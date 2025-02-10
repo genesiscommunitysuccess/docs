@@ -134,7 +134,7 @@ dataserver {
 ```
 
 #### `config`
-The following settings can be applied at query-level. For settings that can also be defined to override at the query level, see [global config](#global-config).
+The following settings can be applied at query-level, and they override any [global settings](#global-config) that you make for the file.
 
 Example:
 ```kotlin
@@ -620,7 +620,7 @@ remote_host,process_a,monitor_a
 
 ### Global `config`
 
-Outside the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some can optionally be overridden at the query level
+Outside the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some of the global settings can be overridden at the query level (as indicated in the table below).
 
 Here is an example of some global configuration settings: 
 
@@ -654,19 +654,60 @@ dataServer {
 | Config item | Description | Default | Overridable in `query` |
 |-------------|-------------|---------|------------------------|
 |`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`)|`2.GIGA_BYTE()`|No|
-|`serializationType`| Serialization approach to convert query rows into bytes and vice versa. Two options: SerializationType.KRYO and SerializationType.FURY. KRYO uses the [Kryo library](https://github.com/EsotericSoftware/kryo). FURY uses the [Fury library](https://github.com/alipay/fury) instead. Internal tests show that Fury can serialize and deserialize row objects 13-15 times more quickly than Kryo in our current Data Server implementation; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). However, the serialized byte array size of a Fury object can be between 10 and 15 per cent larger than a Kryo object, so there is a small penalty to pay for using this option.|KRYO|No|
-|`serializationBufferMode`| This option changes the buffer type used to read/write information from/to LMDB. Two options: SerializationBufferMode. `ON_HEAP` and SerializationBufferMode.`OFF_HEAP`. `ON_HEAP` uses a custom cache of Java HeapByteBuffer objects that exist within the JVM addressable space. `OFF_HEAP` uses DirectByteBuffer objects instead, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. `OFF_HEAP` buffers permit zero-copy serialization/deserialization to LMDB; buffers of this type are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. To use `OFF_HEAP`, you **must** specify the buffer size in advance (see `directBufferSize` setting); consider this carefully if you do not know the size of the serialized query row object in advance.|`ON_HEAP`|No|
-|`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when the `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
-|`compression`|When `true`, it will compress the query row data before writing it to the in-memory cache|`false`|Yes|
+|`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FURY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
+|`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
+|`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
+|`compression`|When `true`, this compresses the query row data before writing it to the in-memory cache|`false`|Yes|
 |`chunkLargeMessages`|When `true`, it will split large updates into smaller ones.|`false`|Yes|
-|`defaultStringSize`|This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the `onStringOverflow` setting for details of how the overflows are handled.|`40`|Yes|
+|`defaultStringSize`|This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the [String overflows](#handling-string-overflows) topic for details. |`40`|Yes|
 |`batchingPeriod`|Delay in milliseconds to wait before sending new data to Data Server clients|`500ms`|Yes|
 |`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes|`true`|Yes|
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
-|`onStringOverflow`|Controls how the system responds to a string overflow. A string overflow happens when the value of a String field in an index is larger than `defaultStringSize`, or the size set on the field.Two options are `IGNORE_ROW` rows with string overflows will be ignored, this can lead to data missing from the Data Server, or `TRUNCATE_FIELD` indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.|TRUNCATE_FIELD |Yes|
-|`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users. For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`. By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions (more at Advanced technical details) to handle date searches.|`false`|Yes|
+|`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. |TRUNCATE_FIELD |Yes|
+|`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
 
-### Backward joins
+###### Serialization considerations
+
+With `serializationType`, there are two options for configuring the type of serialization to be used in response to data requests:
+- `SerializationType.KRYO` uses the [Kryo library](https://github.com/EsotericSoftware/kryo). 
+- `SerializationType.FURY` uses the [Fury library](https://github.com/alipay/fury). 
+
+In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). 
+
+With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB. 
+
+There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. 
+- `SerializationBufferMode.ON_HEAP uses a custom cache of Java `HeapByteBuffer` objects that exist within the JVM addressable space. 
+- `SerializationBufferMode.OFF_HEAP` uses `DirectByteBuffer` objects, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. <br></br>
+OFF_HEAP buffers permit zero-copy serialization/deserialization to LMDB; buffers of this type are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. To use OFF_HEAP, you **must** specify the buffer size in advance (see `directBufferSize` setting). Consider this carefully if you do not know the size of the serialized query row object in advance.
+
+###### Handling string overflows
+
+A string overflow happens when the value of a String field in an index is larger than `defaultStringSize`, or the size set on the field. You can use `onStringOverflow` to control how the system responds to a string overflow.
+
+There are two options:
+
+-  `onStringOverflow.IGNORE_ROW` means that rows with string overflows will be ignored. This can lead to data missing from the Data Server.
+- `onStringOverflow.TRUNCATE_FIELD` causes indices with string overflows to be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.
+
+###### Using the type-aware criteria evaluator
+
+You can use `enableTypeAwareCriteriaEvaluator` to use the type-aware criteria evaluator. This automatically converts criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users. 
+
+For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the correct field types internally (even though `TRADE_DATE` is a field of type `DateTime`). 
+
+The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). 
+
+Note that the type-aware evaluator is also available in `DbMon` for operations such as `search` and `qsearch`. 
+
+If you do not use the use the type-aware criteria evaluator, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. 
+
+So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: 
+`TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`
+
+This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/develop/client-capabilities/server-communications/criteria-matching/#date-operations) to handle date searches.
+
+### Backwards joins
 
 Each query in a Data Server creates what is effectively an open connection between each requesting user and the Data Server. After the initial send of all the data, the Data Server sends only modifications, deletions and insertions in real time. Unchanged fields are not sent, which avoids unnecessary traffic.
 
