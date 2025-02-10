@@ -374,20 +374,20 @@ The `genesisInstallHooks` command specifically runs a (set of) install hook scri
 
 - you need to run install hooks without running `genesisInstall`
 - you need to run `PRE_INSTALL` or `POST_REMAP` install hooks
-    - `PRE_INSTALL` hooks are used when you need the script functionality to run **prior** to running `genesisInstall`. Scripts must be placed in the `/scripts/installHooks/preInstall/` directory.
-    - `POST_REMAP` hooks are used when you need the script functionality to run **after** a `remap` has been completed. Scripts must be placed in the `/scripts/installHooks/postRemap/` directory.
+    - `PRE_INSTALL` hooks are used when you need the script functionality to run **prior** to running `genesisInstall`. Scripts must be placed in the `/scripts/installHooks/preInstallHooks/` directory.
+    - `POST_REMAP` hooks are used when you need the script functionality to run **after** a `remap` has been completed. Scripts must be placed in the `/scripts/installHooks/postRemapHooks/` directory.
 
 | Argument           | Mandatory | Options      | Description                                                                                               |
 |--------------------|-----------|--------------|-----------------------------------------------------------------------------------------------------------|
 | --hookType         | false   | `POST_INSTALL` | Hook type can only take a single option. POST_INSTALL is the default where --hookType is omitted, which runs standard install hooks located in the `/scripts/installHooks/` directory  |
-|                    |         | `PRE_INSTALL`  | `genesisInstallHooks --hookType=PRE_INSTALL` runs install hooks in the `/scripts/installHooks/preInstall/` directory |
-|                    |         | `POST_REMAP`   | `genesisInstallHooks --hookType=POST_REMAP` runs install hooks in the `/scripts/installHooks/postRemap/` directory |
+|                    |         | `PRE_INSTALL`  | `genesisInstallHooks --hookType=PRE_INSTALL` runs install hooks in the `/scripts/installHooks/preInstallHooks/` directory |
+|                    |         | `POST_REMAP`   | `genesisInstallHooks --hookType=POST_REMAP` runs install hooks in the `/scripts/installHooks/postRemapHooks/` directory |
 | --init             | false   |                | `genesisInstallHooks --init=true` marks all installHooks as completed without running any of them. Typically used on a brand new environment. If the HookStateStore is set to DB and this is a new environment, you must run remap before running with this flag. |
 | --repeatHooks      | false   |                | `genesisInstallHooks --repeatHooks=my_app,auth,reporting` repeats ALL install hooks for a specified comma-separated list or modules, regardless of [their status](#status-of-install-hook-run)  |
 
 Install hook file-name conventions:
 - Genesis uses shell script for install hooks. Within the shell script, you could call a Python script, a Kotlin script, Java code, or whatever type of script is necessary.
-- The install hook name must be unique within all the relevant directories for install hooks: `installHooks/`, `installHooks/preInstall/` and `installHooks/postRemap/`.
+- The install hook name must be unique within all the relevant directories for install hooks: `installHooks/`, `installHooks/preInstallHooks/` and `installHooks/postRemapHooks/`.
 - Each install hook must contain a priority number + `_` at the beginning of the file name. This number must be unique. For example: **1_**migrateLogFiles.sh, **2_**migrateDictionary.sh.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_**migrateLogFiles.sh to **9_**migrateLogFiles.sh).
 
