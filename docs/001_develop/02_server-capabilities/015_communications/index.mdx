@@ -111,8 +111,8 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 
 ```java
 GenesisSet genesisSet = new GenesisSet();
-genesisSet.setInteger("PRICE", 10)
-genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
+genesisSet.setInteger("PRICE", 10);
+genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH");
 ```
 
 </TabItem>
@@ -129,38 +129,52 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 
 | Name | Signature | Description |
 |---|---|---|
-| containsField | fun containsField(fieldName: String): Boolean | Checks whether provided field name exists in GenesisSet |
-| equals | override fun equals(other: Any?): Boolean | Checks equality of two GenesisSets |
-| getArray | open operator override fun equals(other: Any?): Boolean | Get an array value, or default value if property not present. |
-| getBigDecimal | fun getBigDecimal(property: String, defaultValue: BigDecimal) | Get a BigDecimal value, or default value if property not present. |
-| getBoolean | fun getBoolean(property: String, defaultValue: Boolean) | Get a boolean value, or the 'defaultValue' parameter if field not found. |
-| getByteArray | fun getByteArray(property: String): ByteArray? | Get a byte array value (assume a Base64 string if a string is found).  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
-| getDate | fun getDate(key: String, defaultValue: DateTime) | Get a DateTime value, or default value if property not present. |
-| getDouble | fun getDouble(property: String, defaultValue: Double) | Get a double value, or default value if property not present. |
-| getGenesisSet | fun getGenesisSet(property: String, defaultValue: GenesisSet) | Get a Genesis set, or default value if property not present. |
-| getInteger | fun getInteger(property: String, defaultValue: Int) | Get an integer value, or default value if property not present. |
-| getLong | fun getLong(property: String, defaultValue: Long) | Get a long value, or default value if property not present. |
-| getObject | tailrec fun getObject(property: String, genesisSet: GenesisSet = this): Any? | Recursively get an object. |
-| getShort | fun getShort(property: String, defaultValue: Short) | Get a short value, or default value if property not present. |
-| getString | fun getString(property: String, defaultValue: String) | Get a string value, or the default value if property not found.  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
-| setArray | fun setArray(key: String, value: Any?) | Set an array value.  Method can be called repeatedly with the same key to build up a list of values. |
-| setBigDecimal | fun setBigDecimal(key: String, value: BigDecimal?) | Set BigDecimal value.  If the value exists in the set it is overwritten. |
-| setBoolean | fun setBoolean(key: String, value: Boolean?) | Set integer value.  If the value exists in the set it is overwritten. |
-| setByteArray | fun setByteArray(key: String, value: ByteArray?) | Set byte array value.  If the value exists in the set it is overwritten. |
-| setDate | fun setDate(key: String, date: DateTime?) | Set date value.  If the value exists in the set it is overwritten. |
-| setDirect | fun setDirect(property: String, value: Any?) | Shorthand method to set a field that may be multiple sets deep. |
-| setDirectNull | fun setDirectNull(property: String, value: Any?, defaultValue: Any) | Shorthand method to set a field that may be multiple sets deep, and accepts a default value for null parameters. |
-| setDouble | fun setDouble(key: String, value: Double?) | Set integer value.  If the value exists in the set it is overwritten. |
-| setFullArray | fun setFullArray(key: String, array: Iterable\<*\>) | Set a full list of values. |
-| setGenesisSet | setGenesisSet(key: String, set: GenesisSet?) | Embed a set inside this set.  If the value exists in the set it is overwritten. |
-| setInteger | fun setInteger(key: String, value: Int?) | Set integer value.  If the value exists in the set it is overwritten. |
-| setLong | fun setLong(key: String, value: Long?) | Set long value.  If the value exists in the set it is overwritten. |
-| setString | fun setString(key: String, value: String? | Set string value.  If the value exists in the set it is overwritten. |
-| toString | override fun toString(): String | Returns a pretty-print string. |
-| unSet | fun unSet(field: String) | Shorthand method to unset a single field. |
-| unSetDirect | tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this) | Shorthand method to unset a field that may be multiple sets deep |
-| unSetGenesisSet | fun unSetGenesisSet(key: String) | Shorthand method to unset a GenesisSet. |
-| with | infix fun String.with(any: Any?) | Sets key-value in GenesisSet Ex: MESSAGE_TYPE with EVENT_INSERT |
+| containsField | `fun containsField(fieldName: String): Boolean` | Checks whether the provided field name exists in GenesisSet. |
+| equals | `override fun equals(other: Any?): Boolean` | Checks equality of two GenesisSets. |
+| getArray | `fun <V> getArray(property: String): List<V?>?` | Get an array value of type V. |
+| getArray | `fun <V> getArray(property: String, clazz: Class<V>): List<V?>?` | Get an array value of type V. |
+| getArray | `fun <V> getArray(property: String, defaultValue: List<V?>): List<V?>?` | Get an array value of type V, or default value if property not present. |
+| getBigDecimal | `fun getBigDecimal(property: String): BigDecimal?` | Get a BigDecimal value. |
+| getBigDecimal | `fun getBigDecimal(property: String, defaultValue: BigDecimal): BigDecimal` | Get a BigDecimal value, or default value if property not present. |
+| getBoolean | `fun getBoolean(property: String): Boolean?` | Get a boolean value. |
+| getBoolean | `fun getBoolean(property: String, defaultValue: Boolean): Boolean` | Get a boolean value, or the 'defaultValue' parameter if field not found. |
+| getByteArray | `fun getByteArray(property: String): ByteArray?` | Get a byte array value (assume a Base64 string if a string is found).  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
+| getDate | `fun getDate(key: String): DateTime?` | Get a DateTime value. |
+| getDate | `fun getDate(key: String, defaultValue: DateTime): DateTime` | Get a DateTime value, or default value if property not present. |
+| getDouble | `fun getDouble(property: String): Double?` | Get a double value. |
+| getDouble | `fun getDouble(property: String, defaultValue: Double): Double` | Get a double value, or default value if property not present. |
+| getGenesisSet | `fun getGenesisSet(property: String): GenesisSet?` | Get a Genesis set. |
+| getGenesisSet | `fun getGenesisSet(property: String, defaultValue: GenesisSet): GenesisSet` | Get a Genesis set, or default value if property not present. |
+| getInteger | `fun getInteger(property: String): Int?` | Get an integer value. |
+| getInteger | `fun getInteger(property: String, defaultValue: Int): Int` | Get an integer value, or default value if property not present. |
+| getLong | `fun getLong(property: String): Long?` | Get a long value. |
+| getLong | `fun getLong(property: String, defaultValue: Long): Long` | Get a long value, or default value if property not present. |
+| getObject | `tailrec fun getObject(property: String, genesisSet: GenesisSet = this): Any?` | Recursively get an object. |
+| getShort | `fun getShort(property: String): Short?` | Get a short value. |
+| getShort | `fun getShort(property: String, defaultValue: Short): Short` | Get a short value, or default value if property not present. |
+| getString | `fun getString(property: String): String?` | Get a string value. You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
+| getString | `fun getString(property: String, defaultValue: String): String` | Get a string value, or the default value if property not found.  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
+| getData | `fun getData(): MutableMap<String, *>` | Get underlying data map. |
+| setArray | `fun setArray(key: String, value: Any?)` | Set an array value.  Method can be called repeatedly with the same key to build up a list of values. If there is an existing item which is a list, then the value is appended to it, otherwise this value is set as the new value. |
+| setBigDecimal | `fun setBigDecimal(key: String, value: BigDecimal?)` | Set BigDecimal value.  If the value exists in the set it is overwritten. |
+| setBoolean | `fun setBoolean(key: String, value: Boolean?)` | Set boolean value.  If the value exists in the set it is overwritten. |
+| setByteArray | `fun setByteArray(key: String, value: ByteArray?)` | Set byte array value.  If the value exists in the set it is overwritten. |
+| setDate | `fun setDate(key: String, date: DateTime?)` | Set date value.  If the value exists in the set it is overwritten. |
+| setDirect | `fun setDirect(property: String, value: Any?)` | Shorthand method to set a field that may be multiple sets deep. For example, `genesisSet.setDirect("DETAILS.TRADE.CLIENT.NAME", "Example")` |
+| setDirectNull | `fun setDirectNull(property: String, value: Any?, defaultValue: Any)` | Shorthand method to set a field that can be multiple sets deep, and which accepts a default value for null parameters. For example, `genesisSet.setDirectNull("DETAILS.TRADE.MARKET.NAME", "Test", "Example")`. |
+| setDouble | `fun setDouble(key: String, value: Double?)` | Set double value.  If the value exists in the set it is overwritten. |
+| setFullArray | `fun setFullArray(key: String, array: Iterable\<*\>)` | Set a full list of values. If there is an existing item which is a list, then all items in this array are appended to it, otherwise this array is set as the new value. |
+| setGenesisSet | `setGenesisSet(key: String, set: GenesisSet?)` | Embed a set inside this set.  If the value exists in the set it is overwritten. |
+| setInteger | `fun setInteger(key: String, value: Int?)` | Set integer value.  If the value exists in the set it is overwritten. |
+| setLong | `fun setLong(key: String, value: Long?)` | Set long value.  If the value exists in the set it is overwritten. |
+| setString | `fun setString(key: String, value: String?)` | Set string value.  If the value exists in the set it is overwritten. |
+| unSet | `fun unSet(field: String)` | Shorthand method to unset a single field. For example, `genesisSet.unSet("PRICE")` |
+| unSetDirect | `tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this)` | Shorthand method to unset a field that may be multiple sets deep. For example, `genesisSet.unSetDirect("DETAILS.TRADE.CLIENT.NAME")`. |
+| unSetGenesisSet | `fun unSetGenesisSet(key: String)` | Shorthand method to unset a GenesisSet. |
+| with | `infix fun String.with(any: Any?)` | Sets key value in GenesisSet. For example, `MESSAGE_TYPE with "EVENT_INSERT"`. |
+| toString | `override fun toString(): String` | Returns a pretty-print string. |
+| writeTo | `fun writeTo(pk: MessagePacker)` | Serialize object into specified packer. |
+| readFrom | `fun readFrom(unpacker: MessageUnpacker)` | Deserialize object from given unpacker. |
 
 ### Companion object
 
@@ -303,7 +317,10 @@ data class EventNack(
 ) : EventReply()
 ```
 
-Alternatively, you can create your own reply type using a normal Kotlin data class or sealed class. The example below defines `EventSetLogLevelReply`:
+Alternatively, you can create your own reply types. The example below defines `EventSetLogLevelReply`:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 sealed class EventSetLogLevelReply : Outbound() {
@@ -311,6 +328,27 @@ sealed class EventSetLogLevelReply : Outbound() {
     data class EventSetLogLevelNack(val error: String) : EventSetLogLevelReply()
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public abstract class EventSetLogLevelReply extends Outbound {}
+
+public class EventSetLogLevelAck extends EventSetLogLevelReply {}
+public class EventSetLogLevelNack extends EventSetLogLevelReply {
+
+    final String error;
+
+    public EventSetLogLevelNack(String error) {
+        this.error = error;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
 
 These custom reply types allow a predetermined number of customized replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply.
 
@@ -391,7 +429,7 @@ These are the main types of Nack (error or warning) message. Most of them are se
 
 #### Error codes
 
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardized to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
+Below is the list of standard error codes, along with their HTTP Status codes. The framework implementation is standardized to provide error code `CODE` as an Enum represented by the `ErrorCode` class, but it also provides the flexibility to include any error code.
 
 ###### ErrorCode class definition
 
@@ -425,7 +463,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | FEATURE_NOT_PROVIDED                 | 400 Bad Request           |
 | FEATURE_NOT_FOUND                    | 404 Not Found             |
 | JSON_SCHEMA_NOT_FOUND                | 404 Not Found             |
-| REJECT_RULE_DOES_NOT_EXIST           | 400 Bad Request           |
+| REJECT_RULE_DOES_NOT_EXIST           | 404 Not Found             |
 | ERROR_CHECKING_EXISTING_RULE         | 400 Bad Request           |
 | NO_DS_NAME                           | 400 Bad Request           |
 | INVALID_DS_NAME                      | 404 Not Found             |
@@ -456,6 +494,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | APPROVAL_WRONG_STATUS_CANNOT_REJECT  | 400 Bad Request           |
 | MISSING_HOSTNAME                     | 400 Bad Request           |
 | NUMBER_OF_RECORDS_DOES_NOT_MATCH     | 400 Bad Request           |
+| OPTIMISTIC_CONCURRENCY_ERROR         | 400 Bad Request           |
 
 #### HTTP status code
 
@@ -539,32 +578,103 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 
 Use these APIs to send and receive messages between micro-services.
 
-### `ClientConnectionsManager`
+### `ServiceDiscovery`
 
-Use `@Inject` to create `ClientConnectionsManager`.
+Use `@Inject` to create `ServiceDiscovery`.
 
 See the example below:
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
-class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {}
+class TestService @Inject constructor(val serviceDiscovery: ServiceDiscovery) {}
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class TestAuthManagerService {
+
+    private final ServiceDiscovery serviceDiscovery;
+
+    @Inject
+    public TestAuthManagerService(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+
+The implementation of `ServiceDiscovery` is determined by the "ClusterMode" system definition property.
+See the topic on [clustering](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering) for more details.
+
+:::
+
+To connect to another service, in general, you should use `GenesisMessageClient`. To load-balance across all service instances, call `resolveClient` whenever sending a message; a service instance will be chosen at random.
+
+When using Consul for clustering, `MessageService` performs failover automatically internally. However, its API is not as rich as the `GenesisMessageClient`API.
+
+#### Functions
+
+| Name | Signature |
+| --- | --- |
+| resolveClientByResource | `fun resolveClientByResource(resourceName: String, initializationLogic: Consumer<GenesisMessageClient>): GenesisMessageClient?` |
+| resolveClientByResource | `fun resolveClientByResource(resourceName: String): GenesisMessageClient?` |
+| resolveResourceInfo | `fun resolveResourceInfo(resourceName: String): ResourceInfo?` |
+| resolveClient | `fun resolveClient(serviceName: String, initializationLogic: Consumer<GenesisMessageClient>): GenesisMessageClient?` |
+| resolveClient | `fun resolveClient(serviceName: String): GenesisMessageClient? = resolveClient(serviceName, EmptyInitializationLogic)` |
+| resolveService | `fun resolveService(serviceName: String, initializationLogic: Consumer<GenesisMessageClient>): MessageService?` |
+| resolveService | `fun resolveService(serviceName: String): MessageService?` |
+| getResources | `fun getResources(): Map<String, ResourceInfo>` |
+| addServiceListener | `fun addServiceListener(service: String, consumer: Consumer<List<ServiceInfo>>): Boolean` |
 
 ### `GenesisMessageClient`
 
-`GenesisMessageClient` is a messaging client that can be obtained using `ClientConnectionManager`. Here is an example:
+`GenesisMessageClient` is a messaging client that can be obtained using `ServiceDiscovery`. Here is an example:
 
 If you connect successfully to the POSITION_APP_EVENT_HANDLER service, you will get GenesisMessageClient. Otherwise, you will get null.
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
-class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {
-    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("POSITION_APP_EVENT_HANDLER")    
+class TestAuthManagerService @Inject constructor(val serviceDiscovery: ServiceDiscovery) {
+    private val genesisMessageClient = serviceDiscovery.resolveClient("POSITION_APP_EVENT_HANDLER")    
     // custom code here
 }
 ```
 
+</TabItem>
+<TabItem value="java">
+
+```java
+
+public class TestAuthManagerService {
+
+    private final ServiceDiscovery serviceDiscovery;
+    private final GenesisMessageClient genesisMessageClient;
+
+    @Inject
+    public TestAuthManagerService(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+        genesisMessageClient = serviceDiscovery.resolveClient("GENESIS_AUTH_MANAGER");
+    }
+    // custom code here
+}
+```
+
+</TabItem>
+</Tabs>
+
 #### Constructor
 
-GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)
+`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)`
 
 #### Functions
 
@@ -572,52 +682,166 @@ GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration:
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout,): Single<O>` |
-| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>,timeout: Int = configuration.reqRepTimeout,): Reply<O>` |
-| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.reqRepTimeout,): Single<O>` |
+| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
+| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Reply<O>` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
 | request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout,): O` |
-| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout,):` |
+| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout): O where O : Outbound, O : ParametricType<P>` |
 | sendMessage | `fun sendMessage(set: GenesisSet): Boolean` |
 | sendMessage | `fun sendMessage(set: GenesisMessage): Boolean` |
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
+| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
-| sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int,)` |
-| sendReqRep | `fun sendReqRep(set: GenesisSet): ListenableFuture<GenesisSet>` |
-| sendReqRep | `fun sendReqRep(set: GenesisSet, reqRepTimeout: Int,): ListenableFuture<GenesisSet>` |
+| sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout,): O?` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout,): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): O?` |
+| addListener | `fun addListener(listener: GenesisMessageListener<GenesisSet>)` |
+| removeListener | `fun removeListener(listener: GenesisMessageListener<GenesisSet>)` |
+| addGenesisMessageListener | `fun <V : GenesisMessage> addGenesisMessageListener(clazz: Class<V>, listener: GenesisMessageListener<V>)` |
+| removeGenesisMessageListener | `fun <V : GenesisMessage> removeGenesisMessageListener(clazz: Class<V>, listener: GenesisMessageListener<V>)` |
+| addGenesisMessageListener | `inline fun <reified V : GenesisMessage> addGenesisMessageListener(listener: GenesisMessageListener<V>)` |
+| removeGenesisMessageListener | `inline fun <reified V : GenesisMessage> removeGenesisMessageListener(listener: GenesisMessageListener<V>)` |
+| triggerCallback | `fun <V : GenesisMessage> triggerCallback(sourceRef: String, message: V): Boolean` |
+| registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.simpleName))` |
+| registerReaderType | `fun registerReaderType(clazz: KClass<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.java.simpleName))` |
+| registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: KClass<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.java.simpleName))` |
+| registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: Class<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.simpleName))` |
+| notifyConnectionDown | `fun notifyConnectionDown(ctx: ChannelHandlerContext)` |
+| waitForConnection | `fun waitForConnection()` |
 
 #### Properties
 
 | Name | Summary |
 | --- | --- |
-| handler | Gives GenesisMessageHandler, which allows us to attach listeners to servers and clients |
-| isActive | Checks whether netty connector is open for new connection |
-| isConnected | Checks whether netty connector is open for new connection |
+| handler | Returns GenesisMessageHandler, which allows us to attach listeners to servers and clients |
+| isActive | Checks whether the netty connector is open for a new connection |
+| isConnected | Checks whether the netty connector is open for a new connection |
 
 Example:
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
-class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {  
-    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    
-    fun sendMessageToEventHandler() {        
-        genesisMessageClient?.waitForConnection()        
-        genesisMessageClient?.sendReqRep(            
-            genesisSet {                
-                MESSAGE_TYPE with "EVENT_LOGIN_AUTH"                
-                SERVICE_NAME with "GENESIS_AUTH_MANAGER"                
-                SOURCE_REF with "sourceRef"                
-                DETAILS with genesisSet {                    
-                    USER_NAME with "User"                    
-                    PASSWORD with "Password"                
-                }            
-            }        
-        )?.get()        
-        genesisMessageClient?.shutdown()    
+class TestAuthManagerService @Inject constructor(val serviceDiscovery: ServiceDiscovery) {
+
+    private val genesisMessageClient = serviceDiscovery.resolveClient("GENESIS_AUTH_MANAGER")
+
+    fun sendMessageToEventHandler() {
+        genesisMessageClient?.waitForConnection()
+
+        val result: Boolean? = genesisMessageClient?.sendMessage(
+            genesisSet {
+                MESSAGE_TYPE with "EVENT_LOGIN_AUTH"
+                SERVICE_NAME with "GENESIS_AUTH_MANAGER"
+                SOURCE_REF with "sourceRef"
+                DETAILS with genesisSet {
+                    USER_NAME with "User"
+                    PASSWORD with "Password"
+                }
+            }
+        )
+        println("Result: $result")
+        genesisMessageClient?.shutdown()
     }
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class TestAuthManagerService {
+
+    private final ServiceDiscovery serviceDiscovery;
+
+    @Inject
+    public TestAuthManagerService(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+    }
+
+    public void sendMessageToEventHandler() throws InterruptedException {
+        var genesisMessageClient = serviceDiscovery.resolveClient("GENESIS_AUTH_MANAGER");
+        if (genesisMessageClient == null) {
+            throw new RuntimeException("Could not find message client for service GENESIS_AUTH_MANAGER");
+        }
+        genesisMessageClient.waitForConnection();
+        var result = genesisMessageClient.sendMessage(
+            GenesisSet.builder()
+                .setString(MESSAGE_TYPE, "EVENT_LOGIN_AUTH")
+                .setString(SERVICE_NAME, "GENESIS_AUTH_MANAGER")
+                .setString(SOURCE_REF, "sourceRef")
+                .setGenesisSet(DETAILS,
+                    GenesisSet.builder()
+                        .setString(USER_NAME, "User")
+                        .setString(PASSWORD, "Password")
+                        .build()
+                )
+                .build()
+        );
+        System.out.println("Result: " + result);
+        genesisMessageClient.shutdown();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### `MessageService`
+
+`MessageService` can be obtained using `ServiceDiscovery`. In the example below, if you connect successfully to the POSITION_APP_EVENT_HANDLER service, you will get MessageService. Otherwise, you will get null.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class TestAuthManagerService(@Inject val serviceDiscovery: ServiceDiscovery) {
+    private val messageService = serviceDiscovery.resolveService("POSITION_APP_EVENT_HANDLER")    
+    // custom code here
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class TestAuthManagerService {
+
+    private final ServiceDiscovery serviceDiscovery;
+    private final MessageService messageService;
+
+    @Inject
+    public TestAuthManagerService(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+        messageService = serviceDiscovery.resolveService("GENESIS_AUTH_MANAGER");
+    }
+    // custom code here
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Functions
+
+| Name | Signature |
+| --- | --- |
+| addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
+| removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
+| rxSendMessage | `fun sendMessage(set: GenesisSet): Single<Boolean>` |
+| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet): Boolean` |
+| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxRequest | `fun rxRequest(set: GenesisSet): Single<GenesisSet>` |
+| rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
+| suspendRequest | `suspend fun suspendRequest(set: GenesisSet): GenesisSet?` |
+| suspendRequest | `suspend fun suspendRequest(set: GenesisSet, timeout: Int): GenesisSet?` |
+| addListener | `fun addListener(listener: GenesisMessageListener<GenesisSet>)` |
+| removeListener | `fun removeListener(listener: GenesisMessageListener<GenesisSet>)` |
+| close | `fun close()` |
 
 ### `GenesisMessageHandler`
 
@@ -632,32 +856,84 @@ GenesisMessageHandler enables you to attach listeners to servers and clients.
 
 ### `GenesisMessageListener`
 
-`GenesisMessageListener` is a functional interface with method `onNewMessage`, which listens for any new messages. `@FunctionalInterface public interface GenesisMessageListener<V extends GenesisMessage>`
+`GenesisMessageListener` is a functional interface with method `onNewMessage`, which is called when a new message is received. 
 
-#### `onNewMessage`
+`@FunctionalInterface public interface GenesisMessageListener<V extends GenesisMessage>`
 
-This method is called when a new message is received.
+#### Functions
+
+| Name | Signature |
+| --- | --- |
+| onNewMessage | `void onNewMessage(V set, GenesisChannel channel);` |
 
 Example:
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
-class CreateListener(@Inject val clientConnectionManager: ClientConnectionsManager) {    
-    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    
-    fun listener(args: Array<String>) {        
-        // Add listener which prints GenesisSet        
-        genesisMessageClient?.handler?.addListener { 
-            set: GenesisSet?, channel: GenesisChannel? -> println(set)        
-        }        
-        // Listener gets called when new message is received        
-        genesisMessageClient?.sendMessage(genesisSet {            
-            MESSAGE_TYPE with "EVENT_LOGIN_AUTH"            
-            SERVICE_NAME with "GENESIS_AUTH_MANAGER"            
-            SOURCE_REF with "sourceRef"            
-            DETAILS with genesisSet {                
-                USER_NAME with "User"                
-                PASSWORD with "Password"            
-            }        
-        })    
+class CreateListener @Inject constructor(val serviceDiscovery: ServiceDiscovery) {
+
+    fun listener() {
+        val genesisMessageClient = serviceDiscovery.resolveClient("GENESIS_AUTH_MANAGER")
+        // Add listener which prints GenesisSet
+        genesisMessageClient?.addListener { set: GenesisSet?, channel: GenesisChannel? ->
+            println(set)
+        }
+        // Listener gets called when new message is received
+        genesisMessageClient?.sendMessage(
+            genesisSet {
+                MESSAGE_TYPE with "EVENT_LOGIN_AUTH"
+                SERVICE_NAME with "GENESIS_AUTH_MANAGER"
+                SOURCE_REF with "sourceRef"
+                DETAILS with genesisSet {
+                    USER_NAME with "User"
+                    PASSWORD with "Password"
+                }
+            }
+        )
     }
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class CreateListener {
+
+    private final ServiceDiscovery serviceDiscovery;
+
+    @Inject
+    public CreateListener(ServiceDiscovery serviceDiscovery) {
+        this.serviceDiscovery = serviceDiscovery;
+    }
+
+    public void listener() {
+        var genesisMessageClient = serviceDiscovery.resolveClient("GENESIS_AUTH_MANAGER");
+        if (genesisMessageClient == null) {
+            throw new RuntimeException("Could not find message client for service GENESIS_AUTH_MANAGER");
+        }
+
+        // Add listener which prints GenesisSet
+        genesisMessageClient.addListener((set, channel) -> System.out.println(set));
+        // Listener gets called when new message is received
+        genesisMessageClient.sendMessage(
+            GenesisSet.builder()
+                .setString(MESSAGE_TYPE, "EVENT_LOGIN_AUTH")
+                .setString(SERVICE_NAME, "GENESIS_AUTH_MANAGER")
+                .setString(SOURCE_REF, "sourceRef")
+                .setGenesisSet(DETAILS,
+                    GenesisSet.builder()
+                        .setString(USER_NAME, "User")
+                        .setString(PASSWORD, "Password")
+                        .build()
+                )
+                .build()
+        );
+    }
+}
+```
+
+</TabItem>
+</Tabs>
