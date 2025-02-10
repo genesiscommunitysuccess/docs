@@ -48,7 +48,7 @@ All Data Server queries are available via REST automatically too.
 
 ## Example configuration
 
-Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following show example dataserver configurations.
+Here is an example Data Server configuration that matches the [data model examples](/develop/server-capabilities/data-model/#example-configuration).
 
 ```kotlin
 dataServer {
@@ -92,24 +92,23 @@ dataServer {
 ```
 
 ###### INSTRUMENT 
-The query name is defaulted as no name is specified.
+This query enables the client app to view the data in the INSTRUMENT table. No name is specified for the query, so the default name ALL_INSTRUMENTS is applied automatically. There are no access controls, so any authenticated user can access this query and see data.
 
 ###### COUNTERPARTY
-A query name is specified.   
-[Access control](/develop/server-capabilities/access-control/) permissions are set, only users with `CounterpartyView` permission are able to access this query and see data. With the INSTRUMENT query above, any user who can authenticate with this app are able to access this query and see data.
+This query enables the client app to view the data in the INSTRUMENT table. A query name is specified. [Access control](/develop/server-capabilities/access-control/) permissions are set; only users with `CounterpartyView` permission are able to access this query and see data.
 
 ###### TRADE_VIEW
-This query is for a view, where as the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
+This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
 
-We have specified the fields of the view we want to show explicitly, if there are fields in a view/table we don't need we can leave them out of this configuration. Where `fields` block is not specified all are implicitly included.  
+This query specifies the fields that we want to show. if there are fields in a view or table, which you don't need wto include, you can leave them out of this configuration using the `fields` block. If you don't specify any fields in this way all are implicitly included.  
 
-The `auth` block in `permissioning` utilizes [access control](/develop/server-capabilities/access-control/) for row level permissioning. Only users with access to the COUNTERPARTY_ID will see the row.
+The `auth` block in `permissioning` applies [access control](/develop/server-capabilities/access-control/) for row level permissioning. Only users with access to the COUNTERPARTY_ID will see the row.
 
-`filter` clause is a server side filter. Subscribing clients may specify criteria to filter data, however this filter applies on the back end and clients may not circumvent.
+The `filter` clause is a server-side filter. Subscribing clients can also specify criteria to filter data. However, this filter is applied on the back end, and client apps cannot cannot circumvent this.
 
 ### Summary
 
-A Data Server file consists of a number of queries onto a table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
+A Data Server file consists of a number of queries onto a tables or views. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
 
 ## Configuration options
 
@@ -135,7 +134,7 @@ dataserver {
 ```
 
 #### `config`
-The following settings can be applied at a query-level. See [global config](#global-config) for settings which can also be defined to override at the query level.
+The following settings can be applied at query-level. For settings that can also be defined to override at the query level, see [global config](#global-config).
 
 Example:
 ```kotlin
@@ -621,9 +620,9 @@ remote_host,process_a,monitor_a
 
 ### Global `config`
 
-Outside of the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some can optionally be overridden at the query level
+Outside the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some can optionally be overridden at the query level
 
-Here is an example of some configuration settings: 
+Here is an example of some global configuration settings: 
 
 ```kotlin
 dataServer {
