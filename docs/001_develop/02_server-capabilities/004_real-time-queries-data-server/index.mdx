@@ -29,7 +29,7 @@ Data Servers preload and monitor specific tables or views in the database. When 
 
 The first time the user subscribes, all the data for the table or view is sent. The connection between the user and the Data Server remains open; so from then on, the Data Server automatically sends changes.
 
-The Data Server uses the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
+The Data Server uses the push mechanism of web sockets to send clients real-time updates for the data they have subscribed to, and which they are filtering on. There is also a REST API that enables clients to subscribe and receive these updates.
 
 ```mermaid
 graph TD
