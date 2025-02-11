@@ -102,6 +102,16 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.7.7
+
+###### Features
+- Add flag to create compact `toString` method on entities
+
+###### Fixes
+- Add sync backwards join cache implementation.
+- Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated
+- Increase zero mq subscriber worker high watermark value to `Integer.MAX_VALUE`
+
 #### 8.7.6
 
 ###### Fixes
