@@ -674,7 +674,7 @@ With `serializationType`, there are two options for configuring the type of seri
 
 In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). 
 
-However, the serialized byte array size of a Fury object can be between 10 and 15 per cent larger than a Kryo object, so there is a small penalty to pay for using this option.
+However, the serialized byte array size of a Fury object can be between 10 and 15 percent larger than a Kryo object, so there is a small penalty to pay for using this option.
 
 With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB. 
 
