@@ -74,7 +74,15 @@ id: '8.8'
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.8.1
+
+###### Features
+- Enhance criteria expression capabilities by allowing direct comparisons between `DateTime` objects against `Long` and `String` types.
+
+###### Fixes
+- Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated.
+- `TypeAwareCriteriaEvaluator` in Dataserver now works with query-enriched fields.
+- Ensure `TypeAwareCriteriaEvaluator` usage in Dataserver and req/rep handles all common date/datetime formats.
 
 ## Client
 
