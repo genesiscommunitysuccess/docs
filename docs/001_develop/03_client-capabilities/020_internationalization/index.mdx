@@ -11,18 +11,16 @@ pagination_next: develop/client-capabilities/desktop-interoperability/foundation
 ---
 
 
-The `@genesislcap/foundation-i18n` package provides a collection of [i18next](https://www.i18next.com/) services and utilities for Genesis applications. These enable you to provide your application several different languages.
+Internationalization is the requirement for making your application suitable for users in different cultures, taking into account language, legal requirements and such important minutiae as the different formats of symbols, telephone numbers and postal codes. Processes for dealing with these issues are referred to under the spectacularly unhelpful acronym [i18n](https://www.w3.org/International/i18n-drafts/nav/about).
 
-For more detailed information on API and configurations, see the [API documentation](./docs/api/index.md).
-
-## Features
+The `@genesislcap/foundation-i18n` package provides a collection of services and utilities based on the [i18next](https://www.i18next.com/) framework. These provide important internationalization features for your application:
 
 - **Easy integration**: Quick set-up with modern JavaScript frameworks and libraries.
 - **Dynamic language switching**: The user can select to change language on the fly without reloading the application.
 - **Module federation support**: Share and load translations dynamically across different micro front-ends or modules.
 - **Dependency injection**: Integrate i18n services into your components using dependency injection.
 
-### Importing and configuring i18
+### Importing and configuring i18n
 
 Once you have [installed](#installation) foundation-i18n, you can import the necessary modules from `@genesislcap/foundation-i18n` and configure your internationalization settings.
 
@@ -60,9 +58,9 @@ Registration.instance<I18nextConfig>(I18nextConfig, {
 
 This could live in your application’s entry point, such as `main.ts` or a similar file.
 
-### I18n set-up (JSON)
+### Storing translation information in JSON
 
-You can also use a JSON file to store your translations and load them dynamically:
+Alternatively, you can use a JSON file to store your translations and load them dynamically. For example:
 
 ```json
 {
@@ -102,13 +100,17 @@ Registration.instance<I18nextConfig>(I18nextConfig, {
 
 ### `addResources` 
 
+You can add resources dynamically and whenever necessary. 
+
+This is useful when:
+
+- you have a large number of translations
+- you need to from a different source
+- you want to load translations at a different time from the initial set-up
+
 :::warning
 This will overwrite any resources you have set previously.
 :::
-
-You can add resources dynamically and when necessary. 
-
-This is useful when you have a large number of translations or when you need to load translations from a different source or at a different time from the initial set-up.
 
 ```typescript
 import { I18next } from '@genesislcap/foundation-i18n';
@@ -125,7 +127,7 @@ export class MyExampleClass {
 
 ### Usage
 
-`foundation-i18n` supports changing languages dynamically, allowing your application to switch languages without needing to reload:
+`foundation-i18n` enables your application to change languages dynamically, without needing to reload:
 
 ```typescript
 import { I18next } from '@genesislcap/foundation-i18n';
