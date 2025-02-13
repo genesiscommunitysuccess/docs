@@ -1,6 +1,6 @@
 ---
-title: 'Internationalization'
-sidebar_label: 'Internationalization'
+title: 'Internationalization - i18n'
+sidebar_label: 'Internationalization - i18n'
 id: client-internationalization
 keywords: [i18n, internationalization]
 tags:
@@ -10,40 +10,20 @@ sidebar_position: 20
 pagination_next: develop/client-capabilities/desktop-interoperability/foundation-fdc3
 ---
 
-# Foundation i18n
+The `@genesislcap/foundation-i18n` package provides a collection of services and utilities based on the [i18next](https://www.i18next.com/) framework to enable your application to handle more than one language. 
 
-The `@genesislcap/foundation-i18n` package provides a collection of i18n services and utilities for Genesis applications. It leverages the power of [i18next](https://www.i18next.com/) to enable seamless internationalization and localization.
+## Key features
 
-## API Documentation
-
-For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
-
-## Features
-
-- **Easy integration**: Quick setup with modern JavaScript frameworks and libraries.
-- **Dynamic language switching**: Change languages on the fly without reloading the application.
-- **Module federation support**: Share and load translations across different micro-frontends or modules dynamically.
+- **Easy integration**: Quick set-up with modern JavaScript frameworks and libraries.
+- **Dynamic language switching**: The user can select to change language on the fly without reloading the application.
+- **Module federation support**: Share and load translations dynamically across different micro front-ends or modules.
 - **Dependency injection**: Integrate i18n services into your components using dependency injection.
 
-## Getting Started
+### Importing and configuring i18n
 
-### Installation
+Once you have [installed](#installation) foundation-i18n, you can import the necessary modules from `@genesislcap/foundation-i18n` and configure your language settings.
 
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-i18n` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
-
-```json
-{
-  "dependencies": {
-    "@genesislcap/foundation-i18n": "latest"
-  },
-}
-```
-
-### I18n Setup
-
-Import the necessary modules from `@genesislcap/foundation-i18n` and configure your internationalization settings.
+Here is an example that provides headings in both English and Portuguese: 
 
 ```typescript
 import { defaultI18nextConfig, I18nextConfig } from '@genesislcap/foundation-i18n';
@@ -77,9 +57,9 @@ Registration.instance<I18nextConfig>(I18nextConfig, {
 
 This could live in your application’s entry point, such as `main.ts` or a similar file.
 
-### I18n Setup (JSON)
+### Storing translation information in JSON
 
-You can also use a JSON file to store your translations and load them dynamically:
+Alternatively, you can use a JSON file to store your translations and load them dynamically. For example:
 
 ```json
 {
@@ -119,11 +99,17 @@ Registration.instance<I18nextConfig>(I18nextConfig, {
 
 ### `addResources` 
 
-> :warning: **This will overwrite previously set resources.**
+You can add resources dynamically and whenever necessary. 
 
-You can also add resources dynamically and when necessary. 
+This is useful when:
 
-This is useful when you have a large number of translations or when you need to load translations from a different source or at a different time from the initial setup.
+- you have a large number of translations
+- you need to from a different source
+- you want to load translations at a different time from the initial set-up
+
+:::warning
+This will overwrite any resources you have set previously.
+:::
 
 ```typescript
 import { I18next } from '@genesislcap/foundation-i18n';
@@ -140,7 +126,7 @@ export class MyExampleClass {
 
 ### Usage
 
-`foundation-i18n` also supports changing languages dynamically, allowing your application to switch languages without needing to reload:
+`foundation-i18n` enables your application to change languages dynamically, without needing to reload:
 
 ```typescript
 import { I18next } from '@genesislcap/foundation-i18n';
@@ -180,9 +166,9 @@ export class MyExampleComponent extends FASTElement {
 }
 ```
 
-### Integrating with Other Libraries
+### Integrating with other libraries
 
-#### Angular Example
+#### Angular example
 
 To integrate `@genesislcap/foundation-i18n` with an Angular application, you can configure `i18next` in a service and use it throughout your components.
 
@@ -248,9 +234,9 @@ export class AppComponent {
 }
 ```
 
-#### React Example
+#### React example
 
-To integrate `@genesislcap/foundation-i18n` with a React application, you can create a separate service for handling `i18next` similar to how you would create other services.
+To integrate `@genesislcap/foundation-i18n` with a React application, create a separate service for handling `i18next` just as you would create other services.
 
 **i18nService.js**
 
@@ -307,3 +293,18 @@ const App = () => {
 
 export default App;
 ```
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-i18n` as a dependency in your `package.json` file. 
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-i18n": "latest"
+  },
+}
+```
+2. Run the `$ npm run bootstrap` command again. (Whenever you change the dependencies of your project, you should always run this command to rebuild.) You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+
