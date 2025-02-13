@@ -249,6 +249,10 @@
         "description": "Enable your admin users to view, add and edit user details, and to activate and deactivate users in a single click."
       },
       {
+        "href": "/develop/business-components/bloomberg/",
+        "description": "Connect easily to Bloomberg's BPIPE and SAPI interfaces and consume Bloomberg market data directly in your Genesis application."
+      },
+      {
         "href": "/develop/business-components/fix/",
         "description": "Create a gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
