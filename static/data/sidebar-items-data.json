@@ -250,7 +250,7 @@
       },
       {
         "href": "/develop/business-components/bloomberg/",
-        "description": "Connect easily to Bloomberg's BPIPE and SAPI interfaces and consume Bloomberg market data directly in your Genesis application."
+        "description": "Connect easily to Bloomberg's B-PIPE and SAPI interfaces and consume Bloomberg market data directly in your Genesis application."
       },
       {
         "href": "/develop/business-components/fix/",
