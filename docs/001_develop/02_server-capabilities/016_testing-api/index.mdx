@@ -703,7 +703,24 @@ public class ProvidedInstanceTest {
 </Tabs>
 
 
+## Using application level system definition files in your integration tests
+By default, GenesisJUnit integration tests use system definition values specified in your annotations.
+However, you can configure the tests to utilize application-level system definition files instead.
+To do so, ensure that the desired file is present on your test classpath.
+Then, pass the `enableAppConfigInTests` property via your Gradle command to enable this configuration.
+Enabling application level system definition files in your tests will ignore any sys def values set via `@SysDefOverwrite`.
+:::info
 
+Whether the desired system definition file is imported from another module
+or declared directly within the same module as the test you want to run, it must be located in a `cfg/` directory.
+
+Additionally, in order for the `enableAppConfigInTests` to be picked up at runtime, you need to extend the gradle `test` task as follows:
+
+`tasks.test {
+     systemProperty("enableAppConfigInTests", "true")
+ }`
+
+:::
 
 ## Integration testing (legacy)
 
