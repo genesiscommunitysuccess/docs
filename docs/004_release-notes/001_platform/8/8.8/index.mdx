@@ -8,14 +8,14 @@ id: '8.8'
 ## Server
 
 ### Features
-* Added ability to perform record deltas using dbSink by exposing modifiedFields 
-* Add dynamicQueryBuilder support 
+* Added ability to perform record deltas using dbSink by exposing `modifiedFields` 
+* Add `dynamicQueryBuilder` support 
 * Add support for dynamic parameters as well as fix issues related to ENUM and DateTime handling 
 * Added support for processing context in data pipeline operators 
 * Allow docker build to pre-set SysDef environment variables 
 * Add enum references as companion object properties for each enum field for easy access in GPAL scripts 
 * Generate all ENUM values inside enum reference objects for completeness 
-* Optimise memory usage BackwardJoinCache for 1-2-1 joins 
+* Optimise memory usage `BackwardJoinCache` for 1-2-1 joins 
 * Added support for enabling app level sys def files in integration tests 
 * Allows for overriding of test process name 
 * Provide better bulk purge support 
@@ -28,25 +28,26 @@ id: '8.8'
 * Optimize index matching for non-consecutive fields 
 * Site specific plugin to do not modify binary files stored under data 
 * Add sync backwards join cache impl 
-* Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
-* Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
+* Ensure `Index.NonUnique` class definition has a fixed `serialVersionUID` field 
+* Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
 * Fix deserialization incompatibility for Index class 
 * Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
 * Increase Kotlin Daemon Heap to 5g 
-* Ensure number parameters are not passed as string values to "where" clauses and use correct uppercase underscore translation 
-* ResourceDaemon doesn't properly evaluate ClusterMode 
+* Ensure number parameters are not passed as string values to `where` clauses and use correct uppercase underscore translation 
+* ResourceDaemon doesn't properly evaluate `ClusterMode` 
 * Align Kotlin daemon heap across composite build 
-* DbBulkSubscribe not updating secondary table when backwardsJoin true 
-* Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+* `DbBulkSubscribe` not updating secondary table when `backwardsJoin` true 
+* Ensure `DataDumpManager` uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder` 
 * Ensure optimistic concurrency checks work within transactions 
 * Ensure script files in site-specific have priority when searching by suffix 
-* Exec plugin should take clientName override into account 
+* Exec plugin should take `clientName` override into account 
 * GenesisType json schema property for req reps and data server queries 
 * Increase producer hwm for zeromq update layer 
 * Option to register root records in back join cache to ensure they exist when child record is registered 
-* Replace hardcoded references of GENESIS_CLUSTER to use ServiceDiscovery based on resource name 
+* Replace hardcoded references of GENESIS_CLUSTER to use `ServiceDiscovery` based on resource name 
 * Split kotlin daemon jvm options to separate property 
 * Increase zero mq subscriber worker high water mark value to `Integer.max_value`
+* Generated SysDef should allow safe conversion of types
 
 ### Dependency changes
 
