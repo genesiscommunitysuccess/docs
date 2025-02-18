@@ -206,6 +206,27 @@ Dependency changes
 - Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
 
+#### 7.2.22
+
+##### Features
+
+- Optimise memory usage `BackwardJoinCache` for 1-2-1 joins
+
+##### Fixes
+
+- Optimize index matching for non-consecutive fields
+- DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records
+- Ensure TRACE level is set correctly for GenesisMessageEncoder and GenesisMessageDecoder when `DATADUMP_ON is activated 
+- Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
+- ResourceDaemon doesn't properly evaluate ClusterMode 
+- Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+- Option to register root records in back join cache to ensure they exist when child record is registered 
+- Add sync backwards join cache impl 
+- Increase producer hwm for zeromq update layer 
+- Increase zero mq subscriber worker high water mark value to `Integer.MAX_VALUE` 
+- genesis-pal-dataserver: Handle multiple updates for same record in data server 
+- Race condition when processing multiple back join table modifications on different fields at the same time
+
 #### 7.2.21
 
 ##### Fixes
