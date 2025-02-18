@@ -215,11 +215,11 @@ Dependency changes
 ##### Fixes
 
 - Optimize index matching for non-consecutive fields
-- DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records
-- Ensure TRACE level is set correctly for GenesisMessageEncoder and GenesisMessageDecoder when `DATADUMP_ON is activated 
-- Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
-- ResourceDaemon doesn't properly evaluate ClusterMode 
-- Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+- `DumpTable` now produces a file with headers when there are rows but the supplied criteria doesn't match any records
+- Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON is activated 
+- Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
+- `ResourceDaemon` doesn't properly evaluate `ClusterMode` 
+- Ensure `DataDumpManager` uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder` 
 - Option to register root records in back join cache to ensure they exist when child record is registered 
 - Add sync backwards join cache impl 
 - Increase producer hwm for zeromq update layer 
