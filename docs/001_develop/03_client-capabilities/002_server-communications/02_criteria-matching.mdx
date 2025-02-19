@@ -249,9 +249,9 @@ ORDER_TYPE.containsWordsStartingWithIgnoreCase('OCO', ',')
 
 #### `Date`/`DateTime` extension functions
 
-The `Date`/`DateTime` [common expression](#date-operations) can be also used as extension functions/operators and the supported date format for `String` and `Long` fields remains the same.
+The `Date`/`DateTime` [common expression](#date-operations) can be also used as extension functions/operators. The supported date format for `String` and `Long` fields remains the same.
 
-The syntax is the following:
+The syntax is:
 
 ##### Functions
 - `String.dateIsToday()`
@@ -267,11 +267,13 @@ TRADE_DATE.dateIsToday()
 
 ##### Operators
 `String` and `Long` fields can be compared against `DateTime` values using the standard Java/Groovy comparators: `<`, `<=`, `==`, `!=`, `>=`, and `>`.
-And the same is applicable the other way around: `DateTime` fields can be directly compared against `String` and `Long` values.
 
-To better illustrate this functionality we can show a few examples using a TRADE_DATETIME field with `DateTime` type.
+Similarly, `DateTime` fields can be compared directlyagainst `String` and `Long` values.
 
-For all the examples the following information applies:
+To illustrate this functionality, here are a few examples using a TRADE_DATETIME field with `DateTime` type.
+
+For all the examples, the following information applies:
+
 - TRADE_DATETIME represents "1st January 2012 at 00:00".
 - 1325376000000 is the epoch time in milliseconds UTC value to represent "1st January 2012 at 00:00".
 - The `String` format used is ISO8601 "yyyy-MM-dd", but other [formats](#date-operations) are accepted.
@@ -300,7 +302,7 @@ If TRADE_DATETIME is set to "1st January 2024 at 00:00", the results will be:
 It is important to note that both the epoch time value or the date in `String` format can be placed as the left operand of the expression too.
 
 :::important
-`DateTime` and epoch time UTC comparisons will ensure Dataserver queries attempt to match the correspondent Dataserver indices (if available) to improve query performance. Therefore, this type of comparison is the recommended approach for all `DateTime` related queries.
+`DateTime` and epoch time UTC comparisons ensure that Data Server queries attempt to match the corresponding Data Server indices (if available) to improve query performance. Therefore, this type of comparison is the recommended approach for all `DateTime` related queries.
 :::
 
 ### Advanced boolean logic
@@ -314,17 +316,18 @@ The following complex example defines:
 (Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100) || (Expr.dateIsEqual(TRADE_DATE, "20220401") && (QUANTITY > 250 || QUANTITY < 350))
 ```
 
-In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, we must add `QUANTITY > 250 || QUANTITY < 350` within brackets.
+In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, you must ensure that `QUANTITY > 250 || QUANTITY < 350` is enclosed within brackets.
 
 ### Object methods
 You can also use the Java methods that correspond to each field type to build criteria.
+
 For example, if you are using a DESCRIPTION field with type STRING, you can write the following expression to check if the content starts with the string 'This':
 
 ```groovy
 DESCRIPTION.startsWith('This')
 ```
 
-The methods available for each of the field types can be found in their Javadoc documentation. For example:
+You can find the methods for each field type in the Javadoc documentation. For example:
 * [String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html)
 * [Long](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html)
 * [Integer](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html)
