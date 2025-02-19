@@ -217,14 +217,14 @@ Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100
 
 ### Groovy extension functions and operators (since 8.9)
 
-The platform provides an additional set of extension methods over the base Groovy capabilities to improve developer experience and usability.
+The platform provides a set of extension methods over the base Groovy capabilities to improve developer experience and increase usability.
 
 #### `String` extension functions
 The `String` [common expressions](#string-operations) are also provided using extension functions. The syntax is the following:
 
 - `String.containsIgnoreCase(String searchStr)`
 
-    This returns `true` when our field contains the string. Casing is ignored.
+    This returns `true` when the field contains the specified string. Casing is ignored.
 
     For example:
 ```groovy
@@ -233,7 +233,7 @@ EXCHANGE_NAME.containsIgnoreCase('oves')
 
 - `String.containsWordsStartingWithIgnoreCase(String searchStr, Character delimiter = ' ')`
 
-    This returns `true` when the field contains a word with the string. Casing is ignored. The default delimiter is a whitespace character, but an optional second parameter can be passed to specify a different delimiter.
+    This returns `true` when the field contains a word that begins with the specified string. Casing is ignored. The default delimiter is a whitespace character, but an optional second parameter can be passed to specify a different delimiter.
 
     For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
 
@@ -247,9 +247,9 @@ DESCRIPTION.containsWordsStartingWithIgnoreCase('desc')
 ORDER_TYPE.containsWordsStartingWithIgnoreCase('OCO', ',')
 ```
 
-#### `Date`/`DateTime` extension functions
+#### `Date` and `DateTime` extension functions
 
-The `Date`/`DateTime` [common expression](#date-operations) can be also used as extension functions/operators. The supported date format for `String` and `Long` fields remains the same.
+The `Date` and `DateTime` [common expressions](#date-operations) can be also used as extension functions/operators. The supported date format for `String` and `Long` fields remains the same.
 
 The syntax is:
 
