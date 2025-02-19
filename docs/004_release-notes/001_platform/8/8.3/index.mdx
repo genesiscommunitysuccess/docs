@@ -139,20 +139,51 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.3.3
+
+###### Features
+
+- genesis-codegen: Add flag to create compact `toString` method on entities 
+- genesis-junit: Add support for dumpit csv and csv.gz files 
+- Allow lambdas for `withInput` expressions to be assigned and reused
+- Optimise memory usage `BackwardJoinCache` for 1-2-1 joins 
+- Configurable update frequency and caching for Db cluster strategy
+- Display current cluster node role in `mon` 
+- Provide better bulk purge support 
+
+###### Performance improvements
+
+- genesis-environment: Use `deleteAll` in `PurgerScript.purgeDerivedRange` 
+
+###### Fixes
+
+- genesis-pal-dataserver: Handle multiple updates for same record in data server 
+- Add sync backwards join cache impl 
+- Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated 
+- Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
+- ResourceDaemon doesn't properly evaluate `ClusterMode` 
+- Cluster manager not bound when running `GenesisRun` and other scripts that user `ServiceModule` 
+- Ensure `DataDumpManager` uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder` 
+- Generated rx repos use modified fields for modify operations 
+- Increase zero mq subscriber worker high water mark value to Integer.max_value 
+- Race condition when processing multiple back join table modifications on different fields at the same time
+- Regression on view generation when empty blocks are used in derived fields 
+- Reusable lambdas in views now cope with aliased table arguments
+
 #### 8.3.2
 
-- Include dependant scripts in codegen cache key (GSF-6895) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3305
-- Table removal + table rename to the table name of the removed table now works as expected (GSF-7003) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3328
-- ResourceDaemon: Fix Dependency Injection initialisation on startup (GSF-6999) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3312
-- SysDefOverwrite test annotation overwrites specified properties with others retrieved from system definition files (GSF-6950) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3283
-- Fail preCompileScripts gradle task by default and add option to disable failing on error (GSF-7019) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3367
-- Remove explicit toString call on ClusterMessage debug line (GSF-7098) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3564
-- Revert resolving sys def from genesis home in TestSystemDefinitionService (GSF-6950) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3291
+- Include dependant scripts in codegen cache key 
+- Table removal + table rename to the table name of the removed table now works as expected
+- ResourceDaemon: Fix Dependency Injection initialisation on startup 
+- SysDefOverwrite test annotation overwrites specified properties with others retrieved from system definition files
+- Fail preCompileScripts gradle task by default and add option to disable failing on error
+- Remove explicit toString call on `ClusterMessage` debug line 
+- Revert resolving sys def from genesis home in `TestSystemDefinitionService`
 
 #### 8.3.1
-- Deploy zip task reference correct file when product name set in settings plugin (GSF-6988) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3259
-- Dataserver backwardsJoin view does not recover in case of a buffered out of order update (GSF-6990) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3270
-- When using @SysDefOverwrite annotation in tests and scripts use sys def receiver (GSF-6950) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3258
+- Deploy zip task reference correct file when product name set in settings plugin 
+- Dataserver `backwardsJoin` view does not recover in case of a buffered out of order update
+- When using `@SysDefOverwrite` annotation in tests and scripts use sys def receiver 
 
 ## Client
 
