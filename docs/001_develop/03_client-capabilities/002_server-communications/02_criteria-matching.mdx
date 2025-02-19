@@ -276,26 +276,26 @@ For all the examples the following information applies:
 - 1325376000000 is the epoch time in milliseconds UTC value to represent "1st January 2012 at 00:00".
 - The `String` format used is ISO8601 "yyyy-MM-dd", but other [formats](#date-operations) are accepted.
 
-| Criteria match (epoch time)       | Criteria Match (String format) | Result |
-|-----------------------------------|--------------------------------|--------|
-| `TRADE_DATETIME == 1325376000000` | `TRADE_DATE == '2012-01-01'`   | true   |
-| `TRADE_DATETIME != 1325376000000` | `TRADE_DATE != '2012-01-01'`   | false  |
-| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATE >= '2012-01-01'`   | true   |
-| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATE <= '2012-01-01'`   | true   |
-| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATE < '2012-01-01'`    | false  |
-| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATE > '2012-01-01'`    | false  |
+| Criteria match (epoch time)       | Criteria Match (String format)   | Result |
+|-----------------------------------|----------------------------------|--------|
+| `TRADE_DATETIME == 1325376000000` | `TRADE_DATETIME == '2012-01-01'` | true   |
+| `TRADE_DATETIME != 1325376000000` | `TRADE_DATETIME != '2012-01-01'` | false  |
+| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATETIME >= '2012-01-01'` | true   |
+| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATETIME <= '2012-01-01'` | true   |
+| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATETIME < '2012-01-01'`  | false  |
+| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATETIME > '2012-01-01'`  | false  |
 
 
 If TRADE_DATETIME is set to "1st January 2024 at 00:00", the results will be:
 
-| Criteria match (epoch time)       | Criteria Match (String format) | Result |
-|-----------------------------------|--------------------------------|--------|
-| `TRADE_DATETIME == 1325376000000` | `TRADE_DATE == '2012-01-01'`   | false  |
-| `TRADE_DATETIME != 1325376000000` | `TRADE_DATE != '2012-01-01'`   | true   |
-| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATE >= '2012-01-01'`   | true   |
-| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATE <= '2012-01-01'`   | false  |
-| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATE < '2012-01-01'`    | true   |
-| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATE > '2012-01-01'`    | false  |
+| Criteria match (epoch time)       | Criteria Match (String format)   | Result |
+|-----------------------------------|----------------------------------|--------|
+| `TRADE_DATETIME == 1325376000000` | `TRADE_DATETIME == '2012-01-01'` | false  |
+| `TRADE_DATETIME != 1325376000000` | `TRADE_DATETIME != '2012-01-01'` | true   |
+| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATETIME >= '2012-01-01'` | true   |
+| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATETIME <= '2012-01-01'` | false  |
+| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATETIME < '2012-01-01'`  | true   |
+| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATETIME > '2012-01-01'`  | false  |
 
 It is important to note that both the epoch time value or the date in `String` format can be placed as the left operand of the expression too.
 
