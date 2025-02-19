@@ -64,6 +64,37 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.4.6
+
+###### Features
+
+- genesis-codegen: Add flag to create compact `toString` method on entities 
+- genesis-junit: Add support for dumpit csv and csv.gz files 
+- Allow lambdas for `withInput` expressions to be assigned and reused
+- Optimise memory usage `BackwardJoinCache` for 1-2-1 joins 
+- Configurable update frequency and caching for Db cluster strategy
+- Display current cluster node role in `mon` 
+- Provide better bulk purge support 
+
+###### Performance improvements
+
+- genesis-environment: Use `deleteAll` in `PurgerScript.purgeDerivedRange` 
+
+###### Fixes
+
+- genesis-pal-dataserver: Handle multiple updates for same record in data server 
+- Add sync backwards join cache impl 
+- Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated 
+- Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
+- ResourceDaemon doesn't properly evaluate `ClusterMode` 
+- Cluster manager not bound when running `GenesisRun` and other scripts that user `ServiceModule` 
+- Ensure `DataDumpManager` uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder` 
+- Generated rx repos use modified fields for modify operations 
+- Increase zero mq subscriber worker high water mark value to Integer.max_value 
+- Race condition when processing multiple back join table modifications on different fields at the same time
+- Regression on view generation when empty blocks are used in derived fields 
+- Reusable lambdas in views now cope with aliased table arguments
+
 #### 8.4.5
 
 * fix: Data Server indices on DOUBLE fields are now correctly sorted correctly in LMDB
