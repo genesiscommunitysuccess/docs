@@ -10,9 +10,7 @@ tags:
     - criteria matching
 ---
 
-# Criteria matching
-
-This page looks at how you can apply criteria matching when you connect to [real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [Snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) resources.
+This page looks at how you can apply criteria matching when you connect to [real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) on the server.
 
 When you make a request to a resource, you can use criteria matching to filter the data returned. This can take the form of:
 
@@ -270,7 +268,7 @@ TRADE_DATE.dateIsToday()
 
 Similarly, `DateTime` fields can be compared directlyagainst `String` and `Long` values.
 
-To illustrate this functionality, here are a few examples using a TRADE_DATETIME field with `DateTime` type.
+To illustrate this, here are a few examples using a TRADE_DATETIME field with `DateTime` type.
 
 For all the examples, the following information applies:
 
@@ -299,7 +297,16 @@ If TRADE_DATETIME is set to "1st January 2024 at 00:00", the results will be:
 | `TRADE_DATETIME > 1325376000000`  | `TRADE_DATETIME < '2012-01-01'`  | true   |
 | `TRADE_DATETIME < 1325376000000`  | `TRADE_DATETIME > '2012-01-01'`  | false  |
 
-It is important to note that both the epoch time value or the date in `String` format can be placed as the left operand of the expression too.
+You can, of course, place the epoch time value or the date in `String` format as the left operand of the expression. For example:
+
+```
+1325376000000 == TRADE_DATETIME
+```
+or
+
+```
+'2012-01-01' == TRADE_DATE 
+```
 
 :::important
 `DateTime` and epoch time UTC comparisons ensure that Data Server queries attempt to match the corresponding Data Server indices (if available) to improve query performance. Therefore, this type of comparison is the recommended approach for all `DateTime` related queries.
