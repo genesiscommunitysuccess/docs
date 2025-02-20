@@ -76,6 +76,32 @@ const numberInputUiSchema: UiSchema = {
 
 <NumberFormExample/>
 
+###### Setting decimal places and fractions
+
+To control the number of decimal places displayed in the field,  use `maximumFractionDigit` as a format option:
+
+```
+  options: Intl.NumberFormatOptions = {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 0,
+  };
+```
+
+For example:
+
+```
+     {
+      "type": "Control",
+      "label": "Price",
+      "scope": "#/properties/PRICE",
+      "options":  <StandardRendererOptions>{
+        formatOptions: <Intl.NumberFormatOptions> {
+          maximumFractionDigits: 8
+        }
+      }
+    }
+```
+
 ### Boolean control
 
 The boolean renderer creates a checkbox control. Set the `type` value in the `JSONSchema` to `boolean` to invoke this renderer. It sets a `true` or `false` on the underlying form model.
