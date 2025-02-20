@@ -78,28 +78,28 @@ const numberInputUiSchema: UiSchema = {
 
 ###### Setting decimal places and fractions
 
-To control the number of decimal places displayed in the field,  use `maximumFractionDigit` as a format option:
+To control the number of decimal places displayed in the field,  use `maximumFractionDigit` as a [format option for the field](/develop/client-capabilities/forms/form-inputs/client-interaction-number-field/#properties):
 
-```
-  options: Intl.NumberFormatOptions = {
-    maximumFractionDigits: 3,
+```typescript
+options: Intl.NumberFormatOptions = {
+    maximumFractionDigits: 4,
     minimumFractionDigits: 0,
-  };
+};
 ```
 
 For example:
 
-```
-     {
-      "type": "Control",
-      "label": "Price",
-      "scope": "#/properties/PRICE",
-      "options":  <StandardRendererOptions>{
-        formatOptions: <Intl.NumberFormatOptions> {
-          maximumFractionDigits: 8
-        }
-      }
+```typescript
+{
+ "type": "Control",
+ "label": "Price",
+ "scope": "#/properties/PRICE",
+  "options":  <StandardRendererOptions>{
+    formatOptions: <Intl.NumberFormatOptions> {
+      maximumFractionDigits: 8
     }
+  }
+}
 ```
 
 ### Boolean control
