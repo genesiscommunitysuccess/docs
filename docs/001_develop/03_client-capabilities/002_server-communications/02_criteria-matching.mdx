@@ -10,16 +10,15 @@ tags:
     - criteria matching
 ---
 
-# Criteria matching
-
-This page looks at how you can apply criteria matching when you connect to [real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [Snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) resources.
+This page looks at how you can apply criteria matching when you connect to [real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) on the server.
 
 When you make a request to a resource, you can use criteria matching to filter the data returned. This can take the form of:
 
 - Common expressions
-- Groovy expressions
+- Groovy extension functions and operators
+- Groovy standard expressions
 
-You can mix and match common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. This is explained in more detail below.
+You can mix and match common expressions, Groovy extension functions and operators and Groovy standard expressions using the && (logical AND) and || (logical OR) boolean operators. This is explained in more detail below.
 
 All expressions must return a boolean value (`true` or `false`).
 
@@ -38,16 +37,16 @@ The platform provides common expressions that are especially helpful for `Date` 
 
 ### String operations
 
-- `containsIgnoreCase(String, String)`
+- `Expr.containsIgnoreCase(String field, String searchStr)`
 
     This returns `true` when our field contains the string. Casing is ignored.
 
     For example:
 ```groovy
-Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
+Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')
 ```
 
-- `containsWordsStartingWithIgnoreCase(String, String)`
+- `Expr.containsWordsStartingWithIgnoreCase(String field, String searchStr, Character delimiter = ' ')`
 
     This returns `true` when the field contains a word with the string. Casing is ignored. The default delimiter is a whitespace character, but a third parameter can be passed to specify a different delimiter.
 
@@ -60,16 +59,19 @@ Expr.containsWordsStartingWithIgnoreCase(DESCRIPTION, 'desc')
     And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
 
 ```groovy
-Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')`
+Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')
 ```
 
 ### Date operations
 
 The allowed String formats are:
-- DateTime with milliseconds precision: _yyyyMMdd-HH:mm:ss.SSS_
-- DateTime with seconds precision: _yyyyMMdd-HH:mm:ss_
-- DateTime with minutes precision: _yyyyMMdd-HH:mm_
-- DateTime as Date: _yyyyMMdd_
+- `DateTime` with milliseconds precision: _yyyyMMdd-HH:mm:ss.SSS_
+- `DateTime` with seconds precision: _yyyyMMdd-HH:mm:ss_
+- `DateTime` with minutes precision: _yyyyMMdd-HH:mm_
+- `DateTime` as Date: _yyyyMMdd_
+- `DateTime` as Date: _yyyy-MM-dd_
+
+The allowed `Long` date-time representation is epoch time in milliseconds (UTC).
 
 The following operations are available:
 
@@ -79,7 +81,7 @@ The following operations are available:
 
     For example:
 ```groovy
-Expr.dateIsBefore(TRADE_DATE,'20150518')`
+Expr.dateIsBefore(TRADE_DATE,'20150518')
 ```
 
 - `dateIsAfter(date as DateTime|String|Long, String)`
@@ -89,7 +91,7 @@ Expr.dateIsBefore(TRADE_DATE,'20150518')`
     For example:
 
 ```groovy
-Expr.dateIsAfter(TRADE_DATE,'20150518')`
+Expr.dateIsAfter(TRADE_DATE,'20150518')
 ```
 
 - `dateIsGreaterEqual(date as DateTime|String|Long, String)`
@@ -118,7 +120,7 @@ Expr.dateIsLessEqual(TRADE_DATE,'20150518')
     For example:
 
 ```groovy
-`Expr.dateIsEqual(TRADE_DATE,'20150518')`
+Expr.dateIsEqual(TRADE_DATE,'20150518')
 ```
 
 - `dateIsToday(date as DateTime|String|Long)`
@@ -127,7 +129,7 @@ Expr.dateIsLessEqual(TRADE_DATE,'20150518')
 
     For example:
 ```groovy
-Expr.dateIsToday(TRADE_DATE)`
+Expr.dateIsToday(TRADE_DATE)
 ```
 
 ### DateTime operations
@@ -139,7 +141,7 @@ Expr.dateIsToday(TRADE_DATE)`
   For example:
 
 ```groovy
-Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
+Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')
 ```
 
 - `dateTimeIsAfter(datetime as DateTime|String|Long, String)`
@@ -158,7 +160,7 @@ Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')
 
   For example:
 ```groovy
-Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
+Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')
 ```
 
 - `dateTimeIsLessEqual(datetime as DateTime|String|Long, String)`
@@ -211,6 +213,105 @@ QUANTITY < 100 || QUANTITY >= 500
 Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100
 ```
 
+### Groovy extension functions and operators (since 8.9)
+
+The platform provides a set of extension methods over the base Groovy capabilities to improve developer experience and increase usability.
+
+#### `String` extension functions
+The `String` [common expressions](#string-operations) are also provided using extension functions. The syntax is the following:
+
+- `String.containsIgnoreCase(String searchStr)`
+
+    This returns `true` when the field contains the specified string. Casing is ignored.
+
+    For example:
+```groovy
+EXCHANGE_NAME.containsIgnoreCase('oves')
+```
+
+- `String.containsWordsStartingWithIgnoreCase(String searchStr, Character delimiter = ' ')`
+
+    This returns `true` when the field contains a word that begins with the specified string. Casing is ignored. The default delimiter is a whitespace character, but an optional second parameter can be passed to specify a different delimiter.
+
+    For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
+
+```groovy
+DESCRIPTION.containsWordsStartingWithIgnoreCase('desc')
+```
+
+    And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
+
+```groovy
+ORDER_TYPE.containsWordsStartingWithIgnoreCase('OCO', ',')
+```
+
+#### `Date` and `DateTime` extension functions
+
+The `Date` and `DateTime` [common expressions](#date-operations) can be also used as extension functions/operators. The supported date format for `String` and `Long` fields remains the same.
+
+The syntax is:
+
+##### Functions
+- `String.dateIsToday()`
+- `Long.dateIsToday()`
+- `DateTime.dateIsToday()`
+
+This returns `true` when the data in the given field is equal to today's date (using system local time).
+
+For example:
+```groovy
+TRADE_DATE.dateIsToday()
+```
+
+##### Operators
+`String` and `Long` fields can be compared against `DateTime` values using the standard Java/Groovy comparators: `<`, `<=`, `==`, `!=`, `>=`, and `>`.
+
+Similarly, `DateTime` fields can be compared directlyagainst `String` and `Long` values.
+
+To illustrate this, here are a few examples using a TRADE_DATETIME field with `DateTime` type.
+
+For all the examples, the following information applies:
+
+- TRADE_DATETIME represents "1st January 2012 at 00:00".
+- 1325376000000 is the epoch time in milliseconds UTC value to represent "1st January 2012 at 00:00".
+- The `String` format used is ISO8601 "yyyy-MM-dd", but other [formats](#date-operations) are accepted.
+
+| Criteria match (epoch time)       | Criteria Match (String format)   | Result |
+|-----------------------------------|----------------------------------|--------|
+| `TRADE_DATETIME == 1325376000000` | `TRADE_DATETIME == '2012-01-01'` | true   |
+| `TRADE_DATETIME != 1325376000000` | `TRADE_DATETIME != '2012-01-01'` | false  |
+| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATETIME >= '2012-01-01'` | true   |
+| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATETIME <= '2012-01-01'` | true   |
+| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATETIME < '2012-01-01'`  | false  |
+| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATETIME > '2012-01-01'`  | false  |
+
+
+If TRADE_DATETIME is set to "1st January 2024 at 00:00", the results will be:
+
+| Criteria match (epoch time)       | Criteria Match (String format)   | Result |
+|-----------------------------------|----------------------------------|--------|
+| `TRADE_DATETIME == 1325376000000` | `TRADE_DATETIME == '2012-01-01'` | false  |
+| `TRADE_DATETIME != 1325376000000` | `TRADE_DATETIME != '2012-01-01'` | true   |
+| `TRADE_DATETIME >= 1325376000000` | `TRADE_DATETIME >= '2012-01-01'` | true   |
+| `TRADE_DATETIME <= 1325376000000` | `TRADE_DATETIME <= '2012-01-01'` | false  |
+| `TRADE_DATETIME > 1325376000000`  | `TRADE_DATETIME < '2012-01-01'`  | true   |
+| `TRADE_DATETIME < 1325376000000`  | `TRADE_DATETIME > '2012-01-01'`  | false  |
+
+You can, of course, place the epoch time value or the date in `String` format as the left operand of the expression. For example:
+
+```
+1325376000000 == TRADE_DATETIME
+```
+or
+
+```
+'2012-01-01' == TRADE_DATE 
+```
+
+:::important
+`DateTime` and epoch time UTC comparisons ensure that Data Server queries attempt to match the corresponding Data Server indices (if available) to improve query performance. Therefore, this type of comparison is the recommended approach for all `DateTime` related queries.
+:::
+
 ### Advanced boolean logic
 If you use logical OR in your filter, you lose the ability to use indexing for searches. If you want to use more advanced boolean logic, you can pass brackets to ensure that each part of your filter is checked in line with your business needs.
 
@@ -222,17 +323,18 @@ The following complex example defines:
 (Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100) || (Expr.dateIsEqual(TRADE_DATE, "20220401") && (QUANTITY > 250 || QUANTITY < 350))
 ```
 
-In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, we must add `QUANTITY > 250 || QUANTITY < 350` within brackets.
+In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, you must ensure that `QUANTITY > 250 || QUANTITY < 350` is enclosed within brackets.
 
 ### Object methods
 You can also use the Java methods that correspond to each field type to build criteria.
+
 For example, if you are using a DESCRIPTION field with type STRING, you can write the following expression to check if the content starts with the string 'This':
 
 ```groovy
 DESCRIPTION.startsWith('This')
 ```
 
-The methods available for each of the field types can be found in their Javadoc documentation. For example:
+You can find the methods for each field type in the Javadoc documentation. For example:
 * [String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html)
 * [Long](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html)
 * [Integer](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html)
