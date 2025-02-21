@@ -76,6 +76,26 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.3
+
+###### Fixes
+- Generated SysDef should allow safe conversion of types
+
+#### 8.8.2
+
+###### Features
+
+- genesis-codegen: Add flag to create compact `toString` method on entities 
+- genesis-junit: Add support for dumpit csv and csv.gz files
+- Display current cluster node role in `mon` 
+
+###### Fixes
+
+- `ClasspathGenerator` to attempt to resolve module name without a full match 
+- Generated rx repos use modified fields for modify operations 
+- Race condition when processing multiple back join table modifications on different fields at the same time
+- Reusable lambdas in views now cope with aliased table arguments
+
 #### 8.8.1
 
 ###### Features
@@ -85,6 +105,7 @@ id: '8.8'
 - Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated.
 - `TypeAwareCriteriaEvaluator` in Dataserver now works with query-enriched fields.
 - Ensure `TypeAwareCriteriaEvaluator` usage in Dataserver and req/rep handles all common date/datetime formats.
+- Process bbg messages with nested structures correctly.
 
 ## Client
 
