@@ -76,6 +76,14 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.5
+
+###### Fixes
+
+- dataserver: ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+- db: when db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+- Disabling processRestart for docker images and including encrypting sysdefs
+
 #### 8.8.4
 
 ###### Features
