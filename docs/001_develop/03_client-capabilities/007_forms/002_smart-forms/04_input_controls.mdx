@@ -19,8 +19,6 @@ import TextAreaFormExample from './examples/textarea_input_example.js';
 import PasswordFormExample from './examples/password_input_example.js';
 import SelectFormExample from './examples/select_input_example.js';
 
-# Foundation Forms - controls
-
 Foundation forms has a range of advanced components for entering text, numbers, floats, dates and booleans, as well as select and autocomplete input boxes. You can use these to create polished, complex forms for your application in quick time.
 
 ## Examples
@@ -75,6 +73,32 @@ const numberInputUiSchema: UiSchema = {
 ```
 
 <NumberFormExample/>
+
+###### Setting decimal places
+
+To control the number of decimal places displayed in the field,  use `maximumFractionDigit` as a [format option for the field](/develop/client-capabilities/forms/form-inputs/client-interaction-number-field/#properties):
+
+```typescript
+options: Intl.NumberFormatOptions = {
+    maximumFractionDigits: 4,
+    minimumFractionDigits: 0,
+};
+```
+
+For example:
+
+```typescript
+{
+ "type": "Control",
+ "label": "Price",
+ "scope": "#/properties/PRICE",
+  "options":  <StandardRendererOptions>{
+    formatOptions: <Intl.NumberFormatOptions> {
+      maximumFractionDigits: 8
+    }
+  }
+}
+```
 
 ### Boolean control
 
