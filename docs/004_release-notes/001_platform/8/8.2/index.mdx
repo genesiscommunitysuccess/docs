@@ -95,6 +95,12 @@ id: '8.2'
 
 ### Patch releases
 
+#### 8.2.17
+
+###### Fixes
+- dataserver: ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+- db: when db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+
 #### 8.2.16
 
 ###### Features
