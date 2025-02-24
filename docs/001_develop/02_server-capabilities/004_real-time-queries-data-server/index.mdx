@@ -1273,7 +1273,7 @@ Create the test class using the code provided below:
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("positions-app-tutorial-dataserver.kts")
+@TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 class DataServerTest {
 
@@ -1286,7 +1286,7 @@ class DataServerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("positions-app-tutorial-dataserver.kts")
+@TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 public class DataServerTest {
 
@@ -1299,7 +1299,7 @@ public class DataServerTest {
 This test class does three things: 
 
 * It enables **GenesisJunit**.
-* It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
+* It identifies the Data Server script that we want to test, using the `TestScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
 There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
@@ -1324,7 +1324,7 @@ Before we can begin writing tests for our Data Server, we need to inject referen
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("positions-app-tutorial-dataserver.kts")
+@TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 class DataServerTest {
 
@@ -1343,7 +1343,7 @@ class DataServerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("positions-app-tutorial-dataserver.kts")
+@TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 public class DataServerTest {
 
@@ -1470,7 +1470,7 @@ To test dynamic authorization, add `@EnableInMemoryTestAuthCache` to your class 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
 @EnableInMemoryTestAuthCache
-@ScriptFile("hello-world-dataserver.kts")
+@TestScriptFile("hello-world-dataserver.kts")
 @CsvData("SystemTest/simple-data-load.csv")
 class DataServerTest {
 
@@ -1527,7 +1527,7 @@ class DataServerTest {
 ```java
 @ExtendWith(GenesisJunit.class)
 @EnableInMemoryTestAuthCache
-@ScriptFile("hello-world-dataserver.kts")
+@TestScriptFile("hello-world-dataserver.kts")
 @CsvData("SystemTest/simple-data-load.csv")
 public class DataServerTest {
 
@@ -1583,7 +1583,7 @@ public class DataServerTest {
 
 #### Await methods
 
-Finally, **QueryView** has some methods to help with making assertions on the data.
+**QueryView** has some methods to help with making assertions on the data.
 With the view itself being updated in the background, these methods will have a timeout.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -1622,6 +1622,37 @@ void testUsdPositions() {
 
 </TabItem>
 </Tabs>
+
+#### Message flow related properties and methods
+
+Finally, **QueryView** also exposes properties and methods that allow full control on the dataserver subscription message flow.
+
+##### Properties
+
+| Kotlin Syntax | Java Syntax | Description | Default Value |
+|--------------|-------------|-------------|---------------|
+| `val queryUpdateMessagesReceived: Int` | `int getQueryUpdateMessagesReceived()` | The number of QUERY_UPDATE messages received so far. | `0` (initially no messages received). |
+| `val latestMoreRowsValueReceived: Boolean?` | `Boolean getLatestMoreRowsValueReceived()` | The last MORE_ROWS boolean value received in a QUERY_UPDATE message. | `null` (no value received yet). |
+| `val subscribed: Boolean` | `boolean getSubscribed()` | Indicates if the query subscription is active (`true`) or not (`false`). | `false` (subscription not active by default). |
+| `val allRawQueryUpdatesReceived: List<GenesisSet>` | `List<GenesisSet> getAllRawQueryUpdatesReceived` | Contains all raw QUERY_UPDATE messages in the order they were received. | Empty list (`[]`) (no updates received yet). |
+| `val latestRawQueryUpdate: GenesisSet?` | `GenesisSet getLatestRawQueryUpdate()` | Provides the raw content of the latest QUERY_UPDATE message for detailed inspection. | `null` (no updates received yet). |
+| `val rowsCount: Int?` | `Integer getRowsCount()` | Provides the ROWS_COUNT value received in the first QUERY_UPDATE message. | `null` (no count received yet). |
+
+##### Methods
+
+The methods below allow developers to create tests that deal with `MORE_ROWS` and `MORE_COLUMNS` message flows (see more in the [client API](#client-api) section). There are also a couple of utility methods (`retrieveRawQueryUpdateRowsFrom` and `checkExpectedRowsNumberFrom`) to query the total number and content of ROW updates received since a specific QUERY_UPDATE message.
+
+| Kotlin Syntax | Java Syntax | Description |
+|--------------|-------------|-------------|
+| `fun moreRows(viewNumber: Int, timeout: Long, unit: TimeUnit): Boolean` | `boolean moreRows(int viewNumber, long timeout, TimeUnit unit)` | Sends a MORE_ROWS message specifying the view number and timeout settings. |
+| `fun moreRows(viewNumber: Int): Boolean` | `boolean moreRows(int viewNumber)` | Sends a MORE_ROWS message specifying the view number with default timeout (10 seconds). |
+| `fun moreRows(): Boolean` | `boolean moreRows()` | Sends a MORE_ROWS message using default view and timeout. |
+| `fun moreColumns(addColumns: List<String>, dropColumns: List<String>, timeout: Long, unit: TimeUnit): Boolean` | `boolean moreColumns(List<String> addColumns, List<String> dropColumns, long timeout, TimeUnit unit)` | Sends a MORE_COLUMNS message with payload to add and remove columns along with timeout settings. |
+| `fun moreColumns(addColumns: List<String>, dropColumns: List<String>): Boolean` | `boolean moreColumns(List<String> addColumns, List<String> dropColumns)` | Sends a MORE_COLUMNS message with payload to add and remove columns using default timeout. |
+| `fun addColumns(addColumns: List<String>): Boolean` | `boolean addColumns(List<String> addColumns)` | Sends a MORE_COLUMNS message requesting columns to be added with default timeout (10 seconds). |
+| `fun dropColumns(dropColumns: List<String>): Boolean` | `boolean dropColumns(List<String> dropColumns)` | Sends a MORE_COLUMNS message requesting columns to be removed with default timeout (10 seconds). |
+| `fun retrieveRawQueryUpdateRowsFrom(fromQueryUpdateNumber: Int): List<GenesisSet>` | `List<GenesisSet> retrieveRawQueryUpdateRowsFrom(int fromQueryUpdateNumber)` | Returns all ROW GenesisSet values received since a specific QUERY_UPDATE message number, starting inclusively from the given number. |
+| `fun checkExpectedRowsNumberFrom(fromQueryUpdateNumber: Int, expectedRows: Int): Boolean` | `boolean checkExpectedRowsNumberFrom(int fromQueryUpdateNumber, int expectedRows)` | Checks if the total number of ROW updates received since a specific QUERY_UPDATE message number matches the expected number of rows, starting inclusively from the given number. |
 
 ### Integration testing (legacy)
 
