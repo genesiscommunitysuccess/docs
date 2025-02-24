@@ -13,7 +13,6 @@ tags:
 sidebar_position: 2
 ---
 
-## Overview
 
 The data model is a fundamental part of any Genesis application. To create a data model, you define the [entities (tables)](#tables) that store the application's data. You also define [views](#views), which join related entities together to provide useful views of the data. For example, it makes sense to have separate tables for counterparties, instruments and exchanges, but if you want to look at the trades or the orders in the system, you probably want to see some of these things in a single grid of data for each trade or order you make. For this, you need a view. 
 
@@ -427,7 +426,7 @@ field("ISIN").metadata {
 
 ##### `maxLength` 
 
-Sets the maximum number of characters allowed
+Sets the maximum number of characters allowed.
 
 ###### Valid for types
 `STRING`
@@ -455,6 +454,7 @@ field("ISIN").metadata {
 
 ##### `title`
 Title gives the field a name, typically more descriptive and for use when displaying the field in the front end of the application.
+
 Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but `title(<title value>)` can be specified to override this.
 
 ###### Valid for types
@@ -503,7 +503,7 @@ There are two different ways to define a primary key:
 
 When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
 
-Fields marked as part of a primary key may not be null.
+Fields marked as part of a primary key cannot be null.
 
 Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
@@ -543,7 +543,8 @@ A non-unique index can be defined by:
 
 As with multi-field primary keys, the order in which the fields are specified should be considered.
 
-###### Example using field level index definition vs indices block level definition, each are valid:
+###### Field-level index definition vs indices block-level definition
+Here are two different ways of defining a non-unique index. Both are equally valid.
 
 ```kotlin {4}
     //Field level
