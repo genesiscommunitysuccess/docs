@@ -250,8 +250,8 @@ public class ConfigFileExampleJavaTest {
 
 #### CsvData
 
-This annotation is used to load CSV data as part of a test and is also repeatable.
-The [DumpIt](/build-deploy-operate/operate/commands/#dumpit) CSV format is supported in bot .csv and .csv.gz extensions.
+This annotation is used to load CSV data as part of a test and is also repeatable. Both individual file paths and folder paths are accepted.
+In terms of individual files, the [DumpIt](/build-deploy-operate/operate/commands/#dumpit) CSV format is supported in both .csv and .csv.gz extensions.
 Alternatively, multi-table `DumpIt` format is supported too in the following format:
 
 ```text
@@ -287,16 +287,16 @@ internal class CsvDataExamples {
     }
 
     @Test
-    @CsvData("other-data.csv")
+    @CsvData("other-data.csv.gz")
     fun loadCsvDataFromOtherDataFile() {
-        // uses "my-data.csv" and "other-data.csv"
+        // uses "my-data.csv" and "other-data.csv.gz"
     }
 
     @Test
-    @CsvData("other-data.csv")
-    @CsvData("more-data.csv")
+    @CsvData("other-data.csv.gz")
+    @CsvData("data-folder")
     fun loadCsvDataFromMultipleFiles() {
-        // uses "my-data.csv", "other-data.csv" and "more-data.csv"
+        // uses "my-data.csv", "other-data.csv.gz" and the "data-folder" folder
     }
 }
 ```
