@@ -206,6 +206,13 @@ Dependency changes
 - Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
 
+#### 7.2.23
+
+##### Fixes
+
+- dataserver: Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available
+- db: When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null
+
 #### 7.2.22
 
 ##### Features
