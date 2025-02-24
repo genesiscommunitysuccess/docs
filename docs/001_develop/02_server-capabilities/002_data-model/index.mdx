@@ -14,9 +14,11 @@ sidebar_position: 2
 ---
 
 
-The data model is a fundamental part of any Genesis application. To create a data model, you define the [entities (tables)](#tables) that store the application's data. You also define [views](#views), which join related entities together to provide useful views of the data. For example, it makes sense to have separate tables for counterparties, instruments and exchanges, but if you want to look at the trades or the orders in the system, you probably want to see some of these things in a single grid of data for each trade or order you make. For this, you need a view. 
+The data model is a fundamental part of any Genesis application. To create a data model, you define the [entities (tables)](#tables) that store the application's data. Each entity (table) consists of one or more attributes (fields) that contain the data.
 
-The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
+You also define [views](#views), which join related entities together to provide useful views of the data. For example, it makes sense to have separate tables for counterparties, instruments and exchanges, but if you want to look at the trades or the orders in the system, you probably want to see some or all of the fields from these different tables in a single grid of data for each trade or order you make. For this, you need a view. 
+
+The application's tables and views enable the platform to notify Genesis Server and Client services and components automatically whenever there are changes to the relevant data. 
 
 The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
@@ -32,10 +34,8 @@ Each table requires:
 - one or more fields (attributes)
 - one primary key
 
-Below is an example `-tables.dictionary.kts`configuration. It defines three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
-
 ###### Example data model
-Below is an example `-tables.dictionary.kts`configuration. It defines three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
+Below is an example `-tables.dictionary.kts `configuration. It defines three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
 
 ```kotlin
 tables {
@@ -164,7 +164,11 @@ views {
 
 Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and client components that display data. 
 
-Tables and views are also be used to power server server capabilities,.... such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
+Tables and views are also used to power server capabilities, such as:
+
+- [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/)
+- [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/)
+- outbound integrations
 
 ## Configuration options
 
@@ -215,12 +219,14 @@ When you create an audit table, it has all the same fields as the source table, 
 
 #### `field`
 
-A table is made up of one or more fields. Each field must have a unique name (unique within the table definition) and a data type. The following data types are available
+A table is made up of one or more fields. Each field must have a unique name (unique within the table definition) and a data type. 
+
+When you are defining a field, there is a range of data types available. These are described in the sections below.
 
 ###### `String`
 String fields can contain any set of characters up to the maximum length of characters specified for the field. 
 
-In the second example belowT, the value in the parenthesis is the maximum number of characters that can be stored in this field for a given record. If you do not specify this value, the default length is 64 characters.
+In the second example below, the value in the parenthesis is the maximum number of characters that can be stored in this field for a given record. If you do not specify this value, the default length is 64 characters.
 
 Now look at the third example. Different database technologies have different limits. So you can use `dbMaxSize` to set the field length to the maximum allowed for the database technology used by the application. 
 
