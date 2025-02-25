@@ -89,11 +89,11 @@ tables {
 
 To create a view, you must start with a "root" table, the main table powering the view. You then define tables that join to it in order to make up the view.
 
-Below is a view called `TRADE_VIEW`, based on the example table configuration above. It defines the `TRADE` tables as its root, and it defines two tables that join to it to create the vew: `INSTRUMENT` and `COUNTERPARTY`.
+Below is a view called `TRADE_VIEW`, based on the example table configuration above. It defines the `TRADE` tables as its root, and it joins to two further tables (`INSTRUMENT` and `COUNTERPARTY`) to create the view.
 
 ![](/img/views-basics.png)
 
-Views can also contain derived fields. Tyhese are fields with values derived from one or more other fields in the view. In the example above, you can see `NOTIONAL` which is the product of `QUANTITY` and `TRADE_PRICE`.
+Views can also contain derived fields. These are fields with values derived from one or more other fields in the view. In the example above, you can see `NOTIONAL` which is the product of `QUANTITY` and `TRADE_PRICE`.
 
 The example above can be configured as follows:
 ```kotlin
@@ -162,7 +162,7 @@ views {
 
 ### Summary
 
-Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and client components that display data. 
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and client components that rely on data. 
 
 Tables and views are also used to power server capabilities, such as:
 
@@ -186,7 +186,7 @@ Tables and their fields are defined in  `*-tables-dictionary.kts` files. These f
 
 `audit` can optionally be defined to make the table auditable
 
-It is a common compliance requirement that a system audits all changes to system records.
+It is a common compliance requirement that a system audits all changes to critical system records.
         
 The following details can be added when you use the `audit = details()` parameter:
 
