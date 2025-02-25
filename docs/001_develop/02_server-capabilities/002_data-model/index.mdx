@@ -234,7 +234,7 @@ Enum (aka enumerated) fields specify the exact set of values which the field can
 
 You can specify an alias for each value of the enum using the keyword `to`. This enables you to create a human-readable representation of the value. The second example below shows an enum with three possible values, each of which has a longer alias. 
 
-An enum must have a default value. Where no default is specified, the first value in the list is set as the default. However, you can set the default explicitly. In the third example below, the default for `MY_ENUM` is set to `S`. 
+An enum must have a default value. Where no default is specified, the first value in the list is set as the default. So, in the first two examples below, the default for `MY_ENUM` is `B`. However, you can set the default explicitly; in the third example, the default for `MY_ENUM` is set to `S`. 
 
 ###### Example definitions
 `field("MY_ENUM", ENUM("B", "S", "SS"))`  
@@ -289,7 +289,7 @@ Double values can lose precision for large numbers, or numbers with many numbers
 `field("MY_DOUBLE", DOUBLE)`
 
 ###### `BigDecimal`
-Big Decimal fields store numeric values with decimal places. They enable you to define the `precision` and `scale` to ensure that values are always accurate for the use case. The second example below sets the Precision to 10 and the number of decimal places to 3. 
+Big Decimal fields store numeric values with decimal places. They enable you to define the `precision` and `scale` to ensure that values are always accurate for the use case. The second example below sets the precision to 10 and scale (the number of decimal places) to 3. 
 
 - Precision is the number of digits in the number (default where not specified is 20)
 - Scale is the number of digits to the right of the decimal point (default where not specified is 5)
@@ -357,7 +357,7 @@ This specifies a default value for the field. If no value is set for the field b
 
 Add `.default(<value>)` to your field definition to set a default. The value must be valid for the data type of the field.
 
-###### Valid for types:
+###### Valid for types
 _any_
 
 ###### Example definition
@@ -368,7 +368,7 @@ This makes a field as mandatory. If you specify `notNull`, then a value MUST be 
 
 Where this is not set for a field, its values can be left as null - unless it is part of the primary key or any index on the table. A field set with a [default](#default) value can never be null.
 
-###### Valid for types:
+###### Valid for types
 _any_
 
 ###### Example definition
@@ -377,7 +377,7 @@ _any_
 ##### `sensitive`
 String fields can be marked as `sensitive()`. Use this when the value needs to store keys, passwords or other sensitive data. Values will be masked when printed to console or logs, or when `toString()` is used in conjunction with the field on a database API. 
 
-###### Valid for types:
+###### Valid for types
 `STRING`
 
 ###### Example definition
@@ -385,9 +385,9 @@ String fields can be marked as `sensitive()`. Use this when the value needs to s
 
 
 ##### `min`
-`min` can be specified to validate that values for the given field are greater than or equal to this value.
+Use `min` to specify a minimum value for a field. The platform will validate that values for the field are greater than or equal to the value that you specify.
 
-###### Valid for types:
+###### Valid for types
 Any numeric types except BigDecimal
 
 ###### Example definition
@@ -400,7 +400,7 @@ field("RATING", INT).metadata {
 ##### `max`
 `max` can be specified to validate that values for the given field are less than or equal to this value
 
-###### Valid for types:
+###### Valid for types
 Any numeric types except BigDecimal
 
 ###### Example definition
@@ -453,9 +453,9 @@ field("ISIN").metadata {
 ```
 
 ##### `title`
-Title gives the field a name, typically more descriptive and for use when displaying the field in the front end of the application.
+Title gives the field a name. Typically, this is used to provide a more descriptive name when displaying the field in the front end of the application.
 
-Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but `title(<title value>)` can be specified to override this.
+Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but you can specify `title(<title value>)` to override this.
 
 ###### Valid for types
 _any_
@@ -466,10 +466,10 @@ _any_
 
 ##### Event field modifiers
 The following modifiers can be set against fields of eligible type in scenarios such as:
-- They are derived and shouldn't be entered by the end user but rather the system itself
-- They are should only be set on insert, and never changed on modifications
+- They are derived and shouldn't be entered by the end user, but rather the system itself.
+- They are should only be set on insert, and never changed on modifications.
 
-This table shows the modifiers available to set:
+You can set the following modifiers:
 | Modifier                 | Valid Field Type | Effect                                                                                     |
 |--------------------------|------------------|--------------------------------------------------------------------------------------------|
 | `.username()`            | STRING           | The field value gets set to the username of the user submitting the event.                 |
