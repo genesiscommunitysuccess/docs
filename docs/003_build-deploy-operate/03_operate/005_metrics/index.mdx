@@ -103,13 +103,16 @@ e.g. `active_connections{hostName=tam_prod1.processName=genesis_router.groupName
 
 #### Settings
 
-To support Graphite, the URL and port should be specified in your system definition file:
+To support Graphite, specify the URL and port in your system definition file:
 
 ```kotlin
 item(name = "MetricsGraphiteURL", value = "localhost")
 item(name = "MetricsGraphitePort", value = "2004")
 item(name = "MetricsStructureType", value = "hierarchical")
 ```
+:::tip
+The current default port for graphite uses the [pickle protocol](https://graphite.readthedocs.io/en/stable/feeding-carbon.html#the-pickle-protocol). Always use the default port for this protocol, as specified by Graphite.
+:::
 
 For the `MetricsStructureType`, Genesis metrics supports both `hierarchical` and `dimensional`.
 
