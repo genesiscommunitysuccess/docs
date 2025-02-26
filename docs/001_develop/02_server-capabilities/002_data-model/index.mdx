@@ -18,7 +18,7 @@ The data model is a fundamental part of any Genesis application. To create a dat
 
 You also define [views](#views), which join related entities together to provide useful views of the data. For example, it makes sense to have separate tables for counterparties, instruments and exchanges, but if you want to look at the trades or the orders in the system, you probably want to see some or all of the fields from these different tables in a single grid of data for each trade or order you make. For this, you need a view. 
 
-The application's tables and views enable the platform to notify Genesis Server and Client services and components automatically whenever there are changes to the relevant data. 
+The application's tables and views enable the platform to notify Genesis Server and Client services and components automatically whenever there are changes to the data in the table or view they are using. 
 
 The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
@@ -87,7 +87,7 @@ tables {
 
 ### Views
 
-To create a view, you must start with a "root" table, the main table powering the view. You then define tables that join to it in order to make up the view.
+To create a view, you must start with a "root" table, the main table powering the view. You then define tables that join to it - or to any other table already joined in the view - in order to make up the view.
 
 Below is a view called `TRADE_VIEW`, based on the example table configuration above. It defines the `TRADE` tables as its root, and it joins to two further tables (`INSTRUMENT` and `COUNTERPARTY`) to create the view.
 
@@ -420,8 +420,9 @@ field("RATING", INT).metadata {
 ```
 
 ##### `minLength` 
+Use `minLength` to specify a minimum length for a value in a field. The platform will validate any value input to the field. If the value is less than the value you have specified, it will be rejected by the DB layer.
 
-This sets the minimum number of characters allowed for the field.
+You specify the value as metadata, as shown in the example definition.
 
 ###### Valid for types
 `STRING`
@@ -434,8 +435,10 @@ field("ISIN").metadata {
 ```
 
 ##### `maxLength` 
+Use `maxLength` to specify a maximum length for a value in a field. The platform will validate any value input to the field. If the value is greater than or equal to the value you have specified, it will be rejected by the DB layer.
 
-Sets the maximum number of characters allowed.
+You specify the value as metadata, as shown in the example definition.
+
 
 ###### Valid for types
 `STRING`
@@ -449,7 +452,9 @@ field("ISIN").metadata {
 
 ##### `pattern`
 
-Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.  
+Use `pattern` to set a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to. This could be the format of a postal code or an instrument code, for example.
+
+You specify the value as metadata, as shown in the example definition. The platform will validate any value input to the field. If the value does not match the pattern you have specified, it will be rejected by the DB layer.
 
 ###### Valid for types
 `STRING`
@@ -462,22 +467,22 @@ field("ISIN").metadata {
 ```
 
 ##### `title`
-Title gives the field a name. Typically, this is used to provide a more descriptive name when displaying the field in the front end of the application.
+Use `title` to give the field a name. Typically, this is used to provide a more descriptive name when displaying the field in the front end of the application.
 
 Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but you can specify `title(<title value>)` to override this.
 
 ###### Valid for types
 _any_
 
-###### Example definitions
+###### Example definition
 `field("KEY", STRING).title("Access key")`
 
 
 ##### Event field modifiers
-You can add modifiers for fields to cover scenarios such as where:
+You can add modifiers for fields to cover scenarios such as:
 
-- the field is derived and should not be modified by the end user, only by the system itself.
-- the field should only be set on insert, and never changed on modifications.
+- where the field is derived and should not be modified by the end user, only by the system itself
+- where the field should only be set on insert, and never changed by modify events
 
 You can set the following modifiers:
 | Modifier                 | Valid Field Type | Effect                                                                                     |
@@ -485,10 +490,16 @@ You can set the following modifiers:
 | `.username()`            | STRING           | The field value gets set to the username of the user submitting the event.                 |
 | `.timestamp()`           | DATE             | The field value is set to the current date.                                                |
 | `.timestamp()`           | DATETIME         | The field value gets set to the current date and time.                                     |
-| `.readonly()`            | _any_            | The field is available during insertion but not modification.                              |
-| `.applicationProvided()` | _any_            | The field must be provided programmatically in the event handler, no user input from the front end |
+| `.readonly()`            | _any_            | The field is available during insertion, but not on modification.                          |
+| `.applicationProvided()` | _any_            | The field must be provided programmatically in the `eventHandler`. User input from the front end is not accepted. |
 
-They are of benefit as no special logic is needed in the events which write to the table entity to enforce the same validation.
+Once you have defined a field with one of these modifiers, then you don't need to specify any further logic in the relevant `eventHandler` to enforce the  validation that you have specified.
+
+:::tip
+If you use Genesis Create to create your client app, then the forms that are auto-generated for submitting to tables will automatically take this logic into account. 
+
+For example, if you have set the field to `readonly()` and you have an [entity manager](/develop/client-capabilities/grids/entity-manager/) using the table as a data source, then the specified field will be available in the auto-generated Insert form but not in the auto-generated Modify form.
+:::
 
 ```kotlin {4-7}
 table(name = "TRADE", id = 11002) {
@@ -508,14 +519,18 @@ Every table must have a single primary key. You must set this to be one or more 
 
 There are two different ways to define a primary key:
 
-- Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`
-- Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`
+- Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`.
+- Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example: `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`.
 
-When defining a multi-field primary key, the order in which the fields are specified is important. Their precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+When defining a multi-field primary key, the order in which the fields are specified is important. Their precedence sets more efficient ways to look up ranges of records in the API. For example, in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
 
 Fields marked as part of a primary key cannot be null.
 
-Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+By default, the platform automatically generates names for each key in the following format: 
+
+`<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. 
+
+If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
