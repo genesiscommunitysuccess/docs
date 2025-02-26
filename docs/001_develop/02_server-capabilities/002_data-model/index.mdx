@@ -389,9 +389,10 @@ String fields can be marked as `sensitive()`. Use this when the value needs to s
 ###### Example definition
 `field("KEY", STRING).sensitive()`
 
-
 ##### `min`
-Use `min` to specify a minimum value for a field. The platform will validate that values for the field are greater than or equal to the value that you specify.
+Use `min` to specify a minimum value for a field. The platform will validate any value input to the field. If the value is not greater than or equal to the value you have specified, it will be rejected by the DB layer.
+
+You specify the value as metadata, as shown in the example definition.
 
 ###### Valid for types
 Any numeric types except BigDecimal
@@ -404,7 +405,9 @@ field("RATING", INT).metadata {
 ```
 
 ##### `max`
-`max` can be specified to validate that values for the given field are less than or equal to this value
+Use `max` to specify a maximum value for a field. The platform will validate any value input to the field. If the value is not less than or equal to the value you have specified, it will be rejected by the DB layer.
+
+You specify the value as metadata, as shown in the example definition.
 
 ###### Valid for types
 Any numeric types except BigDecimal
@@ -471,9 +474,10 @@ _any_
 
 
 ##### Event field modifiers
-The following modifiers can be set against fields of eligible type in scenarios such as:
-- They are derived and shouldn't be entered by the end user, but rather the system itself.
-- They are should only be set on insert, and never changed on modifications.
+You can add modifiers for fields to cover scenarios such as where:
+
+- the field is derived and should not be modified by the end user, only by the system itself.
+- the field should only be set on insert, and never changed on modifications.
 
 You can set the following modifiers:
 | Modifier                 | Valid Field Type | Effect                                                                                     |
@@ -482,7 +486,7 @@ You can set the following modifiers:
 | `.timestamp()`           | DATE             | The field value is set to the current date.                                                |
 | `.timestamp()`           | DATETIME         | The field value gets set to the current date and time.                                     |
 | `.readonly()`            | _any_            | The field is available during insertion but not modification.                              |
-| `.applicationProvided()` | _any_            | The field must be provided programmatically in the event, no user input from the front end |
+| `.applicationProvided()` | _any_            | The field must be provided programmatically in the event handler, no user input from the front end |
 
 They are of benefit as no special logic is needed in the events which write to the table entity to enforce the same validation.
 
@@ -500,14 +504,14 @@ table(name = "TRADE", id = 11002) {
 
 #### `primaryKey`
 
-Every table must have a single Primary Key defined. A primary key needs setting to be one or more fields from the table, and the values for the primary key fields must uniquely identify a record in the table.
+Every table must have a single primary key. You must set this to be one or more fields from the table. The values for the primary key fields must uniquely identify a record in the table.
 
 There are two different ways to define a primary key:
 
 - Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`
 - Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`
 
-When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+When defining a multi-field primary key, the order in which the fields are specified is important. Their precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
 
 Fields marked as part of a primary key cannot be null.
 
@@ -519,8 +523,8 @@ Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<
 
 Indices are typically specified for one or two reasons:
 
-1. To add unique value constraints on records in the table, in addition to the primary key
-2. To add a more efficient way to look up ranges of records for the table
+- to add unique value constraints on records in the table, in addition to the primary key
+- to add a more efficient way to look up ranges of records for the table
 
 Fields marked as part of any index may not be null.
 
