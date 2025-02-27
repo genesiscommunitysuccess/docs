@@ -103,16 +103,18 @@ e.g. `active_connections{hostName=tam_prod1.processName=genesis_router.groupName
 
 #### Settings
 
-To support Graphite, the URL and port should be specified in your system definition file:
+Genesis supports [Pickle protocol](https://graphite.readthedocs.io/en/stable/feeding-carbon.html#the-pickle-protocol), defaulting to port 2004. If your Graphite instance exposes a different port for the Pickle protocol, update your system definition as shown below:
 
 ```kotlin
 item(name = "MetricsGraphiteURL", value = "localhost")
-item(name = "MetricsGraphitePort", value = "2003")
+item(name = "MetricsGraphitePort", value = "2004")
 item(name = "MetricsStructureType", value = "hierarchical")
 ```
+:::info
+Currently, the Genesis Application Platform does not support UDP and PLAINTEXT.
+:::
 
 For the `MetricsStructureType`, Genesis metrics supports both `hierarchical` and `dimensional`.
-
 
 ### Datadog
 
