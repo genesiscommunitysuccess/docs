@@ -23,7 +23,7 @@ The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
 ### Tables
 
-Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
+Each table is defined with a set of fields (entity attributes) which make up a record representing the entity.
 
 Each table requires:
 
@@ -42,7 +42,7 @@ tables {
     field("TRADE_ID", LONG).autoIncrement()
     field("COUNTERPARTY_ID", LONG).notNull()
     field("DATE", DATE).notNull()
-    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY")
     field("INSTRUMENT_ID", LONG).notNull()
     field("QUANTITY", INT).notNull()
     field("TRADE_PRICE", DOUBLE).notNull()
@@ -53,7 +53,7 @@ tables {
       nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
       nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
       nonUnique("DATE").name("TRADE_BY_DATE")
-      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+      nonUnique("COUNTERPARTY_ID", "DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
     }
   }
 
@@ -108,14 +108,14 @@ views {
         fields {
             TRADE.allFields()
 
-            INSTRUMENT.NAME withPrefix INSTRUMENT 
+            INSTRUMENT.NAME withPrefix INSTRUMENT
 
             COUNTERPARTY.COUNTERPARTY_ID
             COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
             COUNTERPARTY.NAME withAlias CTPTY_NAME
-            
+
             derivedField("NOTIONAL", DOUBLE) {
-                withInput(TRADE.QUANTITY, TRADE.PRICE) { quantity, price -> 
+                withInput(TRADE.QUANTITY, TRADE.PRICE) { quantity, price ->
                     quantity * price
                 }
             }
@@ -141,14 +141,14 @@ views {
         fields {
             TRADE.allFields()
 
-            INSTRUMENT.NAME withPrefix INSTRUMENT 
+            INSTRUMENT.NAME withPrefix INSTRUMENT
 
             COUNTERPARTY.COUNTERPARTY_ID
             COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
             COUNTERPARTY.NAME withAlias CTPTY_NAME
 
             val myLambda: DerivedField2<Double, Double, Double> = { quantity, price -> quantity * price }
-            
+
             derivedField("NOTIONAL", DOUBLE) {
                 withInput(TRADE.QUANTITY, TRADE.PRICE, myLambda)
             }
@@ -160,9 +160,9 @@ views {
 
 ### Summary
 
-Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components. 
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components.
 
-Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
+Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations.
 
 ## Configuration options
 
@@ -181,7 +181,7 @@ Tables and their fields are defined in  `*-tables-dictionary.kts` files, these f
 `audit` can optionally be defined to make the table auditable
 
 Auditing changes to system records is a common requirement in compliant financial systems.
-        
+
 The following details can be added when you use the `audit = details()` parameter:
 
 | Parameter name | Type      | Description                                                                 |
@@ -218,24 +218,24 @@ Each table requires one or more fields to be defined.
 Each field must have a unique name (unique within the table definition) and a data type defined. The following data types are available
 
 ###### `String`
-String fields can contain any set of characters up to the maximum length of characters specified for the field. 
+String fields can contain any set of characters up to the maximum length of characters specified for the field.
 The value in the parenthesis in the second example below is the maximum number of characters that can be stored in this field for a given record. Where not specified the default length will be 64 characters.
 `dbMaxSize` can be used to set the field length to be the maximum allowed for the database technology used by the application.  It is helpful as different database technologies have different limits.
 
 ###### Example definitions
-`field("MY_STRING", STRING)`  
-`field("MY_STRING", STRING(256))`  
+`field("MY_STRING", STRING)`
+`field("MY_STRING", STRING(256))`
 `field("MY_STRING", STRING(dbMaxSize))`
 
 ###### `Enum`
 Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a pick-list.
-Each value of the enum can also be have an "alias" which is typically a human readable representation of the value. Use the `to` keyword to separate value and alias See this in the second example below.  
+Each value of the enum can also be have an "alias" which is typically a human readable representation of the value. Use the `to` keyword to separate value and alias See this in the second example below.
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
 
 ###### Example definitions
-`field("MY_ENUM", ENUM("B", "S", "SS"))`  
-`field("MY_ENUM", ENUM("B" to "Buy", "S" to "Sell", "SS" to "Short Sell"))`  
-`field("MY_ENUM", ENUM("B", "S", "SS")).default("S")`  
+`field("MY_ENUM", ENUM("B", "S", "SS"))`
+`field("MY_ENUM", ENUM("B" to "Buy", "S" to "Sell", "SS" to "Short Sell"))`
+`field("MY_ENUM", ENUM("B", "S", "SS")).default("S")`
 
 ###### `Boolean`
 Boolean fields must contain a value of either true or false.
@@ -244,7 +244,7 @@ Boolean fields must contain a value of either true or false.
 `field("MY_BOOLEAN", BOOLEAN)`
 
 ###### `Date`
-Date fields must contain a value representing a date. Dates represent a day in time, they do not include time precision. 
+Date fields must contain a value representing a date. Dates represent a day in time, they do not include time precision.
 
 ###### Example definition
 `field("MY_DATE", DATE)`
@@ -260,21 +260,21 @@ Integer (aka Int) fields represent whole numbers, with no decimal places.
 Integers can only hold 32 bits, and the maximum value is just over 2.14 billion. If you need larger numbers use the type Long
 
 ###### Example definition
-`field("MY_INT", INT)` 
+`field("MY_INT", INT)`
 
 ###### `Long`
-Long fields are similar to integer, but represented in 64 bits. 
-This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theoretically store many more records. 
+Long fields are similar to integer, but represented in 64 bits.
+This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theoretically store many more records.
 
 ###### Example definition
-`field("MY_LONG", LONG)` 
+`field("MY_LONG", LONG)`
 
 ###### `Short`
-Short fields can store whole numbers from -32,768 to 32,767. 
+Short fields can store whole numbers from -32,768 to 32,767.
 They are very rarely used, but are a choice if the data needs to be stored in memory more efficiently.
 
 ###### Example definition
-`field("MY_SHORT", SHORT)` 
+`field("MY_SHORT", SHORT)`
 
 ###### `Double`
 Double fields are used to store numeric values with decimal places.
@@ -283,14 +283,14 @@ Double fields are used to store numeric values with decimal places.
 `field("MY_DOUBLE", DOUBLE)`
 
 ###### `BigDecimal`
-Big Decimal fields are similar to Double's and also store numeric values with decimal places. 
-Double values can lose precision for large numbers, or numbers with many numbers to the right of the decimal place. 
-Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs shown in the second example below) to better ensure values are accurate for their use case. 
+Big Decimal fields are similar to Double's and also store numeric values with decimal places.
+Double values can lose precision for large numbers, or numbers with many numbers to the right of the decimal place.
+Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs shown in the second example below) to better ensure values are accurate for their use case.
 - Precision is the number of digits in the number (default where not specified is 20)
 - Scale is the number of digits to the right of the decimal point (default where not specified is 5)
 
 ###### Example definitions
-`field("MY_BIGDECIMAL", BIGDECIMAL)`   
+`field("MY_BIGDECIMAL", BIGDECIMAL)`
 `field("MY_BIGDECIMAL", BIGDECIMAL(10, 3))`
 
 ###### `Nano Timestamp`
@@ -313,7 +313,7 @@ This setting will ensure a long number, starting from 1, will be auto-generated.
 
 `field("ID", LONG).autoIncrement()`
 
-##### `sequence` 
+##### `sequence`
 Sequence takes a 2-character reference as a value. The numeric part of the value will be incremented for each record added. This value is padded as follows: `SEQUENTIAL_VALUE` (padded by paddingSize) + `SEQUENCE` + `LOCATION` + `1`.
 
 Syntax is `sequence(<2 character ref>)`
@@ -325,8 +325,8 @@ Only valid for fields of type `STRING`. Either  or `uuid` can be set.
 In this example, where the application has system definition `Location` set to `NY`, the generated values will be 000000000000001TRNY1, then 000000000000002TRNY1, and so on...
 
 :::info
-If your application is set to use an SQL database, then sequence will generate a uuid by default. If you want it to generate a sequence as defined here, set the following system definition items in your application:   
-`item(name = "SqlSequencePaddingSize", value = 15)`   
+If your application is set to use an SQL database, then sequence will generate a uuid by default. If you want it to generate a sequence as defined here, set the following system definition items in your application:
+`item(name = "SqlSequencePaddingSize", value = 15)`
 `item(name = "SqlEnableSequenceGeneration", value = true)`
 :::
 
@@ -346,8 +346,8 @@ _any_
 `field("IS_CORRECT", BOOLEAN).default(true)`
 
 ##### `notNull`
-To define a field as mandatory. A value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.  
-Add `.notNull()` to your field definition to set as not nullable.  
+To define a field as mandatory. A value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.
+Add `.notNull()` to your field definition to set as not nullable.
 Where this is not set for a field, its values can be left as null - unless it is part of the primary key or any index on the table. Any field set with a [default](#default) value can never be null.
 
 ###### Valid for types:
@@ -391,7 +391,7 @@ field("RATING", INT).metadata {
 }
 ```
 
-##### `minLength` 
+##### `minLength`
 
 Sets the minimum number of characters allowed
 
@@ -405,7 +405,7 @@ field("ISIN").metadata {
 }
 ```
 
-##### `maxLength` 
+##### `maxLength`
 
 Sets the maximum number of characters allowed
 
@@ -421,7 +421,7 @@ field("ISIN").metadata {
 
 ##### `pattern`
 
-Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.  
+Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.
 
 ###### Valid for types:
 `STRING`
@@ -481,7 +481,7 @@ There are two different ways to define a primary key:
 - Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`
 - Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`
 
-When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID.
 
 Fields marked as part of a primary key may not be null.
 
@@ -616,7 +616,7 @@ Updates to the `table`, referred to as the root table of the view will always tr
 
 Joins are defined in the `joins` block.
 
-Each join is started with `joining(<table to join to>)` and includes in braces the sets of fields to use to join. 
+Each join is started with `joining(<table to join to>)` and includes in braces the sets of fields to use to join.
 
 ```kotlin {5-9}
 views {
@@ -651,7 +651,7 @@ You can also add nested joins, joining to joined tables, recursively as needed b
 
       .joining(ALT_INSTRUMENT_ID) {
           on(INSTRUMENT_ID.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
-          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")        
+          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")
       }
     }
 ```
@@ -664,9 +664,9 @@ Joins can be one-to-one (key field match) or one-to-many (part-key-field match),
 
 Joins can be set as backwards joins, using `backwardsJoin = true` in the joining definition.
 
-A join defined as a backwards join will make sure that any client listening to real-time updates of this view are published updates which happen to the joined table, as well as the root table.  
+A join defined as a backwards join will make sure that any client listening to real-time updates of this view are published updates which happen to the joined table, as well as the root table.
 So for example if our root `TRADE` table joins to `INSTRUMENT`, and it's a backwards join, an update to an `INSTRUMENT` record will trigger real-time updates to connected clients for all rows which join to the updated `INSTRUMENT` record.
- 
+
 ```kotlin {5-9}
 views {
 
@@ -691,7 +691,7 @@ Only specify a backwards join where it is essential to publish updates to the jo
 
 #### `joinType`
 
-Available join types are `JoinType.INNER` and `JoinType.OUTER`. 
+Available join types are `JoinType.INNER` and `JoinType.OUTER`.
 
 - `INNER` joins require all joins to match exactly; if one single join fails to match, the row will be discarded.
 - `OUTER` joins provide null references for failed joins and will still allow the row to be built.
@@ -742,7 +742,7 @@ Syntax:
 
 ```kotlin
 joining({usual join syntax}) {
-   on {  
+   on {
       // either
       withEntity({table name}) {
         // build index entity here
@@ -837,7 +837,7 @@ Adding a field is as simple as typing it in the `fields` section of the view.
 
 ```kotlin
     fields {
-      INSTRUMENT.CURRENCY_ID 
+      INSTRUMENT.CURRENCY_ID
     }
 ```
 
@@ -894,7 +894,7 @@ derivedField("NOTIONAL", DOUBLE) {
 }
 ```
 
-By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields that are loaded in your calculation or in the final view. 
+By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields that are loaded in your calculation or in the final view.
 
 There two options which could mitigate this.
 
