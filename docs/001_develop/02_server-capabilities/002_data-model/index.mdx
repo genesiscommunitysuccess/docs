@@ -44,7 +44,7 @@ tables {
     field("TRADE_ID", LONG).autoIncrement()
     field("COUNTERPARTY_ID", LONG).notNull()
     field("DATE", DATE).notNull()
-    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY")
     field("INSTRUMENT_ID", LONG).notNull()
     field("QUANTITY", INT).notNull()
     field("TRADE_PRICE", DOUBLE).notNull()
@@ -55,7 +55,7 @@ tables {
       nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
       nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
       nonUnique("DATE").name("TRADE_BY_DATE")
-      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+      nonUnique("COUNTERPARTY_ID", "DATE").name("TRADE_BY_CPTY_DATE")
     }
   }
 
@@ -240,7 +240,7 @@ Enum (aka enumerated) fields specify the exact set of values which the field can
 
 You can specify an alias for each value of the enum using the keyword `to`. This enables you to create a human-readable representation of the value. The second example below shows an enum with three possible values, each of which has a longer alias. 
 
-An enum must have a default value. Where no default is specified, the first value in the list is set as the default. So, in the first two examples below, the default for `MY_ENUM` is `B`. However, you can set the default explicitly; in the third example, the default for `MY_ENUM` is set to `S`. 
+By definition, an enum must have a default value. Where no default is specified, the first value in the list is set as the default. So, in the first two examples below, the default for `MY_ENUM` is `B`. However, you can set the default explicitly; in the third example, the default for `MY_ENUM` is set to `S`. 
 
 ###### Example definitions
 `field("MY_ENUM", ENUM("B", "S", "SS"))`  
@@ -289,7 +289,7 @@ They are very rarely used, but are useful if the data needs to be stored in memo
 ###### `Double`
 Double fields are used to store numeric values with decimal places. 
 
-Double values can lose precision for large numbers, or numbers with many numbers to the right of the decimal place. If you need to keep this precision, use `BigDecimal`.
+Double values can lose precision for large numbers, or numbers with many digits to the right of the decimal place. If you need to keep this precision, use `BigDecimal`.
 
 ###### Example definition
 `field("MY_DOUBLE", DOUBLE)`
@@ -530,20 +530,21 @@ By default, the platform automatically generates names for each key in the follo
 
 `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. 
 
-If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+If you wish to give your primary key a specific name, apply `.name(<pk name>)` against it. Here are two examples:
+
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
 #### `indices`
 
-Indices are typically specified for one or two reasons:
+Indices are typically specified for one of two reasons:
 
 - to add unique value constraints on records in the table, in addition to the primary key
 - to add a more efficient way to look up ranges of records for the table
 
-Fields marked as part of any index may not be null.
+Fields marked as part of any index must not be null.
 
-As with primary keys, index names are auto-generated but if you wish to give your index a specific name you can apply `.name(<pk name>)` against it.
+As with primary keys, index names are auto-generated. If you wish to give your index a specific name, apply `.name(<pk name>)` against it.
 
 There are two types of index:
 
@@ -593,9 +594,9 @@ Here are two different ways of defining a non-unique index. Both are equally val
 
 #### `subTables`
 
-Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides is a related table to the parent, in that it will share any fields defined in the parent's key.
+Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable is related to the parent, in that it shares any fields defined in the parent's key.
 
-For example, you might have an `EXECUTION_VENUE` table to provide details of different exchanges and trading venues. There may be alternative codes used to identify this exchange, and we need a table to represent a set of codes for each venue ID. So, you could add a subtable called `ALT_VENUE_CODE`, in which the relationship is one-to-many from the parent.
+For example, you might have an `EXECUTION_VENUE` table to provide details of different exchanges and trading venues. There might be alternative codes used to identify this exchange, and we need a table to represent a set of codes for each venue ID. So, you could add a subtable called `ALT_VENUE_CODE`, in which the relationship is one-to-many from the parent.
 
 The example below shows this. After the fields and the primary key have been defined, you can see the subtable `ALT_VENUE_CODE`.
 
@@ -624,7 +625,7 @@ The example below shows this. After the fields and the primary key have been def
     }
 ```
 
-Some tables provided as standard in the Genesis Server Framework use this method. The example below shows the `GENESIS_PROCESS` monitoring table which holds a record per application process. This then has a subtable called `GENESIS_PROCESS_MONITOR` defined, which records the state of the process on each given host in the application cluster.
+Some of the tables provided as standard by the Genesis Server Framework use this method. The example below shows the `GENESIS_PROCESS` monitoring table which holds a record per application process. This then has a subtable called `GENESIS_PROCESS_MONITOR` defined, which records the state of the process on each given host in the application cluster.
 
 ```kotlin {8-17}
 table(name = "GENESIS_PROCESS", id = 12) {
@@ -649,20 +650,20 @@ table(name = "GENESIS_PROCESS", id = 12) {
 
 ## `view`
 
-Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+[Views](#views) are defined in  `*-views-dictionary.kts` files. These must be placed in the `cfg` folder in your application's server codebase. They enable you to create views of the data, which draw their data from more than one table.
 
 | Parameter name | Type     | Description                                                                 |
 |----------------|----------|-----------------------------------------------------------------------------|
 | `name`         | `String` | Name of the view, must be unique across the application                     |
 | `table`        | `String` | Root table of the view                                                      |
 
-Updates to the `table`, referred to as the root table of the view will always trigger updates for any subscribing clients.
+Updates to the root table (`table` ) of the view will always trigger updates for any subscribing clients.
 
 ### `joins`
 
-Joins are defined in the `joins` block.
+A join creates a relationship between a field (or fields) in the root table and a field (or fields) in another table. To define a join, use the `joins` block.
 
-Each join is started with `joining(<table to join to>)` and includes in braces the sets of fields to use to join. 
+Each join must start with `joining(<table to join to>)`. It must then list each field in the root table, along with the field you want to join to in the other table. Here is a simple example that joins the INSTRUMENT_ID field in the root table (TRADE) to the INSTRUMENT_ID field in the INSTRUMENT table.
 
 ```kotlin {5-9}
 views {
@@ -680,7 +681,9 @@ views {
 }
 ```
 
-If multiple fields are needed in the join, add a `.and()` to the `on()`, for example:
+In the example above, a record is displayed in the view if the INSTRUMENT_ID in the TRADE table matches the INSTRUMENT_ID in the INSTRUMENT table.
+
+If more than one field is needed to create the relationship, add a `.and()` to the `on()`. For example:
 
 ```kotlin
     joining(POSITION) {
@@ -689,7 +692,13 @@ If multiple fields are needed in the join, add a `.and()` to the `on()`, for exa
     }
 ```
 
-You can also add nested joins, joining to joined tables, recursively as needed by adding an inner `.joining` statement:
+In the example above, a record is displayed in the view only if:
+
+- INSTRUMENT_ID in the TRADE table matches INSTRUMENT_ID in the POSITION table <br></br>
+  **AND**
+- BOOK_ID in the TRADE table matches BOOK_ID in the POSITION table
+
+You can also add nested joins, joining to joined tables, recursively as needed, by adding an inner `.joining` statement:
 
 ```kotlin
     joining(INSTRUMENT) {
@@ -702,16 +711,17 @@ You can also add nested joins, joining to joined tables, recursively as needed b
     }
 ```
 
-The above example also demonstrates how to use a hardcoded value to join, see the `ALTERNATE_TYPE` being set to "REFINITIV".
+The above example also demonstrates how to use a hard-coded value to join. Note where `ALTERNATE_TYPE` is set to "REFINITIV".
 
-Joins can be one-to-one (key field match) or one-to-many (part-key-field match), however *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/) as they would be very inefficient and potentially use up a lot of the cache.
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match). However, *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/)* - as they would be very inefficient and could potentially use up a lot of the cache.
 
 #### `backwardsJoin`
 
 Joins can be set as backwards joins, using `backwardsJoin = true` in the joining definition.
 
-A join defined as a backwards join will make sure that any client listening to real-time updates of this view are published updates which happen to the joined table, as well as the root table.  
-So for example if our root `TRADE` table joins to `INSTRUMENT`, and it's a backwards join, an update to an `INSTRUMENT` record will trigger real-time updates to connected clients for all rows which join to the updated `INSTRUMENT` record.
+By default, only updates to the root table are published in real time to subscribers to the view. To include real-time updates to the joined tables as well, you need to create a backwards join.
+
+For example, if our root `TRADE` table joins to `INSTRUMENT`, and it's a backwards join, an update to an `INSTRUMENT` record will trigger real-time updates to connected clients for all rows which join to the updated `INSTRUMENT` record.
  
 ```kotlin {5-9}
 views {
@@ -750,7 +760,7 @@ joining(INSTRUMENT, JoinType.INNER) {
 ```
 
 #### Parameterized joins
-Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterized joins.
+Some join operations require external parameters that are not available in the context of the table-join definition, but which will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterized joins.
 
 These are typically used in Request Server queries:
 
@@ -776,7 +786,7 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
 
 #### Dynamic joins
-These have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+Dynamic joins have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
 
 :::warning
 When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```, here it is ```fixCal``` in both cases.
@@ -895,10 +905,12 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
-You can override the name of a table's field in a view using various operators, this is necessary in the case a field name is the same as another table's field name.
+If a field has the same name as the field name in another table in the view, you can use one of the following operators to override the field name: 
 
 - `withAlias` gives the field an alternative name on the view
-- `withPrefix` adds a prefix to the standard field name; this is useful if you have a clash (e.g. if COUNTERPARTY and INSTRUMENT both have a NAME field)
+- `withPrefix` adds a prefix to the standard field name; this is useful if you have a clash 
+
+For example, if you have COUNTERPARTY joined to INSTRUMENT and both have a NAME field:
 
 ```kotlin
       COUNTERPARTY.NAME withPrefix COUNTERPARTY
@@ -910,12 +922,12 @@ You can override the name of a table's field in a view using various operators, 
 
 Derived fields are used to serve up data that is constructed from one or more fields; this is modified programmatically before progressing.
 
-For example, if a `TRADE` table has a `PRICE` and a `QUANTITY` field, a derived field `NOTIONAL` can be defined as the product of them both.
+For example, if a `TRADE` table has a `PRICE` and a `QUANTITY` field, you can define a derived field `NOTIONAL` as the product of the two.
 
 There are two ways of defining a derived field:
 
 - Using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field.
-- Using `withEntity` enables you to specify a table entity as the input and refer to any of it's fields.
+- Using `withEntity` enables you to specify a table entity as the input and refer to any of its fields.
 
 ###### Using withInput
 
