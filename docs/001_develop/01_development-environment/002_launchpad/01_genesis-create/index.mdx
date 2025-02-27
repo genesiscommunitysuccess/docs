@@ -13,11 +13,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-Genesis Create enables you to create new financial applications rapidly. Without writing a line of code, you can define a data model, configure the services that run a back end, and a set up a complete front end for viewing and interacting with data. 
+Genesis Create enables you to create new financial applications rapidly. Without writing a line of code, you can define a data model, configure the services that run a back end, and set up a complete front end for viewing and interacting with data. 
 
 Once you have done that, you can generate the code and then build and run, either in [Genesis Cloud Workspace](#opening-in-your-genesis-workspace) (which provides an IDE to work from), or by downloading and [working in your preferred IDE locally](#downloading-your-project-to-run-locally).
 
-The code that is generated creates a working app, but you have complete freedom to dive into the code to refine and extend the scope of the app. The generated code includes `To Do` comments, which can instantly find and address.
+The code that is generated creates a working app, but you have complete freedom to dive into the code to refine and extend the scope of the app. The generated code includes `To Do` comments, which you can instantly find and address.
 
 There are two ways of starting Genesis Create:
 
@@ -32,7 +32,7 @@ Genesis Create has tooltips throughout. Hover over question marks and buttons to
 
 Genesis Create provides a set of steps that take you through the complete process of setting up a project from which you can generate a working app.
 
-These steps are displayed the top of the Genesis Create screen.
+These steps are displayed at the top of the Genesis Create screen.
 
 ![Create steps](/img/genesis-launchpad/create-steps.png)
 
@@ -173,7 +173,7 @@ The transformation process follows these rules:
 
 - The size of the Excel file must not be larger than 10MB.
 - Each tab (worksheet) needs to become a single entity or view. Hidden sheets are ignored.
-- Row 1 contains the column headings, which becomes the attribute names. All attribute names are in caps, with spaces turned into underscore characters. So, `Account name` becomes `ACCOUNT_NAME`, for example. Illegal characters, such as `%` are converted automatically. 
+- Row 1 contains the column headings, which become the attribute names. All attribute names are in caps, with spaces turned into underscore characters. So, `Account name` becomes `ACCOUNT_NAME`, for example. Illegal characters, such as `%` are converted automatically. 
 - The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where the process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
 - Column A is used as the primary key for the entity (or root entity of the view).
 - A column attribute is ignored if it has no data in any rows.
@@ -275,7 +275,7 @@ To add a consolidator:
 4.	Check the fields for configuring the aggregation. The most important field is the `Aggregation Function`, which enables you to select the logic for the aggregation, which could be SUM or AVG, for example. (To handle more complex logic, you can customize this in the generated code later on.) When you are happy, make sure that the `Enabled` checkbox is set.
 5.	Click on `Done` to return to the Consolidators page, where your new consolidator is listed.
 
-When you have finished working with consolidators, click on the `Next` button at the bottom right to moe on to the next step.
+When you have finished working with consolidators, click on the `Next` button at the bottom right to move on to the next step.
 
 ### User Interface
 This step enables you to create the web client for your application.
@@ -287,7 +287,7 @@ In the example below, we have called our landing page FX Blotter. You can create
 ![Landing page and tab for creating a new page](/img/genesis-launchpad/main-page.png)
 
 :::tip
-When you have multiple pages, you can click on the `Manage pages` link on the tight to edit, add and delete pages.
+When you have multiple pages, you can click on the `Manage pages` link on the right to add, edit and delete pages.
 :::
 
 You can build each page by adding tiles. Each tile contains a component, such as a grid display or a chart.
@@ -334,7 +334,7 @@ The next step is to generate the code so that you can build and deploy.
 
 #### Opening in your Genesis Workspace
 
-You can now save your project in Genesis Launchpad so that you can build and run in Genesis Cloud Workspace. 
+You can now save your project in Genesis Launchpad so that you can build and run in your Genesis Cloud Workspace. 
 
 To do this:
 
