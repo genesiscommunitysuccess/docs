@@ -26,11 +26,11 @@ The `foundation-notifications` package enables you to create and display a range
 - `toast`
 - `banner`
 - `snackbar`
-- `dialog`. 
+- `dialog`.
 
 These notifications are configurable and can be used in different scenarios, ranging from status update to interactive user alerts.
 
-Your application must use the `notification-listener` component to manage all your notifications. This ensures a consistent user experience. 
+Your application must use the `notification-listener` component to manage all your notifications. This ensures a consistent user experience.
 
 For detailed information on the API and configurations, see the [API documentation](./docs/api/index.md).
 
@@ -144,9 +144,9 @@ export class AppComponent {
 </Tabs>
 
 :::info
-The complete example above shows you how to create a notification in the context of the component library you're using. 
+The complete example above shows you how to create a notification in the context of the component library you're using.
 
-In the [Notification examples](#notification-examples) section below, there is a simple example for each component; each example only shows the function that creates the notification, but you can use that in any of the component libraries, as shown in the complete example. 
+In the [Notification examples](#notification-examples) section below, there is a simple example for each component; each example only shows the function that creates the notification, but you can use that in any of the component libraries, as shown in the complete example.
 :::
 
 ## Notification components
@@ -183,7 +183,7 @@ For the parameters, refer to [AlertStructure](./docs/api/foundation-notification
 ### Toast
 `Toast` notifications are short, auto-closing notifications that are displayed at the edge of the screen. They are used for transient messages, such as success confirmations, error notifications or updates that don't require user acknowledgement.
 
-Here is an example of using the [showNotificationToast](./docs/api/foundation-notifications.shownotificationtoast) method to show a toast. You can click on the `Show Toast` button to view the toast message, which slides in from the top right. You can click to remove it, or you can leave it and it will disappear after a few seconds. 
+Here is an example of using the [showNotificationToast](./docs/api/foundation-notifications.shownotificationtoast) method to show a toast. You can click on the `Show Toast` button to view the toast message, which slides in from the top right. You can click to remove it, or you can leave it and it will disappear after a few seconds.
 
 For the parameters, refer to [ToastStructure](./docs/api/foundation-notifications.toaststructure) in the package API documentation.
 <ToastDemo />
@@ -234,10 +234,10 @@ For the parameters, refer to [BannerStructure](./docs/api/foundation-notificatio
 A snackbar is a notification that appears at the bottom of the screen. These notifications can have interactive buttons, unlike `toasts`. They can be used for brief updates that require user interaction, such as showing a status message or confirming an action.
 
  When you configure a `snackbar`, use the `type` property to set the notification style. Supported types are:
- 
+
  - `error`
  - `success`
- - `info` 
+ - `info`
  - `warning`
 
 Here is an example of using the [showNotificationSnackbar](./docs/api/foundation-notifications.shownotificationsnackbar) method to display a snackbar. You can click on the `Show Snackbar` button to view the snackbar at the bottom left of the screen. You can click on the `Confirm` link to remove it.
@@ -281,7 +281,7 @@ The `dialog` notification component uses a modal-like window to display notifica
 
 One of the most common use cases for dialog is to force the user to confirm before deleting.
 
-To show multiple action buttons in a dialog, use the `confirmingActions` property. 
+To show multiple action buttons in a dialog, use the `confirmingActions` property.
 
 Here is an example of using the [showNotificationSnackbar](./docs/api/foundation-notifications.shownotificationsnackbar) method to display a dialog:
 
@@ -308,7 +308,7 @@ showNotificationDialog(
 
 ## The notification-listener component
 
-Your client app must have a `notification-listener` at the top of the component tree. Any child under this `notification-listener` component can dispatch a custom `NotificationEvent` event. 
+Your client app must have a `notification-listener` at the top of the component tree. Any child under this `notification-listener` component can dispatch a custom `NotificationEvent` event.
 
 The `rapid-notification-listener` component listens for notification events dispatched from any part of your application. It processes the event payload and dynamically displays the appropriate notification component (e.g. `alert` or `toast`).
 
@@ -455,11 +455,31 @@ export class AppComponent {
 
 Additionally, you can provide the `resource-name` attribute to the `notification-listener` component. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.
 
+## Styling
+
+You can style the notification components as normal, such as overriding their styling when registering them with the design system. There are cases though where you may need to target the notification container itself. A concrete example of this is when you have components on your page which are positioned and have a `z-index` style set - you may observe in this case that your component ends up on top of the notification which is unlikely behaviour that you want.
+
+To fix this you can manually set the styles on the container. Here is an example for getting a reference to the container for a toast notification and setting the `z-index` style to be above any other components on the page. In this case we export a version of the function to create toast notifications but with a reference to the styled container bound to it.
+
+```typescript
+import { getNotificationContainer, ToastStructure } from '@genesislcap/foundation-notifications';
+import { showNotificationToast as toast } from '@genesislcap/foundation-notifications';
+
+const container = getNotificationContainer('notify-container', 'rapid');
+container.style.zIndex = '5';
+
+export const showNotificationToast = (config: ToastStructure) => toast(config, 'rapid', container);
+```
+
+Now you can import `showNotificationToast` from this file instead of from the library directly and get the version with your styles.
+
+If you need to do a similar thing with banner notifications then you'd use the `getBannerAnchor` function to get a reference to the container instead.
+
 ## Installation
 
 To enable this module in your application:
 
-1. Add `@genesislcap/foundation-notifications` as a dependency in your `package.json` file. 
+1. Add `@genesislcap/foundation-notifications` as a dependency in your `package.json` file.
 
 ```json
 {
