@@ -761,7 +761,7 @@ Create the test class using the code provided below:
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 class RequestServerTest {
 
     // our tests go here ...
@@ -773,7 +773,7 @@ class RequestServerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 public class RequestServerTest {
 
     // our tests go here ...
@@ -803,7 +803,7 @@ Use the code below:
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 class RequestServerTest {
 
     @Inject
@@ -820,7 +820,7 @@ class RequestServerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 public class RequestServerTest {
 
     @Inject
@@ -968,7 +968,7 @@ In the code below, there are two tests, which both check the result of the autho
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 @EnableInMemoryTestAuthCache
 class HelloWorldRequestServerTest {
     @Inject
@@ -1015,7 +1015,7 @@ class HelloWorldRequestServerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-reqrep.kts")
+@TestScriptFile("hello-world-reqrep.kts")
 @EnableInMemoryTestAuthCache
 public class HelloWorldRequestServerJavaTest {
 
