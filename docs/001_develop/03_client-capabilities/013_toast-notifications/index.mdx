@@ -457,9 +457,11 @@ Additionally, you can provide the `resource-name` attribute to the `notification
 
 ## Styling
 
-You can style the notification components as normal, such as overriding their styling when registering them with the design system. There are cases though where you may need to target the notification container itself. A concrete example of this is when you have components on your page which are positioned and have a `z-index` style set - you may observe in this case that your component ends up on top of the notification which is unlikely behaviour that you want.
+You can style the notification components as normal, such as by overriding their styling when you register them with the design system. There are cases though where you may need to target the notification container itself. 
 
-To fix this you can manually set the styles on the container. Here is an example for getting a reference to the container for a toast notification and setting the `z-index` style to be above any other components on the page. In this case we export a version of the function to create toast notifications but with a reference to the styled container bound to it.
+For example, if you have positioned components on your page and you have allocated `z-index` values for each one, a component could overlap or obscure the notification.
+
+To fix this, you must set the styles on the container manually. Here is an example for getting a reference to the container for a toast notification and setting the `z-index` style to be above any other components on the page. To do this, we export a version of the function to create toast notifications but with a reference to the styled container bound to it.
 
 ```typescript
 import { getNotificationContainer, ToastStructure } from '@genesislcap/foundation-notifications';
@@ -471,9 +473,9 @@ container.style.zIndex = '5';
 export const showNotificationToast = (config: ToastStructure) => toast(config, 'rapid', container);
 ```
 
-Now you can import `showNotificationToast` from this file instead of from the library directly and get the version with your styles.
+Now you can import `showNotificationToast` from this file instead of from the library directly. This gives you a version that has the styles you need.
 
-If you need to do a similar thing with banner notifications then you'd use the `getBannerAnchor` function to get a reference to the container instead.
+If you need to do a similar thing with banner notifications, use the `getBannerAnchor` function to get a reference to the container instead.
 
 ## Installation
 
