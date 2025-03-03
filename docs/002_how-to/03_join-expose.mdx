@@ -50,10 +50,10 @@ You create all your _queries_ in your application's `*-dataserver.kts` file.
 ## Creating a simple view
 Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view. This view enables the app to present details of client trades, which include the details of the trade itself (from the TRADE table) and the client's details (from the CLIENT_DETAILS table).
 
-- The view has been given the name TRADE_CLIENT. 
-- You need a root table as the basis of the view - in this case, TRADE.
-- There is a join that connects this table to the CLIENT_DETAILS table
-- By default, all fields from the joined table become part of the view. In this case, we have specified that only the field CLIENT_NAME is added from the joined table.
+- The view has been given the name `TRADE_CLIENT`. 
+- You need a root table as the basis of the view - in this case, `TRADE`.
+- There is a join that connects the `CLIENT_ID` field in this table to the `CLIENT_ID` field in the `CLIENT_DETAILS` table.
+- The `fields` codeblock specifies that all the fields from the root table are in the view, and just one field (`CLIENT_NAME` from the joined table).
 
 ```kotlin
 views {
