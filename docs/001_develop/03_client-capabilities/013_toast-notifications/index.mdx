@@ -461,7 +461,7 @@ You can style the notification components in the normal way, such as by overridi
 
 For example, if you have positioned components on your page and you have allocated `z-index` values for each one, there is a danger that a component could overlap or obscure the notification.
 
-To fix this, you must set the styles on the container manually. Here is an example of how to do this. It gets a reference to the container for a toast notification, then sets its the `z-index` style to be above any other components on the page. To do this, we export a version of the function to create toast notifications, but with a reference to the styled container bound to it.
+To fix this, you must set the styles on the container manually. Here is an example of how to do this. It gets a reference to the container for a toast notification, then sets its `z-index` style to be above any other components on the page. To do this, we export a version of the function to create toast notifications, but with a reference to the styled container bound to it.
 
 ```typescript
 import { getNotificationContainer, ToastStructure } from '@genesislcap/foundation-notifications';
@@ -472,6 +472,10 @@ container.style.zIndex = '5';
 
 export const showNotificationToast = (config: ToastStructure) => toast(config, 'rapid', container);
 ```
+
+:::tip
+To ensure that the notification is always visible when it is triggered, the `z-index` value for your container must be higher than any other `z-index` value on the page.
+:::
 
 Now you can import `showNotificationToast` from this file instead of from the library directly. This gives you a version that has the styles you need.
 
