@@ -457,11 +457,11 @@ Additionally, you can provide the `resource-name` attribute to the `notification
 
 ## Styling
 
-You can style the notification components as normal, such as by overriding their styling when you register them with the design system. There are cases though where you may need to target the notification container itself. 
+You can style the notification components in the normal way, such as by overriding their styling when you register them with the design system. But there are some cases where you might need to target the notification container itself. 
 
-For example, if you have positioned components on your page and you have allocated `z-index` values for each one, a component could overlap or obscure the notification.
+For example, if you have positioned components on your page and you have allocated `z-index` values for each one, there is a danger that a component could overlap or obscure the notification.
 
-To fix this, you must set the styles on the container manually. Here is an example for getting a reference to the container for a toast notification and setting the `z-index` style to be above any other components on the page. To do this, we export a version of the function to create toast notifications but with a reference to the styled container bound to it.
+To fix this, you must set the styles on the container manually. Here is an example of how to do this. It gets a reference to the container for a toast notification, then sets its the `z-index` style to be above any other components on the page. To do this, we export a version of the function to create toast notifications, but with a reference to the styled container bound to it.
 
 ```typescript
 import { getNotificationContainer, ToastStructure } from '@genesislcap/foundation-notifications';
