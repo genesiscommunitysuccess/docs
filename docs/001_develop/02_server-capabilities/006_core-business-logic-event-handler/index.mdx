@@ -1120,7 +1120,7 @@ First, use the code below to create the test class:
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
     // our tests go here ...
@@ -1132,7 +1132,7 @@ class EventHandlerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerTest {
 
     // our tests go here ...
@@ -1144,7 +1144,7 @@ public class EventHandlerTest {
 The code above does two things: 
 
 * It enables **GenesisJunit**.
-* It specifies the Event Handler script that we want to test, using the `ScriptFile` annotation.
+* It specifies the Event Handler script that we want to test, using the `TestScriptFile` annotation.
 
 There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
@@ -1156,7 +1156,7 @@ Use the code below to inject an Event Handler client:
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
     @Inject
@@ -1171,7 +1171,7 @@ class EventHandlerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerTest {
 
     @Inject
@@ -1308,7 +1308,7 @@ You also need to inject `InMemoryTestAuthCache` into your test class.
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
     @Inject
@@ -1358,7 +1358,7 @@ class EventHandlerTest {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("hello-world-eventhandler.kts")
+@TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerJavaTest {
 
     @Inject
