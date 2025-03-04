@@ -123,17 +123,20 @@ Let's break down what is happening here.
 
 The `GenesisJunit` class can be found in the `global.genesis.testsupport.jupiter` package.
 
-### Annotation Reference
+### Annotations
 
 **GenesisJunit** supports the following annotations.
 Please note that none of these will work without adding `@ExtendWith(GenesisJunit::class)`
 or `@ExtendWith(GenesisJunit.class)` to your class or function.
 
-These `@ExtendWith(GenesisJunit.class)` and any of the annotations below work on both the class and method level.
-Some of the annotations are Repeatable, this means that you can provide multiple values at the same class or method.
-If you provide those Repeatable annotations on both the class and method level, both would be applied.
-If you provide non-Repeatable annotations on both the class and method level, the method level annotion would take precedence.
-The enable annotations (i.e. EnableDataDump and EnableInMemoryTestAuthCache) do not support disabling at the method level once enabled on the class level.
+These `@ExtendWith(GenesisJunit.class)` and all the annotations below work on both the class and method level.
+
+Some of the annotations are Repeatable; this means that you can provide multiple values at the same class or method.
+
+- If you provide these Repeatable annotations on both the class and method level, both are applied.
+- If you provide non-Repeatable annotations on both the class and method level, the method-level annotation takes precedence.
+- The enable annotations (`EnableDataDump` and `EnableInMemoryTestAuthCache`) do not support disabling at the method level once they have been enabled on the class level.
+
 All annotations can be found in the `global.genesis.testsupport.jupiter` package.
 
 #### TestScriptFile
