@@ -252,7 +252,8 @@ public class ConfigFileExampleJavaTest {
 
 This annotation is used to load CSV data as part of a test and is also repeatable. Both individual file paths and folder paths are accepted.
 In terms of individual files, the [DumpIt](/build-deploy-operate/operate/commands/#dumpit) CSV format is supported in both .csv and .csv.gz extensions.
-Alternatively, multi-table `DumpIt` format is supported too in the following format:
+
+Alternatively, multi-table `DumpIt` format is supported in the following format:
 
 ```text
 #TABLE_NAME
@@ -261,7 +262,8 @@ COLUMN_VALUE1, COLUMN_VALUE2, COLUMN_VALUE3
 COLUMN_VALUE2, COLUMN_VALUE3, COLUMN_VALUE4
 ```
 
-So assuming two tables named FIRST_TABLE and SECOND_TABLE, both with `String` columns ID and TEXT, both containing 2 records each, a sample file would look like this:
+So, assuming two tables named FIRST_TABLE and SECOND_TABLE, both with `String` columns ID and TEXT, both containing 2 records each, a sample file would look like this:
+
 ```text
 #FIRST_TABLE
 ID,TEXT
