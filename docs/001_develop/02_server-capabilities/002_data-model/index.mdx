@@ -42,7 +42,7 @@ tables {
     field("TRADE_ID", LONG).autoIncrement()
     field("COUNTERPARTY_ID", LONG).notNull()
     field("DATE", DATE).notNull()
-    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY")
     field("INSTRUMENT_ID", LONG).notNull()
     field("QUANTITY", INT).notNull()
     field("TRADE_PRICE", DOUBLE).notNull()
@@ -53,7 +53,7 @@ tables {
       nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
       nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
       nonUnique("DATE").name("TRADE_BY_DATE")
-      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+      nonUnique("COUNTERPARTY_ID", "DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
     }
   }
 
