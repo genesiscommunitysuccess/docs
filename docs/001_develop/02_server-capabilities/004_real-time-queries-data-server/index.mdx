@@ -1625,7 +1625,7 @@ void testUsdPositions() {
 
 #### Message flow related properties and methods
 
-Finally, **QueryView** also exposes properties and methods that allow full control on the dataserver subscription message flow.
+Finally, **QueryView** also exposes properties and methods that give you full control of the dataserver subscription message flow.
 
 ##### Properties
 
@@ -1640,14 +1640,14 @@ Finally, **QueryView** also exposes properties and methods that allow full contr
 
 ##### Methods
 
-The methods below allow developers to create tests that deal with `MORE_ROWS` and `MORE_COLUMNS` message flows (see more in the [client API](#client-api) section). There are also a couple of utility methods (`retrieveRawQueryUpdateRowsFrom` and `checkExpectedRowsNumberFrom`) to query the total number and content of ROW updates received since a specific QUERY_UPDATE message.
+The methods below enable you to create tests that deal with `MORE_ROWS` and `MORE_COLUMNS` message flows (see more in the [client API](#client-api) section). There are also a couple of utility methods (`retrieveRawQueryUpdateRowsFrom` and `checkExpectedRowsNumberFrom`) to query the total number and content of ROW updates received since a specific QUERY_UPDATE message.
 
 | Kotlin Syntax | Java Syntax | Description |
 |--------------|-------------|-------------|
 | `fun moreRows(viewNumber: Int, timeout: Long, unit: TimeUnit): Boolean` | `boolean moreRows(int viewNumber, long timeout, TimeUnit unit)` | Sends a MORE_ROWS message specifying the view number and timeout settings. |
 | `fun moreRows(viewNumber: Int): Boolean` | `boolean moreRows(int viewNumber)` | Sends a MORE_ROWS message specifying the view number with default timeout (10 seconds). |
 | `fun moreRows(): Boolean` | `boolean moreRows()` | Sends a MORE_ROWS message using default view and timeout. |
-| `fun moreColumns(addColumns: List<String>, dropColumns: List<String>, timeout: Long, unit: TimeUnit): Boolean` | `boolean moreColumns(List<String> addColumns, List<String> dropColumns, long timeout, TimeUnit unit)` | Sends a MORE_COLUMNS message with payload to add and remove columns along with timeout settings. |
+| `fun moreColumns(addColumns: List<String>, dropColumns: List<String>, timeout: Long, unit: TimeUnit): Boolean` | `boolean moreColumns(List<String> addColumns, List<String> dropColumns, long timeout, TimeUnit unit)` | Sends a MORE_COLUMNS message with payload to add and remove columns, along with timeout settings. |
 | `fun moreColumns(addColumns: List<String>, dropColumns: List<String>): Boolean` | `boolean moreColumns(List<String> addColumns, List<String> dropColumns)` | Sends a MORE_COLUMNS message with payload to add and remove columns using default timeout. |
 | `fun addColumns(addColumns: List<String>): Boolean` | `boolean addColumns(List<String> addColumns)` | Sends a MORE_COLUMNS message requesting columns to be added with default timeout (10 seconds). |
 | `fun dropColumns(dropColumns: List<String>): Boolean` | `boolean dropColumns(List<String> dropColumns)` | Sends a MORE_COLUMNS message requesting columns to be removed with default timeout (10 seconds). |
