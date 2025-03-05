@@ -2288,6 +2288,6 @@ To explain the attributes being set:
 
 - `autoAuth : true` - This is not mandatory, but is typically set when setting up sso. When this is true, the app automatically logs in users with an active authenticated session.
 - `sso:` 
-    - `toggled: true` - This ensures that the `Enable SSO` checkbox displayed on the application's login page is checked by default. If you set this to `false`, it will not be checked by default.
+    - `toggled: true` - This ensures that the `Enable SSO` checkbox displayed on the application's login page **will be** checked by default. Where set to `false`, the checkbox **will not be** be checked by default.
     - `identityProvidersPath: 'sso/list'` - This is the endpoint that the UI will call to get a list of identity providers from the server. `sso/list` is the default value for `ssoListEndpoint` configured on the server. Where this value has been changed, it must also match in this configuration.
 
