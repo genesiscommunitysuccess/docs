@@ -1605,7 +1605,16 @@ saml {
     // optional -> called on first user login when the user doesn't exist in the database
     onFirstLogin {
       // optional -> should return a User and it UserAttributes from the SamlResponse
-      createUser {}
+        createUser { samlResponse ->
+            val userNameResponse = samlResponse.nameIdData["mail"] ?: "defaultUser"
+            val user = User {
+                userName = userNameResponse
+            }
+            val userAttributes = UserAttributes {
+                userName = userNameResponse
+            }
+            user to userAttributes
+       }
 
       // optional -> configures user's permissions
       createUserPermissions {
