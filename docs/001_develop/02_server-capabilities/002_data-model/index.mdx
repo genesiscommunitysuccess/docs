@@ -370,7 +370,7 @@ _any_
 `field("IS_CORRECT", BOOLEAN).default(true)`
 
 ##### `notNull`
-This makes a field as mandatory. If you specify `notNull`, then a value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.  
+This marks a field as mandatory. If you specify `notNull`, then a value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.  
 
 Where this is not set for a field, its values can be left as null - unless it is part of the primary key or any index on the table. A field set with a [default](#default) value can never be null.
 
@@ -522,7 +522,7 @@ There are two different ways to define a primary key:
 - Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`.
 - Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example: `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`.
 
-When defining a multi-field primary key, the order in which the fields are specified is important. Their precedence sets more efficient ways to look up ranges of records in the API. For example, in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+When defining a multi-field primary key, the order in which the fields are specified is important. Their precedence sets more efficient ways to look up ranges of records in the API. For example, in the definition above we could efficiently get a list of the entity for a given BOOK_ID, or for a given combination of BOOK_ID and INSTRUMENT_ID. 
 
 Fields marked as part of a primary key cannot be null.
 
@@ -625,7 +625,7 @@ The example below shows this. After the fields and the primary key have been def
     }
 ```
 
-Some of the tables provided as standard by the Genesis Server Framework use this method. The example below shows the `GENESIS_PROCESS` monitoring table which holds a record per application process. This then has a subtable called `GENESIS_PROCESS_MONITOR` defined, which records the state of the process on each given host in the application cluster.
+Some of the tables provided as standard by the Genesis Server Framework use this method. The example below shows the `GENESIS_PROCESS` monitoring table, which holds a record per application process. This table has a subtable called `GENESIS_PROCESS_MONITOR` defined, which records the state of the process on each given host in the application cluster.
 
 ```kotlin {8-17}
 table(name = "GENESIS_PROCESS", id = 12) {
@@ -786,10 +786,10 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
 
 #### Dynamic joins
-Dynamic joins have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+Dynamic joins have a shared syntax with derived fields. However, rather than specifying a field name and type, the view should always return an entity index type of the table you’re joining on.
 
 :::warning
-When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```, here it is ```fixCal``` in both cases.
+When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```; here it is ```fixCal``` in both cases.
 :::
 
 As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
