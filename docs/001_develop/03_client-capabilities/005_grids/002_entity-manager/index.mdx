@@ -290,12 +290,12 @@ In this example, the following attributes are used to configure the **entity-man
 - **`resourceName="ALL_COUNTERPARTYS"`** defines the source of the data for the grid: a Data Server query called `ALL_COUNTERPARTYS`.
 - **`title="Counterparty Management"`** displays **"Counterparty Management"** as the title of the grid.
 - **`:createFormUiSchema=${(x) => counterpartyUIschema}`** specifies the UI schema for the create form. It dynamically loads the schema for the counterparty form from a predefined JavaScript object or function, ensuring that the form fields align with the data structure of the entity.
-- **`updateEvent="EVENT_COUNTERPARTY_UPDATE"`** defines the event used for updating existing counterparty records. This displays the form and fills it with the data of the selected entity for editing.
-- **`deleteEvent="EVENT_COUNTERPARTY_DELETE"`** defines the event used for deleting counterparty records. A button will be displayed for users to delete the selected entity from the grid.
-- **`createEvent="EVENT_COUNTERPARTY_INSERT"`** automatically generates a form with all the fields from the metadata of the `EVENT_COUNTERPARTY_INSERT` event. This also adds a button at the top of the grid so that the user can access this form to create new entities.
-- **`enable-search-bar`** displays a functioning search bar in the grid, so that users can search for specific entities.
+- **`updateEvent="EVENT_COUNTERPARTY_UPDATE"`** defines the event used for updating existing entities (counterparties). This displays the form and fills it with the data of the selected entity (counterparty) for editing.
+- **`deleteEvent="EVENT_COUNTERPARTY_DELETE"`** defines the event used for deleting counterparty records. A button will be displayed for users to delete the selected entity (counterparty) from the grid.
+- **`createEvent="EVENT_COUNTERPARTY_INSERT"`** automatically generates a form with all the fields from the metadata of the `EVENT_COUNTERPARTY_INSERT` event. This also adds a button at the top of the grid so that the user can access this form to create new entities (counterparties).
+- **`enable-search-bar`** displays a functioning search bar in the grid, so that users can search for specific entities (counterparties).
 
-With these attributes in place, you can run the application locally. If the  back-end resources are correctly configured, the grid will be displayed on your page.
+With these attributes in place, you can run the application locally. If the back-end resources are correctly configured, the grid will be displayed on your page.
 
 ![](/img/foundation-entity-management/entity-counterparty-grid-extended.png)
 
