@@ -8,39 +8,37 @@ tags:
   - datasource
 ---
 
-# Datasource
-
-This provides an interface for interacting with different types of data sources within the application. It abstracts the complexities of fetching, streaming, and manipulating data from various back-end services.
+This provides an interface for interacting with different types of data source within the application. It abstracts the complexities of fetching, streaming, and manipulating data from various back-end services.
 
 ## Features
 
-- **Support for Multiple Resource Types:** Handles different resource types, including `DATASERVER`, `EVENT_HANDLER`, and `REQUEST_SERVER`.
-- **Criteria Filtering:** Converts grid-based filtering criteria into a format that can be used to query `REQUEST_SERVER` resources.
-- **Snapshot and Streaming Data:** Capable of taking snapshots of data or streaming data in real time, depending on the resource type and configuration.
-- **Data Transformation:** Includes utilities for normalizing criteria and filtering results from a data server.
-- **Mock Testing Support:** Accompanied by testing utilities to facilitate unit and integration testing of components that depend on data sources.
+- **Support for multiple resource types:** Handles different resource types, including `DATASERVER`, `EVENT_HANDLER`, and `REQUEST_SERVER`.
+- **Criteria filtering:** Converts grid-based filtering criteria into a format that can be used to query `REQUEST_SERVER` resources.
+- **Snapshot and streaming data:** Capable of taking snapshots of data or streaming data in real time, depending on the resource type and configuration.
+- **Data transformation:** Includes utilities for normalizing criteria and filtering results from a Data Server.
+- **Mock testing support:** Accompanied by testing utilities to facilitate unit and integration testing of components that depend on data sources.
 
 ## Key components
 
 ### `DefaultDatasource`
 
-The default implementation of the `Datasource` interface, providing the core functionality required to interact with various data sources. It includes methods for initialization, deinitialization, metadata fetching, snapshot taking, and data streaming.
+This is the default implementation of the `Datasource` interface, providing the core functionality required to interact with various data sources. It includes methods for initialization, deinitialization, metadata fetching, snapshot taking, and data streaming.
 
 ### `EntityDatasource`
 
 An extension of `DefaultDatasource`, tailored for use cases that involve entity-specific data operations. It supports DTO (Data Transfer Object) mapping, enabling seamless translation between raw data objects and entity models.
 
-### Utility Functions
+### Utility functions
 
-- `criteriaFiltersToFields`: Transforms filtering criteria into a structured query object.
-- `dataServerResultFilter`: Processes raw data server results, segregating them into inserts, updates, and deletes.
-- `normaliseCriteria`: Normalizes filtering criteria for consistency and comparability.
+- `criteriaFiltersToFields` transforms filtering criteria into a structured query object.
+- `dataServerResultFilter`processes raw data server results, segregating them into inserts, updates, and deletes.
+- `normaliseCriteria`normalizes filtering criteria for consistency and comparability.
 
 ## Examples
 
 ### Initializing a datasource
 
-Initialization of a `DefaultDatasource` is crucial for setting up the resource name, criteria, and other options that define how data should be fetched and presented.
+Initialization of a `DefaultDatasource` is crucial for setting up the resource name, criteria, and other details that define how data should be fetched and presented.
 
 ```typescript
 import { Datasource, DatasourceOptions } from '@genesislcap/foundation-comms';
@@ -67,7 +65,7 @@ export class MyExampleClass {
 
 ### Taking a snapshot
 
-After initializing the datasource, you can take a snapshot of the current data. This is particularly useful for fetching data at a specific point in time without setting up a real-time stream.
+After initializing the datasource, you can take a snapshot of the current data. This is particularly useful for fetching data at a specific time without setting up a real-time stream.
 
 ```typescript
 import { Datasource } from '@genesislcap/foundation-comms';
@@ -152,9 +150,9 @@ const queryObject = criteriaFiltersToFields(criteria);
 // Outputs: { foo: 'bar', DATE_FROM: '20231110-00:00', DATE_TO: '20231111-00:00' }
 ```
 
-### Data Server Result Processing
+### Processing Data Server results
 
-Filtering and categorizing data server results based on operation type:
+Filtering and categorizing Data Server results based on operation type:
 
 ```typescript
 import { dataServerResultFilter } from '@genesislcap/foundation-comms';
@@ -192,6 +190,6 @@ The module includes a set of mocks and testing utilities to facilitate the testi
 
 ## Considerations
 
-- **Resource Type Compatibility:** Ensure that the resource type you are interacting with is compatible with the methods and options provided by the datasource.
-- **Data Consistency:** Be mindful of the data consistency requirements when using snapshot or streaming modes, as they may affect the behavior of your application.
+- **Resource type compatibility**. Ensure that the resource type you are interacting with is compatible with the methods and options provided by the datasource. If you request snapshot data, this is a single set of data - you cannot request more rows (for example) as you can when you are streaming data.
+- **Data consistency**. Be mindful of the data consistency requirements when using snapshot or streaming modes, as they can affect the behaviour of your application.
 - **Error Handling:** Implement appropriate error handling mechanisms to manage exceptions and errors that may occur during data fetching or streaming operations.
