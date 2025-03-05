@@ -668,10 +668,9 @@ For example, one could define an interface in the production code called `MyInte
 
 ```kotlin
 
-@ImplementedBy(MyIntefaceImpl::class)
 interface MyInteface
 
-@Singleton
+@Module
 @ConditionalOnMissingClass(MyInterface::class)
 class MyInterfaceImpl: MyInterface
 
@@ -680,7 +679,6 @@ class MyInterfaceImpl: MyInterface
 </TabItem>
 <TabItem value="java">
 
-@ImplementedBy(MyIntefaceImpl.class)
 interface MyInteface {
 }
 
