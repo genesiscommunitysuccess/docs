@@ -1,0 +1,159 @@
+---
+title: '8.9'
+sidebar_label: '8.9'
+sidebar_position: 11
+id: '8.9'
+---
+
+## Server
+
+### Features
+
+* Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
+* Implement missing functionality in QueryView to handle all potential use cases 
+* Add flag to create compact toString method on entities 
+* Add support for dumpit csv and csv.gz files 
+* Added ability to perform record deltas using dbSink by exposing modifiedFields 
+* Allow docker build to pre-set SysDef environment variables 
+* Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types 
+* Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions 
+* Generate all ENUM values inside enum reference objects for completeness 
+* GenesisJunit - create compatible DumpIt interface 
+* GenesisJunit - improve loading of test data 
+* Optimise memory usage BackwardJoinCache for 1-2-1 joins 
+* Add framework support for external sql integration 
+* Allows for overriding of test process name 
+* Display current cluster node role in `mon` 
+* Provide better bulk purge support 
+
+### Performance Improvements
+
+* Use deleteAll in PurgerScript.purgeDerivedRange 
+
+### Fixes
+
+* Catch and accumulate unsupported formula errors while processing a worksheet 
+* Fix side effect produced by changing excel naming strategy 
+* Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
+* Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* Do not refresh updates that have moved in or out of range 
+* When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+* Better log error message when SysDef evaluation fails 
+* Handle multiple updates for same record in data server 
+* Handle case when attempting to rename column that does not exist in dataset 
+* Site specific plugin to do not modify binary files stored under data 
+* Ensure route extension mechanism can handle dependency injection correctly 
+* Add sync backwards join cache impl 
+* ClasspathGenerator to attempt to resolve module name without a full match 
+* DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records 
+* Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
+* Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated 
+* Ensure classpath builder util can handle jars with no manifest 
+* Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
+* Fix deserialization incompatibility for Index class 
+* Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
+* Inject SystemDefinition as member variable into data pipelines script to avoid issues with Intellisense 
+* ORDER_BY index selection is now forced at criteria interval buiding stage, and criteria cache now respects index information 
+* TypeAwareCriteriaEvaluator in dataservers now works with query-enriched fields 
+* DbBulkSubscribe not updating secondary table when backwardsJoin true 
+* Disabling processRestart for docker images and including encrypting sysdefs 
+* Disabling processRestart when flag is TRUE and not FALSE 
+* Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+* Ensure TypeAwareCriteriaEvaluator usage in dataserver and req/rep handles all common date/datetime formats 
+* Ensure aliased enum serialization is correct when dealing with GenesisSet objects 
+* Ensure correct HTTP response is sent when message can't be deserialized 
+* Ensure script files in site-specific have priority when searching by suffix 
+* Fix support for views in dbmon 
+* Generated SysDef should allow safe conversion of types 
+* Generated rx repos use modified fields for modify operations 
+* GenesisType json schema property for req reps and data server queries 
+* Increase zero mq subscriber worker high water mark value to Integer.max_value 
+* Race condition when processing multiple back join table modifications on different fields at the same time 
+* Reusable lambdas in views now cope with aliased table arguments 
+* Tests should apply SysDefOverwrite when process config file provided 
+* Using app sys def file in integration tests should work for multiple tests 
+
+### Dependency Changes
+
+* Bump aeronVersion from 1.46.7 to 1.46.8 
+* Bump apachePoi from 5.3.0 to 5.4.0 
+* Bump byteBuddyVersion from 1.15.11 to 1.16.1 
+* Bump byteBuddyVersion from 1.16.1 to 1.17.0 
+* Bump byteBuddyVersion from 1.17.0 to 1.17.1 
+* Bump com.github.oshi:oshi-core from 6.6.5 to 6.6.6 
+* Bump com.google.protobuf:protobuf-java from 4.29.2 to 4.29.3 
+* Bump com.opencsv:opencsv from 5.9 to 5.10 
+* Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 
+* Bump dataframeVersion from 0.12.1 to 0.15.0 
+* Bump debeziumVersion from 3.0.6.Final to 3.0.7.Final 
+* Bump jnaVersion from 5.15.0 to 5.16.0 
+* Bump joda-time:joda-time from 2.13.0 to 2.13.1 
+* Bump micrometerVersion from 1.14.2 to 1.14.3 
+* Bump micrometerVersion from 1.14.3 to 1.14.4 
+* Bump msgpackVersion from 0.9.8 to 0.9.9 
+* Bump nettyVersion from 4.1.116.Final to 4.1.117.Final 
+* Bump nettyVersion from 4.1.117.Final to 4.1.118.Final 
+* Bump oracleJdbcVersion from 23.6.0.24.10 to 23.7.0.25.01 
+* Bump org.apache.activemq:artemis-jakarta-client from 2.38.0 to 2.39.0 
+* Bump org.apache.commons:commons-csv from 1.12.0 to 1.13.0 
+* Bump org.apache.fury:fury-core from 0.9.0 to 0.10.0 
+* Bump org.apache.ivy:ivy from 2.5.2 to 2.5.3 
+* Bump org.assertj:assertj-core from 3.27.0 to 3.27.2 
+* Bump org.assertj:assertj-core from 3.27.2 to 3.27.3 
+* Bump org.checkerframework:checker-qual from 3.48.3 to 3.48.4 
+* Bump org.checkerframework:checker-qual from 3.48.4 to 3.49.0 
+* Bump org.freemarker:freemarker from 2.3.33 to 2.3.34 
+* Bump org.gradle.test-retry from 1.6.0 to 1.6.1 
+* Bump org.gradle.test-retry from 1.6.1 to 1.6.2 
+* Bump org.gradle:test-retry-gradle-plugin from 1.6.0 to 1.6.1 
+* Bump org.gradle:test-retry-gradle-plugin from 1.6.1 to 1.6.2 
+* Bump org.kiwiproject:consul-client from 1.4.5 to 1.5.0 
+* Bump org.openapitools:openapi-generator from 7.10.0 to 7.11.0 
+* Bump org.postgresql:postgresql from 42.7.4 to 42.7.5 
+* Bump pekkoVersion from 1.1.2 to 1.1.3 
+* Bump testcontainersVersion from 1.20.4 to 1.20.5 
+* Revert msgpackVersion from 0.9.9 to 0.9.8 
+
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+
+
+## Client
+
+### Features
+
+## 
+
+* Update criteria conversion to support pure dates 
+* Disabling days of the week in date picker 
+* Datepicker adding bottom slot, hide weekends attribute, display inline attribute 
+* Add DOT_ENV_FILE overrides for picking up extra .env files 
+* Allowing a disabled legend via chart config 
+* Create package 
+* Dispatch logout event from header 
+* Add foundation-storybook showcase 
+* Add functional emitter 
+* Enable filter persistance 
+* Expose current tab index on tabs component 
+* Add ability to hide maximise icon 
+
+### Fixes
+
+* Retain initial value when no data is available and allowCustomOption is true
+* Address failing clean script + extra tweaks 
+* Added button style attribute in action renderer params 
+* Using current date for rolling day 
+* Fixing null date set in calendar
+* Extend session using cookies 
+* Improve github actions to reduce resource usage 
+* Remove debugger statements 
+* Styling for rapid and zero tabulator 
+* Add redirect page for github pages 
+* Remove logger.debug from variables file 
+* Adding isNullOrWhitespace to web core exports 
+* Session extension on multi window 
+* Address grid datasource stream start before metadata 
+* Issue with combo value and add new filter option 
