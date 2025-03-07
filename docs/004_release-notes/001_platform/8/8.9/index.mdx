@@ -9,15 +9,15 @@ id: '8.9'
 
 ### Features
 
-* Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
-* Implement missing functionality in QueryView to handle all potential use cases 
-* Add flag to create compact toString method on entities 
-* Add support for dumpit csv and csv.gz files 
-* Added ability to perform record deltas using dbSink by exposing modifiedFields 
+* `GenesisJUnit` : Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
+* `GenesisJUnit` : Implement missing functionality in QueryView to handle all potential use cases 
+* `genesis-codegen` : Add flag to create compact toString method on entities 
+* `genesis-junit` : Add support for dumpit csv and csv.gz files 
+* `pal-datapipeline` : Added ability to perform record deltas using dbSink by exposing modifiedFields 
 * Allow docker build to pre-set SysDef environment variables 
 * Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types 
 * Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions 
-* Generate all ENUM values inside enum reference objects for completeness 
+* Generated Entities: Generate all ENUM values inside enum reference objects for completeness 
 * GenesisJunit - create compatible DumpIt interface 
 * GenesisJunit - improve loading of test data 
 * Optimise memory usage BackwardJoinCache for 1-2-1 joins 
@@ -28,21 +28,21 @@ id: '8.9'
 
 ### Performance Improvements
 
-* Use deleteAll in PurgerScript.purgeDerivedRange 
+* `genesis-environment` : Use deleteAll in PurgerScript.purgeDerivedRange 
 
 ### Fixes
 
-* Catch and accumulate unsupported formula errors while processing a worksheet 
-* Fix side effect produced by changing excel naming strategy 
-* Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
-* Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
-* Do not refresh updates that have moved in or out of range 
-* When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
-* Better log error message when SysDef evaluation fails 
-* Handle multiple updates for same record in data server 
-* Handle case when attempting to rename column that does not exist in dataset 
-* Site specific plugin to do not modify binary files stored under data 
-* Ensure route extension mechanism can handle dependency injection correctly 
+* `ExcelToGenesis` : Catch and accumulate unsupported formula errors while processing a worksheet 
+* `ExcelToGenesis` : Fix side effect produced by changing excel naming strategy 
+* `ExcelToGenesis` : Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
+* `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `db` : Do not refresh updates that have moved in or out of range 
+* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+* `diags` : Better log error message when SysDef evaluation fails 
+* `genesis-pal-dataserver` : Handle multiple updates for same record in data server 
+* `genesis-transform` : Handle case when attempting to rename column that does not exist in dataset 
+* `gradle` : Site specific plugin to do not modify binary files stored under data 
+* `webmon` : Ensure route extension mechanism can handle dependency injection correctly 
 * Add sync backwards join cache impl 
 * ClasspathGenerator to attempt to resolve module name without a full match 
 * DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records 
@@ -114,7 +114,6 @@ id: '8.9'
 * Bump testcontainersVersion from 1.20.4 to 1.20.5 
 * Revert msgpackVersion from 0.9.9 to 0.9.8 
 
-
 ### Patch releases
 
 There are currently no patch releases for this version
@@ -125,35 +124,35 @@ There are currently no patch releases for this version
 
 ### Features
 
-## 
-
-* Update criteria conversion to support pure dates 
-* Disabling days of the week in date picker 
-* Datepicker adding bottom slot, hide weekends attribute, display inline attribute 
-* Add DOT_ENV_FILE overrides for picking up extra .env files 
-* Allowing a disabled legend via chart config 
-* Create package 
-* Dispatch logout event from header 
+* `build-kit` : Add DOT_ENV_FILE overrides for picking up extra .env files 
+* `g2plot-chart` : Allowing a disabled legend via chart config 
+* `foundation-ui` : Disabling days of the week in date picker 
+* `rapid-grid-tabulator` : Create package 
+* Dispatch logout event from header 
+* `foundation-ui` : Datepicker adding bottom slot, hide weekends attribute, display inline attribute 
 * Add foundation-storybook showcase 
-* Add functional emitter 
-* Enable filter persistance 
-* Expose current tab index on tabs component 
-* Add ability to hide maximise icon 
+* `foundation-events` : Add functional emitter 
+* `foundation-comms` : Update criteria conversion to support pure dates 
+* `foundation-entity-management` : Enable filter persistance 
+* `foundation-ui` : Expose current tab index on tabs component 
+* `foundation-layout` : Add ability to hide maximise icon 
 
 ### Fixes
 
-* Retain initial value when no data is available and allowCustomOption is true
+* Retain initial value when no data is available and allowCustomOption is true 
 * Address failing clean script + extra tweaks 
 * Added button style attribute in action renderer params 
-* Using current date for rolling day 
-* Fixing null date set in calendar
-* Extend session using cookies 
-* Improve github actions to reduce resource usage 
+* `foundation-ui` : Using current date for rolling day 
+* `foundation-ui` : Fixing null date set in calendar 
+* Extend session using cookies 
+* Improve github actions to reduce resource usage 
 * Remove debugger statements 
 * Styling for rapid and zero tabulator 
-* Add redirect page for github pages 
+* Add redirect page for github pages 
 * Remove logger.debug from variables file 
-* Adding isNullOrWhitespace to web core exports 
-* Session extension on multi window 
+* `web-core` : Adding isNullOrWhitespace to web core exports 
+* Session extension on multi window 
 * Address grid datasource stream start before metadata 
 * Issue with combo value and add new filter option 
+* Revert value change 
+* Proxy for file server endpoints 
