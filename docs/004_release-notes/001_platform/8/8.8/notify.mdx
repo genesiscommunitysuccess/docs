@@ -17,7 +17,19 @@ id: '8.8-notify'
 
 ### Patch releases
 
+#### 8.8.2
+
+###### Features
+
+* Add ROUTE_ENABLED flag to allow disabling of routes at runtime without deletion
+
+###### Fixes
+
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues 
+
+
 #### 8.8.1
 
 ###### Features
-- Exposing logger in the configuration DSL
+
+* Exposing logger in the configuration DSL
