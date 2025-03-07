@@ -927,7 +927,7 @@ For example, if a `TRADE` table has a `PRICE` and a `QUANTITY` field, you can de
 There are two ways of defining a derived field:
 
 - Using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field.
-- Using `withEntity` enables you to specify a table entity as the input and refer to any of its fields.
+- Using `withEntity` enables you to specify a table entity as the input and refer to any of its fields. If you are using multiple fields from the same table to create your derived field, it is easier to use this method. You can reference any field in the specified table (entity) to create your derived field. This is easier than providing all the fields you want as separate parameters.
 
 ###### Using withInput
 
@@ -946,7 +946,7 @@ The maximum number of fields that can be used as input of a derived field is 10.
 ###### Using withEntity
 ```kotlin
 derivedField("NOTIONAL", DOUBLE) {
-  withInput(TRADE) { trade ->
+  withEntity(TRADE) { trade ->
     trade.price * trade.quantity
   }
 }
