@@ -29,7 +29,9 @@ If you are testing against previous versions of the framework, see the page on [
 
 Genesis provides a Junit 5 extension that helps developers write integration tests.
 The extension will create a Genesis microservice for the duration of each test case.
-This page will deal with the GenesisJunit extension in general. 
+The GenesisJunit functionality is made available via the `genesis-testsupport` package.
+This page will deal with the GenesisJunit extension in general.
+
 
 ### Testing specific services
 
@@ -119,20 +121,27 @@ Let's break down what is happening here.
 * run the test
 * clean up resources
 
+The `GenesisJunit` class can be found in the `global.genesis.testsupport.jupiter` package.
 
-### Annotation Reference
+### Annotations
 
-**GenesisJunit** supports the following annotations.
-Please note that none of these will work without adding `@ExtendWith(GenesisJunit::class)`
-or `@ExtendWith(GenesisJunit.class)` to your class or function.
+**GenesisJunit** supports a range of annotations.
 
-These `@ExtendWith(GenesisJunit.class)` and any of the annotations below work on both the class and method level.
-Some of the annotations are Repeatable, this means that you can provide multiple values at the same class or method.
-If you provide those Repeatable annotations on both the class and method level, both would be applied.
-If you provide non-Repeatable annotations on both the class and method level, the method level annotion would take precedence.
-The enable annotations (i.e. EnableDataDump and EnableInMemoryTestAuthCache) do not support disabling at the method level once enabled on the class level.
+:::important
+You must add `@ExtendWith(GenesisJunit::class)` or `@ExtendWith(GenesisJunit.class)` to your class or function. This is essential.
+:::
 
-#### ScriptFile
+These `@ExtendWith(GenesisJunit.class)` and all the annotations below work on both the class and method level.
+
+Some of the annotations are Repeatable; this means that you can provide multiple values at the same class or method.
+
+- If you provide these Repeatable annotations on both the class and method level, both are applied.
+- If you provide non-Repeatable annotations on both the class and method level, the method-level annotation takes precedence.
+- The enable annotations (`EnableDataDump` and `EnableInMemoryTestAuthCache`) do not support disabling at the method level once they have been enabled on the class level.
+
+All annotations can be found in the `global.genesis.testsupport.jupiter` package.
+
+#### TestScriptFile
 
 Use this annotation to load a script file as part of the test.
 This annotation is Repeatable.
@@ -142,7 +151,7 @@ This annotation is Repeatable.
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ScriptFile("my-eventhandler.kts")
+@TestScriptFile("my-eventhandler.kts")
 internal class ScriptFileExamples {
 
     @Test
@@ -151,14 +160,14 @@ internal class ScriptFileExamples {
     }
 
     @Test
-    @ScriptFile("other-eventhandler.kts")
+    @TestScriptFile("other-eventhandler.kts")
     fun testMoreScriptFiles() {
         // uses "my-eventhandler.kts" and "other-eventhandler.kts"
     }
 
     @Test
-    @ScriptFile("other-eventhandler.kts")
-    @ScriptFile("more-eventhandler.kts")
+    @TestScriptFile("other-eventhandler.kts")
+    @TestScriptFile("more-eventhandler.kts")
     fun testManyScriptFiles() {
         // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
     }
@@ -170,7 +179,7 @@ internal class ScriptFileExamples {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ScriptFile("my-eventhandler.kts")
+@TestScriptFile("my-eventhandler.kts")
 public class ScriptFileJavaExample {
 
     @Test
@@ -179,14 +188,14 @@ public class ScriptFileJavaExample {
     }
 
     @Test
-    @ScriptFile("other-eventhandler.kts")
+    @TestScriptFile("other-eventhandler.kts")
     public void testMoreScriptFiles() {
         // uses "my-eventhandler.kts" and "other-eventhandler.kts"
     }
 
     @Test
-    @ScriptFile("other-eventhandler.kts")
-    @ScriptFile("more-eventhandler.kts")
+    @TestScriptFile("other-eventhandler.kts")
+    @TestScriptFile("more-eventhandler.kts")
     public void testManyScriptFiles() {
         // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
     }
@@ -195,16 +204,16 @@ public class ScriptFileJavaExample {
 </TabItem>
 </Tabs>
 
-#### ConfigFile
-Use this annotation is used to load a config file as part of a test.
-This annoatation is not Repeatable.
+#### TestConfigFile
+Use this annotation to load a process config file as part of a test.
+This annotation is not Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
 @ExtendWith(GenesisJunit::class)
-@ConfigFile("my-process-config.kts")
+@TestConfigFile("my-process-config.kts")
 internal class ConfigFileExamples {
 
     @Test
@@ -213,7 +222,7 @@ internal class ConfigFileExamples {
     }
 
     @Test
-    @ConfigFile("other-process-config.kts")
+    @TestConfigFile("other-process-config.kts")
     fun otherProcessConfig() {
         // uses "other-process-config.kts"
     }
@@ -225,7 +234,7 @@ internal class ConfigFileExamples {
 
 ```java
 @ExtendWith(GenesisJunit.class)
-@ConfigFile("my-process-config.kts")
+@TestConfigFile("my-process-config.kts")
 public class ConfigFileExampleJavaTest {
 
     @Test
@@ -234,7 +243,7 @@ public class ConfigFileExampleJavaTest {
     }
 
     @Test
-    @ConfigFile("other-process-config.kts")
+    @TestConfigFile("other-process-config.kts")
     public void otherProcessConfig() {
         // uses "other-process-config.kts"
     }
@@ -246,8 +255,30 @@ public class ConfigFileExampleJavaTest {
 
 #### CsvData
 
-This annotation is used to load CSV data as part of a test.
-This annotation is Repeatable.
+This annotation is used to load CSV data as part of a test and is also repeatable. Both individual file paths and folder paths are accepted.
+In terms of individual files, the [DumpIt](/build-deploy-operate/operate/commands/#dumpit) CSV format is supported in both .csv and .csv.gz extensions.
+
+Alternatively, multi-table `DumpIt` format is supported in the following format:
+
+```text
+#TABLE_NAME
+COLUMN_NAME1, COLUMN_NAME2, COLUMN_NAME3
+COLUMN_VALUE1, COLUMN_VALUE2, COLUMN_VALUE3
+COLUMN_VALUE2, COLUMN_VALUE3, COLUMN_VALUE4
+```
+
+So, assuming two tables named FIRST_TABLE and SECOND_TABLE, both with `String` columns ID and TEXT, both containing 2 records each, a sample file would look like this:
+
+```text
+#FIRST_TABLE
+ID,TEXT
+id1,text1
+id2,text2
+#SECOND_TABLE
+ID,TEXT
+id1,text1
+id2,text2
+```
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -263,16 +294,16 @@ internal class CsvDataExamples {
     }
 
     @Test
-    @CsvData("other-data.csv")
+    @CsvData("other-data.csv.gz")
     fun loadCsvDataFromOtherDataFile() {
-        // uses "my-data.csv" and "other-data.csv"
+        // uses "my-data.csv" and "other-data.csv.gz"
     }
 
     @Test
-    @CsvData("other-data.csv")
-    @CsvData("more-data.csv")
+    @CsvData("other-data.csv.gz")
+    @CsvData("data-folder")
     fun loadCsvDataFromMultipleFiles() {
-        // uses "my-data.csv", "other-data.csv" and "more-data.csv"
+        // uses "my-data.csv", "other-data.csv.gz" and the "data-folder" folder
     }
 }
 ```
