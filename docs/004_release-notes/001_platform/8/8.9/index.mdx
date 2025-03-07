@@ -9,110 +9,110 @@ id: '8.9'
 
 ### Features
 
-- feat(GenesisJUnit): Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests (GSF-7180) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3930
-- feat(GenesisJUnit): implement missing functionality in QueryView to handle all potential use cases (GSF-7186) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3978
-- feat(genesis-codegen): add flag to create compact toString method on entities (GSF-7168) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3869
-- feat(genesis-junit): add support for dumpit csv and csv.gz files (GSF-7182) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3956
-- feat(pal-datapipeline): Added ability to perform record deltas using dbSink by exposing modifiedFields (GSF-7146) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/3722
-- feat: Allow docker build to pre-set SysDef environment variables (GSF-7166) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3860
-- feat: Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types (GSF-7174) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3906
-- feat: Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions (GSF-7177) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3940
-- feat: Generated Entities: Generate all ENUM values inside enum reference objects for completeness (GSF-7145) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3720
-- feat: GenesisJunit - create compatible DumpIt interface (GSF-7196) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4003
-- feat: GenesisJunit - improve loading of test data (GSF-7193) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3995
-- feat: Optimise memory usage BackwardJoinCache for 1-2-1 joins (GSF-7158) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3764
-- feat: add framework support for external sql integration (GSF-7132) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3661
-- feat: allows for overriding of test process name (GSF-7137) by @jldparker in https://github.com/genesislcap/genesis-server/pull/3701
-- feat: display current cluster node role in `mon` (GSF-7040) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3945
-- feat: provide better bulk purge support (GSF-7159) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3779
+* `GenesisJUnit` : Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
+* `GenesisJUnit` : Implement missing functionality in QueryView to handle all potential use cases 
+* `genesis-codegen` : Add flag to create compact toString method on entities 
+* `genesis-junit` : Add support for dumpit csv and csv.gz files 
+* `pal-datapipeline` : Added ability to perform record deltas using dbSink by exposing modifiedFields 
+* Allow docker build to pre-set SysDef environment variables 
+* Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types 
+* Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions 
+* Generated Entities: Generate all ENUM values inside enum reference objects for completeness 
+* GenesisJunit - create compatible DumpIt interface 
+* GenesisJunit - improve loading of test data 
+* Optimise memory usage BackwardJoinCache for 1-2-1 joins 
+* Add framework support for external sql integration 
+* Allows for overriding of test process name 
+* Display current cluster node role in `mon` 
+* Provide better bulk purge support 
 
 ### Performance Improvements
 
-- perf(genesis-environment): Use deleteAll in PurgerScript.purgeDerivedRange (GSF-7147) by @aaronburroGenesis in https://github.com/genesislcap/genesis-server/pull/3732
+* `genesis-environment` : Use deleteAll in PurgerScript.purgeDerivedRange 
 
 ### Fixes
 
-- fix(ExcelToGenesis): catch and accumulate unsupported formula errors while processing a worksheet (GSF-7140) by @suarezcarlos in https://github.com/genesislcap/genesis-server/pull/3703
-- fix(ExcelToGenesis): fix side effect produced by changing excel naming strategy (GSF-7151) by @suarezcarlos in https://github.com/genesislcap/genesis-server/pull/3775
-- fix(ExcelToGenesis): make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING (GSF-7148) by @suarezcarlos in https://github.com/genesislcap/genesis-server/pull/3731
-- fix(dataserver): ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available (GSF-7199) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4038
-- fix(db): do not refresh updates that have moved in or out of range (GSF-7206) (#4088) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4093
-- fix(db): when db cache inserts are enabled, write inserts to the cache if existing cache entry value is null (GSF-7200) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4061
-- fix(diags): better log error message when SysDef evaluation fails (GSF-7207) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4087
-- fix(genesis-pal-dataserver): Handle multiple updates for same record in data server (GSF-7163) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/3815
-- fix(genesis-transform): Handle case when attempting to rename column that does not exist in dataset (GSF-7169) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/3876
-- fix(gradle): site specific plugin to do not modify binary files stored under data (GSF-7164) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3834
-- fix(webmon): ensure route extension mechanism can handle dependency injection correctly (GSF-7184) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3969
-- fix: Add sync backwards join cache impl (GSF-7136) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/3774
-- fix: ClasspathGenerator to attempt to resolve module name without a full match (GSF-7189) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/3985
-- fix: DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records (GSF-7142) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3709
-- fix: Ensure Index.NonUnique class definition has a fixed serialVersionUID field (GSF-7157) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3751
-- fix: Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated (GSF-7179) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3929
-- fix: Ensure classpath builder util can handle jars with no manifest (GSF-7167) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/3863
-- fix: Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload (GSF-7162) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3814
-- fix: Fix deserialization incompatibility for Index class (GSF-7156) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3746
-- fix: Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail (GSF-7161) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/3784
-- fix: Inject SystemDefinition as member variable into data pipelines script to avoid issues with Intellisense (GSF-6969) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/3730
-- fix: ORDER_BY index selection is now forced at criteria interval buiding stage, and criteria cache now respects index information (GSF-7188) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3983
-- fix: TypeAwareCriteriaEvaluator in dataservers now works with query-enriched fields (GSF-7172) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3903
-- fix: dbBulkSubscribe not updating secondary table when backwardsJoin true (GSF-7153) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/3738
-- fix: disabling processRestart for docker images and including encrypting sysdefs (GSF-7198) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4032
-- fix: disabling processRestart when flag is TRUE and not FALSE (GSF-7198) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4068
-- fix: ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder (GSF-7165) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3833
-- fix: ensure TypeAwareCriteriaEvaluator usage in dataserver and req/rep handles all common date/datetime formats (GSF-7173) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3902
-- fix: ensure aliased enum serialization is correct when dealing with GenesisSet objects (GSF-7101) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3785
-- fix: ensure correct HTTP response is sent when message can't be deserialized (GSF-7099) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3782
-- fix: ensure script files in site-specific have priority when searching by suffix (GSF-7134) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/3781
-- fix: fix support for views in dbmon (GSF-7216) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4107
-- fix: generated SysDef should allow safe conversion of types (GSF-7181) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/3953
-- fix: generated rx repos use modified fields for modify operations (GSF-7190) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/3984
-- fix: genesisType json schema property for req reps and data server queries (GSF-7138) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/3707
-- fix: increase zero mq subscriber worker high water mark value to Integer.max_value (GSF-7170) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/3885
-- fix: race condition when processing multiple back join table modifications on different fields at the same time (GSF-7183) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/3961
-- fix: reusable lambdas in views now cope with aliased table arguments (GSF-7176) by @harryjhornby in https://github.com/genesislcap/genesis-server/pull/3920
-- fix: tests should apply SysDefOverwrite when process config file provided (GSF-7201) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4047
-- fix: using app sys def file in integration tests should work for multiple tests (GSF-7197) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4020
+* `ExcelToGenesis` : Catch and accumulate unsupported formula errors while processing a worksheet 
+* `ExcelToGenesis` : Fix side effect produced by changing excel naming strategy 
+* `ExcelToGenesis` : Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
+* `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `db` : Do not refresh updates that have moved in or out of range 
+* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+* `diags` : Better log error message when SysDef evaluation fails 
+* `genesis-pal-dataserver` : Handle multiple updates for same record in data server 
+* `genesis-transform` : Handle case when attempting to rename column that does not exist in dataset 
+* `gradle` : Site specific plugin to do not modify binary files stored under data 
+* `webmon` : Ensure route extension mechanism can handle dependency injection correctly 
+* Add sync backwards join cache impl 
+* ClasspathGenerator to attempt to resolve module name without a full match 
+* DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records 
+* Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
+* Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated 
+* Ensure classpath builder util can handle jars with no manifest 
+* Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
+* Fix deserialization incompatibility for Index class 
+* Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
+* Inject SystemDefinition as member variable into data pipelines script to avoid issues with Intellisense 
+* ORDER_BY index selection is now forced at criteria interval buiding stage, and criteria cache now respects index information 
+* TypeAwareCriteriaEvaluator in dataservers now works with query-enriched fields 
+* DbBulkSubscribe not updating secondary table when backwardsJoin true 
+* Disabling processRestart for docker images and including encrypting sysdefs 
+* Disabling processRestart when flag is TRUE and not FALSE 
+* Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+* Ensure TypeAwareCriteriaEvaluator usage in dataserver and req/rep handles all common date/datetime formats 
+* Ensure aliased enum serialization is correct when dealing with GenesisSet objects 
+* Ensure correct HTTP response is sent when message can't be deserialized 
+* Ensure script files in site-specific have priority when searching by suffix 
+* Fix support for views in dbmon 
+* Generated SysDef should allow safe conversion of types 
+* Generated rx repos use modified fields for modify operations 
+* GenesisType json schema property for req reps and data server queries 
+* Increase zero mq subscriber worker high water mark value to Integer.max_value 
+* Race condition when processing multiple back join table modifications on different fields at the same time 
+* Reusable lambdas in views now cope with aliased table arguments 
+* Tests should apply SysDefOverwrite when process config file provided 
+* Using app sys def file in integration tests should work for multiple tests 
 
 ### Dependency Changes
 
-- build(deps): bump aeronVersion from 1.46.7 to 1.46.8 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3736
-- build(deps): bump apachePoi from 5.3.0 to 5.4.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3733
-- build(deps): bump byteBuddyVersion from 1.15.11 to 1.16.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3760
-- build(deps): bump byteBuddyVersion from 1.16.1 to 1.17.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3845
-- build(deps): bump byteBuddyVersion from 1.17.0 to 1.17.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3982
-- build(deps): bump com.github.oshi:oshi-core from 6.6.5 to 6.6.6 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3792
-- build(deps): bump com.google.protobuf:protobuf-java from 4.29.2 to 4.29.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3763
-- build(deps): bump com.opencsv:opencsv from 5.9 to 5.10 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3745
-- build(deps): bump commons-codec:commons-codec from 1.17.2 to 1.18.0 in /genesis-parent/genesis-cluster by @dependabot in https://github.com/genesislcap/genesis-server/pull/3808
-- build(deps): bump dataframeVersion from 0.12.1 to 0.15.0 (GSF-7144) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/3718
-- build(deps): bump debeziumVersion from 3.0.6.Final to 3.0.7.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3741
-- build(deps): bump jnaVersion from 5.15.0 to 5.16.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3727
-- build(deps): bump joda-time:joda-time from 2.13.0 to 2.13.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3868
-- build(deps): bump micrometerVersion from 1.14.2 to 1.14.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3734
-- build(deps): bump micrometerVersion from 1.14.3 to 1.14.4 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3942
-- build(deps): bump msgpackVersion from 0.9.8 to 0.9.9 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3754
-- build(deps): bump nettyVersion from 4.1.116.Final to 4.1.117.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3744
-- build(deps): bump nettyVersion from 4.1.117.Final to 4.1.118.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3941
-- build(deps): bump oracleJdbcVersion from 23.6.0.24.10 to 23.7.0.25.01 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3877
-- build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.38.0 to 2.39.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3706
-- build(deps): bump org.apache.commons:commons-csv from 1.12.0 to 1.13.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3761
-- build(deps): bump org.apache.fury:fury-core from 0.9.0 to 0.10.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3979
-- build(deps): bump org.apache.ivy:ivy from 2.5.2 to 2.5.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3735
-- build(deps): bump org.assertj:assertj-core from 3.27.0 to 3.27.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3743
-- build(deps): bump org.assertj:assertj-core from 3.27.2 to 3.27.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3762
-- build(deps): bump org.checkerframework:checker-qual from 3.48.3 to 3.48.4 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3728
-- build(deps): bump org.checkerframework:checker-qual from 3.48.4 to 3.49.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3867
-- build(deps): bump org.freemarker:freemarker from 2.3.33 to 2.3.34 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3756
-- build(deps): bump org.gradle.test-retry from 1.6.0 to 1.6.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3757
-- build(deps): bump org.gradle.test-retry from 1.6.1 to 1.6.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3918
-- build(deps): bump org.gradle:test-retry-gradle-plugin from 1.6.0 to 1.6.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3759
-- build(deps): bump org.gradle:test-retry-gradle-plugin from 1.6.1 to 1.6.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3917
-- build(deps): bump org.kiwiproject:consul-client from 1.4.5 to 1.5.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3862
-- build(deps): bump org.openapitools:openapi-generator from 7.10.0 to 7.11.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3755
-- build(deps): bump org.postgresql:postgresql from 42.7.4 to 42.7.5 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3777
-- build(deps): bump pekkoVersion from 1.1.2 to 1.1.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/3729
-- build(deps): bump testcontainersVersion from 1.20.4 to 1.20.5 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4012
-- build(deps): revert msgpackVersion from 0.9.9 to 0.9.8 in /genesis-conventions by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/3780
+* `deps` : Bump aeronVersion from 1.46.7 to 1.46.8 /genesis-conventions
+* `deps` : Bump apachePoi from 5.3.0 to 5.4.0 /genesis-conventions
+* `deps` : Bump byteBuddyVersion from 1.15.11 to 1.16.1 /genesis-conventions
+* `deps` : Bump byteBuddyVersion from 1.16.1 to 1.17.0 /genesis-conventions
+* `deps` : Bump byteBuddyVersion from 1.17.0 to 1.17.1 /genesis-conventions
+* `deps` : Bump com.github.oshi:oshi-core from 6.6.5 to 6.6.6 /genesis-conventions
+* `deps` : Bump com.google.protobuf:protobuf-java from 4.29.2 to 4.29.3 /genesis-conventions
+* `deps` : Bump com.opencsv:opencsv from 5.9 to 5.10 /genesis-conventions
+* `deps` : Bump commons-codec:commons-codec from 1.17.2 to 1.18.0 /genesis-parent/genesis-cluster
+* `deps` : Bump dataframeVersion from 0.12.1 to 0.15.0 
+* `deps` : Bump debeziumVersion from 3.0.6.Final to 3.0.7.Final /genesis-conventions
+* `deps` : Bump jnaVersion from 5.15.0 to 5.16.0 /genesis-conventions
+* `deps` : Bump joda-time:joda-time from 2.13.0 to 2.13.1 /genesis-conventions
+* `deps` : Bump micrometerVersion from 1.14.2 to 1.14.3 /genesis-conventions
+* `deps` : Bump micrometerVersion from 1.14.3 to 1.14.4 /genesis-conventions
+* `deps` : Bump msgpackVersion from 0.9.8 to 0.9.9 /genesis-conventions
+* `deps` : Bump nettyVersion from 4.1.116.Final to 4.1.117.Final /genesis-conventions
+* `deps` : Bump nettyVersion from 4.1.117.Final to 4.1.118.Final /genesis-conventions
+* `deps` : Bump oracleJdbcVersion from 23.6.0.24.10 to 23.7.0.25.01 /genesis-conventions
+* `deps` : Bump org.apache.activemq:artemis-jakarta-client from 2.38.0 to 2.39.0 /genesis-conventions
+* `deps` : Bump org.apache.commons:commons-csv from 1.12.0 to 1.13.0 /genesis-conventions
+* `deps` : Bump org.apache.fury:fury-core from 0.9.0 to 0.10.0 /genesis-conventions
+* `deps` : Bump org.apache.ivy:ivy from 2.5.2 to 2.5.3 /genesis-conventions
+* `deps` : Bump org.assertj:assertj-core from 3.27.0 to 3.27.2 /genesis-conventions
+* `deps` : Bump org.assertj:assertj-core from 3.27.2 to 3.27.3 /genesis-conventions
+* `deps` : Bump org.checkerframework:checker-qual from 3.48.3 to 3.48.4 /genesis-conventions
+* `deps` : Bump org.checkerframework:checker-qual from 3.48.4 to 3.49.0 /genesis-conventions
+* `deps` : Bump org.freemarker:freemarker from 2.3.33 to 2.3.34 /genesis-conventions
+* `deps` : Bump org.gradle.test-retry from 1.6.0 to 1.6.1 /genesis-conventions
+* `deps` : Bump org.gradle.test-retry from 1.6.1 to 1.6.2 /genesis-conventions
+* `deps` : Bump org.gradle:test-retry-gradle-plugin from 1.6.0 to 1.6.1 /genesis-conventions
+* `deps` : Bump org.gradle:test-retry-gradle-plugin from 1.6.1 to 1.6.2 /genesis-conventions
+* `deps` : Bump org.kiwiproject:consul-client from 1.4.5 to 1.5.0 /genesis-conventions
+* `deps` : Bump org.openapitools:openapi-generator from 7.10.0 to 7.11.0 /genesis-conventions
+* `deps` : Bump org.postgresql:postgresql from 42.7.4 to 42.7.5 /genesis-conventions
+* `deps` : Bump pekkoVersion from 1.1.2 to 1.1.3 /genesis-conventions
+* `deps` : Bump testcontainersVersion from 1.20.4 to 1.20.5 /genesis-conventions
+* `deps` : Revert msgpackVersion from 0.9.9 to 0.9.8 /genesis-conventions
 
 ### Patch releases
 
@@ -124,35 +124,35 @@ There are currently no patch releases for this version
 
 ### Features
 
-feat(build-kit): add DOT_ENV_FILE overrides for picking up extra .env files - FUI-2287 by @patrickoneill-genesis in #1722
-feat(g2plot-chart): allowing a disabled legend via chart config - FUI-2289 by @patrickoneill-genesis in #1724
-feat(foundation-ui): Disabling days of the week in date picker - FUI-2290 by @patrickoneill-genesis in #1725
-feat(rapid-grid-tabulator): create package DOCMGMT-51 by @matteematt in #1727
-feat: dispatch logout event from header FUI-2193 by @skawian in #1733
-feat(foundation-ui): Datepicker adding bottom slot, hide weekends attribute, display inline attribute - FUI-2293 by @patrickoneill-genesis in #1734
-feat: add foundation-storybook showcase - FUI-1899 by @MrBrunoWolff in #1718
-feat(foundation-events): add functional emitter DOCMGMT-51 by @matteematt in #1737
-feat(foundation-comms): update criteria conversion to support pure dates (PA-1572) by @aaronburroGenesis in #1741
-feat(foundation-entity-management): enable filter persistance FUI-2294 by @matteematt in #1735
-feat(foundation-ui): expose current tab index on tabs component RPT-68 by @matteematt in #1747
-feat(foundation-layout): add ability to hide maximise icon (GENC-966) by @Gareth-Spencer-Genesis in #1717
+* `build-kit` : Add DOT_ENV_FILE overrides for picking up extra .env files 
+* `g2plot-chart` : Allowing a disabled legend via chart config 
+* `foundation-ui` : Disabling days of the week in date picker 
+* `rapid-grid-tabulator` : Create package 
+* Dispatch logout event from header 
+* `foundation-ui` : Datepicker adding bottom slot, hide weekends attribute, display inline attribute 
+* Add foundation-storybook showcase 
+* `foundation-events` : Add functional emitter 
+* `foundation-comms` : Update criteria conversion to support pure dates 
+* `foundation-entity-management` : Enable filter persistance 
+* `foundation-ui` : Expose current tab index on tabs component 
+* `foundation-layout` : Add ability to hide maximise icon 
 
 ### Fixes
 
-fix: retain initial value when no data is available and allowCustomOption is true by @mahamzafar990 in #1720
-chore: address failing clean script + extra tweaks - FUI-2283 by @MrBrunoWolff in #1721
-fix: added button style attribute in action renderer params RPT-64 by @mahamzafar990 in #1729
-fix(foundation-ui): using current date for rolling day - FUI-2290 by @patrickoneill-genesis in #1730
-fix(foundation-ui): fixing null date set in calendar by @patrickoneill-genesis in #1732
-fix: extend session using cookies FUI-2071 by @skawian in #1726
-chore: improve github actions to reduce resource usage FUI-2284 by @matteematt in #1723
-chore: remove debugger statements - FUI-0 by @MrBrunoWolff in #1736
-fix: styling for rapid and zero tabulator DOCMGMT-51 by @matteematt in #1738
-chore: add redirect page for github pages FUI-2284 by @matteematt in #1739
-chore: remove logger.debug from variables file - FUI-0 by @MrBrunoWolff in #1740
-chore(web-core): adding isNullOrWhitespace to web core exports - FUI-2236 by @patrickoneill-genesis in #1745
-fix: session extension on multi window FUI-2071 by @skawian in #1744
-fix: address grid datasource stream start before metadata - PA-1567 by @MrBrunoWolff in #1728
-fix: issue with combo value and add new filter option (PA-1579) by @Gareth-Spencer-Genesis in #1746
-fix: revert value change (PA-1579) by @Gareth-Spencer-Genesis in #1748
-fix: proxy for file server endpoints FUI-0 by @skawian in #1749
+* Retain initial value when no data is available and allowCustomOption is true 
+* Address failing clean script + extra tweaks 
+* Added button style attribute in action renderer params 
+* `foundation-ui` : Using current date for rolling day 
+* `foundation-ui` : Fixing null date set in calendar 
+* Extend session using cookies 
+* Improve github actions to reduce resource usage 
+* Remove debugger statements 
+* Styling for rapid and zero tabulator 
+* Add redirect page for github pages 
+* Remove logger.debug from variables file 
+* `web-core` : Adding isNullOrWhitespace to web core exports 
+* Session extension on multi window 
+* Address grid datasource stream start before metadata 
+* Issue with combo value and add new filter option 
+* Revert value change 
+* Proxy for file server endpoints 
