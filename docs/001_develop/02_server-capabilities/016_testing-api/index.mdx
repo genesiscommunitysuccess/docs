@@ -125,9 +125,11 @@ The `GenesisJunit` class can be found in the `global.genesis.testsupport.jupiter
 
 ### Annotations
 
-**GenesisJunit** supports the following annotations.
-Please note that none of these will work without adding `@ExtendWith(GenesisJunit::class)`
-or `@ExtendWith(GenesisJunit.class)` to your class or function.
+**GenesisJunit** supports a range of annotations.
+
+:::important
+You must add `@ExtendWith(GenesisJunit::class)` or `@ExtendWith(GenesisJunit.class)` to your class or function. This is essential.
+:::
 
 These `@ExtendWith(GenesisJunit.class)` and all the annotations below work on both the class and method level.
 
