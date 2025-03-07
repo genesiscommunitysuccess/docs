@@ -15,4 +15,12 @@ id: '8.9-notify'
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.9.1
+
+###### Features
+
+* Add ROUTE_ENABLED flag to allow disabling of routes at runtime without deletion
+
+###### Fixes
+
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues 
