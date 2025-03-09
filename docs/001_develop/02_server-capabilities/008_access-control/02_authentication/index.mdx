@@ -1385,13 +1385,15 @@ Additionally, all USER_LOGIN audit events are logged to a file at INFO level in 
 
 There are three different types of SSO authentication presently supported by the Genesis Application Platform. These are:
 
-* [JWT (JSON Web Token) SSO](https://jwt.io/introduction) 
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
-* [OpenID Connect](https://openid.net/connect/)
+* [JWT (JSON Web Token) SSO](#jwt) 
+* [SAML](#saml)
+* [OpenID Connect](#oidc)
 
 ### JWT
 
 By giving a user a JSON web token (JWT) when they authenticate with your identity provider, they can automatically have their identity verified when they attempt to access your Genesis application.
+
+You can find [an introduction to JWT, and further details, on the JWT website](https://jwt.io/introduction)
 
 You can authorize the user's access to specific relevant systems (and no others), using tools such as the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
 
@@ -1543,12 +1545,12 @@ Example file provided by IDP:
 
 #### Configuring SAML in the Router 
 
-To enable SAML on the Genesis Router service, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+To enable SAML on the Genesis Router process, change the `GENESIS_ROUTER` process configuration in  `genesis-processes.xml`. If this file is not already in your project's `cfg` directory, follow our guidance on [overriding platform-provided files](https://docs.genesis.global/docs/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files)
 
-Specifically, you have to add:
+Specifically, you have to ensure the following:
 
-- `global.genesis.auth.saml` to the `<package …/>` tag
-- `auth-saml-*.jar` to the `<classpath …/>` tag
+- `global.genesis.auth.saml` and `global.genesis.auth.sso.endpoint` are included in the `<package>` tag
+- `auth-saml-*.jar` and `auth-sso-endpoint-*.jar` are included in the `<classpath>` tag
 
 You can see these additions highlighted in the example below:
 
@@ -1603,7 +1605,16 @@ saml {
     // optional -> called on first user login when the user doesn't exist in the database
     onFirstLogin {
       // optional -> should return a User and it UserAttributes from the SamlResponse
-      createUser {}
+        createUser { samlResponse ->
+            val userNameResponse = samlResponse.nameIdData["mail"] ?: "defaultUser"
+            val user = User {
+                userName = userNameResponse
+            }
+            val userAttributes = UserAttributes {
+                userName = userNameResponse
+            }
+            user to userAttributes
+       }
 
       // optional -> configures user's permissions
       createUserPermissions {
@@ -1639,7 +1650,7 @@ authentication {
 }
 ```
 
-If necessary, you can define advanced configuration in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
+If necessary, you can define advanced configuration in the file `onelogin.saml.properties`. You need to use this if - for example - you need to configure a key for signing the authn request.
 
 Once this is configured, a service provider metadata endpoint will be available on: `https://{url}/gwf/saml/metadata?idp={idp name}`.
 
@@ -1653,13 +1664,13 @@ Other endpoints provided are:
   - For example: `https://dev-position2/gwf/saml/login?idp=provider1`
 
 - the `ssoListEndpoint`
-  - By default, this is `gwf/saml/list` (configurable)
+  - By default, this is `sso/list` (configurable)
   - This endpoint returns a list of identity providers:
   ```
-  [
-    {ID:'provider1', DESCRIPTION:'Description 1'},
-    {ID:'provider2', DESCRIPTION:'Description 2'}
-  ]
+    [
+    {ID:'myCorp', DESCRIPTION:'Corp SAML provider', TYPE:'saml'},
+    {ID:'myOrg', DESCRIPTION:'Org OIDC provider', TYPE:'oidc'}
+    ]
   ```
 
 #### Enabling users for SAML
@@ -1678,12 +1689,12 @@ The Genesis username should be the user’s email address.
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](/develop/client-capabilities/login/).
 
 ###### The flow
-1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
-2. **ssoListEndpoint** returns a list of identity providers:
+1. The front end hits `ssoListEndpoint` - by default, this is `sso/list` (this is configurable).
+2. `ssoListEndpoint` returns a list of identity providers:
     ```
     [
-    {ID:'provider1', DESCRIPTION:'Description 1'},
-    {ID:'provider2', DESCRIPTION:'Description 2'}
+    {ID:'myCorp', DESCRIPTION:'Corp SAML provider', TYPE:'saml'},
+    {ID:'myOrg', DESCRIPTION:'Org OIDC provider', TYPE:'oidc'}
     ]
     ```
 3. Identity providers are parsed and the dropdown is populated on the login page.
@@ -1865,21 +1876,18 @@ We shall now look at these in detail.
 
 ##### Enabling OIDC in the Genesis Router
 
-To enable OIDC on the Genesis Router process, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+To enable OIDC on the Genesis Router process, change the `GENESIS_ROUTER` process configuration in  `genesis-processes.xml`. If this file is not already in your project's `cfg` directory, follow our guidance on [overriding platform-provided files](https://docs.genesis.global/docs/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files)
 
 Specifically, you have to add:
-- `global.genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
-- `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath .../>` tag
-- the GPAL configuration to the `<script ../>` tag
+- `global.genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package>` tag
+- `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath>` tag
+- the oidc GPAL configuration file to the `<script>` tag
 
-Finally, make sure that the `<language ../>` tag says `pal`
+Finally, make sure that the `<language>` tag says `pal`
 
-:::note
-Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the endpoints required by the front end.
-:::
+You can see example additions highlighted in the example below:
 
-You can see these additions in the example below:
-```xml title='enabling OIDC integration' {6,10}
+```xml title='enabling OIDC integration' {6,8,10}
 <process name="GENESIS_ROUTER">
     <start>true</start>
     <groupId>GENESIS</groupId>
@@ -2271,42 +2279,24 @@ oidc {
 In the front end of your application, there are two files that need to be checked and amended to ensure that the SSO workflow works correctly.
 
 #### config.ts
-Add the `sso` configuration block to your **config.ts** file. Note particularly that `ssoToggle` is set to true. This ensures that the **Enable SSO** checkbox is displayed on the application's login page. The user can then check **Enable SSO** manually in the UI. You can use the code below:
+Add the `sso` configuration block to your `config.ts` file. 
 
 ```typescript
 configure(this.container, {
 .....
-	authAuth:true,
+	autoAuth:true,
 	sso: {
 		toggled: true,
-		identityProvidersPath: 'gwf/sso/list'
+		identityProvidersPath: 'sso/list'
 	}
 ......
 });
 ```
-Alternatively, you can set `ssoEnable` to true in the **config.ts** file. This eliminates the need for the user to set it manually.
 
-#### main.ts
-Update the **main.ts** file so that it fetches the `SSO_TOKEN` from the query parameter and adds it to the session storage:
+To explain the attributes being set:
 
-```typescript
-async connectedCallback(){
-	.....
-	this.checkForSSOToken();
-	.....
-}
+- `autoAuth : true` - When this is set to true, any users who have an active authenticated session will be logged in automatically. This is not mandatory, but is essential if you want sso to function seamlessly. 
+- `sso:` 
+    - `toggled: true` - This ensures that the `Enable SSO` checkbox displayed on the application's login page is **checked** by default. Where this is set to `false`, the checkbox is **not** checked by default.
+    - `identityProvidersPath: 'sso/list'` - This is the endpoint that the UI will call to get a list of identity providers from the server. `sso/list` is the default value for `ssoListEndpoint` configured on the server. Where this value has been changed, it must also match in this configuration.
 
-checkForSSOToken(){
-	const queryParams = new  URLSearchParams(window.location.search);
-    const ssoToken = queryParams.get('SSO_TOKEN');
-    if(ssoToken) {
-      if (window.opener){
-        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
-        window.opener.location.reload();
-        window.close();
-      } else {
-        sessionStorage.setItem('ssoToken', ssoToken);
-      }
-    }
-}
-```

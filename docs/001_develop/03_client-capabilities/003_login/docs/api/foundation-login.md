@@ -11,6 +11,7 @@ format: md
 
 |  Class | Description |
 |  --- | --- |
+|  [DefaultLoginRouting](./foundation-login.defaultloginrouting.md) | Default LoginRouting. |
 |  [Login](./foundation-login.login.md) | Defines the login class which handles account authentication from the front-end |
 |  [LoginHosted](./foundation-login.loginhosted.md) | **_(BETA)_** |
 
@@ -19,6 +20,7 @@ format: md
 |  Function | Description |
 |  --- | --- |
 |  [configure(container, config)](./foundation-login.configure.md) | Configure the login micro frontend settings. |
+|  [getLoginRouting()](./foundation-login.getloginrouting.md) | Gets LoginRouting from the DI container. |
 |  [isMFRoute(pathname)](./foundation-login.ismfroute.md) | A utility to check if a pathname is a route of this micro frontend. |
 
 ## Interfaces
@@ -28,6 +30,7 @@ format: md
 |  [IDP](./foundation-login.idp.md) |  |
 |  [IDPResponse](./foundation-login.idpresponse.md) |  |
 |  [LoginConfig](./foundation-login.loginconfig.md) | LoginConfig DI interface. |
+|  [LoginRouting](./foundation-login.loginrouting.md) | LoginRouting interface. |
 
 ## Variables
 
@@ -60,7 +63,7 @@ format: md
 |  [MessageDelays](./foundation-login.messagedelays.md) |  |
 |  [Routes](./foundation-login.routes.md) |  |
 |  [Settings](./foundation-login.settings.md) | Defines the parameters you may set on the routes. |
-|  [SSOConfig](./foundation-login.ssoconfig.md) |  |
+|  [SSOConfig](./foundation-login.ssoconfig.md) | If you don't provide SSOConfig on the login config then SSO is disabled completely. |
 |  [TemplateComponents](./foundation-login.templatecomponents.md) | **_(BETA)_** |
 |  [TemplateOptions](./foundation-login.templateoptions.md) | **_(BETA)_** |
 
