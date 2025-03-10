@@ -594,6 +594,24 @@ internal class OverwriteSysDefTest {
 }
 ```
 
+:::tip
+When running genesis integration tests, by default, all injecting modules will run on a process named `UNIT_TEST_PROCESS`.
+However, in some cases, you may want to override this default process name to use a different one. You can do this by
+simply overriding the `PROCESS_NAME` system definition property. The property will be picked up regardless of how
+you choose to set up your system definitions.
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+class MyTest {
+    @Test
+    @SysDefOverwrite("PROCESS_NAME", "SOME_CUSTOM_PROCESS_NAME")
+    fun `test`() {
+        // Your test code here
+    }
+}
+```
+:::
+
 </TabItem>
 <TabItem value="java">
 
