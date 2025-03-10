@@ -256,4 +256,7 @@ module.exports = {
       ],
     }, 
   ],
+  platformFAQSidebar: [
+    'platform-faq/faq-intro',
+  ]
 };

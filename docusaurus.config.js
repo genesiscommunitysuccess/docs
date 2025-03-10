@@ -161,7 +161,8 @@ const config = {
         { type: "doc", docId: "develop/platform-overview", label: "Develop", position: "right" },
         { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides", position: "right" },
         { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate", position: "right" },
-        { type: "doc", docId: "release-notes/latest-release", label: "Release Notes", position: "right" },        
+        { type: "doc", docId: "release-notes/latest-release", label: "Release Notes", position: "right" },
+        { type: "doc", docId: "platform-faq/faq-intro", label: "Platform FAQ", position: "right" },
         // {
         //   type: "html",
         //   position: "right",
