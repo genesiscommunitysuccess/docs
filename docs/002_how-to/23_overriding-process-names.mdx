@@ -1,0 +1,61 @@
+---
+title: 'How to override process names'
+sidebar_label: 'Override process names'
+id: ht-override-process-names
+keywords: [process, UNIT_TEST_PROCESS, testing, integration test]
+tags:
+    - process
+    - UNIT_TEST_PROCESS
+    - testing
+    - integration test
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+When running genesis integration tests, by default, all injecting modules will run on a process named `UNIT_TEST_PROCESS`.
+However, in some cases, you may want to override this default process name to use a different one. You can do this by
+simply overriding the `PROCESS_NAME` system definition property. The property will be picked up regardless of how
+you choose to set up your system definitions.
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+class MyTest {
+    @Test
+    @SysDefOverwrite("PROCESS_NAME", "SOME_CUSTOM_PROCESS_NAME")
+    fun `test`() {
+        // Your test code here
+    }
+}
+```
+
+```kotlin
+process {
+    systemDefinition {
+        item(name ="PROCESS_NAME", value = "SOME_CUSTOM_PROCESS_NAME")
+    }
+}
+```
+
+```kotlin
+class MyTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        genesisHome = "genesisHome"
+    }
+) {
+    override fun systemDefinition(): Map<String, Any> {
+        return mapOf("PROCESS_NAME" to "SOME_CUSTOM_PROCESS_NAME")
+    }
+}
+```
+
+```kotlin
+class MyTest : GenesisTestSupport(
+    "global.genesis.testsupport",
+    "...genesisHome"
+) {
+    override fun systemDefinition(): Map<String, Any> {
+        return mapOf("PROCESS_NAME" to "SOME_CUSTOM_PROCESS_NAME")
+    }
+}
+```
