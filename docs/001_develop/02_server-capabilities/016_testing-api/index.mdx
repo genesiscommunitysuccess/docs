@@ -690,7 +690,41 @@ public class PackageScanTest {
 #### ProvidedInstance
 
 Annotation used to mark properties or methods as provided instances.
-Marked properties or methods should be used to provide instances during runtime.
+Marked properties or methods can be used to override pre defined instances during test runtime.
+
+For example, one could define an interface in production code called `MyInterface` with a default implementation `MyInterfaceImpl`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+
+interface MyInterface
+
+@Module
+@ConditionalOnMissingClass(MyInterface::class)
+class MyInterfaceImpl: MyInterface
+
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+
+interface MyInterface {
+}
+
+@Singleton
+@ConditionalOnMissingClass(MyInterface.class)
+public class MyInterfaceImpl: MyInterface {
+}
+
+```
+</TabItem>
+</Tabs>
+
+Then we can override the implementation at runtime using a fake/mock implementation:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -703,7 +737,7 @@ internal class ProvidedInstanceTest {
      * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
      */
     @ProvidedInstance
-    private val myInstance: MyInterface = MyClass()
+    private val myInstance: MyInterface = FakeImpl()
 
     @Test
     fun myTest() {
@@ -722,7 +756,7 @@ public class ProvidedInstanceTest {
      * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
      */
     @ProvidedInstance
-    private MyInterface myInstance = new MyClass();
+    private MyInterface myInstance = new FakeImpl();
 
     @Test
     public void myTest() {
