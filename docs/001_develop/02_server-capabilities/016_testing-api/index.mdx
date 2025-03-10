@@ -652,7 +652,7 @@ public class PackageScanTest {
         // scans the package of MyClass, MyOtherClass and MyThirdClass
     }
 }
-```
+``` 
 </TabItem>
 </Tabs>
 
@@ -661,14 +661,14 @@ public class PackageScanTest {
 Annotation used to mark properties or methods as provided instances.
 Marked properties or methods can be used to override pre defined instances during test runtime.
 
-For example, one could define an interface in the production code called `MyInterface` with a default implementation `MyInterfaceImpl`.
+For example, one could define an interface in production code called `MyInterface` with a default implementation `MyInterfaceImpl`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
 
-interface MyInteface
+interface MyInterface
 
 @Module
 @ConditionalOnMissingClass(MyInterface::class)
@@ -681,7 +681,7 @@ class MyInterfaceImpl: MyInterface
 
 ```java
 
-interface MyInteface {
+interface MyInterface {
 }
 
 @Singleton
@@ -693,7 +693,7 @@ public class MyInterfaceImpl: MyInterface {
 </TabItem>
 </Tabs>
 
-And override the implementation at runtime using fake/mock implementation.
+Then override the implementation at runtime using a fake/mock implementation.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
