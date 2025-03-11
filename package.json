@@ -57,7 +57,7 @@
     "@genesislcap/foundation-utils": "14.239.0",
     "@genesislcap/foundation-zero": "14.239.0",
     "@genesislcap/g2plot-chart": "14.239.0",
-    "@genesislcap/grid-pro": "14.239.0",
+    "@genesislcap/grid-pro": "14.247.1",
     "@genesislcap/grid-tabulator": "14.239.0",
     "@genesislcap/pbc-reporting-ui": "1.0.372",
     "@mdx-js/react": "3.0.1",
