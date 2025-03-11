@@ -722,14 +722,14 @@ If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` an
 
 ## `mon`
 
-This command shows the status of the overall system, so you can see if the server is up or not. By default, it  displays a snapshot. If you want to the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
+This command shows the status of the overall system, so you can see if the server is up or not. By default, it displays a snapshot. If you want to the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
 
 ```bash
 
 ***********************************************************************************************
 
 Start: 2023-11-09 10:04:03                                                    Uptime: 3 minutes
-Date:  2023-11-09 10:07:23                                                    Daemon status: OK
+Date:  2023-11-09 10:07:23                                Daemon status: OK. Node role: PRIMARY
 
 PID     Process Name                  Port        Status         CPU       Memory    Message
 ===============================================================================================
@@ -747,9 +747,17 @@ n/a     ALPHA_CONSOLIDATOR            11002       MISSING        n/a       n/a  
 547686  ALPHA_EVENT_HANDLER           11001       RUNNING        47.90     4.10
 
 ```
+At the top, mon shows high-level system information:
 
-By default, the command shows the following columns of information:
+| Information   | Description                                                                                                                                                                         |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Start         | Displays the last date and time the [`startServer`](/build-deploy-operate/operate/commands/#startserver) command was executed.                                                      |
+| Date          | Shows the current server date and time.                                                                                                                                             |
+| Uptime        | Represents the total elapsed time since the [`startServer`](/build-deploy-operate/operate/commands/#startserver) was executed.                                                      |
+| Daemon status | The current status of the Genesis [Resource Daemon](/develop/development-environment/intellij-plugin/#resource-daemon). Possible values: MISSING, STARTING, OK.                     |
+| Node role     | The current node role in the Genesis [Cluster](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering). Possible values: UNKNOWN, SECONDARY, PRIMARY and Consul |
 
+By default, the command shows the following columns of information per process:
 
 | Column       | Description                                                                                                                                 |
 |--------------|---------------------------------------------------------------------------------------------------------------------------------------------|
