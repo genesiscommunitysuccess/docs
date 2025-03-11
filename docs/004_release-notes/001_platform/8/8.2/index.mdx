@@ -43,22 +43,17 @@ id: '8.2'
 - getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
 - Consolidator minus operation produces incorrect result when the first operand is null
 - DOUBLE fields generated using the new table DSL to accept negative values by default 
-- Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
 - Ensure that fields marked as non-nullable at the table level are also marked as such in the audit table 
 - FDB alias cache will now respect fields with same name and different type defined in different tables 
-- Gradle preCompileScripts does not consider compacted processes 
 - Map maxRows from router request to paginated request 
 - Update SetLogLevel to use data classes and workflow, re-add countdown latch to script 
 - Can use warningNack in context event handlers 
 - Ensure PrimaryRoleNodeRestorer handles persisted state properly 
 - Ensure socket queues are ready before cluster init 
-- Excluding unsupported pbcs from DEV compactProcessStrategy 
 - Fixed rx implementation constructor. 
 - Prevent remap using oracle to potentially rename constraints and indices in the recycle bin
 - Saving process static info in a blocking manner to ensure read integrity 
-- Typo in compactProcesses in gradle properties 
-- Updated db batch poll channel logic. 
-- Uses io dispatcher and timeout while cleaning process metadata entries 
+- Updated db batch poll channel logic.
 
 ### Dependency changes
 

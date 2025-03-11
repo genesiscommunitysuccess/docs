@@ -14,25 +14,16 @@ id: '8.9'
 * `genesis-codegen` : Add flag to create compact toString method on entities 
 * `genesis-junit` : Add support for dumpit csv and csv.gz files 
 * `pal-datapipeline` : Added ability to perform record deltas using dbSink by exposing modifiedFields 
-* Allow docker build to pre-set SysDef environment variables 
 * Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types 
 * Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions 
-* Generated Entities: Generate all ENUM values inside enum reference objects for completeness 
 * GenesisJunit - create compatible DumpIt interface 
 * GenesisJunit - improve loading of test data 
-* Optimise memory usage BackwardJoinCache for 1-2-1 joins 
 * Add framework support for external sql integration 
-* Allows for overriding of test process name 
 * Display current cluster node role in `mon` 
-* Provide better bulk purge support 
-
-### Performance improvements
-
-* `genesis-environment` : Use deleteAll in PurgerScript.purgeDerivedRange 
 
 ### Fixes
 
-* `ExcelToGenesis` : Catch and accumulate unsupported formula errors while processing a worksheet 
+ 
 * `ExcelToGenesis` : Fix side effect produced by changing excel naming strategy 
 * `ExcelToGenesis` : Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
 * `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
@@ -41,37 +32,24 @@ id: '8.9'
 * `diags` : Better log error message when SysDef evaluation fails 
 * `genesis-pal-dataserver` : Handle multiple updates for same record in data server 
 * `genesis-transform` : Handle case when attempting to rename column that does not exist in dataset 
-* `gradle` : Site specific plugin to do not modify binary files stored under data 
 * `webmon` : Ensure route extension mechanism can handle dependency injection correctly 
-* Add sync backwards join cache impl 
 * ClasspathGenerator to attempt to resolve module name without a full match 
 * DumpTable now produces a file with headers when there are rows but the supplied criteria doesn't match any records 
-* Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
 * Ensure `TRACE` level is set correctly for `GenesisMessageEncoder` and `GenesisMessageDecoder` when `DATADUMP_ON` is activated 
 * Ensure classpath builder util can handle jars with no manifest 
-* Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
-* Fix deserialization incompatibility for Index class 
-* Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
 * Inject SystemDefinition as member variable into data pipelines script to avoid issues with Intellisense 
 * ORDER_BY index selection is now forced at criteria interval buiding stage, and criteria cache now respects index information 
 * TypeAwareCriteriaEvaluator in dataservers now works with query-enriched fields 
-* DbBulkSubscribe not updating secondary table when backwardsJoin true 
 * Disabling processRestart for docker images and including encrypting sysdefs 
 * Disabling processRestart when flag is TRUE and not FALSE 
-* Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
 * Ensure TypeAwareCriteriaEvaluator usage in dataserver and req/rep handles all common date/datetime formats 
 * Ensure aliased enum serialization is correct when dealing with GenesisSet objects 
 * Ensure correct HTTP response is sent when message can't be deserialized 
-* Ensure script files in site-specific have priority when searching by suffix 
 * Fix support for views in dbmon 
-* Generated SysDef should allow safe conversion of types 
 * Generated rx repos use modified fields for modify operations 
-* GenesisType json schema property for req reps and data server queries 
-* Increase zero mq subscriber worker high water mark value to Integer.max_value 
 * Race condition when processing multiple back join table modifications on different fields at the same time 
 * Reusable lambdas in views now cope with aliased table arguments 
 * Tests should apply SysDefOverwrite when process config file provided 
-* Using app sys def file in integration tests should work for multiple tests 
 
 ### Dependency changes
 
@@ -152,5 +130,4 @@ There are currently no patch releases for this version
 * Session extension on multi window 
 * Address grid datasource stream start before metadata 
 * Issue with combo value and add new filter option 
-* Revert value change 
-* Proxy for file server endpoints 
+* Revert value change

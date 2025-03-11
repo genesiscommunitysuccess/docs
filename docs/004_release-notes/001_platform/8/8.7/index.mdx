@@ -16,13 +16,11 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * Relocate genesis-cluster classes to new modules
 * Expose columnSeparator and quoteChar to csvDecoder operator
 * No longer need import for LOG in purger script
-* Add clientName gradle property to allow for custom site specific folders
 * Print additional statement to system.log if killProcess ends up calling 'kill -9' after the waiting grace period expires
 * TriggerRemote method no longer requires process name
 * Compact PBCs together in dev strategy
 * Add columnSeparator and quoteChar to csvEncoder operator
 * Add ability to copy event meta data with new details type
-* Allow lambdas for withInput expressions to be assigned and reused
 * Added genesis-transform module for user-defined ETL capabilities
 * Add batch size configuration to db batch poll source
 * Make process name optional on cron rule records to allow execution in compact process mode
@@ -41,10 +39,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Fixes
 
-* Indices on DOUBLE fields are now correctly sorted correctly in LMDB - Dataserver
-* Add custom deserializer for Field to ignore originalName
 * `dbSink` should apply operations in batches
-* DictionaryBuilder: fix table metadata read operation and ensure field/table names don't have a double '_'
 * Ensure parentheses are preserved when parsing evaluator expressions to JSON
 * Can use deploy plugin when distribution plugin is disabled
 * Correct bug in enum handling
@@ -55,12 +50,8 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * Renamed DbSink to bring in line with documentation, added typealias for backwards compatibility
 * Correct typo in new transformer API
 * Optionally disable maven modules
-* Correct mapping of dates in ExcelDataToCsv
 * Pipelines : Added type variance to operator interfaces
-* Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule
-* Regression - settings plugin not properly handling OS specific paths while discovering resources
 * Update comment in BodyLessWebEndpoint.kt to new docs url
-* ExcelDataToCSV. allow better user.dir setup, running with no arg and running on a dir
 * Integrations: close consumer when source is stopped
 * Auth: make user active_sessions eventually consistent with user_session table
 * Auth: login-auth-ack and login-details-ack messages now return a "ZERO_MQ_PROXY_OUTBOUND_PORT" property instead of the mispelt "ZERO_MQ_PROXY_OUTOUND_PORT"
@@ -68,7 +59,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * Auth: bump seed version for release
 * Recon: Timestamp on batch recon results view is now start time, not last updated time
 * Notify: Allow null values on email address lists
-* Using app sys def file in integration tests should work for multiple tests
 
 ### Dependency changes
 
