@@ -14,21 +14,21 @@ id: '8.8'
 * Added support for processing context in data pipeline operators 
 * Allow docker build to pre-set SysDef environment variables 
 * Add enum references as companion object properties for each enum field for easy access in GPAL scripts 
-* Generate all ENUM values inside enum reference objects for completeness 
+* Generated Entities: Generate all ENUM values inside enum reference objects for completeness 
 * Optimise memory usage `BackwardJoinCache` for 1-2-1 joins 
 * Added support for enabling app level sys def files in integration tests 
 * Allows for overriding of test process name 
 * Provide better bulk purge support 
 
 ### Performance improvements
-* Use deleteAll in PurgerScript.purgeDerivedRange 
+* `genesis-environment` : Use deleteAll in PurgerScript.purgeDerivedRange 
 
 ### Fixes
-* Catch and accumulate unsupported formula errors while processing a worksheet 
+* `ExcelToGenesis` : Catch and accumulate unsupported formula errors while processing a worksheet
 * Optimize index matching for non-consecutive fields 
-* Site specific plugin to do not modify binary files stored under data 
+* `gradle` : Site specific plugin to do not modify binary files stored under data 
 * Add sync backwards join cache impl 
-* Ensure `Index.NonUnique` class definition has a fixed `serialVersionUID` field 
+* Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
 * Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
 * Fix deserialization incompatibility for Index class 
 * Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 

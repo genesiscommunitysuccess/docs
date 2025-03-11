@@ -25,7 +25,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Add PROCESS_ENABLED field to GENESIS_PROCESS
 - Add coroutines-debug jar file to genesis-distribution package
 - Add support for "alwaysAllowedMessageType" in MessageDelegator
-- Add trace logging to rightSummaryCache
 - Add utility class to create dynamic rule from dynamic rule template
 - Added different rule execution strategies to evaluator dynamic rules
 - Added isTemplate field to DYNAMIC_RULE table
@@ -94,8 +93,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache
 - (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values
 - (pal-streamer): added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling
-- (pal-streamerclient): ensure recovery timestamps get set as COMPLETE and not ACKED
-- (pal-streamerclient): prevent duplicate DS_LOGON messages when streamer goes down
 - (purger): purger enhancements
 - (router): add APPROVAL_MESSAGE HTTP header value to event messages
 - Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
@@ -109,26 +106,18 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Feature flag is respected for MSSQL case
 - Fix SentIt tasks generation
 - Fix deploy scripts
-- Fix handling in GetNextSequenceNumbers script
 - Fix metricService creating inconsistent hierarchical paths.
-- Fixed XML purger business day calculation
 - Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
 - GPAL: Req Reps with wildcards not working
 - Guarantee appropriate handling of dataserver socket disconnection events at router level
 - Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection
 - Improved Comparator code in DbUtil to prevent Long and Int casting errors
 - Inserting empty string on a non-nullable field fails in Oracle
-- Logout can also be performed without the user being logged in
 - Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels
 - NPE in DBUtil.indexComparator when one of the fields is not supplied in the dbrecord
-- Fix OpenApi generator failing due empty object definition
 - Propagate closing of subscription to underlying subscription
-- RefreshTokenCleanUp script to use USER_SESSION table
 - Register global RxJava error handler for SQL engine
 - Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks
-- SESSION_ID is propagated in the Logout message
-- ScriptAnnotationHandler is unable to load script dependencies when using @file:ScriptModules annotation
-- SetLogLevelScript.groovy to create an instance of - ServiceDetailProvider
 - Unable to find module on simple structure when localDaogenVersion is mentioned
 - Update distribution plugin to support configuration cache
 - Updating maxSize of fields to be in line with application usage
@@ -154,8 +143,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Fix message ordering in data server client, to ensure multiple updates are handled correctly
 - Fix handle error when deploy plugin applied on PBC project
 - Fix handling of field resizing operation in MSSQL layer of indexed fields
-- Fix ignore derived fields when building view indices
-- Fix including builders to be also serialized in the DAO dictionary
 - Make description optional in process class
 - Making auditText field dbMaxSize
 - Publication plugin: check task group after tasks are in a group.
@@ -164,7 +151,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Remove suspend from main method and add runBlocking call
 - Resource daemon to await chronicle queue creation
 - Resource daemon to do not wait for chronicle when running from intellij plugin
-- Fix setupEnvironment task fails on deploy plugin
+- SetupEnvironment task fails on deploy plugin
 - Trim consul metadata values to have a max length of 512 and LOG a warning statement when this happens
 - Update task dependencies in distribution gradle template
 

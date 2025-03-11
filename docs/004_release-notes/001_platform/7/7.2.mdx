@@ -9,8 +9,10 @@ id: '7.2'
 This release contains [breaking changes](#breaking-changes). These are listed at the end of this page.
 :::
 
-Features
-- (Settings plugin): Ensure internal modules exist before compilation
+## Server
+
+### Features
+
 - (Settings plugin): generate config jar from main module and remove config internal module
 - (router): add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
 - (router): expose settings for Websocket frame sizes, fix frame aggregation and - allow Websocket binary payload using MsgPack format
@@ -32,60 +34,44 @@ Features
 - Update SQL database connection pool size parameter handling
 - Update scripts to include local imports and implement metaInf producers
 - Add data load flag to remap, and upsertAll flag to SendIt
-- Add process file overrides to project overview build task
-- Add upsert to SendIt.
-- Check db in sync with classpath dictionary on RxDbImpl while not preventing Remap to run.
 - Enable autoIncrement for LONG fields
 - Introducing pbc build gradle plugin
 - Log auth map and fields on dataserver auth usage
 - Logs with traceability in query and caching
-- Move publication logic to DistributionPlugin.
 - New table syntax to support inline field definitions
 - Refactor Excel to Genesis to allow usage from Genesis create
 - Site specific distribution plugin and remove site specific internal module
 - Support for update queue using JMS as underlying implementation
 - Update enum syntax in tables
-Fixes
-- (dataserver): try to recover from data server errors
+
+### Fixes
+
+
 - (exec plugin): copy site specific files from main module
 - (manifest): path for finding script modules in simplified structure
 - (pal-dataserver): disableAuthUpdates flag works as expected again
-- (pal-streamer): Added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling
 - Add 'enabled' property to ManifestCreationTask
 - Add TIMESTAMP support to DbMon distinct command
-- Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
 - Add support for dataserver pagination mode when using HTTP requests
 - Add template processing feature in ProductDetailsCreatorPlugin
 - Convert evaluator expression parser as well as writer to use logical AND
 - Create new task to depend on _genesisInstall and generated code
-- End the dictionary sync failure process with exitProcess.
-- Ensure remap logs full output correctly
-- Extending length of address line fields
 - Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
 - Fix Operating System incompatibilities in purger config (Windows) and path resolution (MacOS)
-- Fix SentIt tasks generation
-- Fix deploy scripts
-- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
-- Guarantee appropriate handling of dataserver socket disconnection events at router level
 - Implement annotation script handling in Gradle plugin
-- Improved Comparator code in DbUtil to prevent Long and Int casting errors
 - JMS UpdateQueue to do not close consumer if there are still listeners -LoginNack to cause the username in the channel context to be erased
 - MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages
 - Prevent duplicate cache entries in views generated dao jar
 - Prevent malformed payloads from evaluator result expressions
-- Propagate closing of subscription to underlying subscription
 - Refactor file storage and alert tables in genesis configuration
 - Remap fail when field becomes non-nullable and added to key at the same change set
 - Resources are not copied to site-specific internal module in simple app
 - Respect asterisk in project overview builder
-- Unable to find module on simple structure when localDaogenVersion is mentioned
 - Update FindCommand to handle null dbEntity
 - Update Long.MIN/MAX_SAFE_INTEGER and refactor tables in genesis config
 - Update backport.yml
 - Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance
-- Add check to stop pbc being used with bundleGeneratedClasses in settings plugin
 - Add process arguments to project overview json
-- Added fields to dynamic rule from template creation.
 - BundleGeneratedClasses=false works when project type is application
 - Correct path to config folder in site specific for simple structure
 - Correct remap's handling of dictionary comparison for old and new table syntax
@@ -95,7 +81,6 @@ Fixes
 - Distribution zip file version with dist plugin
 - Do not attempt to handle OOM in ScriptHost
 - Ensure we always add generated jars dependencies
-- Excluding jnr from dataserver 2
 - Finding product name in settings plugin
 - Fix copy task dependencies for simplified project structure
 - GenerateCache option is now respected as expected
@@ -107,11 +92,11 @@ Fixes
 - Remove hardcoded genesis artifactory config in site specific template
 - Remove projectOverviewBuilder task dependency on genesisSync
 - Replaced endsWith() to !=.
-- Resource daemon to do not wait for chronicle when running from intellij plugin
-- SetupEnvironment task fails on deploy plugin
 - Update implementation of createManifestTask to work with changes to simple structure
 - View enriched fields returns null after DATA_LOGOFF message
-Dependency changes
+
+
+### Dependency changes
 - Fixing snapshot version
 - Bump jacksonVersion from 2.16.2 to 2.17.0 in /genesis-conventions
 - Move awsJdbcWrapperVersion from genesis-db to genesis-dependencies
@@ -205,6 +190,9 @@ Dependency changes
 - Bump testcontainersVersion from 1.19.4 to 1.19.5 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
+
+### Patch releases
+
 
 #### 7.2.23
 

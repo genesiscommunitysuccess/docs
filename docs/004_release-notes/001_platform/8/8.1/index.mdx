@@ -21,19 +21,15 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Add ability to generate apis from openapi spec 
 - Add default values to entity event generator 
 - Add preCompileScripts gradle task in exec plugin 
-- Added field macros for common field patterns 
 - Exposing compactProcessStrategy in docker container build 
-- Handle DataServer LOGON_NACK message in testing flow 
 - Introducing compact process development strategy
 - Project should not need to override gradle project name to start with "genesisproduct-"
-- Use lower lmdb default database size when running through intellij 
 
 ### Fixes
 
 - Project should not need to override gradle project name to start with "genesisproduct-" 
 - Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level 
 - AbstractExternalUpdateQueue can publish to any topic and not just table based ones 
-- Add empty REQUEST when message body and parameters is empty on request replies
 - Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
 - Gradle preCompileScripts does not consider compacted processes 
 - RouterMessageDelegator initialisation logic is now applied even if there was a GenesisMessageClient already computed 
