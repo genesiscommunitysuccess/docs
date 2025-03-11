@@ -155,20 +155,20 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.13
 
-##### Fixes
+###### Fixes
 
 - Dataserver backwardsJoin view does not recover in case of a buffered out of order update
 
 #### 7.0.12
 
-##### Fixes
+###### Fixes
 
 - Add empty REQUEST when message body and parameters is empty on request replies
 - Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
 
 #### 7.0.11
 
-##### Fixes
+###### Fixes
 
 - Distinct/search commands not working in DBMon for enums
 - Including audit generated builders in the dao cache
@@ -176,13 +176,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.10
 
-##### Fixes
+###### Fixes
 
 - Guarantee appropriate handling of dataserver socket disconnection events at router level
 
 #### 7.0.9
 
-##### Fixes
+###### Fixes
 
 - Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
 = Improved Comparator code in DbUtil to prevent Long and Int casting errors
@@ -191,13 +191,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.8
 
-##### Features
+###### Features
 
 - Provide injector binding in Groovy event handlers
 - Add PROCESS_ENABLED field to GENESIS_PROCESS
 - Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
 
-##### Fixes
+###### Fixes
 
 - Try to recover from data server errors
 - Add APPROVAL_MESSAGE HTTP header value to event messages
@@ -207,22 +207,22 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.7
 
-#####  Features
+######  Features
 
 - **Breaking** Add support for process dependency checks when using Consul as cluster mode
 - Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
 
-##### Fixes
+###### Fixes
 
 - Adding RAW FieldType to ViewMeta
 
 #### 7.0.6
 
-##### Features
+###### Features
 
 -Add mechanism to add jars to classpath for all processes
 
-##### Fixes
+###### Fixes
 
 - Modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing
 - Remap handling of auto-increment changes
@@ -230,21 +230,21 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.5
 
-##### Features
+###### Features
 
 -  Allow processes to opt out of compact processes
 
-##### Fixes
+###### Fixes
 
 - Correct for out of sequence updates in update batching operation
 
 #### 7.0.4
 
-##### Features
+###### Features
 
 - Fixes for --compactProcesses xml generation
 
-##### Fixes
+###### Fixes
 
 - (dataserver2): ensure we handle stack overflow errors gracefully 
 - (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values 
@@ -257,13 +257,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.3
 
-##### Features
+###### Features
 
 - (pal-streamerclient): Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process
 - Add coroutines-debug jar file to genesis-distribution package 
 - Add support for "alwaysAllowedMessageType" in MessageDelegator
 
-##### Fixes
+###### Fixes
 
 - GPAL: Req Reps with wildcards not working 
 - Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels 
@@ -275,20 +275,20 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.0.2
 
-##### Features
+###### Features
 
 - (startProcess): Expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
 - Enable support for sequence capabilities in SQL layers 
 - New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize
 
-##### Fixes
+###### Fixes
 
 - (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache 
 - Updating maxSize of fields to be in line with application usage
 
 #### 7.0.1
 
-##### Fixes
+###### Fixes
 
 - (pal-dataserver): ensure dataserver auth cache is initialised correctly 
 - (purger): Purger enhancements
