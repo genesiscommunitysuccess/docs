@@ -19,5 +19,5 @@ persistColumnStateKey: string;
 
 Setting this value will set the entity manager to persist the column states through page refreshes etc. An example of what is stored is when the user resizes or reorders columns. This value must be unique for each table in your app otherwise the persisted data will be corrupted. There is an option on the grid for the user to reset the table to the default layout if they wish.
 
-This does \*not\* store the filter state, to store that use the separate `persisted-filter-model-key` attribute
+This does \*not\* store the filter state, to store that use the separate `persist-filter-model-key` attribute
 
