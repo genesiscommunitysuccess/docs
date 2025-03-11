@@ -12,8 +12,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 ## Server
 
 ### Features
-* Added convenience function for building local file camel string 
-* Added get all pipelines functions to PipelineManager 
+
 * Implement context based "filter" support as shared functionality for dataserver/req-rep/auth blocks, including enriched dataserver queries 
 * Add support for REST integration in datapipelines 
 * Added source for use by event handlers. 
@@ -22,20 +21,11 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Fixes
 * (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
-* (deploy-plugin): find project jars from gradle jar task, not from version 
-* Consul: improve session check logic used to determine primary process demotion to avoid race conditions 
-* Criteria validation and compilation should handle StackOverflow errors
 * Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
-* DbMon search returns the expected number of records 
-* DbMon updateWhere fails if there is a white space in the argument
-* Fix "and" operator usage in generic GPAL "auth" blocks for eventhandler and custom req/rep 
 * Generate non-required properties as nullable for paginated requests 
 * Improve error message when a system definition property is expected but is not specified 
 * Make http response function suspending to fix issues with generated code 
-* Mon dies when system is not able to connect to CONSUL but is configured to do so
 * Remap Oracle Script needs a / between 2 Declare blocks 
-* Rename "authKeyWithUsername" to "authKeyWithUserName" for consistency 
-* Allow db mon to fetch more than 500 results 
 * Allow for req rep GET without request param 
 * Correctly parse criteria expressions for custom req reps 
 * Filter out genesis.testsupport from TestContext package scan
@@ -43,7 +33,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * When using @SysDefOverwrite annotation in tests and scripts use sys def receiver
 
 ### Dependency changes
-* Added constraint on jackson-dataformat-cbor to prevent classpath issues 
+
 * Bump actions/upload-artifact from 3 to 4 by 
 * Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.7 to 0.17.8 in /genesis-subcore/deploy-gradle-plugin 
 * Bump com.github.oshi:oshi-core from 6.6.2 to 6.6.3 in /genesis-conventions 

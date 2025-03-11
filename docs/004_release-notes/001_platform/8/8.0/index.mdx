@@ -14,9 +14,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Features
 
-- (router): add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
-- (router): expose settings for Websocket frame sizes, fix frame aggregation and allow Websocket binary payload using MsgPack format
-- Add PrimaryIfSingleNode system definition setting to automatically set a cluster node as primary if no other hosts are defined
 - Add TestPlugin and GenesisTestSettingsPlugin to Gradle
 - Add classpath to process jar manifest instead of environment variable
 - Add new genesisSyncCompact task to support compact processes and update ProjectOverviewBuilderTask
@@ -27,7 +24,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Refactor GenesisJunit and related classes for support updates
 - Support compact processes in project overview
 - Add annotation driven test approach
-- Add data load flag to remap, and usertAll flag to SendIt
 - Added field macros for common field patterns
 - Handle DataServer LOGON_NACK message in testing flow
 - Improve java api for bulk and range subscribe operations
@@ -36,25 +32,16 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Fixes
 
-- (manifest): path for finding script modules in simplified structure
-- Add TIMESTAMP support to DbMon distinct command
 - Add empty REQUEST when message body and parameters is empty on request replies
 - Fixed issues in schema validation with BigDecimal handling and embedded type info
-- Remap fail when field becomes non-nullable and added to key at the same change set
 - USER_ATTRIBUTES table should use new table field syntax for dynamic fields for compatibility purposes
 - UserSessionCache now handles multiple expiry listeners for the same auth token
-- BundleGeneratedClasses=false works when project type is application
 - Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
-- Correct remap's handling of dictionary comparison for old and new table syntax
-- Do not attempt to handle OOM in ScriptHost
 - Ensure heartbeat pong provides accurate information about authentication status at all times
 - File upload supports larger files
-- pal-dataserver: updates batched at MessageSet level now preserve old row data
-- Remove projectOverviewBuilder task dependency on genesisSync
 
 ### Dependency changes
 
-- Upgrade gradle license report plugin from 2.0 to 2.7
 - Bump aeronVersion from 1.44.0 to 1.44.1 in /genesis-conventions
 - Bump byteBuddyVersion from 1.14.13 to 1.14.14 in /genesis-conventions
 - Bump byteBuddyVersion from 1.14.14 to 1.14.15 in /genesis-conventions
