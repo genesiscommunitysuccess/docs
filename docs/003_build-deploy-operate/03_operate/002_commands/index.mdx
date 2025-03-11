@@ -749,13 +749,13 @@ n/a     ALPHA_CONSOLIDATOR            11002       MISSING        n/a       n/a  
 ```
 At the top, mon shows high-level system information:
 
-| Information   | Description                                                                                                                                                                                                             |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Start         | Displays the last date and time the [`startServer`](/build-deploy-operate/operate/commands/#startserver) command was executed.                                                                                          |
-| Date          | Shows the current server date and time.                                                                                                                                                                                 |
-| Uptime        | Represents the total elapsed time since the [`startServer`](/build-deploy-operate/operate/commands/#startserver) was executed.                                                                                          |
-| Daemon status | The current status of the Genesis [Resource Daemon](/develop/development-environment/intellij-plugin/#resource-daemon). Possible values: MISSING, STARTING, OK.                                                         |
-| Node role     | The current node role in the Genesis [Cluster](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering), retrieved from the resource daemon. Possible values: UNKNOWN, SECONDARY, PRIMARY and Consul |
+| Information   | Description                                                                                                                                                                                                                                                                                                 |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Start         | Displays the last date and time the [`startServer`](/build-deploy-operate/operate/commands/#startserver) command was executed.                                                                                                                                                                              |
+| Date          | Shows the current server date and time.                                                                                                                                                                                                                                                                     |
+| Uptime        | Represents the total elapsed time since the [`startServer`](/build-deploy-operate/operate/commands/#startserver) was executed.                                                                                                                                                                              |
+| Daemon status | The current status of the Genesis [Resource Daemon](/develop/development-environment/intellij-plugin/#resource-daemon). Possible values: MISSING, STARTING, OK.                                                                                                                                             |
+| Node role     | The current node role in the Genesis Cluster, retrieved from the resource daemon. Possible values: UNKNOWN, [SECONDARY, PRIMARY](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering) and [Consul](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering) |
 
 By default, the command shows the following columns of information per process:
 
