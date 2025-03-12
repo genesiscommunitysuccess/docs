@@ -266,7 +266,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <tr>
             <td>maxRows</td>
             <td><code>number</code></td>
-            <td>Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages (if your data source is Data Server). This will not affect the number of rows displayed.</td>
+            <td>Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages (if your data source is a Data Server). This does not affect the number of chart elements displayed.</td>
 <td>
 
 ```typescript
@@ -278,7 +278,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <tr>
             <td>maxView</td>
             <td><code>number</code></td>
-            <td>Maximum number of rows to track as part of a client view or table.</td>
+            <td>Maximum number of rows to track as part of a client view or table. Note that this defaults to 500, so if you want to stream a whole day's trade data within the chart, you need to change this value to exceed the maximum number of expected rows added in a day.</td>
 <td>
 
 ```typescript
@@ -314,7 +314,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <tr>
             <td>rowId</td>
             <td><code>string</code></td>
-            <td>Attribute to set an unique identifier for the row.</td>
+            <td>Attribute to set a unique identifier for the row.</td>
 <td>
 
 ```typescript
