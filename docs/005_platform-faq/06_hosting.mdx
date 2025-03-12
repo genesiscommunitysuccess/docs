@@ -17,26 +17,19 @@ Yes, the Genesis Application Platform is designed for global deployment, and can
 
 To host applications on the Genesis Application Platform, the following infrastructure considerations are recommended:
 
-- **Operating System**: 
-  - Genesis applications are designed to run on Linux-based systems.
+- **Operating System**: Genesis applications are designed to run on Linux-based systems.
 
-- **Memory Requirements**: 
-  - Memory demands vary depending on the specific application.
+- **Memory**: Memory demands vary depending on the specific application.
 
-- **CPU Requirements**: 
-  - CPU demands vary depending on the specific application.
+- **CPU**: CPU demands vary depending on the specific application.
 
-- **Disk Storage**: 
-  - Ensure sufficient disk space is available for application data and logs.
+- **Disk Storage**: Disk space required is typically minimal for a deployed application. More may be required when considering an application's file and log retainment policy.
 
-- **Database**: 
-  - A Genesis application can be configured to use Postgres (recommended), MSSQL or Oracle for a database.
+- **Database**: A Genesis application can be configured to use Postgres (recommended), MSSQL or Oracle for a database.
 
-- **Networking**: 
-  - Genesis applications can operate without external dependencies, making them suitable for environments with restricted network access.
+- **Networking**: Genesis applications can operate without external dependencies, making them suitable for environments with restricted network access.
 
-- **Security**: 
-  - Utilize local reverse proxies with SSL termination to secure data in transit. For data at rest, rely on database-level encryption and disk partition encryption.
+- **Security**: Utilize local reverse proxies with SSL termination to secure data in transit. For data at rest, rely on database-level encryption and disk partition encryption.
 
 ### Can applications be set up to scale? 
 
