@@ -25,7 +25,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Add PROCESS_ENABLED field to GENESIS_PROCESS
 - Add coroutines-debug jar file to genesis-distribution package
 - Add support for "alwaysAllowedMessageType" in MessageDelegator
-- Add trace logging to rightSummaryCache
 - Add utility class to create dynamic rule from dynamic rule template
 - Added different rule execution strategies to evaluator dynamic rules
 - Added isTemplate field to DYNAMIC_RULE table
@@ -94,8 +93,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache
 - (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values
 - (pal-streamer): added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling
-- (pal-streamerclient): ensure recovery timestamps get set as COMPLETE and not ACKED
-- (pal-streamerclient): prevent duplicate DS_LOGON messages when streamer goes down
 - (purger): purger enhancements
 - (router): add APPROVAL_MESSAGE HTTP header value to event messages
 - Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
@@ -109,26 +106,18 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Feature flag is respected for MSSQL case
 - Fix SentIt tasks generation
 - Fix deploy scripts
-- Fix handling in GetNextSequenceNumbers script
 - Fix metricService creating inconsistent hierarchical paths.
-- Fixed XML purger business day calculation
 - Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
 - GPAL: Req Reps with wildcards not working
 - Guarantee appropriate handling of dataserver socket disconnection events at router level
 - Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection
 - Improved Comparator code in DbUtil to prevent Long and Int casting errors
 - Inserting empty string on a non-nullable field fails in Oracle
-- Logout can also be performed without the user being logged in
 - Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels
 - NPE in DBUtil.indexComparator when one of the fields is not supplied in the dbrecord
-- Fix OpenApi generator failing due empty object definition
 - Propagate closing of subscription to underlying subscription
-- RefreshTokenCleanUp script to use USER_SESSION table
 - Register global RxJava error handler for SQL engine
 - Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks
-- SESSION_ID is propagated in the Logout message
-- ScriptAnnotationHandler is unable to load script dependencies when using @file:ScriptModules annotation
-- SetLogLevelScript.groovy to create an instance of - ServiceDetailProvider
 - Unable to find module on simple structure when localDaogenVersion is mentioned
 - Update distribution plugin to support configuration cache
 - Updating maxSize of fields to be in line with application usage
@@ -154,8 +143,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Fix message ordering in data server client, to ensure multiple updates are handled correctly
 - Fix handle error when deploy plugin applied on PBC project
 - Fix handling of field resizing operation in MSSQL layer of indexed fields
-- Fix ignore derived fields when building view indices
-- Fix including builders to be also serialized in the DAO dictionary
 - Make description optional in process class
 - Making auditText field dbMaxSize
 - Publication plugin: check task group after tasks are in a group.
@@ -164,7 +151,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Remove suspend from main method and add runBlocking call
 - Resource daemon to await chronicle queue creation
 - Resource daemon to do not wait for chronicle when running from intellij plugin
-- Fix setupEnvironment task fails on deploy plugin
+- SetupEnvironment task fails on deploy plugin
 - Trim consul metadata values to have a max length of 512 and LOG a warning statement when this happens
 - Update task dependencies in distribution gradle template
 
@@ -302,26 +289,26 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.1.25
 
-##### Fixes
+###### Fixes
 
 - Optimise requests for non-consecutive index field lookups in Request Replies
 
 #### 7.1.24
 
-##### Fixes
+###### Fixes
 
 - Remove ReflectionToStringBuilder from ClusterMessage 
 
 #### 7.1.23
 
-##### Fixes
+###### Fixes
 
 - Dataserver backwardsJoin view does not recover in case of a buffered out of order update  
 - Add type conversion from Integer to Short
 
 #### 7.1.22
 
-##### Fixes
+###### Fixes
 
 - Fixed issues in schema validation with BigDecimal handling and embedded type info 
 - UserSessionCache now handles multiple expiry listeners for the same auth token 
@@ -329,14 +316,14 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.1.21
 
-##### Features
+###### Features
 
 - Add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
 - Expose settings for Websocket frame sizes, fix frame aggregation and allow Websocket binary payload using MsgPack format
 
 #### 7.1.20
 
-##### Fixes
+###### Fixes
 
 - Path for finding script modules in simplified structure
 - Remap fail when field becomes non-nullable and added to key at the same change set
@@ -345,13 +332,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.1.19
 
-##### Fixes
+###### Fixes
 
 - pal-dataserver: updates batched at MessageSet level now preserve old row data
 
 #### 7.1.18
 
-##### Fixes
+###### Fixes
 
 - Add TIMESTAMP support to DbMon distinct command
 - Dependency changes
@@ -359,7 +346,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 7.1.17
 
-##### Fixes
+###### Fixes
 
 - Copy site specific files from main module
 - DisableAuthUpdates flag works as expected again
@@ -373,40 +360,40 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Genesis 7.1.3(reporting-server)
 - **Breaking** Collapse reporting processes into single process and increase process memory
 
-##### Fixes
+###### Fixes
 
 #### 7.1.15
 
-##### Features
+###### Features
 
 - Add minimal cfg zip to distribution and distribution plugin.
 - Site specific distribution plugin and remove site specific internal module
 
 #### 7.1.14
 
-##### Features
+###### Features
 
 - Add inject method to AuthPermissionsScript
 
 #### 7.1.13
 
-##### Features
+###### Features
 
 - Settings plugin: generate config jar from main module and remove config internal module
 
-##### Fixes
+###### Fixes
 
 - Dictionary cache main module now assembles all the submodules on assemble.
 
 #### 7.1.12
 
-##### Fixes
+###### Fixes
 
 - LoginNack to cause the username in the channel context to be erased
 
 #### 7.1.11
 
-##### Fixes
+###### Fixes
 
 - Only add version constraints of artifacts from a product's manifest where version is same as product version Replaced endsWith() to !=.
 
@@ -416,22 +403,22 @@ No functional changes.
 
 #### 7.1.9
 
-##### Features
+###### Features
 
 - Add gzip compression option for table dumps
 
-##### Fixes
+###### Fixes
 
 - Add process arguments to project overview json
 - Finding product name in settings plugin
 
 #### 7.1.8
 
-##### Features
+###### Features
 
 - Logs with traceability in query and caching
 
-##### Fixes
+###### Fixes
 
 - MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages
 - Prevent duplicate cache entries in views generated dao jar
@@ -439,27 +426,27 @@ No functional changes.
 
 #### 7.1.7
 
-##### Fixes
+###### Fixes
 - Get site specific overrides from local files in exec plugin for simple structure
 
 #### 7.1.6
 
-##### Features
+###### Features
 
 - Enable autoIncrement for LONG fields
 
-##### Fixes
+###### Fixes
 - Correct path to config folder in site specific for simple structure
 
 #### 7.1.5
 
-##### Fixes
+###### Fixes
 
 - Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
 
 #### 7.1.4
 
-##### Fixes
+###### Fixes
 
 - Add 'enabled' property to ManifestCreationTask
 - Add support for dataserver pagination mode when using HTTP requests
@@ -467,27 +454,27 @@ No functional changes.
 
 #### 7.1.3
 
-##### Fixes
+###### Fixes
 
 - Convert evaluator expression parser as well as writer to use logical AND
 - Ensure we always add generated jars dependencies
 
 #### 7.1.2
 
-##### Fixes
+###### Fixes
 
 - Including audit generated builders in the dao cache
 
 #### 7.1.1
 
-##### Features
+###### Features
 
 - **Breaking** API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
 
-##### Features
+###### Features
 
 - Project type properties so import not required
-##### Fixes
+###### Fixes
 
 - Add template processing feature in ProductDetailsCreatorPlugin
 - Create new task to depend on _genesisInstall and generated code

@@ -8,11 +8,16 @@ id: '8.8-integrations'
 ### Features
 
 * Added Bloomberg client implementation, and adaptors for Data Pipelines V2 
+* Add jms mq source + sink 
+* Added kafka source implementation 
+* Use pipeline monitor to update process status 
 
 ### Fixes
 
 * Fixed initialisation issue in BloombergClient related to metrics 
 * Fixed initialisation issue with Bloomberg data pipelines connector 
+* Close consumer when source is stopped 
+* Make dependencies visible 
 
 ### Dependency changes
 

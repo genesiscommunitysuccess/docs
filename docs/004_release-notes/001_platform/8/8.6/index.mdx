@@ -11,7 +11,6 @@ id: '8.6'
 
 - (packagescan): Add support for storing multiple packages in a single file 
 - (streamer/streamerclient): Streamer and Streamerclient: Add support for `inject()` method in GPAL context 
-- Add "derivedFieldWithUserName" support to dataservers and req/reps 
 - Add clientName gradle property to allow for custom site specific folders 
 - Allow lambdas for withInput expressions to be assigned and reused 
 - Allow project structure to scan sub-folders for scripts and configs 
@@ -19,12 +18,10 @@ id: '8.6'
 - Create script to generate CSV from excel data
 - Remap should also consider data present at testData/data folder when --dataLoad is set
 - Support multibinding 
-- Added support for camel Idempotent repositories in data pipelines 
 - Allows for alternative tables names to be passed to SendIt 
 - Configurable update frequency and caching for Db cluster strategy 
 - Expose columnSeparator and quoteChar to csvDecoder operator 
 - Print additional statement to system.log if killProcess ends up calling 'kill -9' after the waiting grace period expires 
-- Support multiple process profiles in ProjectOverviewBuilderTask  
 - Update dictionary builder to use new table format and more 
 
 ### Fixes
@@ -34,17 +31,14 @@ id: '8.6'
 - DictionaryBuilder: fix table metadata read operation and ensure field/table names don't have a double '_' 
 - Disable copyDependencies task in genesis-openapi-codegen and improve publish-plugin-config configuration to ensure no plugin modules ever run copyDependencies task 
 - Ensure classpath jars are deleted before rewriting so genesisInstall does not fail 
-- Ensure only generated jars are added to process classpath when using WriteClasspathToManifest 
 - Ensure parentheses are preserved when parsing evaluator expressions to JSON 
 - ExcelDataToCSV. allow better user.dir setup, running with no arg and running on a dir 
-- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns 
 - Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule 
 - Correct bug in enum handling 
 - Correct mapping of dates in ExcelDataToCsv 
 - dbSink should apply operations in batches 
 - Deprecate isAcid property and remove usage 
 - Don't reference constraints in alter column size statements 
-- Ensure groovy compilation exceptions are handled 
 - Fixes websockets for the docker default nginx config 
 - Re-add standard help options to DictionaryBuilder 
 - Regression - settings plugin not properly handling OS specific paths while discovering resources 
@@ -105,11 +99,23 @@ id: '8.6'
 - Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.1 to 2.5.2 in /genesis-conventions 
 - Bump sshdVersion from 2.13.2 to 2.14.0 in /genesis-conventions 
 - Bump testcontainersVersion from 1.20.2 to 1.20.3 in /genesis-conventions 
-- build(deps): locking jackson-jsr to 2.17.2 
-- build(deps): reverting jackson to 2.17.2 
-- build(deps): reverting networknt and bumping jackson to 2.17.3
+* Locking jackson-jsr to 2.17.2 
+* Reverting jackson to 2.17.2 
+* Reverting networknt and bumping jackson to 2.17.3
 
 ### Patch releases
+
+#### 8.6.15
+
+###### Fixes
+
+* `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `db` : Do not refresh updates that have moved in or out of range 
+* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+* `xml-dataserver` : Race condition when processing modify very soon after an insert which failed the where clause 
+* Fix support for views in dbmon 
+* Generated SysDef should allow safe conversion of types 
+* Tests should apply SysDefOverwrite when process config file provided 
 
 #### 8.6.14
 
