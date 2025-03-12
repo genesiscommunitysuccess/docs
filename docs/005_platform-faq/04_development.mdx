@@ -24,7 +24,7 @@ The **Genesis Application Platform** primarily uses the following programming la
 
 ### What is GPAL and its role in the Genesis Platform?  
 
-GPAL (Genesis Platform Application Language) is a domain-specific language used to configure and customize microservices in the Genesis Platform. It simplifies complex functionality into easy-to-understand syntax, allowing users to focus on business requirements rather than coding details. Additionally, developers can use Java and Kotlin for further customization as they wish.
+GPAL (Genesis Platform Application Language) is a domain-specific language used to configure and customize microservices in the Genesis Platform. GPAL abstracts away complex algorithms behind simple to understand syntax, exposing the extension points required to enable any developer to build very rich applications quickly.  While accelerating the most complex use cases, GPAL also allows the full power of Java and Kotlin at any point to ensure unlimited flexibility to meet the complex requirements for any financial application.
 
 ### Can I write in Java?
 
@@ -81,3 +81,54 @@ Genesis provides a suite of testing libraries:
 * **GenesisJUnit** – Annotation based JUnit extensions for microservice unit testing
 * **End-to-End (E2E) Testing** - Cucumber based end-to-end testing framework.
 * **Genesis UI Test Utilities** – Simplifying unit testing Genesis UI components.
+
+### Are there any third party dependencies used in the platform?
+
+The platform leverages a wide variety of third-party dependencies on the server-side to provide features such as caching and messaging.  The following are a sampling of the larger libraries providing capabilities in the architecture.
+
+- **Caching** Genesis leverages LMDB in the Data Server microservice to implement a level 2 cache for the data behind each named query in order to provide a faster response time to clients requesting views.
+- **Authorization Map Replication** Genesis leverages chronicle cache in order to replicate pre-calculated row-level authorization across processes to provide faster response times in components such as the Data Server, Event Handler as well as any other process implementing authorization data.
+- **Clustering and Replication** Genesis leverages a suite of third-party providers to implement clustering including HashiCorp’s Consul to provide service discovery and leader election to provide automated cluster wide singleton failover. Apache Pekko can also be used to setup a basic cluster in scenarios that do not require automatic failover, or heterogeneous deployments.
+- **Messaging** Genesis leverages Zero MQ as the default, broker-less messaging provider between the services of a single Genesis instance to provide the lowest latencies possible while providing JMS based messaging on top of Active MQ if dictated by the non-functional requirements.
+- **Networking** Genesis leverages Netty as our networking library for both client to server communication and service to service communication. The low-level and high-performance nature provided by its non-blocking design allows us to provide minimal overhead and maximum flexibility in our API implementation.
+- **Metrics & Distributed Tracing** Genesis leverages Micrometer and Open Telemetry to provide excellent metrics and distributed tracing support as well as comprehensive compatibility with metrics solutions provided by commercial vendors and open source solutions.
+
+
+### What performance can applications achieve?
+
+The Genesis Application Platform cost-effectively scales to support diverse use cases, from small team computing to high-volume, low-latency mission-critical workloads. Clients leverage this flexibility to launch fast, low-risk offerings and scale seamlessly without technical debt. Built on microservices, Genesis ensures high throughput and low-latency performance.
+
+A key component of the platform is the Genesis Data Server, which facilitates low-latency real-time streaming of data updates to authorized subscribers. On a server with a small footprint, based on 50 concurrent users​ and 500k rows in the  dataset:
+* Median response time 7ms​
+* 95th percentile 16ms
+
+Neptune, the leading price data hub for bonds and other fixed-income products, built on top of the Genesis Platform is a great example of the Genesis Platform’s ability to scale.  Neptune was not only able to deliver their application in record time to the market but was able to grow from its initial 300 million messages/day to over 1 billion messages per day.
+
+#### Key performance metrics by problem class 
+
+##### Market Data Providers
+Characterized by highly available, high volume, low latency, large user populations but without strict demands on transactional integrity that would be present in, for example, trade booking.
+*	Largest user population: ~5k users 
+*	Largest concurrent user population: ~500 users 
+*	Typical UI response time (data grid with ~5k rows viewing volatile data) : < 300ms 
+*	Highest message delivery benchmark: 2B messages in a single trading session
+*	Peak message throughput: 100k / sec
+*	95% end to end latency on primary use case: < 50ms
+
+##### Post Trade Transaction Processors
+Characterized by mission critical, multi-regional availability, medium (1k /sec) volume, low latency, medium user populations and zero tolerance for transaction failure.
+*	User population: ~500 users
+*	Concurrent user population: ~50 users 
+*	Typical UI response time: < 300ms 
+*	Highest trade processing count per market day: 2M
+*	Peak trade throughput: ~1k / sec
+
+##### Execution and Trading Venues
+Characterized by mission critical, high availability, global user population, medium (1k /sec) volume, low latency, large user populations and zero tolerance for transaction failure.
+*	User population: ~2k
+*	Concurrent user population: ~2k
+*	Typical UI real time data latency: < 500ms
+*	Typical UI responsiveness: < 100ms
+*	Highest user event count per market day: ~100k
+*	Highest trade processing count per market day: ~10k
+
