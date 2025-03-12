@@ -1,0 +1,83 @@
+---
+title: 'Development FAQ'
+sidebar_label: 'Development'
+id: 'faq-development'
+hide_table_of_contents: true
+---
+
+### What languages are used in the Genesis Application Platform?
+
+The **Genesis Application Platform** primarily uses the following programming languages:
+
+##### **Backend Development**  
+- **Java & Kotlin** – Used for writing business logic and extending platform capabilities.  
+- **Genesis Programming Abstraction Language (GPAL)** – A high-level domain-specific language (DSL) for defining data models, queries, workflows, and configurations.  
+
+##### **Frontend Development**  
+- **JavaScript & TypeScript** – Used for building web applications.  
+- **HTML & CSS** – For structuring and styling UI components.  
+- **Web UI Frameworks** – Supports **React, Angular, and Web Components** for frontend development.  
+
+##### **Scripting & Build Automation**  
+- **Gradle** – Used for project builds and dependency management.  
+- **Node.js & NPM** – Required for managing frontend dependencies and builds.  
+
+### What is GPAL and its role in the Genesis Platform?  
+
+GPAL (Genesis Platform Application Language) is a domain-specific language used to configure and customize microservices in the Genesis Platform. It simplifies complex functionality into easy-to-understand syntax, allowing users to focus on business requirements rather than coding details. Additionally, developers can use Java and Kotlin for further customization as they wish.
+
+### Can I write in Java?
+
+Yes! The back end services of Genesis applications can predominantly be written in Java where preferred. Although GPAL can contain business logic, it can also be used for configuration and business logic be written in Java and injected into the Genesis services. 
+
+### Can I use an existing framework?
+
+Yes! Genesis client applications can be written in Angular or React where preferred and Genesis UI components will work within these frameworks. 
+
+### Can non-developers build applications?
+
+Yes! **Non-developers**, such as **business analysts, product managers, and operations teams**, can design and build applications on the **Genesis Application Platform** using tooling such as Genesis Create. For most applications they can build up to 80% of the application, and hand over to developers for the more complex tasks such as 
+
+### What is the learning curve for developing applications?
+
+The **Genesis Application Platform** is designed to be accessible to both **junior and experienced developers** as well as business analysts and other non developers., offering a structured learning path with **tools, documentation, and guided onboarding**.
+
+| Developer Level   | Required Skills | Learning Curve |
+|------------------|----------------|----------------|
+| **Business Analysts / Non-Developers** | Can use **Genesis Create** to configure applications | **Very Low** – Can build applications with minimal coding |
+| **Junior Developers** | GPAL syntax, basic Java/Kotlin, UI configuration | **Moderate** – Can become productive within **a few days** |
+| **Experienced Developers** | Java/Kotlin for backend, React/Angular for frontend, advanced GPAL customization | **Higher** – Full platform mastery in **weeks** |
+
+### Is training available? 
+
+Yes, Genesis offers extensive online training programs through the Genesis Academy in addition to documentation and how-to guides for adding common functionality, to help developers onboard quickly and effectively maximize the platform's potential. 
+
+
+### What other help is available for developers using the platform?
+
+In addition to academy courses, how-to guides and general documentation, platform developers have access to a developer support hub where they can ask for help with using the platform.
+
+Genesis also have solutions architects available to help any team with design and architectural guidance.
+
+### How are libraries and resources accessed?
+
+Client libraries are accessed from the public official NPM registry.
+Server packages are accessed from the Genesis JFrog artifactory.
+
+### How often do Genesis release updates?
+
+Genesis follows a **monthly release cycle**, providing:  
+
+1. **Security Patches** – Regular updates to address vulnerabilities and compliance requirements.  
+2. **Bug Fixes** – Continuous improvements based on feedback and internal testing.  
+3. **New Features** – Enhancements to microservices, components, and integrations.  
+
+Updates are designed to **minimize effort** for developers. Due to the clean separation between application logic and the Genesis framework, most updates only require dependency version changes. In rare cases, breaking changes occur when fundamental improvements require modifications to the DSL or microservices.  
+
+### Are any testing libraries and utilities included in the platform? 
+
+Genesis provides a suite of testing libraries:
+
+* **GenesisJUnit** – Annotation based JUnit extensions for microservice unit testing
+* **End-to-End (E2E) Testing** - Cucumber based end-to-end testing framework.
+* **Genesis UI Test Utilities** – Simplifying unit testing Genesis UI components.

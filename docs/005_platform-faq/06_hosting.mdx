@@ -1,0 +1,63 @@
+---
+title: 'Hosting & Deployment FAQ'
+sidebar_label: 'Hosting & Deployment'
+id: 'faq-hosting'
+hide_table_of_contents: true
+---
+
+### What hosting options does Genesis offer? 
+
+The platform supports flexible hosting options. Deployment can be on-premise and cloud environments, including private and hybrid cloud options. Genesis also provides a hosting service within it's cloud infrastructure.
+
+### Can applications be deployed globally? 
+
+Yes, the Genesis Application Platform is designed for global deployment, and can be configure to ensure low latency performance and reliability in international markets. 
+
+### What are the hardware and software requirements? 
+
+To host applications on the Genesis Application Platform, the following infrastructure considerations are recommended:
+
+- **Operating System**: 
+  - Genesis applications are designed to run on Linux-based systems.
+
+- **Memory Requirements**: 
+  - Memory demands vary depending on the specific application.
+
+- **CPU Requirements**: 
+  - CPU demands vary depending on the specific application.
+
+- **Disk Storage**: 
+  - Ensure sufficient disk space is available for application data and logs.
+
+- **Database**: 
+  - A Genesis application can be configured to use Postgres (recommended), MSSQL or Oracle for a database.
+
+- **Networking**: 
+  - Genesis applications can operate without external dependencies, making them suitable for environments with restricted network access.
+
+- **Security**: 
+  - Utilize local reverse proxies with SSL termination to secure data in transit. For data at rest, rely on database-level encryption and disk partition encryption.
+
+### Can applications be set up to scale? 
+
+Yes, the platform is designed with scalability in mind, enabling applications to handle increasing workloads efficiently.
+
+### Can applications be set up for high availability? 
+
+Yes, the platform supports configurations for high availability, ensuring continuous operation and minimizing downtime.  
+
+### How Does Genesis Support Application Scalability and Availability?
+
+The **Genesis Application Platform** is designed to support enterprise-scale operations including mission-critical financial applications with high scalability and availability.
+
+Scalability and availability are achieved through a **modular microservices architecture, real-time data processing, clustering, replication, caching, and cloud-native deployment options**. It is built to handle **high-volume, low-latency financial applications** with **global reach and 24/7 reliability**.
+
+### How do you monitor and observe applications?
+
+Genesis offers comprehensive observability tools, including:
+
+- Real-time metrics for performance monitoring
+- Distributed tracing for issue diagnosis based on the OpenTelemetry standard
+- Logging for in-depth audits and system analysis
+
+Client hosted Genesis applications can be plugged into enterprise monitoring and observability platforms as required.
