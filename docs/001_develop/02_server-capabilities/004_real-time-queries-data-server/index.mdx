@@ -744,6 +744,7 @@ To control the flow of data and allow for filtering  and ordering, the following
 | `MAX_ROWS`       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional; [read more below](#rows--view-concepts) |
 | `MAX_VIEW`       | 1000      | Maximum number of rows to track as part of a front-end view; see below for more; [read more below](#rows--view-concepts)  |
 | `MOVING_VIEW`    | `true`    | Defines the behaviour of the front-end view when it receives new rows in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving from the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default; [read more below](#rows--view-concepts) |
+| `VIEW_NUMBER`        | 0   | If set to a number different than 0, enables pagination mode and forces `MAX_VIEW` to have the same size as `MAX_ROWS` (i.e. `MAX_ROWS` becomes the page size) and sets `MOVING_VIEW` to `false` (i.e. rows in a page won't be replaced) |
 | `CRITERIA_MATCH` |           | The front end can send an expression or a Groovy expression to perform filtering on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000`; [read more below](#criteria_match) |
 | `FIELDS`         |           | This parameter enables the front end to select a subset of fields from the query. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. If this option is not specified, all fields are returned |
 | `ORDER_BY`       |           | This option can be used to select an [index](#indices) in the Data Server query that is being queried for sorting. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest) |
@@ -790,7 +791,7 @@ Initial Response
       "QUANTITY": 500,
       "PRICE": 226.12,
       "INSTRUMENT_NAME": "Apple",
-      "DATE": 1730937600000
+      "DATE": 1730937600000,
       "DETAILS": {
         "OPERATION": "INSERT",
         "ROW_REF": "7169357821048261343"
@@ -801,7 +802,7 @@ Initial Response
       "QUANTITY": 1000,
       "PRICE": 589.34,
       "INSTRUMENT_NAME": "Meta",
-      "DATE": 1730937600000
+      "DATE": 1730937600000,
       "DETAILS": {
         "OPERATION": "INSERT",
         "ROW_REF": "7169357821048261344"
@@ -827,7 +828,7 @@ New row update
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
-      "DATE": 1730937600000
+      "DATE": 1730937600000,
       "DETAILS": {
         "OPERATION": "INSERT",
         "ROW_REF": "7169357821048261345"
@@ -946,7 +947,7 @@ connection: keep-alive
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
-      "DATE": 1730937600000
+      "DATE": 1730937600000,
       "DETAILS": {
         "OPERATION": "INSERT",
         "ROW_REF": "7169357821048261345"
@@ -1013,7 +1014,305 @@ The filters can be specified using common expressions, Groovy expressions, or ev
 
 Used to request more rows on an active subscription.
 
-TBD
+The `MORE_ROWS` message can optionally provide a `VIEW_NUMBER` value to change the current page when used under pagination mode. More information on row and view concepts can be found [here](#rows--view-concepts).
+- If `VIEW_NUMBER` is not provided it will default to 0 (i.e. pagination disabled).
+- If `VIEW_NUMBER` is provided (i.e. 1 or higher), it will trigger a page change. When a page change happens, all previously sent rows are discarded by the dataserver via `DELETE` updates and the new page rows are sent as `INSERT` updates.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+
+The websocket request for `MORE_ROWS` can optionally provide a `SOURCE_REF` value within the `DETAILS` block to trigger a `MORE_ROWS_ACK` response.
+For clarity:
+- `SOURCE_REF` at the root level should be the same as the one used to create the subscription with the `DATA_LOGON` message.
+- `DETAILS.SOURCE_REF` is optional, and if used, it will be part of the `MORE_ROWS_ACK` message.
+
+Basic Request
+```
+{
+  "MESSAGE_TYPE": "MORE_ROWS",
+  "SOURCE_REF": "123",
+  "SESSION_AUTH_TOKEN": "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM",
+  "USER_NAME": "admin",
+  "DETAILS": {
+    "SOURCE_REF": "124"
+  }
+}
+```
+
+`MORE_ROWS_ACK` Response (if `DETAILS.SOURCE_REF` was provided)
+```
+{
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "124"
+}
+```
+
+Sample response with the new row data (if available)
+```
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "TRADE_ID": 4,
+      "DIRECTION": "BUY",
+      "QUANTITY": 25,
+      "PRICE": 950.14,
+      "INSTRUMENT_NAME": "Microsoft",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821848261348"
+      }
+    }
+  ],
+  "SOURCE_REF": "123",
+  "SEQUENCE_ID": 3,
+  "MORE_ROWS": false
+}
+```
+
+If the `DATA_LOGON` subscription started in pagination mode, you must provide the VIEW_NUMBER payload as part of the `MORE_ROWS` body.
+When `MORE_ROWS` is called in pagination mode the next `QUERY_UPDATE` response will provide DELETE updates for all the rows removed from the previous page and INSERT updates for the new rows in the page.
+
+So, in the case of a `DATA_LOGON` subscription using pagination and MAX_ROWS=2, 2 rows will be DELETED and 2 ROWS will be added for each `MORE_ROWS` call selecting a new page.
+
+Pagination request for page 2 (assuming `DATA_LOGON` used MAX_ROWS=2)
+```
+{
+  "MESSAGE_TYPE": "MORE_ROWS",
+  "SOURCE_REF": "123",
+  "SESSION_AUTH_TOKEN": "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM",
+  "USER_NAME": "admin",
+  "DETAILS": {
+    "SOURCE_REF": "124"
+    "VIEW_NUMBER": 2
+  }
+}
+```
+
+`MORE_ROWS_ACK` Response
+```
+{
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "124"
+}
+```
+
+Sample response deleting the old page (page 1) and adding page 2
+```
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821048261343"
+      }
+    },
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821048261344"
+      }
+    },
+    {
+      "TRADE_ID": 3,
+      "DIRECTION": "BUY",      
+      "QUANTITY": 1000,
+      "PRICE": 795.04,
+      "INSTRUMENT_NAME": "Netflix",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261345"
+      }
+    },
+    {
+      "TRADE_ID": 4,
+      "DIRECTION": "BUY",
+      "QUANTITY": 25,
+      "PRICE": 950.14,
+      "INSTRUMENT_NAME": "Microsoft",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821848261348"
+      }
+    }
+  ],
+  "SOURCE_REF": "123",
+  "SEQUENCE_ID": 3,
+  "MORE_ROWS": false
+}
+```
+
+</TabItem>
+<TabItem value="rest">
+The HTTP request for `MORE_ROWS` *requires* a `SUBSCRIPTION_REF` value within the HTTP headers to reference the original dataserver subscription.
+For clarity:
+- The `SUBSCRIPTION_REF` header should be the same value as the one inside the `DATA_LOGON` message  used to create the target dataserver subscription.
+- `SOURCE_REF` should be unique and will be part of the `MORE_ROWS_ACK` message received as a response to the `MORE_ROWS` request.
+
+Request
+```
+PUT http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 124
+SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
+USER_NAME: admin
+SUBSCRIPTION_REF: 123
+```
+
+`MORE_ROWS_ACK` Response
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 60
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "124"
+}
+```
+
+`GET` Request to retrieve new rows:
+```
+GET http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123
+SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
+USER_NAME: admin
+```
+
+Response with updated data:
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 387
+connection: keep-alive
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "TRADE_ID": 4,
+      "DIRECTION": "BUY",
+      "QUANTITY": 25,
+      "PRICE": 950.14,
+      "INSTRUMENT_NAME": "Microsoft",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821848261348"
+      }
+    }
+  ],
+  "SOURCE_REF": "123",
+  "SEQUENCE_ID": 3,
+  "MORE_ROWS": false
+}
+```
+
+If the `DATA_LOGON` subscription started in pagination mode, you must provide the VIEW_NUMBER payload as part of the `MORE_ROWS` body.
+When `MORE_ROWS` is called in pagination mode, the next `GET` request after a successful `MORE_ROWS_ACK` message response will provide the next `QUERY_UPDATE` message containing DELETE updates for all the rows removed from the previous
+page and INSERT updates for the new rows in the page.
+
+So, in the case of a previous `DATA_LOGON` subscription using pagination and MAX_ROWS=2, 2 rows will be DELETED and 2 ROWS will be added for each `MORE_ROWS` call selecting a new page.
+
+Pagination request for page 2 (assuming `DATA_LOGON` used MAX_ROWS=2)
+
+```
+PUT http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 124
+SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
+USER_NAME: admin
+SUBSCRIPTION_REF: 123
+{
+  "DETAILS": {
+    "VIEW_NUMBER": 2
+  }
+}
+```
+
+`MORE_ROWS_ACK` Response
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 60
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "124"
+}
+```
+
+`GET` Request to retrieve new rows:
+```
+GET http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123
+SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
+USER_NAME: admin
+```
+
+Sample response deleting the old page (page 1) and adding page 2
+
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 888
+connection: keep-alive
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821048261343"
+      }
+    },
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821048261344"
+      }
+    },
+    {
+      "TRADE_ID": 3,
+      "DIRECTION": "BUY",      
+      "QUANTITY": 1000,
+      "PRICE": 795.04,
+      "INSTRUMENT_NAME": "Netflix",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261345"
+      }
+    },
+    {
+      "TRADE_ID": 4,
+      "DIRECTION": "BUY",
+      "QUANTITY": 25,
+      "PRICE": 950.14,
+      "INSTRUMENT_NAME": "Microsoft",
+      "DATE": 1730937600000,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821848261348"
+      }
+    }
+  ],
+  "SOURCE_REF": "123",
+  "SEQUENCE_ID": 3,
+  "MORE_ROWS": false
+}
+```
+
+
+</TabItem>
+</Tabs>
 
 ### `MORE_COLUMNS`
 
@@ -1021,19 +1320,23 @@ Used to request more columns on an active subscription.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
-Request
+The websocket request for `MORE_COLUMNS` can optionally provide a `SOURCE_REF` value within the `DETAILS` block to trigger a `MORE_COLUMNS_ACK` response.
+For clarity:
+- `SOURCE_REF` at the root level should be the same as the one used to create the subscription with the `DATA_LOGON` message.
+- `DETAILS.SOURCE_REF` is optional, and if used, it will be part of the `MORE_COLUMNS_ACK` message.
 ```
 {
     "MESSAGE_TYPE": "MORE_COLUMNS",
-    "SOURCE_REF": "124",
+    "SOURCE_REF": "123",
     "SESSION_AUTH_TOKEN": "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM",
     "USER_NAME": "admin",
     "DETAILS": {
         "ADD_COLUMNS": "CTPTY_NAME"
+        "SOURCE_REF": "124"
     }
 }
 ```
-ACK Response
+`MORE_COLUMNS_ACK` Response (if `DETAILS.SOURCE_REF` was provided)
 ```
 {
   "MESSAGE_TYPE": "MORE_COLUMNS_ACK",
@@ -1074,23 +1377,24 @@ Response with the new column data
 ```
 </TabItem>
 <TabItem value="rest">
-Request for `MORE_ROWS` requires request then a GET to retrieve the data
-- `SOURCE_REF` should be unique and expected on `ACK`
-- `SUBSCRIPTION_REF` should be used as SOURCE_REF for subscription post `ACK` response
+The HTTP request for `MORE_COLUMNS` *requires* a `SUBSCRIPTION_REF` value within the HTTP headers to reference the original dataserver subscription.
+For clarity:
+- The `SUBSCRIPTION_REF` header should be the same value as the one inside the `DATA_LOGON` message  used to create the target dataserver subscription.
+- `SOURCE_REF` should be unique and will be part of the `MORE_COLUMNS_ACK` message received as a response to the `MORE_COLUMNS` request.
 ```
 PUT http://localhost:9064/all-trades
 Content-Type: application/json
 SOURCE_REF: 124
 SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
 USER_NAME: admin
-SUBSCRIPTION_REF: 124-1
+SUBSCRIPTION_REF: 123
 {
   "DETAILS": {
     "ADD_COLUMNS": "COUNTERPARTY_NAME"
   }
 }
 ```
-Response `ACK`
+`MORE_COLUMNS_ACK` Response
 ```
 HTTP/1.1 200 OK
 content-type: application/json
@@ -1102,11 +1406,11 @@ connection: keep-alive
   "SOURCE_REF": "124"
 }
 ```
-`GET` Request to retrieve updated data with `QUANTITY` column:
+`GET` Request to retrieve updated data:
 ```
 GET http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 124-1
+SOURCE_REF: 123
 SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
 USER_NAME: admin
 ```
@@ -1142,7 +1446,7 @@ connection: keep-alive
       }
     },
   ],
-  "SOURCE_REF": "124-1",
+  "SOURCE_REF": "123",
 }
 ```
 </TabItem>
@@ -1158,7 +1462,7 @@ Request
 ```
 {
     "MESSAGE_TYPE": "DATA_LOGOFF",
-    "SOURCE_REF": "125",
+    "SOURCE_REF": "123",
     "USER_NAME": "admin"
 }
 ```
@@ -1166,7 +1470,7 @@ Response
 ```
 {
     "MESSAGE_TYPE": "LOGOFF_ACK",
-    "SOURCE_REF": "125"
+    "SOURCE_REF": "123"
 }
 ```
 </TabItem>
@@ -1175,7 +1479,7 @@ Request
 ```
 DELETE http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 125
+SOURCE_REF: 123
 SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
 USER_NAME: admin
 ```
@@ -1187,7 +1491,7 @@ content-length: 58
 connection: keep-alive
 {
   "MESSAGE_TYPE": "LOGOFF_ACK",
-  "SOURCE_REF": "125"
+  "SOURCE_REF": "123"
 }
 ```
 </TabItem>
