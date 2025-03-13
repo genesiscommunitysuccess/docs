@@ -5,45 +5,144 @@ id: 'faq-hosting'
 hide_table_of_contents: true
 ---
 
-### What hosting options does Genesis offer? 
+### What hosting models does Genesis offer? 
 
 The platform supports flexible hosting options. Deployment can be on-premise and cloud environments, including private and hybrid cloud options. Genesis also provides a hosting service within it's cloud infrastructure.
 
+Hosting service levels will depend on the specific client needs as well as the type of application being deployed.  These can span everything from a Genesis packaged solution, Genesis developed custom solution or solutions developed in partnership with the client. 
+
+Genesis offer the following hosting models:
+
+| Offering | Description |
+|----------|-------------|
+| Platform | This is our standard offering where the client is responsible for the application build. The client has the option for Genesis to manage the application inside of a client owned AWS tenancy.  This is a shared responsibility model in which the client can choose to implement additional controls granting Genesis more restricted access to deploy and manage the hosted application.  In this deployment model, the roles and responsibilities for infrastructure management will vary based on the client’s preferences. |
+| Platform Solution  | Genesis is responsible for the support and development of the overall Genesis solution provided to the client which is hosted on the clients AWS cloud environment. As above, the client has an option for Genesis to own the infrastructure support within their AWS environment.  |
+| Hosted Platform  | Genesis will manage the infrastructure as well as application hosting.  This is provided inside of the Genesis AWS tenancy where both infrastructure as well as the application is provisioned, configured and managed by Genesis.  |
+| Hosted Platform Solution  | Genesis are fully responsible for the support, development and infrastructure of the overall Genesis solution provided to the client.  |
+
+Applications hosted by Genesis are hosted on the Genesis AWS tenancy.  There are no limitations or restrictions on applications hosted by Genesis, however applications requiring access to internal systems inside the client’s network would require access to be provided to the Genesis hosted network. 
+
+### What are the roles and responsibilities for the hosting models?
+
+The roles and responsibilities for the client and Genesis are described using **R**esponsible, **A**ccountable, **C**onsulted, and **I**nformed. 
+
+<table>
+  <tr>
+    <th rowspan="2">Task</th>
+    <th colspan="2">Platform</th>
+    <th colspan="2">Platform Solution</th>
+    <th colspan="2">Hosted Platform</th>
+    <th colspan="2">Hosted Platform Solution</th>
+  </tr>
+  <tr>
+    <th>Client's Role</th>
+    <th>Genesis's Role</th>
+    <th>Client's Role</th>
+    <th>Genesis's Role</th>
+    <th>Client's Role</th>
+    <th>Genesis's Role</th>
+    <th>Client's Role</th>
+    <th>Genesis's Role</th>
+  </tr>
+  <tr>
+    <td>Application Development</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+  <tr>
+    <td>Application Patching</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+  <tr>
+    <td>Application Support</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+  <tr>
+    <td>Platform Support</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+  <tr>
+    <td>Infrastructure Support</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+  <tr>
+    <td>OS Patch Management</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>\*</td>
+    <td>C/I</td>
+    <td>A/R</td>
+    <td>C/I</td>
+    <td>A/R</td>
+  </tr>
+</table>
+
+Role's marked * are determined during client platform onboarding in accordance with any internal policies your enterprise has.
+
 ### Can applications be deployed globally? 
 
-Yes, the Genesis Application Platform is designed for global deployment, and can be configure to ensure low latency performance and reliability in international markets. 
+Typically, organizations deploy Genesis application clusters to multiple data centers within a single geographical region to service users distributed across the globe.  This is possible due to the lightweight web-based user interface which has been optimized for performance including on-demand loading of routes, highly optimized payloads and web sockets for real time updates which remove repeated connection overhead.  These optimizations ensure users across the highest latencies have a great user experience and remove the need for local instances unless required to meet compliance requirements.  In these cases, business data is partitioned by region and managed by separate instances of the application in order to meet data localization requirements. 
+
+Genesis financial market clients, such as execution venues, are often subject to stringent regulatory oversight and have the very highest level of availability requirements. In these mission critical scenarios, the Genesis Application Platform is typically deployed with secondary standby clusters in a separate geographical region for maximum disaster recovery. 
 
 ### What are the hardware and software requirements? 
 
-To host applications on the Genesis Application Platform, the following infrastructure considerations are recommended:
+To host applications built on the Genesis Application Platform, the following infrastructure considerations are recommended:
 
 - **Operating System**: Genesis applications are designed to run on Linux-based systems.
-
-- **Memory**: Memory demands vary depending on the specific application.
-
-- **CPU**: CPU demands vary depending on the specific application.
-
+- **Memory**: Memory demands vary depending on the specific application use-case. 
+- **CPU**: CPU demands vary depending on the specific application use-case.
 - **Disk Storage**: Disk space required is typically minimal for a deployed application. More may be required when considering an application's file and log retainment policy.
-
 - **Database**: A Genesis application can be configured to use Postgres (recommended), MSSQL or Oracle for a database.
-
 - **Networking**: Genesis applications can operate without external dependencies, making them suitable for environments with restricted network access.
-
 - **Security**: Utilize local reverse proxies with SSL termination to secure data in transit. For data at rest, rely on database-level encryption and disk partition encryption.
-
-### Can applications be set up to scale? 
-
-Yes, the platform is designed with scalability in mind, enabling applications to handle increasing workloads efficiently.
-
-### Can applications be set up for high availability? 
-
-Yes, the platform supports configurations for high availability, ensuring continuous operation and minimizing downtime.  
 
 ### How Does Genesis Support Application Scalability and Availability?
 
 The **Genesis Application Platform** is designed to support enterprise-scale operations including mission-critical financial applications with high scalability and availability.
 
-Scalability and availability are achieved through a **modular microservices architecture, real-time data processing, clustering, replication, caching, and cloud-native deployment options**. It is built to handle **high-volume, low-latency financial applications** with **global reach and 24/7 reliability**.
+With the deployment of a single microservice set, services are segregated by function, including dedicated services for command, query, authorization & authentication.  However, services can also be segregated within a given function by domain.  An application can for example choose to configure multiple Event Handler or Data Server instances each focused on a specific domain.  This allows for both improved load balancing in a single set of microservices as well as better fault isolation. 
+
+The entire microservice set can also be replicated behind an external load balancer.  An additional microservice called the Cluster Manager takes the responsibility of relaying messages between the Genesis Microservices Sets in order to ensure eventual consistency of any cached data. 
+
+In this configuration, there are multiple active instances of reach service for high availability and load balancing.  Failures of any single node are seamless to end-users.   
+
+This configuration can be used in a single region / data center as well as across data centers based on the available latencies. 
 
 ### How do you monitor and observe applications?
 
@@ -54,3 +153,13 @@ Genesis offers comprehensive observability tools, including:
 - Logging for in-depth audits and system analysis
 
 Client hosted Genesis applications can be plugged into enterprise monitoring and observability platforms as required.
+
+### What hosted application support is available?
+
+* **Application Support** - 1st and 2nd Line support of the developed product on top of the Genesis Platform. Genesis can provide application support for all applications which have been developed by Genesis. 
+
+* **Core Platform Support ** - 3rd Line support / support of the Genesis core code base. Genesis will help support defects within the application. When it is proven to be a platform defect, Genesis will ensure workaround’s and a permanent fix will be made available within a previously agreed SLA.  
+
+* **Infrastructure Support ** - Where hosted by Genesis, we provide support of the infrastructure the platform is hosted on. Genesis will manage the infrastructure as well as application hosting.  This is provided inside of the Genesis AWS tenancy where both infrastructure as well as the application is provisioned, configured and managed by Genesis. 
+
+

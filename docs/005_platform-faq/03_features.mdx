@@ -21,37 +21,43 @@ A runtime environment to run security and compliant, highly available and perfor
 
 A suite of full solutions, templates, financial industry system integrations, and pre-built reusable components to cover common application requirements such as document management, reporting, alerting and reconciliation.
 
-### What are the main capabilities?
+### What are the main services, features and capabilities?
 
 The **Genesis Application Platform** consists of a comprehensive set of **microservices and components** designed to accelerate financial application development.
 
-### Core Microservices
-These microservices provide the foundational building blocks for Genesis applications:
+#### Data Modeling
+The data model forms the foundation of the metadata used by other parts of the platform to provide immediate functionality without any extra code.
+
+- **Tables (entities)** - model application data as tables with attributes.
+- **Views** - Join entities together to form views.
+
+#### Core Microservices
+These microservices provide the foundational building blocks for Genesis applications. Some of the key microservices are:
 
 - **Event Handler** – Manages data creation, updates, and business logic execution (CQRS command service).  
-- **Data Server** – Handles real-time queries, caching, and live data updates.  
+- **Data Server** – Handles real-time queries, caching, and live data updates to all subscribers.  
 - **Consolidator** – Aggregates data streams, enabling real-time calculations and rollups.  
 - **Evaluator** – Performs complex rule-based evaluations on incoming data.  
 - **Authorization Service** – Controls fine-grained access to data, ensuring security compliance.  
 - **Authentication Service** – Supports **SAML, OpenID Connect, and enterprise SSO integration**.  
 
-### Integration & Data Services
-These services enable seamless interaction with external systems:
+#### Integration & Data Services
+These services enable seamless interaction with external systems. Some of the key integration services are:
 
 - **Data Pipeline** – Provides connectivity to external data sources (FIX, SWIFT, JSON, XML, Kafka, MQ).  
 - **REST API Client** – Allows Genesis applications to consume external APIs.  
 - **Messaging Framework** – Supports **ZeroMQ** for low-latency communication and **ActiveMQ** for message queuing.  
 
-### Frontend & UI Components
-Genesis provides a library of **prebuilt UI components** for financial applications:
+#### Frontend & UI Components
+Genesis provides a library of **prebuilt UI components** for financial applications. Some of the key UI components are:
 
 - **Entity Management UI** – Dynamic, real-time grids for data visualization.  
 - **Smart Forms** – Auto-generated forms based on the data model.  
 - **Charts & Dashboards** – Prebuilt visualizations for real-time data tracking.  
 - **Micro Frontends** – Modular UI components compatible with **React, Angular, and Web Components**.  
 
-### Full-stack Components
-Genesis provides a set of reusable components which can be used in any application.
+#### Full-stack Components
+Genesis provides a set of reusable components which can be used in any application. Some of the key full-stack components are:
 
 - **Document Management** : A user-friendly interface to handle document management across multiple storage systems.
 - **Document Generation** : Allows users to create professional-grade documents in TXT, HTML, XLSX or PDF formats.
@@ -59,15 +65,13 @@ Genesis provides a set of reusable components which can be used in any applicati
 - **Notifications & Alerts** : A robust solution for delivering real-time notifications and alerts to user screens, emails and collaboration platforms such as Symphony and Microsoft Teams.
 - **Reconciliation Manager** : Streamlines and automates the process of matching data to ensure accuracy and consistency in financial and operational records.
 
-
-### What tools are included?
+### What tools are included in the platform?
 
 The **Genesis Application Platform** provides a suite of tools to help build, test, and deploy financial applications efficiently.
 
 ##### Development & Configuration Tools
 - **Genesis Create** – A tool for rapidly assembling applications using guided workflows.  
 - **Genesis Client & Server Libraries** – Java and Kotlin libraries for backend development, with JavaScript/TypeScript libraries for frontend.  
-- **Genesis Programming Abstraction Language (GPAL)** – A high-level domain-specific language (DSL) for defining data models, workflows, and queries.  
 - **VS Code Plugin** – Supports UI component wizards, syntax highlighting, code completion, and GPAL development in VS Code.
 
 ##### IDE & Build Tools
@@ -89,11 +93,6 @@ The **Genesis Application Platform** provides a suite of tools to help build, te
 - **Metrics & Distributed Tracing** – Uses **Micrometer and OpenTelemetry** for system monitoring.  
 - **Service Metrics Dashboard** – Provides real-time insights into microservice performance.  
 - **Genesis Logging Framework** – Captures structured logs for auditing and debugging.  
-
-##### Integration & API Tools  
-- **Data Pipelines** – Prebuilt connectors for **FIX, SWIFT, Kafka, MQ, REST APIs, and file-based integrations**.  
-- **REST API Client** – Simplifies calling external APIs within Genesis microservices.  
-- **Web UI Components** – A library of prebuilt **grids, forms, charts, and layouts** that integrate with backend services. 
 
 ### How often are new features released?
 
