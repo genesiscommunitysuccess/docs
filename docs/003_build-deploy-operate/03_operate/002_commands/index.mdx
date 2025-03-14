@@ -786,7 +786,7 @@ The key column in the display is **Status**, which can have the following values
 * `RUNNING` the process has just started and is still initializing.
 * `STARTING` the process has completed initialization; it is running but hasn't yet signalled to the monitor that it has completed its internal health checks
 * `HEALTHY` the process is fully available
-* `STANDBY` the process is in standby mode; it will take it over if the node becomes Primary (when operating in a regular cluster), else this process is elected the primary singleton process (when operating in a Consul cluster)
+* `STANDBY` when operating in a regular cluster, this indicates that the process is in standby mode; it will take over if the node becomes Primary; when operating in a Consul cluster, this indicates that the process is elected the primary singleton process
 * `MISSING` there has been an error and the process has not started correctly
 
 :::info
