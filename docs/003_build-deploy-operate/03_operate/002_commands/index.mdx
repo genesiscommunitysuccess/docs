@@ -722,7 +722,7 @@ If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` an
 
 ## `mon`
 
-This command shows the status of the overall system, so you can see if the server is up or not. By default, it displays a snapshot. If you want to the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
+This command shows the status of the overall system, so you can see if the server is up or not. By default, it displays a snapshot. If you want the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
 
 ```bash
 
@@ -771,23 +771,23 @@ By default, the command shows the following columns of information per process:
 
 ### Node roles
 
-When running in a [standard cluster](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering) the possible values are:
+When running in a [standard cluster](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering), the possible values are:
 * `PRIMARY` where this node is the primary node in the cluster
 * `SECONDARY` where this node is a secondary node in the cluster
-* `UNKNOWN` on initialization of a new node, else where there are connectivity issues to other nodes in the cluster
+* `UNKNOWN` on initialization of a new node, or where there are connectivity issues to other nodes in the cluster
 
-When running in a [Consul](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering) cluster the value is set to:
-* `UNKNOWN` on initialization of a new node, else where there are connectivity issues to the Consul cluster
+When running in a [Consul](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering) cluster, the value is set to:
+* `UNKNOWN` on initialization of a new node, or where there are connectivity issues to the Consul cluster
 * `Consul`
 
 ### Process statuses
 The key column in the display is **Status**, which can have the following values:
 
 * `RUNNING` the process has just started and is still initializing.
-* `STARTING` the process has completed initialization; it is running but hasn't yet signalled to the monitor that it has completed its internal health checks.
-* `HEALTHY` the process is fully available.
+* `STARTING` the process has completed initialization; it is running but hasn't yet signalled to the monitor that it has completed its internal health checks
+* `HEALTHY` the process is fully available
 * `STANDBY` the process is in standby mode; it will take it over if the node becomes Primary (when operating in a regular cluster), else this process is elected the primary singleton process (when operating in a Consul cluster)
-* `MISSING` there has been an error and the process has not started correctly.
+* `MISSING` there has been an error and the process has not started correctly
 
 :::info
 If you are using a development environment and you are running a local build via the IntelliJ plugin, you cannot run the `mon` command. The plugin provides a **Mon** tab where you can monitor the status of each process and start and stop each one.
