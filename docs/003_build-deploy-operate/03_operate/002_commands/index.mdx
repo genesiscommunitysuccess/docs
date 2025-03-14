@@ -778,7 +778,7 @@ When running in a [standard cluster](/build-deploy-operate/deploy/hosting-infras
 
 When running in a [Consul](/build-deploy-operate/deploy/hosting-infrastructure/containers/#clustering) cluster, the value is set to:
 * `UNKNOWN` on initialization of a new node, or where there are connectivity issues to the Consul cluster
-* `Consul`
+* `Consul` where the node is running successfully in a Consul cluster
 
 ### Process statuses
 The key column in the display is **Status**, which can have the following values:
@@ -786,7 +786,7 @@ The key column in the display is **Status**, which can have the following values
 * `RUNNING` the process has just started and is still initializing.
 * `STARTING` the process has completed initialization; it is running but hasn't yet signalled to the monitor that it has completed its internal health checks
 * `HEALTHY` the process is fully available
-* `STANDBY` when operating in a regular cluster, this indicates that the process is in standby mode; it will take over if the node becomes Primary; when operating in a Consul cluster, this indicates that the process is elected the primary singleton process
+* `STANDBY` when operating in a **regular cluster**, this indicates that the process is in standby mode; it will take over if the node becomes Primary; when operating in a **Consul cluster**, this indicates that the process is elected the primary singleton process
 * `MISSING` there has been an error and the process has not started correctly
 
 :::info
