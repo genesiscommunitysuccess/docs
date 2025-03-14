@@ -17,5 +17,5 @@ persistFilterModelKey: string;
 
 ## Remarks
 
-Default behaviour when unset is to not save the filter config. This value must be unique for each table in your app otherwise the persisted data will be corrupted.
+Default behaviour when unset is not to save the filter config. When set, this value must be unique for each table in your app, otherwise the persisted data will be corrupted.
 
