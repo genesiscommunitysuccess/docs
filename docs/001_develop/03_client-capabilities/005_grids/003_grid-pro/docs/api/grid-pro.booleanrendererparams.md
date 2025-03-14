@@ -14,5 +14,6 @@ Parameters for the [GridPro](./grid-pro.gridpro.md) boolean renderer.
 ```typescript
 export type BooleanRendererParams = {
     isDisabled?: (rowData: any) => boolean;
+    onChange?: <T>(rowData: T) => void;
 };
 ```

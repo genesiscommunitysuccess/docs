@@ -16,6 +16,7 @@ export type ActionRendererParams = {
     actionClick?: (rowData: any) => void;
     actionName?: string;
     appearance?: string;
+    actionButtonStyle?: string;
     dataTestId?: string;
     isDisabled?: (rowData: any) => boolean;
     uniqueFieldName?: string;

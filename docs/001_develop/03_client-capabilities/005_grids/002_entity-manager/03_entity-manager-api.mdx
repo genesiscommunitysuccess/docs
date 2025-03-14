@@ -19,7 +19,7 @@ pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro
 ---
 
 
-The Declarative HTML API enables you to use simple, semantic tags to create and configure the **entity-management** component directly within your HTML. You can quickly integrate and easily customize the component without writing complex JavaScript code. 
+The Declarative HTML API enables you to use simple, semantic tags to create and configure the **entity-management** component directly within your HTML. You can quickly integrate and easily customize the component without writing complex JavaScript code.
 
 Using HTML attributes, you can define key settings such as the data source, event handlers, UI schema, and actions like create, update, and delete, all within the markup itself.
 
@@ -170,10 +170,20 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     <tr>
       <td>persist-column-state-key</td>
       <td><code>string</code></td>
-      <td>Unique key for storing column state persistently; omit to disable.</td>
+      <td>Unique key for storing column state persistently; omit to disable. Must be unique for each grid or entity manager in your application.</td>
       <td>
         ```typescript
         <entity-management persist-column-state-key="counterparty-grid-state">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>persist-filter-model-key</td>
+      <td><code>string</code></td>
+      <td>Unique key for storing column filters persistently; omit to disable. Must be unique for each grid or entity manager in your application.</td>
+      <td>
+        ```typescript
+        <entity-management persist-column-filter-key="counterparty-grid-filters">
         ```
       </td>
     </tr>

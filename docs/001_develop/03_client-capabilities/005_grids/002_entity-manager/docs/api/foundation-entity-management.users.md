@@ -71,6 +71,7 @@ const userColumns = [
 |  [gridOptions](./foundation-entity-management.users.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
 |  [isServerSideDatasource](./foundation-entity-management.users.isserversidedatasource.md) | <code>readonly</code> | boolean |  |
 |  [persistColumnStateKey](./foundation-entity-management.users.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the user manager stores the state of the columns when the user edits them. Defaulted to <code>entity_users_management</code>. |
+|  [persistFilterModelKey](./foundation-entity-management.users.persistfiltermodelkey.md) |  | string | The key to use for persisting the filter model in local browser or KV storage. |
 |  [prefix](./foundation-entity-management.users.prefix.md) |  | string | Name of the design system prefix that will be used for components. |
 |  [updateEvent](./foundation-entity-management.users.updateevent.md) |  | string | String which contains event if we have permission to update user of empty string if not |
 
