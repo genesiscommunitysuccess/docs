@@ -81,13 +81,13 @@ id: '8.8'
 ###### Features
 
 * `dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
-* `pal-dataserver` : Add new dataserver update processing mode 
+* `pal-dataserver` : Experimental (subject to live testing). Add an alternate update handler.
 
 ###### Fixes
 
 * `dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
 * `dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
-* `xml-dataserver` : Race condition when processing modify very soon after an insert which failed the `where` clause
+* `xml-dataserver` : Fixed a race condition that occurs when processing a modify event that immediately follows an insert that has failed on a `where` clause. Only relevant to applications that have legacy xml dataserver.
 
 #### 8.8.8
 

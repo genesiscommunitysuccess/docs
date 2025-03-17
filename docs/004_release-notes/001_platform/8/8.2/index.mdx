@@ -94,11 +94,11 @@ id: '8.2'
 
 ### Features
 
-* `pal-dataserver` : Add new dataserver update processing mode ? Which update
+`pal-dataserver` : Experimental (subject to live testing). Add an alternate update handler.
 
 ### Fixes
 
-* `xml-dataserver` : Fixed a race condition when processing a modify event which matches a where clause, where the original insert event occurred very soon before, but did not match the where clause ? Is this correct?
+* `xml-dataserver` : Fixed a race condition that occurs when processing a modify event that immediately follows an insert that has failed on a `where` clause. Only relevant to applications that have legacy xml dataserver. 
 
 #### 8.2.19
 

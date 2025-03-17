@@ -110,7 +110,7 @@ id: '8.6'
 ###### Features
 
 * `dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
-* `pal-dataserver` : Add new dataserver update processing mode
+* `pal-dataserver` : Experimental (subject to live testing). Add an alternate update handler.
 
 ###### Fixes
 
@@ -124,7 +124,7 @@ id: '8.6'
 * `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
 * `db` : Do not refresh updates that have moved in or out of range 
 * `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
-* `xml-dataserver` : Race condition when processing modify very soon after an insert which failed the where clause 
+* `xml-dataserver` : Fixed a race condition that occurs when processing a modify event that immediately follows an insert that has failed on a `where` clause. Only relevant to applications that have legacy xml dataserver.
 * Fix support for views in dbmon 
 * Generated SysDef should allow safe conversion of types 
 * Tests should apply SysDefOverwrite when process config file provided 
