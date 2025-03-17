@@ -105,6 +105,18 @@ id: '8.6'
 
 ### Patch releases
 
+#### 8.6.16
+
+###### Features
+
+* `dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+* `pal-dataserver` : Add new dataserver update processing mode
+
+###### Fixes
+
+* `dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling
+
 #### 8.6.15
 
 ###### Fixes
