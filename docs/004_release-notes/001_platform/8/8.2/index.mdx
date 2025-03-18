@@ -98,7 +98,7 @@ id: '8.2'
 
 ### Fixes
 
-* `xml-dataserver` : Fixed a race condition that occurs when processing a modify event that immediately follows an insert that has failed on a `where` clause. 
+* `xml-dataserver` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event.
 
 #### 8.2.19
 
