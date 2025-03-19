@@ -190,7 +190,7 @@ dataServer {
 A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order.
 
 :::info
-To create the default query index, a Data Server always uses the internal RECORD_ID value of the database records. This is equivalent to indexing records by their creation date. Data Servers do not use table indices. To query records efficiently, you need to recreate indices at the Data Server level.
+A Data Server always uses the internal RECORD_ID value of the database records to create the default index. This is equivalent to indexing records by their creation date. Data Servers do not use table/view indices automatically. To query records efficiently, you need to recreate indices at the Data Server level or use the [`importEntityIndices`](#global-config) configuration option.
 :::
 
 The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
@@ -220,7 +220,7 @@ There are two scenarios where an index is useful:
 
 *Important*: Unique indices should be defined carefully, as they need to reflect column uniqueness within the table or view. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
-Note that table indices are NOT available in dataserver queries by default. Table/view indices can be automatically imported when using the [`importEntityIndices`](#global-config) configuration option or using the `fromEntity` method as shown in the example below:
+Note that table indices are NOT available in dataserver queries by default as previously mentioned. Table/view indices can be automatically imported when using the [`importEntityIndices`](#global-config) configuration option or using the `fromEntity` method as shown in the example below:
 
 ```kotlin
 dataServer {
