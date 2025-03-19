@@ -659,7 +659,8 @@ dataServer {
 |`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
 |`compression`|When `true`, this compresses the query row data before writing it to the in-memory cache|`false`|Yes|
 |`chunkLargeMessages`|When `true`, it will split large updates into smaller ones.|`false`|Yes|
-|`defaultStringSize`|This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the [String overflows](#handling-string-overflows) topic for details. |`40`|Yes|
+| `defaultStringSize`                | Defines the byte array size (in UTF-8 encoding) for storing `String` values in the Data Server LMDB indices. Larger values increase index key sizes, while smaller values reduce them but may cause string overflow. See the [String overflows](#handling-string-overflows) topic for details. | `40`            | Yes                    |
+| `maxBytesPerCharacter`             | Specifies the maximum number of bytes allocated per character when determining the index `String` byte array size. Since some UTF-8 characters require multiple bytes, this setting offers the required flexibility to ensure sufficient space is reserved.                                    | 1               | Yes                    |
 |`batchingPeriod`|Delay in milliseconds to wait before sending new data to Data Server clients|`500ms`|Yes|
 |`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes|`true`|Yes|
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
