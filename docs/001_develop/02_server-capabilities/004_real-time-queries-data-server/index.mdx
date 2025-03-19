@@ -187,7 +187,11 @@ dataServer {
 
 #### `indices`
 
-A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. 
+A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order.
+
+:::info
+To create the default query index, a Data Server always uses the internal RECORD_ID value of the database records. This is equivalent to indexing records by their creation date. Data Servers do not use table indices. To query records efficiently, you need to recreate indices at the Data Server level.
+:::
 
 The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
 
@@ -201,6 +205,9 @@ dataServer {
                 QUANTITY
                 SIMPLE_ID
             }
+            nonUnique("SIMPLE_QUERY_BY_INSTRUMENT"){
+                INSTRUMENT_ID
+            }
         }
     }
 }
@@ -211,9 +218,20 @@ There are two scenarios where an index is useful:
 * **Optimizing query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
 * **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
-*Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
+*Important*: Unique indices should be defined carefully, as they need to reflect column uniqueness within the table or view. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
-Note that table indexes are NOT available in dataserver queries.
+Note that table indices are NOT available in dataserver queries by default. Table/view indices can be automatically imported when using the [`importEntityIndices`](#global-config) configuration option or using the `fromEntity` method as shown in the example below:
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        indices {
+            fromEntity(SIMPLE_TABLE.BY_QUANTITY)
+            fromEntity(SIMPLE_TABLE.BY_INSTRUMENT)
+        }
+    }
+}
+```
 
 <CommonPermissions />
 
@@ -445,19 +463,6 @@ query("TRADE_RANGED_USD", TRADE) {
 
 Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
 
-- The `index` property must be a [unique index](/develop/server-capabilities/data-model/#unique). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
-
-```
-unique {
- QUANTITY
- TRADE_ID
-}
-```
-
-:::info
-To create the default query index, a Data Server always uses the internal RECORD_ID value of the database records. This is equivalent to indexing records by their creation date. Data Servers do not use table indices. To query records efficiently, you need to recreate indices at the Data Server level.
-:::
-
 - Use the `numKeyFields` property to specify the number of fields to use from an index. The fields are always selected in the order they are specified in the index.
 - Use `from` to specify the start of the data range. This is mandatory.
 - Use `to` to specify the end of the data range. This is optional, but highly recommended. When `to` is not specified, the `from` clause works in a same way as advanced `where`, specified above. For these cases, we recommend using advanced `where` for better readability.
@@ -639,6 +644,7 @@ dataServer {
         serializationType = SerializationType.KRYO // Available from version 7.0.0 onwards
         serializationBufferMode = SerializationBufferMode.ON_HEAP // Available from version 7.0.0 onwards
         directBufferSize = 8096 // Available from version 7.0.0 onwards
+        importEntityIndices = false
     }
     query("SIMPLE_QUERY", SIMPLE_TABLE) {
         config {
@@ -665,6 +671,7 @@ dataServer {
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
 |`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. |TRUNCATE_FIELD |Yes|
 |`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
+|`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
 ###### Serialization considerations
 
