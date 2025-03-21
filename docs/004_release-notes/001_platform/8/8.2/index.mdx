@@ -90,6 +90,16 @@ id: '8.2'
 
 ### Patch releases
 
+#### 8.2.20
+
+###### Fixes
+
+* `xml-dataserver` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event.
+
+###### Experimental features
+
+* `pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
+
 #### 8.2.19
 
 ###### Fixes
