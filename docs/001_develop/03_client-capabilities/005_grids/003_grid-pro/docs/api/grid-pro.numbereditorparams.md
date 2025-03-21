@@ -22,6 +22,7 @@ export interface NumberEditorParams extends ICellEditorParams
 |  --- | --- | --- | --- |
 |  [disabled](./grid-pro.numbereditorparams.disabled.md) |  | boolean |  |
 |  [formatOptions](./grid-pro.numbereditorparams.formatoptions.md) |  | any |  |
+|  [onChange](./grid-pro.numbereditorparams.onchange.md) |  | (value: number, params: [NumberEditorParams](./grid-pro.numbereditorparams.md)) =&gt; void |  |
 |  [placeholder](./grid-pro.numbereditorparams.placeholder.md) |  | string |  |
 |  [withFormatting](./grid-pro.numbereditorparams.withformatting.md) |  | boolean |  |
 
