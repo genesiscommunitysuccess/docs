@@ -333,7 +333,8 @@ The `requestReply` code block can be as simple or complex as your requirements. 
 Example syntax:
 
 ```kotlin
-// the name is optional, if none is provided, then request will be based on the output class, e.g. REQ_OUTPUT_CLASS
+// The name is optional, if none is provided, then request will be based on the output class, e.g. REQ_OUTPUT_CLASS
+// Set [InputClass] to `Unit` if you don't need the client to send any request data.
 requestReply<[InputClass], [OutputClass]> ("{optional name}") {
   // permissioning is optional
   permissioning {
