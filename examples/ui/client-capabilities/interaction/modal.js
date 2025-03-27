@@ -16,6 +16,7 @@ export default function ModalDemo({ inIndex = false }) {
     const modalRefSlotBottom = useRef(null);
     const modalRefLeft = useRef(null);
     const modalRefRight = useRef(null);
+    const modalRefDraggable = useRef(null);
 
     const [showCallbackMessage, setShowCallbackMessage] = useState('');
     const [closeCallbackMessage, setCloseCallbackMessage] = useState('');
@@ -58,6 +59,11 @@ export default function ModalDemo({ inIndex = false }) {
             modalRefRight.current.onShowCallback = () => showCallback('right modal shown');
             modalRefRight.current.onCloseCallback = () => closeCallback('right modal closed');
         }
+
+        if (modalRefDraggable.current) {
+            modalRefDraggable.current.onShowCallback = () => showCallback('draggable modal shown');
+            modalRefDraggable.current.onCloseCallback = () => closeCallback('draggable modal closed');
+        }
     }, []);
 
 
@@ -91,6 +97,7 @@ export default function ModalDemo({ inIndex = false }) {
                 <rapid-button onClick={() => handleClick(modalRefSlotBottom)}>Open modal with bottom slot</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefLeft)}>Open modal positioned left</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefRight)}>Open modal positioned right</rapid-button>
+                <rapid-button onClick={() => handleClick(modalRefDraggable)}>Open draggable modal</rapid-button>
             </div>
             <div>
                 <div>
@@ -128,6 +135,12 @@ export default function ModalDemo({ inIndex = false }) {
                 ref={modalRefRight}
                 position="right">
                 <p>This is a modal. It is positioned to the right.</p>
+            </rapid-modal>
+            <rapid-modal
+                ref={modalRefDraggable}
+                draggable="true">
+                <h3 slot="top">Draggable modal</h3>
+                <p>This modal can be dragged.</p>
             </rapid-modal>
         </div>
     </CodeSection >)
