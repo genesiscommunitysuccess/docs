@@ -8,30 +8,77 @@ tags:
   - components
   - document
   - generation
+  - excel
+  - pdf
 ---
 
 import Tabs from '@theme/Tabs';
 
 import TabItem from '@theme/TabItem';
 
-import {gsfVersion} from '/src/versioning/versions.js'
-
 ## Creating a template and other assets
-You must create the template of the information you need and upload it to FILE_STORAGE (see Document Management for more information on uploading/downloading files). 
+Templates you create must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with "Is Template" checked, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager. 
 
-If you need any other assets to produce the results you need (images, css files etc.), you must also upload these to FILE_STORAGE. Along with this, you must create and upload a TEMPLATE_ASSET record that maps these assets to the template.
+If you need any other assets to produce the results you need in the template (images, css files etc.), you must also upload these. Along with this, the must be a `TEMPLATE_ASSET` record that maps these assets to the template.
+
+### Example DB entries
+
+These example database entries show an uploaded template, and a single asset for it, and also an entry to associate the two. The relevant ID's are highlighted:
+
+```bash {11,23,37,38}
+==================================
+FILE_STORAGE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2025-03-01 18:11:40.270(n:0,s:1102)      NANO_TIMESTAMP      
+CREATED_AT                               2025-03-01 18:11:40.269 +0000            DATETIME            
+CREATED_BY                               admin                                    STRING              
+FILE_NAME                                Trade_Report.pdf                         STRING              
+FILE_SIZE                                914333                                   LONG                
+FILE_STORAGE_ID                          000000000000001FFLO1                     STRING              
+IS_TEMPLATE                              true                                     BOOLEAN             
+LOCATION_DETAILS                         templates/Trade_Report.pdf               STRING              
+MODIFIED_AT                              2025-03-01 18:11:40.269 +0000            DATETIME            
+MODIFIED_BY                              admin                                    STRING              
+STORAGE_MANAGER                          LOCAL_STORAGE                            STRING              
+-------------------------------------------------------------------------------------------
+TIMESTAMP                                2025-03-01 18:13:41.954(n:0,s:1102)      NANO_TIMESTAMP      
+CREATED_AT                               2025-03-01 18:13:41.658 +0000            DATETIME            
+CREATED_BY                               admin                                    STRING              
+FILE_NAME                                CompanyLogo.png                          STRING              
+FILE_SIZE                                8415555                                  LONG                
+FILE_STORAGE_ID                          000000000000002FFLO1                     STRING              
+IS_TEMPLATE                              true                                     BOOLEAN             
+LOCATION_DETAILS                         template_assets/CompanyLogo.png          STRING              
+MODIFIED_AT                              2025-03-01 18:13:41.658 +0000            DATETIME            
+MODIFIED_BY                              admin                                    STRING              
+STORAGE_MANAGER                          LOCAL_STORAGE                            STRING        
+-------------------------------------------------------------------------------------------
+
+==================================
+TEMPLATE_ASSET
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2025-03-01 18:14:21.821(n:0,s:1102)      NANO_TIMESTAMP      
+ASSET_ID                                 000000000000002FFLO1                     STRING              
+TEMPLATE_ID                              000000000000001FFLO1                     STRING      
+```
+
+In this example, the `Trade_Report.pdf` template is associated with the `CompanyLogo.png` via the `TEMPLATE_ASSET` table, so that the template can include the logo in it's output. Each template can have as many assets associated to it as needed.
 
 ## Using the Document Generator
 
 There are two methods for generating documents:
 
-- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating .txt and .html files, but not .pdf files.
-- `generateAndStore` generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
+- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `xlsx` files.
+- `generateAndStore` generates a file based on the template provided. The resulting file is added to `FILE_STORAGE` and the corresponding `FileStorageID` is returned.
 
-### DocumentContentConfiguration
+### `DocumentContentConfiguration`
 
 The `generateContent` method takes in an object with the following parameters:
-- `templateId` is the FileStorageId for the template you want to generate the document from.
+- `templateId` is the `FileStorageId` of the template you want to generate the document from.
 - `userName` is the username of the user generating the document.
 - `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
 - `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
@@ -40,12 +87,12 @@ The `generateContent` method takes in an object with the following parameters:
 For example:
 ```kotlin
 DocumentContentConfiguration(
-    templateId = "FILE_0001",
+    templateId = "000000000000003FFLO1",
     userName = "JohnDoe",
     data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")))
 ```
 
-### DocumentContentResult
+### `DocumentContentResult`
 
 The `generateContent` method returns an object with the following parameters:
 - `rawContent` is the content of the resulting document generation.
@@ -59,16 +106,16 @@ DocumentContentResult(
 )
 ```
 
-### DocumentStorageConfiguration
+### `DocumentStorageConfiguration`
 
 The `generateAndStore` method takes in an object with the following parameters:
-- everything in **DocumentContentConfiguration**.
+- everything in [`DocumentContentConfiguration`](#documentcontentconfiguration).
 - `fileName` is the file name for the document you would like to generate. This must include the file extension of the type of file that you want to generate.
 
 For example:
 ```kotlin
 DocumentStorageConfiguration(
-    templateId = "FILE_0001",
+    templateId = "000000000000004FFLO1",
     fileName = "trades-pdf-gen.pdf",
     userName = "JohnDoe",
     data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")),
@@ -76,7 +123,7 @@ DocumentStorageConfiguration(
     workingDirectory = "tmp/provided_dir")
 ```
 
-### DocumentStorageResult
+### `DocumentStorageResult`
 
 The `generateAndStore` method returns an object with the following parameters:
 - `fileStorageId` is the FileStorageId of the generated file.
@@ -84,7 +131,7 @@ The `generateAndStore` method returns an object with the following parameters:
 For example:
 ```kotlin
 DocumentStorageResult(
-    fileStorageId = "FILE_0002"
+    fileStorageId = "000000000000005FFLO1"
 )
 ```
 
@@ -118,6 +165,10 @@ val trade = Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterp
 val data = mapOf("trades" to listOf(trade))
 ```
 
+The `data` map can contain many objects, this allows you to create very rich PDFs containing lots of application data, for example a client specific report including their current positions, trades from the past month, and any other dynamic data you wish.
+
+You can find more examples and details on how to create [Thymeleaf templates here](https://www.thymeleaf.org/documentation.html).
+
 ### TXT templates
 
 When a TXT template is provided, the TXT template engine uses a simple substitution syntax. Thus, each field must be added individually.
@@ -142,13 +193,11 @@ val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_
 
 To inject the Document Generator, set up the following dependency in the module where you are going to use it.
 
-Version: {gsfVersion}
-
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
 <TabItem value="gradle">
 
 ```kotlin
-implementation("global.genesis:file-server-app:$version")
+implementation("global.genesis:file-server-app:$file-serverVersion")
 ```
 
 </TabItem>
@@ -158,7 +207,7 @@ implementation("global.genesis:file-server-app:$version")
 <dependency>
     <groupId>global.genesis</groupId>
     <artifactId>file-server-app</artifactId>
-    <version>$version</version>
+    <version>$file-serverVersion</version>
 </dependency>
 ```
 
@@ -188,7 +237,7 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
             val documentStorageResult =
                 documentGenerator.generateAndStore(
                     DocumentStorageConfiguration(
-                        templateId = "FILE_0001",
+                        templateId = "000000000000006FFLO1",
                         fileName = "trades-pdf-gen.pdf",
                         userName = "JohnDoe",
                         data = tradeMap,
@@ -198,7 +247,7 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
 
             // custom code block ...
 
-            ack()
+            ack()ß
         }
     }
 ```
@@ -222,7 +271,7 @@ class GeneratePdf @Inject constructor(
     val documentContentResult =
                 documentGenerator.generateContent(
                     DocumentContentConfiguration(
-                        templateId = "FILE_0001",
+                        templateId = "000000000000007FFLO1",
                         userName = "JohnDoe",
                         data = tradeMap,
                         deleteOnExit = false,
