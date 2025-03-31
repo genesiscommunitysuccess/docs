@@ -105,14 +105,29 @@ id: '8.6'
 
 ### Patch releases
 
+#### 8.6.16
+
+###### Features
+
+* `pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+
+###### Fixes
+
+* `pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling
+
+###### Experimental features
+
+* `pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load
+
 #### 8.6.15
 
 ###### Fixes
 
-* `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `pal-dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
 * `db` : Do not refresh updates that have moved in or out of range 
 * `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
-* `xml-dataserver` : Race condition when processing modify very soon after an insert which failed the where clause 
+* `xml-dataserver` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event.
 * Fix support for views in dbmon 
 * Generated SysDef should allow safe conversion of types 
 * Tests should apply SysDefOverwrite when process config file provided 

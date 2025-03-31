@@ -76,6 +76,33 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.10
+
+###### Features
+
+* Add support for `GENESIS_HOME` in `templt.xml` files 
+* Improve coroutine exception handling
+
+###### Fixes
+
+* Use `GenesisInjector` for all script configurations
+
+#### 8.8.9
+
+###### Features
+
+* `pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+
+###### Fixes
+
+* `pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
+* `xml-dataserver` : Fixed a race condition when a modify event matching the where clause quickly follows a non-matching insert event.
+
+###### Experimental features
+
+* `pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
+
 #### 8.8.8
 
 ###### Fixes

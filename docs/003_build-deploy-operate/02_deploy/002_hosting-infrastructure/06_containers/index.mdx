@@ -303,16 +303,15 @@ You can also [set System Definitions values from environment variables](/develop
 
 The Genesis Application Platform is highly resilient and easy to cluster for a High Availability (HA) setup.
 
-The Genesis platform uses [Akka](https://akka.io/) to help manage the communication between clusters: specifically for identifying members of the cluster, joins and leaves etc.
-
-This area takes you through how to configure the platform with our clustering options.
+This area takes you through how to configure the platform with our clustering options when using containers.
 
 ### Consul
-The Consul cluster mode uses Hashicorp's Consul for service discovery.
+The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.
 
 Combining this with the use of an MQTT broker gives you a dynamically scalable Genesis app with automatic failover.
 
 ### Prerequisites
+
 #### Services
 To operate the Genesis Application Platform within an HA setup using Hashicorp's Consul for Clustering, the following services must be available:
 

@@ -7,15 +7,13 @@ id: '8.8-integrations'
 
 ### Features
 
-* Added Bloomberg client implementation, and adaptors for Data Pipelines V2 
+* `bloomberg-genesis` : Added Bloomberg client implementation, and adaptors for Data Pipelines V2 
 * Add jms mq source + sink 
 * Added kafka source implementation 
 * Use pipeline monitor to update process status 
 
 ### Fixes
 
-* Fixed initialisation issue in BloombergClient related to metrics 
-* Fixed initialisation issue with Bloomberg data pipelines connector 
 * Close consumer when source is stopped 
 * Make dependencies visible 
 
@@ -25,14 +23,19 @@ id: '8.8-integrations'
 
 ### Patch releases
 
+#### 8.8.3
+
+###### Fixes
+* `bloomberg-genesis` : Ensure BloombergClient does not attempt to subscribe until session is properly initialized 
+
 #### 8.8.2
 
 ###### Fixes
-- Allow JMS connections without a password 
+* Allow JMS connections without a password 
 
 #### 8.8.1
 
 ###### Fixes
-- Correctly process bbg messages with nested structures 
+* `bloomberg-genesis` : Correctly process bbg messages with nested structures 
 
 

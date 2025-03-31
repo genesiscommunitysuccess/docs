@@ -61,6 +61,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [hideEdit](./foundation-entity-management.entitymanagement.hideedit.md) |  | boolean | Hides edit button |
 |  [modalPosition](./foundation-entity-management.entitymanagement.modalposition.md) |  | 'centre' \| 'left' \| 'right' | Determines where the modal dialog will appear on screen |
 |  [persistColumnStateKey](./foundation-entity-management.entitymanagement.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the entity manager stores the state of the columns when the user edits them. Omit this attribute to disable the functionality, set it to a unique value to enable it. |
+|  [persistFilterModelKey](./foundation-entity-management.entitymanagement.persistfiltermodelkey.md) |  | string | The key to use for persisting the filter model in local browser or KV storage. |
 |  [prefix](./foundation-entity-management.entitymanagement.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
 |  [readEvent](./foundation-entity-management.entitymanagement.readevent.md) |  | string | Name of the request on the Genesis server which fetches data for the form, example usage could include fetching additional data that is not available in the grid but required for the selected entity |
 |  [readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md) |  | (entity: any) =&gt; any | Similar to readEvent but allows to provide function that will be executed before opening the form and yields data to the form |

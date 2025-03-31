@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-criteriaChanged(oldCriteria: string, newCriteria: string): void;
+criteriaChanged(oldCriteria: string, newCriteria: string): Promise<void>;
 ```
 
 ## Parameters
@@ -22,5 +22,5 @@ criteriaChanged(oldCriteria: string, newCriteria: string): void;
 
 **Returns:**
 
-void
+Promise&lt;void&gt;
 
