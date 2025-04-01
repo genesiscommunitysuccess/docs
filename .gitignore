@@ -35,6 +35,6 @@ tmp
 
 /src/client-modules/
 /src/client-modules/iife.d.ts
-src/client-modules/docs.iife.min.js
+/src/client-modules/docs.iife.min.js
 /static/dsc
 Writerside/*
