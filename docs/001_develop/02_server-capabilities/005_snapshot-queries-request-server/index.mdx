@@ -316,8 +316,8 @@ For maximum flexibility, you can define your own Request Servers.
 
 * You can specify any class for the input and output, similar to Event Handlers.
 * For the request, optional fields should have a default value in the primary constructor.
-* You can set up a `requestReply` that can accept [empty queries](#using-requestreply-with-no-parameters)
 * You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
+* You can set up a request that can accept [queries with no parameters](#using-requestreply-with-no-parameters).
 
 It is recommended that you locate your classes within the main/kotlin messages folder of your project structure. Ensure that the `*-reqrep.kts` file you are writing a custom request server within has a dependency on the _app-name_**-app** ScriptModule near the top:
 
@@ -396,8 +396,6 @@ There are three types of reply that you can use with custom request servers:
 - **replyList** expects a return of the type `List<OutputClass>`. 
 
 For all of these, you can use the parameter `request`. In our previous example, the `request` is of the type `InputClass`.
-
-Note that you can also set up your requestReply to [accept empty requests](#using-requestreply-with-no-parameters).
 
 ### Examples
 In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
