@@ -73,12 +73,12 @@ genesis {
 includeBuild("../client")
 ```
 
-- Additionally, make sure that the `client/build.gradle.kts` file has `group` specified - you can add this to the root of the file:
+    - Additionally, make sure that the `client/build.gradle.kts` file has `group` specified - you can add this to the root of the file:
 ```kotlin
 group = "global.genesis"
 ```
 
-- Then add the following to the dependencies block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
+    - Then add the following to the dependencies block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
 ```kotlin
 genesisWeb("global.genesis:client")
 ```
