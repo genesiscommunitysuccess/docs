@@ -496,7 +496,7 @@ Helpers assist you to interact with the Kotlin Flow type, which is the return ty
 * T.sortedBy(selector: (T) -> K?) - Returns a Flow of all sorted values given a selector
 
 #### Using requestReply with no parameters
-If you want to your `requestReply` to accept empty data requests (where no parameters are returned), use `Unit` as part of your declaration. For example:
+If your custom Request Server does not require any input from the client on the request, define the `[Input]` as `Unit`. For example:
 
 ```
 requestReply<Unit, LiquidityScoreResponse>(name = "LIQUIDITY_SCORE_ALL")
