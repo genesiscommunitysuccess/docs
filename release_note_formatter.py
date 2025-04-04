@@ -5,9 +5,6 @@ import os
 
 # Define the list of operations
 operations = [
-    # String matches and replacements - add any modificaitons from original notes here (list will get large!)
-    #{"type": "string", "find": "FOOOO", "replace": "BARRRR"},
-    #{"type": "string", "find": "MOOOO", "replace": "MARRRR"},
 
     # Regex operations to tidy up what is produced by default and format as we want it to look
     
@@ -26,7 +23,12 @@ operations = [
     #{"type": "regex", "find": r"in (/[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*) by @\w+ in https?://[^\s)]+", "replace": r"\1"},
 
     # This will remove the tail of the dependabot version bump commit messages
-    {"type": "regex","find": r"\s+in /genesis-conventions\b","replace": ""}
+    {"type": "regex","find": r"\s+in /genesis-conventions\b","replace": ""},
+
+    # String matches and replacements - add any modificaitons from original notes here (list will get large!)
+    #{"type": "string", "find": "FOOOO", "replace": "BARRRR"},
+    {"type": "string", "find": "`db` : Correct upsert operation on SQL", "replace": "`db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field"},
+    
 ]
 
 def apply_operations_to_file(file_path: str):
