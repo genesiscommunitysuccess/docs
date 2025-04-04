@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-createDataLogonMessage(resourceName: string, params?: any): Message<MessageDetails.DataserverRequest>;
+createDataLogonMessage(resourceName: string, params?: DataserverParams): Message<MessageDetails.DataserverRequest>;
 ```
 
 ## Parameters
@@ -18,7 +18,7 @@ createDataLogonMessage(resourceName: string, params?: any): Message<MessageDetai
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  resourceName | string |  |
-|  params | any | _(Optional)_ |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ |
 
 **Returns:**
 
