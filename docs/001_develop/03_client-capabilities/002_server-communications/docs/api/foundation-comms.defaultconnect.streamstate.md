@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-streamState(resourceName: string, onMessage?: Function, onError?: Function, params?: any, initialState?: any[]): Observable<any[]>;
+streamState(resourceName: string, onMessage?: Function, onError?: Function, params?: DataserverParams, initialState?: any[]): Observable<any[]>;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ streamState(resourceName: string, onMessage?: Function, onError?: Function, para
 |  resourceName | string |  |
 |  onMessage | Function | _(Optional)_ |
 |  onError | Function | _(Optional)_ |
-|  params | any | _(Optional)_ |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ |
 |  initialState | any\[\] | _(Optional)_ |
 
 **Returns:**

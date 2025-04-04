@@ -10,14 +10,14 @@ format: md
 **Signature:**
 
 ```typescript
-getAvailableResources(params?: any): Promise<ResourcesMessage>;
+getAvailableResources(params?: RequestParams): Promise<ResourcesMessage>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | any | _(Optional)_ |
+|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ |
 
 **Returns:**
 

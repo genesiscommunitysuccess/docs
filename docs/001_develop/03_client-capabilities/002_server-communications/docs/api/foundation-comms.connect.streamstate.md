@@ -12,7 +12,7 @@ Starts listening for updates on the specified resource.
 **Signature:**
 
 ```typescript
-streamState(resourceName: string, onMessage: Function, onError: Function, params?: any, initialState?: any[]): Observable<any[]>;
+streamState(resourceName: string, onMessage: Function, onError: Function, params?: DataserverParams, initialState?: any[]): Observable<any[]>;
 ```
 
 ## Parameters
@@ -22,7 +22,7 @@ streamState(resourceName: string, onMessage: Function, onError: Function, params
 |  resourceName | string | The name of the resource to listen for updates on. |
 |  onMessage | Function | A callback function to handle received messages. |
 |  onError | Function | A callback function to handle errors. |
-|  params | any | _(Optional)_ Additional parameters to pass to the server. |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ Additional parameters to pass to the server. |
 |  initialState | any\[\] | _(Optional)_ State of the list to start with, defaults to empty array. |
 
 **Returns:**
