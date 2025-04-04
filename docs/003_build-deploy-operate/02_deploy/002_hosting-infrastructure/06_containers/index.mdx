@@ -73,13 +73,13 @@ genesis {
 includeBuild("../client")
 ```
 
-    - Additionally, make sure that the `client/build.gradle.kts` file has `group` specified; add this to the root of the file:
+    - Additionally, make sure that the `client/build.gradle.kts` file has `group` specified; add the following to the root of the file:
 
 ```kotlin
 group = "global.genesis"
 ```
 
-    - Then add the following to the dependencies block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
+    - Then add the following to the `dependencies` block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
 ```kotlin
 genesisWeb("global.genesis:client")
 ```
@@ -104,7 +104,7 @@ genesisWeb("global.genesis:client")
 </Tabs>
 
 :::tip
-If you're unable to execute the gradlew command, ensure you have the correct permissions on the file. Add execute permissions with `chmod +x gradlew`
+If you're unable to execute the `gradlew` command, ensure you have the correct permissions on the file. Add execute permissions with `chmod +x gradlew`
 
 The gradle `buildImage` command requires connection to Docker/Rancher, which should be running locally. If you're running Rancher on Mac, you may need to run the
 following `socat` image, which enables you to build your Genesis application image:
