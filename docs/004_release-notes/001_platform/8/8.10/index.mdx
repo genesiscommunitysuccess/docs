@@ -122,9 +122,9 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Breaking changes
 
-#### Upgrade to Gradle 8.10.2 
+#### Mandatory upgrade to Gradle version 8.10.2 
 
-We have had to move onto version 8.10.2 of Gradle as part of a security vulnerability. A dependent library of the Genesis Framework (Apache Camel) had a critical vulnerability and the fixed version uses a library called Jackson 2.18, which is incompatible with Gradle 8.4 (our previous version of gradle). Gradle have fixed in 8.10.2+ but they have not backported to 8.4 and as such projects taking Genesis 8.10 + of the Genesis Server Framework are required to follow these steps to update their project's gradle wrapper to 8.10.*.
+We have had to move onto version 8.10.2 of Gradle as part of a security vulnerability fix. A dependent library of the Genesis Framework (Apache Camel) had a critical vulnerability and the fixed version uses a library called Jackson 2.18, which is incompatible with Gradle 8.4 (our previous version of gradle) due to it's own bug. Gradle have fixed their bug in 8.10.2+ but they have not backported to 8.4 and as such projects taking Genesis 8.10+ of the Genesis Server Framework are required to follow these steps to update their project's gradle wrapper to 8.10.2.
 
 Firstly, upgrade your server dependencies to use 8.10.* where * is the latest patch version at the time of your upgrade. This must be completed before then following these instructions:
 
