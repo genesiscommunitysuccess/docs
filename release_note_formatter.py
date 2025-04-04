@@ -12,8 +12,12 @@ operations = [
     # Regex operations to tidy up what is produced by default and format as we want it to look
     
     # This will neaten the start string... removing feat/fix etc... and formatting the first letter to be a capital - keeping the component if one is defined
-    {"type": "regex", "find": r"^[-*] (feat|fix|chore|perf|build|deps)(!?)(?:\((.*?)\))?(!?)?: (.)", "replace": "* \2 : \\U\\3"},
-    #{"type": "regex", "find": r"/\* (deps)? :", "replace": ""},
+    {"type": "regex", "find": r"^[-*] (feat|fix|chore|perf|build|deps)(!?)(?:\((.*?)\))?(!?)?: (.)", "replace": "* `\2` : \\U\\3"},
+    # This will normalise any which had no component so we don't have a random : at the start
+    {"type": "regex", "find": r"^\*\s+``\s+: ", "replace": "* "},
+    # This will remove (deps) prefixes that are left
+    {"type": "regex", "find": r"^\*\s+`deps`\s+: ", "replace": "* "},
+
     #{"type": "regex", "find": r"(?:-\s*)?(\(?[A-Z]{2,10}-\d+\)?|\[[A-Z]{2,10}-\d+\]\(https?://[^\s)]+\))?(?:\s*\(#\d+\))?\s*(\(https?://[^\s)]+\) )?by @[\w-]+ in (?:#\d+|https?://[^\s)]+)", "replace": ""},
     #{"type": "regex", "find": r"(?:-\s*)?(\(?[A-Z]{2,10}-\d+\)?|\[[A-Z]{2,10}-\d+\]\(https?://[^\s)]+\))(?:\s*\(#\d+\))?\s*(\(https?://[^\s)]+\) )?by @[\w-]+ in #\d+|by @[\w-]+ in #\d+", "replace": ""},
     #{"type": "regex", "find": r"(?:-\s*)?(\(?[A-Z]{2,10}-\d+\)?|\[[A-Z]{2,10}-\d+\]\(https?://[^\s)]+\))(?:\s*\(#\d+\))?\s*(\(https?://[^\s)]+\) )?by.*", "replace": ""},
@@ -28,20 +32,21 @@ def apply_operations_to_file(file_path: str):
         if op["type"] == "string":
             content = content.replace(op["find"], op["replace"])
         elif op["type"] == "regex":
-            special_case_pattern = r"^[-*] (feat|fix|chore|perf|build|deps)(!?)(?:\((.*?)\))?(!?)?: (.)"
-            for op in operations:
-                if op["type"] == "string":
-                    content = content.replace(op["find"], op["replace"])
-                elif op["type"] == "regex":
-                    if op["find"] == special_case_pattern:
-                        content = re.sub(
-                            special_case_pattern,
-                            lambda m: f"* {m.group(3) or ''} : {m.group(5).upper()}",
-                            content,
-                            flags=re.MULTILINE
-                        )
-                    else:
-                        content = re.sub(op["find"], op["replace"], content, flags=re.MULTILINE)
+          special_case_pattern = r"^[-*] (feat|fix|chore|perf|build|deps)(!?)(?:\((.*?)\))?(!?)?: (.)"
+          for op in operations:
+              if op["type"] == "string":
+                  content = content.replace(op["find"], op["replace"])
+              elif op["type"] == "regex":
+                  if op["find"] == special_case_pattern:
+                      content = re.sub(
+                          special_case_pattern,
+                          lambda m: f"* `{m.group(3) or ''}` : {m.group(5).upper()}",
+                          content,
+                          flags=re.MULTILINE
+                      )
+                  else:
+                      content = re.sub(op["find"], op["replace"], content, flags=re.MULTILINE)
+
 
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(content)
