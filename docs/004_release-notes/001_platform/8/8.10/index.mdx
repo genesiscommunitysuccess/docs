@@ -38,9 +38,9 @@ id: '8.10'
 * `dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
 * `dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
 * `dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
-* `db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
-* `db` : Do not refresh updates that have moved in or out of range 
-* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
+* `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field
+* `genesis-db` : Do not refresh updates that have moved in or out of range 
+* `genesis-db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
 * `diags` : Better log error message when SysDef evaluation fails 
 * `genesis-criteria` : Fixed scenarios where METHOD_EXPRESSION types would not be handled correctly 
 * `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
@@ -99,8 +99,8 @@ id: '8.10'
 
 ###### Fixes
 
-- fix(db): Change default Backwards Join Cache mode to Sync (GSF-7267) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4318
-- fix: Fix `ClassCastException` issue in backwards join cache (GSF-7266) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4319
+* `genesis-db` : Change default Backwards Join Cache mode to Sync 
+* Fix `ClassCastException` issue in backwards join cache 
 
 ## Client
 
@@ -120,6 +120,3 @@ id: '8.10'
 * `client-app` : Fix setup issue after env tooling change 
 * Add proxy rewrite logic for gwf 
 * Add proxy support for public path deployments 
-* Add proxy support for public path deployments 
-* `foundation-openfin` : Audit fix on foundation openfin packages
-* Revert "fix(foundation-openfin): audit fix on foundation openfin package-lock

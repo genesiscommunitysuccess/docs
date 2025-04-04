@@ -27,8 +27,11 @@ operations = [
 
     # String matches and replacements - add any modificaitons from original notes here (list will get large!)
     #{"type": "string", "find": "FOOOO", "replace": "BARRRR"},
-    {"type": "string", "find": "`db` : Correct upsert operation on SQL", "replace": "`db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field"},
-    
+    {"type": "string", "find": "`db` : Correct upsert operation on SQL", "replace": "`genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field"},
+    {"type": "string", "find": "`db` : Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field", "replace": "`genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field"},
+    {"type": "string", "find": "* `db` : Do not refresh updates that have moved in or out of range", "replace": "* `genesis-db` : Do not refresh updates that have moved in or out of range"},
+    {"type": "string", "find": "* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null", "replace": "* `genesis-db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null"},
+    {"type": "string", "find": "* `db` : Change default Backwards Join Cache mode to Sync", "replace": "* `genesis-db` : Change default Backwards Join Cache mode to Sync"},
 ]
 
 def apply_operations_to_file(file_path: str):
