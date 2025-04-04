@@ -7,10 +7,9 @@ id: '8.10'
 
 ## Server
 
-### BREAKING CHANGES
-
-* Upgrade to Gradle 8.10.2 
-* Removed unused legacy validation database strategy 
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
 
 ### Features
 
@@ -120,3 +119,20 @@ id: '8.10'
 * `client-app` : Fix setup issue after env tooling change 
 * Add proxy rewrite logic for gwf 
 * Add proxy support for public path deployments 
+
+### Breaking changes
+
+#### Mandatory upgrade to Gradle version 8.10.2 
+
+We have had to move onto version 8.10.2 of Gradle as part of a security vulnerability fix. A dependent library of the Genesis Framework (Apache Camel) had a critical vulnerability and the fixed version uses a library called Jackson 2.18, which is incompatible with Gradle 8.4 (our previous version of gradle) due to it's own bug. Gradle have fixed their bug in 8.10.2+ but they have not backported to 8.4 and as such projects taking Genesis 8.10+ of the Genesis Server Framework are required to follow these steps to update their project's gradle wrapper to 8.10.2.
+
+Firstly, upgrade your server dependencies to use 8.10.* where * is the latest patch version at the time of your upgrade. This must be completed before then following these instructions:
+
+1. Under your project root directory run this command twice: `./gradlew wrapper --gradle-version 8.10.2`
+1. Then move into the project's `server` directory, and run the same command twice again: `./gradlew wrapper --gradle-version 8.10.2`
+
+Please note, if the instructions above fail to download the new version it is likely that your IT department may be blocking gradle downloads. In which case speak to your IT team about where you can download Gradle version 8.10.2 within your enterprise, requesting they add it if this version isn't yet available. 
+
+[Click here for more details on the gradle issue which forced the upgrade](https://github.com/gradle/gradle/issues/30949)  
+[Click here for further details on upgrading Gradle](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:upgrading_wrapper)  
+[Click here for Gradle breaking changes release notes](https://docs.gradle.org/8.10.2/userguide/upgrading_version_8.html)
