@@ -76,6 +76,27 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.12
+
+###### Fixes
+
+* `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
+* `genesis-junit` : Detect annotations on super classes 
+* `pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
+* `settings-plugin` : Add script dependencies on script-config module if present 
+
+#### 8.8.11
+
+###### Features
+
+* `pal-dataserver` : Improve priming progress updates in log file 
+
+###### Fixes
+
+* `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
+* `pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
+* `pal-requestserver` : Range requests using FROM/TO are now evaluated correctly 
+
 #### 8.8.10
 
 ###### Features
