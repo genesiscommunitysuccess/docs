@@ -5,7 +5,37 @@ sidebar_position: 2
 id: '8.10-documents'
 ---
 
-No changes
+### BREAKING CHANGES
+
+- build(deps)!: Upgrade to Gradle 8.10.2 by @jacinpoz in https://github.com/genesislcap/platform-documents/pull/331
+- feat!: Enable auth by default on file server endpoints (DOCMGMT-0) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/358
+- feat!: Replaced IS_TEMPLATE flag on FILE_STORAGE table with FILE_TYPE enum for extensibility (DOCMGMT-0) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/349
+
+### Features
+
+- feat: Added endpoint to get asset details for a given document template ID (DOCMGMT-64) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/353
+- feat: Added new HTTP endpoint to replace binary content of file (DOCMGMT-62) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/345
+- feat: Added subdirectory storage option to document storage API calls (DOCMGMT-58) by @tgosling-genesis in https://github.com/genesislcap/platform-documents/pull/323
+- feat: Added support for Apache Freemarker templates in Document Generator (DOCMGMT-66) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/359
+- feat: Move deletion of files to event handler instead of web handler (DOCMGMT-60) by @tgosling-genesis in https://github.com/genesislcap/platform-documents/pull/332
+- feat: handle file UPLOAD_TEMPLATE (DOCMGMT-52) by @matteematt in https://github.com/genesislcap/platform-documents/pull/330
+
+### Fixes
+
+- fix: Ensure file size is correctly updated when replacing a file binary contents (DOCMGMT-65) by @ZuhaaJamani in https://github.com/genesislcap/platform-documents/pull/355
+- fix: Replaced fetch call for delete with event (DOCMGMT-60) by @mahamzafar990 in https://github.com/genesislcap/platform-documents/pull/333
+- fix: add gwf prefix to fetch calls (DOCMGMT-0) by @matteematt in https://github.com/genesislcap/platform-documents/pull/334
+- fix: bump version (DOCMGMT-0) by @matteematt in https://github.com/genesislcap/platform-documents/pull/337
+- fix: prevent appending session token (DOCMGMT-0) by @skawian in https://github.com/genesislcap/platform-documents/pull/325
+- fix: restore targetting minor version (RPT-0) by @matteematt in https://github.com/genesislcap/platform-documents/pull/339
+- fix: set the versions to be floating DOCMGMT-51 by @matteematt in https://github.com/genesislcap/platform-documents/pull/335
+- fix: use patch versions where we were before (DOCMGMT-0) by @matteematt in https://github.com/genesislcap/platform-documents/pull/341
+- fix: use relative path for endpoints (DOCMGMT-0) by @skawian in https://github.com/genesislcap/platform-documents/pull/327
+- fix: use relative paths for endpoints (DOCMGMT-0) by @skawian in https://github.com/genesislcap/platform-documents/pull/326
+
+### Dependency changes
+
+- build(deps): Updating genesisVersion to 8.10.0-SNAPSHOT by @tgosling-genesis in https://github.com/genesislcap/platform-documents/pull/322
 
 ### Patch releases
 

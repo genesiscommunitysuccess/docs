@@ -5,3 +5,116 @@ sidebar_position: 11
 id: '8.10'
 ---
 
+## Server
+
+### BREAKING CHANGES
+
+- build(deps)!: Upgrade to Gradle 8.10.2 (GSF-7224) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4203
+- chore!: Removed unused legacy validation database strategy (GSF-6238) by @jldparker in https://github.com/genesislcap/genesis-server/pull/3386
+
+### Features
+
+- feat!(genesis-transform): Added predicate expression structure to criteria API and replaced rowFilters in transformer configuration (GSF-7235) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4187
+- feat!(genesis-transform): Modified transformer configuration to use inclusion over exclusion for column filters (GSF-7236) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4189
+- feat(Dataserver): Add support for importing entity indices (GSF-7243) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4211
+- feat(GenesisJunit): Added support for testing process end state (GSF-7239) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4190
+- feat(dataserver): Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices (GSF-7231) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4156
+- feat(db): extension to allow interception of database writes (GSF-7228) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4134
+- feat(genesis-criteria): Added additional functions in criteria API (isNullOrBlank, longtoDate, longToDateTime) (GSF-7253) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4273
+- feat(genesis-junit): add support for `@UserRight` annotation (GSF-7247) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4228
+- feat(pal-dataserver): add new dataserver update processing mode (GSF-7226) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4136
+- feat(pal-dataserver): improve priming progress updates in log file (GSF-7249) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4240
+- feat: Added valid timezone endpoint to GENESIS_EVALUATOR and added RULE_TYPE to CRON_RULE table (GSF-7205) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4077
+- feat: add annotation support to dump threads and coroutines on test failure (GSF-7242) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4210
+- feat: add support for `GENESIS_HOME` in templt.xml files (GSF-7240) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4202
+- feat: add support for custom purgers (GSF-7226) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4119
+- feat: allow core packages to be augmented for application bootstrap (GSF-7220) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4204
+- feat: improve coroutine exception handling (GSF-7244) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4216
+
+### Fixes
+
+- fix(Router): Cookie based auth doesn't work on multipart HTTP messages (GSF-7255) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4278
+- fix(dataserver): Add support for non unique indices (GSF-7238) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4197
+- fix(dataserver): Avoid unnecessary LMDB range read in certain scenarios (GSF-7237) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4188
+- fix(dataserver): Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling (GSF-7232) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4159
+- fix(dataserver): ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available (GSF-7199) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4023
+- fix(db): correct upsert operation on SQL (GSF-7259) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4297
+- fix(db): do not refresh updates that have moved in or out of range (GSF-7206) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4088
+- fix(db): when db cache inserts are enabled, write inserts to the cache if existing cache entry value is null (GSF-7200) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4030
+- fix(diags): better log error message when SysDef evaluation fails (GSF-7207) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4081
+- fix(genesis-criteria): Fixed scenarios where METHOD_EXPRESSION types would not be handled correctly (GSF-7248) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4250
+- fix(genesis-db): upsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode (GSF-7252) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4266
+- fix(genesis-junit): detect annotations on super classes (GSF-7260) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4300
+- fix(gradle-plugins): Ensure automatic dependency resolution handles exceptions correctly (GSF-7261) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4299
+- fix(pal-consolidator): Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations (GSF-7263) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4313
+- fix(pal-dataserver): `String` overflow handling logic is now applied correctly when priming (GSF-7257) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4288
+- fix(pal-dataserver): revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled (GSF-7251) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4249
+- fix(pal-requestserver): Range requests using FROM/TO are now evaluated correctly (GSF-7254) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4271
+- fix(pbc-gradle-plugin): Allow patch inclusive semantic versions (^X syntax) in client versions (GSF-7246) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4217
+- fix(settings-plugin): add script dependencies on script-config module if present (GSF-7262) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4310
+- fix(xml-dataserver): Race condition when processing modify very soon after an insert which failed the where clause (GSF-7229) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4135
+- fix: Ensure METHOD_EXPRESSION types can be deserialised as part of Criteria API (GSF-7248) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4229
+- fix: Use `GenesisInjector` for all script configurations (GSF-7234) by @harryjhornby in https://github.com/genesislcap/genesis-server/pull/4186
+- fix: disabling processRestart for docker images and including encrypting sysdefs (GSF-7198) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4022
+- fix: disabling processRestart when flag is TRUE and not FALSE (GSF-7198) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4065
+- fix: fix support for views in dbmon (GSF-7216) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4098
+- fix: remove need for additional sys def service for BackwardJoinCache (GSF-7215) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4095
+- fix: tests should apply SysDefOverwrite when process config file provided (GSF-7201) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/4043
+- fix: using app sys def file in integration tests should work for multiple tests (GSF-7197) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/4017
+
+### Dependency changes
+
+- build(deps): bump byteBuddyVersion from 1.17.1 to 1.17.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4121
+- build(deps): bump camelVersion from 4.10.1 to 4.10.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4146
+- build(deps): bump camelVersion from 4.7.0 to 4.10.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4115
+- build(deps): bump com.github.oshi:oshi-core from 6.6.6 to 6.7.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4079
+- build(deps): bump com.github.oshi:oshi-core from 6.7.0 to 6.7.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4199
+- build(deps): bump com.github.oshi:oshi-core from 6.7.1 to 6.8.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4246
+- build(deps): bump com.google.errorprone:error_prone_annotations from 2.36.0 to 2.37.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4231
+- build(deps): bump com.google.protobuf:protobuf-java from 4.29.3 to 4.30.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4120
+- build(deps): bump com.google.protobuf:protobuf-java from 4.30.0 to 4.30.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4205
+- build(deps): bump com.microsoft.sqlserver:mssql-jdbc from 12.8.1.jre11 to 12.10.0.jre11 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4221
+- build(deps): bump debeziumVersion from 3.0.7.Final to 3.0.8.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4117
+- build(deps): bump groovyVersion from 3.0.23 to 3.0.24 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4090
+- build(deps): bump jacksonVersion from 2.17.3 to 2.18.3 in /genesis-conventions by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4201
+- build(deps): bump jnaVersion from 5.16.0 to 5.17.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4214
+- build(deps): bump junitVersion from 5.10.3 to 5.12.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4213
+- build(deps): bump micrometerVersion from 1.14.4 to 1.14.5 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4157
+- build(deps): bump mockitoVersion from 5.15.2 to 5.16.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4123
+- build(deps): bump mockitoVersion from 5.16.0 to 5.16.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4215
+- build(deps): bump nettyVersion from 4.1.118.Final to 4.1.119.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4082
+- build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.39.0 to 2.40.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4220
+- build(deps): bump org.apache.commons:commons-csv from 1.13.0 to 1.14.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4232
+- build(deps): bump org.checkerframework:checker-qual from 3.49.0 to 3.49.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4131
+- build(deps): bump org.jlleitschuh.gradle.ktlint from 12.1.1 to 12.2.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4147
+- build(deps): bump slf4jVersion from 2.0.16 to 2.0.17 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4078
+- build(deps): bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.4 to 2.5.5 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4133
+- build(deps): bump sshdVersion from 2.14.0 to 2.15.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4074
+- build(deps): bump testcontainersVersion from 1.20.5 to 1.20.6 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4118
+
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Client
+
+### Features
+
+* feat: Added new cron scheduler component
+* feat: Added expression builder package and rule builder component FUI-2266 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1755
+* feat(build-kit): Reading dot env file parameter from env params - FUI-2292 by @patrickoneill-genesis in https://github.com/genesislcap/foundation-ui/pull/1731
+* feat(foundation-ui): add draggable ability to existing modal component - FUI-2299 by @ArturKrasinski in https://github.com/genesislcap/foundation-ui/pull/1769
+
+### Fixes
+
+* fix(foundation-entity-management): corrected add button position when search-bar is enabled FUI-2242 by @SzymonZur in https://github.com/genesislcap/foundation-ui/pull/1752
+* fix(foundation-login): build from docs PTL-1832 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1754
+* fix(foundation-ui): fixing width in calendar days of week header for weekends hidden - FUI-2293 by @patrickoneill-genesis in https://github.com/genesislcap/foundation-ui/pull/1756
+* chore: upgrade docs management to the latest version FUI-0 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1751
+* chore(client-app): fix setup issue after env tooling change FUI-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1761
+* fix: add proxy rewrite logic for gwf FUI-0 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1763
+* fix: add proxy support for public path deployments FUI-0 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1764
+* fix: add proxy support for public path deployments FUI-0 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1766
+* fix(foundation-openfin): audit fix on foundation openfin packages  by @patrickoneill-genesis in https://github.com/genesislcap/foundation-ui/pull/1772
+* fix: Revert "fix(foundation-openfin): audit fix on foundation openfin package-lock by @patrickoneill-genesis in https://github.com/genesislcap/foundation-ui/pull/1773
