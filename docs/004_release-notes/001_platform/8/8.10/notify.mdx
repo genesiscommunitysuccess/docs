@@ -7,23 +7,23 @@ id: '8.10-notify'
 
 ### BREAKING CHANGES
 
-- build(deps)!: Upgrade to Gradle 8.10.2 by @jacinpoz in https://github.com/genesislcap/platform-notify/pull/400
-- feat!: Add ROUTE_ENABLED flag to allow disabling of routes at runtime without deletion (NOTIFY-220) by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/384
+* Upgrade to Gradle 8.10.2
+* Add ROUTE_ENABLED flag to allow disabling of routes at runtime without deletion 
 
 ### Features
 
-- feat: Add support to set arbitrary properties on SMTP config for advanced use cases such as TLS trusted hosts (NOTIFY-224) by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/390
-- feat: Added UI support for enabling and disabling routes (NOTIFY-220) by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/387
-- feat: Expose properties for sessionTimeout, verifyServerIdentity, trustedSslHosts and trustAllSslHosts in Email Gateway configuration (NOTIFY-224) by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/395
+* Add support to set arbitrary properties on SMTP config for advanced use cases such as TLS trusted hosts 
+* Added UI support for enabling and disabling routes 
+* Expose properties for sessionTimeout, verifyServerIdentity, trustedSslHosts and trustAllSslHosts in Email Gateway configuration 
 
 ### Fixes
 
-- fix(SendGrid): Only log outbound email body if debug enabled, to prevent memory issues (NOTIFY-222) by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/378
-- fix: Ensure correct mime type is sent on email with plain text content (NOTIFY-226) by @ZuhaaJamani in https://github.com/genesislcap/platform-notify/pull/402
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues 
+* Ensure correct mime type is sent on email with plain text content 
 
 ### Dependency changes
 
-- build(deps): Updating genesisVersion and fileServerVersion to 8.10.0-SNAPSHOT by @tgosling-genesis in https://github.com/genesislcap/platform-notify/pull/377
+* Updating genesisVersion and fileServerVersion to 8.10.0-SNAPSHOT
 
 ### Patch releases
 
