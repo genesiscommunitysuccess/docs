@@ -32,6 +32,10 @@ operations = [
     {"type": "string", "find": "* `db` : Do not refresh updates that have moved in or out of range", "replace": "* `genesis-db` : Do not refresh updates that have moved in or out of range"},
     {"type": "string", "find": "* `db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null", "replace": "* `genesis-db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null"},
     {"type": "string", "find": "* `db` : Change default Backwards Join Cache mode to Sync", "replace": "* `genesis-db` : Change default Backwards Join Cache mode to Sync"},
+    {"type": "string", "find": "`genesis-transform` : Added predicate expression structure to criteria API and replaced rowFilters in transformer configuration", "replace": "`genesis-transform` : Added predicate expression structure to criteria API and replaced `rowFilters` in transformer configuration"},
+    {"type": "string", "find": "`genesis-criteria` : Added additional functions in criteria API (isNullOrBlank, longtoDate, longToDateTime)", "replace": "`genesis-criteria` : Added additional functions in criteria API (`isNullOrBlank`, `longtoDate`, `longToDateTime`)"},
+    {"type": "string", "find": "Add support for `GENESIS_HOME` in templt.xml files ", "replace": "Add support for `GENESIS_HOME` in `templt.xml` files"},
+    {"type": "string", "find": "Expose properties for sessionTimeout, verifyServerIdentity, trustedSslHosts and trustAllSslHosts in Email Gateway configuration", "replace": "Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration"},
 ]
 
 def apply_operations_to_file(file_path: str):
