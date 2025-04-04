@@ -1,0 +1,27 @@
+---
+title: '8.10 Notify'
+sidebar_label: 'Notify'
+sidebar_position: 5
+id: '8.10-notify'
+---
+
+### BREAKING CHANGES
+
+* Upgrade to Gradle 8.10.2
+* Add ROUTE_ENABLED flag to allow disabling of routes at runtime without deletion 
+
+### Features
+
+* Add support to set arbitrary properties on SMTP config for advanced use cases such as TLS trusted hosts 
+* Added UI support for enabling and disabling routes 
+* Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration 
+
+### Fixes
+
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues 
+* Ensure correct mime type is sent on email with plain text content 
+
+### Patch releases
+
+There are currently no patch releases for this version
+

@@ -1,0 +1,42 @@
+---
+title: '8.10 Documents'
+sidebar_label: 'Documents'
+sidebar_position: 2
+id: '8.10-documents'
+---
+
+### BREAKING CHANGES
+
+* Upgrade to Gradle 8.10.2
+* Enable auth by default on file server endpoints 
+* Replaced IS_TEMPLATE flag on FILE_STORAGE table with FILE_TYPE enum for extensibility 
+
+### Features
+
+* Added endpoint to get asset details for a given document template ID 
+* Added new HTTP endpoint to replace binary content of file 
+* Added subdirectory storage option to document storage API calls 
+* Added support for Apache Freemarker templates in Document Generator 
+* Move deletion of files to event handler instead of web handler 
+* Handle file UPLOAD_TEMPLATE 
+
+### Fixes
+
+* Ensure file size is correctly updated when replacing a file binary contents 
+* Replaced fetch call for delete with event 
+* Add gwf prefix to fetch calls
+* Prevent appending session token 
+* Restore targetting minor version 
+* Set the versions to be floating 
+* Use patch versions where we were before 
+* Use relative path for endpoints 
+* Use relative paths for endpoints 
+
+### Dependency changes
+
+* Updating genesisVersion to 8.10.0-SNAPSHOT
+
+### Patch releases
+
+There are currently no patch releases for this version
+
