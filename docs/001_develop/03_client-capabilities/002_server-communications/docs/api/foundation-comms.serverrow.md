@@ -17,5 +17,6 @@ export type ServerRow = {
         OPERATION: 'INSERT' | 'MODIFY' | 'DELETE';
         ROW_REF: string;
     };
+    [key: string]: any;
 };
 ```

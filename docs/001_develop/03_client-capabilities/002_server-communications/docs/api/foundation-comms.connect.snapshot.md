@@ -12,7 +12,7 @@ Retrieves a snapshot of data for the specified resource.
 **Signature:**
 
 ```typescript
-snapshot(resourceName: string, params?: any): Promise<Message>;
+snapshot(resourceName: string, params?: DataserverParams): Promise<Message>;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ snapshot(resourceName: string, params?: any): Promise<Message>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  resourceName | string | The name of the resource to retrieve the snapshot for. |
-|  params | any | _(Optional)_ Additional parameters to pass to the server. |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ Additional parameters to pass to the server. |
 
 **Returns:**
 
