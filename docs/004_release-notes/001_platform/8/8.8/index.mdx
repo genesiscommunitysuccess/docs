@@ -76,6 +76,27 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.12
+
+###### Fixes
+
+- fix(db): correct upsert operation on SQL (GSF-7259) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4295
+- fix(genesis-junit): detect annotations on super classes (GSF-7260)  by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4304
+- fix(pal-dataserver): `String` overflow handling logic is now applied correctly when priming (GSF-7257) (#4287) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4291
+- fix(settings-plugin): add script dependencies on script-config module if present (GSF-7262) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4308
+
+#### 8.8.11
+
+###### Features
+
+- feat(pal-dataserver): improve priming progress updates in log file (GSF-7249) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4243
+
+###### Fixes
+
+- fix(genesis-db): upsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode (GSF-7252) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4264
+- fix(pal-dataserver): revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled (GSF-7251) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4257
+- fix(pal-requestserver): Range requests using FROM/TO are now evaluated correctly (GSF-7254) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/4269
+
 #### 8.8.10
 
 ###### Features
