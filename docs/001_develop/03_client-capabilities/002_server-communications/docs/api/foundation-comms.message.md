@@ -15,7 +15,8 @@ Base Message type for all DETAIL variants
 export type Message<T = void | any> = {
     REPLY?: any[];
     CODE?: MessageCode | string;
-    DETAILS?: T;
+    DETAILS?: T | any;
+    GENERATED?: T | any;
     LOGGED_OUT?: boolean;
     ERROR?: MessageError[];
     MESSAGE_TYPE?: MessageType | EventMessageType | string;

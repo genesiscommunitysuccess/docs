@@ -24,6 +24,7 @@ export declare enum FieldTypeEnum
 |  DATE | <code>&quot;DATE&quot;</code> |  |
 |  DATETIME | <code>&quot;DATETIME&quot;</code> |  |
 |  ENUM | <code>&quot;ENUM&quot;</code> |  |
+|  NANO\_TIMESTAMP | <code>&quot;NANO_TIMESTAMP&quot;</code> |  |
 |  NUMBER | <code>&quot;NUMBER&quot;</code> |  |
 |  STRING | <code>&quot;STRING&quot;</code> |  |
 

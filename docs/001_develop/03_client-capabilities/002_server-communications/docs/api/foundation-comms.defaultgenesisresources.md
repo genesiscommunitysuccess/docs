@@ -36,7 +36,8 @@ export declare class DefaultGenesisResources implements GenesisResources
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [destroy()](./foundation-comms.defaultgenesisresources.destroy.md) |  | Destroy and garbage collect |
-|  [getResources()](./foundation-comms.defaultgenesisresources.getresources.md) | <code>protected</code> |  |
+|  [fetchResources()](./foundation-comms.defaultgenesisresources.fetchresources.md) | <code>protected</code> |  |
+|  [getAllResources()](./foundation-comms.defaultgenesisresources.getallresources.md) |  |  |
 |  [getResourceTypeFor(resourceName)](./foundation-comms.defaultgenesisresources.getresourcetypefor.md) |  | Gets the type of resource |
 |  [isValidResource(resourceName)](./foundation-comms.defaultgenesisresources.isvalidresource.md) |  | Checks if the resource exists |
 |  [postLoadedMessage()](./foundation-comms.defaultgenesisresources.postloadedmessage.md) | <code>protected</code> |  |

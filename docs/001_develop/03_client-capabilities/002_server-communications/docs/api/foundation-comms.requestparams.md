@@ -15,6 +15,7 @@ Parameters for a REQ\_ messages
 export type RequestParams = {
     DETAILS?: RequestDetailsParam | any;
     REQUEST?: any;
+    [key: string]: any;
 };
 ```
 **References:** [RequestDetailsParam](./foundation-comms.requestdetailsparam.md)
