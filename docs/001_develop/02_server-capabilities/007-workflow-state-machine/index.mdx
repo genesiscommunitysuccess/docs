@@ -74,10 +74,8 @@ eventHandler {
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if(order.orderState == OrderStatus.ASSIGNED) {
-          if(order.assignedTo == null) {
-            return onValidate@nack("Order must be assigned to set status of ASSIGNED")
-          }
+        require(order.assignedTo != null || orderState != OrderStatus.ASSIGNED) {
+            "Order must be assigned to set status of ASSIGNED"
         }
       }
       
@@ -102,10 +100,8 @@ eventHandler {
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if(order.orderState == OrderStatus.ASSIGNED) {
-          if(order.assignedTo == null) {
-            return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
-          }
+        require(order.assignedTo != null || orderState != OrderStatus.ASSIGNED) {
+            "Order must be assigned to set status of ASSIGNED"
         }
       }
     }
@@ -120,10 +116,9 @@ eventHandler {
       }
 
       onValidate { order ->
-        if(order.orderState == OrderStatus.ASSIGNED) {
-          if(order.assignedTo == null) {
-            return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
-          }
+        verifyOnly { order hasField ORDER.ASSIGNED_TO }
+        require(order.assignedTo != null) {
+            "Order must be assigned to set status of ASSIGNED"
         }
       }
     }
@@ -265,7 +260,12 @@ This removes fields defined on the table from the event. These fields should onl
 
 This validates the inbound event details. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
 
-One difference from a regular eventHandler `onValidate` block is that there is no need to return an `ack`. This is returned implicitly where no exception is hit; otherwise, a `nack` is returned.
+**For a State Machine, you must not return an `ack` or `nack` at the end of the `onValidate` block**. If you do, it will not compile. This is a major difference between a State Machine and a standard Event Handler.
+
+The validation is considered successful unless an `IllegalArgumentException` is thrown, in which case a `nack` is returned automatically.
+`verifyOnly` and `require` will throw this exception if these statements fail.
+
+Other exceptions will result in a `nack` as well, but will be considered internal failures, and no error message is returned to the caller.
 
 ```kotlin {3-11}
     insertEvent {
@@ -273,10 +273,8 @@ One difference from a regular eventHandler `onValidate` block is that there is n
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if (order.orderState == OrderStatus.ASSIGNED) {
-          if (order.assignedTo == null) {
-            return onValidate@nack("Order must be assigned to set status of ASSIGNED")
-          }
+        require(order.assignedTo != null || orderState != OrderStatus.ASSIGNED) {
+          "Order must be assigned to set status of ASSIGNED"
         }
       }
       ...
@@ -446,10 +444,8 @@ class OrderStateMachine @Inject constructor(
         onValidate { order ->
           verifyOnly { order hasField ORDER.PRICE }
           verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-          if(order.orderState == OrderStatus.ASSIGNED) {
-            if(order.assignedTo == null) {
-              return onValidate@nack("Order must be assigned to set status of ASSIGNED")
-            }
+          require(order.assignedTo != null || orderState != OrderStatus.ASSIGNED) {
+            "Order must be assigned to set status of ASSIGNED"
           }
         }
 
