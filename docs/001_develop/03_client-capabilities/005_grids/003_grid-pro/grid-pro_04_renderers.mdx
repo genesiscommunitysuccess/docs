@@ -43,7 +43,7 @@ Renders a single action button within a grid cell, allowing for row-specific int
 
 #### Key features
 
-- Customizable button name and appearance
+- Customizable button name, appearance and button style
 - Supports disabled state based on row data
 - Handles click events with optional async actions
 - Supports E2E testing with data-test-id attributes
@@ -57,7 +57,8 @@ const actionRendererColDef = {
     actionName: 'Edit',
     actionClick: (rowData) => handleEdit(rowData),
     isDisabled: (rowData) => !rowData.editable,
-    appearance: 'primary'
+    appearance: 'primary',
+    actionButtonStyle: 'color: #f5f5f5; font-weight: 700;',
   },
   // other column options
 }

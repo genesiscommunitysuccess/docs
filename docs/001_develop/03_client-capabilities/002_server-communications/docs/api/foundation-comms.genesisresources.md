@@ -24,6 +24,7 @@ A lazy shared Genesis Resources lookup system. N number of callers can request i
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [destroy](./foundation-comms.genesisresources.destroy.md) |  | () =&gt; void | Destroy and garbage collect |
+|  [getAllResources](./foundation-comms.genesisresources.getallresources.md) |  | () =&gt; Promise&lt;[ResourceItem](./foundation-comms.resourceitem.md)\[\]&gt; | All available resources |
 |  [getResourceTypeFor](./foundation-comms.genesisresources.getresourcetypefor.md) |  | (resourceName: string) =&gt; Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)&gt; | Gets the type of resource |
 |  [isValidResource](./foundation-comms.genesisresources.isvalidresource.md) |  | (resourceName: string) =&gt; Promise&lt;boolean&gt; | Checks if the resource exists |
 

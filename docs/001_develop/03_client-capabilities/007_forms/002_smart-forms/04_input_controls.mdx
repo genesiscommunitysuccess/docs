@@ -224,6 +224,7 @@ The select control schema creates a dropdown select box. Users can select only o
 
 To invoke this renderer, include an `options` section in the `UISchemaElement` with an array of data. You can specify which properties of your array objects are used for the underlying option value, `valueField`, and for the display value, `labelField`.
 
+You can also include an optional boolean property, `allowCustomOptions`, which enables users to enter custom values that are not part of the predefined options list, offering more flexibility in their input.
 ```ts
 // Select Input
 const selectData = ['Miami', 'New York', 'London', 'Dublin', 'São Paulo', 'Bengaluru']
