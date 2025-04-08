@@ -788,6 +788,7 @@ public class ProvidedInstanceTest {
 #### UserRight
 
 The `UserRight` annotation provides users with specific rights during a test.
+
 To use this annotation, annotate any method or class with `@UserRight` and provide the user and right codes:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -825,8 +826,7 @@ public void testAnnotation() {
 
 #### ExpectedProcessStatus
 
-The `ExpectedProcessStatus` annotations provides a way to assert a certain process end state after a test.
-By default GenesisJunit will assert that the process is healthy (`ProcessState.UP`) after a test.
+The `ExpectedProcessStatus` annotations enable you to set the end state of a process after a test. By default, GenesisJunit will assert that the process is healthy (`ProcessState.UP`).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
