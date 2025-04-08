@@ -23,7 +23,7 @@ operations = [
     #{"type": "regex", "find": r"in (/[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*) by @\w+ in https?://[^\s)]+", "replace": r"\1"},
 
     # This will remove the tail of the dependabot version bump commit messages
-    {"type": "regex","find": r"\s+in /genesis-conventions\b","replace": ""},
+    {"type": "regex","find": r"\s+in /genesis[\w/-]*","replace": ""},
 
     # String matches and replacements - add any modificaitons from original notes here (list will get large!)
     #{"type": "string", "find": "FOOOO", "replace": "BARRRR"},
