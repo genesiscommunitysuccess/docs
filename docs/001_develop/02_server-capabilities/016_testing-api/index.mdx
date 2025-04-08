@@ -785,8 +785,81 @@ public class ProvidedInstanceTest {
 </TabItem>
 </Tabs>
 
+#### UserRight
+
+The `UserRight` annotation provides users with specific rights during a test.
+
+To use this annotation, annotate any method or class with `@UserRight` and provide the user and right codes:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+@UserRight("John Doe", "LICENSE_TO_BILL")
+fun `user has rights`() {
+    client.sendRequest(
+        workFlow = InstrumentDetailsFlow,
+        request = ByAlternateTypeAlternateCode("RIC", "AMBV4"),
+        username = "John Doe"
+    )
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+@UserRight(user = "John Doe", rights = "LICENSE_TO_BILL")
+public void testAnnotation() {
+    client.sendRequest(
+        InstrumentDetailsFlow,
+        new ByAlternateTypeAlternateCode("RIC", "AMBV4"),
+        "John Doe"
+    );
+}
+```
+</TabItem>
+</Tabs>
 
 
+#### ExpectedProcessStatus
+
+The `ExpectedProcessStatus` annotations provide a way to assert the end state of a process after a test. By default, GenesisJunit will assert that the process is healthy (`ProcessState.UP`).
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+@ExpectedProcessStatus(ProcessState.DOWN)
+fun `test status DOWN`() {
+    ProcessStateChangeHandler("test").setProcessDown()
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+@ExpectedProcessStatus(ProcessState.DOWN)
+public void testStatusDown() {
+    new ProcessStateChangeHandler("test").setProcessDown();
+}
+```
+</TabItem>
+</Tabs>
+
+### Troubleshoot threading and coroutine issues in tests
+
+To help troubleshoot threading and coroutine issues, genesis junit offers support for thread and coroutine dumps on test failure.
+To enable this, there are three annotations:
+
+* `@ThreadDumpOnFailure` - dumps threads on test failure
+* `@CoroutinesDumpOnFailure` - dumps coroutines on test failure
+* `@FullDumpOnFailure` - dumps both tests and coroutines on test failure
 
 ## Integration testing (legacy)
 
