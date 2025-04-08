@@ -2,12 +2,15 @@
 title: 'Real-time queries (Data Server)'
 sidebar_label: 'Real-time queries (Data Server)'
 id: server-real-time-queries-data-server
-keywords: [query, real-time, real time, dataserver]
+keywords: [query, real-time, real time, dataserver, lmdb, lmdb allocation, serialization]
 tags:
 - query
 - real-time
 - real time
 - dataserver
+- lmdb
+- lmdb allocation
+- serialization
 sidebar_position: 4
 ---
 
@@ -660,7 +663,7 @@ dataServer {
 
 | Config item | Description | Default | Overridable in `query` |
 |-------------|-------------|---------|------------------------|
-|`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`)|`2.GIGA_BYTE()`|No|
+|`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`)|`2.GIGA_BYTE()`|No|
 |`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FURY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
 |`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
 |`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
@@ -674,6 +677,22 @@ dataServer {
 |`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. |TRUNCATE_FIELD |Yes|
 |`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
 |`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
+
+###### LMDB allocation and WARNING state
+When the LMDB consumes most of the memory allocated by `lmdbAllocationSize`, the status of the Data Server process is automatically changed to `WARNING`. 
+
+There are two simple ways to address this:
+
+- Increase the `lmdbAllocateSize`.
+- Set `compression` to `true`.
+
+If LMDB memory usage is a persistent issue, then the recommended strategy is to copy the entire LMDB store to a new file on a regular basis and delete the old LMDB file. This reduces the store size by removing deleted entries (these are not tidied up automatically - LMDB does not run cleaning tasks in the background).
+
+:::tip Looking into memory usage 
+To examine memory usage, look at the base table sizes when the Data Server process starts and the queries are primed. 
+
+The Data Server logs how many records are stored in LMDB for each query on start-up, so you know exactly how many entries are used for each table and view. Queries with a large number of entities and large record size are likely to be the problem.
+:::
 
 ###### Serialization considerations
 
