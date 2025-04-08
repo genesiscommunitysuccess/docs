@@ -880,15 +880,6 @@ A log file called `purge_<time_of_run>` will be created in the `$GENESIS_HOME/ru
 
 The functions and filters below give you different ways of purging data.
 
-###### Inject repository
-You can inject any repository into the purger script; for example:
-
-```kotlin
-purgers{
-    val userSessionRepo = inject<UserSessionRx2Repository>()
-}
-```
-
 ### Purge by date
 
 The purger supports purging based on days. You can specify the max age of a record in terms of either calendar days or business days.
@@ -974,6 +965,25 @@ purgers {
 // Purge USER_SESSION older than 8 business days in country India
  bulkPurger(USER_SESSION)
   .filterBusinessDays(8, "INDIA")
+}
+```
+
+### Custom purgers
+
+If more complicated purging logic is required, custom purgers can help.
+These allow developers to return a `Collection` or `Flow` of entities as a purger instruction.
+For example, if we wanted to remove all users without a corresponding user session:
+
+```kotlin
+customPurger(USER) {
+    val usersWithSession = entityDb.getBulk(USER_SESSION)
+        .map { it.userName }
+        .toSet()
+
+    entityDb.getBulk(USER)
+        .filterNot { it.userName in usersWithSession }
+        .map { it.byName() }
+        .asPurgerInstruction()
 }
 ```
 
