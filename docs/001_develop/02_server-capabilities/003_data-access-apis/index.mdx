@@ -144,12 +144,11 @@ View entities inherit the indices of the root table of the view, so with referen
 ### Entity logging
 
 By default, table and view entities add new lines to the `toString()` method.
-This can help when looking through log files, as each property will be on its own line.
-However, in larger projects, and when using tools like `grep` and log aggregators,
-this can make the log files harder to manager, as a single log entry can span many lines.
+This can help when looking through log files, as each property has a line to itself.
 
-As such, genesis exposes a property in the gradle build script that will generate `toString()` methods that return a `String` representation of the entity on a single line.
-To enable, add `generateCompactToString = true` to the **build.gradle.kts** files of the **genesis-generated-dao** and **genesis-generated-dao** modules:
+However, in larger projects, and when using tools like `grep` and log aggregators, this can make the log files harder to manage; as a single log entry can span many lines.
+
+For this, the platform exposes a property in the gradle build script to generate `toString()` methods that return a `String` representation of the entity on a single line. To enable this, add `generateCompactToString = true` to the `build.gradle.kts` files of the `genesis-generated-dao` and `genesis-generated-dao` modules:
 
 ```kotlin
 description = "genesis-generated-dao"
