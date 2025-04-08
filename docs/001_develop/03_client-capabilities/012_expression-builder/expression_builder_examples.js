@@ -1,6 +1,6 @@
 import { CodeSection } from '../../../../examples/ui/documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import React from 'react';
+import React, {useState} from 'react';
 
 const EXAMPLE_MIN_AGE = 18;
 
@@ -67,9 +67,16 @@ export function RuleBuilderExample() {
 	const isBrowser = useIsBrowser();
 	const expressionBuilderRef = React.useRef(null);
 
+	const [modelString, setModelString] = useState({});
+	const [showModel, setShowModel] = useState(true);
+
 	if (isBrowser) {
 		const RapidImports = require('../../../../examples/ui/rapidImports');
 		RapidImports.registerComponents();
+	}
+
+	const change = (e) => {
+		setModelString(e.nativeEvent.detail)
 	}
 
 	const ruleConfig = {
@@ -87,8 +94,12 @@ export function RuleBuilderExample() {
 	}, []);
 
 	return (
-		<CodeSection>
-			<rapid-rule-expression-builder ref={expressionBuilderRef}></rapid-rule-expression-builder>
+		<CodeSection style={{flexDirection: 'column'}}>
+			<div style={{width: '100%', display: 'flex', justifyContent: 'flex-end'}}><rapid-button onClick={() => setShowModel(!showModel)}>{showModel ? 'Hide'  : 'Show'} Model</rapid-button></div>
+			<div style={{display: 'grid', gridTemplateColumns: showModel ? '2fr 1fr' : '1fr'}}>
+				<rapid-rule-expression-builder ref={expressionBuilderRef} onChange={change}></rapid-rule-expression-builder>
+				{showModel ? <pre style={{backgroundColor: '#292d3e', color: 'white', borderRadius: '6px'}}><code>{JSON.stringify(modelString, null, 2)}</code></pre> : null }
+			</div>
 		</CodeSection>
 	);
 }
