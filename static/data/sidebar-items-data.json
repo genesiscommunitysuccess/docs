@@ -179,6 +179,11 @@
         "description": "Collection of utility services and helpers designed to facilitate common development tasks within Genesis applications."
       },
       {
+        "href": "/develop/client-capabilities/expression-builder/",
+        "imageUrl": "/svg/categories-icons/expression-builder.svg",
+        "description": "Create your own domain specific expression builders, or use bundled Genesis builders for creating boolean and value expressions."
+      },
+      {
         "href": "/develop/client-capabilities/layout-management/",
         "imageUrl": "/svg/categories-icons/layout-svgrepo-com.svg",
         "description": "Understand layout features, including dynamic layouts that support resizing, dragging and re-ordering."
