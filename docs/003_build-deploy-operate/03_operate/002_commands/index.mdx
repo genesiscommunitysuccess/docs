@@ -970,9 +970,9 @@ purgers {
 
 ### Custom purgers
 
-If more complicated purging logic is required, custom purgers can help.
-These allow developers to return a `Collection` or `Flow` of entities as a purger instruction.
-For example, if we wanted to remove all users without a corresponding user session:
+If you need more complicated purging logic, you can create custom purgers.
+These enable you to return a `Collection` or `Flow` of entities as a purger instruction.
+For example, this custom purger removes all users who do not have a corresponding user session:
 
 ```kotlin
 customPurger(USER) {
