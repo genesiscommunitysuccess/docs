@@ -3,11 +3,15 @@ title: 'Real-time queries (Data Server)'
 sidebar_label: 'Real-time queries (Data Server)'
 id: server-real-time-queries-data-server
 keywords: [query, real-time, real time, dataserver, lmdb, lmdb allocation, serialization]
+keywords: [query, real-time, real time, dataserver, lmdb, lmdb allocation, serialization]
 tags:
 - query
 - real-time
 - real time
 - dataserver
+- lmdb
+- lmdb allocation
+- serialization
 - lmdb
 - lmdb allocation
 - serialization
@@ -679,12 +683,14 @@ dataServer {
 |`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
 ###### LMDB allocation and WARNING state
-When the LMDB consumes most of the space allocated by `lmdbAllocateSize`, the status of the Data Server process is automatically changed to `WARNING`. 
+When the LMDB consumes most of the memory allocated by `lmdbAllocationSize`, the status of the Data Server process is automatically changed to `WARNING`. 
 
 There are two simple ways to address this:
 
 - Increase the `lmdbAllocateSize`.
 - Set `compression` to `true`.
+
+If LMDB memory usage is a persistent issue, then the recommended strategy is to copy the entire LMDB store to a new file on a regular basis and delete the old LMDB file. This reduces the store size by removing deleted entries (these are not tidied up automatically - LMDB does not run cleaning tasks in the background).
 
 :::tip Looking into memory usage 
 To examine memory usage, look at the base table sizes when the Data Server process starts and the queries are primed. 
