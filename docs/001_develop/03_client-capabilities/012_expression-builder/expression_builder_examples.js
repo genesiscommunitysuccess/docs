@@ -165,40 +165,9 @@ const createExpressionBuilder = (componentType, initialModel, configPropName) =>
     // Create the component element dynamically
     const ExpressionBuilderElement = `rapid-${componentType}-expression-builder`;
 
-    return (
-      <CodeSection style={{ flexDirection: 'column' }}>
-        <div style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end'
-        }}>
-          <rapid-button onClick={() => setShowModel(!showModel)}>
-            {showModel ? 'Hide' : 'Show'} Model
-          </rapid-button>
-        </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: showModel ? '2fr 1fr' : '1fr'
-        }}>
-          {React.createElement(ExpressionBuilderElement, {
-            ref: expressionBuilderRef,
-            onChange: change
-          })}
-          {showModel ? (
-            <pre style={{
-              backgroundColor: '#292d3e',
-              color: 'white',
-              borderRadius: '6px'
-            }}>
-              <code>{JSON.stringify(modelString, null, 2)}</code>
-            </pre>
-          ) : null}
-        </div>
-      </CodeSection>
-    );
-  };
-};
-
-// Create the specific builder components using the factory
-export const RuleBuilderExample = createExpressionBuilder('rule', ruleModel, 'ruleConfig');
-export const ValueBuilderExample = createExpressionBuilder('value', valueModel, 'valueConfig');
+	return (
+		<CodeSection>
+			<rapid-rule-expression-builder ref={expressionBuilderRef}></rapid-rule-expression-builder>
+		</CodeSection>
+	);
+}
