@@ -76,6 +76,15 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.13
+
+##### Fixes
+
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `pal-consolidator` : Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations 
+* `pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed. 
+* Fixed a test-only edge case in GenesisMessageClient where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed. 
+
 #### 8.8.12
 
 ###### Fixes
