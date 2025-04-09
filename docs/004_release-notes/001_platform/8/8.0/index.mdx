@@ -21,7 +21,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Added '-audit' flag to SendIt
 - Added support for null values in criteria JSON API
 - Move gzipped logs to archive dir in startServer
-- Refactor GenesisJunit and related classes for support updates
+- Refactor `GenesisJUnit` and related classes for support updates
 - Support compact processes in project overview
 - Add annotation driven test approach
 - Added field macros for common field patterns
@@ -42,36 +42,36 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Dependency changes
 
-- Bump aeronVersion from 1.44.0 to 1.44.1 in /genesis-conventions
-- Bump byteBuddyVersion from 1.14.13 to 1.14.14 in /genesis-conventions
-- Bump byteBuddyVersion from 1.14.14 to 1.14.15 in /genesis-conventions
-- Bump camelVersion from 4.5.0 to 4.6.0 in /genesis-conventions
-- Bump com.github.oshi:oshi-core from 6.5.0 to 6.6.0 in /genesis-conventions
-- Bump com.github.spullara.mustache.java:compiler from 0.9.11 to 0.9.12 in /genesis-conventions
-- Bump com.github.spullara.mustache.java:compiler from 0.9.12 to 0.9.13 in /genesis-conventions
-- Bump com.google.errorprone:error_prone_annotations from 2.26.1 to 2.27.0 in /genesis-conventions
-- Bump com.google.errorprone:error_prone_annotations from 2.27.0 to 2.27.1 in /genesis-conventions
-- Bump commons-cli:commons-cli from 1.6.0 to 1.7.0 in /genesis-conventions
-- Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 in /genesis-parent/genesis-cluster
-- Bump debeziumVersion from 2.6.0.Final to 2.6.1.Final in /genesis-conventions
-- Bump info.picocli:picocli from 4.7.5 to 4.7.6 in /genesis-conventions
-- Bump io.github.classgraph:classgraph from 4.8.170 to 4.8.171 in /genesis-conventions
-- Bump io.github.classgraph:classgraph from 4.8.171 to 4.8.172 in /genesis-conventions
-- Bump jacksonVersion from 2.17.0 to 2.17.1 in /genesis-conventions
-- Bump ktorVersion from 2.3.10 to 2.3.11 in /genesis-conventions
-- Bump nettyVersion from 4.1.108.Final to 4.1.109.Final in /genesis-conventions
-- Bump oracleJdbcVersion from 23.3.0.23.09 to 23.4.0.24.05 in /genesis-conventions
-- Bump org.apache.commons:commons-csv from 1.10.0 to 1.11.0 in /genesis-conventions
-- Bump org.checkerframework:checker-qual from 3.42.0 to 3.43.0 in /genesis-conventions
-- Bump org.gradle.test-retry from 1.5.8 to 1.5.9 in /genesis-conventions
-- Bump org.gradle:test-retry-gradle-plugin from 1.5.8 to 1.5.9 in /genesis-conventions
-- Bump org.jline:jline from 3.25.1 to 3.26.0 in /genesis-conventions
-- Bump org.jline:jline from 3.26.0 to 3.26.1 in /genesis-conventions
-- Bump org.jlleitschuh.gradle.ktlint from 12.1.0 to 12.1.1 in /genesis-conventions
-- Bump org.objenesis:objenesis from 3.3 to 3.4 in /genesis-conventions
-- Bump slf4jVersion from 2.0.12 to 2.0.13 in /genesis-conventions
-- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.5 to 2.3.6 in /genesis-conventions
-- Bump testcontainersVersion from 1.19.7 to 1.19.8 in /genesis-conventions
+- Bump aeronVersion from 1.44.0 to 1.44.1
+- Bump byteBuddyVersion from 1.14.13 to 1.14.14
+- Bump byteBuddyVersion from 1.14.14 to 1.14.15
+- Bump camelVersion from 4.5.0 to 4.6.0
+- Bump com.github.oshi:oshi-core from 6.5.0 to 6.6.0
+- Bump com.github.spullara.mustache.java:compiler from 0.9.11 to 0.9.12
+- Bump com.github.spullara.mustache.java:compiler from 0.9.12 to 0.9.13
+- Bump com.google.errorprone:error_prone_annotations from 2.26.1 to 2.27.0
+- Bump com.google.errorprone:error_prone_annotations from 2.27.0 to 2.27.1
+- Bump commons-cli:commons-cli from 1.6.0 to 1.7.0
+- Bump commons-codec:commons-codec from 1.16.1 to 1.17.0
+- Bump debeziumVersion from 2.6.0.Final to 2.6.1.Final
+- Bump info.picocli:picocli from 4.7.5 to 4.7.6
+- Bump io.github.classgraph:classgraph from 4.8.170 to 4.8.171
+- Bump io.github.classgraph:classgraph from 4.8.171 to 4.8.172
+- Bump jacksonVersion from 2.17.0 to 2.17.1
+- Bump ktorVersion from 2.3.10 to 2.3.11
+- Bump nettyVersion from 4.1.108.Final to 4.1.109.Final
+- Bump oracleJdbcVersion from 23.3.0.23.09 to 23.4.0.24.05
+- Bump org.apache.commons:commons-csv from 1.10.0 to 1.11.0
+- Bump org.checkerframework:checker-qual from 3.42.0 to 3.43.0
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.9
+- Bump org.gradle:test-retry-gradle-plugin from 1.5.8 to 1.5.9
+- Bump org.jline:jline from 3.25.1 to 3.26.0
+- Bump org.jline:jline from 3.26.0 to 3.26.1
+- Bump org.jlleitschuh.gradle.ktlint from 12.1.0 to 12.1.1
+- Bump org.objenesis:objenesis from 3.3 to 3.4
+- Bump slf4jVersion from 2.0.12 to 2.0.13
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.5 to 2.3.6
+- Bump testcontainersVersion from 1.19.7 to 1.19.8
 
 ### Patch releases
 
@@ -125,7 +125,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 ###### Features
 
 - Add non-blocking threading model for database subscriptions 
-- Add support for Consolidators and data pipelines in GenesisJunit 
+- Add support for Consolidators and data pipelines in `GenesisJUnit` 
 - Add metric for tracking the number of users per dataserver query
 
 ###### Fixes
