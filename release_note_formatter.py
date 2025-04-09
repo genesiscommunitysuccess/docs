@@ -56,9 +56,11 @@ operations = [
     {"type": "string", "find": "`pal-dataserver`", "replace": "`genesis-pal-dataserver`"},
     {"type": "string", "find": "`xml-dataserver`", "replace": "`genesis-dataserver2`"},
     {"type": "string", "find": "`dataserver`", "replace": "`genesis-dataserver`"},
-    {"type": "string", "find": "`pal-consolidator`", "replace": "`genesis-pal-consolidator`"},\
+    {"type": "string", "find": "`pal-consolidator`", "replace": "`genesis-pal-consolidator`"},
     {"type": "string", "find": "`pal-datapipeline`", "replace": "`genesis-pal-datapipeline`"},
     {"type": "string", "find": "`pal-requestserver`", "replace": "`genesis-pal-requestserver`"},
+    {"type": "string", "find": "`ExcelToGenesis`", "replace": "`genesis-environment`"},
+    
 ]
 
 def apply_operations_to_file(file_path: str):
