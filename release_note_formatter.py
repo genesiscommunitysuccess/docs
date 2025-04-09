@@ -41,6 +41,11 @@ operations = [
 
     # General tidy up
     {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
+    {
+        "type": "regex",
+        "find": r"(?<![`\\w])\bGenesisMessageClient\b(?![`\\w])",
+        "replace": r"`GenesisMessageClient`"
+    },
 ]
 
 def apply_operations_to_file(file_path: str):
