@@ -40,7 +40,6 @@ operations = [
     {"type": "string", "find": "Improve genesis set handling in GenesisMessageClient", "replace": "Fixed a test-only edge case in GenesisMessageClient where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed" },
 
     # General tidy up
-    {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
     {
         "type": "regex",
         "find": r"(?<![`\\w])\bGenesisMessageClient\b(?![`\\w])",
@@ -48,6 +47,7 @@ operations = [
     },
 
     # Component tidy up
+    {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
     {"type": "string", "find": "`GenesisJUnit`", "replace": "`genesis-testsupport`"},
     {"type": "string", "find": "`GenesisJunit`", "replace": "`genesis-testsupport`"},
     {"type": "string", "find": "`genesis-junit`", "replace": "`genesis-testsupport`"},
