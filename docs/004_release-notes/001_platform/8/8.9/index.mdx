@@ -9,11 +9,11 @@ id: '8.9'
 
 ### Features
 
-* `GenesisJUnit` : Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
-* `GenesisJUnit` : Implement missing functionality in QueryView to handle all potential use cases 
+* `genesis-testsupport` : Add properties `queryUpdateMessagesReceived` and `lastMoreRowsValueReceived` to `QueryView` object to enable creation of complex tests 
+* `genesis-testsupport` : Implement missing functionality in QueryView to handle all potential use cases 
 * `genesis-codegen` : Add flag to create compact toString method on entities 
-* `genesis-junit` : Add support for dumpit csv and csv.gz files 
-* `pal-datapipeline` : Added ability to perform record deltas using dbSink by exposing modifiedFields 
+* `genesis-testsupport` : Add support for dumpit csv and csv.gz files 
+* `genesis-pal-datapipeline` : Added ability to perform record deltas using dbSink by exposing modifiedFields 
 * Enhance criteria expression capabilities by allowing direct comparisons between DateTime objects against Long and String types 
 * Enhance criteria expression capabilities by implementing `dateIsToday` comparisons as well as `String` extension functions 
 * GenesisJunit - create compatible DumpIt interface 
@@ -26,7 +26,7 @@ id: '8.9'
  
 * `ExcelToGenesis` : Fix side effect produced by changing excel naming strategy 
 * `ExcelToGenesis` : Make the ExcelType returned from the sampling of empty cells belonging to a labelled column be STRING 
-* `pal-dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `genesis-pal-dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
 * `genesis-db` : Do not refresh updates that have moved in or out of range 
 * `genesis-db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
 * `diags` : Better log error message when SysDef evaluation fails 
