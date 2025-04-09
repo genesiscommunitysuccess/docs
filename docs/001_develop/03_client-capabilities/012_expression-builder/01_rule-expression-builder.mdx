@@ -305,3 +305,52 @@ This component doesn't have any css parts. You should instead override the styli
 ### Listened events
 
 This component doesn't listen to any events.
+
+## Predicate expressions
+
+The payload the component produces is a predicate expression, which is a tree structure expression. Each rule on the UI maps to either a method or a binary expression.
+
+* A `binary` expression example is when `FIRST_NAME EQUALS "John"`.
+* A `method` expression example is when `FIRST_NAME CONTAINS "Matt"`.
+* A `predicate` expression is example is when we join the first two examples `FIRST_NAME EQUALS "John" (AND) FIRST_NAME CONTAINS "Matt"`.
+
+Depending on the configuration of the expression builder you can allow no nested expressions, or as many nested expressions as possible!
+
+These expressions can then be used directly with the evaluator and criteria back-end services. You can also write your own server functions which work with these payloads if you wish.
+
+## Using server fields
+
+As shown in the example code at the top you can define the fields in which the user can use in the component directly in the front end, and of course you can generate them dynamically, or construct them.
+
+A likely use case is that you want the fields to match fields from specific tables in your database. To help streamline this process there are a number of utilities and functions you can make use of from the platform to streamline this process.
+
+```typescript
+import { Connect } from '@genesislcap/foundation-comms';
+import { ExpressionBuilderTypes } from '@genesislcap/rapid-design-system';
+import { mapJsonSchemaFieldToExprBuilderField } from '@genesislcap/foundation-utils';
+
+// Request the fields via the JSON schema for a specific endpoint
+// You need to get a reference to a "connect" instance from `foundation-comms` via
+// dependency injection in your chosen platform. Ensure you also are in an async function
+// to be able to await, or use `Promise.then`
+const resourceSchema = await this.connect.getJSONSchema('TRADE')
+// Genesis server should not ever return the following formats, but they're valid
+// valid JSON schema shapes so we need to check the cases
+if (
+    typeof resourceSchema.OUTBOUND?.properties?.REPLY === 'boolean' ||
+    Array.isArray(resourceSchema.OUTBOUND?.properties?.REPLY?.items) ||
+    typeof resourceSchema.OUTBOUND?.properties?.REPLY?.items === 'boolean'
+) {
+    console.log('Malformed error shape');
+    return;
+}
+// Use the utility function to map the json schema properties which are defined
+// on the response
+const fields = Object.entries(
+    resourceSchema.OUTBOUND?.properties?.REPLY?.items?.properties ?? {},
+).map(mapJsonSchemaFieldToExprBuilderField);
+// Finally use those fields in the config for the rule expression builder
+const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+    fields,
+};
+```
