@@ -200,3 +200,62 @@ export const fields = [
 ];
 ```
 </CollapsibleSlot>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ruleConfig</td>
+      <td>LINK</td>
+      <td>The primary configuration point for the component which allows you to specify input fields, optionally set the model, among other configuration items.</td>
+      <td>
+
+```typescript
+<rapid-rule-expression-builder :ruleConfig="${(x) => x.ruleConfig}">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>styles</td>
+      <td>LINK</td>
+      <td>Allows you to change which custom elements and their styles are used inside of the component. This isn't recommended to be used, if you want to use a custom style for an element, such as the checkbox, you should override its style when registering the component.</td>
+<td>
+
+```typescript
+<rapid-rule-expression-builder :styles="${(x) => x.styles}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>model</td>
+      <td>LINK</td>
+      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>ruleConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't valid server rule and therefore will not be shown on the change event payload.</td>
+<td>
+
+```typesscript
+const model = document.querySelector('rapid-rule-expression-builder').model;
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
