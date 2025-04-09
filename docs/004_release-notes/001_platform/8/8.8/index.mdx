@@ -24,9 +24,9 @@ id: '8.8'
 * `genesis-environment` : Use deleteAll in PurgerScript.purgeDerivedRange 
 
 ### Fixes
-* `ExcelToGenesis` : Catch and accumulate unsupported formula errors while processing a worksheet
+* `genesis-environment` : Catch and accumulate unsupported formula errors while processing a worksheet
 * Optimize index matching for non-consecutive fields 
-* `gradle` : Site specific plugin to do not modify binary files stored under data 
+* `distribution-gradle-plugin` : Site specific plugin to not modify binary files stored under data 
 * Add sync backwards join cache impl 
 * Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
 * Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
@@ -76,26 +76,35 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.13
+
+##### Fixes
+
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-pal-consolidator` : Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations 
+* `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed
+* Fixed a test-only edge case in `GenesisMessageClient` where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed
+
 #### 8.8.12
 
 ###### Fixes
 
 * `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
-* `genesis-junit` : Detect annotations on super classes 
-* `pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
-* `settings-plugin` : Add script dependencies on script-config module if present 
+* `genesis-testsupport` : Detect annotations on super classes 
+* `genesis-pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
+* `settings-gradle-plugin-common` : Add script dependencies on script-config module if present 
 
 #### 8.8.11
 
 ###### Features
 
-* `pal-dataserver` : Improve priming progress updates in log file 
+* `genesis-pal-dataserver` : Improve priming progress updates in log file 
 
 ###### Fixes
 
 * `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
-* `pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
-* `pal-requestserver` : Range requests using FROM/TO are now evaluated correctly 
+* `genesis-pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
+* `genesis-pal-requestserver` : Range requests using FROM/TO are now evaluated correctly 
 
 #### 8.8.10
 
@@ -112,17 +121,17 @@ id: '8.8'
 
 ###### Features
 
-* `pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+* `genesis-pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
 
 ###### Fixes
 
-* `pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
-* `pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
-* `xml-dataserver` : Fixed a race condition when a modify event matching the where clause quickly follows a non-matching insert event.
+* `genesis-pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `genesis-pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
+* `genesis-dataserver2` : Fixed a race condition when a modify event matching the where clause quickly follows a non-matching insert event.
 
 ###### Experimental features
 
-* `pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
+* `genesis-pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
 
 #### 8.8.8
 
@@ -156,8 +165,8 @@ id: '8.8'
 
 ###### Features
 
-- GenesisJunit - create compatible `DumpIt` interface 
-- GenesisJunit - improve loading of test data 
+* `genesis-testsupport` : Create compatible `DumpIt` interface 
+* `genesis-testsupport` : Improve loading of test data 
 
 ###### Fixes
 - Using app sys def file in integration tests should work for multiple tests

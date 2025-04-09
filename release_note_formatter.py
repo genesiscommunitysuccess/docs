@@ -36,6 +36,28 @@ operations = [
     {"type": "string", "find": "`genesis-criteria` : Added additional functions in criteria API (isNullOrBlank, longtoDate, longToDateTime)", "replace": "`genesis-criteria` : Added additional functions in criteria API (`isNullOrBlank`, `longtoDate`, `longToDateTime`)"},
     {"type": "string", "find": "Add support for `GENESIS_HOME` in templt.xml files ", "replace": "Add support for `GENESIS_HOME` in `templt.xml` files"},
     {"type": "string", "find": "Expose properties for sessionTimeout, verifyServerIdentity, trustedSslHosts and trustAllSslHosts in Email Gateway configuration", "replace": "Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration"},
+    {"type": "string", "find": "`pal-dataserver` : Data server priming progress", "replace": "`pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed" },
+    {"type": "string", "find": "Improve genesis set handling in GenesisMessageClient", "replace": "Fixed a test-only edge case in GenesisMessageClient where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed" },
+
+    # Component tidy up
+    {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
+    {"type": "string", "find": "* `GenesisJUnit`", "replace": "* `genesis-testsupport`"},
+    {"type": "string", "find": "* `GenesisJunit`", "replace": "* `genesis-testsupport`"},
+    {"type": "string", "find": "* `genesis-junit`", "replace": "* `genesis-testsupport`"},
+    {"type": "string", "find": "* `Router`", "replace": "* `genesis-router`"},
+    {"type": "string", "find": "* `pal-dataserver`", "replace": "* `genesis-pal-dataserver`"},
+    {"type": "string", "find": "* `xml-dataserver`", "replace": "* `genesis-dataserver2`"},
+    {"type": "string", "find": "* `dataserver`", "replace": "* `genesis-pal-dataserver`"},
+    {"type": "string", "find": "* `pal-consolidator`", "replace": "* `genesis-pal-consolidator`"},
+    {"type": "string", "find": "* `pal-datapipeline`", "replace": "* `genesis-pal-datapipeline`"},
+    {"type": "string", "find": "* `pal-requestserver`", "replace": "* `genesis-pal-requestserver`"},
+    {"type": "string", "find": "* `ExcelToGenesis`", "replace": "* `genesis-environment`"},
+    {"type": "string", "find": "* `genesis-dataserver`", "replace": "* `genesis-pal-dataserver`"},
+
+    # Common non component technical terms to backtick
+    {"type": "regex","find": r"(?<![`\\w])\bGenesisMessageClient\b(?![`\\w])","replace": r"`GenesisMessageClient`"},
+    {"type": "regex","find": r"(?<![`\\w])\bGenesisJUnit\b(?![`\\w])","replace": r"`GenesisJUnit`"},
+    {"type": "regex","find": r"(?<![`\\w])\bGenesisJunit\b(?![`\\w])","replace": r"`GenesisJUnit`"},
 ]
 
 def apply_operations_to_file(file_path: str):

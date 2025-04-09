@@ -17,7 +17,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * Add support for REST integration in datapipelines 
 * Added source for use by event handlers. 
 * Deprecate safeWriteTransaction in favour of writeTransaction 
-* feat: added support for camel Idempotent repositories in data pipelines (8.4.2+)
+* Added support for camel Idempotent repositories in data pipelines (8.4.2+)
 
 ### Fixes
 * (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
@@ -35,22 +35,22 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 ### Dependency changes
 
 * Bump actions/upload-artifact from 3 to 4 by 
-* Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.7 to 0.17.8 in /genesis-subcore/deploy-gradle-plugin 
-* Bump com.github.oshi:oshi-core from 6.6.2 to 6.6.3 in /genesis-conventions 
-* Bump com.jfrog.artifactory from 5.2.3 to 5.2.4 in /genesis-publish-config 
-* Bump com.jfrog.artifactory from 5.2.4 to 5.2.5 in /genesis-publish-config 
-* Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.1.jre11 to 12.8.1.jre11 in /genesis-conventions 
-* Bump com.networknt:json-schema-validator from 1.5.0 to 1.5.1 in /genesis-conventions 
-* Bump commons-cli:commons-cli from 1.8.0 to 1.9.0 in /genesis-conventions 
-* Bump debeziumVersion from 2.7.0.Final to 2.7.1.Final in /genesis-conventions 
-* Bump io.github.classgraph:classgraph from 4.8.174 to 4.8.175 in /genesis-conventions 
-* Bump oracleJdbcVersion from 23.4.0.24.05 to 23.5.0.24.07 in /genesis-conventions 
-* Bump org.apache.commons:commons-compress from 1.26.2 to 1.27.1 in /genesis-conventions 
-* Bump org.apache.fury:fury-core from 0.6.0 to 0.7.0 in /genesis-conventions 
-* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.4 in /genesis-publish-config 
-* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.4 to 5.2.5 in /genesis-publish-config
-* Bump slf4jVersion from 2.0.13 to 2.0.16 in /genesis-conventions 
-* Bump sshdVersion from 2.13.1 to 2.13.2 in /genesis-conventions 
+* Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.7 to 0.17.8 
+* Bump com.github.oshi:oshi-core from 6.6.2 to 6.6.3 
+* Bump com.jfrog.artifactory from 5.2.3 to 5.2.4 
+* Bump com.jfrog.artifactory from 5.2.4 to 5.2.5 
+* Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.1.jre11 to 12.8.1.jre11 
+* Bump com.networknt:json-schema-validator from 1.5.0 to 1.5.1 
+* Bump commons-cli:commons-cli from 1.8.0 to 1.9.0 
+* Bump debeziumVersion from 2.7.0.Final to 2.7.1.Final 
+* Bump io.github.classgraph:classgraph from 4.8.174 to 4.8.175 
+* Bump oracleJdbcVersion from 23.4.0.24.05 to 23.5.0.24.07 
+* Bump org.apache.commons:commons-compress from 1.26.2 to 1.27.1 
+* Bump org.apache.fury:fury-core from 0.6.0 to 0.7.0 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.4 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.4 to 5.2.5
+* Bump slf4jVersion from 2.0.13 to 2.0.16 
+* Bump sshdVersion from 2.13.1 to 2.13.2 
 
 ### Patch releases
 
@@ -87,42 +87,42 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 8.4.5
 
-* fix: Data Server indices on DOUBLE fields are now correctly sorted correctly in LMDB
-* fix: Remove explicit toString call on ClusterMessage debug line
+* Data Server indices on DOUBLE fields are now correctly sorted correctly in LMDB
+* Remove explicit toString call on ClusterMessage debug line
 
 #### 8.4.4
 
-* fix: Disable copyDependencies task in genesis-openapi-codegen and improve publish-plugin-config configuration to ensure no plugin modules ever run copyDependencies task
+* Disable copyDependencies task in genesis-openapi-codegen and improve publish-plugin-config configuration to ensure no plugin modules ever run copyDependencies task
 
 #### 8.4.3
 
-* fix: Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+* Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
 
 #### 8.4.2
 
-* fix: Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
+* Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
 
 #### 8.4.1
 
-* fix: ensure groovy compilation exceptions are handled
-* fix: fail preCompileScripts gradle task by default and add option to disable failing on error
+* Ensure groovy compilation exceptions are handled
+* Fail preCompileScripts gradle task by default and add option to disable failing on error
 * Fixed multiple components dependencies pointing at beta version
 
 ## Client
 
 ### Features
-* feat(foundation-fdc3): marking types as deprecated, fix channel broadcast payload 
-* feat(foundation-fdc3): bumping fdc3 package version 
+* `foundation-fdc3` : Marking types as deprecated, fix channel broadcast payload 
+* `foundation-fdc3` : Bumping fdc3 package version 
 
 ### Fixes
-* fix(foundation-ui): port resetCombobox function from genesis-create 
-* fix(foundation-forms): check if oneOf exist for genesisType in date renderer 
-* fix(foundation-forms): smart forms correct errors placement 
-* fix(foundation-forms): pass jsonSchema to arrayList renderer if uiSchema is provided 
-* fix(foundation-entity-management): show entityLabel on notification description 
-* fix(foundation-entity-management): changeCase for search-bar if headerName isn't provided 
-* chore: change SLACK_CHANNEL on CI workflows  
-* chore: add new circular.yml workflow script + circular dep fixes 
+* `foundation-ui` : Port resetCombobox function from genesis-create 
+* `foundation-forms` : Check if oneOf exist for genesisType in date renderer 
+* `foundation-forms` : Smart forms correct errors placement 
+* `foundation-forms` : Pass jsonSchema to arrayList renderer if uiSchema is provided 
+* `foundation-entity-management` : Show entityLabel on notification description 
+* `foundation-entity-management` : ChangeCase for search-bar if headerName isn't provided 
+* Change SLACK_CHANNEL on CI workflows  
+* Add new circular.yml workflow script + circular dep fixes 
 
 ## Noteworthy changes
 

@@ -32,7 +32,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - AbstractExternalUpdateQueue can publish to any topic and not just table based ones 
 - Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
 - Gradle preCompileScripts does not consider compacted processes 
-- RouterMessageDelegator initialisation logic is now applied even if there was a GenesisMessageClient already computed 
+- RouterMessageDelegator initialisation logic is now applied even if there was a `GenesisMessageClient` already computed 
 - Update all references of python to python3 
 - Add type conversion from Integer to Short 
 - Excluding unsupported pbcs from DEV compactProcessStrategy
@@ -51,70 +51,70 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Dependency changes
 
-- Bump byteBuddyVersion from 1.14.15 to 1.14.16 in /genesis-conventions 
-- Bump byteBuddyVersion from 1.14.16 to 1.14.17 in /genesis-conventions 
-- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.6 to 0.17.7 in /genesis-subcore/deploy-gradle-plugin 
-- Bump com.github.oshi:oshi-core from 6.6.0 to 6.6.1 in /genesis-conventions 
-- Bump com.google.errorprone:error_prone_annotations from 2.27.1 to 2.28.0 in /genesis-conventions
-- Bump com.google.guava:guava from 33.1.0-jre to 33.2.0-jre in /genesis-conventions 
-- Bump com.google.guava:guava from 33.2.0-jre to 33.2.1-jre in /genesis-conventions 
-- Bump com.google.protobuf:protobuf-java from 4.26.1 to 4.27.0 in /genesis-conventions 
-- Bump com.google.protobuf:protobuf-java from 4.27.0 to 4.27.1 in /genesis-conventions 
-- Bump com.google.protobuf:protobuf-java from 4.27.1 to 4.27.2 in /genesis-conventions 
-- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-conventions 
-- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-publish-config 
-- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-conventions 
-- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-publish-config 
-- Bump com.networknt:json-schema-validator from 1.4.0 to 1.4.2 in /genesis-conventions 
-- Bump com.networknt:json-schema-validator from 1.4.2 to 1.4.3 in /genesis-conventions 
-- Bump commons-cli:commons-cli from 1.7.0 to 1.8.0 in /genesis-conventions 
-- Bump commons-net:commons-net from 3.10.0 to 3.11.0 in /genesis-conventions 
-- Bump commons-net:commons-net from 3.11.0 to 3.11.1 in /genesis-conventions 
-- Bump debeziumVersion from 2.6.1.Final to 2.6.2.Final in /genesis-conventions 
-- Bump io.github.classgraph:classgraph from 4.8.172 to 4.8.173 in /genesis-conventions 
-- Bump io.github.classgraph:classgraph from 4.8.173 to 4.8.174 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.14.15 to 1.14.16 
+- Bump byteBuddyVersion from 1.14.16 to 1.14.17 
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.6 to 0.17.7 
+- Bump com.github.oshi:oshi-core from 6.6.0 to 6.6.1 
+- Bump com.google.errorprone:error_prone_annotations from 2.27.1 to 2.28.0
+- Bump com.google.guava:guava from 33.1.0-jre to 33.2.0-jre 
+- Bump com.google.guava:guava from 33.2.0-jre to 33.2.1-jre 
+- Bump com.google.protobuf:protobuf-java from 4.26.1 to 4.27.0 
+- Bump com.google.protobuf:protobuf-java from 4.27.0 to 4.27.1 
+- Bump com.google.protobuf:protobuf-java from 4.27.1 to 4.27.2 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 
+- Bump com.networknt:json-schema-validator from 1.4.0 to 1.4.2 
+- Bump com.networknt:json-schema-validator from 1.4.2 to 1.4.3 
+- Bump commons-cli:commons-cli from 1.7.0 to 1.8.0 
+- Bump commons-net:commons-net from 3.10.0 to 3.11.0 
+- Bump commons-net:commons-net from 3.11.0 to 3.11.1 
+- Bump debeziumVersion from 2.6.1.Final to 2.6.2.Final 
+- Bump io.github.classgraph:classgraph from 4.8.172 to 4.8.173 
+- Bump io.github.classgraph:classgraph from 4.8.173 to 4.8.174 
 - Bump korthout/backport-action from 2 to 3 
-- Bump ktorVersion from 2.3.11 to 2.3.12 in /genesis-conventions 
-- Bump maven-plugin-api.version from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
-- Bump maven-plugin-api.version from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
-- Bump micrometerVersion from 1.12.5 to 1.13.0 in /genesis-conventions 
-- Bump micrometerVersion from 1.13.0 to 1.13.1 in /genesis-conventions 
-- Bump mockitoVersion from 5.11.0 to 5.12.0 in /genesis-conventions 
-- Bump nettyVersion from 4.1.109.Final to 4.1.110.Final in /genesis-conventions 
-- Bump nettyVersion from 4.1.110.Final to 4.1.111.Final in /genesis-conventions 
-- Bump org.agrona:agrona from 1.21.1 to 1.21.2 in /genesis-conventions 
-- Bump org.apache.activemq:artemis-jakarta-client from 2.33.0 to 2.34.0 in /genesis-conventions 
-- Bump org.apache.activemq:artemis-jakarta-client from 2.34.0 to 2.35.0 in /genesis-conventions 
-- Bump org.apache.commons:commons-compress from 1.26.1 to 1.26.2 in /genesis-conventions 
-- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.2 to 3.4.0 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.12.1 to 3.13.0 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.1 to 3.7.0 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.7.0 to 3.7.1 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-deploy-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.1 to 3.5.0 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.1 to 3.1.0 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven:maven-model from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.maven:maven-model from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
-- Bump org.apache.shiro:shiro-core from 1.13.0 to 2.0.1 in /genesis-conventions 
-- Bump org.apache.sshd:sshd-core from 2.12.1 to 2.13.0 in /genesis-conventions 
-- Bump org.assertj:assertj-core from 3.25.3 to 3.26.0 in /genesis-conventions 
-- Bump org.checkerframework:checker-qual from 3.43.0 to 3.44.0 in /genesis-conventions 
-- Bump org.codehaus.plexus:plexus-utils from 3.5.0 to 4.0.1 in /genesis-parent/genesis-maven-submodules 
-- Bump org.freemarker:freemarker from 2.3.32 to 2.3.33 in /genesis-conventions 
-- Bump org.hsqldb:hsqldb from 2.7.2 to 2.7.3 in /genesis-conventions 
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-conventions 
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-publish-config 
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-conventions 
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-publish-config 
-- Bump org.jline:jline from 3.26.1 to 3.26.2 in /genesis-conventions 
-- Bump pekkoVersion from 1.0.2 to 1.0.3 in /genesis-conventions 
-- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.6 to 2.3.7 in /genesis-conventions
-- Bump sshdVersion from 2.12.1 to 2.13.0 in /genesis-conventions 
-- Bump sshdVersion from 2.13.0 to 2.13.1 in /genesis-conventions 
-- Change org.furyio for org.apache.fury and bump to 0.5.1 in /genesis-conventions
+- Bump ktorVersion from 2.3.11 to 2.3.12 
+- Bump maven-plugin-api.version from 3.9.6 to 3.9.7 
+- Bump maven-plugin-api.version from 3.9.7 to 3.9.8 
+- Bump micrometerVersion from 1.12.5 to 1.13.0 
+- Bump micrometerVersion from 1.13.0 to 1.13.1 
+- Bump mockitoVersion from 5.11.0 to 5.12.0 
+- Bump nettyVersion from 4.1.109.Final to 4.1.110.Final 
+- Bump nettyVersion from 4.1.110.Final to 4.1.111.Final 
+- Bump org.agrona:agrona from 1.21.1 to 1.21.2 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.33.0 to 2.34.0 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.34.0 to 2.35.0 
+- Bump org.apache.commons:commons-compress from 1.26.1 to 1.26.2 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.11.0 to 3.13.1 
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.2 to 3.4.0 
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.12.1 to 3.13.0 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.1 to 3.7.0 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.7.0 to 3.7.1 
+- Bump org.apache.maven.plugins:maven-deploy-plugin from 3.1.1 to 3.1.2 
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.1 to 3.5.0 
+- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.1 to 3.1.2 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.11.0 to 3.13.1 
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.1 to 3.1.0 
+- Bump org.apache.maven:maven-model from 3.9.6 to 3.9.7 
+- Bump org.apache.maven:maven-model from 3.9.7 to 3.9.8 
+- Bump org.apache.shiro:shiro-core from 1.13.0 to 2.0.1 
+- Bump org.apache.sshd:sshd-core from 2.12.1 to 2.13.0 
+- Bump org.assertj:assertj-core from 3.25.3 to 3.26.0 
+- Bump org.checkerframework:checker-qual from 3.43.0 to 3.44.0 
+- Bump org.codehaus.plexus:plexus-utils from 3.5.0 to 4.0.1 
+- Bump org.freemarker:freemarker from 2.3.32 to 2.3.33 
+- Bump org.hsqldb:hsqldb from 2.7.2 to 2.7.3 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 
+- Bump org.jline:jline from 3.26.1 to 3.26.2 
+- Bump pekkoVersion from 1.0.2 to 1.0.3 
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.6 to 2.3.7
+- Bump sshdVersion from 2.12.1 to 2.13.0 
+- Bump sshdVersion from 2.13.0 to 2.13.1 
+- Change org.furyio for org.apache.fury and bump to 0.5.1
 
 ### Patch releases
 
@@ -142,7 +142,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids
 - Can use warningNack in context event handlers
 - Exclude data folder from site specific folder copy 
-- Fix minor issues in GenesisJunit test framework 
+- Fix minor issues in `GenesisJUnit` test framework 
 
 #### 8.1.5
 - Feat add metric for tracking the number of users per dataserver query
@@ -154,7 +154,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method
 - FDB alias cache will now respect fields with same name and different type defined in different tables
 - Add non-blocking threading model for database subscriptions
-- Add support for Consolidators and data pipelines in GenesisJunit
+- Add support for Consolidators and data pipelines in `GenesisJUnit`
 
 #### 8.1.3
 - Saving process static info in a blocking manner to ensure read integrity
