@@ -15,9 +15,9 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 * `genesis-transform` : Added predicate expression structure to criteria API and replaced `rowFilters` in transformer configuration 
 * `genesis-transform` : Modified transformer configuration to use inclusion over exclusion for column filters 
-* `genesis-dataserver` : Add support for importing entity indices 
+* `genesis-pal-dataserver` : Add support for importing entity indices 
 * `genesis-testsupport` : Added support for testing process end state 
-* `genesis-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+* `genesis-pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
 * `genesis-db` : Extension to allow interception of database writes 
 * `genesis-criteria` : Added additional functions in criteria API (`isNullOrBlank`, `longtoDate`, `longToDateTime`) 
 * `genesis-testsupport` : Add support for `@UserRight` annotation 
@@ -33,10 +33,10 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 ### Fixes
 
 * `genesis-router` : Cookie based auth doesn't work on multipart HTTP messages 
-* `genesis-dataserver` : Add support for non unique indices 
-* `genesis-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
-* `genesis-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
-* `genesis-dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
+* `genesis-pal-dataserver` : Add support for non unique indices 
+* `genesis-pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `genesis-pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
+* `genesis-pal-dataserver` : Ensure we use LMDB as source of truth when the `oldRecord` information in the table update is not available 
 * `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field
 * `genesis-db` : Do not refresh updates that have moved in or out of range 
 * `genesis-db` : When db cache inserts are enabled, write inserts to the cache if existing cache entry value is null 
