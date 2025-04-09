@@ -10,6 +10,8 @@ sidebar_position: 15
 
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase'
 import { RuleBuilderExample } from './expression_builder_examples.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Rule expression builder
 
@@ -41,8 +43,8 @@ Declaration
 <rapid-rule-expression-builder></rapid-rule-expression-builder>
 ```
 
-    Usage
-    ```typescript
+Usage
+```typescript
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
 // See further down for code snippet containing fields
 import { fields } from './fields';
@@ -68,7 +70,7 @@ export class MyElement extends GenesisElement {
     console.log({newModel});
   }
 }
-    ```
+```
 
   </TabItem>
   <TabItem value="react">
@@ -140,7 +142,7 @@ import { ExpressionBuilderTypes } from '@genesislcap/rapid-design-system';
 
 const EXAMPLE_MIN_AGE = 18;
 
-export const fields = [
+export const fields: ExpressionBuilderTypes.Fields = [
   {
     fieldId: 'firstName',
     label: 'First Name',
@@ -259,3 +261,47 @@ const model = document.querySelector('rapid-rule-expression-builder').model;
     </tr>
   </tbody>
 </table>
+
+### Slots
+
+This component doesn't have any slots.
+
+### Parts
+
+This component doesn't have any css parts. You should instead override the styling by changing the constituent component's styling during registration, or using the `styles` properties for advanced users.
+
+### Fired events
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td>LINK</td>
+      <td>Emits whenever the user changes the state of the UI component. The event detail contains the predicate expression payload the server expects. As the server expression must always contain non-partial rules the payload may be slightly out of sync with the UI if the user has a partial rule. You can use the <code>model</code> property on the component to get the precise underlying state of the component if you wish.</td>
+<td>
+
+```typescript
+<rapid-rule-expression-builder
+    @change=${(x) =>
+    x.handleChangedRuleExpression(
+        x.event as CustomEvent<RuleExpression.Expression['PredicateExpression']>,
+    )}
+>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Listened events
+
+This component doesn't listen to any events.
