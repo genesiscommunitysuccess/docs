@@ -3,8 +3,7 @@ import os
 import re
 
 def extract_backtick_keywords_from_line(line):
-    # Match lines like: * `genesis-transform`:
-    match = re.match(r'^\* `([^`]+)`:.*', line)
+    match = re.search(r'^\s*\*\s*`([^`]+)`\s*:', line)
     if match:
         return match.group(1)
     return None
@@ -15,11 +14,12 @@ def find_keywords_in_directory(directory_path):
     for root, _, files in os.walk(directory_path):
         for filename in files:
             file_path = os.path.join(root, filename)
-
+            print(f"Scanning: {file_path}") 
             try:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     for line in file:
                         keyword = extract_backtick_keywords_from_line(line)
+                        print(f"Matched: {keyword}")
                         if keyword:
                             keywords.add(keyword)
             except (UnicodeDecodeError, OSError):
