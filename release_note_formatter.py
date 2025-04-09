@@ -51,7 +51,6 @@ operations = [
     {"type": "string", "find": "`GenesisJUnit`", "replace": "`genesis-testsupport`"},
     {"type": "string", "find": "`GenesisJunit`", "replace": "`genesis-testsupport`"},
     {"type": "string", "find": "`genesis-junit`", "replace": "`genesis-testsupport`"},
-    #{"type": "string", "find": "`ExcelToGenesis`", "replace": "`??????????????`"},
     {"type": "string", "find": "`Router`", "replace": "`genesis-router`"},
     {"type": "string", "find": "`pal-dataserver`", "replace": "`genesis-pal-dataserver`"},
     {"type": "string", "find": "`xml-dataserver`", "replace": "`genesis-dataserver2`"},

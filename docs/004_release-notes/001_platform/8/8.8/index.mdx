@@ -26,7 +26,7 @@ id: '8.8'
 ### Fixes
 * `genesis-environment` : Catch and accumulate unsupported formula errors while processing a worksheet
 * Optimize index matching for non-consecutive fields 
-* `gradle` : Site specific plugin to do not modify binary files stored under data 
+* `distribution-gradle-plugin` : Site specific plugin to do not modify binary files stored under data 
 * Add sync backwards join cache impl 
 * Ensure Index.NonUnique class definition has a fixed serialVersionUID field 
 * Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
@@ -92,7 +92,7 @@ id: '8.8'
 * `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
 * `genesis-testsupport` : Detect annotations on super classes 
 * `genesis-pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
-* `settings-plugin` : Add script dependencies on script-config module if present 
+* `settings-gradle-plugin-common` : Add script dependencies on script-config module if present 
 
 #### 8.8.11
 
