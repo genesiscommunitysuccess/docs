@@ -151,7 +151,7 @@ export class MyComponent implements AfterViewInit {
     }
   }
 
-  onChange(event: CustomEvent<RuleExpression['PredicateExpression']>): void {
+  onChange(event: CustomEvent<RuleExpression.Expression['PredicateExpression']>): void {
     console.log(event.detail);
   }
 }
