@@ -249,7 +249,7 @@ This component doesn't have any attributes.
   <tbody>
     <tr>
       <td>ruleConfig</td>
-      <td>LINK</td>
+      <td><code>ExpressionBuilderTypes.RuleConfig</code></td>
       <td>The primary configuration point for the component which allows you to specify input fields, optionally set the model, among other configuration items.</td>
       <td>
 
@@ -261,7 +261,7 @@ This component doesn't have any attributes.
     </tr>
     <tr>
       <td>styles</td>
-      <td>LINK</td>
+      <td><code>ExpressionBuilderTypes.Styles</code></td>
       <td>Allows you to change which custom elements and their styles are used inside of the component. This isn't recommended to be used, if you want to use a custom style for an element, such as the checkbox, you should override its style when registering the component.</td>
 <td>
 
@@ -273,7 +273,7 @@ This component doesn't have any attributes.
     </tr>
     <tr>
       <td>model</td>
-      <td>LINK</td>
+      <td><code>RuleExpression.Expression['PredicateExpression']</code></td>
       <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>ruleConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't valid server rule and therefore will not be shown on the change event payload.</td>
 <td>
 
@@ -308,7 +308,7 @@ This component doesn't have any css parts. You should instead override the styli
   <tbody>
     <tr>
       <td>change</td>
-      <td>LINK</td>
+      <td><code>RuleExpression.Expression['PredicateExpression']</code></td>
       <td>Emits whenever the user changes the state of the UI component. The event detail contains the predicate expression payload the server expects. As the server expression must always contain non-partial rules the payload may be slightly out of sync with the UI if the user has a partial rule. You can use the <code>model</code> property on the component to get the precise underlying state of the component if you wish.</td>
 <td>
 
