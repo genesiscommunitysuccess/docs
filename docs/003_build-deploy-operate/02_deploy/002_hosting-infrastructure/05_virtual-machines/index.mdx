@@ -151,13 +151,9 @@ Example:
 
 ### Environment variables
 
-The Genesis platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from an enterprise configuration management system, and the platform supports encrypted settings.
+The Genesis platform supports extraction of system-level environment variables to populate environment-specific settings. 
 
-```kotlin
-item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
-item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
-item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
-```
+You can [set System Definitions values from environment variables](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables), which allows you to change the location of external dependencies (such as the database) between your production and non-production environments.
 
 ### External runtime dependencies
 
