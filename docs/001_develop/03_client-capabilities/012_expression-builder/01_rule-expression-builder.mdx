@@ -345,10 +345,11 @@ if (
     return;
 }
 // Use the utility function to map the json schema properties which are defined
-// on the response
+// on the response. Filter out null values (e.g. NANO_TIMESTAMP server fields are not
+// valid expression builder fields
 const fields = Object.entries(
     resourceSchema.OUTBOUND?.properties?.REPLY?.items?.properties ?? {},
-).map(mapJsonSchemaFieldToExprBuilderField);
+).map(mapJsonSchemaFieldToExprBuilderField).filter(Boolean);
 // Finally use those fields in the config for the rule expression builder
 const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
     fields,
