@@ -146,7 +146,7 @@ On handling a request, reads all file uploads from the request body and writes t
 
 ### `webHandlers`
 
-The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**. 
+The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**.
 
 ###### Overriding the base path
 
@@ -162,7 +162,7 @@ webHandlers("my-base-path") {
 }
 ```
 
-In the example above, the path would be: 
+In the example above, the path would be:
 
 * **my-base-path/all-trades**
 
@@ -206,7 +206,7 @@ Valid HTTP request types are:
 - DELETE
 
 
-```kotlin 
+```kotlin
   endpoint(GET, "test") {
 ```
 
@@ -225,7 +225,7 @@ Use the `by` syntax to define parameters. Note that these variables are only ava
 
 ###### Query parameters
 
-Here is a simple example of how to define a query parameter: 
+Here is a simple example of how to define a query parameter:
 
 ```kotlin {2,5}
 endpoint(GET, "test") {
@@ -242,7 +242,7 @@ Here is an example of how to define an optional query parameter. Optional parame
 ```kotlin {2,5}
 endpoint(GET, "test") {
     val name by optionalQueryParameter("name")
-    
+
     handleRequest {
         "Hello ${name ?: "Anonymous"}"
     }
@@ -256,7 +256,7 @@ Path parameters are always required. Here is an example of how to define one:
 ```kotlin {2,5}
 endpoint(GET, "test/{name}") {
     val name by pathParameter("name")
-    
+
     handleRequest {
         "Hello $name"
     }
@@ -270,7 +270,7 @@ Here is an example of how to define a header parameter:
 ```kotlin {2,5}
 endpoint(GET, "test") {
     val name by header("name")
-    
+
     handleRequest {
         "Hello $name"
     }
@@ -298,7 +298,7 @@ The below endpoint will only match if the `Test-Header` header is present with i
 ```kotlin {2}
 endpoint(GET, "test") {
     header("Test-Header", "test")
- 
+
     handleRequest {
         "Hello World"
     }
@@ -307,12 +307,12 @@ endpoint(GET, "test") {
 
 ###### Secret values
 
-Here is an example of how to define a secret header: 
+Here is an example of how to define a secret header:
 
 ```kotlin {2}
 endpoint(GET, "test") {
     headerSecret("secret-header", "secret-value")
-    
+
     handleRequest {
         "OK"
     }
@@ -350,14 +350,14 @@ multipartEndpoint("test") {
 
 #### `config`
 
-The `config` function can be used to configure endpoints, which are supported on different levels: 
+The `config` function can be used to configure endpoints, which are supported on different levels:
 - `webHandlers` level
 - `grouping` level
 - `endpoint` levels
 
- `config` calls in nested blocks override those in parent blocks.  
+ `config` calls in nested blocks override those in parent blocks.
 
-###### Example 
+###### Example
 
 This is an example of a `config` block:
 
@@ -443,7 +443,7 @@ Here, the input type is `String`, and the output type is `Trade`. The `parseRequ
 
 ##### `composeResponse`
 
-When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type that the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this: 
+When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type that the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this:
 
 ```kotlin {3-12}
 endpoint<String, String>(GET, "trades") {
@@ -459,9 +459,9 @@ endpoint<String, String>(GET, "trades") {
             """.trimIndent()
         }
     }
-    
+
     produces(ContentType.APPLICATION_XML)
-    
+
     handleRequest {
         tradeClient.getTrade(body)
     }
@@ -470,7 +470,7 @@ endpoint<String, String>(GET, "trades") {
 
 #### `produces`
 
-By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
+By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism.
 
 This is sufficient for most cases, but you can customise the output.
 
@@ -486,7 +486,7 @@ If you want to override the default behaviour and specify an output type, use th
 | `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
 | `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
 
-You can set multiple content types in the `produces` call; the client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
+You can set multiple content types in the `produces` call; the client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned.
 
 ```kotlin
 webHandlers {
@@ -508,11 +508,11 @@ webHandlers {
 
 ###### Return types
 
-By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
+By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below.
 
-If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header. 
+If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header.
 
-However, if the `produces` function is used, then the `Accept` header will always be respected. 
+However, if the `produces` function is used, then the `Accept` header will always be respected.
 
 | Return type    | Behaviour                                    | Default Content-Type       |
 |----------------|----------------------------------------------|:---------------------------|
@@ -538,7 +538,7 @@ webHandlers {
 
 ###### Content type
 
-As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
+As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`.
 
 These content types are supported out of the box:
 
@@ -626,7 +626,7 @@ permissioning {
 
 #### `customPermissions`
 
-The `customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.  
+The `customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.
 It is useful, for example, in the case you have an external API to check against. In this example an `entitlementUtils` object wraps an external API we can call to check the user's username has access.
 
 ```kotlin
@@ -713,7 +713,7 @@ if (!userHasRight(userName, "TradeViewFull")) { ... }
 
 ## Http status codes
 
-By default, all endpoints return a `200 OK` status code. 
+By default, all endpoints return a `200 OK` status code.
 
 ### `endpoint` override
 
@@ -781,11 +781,11 @@ connection: keep-alive
 
 By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path, and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
 
-We can provide the following information: 
+We can provide the following information:
 
 * `description`
 * `summary`
-* `response` 
+* `response`
 * `requestBody`
 * `parameters`
 
@@ -808,8 +808,8 @@ endpoint(GET, "test") {
 A schema for the response type used in the endpoint is generated automatically. This schema includes support for sealed types. However, the schema can be customised if needed. You can also provide:
 
 - examples
-- descriptions 
-- additional responses 
+- descriptions
+- additional responses
 
 Here is an example:
 
@@ -835,7 +835,7 @@ The example above defines the standard response of type `TestData`. There is als
 
 #### Request body
 
-As with responses, the request body schema is generated automatically. However, this can also be customised. 
+As with responses, the request body schema is generated automatically. However, this can also be customised.
 
 Similarly, you can provide a description and example. Providing an example for a request body is very useful for testing the endpoint in the OpenAPI UI. The request is ready to go with the example data, which the user can modify to suit their needs.
 
@@ -898,7 +898,7 @@ router {
     webPort = 9064
     socketPort = 9065
 
-    // rest of file cut for brevity     
+    // rest of file cut for brevity
 }
 ```
 
@@ -908,7 +908,7 @@ router {
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing-legacy) section.
+If you are testing against a previous version of the framework, go to [legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api).
 
 :::
 
@@ -918,7 +918,7 @@ We shall use a simple example and work through the communication between our tes
 
 In this example, we shall test the following Web Endpoint. Note, the web handler scripts must exist in your test Genesis Home folder (e.g. `src/test/resources/genesisHome/trade-app/src/main/scripts/trade-web-handler.kts`).
 
-```kotlin 
+```kotlin
 import global.genesis.trade.TradeInformation
 import global.genesis.trade.TradeInformationClient
 
@@ -939,7 +939,7 @@ webHandlers {
 
 With the below as our test client which represents an external service.
 
-```kotlin 
+```kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1048,7 +1048,7 @@ public class WebEndpointTest {
 </TabItem>
 </Tabs>
 
-This test class does four things: 
+This test class does four things:
 
 * Adds necessary imports.
 * It enables **GenesisJunit**.
