@@ -29,7 +29,7 @@ The Genesis Application Platform has a real-time event-driven architecture. The 
 graph TD
 A[UI] --> |1. Event| B(EVENT_HANDLER)
 B -->|3. Ack/Nack| A
-B <-->|2. Read/Write|C[Database] 
+B <-->|2. Read/Write|C[Database]
 ```
 
 Nearly every table defined in your application's data model in an app will need events to affect the data. The standard events for most tables are **Insert**, **Modify** and **Delete** (but not every table will need all these events); depending on your application workflow, you could need many more.
@@ -91,7 +91,7 @@ eventHandler {
         }
       }
     }
-    
+
     onValidate {
       //Where the eventHandler type is a DAO object, details map to a conforming trade dao object
       val trade = event.details
@@ -104,12 +104,12 @@ eventHandler {
       val price = trade.price
       //Validate the price is not negative
       require(price >= 0.0) { "Price cannot be negative" }
-      
+
       //Warn if the price is far from market price utilizing pricing library function
       if(pricingLibrary.priceFarFromCurrentMarketPrice(trade.price, trade.direction)) {
         return@onValidate warningNack("Price out of bounds from market price")
       }
-      
+
       ack()
     }
 
@@ -168,13 +168,13 @@ A successful event can also send data back to the client as part of an `ack`. A 
     }
   }
 
-``` 
+```
 
 ### `nack`
 
 A nack statement signifies that an event failed. This is typically sent during `onValidate` and sometimes during `onEvent`.
 
-It can take a string argument, which is the error message passed back to the client. 
+It can take a string argument, which is the error message passed back to the client.
 
 Where triggering within an `onValidate` block, prefix the `nack` with `return@onValidate` to terminate validation at this point.
 
@@ -186,14 +186,14 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
     val price = event.details.price
     if (price < 0.0) {
       return@onValidate nack("Price cannot be negative")
-    } 
+    }
     ...
   }
   onCommit { event ->
     val marketPrice = pricingLibrary.getCurrentBid(event.details.instrumentId)
     if (marketPrice == null) {
       return@onCommit nack("Unable to determine market price for instrument ${event.details.instrumentId}")
-    } 
+    }
     ...
   }
 }
@@ -205,7 +205,7 @@ Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NA
 
 ### `eventHandler`
 
-`eventHandler` defines a new event. 
+`eventHandler` defines a new event.
 
 In the parenthesis you can define:
 
@@ -308,11 +308,11 @@ Where setting mandatory fields to be optional, you must have a default supplied 
 
 #### `requiresPendingApproval`
 
-This is used where particular system events require a second system user to approve them before they take effect in the application. 
+This is used where particular system events require a second system user to approve them before they take effect in the application.
 
 In the example below, you can **optionally** set the approval message. This is the message that an authorized approver will see during their review.
 
-The function must return boolean logic, where it evaluates to false the event will be subject to approval. 
+The function must return boolean logic, where it evaluates to false the event will be subject to approval.
 
 ```kotlin
   eventHandler<Trade>("TRADE_INSERT") {
@@ -438,7 +438,7 @@ There are useful properties you can set as part of the `approvableAck` definitio
     ...
   }
 
-``` 
+```
 
 See [approval workflow](#approval-workflow) for more details.
 
@@ -486,7 +486,7 @@ You can use the `triggerRemote` method to call an event that is not defined in t
 
 - another event from this application, which is defined in another file
 - an event defined in the platform
-- a business component that you have added to this project 
+- a business component that you have added to this project
 
 `triggerRemote` takes the following parameters:
 
@@ -536,13 +536,13 @@ You can use the `triggerRemote` method to call an event that is not defined in t
   - the context object, which will be passed to the [`onCommit`](#oncommit) block
   - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler))
 - The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
-- The [`onCommit`](#oncommit) block has two lambda parameters: 
-  - the standard event 
+- The [`onCommit`](#oncommit) block has two lambda parameters:
+  - the standard event
   - a reference to the context object returned in the [`validationAck`](#validationack)
 
 #### `validationAck`
 
-For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler` blocks. 
+For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler` blocks.
 
 The `validationAck` must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
 
@@ -580,9 +580,9 @@ There are several options that can be specified in the message header:
 | --------------------|---------|----------------------------------------------------------------------|
 | `VALIDATE`          | `false` | Where `true`, events will return after the [`onValidate`](#onvalidate) block ack and not trigger the [`onCommit`](#oncommit) block |
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
-| `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true | 
+| `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true |
 | `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence |
-| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` | 
+| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` |
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -1083,19 +1083,19 @@ If you wish to run a dedicated process for an Event Handler, here is an example 
 
 **GenesisJunit** is available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing) section.
+If you are testing against a previous version of the framework, go to [legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api).
 
 :::
 
 ### Integration testing
 
-This section covers the basics of testing Event Handlers. We shall use a very simple example, and work through the communication between our test and the Event Handler. 
+This section covers the basics of testing Event Handlers. We shall use a very simple example, and work through the communication between our test and the Event Handler.
 
-This includes how to test dynamic authorization. 
+This includes how to test dynamic authorization.
 
 This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), which is designed to make testing easy.
 
-In this example, we shall test the following Event Handler: 
+In this example, we shall test the following Event Handler:
 
 ```kotlin
 data class Hello(
@@ -1141,7 +1141,7 @@ public class EventHandlerTest {
 </TabItem>
 </Tabs>
 
-The code above does two things: 
+The code above does two things:
 
 * It enables **GenesisJunit**.
 * It specifies the Event Handler script that we want to test, using the `TestScriptFile` annotation.
@@ -1197,8 +1197,8 @@ fun testHelloWorld() {
         details = Hello("PETER"),
         messageType = "EVENT_HELLO_WORLD"
     )
-    
-    assert(reply is EventReply.EventAck) 
+
+    assert(reply is EventReply.EventAck)
 }
 ```
 
@@ -1219,7 +1219,7 @@ void testHelloWorld() {
 </TabItem>
 </Tabs>
 
-As you can see here, to send an event to our event handler, we need to provide the details class. 
+As you can see here, to send an event to our event handler, we need to provide the details class.
 The message type is optional, but we have to set it here, as we set a custom message name on our Event Handler.
 
 We can also provide the user name:
@@ -1266,17 +1266,17 @@ There are three versions of the Event Handler client available during testing:
 * EventClientAsync - this is the coroutine client, where calls suspend
 * EventClientRx - this is the RxJava client, which wraps responses in a `Single`
 
-In most instances, **EventClientSync** will suffice. 
+In most instances, **EventClientSync** will suffice.
 Use the other clients if your tests use other asynchronous operations.
 
 #### Dynamic authorization
 
-To test dynamic authorization, add the `@EnableInMemoryTestAuthCache` to your class or method. 
-This makes `InMemoryTestAuthCache` available for injection into your test class. 
+To test dynamic authorization, add the `@EnableInMemoryTestAuthCache` to your class or method.
+This makes `InMemoryTestAuthCache` available for injection into your test class.
 
 Amend the Event Handler to enable authorization:
 
-```kotlin 
+```kotlin
 data class Hello(
     val name: String,
 )
@@ -1313,7 +1313,7 @@ class EventHandlerTest {
 
     @Inject
     lateinit var client: EventClientSync
-    
+
     @Inject
     lateinit var authCache: InMemoryTestAuthCache
 
@@ -1374,7 +1374,7 @@ public class EventHandlerJavaTest {
                 .withEntityCode("PETER")
                 .withUserName("PETER")
                 .authorise();
-        
+
         var reply = client.builder()
                 .withDetails(new Hello("PETER"))
                 .withMessageType("EVENT_HELLO_WORLD_AUTH")
@@ -1405,7 +1405,7 @@ public class EventHandlerJavaTest {
 </TabItem>
 </Tabs>
 
-The revoke calls are not needed in this case; they have been included here to show the syntax. 
+The revoke calls are not needed in this case; they have been included here to show the syntax.
 These calls can be used to revoke previous authorizations in your tests.
 
 #### Conclusion
@@ -1724,7 +1724,7 @@ The url consists of:
 - if necessary, some extra routing; in this case **sm** uses a proxy to access the server
 - the name of the Request Server
 
-Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 
+Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**.
 
 ![](/img/test-eh-check-insertion.png)
 
@@ -1818,7 +1818,7 @@ Below is an example of a simple test.
 
 First, this creates an `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT" and username.
 
-Second, it sends a message to the Event Handler using `getMessageClient().request(event, EventReply.class)`. The result is first verified to be an `EventAck`. 
+Second, it sends a message to the Event Handler using `getMessageClient().request(event, EventReply.class)`. The result is first verified to be an `EventAck`.
 
 Finally, it checks that the inserted trade can be retrieved from the database.:
 
@@ -2029,13 +2029,13 @@ Java Event Handlers can be implemented using [RxJava3](#rx3) and [Sync](#sync) E
 You need to add the `global.genesis.eventhandler` package to the package tag of the process; this tag defines which package the process should refer to. For example:
 
 ```xml
-<process name="POSITION_NEW_PROCESS">    
-  <groupId>POSITION</groupId>    
-  <start>true</start>    
+<process name="POSITION_NEW_PROCESS">
+  <groupId>POSITION</groupId>
+  <start>true</start>
   <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
-  <module>position-new-process</module>    
+  <module>position-new-process</module>
   <package>global.genesis.eventhandler,position.company.manager</package>
-  <description>Handles events</description>  
+  <description>Handles events</description>
 </process>
 ```
 
@@ -2064,7 +2064,7 @@ Each custom Event Handler must define an input message type `I` and an output me
 | requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, see [approval workflow](#approval-workflow) |
 | approvalKey | null | Auto-generated key ID for particular approval request. For more details, see [approval workflow](#approval-workflow)                  |
 | approvalMessage | null | Optional message for approval request. For more details, see [approval workflow](#approval-workflow)                                  |
-| reason | null | Optional reason sent as part of event message                                                        
+| reason | null | Optional reason sent as part of event message
 
 ### Async
 
@@ -2092,14 +2092,14 @@ import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
 @Module
-class EventCompanyHandlerAsync @Inject constructor(        
-    private val entityDb: AsyncEntityDb,        
+class EventCompanyHandlerAsync @Inject constructor(
+    private val entityDb: AsyncEntityDb,
     private val companyService: CompanyService
-) : AsyncEventHandler<Company, EventReply> {   
-    override suspend fun process(message: Event<Company>): EventReply {       
-        val company = message.details        
-        // custom code block..        
-        return EventReply.EventAck()    
+) : AsyncEventHandler<Company, EventReply> {
+    override suspend fun process(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return EventReply.EventAck()
     }
 }
 ```
@@ -2122,11 +2122,11 @@ import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
 @Module
-class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {    
-    override suspend fun process(message: Event<Company>): EventReply {        
-        val company = message.details        
-        // custom code block..        
-        return ack()    
+class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
+    override suspend fun process(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
     }
 }
 ```
@@ -2156,16 +2156,16 @@ import global.genesis.message.core.event.EventReply
 
 @Module
 class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
-    override suspend fun onValidate(message: Event<Company>): EventReply {        
-        val company = message.details        
-        // custom code block..        
-        return ack()    
-    }    
-    
-    override suspend fun onCommit(message: Event<Company>): EventReply {        
-        val company = message.details        
-        // custom code block..        
-        return ack()    
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+
+    override suspend fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
     }
 }
 ```
@@ -2202,21 +2202,21 @@ import global.genesis.message.core.event.EventReply
 import global.genesis.message.core.event.ValidationResult
 
 @Module
-class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {    
-    override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {        
-        val company = message.details        
-        // custom code block..        
-        val companyName = company.companyName        
-        return validationResult(ack(), companyName)    
-    }    
-    
-    override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {        
-        if(context != null) {            
-            // Do something with the context        
-        }        
-        val company = message.details        
-        // custom code block..        
-        return ack()    
+class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {
+    override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+        val company = message.details
+        // custom code block..
+        val companyName = company.companyName
+        return validationResult(ack(), companyName)
+    }
+
+    override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {
+        if(context != null) {
+            // Do something with the context
+        }
+        val company = message.details
+        // custom code block..
+        return ack()
     }
 }
 ```
