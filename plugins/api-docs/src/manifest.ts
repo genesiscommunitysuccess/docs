@@ -761,5 +761,24 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/expression-builder",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/012_expression-builder",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "readme.mdx",
+        keywords: ["genesis", "expression-builder", "rules"],
+        tags: [
+          "expression-builder", "rules"
+        ],
+        pages: [ ],
+      },
+    },
   ],
 };
