@@ -263,13 +263,18 @@ systemDefinition {
         ...
         item(name = "DbLayer", value = "SQL")
         item(name = "DbHost", value = "jdbc:oracle:thin://pdb:6060;databaseName=trades")
-        item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
-        item(name = "DbPassword",  value = System.getenv("DBPASSWORD"), encrypted = true)
+        item(name = "DbUsername", value = "ab8b6921e904a1dbf058041ae176f27323ed2f835c0a5276b307ef539f6ef6d9", encrypted = true)
+        item(name = "DbPassword",  value = "a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a", encrypted = true)
         ...
     }
     ...
 }
 ```
+
+:::warning
+The examples above have sensitive values written directly into the system definition items for the sake of brevity. It is advisable to [use environment variables to store sensitive values](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables)
+:::
+
 
 ### File Storage 
 

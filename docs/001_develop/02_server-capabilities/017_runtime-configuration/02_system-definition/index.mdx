@@ -90,15 +90,43 @@ item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?u
 See our pages on [database technology](/build-deploy-operate/deploy/supporting-infrastructure/#databases) for more information on how to configure a specific database.
 
 **Database username and password encryption**
-You can add an encrypted username and password for the database system.
-Run the command `encryptUserPassWithKey`, which will ask you to supply the plain username, password and Genesis Key. Genesis Key is 32 characters long.
-This will generate encrypted username and password, which can then be added into a system definition file. You can directly add the encrypted values or you can embed these fields into the local system environment variables and refer to them as follows:
 
-```kotlin
-item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
-item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
-item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
+You may want to encrypt usernames, passwords and other key configuration values such as usernames and passwords for the database.
+
+Two scripts are provided as part of the project to encrypt username and password values:
+
+- `encryptUserPass` : This will prompt you to enter a username, then a password, and will output the encrypted versions of them. No key will be used to encrypt the values.
+- `encryptUserPassWithKey` : This is a more secure approach where a key is supplied to encrypt values with. This key will need to be set in a system definition item `GenesisKey`, and where this is present all encrypted system definition values will be expected to use the key.
+
+Example usages:
+
+```bash
+global.genesis.genesistodb.utils.PasswordEncryptor
+Enter userName
+my.user
+Enter password
+password123
+UserName: 6913ab67ff0bd7ae475bde29909d12d0857102cfac7378179cb420676e980f12
+Password: 41581be94278017550b40d3df925fb974ab3fb75dad8050b9e2df04713f1038b
 ```
+
+```bash
+global.genesis.config.utils.PasswordEncryptor
+Enter userName
+my.user
+Enter password
+password123
+Enter key
+ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+userName: ab8b6921e904a1dbf058041ae176f27323ed2f835c0a5276b307ef539f6ef6d9
+password: a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a
+```
+
+Where the key on `encryptUserPassWithKey` needs to be a 32 character string and kept secret.
+
+Copy the output `userName` and `password` values and keep these safe.
+
+Given the sensitive nature of the field values, it is advisable NOT to put these raw values into the system definition file, and instead to [use environment variables to override theses system definition items](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables) or a credentials manager such as [Hashicorp Vault](/develop/server-capabilities/runtime-configuration/system-definition/#hashicorp-vault-support) to avoid adding sensitive data into your code repository.
 
 **DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
 
@@ -151,11 +179,20 @@ If you want to enable SSL for your process communication, this is done in the [s
 
 ## Setting system-definition values from environment variables
 
-You can override system-definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
+You can override system-definition values in any environment by using environment variables to override them.
 
-To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_`: for example, `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`.
+To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_` or `GENESIS_SYSDEF_ENCRYPTED_`. 
 
-In this example, we fetch the value of `DbHost` from the environment variable. If the environment variable is not set, then the value from the system-definitions file will be used.
+`GENESIS_SYSDEF_ENCRYPTED` is needed where the value of the system definition is sensitive and is encoded (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
+
+Here is an example of environment variables `DbHost`, `DbUser`, `DbPassword` and `GenesisKey`, that will all be taken and override the configuration found in the system definition file for each of the items:
+
+```bash
+GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis
+GENESIS_SYSDEF_ENCRYPTED_DbUsername=ab8b6921e904a1dbf058041ae176f27323ed2f835c0a5276b307ef539f6ef6d9
+GENESIS_SYSDEF_ENCRYPTED_DbPassword=a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a
+GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+```
 
 ## Retrieving system-definition properties
 
