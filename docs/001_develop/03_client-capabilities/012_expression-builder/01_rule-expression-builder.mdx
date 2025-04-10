@@ -81,18 +81,36 @@ Declaration
 ```
 
     Usage
-    ```tsx
-    export function MyComponent() {
-      const dialogRef = useRef(null);
+```tsx
+import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
+// See further down for code snippet containing fields
+import { fields } from './fields';
+export function MyComponent() {
+  const expressionBuilderRef = useRef(null);
 
-      return (
-        <CodeSection>
-          <rapid-rule-expression-builder onClick={() => console.log('previous')} direction="previous"></rapid-rule-expression-builder>
-          <rapid-rule-expression-builder onClick={() => console.log('next')} direction="next"></rapid-rule-expression-builder>
-        </CodeSection >
-      )
+  const change = (e) => {
+    console.log(e.nativeEvent.detail);
+  };
+
+  const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+    fields, // from import
+    // you can also set the model and other configuration options here
+  };
+
+  React.useEffect(() => {
+    if (expressionBuilderRef.current) {
+      expressionBuilderRef.current.ruleConfig = ruleConfig;
     }
-    ```
+  }, []);
+
+  return (
+    <rapid-rule-expression-builder
+      ref={expressionBuilderRef}
+      onChange={change}
+    ></rapid-rule-expression-builder>
+  )
+}
+```
   </TabItem>
   <TabItem value="angular">
 
@@ -101,37 +119,43 @@ Declaration
     <rapid-rule-expression-builder></rapid-rule-expression-builder>
     ```
 
-    Usage
-    ```typescript
-    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ExpressionBuilderTypes, RuleExpression, RapidRuleExpressionBuilder } from '@genesislcap/rapid-design-system';
+import { fields } from './fields'; // Assuming fields.ts is in the same directory
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-rule-expression-builder
+      #expressionBuilder
+      (onChange)="onChange($event)"
+    ></rapid-rule-expression-builder>
+  `,
+  standalone: true,
+  imports: [CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent implements AfterViewInit {
+  @ViewChild('expressionBuilder', { static: false }) expressionBuilderRef!: ElementRef<RapidRuleExpressionBuilder>;
 
-    @Component({
-      selector: 'my-component',
-      template: `
-        <code-section>
-          <rapid-rule-expression-builder
-            direction="previous"
-            (click)="onPreviousClick()"
-          ></rapid-rule-expression-builder>
-          <rapid-rule-expression-builder
-            direction="next"
-            (click)="onNextClick()"
-          ></rapid-rule-expression-builder>
-        </code-section>
-      `,
-      standalone: true,
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-    export class MyComponent {
-      onPreviousClick() {
-        console.log('previous');
-      }
+  ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+    fields, // from import
+    // you can also set the model and other configuration options here
+  };
 
-      onNextClick() {
-        console.log('next');
-      }
+  ngAfterViewInit(): void {
+    if (this.expressionBuilderRef) {
+      this.expressionBuilderRef.nativeElement.ruleConfig = this.ruleConfig;
     }
-    ```
+  }
+
+  onChange(event: CustomEvent<RuleExpression['PredicateExpression']>): void {
+    console.log(event.detail);
+  }
+}
+```
   </TabItem>
 </Tabs>
 
