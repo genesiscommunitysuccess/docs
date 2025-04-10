@@ -126,7 +126,7 @@ Where the key on `encryptUserPassWithKey` needs to be a 32 character string and 
 
 Copy the output `userName` and `password` values and keep these safe.
 
-Given the sensitive nature of the field values, it is advisable NOT to put these raw values into the system definition file, and instead to [use environment variables to override theses system definition items](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables) or a credentials manager such as [Hashicorp Vault](/develop/server-capabilities/runtime-configuration/system-definition/#hashicorp-vault-support) to avoid adding sensitive data into your code repository.
+Given the sensitive nature of the field values, it is advisable NOT to put these raw values into the system definition file, and instead to [use environment variables to override these system definition items](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables) or a credentials manager such as [Hashicorp Vault](/develop/server-capabilities/runtime-configuration/system-definition/#hashicorp-vault-support) to avoid adding sensitive data into your code repository.
 
 **DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
 
@@ -185,7 +185,7 @@ To do this, you can set an environment variable that has the same name as the sy
 
 `GENESIS_SYSDEF_ENCRYPTED` is needed where the value of the system definition is sensitive and is encoded (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
 
-Here is an example of environment variables `DbHost`, `DbUser`, `DbPassword` and `GenesisKey`, that will all be taken and override the configuration found in the system definition file for each of the items:
+Here is an example of environment variables `DbHost`, `DbUser`, `DbPassword` and `GenesisKey`. These will all be taken and will override the configuration found in the system definition file for each of the items:
 
 ```bash
 GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis
