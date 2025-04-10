@@ -13,22 +13,21 @@ import { ValueBuilderExample } from './expression_builder_examples.js'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Rule expression builder
+# Value expression builder
 
-The rule expression builder is a UI component which allows the user to configure boolean expressions upon a set of data. The generated expression can then be directly executed by the evaluator and criteria back-end services.
+The value expression builder is a UI component which allows the user to configure transformation expressions upon a set of data. The generated expression can then be directly executed by the evaluator and criteria back-end services.
 
 Use cases:
-* Allow the user to define a set of filters which can be used on a dataset.
-* Configure predicate expressions to execute actions when specific conditions are realised.
-* Allow run-time configuration of rules which dictate application function, which typically would require developer code changes.
+* Allow the user to define a set of data transformations to execute
+* Allow run-time configuration of transformations which dictate application function, which typically would require developer code changes.
 
 :::tip
-This component is based on the [expression builder library](..) and is pre-configured to create boolean expressions that the back-end can work with. If you want to set your own operations and other configurations you can create your own component using the base library.
+This component is based on the [expression builder library](..) and is pre-configured to create transformation expressions that the back-end can work with. If you want to set your own operations and other configurations you can create your own component using the base library.
 :::
 
 ## Example
 
-You can add, change, or delete a rule to create different expressions based upon input fields. You can use groups to join rules using specific boolean combinators (`AND` and `OR`) to create complex expressions. When you change the expression model on the UI you can see the json payload which is created change on the right hand side (click the button to show the model if it's currently hidden).
+You can add, change, or delete a rule to create different expressions based upon input fields. When you change the expression model on the UI you can see the json payload which is created change on the right hand side (click the button to show the model if it's currently hidden).
 
 Notice that if a rule is highlighted in red when it's partially defined (e.g. you've chosen the field but not an operator), then the model payload on the right hand side won't change. This is because the back-end model doesn't support partial rules. It is possible to look at the underlying model which contains a tree structure even for partial rules.
 
@@ -40,7 +39,7 @@ Notice that if a rule is highlighted in red when it's partially defined (e.g. yo
 
 Declaration
 ```html
-<rapid-rule-expression-builder></rapid-rule-expression-builder>
+<rapid-value-expression-builder></rapid-value-expression-builder>
 ```
 
 Usage
@@ -51,21 +50,21 @@ import { fields } from './fields';
 @customElement({
   name: 'my-element',
   template: html<MyElement>`
-    <rapid-rule-expression-builder
-      :ruleConfig=${(x) => x.ruleConfig}
+    <rapid-value-expression-builder
+      :valueConfig=${(x) => x.valueConfig}
       @change=${(x) =>
-        x.handleChangedRuleExpression(
-          x.event as CustomEvent<RuleExpression.Expression['PredicateExpression']>,
+        x.handleChangedValueExpression(
+          x.event as CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>,
         )}
-    ></rapid-rule-expression-builder>
+    ></rapid-value-expression-builder>
   `,
 })
 export class MyElement extends GenesisElement {
-  ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+  valueConfig: ExpressionBuilderTypes.ValueConfig = {
     fields, // from import
     // you can also set the model and other configuration options here
   }
-  handleChangedRuleExpression(e: CustomEvent<RuleExpression.Expression['PredicateExpression']>){
+  handleChangedValueExpression(e: CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>){
     const newModel = e.detail;
     console.log({newModel});
   }
@@ -77,7 +76,7 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-rule-expression-builder></rapid-rule-expression-builder>
+<rapid-value-expression-builder></rapid-value-expression-builder>
 ```
 
     Usage
@@ -92,22 +91,22 @@ export function MyComponent() {
     console.log(e.nativeEvent.detail);
   };
 
-  const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+  const valueConfig: ExpressionBuilderTypes.ValueConfig = {
     fields, // from import
     // you can also set the model and other configuration options here
   };
 
   React.useEffect(() => {
     if (expressionBuilderRef.current) {
-      expressionBuilderRef.current.ruleConfig = ruleConfig;
+      expressionBuilderRef.current.valueConfig = valueConfig;
     }
   }, []);
 
   return (
-    <rapid-rule-expression-builder
+    <rapid-value-expression-builder
       ref={expressionBuilderRef}
       onChange={change}
-    ></rapid-rule-expression-builder>
+    ></rapid-value-expression-builder>
   )
 }
 ```
@@ -116,42 +115,42 @@ export function MyComponent() {
 
     Declaration
     ```html
-    <rapid-rule-expression-builder></rapid-rule-expression-builder>
+    <rapid-value-expression-builder></rapid-value-expression-builder>
     ```
 
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { ExpressionBuilderTypes, RuleExpression, RapidRuleExpressionBuilder } from '@genesislcap/rapid-design-system';
+import { ExpressionBuilderTypes, RuleExpression, RapidValueExpressionBuilder } from '@genesislcap/rapid-design-system';
 import { fields } from './fields'; // Assuming fields.ts is in the same directory
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'my-component',
   template: `
-    <rapid-rule-expression-builder
+    <rapid-value-expression-builder
       #expressionBuilder
       (onChange)="onChange($event)"
-    ></rapid-rule-expression-builder>
+    ></rapid-value-expression-builder>
   `,
   standalone: true,
   imports: [CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MyComponent implements AfterViewInit {
-  @ViewChild('expressionBuilder', { static: false }) expressionBuilderRef!: ElementRef<RapidRuleExpressionBuilder>;
+  @ViewChild('expressionBuilder', { static: false }) expressionBuilderRef!: ElementRef<RapidValueExpressionBuilder>;
 
-  ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+  valueConfig: ExpressionBuilderTypes.valueConfig = {
     fields, // from import
     // you can also set the model and other configuration options here
   };
 
   ngAfterViewInit(): void {
     if (this.expressionBuilderRef) {
-      this.expressionBuilderRef.nativeElement.ruleConfig = this.ruleConfig;
+      this.expressionBuilderRef.nativeElement.valueConfig = this.valueConfig;
     }
   }
 
-  onChange(event: CustomEvent<RuleExpression['PredicateExpression']>): void {
+  onChange(event: CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>): void {
     console.log(event.detail);
   }
 }
@@ -160,7 +159,7 @@ export class MyComponent implements AfterViewInit {
 </Tabs>
 
 
-<CollapsibleSlot title="fields.ts" description="Expand to see example fields you can use with the rule expression builder for testing and learning">
+<CollapsibleSlot title="fields.ts" description="Expand to see example fields you can use with the value expression builder for testing and learning">
 ```typescript
 import { ExpressionBuilderTypes } from '@genesislcap/rapid-design-system';
 
@@ -248,13 +247,13 @@ This component doesn't have any attributes.
   </thead>
   <tbody>
     <tr>
-      <td>ruleConfig</td>
-      <td><code>ExpressionBuilderTypes.RuleConfig</code></td>
+      <td>valueConfig</td>
+      <td><code>ExpressionBuilderTypes.ValueConfig</code></td>
       <td>The primary configuration point for the component which allows you to specify input fields, optionally set the model, among other configuration items.</td>
       <td>
 
 ```typescript
-<rapid-rule-expression-builder :ruleConfig="${(x) => x.ruleConfig}">
+<rapid-value-expression-builder :valueConfig="${(x) => x.valueConfig}">
 ```
 
       </td>
@@ -266,19 +265,19 @@ This component doesn't have any attributes.
 <td>
 
 ```typescript
-<rapid-rule-expression-builder :styles="${(x) => x.styles}">
+<rapid-value-expression-builder :styles="${(x) => x.styles}">
 ```
 
 </td>
     </tr>
     <tr>
       <td>model</td>
-      <td><code>RuleExpression.Expression['PredicateExpression']</code></td>
-      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>ruleConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't valid server rule and therefore will not be shown on the change event payload.</td>
+      <td><code>RuleExpression.Expression['MethodExpression']</code> | <code>RuleExpression.Expression['BinaryExpression']</code></td>
+      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>valueConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't valid server rule and therefore will not be shown on the change event payload.</td>
 <td>
 
 ```typesscript
-const model = document.querySelector('rapid-rule-expression-builder').model;
+const model = document.querySelector('rapid-value-expression-builder').model;
 ```
 
 </td>
@@ -308,15 +307,15 @@ This component doesn't have any css parts. You should instead override the styli
   <tbody>
     <tr>
       <td>change</td>
-      <td><code>RuleExpression.Expression['PredicateExpression']</code></td>
-      <td>Emits whenever the user changes the state of the UI component. The event detail contains the predicate expression payload the server expects. As the server expression must always contain non-partial rules the payload may be slightly out of sync with the UI if the user has a partial rule. You can use the <code>model</code> property on the component to get the precise underlying state of the component if you wish.</td>
+      <td><code>RuleExpression.Expression['MethodExpression']</code> | <code>RuleExpression.Expression['BinaryExpression']</code></td>
+      <td>Emits whenever the user changes the state of the UI component. The event detail contains the transformation expression payload the server expects. As the server expression must always contain non-partial rules the payload may be slightly out of sync with the UI if the user has a partial rule. You can use the <code>model</code> property on the component to get the precise underlying state of the component if you wish.</td>
 <td>
 
 ```typescript
-<rapid-rule-expression-builder
+<rapid-value-expression-builder
     @change=${(x) =>
-    x.handleChangedRuleExpression(
-        x.event as CustomEvent<RuleExpression.Expression['PredicateExpression']>,
+    x.handleChangedValueExpression(
+        x.event as CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>,
     )}
 >
 ```
@@ -330,15 +329,12 @@ This component doesn't have any css parts. You should instead override the styli
 
 This component doesn't listen to any events.
 
-## Predicate expressions
+## Transformation expressions
 
-The payload the component produces is a predicate expression, which is a tree structure expression. Each rule on the UI maps to either a method or a binary expression.
+The payload the component produces is a union of expressions which can apply a transform to a field, which the UI rule maps to directly.
 
-* A `binary` expression example is when `FIRST_NAME EQUALS "John"`.
-* A `method` expression example is when `FIRST_NAME CONTAINS "Matt"`.
-* A `predicate` expression is example is when we join the first two examples `FIRST_NAME EQUALS "John" (AND) FIRST_NAME CONTAINS "Matt"`.
-
-Depending on the configuration of the expression builder you can allow no nested expressions, or as many nested expressions as possible!
+* A `binary` expression example is when `AGE PLUS 5`.
+* A `method` expression example is when `DATE_REGISTERED CONVERT_TO_DATE_TIME`.
 
 These expressions can then be used directly with the evaluator and criteria back-end services. You can also write your own server functions which work with these payloads if you wish.
 
@@ -374,8 +370,8 @@ if (
 const fields = Object.entries(
     resourceSchema.OUTBOUND?.properties?.REPLY?.items?.properties ?? {},
 ).map(mapJsonSchemaFieldToExprBuilderField).filter(Boolean);
-// Finally use those fields in the config for the rule expression builder
-const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
+// Finally use those fields in the config for the value expression builder
+const valueConfig: ExpressionBuilderTypes.ValueConfig = {
     fields,
 };
 ```
