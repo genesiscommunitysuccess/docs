@@ -18,7 +18,6 @@
     "serve:base_url": "cross-env BASE_URL=/docs/ docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
-    "start:mcp": "node src/mcp/standalone-server.mjs",
     "swizzle": "docusaurus swizzle",
     "postinstall": "npm run generate:iife && npm run hack:iife",
     "generate:iife": "genx build -b rollup",
@@ -62,18 +61,15 @@
     "@genesislcap/grid-tabulator": "14.257.1",
     "@genesislcap/pbc-reporting-ui": "1.0.372",
     "@mdx-js/react": "3.0.1",
-    "@modelcontextprotocol/sdk": "^1.9.0",
     "@mui/icons-material": "5.16.7",
     "@mui/material": "5.16.7",
     "clsx": "2.1.1",
     "docusaurus-gtm-plugin": "0.0.2",
     "docusaurus-pushfeedback": "^1.0.1",
-    "express": "^5.1.0",
     "prism-react-renderer": "2.3.1",
     "raw-loader": "4.0.2",
     "react": "^19.0.0-rc.1",
-    "react-dom": "^19.0.0-rc.1",
-    "zod": "^3.24.2"
+    "react-dom": "^19.0.0-rc.1"
   },
   "browserslist": {
     "production": [
