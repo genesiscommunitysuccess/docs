@@ -18,6 +18,8 @@ FoundationHeader;
 Form;
 Filters;
 CriteriaSegmentedControl;
+rapidDesignSystem.RapidRuleExpressionBuilder;
+rapidDesignSystem.RapidValueExpressionBuilder;
 
 /**
  * registerComponents.
