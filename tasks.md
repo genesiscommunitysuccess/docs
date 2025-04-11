@@ -40,3 +40,11 @@ b. Is there a way of using docusouras or some other tool to generate the list of
 c. Implement the tool using the best way from (b)
 
 3. Expose the markdown documents via each route
+
+Let's create a tool which allows an AI client to input the markdown route received from the route and api docs search tools and look at the markdown
+
+# What we need to do
+
+a. Add a new tool. It should have a required parameter for the md or mdx path to view. It should have optional parameters for getting offsets and line counts so we can look at specific parts of the file
+b. Add context saying that it's useful to use the other two tools to search for the filepaths to view
+c. Implement the tool to view the file using the input parameters
