@@ -2,6 +2,7 @@
   "name": "@genesislcap/docs",
   "description": "Genesis platform documentation",
   "version": "0.0.1",
+  "type": "module",
   "engines": {
     "node": ">=20.10.0"
   },
@@ -12,12 +13,14 @@
     "build-main": "docusaurus build",
     "build:base_url": "npm run copy:dsc && cross-env BASE_URL=/docs/ docusaurus build",
     "build:production": "npm run copy:dsc && cross-env BASE_URL=/docs/ BRANCH=master docusaurus build",
+    "build:mcp": "tsc --project src/mcp/tsconfig.json",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "serve:base_url": "cross-env BASE_URL=/docs/ docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
+    "start:mcp": "npm run build:mcp && node dist/mcp/index.js",
     "swizzle": "docusaurus swizzle",
     "postinstall": "npm run generate:iife && npm run hack:iife",
     "generate:iife": "genx build -b rollup",
@@ -87,13 +90,16 @@
     "@docusaurus/module-type-aliases": "3.5.2",
     "@docusaurus/types": "3.5.2",
     "@genesislcap/genx": "14.257.1",
+    "@modelcontextprotocol/sdk": "^1.9.0",
     "@types/mocha": "10.0.7",
     "api-docs-sync": "file:./plugins/api-docs",
     "copyfiles": "2.4.1",
     "cross-env": "7.0.3",
     "dotenv": "16.4.5",
     "esbuild-loader": "4.2.2",
-    "rimraf": "6.0.1"
+    "mcp-framework": "^0.2.11",
+    "rimraf": "6.0.1",
+    "zod": "^3.24.2"
   },
   "overrides": {
     "@rollup/plugin-commonjs": "^21.0.1",

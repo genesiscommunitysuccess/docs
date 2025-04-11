@@ -1,0 +1,7 @@
+{
+  "name": "genesis-docs-mcp",
+  "version": "0.0.1",
+  "description": "MCP Server for Genesis Documentation",
+  "type": "module",
+  "private": true
+}
