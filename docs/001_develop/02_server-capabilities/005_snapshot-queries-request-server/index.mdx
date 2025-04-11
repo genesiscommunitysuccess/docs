@@ -30,7 +30,7 @@ The Request Server is a microservice responsible for providing APIs to request s
 graph TD
 A[UI] --> |1. Request| B(REQUEST_SERVER)
 B -->|3. Set Response| A
-B <-->|2. Read|C[Database] 
+B <-->|2. Read|C[Database]
 ```
 
 Genesis Request Servers are defined in the `*-reqrep.kts` files.
@@ -90,18 +90,18 @@ requestReplies {
 }
 ```
 
-###### INSTRUMENT 
+###### INSTRUMENT
 The request server name is defaulted as no name is specified.
 
-###### COUNTERPARTY   
+###### COUNTERPARTY
 [Access control](/develop/server-capabilities/access-control/) permissions are set, only users with `CounterpartyView` permission are able to access this query and see data. With the INSTRUMENT query above, any user who can authenticate with this app are able to access this query and see data.
 
 ###### TRADE_VIEW
 A request server name is specified.
 
-This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
+This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.
 
-We have specified the fields of the view we want to show explicitly, if there are fields in a view/table we don't need we can leave them out of this configuration. Where `fields` block is not specified all are implicitly included.  
+We have specified the fields of the view we want to show explicitly, if there are fields in a view/table we don't need we can leave them out of this configuration. Where `fields` block is not specified all are implicitly included.
 
 The `auth` block in `permissioning` utilizes [access control](/develop/server-capabilities/access-control/) for row level permissioning. Only users with access to the COUNTERPARTY_ID will see the row.
 
@@ -120,7 +120,7 @@ All `requestReply` blocks should be added under the parent block `requestReplies
 requestReplies {
 
   requestReply(...
-  
+
 }
 
 ### `requestReply`
@@ -192,7 +192,7 @@ Request Server scripts can optionally transform a request parameter’s value us
 In the example below, `withTransformation` is used twice.
 
 * If the `ALTERNATE_TYPE` parameter value is null, then the Request Server will use `"UNKNOWN"` by default.
-* If the `ALTERNATE_TYPE` parameter has the value "RIC", then the transformation block will use the value of `INSTRUMENT_CODE` from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
+* If the `ALTERNATE_TYPE` parameter has the value "RIC", then the transformation block will use the value of `INSTRUMENT_CODE` from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup.
 
 ```kotlin {5-16}
 requestReplies {
@@ -251,7 +251,7 @@ This is the same as `filter` but adding a `genesisSet` context property that hol
 In the example below, we will filter out rows where the COUNTERPARTY_NAME is equal to the instrument's name.
 
 ```kotlin
-  filterWithParameters {                 
+  filterWithParameters {
     genesisSet.getString("COUNTERPARTY_NAME") != data.instrumentName
   }
 ```
@@ -261,7 +261,7 @@ In the example below, we will filter out rows where the COUNTERPARTY_NAME is equ
 Similar to `filterWithParameters` but the `genesisSet` context property contains the whole request payload and not just the parameters.
 
 ```kotlin
-  filterWithParameters {                 
+  filterWithParameters {
     genesisSet.getString("REQUEST.COUNTERPARTY_NAME") != data.instrumentName && data.assignedTo == genesisSet.getString("userName")
   }
 ```
@@ -353,34 +353,34 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
         authKeyWithUserName {
             key(data.fieldNameA, data.fieldNameB, userName)
         }
-        
+
         // hide fields are supported
         hideFields { userName ->
             listOf("FIELD_NAME_A")
         }
-        
+
         // predicates are supported
         filter {
         }
     }
   }
-  
+
   // a reply tag is required; there are three types.
-  // the reply tag will have a single parameter, the request, which will be of type 
+  // the reply tag will have a single parameter, the request, which will be of type
   // [input class]
   // all three have these fields available:
-  // 1. db          - readonly entity database 
+  // 1. db          - readonly entity database
   // 2. userName    - the name of the user who made the request
   // 3. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
-  
+
   // either:
-  reply { request -> 
+  reply { request ->
   }
-  
-  // or: 
-  replySingle { request -> 
+
+  // or:
+  replySingle { request ->
   }
-  
+
   // or:
   replyList { request ->
   }
@@ -392,8 +392,8 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
 There are three types of reply that you can use with custom request servers:
 
 - **reply** expects a type of `Flow<OutputClass>` to be returned.
-- **replySingle** expects a return of the `<OutputClass>` type that you defined in your `requestReply`. 
-- **replyList** expects a return of the type `List<OutputClass>`. 
+- **replySingle** expects a return of the `<OutputClass>` type that you defined in your `requestReply`.
+- **replyList** expects a return of the type `List<OutputClass>`.
 
 For all of these, you can use the parameter `request`. In our previous example, the `request` is of the type `InputClass`.
 
@@ -434,7 +434,7 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 }
 ```
 
-Next is a more complex example. 
+Next is a more complex example.
 
 - The first block checks that the user is authorized to view the instrument.
 - The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
@@ -448,7 +448,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
             }
         }
     }
-    
+
     reply { byAlternateTypeAlternateCode ->
         when {
             byAlternateTypeAlternateCode.alternateType == "*" ->
@@ -666,8 +666,8 @@ The filters can be specified using common expressions, Groovy expressions, or ev
 
 #### Ranges
 
-A client can specify ranges of data from a Request Server by post-fixing the request parameter names with `_FROM` and `_TO`.  
-The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. 
+A client can specify ranges of data from a Request Server by post-fixing the request parameter names with `_FROM` and `_TO`.
+The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000.
 Ranges can be used with numeric, `DATE` and `DATETIME` field types.
 You must specify both `_FROM` and `_TO` to get a result. Specifying only one end will result in an error.
 
@@ -680,7 +680,7 @@ You must specify both `_FROM` and `_TO` to get a result. Specifying only one end
 
 :::note
 1. Ranges must be based on indexes. Post-fixing the request parameter targeting records without an index, will process the request ignoring the range.
-2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/#timestamps). 
+2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/#timestamps).
 :::
 
 ## Metrics
@@ -728,7 +728,7 @@ If you wish to run a dedicated process for a request server, the following gives
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing) section.
+If you are testing against a previous version of the framework, go to [legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api).
 
 :::
 
@@ -740,7 +740,7 @@ We shall use a very simple example and work through the communication between ou
 
 In this example, we shall test the following Request Server:
 
-```kotlin 
+```kotlin
 data class Hello(
     val name: String,
 )
@@ -790,7 +790,7 @@ public class RequestServerTest {
 </TabItem>
 </Tabs>
 
-This test class does three things: 
+This test class does three things:
 
 * It enables **GenesisJunit**.
 * It identifies the Request Server script that we want to test, using the `TestScriptFile` annotation.
@@ -848,7 +848,7 @@ The syntax for defining the request-reply workflow depends on whether you use Ko
 
 In Kotlin, you can build the flow in a method call:
 
-```kotlin 
+```kotlin
 private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
 ```
 
@@ -859,7 +859,7 @@ private RequestReplyWorkflow<Hello, World> helloWorldFlow = new AbstractRequestR
 ```
 
 ### A first test
-Here is a very simple first test. 
+Here is a very simple first test.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -893,7 +893,7 @@ public void testHelloWorldRequestServer() {
 
 ### Providing a user name
 
-As you can see, to send a request, you need to provide both the workflow and the content. 
+As you can see, to send a request, you need to provide both the workflow and the content.
 You can optionally provide a username as well:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -963,7 +963,7 @@ requestReplies {
 }
 ```
 
-You then need to create your new test cases. Note that the authorization for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
+You then need to create your new test cases. Note that the authorization for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access.
 
 In the code below, there are two tests, which both check the result of the authorization process:
 
@@ -1095,7 +1095,7 @@ This section covers testing your Request Server if you are using any version of 
 
 It is good practice to test your Request Servers. This is the best way to prevent any unexpected side effects of changes to your application over time.
 
-The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Request Server configuration is used to create our Request Server. We also need to add the required packages and genesis home. 
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Request Server configuration is used to create our Request Server. We also need to add the required packages and genesis home.
 
 ```kotlin
 class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(

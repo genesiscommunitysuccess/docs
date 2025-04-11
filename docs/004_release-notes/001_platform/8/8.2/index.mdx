@@ -22,7 +22,7 @@ id: '8.2'
 - Add non-blocking threading model for database subscriptions 
 - Add onCompletion handling to data pipelines v2 
 - Add optional pagination support to API code generation 
-- Add support for Consolidators and ata pipelines in GenesisJunit 
+- Add support for Consolidators and ata pipelines in `GenesisJUnit` 
 - Added persistence api for data pipelines.
 - Added source implementation to batch poll the db. 
 - Added source that uses camel to get files. 
@@ -57,35 +57,35 @@ id: '8.2'
 
 ### Dependency changes
 
-- Bump apachePoi from 5.2.5 to 5.3.0 in /genesis-conventions 
-- Bump byteBuddyVersion from 1.14.17 to 1.14.18 in /genesis-conventions 
-- Bump byteBuddyVersion from 1.14.17 to 1.14.18 in /genesis-conventions 
-- Bump camelVersion from 4.6.0 to 4.7.0 in /genesis-conventions 
-- Bump com.github.oshi:oshi-core from 6.6.1 to 6.6.2 in /genesis-conventions 
-- Bump com.github.spullara.mustache.java:compiler from 0.9.13 to 0.9.14 in /genesis-conventions
-- Bump com.google.errorprone:error_prone_annotations from 2.28.0 to 2.29.2 in /genesis-conventions 
-- Bump com.h2database:h2 from 2.2.224 to 2.3.230 in /genesis-conventions 
-- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3 in /genesis-conventions
-- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3 in /genesis-publish-config 
-- Bump com.networknt:json-schema-validator from 1.4.3 to 1.5.0 in /genesis-conventions 
-- Bump commons-codec:commons-codec from 1.17.0 to 1.17.1 in /genesis-parent/genesis-cluster 
-- Bump de.cronn:reflection-util from 2.15.0 to 2.16.0 in /genesis-subcore/genesis-db 
-- Bump debeziumVersion from 2.6.2.Final to 2.7.0.Final in /genesis-conventions
-- Bump groovyVersion from 3.0.21 to 3.0.22 in /genesis-conventions
-- Bump jacksonVersion from 2.17.1 to 2.17.2 in /genesis-conventions 
-- Bump junitVersion from 5.10.2 to 5.10.3 in /genesis-conventions 
-- Bump micrometerVersion from 1.13.1 to 1.13.2 in /genesis-conventions 
-- Bump nettyVersion from 4.1.111.Final to 4.1.112.Final in /genesis-conventions 
-- Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.15.0 in /genesis-conventions 
-- Bump org.assertj:assertj-core from 3.26.0 to 3.26.3 in /genesis-conventions 
-- Bump org.checkerframework:checker-qual from 3.44.0 to 3.45.0 in /genesis-conventions 
-- Bump org.gradle.test-retry from 1.5.9 to 1.5.10 in /genesis-conventions
-- Bump org.java-websocket:Java-WebSocket from 1.5.6 to 1.5.7 in /genesis-conventions 
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3 in /genesis-conventions
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3 in /genesis-publish-config 
-- Bump org.mockito.kotlin:mockito-kotlin from 5.3.1 to 5.4.0 in /genesis-conventions 
-- Bump org.openapitools:openapi-generator from 7.6.0 to 7.7.0 in /genesis-conventions 
-- Bump testcontainersVersion from 1.19.8 to 1.20.0 in /genesis-conventions 
+- Bump apachePoi from 5.2.5 to 5.3.0 
+- Bump byteBuddyVersion from 1.14.17 to 1.14.18 
+- Bump byteBuddyVersion from 1.14.17 to 1.14.18 
+- Bump camelVersion from 4.6.0 to 4.7.0 
+- Bump com.github.oshi:oshi-core from 6.6.1 to 6.6.2 
+- Bump com.github.spullara.mustache.java:compiler from 0.9.13 to 0.9.14
+- Bump com.google.errorprone:error_prone_annotations from 2.28.0 to 2.29.2 
+- Bump com.h2database:h2 from 2.2.224 to 2.3.230 
+- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3
+- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3 
+- Bump com.networknt:json-schema-validator from 1.4.3 to 1.5.0 
+- Bump commons-codec:commons-codec from 1.17.0 to 1.17.1 
+- Bump de.cronn:reflection-util from 2.15.0 to 2.16.0 
+- Bump debeziumVersion from 2.6.2.Final to 2.7.0.Final
+- Bump groovyVersion from 3.0.21 to 3.0.22
+- Bump jacksonVersion from 2.17.1 to 2.17.2 
+- Bump junitVersion from 5.10.2 to 5.10.3 
+- Bump micrometerVersion from 1.13.1 to 1.13.2 
+- Bump nettyVersion from 4.1.111.Final to 4.1.112.Final 
+- Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.15.0 
+- Bump org.assertj:assertj-core from 3.26.0 to 3.26.3 
+- Bump org.checkerframework:checker-qual from 3.44.0 to 3.45.0 
+- Bump org.gradle.test-retry from 1.5.9 to 1.5.10
+- Bump org.java-websocket:Java-WebSocket from 1.5.6 to 1.5.7 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3 
+- Bump org.mockito.kotlin:mockito-kotlin from 5.3.1 to 5.4.0 
+- Bump org.openapitools:openapi-generator from 7.6.0 to 7.7.0 
+- Bump testcontainersVersion from 1.19.8 to 1.20.0 
 - Downgrading H2 to 2.2.224 due to different behavior on GetRange operations and indices
 
 ### Patch releases
@@ -94,11 +94,11 @@ id: '8.2'
 
 ###### Fixes
 
-* `xml-dataserver` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event.
+* `genesis-dataserver2` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event.
 
 ###### Experimental features
 
-* `pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
+* `genesis-pal-dataserver` : Added an alternate update handler - a new way of processing table/view updates that relies on the database as a source of truth more often, potentially introducing more database load.
 
 #### 8.2.19
 
@@ -233,7 +233,7 @@ id: '8.2'
 
 - Increasing object_key field size
 - Ensure error messages are flushed to logs on process exit
-- Dix minor issues in GenesisJunit test framework
+- Dix minor issues in `GenesisJUnit` test framework
 
 ## Client
 

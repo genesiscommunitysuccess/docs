@@ -43,35 +43,48 @@ The Gradle plugin provides the easiest and quickest way to get Genesis running i
 **There are 3 Gradle tasks that are provided to help you build your Docker image:**
 
 - `createDockerfile` - generates the Dockerfile dynamically based on user-defined settings and dependencies. It also copies all the files needed for the context into the same folder.
-- `buildImage` - runs **createDockerfile** as a sub-task, and then runs `docker build` on the generated Dockerfile.
-- `pushImage` - pushes the generated image to a repository defined in **gradle.properties** (see [section on pushing](#pushing)).
+- `buildImage` - runs `createDockerfile` as a sub-task, and then runs `docker build` on the generated Dockerfile.
+- `pushImage` - pushes the generated image to a repository defined in `gradle.properties` (see [section on pushing](#pushing)).
 
 ### Using the plugin
 
 1. Create or use an existing Genesis project.
 
-2. Make the necessary changes to the **genesis-system-definitions.kts** for your dependencies, such as [the location of the database](/build-deploy-operate/deploy/supporting-infrastructure/#databases).
+2. Make the necessary changes to the `genesis-system-definitions.kts` for your dependencies, such as [the location of the database](/build-deploy-operate/deploy/supporting-infrastructure/#databases).
 
-3. Add your dependencies to the Deploy plugin in `server/build.gradle.kts`:
+3. Ensure `genesisDeploy.enabled = true` is set in your `server/settings.gradle.kts` within the `genesis` plugins section. For example:
 
 ```kotlin
-    genesisServer(
-        group = "global.genesis",
-        name = "genesis-distribution",
-        version = properties["genesisVersion"].toString(),
-        classifier = "bin",
-        ext = "zip"
-    )
-    genesisServer(
-        group = "global.genesis",
-        name = "auth-distribution",
-        version = properties["authVersion"].toString(),
-        classifier = "bin",
-        ext = "zip"
-    )
+genesis {
+    productName = "appname"
+
+    dependencies {
+        dependency("global.genesis:auth:${extra.properties["authVersion"]}")
+        dependency("global.genesis:fix:${extra.properties["genesisFixVersion"]}")
+    }
+    plugins {
+        genesisDeploy.enabled = true
+    }
+}
 ```
 
-4. Run the `buildImage` Gradle task from the root of the **server/jvm/** project. You can also run this task from your IDE if you prefer:
+4. Ensure the client is included in the image by adding the following to `server/settings.gradle.kts`:
+```kotlin
+includeBuild("../client")
+```
+
+    - Additionally, make sure that the `client/build.gradle.kts` file has `group` specified; add the following to the root of the file:
+
+```kotlin
+group = "global.genesis"
+```
+
+    - Then add the following to the `dependencies` block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
+```kotlin
+genesisWeb("global.genesis:client")
+```
+
+5. Run the `buildImage` Gradle task from the root of the `server/` project. You can also run this task from your IDE if you prefer:
 
 <Tabs defaultValue="linux" values={[{ label: 'Linux/Unix', value: 'linux', }, { label: 'Windows', value: 'windows', }]}>
 <TabItem value="linux">
@@ -89,6 +102,17 @@ The Gradle plugin provides the easiest and quickest way to get Genesis running i
 
 </TabItem>
 </Tabs>
+
+:::tip
+If you're unable to execute the `gradlew` command, ensure you have the correct permissions on the file. Add execute permissions with `chmod +x gradlew`
+
+The gradle `buildImage` command requires connection to Docker/Rancher, which should be running locally. If you're running Rancher on Mac, you may need to run the
+following `socat` image, which enables you to build your Genesis application image:
+
+```bash
+docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock -p 2375:2375 --name socat rycus86/docker-socat
+```
+:::
 
 Once the image has been built, the output should display the name of the image:
 

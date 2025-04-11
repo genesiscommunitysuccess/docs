@@ -44,7 +44,7 @@ When the client first requests to subscribe to a query in a Data Server, the ini
 
 Genesis Data Servers are defined in the `*-dataserver.kts` files.
 
-All Data Server queries are available via REST automatically too. 
+All Data Server queries are available via REST automatically too.
 
 ## Example configuration
 
@@ -91,16 +91,16 @@ dataServer {
 }
 ```
 
-###### INSTRUMENT 
+###### INSTRUMENT
 This query enables the client app to view the data in the INSTRUMENT table. No name is specified for the query, so the default name ALL_INSTRUMENTS is applied automatically. There are no access controls, so any authenticated user can access this query and see data.
 
 ###### COUNTERPARTY
 This query enables the client app to view the data in the INSTRUMENT table. A query name is specified. [Access control](/develop/server-capabilities/access-control/) permissions are set; only users with `CounterpartyView` permission are able to access this query and see data.
 
 ###### TRADE_VIEW
-This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
+This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.
 
-This query specifies the fields that we want to show. if there are fields in a view or table, which you don't need wto include, you can leave them out of this configuration using the `fields` block. If you don't specify any fields in this way all are implicitly included.  
+This query specifies the fields that we want to show. if there are fields in a view or table, which you don't need wto include, you can leave them out of this configuration using the `fields` block. If you don't specify any fields in this way all are implicitly included.
 
 The `auth` block in `permissioning` applies [access control](/develop/server-capabilities/access-control/) for row level permissioning. Only users with access to the COUNTERPARTY_ID will see the row.
 
@@ -187,7 +187,11 @@ dataServer {
 
 #### `indices`
 
-A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. 
+A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order.
+
+:::info
+A Data Server always uses the internal RECORD_ID value of the database records to create the default index. This is equivalent to indexing records by their creation date. Data Servers do not use table/view indices automatically. To query records efficiently, you need to recreate indices at the Data Server level or use the [`importEntityIndices`](#global-config) configuration option.
+:::
 
 The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
 
@@ -201,6 +205,9 @@ dataServer {
                 QUANTITY
                 SIMPLE_ID
             }
+            nonUnique("SIMPLE_QUERY_BY_INSTRUMENT"){
+                INSTRUMENT_ID
+            }
         }
     }
 }
@@ -209,11 +216,22 @@ dataServer {
 There are two scenarios where an index is useful:
 
 * **Optimizing query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
-* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
+* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.
 
-*Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
+*Important*: Unique indices should be defined carefully, as they need to reflect column uniqueness within the table or view. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
-Note that table indexes are NOT available in dataserver queries.
+Note that table indices are NOT available in dataserver queries by default as previously mentioned. Table/view indices can be automatically imported when using the [`importEntityIndices`](#global-config) configuration option or using the `fromEntity` method as shown in the example below:
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        indices {
+            fromEntity(SIMPLE_TABLE.BY_QUANTITY)
+            fromEntity(SIMPLE_TABLE.BY_INSTRUMENT)
+        }
+    }
+}
+```
 
 <CommonPermissions />
 
@@ -238,11 +256,11 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. This data cannot be cached, as it is derived from the subscribing client's input. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
-The `join` operation receives two parameters: 
+The `join` operation receives two parameters:
 - `userName` is the current user name subscribed to the query
 - `row` is the pre-built query row
 
-`hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided: 
+`hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided:
 - `userName` the current user name subscribed to the query
 - `row` the pre-built query `row`
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
@@ -402,7 +420,7 @@ You can use the following options when you create index-based queries:
 
 ##### `where`
 
-This provides a set of data equal to specified index. 
+This provides a set of data equal to specified index.
 Advanced `where` accepts index and the provided index is used to get similar records from database. The Data Server query returns all the trade data whose quantity is equal to 42. You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below:
 
 ```kotlin
@@ -444,19 +462,6 @@ query("TRADE_RANGED_USD", TRADE) {
 ##### `ranged`
 
 Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
-
-- The `index` property must be a [unique index](/develop/server-capabilities/data-model/#unique). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
-
-```
-unique {
- QUANTITY
- TRADE_ID
-}
-```
-
-:::info
-To create the default query index, a Data Server always uses the internal RECORD_ID value of the database records. This is equivalent to indexing records by their creation date. Data Servers do not use table indices. To query records efficiently, you need to recreate indices at the Data Server level.
-:::
 
 - Use the `numKeyFields` property to specify the number of fields to use from an index. The fields are always selected in the order they are specified in the index.
 - Use `from` to specify the start of the data range. This is mandatory.
@@ -622,14 +627,14 @@ remote_host,process_a,monitor_a
 
 Outside the `query` blocks, you can specify a `config` block to make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some of the global settings can be overridden at the query level (as indicated in the table below).
 
-Here is an example of some global configuration settings: 
+Here is an example of some global configuration settings:
 
 ```kotlin
 dataServer {
     config {
         lmdbAllocateSize = 512.MEGA_BYTE() // top level only setting
         // Items below can be overridden in individual query definitions
-        compression = true 
+        compression = true
         chunkLargeMessages = true
         defaultStringSize = 40
         maxBytesPerCharacter = 1
@@ -640,6 +645,7 @@ dataServer {
         serializationType = SerializationType.KRYO // Available from version 7.0.0 onwards
         serializationBufferMode = SerializationBufferMode.ON_HEAP // Available from version 7.0.0 onwards
         directBufferSize = 8096 // Available from version 7.0.0 onwards
+        importEntityIndices = false
     }
     query("SIMPLE_QUERY", SIMPLE_TABLE) {
         config {
@@ -667,21 +673,22 @@ dataServer {
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
 |`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. |TRUNCATE_FIELD |Yes|
 |`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
+|`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
 ###### Serialization considerations
 
 With `serializationType`, there are two options for configuring the type of serialization to be used in response to data requests:
-- `SerializationType.KRYO` uses the [Kryo library](https://github.com/EsotericSoftware/kryo). 
-- `SerializationType.FURY` uses the [Fury library](https://github.com/alipay/fury). 
+- `SerializationType.KRYO` uses the [Kryo library](https://github.com/EsotericSoftware/kryo).
+- `SerializationType.FURY` uses the [Fury library](https://github.com/alipay/fury).
 
-In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). 
+In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages).
 
 However, the serialized byte array size of a Fury object can be between 10 and 15 percent larger than a Kryo object, so there is a small penalty to pay for using this option.
 
-With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB. 
+With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB.
 
-There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. 
-- `SerializationBufferMode.ON_HEAP uses a custom cache of Java `HeapByteBuffer` objects that exist within the JVM addressable space. 
+There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`.
+- `SerializationBufferMode.ON_HEAP uses a custom cache of Java `HeapByteBuffer` objects that exist within the JVM addressable space.
 - `SerializationBufferMode.OFF_HEAP` uses `DirectByteBuffer` objects, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. <br></br>
 OFF_HEAP buffers permit zero-copy serialization/deserialization to LMDB; buffers of this type are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. To use OFF_HEAP, you **must** specify the buffer size in advance (see `directBufferSize` setting). Consider this carefully if you do not know the size of the serialized query row object in advance.
 
@@ -696,17 +703,17 @@ There are two options:
 
 ###### Using the type-aware criteria evaluator
 
-You can use `enableTypeAwareCriteriaEvaluator` to use the type-aware criteria evaluator. This automatically converts criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users. 
+You can use `enableTypeAwareCriteriaEvaluator` to use the type-aware criteria evaluator. This automatically converts criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users.
 
-For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the correct field types internally (even though `TRADE_DATE` is a field of type `DateTime`). 
+For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the correct field types internally (even though `TRADE_DATE` is a field of type `DateTime`).
 
-The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). 
+The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`).
 
-Note that the type-aware evaluator is also available in [`DbMon`](/build-deploy-operate/operate/commands/dbmon/) for operations such as `search` and `qsearch`. 
+Note that the type-aware evaluator is also available in [`DbMon`](/build-deploy-operate/operate/commands/dbmon/) for operations such as `search` and `qsearch`.
 
-If you do not use the use the type-aware criteria evaluator, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. 
+If you do not use the use the type-aware criteria evaluator, the traditional criteria evaluator needs the field types to match the query fields in the Data Server.
 
-So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: 
+So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like:
 `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`
 
 This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/develop/client-capabilities/server-communications/criteria-matching/#date-operations) to handle date searches.
@@ -731,7 +738,7 @@ Find details around [how data servers work with optimistic concurrency](/develop
 
 ## Client API
 
-Clients can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
+Clients can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed.
 
 <CommonAuthenticateFirst />
 
@@ -789,7 +796,7 @@ Initial Response
   "ROW": [
     {
       "TRADE_ID": 1,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 500,
       "PRICE": 226.12,
       "INSTRUMENT_NAME": "Apple",
@@ -800,7 +807,7 @@ Initial Response
       }
     },
       "TRADE_ID": 2,
-      "DIRECTION": "SELL",      
+      "DIRECTION": "SELL",
       "QUANTITY": 1000,
       "PRICE": 589.34,
       "INSTRUMENT_NAME": "Meta",
@@ -826,7 +833,7 @@ New row update
   "ROW": [
     {
       "TRADE_ID": 3,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
@@ -890,7 +897,7 @@ connection: keep-alive
   "ROW": [
     {
       "TRADE_ID": 1,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 500,
       "PRICE": 226.12,
       "INSTRUMENT_NAME": "Apple",
@@ -902,7 +909,7 @@ connection: keep-alive
     },
     {
       "TRADE_ID": 2,
-      "DIRECTION": "SELL",      
+      "DIRECTION": "SELL",
       "QUANTITY": 1000,
       "PRICE": 589.34,
       "INSTRUMENT_NAME": "Meta",
@@ -945,7 +952,7 @@ connection: keep-alive
   "ROW": [
     {
       "TRADE_ID": 3,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
@@ -972,38 +979,38 @@ connection: keep-alive
 
 #### Rows & view concepts
 ###### MAX_ROWS
-MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows). 
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows).
 
-The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
+The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour.
 
 For example, when a DATA_LOGON is received with MAX_ROWS set to 500, and REVERSE set to false:
 
-- **If no real-time updates occur on the server** the initial DATA_LOGON returns all 500 rows in reverse order. If the front end makes another request for MAX_ROWS, it receives another 500 rows in reverse order. From here, the front end can make further MORE_ROWS requests until the MAX_VIEW setting is reached. 
+- **If no real-time updates occur on the server** the initial DATA_LOGON returns all 500 rows in reverse order. If the front end makes another request for MAX_ROWS, it receives another 500 rows in reverse order. From here, the front end can make further MORE_ROWS requests until the MAX_VIEW setting is reached.
 
 - **If real-time updates occur on the server** these are sent to the front end regardless of order, and they will count towards the MAX_VIEW.
 
 ###### MAX_VIEW and MOVING_VIEW
-What happens when you reach MAX_VIEW depends on the MOVING_VIEW setting. 
+What happens when you reach MAX_VIEW depends on the MOVING_VIEW setting.
 
-- If MOVING_VIEW is set to true, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. So if you already have 2000 rows in your view and a new row is inserted, the oldest row in your view will be deleted (the Data Server sends a delete message) and the new row will be sent (the Data Server sends an insert message for that row). 
+- If MOVING_VIEW is set to true, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. So if you already have 2000 rows in your view and a new row is inserted, the oldest row in your view will be deleted (the Data Server sends a delete message) and the new row will be sent (the Data Server sends an insert message for that row).
 
 - If MOVING_VIEW is set to false, the Data Server will not send any updates for any new rows whatsoever. Only the rows that are currently in your view will receive updates. In either case, you can only have a total of MAX_VIEW rows in your grid.
 
 This allows for easier implementation of infinite scrolling, whilst providing latest and greatest database updates. The front end must send a **DATA_LOGON** and then continue calling MORE_ROWS to fill the grid as the user scrolls.
 
 ###### Limiting the number of rows
-Where the front end wants to limit the number of rows returned by the query, and only wants updates for those specific rows, there are two options. 
+Where the front end wants to limit the number of rows returned by the query, and only wants updates for those specific rows, there are two options.
 
 For both options that we describe below, we assume that the front end wants to receive only five lines:
 
-- The DATA_LOGON will have MAX_ROWS = 5, MAX_VIEW = 5, and MOVING_VIEW = false. This ensures that the server only returns those those rows and only sends updates for those rows - updates to other rows are ignored. 
-- If you want to use pagination, the front end requests a limited number of lines; for this, the DATA_LOGON will have MAX_ROWS = 5 and VIEW_NUMBER = 1. The first five rows are sent in a pagination mode. A subsequent MORE_ROWS update with VIEW_NUMBER = 2 will delete all the current five rows in the grid and return the next page of rows (i.e. another 5). The server only sends updates for the rows on display, and will respect REVERSE settings.  
+- The DATA_LOGON will have MAX_ROWS = 5, MAX_VIEW = 5, and MOVING_VIEW = false. This ensures that the server only returns those those rows and only sends updates for those rows - updates to other rows are ignored.
+- If you want to use pagination, the front end requests a limited number of lines; for this, the DATA_LOGON will have MAX_ROWS = 5 and VIEW_NUMBER = 1. The first five rows are sent in a pagination mode. A subsequent MORE_ROWS update with VIEW_NUMBER = 2 will delete all the current five rows in the grid and return the next page of rows (i.e. another 5). The server only sends updates for the rows on display, and will respect REVERSE settings.
 On successful DATA_LOGON and on any subsequent MORE_ROWS messages, the server sends a field called ROWS_COUNT, which contains an estimated number of rows in the server. You can divide this number by your MAX_ROWS setting to know how many pages can be queried on the server.
 
 :::info
 Let's summarize all that.
 - Where the front end only wants to receive a subset of rows, or is using pagination, **DATA_LOGON** has MAX_ROWS = MAX_VIEW and MOVING_VIEW = false.
-- If you always want to send new updates to the front end automatically once they occur in the server,  the DATA_LOGONs from the front end do not have MAX_ROWS = MAX_VIEW or MOVING_VIEW set to false. The value of REVERSE is ignored. 
+- If you always want to send new updates to the front end automatically once they occur in the server,  the DATA_LOGONs from the front end do not have MAX_ROWS = MAX_VIEW or MOVING_VIEW set to false. The value of REVERSE is ignored.
 :::
 
 #### `CRITERIA_MATCH`
@@ -1119,7 +1126,7 @@ Sample response deleting the old page (page 1) and adding page 2
     },
     {
       "TRADE_ID": 3,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
@@ -1283,7 +1290,7 @@ connection: keep-alive
     },
     {
       "TRADE_ID": 3,
-      "DIRECTION": "BUY",      
+      "DIRECTION": "BUY",
       "QUANTITY": 1000,
       "PRICE": 795.04,
       "INSTRUMENT_NAME": "Netflix",
@@ -1558,13 +1565,13 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing-legacy) section.
+If you are testing against an earlier version of the framework, go to [legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api).
 
 :::
 
 ### Integration testing
 
-This document looks at the basics of testing Data Servers. 
+This document looks at the basics of testing Data Servers.
 
 We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#genesisjunit), which is designed to make testing easy.
 
@@ -1602,7 +1609,7 @@ public class DataServerTest {
 </TabItem>
 </Tabs>
 
-This test class does three things: 
+This test class does three things:
 
 * It enables **GenesisJunit**.
 * It identifies the Data Server script that we want to test, using the `TestScriptFile` annotation.
@@ -1752,7 +1759,7 @@ public void buildCollections() {
 
 For this test, we have amended our Data Server to enable authorization:
 
-```kotlin 
+```kotlin
 dataServer {
     query("ALL_TRADES_AUTH", TRADE) {
         permissioning {
@@ -1768,7 +1775,7 @@ dataServer {
 
 Once you add the `auth` block to the code, you need to amend the test.
 
-To test dynamic authorization, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
+To test dynamic authorization, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1946,7 +1953,7 @@ Finally, **QueryView** also exposes properties and methods that enable you to co
 
 ##### Methods
 
-The methods below enable you to create tests that deal with `MORE_ROWS` and `MORE_COLUMNS` message flows (see more in the [client API](#client-api) section). 
+The methods below enable you to create tests that deal with `MORE_ROWS` and `MORE_COLUMNS` message flows (see more in the [client API](#client-api) section).
 
 The majority of these methods enable you to send messages to control the message flow. The last two in the table (`retrieveRawQueryUpdateRowsFrom` and `checkExpectedRowsNumberFrom`) are utility methods that enable you to query the total number and content of ROW updates received since a specified QUERY_UPDATE message.
 
