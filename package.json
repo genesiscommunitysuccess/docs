@@ -69,6 +69,7 @@
     "clsx": "2.1.1",
     "docusaurus-gtm-plugin": "0.0.2",
     "docusaurus-pushfeedback": "^1.0.1",
+    "fuse.js": "^7.1.0",
     "prism-react-renderer": "2.3.1",
     "raw-loader": "4.0.2",
     "react": "^19.0.0-rc.1",
