@@ -52,6 +52,18 @@ To use this MCP server with Claude Code, you need to add it to your Claude confi
 
 3. Save the file and restart Claude Code if it's already running.
 
+### Important Usage Notes
+
+- **Current Working Directory**: You must set the `cwd` in your configuration to the exact path where you cloned the repository.
+
+- **Running Claude Code**: You must currently run the Claude Code CLI from the same directory as the cloned project. This is a temporary limitation that will be addressed in a future update.
+
+  Example:
+  ```bash
+  cd /path/to/your/genesis-docs
+  claude
+  ```
+
 ## Available Tools
 
 The MCP server provides the following tools:
