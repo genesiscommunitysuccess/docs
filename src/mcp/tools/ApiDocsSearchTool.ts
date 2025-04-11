@@ -20,7 +20,9 @@ class ApiDocsSearchTool extends BaseSearchTool<BaseSearchInput, ApiDocInfo> {
   };
 
   async execute({ query }: BaseSearchInput) {
-    const result = await this.executeSearch(query, "ApiDocsSearchTool");
+    // Pass a getPathFunc to enable sibling context
+    const getPathFunc = (doc: ApiDocInfo) => doc.path;
+    const result = await this.executeSearch(query, "ApiDocsSearchTool", getPathFunc);
     
     if (!result.success) {
       return result;
@@ -32,17 +34,30 @@ class ApiDocsSearchTool extends BaseSearchTool<BaseSearchInput, ApiDocInfo> {
       apiDocs: result.items.map((doc: ApiDocInfo) => doc.path),
       count: result.count,
       query,
+      noResultsHint: result.noResultsHint
     };
   }
   
   filterItemsByQuery(docs: ApiDocInfo[], searchTerm: string): ApiDocInfo[] {
-    return docs.filter(
-      (doc) => 
-        doc.path.toLowerCase().includes(searchTerm) || 
-        (doc.modulePath && doc.modulePath.toLowerCase().includes(searchTerm)) ||
-        (doc.componentName && doc.componentName.toLowerCase().includes(searchTerm)) ||
-        (doc.methodName && doc.methodName.toLowerCase().includes(searchTerm))
-    );
+    // Use fuzzy matching instead of simple includes
+    const matches: [ApiDocInfo, number][] = docs.map(doc => {
+      // Calculate a composite score across all searchable fields
+      const pathScore = this.fuzzyMatch(doc.path, searchTerm);
+      const moduleScore = doc.modulePath ? this.fuzzyMatch(doc.modulePath, searchTerm) : 0;
+      const componentScore = doc.componentName ? this.fuzzyMatch(doc.componentName, searchTerm) : 0;
+      const methodScore = doc.methodName ? this.fuzzyMatch(doc.methodName, searchTerm) : 0;
+      
+      // Take the best score among the fields
+      const score = Math.max(pathScore, moduleScore, componentScore, methodScore);
+      
+      return [doc, score];
+    });
+    
+    // Filter out docs with zero score and sort by score descending
+    return matches
+      .filter(([, score]) => score > 0)
+      .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+      .map(([doc]) => doc);
   }
 
   async findAllItems(): Promise<ApiDocInfo[]> {

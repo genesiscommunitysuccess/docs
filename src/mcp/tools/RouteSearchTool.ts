@@ -21,7 +21,9 @@ class RouteSearchTool extends BaseSearchTool<BaseSearchInput, RouteInfo> {
   };
 
   async execute({ query }: BaseSearchInput) {
-    const result = await this.executeSearch(query, "RouteSearchTool");
+    // Pass a getPathFunc to enable sibling context
+    const getPathFunc = (route: RouteInfo) => route.path;
+    const result = await this.executeSearch(query, "RouteSearchTool", getPathFunc);
     
     if (!result.success) {
       return result;
@@ -41,17 +43,30 @@ class RouteSearchTool extends BaseSearchTool<BaseSearchInput, RouteInfo> {
         routes: result.items,
         count: result.count,
         query,
+        noResultsHint: result.noResultsHint
       };
     }
   }
   
   filterItemsByQuery(routes: RouteInfo[], searchTerm: string): RouteInfo[] {
-    return routes.filter(
-      (route) => 
-        route.routePath.toLowerCase().includes(searchTerm) || 
-        (route.title && route.title.toLowerCase().includes(searchTerm)) ||
-        (route.description && route.description.toLowerCase().includes(searchTerm))
-    );
+    // Use fuzzy matching instead of simple includes
+    const matches: [RouteInfo, number][] = routes.map(route => {
+      // Calculate a composite score across all searchable fields
+      const pathScore = this.fuzzyMatch(route.routePath, searchTerm);
+      const titleScore = route.title ? this.fuzzyMatch(route.title, searchTerm) : 0;
+      const descScore = route.description ? this.fuzzyMatch(route.description, searchTerm) : 0;
+      
+      // Take the best score among the fields
+      const score = Math.max(pathScore, titleScore, descScore);
+      
+      return [route, score];
+    });
+    
+    // Filter out routes with zero score and sort by score descending
+    return matches
+      .filter(([, score]) => score > 0)
+      .sort(([, scoreA], [, scoreB]) => scoreB - scoreA)
+      .map(([route]) => route);
   }
 
   async findAllItems(): Promise<RouteInfo[]> {
