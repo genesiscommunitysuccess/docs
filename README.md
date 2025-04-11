@@ -87,3 +87,40 @@ Front-end documentation from `foundation-ui` can be pulled into this repo. To th
 3. Set up the sidebar.
 4. Run with `$ npm run start:copy-docs`.
 5. Once you have got feedback on the docs, you can lock it in via `./plugins/api-docs/processedMap.js`.
+
+## MCP Server for Claude Code
+
+This repository includes an MCP (Model Context Protocol) server for use with Claude Code, allowing AI assistants to better interact with the Genesis documentation.
+
+### Global Installation (Recommended)
+
+To install the MCP server globally so it can be used from any directory:
+
+1. Run the installation script:
+   ```bash
+   ./install-mcp-global.sh
+   ```
+
+2. Update your Claude config file (~/.claude.json):
+   ```json
+   {
+     "mcpServers": {
+       "genesis-docs-mcp": {
+         "command": "genesis-docs-mcp",
+         "args": []
+       }
+     }
+   }
+   ```
+
+3. Restart Claude Code.
+
+### Available MCP Tools
+
+- `docsSearch`: Search documentation for specific terms
+- `routeSearch`: Search and list Docusaurus routes
+- `apiDocsSearch`: Search API documentation resources
+- `markdownView`: View the content of markdown files
+- `contentSearch`: Search through content of documentation files
+
+For more details about the MCP server implementation, see [src/mcp/README.md](src/mcp/README.md).

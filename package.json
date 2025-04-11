@@ -13,7 +13,7 @@
     "build-main": "docusaurus build",
     "build:base_url": "npm run copy:dsc && cross-env BASE_URL=/docs/ docusaurus build",
     "build:production": "npm run copy:dsc && cross-env BASE_URL=/docs/ BRANCH=master docusaurus build",
-    "build:mcp": "tsc --project src/mcp/tsconfig.json",
+    "build:mcp": "rimraf dist/mcp && tsc --project src/mcp/tsconfig.json && mkdir -p dist/mcp/bin && cp src/mcp/bin/genesis-docs-mcp.js dist/mcp/bin/ && chmod +x dist/mcp/bin/genesis-docs-mcp.js",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
