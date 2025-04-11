@@ -451,7 +451,7 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
         }
         .map {
             // in order to use the database sink we must provide it a DbOperation to perform - in this case it's an upsert on each FxRate object provided by the above operation
-            DbOperation.Upsert(it)
+            it -> DbOperation.Upsert(it)
         }
         // here we are using a simple database sink to perform the above operation - txDbSink is a transactional database sink
         .sink(txDbSink())
