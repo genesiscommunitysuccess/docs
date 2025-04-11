@@ -3,8 +3,6 @@ import { z } from "zod";
 import path from "path";
 import fs from "fs/promises";
 import * as globModule from "glob";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 const { glob } = globModule;
 
 // Base interface for search inputs
@@ -15,34 +13,9 @@ export interface BaseSearchInput {
 // Base class for search tools
 export abstract class BaseSearchTool<TInput extends BaseSearchInput, TResult> extends MCPTool<TInput> {
   // Base directory for docs
-  protected docsDir: string;
+  protected docsDir = path.resolve(process.cwd(), "docs");
   // Route base path from config
   protected routeBasePath = "/";
-  
-  constructor() {
-    super();
-    
-    // Determine the docs directory based on the module location
-    // This helps when the tool is installed globally
-    try {
-      // First try to handle ESM context
-      const currentFilePath = fileURLToPath(import.meta.url);
-      const currentDir = dirname(currentFilePath);
-      
-      // Go up from /tools/ to the project root
-      // For global installs: /usr/local/lib/node_modules/genesis-docs-mcp/tools/ -> [project root]
-      // For local dev: /path/to/project/dist/mcp/tools/ -> /path/to/project/
-      const projectRoot = path.resolve(currentDir, '../../../');
-      this.docsDir = path.resolve(projectRoot, 'docs');
-      
-      console.log(`[BaseSearchTool] Set docs directory to: ${this.docsDir}`);
-    } catch (error) {
-      // Fallback to CWD if something goes wrong
-      console.warn(`[BaseSearchTool] Error determining docs path: ${error}`);
-      this.docsDir = path.resolve(process.cwd(), 'docs');
-      console.log(`[BaseSearchTool] Fallback to CWD docs directory: ${this.docsDir}`);
-    }
-  }
 
   // Abstract methods that derived classes must implement
   abstract findAllItems(): Promise<TResult[]>;

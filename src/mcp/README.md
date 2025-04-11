@@ -30,9 +30,7 @@ This directory contains the implementation of an MCP (Model Control Protocol) se
 
 ### Configuring Claude Code
 
-There are two ways to use this MCP server with Claude Code:
-
-#### Option 1: Local Installation (Project-Specific)
+To use this MCP server with Claude Code, you need to add it to your Claude configuration:
 
 1. Edit your Claude config file:
    ```bash
@@ -53,32 +51,6 @@ There are two ways to use this MCP server with Claude Code:
    ```
 
 3. Save the file and restart Claude Code if it's already running.
-
-#### Option 2: Global Installation (Works from Any Directory)
-
-1. Run the installation script from the repository root:
-   ```bash
-   ./install-mcp-global.sh
-   ```
-
-2. Edit your Claude config file:
-   ```bash
-   nano ~/.claude.json
-   ```
-
-3. Add the MCP server configuration using the global command:
-   ```json
-   {
-     "mcpServers": {
-       "genesis-docs-mcp": {
-         "command": "genesis-docs-mcp",
-         "args": []
-       }
-     }
-   }
-   ```
-
-4. Save the file and restart Claude Code if it's already running.
 
 ## Available Tools
 

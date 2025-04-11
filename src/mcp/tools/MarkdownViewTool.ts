@@ -2,8 +2,6 @@ import { MCPTool } from "mcp-framework";
 import { z } from "zod";
 import path from "path";
 import fs from "fs/promises";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 interface MarkdownViewInput {
   path: string;
@@ -29,8 +27,7 @@ class MarkdownViewTool extends MCPTool<MarkdownViewInput> {
     },
   };
 
-  // Find the root directory for docs regardless of where the server is running from
-  private docsDir = this.findDocsDirectory();
+  private docsDir = path.resolve(process.cwd(), "docs");
 
   async execute({ path: markdownPath, offset, limit }: MarkdownViewInput) {
     try {

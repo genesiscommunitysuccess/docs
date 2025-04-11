@@ -3,30 +3,5 @@
   "version": "0.0.1",
   "description": "MCP Server for Genesis Documentation",
   "type": "module",
-  "private": false,
-  "bin": {
-    "genesis-docs-mcp": "./bin/genesis-docs-mcp.js"
-  },
-  "main": "index.js",
-  "files": [
-    "index.js",
-    "bin",
-    "tools"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "mcp-framework": "^0.2.11",
-    "glob": "^10.3.10",
-    "zod": "^3.24.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "private": true
 }
