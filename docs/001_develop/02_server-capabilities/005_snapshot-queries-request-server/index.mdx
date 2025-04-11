@@ -312,13 +312,14 @@ SOURCE_REF = "source-ref"
 
 ### Custom Request Servers
 
-By defining your own Request Servers, you have maximum flexibility.
+For maximum flexibility, you can define your own Request Servers. 
 
 * You can specify any class for the input and output, similar to Event Handlers.
 * For the request, optional fields should have a default value in the primary constructor.
 * You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
+* You can set up a request that can accept [queries with no parameters](#using-requestreply-with-no-parameters).
 
-It is recommended that you locate your classes within the main/kotlin messages folder of your project structure. Ensure that the `*-reqrep.kts` file you are writing a custom request server within has a dependency on the _app-name_**-app** ScriptModule near the top
+It is recommended that you locate your classes within the main/kotlin messages folder of your project structure. Ensure that the `*-reqrep.kts` file you are writing a custom request server within has a dependency on the _app-name_**-app** ScriptModule near the top:
 
 ```kotlin
   @file:ScriptModules("{app-name}-app")
@@ -494,6 +495,12 @@ Helpers assist you to interact with the Kotlin Flow type, which is the return ty
 * T.sorted() - Returns a Flow of all sorted values
 * T.sortedBy(selector: (T) -> K?) - Returns a Flow of all sorted values given a selector
 
+#### Using requestReply with no parameters
+If your custom Request Server does not require any input from the client on the request, define the `[Input]` as `Unit`. For example:
+
+```
+requestReply<Unit, LiquidityScoreResponse>(name = "LIQUIDITY_SCORE_ALL")
+```
 
 ### Logging
 
