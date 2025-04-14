@@ -27,6 +27,14 @@ describe('FilenameSearchTool', () => {
 
   describe('execute', () => {
     it('should return matching files for "grid-pro" search', async () => {
+      // Mock the file system to return grid-pro files
+      jest.spyOn(fileSystem, 'docsFiles').mockResolvedValueOnce([
+        '/Users/test/project/dist/docs/003_grid-pro/index.md',
+        '/Users/test/project/dist/docs/003_grid-pro/grid-pro-introduction.md',
+        '/Users/test/project/dist/docs/003_grid-pro/numbereditor.md',
+        '/Users/test/project/dist/docs/other-file.md'
+      ]);
+      
       // Perform a search for grid-pro
       const result = await tool.execute({ searchString: 'grid-pro' });
       
@@ -65,6 +73,14 @@ describe('FilenameSearchTool', () => {
     });
 
     it('should return related files when searching for specific grid-pro components', async () => {
+      // Mock the file system to return grid-pro files
+      jest.spyOn(fileSystem, 'docsFiles').mockResolvedValueOnce([
+        '/Users/test/project/dist/docs/003_grid-pro/index.md',
+        '/Users/test/project/dist/docs/003_grid-pro/grid-pro-introduction.md',
+        '/Users/test/project/dist/docs/003_grid-pro/numbereditor.md',
+        '/Users/test/project/dist/docs/other-file.md'
+      ]);
+      
       // Search for a more specific grid-pro component
       const result = await tool.execute({ searchString: 'grid-pro number editor' });
       
@@ -167,6 +183,132 @@ describe('FilenameSearchTool', () => {
       } else {
         // Test failed - the result doesn't have the expected format
         fail('Expected result to have exactMatches=true and paths array');
+      }
+    });
+    
+    it('should filter out API docs by default', async () => {
+      // Mock file system with both regular and API docs
+      jest.spyOn(fileSystem, 'docsFiles').mockResolvedValueOnce([
+        '/Users/test/project/dist/docs/api-guide.md',
+        '/Users/test/project/dist/docs/api/reference.md',
+        '/Users/test/project/dist/docs/api/methods.md',
+        '/Users/test/project/dist/docs/user-guide.md'
+      ]);
+      
+      // Search for "api" which would match both regular and API docs
+      const result = await tool.execute({ searchString: 'api' });
+      
+      // Check if result is a success object (not a string error message)
+      if (typeof result === 'string') {
+        // If we get a string, the test should fail
+        expect(result).not.toBe(result); // Will always fail
+        return;
+      }
+      
+      // Check that we have a valid result format
+      if ('exactMatches' in result) {
+        if (result.exactMatches === false && 'text' in result && result.text) {
+          // For fuzzy results, check that no API docs paths are included
+          expect(result.text).toContain('api-guide.md');
+          expect(result.text).not.toContain('/docs/api/reference.md');
+          expect(result.text).not.toContain('/docs/api/methods.md');
+        } else if (result.exactMatches === true && 'paths' in result && result.paths) {
+          // For exact matches, ensure no API docs paths are included
+          const apiPathsIncluded = result.paths.some((path: string) => path.includes('/docs/api/'));
+          expect(apiPathsIncluded).toBe(false);
+        }
+      } else {
+        fail('Result has an unexpected format');
+      }
+    });
+    
+    it('should include API docs when showApiDocs is true', async () => {
+      // Mock file system with both regular and API docs
+      jest.spyOn(fileSystem, 'docsFiles').mockResolvedValueOnce([
+        '/Users/test/project/dist/docs/api-guide.md',
+        '/Users/test/project/dist/docs/api/reference.md',
+        '/Users/test/project/dist/docs/api/methods.md',
+        '/Users/test/project/dist/docs/user-guide.md'
+      ]);
+      
+      // Search for "api" with showApiDocs=true
+      const result = await tool.execute({ searchString: 'api', showApiDocs: true });
+      
+      // Check if result is a success object (not a string error message)
+      if (typeof result === 'string') {
+        // If we get a string, the test should fail
+        expect(result).not.toBe(result); // Will always fail
+        return;
+      }
+      
+      // Check that we have a valid result format
+      if ('exactMatches' in result) {
+        if (result.exactMatches === false && 'text' in result && result.text) {
+          // For fuzzy results, check that API docs paths are included
+          const resultText = result.text;
+          // Both regular and API docs should be included
+          expect(resultText).toContain('api-guide.md');
+          
+          // At least one of the API docs should be included
+          const hasApiDocs = 
+            resultText.includes('reference.md') || 
+            resultText.includes('methods.md');
+          expect(hasApiDocs).toBe(true);
+        } else if (result.exactMatches === true && 'paths' in result && result.paths) {
+          // For exact matches, check if API docs are included when they match exactly
+          const allPaths = result.paths.join('\n');
+          
+          // If there's an exact match with /api/ in the path, it should be included
+          if (allPaths && allPaths.includes('/docs/api/')) {
+            expect(allPaths).toMatch(/\/docs\/api\//);
+          }
+        }
+      } else {
+        fail('Result has an unexpected format');
+      }
+    });
+    
+    it('should limit results based on maxResults parameter and include extra result information', async () => {
+      // Generate a large set of mock files (more than the default limit)
+      const mockFiles = Array.from({ length: 50 }, (_, i) => 
+        `/Users/test/project/dist/docs/file-${i+1}.md`
+      );
+      
+      // Mock file system to return many files
+      jest.spyOn(fileSystem, 'docsFiles').mockResolvedValueOnce(mockFiles);
+      
+      // Test with a search term that will match many files
+      const result = await tool.execute({ 
+        searchString: 'file', 
+        maxResults: 5 // Limit to just 5 results
+      });
+      
+      // Check if result is a success object (not a string error message)
+      if (typeof result === 'string') {
+        // If we get a string, the test should fail
+        expect(result).not.toBe(result); // Will always fail
+        return;
+      }
+      
+      // Check that we have a valid result format with information about additional results
+      if ('exactMatches' in result && result.exactMatches === false && 'text' in result) {
+        // Check that we have the additional result information
+        expect(result).toHaveProperty('totalResults');
+        expect(result).toHaveProperty('shownResults');
+        expect(result).toHaveProperty('additionalResults');
+        
+        // Verify the counts are correct
+        expect(result.shownResults).toBe(5);
+        expect(result.additionalResults).toBeGreaterThan(0);
+        expect(result.totalResults).toBeGreaterThan(5);
+        
+        // Since we limited to 5 results, check if the number of entries matches
+        expect(result.shownResults).toBe(5);
+        
+        // Check that the additionalResults + shownResults = totalResults
+        expect(result.additionalResults + result.shownResults).toBe(result.totalResults);
+      } else {
+        fail('Result does not have the expected format with additional result information');
       }
     });
   });

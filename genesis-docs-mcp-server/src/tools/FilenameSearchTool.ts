@@ -5,6 +5,8 @@ import Fuse from 'fuse.js'
 
 interface FilenameSearchInput {
   searchString: string;
+  showApiDocs?: boolean;
+  maxResults?: number;
 }
 
 class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
@@ -16,17 +18,34 @@ class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
       type: z.string(),
       description: "The search term to use which is used to fuzzy match against the documentation",
     },
+    showApiDocs: {
+      type: z.boolean().optional().default(false),
+      description: "Whether to include API documentation in the search results. Defaults to false.",
+    },
+    maxResults: {
+      type: z.number().positive().int().optional().default(20),
+      description: "Maximum number of results to return. Defaults to 20.",
+    },
   };
 
   async execute(input: FilenameSearchInput) {
     const docsFiles = await fileSystem.docsFiles();
+    
+    // Filter out API docs if showApiDocs is false (default)
+    const filteredDocsFiles = input.showApiDocs === true 
+      ? docsFiles 
+      : docsFiles.filter(file => {
+          // Filter out anything with /docs/api/ in the path
+          // Also check for lowercase variations to be comprehensive
+          return !file.includes('/docs/api/') && !file.includes('/docs/API/')
+        });
 
     // Extract search components and prepare them
     const searchTerms = input.searchString.toLowerCase().trim().split(/\s+/);
 
     // Pre-filter files to only those likely to be relevant (containing any of the search terms)
     // This gives us a smaller set to run the expensive fuzzy search on
-    const preFilteredFiles = docsFiles.filter(file => {
+    const preFilteredFiles = filteredDocsFiles.filter(file => {
       const filename = file.toLowerCase();
       return searchTerms.some(term => filename.includes(term));
     });
@@ -82,11 +101,20 @@ class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
     // Find the best score to use as a baseline
     const bestScore = searchResults[0].score || 0.3;
 
+    // Get the max number of results to return (default to 20 if not specified)
+    const maxResults = input.maxResults || 20;
+
     // Only include results that are within a reasonable range of the best score
     // This helps exclude less relevant results
-    const relevantResults = searchResults
-      .filter(result => (result.score || 1) <= bestScore + 0.2) // Keep results with scores close to the best
-      .slice(0, 20); // Limit to top 20 results maximum
+    const filteredResults = searchResults
+      .filter(result => (result.score || 1) <= bestScore + 0.2); // Keep results with scores close to the best
+    
+    // Check if we have more results than we're going to show
+    const totalResults = filteredResults.length;
+    const hasMoreResults = totalResults > maxResults;
+    
+    // Limit to specified max results
+    const relevantResults = filteredResults.slice(0, maxResults);
 
     // Format results with relative paths
     const formattedResults = relevantResults.map(result => {
@@ -101,10 +129,20 @@ class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
       return `${fileName} (${score})\n${relativePath}`;
     });
 
-    return {
+    // Build the response
+    const response: any = {
       exactMatches: false,
       text: formattedResults.join("\n\n")
     };
+    
+    // Add information about additional results if applicable
+    if (hasMoreResults) {
+      response.totalResults = totalResults;
+      response.shownResults = maxResults;
+      response.additionalResults = totalResults - maxResults;
+    }
+
+    return response;
   }
 }
 
