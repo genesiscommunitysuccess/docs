@@ -26,14 +26,14 @@ describe('DocFileViewTool', () => {
       // Execute the tool with a mock file path
       const result = await tool.execute({ filePath: 'docs/test-file.md' });
 
+      // Expected header
+      const expectedHeader = 'File: docs/test-file.md\nTruncated: No';
+
+      // Expected formatted response
+      const expectedResponse = `${expectedHeader}\n\n---\n\n${mockContent}`;
+
       // Verify the result
-      expect(result).toEqual({
-        content: mockContent,
-        isTruncated: false,
-        offset: undefined,
-        maxLines: undefined,
-        filePath: 'docs/test-file.md',
-      });
+      expect(result).toEqual(expectedResponse);
 
       // Verify the file system service was called correctly
       expect(fileSystem.readDocFile).toHaveBeenCalledWith(
@@ -55,14 +55,14 @@ describe('DocFileViewTool', () => {
         maxLines: 3,
       });
 
+      // Expected header
+      const expectedHeader = 'File: docs/test-file.md\nTruncated: Yes\nOffset: 2\nMax Lines: 3';
+
+      // Expected formatted response
+      const expectedResponse = `${expectedHeader}\n\n---\n\n${mockTruncatedContent}`;
+
       // Verify result
-      expect(result).toEqual({
-        content: mockTruncatedContent,
-        isTruncated: true,
-        offset: 2,
-        maxLines: 3,
-        filePath: 'docs/test-file.md',
-      });
+      expect(result).toEqual(expectedResponse);
 
       // Verify file system was called with correct parameters
       expect(fileSystem.readDocFile).toHaveBeenCalledWith('docs/test-file.md', 2, 3);
@@ -76,12 +76,11 @@ describe('DocFileViewTool', () => {
       // Execute with a non-existent file
       const result = await tool.execute({ filePath: 'docs/nonexistent.md' });
 
-      // Verify we get back an error object
-      expect(result).toEqual({
-        error: true,
-        message: errorMessage,
-        filePath: 'docs/nonexistent.md',
-      });
+      // Expected error message
+      const expectedResponse = `ERROR: ${errorMessage}`;
+
+      // Verify we get back a properly formatted error message
+      expect(result).toEqual(expectedResponse);
     });
   });
 });

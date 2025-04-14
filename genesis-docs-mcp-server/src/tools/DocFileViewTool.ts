@@ -39,20 +39,23 @@ class DocFileViewTool extends MCPTool<DocFileViewInput> {
       // Determine if content is truncated
       const isTruncated = input.offset !== undefined && input.maxLines !== undefined;
 
-      return {
-        content,
-        isTruncated,
-        offset: input.offset,
-        maxLines: input.maxLines,
-        filePath: input.filePath,
-      };
+      // Create a header with file information
+      const header = [
+        `File: ${input.filePath}`,
+        `Truncated: ${isTruncated ? 'Yes' : 'No'}`,
+        input.offset !== undefined ? `Offset: ${input.offset}` : null,
+        input.maxLines !== undefined ? `Max Lines: ${input.maxLines}` : null,
+      ]
+        .filter(Boolean) // Remove null entries
+        .join('\n');
+
+      // Combine header and content with clear separation
+      const formattedResponse = `${header}\n\n---\n\n${content}`;
+
+      return formattedResponse;
     } catch (error) {
       // Return error message in a consistent format
-      return {
-        error: true,
-        message: error instanceof Error ? error.message : 'Unknown error occurred',
-        filePath: input.filePath,
-      };
+      return `ERROR: ${error instanceof Error ? error.message : 'Unknown error occurred'}`;
     }
   }
 }

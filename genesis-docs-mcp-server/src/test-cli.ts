@@ -74,44 +74,53 @@ async function testDocFileView() {
   // Create and execute the tool
   try {
     const tool = new DocFileViewTool();
-    const result = await tool.execute({
+    const response = await tool.execute({
       filePath,
       offset: offset || undefined,
       maxLines: maxLines || undefined,
     });
 
-    console.log('\nResults:');
+    console.log('\nRaw Response:');
+    console.log(response);
 
-    // Check if there was an error
-    if ('error' in result && result.error) {
-      console.log(`Error: ${result.message}`);
-      process.exit(1);
-    }
-
-    // Display some info about the file
-    if ('content' in result && result.content) {
-      const contentLines = result.content.split('\n');
-      console.log(`\nFile: ${result.filePath}`);
-      console.log(`Lines: ${contentLines.length}`);
-      console.log(`Size: ${result.content.length} bytes`);
-
-      if (result.isTruncated) {
-        console.log(
-          `Showing lines ${result.offset} to ${result.offset! + contentLines.length} (truncated)`
-        );
+    // Handle the response
+    if (typeof response === 'string') {
+      // Check if it's an error response
+      if (response.startsWith('ERROR:')) {
+        console.log(`\n${response}`);
+        process.exit(1);
       }
 
-      // Show first few lines of content for preview
-      console.log('\nContent Preview:');
-      console.log('----------------------------------------');
-      console.log(result.content.slice(0, 500) + (result.content.length > 500 ? '...' : ''));
-      console.log('----------------------------------------');
+      // Handle the format with header and content separated by ---
+      if (response.includes('---')) {
+        const [header, content] = response.split('\n\n---\n\n');
 
-      // Provide instructions for viewing entire content or specific parts
-      console.log(
-        '\nTo see more content, use: node dist/test-cli.js view <path> [offset] [maxLines]'
-      );
-      console.log(`For example: node dist/test-cli.js view ${filePath} 10 20`);
+        // Display the header information
+        console.log(`\n${header}`);
+
+        // Calculate some additional information about the content
+        const contentLines = content.split('\n');
+        console.log(`Lines: ${contentLines.length}`);
+        console.log(`Size: ${content.length} bytes`);
+
+        // Show preview of the content
+        console.log('\nContent Preview:');
+        console.log('----------------------------------------');
+        console.log(content.slice(0, 500) + (content.length > 500 ? '...' : ''));
+        console.log('----------------------------------------');
+
+        // Provide instructions for viewing entire content or specific parts
+        console.log(
+          '\nTo see more content, use: node dist/test-cli.js view <path> [offset] [maxLines]'
+        );
+        console.log(`For example: node dist/test-cli.js view ${filePath} 10 20`);
+      } else {
+        // Unknown response format
+        console.log('Unexpected response format:');
+        console.log(response);
+      }
+    } else {
+      console.error('Unexpected response type:', typeof response);
     }
   } catch (error) {
     console.error('Error during test:', error);
