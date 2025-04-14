@@ -261,7 +261,7 @@ In the example below, we will filter out rows where the COUNTERPARTY_NAME is equ
 Similar to `filterWithParameters` but the `genesisSet` context property contains the whole request payload and not just the parameters.
 
 ```kotlin
-  filterWithParameters {
+  filterWithRequest {
     genesisSet.getString("REQUEST.COUNTERPARTY_NAME") != data.instrumentName && data.assignedTo == genesisSet.getString("userName")
   }
 ```
@@ -659,10 +659,10 @@ The filters can be specified using common expressions, Groovy expressions, or ev
 
 #### Ranges
 
-A client can specify ranges of data from a Request Server by post-fixing the request parameter names with `_FROM` and `_TO`.
-The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000.
-Ranges can be used with numeric, `DATE` and `DATETIME` field types.
-You must specify both `_FROM` and `_TO` to get a result. Specifying only one end will result in an error.
+A client can specify ranges of data from a Request Server by post-fixing the request parameter names with `_FROM` and `_TO`.  
+The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000.  
+Ranges can be used with numeric, `DATE` and `DATETIME` field types.  
+You must specify both `_FROM` and `_TO` to get a result. Specifying only one end will result in an error.  
 
 ```json
   "DETAILS" : {
@@ -1103,7 +1103,7 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/legacy-testing-api/#abstractgenesistestsupport).
 
 Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](#custom-request-servers).
 
