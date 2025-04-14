@@ -1,5 +1,7 @@
 import { MCPTool } from "mcp-framework";
 import { z } from "zod";
+import { fileSystem } from "../services/FileSystem.js";
+import Fuse from 'fuse.js'
 
 interface FilenameSearchInput {
   searchString: string;
@@ -17,7 +19,15 @@ class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
   };
 
   async execute(input: FilenameSearchInput) {
-    return `Processed: ${input.searchString}`;
+    const docsFiles = await fileSystem.docsFiles()
+    const fuse = new Fuse(docsFiles, {
+      threshold: 0.4
+    })
+    const results = fuse.search(input.searchString)
+    if (results.length === 0) {
+      return { content: [{ type: "text", text: "No results, in this case please try to use less words in your search term and try again" }] };
+    }
+    return { content: [{ type: "text", text: results.map(r => r.item).join("\n") }] };
   }
 }
 

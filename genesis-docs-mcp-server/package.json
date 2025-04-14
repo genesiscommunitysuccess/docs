@@ -11,14 +11,16 @@
   ],
   "scripts": {
     "build": "npm run copy-docs && npm run build:src",
-		"build:src": "tsc && mcp-build",
-		"debug": "npx @modelcontextprotocol/inspector dist/index.js",
+    "build:src": "tsc && mcp-build",
+    "debug": "npx @modelcontextprotocol/inspector dist/index.js",
     "copy-docs": "copyfiles -u 1 ../docs/**/*.md ../docs/**/*.mdx dist",
     "start": "node dist/index.js",
     "watch": "tsc --watch"
   },
   "dependencies": {
     "copyfiles": "^2.4.1",
+    "fuse.js": "^7.1.0",
+    "globby": "^14.1.0",
     "mcp-framework": "^0.2.2"
   },
   "devDependencies": {
