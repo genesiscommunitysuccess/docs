@@ -15,7 +15,9 @@
     "debug": "npx @modelcontextprotocol/inspector dist/index.js",
     "copy-docs": "copyfiles -u 1 ../docs/**/*.md ../docs/**/*.mdx dist",
     "start": "node dist/index.js",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "manual-test": "npm run build:src && node dist/manual-test.js"
   },
   "dependencies": {
     "copyfiles": "^2.4.1",
@@ -24,10 +26,30 @@
     "mcp-framework": "^0.2.2"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.11.24",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18.19.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    }
   }
 }

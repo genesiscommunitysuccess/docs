@@ -1,5 +1,11 @@
 import { MCPTool } from "mcp-framework";
+import path from "path";
+import { fileURLToPath } from "url";
 import { z } from "zod";
+
+// ES Module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface ExampleInput {
   message: string;
@@ -17,7 +23,7 @@ class ExampleTool extends MCPTool<ExampleInput> {
   };
 
   async execute(input: ExampleInput) {
-    return `Processed: ${input.message}`;
+    return `Processed: ${input.message}, process.cwd() ${process.cwd()}, __dirname: ${__dirname}`;
   }
 }
 
