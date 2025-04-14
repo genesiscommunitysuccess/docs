@@ -1,7 +1,7 @@
-import { MCPTool } from "mcp-framework";
-import path from "path";
-import { fileURLToPath } from "url";
-import { z } from "zod";
+import { MCPTool } from 'mcp-framework';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { z } from 'zod';
 
 // ES Module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -12,13 +12,13 @@ interface ExampleInput {
 }
 
 class ExampleTool extends MCPTool<ExampleInput> {
-  name = "example_tool";
-  description = "An example tool that processes messages";
+  name = 'example_tool';
+  description = 'An example tool that processes messages';
 
   schema = {
     message: {
       type: z.string(),
-      description: "Message to process",
+      description: 'Message to process',
     },
   };
 

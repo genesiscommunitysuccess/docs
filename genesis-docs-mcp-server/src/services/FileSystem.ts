@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 export type FileSystem = {
   docsFiles: () => Promise<string[]>;
-}
+};
 
 export async function runGlobby(searchTerm: string) {
   try {
@@ -24,7 +24,7 @@ export async function runGlobby(searchTerm: string) {
   }
 }
 
-let docs: string[] | null = null
+let docs: string[] | null = null;
 
 export const fileSystemBuilder = (): FileSystem => {
   return {
@@ -35,7 +35,7 @@ export const fileSystemBuilder = (): FileSystem => {
       }
       return docs;
     },
-  }
-}
+  };
+};
 
-export const fileSystem = fileSystemBuilder()
+export const fileSystem = fileSystemBuilder();

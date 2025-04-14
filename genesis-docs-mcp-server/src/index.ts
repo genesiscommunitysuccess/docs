@@ -1,4 +1,4 @@
-import { MCPServer } from "mcp-framework";
+import { MCPServer } from 'mcp-framework';
 
 const server = new MCPServer();
 
