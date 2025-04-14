@@ -18,6 +18,8 @@
     "watch": "tsc --watch",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "manual-test": "npm run build:src && node dist/manual-test.js",
+    "test-search": "npm run build:src && node dist/test-cli.js search",
+    "test-view": "npm run build:src && node dist/test-cli.js view",
     "lint": "eslint --ext .ts,.js src",
     "lint:fix": "eslint --ext .ts,.js src --fix"
   },

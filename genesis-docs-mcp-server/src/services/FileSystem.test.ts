@@ -1,5 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach, jest } from '@jest/globals';
 import path from 'path';
+import fs from 'fs/promises';
 import { fileSystem, fileSystemBuilder, runGlobby } from './FileSystem.js';
 
 describe('FileSystem', () => {
@@ -117,6 +118,67 @@ describe('FileSystem', () => {
 
       // If cache works, shouldn't be any logs from running globby again
       expect(lookingLogs.length).toBe(0);
+    });
+  });
+
+  describe('readDocFile', () => {
+    // Create a mock file system for reading file tests
+    let mockFs: any;
+
+    beforeEach(() => {
+      // Create a fresh file system for each test
+      mockFs = fileSystemBuilder();
+
+      // Mock the fs.readFile function to avoid actual file system access
+      jest.spyOn(fs, 'readFile').mockImplementation(
+        // Use a generic typed function to satisfy TypeScript
+        (path: unknown, ...args: unknown[]) => {
+          // Check if the path is a nonexistent file
+          if (typeof path === 'string' && path.includes('nonexistent')) {
+            return Promise.reject(new Error('ENOENT: no such file or directory'));
+          }
+
+          // Otherwise return mock content
+          return Promise.resolve('# Test Markdown\nLine 2\nLine 3\nLine 4\nLine 5');
+        }
+      );
+    });
+
+    it('should read a file with proper path resolution', async () => {
+      const content = await mockFs.readDocFile('docs/test-file.md');
+
+      // Verify content returned correctly
+      expect(content).toBe('# Test Markdown\nLine 2\nLine 3\nLine 4\nLine 5');
+    });
+
+    it('should handle paths that already include dist/', async () => {
+      const content = await mockFs.readDocFile('dist/docs/test-file.md');
+
+      // Verify content returned correctly
+      expect(content).toBe('# Test Markdown\nLine 2\nLine 3\nLine 4\nLine 5');
+    });
+
+    it('should read specific lines with offset and maxLines', async () => {
+      // Request lines 2-4 (0-based index)
+      const content = await mockFs.readDocFile('docs/test-file.md', 1, 3);
+
+      // Expect lines 2, 3, and 4
+      expect(content).toBe('Line 2\nLine 3\nLine 4');
+    });
+
+    it('should handle offset beyond file length', async () => {
+      // Request lines beyond the end of the file
+      const content = await mockFs.readDocFile('docs/test-file.md', 10, 3);
+
+      // Expect empty string since offset is beyond file length
+      expect(content).toBe('');
+    });
+
+    it('should throw an error for nonexistent files', async () => {
+      // Try to read a nonexistent file
+      await expect(mockFs.readDocFile('docs/nonexistent.md')).rejects.toThrow(
+        'Failed to read documentation file: docs/nonexistent.md'
+      );
     });
   });
 });
