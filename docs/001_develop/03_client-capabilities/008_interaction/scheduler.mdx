@@ -2,11 +2,13 @@
 title: 'Cron Scheduler'
 sidebar_label: 'Cron Scheduler'
 id: cron-scheduler
-keywords: [ interaction, interactive, active, window, overlay, popup]
+keywords: [ interaction, interactive, recurrence, scheduler, repeats, cron]
 tags:
 - interaction
 - recurrence
 - scheduler
+- repeats
+- cron
 sidebar_position: 8
 ---
 
@@ -14,9 +16,9 @@ import CronSchedulerDemo from '/examples/ui/client-capabilities/interaction/sche
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Cron Scheduler is a web component designed to simplify the creation and management of scheduled tasks. It provides a user-friendly interface for selecting a `recurrence pattern` (hourly, daily, weekly, monthly, yearly), with input options that adapt based on the selected type—such as frequency, specific days, or time of execution. 
+The Cron Scheduler is a web component designed to simplify the creation and management of scheduled tasks. It provides a user-friendly interface for selecting a `recurrence pattern` (hourly, daily, weekly, monthly, yearly), with input options that adapt based on the selected type such as frequency, specific days, or time of execution. 
 
-Once configured, the component automatically generates a [Quartz-compatible cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) cron expression, handles validation and parsing, and emits update events when the schedule changes. This makes it easy to integrate with backend systems that rely on cron-based scheduling, and flexible enough to embed in various applications and frameworks.
+Once configured, the component automatically generates a [Quartz-compatible cron expression](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html), handles validation and parsing, and emits update events when the schedule changes. This makes it easy to integrate with backend systems that rely on cron-based scheduling, and flexible enough to embed in various applications and frameworks.
 
 
 **Use cases:**
@@ -26,12 +28,11 @@ Once configured, the component automatically generates a [Quartz-compatible cron
 * Generating reports at regular intervals
 
 :::info
-💡 For a breakdown of how cron expressions work and the library used on the backend, see [Cron Expression Format (Quartz)](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) or [`Cron expression section`](#cron-expression).
+ For a breakdown of how cron expressions work and the library used on the backend, see [Cron Expression Format (Quartz)](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) or [`Cron expression section`](#cron-expression).
 :::
 
 ## Example
-The example below shows the component in action. You can select a recurrence pattern, specify the frequency, and the component will generate the corresponding cron expression. The generated cron expression is displayed in the output field.
-
+Lets look at a simple example of component in action. For example if you want the task to be executed on every Monday and Wednesday at 10:30 AM, you can select the `Weekly` recurrence type, choose `Monday` and `Wednesday` from the list of days, set the time to `10:30 AM`, and the component will generate the corresponding cron expression. The generated cron expression is displayed in the output field.
 
 <CronSchedulerDemo />
 
@@ -41,10 +42,7 @@ The example below shows the component in action. You can select a recurrence pat
 
     Declaration
     ```html
-      <rapid-scheduler-cron-builder
-        :cron=${sync((x) => x.cronExpression)}
-        @change=${(x, c) => x.handleChange(c.event)}
-      ></rapid-scheduler-cron-builder>
+      <rapid-scheduler-cron-builder></rapid-scheduler-cron-builder>
     ```
 
     Usage
@@ -52,15 +50,15 @@ The example below shows the component in action. You can select a recurrence pat
     @customElement({
       name: 'my-element',
       template: html<MyElement>`
-          <rapid-scheduler-cron-builder
-            :cron=${sync((x) => x.cronExpression)}
-            @change=${(x, c) => x.handleChange(c.event)}
-          ></rapid-scheduler-cron-builder>
+        <rapid-scheduler-cron-builder
+          :cron=${sync((x) => x.cronExpression)}
+          @change=${(x, c) => x.handleChange(c.event)}
+        ></rapid-scheduler-cron-builder>
         <p>Cron: {(x) => x.cronExpression}</p>
       `,
     })
     export class MyElement extends GenesisElement {
-      @observable cronExpression = '0 30 10 ? * 1,3';
+      @observable cronExpression = '0 30 10 ? * 2,4';
       
       handleChange(event) {
         console.log(event.target.value);
@@ -73,21 +71,19 @@ The example below shows the component in action. You can select a recurrence pat
 
     Declaration
     ```html
-    <rapid-scheduler-cron-builder cron="0 30 10 ? * 1,3" onChange={(e) => setCron(e.target.value)} >
-				</rapid-scheduler-cron-builder>
+      <rapid-scheduler-cron-builder></rapid-scheduler-cron-builder>
     ```
 
     Usage
     ```tsx
     export function MyComponent() {
-      const [cron, setCron] = useState('0 30 10 ? * 1,3');
+      const [cron, setCron] = useState('0 30 10 ? * 2,4');
 
       return (
-        <rapid-scheduler-cron-builder
-          cron={cron}
+        <rapid-scheduler-cron-builder 
+          cron="0 30 10 ? * 2,4" 
           onChange={(e) => setCron(e.target.value)}
-        >
-        </rapid-scheduler-cron-builder>
+        ></rapid-scheduler-cron-builder>
         <p>Cron: {cron}</p>
       )
     }
@@ -97,8 +93,7 @@ The example below shows the component in action. You can select a recurrence pat
 
     Declaration
     ```html
-        <rapid-scheduler-cron-builder (change)="onChange($event)">
-        </rapid-scheduler-cron-builder>
+      <rapid-scheduler-cron-builder></rapid-scheduler-cron-builder>
     ```
 
     Usage
@@ -123,51 +118,28 @@ The example below shows the component in action. You can select a recurrence pat
 </Tabs>
 
 ## Recurrence types
+Lets look at the different `recurrence types` available in the Cron Scheduler component in detail. Each recurrence type provides a unique way to schedule tasks based on inputs like time, frequency, selected days, month etc.
 
 ### Daily Recurrence
-The Daily recurrence type allows users to schedule tasks that repeat every specified number of days. It supports two `weekType` options: `Week`, where the task runs on all calendar days, and `Work Week`, where execution is limited to Monday through Friday. Users can define the `frequency` to determine how often the task repeats (e.g., every 2 days), and select a specific `time of day` for execution. This configuration provides flexibility for scheduling tasks that need to run consistently across days or only on working days.
-
+The `Daily` recurrence type allows users to schedule tasks that repeat every specified number of days. It supports two `weekType` options: `Week`, where the task runs on all calendar days, and `Work week`, where execution is limited to Monday through Friday. Users can define the `frequency` to determine how often the task repeats (e.g., every 2 days), and select a specific `time of day` for execution. This configuration provides flexibility for scheduling tasks that need to run consistently across days or only on working days.
+:::info
+When `weekType` is set to **"Week"**, the frequency in days is used to determine how often the task should run (e.g., every 2 days).
+Whereas when `weekType` is set to **"Work week"**, the cron expression uses a range in the `day-of-week` field (e.g., **2-6** for MON–FRI), and therefore the `day-of-month` field must be set to **"?"** — since Quartz does not support specifying both fields simultaneously.
+:::
 ### Weekly Recurrence
-The Weekly recurrence type enables scheduling tasks on specific `days of the week`, offering flexibility to select one or more weekdays from Monday to Sunday. Users can choose the exact `time` at which the task should run on the selected days. This setup is ideal for scenarios where tasks need to occur on consistent weekly patterns such as every Monday and Wednesday at 9 AM, allowing fine-grained control over the execution schedule.
+The `Weekly` recurrence type enables scheduling tasks on specific `days of the week`, offering flexibility to select one or more weekdays from **Monday to Sunday**. Users can choose the exact `time` at which the task should run on the `selected days`. This setup is ideal for scenarios where tasks need to occur on consistent weekly patterns such as every Monday and Wednesday at 9 AM, allowing fine-grained control over the execution schedule.
 
 ### Monthly Recurrence
-The Monthly recurrence type allows users to schedule tasks that repeat on specific `days of the month`. Users can select a particular `day` (e.g., the 15th) or choose a specific `weekday occurrence` (e.g., the first Monday of the month). Additionally, users can define the `time` at which the task should run. This configuration is useful for tasks that need to occur on a regular monthly basis, such as generating reports or sending reminders.
+The `Monthly` recurrence type allows users to schedule tasks that repeat on specific `days of the month`. Users can select a particular `day` (e.g., the 15th) or choose a specific `weekday occurrence` (e.g., the first Monday of the month). Additionally, users can define the `time` at which the task should run. This configuration is useful for tasks that need to occur on a regular monthly basis, such as generating reports or sending reminders.
 
 ### Yearly Recurrence
-The Yearly recurrence type enables users to schedule tasks that repeat on specific `dates` each year. Users can select a particular `day` and `month` (e.g., January 1st) or choose a specific `weekday occurrence` (e.g., the first Monday of January). Additionally, users can define the `time` at which the task should run. This setup is ideal for tasks that need to occur annually, such as sending birthday greetings or generating yearly reports.
+The `Yearly` recurrence type enables users to schedule tasks that repeat on specific `dates` each year. Users can select a particular `day` and `month` (e.g., January 1st) or choose a specific `weekday occurrence` (e.g., the first Monday of January). Additionally, users can define the `time` at which the task should run. This setup is ideal for tasks that need to occur annually, such as sending birthday greetings or generating yearly reports.
 
 ### Hourly Recurrence
-The Hourly recurrence type allows users to schedule tasks to run at regular `hourly intervals` throughout the day. Users can specify the `frequency` in hours for example, every 2 hours to define how often the task should repeat. This type is useful for scenarios requiring high-frequency execution, such as polling services, syncing data, or checking for updates at consistent intervals.
+The `Hourly` recurrence type allows users to schedule tasks to run at regular `hourly intervals` throughout the day. Users can specify the `frequency` in hours for example, every 2 hours to define how often the task should repeat. This type is useful for scenarios requiring high-frequency execution, such as polling services, syncing data, or checking for updates at consistent intervals.
 
 ## API
-
-### Attributes
-
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Example</th>
-    </tr>
-  </thead>
-  <tbody>
-   
-    <tr>
-      <td>cron</td>
-      <td><code>'0 0 0 ? * *'</code></td>
-      <td>The cron expression on basis of selected input. Default is <code>0 0 0 ? * *</code>.</td>
-      <td>
-
-        ```typescript
-        <rapid-cron-scheduler cron="0 0 0 ? * *"></rapid-cron-scheduler>
-        ```
-
-      </td>
-    </tr>
-  </tbody>
-</table>
+Property and attribute binding examples for Genesis Component syntax.
 
 ### Properties
 
@@ -183,27 +155,48 @@ The Hourly recurrence type allows users to schedule tasks to run at regular `hou
     <tbody>
         <tr>
         <td>cron</td>
-        <td><code>'0 0 0 ? * *'</code></td>
-        <td>The cron expression on basis of selected input. Default is <code>0 0 0 ? * *</code>.</td>
+        <td><code>`string`</code></td>
+        <td>The cron expression string  on basis of selected input. It can be set to any cron expression e.g. <code>'0 30 10 ? * 2,4'</code> - For executing the task on every Monday and Wednesday at 10:30 AM. For More examples refer to [`Cron expression section`](#cron-expression)</td>
         <td>
 
-            ```typescript
-            <rapid-cron-scheduler cron="0 0 0 ? * *"></rapid-cron-scheduler>
-            ```
+          ```typescript
+            <rapid-scheduler-cron-builder 
+              :cron=${sync((x) => x.cronExpression)}
+            ></rapid-scheduler-cron-builder>
+          ```
 
         </td>
         </tr>
     </tbody>
 </table>
 
-
+### Attributes
+This component doesn't have any attributes.
 
 ### Events fired
 
-| Name | Description |
-|---|---|
-| change | Fires a custom 'change' event when the `cron` expression value updates |
-
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>change</td>
+        <td>Fires a custom 'change' event when the `cron` expression value changes. Access the value of on the event via `**.target.value**`</td>
+        <td>
+          ```typescript
+            <rapid-scheduler-cron-builder 
+              @change=${(x, c) => x.handleChange(c.event)}
+            ></rapid-scheduler-cron-builder>
+          ```
+        </td>
+        </tr>
+    </tbody>
+</table>
 ### Events listened to
 
 This component doesn't listen to any events.
@@ -217,7 +210,7 @@ The cron expression is a string that represents a schedule in a specific format.
 | Hours | Hours (0-23) | 0-23 |
 | Day of Month | Day of the month (1-31) | 1-31 |
 | Month | Month (1-12) | 1-12|
-| Day of Week | Day of the week (0-6, where 0 is Sunday) | 0-6 |
+| Day of Week | Day of the week (1-7, where 1 is Sunday) | 1-7 |
 
 ### Example
 Below are some examples of cron expressions and their meanings:
@@ -234,6 +227,5 @@ Below are some examples of cron expressions and their meanings:
 | `0 30 10 ? * 1#3` | At 10:30 AM on the third Monday of every month |
 
 :::warning
-Support for specifying both `day-of-week` and `day-of-month` is not complete.  
-You must use `?` in one of these fields to indicate "no specific value."
+Support for specifying both `day-of-week` and `day-of-month` is not complete. You must use `?` in one of these fields to indicate "no specific value."
 :::
