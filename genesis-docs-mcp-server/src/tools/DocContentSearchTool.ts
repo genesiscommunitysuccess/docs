@@ -1,6 +1,6 @@
 import { MCPTool } from "mcp-framework";
 import { z } from "zod";
-import { fileSystem } from "../services/FileSystem";
+import { fileSystem } from "../services/FileSystem.js";
 
 interface DocContentSearchInput {
   searchString: string;
