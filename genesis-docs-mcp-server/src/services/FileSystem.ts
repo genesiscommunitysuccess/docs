@@ -10,9 +10,20 @@ const __dirname = path.dirname(__filename);
 // Get project root path (useful for resolving paths)
 export const projectRoot = path.resolve(__dirname, '../..');
 
+export type SearchResult = {
+  filePath: string; // Path in the format expected by DocFileViewTool
+  matches: Array<{
+    line: number; // 1-based line number
+    text: string; // The text content of the matching line
+    offset: number; // 0-based line offset (for DocFileViewTool)
+  }>;
+  totalLines?: number; // Total number of lines in the file
+};
+
 export type FileSystem = {
   docsFiles: () => Promise<string[]>;
   readDocFile: (filePath: string, offset?: number, maxLines?: number) => Promise<string>;
+  searchDocFiles: (searchTerm: string) => Promise<SearchResult[]>;
 };
 
 export async function runGlobby(searchTerm: string) {
@@ -43,10 +54,15 @@ export const fileSystemBuilder = (): FileSystem => {
 
     async readDocFile(filePath: string, offset?: number, maxLines?: number): Promise<string> {
       try {
-        // Ensure the path is properly resolved to the project root and handle dist/ prefix if needed
-        const absolutePath = filePath.startsWith('dist/')
-          ? path.join(projectRoot, filePath)
-          : path.join(projectRoot, 'dist', filePath);
+        // Extract relative path from the input path using the pattern in FilenameSearchTool
+        // Remove any '/dist/' prefix if present, since we'll add it back
+        let relativePath = filePath;
+        if (relativePath.includes('/dist/')) {
+          relativePath = relativePath.split('/dist/').pop() || relativePath;
+        }
+
+        // Build the absolute path
+        const absolutePath = path.join(projectRoot, 'dist', relativePath);
 
         // Read the file
         const content = await fs.readFile(absolutePath, 'utf-8');
@@ -65,6 +81,89 @@ export const fileSystemBuilder = (): FileSystem => {
       } catch (error) {
         console.error(`Error reading doc file ${filePath}:`, error);
         throw new Error(`Failed to read documentation file: ${filePath}`);
+      }
+    },
+
+    async searchDocFiles(searchTerm: string): Promise<SearchResult[]> {
+      try {
+        const files = await this.docsFiles();
+        const searchResults: SearchResult[] = [];
+
+        // Escape special regex characters in the search term
+        const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Create case insensitive regex for better search
+        const searchRegex = new RegExp(escapedTerm, 'i');
+
+        // Process files in batches to control concurrency
+        const batchSize = 50; // Adjust based on expected file size and system resources
+
+        for (let i = 0; i < files.length; i += batchSize) {
+          const batch = files.slice(i, i + batchSize);
+
+          // Process each batch concurrently
+          const batchResults = await Promise.all(
+            batch.map(async (filePath) => {
+              try {
+                // Read the file
+                const content = await this.readDocFile(filePath);
+                const lines = content.split('\n');
+
+                const matches = lines
+                  .map((text, lineIndex) => {
+                    if (searchRegex.test(text)) {
+                      // Add offset property (0-based) which is the same as lineIndex
+                      return {
+                        line: lineIndex + 1, // 1-based line number for display
+                        text,
+                        offset: lineIndex, // 0-based offset for DocFileViewTool
+                      };
+                    }
+                    return null;
+                  })
+                  .filter(
+                    (match): match is { line: number; text: string; offset: number } =>
+                      match !== null
+                  );
+
+                if (matches.length > 0) {
+                  // Format the path in the same way as FilenameSearchTool
+                  // Extract relative path from /dist (if present)
+                  let relativePath = filePath;
+                  if (relativePath.includes('/dist/')) {
+                    relativePath = relativePath.split('/dist/').pop() || relativePath;
+                  } else {
+                    // Just ensure we're returning the path relative to dist/
+                    relativePath = relativePath.replace(`${projectRoot}/dist/`, '');
+                  }
+
+                  // Create a SearchResult object
+                  const searchResult: SearchResult = {
+                    filePath: relativePath,
+                    matches,
+                    totalLines: lines.length,
+                  };
+                  return searchResult;
+                }
+              } catch (error) {
+                // Skip files with read errors
+                console.error(`Error searching file ${filePath}:`, error);
+              }
+              return null;
+            })
+          );
+
+          // Add non-null results to the main results array
+          const filteredResults = batchResults.filter(
+            (result): result is SearchResult => result !== null
+          );
+          searchResults.push(...filteredResults);
+        }
+
+        return searchResults;
+      } catch (error) {
+        console.error(`Error searching doc files for ${searchTerm}:`, error);
+        return [];
       }
     },
   };
