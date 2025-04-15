@@ -27,7 +27,7 @@ class DocContentSearchTool extends MCPTool<DocContentSearchInput> {
 filePath: ${res.filePath}
 totalLines: ${res.totalLines}
 
-${res.matches.map((f, i) => `(Match ${i}, offset ${f.offset}): ${f.line}`).join("\n")}
+${res.matches.map((f, i) => `(Match ${i}, offset ${f.offset}): ${f.text}`).join("\n")}
 -----
 `).join("\n\n")
   }
