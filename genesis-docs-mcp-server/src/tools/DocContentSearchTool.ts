@@ -4,7 +4,7 @@ import { fileSystem } from "../services/FileSystem.js";
 
 interface DocContentSearchInput {
   searchString: string;
-  showContent?: boolean;
+  showContent?: string;
 }
 
 class DocContentSearchTool extends MCPTool<DocContentSearchInput> {
@@ -17,8 +17,8 @@ class DocContentSearchTool extends MCPTool<DocContentSearchInput> {
       description: "Text to search for in documentation files",
     },
     showContent: {
-      type: z.boolean().optional().default(false),
-      description: "If set to true then return the line content which contains the match"
+      type: z.string().optional(),
+      description: "If set to \"true\" then return the line content which contains the match"
     }
   };
 
@@ -27,7 +27,7 @@ class DocContentSearchTool extends MCPTool<DocContentSearchInput> {
     if (results.length === 0) {
       return "No results: please try again with a shorter search term";
     }
-    const s = input.showContent
+    const s = input.showContent === "true"
     return results.map(res => `
 -----
 filePath: ${res.filePath}
