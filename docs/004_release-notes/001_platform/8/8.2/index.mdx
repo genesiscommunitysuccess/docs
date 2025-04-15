@@ -112,6 +112,21 @@ id: '8.2'
 * `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed 
 * `genesis-pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
 
+#### 8.2.21
+
+###### Features
+
+* `genesis-pal-dataserver` : Improve priming progress updates in log file 
+* Improve coroutine exception handling 
+
+###### Fixes
+
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+* `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed 
+* `genesis-pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
+
 #### 8.2.20
 
 ###### Fixes
