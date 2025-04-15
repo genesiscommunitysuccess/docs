@@ -4,6 +4,7 @@ import {useUpdateCSSVariable} from '@site/src/components/Hooks';
 import AccordionDemo from '/examples/ui/client-capabilities/interaction/accordion.js';
 import AnchorDemo from '/examples/ui/client-capabilities/interaction/anchor.js';
 import AnchoredRegionDemo from '/examples/ui/client-capabilities/interaction/anchored-region.js';
+import CronSchedulerDemo from '../../../../examples/ui/client-capabilities/interaction/scheduler';
 import DialogDemo from '/examples/ui/client-capabilities/interaction/dialog.js';
 import DropdownMenuDemo from '/examples/ui/client-capabilities/interaction/dropdown-menu.js';
 import FlipperDemo from '/examples/ui/client-capabilities/interaction/flipper.js';
@@ -68,6 +69,12 @@ const cardData = [
     "link": "/develop/client-capabilities/interaction/client-interaction-modal/",
     "text": "Focused overlay content",
     children: <ModalDemo />,
+  },
+  {
+    "heading": "Scheduler",
+    "link": "/develop/client-capabilities/interaction/client-interaction-scheduler/",
+    "text": "component for scheduling tasks",
+    children: <CronSchedulerDemo />,
   },
   {
     "heading": "Tabs",
