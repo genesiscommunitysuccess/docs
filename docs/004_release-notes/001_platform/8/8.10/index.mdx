@@ -94,7 +94,21 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
-### 8.10.1
+#### 8.10.2
+
+###### Fixes
+
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-codegen` : Prioritise project dictionary file over dependency dictionary file during codegen 
+* `genesis-config` : Support `String` input for sys def ProcessDependencyTimeoutSeconds 
+* `genesis-db` : Handle sql getRange operation with continuation 
+* `genesis-testsupport` : Fix handling of nested classes 
+* `genesis-net` : Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation 
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+* `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed 
+* Fixed a test-only edge case in `GenesisMessageClient` where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed 
+
+#### 8.10.1
 
 ###### Fixes
 
