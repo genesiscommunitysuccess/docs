@@ -1,0 +1,32 @@
+---
+description: Genesis directory and project structure
+globs: **
+alwaysApply: true
+---
+## Directory Structure
+  IMPORTANT: {app-name} is a placeholder for the name of the application. It should be replaced with the actual name of the application name.
+
+**Genesis projects** typically have two main folders:
+
+1. **client** (frontend code)
+   - `client/src/`
+     - `routes/` (for application routes)
+     - `components/` (common or reusable components)
+
+2. **server** (backend code)
+   - `server/{app-name}-app/src/` (backend code)
+   - `server/{app-name}-app/src/main/genesis/cfg/`
+     - `genesis-system-definition.kts`
+     - `{app-name}-processes.xml`
+     - `{app-name}-service-definition.xml`
+     - `{app-name}-system-definition.kts`
+     - `{app-name}-tables-dictionary.kts`
+     - `{app-name}-view-dictionary.kts`
+   - `server/{app-name}-app/src/main/genesis/scripts/`
+     - `{app-name}-consolidator.kts`
+     - `{app-name}-dataserver.kts`
+     - `{app-name}-eventhandler.kts`
+     - `{app-name}-pipelines.kts`
+     - `{app-name}-reqrep.kts`
+     - `{app-name}-streamer.kts`
+     - `{app-name}-streamer-client.kts`

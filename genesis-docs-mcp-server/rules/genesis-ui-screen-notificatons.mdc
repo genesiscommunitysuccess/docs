@@ -1,0 +1,18 @@
+---
+description: Genesis rapid grid syntax, to create grids/tables that doens't need CRUD operations.
+globs: **
+alwaysApply: true
+---
+## 1. Screen Notifications
+
+When the user asks to add any of the following notifications:
+ 1. alert
+ 2. toast
+ 3. banner
+ 4. snackbar
+ 5. dialog
+
+- Always refer to the documentation under "Client Capabilities - Screen Notifications"
+
+- For dialog, always use confirmingActions and dismissingAction, instead of buttons.
+

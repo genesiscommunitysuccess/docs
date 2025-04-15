@@ -3,11 +3,13 @@
 
 import FilenameSearchTool from './tools/FilenameSearchTool.js';
 import DocFileViewTool from './tools/DocFileViewTool.js';
+import RulesViewTool from './tools/RulesViewTool.js';
 import { fileSystem } from './services/FileSystem.js';
 
 const TOOL_TYPES = {
   SEARCH: 'search',
   VIEW: 'view',
+  RULES: 'rules',
 };
 
 async function main() {
@@ -18,6 +20,8 @@ async function main() {
     await testFilenameSearch();
   } else if (toolType === TOOL_TYPES.VIEW) {
     await testDocFileView();
+  } else if (toolType === TOOL_TYPES.RULES) {
+    await testRulesView();
   } else {
     console.log(`Unknown tool type: ${toolType}`);
     console.log(`Available tool types: ${Object.values(TOOL_TYPES).join(', ')}`);
@@ -25,6 +29,7 @@ async function main() {
     console.log('Examples:');
     console.log('  Search: node dist/test-cli.js search "grid pro"');
     console.log('  View: node dist/test-cli.js view docs/001_develop/index.md [offset] [maxLines]');
+    console.log('  Rules: node dist/test-cli.js rules [ruleName]');
     process.exit(1);
   }
 }
@@ -124,6 +129,49 @@ async function testDocFileView() {
     }
   } catch (error) {
     console.error('Error during test:', error);
+    process.exit(1);
+  }
+}
+
+async function testRulesView() {
+  // Get the rule name from command line args or use list mode
+  const ruleName = process.argv[3];
+  
+  try {
+    const tool = new RulesViewTool();
+    let result;
+    
+    if (!ruleName || ruleName === 'list') {
+      // List all available rules
+      console.log('Listing all Genesis coding standard rules:');
+      result = await tool.execute({ listRules: 'true' });
+      
+      if (result && typeof result === 'object' && 'ruleFiles' in result) {
+        const { ruleFiles } = result;
+        console.log('\nAvailable rules:');
+        ruleFiles.forEach((rule, index) => {
+          console.log(`${index + 1}. ${rule}`);
+        });
+        console.log('\nTo view a specific rule, use: node dist/test-cli.js rules <ruleName>');
+      } else {
+        console.log('\nUnexpected result format:', result);
+      }
+    } else {
+      // View a specific rule
+      console.log(`Viewing Genesis coding standard rule: ${ruleName}`);
+      result = await tool.execute({ ruleName });
+      
+      if (result && typeof result === 'object' && 'content' in result) {
+        console.log('\nRule Content:');
+        console.log('----------------------------------------');
+        console.log(result.content);
+        console.log('----------------------------------------');
+      } else {
+        console.log('\nError or unexpected result format:', result);
+      }
+    }
+  } catch (error) {
+    console.error('Error during rules test:', error);
     process.exit(1);
   }
 }

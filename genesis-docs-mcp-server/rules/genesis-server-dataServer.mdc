@@ -1,0 +1,225 @@
+---
+description: Data Server is a microservice responsible for providing real-time queries
+globs: **/server/**/src/main/genesis/scripts/**-dataserver.kts
+alwaysApply: true
+---
+## Overview
+
+A Data Server is a real-time query mechanism that:
+1. Provides streaming updates to clients
+2. Automatically pushes data changes to subscribed clients
+3. Supports complex queries with joins, derived fields, and filtering
+4. Manages client subscriptions efficiently using asynchronous (non-blocking) operations
+5. No request parameters needed (unlike Request Reply)
+6. Supports field aliasing and derived fields
+7. Can include configuration for default filtering and behavior
+
+### Basic Structure
+```kotlin
+dataServer {
+    query("QUERY_NAME", TABLE_OR_VIEW) {
+        fields {
+            FIELD1
+            FIELD2 withAlias "ALIAS"
+            FIELD3 withPrefix "PRE"
+        }
+
+        derivedField("CALCULATED_FIELD", TYPE) {
+            data.field1 - data.field2
+        }
+
+        config {
+            defaultCriteria = "FIELD1 > 0"
+            backwardsJoins = true
+            disableAuthUpdates = false
+        }
+    }
+}
+```
+
+### Field Configuration Options
+1. **Direct Fields**
+   ```kotlin
+   fields {
+       FIELD_NAME  // Direct reference
+   }
+   ```
+
+2. **Field Aliasing**
+   ```kotlin
+   fields {
+       FIELD_NAME withAlias "DISPLAY_NAME"
+   }
+   ```
+
+3. **Field Prefixing**
+   ```kotlin
+   fields {
+       FIELD_NAME withPrefix "PRE"  // Results in "PRE_FIELD_NAME"
+   }
+   ```
+
+### Derived Fields
+- Must be defined outside the fields block, at the same level as other query configurations (like filter and permissioning)
+- Can access record data via the 'data' object
+- Support various return types (STRING, DOUBLE, etc.)
+
+```kotlin
+fields {
+    FIRST_NAME
+    LAST_NAME
+}
+
+derivedField("FULL_NAME", STRING) {
+    data.firstName + " " + data.lastName
+}
+```
+
+### Query Configuration
+The config block supports several options:
+
+1. **Default Criteria**
+   ```kotlin
+   config {
+       defaultCriteria = "QUANTITY > 0"  // SQL-like string expression
+   }
+   ```
+
+2. **Join Behavior**
+   ```kotlin
+   config {
+       backwardsJoins = true  // Enables reverse join direction
+   }
+   ```
+
+3. **Auth Updates**
+   ```kotlin
+   config {
+       disableAuthUpdates = false  // Controls auth-based updates
+   }
+   ```
+
+### Filtering
+- Use `filter` block, NOT `where` block when filtering on table fields
+- Access record data via the `data` object
+- Place filter conditions inside the filter block
+
+### When to Use Request Reply Instead
+1. Looking up specific records by ID
+2. One-time queries that don't need real-time updates
+3. Operations requiring input parameters
+4. Complex lookups with derived fields
+
+### Example: Complete Data Server Query
+```kotlin
+dataServer {
+    query("ALL_TRADES", TRADE) {
+        fields {
+            TRADE_ID
+            INSTRUMENT_ID withPrefix "G"
+            ORDER_ID withAlias "ORDER"
+            TRADED_QTY
+        }
+
+        derivedField("TRADE_DESCRIPTION", STRING) {
+            data.tradeId + "-" + data.instrumentId + "-" + data.tradedQty
+        }
+
+        config {
+            defaultCriteria = "TRADED_QTY > 0"
+            backwardsJoins = true
+            disableAuthUpdates = false
+        }
+    }
+}
+```
+
+### Best Practices
+1. Use meaningful query names
+2. Keep derived field logic simple
+3. Place derived fields outside fields block
+4. Use field aliases for UI-friendly names
+5. Set appropriate default criteria
+6. Consider authorization requirements
+7. Document complex queries
+
+## Field References in Queries
+
+Follow these rules for field references:
+
+1. **Single Table Queries**
+   - Do not prefix fields with the table/entity name
+   - Access fields directly by their name
+
+❌ Don't:
+```kotlin
+query("ALL_TRADES", TRADE) {
+    fields {
+        TRADE.TRADE_ID    // Don't prefix with table name
+        TRADE.QUANTITY
+    }
+    where {
+        TRADE.QUANTITY > 0  // Don't prefix in where clause
+    }
+}
+```
+
+✅ Do:
+```kotlin
+query("ALL_TRADES", TRADE) {
+    fields {
+        TRADE_ID    // Direct field reference
+        QUANTITY
+    }
+    where {
+        QUANTITY > 0  // Direct field reference
+    }
+}
+```
+
+2. **Exception: Multi-Table Queries**
+   - When querying multiple tables (e.g., in views), prefix fields with table name to avoid ambiguity
+   - This helps distinguish between fields from different tables
+
+Example with view:
+```kotlin
+query("TRADE_VIEW", TRADE_VIEW) {
+    fields {
+        TRADE.TRADE_ID    // Prefix needed for multi-table queries
+        ORDER.ORDER_ID
+    }
+}
+```
+
+## Default Criteria
+
+When setting default filtering criteria for queries, use the `defaultCriteria` property in a config block:
+
+❌ Don't:
+```kotlin
+query("ALL_TRADES", TRADE) {
+    config {
+        where {  // Don't use where block for default criteria
+            TRADED_QTY > 0
+        }
+    }
+}
+```
+
+✅ Do:
+```kotlin
+query("ALL_TRADES", TRADE) {
+    config {
+        defaultCriteria = "TRADED_QTY > 0"  // Use defaultCriteria property with string expression
+    }
+}
+```
+
+Key Points:
+1. Use `config` block to configure query behavior
+2. Set `defaultCriteria` as a string expression
+3. This criteria will be applied by default but can be overridden by client requests
+4. Use proper field names as defined in the tables dictionary
+5. The use of "allFields" is not valid syntax in dataserver cfg, exclude the "fields" cfg block to return all fields.
+
+

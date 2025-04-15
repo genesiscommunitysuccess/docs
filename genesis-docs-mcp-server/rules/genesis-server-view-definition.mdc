@@ -1,0 +1,127 @@
+---
+description: Views support joining related entities together
+globs: **/server/**/src/main/genesis/cfg/**-view-dictionary.kts
+alwaysApply: true
+---
+View Structure
+Views support joining related entities together:
+- Provide a root table
+- Define joins
+- Specify fields to include
+
+Refer to detailed online documentation @https://docs.genesis.global/docs/develop/server-capabilities/data-model/#view
+
+## 1. View Dictionary (`{app-name}-view-dictionary.kts`)
+
+### 1.1 View Structure
+Views support joining related entities together:
+- Provide a root table
+- Define joins
+- Specify fields to include
+
+### 1.2 View Example
+```kotlin
+view("VIEW_NAME", ROOT_TABLE) {
+    fields {
+        ROOT_TABLE.allFields()
+        SECONDARY_TABLE.FIELD_NAME
+    }
+    joins {
+        joining(SECONDARY_TABLE) {
+            on(ROOT_TABLE.FOREIGN_KEY to SECONDARY_TABLE { PRIMARY_KEY })
+        }
+    }
+}
+```
+
+### 1.3 Field Aliasing Best Practices
+
+1. **Use Aliases for Clarity**
+   - Use aliases when field names would otherwise be ambiguous
+   - Use aliases when you want to present a field with a more descriptive name
+
+2. **Avoid Redundant Aliases**
+   - Do not alias a field with its own name (e.g., `FIELD_NAME withAlias "FIELD_NAME"`)
+   - Redundant aliases add unnecessary complexity and verbosity
+
+❌ Don't:
+```kotlin
+view("EXAMPLE_VIEW", TABLE) {
+    fields {
+        TABLE {
+            FIELD_1 withAlias "FIELD_1"  // Redundant alias
+        }
+    }
+}
+```
+
+✅ Do:
+```kotlin
+view("EXAMPLE_VIEW", TABLE) {
+    fields {
+        TABLE {
+            FIELD_1  // No alias needed
+            FIELD_2 withAlias "BETTER_NAME"  // Useful alias
+        }
+    }
+}
+```
+
+### 1.4 Field configuration block best practices
+    - When creating views that join multiple tables, we need to ensure that field names remain unique.
+    - Only use allFields if there are no name clashes with other joined tables.
+    - If there are clashes then explicitly list the fields required from each table or use aliases to avoid duplicates
+    - To remove one or more fields from all the fields of a table then use except function with a list of table fields:
+        e.g.
+        ```kotlin
+        view("EXAMPLE_VIEW", TABLE) {
+            fields {
+                TABLE.except(listOf(TABLE.FIELD_1, TABLE.FIELD_2))
+            }
+        }
+        ```
+
+### Derived fields
+  - The derivedField cfg should always be defined inside the fields block.
+  - Always use "withInput" or "withEntity" blocks and not "data." notation
+
+ ✅ Do:
+ ```kotlin
+ view("EXAMPLE_VIEW", TABLE) {
+     fields {
+         TABLE {
+             FIELD_1
+             FIELD_2
+         }
+         derivedField("DERIVED_FIELD", STRING) {
+             withInput(
+                 TABLE.FIELD_1,
+                 TABLE.FIELD_1
+             ) { field1, field2 ->
+                 "${field1} ${field2}"
+             }
+         }
+         derivedField("DERIVED_FIELD_2", STRING) {
+              withEntity(
+                  TABLE
+              ) { table ->
+                  "${table.field1} ${table.field2}"
+              }
+          }
+     }
+ }
+
+ ❌ Don't:
+ ```kotlin
+ view("EXAMPLE_VIEW", TABLE) {
+     fields {
+         TABLE {
+             FIELD_1
+             FIELD_2
+         }
+         derivedField("DERIVED_FIELD", STRING) {
+             "${data.field1} ${data.field2}"
+         }
+     }
+ }
+ ```

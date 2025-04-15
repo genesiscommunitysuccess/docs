@@ -1,0 +1,26 @@
+---
+description: Genesis General Rules to apply to any code implementation of genesis framework or cursor rules interactions
+globs: **
+alwaysApply: true
+---
+
+# Genesis General Rules to apply to any code implementation of genesis framework
+
+## Specific Cursor Rules integrations
+- When applying [genesis-ui-entity-management.mdc](mdc:.cursor/rules/genesis-ui-entity-management.mdc) make sure to follow [table-definition-rules.mdc](mdc:.cursor/rules/table-definition-rules.mdc) , [view-definition-rules.mdc](mdc:.cursor/rules/view-definition-rules.mdc), [eventhandler-definition-rules.mdc](mdc:.cursor/rules/eventhandler-definition-rules.mdc) to create all parts necessary to make the entity-management works integrated with the backend, unless is specific asked from the user to not generate backend code.
+- If you need to create a new route/page in the application, make sure to follow [genesis-ui-routes.mdc](mdc:.cursor/rules/genesis-ui-routes.mdc) and [directory-structure.mdc](mdc:.cursor/rules/directory-structure.mdc)
+- The front-end uses dataservers to communicate with the backend mostly, so make sure to always check [dataServer-definition-rules.mdc](mdc:.cursor/rules/dataServer-definition-rules.mdc) to understand how that works.
+
+# Genesis Applications common behaviors
+- Always check the cursor rules when generating code.
+
+## Unit Tests
+ - When creating unit tests ensure the dependencies are added to the project build script.
+    pal-eventhandler (for testing event handlers)
+    pal-requestserver (for testing request/reply services)
+    pal-consolidator (for testing consolidators)
+    pal-dataserver (for testing data servers)
+
+
+### Processes and Service definitions
+- When creating a new process in the {app}-processes.xml file, always ensure a corresponding service is created in the {app}-service-definitions.xml

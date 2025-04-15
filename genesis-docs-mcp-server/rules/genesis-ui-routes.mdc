@@ -1,0 +1,102 @@
+---
+description: Genesis routes syntax, to create new routes/pages in the application front-end.
+globs: **
+alwaysApply: true
+---
+### 1.2 Route Configuration Rules
+
+1. **Core Requirements**
+- ALWAYS define routes in `client/src/routes/config.ts`
+- ALWAYS extend `FoundationRouterConfiguration` for the main router config
+- ALWAYS include authentication handling for protected routes
+- ALWAYS define layouts for routes (default or custom)
+- ALWAYS extend `GenesisElement` the new route file, that is basically a component.
+-- Note that the new route file, will create other two files: `{filename}.template.ts` and `{filename}.styles.ts`
+
+2. **Route Structure**
+- Use `routes.map()` to define routes with:
+  - `path`: URL path
+  - `element`: Component to render
+  - `title`: Page title
+  - `name`: Route name
+  - `layout`: Layout component (optional)
+  - `settings`: Route settings (e.g., `public: true` for login)
+
+3. **Navigation Items**
+```typescript
+navItems: [
+  {
+    title: 'Home',
+    icon: {
+      name: 'icon-name',
+      variant: 'solid'
+    },
+    permission: 'PERMISSION_NAME'
+  }
+]
+```
+
+4. **Common Patterns**
+- Use empty path ('') with redirect for root route
+- Define fallback routes for 'not-found' scenarios
+- Include standard routes:
+  - Login
+  - Not Found
+  - Not Permitted
+  - Home
+
+5. **Example Route Definition**
+```typescript
+this.routes.map(
+  {
+    path: 'home',
+    element: Home,
+    title: 'Home',
+    name: 'home',
+    navItems: [
+      {
+        title: 'Home',
+        icon: { name: 'home' },
+        permission: ''
+      }
+    ]
+  }
+);
+
+```
+6. **Example of new route file component**
+```typescript
+import { User } from '@genesislcap/foundation-user';
+import { customElement, GenesisElement } from '@genesislcap/web-core';
+import { HomeStyles as styles } from './home.styles';
+import { HomeTemplate as template } from './home.template';
+
+@customElement({
+  name: 'home-route',
+  template,
+  styles,
+})
+export class Home extends GenesisElement {}
+```
+
+7. **Example of new route file styles blank**
+```typescript
+import { css } from '@genesislcap/web-core';
+
+export const HomeStyles = css`
+  :host {
+    /* insert css styles here */
+  }
+`;
+```
+
+8. **Example of new route file template**
+```typescript
+import { html } from '@genesislcap/web-core';
+import type { NotFound } from './not-found';
+
+export const NotFoundTemplate = html<NotFound>`
+  <h1 class="error-message">Not found! 404</h1>
+`;
+```
+
