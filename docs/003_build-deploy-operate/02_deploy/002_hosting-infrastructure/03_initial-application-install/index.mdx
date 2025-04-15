@@ -34,11 +34,11 @@ These are distributions which are maintained by Genesis, and power all Genesis a
 - Genesis Server Framework
 - Further Genesis Component distributions - those required are determined by [the application's configured dependencies](/build-deploy-operate/build/plugins/#dependencies)
 
-These distribution zip bundles are released to the Genesis artifactory along with the underlying libs, and are contained in `*-distribution` folders under the `libs-release-client` repository. For example the main [Genesis Server framework distributions are found here](https://genesisglobal.jfrog.io/ui/repos/tree/General/libs-release-client/global/genesis/genesis-distribution). You'll need [access to Genesis Server artifacts](/build-deploy-operate/build/library-access/#server-artifacts).
+These distribution zip bundles are released to the Genesis artifactory along with the underlying libs, and are contained in `*-distribution` folders under the `libs-release-client` repository. For example the main [Genesis Server framework distributions are found here](https://genesisglobal.jfrog.io/ui/repos/tree/General/libs-release-local/global/genesis/genesis-distribution). You'll need [access to Genesis Server artifacts](/build-deploy-operate/build/library-access/#server-artifacts).
 
 When the version of any of these Genesis dependencies is updated in the application, the related distribution zip for that release needs to be added onto the box and **replace** the respective distribution that is already there.
 
-Where using the [Genesis build plugin's](/build-deploy-operate/deploy/hosting-infrastructure/containers/#using-the-plugin) `buildImage`, it will read the application codebase to determine the module versions to include and further docker commands can be used to deploy them. If you are setting things up manually, you can to determine which module versions in the same way `buildImage` does by [reading the dependencies](/build-deploy-operate/build/plugins/#dependencies) from the application's codebase.
+Where using the [Genesis build plugin's](/build-deploy-operate/deploy/hosting-infrastructure/containers/#using-the-plugin) `buildImage`, it will read the application codebase to determine the module versions to include and further docker commands can be used to deploy them. If you are setting things up manually, you can to determine which module versions in the same way `buildImage` does by [reading the dependencies](/docs/build-deploy-operate/build/plugins/#dependencies) from the application's codebase.
 
 ## Installing code
 
