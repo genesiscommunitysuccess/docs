@@ -77,11 +77,20 @@ Lets look at a simple example of component in action. For example if you want th
     Usage
     ```tsx
     export function MyComponent() {
+      
+      const schedulerRef = useRef(null);
       const [cron, setCron] = useState('0 30 10 ? * 2,4');
 
+      useEffect(() => {
+        if (schedulerRef.current) {
+          schedulerRef.current.cron = cron;
+        }
+      }, [cron]);
+
       return (
-        <rapid-scheduler-cron-builder 
-          cron="0 30 10 ? * 2,4" 
+        <rapid-scheduler-cron-builder
+          ref={schedulerRef} 
+          cron={cron} 
           onChange={(e) => setCron(e.target.value)}
         ></rapid-scheduler-cron-builder>
         <p>Cron: {cron}</p>
