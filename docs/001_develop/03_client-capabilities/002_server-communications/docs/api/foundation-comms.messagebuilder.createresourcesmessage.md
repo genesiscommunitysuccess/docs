@@ -12,14 +12,14 @@ Creates a message for getting list of resources.
 **Signature:**
 
 ```typescript
-createResourcesMessage<T = any>(params?: any): Message<T>;
+createResourcesMessage<T = any>(params?: RequestParams): Message<T>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | any | _(Optional)_ The additional parameters. |
+|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ The additional parameters. |
 
 **Returns:**
 

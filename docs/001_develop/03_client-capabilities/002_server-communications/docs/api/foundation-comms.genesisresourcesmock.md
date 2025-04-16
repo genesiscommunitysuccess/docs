@@ -28,6 +28,7 @@ export declare class GenesisResourcesMock implements GenesisResources
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [destroy()](./foundation-comms.genesisresourcesmock.destroy.md) |  |  |
+|  [getAllResources()](./foundation-comms.genesisresourcesmock.getallresources.md) |  |  |
 |  [getResourceTypeFor(resourceName)](./foundation-comms.genesisresourcesmock.getresourcetypefor.md) |  | Gets the type of resource |
 |  [isValidResource(resourceName)](./foundation-comms.genesisresourcesmock.isvalidresource.md) |  | Checks if the resource exists |
 

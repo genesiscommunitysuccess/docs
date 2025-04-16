@@ -7,6 +7,11 @@ format: md
 
 ## DefaultHttpConnect.setValidSession() method
 
+> Warning: This API is now obsolete.
+> 
+> - Please reference  instead.',
+> 
+
 **Signature:**
 
 ```typescript

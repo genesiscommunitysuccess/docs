@@ -37,7 +37,9 @@ asd == 'zxc' &&
 Expr.containsIgnoreCase(FIELD, 'abc') &&
 Expr.dateIsToday(DATE) &&
 Expr.dateTimeIsGreaterEqual(DATETIME, '20231110-03:23') &&
-Expr.dateTimeIsLessEqual(DATETIME, '20231115-03:23')
+Expr.dateTimeIsLessEqual(DATETIME, '20231115-03:23') &&
+Expr.dateIsGreaterEqual(DATEONLY, '20231110') &&
+Expr.dateIsLessEqual(DATEONLY, '20231115')
 ```
 into
 
@@ -50,6 +52,8 @@ into
   DATE_TO: '20231111-00:00',
   DATETIME_FROM: '20231110-03:23',
   DATETIME_TO: '20231115-03:23',
+  DATEONLY_FROM: '20231110',
+  DATEONLY_TO: '20231115',
 }
 ```
 

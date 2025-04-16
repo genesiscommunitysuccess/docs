@@ -22,5 +22,6 @@ TYPES_MAP: {
     BIGDECIMAL: FieldTypeEnum;
     DATE: FieldTypeEnum;
     DATETIME: FieldTypeEnum;
+    NANO_TIMESTAMP: FieldTypeEnum;
 }
 ```
