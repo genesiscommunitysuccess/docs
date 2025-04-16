@@ -14,6 +14,13 @@ export default function CronSchedulerDemo({ inIndex=false }) {
 	const schedulerRef = useRef(null);
 
 	const [cron, setCron] = useState('0 30 10 ? * 2,4');
+
+	useEffect(() => {
+		if (schedulerRef.current) {
+		  schedulerRef.current.cron = cron;
+		}
+	  }, [cron]);
+
 	const styles = inIndex ? { color: 'var(--neutral-foreground-rest)', width: '100%', height: '200px', overflow: 'hidden'} : { color: 'var(--neutral-foreground-rest)', width: '100%', height: '350px'}
 
 	useEffect(() => {
