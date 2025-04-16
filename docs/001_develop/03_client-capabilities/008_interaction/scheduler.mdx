@@ -98,19 +98,33 @@ Lets look at a simple example of component in action. For example if you want th
 
     Usage
     ```typescript
-    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
     @Component({
       selector: 'my-root',
       template: `
-        <rapid-scheduler-cron-builder (change)="onChange($event)">
+        <rapid-scheduler-cron-builder
+          #scheduler 
+          (change)="onChange($event)">
         </rapid-scheduler-cron-builder>
+        <p>Cron: {{cron}}</p>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-    export class AppComponent {
+    export class AppComponent implements AfterViewInit {
+      @ViewChild('scheduler', { static: false }) schedulerRef!: ElementRef;
+
+      cron: string = '0 30 10 ? * 2,4'; // default value
+
+      ngAfterViewInit(): void {
+        if (this.schedulerRef?.nativeElement) {
+          this.schedulerRef.nativeElement.cron = this.cron;
+        }
+      }
+
       onChange(event: Event) {
-        console.log('Cron', event.target.value);
+        const value = (event.target as any).value;
+        this.cron = value;
       }
     }
     ```
