@@ -26,7 +26,7 @@ export default function CronSchedulerDemo({ inIndex=false }) {
 	return (
 		<CodeSection>
 			<div style={styles}>
-				<rapid-scheduler-cron-builder ref={schedulerRef}  cron={cron} onChange={(e) => setCron(e.target.value)} >
+				<rapid-scheduler-cron-builder ref={schedulerRef} onChange={(e) => setCron(e.target.value)} >
 				</rapid-scheduler-cron-builder>
 				<p style={{ color: 'var(--neutral-foreground-rest)', fontSize: 'var(--type-ramp-base-font-size)', padding: 'calc(var(--design-unit) * 4px)'}}>Cron: {cron}</p>
 			</div>

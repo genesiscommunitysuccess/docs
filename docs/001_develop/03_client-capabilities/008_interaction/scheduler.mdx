@@ -91,7 +91,6 @@ You can play around with different recurrence types, each offering its own set o
       return (
         <rapid-scheduler-cron-builder
           ref={schedulerRef} 
-          cron={cron} 
           onChange={(e) => setCron(e.target.value)}
         ></rapid-scheduler-cron-builder>
         <p>Cron: {cron}</p>
