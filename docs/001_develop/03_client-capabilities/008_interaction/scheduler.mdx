@@ -157,15 +157,15 @@ Property and attribute binding examples for Genesis Component syntax.
         <td>cron</td>
         <td>string</td>
         <td>The cron expression string  on basis of selected input. It can be set to any cron expression e.g. `0 30 10 ? * 2,4` - For executing the task on every Monday and Wednesday at 10:30 AM. For More examples refer to [`Cron expression section`](#cron-expression)</td>
-        <td>
+<td>
 
-          ```typescript
-            <rapid-scheduler-cron-builder 
-              :cron=${sync((x) => x.cronExpression)}
-            ></rapid-scheduler-cron-builder>
-          ```
+```typescript
+<rapid-scheduler-cron-builder 
+:cron=${sync((x) => x.cronExpression)}
+></rapid-scheduler-cron-builder>
+```
 
-        </td>
+</td>
         </tr>
     </tbody>
 </table>
@@ -189,13 +189,15 @@ This component doesn't have any attributes.
         <td>change</td>
         <td>string</td>
         <td>Fires a custom change event when the `cron` expression value changes. Access the value of on the event via `.target.value`</td>
-        <td>
-          ```typescript
-            <rapid-scheduler-cron-builder 
-              @change=${(x, c) => x.handleChange(c.event)}
-            ></rapid-scheduler-cron-builder>
-          ```
-        </td>
+<td>
+
+```typescript
+<rapid-scheduler-cron-builder 
+@change=${(x, c) => x.handleChange(c.event)}
+></rapid-scheduler-cron-builder>
+```
+
+</td>
         </tr>
     </tbody>
 </table>
