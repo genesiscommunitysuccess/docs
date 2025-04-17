@@ -49,18 +49,41 @@ The rule expression builder is a UI component which allows the user to configure
 
 Use cases:
 * Allow the user to define a set of filters which can be used on a dataset.
-* Configure predicate expressions to execute actions when specific conditions are realised.
-* Allow run-time configuration of rules which dictate application function, which typically would require developer code changes.
+* Configure predicate expressions to execute actions when specific conditions are realized.
+* Allow run-time configuration of rules that dictate application function, which typically would require developer code changes.
 
 :::tip
-This component is based on the [expression builder library](/develop/client-capabilities/expression-builder/) and is pre-configured to create boolean expressions that the back-end can work with. If you want to set your own operations and other configurations you can create your own component using the base library.
+This component is based on the [expression builder library](/develop/client-capabilities/expression-builder/) and is pre-configured to create boolean expressions that the back-end can work with.
+
+If you want to set your own operations and other configurations, you can create your own component using that base library.
 :::
 
 ## Example
 
-You can add, change, or delete a rule to create different expressions based upon input fields. You can use groups to join rules using specific boolean combinators (`AND` and `OR`) to create complex expressions. When you change the expression model on the UI you can see the json payload which is created change on the right hand side (click the button to show the model if it's currently hidden).
+You can add, change, or delete a rule to create different expressions based upon input fields. You can use groups to join rules using specific boolean combinators (`AND` and `OR`) to create complex expressions. The json payload that is created from your expression is displayed on the right-hand side. When you change the expression model on the UI, you can see the payload change to show the result. Click the button to show the model if it's currently hidden.
 
-Notice that if a rule is highlighted in red when it's partially defined (e.g. you've chosen the field but not an operator), then the model payload on the right hand side won't change. This is because the back-end model doesn't support partial rules. It is possible to look at the underlying model which contains a tree structure even for partial rules.
+Notice that if a rule is highlighted in red when it's partially defined (e.g. you've chosen the field but not an operator), then the model payload on the right-hand side won't change. This is because the back-end model doesn't support partial rules. It is possible to look at the underlying model, which contains a tree structure even for partial rules.
+
+# Rule expression builder
+
+The rule expression builder is a UI component which allows the user to configure boolean expressions upon a set of data. The generated expression can then be directly executed by the evaluator and criteria back-end services.
+
+Use cases:
+* Allow the user to define a set of filters which can be used on a dataset.
+* Configure predicate expressions to execute actions when specific conditions are realized.
+* Allow run-time configuration of rules that dictate application function, which typically would require developer code changes.
+
+:::tip
+This component is based on the [expression builder library](/develop/client-capabilities/expression-builder/) and is pre-configured to create boolean expressions that the back-end can work with. 
+
+If you want to set your own operations and other configurations, you can create your own component using that base library.
+:::
+
+## Example
+
+You can add, change, or delete a rule to create different expressions based upon input fields. You can use groups to join rules using specific boolean combinators (`AND` and `OR`) to create complex expressions. The json payload that is created from your expression is displayed on the right-hand side. When you change the expression model on the UI, you can see the payload change to show the result. Click the button to show the model if it's currently hidden.
+
+Notice that if a rule is highlighted in red when it's partially defined (e.g. you've chosen the field but not an operator), then the model payload on the right-hand side won't change. This is because the back-end model doesn't support partial rules. It is possible to look at the underlying model, which contains a tree structure even for partial rules.
 
 <RuleBuilderExample />
 
@@ -304,7 +327,7 @@ This component doesn't have any attributes.
     <tr>
       <td>model</td>
       <td><code>RuleExpression.Expression['PredicateExpression']</code></td>
-      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>ruleConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't a valid server rule and therefore will not be shown on the change event payload.</td>
+      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>ruleConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't a a valid server rule and therefore will not be shown on the change event payload.</td>
 <td>
 
 ```typesscript
