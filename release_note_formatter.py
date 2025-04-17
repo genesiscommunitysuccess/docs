@@ -38,7 +38,7 @@ operations = [
     {"type": "string", "find": "Expose properties for sessionTimeout, verifyServerIdentity, trustedSslHosts and trustAllSslHosts in Email Gateway configuration", "replace": "Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration"},
     {"type": "string", "find": "`pal-dataserver` : Data server priming progress", "replace": "`pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed" },
     {"type": "string", "find": "Improve genesis set handling in GenesisMessageClient", "replace": "Fixed a test-only edge case in GenesisMessageClient where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed" },
-
+    {"type": "string", "find": "* Update fileServerVersion to 8.8.1", "replace": "* Update to use Document Manager version `8.8.1`" },
     # Component tidy up
     {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
     {"type": "string", "find": "* `GenesisJUnit`", "replace": "* `genesis-testsupport`"},
@@ -100,5 +100,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py <path_to_folder>")
     else:
-        process_folder(sys.argv[1])
+        process_folder("docs/004_release-notes/001_platform/" + sys.argv[1])
         print("All .mdx files processed successfully.")
