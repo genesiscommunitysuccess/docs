@@ -1,0 +1,216 @@
+---
+description: Genesis entity-management syntax, to create grids/tables that need CRUD operations.
+globs: **
+alwaysApply: true
+---
+### Entity Management Rules
+
+1. **Core Instructions**
+- ALWAYS use `<entity-management>` component for CRUD operations
+- `<entity-management>` is a wrapper for `<rapid-grid-pro>`, so it cannot have `<rapid-grid-pro>` inside of it
+- ALWAYS define specific actions using `<entity-management-action>`
+- ALWAYS specify correct event-name matching server-side event handlers, also remember the event on entity-management always need to have EVENT_ in the beginning of the name, because even though eventHandler on backend doesn't have the "EVENT_", the genesis framework add the "EVENT_" into the name, for example: ``` eventHandler<Order>("ORDER_INSERT")``` from the backend needs to be called like this in the front-end: ``` createEvent="EVENT_ORDER_INSERT" ```.
+- ALWAYS list required fields for each action
+- NEVER hardcode field values in the component
+- ALWAYS handle action results using entity management events
+- NEVER add a rapid-grid-pro inside of an entity-management component.
+- NEVER add `rapid-grid-pro-column` or use it inside a entity-management node.
+- By default, the grid displays Add, Edit and Delete buttons to match the settings you have made for createEvent (insert), updateEvent (edit) and deleteEvent. These are placed above the grid to the right. Edit and Delete buttons are greyed out until the user selects a row in the grid.
+-- You can set the location of the buttons using the setting crud-menu-position.
+-- To position the Edit and Delete buttons in a column for every row in the grid, set crud-menu-position = column.
+-- If you don't want to display the buttons at all, set crud-menu-position = none.
+- The resourceName will be the dataserver the grid will be connected, this dataserver must exist in the server folder, tables file.
+- CHECK the height of the entity management component, to make sure it's displaying the grid correctly in the screen.
+- You must create `FormUiSchema` for create and edit events on entity-management, for create you must use the attribute `:createFormUiSchema` and for edit `:updateFormUiSchema`, sending the UI Schema described in the examples
+- `FormUISchema` must be a `UiSchema` type that you can import from `import {UiSchema} from "@genesislcap/foundation-forms"`.
+- Make sure the grid and its fields and ui schema matches with the table/dataserver of the resource connected.
+- Make sure all fields and attributes from `UISchema` variable used on entityManagement exists, fix schema issues in case not, in case you can't fix it, make the field simple, without options.
+- You can create a screen-name.config.ts to create the `UISchema` and also `ColDefs` to avoid circular dependency between the template and .ts files.
+- Always define the design system prefix as `design-system-prefix="rapid"`, never omit this property, since entity-management cannot work in case it doesn't exist.
+
+### Entity Management Examples
+
+1. **Basic Entity Management Component Structure example**
+```typescript
+const columnDefs: ColDef[] = [
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name', cellStyle: { 'text-align': 'right', color: 'red' } },
+  { field: 'ENABLED', headerName: 'Enabled', width: 100 },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+];
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+   <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      :columns=${() => columnDefs}
+    ></entity-management>
+  `,
+})
+export class EntityManagementColumns extends GenesisElement {}
+```
+
+2. **Entity Management More complex Examples **
+```html
+<entity-management
+  design-system-prefix="rapid"
+  crud-menu-position="bottom"
+  resourceName="ALL_COUNTERPARTYS"
+  title="Custom buttons"
+  updateEvent="EVENT_COUNTERPARTY_MODIFY"
+  deleteEvent="EVENT_COUNTERPARTY_DELETE"
+  createEvent="EVENT_COUNTERPARTY_INSERT"
+>
+  <rapid-button slot="crud-bottom-before">Custom before</rapid-button>
+  <rapid-button slot="crud-bottom-after">Custom after</rapid-button>
+</entity-management>
+```
+
+3. **Entity Management with formUiSchema (UI Schema) for createEvent example**
+```typescript
+const UI_SCHEMA: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/DESCRIPTION', label: 'Desc' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    {
+      type: 'Control',
+      scope: '#/properties/RIGHT_CODES',
+      label: 'Right Codes',
+      options: <ConnectedRenderersOptions>{
+        allOptionsResourceName: 'RIGHT',
+        valueField: 'CODE',
+        labelField: 'CODE',
+      },
+    },
+    { type: 'Control', scope: '#/properties/STATUS', label: 'Status' },
+    {
+      type: 'Control',
+      scope: '#/properties/USER_NAMES',
+      label: 'User Names',
+      options: <ConnectedRenderersOptions>{
+        allOptionsResourceName: 'USER',
+        valueField: 'USER_NAME',
+        labelField: 'USER_NAME',
+      },
+    },
+  ],
+};
+export const CustomEntityManagementTemplate = html<CustomEntityManagement>`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_PROFILES"
+      updateEvent="EVENT_AMEND_PROFILE"
+      deleteEvent="EVENT_DELETE_PROFILE"
+      createEvent="EVENT_INSERT_PROFILE"
+      :createFormUiSchema=${(x) => UI_SCHEMA}
+      :updateFormUiSchema=${(x) => UI_SCHEMA}
+    ></entity-management>
+`;
+```
+
+4. **Really complex UI Schema example**
+```typescript
+export const addTradeSchema =
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/LOANX_ID",
+      "options": {
+        "allOptionsResourceName": 'ALL_LOANS',
+        "valueField": 'LOANX_ID',
+        "labelField": 'LOAN_NAME',
+      },
+      "label": 'Credit Facility'
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/TRADER",
+      "options": {
+        "allOptionsResourceName": 'PROFILE_USER',
+        "valueField": 'USER_NAME',
+        "labelField": 'USER_NAME',
+        datasourceConfig: {
+          request: {
+            PROFILE_NAME: 'TRADER',
+          },
+        },
+      },
+      "label": "Trader"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/BOOK_ID",
+      "options": {
+        "allOptionsResourceName": 'ALL_BOOK',
+        "valueField": 'BOOK_ID',
+        "labelField": 'BOOK_NAME',
+      },
+      "label": 'Book'
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/COUNTERPARTY_ID",
+      "options": {
+        "allOptionsResourceName": 'ALL_COUNTERPARTY',
+        "valueField": 'COUNTERPARTY_ID',
+        "labelField": 'COUNTERPARTY_NAME',
+      },
+      "label": 'Customer'
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/SIDE",
+      "label": "Direction"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/NOTIONAL_AMOUNT",
+      "label": "Size"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/PRICE",
+      "label": "Price"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/SALESPERSON",
+      "options": {
+        "allOptionsResourceName": 'PROFILE_USER',
+        "valueField": 'USER_NAME',
+        "labelField": 'USER_NAME',
+        datasourceConfig: {
+          request: {
+            PROFILE_NAME: 'SALES',
+          },
+        },
+      },
+      "label": "Salesperson"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ASSIGNMENT_FEES",
+      "label": "Assignment Fees",
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/DOCS",
+      "label": "Docs"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/SALES_COMMISSION_BPS",
+      "label": "Sales Credit"
+    },
+  ]
+};
+```

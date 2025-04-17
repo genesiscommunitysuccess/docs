@@ -1,0 +1,686 @@
+---
+description: Request Reply is a Genesis microservice responsible for providing a one time response to a request.
+globs: **/server/**/src/main/genesis/scripts/**-reqrep.kts
+alwaysApply: true
+---
+## Request Reply
+
+Request Reply is a synchronous query mechanism that:
+1. Accepts input parameters in a request
+2. Returns a single response with matching records
+3. Does not provide real-time updates
+4. Is ideal for lookup operations
+
+## 1. Request Reply Rules
+
+Request replies provide snapshot data from tables or views in response to frontend requests. Unlike Data Servers, request replies are one-time queries that don't maintain an open connection.
+
+### 1.1 Basic Syntax
+```kotlin
+requestReplies {
+    // Basic request reply for all fields
+    requestReply(TABLE_NAME)
+
+    // Request reply with specific request field
+    requestReply(TABLE_NAME) {
+        request(FIELD_NAME)  // Allows querying by this field
+    }
+}
+```
+
+### 1.2 Key Points
+1. Request replies are defined in `{app-name}-reqrep.kts`
+2. Each request reply can specify which fields can be used as query parameters
+3. By default, all fields are returned in the response
+4. The connection closes after the response is sent
+5. Use for one-time queries rather than real-time data
+
+### 1.3 Examples
+```kotlin
+requestReplies {
+    // Basic request reply - returns all records
+    requestReply(TRADE)
+
+    // Request reply with specific query field
+    requestReply(BASKET) {
+        request(TRADE_ID)  // Can query baskets by TRADE_ID
+    }
+
+    // Request reply with multiple query fields
+    requestReply(ORDER) {
+        request(ORDER_ID, INSTRUMENT_ID)
+    }
+}
+```
+
+### 1.4 Best Practices
+1. Only expose necessary query fields
+2. Consider adding authorization rules for sensitive data
+3. Use Data Servers instead if real-time updates are needed
+4. Add indices for frequently queried fields
+5. Consider response field restrictions for large tables
+
+### 1.5 Field Transformations
+
+Request replies support field transformations to modify data before sending it to the client.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    request {
+        // Basic field for querying
+        FIELD_NAME
+
+        // Field with transformation
+        FIELD_NAME withTransformation { fieldValue, record ->
+            // Transform the field value
+            fieldValue?.let { "PREFIX_$it" } ?: "DEFAULT"
+        }
+    }
+}
+```
+
+Key Points:
+1. Transformations are defined using `withTransformation`
+2. The transformation lambda receives two parameters:
+   - `fieldValue`: The value of the field (nullable)
+   - `record`: The full record (use _ if not needed)
+3. Common use cases:
+   - Adding prefixes/suffixes
+   - Formatting values
+   - Providing default values for nulls
+   - Converting data types
+
+Example:
+```kotlin
+requestReply(BASKET) {
+    request {
+        TRADE_ID
+        BASKET_NAME withTransformation { basketName, _ ->
+            basketName?.let { "GENESIS_$it" } ?: ""  // Prefix or empty if null
+        }
+    }
+}
+```
+
+### 1.6 Derived Fields
+
+Request replies support derived fields to compute new values from existing fields.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    reply {
+        // Regular fields
+        FIELD_1
+        FIELD_2
+
+        // Derived field with type
+        derivedField("NEW_FIELD", STRING) {
+            "${data.field1} - ${data.field2 ?: ""}"  // Access fields via 'data'
+        }
+    }
+}
+```
+
+Key Points:
+1. Derived fields are defined in the `reply` block
+2. Require a name and type parameter
+3. Access record fields through the `data` object
+4. Can combine multiple fields
+5. Should handle null values appropriately
+
+Example:
+```kotlin
+requestReply(BASKET) {
+    reply {
+        TRADE_ID withPrefix "TR"
+        BASKET_NAME withAlias "NAME"
+        derivedField("BASKET_DESCRIPTION", STRING) {
+            "${data.tradeId} - ${data.basketName ?: ""}"
+        }
+    }
+}
+```
+
+Common Use Cases:
+- Combining multiple fields
+- Formatting complex descriptions
+- Computing derived values
+- Providing fallbacks for null values
+
+### 1.7 User-Aware Derived Fields
+
+Request replies support derived fields that can access the current user's context using `derivedFieldWithUserName`.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    reply {
+        // Regular derived field
+        derivedField("DESCRIPTION", STRING) {
+            // Only has access to record data
+            "${data.field1} - ${data.field2}"
+        }
+
+        // User-aware derived field
+        derivedFieldWithUserName("USER_DESCRIPTION", STRING) {
+            // Has access to both record data and userName
+            if (data.owner == userName) {
+                "${data.field1} - ${data.field2}"
+            } else ""
+        }
+    }
+}
+```
+
+Key Points:
+1. Use `derivedFieldWithUserName` to access request user context
+2. The `userName` variable is implicitly available in the lambda
+3. Useful for implementing user-specific logic
+4. Can combine with record data access via `data`
+5. Common for authorization-aware field calculations
+
+Example:
+```kotlin
+requestReply(BASKET) {
+    reply {
+        derivedFieldWithUserName("BASKET_DESCRIPTION_USER", STRING) {
+            if (data.basketOwner == userName) {
+                "${data.tradeId} - ${data.basketName ?: ""}"
+            } else ""
+        }
+    }
+}
+```
+
+Common Use Cases:
+- User-specific formatting
+- Owner-only field access
+- Role-based field values
+- User authorization checks
+
+### 1.8 Request Reply Filters
+
+Request replies support filtering to control which records are returned to the client.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    // Basic filter - only has access to record data
+    filter {
+        data.quantity > 100.0
+    }
+
+    // User-aware filter - has access to userName
+    filterWithUserName {
+        userName == "SPECIFIC_USER"
+    }
+}
+```
+
+Key Points:
+1. Two types of filters:
+   - `filter`: Basic filtering using record data
+   - `filterWithUserName`: Filtering with access to user context
+2. Filters are evaluated for each record
+3. Only records that pass the filter are returned
+4. Can combine with other request reply features
+
+Examples:
+```kotlin
+// Filter based on numeric value
+requestReply(TRADE) {
+    filter {
+        data.tradedQty > 100.0  // Only large trades
+    }
+}
+
+// Filter based on user context
+requestReply(BASKET) {
+    filterWithUserName {
+        userName == "TestUser"  // Only TestUser's records
+    }
+}
+```
+
+Common Use Cases:
+- Quantity thresholds
+- Date ranges
+- Status filters
+- User-specific data access
+- Role-based filtering
+
+### 1.9 Request Reply Permissioning
+
+Request replies support various permissioning mechanisms to control access to data.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    permissioning {
+        // Simple permission codes
+        permissionCodes = listOf("ViewPermission", "UpdatePermission")
+
+        // Advanced auth with field hiding
+        auth {
+            hideFields { userName, _ ->
+                if (!userHasRight(userName, "FullViewRight")) {
+                    listOf(SENSITIVE_FIELD)  // Hide these fields
+                } else emptyList()
+            }
+        }
+    }
+}
+```
+
+Key Points:
+1. Three main permissioning approaches:
+   - Permission Codes: Basic access control
+   - Auth Block: Complex authorization rules
+   - Hide Fields: Field-level visibility control
+2. Can combine multiple permissioning mechanisms
+3. Access to user context via userName parameter
+4. Can conditionally hide fields based on user rights
+
+Examples:
+```kotlin
+// Basic permission codes
+requestReply(ORDERS) {
+    permissioning {
+        permissionCodes = listOf("OrderView", "OrderUpdate")
+    }
+}
+
+// Field hiding based on user rights
+requestReply(TRADE_VIEW) {
+    permissioning {
+        auth {
+            hideFields { userName, _ ->
+                if (!userHasRight(userName, "TradeFullView")) {
+                    listOf(ORDER_ID)
+                } else emptyList()
+            }
+        }
+    }
+}
+```
+
+Common Use Cases:
+- Basic access control with permission codes
+- Field-level security
+- Role-based field visibility
+- User-specific data access
+- Sensitive data protection
+
+### 1.10 Row Return Limits
+
+Request replies support limiting the number of rows returned to prevent large result sets.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    // Limit the number of rows returned
+    rowReturnLimit = 100
+}
+```
+
+Key Points:
+1. Use `rowReturnLimit` to set maximum number of rows
+2. Helps prevent performance issues with large queries
+3. Returns only the first N rows that match other criteria
+4. Can combine with other request reply features
+5. Useful for pagination and performance optimization
+
+Example:
+```kotlin
+requestReply(ORDERS_VIEW) {
+    rowReturnLimit = 50  // Only return first 50 matching records
+
+    // Can combine with other features
+    filter {
+        data.quantity > 0
+    }
+}
+```
+
+Common Use Cases:
+- Pagination implementation
+- Performance optimization
+- UI result set limits
+- Resource usage control
+- Network traffic management
+
+### 1.11 Request Reply Timeouts
+
+Request replies support timeouts to limit how long a query can run before being cancelled.
+
+```kotlin
+requestReply(TABLE_NAME) {
+    // Set timeout in seconds
+    timeout = 30
+}
+```
+
+Key Points:
+1. Use `timeout` to set maximum query duration in seconds
+2. Query is cancelled if it exceeds the timeout
+3. Helps prevent long-running queries from impacting system
+4. Can combine with other request reply features
+5. Default timeout varies by configuration
+
+Example:
+```kotlin
+requestReply(ORDERS_VIEW) {
+    timeout = 20  // Cancel query after 20 seconds
+
+    // Can combine with other features
+    rowReturnLimit = 50
+    filter {
+        data.quantity > 0
+    }
+}
+```
+
+Common Use Cases:
+- Preventing hung queries
+- Resource management
+- SLA enforcement
+- Performance monitoring
+- User experience optimization
+
+
+
+# 2 - Testing
+
+Refer to documentation located in server-capabilities/snapshot-queries-request-server/#testing
+
+When adding request reply tests ALWAYS make sure the following dependencies and imports are present:
+
+## 2.1 **Required Dependencies**
+Ensure the following is present in the build.gradle.kts file:
+```kotlin
+dependencies {
+    testImplementation(genesis("pal-requestserver"))
+}
+```
+
+## 2.2 **Required Imports**
+
+ALWAYS ensure the following imports are added to the class:
+
+```
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
+import javax.inject.Inject
+import kotlin.test.*
+import global.genesis.message.core.workflow.message.*
+import global.genesis.gen.dao.*
+import global.genesis.gen.config.tables.*
+import global.genesis.testsupport.client.requestserver.*
+import global.genesis.testsupport.jupiter.*
+import global.genesis.db.rx.entity.multi.*
+import global.genesis.testsupport.mock.*
+```
+
+## 2.3. **Basic Test Class Structure**
+```kotlin
+
+@ExtendWith(GenesisJunit::class)
+@TestScriptFile("project-reqrep.kts")
+class RequestReplyTest {
+    @Inject
+    lateinit var client: RequestClientSync
+
+    @Inject
+    lateinit var entityDb: AsyncEntityDb
+
+    @Inject
+    private lateinit var authCache: InMemoryTestAuthCache
+}
+```
+
+## 2.4 Testing Best Practices and Common Patterns
+
+###1. **BeforeEach Method Structure**
+```kotlin
+@BeforeEach
+fun setup() {  // Must return Unit
+    runBlocking {  // Move runBlocking inside
+        entityDb.deleteAll(entityDb.getBulk(TABLE))
+        entityDb.insert(/* test data */)
+    }
+}
+```
+
+###2. **Permission Testing Pattern**
+```kotlin
+@Test
+fun `test with permission`() = runBlocking {
+    // Grant permission
+    entityDb.insert(RightSummary {
+        rightCode = "RequiredRight"
+        userName = "AuthorizedUser"
+    })
+
+    val result = client.sendRequest(
+        requestReplyWorkflowBuilder<Entity.ById, Entity>("QUERY"),
+        Entity.ById("ID"),
+        "AuthorizedUser"  // Pass username
+    )
+    // Assert success
+}
+
+@Test
+fun `test without permission`() {  // No runBlocking needed
+    assertThrows(IllegalArgumentException::class.java) {
+        client.sendRequest(/* request details */)
+    }
+}
+```
+
+###3. **Data Management**
+```kotlin
+// This is the correct way to clear data, replace TABLE with the name of the table to be cleared
+entityDb.deleteAll(entityDb.getBulk(TABLE))
+
+// Incorrect - don't use
+entityDb.deleteAll(Entity.byId)
+```
+
+4. **Common Gotchas**
+- Use `global.genesis.gen.dao` not `dictionary.gen.dao`
+- Use `entityDb.getBulk(TABLE)` not `Entity.byId` for deleteAll
+- Include `javax.inject.Inject` for dependency injection
+- @BeforeEach methods must return Unit
+- assertThrows doesn't need runBlocking
+- Always pass username when testing permissioned queries
+
+5. **Testing Best Practices**
+- Clear data before each test
+- Test both successful and failed permission scenarios
+- Test filters with matching and non-matching data
+- Verify all returned fields including aliases and derived fields
+- Use descriptive test names
+- Include proper error assertions
+
+### 1.14 Complete Test Example
+
+Here's a comprehensive example demonstrating these patterns:
+
+```kotlin
+
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
+import javax.inject.Inject
+import kotlin.test.*
+import global.genesis.message.core.workflow.message.*
+import global.genesis.gen.dao.*
+import global.genesis.gen.config.tables.*
+import global.genesis.testsupport.client.requestserver.*
+import global.genesis.testsupport.jupiter.*
+import global.genesis.db.rx.entity.multi.*
+import global.genesis.testsupport.mock.*
+
+@ExtendWith(GenesisJunit::class)
+class BasketRequestReplyTest {
+    @Inject
+    private lateinit var entityDb: AsyncEntityDb
+
+    @Inject
+    private lateinit var client: RequestClientSync
+
+    @BeforeEach
+    fun setup() {
+        runBlocking {
+            entityDb.deleteAll(entityDb.getBulk(BASKET))
+            entityDb.insert(Basket {
+                basketId = "BK1"
+                tradeId = "TRADE1"
+                basketName = "Test Basket"
+                basketOwner = "Test Owner"
+            })
+        }
+    }
+
+    @Test
+    fun `test query basket by basket id`() = runBlocking {
+        val result = client.sendRequest(
+            requestReplyWorkflowBuilder<Basket.ById, Basket>("BASKET"),
+            Basket.ById("BK1")
+        )
+        assertTrue(result.isNotEmpty())
+        val record = result.first()
+        assertEquals("TRADE1", record.tradeId)
+        assertEquals("Test Basket", record.name)
+    }
+
+    @Test
+    fun `test basket query with permission`() = runBlocking {
+        entityDb.insert(RightSummary {
+            rightCode = "BasketView"
+            userName = "AuthorizedUser"
+        })
+
+        val result = client.sendRequest(
+            requestReplyWorkflowBuilder<Basket.ById, Basket>("BASKET"),
+            Basket.ById("BK1"),
+            "AuthorizedUser"
+        )
+        assertTrue(result.isNotEmpty())
+    }
+
+    @Test
+    fun `test basket query without permission`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            client.sendRequest(
+                requestReplyWorkflowBuilder<Basket.ById, Basket>("BASKET"),
+                Basket.ById("BK1"),
+                "UnauthorizedUser"
+            )
+        }
+    }
+}
+```
+
+## 7. Complete Example: Basket Implementation
+
+Here's a complete example demonstrating table definition, request reply, and testing patterns in Genesis:
+
+### 7.1 Table Definition
+```kotlin
+table(name = "BASKET", id = 11_003) {
+    field("BASKET_ID", STRING).sequence("BK")
+    field("TRADE_ID", STRING(100)).notNull().metadata {
+        maxLength = 100
+    }
+    field("BASKET_NAME", STRING(100)).notNull().metadata {
+        maxLength = 100
+    }
+    field("BASKET_OWNER", STRING(100)).notNull().metadata {
+        maxLength = 100
+    }
+
+    primaryKey("BASKET_ID")
+
+    indices {
+        nonUnique("TRADE_ID").name("BASKET_BY_TRADE_ID")
+    }
+}
+```
+
+Key Points:
+1. Sequence field as primary key uses STRING type without length
+2. Two-character sequence reference ("BK")
+3. Consistent field naming (uppercase)
+4. Descriptive index naming
+5. Metadata for string length validation
+
+### 7.2 Request Reply Definition
+```kotlin
+requestReply(BASKET) {
+    request {
+        BASKET_ID
+        TRADE_ID
+    }
+    reply {
+        TRADE_ID
+        BASKET_NAME withAlias "NAME"
+        derivedField("BASKET_DESCRIPTION", STRING) {
+            "${data.basketName} - ${data.basketOwner}"
+        }
+    }
+}
+```
+
+Key Points:
+1. Query fields match table indices
+2. Field aliasing for frontend compatibility
+3. Derived fields for computed values
+4. Access to record data via 'data' object
+
+### 7.3 Request Reply Testing
+```kotlin
+
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
+import javax.inject.Inject
+import kotlin.test.*
+import global.genesis.message.core.workflow.message.*
+import global.genesis.gen.dao.*
+import global.genesis.gen.config.tables.*
+import global.genesis.testsupport.client.requestserver.*
+import global.genesis.testsupport.jupiter.*
+import global.genesis.db.rx.entity.multi.*
+import global.genesis.testsupport.mock.*
+
+@ExtendWith(GenesisJunit::class)
+class BasketRequestReplyTest {
+    @Inject
+    private lateinit var entityDb: AsyncEntityDb
+
+    @Inject
+    private lateinit var client: RequestClientSync
+
+    @BeforeEach
+    fun setup() = runBlocking {
+        entityDb.deleteAll(entityDb.getBulk(BASKET))
+        entityDb.insert(Basket {
+            basketId = "BK1"
+            tradeId = "TRADE1"
+            basketName = "Test Basket"
+            basketOwner = "Test Owner"
+        })
+    }
+
+    @Test
+    fun `test query basket by basket id`() = runBlocking {
+        val result = client.sendRequest(
+            requestReplyWorkflowBuilder<Basket.ById, Basket>("BASKET"),
+            Basket.ById("BK1")
+        )
+        assertTrue(result.isNotEmpty())
+        val record = result.first()
+        assertEquals("TRADE1", record.tradeId)
+        assertEquals("Test Basket", record.name)
+        assertEquals("Test Basket - Test Owner", record.basketDescription)
+    }
+}
+```
