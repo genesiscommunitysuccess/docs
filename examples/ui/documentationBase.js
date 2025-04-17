@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function CodeSection({ children, color }) {
+export function CodeSection({ children, style }) {
 	return (
 		<rapid-design-system-provider>
 			<div
@@ -9,7 +9,8 @@ export function CodeSection({ children, color }) {
 					borderRadius: '6px',
 					padding: '10px',
 					alignItems: 'center',
-					display: 'flex'
+					display: 'flex',
+					...style
 				}}
 			>
 				{children}

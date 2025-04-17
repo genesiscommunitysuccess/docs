@@ -1,0 +1,29 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Root node -->
+  <circle cx="50" cy="25" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <text x="50" y="27.5" text-anchor="middle" font-size="5" fill="currentColor" font-weight="bold">OR</text>
+
+  <!-- Connecting lines -->
+  <line x1="50" y1="32" x2="30" y2="45" stroke="currentColor" stroke-width="2"/>
+  <line x1="50" y1="32" x2="70" y2="45" stroke="currentColor" stroke-width="2"/>
+
+  <!-- Second level nodes -->
+  <circle cx="30" cy="50" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <text x="30" y="51.5" text-anchor="middle" font-size="4" fill="currentColor" font-weight="bold">AND</text>
+
+  <circle cx="70" cy="50" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <text x="70" y="51.5" text-anchor="middle" font-size="5" fill="currentColor" font-weight="bold">OR</text>
+
+  <!-- Lines to leaf nodes -->
+  <line x1="30" y1="57" x2="20" y2="70" stroke="currentColor" stroke-width="2"/>
+  <line x1="30" y1="57" x2="40" y2="70" stroke="currentColor" stroke-width="2"/>
+
+  <line x1="70" y1="57" x2="60" y2="70" stroke="currentColor" stroke-width="2"/>
+  <line x1="70" y1="57" x2="80" y2="70" stroke="currentColor" stroke-width="2"/>
+
+  <!-- Leaf nodes (conditions) -->
+  <rect x="15" y="70" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="35" y="70" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="55" y="70" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="75" y="70" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+</svg>
