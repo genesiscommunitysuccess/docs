@@ -679,7 +679,7 @@ dataServer {
 |`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
 ###### LMDB allocation and WARNING state
-When the LMDB consumes most of the memory allocated by `lmdbAllocationSize`, the status of the Data Server process is automatically changed to `WARNING`. 
+When the LMDB consumes most of the space allocated by `lmdbAllocateSize`, the status of the Data Server process is automatically changed to `WARNING`. 
 
 There are two simple ways to address this:
 
