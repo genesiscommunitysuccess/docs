@@ -39,6 +39,11 @@ operations = [
     {"type": "string", "find": "`pal-dataserver` : Data server priming progress", "replace": "`pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed" },
     {"type": "string", "find": "Improve genesis set handling in GenesisMessageClient", "replace": "Fixed a test-only edge case in GenesisMessageClient where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed" },
     {"type": "string", "find": "* Update fileServerVersion to 8.8.1", "replace": "* Update to use Document Manager version `8.8.1`" },
+    {"type": "string", "find": "`auth-manager` : Fix deadlock in logon process", "replace": "`auth-manager` : Fix deadlock from occurring in logon process where `AUTH_MANAGER` receives too many concurrent user logins" },
+    {"type": "string", "find": "EVENT_START_PROCESS and EVENT_STOP_PROCESS now work as expected", "replace": "Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform." },
+    {"type": "string", "find": "* `genesis-environment` : GENESIS_SYSDEF_ environment variable now work as expected within python scripts", "replace": "* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts" },
+
+
     # Component tidy up
     {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
     {"type": "string", "find": "* `GenesisJUnit`", "replace": "* `genesis-testsupport`"},
