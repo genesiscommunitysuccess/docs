@@ -690,8 +690,6 @@ There are two simple ways to address this:
 - Increase the `lmdbAllocateSize`.
 - Set `compression` to `true`.
 
-If LMDB memory usage is a persistent issue, then the recommended strategy is to copy the entire LMDB store to a new file on a regular basis and delete the old LMDB file. This reduces the store size by removing deleted entries (these are not tidied up automatically - LMDB does not run cleaning tasks in the background).
-
 :::tip Looking into memory usage 
 To examine memory usage, look at the base table sizes when the Data Server process starts and the queries are primed. 
 
