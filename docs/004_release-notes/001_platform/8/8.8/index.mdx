@@ -76,9 +76,23 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.14
+
+###### Fixes
+
+* `genesis-config` : Support `String` input for sys def ProcessDependencyTimeoutSeconds 
+* `genesis-console` : Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform. 
+* `genesis-db` : Handle sql getRange operation with continuation 
+* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts 
+* `genesis-gradle` : Also use site specific template files when checking for overridden processes 
+* `genesis-testsupport` : Fix handling of nested classes 
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+* `genesis-router` : Fix package scan definition in processes.xml to only include console router extensions 
+* `genesis-router` : Handle Netty exceptions when creating a TextWebsocketFrame in a graceful manner  
+
 #### 8.8.13
 
-##### Fixes
+###### Fixes
 
 * `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
 * `genesis-pal-consolidator` : Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations 
