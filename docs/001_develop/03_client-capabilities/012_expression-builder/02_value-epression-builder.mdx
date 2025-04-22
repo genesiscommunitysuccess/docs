@@ -1,0 +1,393 @@
+---
+title: 'Value expression builder'
+sidebar_label: 'Value expression builder'
+id: client-expression-value-builder
+keywords: [ builder, expression, value, transformation, binary, method, calculate, UI, component, frontend ]
+tags:
+- builder
+- expression
+- value
+- transformation
+- calculation
+- ui-component
+- frontend
+- genesis-ui
+- binary-expression
+- method-expression
+sidebar_position: 15
+---
+
+import { CollapsibleSlot } from '../../../../examples/ui/documentationBase'
+import { ValueBuilderExample } from './expression_builder_examples.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Value expression builder
+
+The value expression builder is a UI component which allows the user to configure transformation expressions upon a set of data. The generated expression can then be directly executed by the evaluator and criteria back-end services.
+
+Use cases:
+* Build the expression of the Genesis Evaluator's `DYNAMIC_RULE` engine - [see here](/develop/server-capabilities/real-time-triggers-evaluator/#dynamic_rule).
+* Allow the user to define a set of data transformations to execute
+* Allow run-time configuration of transformations which dictate application function, which typically would require developer code changes.
+
+:::tip
+This component is based on the [expression builder library](/develop/client-capabilities/expression-builder/) and is pre-configured to create transformation expressions that the back end can work with.
+
+If you want to set your own operations and other configurations, you can create your own component using that base library.
+:::
+
+## Example
+
+You can add, change, or delete a rule to create different expressions based upon input fields. The json payload that is created from your expression is displayed on the right-hand side. When you change the expression model on the UI, you can see the payload change to show the result. Click the button to show the model if it's currently hidden.
+
+Notice that if a rule is highlighted in red when it's partially defined (e.g. you've chosen the field but not an operator), then the model payload on the right-hand side won't change. This is because the back-end model doesn't support partial rules. It is possible to look at the underlying model, which contains a tree structure even for partial rules.
+
+<ValueBuilderExample />
+
+:::warning
+Currently only numeric and date/datetime types have value operators, so if you select a different type (e.g. enum or string) then you'll not be able to select an operator.
+:::
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+Declaration
+```html
+<rapid-value-expression-builder></rapid-value-expression-builder>
+```
+
+Usage
+```typescript
+import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
+// See further down for code snippet containing fields
+import { fields } from './fields';
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-value-expression-builder
+      :valueConfig=${(x) => x.valueConfig}
+      @change=${(x) =>
+        x.handleChangedValueExpression(
+          x.event as CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>,
+        )}
+    ></rapid-value-expression-builder>
+  `,
+})
+export class MyElement extends GenesisElement {
+  valueConfig: ExpressionBuilderTypes.ValueConfig = {
+    fields, // from import
+    // you can also set the model and other configuration options here
+  }
+  handleChangedValueExpression(e: CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>){
+    const newModel = e.detail;
+    console.log({newModel});
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+Declaration
+```html
+<rapid-value-expression-builder></rapid-value-expression-builder>
+```
+
+    Usage
+```tsx
+import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
+// See further down for code snippet containing fields
+import { fields } from './fields';
+export function MyComponent() {
+  const expressionBuilderRef = useRef(null);
+
+  const change = (e) => {
+    console.log(e.nativeEvent.detail);
+  };
+
+  const valueConfig: ExpressionBuilderTypes.ValueConfig = {
+    fields, // from import
+    // you can also set the model and other configuration options here
+  };
+
+  React.useEffect(() => {
+    if (expressionBuilderRef.current) {
+      expressionBuilderRef.current.valueConfig = valueConfig;
+    }
+  }, []);
+
+  return (
+    <rapid-value-expression-builder
+      ref={expressionBuilderRef}
+      onChange={change}
+    ></rapid-value-expression-builder>
+  )
+}
+```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-value-expression-builder></rapid-value-expression-builder>
+    ```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ExpressionBuilderTypes, RuleExpression, RapidValueExpressionBuilder } from '@genesislcap/rapid-design-system';
+import { fields } from './fields'; // Assuming fields.ts is in the same directory
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-value-expression-builder
+      #expressionBuilder
+      (onChange)="onChange($event)"
+    ></rapid-value-expression-builder>
+  `,
+  standalone: true,
+  imports: [CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent implements AfterViewInit {
+  @ViewChild('expressionBuilder', { static: false }) expressionBuilderRef!: ElementRef<RapidValueExpressionBuilder>;
+
+  valueConfig: ExpressionBuilderTypes.valueConfig = {
+    fields, // from import
+    // you can also set the model and other configuration options here
+  };
+
+  ngAfterViewInit(): void {
+    if (this.expressionBuilderRef) {
+      this.expressionBuilderRef.nativeElement.valueConfig = this.valueConfig;
+    }
+  }
+
+  onChange(event: CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>): void {
+    console.log(event.detail);
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+
+<CollapsibleSlot title="fields.ts" description="Expand to see example fields you can use with the value expression builder for testing and learning">
+```typescript
+import { ExpressionBuilderTypes } from '@genesislcap/rapid-design-system';
+
+const EXAMPLE_MIN_AGE = 18;
+
+export const fields: ExpressionBuilderTypes.Fields = [
+  {
+    fieldId: 'firstName',
+    label: 'First Name',
+    type: 'string',
+    input: 'text',
+    defaultValue: 'John',
+  },
+  {
+    fieldId: 'lastName',
+    label: 'Last Name',
+    type: 'string',
+    input: 'text',
+  },
+  {
+    fieldId: 'age',
+    label: 'Age',
+    type: 'int',
+    input: 'number',
+    validation: (age) =>
+      parseInt(age) < EXAMPLE_MIN_AGE ? `User must be at least ${EXAMPLE_MIN_AGE}` : null,
+  },
+  {
+    fieldId: 'weight',
+    label: 'Weight',
+    type: 'double',
+    input: 'number',
+  },
+  {
+    fieldId: 'isActive',
+    label: 'Is Active',
+    type: 'boolean',
+    input: 'checkbox',
+  },
+  {
+    fieldId: 'dateJoined',
+    label: 'Date Joined',
+    type: 'date',
+    input: 'date',
+  },
+  {
+    fieldId: 'country',
+    label: 'Country',
+    type: 'enum',
+    input: 'select',
+    values: {
+      usa: 'United States',
+      canada: 'Canada',
+      uk: 'United Kingdom',
+    },
+  },
+  {
+    fieldId: 'lastUpdated',
+    label: 'Last Updated',
+    type: 'date-time',
+    input: 'datetime-local',
+  },
+];
+```
+</CollapsibleSlot>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th style={{minWidth: '350px'}}>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>valueConfig</td>
+      <td><code>ExpressionBuilderTypes.ValueConfig</code></td>
+      <td>The primary configuration point for the component which allows you to specify input fields, optionally set the model, among other configuration items.</td>
+      <td>
+
+```typescript
+<rapid-value-expression-builder :valueConfig="${(x) => x.valueConfig}">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>styles</td>
+      <td><code>ExpressionBuilderTypes.Styles</code></td>
+      <td>Allows you to change which custom elements and their styles are used inside of the component. This isn't recommended to be used, if you want to use a custom style for an element, such as the checkbox, you should override its style when registering the component.</td>
+<td>
+
+```typescript
+<rapid-value-expression-builder :styles="${(x) => x.styles}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>model</td>
+      <td><code>RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']</code></td>
+      <td>This is a <em>readonly</em> property and therefore shouldn't be set directly - if you want to set the model then do it via the optional model property on the <code>valueConfig</code> block. This property can be used to receive the precise underlying model the UI state currently represents. This can be useful when the user has configured a partial rule (e.g. only selected a field in a rule) which isn't valid server rule and therefore will not be shown on the change event payload.</td>
+<td>
+
+```typesscript
+const model = document.querySelector('rapid-value-expression-builder').model;
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+This component doesn't have any slots.
+
+### Parts
+
+This component doesn't have any css parts. You should instead override the styling by changing the constituent component's styling during registration, or using the `styles` properties for advanced users.
+
+### Fired events
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th style={{minWidth: '350px'}}>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']</code></td>
+      <td>Emits whenever the user changes the state of the UI component. The event detail contains the transformation expression payload the server expects. As the server expression must always contain non-partial rules, the payload may be slightly out of sync with the UI if the user has a partial rule. You can use the <code>model</code> property on the component to get the precise underlying state of the component if you wish.</td>
+<td>
+
+```typescript
+<rapid-value-expression-builder
+    @change=${(x) =>
+    x.handleChangedValueExpression(
+        x.event as CustomEvent<RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']>,
+    )}
+>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Listened events
+
+This component doesn't listen to any events.
+
+## Transformation expressions
+
+The payload the component produces is a union of expressions which can apply a transform to a field, which the UI rule maps to directly.
+
+* A `binary` expression example is when `AGE PLUS 5`.
+* A `method` expression example is when `DATE_REGISTERED CONVERT_TO_DATE_TIME`.
+
+These expressions can then be used directly with the evaluator and criteria back-end services. You can also write your own server functions which work with these payloads if you wish.
+
+## Using server fields
+
+As shown in the example code at the top, you can define the fields which the user can use in the component directly in the front end, and of course you can generate them dynamically, or construct them.
+
+A likely use case is where you want the fields to match fields from specific tables in your database. To help streamline this process, the platform provides are a number of utilities and functions:
+
+```typescript
+import { Connect } from '@genesislcap/foundation-comms';
+import { ExpressionBuilderTypes } from '@genesislcap/rapid-design-system';
+import { mapJsonSchemaFieldToExprBuilderField } from '@genesislcap/foundation-utils';
+
+// Request the fields via the JSON schema for a specific endpoint
+// You need to get a reference to a "connect" instance from `foundation-comms` via
+// dependency injection in your chosen platform. Ensure you also are in an async function
+// to be able to await, or use `Promise.then`
+const resourceSchema = await this.connect.getJSONSchema('TRADE')
+// Genesis server should not ever return the following formats, but they're valid
+// valid JSON schema shapes so we need to check the cases
+if (
+    typeof resourceSchema.OUTBOUND?.properties?.REPLY === 'boolean' ||
+    Array.isArray(resourceSchema.OUTBOUND?.properties?.REPLY?.items) ||
+    typeof resourceSchema.OUTBOUND?.properties?.REPLY?.items === 'boolean'
+) {
+    console.log('Malformed error shape');
+    return;
+}
+// Use the utility function to map the json schema properties which are defined
+// on the response. Filter out null values (e.g. NANO_TIMESTAMP server fields are not
+// valid expression builder fields)
+const fields = Object.entries(
+    resourceSchema.OUTBOUND?.properties?.REPLY?.items?.properties ?? {},
+).map(mapJsonSchemaFieldToExprBuilderField).filter(Boolean);
+// Finally use those fields in the config for the value expression builder
+const valueConfig: ExpressionBuilderTypes.ValueConfig = {
+    fields,
+};
+```
