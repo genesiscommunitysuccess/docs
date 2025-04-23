@@ -42,6 +42,7 @@ operations = [
     {"type": "string", "find": "`auth-manager` : Fix deadlock in logon process", "replace": "`auth-manager` : Fix deadlock from occurring in logon process where `AUTH_MANAGER` receives too many concurrent user logins" },
     {"type": "string", "find": "EVENT_START_PROCESS and EVENT_STOP_PROCESS now work as expected", "replace": "Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform." },
     {"type": "string", "find": "* `genesis-environment` : GENESIS_SYSDEF_ environment variable now work as expected within python scripts", "replace": "* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts" },
+    {"type": "string", "find": "* `genesis-gradle` : Sys Def gradle caching when Sys Def values have a mix of Ints and Longs", "replace": "* `genesis-gradle` : Fixed an issue where the gradle cache was reading system definition items defined with type `LONG` as `INT` values. This lead to constant cache misses even when the values were unchanged, which contributed to longer build times." },
 
 
     # Component tidy up
