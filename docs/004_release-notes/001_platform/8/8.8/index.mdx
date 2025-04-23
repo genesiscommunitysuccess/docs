@@ -76,6 +76,12 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.15
+
+###### Fixes
+
+* `genesis-gradle` : Fixed an issue where the gradle cache was reading system definition items defined with type `LONG` as `INT` values. This lead to constant cache misses even when the values were unchanged, which contributed to longer build times. 
+
 #### 8.8.14
 
 ###### Fixes
