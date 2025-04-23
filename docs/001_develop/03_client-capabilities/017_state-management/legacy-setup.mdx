@@ -1,6 +1,6 @@
 ---
-title: 'Legacy project setup'
-sidebar_label: 'Legacy setup'
+title: 'Legacy project set-up'
+sidebar_label: 'Legacy set-up'
 id: client-state-management-legacy-setup
 keywords: [web, store, events, observable, binding, communication, redux, injection, state, reducer]
 tags:
@@ -22,8 +22,7 @@ import TabItem from '@theme/TabItem';
 import BaseStore from '../../../_includes/_base_store_setup.mdx'
 import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
 
-This page guides you through installing the `foundation-store` in your legacy project. This isn't recommended - all new applications
-created via Genesis Create or `genx` will install the store for you, and then you can just follow the [example tutorial](../client-state-management-examples). However, if you're adding Genesis into an existing project (or you're using an old Genesis project from before the store was a default component) you can follow this guide.
+This page guides you through installing the `foundation-store` in your legacy project. This isn't recommended - all new applications created via Genesis Create or `genx` will install the store for you, and then you can just follow the [example tutorial](../client-state-management-examples). However, if you're adding Genesis into an existing project (or you're using an old Genesis project from before the store was a default component) you can follow this guide.
 
 ## Installation
 
@@ -41,13 +40,13 @@ created via Genesis Create or `genx` will install the store for you, and then yo
 }
 ```
 
-Next you need to add in the base store configuration. Once you've followed this page and the store is setup, you can then configure the store for your use.
+Next, add the base store configuration. Once you've followed this page and the store is set up, you can then configure the store for your use.
 
 <BaseStore />
 
 ## Genesis router wiring
 
-If you are using a Genesis syntax project then you need to wire in the store into your application router. Components that interact with the store will individually require access, but there are steps required at the top level to create the store service. You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
+If you are using a Genesis syntax project, then you need to wire in the store into your application router. Components that interact with the store will individually require access, but there are steps required at the top level to create the store service. You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
 
 `main.ts`
 ```typescript {10}
@@ -74,15 +73,14 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-## Store initialisation events
+## Store initialization events
 
-In addition to the events that you create to handle your business logic, you'll also need to emit events to setup and control
+In addition to the events that you create to handle your business logic, you also need to emit events to set up and control
 the state of the store itself.
 
 ### `'store-connected'`
 
-In your main application class you need to fire a `'store-connected'` event in-order to
-fully initialise the store.
+In your main application class, you need to fire a `'store-connected'` event in-order to fully initialize the store.
 
 The `'store-connected'` event handler needs to be explicitly bound. When the root store handles `'store-connected'`,
 it auto binds all the store event listeners to the rootElement.
@@ -92,9 +90,8 @@ See EventEmitter for more information.
 
 ### `'store-ready'`
 
-As you may be required to do some additional work between the initialisation of the store and the application use, there is
-an additional `store-ready` event to dispatch. It's not a hard requirement to emit this, but is considered best practice. If you've no work to
-do, you can just emit this right after `'store-connected'`.
+As you may be required to do some additional work between the initialization of the store and the application use, there is
+an additional `store-ready` event to dispatch. It's not a hard requirement to emit this, but it is considered best practice. If you've no work to do, you can just emit this right after `'store-connected'`.
 
 ```typescript
 this.$emit('store-connected', this);
@@ -118,14 +115,13 @@ disconnectedCallback() {
 ```
 ### Configuration example
 
-The following snippets are examples of your main application class dispatching the required events
+The following snippets are examples of your main application class dispatching the required events.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
-Example Main class in Genesis. Highlighted lines are directly related to initialising the store - other configuration may be different in
-your application. Other functionality that the main class may be required to perform is omitted from this example.
+Example Main class in Genesis. Highlighted lines are directly related to initializing the store - other parts of the configuration may be different in your application. Other functionality that the main class may be required to perform is omitted from this example.
 
 ```typescript {2-3,14,25-26,34-35,42-58}
 /**
