@@ -1,9 +1,8 @@
 1. Create an mcp server
 
-You are in a docusouras documentation repo for a software platform. The repo contains a lot of information written in markdown documents and then when you run the application it converts
-those markdown pages into documentation pages to view on the website
+You are in a docusaurus documentation repo for a software platform. The repo contains a lot of information written in markdown documents. When you run the application, it converts these markdown pages into documentation pages that can be viewed on the website
 
-I want us to also be able to expose the documentation by MCP (model context protocol).
+We also want to expose the documentation by MCP (model context protocol).
 
 # What we need to do
 
@@ -31,7 +30,7 @@ We've implemented basic MCP server but it doesn't do anything useful. Let's make
 
 In docusouras it creates a route per markdown file, and we want to return all of the routes
 
-The tool should take one parameter which is a search term for filtering on the routes, or it takes * to return all of the routes
+The tool should take one parameter, which is a search term for filtering on the routes, or it takes * to return all of the routes
 
 # What we need to do
 
