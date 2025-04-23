@@ -103,7 +103,7 @@ export class MainRouterConfig extends RouterConfiguration<RouterSettings> {
         // Otherwise route them to login
         phase.cancel(() => {
           session.captureReturnUrl();
-          Route.name.replace(phase.router, 'login');
+          FoundationRouteNav.name.replace(phase.router, 'login');
         });
       },
     });
