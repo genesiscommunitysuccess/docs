@@ -23,21 +23,21 @@ import TabItem from '@theme/TabItem';
 import BaseStore from '../../../_includes/_base_store_setup.mdx'
 import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
 
-This page will guide you through setting up a simple example of two components communicating via a store shared value.
+This page guides you through setting up a simple example of two components that communicate via a store shared value.
 
 ## Requirements
 
-Please note that this document assumes that the store is already set up for you, as it is in all new projects. If you don't have the store setup already see [this page](../client-state-management-legacy-setup).
+This document assumes that the store is already set up for you, as it is in all new projects. If you don't have the store set up already, see [this page](../client-state-management-legacy-setup).
 
-In your project you should have a blank store setup that looks like the following:
+In your project, you should have a blank store set-up that looks like the following:
 
 <BaseStore />
 
 ### Test components
 
-We're going to be linking two components together using a variable in the store. The first component is an example `<grid-pro>`. Open the collapsed section to see the mock data.
+We're going to link two components using a variable in the store. The first component is an example `<grid-pro>`.
 
-<CollapsibleSlot title="data.ts" description="Sample data used to configure the example grid">
+<CollapsibleSlot title="data.ts" description="Click to view the sample data used to configure the example grid">
     ```typescript
        const columnDefs: ColDef[] = [
         { headerName: 'ID', field: 'id' },
@@ -173,7 +173,9 @@ We're going to be linking two components together using a variable in the store.
 </Tabs>
 
 
-Pasting the above example into your codebase and adding it to the HTML should allow you to see the data on the grid pro. Next, we are going to use a simple component to allow you to filter out certain rows of data.
+Pasting the above example into your codebase and adding it to the HTML should enable you to see the data on the grid pro. 
+
+Next, we are going to use a simple component to allow you to filter out certain rows of data.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -252,28 +254,31 @@ Pasting the above example into your codebase and adding it to the HTML should al
 You can add this second component to your HTML and see the radio input component. However, clicking any of the radio buttons doesn't affect the grid. Next, we are going to use the store to link these components together.
 
 :::tip
-In this simple example you could avoid using the store by just allowing the user to create filters on the grid pro themselves, or both components could be siblings, contained in a parent component which manages the shared state. However, the following example will teach you the basics of how to link components so you can use it as an option during implementation.
+In this simple example, you could avoid using the store by just allowing the user to create filters on the grid pro themselves; or both components could be siblings, contained in a parent component that manages the shared state. However, the following example will teach you the basics of how to link components so you can use it as an option during implementation.
 
 For example, you may want components which cannot be siblings in a different component to link to each other.
 :::
 
 ## Configuring the store
 
-1. *Setup the event* - each action in the store requires a triggering event. We can setup an event name which is simply a string, but it is good practise to type it with an `enum` to aid future refactoring. We can create a simple TypeScript `enum` at the top of the page. In this example we'll call it `set-filter` as we want it to configure the filtering on the grid.
+1. *Set up the event* - each action in the store requires a triggering event. We can set up an event name that is simply a string, but it is good practice to type it with an `enum` to aid future refactoring. We can create a simple TypeScript `enum` at the top of the page. In this example, we call it `set-filter`, as we want it to configure the filtering on the grid.
+
 ```typescript
 export enum StoreEvents {
   SetFilter = 'set-filter',
 }
 ```
 
-2. *Set the event payload type* - each event can have data associated with it. The data type could be a simple primitive such as `boolean`. Some events you'll create, like `store-init`, are simple and the event triggering in itself is enough information, so they can be typed as `void`. In this example we want to type the different filtering types we're going to allow, so we'll set a union of strings of the allowed values. The pattern we're using is the key is the event name, and the value is the associated type.
+2. *Set the event payload type* - each event can have data associated with it. The data type could be a simple primitive such as `boolean`. Some events you'll create, like `store-init`, are simple and the event triggering in itself is enough information, so they can be typed as `void`. In this example, we want to type the different filtering types that we're going to allow, so we set a union of strings of the allowed values. The pattern we're using is the key is the event name, and the value is the associated type.
+
 ```typescript
 export type StoreEventDetailMap = StoreRootEventDetailMap & {
   [StoreEvents.SetFilter]: 'income' | 'expense' | 'both';
 };
 ```
 
-3. *Setup variables and handlers on interface* - next we want to fill out the interface with this associated data and handlers. In most cases you'll have one property, and an associated handler. It's good practise to type the property as `readonly` to ensure that you remember to update it via the `.commit` method. The type of the variable and the parameter to the handler functions are both the type described as the union of strings from the previous step - they can be referenced by using the event name to index on the detail map type.
+3. *Set up variables and handlers on interface* - next we want to fill the interface with this associated data and handlers. In most cases you'll have one property, and an associated handler. It's good practice to type the property as `readonly` to ensure that you remember to update it via the `.commit` method. The type of the variable and the parameter to the handler functions are both the type described as the union of strings from the previous step - they can be referenced using the event name to index on the detail map type.
+
 ```typescript
 export interface Store extends StoreRoot {
   readonly transactionTypeFilter: StoreEventDetailMap[StoreEvents.SetFilter]
@@ -281,7 +286,8 @@ export interface Store extends StoreRoot {
 }
 ```
 
-4. *Configure value and handler on implementation* - finally the variable needs to be defined on the store, and the handler implemented(typescript should currently be giving an error because the items added to the interface in step 3 are not currently defined on the implementing class). The `@observable` property is defined and a default value set, in this case the initial option is to show both transaction types (no filtering). Finally, this simple handler only needs to commit the new value to the store.
+4. *Configure value and handler on implementation* - finally, the variable needs to be defined on the store, and the handler implemented (typescript should currently be giving an error because the items added to the interface in step 3 are not currently defined on the implementing class). The `@observable` property is defined and a default value set; in this case, the initial option is to show both transaction types (no filtering). Finally, this simple handler only needs to commit the new value to the store.
+
 ```typescript
 class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
 
@@ -299,13 +305,13 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 }
 ```
 
-The implementations again use the type `StoreEventDetailMap[StoreEvents.SetFilter]` to set the type of the variable and the parameter to the handler functions. The above example also adds in a `console.log` statement for debugging the next steps, this isn't necessary functionality and should be removed once everything is working.
+The implementations again use the type `StoreEventDetailMap[StoreEvents.SetFilter]` to set the type of the variable and the parameter to the handler functions. The above example also adds in a `console.log` statement for debugging the next steps; this isn't necessary functionality, and should be removed once everything is working.
 
 ## Updating the components
 
-The final steps are to interact with the store from the two components. Configure the filter component first as that is the component initialising the action (emitting the event).
+The final steps are to interact with the store from the two components. Configure the filter component first, as that is the component that initializes the action (emitting the event).
 
-In Genesis syntax you can dispatch an event from a standard component, but it's good practise to use the `EventEmitter` mixin to strongly type the component.
+In Genesis syntax you can dispatch an event from a standard component, but it's good practice to use the `EventEmitter` mixin to strongly type the component.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -387,9 +393,9 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
 </Tabs>
 
 
-At this stage you should be able to activate the `console.log` statement in the store handler added in step 4 by running the app and interacting with the radio buttons. As the selected radio is changed an event is dispatched and should be picked up and set in the store handler.
+At this stage you should be able to activate the `console.log` statement in the store handler added in step 4 by running the app and interacting with the radio buttons. When the selected radio is changed, an event is dispatched and should be picked up and set in the store handler.
 
-The very final step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable`, it could be used directly in a template binding (in a Genesis syntax component), as the store updates the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>` which means the filtering cannot be done via a template binding directly. Instead the `binding` property on a reference to the store is used.
+The very last step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable`, it could be used directly in a template binding (in a Genesis syntax component); as the store updates, the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>`, the filtering cannot be done via a template binding directly. Instead, the `binding` property on a reference to the store is used.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -505,9 +511,9 @@ The very final step is to use the configured value to filter the grid rows. Ther
 
 
 
-The [binding](../docs/api/foundation-store.store.binding/) function binds the required `@observable` property in the first argument, and takes a callback function with the updated data as the second. In the above case when `transactionTypeFilter` is updated the `rowData` is filtered in the callback.
+The [binding](../docs/api/foundation-store.store.binding/) function binds the required `@observable` property in the first argument, and takes a callback function with the updated data as the second. In the above case, when `transactionTypeFilter` is updated the `rowData` is filtered in the callback.
 
-As well as reacting to the `@observable` directly on the html, there are addition binding methods which are documented on the API [here](../docs/api/foundation-store.store/#methods).
+As well as reacting to the `@observable` directly on the html, there are additional binding methods, which are documented on the [API](../docs/api/foundation-store.store/#methods).
 
 ## Complete example
 
