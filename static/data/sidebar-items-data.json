@@ -262,5 +262,25 @@
         "description": "Create a gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
     ]
+  },
+  "/develop/qa": {
+    "description": "Introduction : tools to make sure your app works as it should.",
+    "items": [
+      {
+        "href": "/develop/qa/overview/",
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
+        "description": "Overview stuff"
+      },
+      {
+        "href": "/develop/qa/api/",
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
+        "description": "API stuff"
+      },
+      {
+        "href": "/develop/qa/ui/",
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
+        "description": "UI stuff"
+      }
+    ]
   }
 }
