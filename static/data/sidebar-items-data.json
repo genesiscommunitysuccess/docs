@@ -267,17 +267,17 @@
     "description": "Introduction : tools to make sure your app works as it should.",
     "items": [
       {
-        "href": "/develop/qa/overview/",
+        "href": "/develop/qa/qa-overview/qa-overview",
         "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
         "description": "Overview stuff"
       },
       {
-        "href": "/develop/qa/api/",
+        "href": "/develop/qa/qa-api/qa-api",
         "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
         "description": "API stuff"
       },
       {
-        "href": "/develop/qa/ui/",
+        "href": "/develop/qa/qa-ui/qa-ui",
         "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
         "description": "UI stuff"
       }
