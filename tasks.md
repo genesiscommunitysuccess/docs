@@ -28,14 +28,14 @@ Then we can test
 
 We've implemented basic MCP server but it doesn't do anything useful. Let's make a tool which lets the AI look at all of the routes where the markdown files are
 
-In docusouras it creates a route per markdown file, and we want to return all of the routes
+In docusaurus it creates a route per markdown file, and we want to return all of the routes
 
 The tool should take one parameter, which is a search term for filtering on the routes, or it takes * to return all of the routes
 
 # What we need to do
 
 a. Implement the tool interface using the parameters I previously said
-b. Is there a way of using docusouras or some other tool to generate the list of all of the routes? IF not we can use the filesystem to check for the .md and .mdx files
+b. Is there a way of using docusaurus or some other tool to generate the list of all of the routes? IF not, we can use the filesystem to check for the .md and .mdx files
 c. Implement the tool using the best way from (b)
 
 3. Expose the markdown documents via each route
