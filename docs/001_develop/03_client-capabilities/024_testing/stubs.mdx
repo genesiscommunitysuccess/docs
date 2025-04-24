@@ -40,12 +40,12 @@ function getNamesForDisplay() {
 }
 ```
 
-This function has a side effect because it reads `.users.names` from an external store. The unit tests could be written to have code which sets up the store with data and then tests the function. However, this has issues:
+This function has a side effect because it reads `.users.names` from an external store. You could write the unit tests to have code that sets up the store with data and then tests the function. However, this has issues:
 
 - The boilerplate quickly becomes large and distracts from reading the test logic itself.
 - The data external to the test will persist between each test case, so reordering tests or changing tests can break other tests. This is bad practice - all unit tests should be completely independent.
 
-Instead, we can use a stub to control the data directly in the test.
+To address this, you can use a stub to control the data directly in the test.
 
 ### Unit test
 
@@ -82,7 +82,7 @@ GetNamesForDisplaySuite('Returns empty array when names array is empty', () => {
 GetNamesForDisplaySuite.run();
 ```
 
-In each test `sinon` is used to stub the data that is returned when the code under test accesses `selectors.users.names`. This allows you to control the test cases for the unit test. If any implementations change in other places, this shouldn't change these two unit tests, as they're isolated (in accordance with best practice).
+In each test, `sinon` is used to stub the data that is returned when the code under test accesses `selectors.users.names`. This allows you to control the test cases for the unit test. If any implementations change in other places, this shouldn't change these two unit tests, as they're isolated (in accordance with best practice).
 
 :::tip
 The `sinon` import allows other types of stubbing and mocking to be used in your tests. See the [Sinon.JS](https://sinonjs.org/releases/v18/) documentation for more information. Conversing with AI chatbots is also a useful way to learn how to write mocks for unit tests.
@@ -98,6 +98,8 @@ GetNamesForDisplaySuite.before.each(() => {
 });
 ```
 
-The ensures that before every test runs, all `sinon` mocks are cleared and the code runs as normal. This isn't strictly necessary for our simple example.
+This ensures that before every test runs, all `sinon` mocks are cleared and the code runs as normal. 
 
-However, imagine a more complex function under test where you stub many different functions at different times in the same unit test file. As stated earlier, you should ensure that each unit test is completely independent from the others. This means you should not have a unit test that sets up a mock which a later unit test in the file relies on. Resetting all the stubs helps to ensure that doesn't happen, and enables you to quickly remove any stubs so that functions can be used as normal in other test suites.
+For our simple example, this isn't strictly necessary. But it is very useful in more complex examples. 
+
+Imagine a more complex function under test where you stub many different functions at different times in the same unit test file. As stated earlier, you should ensure that each unit test is completely independent from the others. This means you should not have a unit test that sets up a mock which a later unit test in the file relies on. Resetting all the stubs helps to ensure that doesn't happen, and enables you to quickly remove any stubs so that functions can be used as normal in other test suites.
