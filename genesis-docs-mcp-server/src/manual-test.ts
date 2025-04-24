@@ -2,12 +2,33 @@
 // Direct CLI for testing tools without MCP server
 
 import FilenameSearchTool from './tools/FilenameSearchTool.js';
+import DocContentSearchTool from './tools/DocContentSearchTool.js';
+import DocFileViewTool from './tools/DocFileViewTool.js';
+import RulesViewTool from './tools/RulesViewTool.js';
+import GenesisToolsInfoTool from './tools/GenesisToolsInfoTool.js';
 import { fileSystem } from './services/FileSystem.js';
+
+// Enum for selecting which tool to test
+enum TestTool {
+  FilenameSearch = 'filename',
+  ContentSearch = 'content',
+  FileView = 'fileview',
+  RulesView = 'rules',
+  ToolsInfo = 'info',
+  All = 'all'
+}
+
+// Parse command-line options for filename search
+interface FilenameSearchOptions {
+  searchTerm: string;
+  showApiDocs: string;
+  strictWordBoundaries: string;
+}
 
 // Simple test function for the FilenameSearchTool
 async function testFilenameSearch(
   searchTerm: string,
-  options: { showApiDocs: string; strictWordBoundaries: string }
+  options: FilenameSearchOptions
 ) {
   console.log(`Testing FilenameSearchTool with search term: "${searchTerm}"`);
   console.log(`API docs: ${options.showApiDocs === 'true' ? 'enabled' : 'disabled'}`);
@@ -28,9 +49,8 @@ async function testFilenameSearch(
     console.log('\nResults:');
     console.log(JSON.stringify(result, null, 2));
 
-    // If there are more results than what was shown, provide a hint
     // If not explicitly showing API docs and we're searching for "api", run a comparison search
-    if (!options.showApiDocs && searchTerm.toLowerCase().includes('api')) {
+    if (options.showApiDocs !== 'true' && searchTerm.toLowerCase().includes('api')) {
       console.log('\nRunning the same search WITH showApiDocs = true for comparison:');
       const resultWithApi = await tool.execute({
         searchString: searchTerm,
@@ -42,109 +62,263 @@ async function testFilenameSearch(
       console.log(JSON.stringify(resultWithApi, null, 2));
     }
   } catch (error) {
-    console.error('Error executing tool:', error);
-    process.exit(1);
+    console.error('Error executing FilenameSearchTool:', error);
   }
 }
 
-// Function to test the new content search functionality
-async function testContentSearch(searchTerm: string) {
-  console.log(`\nTesting searchDocFiles with search term: "${searchTerm}"`);
+// Function to test the content search tool
+async function testContentSearch(searchTerm: string, showContent = false) {
+  console.log(`\nTesting DocContentSearchTool with search term: "${searchTerm}"`);
+  console.log(`Show content: ${showContent ? 'enabled' : 'disabled'}`);
 
   try {
+    const tool = new DocContentSearchTool();
     console.log('\nRunning content search...');
-    const results = await fileSystem.searchDocFiles(searchTerm);
+    const result = await tool.execute({
+      searchString: searchTerm,
+      showContent: showContent ? 'true' : '',
+    });
 
-    console.log(`\nFound matches in ${results.length} files.`);
+    console.log('\nResults:');
+    console.log(result);
 
-    if (results.length > 0) {
-      // Display some stats about the results
-      const totalMatches = results.reduce((total, file) => total + file.matches.length, 0);
-      console.log(`Total matching lines across all files: ${totalMatches}`);
-
-      // Show the top 3 files with the most matches
-      const sortedResults = [...results].sort((a, b) => b.matches.length - a.matches.length);
-      console.log('\nTop files with matches:');
-      sortedResults.slice(0, 3).forEach((file, index) => {
-        console.log(
-          `${index + 1}. ${file.filePath} (${file.matches.length} matches, ${file.totalLines} total lines)`
-        );
-
-        // Show a sample of the first 2 matching lines for each file
-        console.log('   Sample matches:');
-        file.matches.slice(0, 2).forEach((match) => {
-          console.log(
-            `   Line ${match.line} (offset: ${match.offset}): ${match.text.substring(0, 80)}${match.text.length > 80 ? '...' : ''}`
-          );
-        });
-        if (file.matches.length > 2) {
-          console.log(`   ... and ${file.matches.length - 2} more matches`);
-        }
-
-        // Show usage example with DocFileViewTool
-        const firstMatch = file.matches[0];
-        console.log('\n   Usage with DocFileViewTool:');
-        console.log(
-          `   DocFileViewTool.execute({ filePath: "${file.filePath}", offset: ${firstMatch.offset}, maxLines: 10 })`
-        );
-      });
-
-      if (results.length > 3) {
-        console.log(`\n... and ${results.length - 3} more files with matches`);
-      }
-
-      // Show results in JSON format that could be consumed by AI
-      console.log('\nJSON results format (sample):');
-      console.log(JSON.stringify(sortedResults[0], null, 2));
-    } else {
-      console.log('No matches found.');
-    }
   } catch (error) {
-    console.error('Error during content search:', error);
+    console.error('Error executing DocContentSearchTool:', error);
   }
 }
 
-// Main test function
-async function runTests() {
-  // Get command line arguments, defaulting to "grid pro" if none provided
-  const searchTerm = process.argv[2] || 'grid pro';
+// Function to test the file view tool
+async function testFileView(filePath: string, offset?: number, maxLines?: number) {
+  console.log(`\nTesting DocFileViewTool with file: "${filePath}"`);
+  if (offset !== undefined) console.log(`Offset: ${offset}`);
+  if (maxLines !== undefined) console.log(`Max lines: ${maxLines}`);
 
-  // Parse command line options
-  const showApiDocs = process.argv.includes('--show-api') ? 'true' : '';
-  const strictWordBoundaries = process.argv.includes('--strict-word-boundaries') ? 'true' : '';
-  const contentSearchOnly = process.argv.includes('--content-only');
-  const filenameSearchOnly = process.argv.includes('--filename-only');
+  try {
+    const tool = new DocFileViewTool();
+    console.log('\nReading file...');
+    const result = await tool.execute({
+      filePath,
+      offset,
+      maxLines,
+    });
 
-  // Look for --limit=X or -n X parameter
-  let maxResults = 20; // Default
-  for (let i = 0; i < process.argv.length; i++) {
-    const arg = process.argv[i];
-    if (arg.startsWith('--limit=')) {
-      const limitValue = arg.split('=')[1];
-      maxResults = parseInt(limitValue, 10) || 20;
-    } else if ((arg === '--limit' || arg === '-n') && i < process.argv.length - 1) {
-      maxResults = parseInt(process.argv[i + 1], 10) || 20;
-    }
+    console.log('\nFile content:');
+    console.log(result);
+
+  } catch (error) {
+    console.error('Error executing DocFileViewTool:', error);
   }
+}
 
-  // First ensure we have docs files
+// Function to test the rules view tool
+async function testRulesView(ruleName?: string) {
+  console.log('\nTesting RulesViewTool');
+  
+  try {
+    const tool = new RulesViewTool();
+    
+    if (ruleName) {
+      console.log(`Looking up rule: ${ruleName}`);
+      const result = await tool.execute({ ruleName });
+      console.log('\nRule content:');
+      console.log(JSON.stringify(result, null, 2));
+    } else {
+      console.log('Listing all rules');
+      const result = await tool.execute({ listRules: 'true' });
+      console.log('\nAvailable rules:');
+      console.log(JSON.stringify(result, null, 2));
+    }
+  } catch (error) {
+    console.error('Error executing RulesViewTool:', error);
+  }
+}
+
+// Function to test the tools info tool
+async function testToolsInfo(detail?: string) {
+  console.log('\nTesting GenesisToolsInfoTool');
+  
+  try {
+    const tool = new GenesisToolsInfoTool();
+    
+    if (detail) {
+      console.log(`Getting detailed info about: ${detail}`);
+      const result = await tool.execute({ detail });
+      console.log('\nDetailed info:');
+      console.log(result);
+    } else {
+      console.log('Getting general overview');
+      const result = await tool.execute({});
+      console.log('\nTools overview:');
+      console.log(result);
+    }
+  } catch (error) {
+    console.error('Error executing GenesisToolsInfoTool:', error);
+  }
+}
+
+// Main function to parse command line args and determine which tool to run
+async function main() {
+  // Check for docs files
   const files = await fileSystem.docsFiles();
   console.log(`Found ${files.length} documentation files`);
 
   if (files.length === 0) {
-    console.log("No documentation files found. Please run 'npm run copy-docs' first");
+    console.error("No documentation files found. Please run 'npm run copy-docs' first");
     process.exit(1);
   }
 
-  // Run the appropriate tests based on flags
-  if (!contentSearchOnly) {
-    await testFilenameSearch(searchTerm, { strictWordBoundaries, showApiDocs });
+  // Default to filename search if no tool specified
+  let toolToRun = TestTool.FilenameSearch;
+  
+  // Parse the tool selection
+  const toolArg = process.argv.find(arg => 
+    arg.startsWith('--tool=') || 
+    arg.startsWith('-t=')
+  );
+  
+  if (toolArg) {
+    const toolValue = toolArg.split('=')[1].toLowerCase();
+    if (Object.values(TestTool).includes(toolValue as TestTool)) {
+      toolToRun = toolValue as TestTool;
+    } else {
+      console.error(`Unknown tool: ${toolValue}. Available tools: ${Object.values(TestTool).join(', ')}`);
+      process.exit(1);
+    }
   }
 
-  if (!filenameSearchOnly) {
-    await testContentSearch(searchTerm);
+  // Get the search term - need to skip node path, script path, and any flag arguments
+  let searchTerm = 'grid'; // Default value
+  for (let i = 2; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+    if (!arg.startsWith('-') && !process.argv[i-1]?.startsWith('--')) {
+      // Remove any surrounding quotes if present
+      searchTerm = arg.replace(/^["'](.*)["']$/, '$1');
+      break;
+    }
+  }
+
+  // Parse common options
+  const showApiDocs = process.argv.includes('--show-api') ? 'true' : '';
+  const strictWordBoundaries = process.argv.includes('--no-strict-boundaries') ? 'false' : 'true';
+  const showContent = process.argv.includes('--show-content');
+  
+  // Parse file view options
+  const filePathArg = process.argv.find(arg => arg.startsWith('--file='));
+  const filePath = filePathArg ? filePathArg.split('=')[1] : undefined;
+  
+  const offsetArg = process.argv.find(arg => arg.startsWith('--offset='));
+  const offset = offsetArg ? parseInt(offsetArg.split('=')[1], 10) : undefined;
+  
+  const maxLinesArg = process.argv.find(arg => arg.startsWith('--max-lines='));
+  const maxLines = maxLinesArg ? parseInt(maxLinesArg.split('=')[1], 10) : undefined;
+  
+  // Parse rules view options
+  const ruleNameArg = process.argv.find(arg => arg.startsWith('--rule='));
+  const ruleName = ruleNameArg ? ruleNameArg.split('=')[1] : undefined;
+  
+  // Parse tools info options
+  const detailArg = process.argv.find(arg => arg.startsWith('--detail='));
+  const detail = detailArg ? detailArg.split('=')[1] : undefined;
+
+  // Run selected tool(s)
+  switch (toolToRun) {
+    case TestTool.FilenameSearch:
+      await testFilenameSearch(searchTerm, { 
+        searchTerm, 
+        showApiDocs, 
+        strictWordBoundaries 
+      });
+      break;
+      
+    case TestTool.ContentSearch:
+      await testContentSearch(searchTerm, showContent);
+      break;
+      
+    case TestTool.FileView:
+      if (!filePath) {
+        console.error('Error: --file parameter is required for file view tool');
+        process.exit(1);
+      }
+      await testFileView(filePath, offset, maxLines);
+      break;
+      
+    case TestTool.RulesView:
+      await testRulesView(ruleName);
+      break;
+      
+    case TestTool.ToolsInfo:
+      await testToolsInfo(detail);
+      break;
+      
+    case TestTool.All:
+      console.log('=== Running all tools ===');
+      await testFilenameSearch(searchTerm, { 
+        searchTerm, 
+        showApiDocs, 
+        strictWordBoundaries 
+      });
+      await testContentSearch(searchTerm, showContent);
+      if (filePath) {
+        await testFileView(filePath, offset, maxLines);
+      }
+      await testRulesView(ruleName);
+      await testToolsInfo(detail);
+      break;
+      
+    default:
+      console.error(`Unsupported tool: ${toolToRun}`);
+      process.exit(1);
   }
 }
 
-// Run the tests
-runTests();
+// Display help if requested
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  console.log(`
+Genesis Documentation Tools CLI Tester
+
+Usage:
+  npm run manual-test -- [search-term] [options]
+
+Tool Selection:
+  --tool=<tool-name>, -t=<tool-name>    Tool to run (default: filename)
+                                       Available tools: filename, content, fileview, rules, info, all
+
+Common Options:
+  --show-api                           Include API docs in search results
+  --no-strict-boundaries               Disable strict word boundaries for search
+  --show-content                       Show content in content search results
+
+FilenameSearch Options:
+  [search-term]                        Term to search for (default: "grid-pro")
+
+ContentSearch Options:
+  [search-term]                        Term to search for content
+
+FileView Options:
+  --file=<file-path>                   Path to the file to view (required)
+  --offset=<number>                    Line to start viewing from
+  --max-lines=<number>                 Maximum number of lines to view
+
+RulesView Options:
+  --rule=<rule-name>                   Name of rule to view (if omitted, lists all rules)
+
+ToolsInfo Options:
+  --detail=<detail-name>               Detail to show (if omitted, shows overview)
+
+Examples:
+  npm run manual-test -- "grid-pro"                       # Search for "grid-pro" using FilenameSearchTool
+  npm run manual-test -- --tool=content "function"        # Search for "function" in content
+  npm run manual-test -- --tool=fileview --file=docs/index.md  # View a specific file
+  npm run manual-test -- --tool=rules                     # List all rules
+  npm run manual-test -- --tool=rules --rule=genesis-general-rules.mdc  # View a specific rule
+  npm run manual-test -- --tool=info --detail=search      # Get info about search tools
+  npm run manual-test -- --tool=all "grid"                # Run all tools with "grid" as search term
+  `);
+  process.exit(0);
+}
+
+// Run the main function
+main().catch(error => {
+  console.error('Unhandled error:', error);
+  process.exit(1);
+});

@@ -37,12 +37,22 @@ async function main() {
 async function testFilenameSearch() {
   // Get command line arguments, defaulting to "grid pro" if none provided
   const searchTerm = process.argv[3] || 'grid pro';
+  
+  // Parse options
+  const showApiDocs = process.argv.includes('--show-api') ? 'true' : '';
+  const strictWordBoundaries = process.argv.includes('--no-strict-boundaries') ? 'false' : 'true';
 
   console.log(`Testing FilenameSearchTool with search term: "${searchTerm}"`);
+  console.log(`API docs: ${showApiDocs === 'true' ? 'enabled' : 'disabled'}`);
+  console.log(`Strict word boundaries: ${strictWordBoundaries === 'true' ? 'enabled' : 'disabled'}`);
 
   try {
     const tool = new FilenameSearchTool();
-    const result = await tool.execute({ searchString: searchTerm });
+    const result = await tool.execute({ 
+      searchString: searchTerm,
+      showApiDocs,
+      strictWordBoundaries
+    });
 
     console.log('\nResults:');
     console.log(JSON.stringify(result, null, 2));
