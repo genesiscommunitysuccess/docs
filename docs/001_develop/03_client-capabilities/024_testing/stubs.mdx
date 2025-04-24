@@ -40,7 +40,7 @@ function getNamesForDisplay() {
 }
 ```
 
-This function has a side effect because it reads `.users.names` from an external store. The unit tests could be written to have code which sets up the store with data and then test the function. However, this has issues:
+This function has a side effect because it reads `.users.names` from an external store. The unit tests could be written to have code which sets up the store with data and then tests the function. However, this has issues:
 
 - The boilerplate quickly becomes large and distracts from reading the test logic itself.
 - The data external to the test will persist between each test case, so reordering tests or changing tests can break other tests. This is bad practice - all unit tests should be completely independent.
