@@ -22,11 +22,13 @@ class RulesViewTool extends MCPTool<RulesViewInput> {
     },
   };
 
-  async execute(input: RulesViewInput): Promise<string | { ruleFiles: string[] } | { rule: string, content: string }> {
+  async execute(
+    input: RulesViewInput
+  ): Promise<string | { ruleFiles: string[] } | { rule: string; content: string }> {
     try {
       // Convert string 'true' to boolean for listRules
       const shouldListRules = input.listRules === 'true';
-      
+
       // List all rules if requested or if no specific rule is provided
       if (shouldListRules || (!input.ruleName && input.listRules !== 'false')) {
         const ruleFiles = await fileSystem.listRules();
@@ -36,13 +38,13 @@ class RulesViewTool extends MCPTool<RulesViewInput> {
       // Return content of a specific rule
       if (input.ruleName) {
         const ruleContent = await fileSystem.readRuleFile(input.ruleName);
-        
+
         return {
           rule: input.ruleName,
-          content: ruleContent
+          content: ruleContent,
         };
       }
-      
+
       return 'Please provide either ruleName or set listRules to true';
     } catch (error) {
       return `Error: ${error instanceof Error ? error.message : String(error)}`;

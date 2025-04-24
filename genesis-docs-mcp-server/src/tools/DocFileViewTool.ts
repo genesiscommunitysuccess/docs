@@ -20,12 +20,12 @@ class DocFileViewTool extends MCPTool<DocFileViewInput> {
         'The file path, relative to the project root dist directory. This should match the format returned by FilenameSearchTool (e.g., "docs/path/to/file.md").',
     },
     offset: {
-      type: z.number().int().min(0).optional(),
+      type: z.coerce.number().int().min(0).optional(),
       description:
         'Optional line number to start reading from (0-based index). Use this when you only need to view a specific portion of a large file.',
     },
     maxLines: {
-      type: z.number().int().positive().optional(),
+      type: z.coerce.number().int().positive().optional(),
       description:
         'Optional maximum number of lines to read. Use together with offset to paginate through large files.',
     },
