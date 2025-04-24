@@ -7,10 +7,10 @@ format: md
 
 ## DefaultHttpConnect.setValidSession() method
 
-> Warning: This API is now obsolete.
-> 
-> - Please reference '@genesislcap/foundation-user#User' instead.,
-> 
+:::warning This API is now obsolete.
+
+See our section on [User Management](/develop/client-capabilities/server-communications/comms-user/) for details on permissioning, which is based on users and roles.
+:::
 
 **Signature:**
 
