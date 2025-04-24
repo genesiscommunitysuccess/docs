@@ -15,26 +15,21 @@ tags:
   - playwright
 ---
 
-# Foundation Testing
 
-`foundation-testing` is a comprehensive framework for **Unit** and **End-to-End (E2E)** testing, designed to validate components, user interactions, and workflows. Fully compatible with **Genesis**, **React**, and **Angular** frameworks, it ensures your application delivers a seamless and reliable user experience across diverse scenarios.
+`foundation-testing` is a comprehensive framework for Unit and End-to-End (E2E) testing, designed to validate components, user interactions, and workflows. Fully compatible with Genesis, React, and Angular frameworks, it ensures that your application can deliver a seamless and reliable user experience across diverse scenarios.
 
-:::info
-See complete set of API documentation [here](./docs/api/index.md).
-:::
+## Unit testing
 
-## Unit Testing
+The `foundation-testing` package offers a comprehensive framework for implementing Unit Tests. Use it to validate the functionality of individual components, functions, and interactions, ensuring a seamless user experience.
 
-The `foundation-testing` package offers a comprehensive framework for implementing **Unit Tests**. Use it to validate the functionality of individual components, functions, and interactions, ensuring a seamless user experience.
-
-### Key Tools and Features
+### Key tools and features
 
 - **Customizable Unit Test Suites**:
   - Define detailed test suites in the **`tests/unit`** folder to cover critical components and functions.
   - Fully customizable to meet the needs of your application.
 
 - **Sinon Integration**:
-  - Incorporate **spies**, **stubs**, and **mocks** into your tests using **Sinon.JS**, enabling powerful control over test behaviors.
+  - Incorporate **spies**, **stubs**, and **mocks** into your tests using **Sinon.JS**, for powerful control over test behaviours.
 
 - **Lightweight Framework**:
   - Minimal dependencies for a fast and efficient testing experience.
@@ -46,20 +41,20 @@ The `foundation-testing` package offers a comprehensive framework for implementi
   - Organize test suites into multiple files for clarity and manageability.
 
 - **Browser-Compatible**:
-  - Run and debug tests directly in a browser environment, leveraging browser developer tools for enhanced debugging.
+  - Run and debug tests directly in a browser environment, using browser developer tools for enhanced debugging.
 
-### Getting Started with Unit Testing
+### Getting started with unit testing
 
 - Define test suites in the **tests/unit** folder, targeting critical components and functions.
 - Use [UVU](ttps://github.com/lukeed/uvu) for fast and lightweight Unit Testing.
 - Use [Sinon.JS](https://sinonjs.org/releases/v18/) if you need spies, stubs or mocks.
 - Execute tests locally or on your CI pipeline, ensuring reliable and consistent outcomes.
 
-## E2E Testing
+## E2E testing
 
 The `foundation-testing` package also includes a powerful framework for **End-to-End (E2E) Testing**, ensuring seamless user experience by validating workflows and user interactions across diverse scenarios.
 
-### Key Tools and Features
+### Key tools and features
 
 - **Customizable E2E Scenarios**:
   - Define scenarios in the **`tests/e2e`** folder, focusing on user journeys and application workflows.
@@ -77,7 +72,7 @@ The `foundation-testing` package also includes a powerful framework for **End-to
 - **Automated CI Integration**:
   - Integrate E2E tests into your CI pipeline to validate every codebase change before deployment, ensuring reliability and minimizing bugs.
 
-### Getting Started with E2E Testing
+### Getting started with E2E testing
 
 1. **Creating and running E2E Tests**:
    - Define test scenarios in the **tests/e2e** folder, targeting critical user journeys and application functionalities.
@@ -97,11 +92,11 @@ The `foundation-testing` package also includes a powerful framework for **End-to
 
 ---
 
-By combining **Unit** and **E2E** testing with the `foundation-testing` package, you can ensure your web application delivers a reliable and optimized user experience.
+By combining Unit and E2E testing with the `foundation-testing` package, you can ensure that your web application delivers a reliable and optimized user experience.
 
 ## Examples
 
-### Test Organisation
+### Test organization
 
 You can unit-test specific logic by adding a test file alongside the source file.
 
@@ -145,7 +140,7 @@ export default {
 };
 ```
 
-If you need to customise JSDOM, you can create a **jsdom.setup.ts** file in your package directory:
+If you need to customize JSDOM, you can create a **jsdom.setup.ts** file in your package directory:
 
 ```ts
 // custom code
@@ -178,7 +173,7 @@ The test-related scripts to add to your package's **package.json** file may incl
 
 ### Testing logic
 
-The **logic.test.ts** usually uses `createLogicSuite`, which is used to test function output given certain input
+The `logic.test.ts` usually uses `createLogicSuite`, which tests function output given certain input
 arguments. Based on user feedback, these arguments are now passed as an array by convention:
 
 ```ts
@@ -206,7 +201,7 @@ Suite.run();
 
 ### Testing components
 
-The **component.test.ts** or any test that directly or indirectly makes use of the DI uses `createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this utility also allows you to provide DI container mocks, which are required for certain testing flows to effectively test **web components**.
+The `component.test.ts` uses `createComponentSuite` (as does any test that directly or indirectly makes use of the DI). Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this utility also allows you to provide DI container mocks, which are required for certain testing flows to test web components effectively.
 
 ```ts
 // component.test.ts
@@ -294,7 +289,7 @@ Suite.run();
 
 ### Testing E2E
 
-The **baseline.e2e.ts** uses `playwright`; test cases have access to the fixtures provided during set-up.
+The `baseline.e2e.ts` uses `playwright`; test cases have access to the fixtures provided during set-up.
 
 ```ts
 import { test, expect } from '@genesislcap/foundation-testing/e2e';
@@ -306,13 +301,19 @@ test('baseline test', async ({ page }) => {
 });
 ```
 
-### Unit Testing Resources and Further Documentation
+### Unit testing resources and further documentation
 
 - [UVU](ttps://github.com/lukeed/uvu)
 - [Sinon.JS](https://sinonjs.org/releases/v18/)
 
-### E2E Resources and Further Documentation
+### E2E resources and further documentation
 
 - [Playwright Documentation](https://playwright.dev/)
 - [playwright-bdd](https://github.com/vitalets/playwright-bdd)
 - [Lighthouse Documentation](https://developers.google.com/web/tools/lighthouse) 
+
+## API documents
+:::info
+Find more details in our [API documentation](./docs/api/index.md).
+:::
+
