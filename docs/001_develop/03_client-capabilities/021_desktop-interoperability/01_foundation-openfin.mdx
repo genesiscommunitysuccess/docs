@@ -11,38 +11,16 @@ tags:
   - openfin
 ---
 
-# Genesis Foundation Openfin
 
-This provides a robust implementation of the Openfin workspace container
+Foundation Openfin provides a robust implementation of the Openfin (now called "Here") workspace container.
 
-## API Documentation
-
-For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
-
-## Installation
-
-To include `@genesislcap/foundation-openfin` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation. 
-
-This package depends on a newer version of typescript which you will also need to add to your package json
-
-```json
-{
-  "dependencies": {
-    ...
-    "@genesislcap/foundation-openfin": "latest",
-    "typescript": "^5.6.3",
-    ...
-  }
-}
-```
-
-## Key Features
+## Key features
 
 - **Openfin Notifications:** Implements a component to create openfin notifications
 
-## Usage Examples
+## Usage examples
 
-### Adding Intent Listeners
+### Adding intent listeners
 
 ```html
 <openfin-notifications
@@ -60,6 +38,7 @@ This package depends on a newer version of typescript which you will also need t
         Route.path.push('/some-route')
         if (buttonElement) {
           buttonElement.$emit('some-event', details.TABLE_ENTITY_ID);
+        }
         }
       },
       {
@@ -82,5 +61,27 @@ This package depends on a newer version of typescript which you will also need t
   ]}"
 ></openfin-notifications>
 ```
+
+## API documentation
+
+For more detailed information on API and configurations, see the [API documentation](docs/api/index.md) in the `docs/api` directory.
+
+## Installation
+
+To include `@genesislcap/foundation-openfin` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation. 
+
+This package depends on a newer version of typescript which you will also need to add to your package json
+
+```json
+{
+  "dependencies": {
+    ...
+    "@genesislcap/foundation-openfin": "latest",
+    "typescript": "^5.6.3",
+    ...
+  }
+}
+```
+
 
 
