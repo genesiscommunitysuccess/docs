@@ -91,6 +91,7 @@ export function GridProExampleActionRenderer() {
           actionName: 'View',
           appearance: 'primary',
           actionClick: (rowData) => console.log('View Data', rowData),
+          actionButtonStyle: 'color: #f5f5f5;font-weight: 700;',
         },
       },
     ],

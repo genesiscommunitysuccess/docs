@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-streamWithoutAutoTeardown(resourceName: string, onMessage: Function, onError: Function, params?: any): SocketObservable<Message>;
+streamWithoutAutoTeardown(resourceName: string, onMessage: Function, onError: Function, params?: DataserverParams): SocketObservable<Message>;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ streamWithoutAutoTeardown(resourceName: string, onMessage: Function, onError: Fu
 |  resourceName | string |  |
 |  onMessage | Function |  |
 |  onError | Function |  |
-|  params | any | _(Optional)_ |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ |
 
 **Returns:**
 

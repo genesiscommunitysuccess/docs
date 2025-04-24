@@ -12,7 +12,7 @@ Starts listening for updates on the specified resource.
 **Signature:**
 
 ```typescript
-stream(resourceName: string, onMessage: Function, onError: Function, params?: any): SocketObservable<Message>;
+stream(resourceName: string, onMessage: Function, onError: Function, params?: DataserverParams): SocketObservable<Message>;
 ```
 
 ## Parameters
@@ -22,7 +22,7 @@ stream(resourceName: string, onMessage: Function, onError: Function, params?: an
 |  resourceName | string | The name of the resource to listen for updates on. |
 |  onMessage | Function | A callback function to handle received messages. |
 |  onError | Function | A callback function to handle errors. |
-|  params | any | _(Optional)_ Additional parameters to pass to the server. |
+|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ Additional parameters to pass to the server. |
 
 **Returns:**
 

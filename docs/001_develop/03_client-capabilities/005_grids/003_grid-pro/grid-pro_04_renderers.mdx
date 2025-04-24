@@ -28,7 +28,7 @@ import {
 
 ## Overview
 
-All of our custom cell rendering components enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns.
+All of our custom cell rendering components are enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns.
 
 ## Default Genesis renderers
 
@@ -43,7 +43,7 @@ Renders a single action button within a grid cell, allowing for row-specific int
 
 #### Key features
 
-- Customizable button name and appearance
+- The button name, appearance and style can be customized
 - Supports disabled state based on row data
 - Handles click events with optional async actions
 - Supports E2E testing with data-test-id attributes
@@ -57,7 +57,8 @@ const actionRendererColDef = {
     actionName: 'Edit',
     actionClick: (rowData) => handleEdit(rowData),
     isDisabled: (rowData) => !rowData.editable,
-    appearance: 'primary'
+    appearance: 'primary',
+    actionButtonStyle: 'color: #f5f5f5; font-weight: 700;',
   },
   // other column options
 }

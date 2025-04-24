@@ -7,7 +7,7 @@ format: md
 
 ## MessageBuilder.createMoreRowsMessage() method
 
-Creates a message to request more rows.
+Creates a message to request more rows. This is only relevant when you are connected to a real-time (Data Server) datasource.
 
 **Signature:**
 
@@ -20,7 +20,7 @@ createMoreRowsMessage(sourceRef: string, viewNumber?: number): Message<MessageDe
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  sourceRef | string | The unique source reference. |
-|  viewNumber | number | _(Optional)_ The desired view number. Default:always the first view, if not spceified. |
+|  viewNumber | number | _(Optional)_ The desired view number. Default: the first view. |
 
 **Returns:**
 
