@@ -6,6 +6,7 @@ import DocContentSearchTool from './tools/DocContentSearchTool.js';
 import DocFileViewTool from './tools/DocFileViewTool.js';
 import RulesViewTool from './tools/RulesViewTool.js';
 import GenesisDocsReadmeTool from './tools/GenesisDocsReadmeTool.js';
+import IngestTool from './tools/IngestTool.js';
 import { fileSystem } from './services/FileSystem.js';
 
 // Enum for selecting which tool to test
@@ -15,6 +16,7 @@ enum TestTool {
   FileView = 'fileview',
   RulesView = 'rules',
   ToolsInfo = 'info',
+  Ingest = 'ingest',
   All = 'all'
 }
 
@@ -156,6 +158,34 @@ async function testDocsReadme(detail?: string) {
   }
 }
 
+// Function to test the ingest tool
+async function testIngest(repository?: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
+  console.log('\nTesting IngestTool');
+  
+  try {
+    const tool = new IngestTool();
+    
+    console.log(`Packing repository: ${repository || 'genesiscommunitysuccess/docs'}`);
+    console.log(`Output format: ${outputFormat || 'markdown'}`);
+    console.log(`Max file size: ${maxFileSizeKb || '50'}KB`);
+    if (ignorePatterns) {
+      console.log(`Ignoring patterns: ${ignorePatterns}`);
+    }
+    
+    const result = await tool.execute({ 
+      repository,
+      outputFormat,
+      maxFileSizeKb,
+      ignorePatterns
+    });
+    
+    console.log('\nPacking result:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing IngestTool:', error);
+  }
+}
+
 // Main function to parse command line args and determine which tool to run
 async function main() {
   // Check for docs files
@@ -220,6 +250,19 @@ async function main() {
   const detailArg = process.argv.find(arg => arg.startsWith('--detail='));
   const detail = detailArg ? detailArg.split('=')[1] : undefined;
 
+  // Parse ingest options
+  const repoArg = process.argv.find(arg => arg.startsWith('--repo='));
+  const repository = repoArg ? repoArg.split('=')[1] : undefined;
+  
+  const formatArg = process.argv.find(arg => arg.startsWith('--format='));
+  const outputFormat = formatArg ? formatArg.split('=')[1] : undefined;
+  
+  const maxSizeArg = process.argv.find(arg => arg.startsWith('--max-size='));
+  const maxFileSizeKb = maxSizeArg ? maxSizeArg.split('=')[1] : undefined;
+  
+  const ignoreArg = process.argv.find(arg => arg.startsWith('--ignore='));
+  const ignorePatterns = ignoreArg ? ignoreArg.split('=')[1] : undefined;
+
   // Run selected tool(s)
   switch (toolToRun) {
     case TestTool.FilenameSearch:
@@ -250,6 +293,10 @@ async function main() {
       await testDocsReadme(detail);
       break;
       
+    case TestTool.Ingest:
+      await testIngest(repository, outputFormat, maxFileSizeKb, ignorePatterns);
+      break;
+      
     case TestTool.All:
       console.log('=== Running all tools ===');
       await testFilenameSearch(searchTerm, { 
@@ -263,6 +310,7 @@ async function main() {
       }
       await testRulesView(ruleName);
       await testDocsReadme(detail);
+      await testIngest(repository, outputFormat, maxFileSizeKb, ignorePatterns);
       break;
       
     default:
@@ -281,7 +329,7 @@ Usage:
 
 Tool Selection:
   --tool=<tool-name>, -t=<tool-name>    Tool to run (default: filename)
-                                       Available tools: filename, content, fileview, rules, info, all
+                                       Available tools: filename, content, fileview, rules, info, ingest, all
 
 Common Options:
   --show-api                           Include API docs in search results
@@ -304,6 +352,12 @@ RulesView Options:
 
 ToolsInfo Options:
   --detail=<detail-name>               Detail to show (if omitted, shows overview)
+
+Ingest Options:
+  --repo=<repository>                  Repository to pack (format: username/repo or full URL)
+  --format=<format>                    Output format: markdown, xml, json (default: markdown)
+  --max-size=<max-file-size-kb>        Maximum file size to include in KB (default: 50KB)
+  --ignore=<pattern1,pattern2>         Comma-separated list of glob patterns to ignore
 
 Examples:
   npm run manual-test -- "grid-pro"                       # Search for "grid-pro" using FilenameSearchTool

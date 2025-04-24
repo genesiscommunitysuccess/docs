@@ -17,7 +17,7 @@ export type SearchResult = {
     text: string; // The text content of the matching line
     offset: number; // 0-based line offset (for DocFileViewTool)
   }>;
-  totalLines: number; // Total number of lines in the file
+  totalLines?: number; // Total number of lines in the file
 };
 
 export type FileSystem = {
@@ -136,65 +136,65 @@ export const fileSystemBuilder = (): FileSystem => {
         const files = await this.docsFiles();
         const searchResults: SearchResult[] = [];
 
-        // Escape special regex characters in the search term for grep
+        // Escape special regex characters in the search term
         const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+        // Create case insensitive regex for better search
+        const searchRegex = new RegExp(escapedTerm, 'i');
+
         // Process files in batches to control concurrency
-        const batchSize = 50;
-        
+        const batchSize = 50; // Adjust based on expected file size and system resources
+
         for (let i = 0; i < files.length; i += batchSize) {
           const batch = files.slice(i, i + batchSize);
-          
+
           // Process each batch concurrently
           const batchResults = await Promise.all(
             batch.map(async (filePath) => {
               try {
-                // Use grep to search the file
-                const { exec } = await import('child_process');
-                const { promisify } = await import('util');
-                const execAsync = promisify(exec);
-                
-                // Run grep with line numbers (-n) and case insensitive (-i)
-                const { stdout } = await execAsync(`grep -in "${escapedTerm}" "${filePath}"`);
-                
-                if (stdout) {
-                  const lines = stdout.split('\n').filter(line => line.trim());
-                  const matches = lines.map(line => {
-                    // grep output format is "filename:linenumber:content"
-                    const [_, lineNum, ...contentParts] = line.split(':');
-                    const text = contentParts.join(':'); // Rejoin in case content contains colons
-                    const lineIndex = parseInt(lineNum) - 1; // Convert to 0-based index
-                    
-                    return {
-                      line: parseInt(lineNum), // 1-based line number
-                      text,
-                      offset: lineIndex,
-                    };
-                  });
+                // Read the file
+                const content = await this.readDocFile(filePath);
+                const lines = content.split('\n');
 
-                  // Get total lines in file using wc -l
-                  const { stdout: lineCount } = await execAsync(`wc -l < "${filePath}"`);
-                  const totalLines = parseInt(lineCount);
+                const matches = lines
+                  .map((text, lineIndex) => {
+                    if (searchRegex.test(text)) {
+                      // Add offset property (0-based) which is the same as lineIndex
+                      return {
+                        line: lineIndex + 1, // 1-based line number for display
+                        text,
+                        offset: lineIndex, // 0-based offset for DocFileViewTool
+                      };
+                    }
+                    return null;
+                  })
+                  .filter(
+                    (match): match is { line: number; text: string; offset: number } =>
+                      match !== null
+                  );
 
-                  // Format the path
+                if (matches.length > 0) {
+                  // Format the path in the same way as FilenameSearchTool
+                  // Extract relative path from /dist (if present)
                   let relativePath = filePath;
                   if (relativePath.includes('/dist/')) {
                     relativePath = relativePath.split('/dist/').pop() || relativePath;
                   } else {
+                    // Just ensure we're returning the path relative to dist/
                     relativePath = relativePath.replace(`${projectRoot}/dist/`, '');
                   }
 
-                  return {
+                  // Create a SearchResult object
+                  const searchResult: SearchResult = {
                     filePath: relativePath,
                     matches,
-                    totalLines,
+                    totalLines: lines.length,
                   };
+                  return searchResult;
                 }
               } catch (error) {
-                // Skip files with read errors or no matches
-                if ((error as any).code !== 1) { // grep returns 1 when no matches found
-                  console.error(`Error searching file ${filePath}:`, error);
-                }
+                // Skip files with read errors
+                console.error(`Error searching file ${filePath}:`, error);
               }
               return null;
             })
@@ -202,7 +202,7 @@ export const fileSystemBuilder = (): FileSystem => {
 
           // Add non-null results to the main results array
           const filteredResults = batchResults.filter(
-            (result): result is SearchResult => result !== null && result.totalLines !== undefined
+            (result): result is SearchResult => result !== null
           );
           searchResults.push(...filteredResults);
         }
