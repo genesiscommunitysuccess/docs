@@ -21,28 +21,22 @@ import BaseStore from '../../../_includes/_base_store_setup.mdx'
 
 # Genesis Foundation Store
 
-The `foundation-store` provides a decoupled and testable way to manage application
-state that adheres to our best practices. Using `foundation-store` is completely optional, as you may decide that your
-application doesn't warrant a store, or that you would prefer to use a store you are more familiar with. The system is
-flexible, so you can use whatever you like to handle application level state management, but you should be mindful of
+The `foundation-store` provides a decoupled and testable way to manage application state, which adheres to our best practices. Using `foundation-store` is completely optional; you might decide that your application doesn't warrant a store, or that you would prefer to use a store that you are more familiar with. 
+
+The system is flexible, so you can use whatever you like to handle application-level state management, but you should be mindful of
 degrading performance.
 
 ## Background
 
-Client apps today manage application state in different ways. These apps might leverage common third party stores likes
-Redux, or use none at all, peppering `@attr` and `@observable` properties (or equivalent state management in different frameworks)
-in different components, and at various levels of DOM hierarchy. With the latter business logic might start creeping into  components,
-every component becomes smart instead of being dumb, providing shared access to data becomes difficult, tests require lots of mocks,
-and things get hard to refactor etc. Large applications should aim to lift state where possible to bring all the benefits mentioned above.
+Client apps today manage application state in different ways. These apps might use common third-party stores such as
+Redux, or they might use none at all, peppering `@attr` and `@observable` properties (or equivalent state management in different frameworks) in different components, and at various levels of DOM hierarchy. With the latter, business logic might start creeping into  components; in this case, every component becomes smart instead of being dumb, providing shared access to data becomes difficult, tests require lots of mocks, and things get hard to refactor etc. Large applications should aim to lift state where possible to bring all the benefits mentioned above.
 
 ## Quick start
 
-If you're familiar with state management libraries such as React's Redux you may find reading through the quick start guide to be all you require.
-It introduces a glossary of terms used in `foundation-store` as compared to Redux, and provides a quick look at a complete store setup.
+If you're familiar with state management libraries such as React's Redux, you might only need to read through the quick start guide. This introduces a glossary of terms used in `foundation-store` as compared to Redux, and provides a quick look at a complete store set-up.
 
 :::tip
-If you are new to the store concept, or are unsure of the integration points from your components to the store, see the more thorough example which guides you
-step-by-step [here](./client-state-management-examples).
+If you are new to the store concept, or are unsure of the integration points from your components to the store, see the more thorough [example](./client-state-management-examples) which guides you step-by-step.
 :::
 
 ### Equivalent Redux terms
@@ -62,11 +56,10 @@ Similar to the Reducer context above, however you should _NOT_ commit values to 
 - **Slice**. A store fragment. A part of the store with a specific purpose, domain model.
 - **Selector**. A simple getter on a store fragment.
 
-### Setup
+### Set-up
 
-Create a root store.ts file somewhere, for example `./store/store.ts`. This will be the root store for the application,
-which may consist for other [store fragments](./client-state-management-usage#using-store-fragments). Each fragment could be considered as a domain, with a single purpose. This
-setup allows us to isolate data and provide the component trees access to only the data they really need to function.
+Create a root `store.ts` file somewhere, for example `./store/store.ts`. This will be the root store for the application,
+which may consist of other [store fragments](./client-state-management-usage#using-store-fragments). Each fragment could be considered as a domain, with a single purpose. This set-up allows us to isolate data and provide the component trees access to only the data they really need to function.
 
 ```typescript store.ts
 import {CustomEventMap, EventListenerMap, registerEmitter} from '@genesislcap/foundation-events';
@@ -222,5 +215,6 @@ code. For example:
 
 <BaseStore />
 
-## [API Docs](./docs/api/index.md)
+## API
+You can find out more details in our [API docs](./docs/api/index.md).
 
