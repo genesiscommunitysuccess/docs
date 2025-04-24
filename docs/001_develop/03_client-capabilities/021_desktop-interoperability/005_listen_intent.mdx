@@ -20,9 +20,7 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# FDC3 intent listener
-
-This is a utility element that listens to any raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 that are handled by the application.
+FDC3 intent listener is a utility element that listens to any raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 that are handled by the application.
 
 Use cases:
 * Handle intents raised against an application in an FDC3 workspace.
@@ -31,10 +29,10 @@ Use cases:
 
 This handles intents raised against the application.
 
-:::warning Compatibilty with Desktop Agent implementations
+:::warning Compatibility with Desktop Agent implementations
 Where an app is intended to be launched in order to resolve a raised intent, the element must be present in the DOM *within 15 seconds of the application launch*.
 
-This is the minimum timeout that Desktop Agents are required to provide in order to be widely compatible with Desktop Agent implementations
+This is the minimum timeout that Desktop Agents are required to provide in order to be widely compatible with Desktop Agent implementations.
 :::
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -180,7 +178,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-This component has no attributes
+This component has no attributes.
 
 ### Properties
 
@@ -197,11 +195,11 @@ This component has no attributes
     <tr>
         <td>config</td>
         <td><code>IntentConfig</code></td> <!-- TODO link API docs -->
-        <td>An array of objects which configure the intent name and a handler for intent payloads</td>
+        <td>An array of objects that configure the intent name and the handler for intent payloads</td>
         <td>
             ```typescript
             <fdc3-intent-listener :config=${() =>
-                [{ intent: 'ViewInstrument', callback: (msg) => console.log(JSON.stringify(msg)}]
+                [{ intent: 'ViewInstrument', callback: (msg) => console.log(JSON.stringify(msg))}]
             }>
             ```
         </td>
