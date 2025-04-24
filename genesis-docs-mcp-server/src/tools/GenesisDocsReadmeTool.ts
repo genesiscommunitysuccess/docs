@@ -1,24 +1,24 @@
 import { MCPTool } from 'mcp-framework';
 import { z } from 'zod';
 
-interface GenesisToolsInfoInput {
+interface GenesisDocsReadmeInput {
   detail?: string;
 }
 
-class GenesisToolsInfoTool extends MCPTool<GenesisToolsInfoInput> {
-  name = 'genesis-tools-info';
+class GenesisDocsReadmeTool extends MCPTool<GenesisDocsReadmeInput> {
+  name = 'genesis-docs-readme';
   description =
-    'Provides information about the available Genesis documentation tools and how to use them effectively with AI';
+    'Provides a comprehensive readme for using Genesis documentation tools with AI';
 
   schema = {
     detail: {
       type: z.string().optional(),
       description:
-        'Optional parameter to get detailed information about a specific aspect of the tools (e.g., "search", "rules", "files")',
+        'Optional parameter to get detailed information about a specific aspect (e.g., "search", "rules", "best-practices")',
     },
   };
 
-  async execute(input: GenesisToolsInfoInput) {
+  async execute(input: GenesisDocsReadmeInput) {
     // Return information based on the requested detail or general information if no detail specified
     if (input.detail) {
       return this.getDetailedInfo(input.detail);
@@ -44,6 +44,14 @@ Welcome to the Genesis Documentation tools. These tools are designed to help AI 
 - **doc-file-view**: View the contents of a documentation file
 - **rules-view**: Read Genesis coding standards and conventions
 
+## Working with Genesis Projects
+
+When working with Genesis projects, AI assistants should:
+
+1. **Always look up documentation** before changing or adding code
+2. **Search for "custom-components"** when writing Genesis code to understand project-specific components
+3. **Search for "framework-integration"** when writing code that integrates with different frameworks
+
 ## How to Use These Tools Together
 
 Typical workflows include:
@@ -60,7 +68,7 @@ Typical workflows include:
    - Use \`rules-view\` to list available coding rules
    - Use \`rules-view\` with a specific ruleName to read particular standards
 
-For more detailed information about each tool, provide a 'detail' parameter with values like 'search', 'files', or 'rules'.`;
+For more detailed information about each tool, provide a 'detail' parameter with values like 'search', 'files', 'rules', or 'best-practices'.`;
   }
 
   private getDetailedInfo(detail: string): string {
@@ -76,8 +84,14 @@ For more detailed information about each tool, provide a 'detail' parameter with
       lowerDetail.includes('convention')
     ) {
       return this.getRulesToolsInfo();
+    } else if (
+      lowerDetail.includes('best') ||
+      lowerDetail.includes('practice') ||
+      lowerDetail.includes('genesis')
+    ) {
+      return this.getBestPracticesInfo();
     } else {
-      return `No detailed information available for "${detail}". Try using "search", "files", or "rules" as the detail parameter.`;
+      return `No detailed information available for "${detail}". Try using "search", "files", "rules", or "best-practices" as the detail parameter.`;
     }
   }
 
@@ -86,12 +100,12 @@ For more detailed information about each tool, provide a 'detail' parameter with
 
 ## 🔍 filename-search
 
-This tool allows you to find documentation files by their names. It uses fuzzy matching to find files even when the search term isn't an exact match.
+This tool allows you to find documentation files by their names using fuzzy matching. It returns all matches plus sibling documents from the same directories for additional context.
 
 ### Parameters:
 - \`searchString\`: The text to search for in filenames
-- \`showApiDocs\`: (Optional) Set to true to include API documentation in results
-- \`maxResults\`: (Optional) Maximum number of results to return (default: 20)
+- \`showApiDocs\`: (Optional) Set to "true" to include API documentation in results
+- \`strictWordBoundaries\`: (Optional) Controls how search terms are matched - when enabled (default), "pro" would match a file containing "grid-pro" but not "improving"
 
 ### Example Usage:
 \`\`\`
@@ -99,8 +113,7 @@ filename-search({ searchString: "grid" })
 \`\`\`
 
 ### Response Format:
-- For exact matches: Returns an object with \`exactMatches: true\` and an array of matching paths
-- For fuzzy matches: Returns formatted text with filenames and paths
+Returns an array of matching file paths, including both direct matches and sibling documents for context.
 
 ## 🔍 doc-content-search
 
@@ -223,6 +236,56 @@ Genesis rules are organized into categories:
 3. **Apply rules consistently**: Follow the rules throughout your development process
 4. **Reference rules in explanations**: When explaining code choices to users, reference the relevant rules`;
   }
+
+  private getBestPracticesInfo(): string {
+    return `# Genesis Development Best Practices for AI
+
+## General Development Guidelines
+
+When working with Genesis projects, AI assistants should:
+
+1. **Always consult documentation first**:
+   - Before modifying or adding code to a Genesis project, search for and read the relevant documentation
+   - Use the \`filename-search\` and \`doc-content-search\` tools to find appropriate guidance
+   - Reference the documentation when explaining your code choices
+
+2. **Follow Genesis coding standards**:
+   - Use the \`rules-view\` tool to access Genesis coding standards
+   - Follow these standards consistently when writing or modifying code
+   - Structure projects according to Genesis conventions
+
+## Key Search Terms
+
+When working on specific aspects of Genesis projects, search for these terms:
+
+### 1. Custom Components
+\`\`\`
+filename-search({ searchString: "custom-components" })
+\`\`\`
+
+- **Why**: When writing Genesis code, understanding project-specific components is crucial
+- **What you'll find**: Documentation on creating and using custom components in Genesis
+- **When to use**: Before creating new components or modifying existing custom components
+
+### 2. Framework Integration
+\`\`\`
+filename-search({ searchString: "framework-integration" })
+\`\`\`
+
+- **Why**: When integrating Genesis with other frameworks, special considerations apply
+- **What you'll find**: Documentation on how Genesis integrates with various frameworks
+- **When to use**: Before writing code that connects Genesis to external frameworks or libraries
+
+## Recommended Workflow
+
+1. **Understand the task**: Clarify what part of Genesis you're working with
+2. **Search documentation**: Use the appropriate search terms
+3. **Review coding standards**: Check for relevant rules
+4. **Implement solution**: Follow Genesis patterns and conventions
+5. **Verify against standards**: Ensure your solution adheres to Genesis best practices
+
+By following these guidelines, you'll create high-quality, maintainable code that integrates well with the Genesis platform.`;
+  }
 }
 
-export default GenesisToolsInfoTool;
+export default GenesisDocsReadmeTool;

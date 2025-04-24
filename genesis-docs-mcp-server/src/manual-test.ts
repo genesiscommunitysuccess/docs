@@ -5,7 +5,7 @@ import FilenameSearchTool from './tools/FilenameSearchTool.js';
 import DocContentSearchTool from './tools/DocContentSearchTool.js';
 import DocFileViewTool from './tools/DocFileViewTool.js';
 import RulesViewTool from './tools/RulesViewTool.js';
-import GenesisToolsInfoTool from './tools/GenesisToolsInfoTool.js';
+import GenesisDocsReadmeTool from './tools/GenesisDocsReadmeTool.js';
 import { fileSystem } from './services/FileSystem.js';
 
 // Enum for selecting which tool to test
@@ -133,12 +133,12 @@ async function testRulesView(ruleName?: string) {
   }
 }
 
-// Function to test the tools info tool
-async function testToolsInfo(detail?: string) {
-  console.log('\nTesting GenesisToolsInfoTool');
+// Function to test the docs readme tool
+async function testDocsReadme(detail?: string) {
+  console.log('\nTesting GenesisDocsReadmeTool');
   
   try {
-    const tool = new GenesisToolsInfoTool();
+    const tool = new GenesisDocsReadmeTool();
     
     if (detail) {
       console.log(`Getting detailed info about: ${detail}`);
@@ -152,7 +152,7 @@ async function testToolsInfo(detail?: string) {
       console.log(result);
     }
   } catch (error) {
-    console.error('Error executing GenesisToolsInfoTool:', error);
+    console.error('Error executing GenesisDocsReadmeTool:', error);
   }
 }
 
@@ -247,7 +247,7 @@ async function main() {
       break;
       
     case TestTool.ToolsInfo:
-      await testToolsInfo(detail);
+      await testDocsReadme(detail);
       break;
       
     case TestTool.All:
@@ -262,7 +262,7 @@ async function main() {
         await testFileView(filePath, offset, maxLines);
       }
       await testRulesView(ruleName);
-      await testToolsInfo(detail);
+      await testDocsReadme(detail);
       break;
       
     default:
@@ -311,7 +311,8 @@ Examples:
   npm run manual-test -- --tool=fileview --file=docs/index.md  # View a specific file
   npm run manual-test -- --tool=rules                     # List all rules
   npm run manual-test -- --tool=rules --rule=genesis-general-rules.mdc  # View a specific rule
-  npm run manual-test -- --tool=info --detail=search      # Get info about search tools
+  npm run manual-test -- --tool=info --detail=search      # Get detailed info about search tools
+  npm run manual-test -- --tool=info --detail=best-practices      # Get detailed info about best practices
   npm run manual-test -- --tool=all "grid"                # Run all tools with "grid" as search term
   `);
   process.exit(0);
