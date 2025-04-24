@@ -136,16 +136,16 @@ async function testDocFileView() {
 async function testRulesView() {
   // Get the rule name from command line args or use list mode
   const ruleName = process.argv[3];
-  
+
   try {
     const tool = new RulesViewTool();
     let result;
-    
+
     if (!ruleName || ruleName === 'list') {
       // List all available rules
       console.log('Listing all Genesis coding standard rules:');
       result = await tool.execute({ listRules: 'true' });
-      
+
       if (result && typeof result === 'object' && 'ruleFiles' in result) {
         const { ruleFiles } = result;
         console.log('\nAvailable rules:');
@@ -160,7 +160,7 @@ async function testRulesView() {
       // View a specific rule
       console.log(`Viewing Genesis coding standard rule: ${ruleName}`);
       result = await tool.execute({ ruleName });
-      
+
       if (result && typeof result === 'object' && 'content' in result) {
         console.log('\nRule Content:');
         console.log('----------------------------------------');

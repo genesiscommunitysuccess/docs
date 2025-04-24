@@ -7,11 +7,13 @@ import { fileSystem } from './services/FileSystem.js';
 // Simple test function for the FilenameSearchTool
 async function testFilenameSearch(
   searchTerm: string,
-  options: { showApiDocs: boolean; maxResults: number }
+  options: { showApiDocs: string; strictWordBoundaries: string }
 ) {
   console.log(`Testing FilenameSearchTool with search term: "${searchTerm}"`);
-  console.log(`API docs: ${options.showApiDocs ? 'enabled' : 'disabled'}`);
-  console.log(`Max results: ${options.maxResults}`);
+  console.log(`API docs: ${options.showApiDocs === 'true' ? 'enabled' : 'disabled'}`);
+  console.log(
+    `Strict word boundaries: ${options.strictWordBoundaries === 'true' ? 'enabled' : 'disabled'}`
+  );
 
   // Create and execute the tool
   try {
@@ -20,27 +22,20 @@ async function testFilenameSearch(
     const result = await tool.execute({
       searchString: searchTerm,
       showApiDocs: options.showApiDocs,
-      maxResults: options.maxResults,
+      strictWordBoundaries: options.strictWordBoundaries,
     });
 
     console.log('\nResults:');
     console.log(JSON.stringify(result, null, 2));
 
     // If there are more results than what was shown, provide a hint
-    if (result.additionalResults && result.additionalResults > 0) {
-      console.log(
-        `\nNote: ${result.additionalResults} additional results were found but not shown.`
-      );
-      console.log(`Use --limit=${result.totalResults} to see all results.`);
-    }
-
     // If not explicitly showing API docs and we're searching for "api", run a comparison search
     if (!options.showApiDocs && searchTerm.toLowerCase().includes('api')) {
       console.log('\nRunning the same search WITH showApiDocs = true for comparison:');
       const resultWithApi = await tool.execute({
         searchString: searchTerm,
-        showApiDocs: true,
-        maxResults: options.maxResults,
+        showApiDocs: 'true',
+        strictWordBoundaries: options.strictWordBoundaries,
       });
 
       console.log('\nResults with API docs included:');
@@ -115,7 +110,8 @@ async function runTests() {
   const searchTerm = process.argv[2] || 'grid pro';
 
   // Parse command line options
-  const showApiDocs = process.argv.includes('--show-api');
+  const showApiDocs = process.argv.includes('--show-api') ? 'true' : '';
+  const strictWordBoundaries = process.argv.includes('--strict-word-boundaries') ? 'true' : '';
   const contentSearchOnly = process.argv.includes('--content-only');
   const filenameSearchOnly = process.argv.includes('--filename-only');
 
@@ -142,7 +138,7 @@ async function runTests() {
 
   // Run the appropriate tests based on flags
   if (!contentSearchOnly) {
-    await testFilenameSearch(searchTerm, { showApiDocs, maxResults });
+    await testFilenameSearch(searchTerm, { strictWordBoundaries, showApiDocs });
   }
 
   if (!filenameSearchOnly) {

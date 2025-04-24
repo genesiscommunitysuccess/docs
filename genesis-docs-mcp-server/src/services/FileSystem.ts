@@ -55,7 +55,7 @@ export const fileSystemBuilder = (): FileSystem => {
       }
       return docs;
     },
-    
+
     async rulesFiles() {
       if (!rules) {
         // Search for MDC files in the rules directory
@@ -65,15 +65,15 @@ export const fileSystemBuilder = (): FileSystem => {
       }
       return rules;
     },
-    
+
     async listRules() {
       const files = await this.rulesFiles();
-      return files.map(filePath => {
+      return files.map((filePath) => {
         // Extract just the filename without the path
         return path.basename(filePath);
       });
     },
-    
+
     async readRuleFile(filePath: string): Promise<string> {
       try {
         // If full path provided, use it directly
@@ -81,16 +81,17 @@ export const fileSystemBuilder = (): FileSystem => {
           const absolutePath = filePath;
           return await fs.readFile(absolutePath, 'utf-8');
         }
-        
+
         // If just a filename provided, find it in the rules directory
         const files = await this.rulesFiles();
-        const ruleFile = files.find(file => file.endsWith(`/${filePath}`)) || 
-                         files.find(file => path.basename(file) === filePath);
-                         
+        const ruleFile =
+          files.find((file) => file.endsWith(`/${filePath}`)) ||
+          files.find((file) => path.basename(file) === filePath);
+
         if (!ruleFile) {
           throw new Error(`Rule file not found: ${filePath}`);
         }
-        
+
         return await fs.readFile(ruleFile, 'utf-8');
       } catch (error) {
         console.error(`Error reading rule file ${filePath}:`, error);

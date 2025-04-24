@@ -7,12 +7,14 @@ interface GenesisToolsInfoInput {
 
 class GenesisToolsInfoTool extends MCPTool<GenesisToolsInfoInput> {
   name = 'genesis-tools-info';
-  description = 'Provides information about the available Genesis documentation tools and how to use them effectively with AI';
+  description =
+    'Provides information about the available Genesis documentation tools and how to use them effectively with AI';
 
   schema = {
     detail: {
       type: z.string().optional(),
-      description: 'Optional parameter to get detailed information about a specific aspect of the tools (e.g., "search", "rules", "files")',
+      description:
+        'Optional parameter to get detailed information about a specific aspect of the tools (e.g., "search", "rules", "files")',
     },
   };
 
@@ -21,7 +23,7 @@ class GenesisToolsInfoTool extends MCPTool<GenesisToolsInfoInput> {
     if (input.detail) {
       return this.getDetailedInfo(input.detail);
     }
-    
+
     return this.getOverview();
   }
 
@@ -63,12 +65,16 @@ For more detailed information about each tool, provide a 'detail' parameter with
 
   private getDetailedInfo(detail: string): string {
     const lowerDetail = detail.toLowerCase();
-    
+
     if (lowerDetail.includes('search')) {
       return this.getSearchToolsInfo();
     } else if (lowerDetail.includes('file') || lowerDetail.includes('content')) {
       return this.getFileToolsInfo();
-    } else if (lowerDetail.includes('rule') || lowerDetail.includes('standard') || lowerDetail.includes('convention')) {
+    } else if (
+      lowerDetail.includes('rule') ||
+      lowerDetail.includes('standard') ||
+      lowerDetail.includes('convention')
+    ) {
       return this.getRulesToolsInfo();
     } else {
       return `No detailed information available for "${detail}". Try using "search", "files", or "rules" as the detail parameter.`;
