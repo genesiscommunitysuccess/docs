@@ -95,7 +95,7 @@ id: '8.2'
 ###### Fixes
 
 * `genesis-clustersupport` : Only initialise process metadata service where the `PROCESS_MET_DATA` table exists in the db 
-* `genesis-logging` : Fixed issues where `startServer` would hang if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process
+* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process
 
 #### 8.2.21
 
