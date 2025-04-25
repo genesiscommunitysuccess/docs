@@ -770,16 +770,16 @@ Here is a full list of DbMon commands and their arguments.
 | [distinct](#finding-distinct-records)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                             |
 | [displayFields](#viewing-selected-columns)     | `<field_names>`                             | display only selected columns                                          |
 | [find](#finding-and-viewing-a-specific-record)                        | `<key_name>`                                | find a specific record in a index                                      |
-| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                                        |
-| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                                        |
+| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |  set the next sequence number for the specified field; **only use when all processes have been stopped**   |
+| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |          set the next sequence number for the specified field; **only use when all processes have been stopped** |
 | [first](#finding-the-first-and-last-record)             | `<key_name>`                                | get the first record by key                                            |
 | help                                 |                                             | list all commands                                                      |
 | [insert](#inserting-a-new-record)                    |                                             | insert a new record with the currently selected fields                                                    |
 | [last](#finding-the-first-and-last-record)              | `<key_name>`                                | get the last record by key                                             |
-| listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                                        |
+| listAll                              | `<key_name> <num_key_fields> <max_records>` |  requires the [table or view context](#finding-and-viewing-information) and the record context; lists all the records from the table or view, which have the same value as the context record for the first fields of the key (if all the fields for the key are used, only one record is returned)  |
 | [next](#displaying-the-next-record)                        | `<key_name>`                                | get the next record by key                                             |
-| qsearch                              | `<condition> [-l <limit>]`                  |                                                                        |
-| qshow                                |                                             |                                                                        |
+| qsearch                              | `<condition> [-l <limit>]`                  |  return the records that match the criteria, excluding columns with null values  |
+| qshow                                |                                             |   display the current record, excluding columns with null values          |
 | [search](#searching-for-one-or-more-records)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                             |
 | [set](#changing-the-value-of-a-field)                | `<field_name> <field_value>`                | set a field                                                            |
 | sequenceNumber                       | `<sequence_name>`                           | displays the last generated sequence number for the table or view      |
