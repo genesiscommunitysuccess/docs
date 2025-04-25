@@ -136,6 +136,34 @@ class MixinCodeSamplesTool extends MCPTool<MixinCodeSamplesInput> {
   }
 
   /**
+   * Extract GitHub repository URLs directly from content
+   */
+  private extractGitHubRepoUrls(content: string): string[] {
+    const repoUrls: string[] = [];
+    
+    // Look for GitHub URLs in the content
+    const githubPattern = /https:\/\/github\.com\/([^\/\s"')]+)\/([^\/\s"')]+)/g;
+    const matches = [...content.matchAll(githubPattern)];
+    
+    for (const match of matches) {
+      const fullUrl = match[0];
+      const owner = match[1];
+      const repo = match[2];
+      
+      // Check if this is a repo URL (not a file or issue)
+      if (owner && repo && !fullUrl.includes('/blob/') && !fullUrl.includes('/tree/')) {
+        repoUrls.push(`${owner}/${repo}`);
+      } else if (owner && repo) {
+        // This is a URL to a specific file or directory in the repo
+        repoUrls.push(`${owner}/${repo}`);
+      }
+    }
+    
+    // Return unique repository URLs
+    return [...new Set(repoUrls)];
+  }
+
+  /**
    * Fetch repositories from GitHub API
    */
   private async fetchRepositories(): Promise<any[]> {
@@ -280,10 +308,19 @@ class MixinCodeSamplesTool extends MCPTool<MixinCodeSamplesInput> {
         };
       }
       
+      // Fix for duplicate "docs/" in path
+      let mdxFilePath = input.mdxFilePath;
+      if (mdxFilePath.startsWith('docs/') && localFolder.endsWith('/docs')) {
+        mdxFilePath = mdxFilePath.substring(5); // Remove the 'docs/' prefix
+        console.log(`Adjusted mdxFilePath to prevent duplicate docs/ in path: ${mdxFilePath}`);
+      }
+      
       // Construct the full path to the MDX file
-      const fullMdxPath = path.isAbsolute(input.mdxFilePath) 
-        ? input.mdxFilePath 
-        : path.join(localFolder, input.mdxFilePath);
+      const fullMdxPath = path.isAbsolute(mdxFilePath) 
+        ? mdxFilePath 
+        : path.join(localFolder, mdxFilePath);
+      
+      console.log(`Full MDX path: ${fullMdxPath}`);
       
       // Read and parse MDX file
       const mdxContent = await this.readMdxFile(fullMdxPath);
@@ -294,17 +331,33 @@ class MixinCodeSamplesTool extends MCPTool<MixinCodeSamplesInput> {
         };
       }
       
+      // Extract GitHub repository URLs directly from content
+      const directRepoUrls = this.extractGitHubRepoUrls(mdxContent);
+      console.log(`Found ${directRepoUrls.length} GitHub repository URLs directly in content:`, directRepoUrls);
+      
       // Extract key terms from MDX content
       const keyTerms = this.extractKeyTerms(mdxContent);
       console.log(`Extracted ${keyTerms.length} key terms:`, keyTerms);
       
-      if (keyTerms.length === 0) {
+      if (keyTerms.length === 0 && directRepoUrls.length === 0) {
         return {
           success: false,
-          error: `No key terms could be extracted from the MDX file: ${fullMdxPath}`
+          error: `No key terms or GitHub repositories could be extracted from the MDX file: ${fullMdxPath}`
         };
       }
       
+      // If we have direct repository URLs, return them immediately
+      if (directRepoUrls.length > 0) {
+        return {
+          success: true,
+          mdxFile: path.basename(fullMdxPath),
+          extractedTerms: keyTerms,
+          repos: directRepoUrls,
+          relevanceNote: "Repositories were directly referenced in the MDX content."
+        };
+      }
+      
+      // If no direct URLs were found, fall back to the original matching logic
       // Fetch repositories from GitHub
       const repos = await this.fetchRepositories();
       if (repos.length === 0) {
@@ -320,6 +373,15 @@ class MixinCodeSamplesTool extends MCPTool<MixinCodeSamplesInput> {
       
       // Limit to max repos
       const topMatches = matches.slice(0, maxRepos);
+      
+      // Extract repository URLs from the top matches
+      const repoUrls = topMatches.map(match => {
+        // Extract owner/repo from URL
+        const urlParts = match.url.split('/');
+        const owner = urlParts[urlParts.length - 2];
+        const repo = urlParts[urlParts.length - 1];
+        return `${owner}/${repo}`;
+      });
       
       // Group matches by category
       const matchesByCategory: Record<string, RepoMatch[]> = {};
@@ -339,6 +401,7 @@ class MixinCodeSamplesTool extends MCPTool<MixinCodeSamplesInput> {
         totalMatches: matches.length,
         topMatches,
         matchesByCategory,
+        repos: repoUrls,
         relevanceNote: "Repositories are matched based on key terms extracted from the .mdx file and scored by relevance. Higher scores indicate better matches."
       };
       

@@ -170,13 +170,17 @@ async function testDocsReadme(detail?: string) {
 }
 
 // Function to test the ingest tool
-async function testIngest(folder: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
+async function testIngest(folder: string, repository?: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
   console.log('\nTesting IngestTool');
   
   try {
     const tool = new IngestTool();
     
-    console.log(`Packing folder: ${folder}`);
+    if (repository) {
+      console.log(`Processing repository: ${repository}`);
+    } else {
+      console.log(`Packing folder: ${folder}`);
+    }
     console.log(`Output format: ${outputFormat || 'markdown'}`);
     console.log(`Max file size: ${maxFileSizeKb || '50'}KB`);
     if (ignorePatterns) {
@@ -184,7 +188,8 @@ async function testIngest(folder: string, outputFormat?: string, maxFileSizeKb?:
     }
     
     const result = await tool.execute({ 
-      folder,
+      folder: repository ? undefined : folder,
+      repository,
       outputFormat,
       maxFileSizeKb,
       ignorePatterns
@@ -317,6 +322,9 @@ async function main() {
   const folderArg = process.argv.find(arg => arg.startsWith('--folder='));
   const folder = folderArg ? folderArg.split('=')[1] : path.resolve(projectRoot, '../docs');
   
+  const repositoryArg = process.argv.find(arg => arg.startsWith('--repository='));
+  const repository = repositoryArg ? repositoryArg.split('=')[1] : undefined;
+  
   const formatArg = process.argv.find(arg => arg.startsWith('--format='));
   const outputFormat = formatArg ? formatArg.split('=')[1] : undefined;
   
@@ -361,7 +369,7 @@ async function main() {
       break;
       
     case TestTool.Ingest:
-      await testIngest(folder, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testIngest(folder, repository, outputFormat, maxFileSizeKb, ignorePatterns);
       break;
       
     case TestTool.EnrichedContent:
@@ -392,7 +400,7 @@ async function main() {
       }
       await testRulesView(ruleName);
       await testDocsReadme(detail);
-      await testIngest(folder, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testIngest(folder, repository, outputFormat, maxFileSizeKb, ignorePatterns);
       await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
       break;
       

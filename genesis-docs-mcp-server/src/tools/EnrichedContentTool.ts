@@ -1,325 +1,531 @@
 import { MCPTool } from 'mcp-framework';
 import { z } from 'zod';
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
 import DocContentSearchTool from './DocContentSearchTool.js';
 import IngestTool from './IngestTool.js';
-import path from 'path';
-import fs from 'fs';
-import { promises as fsPromises } from 'fs';
-import { fileURLToPath } from 'url';
+import MixinCodeSamplesTool from './MixinCodeSamplesTool.js';
 
 // ES Module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../..');
-const defaultDocsFolder = path.resolve(projectRoot, '../docs');
+
+interface DocContentSearchResult {
+  success: boolean;
+  error?: string;
+  matches?: Array<{
+    file: string;
+    content?: string;
+    matches?: number;
+  }>;
+}
+
+interface MixinCodeSamplesResult {
+  success: boolean;
+  error?: string;
+  repos?: string[];
+  mdxFile?: string;
+  extractedTerms?: string[];
+  totalMatches?: number;
+  topMatches?: any[];
+  matchesByCategory?: any;
+  relevanceNote?: string;
+}
 
 interface EnrichedContentInput {
   searchString: string;
+  maxResults?: string;
+  includeOriginalText?: string;
   outputFormat?: string;
   maxFileSizeKb?: string;
   localFolder?: string;
-  maxResults?: string;
-}
-
-interface FileResult {
-  filePath: string;
-  fullPath: string;
-  content: string;
-  size: number;
-  tokens: number;
 }
 
 class EnrichedContentTool extends MCPTool<EnrichedContentInput> {
   name = 'enriched';
-  description =
-    'Performs a content search to find relevant files, then ingests all matching files and combines them into a single result for detailed information.';
+  description = 'Search for documentation and enrich it with relevant code samples from GitHub repos';
+  
+  private contentSearchTool = new DocContentSearchTool();
+  private ingestTool = new IngestTool();
+  private codeSamplesTool = new MixinCodeSamplesTool();
 
   schema = {
     searchString: {
       type: z.string(),
       description: 'Text to search for in documentation files',
     },
+    maxResults: {
+      type: z.string().optional().default('3'),
+      description: 'Maximum number of files to process',
+    },
+    includeOriginalText: {
+      type: z.string().optional().default('true'),
+      description: 'Whether to include the original documentation text in the output',
+    },
     outputFormat: {
       type: z.string().optional().default('markdown'),
-      description: 'Output format. Options: markdown, xml, json (default: markdown)',
+      description: 'Output format for ingested content (markdown, xml, json)',
     },
     maxFileSizeKb: {
-      type: z.string().optional().default('50'),
-      description: 'Maximum file size in KB to include in the output (default: 50)',
+      type: z.string().optional().default('100'),
+      description: 'Maximum file size to include in KB',
     },
     localFolder: {
       type: z.string().optional(),
-      description: 'Local folder path to use for ingestion (defaults to ../docs)',
-    },
-    maxResults: {
-      type: z.string().optional().default('5'),
-      description: 'Maximum number of files to process (default: 5)',
+      description: 'Local folder path to use for ingestion',
     },
   };
 
   /**
-   * Read a single file and return its contents and metadata
+   * Extract GitHub repository URLs directly from content
    */
-  private async readSingleFile(filePath: string): Promise<FileResult | null> {
-    try {
-      console.log(`Reading file: ${filePath}`);
+  private extractGitHubRepoUrls(content: string): string[] {
+    const repoUrls: string[] = [];
+    
+    // Look for GitHub URLs in the content
+    const githubPattern = /https:\/\/github\.com\/([^\/\s"')]+)\/([^\/\s"')]+)/g;
+    const matches = [...content.matchAll(githubPattern)];
+    
+    for (const match of matches) {
+      const fullUrl = match[0];
+      const owner = match[1];
+      const repo = match[2];
       
-      // Check if file exists and is accessible
-      const stats = await fsPromises.stat(filePath);
-      if (!stats.isFile()) {
-        console.log(`Path exists but is not a file: ${filePath}`);
-        return null;
+      // Check if this is a repo URL (not a file or issue)
+      if (owner && repo) {
+        // Just get the repo owner/name, without the specific path
+        repoUrls.push(`${owner}/${repo}`);
       }
-      
-      // Read the file content
-      const content = await fsPromises.readFile(filePath, 'utf-8');
-      
-      // Estimate tokens as ~4 characters per token
-      const tokens = Math.round(content.length / 4);
-      
-      return {
-        filePath: path.basename(filePath),
-        fullPath: filePath,
-        content,
-        size: stats.size,
-        tokens
-      };
-    } catch (error) {
-      console.error(`Error reading file: ${filePath}`, error);
-      return null;
-    }
-  }
-
-  /**
-   * Extract all file paths from search results
-   */
-  private extractFilePaths(searchResult: string): string[] {
-    const regex = /filePath: (.*?)(?:\n|\r|$)/g;
-    const matches = [...searchResult.matchAll(regex)];
-    
-    if (matches.length === 0) {
-      return [];
     }
     
-    return matches.map(match => match[1].trim());
-  }
-
-  /**
-   * Combine multiple file contents into a single output file
-   */
-  private async combineFiles(files: FileResult[], input: EnrichedContentInput): Promise<any> {
-    try {
-      // Create a timestamp for the output filename
-      const timestamp = new Date().getTime();
-      const outputFilename = `combined-${timestamp}.md`;
-      
-      // Prepare the combined content
-      let combinedContent = `# Combined Results for "${input.searchString}"\n\n`;
-      
-      // Add each file with headers
-      files.forEach(file => {
-        combinedContent += `## ${file.filePath}\n\n`;
-        combinedContent += file.content;
-        combinedContent += '\n\n---\n\n';
-      });
-      
-      // Save combined file to dist/output directory
-      const outputDir = path.join(projectRoot, 'dist', 'output');
-      await fsPromises.mkdir(outputDir, { recursive: true });
-      const outputPath = path.join(outputDir, outputFilename);
-      await fsPromises.writeFile(outputPath, combinedContent);
-      
-      // Calculate combined stats
-      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-      const totalTokens = files.reduce((sum, file) => sum + file.tokens, 0);
-      
-      return {
-        success: true,
-        message: `Successfully combined ${files.length} files`,
-        files: files.map(f => f.filePath),
-        stats: {
-          outputSize: `${(totalSize / 1024).toFixed(2)} KB`,
-          estimatedTokens: totalTokens,
-          fileCount: files.length,
-          outputFormat: 'markdown'
-        },
-        outputFile: outputFilename,
-        relativePath: `output/${outputFilename}`,
-      };
-    } catch (error) {
-      console.error('Error combining files:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : String(error)
-      };
-    }
-  }
-
-  /**
-   * Execute the IngestTool with the given folder and return a structured result
-   */
-  private async runIngest(folder: string, filePath: string, targetSubPath: string | null, input: EnrichedContentInput) {
-    const ingestTool = new IngestTool();
-    console.log(`Calling IngestTool with folder: ${folder}`);
-    
-    const ingestResult = await ingestTool.execute({
-      folder,
-      outputFormat: input.outputFormat,
-      maxFileSizeKb: input.maxFileSizeKb
-    });
-    
-    const result: any = {
-      searchString: input.searchString,
-      filePath,
-      targetFolder: folder,
-      ingestResult
-    };
-    
-    // Only add targetSubPath if it exists
-    if (targetSubPath) {
-      result.targetSubPath = targetSubPath;
-    }
-    
-    return result;
+    // Return unique repository URLs
+    return [...new Set(repoUrls)];
   }
 
   async execute(input: EnrichedContentInput) {
+    console.log(`Starting enriched content search for: ${input.searchString}`);
+    
     try {
-      // Determine and validate local folder
-      const localFolder = input.localFolder || defaultDocsFolder;
-      const maxResults = parseInt(input.maxResults || '5', 10);
-      
-      try {
-        const stats = fs.statSync(localFolder);
-        if (!stats.isDirectory()) {
-          return {
-            success: false,
-            error: `Local folder is not a directory: ${localFolder}`
-          };
-        }
-        console.log(`Using local folder for ingestion: ${localFolder}`);
-      } catch (err) {
-        return {
-          success: false,
-          error: `Cannot access local folder: ${localFolder}. Error: ${err instanceof Error ? err.message : String(err)}`
-        };
-      }
-
-      // Search for content
-      const contentSearchTool = new DocContentSearchTool();
-      const searchResult = await contentSearchTool.execute({
+      // Step 1: Search for content
+      const contentSearchResponse = await this.contentSearchTool.execute({
         searchString: input.searchString,
         showContent: 'true',
       });
-
-      // Validate search results
-      if (typeof searchResult !== 'string' || searchResult.trim() === '') {
-        return 'No search results found for the provided search string.';
-      }
-
-      // Extract all file paths from search results
-      const filePaths = this.extractFilePaths(searchResult);
       
-      if (filePaths.length === 0) {
-        return 'No valid file paths found in search results.';
-      }
-      
-      console.log(`Found ${filePaths.length} file paths in search results.`);
-      
-      // Limit the number of results to process
-      const limitedPaths = filePaths.slice(0, maxResults);
-      
-      // Process each file
-      const fileResults: FileResult[] = [];
-      
-      for (const relativeFilePath of limitedPaths) {
-        // Construct the full path to the actual file
-        const fullFilePath = path.join(
-          localFolder, 
-          relativeFilePath.startsWith('docs/') ? relativeFilePath.substring(5) : relativeFilePath
-        );
-        
-        console.log(`Processing file: ${relativeFilePath} -> ${fullFilePath}`);
-        
-        // Check if the file exists
-        if (fs.existsSync(fullFilePath) && fs.statSync(fullFilePath).isFile()) {
-          const fileResult = await this.readSingleFile(fullFilePath);
-          if (fileResult) {
-            fileResults.push(fileResult);
-          }
-        } else {
-          console.log(`File not found or not a regular file: ${fullFilePath}`);
+      // The DocContentSearchTool returns a string, not an object
+      // Parse the response string to extract file paths
+      if (typeof contentSearchResponse === 'string') {
+        if (contentSearchResponse.includes('No results:')) {
+          return {
+            success: false,
+            error: `No documentation matches found for: ${input.searchString}`,
+          };
         }
-      }
-      
-      if (fileResults.length === 0) {
-        console.log(`No files could be processed. Falling back to directory-based approach.`);
         
-        // Fall back to the original directory-based approach with the first file path
-        if (filePaths.length > 0) {
-          const firstFilePath = filePaths[0];
+        // Parse the search results from the string response
+        const matches = [];
+        
+        // Set to collect repositories for ingestion
+        const reposToIngest = new Set<string>();
+        
+        // Extract files from the response
+        const fileMatches = contentSearchResponse.split('-----').filter(section => section.trim());
+        
+        for (const fileSection of fileMatches) {
+          const filePathMatch = fileSection.match(/filePath: ([^\n]+)/);
           
-          // Parse file path to get components
-          const pathWithoutDocsPrefix = firstFilePath.startsWith('docs/') ? firstFilePath.substring(5) : firstFilePath;
-          const pathComponents = pathWithoutDocsPrefix.split('/');
-          
-          if (pathComponents.length === 0) {
-            console.log(`Empty path components, falling back to full folder: ${localFolder}`);
-            return this.runIngest(localFolder, firstFilePath, null, input);
-          }
-          
-          // Extract top-level component
-          const firstComponent = pathComponents[0];
-          const topLevelComponent = firstComponent;
-          
-          console.log(`Extracted top-level component: ${topLevelComponent}`);
-          
-          // Determine target path based on file path structure
-          const lastComponent = pathComponents[pathComponents.length - 1];
-          const isFile = lastComponent && (lastComponent.endsWith('.md') || lastComponent.endsWith('.mdx'));
-          
-          // Create subfolder path 
-          const targetSubPath = isFile && pathComponents.length > 1 
-            ? pathComponents.slice(0, -1).join('/') // Remove filename for file paths
-            : (pathComponents.length > 1 ? `${pathComponents[0]}/${pathComponents[1]}` : pathComponents[0]); // Use top/second level for dirs
-          
-          console.log(`Target subfolder path: ${targetSubPath}`);
-          
-          // Try target subfolder path first
-          const targetFolderPath = path.join(localFolder, targetSubPath);
-          console.log(`Checking target folder: ${targetFolderPath}`);
-          
-          if (fs.existsSync(targetFolderPath) && fs.statSync(targetFolderPath).isDirectory()) {
-            console.log(`Using target folder: ${targetFolderPath}`);
-            return this.runIngest(targetFolderPath, firstFilePath, targetSubPath, input);
-          }
-          
-          // Try top-level component as fallback
-          if (topLevelComponent && topLevelComponent !== targetSubPath) {
-            const fallbackPath = path.join(localFolder, topLevelComponent);
+          if (filePathMatch && filePathMatch[1]) {
+            const filePath = filePathMatch[1].trim();
             
-            if (fs.existsSync(fallbackPath) && fs.statSync(fallbackPath).isDirectory()) {
-              console.log(`Found fallback target folder: ${fallbackPath}`);
-              return this.runIngest(fallbackPath, firstFilePath, null, input);
+            // Extract content - but we'll replace this later with the full document
+            const matchContent = fileSection.split('\n\n').slice(1).join('\n\n').trim();
+            
+            // Extract GitHub repositories directly from the content
+            const repoUrls = this.extractGitHubRepoUrls(matchContent);
+            
+            // Add each repository to the ingest list
+            for (const repo of repoUrls) {
+              reposToIngest.add(repo);
+            }
+            
+            matches.push({
+              file: filePath,
+              matchContent,
+              matches: (fileSection.match(/\(Match \d+/g) || []).length,
+              repos: repoUrls
+            });
+          }
+        }
+        
+        if (matches.length === 0) {
+          return {
+            success: false,
+            error: `No documentation matches found for: ${input.searchString}`,
+          };
+        }
+        
+        console.log(`Found ${matches.length} documentation matches`);
+        
+        // Limit number of files to process
+        const maxResults = parseInt(input.maxResults || '3', 10);
+        const filesToProcess = matches.slice(0, maxResults);
+        
+        const results = [];
+        
+        // Step 2: Process each file to extract relevant code samples and full content
+        for (const fileMatch of filesToProcess) {
+          const { file } = fileMatch;
+          console.log(`Processing file: ${file}`);
+          
+          // Get code samples from the MixinCodeSamplesTool
+          const codeSamplesResponse = await this.codeSamplesTool.execute({
+            mdxFilePath: file,
+          });
+          
+          // Safely convert to our expected type
+          const codeSamplesResult = codeSamplesResponse as unknown as MixinCodeSamplesResult;
+          
+          console.log('MixinCodeSamplesResult success:', codeSamplesResult.success);
+          console.log('MixinCodeSamplesResult repos:', codeSamplesResult.repos);
+          
+          // If code samples are found, add the repos to the ingest list
+          if (codeSamplesResult.success && codeSamplesResult.repos) {
+            console.log(`Found ${codeSamplesResult.repos.length} relevant repositories for ${file}`);
+            
+            // Add repos to the list to ingest
+            for (const repo of codeSamplesResult.repos) {
+              console.log(`Adding repository for ingestion: ${repo}`);
+              reposToIngest.add(repo);
             }
           }
           
-          // Use entire local folder as last resort
-          console.log(`No suitable target folder found. Using entire local folder: ${localFolder}`);
-          return this.runIngest(localFolder, firstFilePath, null, input);
-        } else {
+          // Get the full content of the MDX file
+          let fullContent = '';
+          try {
+            // Determine folder to use
+            const localFolder = input.localFolder || path.resolve(projectRoot, '../docs');
+            
+            // Fix for duplicate "docs/" in path
+            let mdxFilePath = file;
+            if (mdxFilePath.startsWith('docs/') && localFolder.endsWith('/docs')) {
+              mdxFilePath = mdxFilePath.substring(5); // Remove the 'docs/' prefix
+            }
+            
+            // Construct the full path to the MDX file
+            const fullMdxPath = path.isAbsolute(mdxFilePath) 
+              ? mdxFilePath 
+              : path.join(localFolder, mdxFilePath);
+            
+            // Read the full content of the file
+            const mdxContent = await fs.readFile(fullMdxPath, 'utf-8');
+            fullContent = mdxContent;
+            console.log(`Read full content for file: ${file}`);
+          } catch (err) {
+            console.error(`Error reading full content for ${file}:`, err);
+            // Fallback to match content if we can't read the full file
+            fullContent = fileMatch.matchContent;
+          }
+          
+          results.push({
+            file,
+            content: fullContent, 
+            codeSamplesResult
+          });
+        }
+        
+        // Step 3: Ingest all unique repositories found
+        const ingestResults = [];
+        
+        if (reposToIngest.size > 0) {
+          console.log(`Ingesting ${reposToIngest.size} unique repositories`);
+          
+          for (const repo of reposToIngest) {
+            console.log(`Ingesting repository: ${repo}`);
+            
+            const ingestResult = await this.ingestTool.execute({
+              repository: repo,
+              outputFormat: input.outputFormat || 'markdown',
+              maxFileSizeKb: input.maxFileSizeKb || '100',
+              ignorePatterns: '*.jpg,*.png,*.gif,node_modules/**,dist/**',
+              folder: input.localFolder,
+            });
+            
+            ingestResults.push({
+              repository: repo,
+              ingestResult
+            });
+          }
+        }
+        
+        // Step 4: Prepare the combined result
+        const includeOriginalText = input.includeOriginalText !== 'false';
+        
+        // Create temporary directories for the combined output
+        const tempDir = path.join(projectRoot, 'dist', 'temp');
+        const outputDir = path.join(projectRoot, 'dist', 'output');
+        await fs.mkdir(tempDir, { recursive: true });
+        await fs.mkdir(outputDir, { recursive: true });
+        
+        // Create a random filename for the output
+        const timestamp = new Date().getTime();
+        const outputFilename = `enriched-${timestamp}.md`;
+        const outputPath = path.join(outputDir, outputFilename);
+        
+        // Combine all documentation files and code samples
+        let combinedOutput = `# Enriched Content for: ${input.searchString}\n\n`;
+        
+        for (const result of results) {
+          combinedOutput += `## Documentation: ${result.file}\n\n`;
+          
+          if (includeOriginalText && result.content) {
+            combinedOutput += `### Original Content\n\n${result.content}\n\n`;
+          }
+          
+          if (result.codeSamplesResult.success && result.codeSamplesResult.repos) {
+            combinedOutput += `### Related Code Repositories\n\n`;
+            
+            for (const repo of result.codeSamplesResult.repos) {
+              combinedOutput += `- ${repo}\n`;
+            }
+            
+            combinedOutput += `\n`;
+          }
+        }
+        
+        // Add ingested repository content
+        if (ingestResults.length > 0) {
+          combinedOutput += `## Related Code Content\n\n`;
+          
+          for (const ingestResult of ingestResults) {
+            if (ingestResult.ingestResult.success && ingestResult.ingestResult.relativePath) {
+              combinedOutput += `### From Repository: ${ingestResult.repository}\n\n`;
+              
+              // Get the path to the ingested content file
+              const ingestedContentPath = path.join(projectRoot, 'dist', ingestResult.ingestResult.relativePath);
+              
+              try {
+                // Read the ingested content
+                const ingestedContent = await fs.readFile(ingestedContentPath, 'utf-8');
+                
+                // Get the full content or truncate if extremely large to avoid memory issues
+                const contentSummary = ingestedContent.length > 20000 
+                  ? ingestedContent.substring(0, 20000) + '\n\n... (content truncated for brevity) ...'
+                  : ingestedContent;
+                
+                combinedOutput += `${contentSummary}\n\n`;
+              } catch (err) {
+                combinedOutput += `Error reading ingested content: ${err instanceof Error ? err.message : String(err)}\n\n`;
+              }
+            }
+          }
+        }
+        
+        // Write the combined output to the file
+        await fs.writeFile(outputPath, combinedOutput);
+        
+        return {
+          success: true,
+          message: `Enriched content created successfully`,
+          matches: filesToProcess.length,
+          repositories: reposToIngest.size,
+          outputFile: outputFilename,
+          relativePath: `output/${outputFilename}`,
+        };
+      } else {
+        // Fallback to the old approach if the response is not a string
+        const contentSearchResult = contentSearchResponse as unknown as DocContentSearchResult;
+        
+        if (!contentSearchResult.success || !contentSearchResult.matches || contentSearchResult.matches.length === 0) {
           return {
             success: false,
-            error: "No files could be processed and no fallback paths available."
+            error: `No documentation matches found for: ${input.searchString}`,
           };
         }
+        
+        console.log(`Found ${contentSearchResult.matches.length} documentation matches`);
+        
+        // Limit number of files to process
+        const maxResults = parseInt(input.maxResults || '3', 10);
+        const filesToProcess = contentSearchResult.matches.slice(0, maxResults);
+        
+        const results = [];
+        const reposToIngest = new Set<string>();
+        
+        // Step 2: Process each file to extract relevant code samples
+        for (const fileMatch of filesToProcess) {
+          const { file, content } = fileMatch;
+          console.log(`Processing file: ${file}`);
+          
+          // Extract GitHub repositories directly from the content if available
+          if (content) {
+            const repoUrls = this.extractGitHubRepoUrls(content);
+            
+            // Add each repository to the ingest list
+            for (const repo of repoUrls) {
+              console.log(`Adding repository for ingestion: ${repo}`);
+              reposToIngest.add(repo);
+            }
+          }
+          
+          // Get code samples from the MixinCodeSamplesTool
+          const codeSamplesResponse = await this.codeSamplesTool.execute({
+            mdxFilePath: file,
+          });
+          
+          // Safely convert to our expected type
+          const codeSamplesResult = codeSamplesResponse as unknown as MixinCodeSamplesResult;
+          
+          console.log('MixinCodeSamplesResult success:', codeSamplesResult.success);
+          console.log('MixinCodeSamplesResult repos:', codeSamplesResult.repos);
+          
+          // If code samples are found, add the repos to the ingest list
+          if (codeSamplesResult.success && codeSamplesResult.repos) {
+            console.log(`Found ${codeSamplesResult.repos.length} relevant repositories for ${file}`);
+            
+            // Add repos to the list to ingest
+            for (const repo of codeSamplesResult.repos) {
+              console.log(`Adding repository for ingestion: ${repo}`);
+              reposToIngest.add(repo);
+            }
+          }
+          
+          // Get the full content of the MDX file
+          let fullContent = '';
+          try {
+            // Determine folder to use
+            const localFolder = input.localFolder || path.resolve(projectRoot, '../docs');
+            
+            // Fix for duplicate "docs/" in path
+            let mdxFilePath = file;
+            if (mdxFilePath.startsWith('docs/') && localFolder.endsWith('/docs')) {
+              mdxFilePath = mdxFilePath.substring(5); // Remove the 'docs/' prefix
+            }
+            
+            // Construct the full path to the MDX file
+            const fullMdxPath = path.isAbsolute(mdxFilePath) 
+              ? mdxFilePath 
+              : path.join(localFolder, mdxFilePath);
+            
+            // Read the full content of the file
+            const mdxContent = await fs.readFile(fullMdxPath, 'utf-8');
+            fullContent = mdxContent;
+            console.log(`Read full content for file: ${file}`);
+          } catch (err) {
+            console.error(`Error reading full content for ${file}:`, err);
+            // Fallback to match content if we can't read the full file
+            fullContent = content || '';
+          }
+          
+          results.push({
+            file,
+            content: fullContent,
+            codeSamplesResult
+          });
+        }
+        
+        // Step 3: Ingest all unique repositories found
+        const ingestResults = [];
+        
+        if (reposToIngest.size > 0) {
+          console.log(`Ingesting ${reposToIngest.size} unique repositories`);
+          
+          for (const repo of reposToIngest) {
+            console.log(`Ingesting repository: ${repo}`);
+            
+            const ingestResult = await this.ingestTool.execute({
+              repository: repo,
+              outputFormat: input.outputFormat || 'markdown',
+              maxFileSizeKb: input.maxFileSizeKb || '100',
+              ignorePatterns: '*.jpg,*.png,*.gif,node_modules/**,dist/**',
+              folder: input.localFolder,
+            });
+            
+            ingestResults.push({
+              repository: repo,
+              ingestResult
+            });
+          }
+        }
+        
+        // Step 4: Prepare the combined result
+        const includeOriginalText = input.includeOriginalText !== 'false';
+        
+        // Create temporary directories for the combined output
+        const tempDir = path.join(projectRoot, 'dist', 'temp');
+        const outputDir = path.join(projectRoot, 'dist', 'output');
+        await fs.mkdir(tempDir, { recursive: true });
+        await fs.mkdir(outputDir, { recursive: true });
+        
+        // Create a random filename for the output
+        const timestamp = new Date().getTime();
+        const outputFilename = `enriched-${timestamp}.md`;
+        const outputPath = path.join(outputDir, outputFilename);
+        
+        // Combine all documentation files and code samples
+        let combinedOutput = `# Enriched Content for: ${input.searchString}\n\n`;
+        
+        for (const result of results) {
+          combinedOutput += `## Documentation: ${result.file}\n\n`;
+          
+          if (includeOriginalText && result.content) {
+            combinedOutput += `### Original Content\n\n${result.content}\n\n`;
+          }
+          
+          if (result.codeSamplesResult.success && result.codeSamplesResult.repos) {
+            combinedOutput += `### Related Code Repositories\n\n`;
+            
+            for (const repo of result.codeSamplesResult.repos) {
+              combinedOutput += `- ${repo}\n`;
+            }
+            
+            combinedOutput += `\n`;
+          }
+        }
+        
+        // Add ingested repository content
+        if (ingestResults.length > 0) {
+          combinedOutput += `## Related Code Content\n\n`;
+          
+          for (const ingestResult of ingestResults) {
+            if (ingestResult.ingestResult.success && ingestResult.ingestResult.relativePath) {
+              combinedOutput += `### From Repository: ${ingestResult.repository}\n\n`;
+              
+              // Get the path to the ingested content file
+              const ingestedContentPath = path.join(projectRoot, 'dist', ingestResult.ingestResult.relativePath);
+              
+              try {
+                // Read the ingested content
+                const ingestedContent = await fs.readFile(ingestedContentPath, 'utf-8');
+                
+                // Get a summary (first 1000 characters) to avoid massive output
+                const contentSummary = ingestedContent.length > 2000 
+                  ? ingestedContent.substring(0, 2000) + '\n\n... (content truncated for brevity) ...'
+                  : ingestedContent;
+                
+                combinedOutput += `${contentSummary}\n\n`;
+              } catch (err) {
+                combinedOutput += `Error reading ingested content: ${err instanceof Error ? err.message : String(err)}\n\n`;
+              }
+            }
+          }
+        }
+        
+        // Write the combined output to the file
+        await fs.writeFile(outputPath, combinedOutput);
+        
+        return {
+          success: true,
+          message: `Enriched content created successfully`,
+          matches: filesToProcess.length,
+          repositories: reposToIngest.size,
+          outputFile: outputFilename,
+          relativePath: `output/${outputFilename}`,
+        };
       }
-      
-      // Combine all file results into a single output
-      console.log(`Successfully processed ${fileResults.length} files. Combining results.`);
-      return this.combineFiles(fileResults, input);
     } catch (error) {
-      console.error('Error during enriched content process:', error);
+      console.error(`Error during enriched content generation:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : String(error),
