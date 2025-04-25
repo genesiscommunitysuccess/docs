@@ -7,7 +7,15 @@ import DocFileViewTool from './tools/DocFileViewTool.js';
 import RulesViewTool from './tools/RulesViewTool.js';
 import GenesisDocsReadmeTool from './tools/GenesisDocsReadmeTool.js';
 import IngestTool from './tools/IngestTool.js';
+import EnrichedContentTool from './tools/EnrichedContentTool.js';
 import { fileSystem } from './services/FileSystem.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ES Module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 // Enum for selecting which tool to test
 enum TestTool {
@@ -17,6 +25,7 @@ enum TestTool {
   RulesView = 'rules',
   ToolsInfo = 'info',
   Ingest = 'ingest',
+  EnrichedContent = 'enriched',
   All = 'all'
 }
 
@@ -159,13 +168,13 @@ async function testDocsReadme(detail?: string) {
 }
 
 // Function to test the ingest tool
-async function testIngest(repository?: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
+async function testIngest(folder: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
   console.log('\nTesting IngestTool');
   
   try {
     const tool = new IngestTool();
     
-    console.log(`Packing repository: ${repository || 'genesiscommunitysuccess/docs'}`);
+    console.log(`Packing folder: ${folder}`);
     console.log(`Output format: ${outputFormat || 'markdown'}`);
     console.log(`Max file size: ${maxFileSizeKb || '50'}KB`);
     if (ignorePatterns) {
@@ -173,7 +182,7 @@ async function testIngest(repository?: string, outputFormat?: string, maxFileSiz
     }
     
     const result = await tool.execute({ 
-      repository,
+      folder,
       outputFormat,
       maxFileSizeKb,
       ignorePatterns
@@ -183,6 +192,38 @@ async function testIngest(repository?: string, outputFormat?: string, maxFileSiz
     console.log(JSON.stringify(result, null, 2));
   } catch (error) {
     console.error('Error executing IngestTool:', error);
+  }
+}
+
+// Function to test the enriched content tool
+async function testEnrichedContent(searchTerm: string, outputFormat?: string, maxFileSizeKb?: string, localFolder?: string) {
+  console.log('\nTesting EnrichedContentTool');
+  
+  try {
+    const tool = new EnrichedContentTool();
+    
+    console.log(`Searching for: "${searchTerm}"`);
+    if (outputFormat) {
+      console.log(`Output format: ${outputFormat}`);
+    }
+    if (maxFileSizeKb) {
+      console.log(`Max file size: ${maxFileSizeKb}KB`);
+    }
+    if (localFolder) {
+      console.log(`Using local folder: ${localFolder}`);
+    }
+    
+    const result = await tool.execute({ 
+      searchString: searchTerm,
+      outputFormat,
+      maxFileSizeKb,
+      localFolder
+    });
+    
+    console.log('\nEnriched content result:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing EnrichedContentTool:', error);
   }
 }
 
@@ -251,8 +292,8 @@ async function main() {
   const detail = detailArg ? detailArg.split('=')[1] : undefined;
 
   // Parse ingest options
-  const repoArg = process.argv.find(arg => arg.startsWith('--repo='));
-  const repository = repoArg ? repoArg.split('=')[1] : undefined;
+  const folderArg = process.argv.find(arg => arg.startsWith('--folder='));
+  const folder = folderArg ? folderArg.split('=')[1] : path.resolve(projectRoot, '../docs');
   
   const formatArg = process.argv.find(arg => arg.startsWith('--format='));
   const outputFormat = formatArg ? formatArg.split('=')[1] : undefined;
@@ -262,6 +303,10 @@ async function main() {
   
   const ignoreArg = process.argv.find(arg => arg.startsWith('--ignore='));
   const ignorePatterns = ignoreArg ? ignoreArg.split('=')[1] : undefined;
+  
+  // Parse localFolder option
+  const localFolderArg = process.argv.find(arg => arg.startsWith('--localFolder='));
+  const localFolder = localFolderArg ? localFolderArg.split('=')[1] : undefined;
 
   // Run selected tool(s)
   switch (toolToRun) {
@@ -294,7 +339,11 @@ async function main() {
       break;
       
     case TestTool.Ingest:
-      await testIngest(repository, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testIngest(folder, outputFormat, maxFileSizeKb, ignorePatterns);
+      break;
+      
+    case TestTool.EnrichedContent:
+      await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
       break;
       
     case TestTool.All:
@@ -310,7 +359,8 @@ async function main() {
       }
       await testRulesView(ruleName);
       await testDocsReadme(detail);
-      await testIngest(repository, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testIngest(folder, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
       break;
       
     default:
@@ -354,10 +404,16 @@ ToolsInfo Options:
   --detail=<detail-name>               Detail to show (if omitted, shows overview)
 
 Ingest Options:
-  --repo=<repository>                  Repository to pack (format: username/repo or full URL)
+  --folder=<path>                     Local folder path to ingest (default: ../docs)
+  --format=<format>                   Output format: markdown, xml, json (default: markdown)
+  --max-size=<max-file-size-kb>       Maximum file size to include in KB (default: 50KB)
+  --ignore=<pattern1,pattern2>        Comma-separated list of glob patterns to ignore
+
+EnrichedContent Options:
+  [search-term]                        Term to search for content and ingest
   --format=<format>                    Output format: markdown, xml, json (default: markdown)
   --max-size=<max-file-size-kb>        Maximum file size to include in KB (default: 50KB)
-  --ignore=<pattern1,pattern2>         Comma-separated list of glob patterns to ignore
+  --localFolder=<path>                 Local folder path to use for ingestion (defaults to ../docs)
 
 Examples:
   npm run manual-test -- "grid-pro"                       # Search for "grid-pro" using FilenameSearchTool
@@ -368,6 +424,7 @@ Examples:
   npm run manual-test -- --tool=info --detail=search      # Get detailed info about search tools
   npm run manual-test -- --tool=info --detail=best-practices      # Get detailed info about best practices
   npm run manual-test -- --tool=all "grid"                # Run all tools with "grid" as search term
+  npm run manual-test -- --tool=enriched "grid-pro"   # Search for "grid-pro" and ingest content
   `);
   process.exit(0);
 }

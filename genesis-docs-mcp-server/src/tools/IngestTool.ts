@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../..');
 
 interface IngestInput {
-  repository?: string;
+  folder: string;
   outputFormat?: string;
   maxFileSizeKb?: string;
   ignorePatterns?: string;
@@ -19,12 +19,12 @@ interface IngestInput {
 
 class IngestTool extends MCPTool<IngestInput> {
   name = 'ingest';
-  description = 'Packs GitHub repositories into a single AI-friendly file using repomix';
+  description = 'Packs local folders into a single AI-friendly file using repomix';
 
   schema = {
-    repository: {
-      type: z.string().optional().default('genesiscommunitysuccess/docs'),
-      description: 'GitHub repository to ingest documentation from (e.g., "username/repo")',
+    folder: {
+      type: z.string(),
+      description: 'Local folder path to ingest documentation from',
     },
     outputFormat: {
       type: z.string().optional().default('markdown'),
@@ -42,24 +42,29 @@ class IngestTool extends MCPTool<IngestInput> {
 
   async execute(input: IngestInput) {
     try {
-      const repository = input.repository || 'genesiscommunitysuccess/docs';
+      const folder = input.folder;
       const outputFormat = (input.outputFormat || 'markdown').toLowerCase();
       const maxFileSizeKb = input.maxFileSizeKb || '50';
       
-      // Format the repository as a GitHub URL if it's not already a full URL
-      const repoUrl = repository.startsWith('http') 
-        ? repository 
-        : `https://github.com/${repository}`;
+      // Verify local folder exists and is accessible
+      try {
+        const stats = await fs.stat(folder);
+        if (!stats.isDirectory()) {
+          throw new Error(`Path exists but is not a directory: ${folder}`);
+        }
+      } catch (err) {
+        throw new Error(`Cannot access folder: ${folder}. Error: ${err instanceof Error ? err.message : String(err)}`);
+      }
       
-      console.log(`Processing repository: ${repoUrl}`);
+      console.log(`Processing local folder: ${folder}`);
       
       // Create a temporary output path
-      const outputDir = path.join(projectRoot, 'dist', 'docs');
+      const outputDir = path.join(projectRoot, 'dist', 'output');
       await fs.mkdir(outputDir, { recursive: true });
       
       // Create a random filename for the output
       const timestamp = new Date().getTime();
-      const outputFilename = `repo-${timestamp}.${outputFormat === 'json' ? 'json' : outputFormat === 'xml' ? 'xml' : 'md'}`;
+      const outputFilename = `docs-${timestamp}.${outputFormat === 'json' ? 'json' : outputFormat === 'xml' ? 'xml' : 'md'}`;
       const outputPath = path.join(outputDir, outputFilename);
       
       // Parse ignore patterns if provided
@@ -67,35 +72,45 @@ class IngestTool extends MCPTool<IngestInput> {
       
       // Configure repomix options
       const options: CliOptions = {
-        remote: repoUrl,
         output: outputPath,
         style: outputFormat as any,
         maxFileSize: parseInt(maxFileSizeKb, 10) * 1024, // Convert to bytes
         ignorePatterns,
         compress: false, // Disable compression for easier handling
-        quiet: true, // Reduce console output
+        quiet: false, // Suppress console output for cleaner logs
+        removeEmptyLines: true, // Remove empty lines to reduce token usage     
       };
       
-      console.log(`Packing repository with repomix...`);
-      const result = await runCli(['.'], process.cwd(), options);
+      console.log(`Packing folder with repomix using options:`, JSON.stringify(options, null, 2));
+      
+      // Pass the folder as the first argument to runCli instead of using the local option
+      const result = await runCli([folder], process.cwd(), options);
       
       if (!result || !result.packResult) {
-        throw new Error('Failed to pack repository with repomix');
+        throw new Error(`Failed to pack folder with repomix. Result: ${JSON.stringify(result)}`);
       }
       
       // Read the generated file
       const outputContent = await fs.readFile(outputPath, 'utf-8');
       
-      // Save the packed file to dist/docs
-      const docsDir = path.join(projectRoot, 'dist', 'docs');
+      // Save the packed file to dist/output
+      const docsDir = path.join(projectRoot, 'dist', 'output');
       await fs.mkdir(docsDir, { recursive: true });
       
       // Save with a more descriptive filename
-      const repoName = repository.split('/').pop() || 'repository';
-      const docsFilename = `${repoName}-${timestamp}.${outputFormat === 'json' ? 'json' : outputFormat === 'xml' ? 'xml' : 'md'}`;
+      const folderName = path.basename(folder);
+      const docsFilename = `${folderName}-${timestamp}.${outputFormat === 'json' ? 'json' : outputFormat === 'xml' ? 'xml' : 'md'}`;
       const docsPath = path.join(docsDir, docsFilename);
       
       await fs.writeFile(docsPath, outputContent);
+      
+      // Delete the temporary output file
+      try {
+        await fs.unlink(outputPath);
+        console.log(`Deleted temporary file: ${outputPath}`);
+      } catch (err) {
+        console.warn(`Warning: Failed to delete temporary file ${outputPath}: ${err instanceof Error ? err.message : String(err)}`);
+      }
       
       // Calculate stats based on the output file
       const fileStats = await fs.stat(docsPath);
@@ -105,17 +120,17 @@ class IngestTool extends MCPTool<IngestInput> {
       
       return {
         success: true,
-        message: `Successfully packed repository: ${repository}`,
+        message: `Successfully packed folder: ${folder}`,
         stats: {
           outputSize: `${(totalSize / 1024).toFixed(2)} KB`,
           estimatedTokens: totalTokens,
           outputFormat,
         },
         outputFile: docsFilename,
-        relativePath: `docs/${docsFilename}`,
+        relativePath: `output/${docsFilename}`,
       };
     } catch (error) {
-      console.error('Error during repository packing:', error);
+      console.error(`Error during folder packing:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : String(error),

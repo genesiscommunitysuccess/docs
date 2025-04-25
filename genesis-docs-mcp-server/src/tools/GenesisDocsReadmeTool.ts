@@ -42,6 +42,7 @@ Welcome to the Genesis Documentation tools. These tools are designed to help AI 
 ### 📄 Content Tools
 
 - **doc-file-view**: View the contents of a documentation file
+- **enriched-content**: Searches for content and ingests the most relevant file for detailed information
 - **rules-view**: Read Genesis coding standards and conventions
 
 ## Working with Genesis Projects
@@ -63,6 +64,7 @@ Typical workflows include:
 2. **Searching for specific information**:
    - Use \`doc-content-search\` to find mentions of specific terms
    - Use \`doc-file-view\` to read the files that contain those terms
+   - For in-depth exploration, use \`enriched-content\` to get comprehensive information about a topic
 
 3. **Understanding coding standards**:
    - Use \`rules-view\` to list available coding rules
@@ -168,12 +170,50 @@ doc-file-view({
 ### Response Format:
 Returns the file content as raw markdown, preserving all formatting and newlines.
 
+## 📄 enriched-content
+
+This tool searches for content and then uses repomix to ingest only the specific folder in the Genesis repository that contains those files.
+
+### Parameters:
+- \`searchString\`: Text to search for in documentation files
+- \`outputFormat\`: (Optional) Output format. Options: markdown, xml, json (default: markdown)
+- \`maxFileSizeKb\`: (Optional) Maximum file size in KB to include in the output (default: 50)
+
+### Example Usage:
+\`\`\`
+enriched-content({ searchString: "grid component" })
+\`\`\`
+
+With output format specified:
+\`\`\`
+enriched-content({ 
+  searchString: "dataserver", 
+  outputFormat: "json" 
+})
+\`\`\`
+
+### Response Format:
+Returns an object containing:
+- The search string you provided
+- The file path where relevant content was found
+- The folder path extracted from the file path
+- The repository URL used for ingestion
+- The ingest result containing all files from the folder in the repository
+
+### How It Works:
+1. First searches the documentation content to find a relevant file path using the search string
+2. Extracts the folder path from the found file
+3. Constructs a GitHub repository URL pointing to that specific folder
+4. Uses repomix to ingest only that specific folder from the GitHub repository
+5. Returns both the specific file reference and the comprehensive documentation from that folder
+
 ## Best Practices for File Operations
 
 1. **Use paths from search results**: The file paths returned by \`filename-search\` and \`doc-content-search\` can be directly used with \`doc-file-view\`
 2. **Read files in chunks**: For large files, use \`offset\` and \`maxLines\` to read manageable sections
 3. **Explore related files**: Look for related files in the same directory for additional context
-4. **Understand the documentation structure**: Genesis documentation follows a consistent structure:
+4. **Use enriched-content for deep dives**: When you need comprehensive information about a topic, use \`enriched-content\` instead of multiple searches and reads
+5. **Understand the documentation structure**: Genesis documentation follows a consistent structure:
    - \`001_develop\`: Development documentation
    - \`002_how-to\`: How-to guides
    - \`003_build-deploy-operate\`: Build, deployment, and operations guides
