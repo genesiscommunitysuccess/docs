@@ -67,6 +67,23 @@ Get specific details about a topic:
 npm run manual-test -- --tool=info --detail=search
 ```
 
+## EnrichedContent Tool
+
+Basic enriched content search:
+```bash
+npm run manual-test -- "grid component" --tool=enriched
+```
+
+With specific output format:
+```bash
+npm run manual-test -- "dataserver" --tool=enriched --format=json
+```
+
+With custom file size limit:
+```bash
+npm run manual-test -- "authentication" --tool=enriched --max-size=100
+```
+
 ## Run All Tools
 
 Run all tools with one search term:

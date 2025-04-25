@@ -6,7 +6,17 @@ import DocContentSearchTool from './tools/DocContentSearchTool.js';
 import DocFileViewTool from './tools/DocFileViewTool.js';
 import RulesViewTool from './tools/RulesViewTool.js';
 import GenesisDocsReadmeTool from './tools/GenesisDocsReadmeTool.js';
+import IngestTool from './tools/IngestTool.js';
+import EnrichedContentTool from './tools/EnrichedContentTool.js';
+import MixinCodeSamplesTool from './tools/MixinCodeSamplesTool.js';
 import { fileSystem } from './services/FileSystem.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ES Module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 // Enum for selecting which tool to test
 enum TestTool {
@@ -15,6 +25,9 @@ enum TestTool {
   FileView = 'fileview',
   RulesView = 'rules',
   ToolsInfo = 'info',
+  Ingest = 'ingest',
+  EnrichedContent = 'enriched',
+  MixinCodeSamples = 'mixin-code-samples',
   All = 'all'
 }
 
@@ -156,6 +169,91 @@ async function testDocsReadme(detail?: string) {
   }
 }
 
+// Function to test the ingest tool
+async function testIngest(folder: string, repository?: string, outputFormat?: string, maxFileSizeKb?: string, ignorePatterns?: string) {
+  console.log('\nTesting IngestTool');
+  
+  try {
+    const tool = new IngestTool();
+    
+    if (repository) {
+      console.log(`Processing repository: ${repository}`);
+    } else {
+      console.log(`Packing folder: ${folder}`);
+    }
+    console.log(`Output format: ${outputFormat || 'markdown'}`);
+    console.log(`Max file size: ${maxFileSizeKb || '50'}KB`);
+    if (ignorePatterns) {
+      console.log(`Ignoring patterns: ${ignorePatterns}`);
+    }
+    
+    const result = await tool.execute({ 
+      folder: repository ? undefined : folder,
+      repository,
+      outputFormat,
+      maxFileSizeKb,
+      ignorePatterns
+    });
+    
+    console.log('\nPacking result:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing IngestTool:', error);
+  }
+}
+
+// Function to test the enriched content tool
+async function testEnrichedContent(searchTerm: string, outputFormat?: string, maxFileSizeKb?: string, localFolder?: string) {
+  console.log('\nTesting EnrichedContentTool');
+  
+  try {
+    const tool = new EnrichedContentTool();
+    
+    console.log(`Searching for: "${searchTerm}"`);
+    if (outputFormat) {
+      console.log(`Output format: ${outputFormat}`);
+    }
+    if (maxFileSizeKb) {
+      console.log(`Max file size: ${maxFileSizeKb}KB`);
+    }
+    if (localFolder) {
+      console.log(`Using local folder: ${localFolder}`);
+    }
+    
+    const result = await tool.execute({ 
+      searchString: searchTerm,
+      outputFormat,
+      maxFileSizeKb,
+      localFolder
+    });
+    
+    console.log('\nEnriched content result:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing EnrichedContentTool:', error);
+  }
+}
+
+// Function to test MixinCodeSamplesTool
+async function testMixinCodeSamples(mdxFilePath: string, options: any) {
+  console.log('\nTesting MixinCodeSamplesTool');
+  console.log(`MDX File Path: ${mdxFilePath}`);
+  
+  try {
+    const tool = new MixinCodeSamplesTool();
+    const result = await tool.execute({
+      mdxFilePath,
+      localFolder: options.localFolder,
+      maxRepos: options.maxRepos,
+    });
+    
+    console.log('\nResults:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing MixinCodeSamplesTool:', error);
+  }
+}
+
 // Main function to parse command line args and determine which tool to run
 async function main() {
   // Check for docs files
@@ -220,6 +318,26 @@ async function main() {
   const detailArg = process.argv.find(arg => arg.startsWith('--detail='));
   const detail = detailArg ? detailArg.split('=')[1] : undefined;
 
+  // Parse ingest options
+  const folderArg = process.argv.find(arg => arg.startsWith('--folder='));
+  const folder = folderArg ? folderArg.split('=')[1] : path.resolve(projectRoot, '../docs');
+  
+  const repositoryArg = process.argv.find(arg => arg.startsWith('--repository='));
+  const repository = repositoryArg ? repositoryArg.split('=')[1] : undefined;
+  
+  const formatArg = process.argv.find(arg => arg.startsWith('--format='));
+  const outputFormat = formatArg ? formatArg.split('=')[1] : undefined;
+  
+  const maxSizeArg = process.argv.find(arg => arg.startsWith('--max-size='));
+  const maxFileSizeKb = maxSizeArg ? maxSizeArg.split('=')[1] : undefined;
+  
+  const ignoreArg = process.argv.find(arg => arg.startsWith('--ignore='));
+  const ignorePatterns = ignoreArg ? ignoreArg.split('=')[1] : undefined;
+  
+  // Parse localFolder option
+  const localFolderArg = process.argv.find(arg => arg.startsWith('--localFolder='));
+  const localFolder = localFolderArg ? localFolderArg.split('=')[1] : undefined;
+
   // Run selected tool(s)
   switch (toolToRun) {
     case TestTool.FilenameSearch:
@@ -250,6 +368,25 @@ async function main() {
       await testDocsReadme(detail);
       break;
       
+    case TestTool.Ingest:
+      await testIngest(folder, repository, outputFormat, maxFileSizeKb, ignorePatterns);
+      break;
+      
+    case TestTool.EnrichedContent:
+      await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
+      break;
+      
+    case TestTool.MixinCodeSamples:
+      if (!searchTerm) {
+        console.error('Error: Search term (mdxFilePath) is required for the mixin-code-samples tool');
+        process.exit(1);
+      }
+      await testMixinCodeSamples(searchTerm, {
+        localFolder,
+        maxRepos: maxFileSizeKb,
+      });
+      break;
+      
     case TestTool.All:
       console.log('=== Running all tools ===');
       await testFilenameSearch(searchTerm, { 
@@ -263,6 +400,8 @@ async function main() {
       }
       await testRulesView(ruleName);
       await testDocsReadme(detail);
+      await testIngest(folder, repository, outputFormat, maxFileSizeKb, ignorePatterns);
+      await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
       break;
       
     default:
@@ -281,7 +420,7 @@ Usage:
 
 Tool Selection:
   --tool=<tool-name>, -t=<tool-name>    Tool to run (default: filename)
-                                       Available tools: filename, content, fileview, rules, info, all
+                                       Available tools: filename, content, fileview, rules, info, ingest, all
 
 Common Options:
   --show-api                           Include API docs in search results
@@ -305,6 +444,18 @@ RulesView Options:
 ToolsInfo Options:
   --detail=<detail-name>               Detail to show (if omitted, shows overview)
 
+Ingest Options:
+  --folder=<path>                     Local folder path to ingest (default: ../docs)
+  --format=<format>                   Output format: markdown, xml, json (default: markdown)
+  --max-size=<max-file-size-kb>       Maximum file size to include in KB (default: 50KB)
+  --ignore=<pattern1,pattern2>        Comma-separated list of glob patterns to ignore
+
+EnrichedContent Options:
+  [search-term]                        Term to search for content and ingest
+  --format=<format>                    Output format: markdown, xml, json (default: markdown)
+  --max-size=<max-file-size-kb>        Maximum file size to include in KB (default: 50KB)
+  --localFolder=<path>                 Local folder path to use for ingestion (defaults to ../docs)
+
 Examples:
   npm run manual-test -- "grid-pro"                       # Search for "grid-pro" using FilenameSearchTool
   npm run manual-test -- --tool=content "function"        # Search for "function" in content
@@ -314,6 +465,7 @@ Examples:
   npm run manual-test -- --tool=info --detail=search      # Get detailed info about search tools
   npm run manual-test -- --tool=info --detail=best-practices      # Get detailed info about best practices
   npm run manual-test -- --tool=all "grid"                # Run all tools with "grid" as search term
+  npm run manual-test -- --tool=enriched "grid-pro"   # Search for "grid-pro" and ingest content
   `);
   process.exit(0);
 }
