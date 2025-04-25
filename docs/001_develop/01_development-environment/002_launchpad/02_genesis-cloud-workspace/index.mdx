@@ -15,9 +15,9 @@ When you use [Launchpad](/develop/development-environment/launchpad/) to open a 
 
     <img src={useBaseUrl('/img/genesis-launchpad/current-projects.png')} alt="Current user projects" class="center-image"/>
 
-The workspace gives you a web IDE - VSCode, with your project structure shown on the left.
+The workspace gives you a browser-based IDE, with your project structure shown on the left.
 
-    <img src={useBaseUrl('/img/genesis-launchpad/project-in-vscode.png')} alt="VS Code Welcome" class="center-image"/>
+    <img src={useBaseUrl('/img/genesis-launchpad/project-in-vscode.png')} alt="IDE" class="center-image"/>
 
 ## Building the project
 
@@ -86,14 +86,21 @@ Upon completion, it starts all required processes.
 ## Opening your app
 When all the services are `UP`, you are ready to start the front end and view your app.
 
-1.	Go to the `Ports` tab at the bottom of your screen, then select the `Globe` icon.
- 
-     ![The glove icon in the Ports tab](/img/genesis-launchpad/ports-tab.png)
+By default, a button marked `Open in Browser ` is displayed. You can just click on this to start the app and log in.
 
-2.	If you are prompted, make sure that pop-ups are not blocked on your browser.
-3.	To log in, you need the user name admin and the password genesis.
- 
-Then you can look through your app and interact with the different displays you have created.
+To log in, you need the user name `admin` and the password `genesis`.
+
+<details>
+    <summary>If you don't see the `Open in Browser` button...</summary>
+    1. Go to the `Ports` tab at the bottom of your screen, then select the `Globe` icon for the port displayed.
+         ![The globe icon in the Ports tab](/img/genesis-launchpad/ports-tab.png)
+    2. If you are prompted, make sure that pop-ups are not blocked on your browser.
+    
+    **If there is no port displayed, click on `Add Port` and enter the port number `6060`.**
+    
+</details>
+
+Now you can look through your app and interact with the different displays you have created.
 
 ![Interact with your app](/img/genesis-launchpad/interact.png)
 
