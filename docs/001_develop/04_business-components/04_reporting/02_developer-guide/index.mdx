@@ -10,4 +10,140 @@ tags:
   - developer
 ---
 
-Dev guide contents
+# Setup
+
+In order to setup the Reporting PBC you'll need to install it into your project, and then perform some basic configuration.
+
+Ensure you're using these versions:
+* The latest version of `@genesislcap/pbc-reporting-ui`
+* At least version `8.11` of the Genesis Server.
+* At least version `14.263.0` of Foundation UI.
+
+:::tip
+You will want to additionally setup the Document Management PBC to be able to use the full functionality of the Reporting PBC.
+:::
+
+## Installing during Genesis Create
+
+When configuring a new application via Genesis Create you can install the Reporting PBC by selecting it as a component on the project attributes screen.
+
+## Installing in a modern Genesis application
+
+If you have a modern Genesis application (an application using the unified monorepo structure) you can run the following command in the project root to install the PBC:
+
+```bash
+npx -y @genesislcap/genx@latest add -s pbc-reporting-seed -x --no-shell
+```
+
+If this doesn't work you can try the next method as a backup.
+
+## Installing via a component
+
+If you're not able to install the component via the above methods you can install it manually as a component. Ensure you're using the versions mentioned above.
+
+Then you can install and use the reporting UI as you would with any other component. Here is an example component using the Genesis syntax.
+
+<!-- TODO: remove beta namespacing when the module is out of beta -->
+
+```typescript
+// Register the component. You could instead do this in a file such as components.ts
+import { ReportingBeta } from '@genesislcap/pbc-reporting-ui'
+ReportingBeta.RapidReporting;
+
+@customElement({
+  name: 'reporting-pbc',
+  template: html`<rapid-reporting-beta></rapid-reporting-beta>`,
+})
+export class PBCReporting extends GenesisElement { }
+```
+
+## Required configuration
+
+<!-- TODO: we can remove this section when out of beta -->
+
+You need to opt into the beta version of the PBC to get the latest features. If you've installed it as a component manually then the code snippet already instructs you to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
+
+```typescript {11}
+import type { AppRoute } from '@genesislcap/foundation-shell/app';
+
+/**
+ * Reporting route
+ * @public
+ */
+export const reporting: AppRoute = {
+  title: 'Reporting',
+  path: 'reporting',
+  name: 'reporting',
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).ReportingBeta.FoundationReporting,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'side-nav',
+      title: 'Reporting',
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+    },
+  ],
+};
+```
+
+Specifically, you need to add the `ReportingBeta` namespace as part of your dynamic import.
+
+# Server API
+
+TODO
+
+# Custom permissions
+
+This component doesn't currently have permission controls.
+
+# UI customisations
+
+## Component sizing configuration
+
+The PBC has styling configured to ensure that all of the components fit inside of the browser without overflow for any browser window size. In order to do that the Reporting PBC must be configured with the size of the application taken up by components outside of the component itself.
+
+It's recommended that the reporting PBC takes up an entire route in your application, and therefore the only component on the screen in addition to the component should be your application header. The default of all modern Genesis applications use a header height of `60px` - if you've not changed this then you don't need to make any changes.
+
+If you've changed the height of your header, using a custom header, or there are more elements on the DOM in addition to your reporting component and header then you need to override this value with the height value that all of these elements are taking up. See the following example where the height of all elements on the page which are not from the reporting module is `100px`.
+
+```typescript
+@customElement({
+  name: 'reporting-pbc',
+  template: html`<rapid-reporting-beta></rapid-reporting-beta>`,
+  styles: css`
+    :host {
+      --app-top-height: 100px;
+    }
+  `
+})
+export class PBCReporting extends GenesisElement { }
+```
+
+If you've installed the PBC via `genx` or Genesis Create then you can simply add the following block in your top level component (likely `main.styles.ts`).
+```css
+  :host {
+    --app-top-height: 100px;
+  }
+```
+
+## Design tokens
+
+The styles of the PBC are configured to use the standard css design tokens which are used in any Genesis application. If you're already using the rapid design system and you've configured the design tokens at the top level they should be automatically applied. However, if you're using a different design system for your app you will need to set the tokens for the rapid design system used on your PBC. For example:
+
+```css
+  rapid-reporting-beta,
+  rapid-design-system-provider {
+    --neutral-layer-3: white;
+    --neutral-layer-2: #f5f5f5;
+    --neutral-layer-4: #fafafa;
+  }
+```
+
+You set this css as either in your component or at the top level, as with the above example.
+
+# Integrations
+
+TODO
