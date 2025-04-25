@@ -8,6 +8,7 @@ import RulesViewTool from './tools/RulesViewTool.js';
 import GenesisDocsReadmeTool from './tools/GenesisDocsReadmeTool.js';
 import IngestTool from './tools/IngestTool.js';
 import EnrichedContentTool from './tools/EnrichedContentTool.js';
+import MixinCodeSamplesTool from './tools/MixinCodeSamplesTool.js';
 import { fileSystem } from './services/FileSystem.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -26,6 +27,7 @@ enum TestTool {
   ToolsInfo = 'info',
   Ingest = 'ingest',
   EnrichedContent = 'enriched',
+  MixinCodeSamples = 'mixin-code-samples',
   All = 'all'
 }
 
@@ -227,6 +229,26 @@ async function testEnrichedContent(searchTerm: string, outputFormat?: string, ma
   }
 }
 
+// Function to test MixinCodeSamplesTool
+async function testMixinCodeSamples(mdxFilePath: string, options: any) {
+  console.log('\nTesting MixinCodeSamplesTool');
+  console.log(`MDX File Path: ${mdxFilePath}`);
+  
+  try {
+    const tool = new MixinCodeSamplesTool();
+    const result = await tool.execute({
+      mdxFilePath,
+      localFolder: options.localFolder,
+      maxRepos: options.maxRepos,
+    });
+    
+    console.log('\nResults:');
+    console.log(JSON.stringify(result, null, 2));
+  } catch (error) {
+    console.error('Error executing MixinCodeSamplesTool:', error);
+  }
+}
+
 // Main function to parse command line args and determine which tool to run
 async function main() {
   // Check for docs files
@@ -344,6 +366,17 @@ async function main() {
       
     case TestTool.EnrichedContent:
       await testEnrichedContent(searchTerm, outputFormat, maxFileSizeKb, localFolder);
+      break;
+      
+    case TestTool.MixinCodeSamples:
+      if (!searchTerm) {
+        console.error('Error: Search term (mdxFilePath) is required for the mixin-code-samples tool');
+        process.exit(1);
+      }
+      await testMixinCodeSamples(searchTerm, {
+        localFolder,
+        maxRepos: maxFileSizeKb,
+      });
       break;
       
     case TestTool.All:
