@@ -1,0 +1,349 @@
+---
+title: 'Categorized Multiselect'
+sidebar_label: 'Categorized Multiselect'
+id: client-interaction-categorized-multiselect
+keywords: [interaction, interactive, select, form, submit, data, multiselect, dropdown, options, filter, search, async, multiple selection, categorized, categories, grouped options]
+tags:
+- interaction
+- interactive
+- select
+- form
+- submit
+- data
+- multiselect
+- dropdown
+- search
+- filter
+- multiple selection
+- custom options
+- categorized options
+- grouped selection
+sidebar_position: 8
+---
+
+import CategorizedMultiselectDemo from '../../../../../examples/ui/client-capabilities/interaction/categorized-multiselect.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Categorized Multiselect
+
+Use cases:
+* Selecting one or more from a list of options
+* Adding extra information to the options in addition to what is possible with the select and multiselect components
+
+## Example
+
+<CategorizedMultiselectDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-categorized-multiselect></rapid-categorized-multiselect>
+    ```
+
+    Usage
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-categorized-multiselect
+      ${ref('multiselect')}
+      @selectionChange=${(x) => x.onChange()}
+      :options=${(x) => x.options}
+    >
+    </rapid-categorized-multiselect>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable multiselect: CategorizedMultiselect;
+  const options = [
+    {
+      type: "First category",
+      value: 'First value',
+      label: 'This is the first value',
+      description:
+        'Here you can add further information about each categorized multiselect item if you would like to',
+    },
+    {
+      type: "Second category",
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      type: "Second category",
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ]
+  onChange() {
+    // You can also get the selected options via `event.detail`
+    console.log(this.multiselect.selectedOptions)
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-categorized-multiselect></rapid-categorized-multiselect>
+  ```
+  Usage
+```tsx
+export function MyComponent() {
+  const [selectedOptions, setSelectedOptions] = useState([])
+
+  const options = [
+    {
+      type: "First category",
+      value: 'First value',
+      label: 'This is the first value',
+      description:
+        'Here you can add further information about each categorized multiselect item if you would like to',
+    },
+    {
+      type: "Second category",
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      type: "Second category",
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ]
+
+  const selectionChange = (e) => {
+    console.log(e.detail)
+    setSelectedOptions(e.detail)
+  }
+
+  return (
+    <rapid-categorized-multiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
+    </rapid-categorized-multiselect>
+  )
+}
+```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-categorized-multiselect></rapid-categorized-multiselect>
+  ```
+
+  Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-categorized-multiselect
+      [options]="options"
+      [selectedOptions]="selectedOptions"
+      (selectionChange)="selectionChange($event)">
+    </rapid-categorized-multiselect>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent {
+  selectedOptions: any[] = [];
+
+  options = [
+    {
+      type: "First category",
+      value: 'First value',
+      label: 'This is the first value',
+      description:
+        'Here you can add further information about each categorized multiselect item if you would like to',
+    },
+    {
+      type: "Second category",
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      type: "Second category",
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ]
+
+  selectionChange(event: CustomEvent) {
+    console.log(event.detail);
+    this.selectedOptions = event.detail;
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Component identifier.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect name="myMultiselect">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>auto-position</td>
+      <td><code>boolean</code></td>
+      <td>Controls automatic positioning behavior. Default <code>true</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect auto-position>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>search</td>
+      <td><code>boolean</code></td>
+      <td>Controls search functionality visibility. Default <code>true</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect search>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Disables the component. Default <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect disabled>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+# Properties
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>options</td>
+      <td><code>CategorizedMultiselectOption[]</code></td>
+      <td>Data options. Default <code>[]</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect :options=${() => [
+  { type: 'Category 1', value: 'opt1', label: 'Option 1' },
+  { type: 'Category 2', value: 'opt2', label: 'Option 2' }
+]}>
+<rapid-categorized-multiselect :options=${(x) => x.options}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>selectedOptions</td>
+      <td><code>string[]</code></td>
+      <td>Selected option values. Default <code>[]</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect :selectedOptions=${() => ['opt1', 'opt3']}>
+<rapid-categorized-multiselect :selectedOptions=${(x) => x.selectedOptions}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>Position</code></td>
+      <td>Controls dropdown position. Default <code>Position.BELOW</code>.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect :position=${() => Position.ABOVE}>
+<rapid-categorized-multiselect :position=${(x) => x.dropdownPosition}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default | For the component label content |
+| button-content | Customizable button content (defaults to a plus icon) |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| root | The main container |
+| control | The control button area |
+| control-button | The button element |
+| label | The component label |
+| options | The dropdown options container |
+| filter-search | The search input field |
+| checkbox-container | Container for option checkboxes |
+| multiselect-checkbox | Individual checkbox items |
+
+### Events fired
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>selectionChange</td>
+      <td><code>string[]</code></td>
+      <td>Fired when selection changes. The event detail contains an array of selected option values.</td>
+<td>
+
+```typescript
+<rapid-categorized-multiselect @selectionChange="${(e) => handleSelectionChange(e.detail)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+
