@@ -106,7 +106,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * `genesis-environment` : Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation 
 * `genesis-environment` : `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml 
 * `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
-* `genesis-logging` : Only check if process is running on `startServer` if log file ends in .log or .log.err 
+* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process 
 
 #### 8.10.3
 

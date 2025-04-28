@@ -76,6 +76,19 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.16
+
+###### Features
+
+* `genesis-logging` : Support configurable log directories and system definition option to disable automatic archiving 
+
+###### Fixes
+
+* `genesis-environment` : Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation 
+* `genesis-environment` : `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml 
+* `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
+* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process 
+
 #### 8.8.15
 
 ###### Fixes
