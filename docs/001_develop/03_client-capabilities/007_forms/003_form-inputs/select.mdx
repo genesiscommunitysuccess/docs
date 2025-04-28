@@ -22,9 +22,13 @@ import Options from '../../../../_includes/_options.mdx'
 
 Use cases:
 * Selecting from a list of options
-* Selecting multiple options
 * Sorting
 * Filtering
+
+:::tip
+If you want to allow the selection of multiple items check out the [multiselect](/develop/client-capabilities/forms/form-inputs/client-interaction-multiselect/)
+and [categorized multiselect](/develop/client-capabilities/forms/form-inputs/client-interaction-categorized-multiselect/) components.
+:::
 
 ## Example
 
@@ -120,6 +124,32 @@ Use cases:
 </TabItem>
 </Tabs>
 
+<Options />
+
+You can also use the repeat directive to create options dynamically in the code:
+
+```typescript
+const sampleSelectOptions = [
+  { label: 'Large', value: 'l' },
+  { label: 'Small', value: 's' },
+]
+```
+
+```typescript
+import { html, repeat } from '@genesislcap/web-core';
+html`
+  <rapid-select>
+    ${repeat(
+      (x) => x.sampleSelectOptions,
+      html`
+        <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
+      `
+    )}
+  </rapid-select>
+`
+```
+
+
 ## API
 
  Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
@@ -147,18 +177,6 @@ Use cases:
 
 ```typescript
 <rapid-select form="sampleForm">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>multiple</td>
-      <td><code>boolean</code></td>
-      <td>Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false`</td>
-<td>
-
-```typescript
-<rapid-select multiple>
 ```
 
 </td>
@@ -229,35 +247,6 @@ Use cases:
 :::note
   If you set the `size`, the list is displayed by default (the user does not need to click to view it). This overrides any setting you make for `open`.
 :::
-
-<Options /> 
-
-:::note
-- If you specify a `selected` or `value` to more than one `option` while `multiple = false`, then the component selects only the first in the `rapid-option` list
-:::
-
-You can also use the repeat directive to create options dynamically in the code:
-
-```typescript
-  const sampleSelectOptions = [
-    {label: 'Large', value: 'l'},
-    {label: 'Small', value: 's'},
-  ]
-```
-
-```typescript
-import {html, repeat} from '@genesislcap/web-core';
-html`
-  <rapid-select>
-    ${repeat(
-  (x) => x.sampleSelectOptions,
-  html`
-        <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
-      `,
-  )}
-    </rapid-select>
-`
-```
 
 # Properties
 
