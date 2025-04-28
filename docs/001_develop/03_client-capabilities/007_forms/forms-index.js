@@ -18,6 +18,7 @@ import ToolbarDemo from '/examples/ui/client-capabilities/interaction/toolbar.js
 
 import CriteriaSegmentedControlDemo from '/examples/ui/client-capabilities/interaction/criteria-segmented-control.js';
 import SegmentedControlDemo from '/examples/ui/client-capabilities/interaction/segmented-control.js';
+import MultiselectDemo from '/examples/ui/client-capabilities/interaction/multiselect';
 
 const cardData = [
   {
@@ -49,6 +50,12 @@ const cardData = [
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-file-upload/",
     "text": "Control for uploading files",
     children: <FileUploadDemo />,
+  },
+  {
+    "heading": "Multiselect",
+    "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-multiselect/",
+    "text": "Select one or more options",
+    children: <MultiselectDemo />,
   },
   {
     "heading": "Number Field",
