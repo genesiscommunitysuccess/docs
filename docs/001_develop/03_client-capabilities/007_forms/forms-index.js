@@ -19,6 +19,7 @@ import ToolbarDemo from '/examples/ui/client-capabilities/interaction/toolbar.js
 import CriteriaSegmentedControlDemo from '/examples/ui/client-capabilities/interaction/criteria-segmented-control.js';
 import SegmentedControlDemo from '/examples/ui/client-capabilities/interaction/segmented-control.js';
 import MultiselectDemo from '/examples/ui/client-capabilities/interaction/multiselect';
+import CategorizedMultiselectDemo from '../../../../examples/ui/client-capabilities/interaction/categorized-multiselect';
 
 const cardData = [
   {
@@ -26,6 +27,12 @@ const cardData = [
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-button/",
     "text": "Clickable element to indicate action",
     children: <ButtonDemo />,
+  },
+  {
+    "heading": "Categorized Multiselect",
+    "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-categorized-multiselect/",
+    "text": "Select multiple categorized options, including descriptions",
+    children: <CategorizedMultiselectDemo />,
   },
   {
     "heading": "Checkbox",
