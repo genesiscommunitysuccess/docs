@@ -94,6 +94,37 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.10.4
+
+###### Features
+
+* `genesis-pal-datapipeline` : Add delayBetweenBatches + delayBetweenReads to db batch polling source 
+
+###### Fixes
+
+* `genesis-clustersupport` : Only initialise process metadata service where the `PROCESS_MET_DATA` table exists in the db 
+* `genesis-environment` : Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation 
+* `genesis-environment` : `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml 
+* `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
+* `genesis-logging` : Only check if process is running on `startServer` if log file ends in .log or .log.err 
+
+#### 8.10.3
+
+###### Features
+
+* `genesis-logging` : Support configurable log directories and system definition option to disable automatic archiving 
+* `genesis-pal-dataserver` : Improve memory profile of data server enriched fields 
+
+###### Fixes
+
+* `genesis-console` : Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform. 
+* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts 
+* `genesis-gradle` : Also use site specific template files when checking for overridden processes 
+* `genesis-gradle` : Fixed an issue where the gradle cache was reading system definition items defined with type `LONG` as `INT` values. This lead to constant cache misses even when the values were unchanged, which contributed to longer build times. 
+* `genesis-router` : Fix package scan definition in processes.xml to only include console router extensions 
+* `genesis-router` : Handle Netty exceptions when creating a TextWebsocketFrame in a graceful manner  
+
+
 #### 8.10.2
 
 ###### Fixes
