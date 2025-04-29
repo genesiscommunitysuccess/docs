@@ -144,22 +144,6 @@ When using Genesis Create this will automatically be populated with all of the e
 
 If you list an endpoint which is not valid for reporting (for example a Data Server) else a non existent datasource, no errors will occur but these items will not be displayed to the user for selection.
 
-## Custom Permissions
-
-This PBC supports many right code permissions for granular control over what each user/group can do.
-
-| Permission | Description |
-|------------|-------------|
-| `ViewReportConfigs` | View report configurations (both the overall list and the individual configuration), but not delete, edit, or create them. |
-| `EditReportConfigs` | Create and edit report configurations. With `EditReportConfigs` disabled but `ViewReportConfigs` enabled a user can open a report configuration but they can't save any changes. Requires `ViewReportConfigs`. |
-| `DeleteReportConfigs` | Delete report configurations. Requires `ViewReportConfigs`.|
-| `ViewReportDestinations` | View report destinations, but not delete, edit, or create them. If the user has `EditReportConfigs` but not `ViewReportDestinations` then they can't view or select them when configuring a report. |
-| `EditReportDestinations` | Create and edit report destinations. Requires `ViewReportDestinations`. |
-| `DeleteReportDestinations` | Delete report destinations. Requires `ViewReportDestinations`.  |
-| `RunReport` | Execute an existing report config, and view + download generated reports (even if `ViewReport` isn't enabled). |
-| `ViewReport` | View and download generated reports. |
-| `DeleteReport` | Delete generated reports. Requires `RunReport` or `ViewReport`. |
-
 ## UI customisations
 
 ### Component sizing configuration

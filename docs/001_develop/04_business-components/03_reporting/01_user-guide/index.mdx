@@ -152,3 +152,19 @@ Each entry includes:
 You can **download** or **delete** generated reports from this page.
 
 Reports are also accessible in the Document Manager under the same hierarchy as when the report was run.
+
+## Access Permissions
+
+The following tables shows the permission codes associated with the reporting component functionality listed in this User Guide. If you are unable to see or use parts of the Reporting component in your application, speak to an application administrator who will be able to provide access.
+
+| Functional group | Permission | Description |
+|------------------|------------|-------------|
+| Report Configuration | `ViewReportConfigs` | View report configurations (both the overall list and the individual configuration), but not delete, edit, or create them. |
+| Report Configuration | `EditReportConfigs` | Create and edit report configurations. With `EditReportConfigs` disabled but `ViewReportConfigs` enabled a user can open a report configuration but they can't save any changes. Requires `ViewReportConfigs`. |
+| Report Configuration | `DeleteReportConfigs` | Delete report configurations. Requires `ViewReportConfigs`.|
+| Report Generation | `RunReport` | Execute an existing report config, and view + download generated reports (even if `ViewReport` isn't enabled). |
+| Report Generation | `ViewReport` | View and download generated reports. |
+| Report Generation | `DeleteReport` | Delete generated reports. Requires `RunReport` or `ViewReport`. |
+| Report Destination Configuration | `ViewReportDestinations` | View report destinations, but not delete, edit, or create them. If the user has `EditReportConfigs` but not `ViewReportDestinations` then they can't view or select them when configuring a report. |
+| Report Destination Configuration | `EditReportDestinations` | Create and edit report destinations. Requires `ViewReportDestinations`. |
+| Report Destination Configuration | `DeleteReportDestinations` | Delete report destinations. Requires `ViewReportDestinations`.  |
