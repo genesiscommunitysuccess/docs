@@ -10,4 +10,147 @@ tags:
   - user
 ---
 
-User guide contents
+This page is an overview how to use the reporting module. It is intended for users of the reporting module. There is a developers guide that can be found in the [reporting developer guide](/develop/reporting/developer-guide)
+
+:::tip
+This guide gives a high level overview of how to use the module. When using the reporting module user interface you'll find tooltips throughout which help give more context to particular elements.
+
+!ADD TOOLTIP SCREENSHOTS!
+
+:::
+
+## Accessing the reporting module
+
+Click "Reporting" to open the module. It is included in the application header by default.
+
+!Add screenshot of the header!
+
+## Report configuration
+
+This is the landing section when opening the reporting module. It lists all of the reports configured in the application.
+
+! Screenshot of the report configuration list of reports!
+
+The "Add new report" button opens the report configuration editor for a new report to begin. Details on using this in [report configuration editor](#report-configuration-editor)
+
+! Add report button!
+
+For each of the reports listed you can take the following actions using the elipses button on the far right:
+- Run : Triggers a run of the given report based on its current configuration
+- Edit : Opens the given report in the report configuration editor with its current settings. Details on using this in [report configuration editor](#report-configuration-editor)
+- Delete : Delete's the given report configuration. This will delete the entire report configuration.
+
+
+### Report configuration editor
+
+This editor is used for creating and maintain report configurations.
+
+The stepper at the top shows the steps followed when configuring a report
+
+
+The "Save and Close" button will save current configuration of a report regardless of its validity and exit the editor.
+
+The "Discard changes" button will exit the editor and discard any changes made. If this is a new report configuration then clicking this button will delete all progress.
+
+#### Report setup
+
+The first page of configuration. You are required to provide a unique name for this report configuration.
+
+The "File type" should be set according to the type of report you wish to create. Available options are:
+- csv
+- Excel
+- PDF
+
+The "file name" must also be specified. This is the filename which will be set for generated report files..
+
+You must also select an output directory. This is the directory within Document Manager 
+?Doc manager link?
+where generated report files will be stored and can be found to download or delete.
+
+
+
+You can optionally give the report a full description for the report here.
+
+##### Templated reports
+
+If you have selected a report type which can be templated (PDF or Excel) you can also select a file template from the selector. This dropdown will show all documents of the selected type which are uploaded to the Document Manager and denoted as "Document Template".
+! Doc Manager GIF !
+File template is mandatory where the file type is set to PDF.
+
+Templated reports can also use assets. For example if a PDF needs to include images such as company logos, photos, or any other imagery. 
+They will automatically included only when they are linked in the Document Manager to the report template file being selected.
+
+! Doc Manager gif asset linking !
+
+
+#### Add datasources
+
+Select the data sources for your report. Simple report types such as csv may only have a single datasource selected. For more complex report types such as PDF and Excel, multiple data sources can be selected to use within the template.
+
+! Link to technical docs and the sysdef you set up new endpoints in so they become selectable !
+
+#### Row filters
+
+This section of configuration allows you to set up data filters for the report. Filters limit the data for inclusion in the report. An example might be to filter to a given counterparties data on a report intended specifically for that counterparty.
+
+The filters can use any of the fields which make up the datasource selected.
+
+Use the "Add Rule" option to add more criteria. 
+
+Use the "Add Group" option to build a group of new rules. 
+
+Using groups you can build rich filters which mix "AND" and "OR" logic, as is necessary for your report needs.
+
+Where multiple datasources have been selected for the report, separate tabs allow you to view and edit each of the datasource's filters.
+
+
+#### Column visibility
+
+The column visibility section allows you to select which columns of the datasource to include in the report.
+
+Use the checkbox on the side to mark a field as included. Leaving the box unchecked means the field will be excluded from the report.
+
+By default all columns are selected except the Record ID and Timestamp, which are typically internal fields not to be included. Is they need to be included they can be selected.
+
+Any fields left here which are not used in the template will effectively not be used and visible in the resulting report.
+
+#### Format?
+
+#### Column renames
+
+In this section you can rename columns. This is helpful for non templated reports to allow you to control the column header name. 
+
+Use the checkboxes to include/exclude a field to be renamed. Where checked the name listed in the "Display Name" column will be used, and this value can be set as desired for each of the columns.
+
+Where column renames are used in the context of a templated report, the template must refer to this name and not the field name on the original data source.
+
+#### Delivery
+
+The delivery section allows you to set up a schedule on which to run the report automatically. 
+
+Using the options here you can configure the timings of when the report should run, including the timezone to adhere to. More details on using [the various recurrence types can be found here](/develop/client-capabilities/interaction/client-interaction-scheduler/#recurrence-types)
+
+! Scheduler screenshot !
+
+You can also set a pre-configured destination for the report. The entries available for selection are configured in the [Report destinations][#report-destinations] page. 
+
+You can select multiple if you wish the report to be distributed to multiple channels.
+
+! Destination screenshot!
+
+## Report destinations
+
+This screen allows you to create and maintain destinations available to distribute reports to. Currently the following distribution methods are available for reports:
+
+- Email routes : The generated report will be sent per the email route configuration
+- Screen routes : A screen notification will be generated to alert that the report has been generated.
+
+[Genesis Notify](/develop/business-components/notifications/) is used for report distribution and only the routes configured in notify are available for selection in reporting. 
+
+All destinations entries listed here are available to be selected in reports as destinations in the [Delivery section of report configuration](#delivery)
+
+## Generated reports
+
+This screen lists all of the reports that have been generated from report configurations. Details around the generated report file are listed here including generation time, the status, and in the case of a failed report status it will also give details of the failure reason.
+
+They can be downloaded or deleted from this page. The same reports can also be fond in the Document Manager component, the hierarchy they can each be found within will match that of the report configuration when the report was run.
