@@ -56,7 +56,7 @@ ReportingV2.RapidReporting;
 
 @customElement({
   name: 'reporting-pbc',
-  template: html`<rapid-reporting-v2></rapid-reporting-v2>`,
+  template: html`<rapid-reporting></rapid-reporting>`,
 })
 export class PBCReporting extends GenesisElement { }
 ```
@@ -156,8 +156,8 @@ This PBC supports many right code permissions for granular control over what eac
 | `ViewReportDestinations` | View report destinations, but not delete, edit, or create them. If the user has `EditReportConfigs` but not `ViewReportDestinations` then they can't view or select them when configuring a report. |
 | `EditReportDestinations` | Create and edit report destinations. Requires `ViewReportDestinations`. |
 | `DeleteReportDestinations` | Delete report destinations. Requires `ViewReportDestinations`.  |
-| `RunReport` | Execute an existing report config, and view generated reports (even if `ViewReport` isn't enabled). |
-| `ViewReport` | View generated reports. |
+| `RunReport` | Execute an existing report config, and view + download generated reports (even if `ViewReport` isn't enabled). |
+| `ViewReport` | View and download generated reports. |
 | `DeleteReport` | Delete generated reports. Requires `RunReport` or `ViewReport`. |
 
 ## UI customisations
@@ -173,7 +173,7 @@ If you've changed the height of your header, using a custom header, or there are
 ```typescript
 @customElement({
   name: 'reporting-pbc',
-  template: html`<rapid-reporting-v2></rapid-reporting-v2>`,
+  template: html`<rapid-reporting></rapid-reporting>`,
   styles: css`
     :host {
       --app-top-height: 100px;
@@ -195,7 +195,7 @@ If you've installed the PBC via `genx` or Genesis Create then you can simply add
 The styles of the PBC are configured to use the standard css design tokens which are used in any Genesis application. If you're already using the rapid design system and you've configured the design tokens at the top level they should be automatically applied. However, if you're using a different design system for your app you will need to set the tokens for the rapid design system used on your PBC. For example:
 
 ```css
-  rapid-reporting-v2,
+  rapid-reporting,
   rapid-design-system-provider {
     --neutral-layer-3: white;
     --neutral-layer-2: #f5f5f5;
