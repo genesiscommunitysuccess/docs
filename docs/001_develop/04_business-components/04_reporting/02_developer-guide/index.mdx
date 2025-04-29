@@ -10,7 +10,7 @@ tags:
   - developer
 ---
 
-# Setup
+## Setup
 
 In order to setup the Reporting PBC you'll need to install it into your project, and then perform some basic configuration.
 
@@ -23,11 +23,11 @@ Ensure you're using these versions:
 You will want to additionally setup the Document Management PBC to be able to use the full functionality of the Reporting PBC.
 :::
 
-## Installing during Genesis Create
+### Installing during Genesis Create
 
 When configuring a new application via Genesis Create you can install the Reporting PBC by selecting it as a component on the project attributes screen.
 
-## Installing in a modern Genesis application
+### Installing in a modern Genesis application
 
 If you have a modern Genesis application (an application using the unified monorepo structure) you can run the following command in the project root to install the PBC:
 
@@ -35,11 +35,15 @@ If you have a modern Genesis application (an application using the unified monor
 npx -y @genesislcap/genx@latest add -s pbc-reporting-seed -x --no-shell
 ```
 
+This will install and configure the client and server modules
+
 If this doesn't work you can try the next method as a backup.
 
-## Installing via a component
+### Manually adding the component
 
 If you're not able to install the component via the above methods you can install it manually as a component. Ensure you're using the versions mentioned above.
+
+#### Client installation
 
 Then you can install and use the reporting UI as you would with any other component. Here is an example component using the Genesis syntax.
 
@@ -56,6 +60,34 @@ ReportingBeta.RapidReporting;
 })
 export class PBCReporting extends GenesisElement { }
 ```
+
+#### Server installation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To manually add the Reporting server component to your project, you must add some dependencies to your server and client packages.
+
+1. Add `fileServerVersion` to the file **server/gradle.properties**:
+
+```xml
+reportingVersion=x.y.z
+```
+
+2. Then add the following dependency to the **server/settings.gradle.kts** file in your project:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    ...
+    dependencies {
+        ...
+        dependency("global.genesis:reporting:${extra.properties["reportingVersion"]}")
+        ...
+    }
+}
+```
+
 
 ## Required configuration
 
@@ -91,17 +123,30 @@ export const reporting: AppRoute = {
 
 Specifically, you need to add the `ReportingBeta` namespace as part of your dynamic import.
 
-# Server API
 
-TODO
+### Server configuration
 
-# Custom permissions
+Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information). 
 
-This component doesn't currently have permission controls.
+To make a resource available as a source of data for a report, add the resource name to the `REPORTING_DATASOURCE_LIST` system definition in the file `reporting-system-definition.kts`.
 
-# UI customisations
+Here is an example `REPORTING_DATASOURCE_LIST` from a `reporting-system-definition.kts` file. It makes four request servers available to the Reporting Server:
 
-## Component sizing configuration
+```kotlin
+   item("REPORTING_DATASOURCE_LIST", listOf("TRADE", "ORDER", "TRADE_VIEW", "ORDER_VIEW"))
+```
+
+:::info
+If the file `reporting-system-definition.kts` does not exist in your application codebase, [override it in your application](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) and edit the system definition item.
+:::
+
+When using Genesis Create this will automatically be populated with all of the endpoints configured during the create process.
+
+If you list an endpoint which is not valid for reporting (for example a Data Server) else a non existent datasource, no errors will occur but these items will not be displayed to the user for selection.
+
+## UI customisations
+
+### Component sizing configuration
 
 The PBC has styling configured to ensure that all of the components fit inside of the browser without overflow for any browser window size. In order to do that the Reporting PBC must be configured with the size of the application taken up by components outside of the component itself.
 
@@ -129,7 +174,7 @@ If you've installed the PBC via `genx` or Genesis Create then you can simply add
   }
 ```
 
-## Design tokens
+### Design tokens
 
 The styles of the PBC are configured to use the standard css design tokens which are used in any Genesis application. If you're already using the rapid design system and you've configured the design tokens at the top level they should be automatically applied. However, if you're using a different design system for your app you will need to set the tokens for the rapid design system used on your PBC. For example:
 
@@ -144,6 +189,10 @@ The styles of the PBC are configured to use the standard css design tokens which
 
 You set this css as either in your component or at the top level, as with the above example.
 
-# Integrations
+## Integrations
 
-TODO
+The reporting component integrates with other Genesis components to handle respective functionality:
+
+- [Document Manager](/develop/business-components/doc-management/) : for managing templates, template assets, and generated reports
+- [Document Generator](/develop/business-components/generated-docs/) : for the generation of reports from a template
+- [Notify](/develop/business-components/notifications/) : for distributing generated reports
