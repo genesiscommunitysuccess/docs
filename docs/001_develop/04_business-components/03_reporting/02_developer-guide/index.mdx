@@ -15,7 +15,7 @@ tags:
 In order to setup the Reporting PBC you'll need to install it into your project, and then perform some basic configuration.
 
 Ensure you're using these versions:
-* The latest version of `@genesislcap/pbc-reporting-ui`
+* At least version `2.0.0` `@genesislcap/pbc-reporting-ui`
 * At least version `8.11` of the Genesis Server.
 * At least version `14.263.0` of Foundation UI.
 
@@ -51,12 +51,12 @@ Then you can install and use the reporting UI as you would with any other compon
 
 ```typescript
 // Register the component. You could instead do this in a file such as components.ts
-import { ReportingBeta } from '@genesislcap/pbc-reporting-ui'
-ReportingBeta.RapidReporting;
+import { ReportingV2 } from '@genesislcap/pbc-reporting-ui'
+ReportingV2.RapidReporting;
 
 @customElement({
   name: 'reporting-pbc',
-  template: html`<rapid-reporting-beta></rapid-reporting-beta>`,
+  template: html`<rapid-reporting-v2></rapid-reporting-v2>`,
 })
 export class PBCReporting extends GenesisElement { }
 ```
@@ -89,11 +89,11 @@ genesis {
 ```
 
 
-## Required configuration
+#### Required configuration
 
 <!-- TODO: we can remove this section when out of beta -->
 
-You need to opt into the beta version of the PBC to get the latest features. If you've installed it as a component manually then the code snippet already instructs you to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
+You need to opt into the version two of the PBC to get the latest features. If you've installed it as a component manually then the code snippet already instructs you to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
 
 ```typescript {11}
 import type { AppRoute } from '@genesislcap/foundation-shell/app';
@@ -106,7 +106,7 @@ export const reporting: AppRoute = {
   title: 'Reporting',
   path: 'reporting',
   name: 'reporting',
-  element: async () => (await import('@genesislcap/pbc-reporting-ui')).ReportingBeta.FoundationReporting,
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).ReportingV2.RapidReporting,
   settings: { autoAuth: true, maxRows: 500 },
   navItems: [
     {
@@ -121,12 +121,12 @@ export const reporting: AppRoute = {
 };
 ```
 
-Specifically, you need to add the `ReportingBeta` namespace as part of your dynamic import.
+Specifically, you need to add the `ReportingV2` namespace as part of your dynamic import.
 
 
-### Server configuration
+## Server configuration
 
-Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information). 
+Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information).
 
 To make a resource available as a source of data for a report, add the resource name to the `REPORTING_DATASOURCE_LIST` system definition in the file `reporting-system-definition.kts`.
 
@@ -144,6 +144,22 @@ When using Genesis Create this will automatically be populated with all of the e
 
 If you list an endpoint which is not valid for reporting (for example a Data Server) else a non existent datasource, no errors will occur but these items will not be displayed to the user for selection.
 
+## Custom Permissions
+
+This PBC supports many right code permissions for granular control over what each user/group can do.
+
+| Permission | Description |
+|------------|-------------|
+| `ViewReportConfigs` | View report configurations (both the overall list and the individual configuration), but not delete, edit, or create them. |
+| `EditReportConfigs` | Create and edit report configurations. With `EditReportConfigs` disabled but `ViewReportConfigs` enabled a user can open a report configuration but they can't save any changes. Requires `ViewReportConfigs`. |
+| `DeleteReportConfigs` | Delete report configurations. Requires `ViewReportConfigs`.|
+| `ViewReportDestinations` | View report destinations, but not delete, edit, or create them. If the user has `EditReportConfigs` but not `ViewReportDestinations` then they can't view or select them when configuring a report. |
+| `EditReportDestinations` | Create and edit report destinations. Requires `ViewReportDestinations`. |
+| `DeleteReportDestinations` | Delete report destinations. Requires `ViewReportDestinations`.  |
+| `RunReport` | Execute an existing report config, and view generated reports (even if `ViewReport` isn't enabled). |
+| `ViewReport` | View generated reports. |
+| `DeleteReport` | Delete generated reports. Requires `RunReport` or `ViewReport`. |
+
 ## UI customisations
 
 ### Component sizing configuration
@@ -157,7 +173,7 @@ If you've changed the height of your header, using a custom header, or there are
 ```typescript
 @customElement({
   name: 'reporting-pbc',
-  template: html`<rapid-reporting-beta></rapid-reporting-beta>`,
+  template: html`<rapid-reporting-v2></rapid-reporting-v2>`,
   styles: css`
     :host {
       --app-top-height: 100px;
@@ -179,7 +195,7 @@ If you've installed the PBC via `genx` or Genesis Create then you can simply add
 The styles of the PBC are configured to use the standard css design tokens which are used in any Genesis application. If you're already using the rapid design system and you've configured the design tokens at the top level they should be automatically applied. However, if you're using a different design system for your app you will need to set the tokens for the rapid design system used on your PBC. For example:
 
 ```css
-  rapid-reporting-beta,
+  rapid-reporting-v2,
   rapid-design-system-provider {
     --neutral-layer-3: white;
     --neutral-layer-2: #f5f5f5;
