@@ -83,6 +83,24 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
 }
 ```
 
+There is an optional `onParsingError` handler that you can use to describe what behaviour you want to happen if there is an exception thrown when parsing the fix message.
+Here you have access to the entity which caused the exception as well as the exception itself:
+
+```kotlin
+fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
+    where { report ->
+        report.lastMkt() == "VODL"
+    }
+
+    onParsingError {
+            LOG.error("STREAM THREW PARSING EXCEPTION FOR {}", entity, throwable)
+            throw throwable
+    }
+}
+```
+
+If this is not set, by default the streamer will simply log the entity and exception and continue with the stream.
+
 ### Streamer Client
 
 The FIX-Xlator plugin enables a number of extension functions for the Streamer Client. These are explained below.
