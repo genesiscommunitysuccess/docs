@@ -47,12 +47,10 @@ If you're not able to install the component via the above methods you can instal
 
 Then you can install and use the reporting UI as you would with any other component. Here is an example component using the Genesis syntax.
 
-<!-- TODO: remove beta namespacing when the module is out of beta -->
-
 ```typescript
 // Register the component. You could instead do this in a file such as components.ts
-import { ReportingV2 } from '@genesislcap/pbc-reporting-ui'
-ReportingV2.RapidReporting;
+import { RapidReporting } from '@genesislcap/pbc-reporting-ui'
+RapidReporting;
 
 @customElement({
   name: 'reporting-pbc',
@@ -89,11 +87,9 @@ genesis {
 ```
 
 
-#### Required configuration
+#### Legacy configuration
 
-<!-- TODO: we can remove this section when out of beta -->
-
-You need to opt into the version two of the PBC to get the latest features. If you've installed it as a component manually then the code snippet already instructs you to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
+By default you will get the latest and greatest version of the reporting PBC. If for any reason you need to use the legacy reporting module you can make changes in your application to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
 
 ```typescript {11}
 import type { AppRoute } from '@genesislcap/foundation-shell/app';
@@ -106,7 +102,7 @@ export const reporting: AppRoute = {
   title: 'Reporting',
   path: 'reporting',
   name: 'reporting',
-  element: async () => (await import('@genesislcap/pbc-reporting-ui')).ReportingV2.RapidReporting,
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).LegacyReporting.RapidReporting,
   settings: { autoAuth: true, maxRows: 500 },
   navItems: [
     {
@@ -121,8 +117,18 @@ export const reporting: AppRoute = {
 };
 ```
 
-Specifically, you need to add the `ReportingV2` namespace as part of your dynamic import.
+Specifically, you need to add the `LegacyReporting` namespace as part of your dynamic import.
 
+If you instead installed it manually you'd change the import in the component you've written to the following
+```typescript
+// Register the component. You could instead do this in a file such as components.ts
+import { LegacyReporting } from '@genesislcap/pbc-reporting-ui'
+RapidReporting.RapidReporting;
+```
+
+:::warning
+The legacy reporting is deprecated and will be removed in a future version. If you've decided to opt into using the legacy reporting module you'll then receive a breaking change when it's removed.
+:::
 
 ## Server configuration
 
