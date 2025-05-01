@@ -17,9 +17,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ## Creating a template and other assets
-Templates you create must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with "Is Template" checked, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager. 
+Templates you create must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with "Is Template" checked, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager. You can also link assets using the UI. This GIF gives an example of uploading a template, an asset, and linking them:
 
-If you need any other assets to produce the results you need in the template (images, css files etc.), you must also upload these. Along with this, the must be a `TEMPLATE_ASSET` record that maps these assets to the template.
+! Add GIF for template asset linking !
+
+If you need any other assets to produce the results you need in the template (images, css files etc.), you must also upload these. Along with this, the must be a `TEMPLATE_ASSET` record that maps these assets to the template. They can be linked using the Document Management PBC
 
 ### Example DB entries
 
@@ -37,7 +39,7 @@ CREATED_BY                               admin                                  
 FILE_NAME                                Trade_Report.pdf                         STRING              
 FILE_SIZE                                914333                                   LONG                
 FILE_STORAGE_ID                          000000000000001FFLO1                     STRING              
-IS_TEMPLATE                              true                                     BOOLEAN             
+FILE_TYPE                                DOCUMENT_TEMPLATE                        ENUM[USER_DOCUMENT DOCUMENT_TEMPLATE TEMPLATE_ASSET]
 LOCATION_DETAILS                         templates/Trade_Report.pdf               STRING              
 MODIFIED_AT                              2025-03-01 18:11:40.269 +0000            DATETIME            
 MODIFIED_BY                              admin                                    STRING              
@@ -49,7 +51,7 @@ CREATED_BY                               admin                                  
 FILE_NAME                                CompanyLogo.png                          STRING              
 FILE_SIZE                                8415555                                  LONG                
 FILE_STORAGE_ID                          000000000000002FFLO1                     STRING              
-IS_TEMPLATE                              true                                     BOOLEAN             
+FILE_TYPE                                TEMPLATE_ASSET                           ENUM[USER_DOCUMENT DOCUMENT_TEMPLATE TEMPLATE_ASSET]
 LOCATION_DETAILS                         template_assets/CompanyLogo.png          STRING              
 MODIFIED_AT                              2025-03-01 18:13:41.658 +0000            DATETIME            
 MODIFIED_BY                              admin                                    STRING              
@@ -68,11 +70,12 @@ TEMPLATE_ID                              000000000000001FFLO1                   
 
 In this example, the `Trade_Report.pdf` template is associated with the `CompanyLogo.png` via the `TEMPLATE_ASSET` table, so that the template can include the logo in it's output. Each template can have as many assets associated to it as needed.
 
+
 ## Using the Document Generator
 
 There are two methods for generating documents:
 
-- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `xlsx` files.
+- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `.xlsx` files.
 - `generateAndStore` generates a file based on the template provided. The resulting file is added to `FILE_STORAGE` and the corresponding `FileStorageID` is returned.
 
 ### `DocumentContentConfiguration`
