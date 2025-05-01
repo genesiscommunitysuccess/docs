@@ -87,49 +87,6 @@ genesis {
 ```
 
 
-#### Legacy configuration
-
-By default you will get the latest and greatest version of the reporting PBC. If for any reason you need to use the legacy reporting module you can make changes in your application to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
-
-```typescript {11}
-import type { AppRoute } from '@genesislcap/foundation-shell/app';
-
-/**
- * Reporting route
- * @public
- */
-export const reporting: AppRoute = {
-  title: 'Reporting',
-  path: 'reporting',
-  name: 'reporting',
-  element: async () => (await import('@genesislcap/pbc-reporting-ui')).LegacyReporting.RapidReporting,
-  settings: { autoAuth: true, maxRows: 500 },
-  navItems: [
-    {
-      navId: 'side-nav',
-      title: 'Reporting',
-      icon: {
-        name: 'file-csv',
-        variant: 'solid',
-      },
-    },
-  ],
-};
-```
-
-Specifically, you need to add the `LegacyReporting` namespace as part of your dynamic import.
-
-If you instead installed it manually you'd change the import in the component you've written to the following
-```typescript
-// Register the component. You could instead do this in a file such as components.ts
-import { LegacyReporting } from '@genesislcap/pbc-reporting-ui'
-RapidReporting.RapidReporting;
-```
-
-:::warning
-The legacy reporting is deprecated and will be removed in a future version. If you've decided to opt into using the legacy reporting module you'll then receive a breaking change when it's removed.
-:::
-
 ## Server configuration
 
 Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information).
@@ -202,3 +159,47 @@ The reporting component integrates with other Genesis components to handle respe
 - [Document Manager](/develop/business-components/doc-management/) : for managing templates, template assets, and generated reports
 - [Document Generator](/develop/business-components/generated-docs/) : for the generation of reports from a template
 - [Notify](/develop/business-components/notifications/) : for distributing generated reports
+
+## Legacy configuration
+
+By default you will get the latest and greatest version of the reporting PBC. If for any reason you need to use the legacy reporting module you can make changes in your application to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
+
+```typescript {11}
+import type { AppRoute } from '@genesislcap/foundation-shell/app';
+
+/**
+ * Reporting route
+ * @public
+ */
+export const reporting: AppRoute = {
+  title: 'Reporting',
+  path: 'reporting',
+  name: 'reporting',
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).LegacyReporting.RapidReporting,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'side-nav',
+      title: 'Reporting',
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+    },
+  ],
+};
+```
+
+Specifically, you need to add the `LegacyReporting` namespace as part of your dynamic import.
+
+If you instead installed it manually you'd change the import in the component you've written to the following
+```typescript
+// Register the component. You could instead do this in a file such as components.ts
+import { LegacyReporting } from '@genesislcap/pbc-reporting-ui'
+RapidReporting.RapidReporting;
+```
+
+:::warning
+The legacy reporting is deprecated and will be removed in a future version. If you've decided to opt into using the legacy reporting module you'll then receive a breaking change when it's removed.
+:::
+
