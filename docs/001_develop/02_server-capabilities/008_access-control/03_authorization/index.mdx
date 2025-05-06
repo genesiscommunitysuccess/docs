@@ -1,8 +1,8 @@
 ---
 title: 'Authorization'
 sidebar_label: 'Authorization'
-id: server-authorisation
-keywords: [access, control, auth, authorisation, authorization, permission, permissions, rights, codes, profile]
+id: server-authorization
+keywords: [access, control, auth, authorization, authorization, permission, permissions, rights, codes, profile]
 tags:
 - access
 - control
@@ -58,6 +58,23 @@ See [assigning users permissions](#assigning-users-permissions) for details on a
 There are two methods for configuring entity access. The first is simple and quite a common use case, the second allows full configuration to meet more complex requirements. Both methods look to achieve the same thing, which is "is a given user authorized to access this entity"
 
 A services called `GENESIS_AUTH_PERMS` is responsible for building maps around this data, which are in turn accessed by any other [components](#component-configuration-options).
+
+### How it works
+On start-up, the `GENESIS_AUTH_PERMS` process performs an initial scan of all entities. For each entity found, it performs authorization against every user in the system. This builds a full map of permissioned users.
+By default, any updates to the entity and the `USER` table will be automatically processed to permission new entities as they are entered into the database.
+Entries are stored in a memory-mapped file located in `$GENESIS_HOME/runtime/authCache`.
+
+If you need to clear out the entries by hand, simply delete everything in that directory and restart `GENESIS_AUTH_PERMS`.
+
+You can create more than one permission map for each table.
+
+:::warning
+The back-end infrastructure uses `ChronicleMap` to store and serve real-time dynamic authorizations. Therefore, the application must know in advance how many entries need to be stored on each Auth Map.
+
+You can define this using  `averageEntityChars`, `averageUserNameChars` and `averageUsers`, which are described in the section [Entity configuration options](#entity) below.
+
+For more technical details, go to [Configure Entries](https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc#configure-entries) in the ChronicleMap docs.
+:::
 
 #### Simple configuration
 
