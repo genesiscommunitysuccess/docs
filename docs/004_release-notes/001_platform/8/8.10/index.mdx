@@ -94,6 +94,19 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.10.5
+
+###### Features
+
+* `genesis-db` : Try to detect sql layer deadlocks 
+* `genesis-router` : Improve handling of `triggerEvent` in custom webhandler script 
+
+###### Fixes
+
+* `genesis-db` : Ensure "audited" db API runs audit operations in the same transaction and fix transactional db listeners 
+* `genesis-environment` : Ensure `GlobalClasspathAdditions` sysdef item is handled correctly as part of `startProcess` classpath generation 
+* `genesis-pal-dataserver` : Correct handling of out of sequence update processing 
+
 #### 8.10.4
 
 ###### Features
