@@ -1,0 +1,368 @@
+---
+title: 'Document Generation - Developer guide'
+sidebar_label: 'Developer guide'
+sidebar_position: 2
+id: business-components-doc-generate-dev-guide
+keywords: [reporting, reports, developer]
+tags:
+  - reporting
+  - reports
+  - developer
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## Setup
+
+Document Generation comes as part of the Document Management component. You can find [installation instructions for Document Management here](/develop/business-components/doc-management/doc-management-installation/).
+
+Document Generation is a server component only, it has no Client component.
+
+## Server API
+
+The Document Generation PBC contains an API for generating documents in code, for example within an event handler. The component is a sub component of Document Manager and requires template and asset files to be available in the Document Manager, and will also use the Document Manger to store generated report files.
+
+### Creating a template and other assets
+
+Templates used to generate documents must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `DOCUMENT_TEMPLATE`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
+
+! Add screenshot of doc manager - template !
+
+Templates may reference "assets" too, for example a html template referencing images, or css files. Similarly to templates the easiest way is to upload the asset via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `TEMPLATE_ASSET`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
+
+! Add screenshot of doc manager - asset !
+
+For assets to be included in the generated document, you must also link the template to the assets. The easiest is using the UI. This GIF gives an example of uploading a template, an asset, and linking them:
+
+! Add GIF for template asset linking !
+
+Linking assets creates `TEMPLATE_ASSET` record that maps these assets to the template. 
+
+#### Example DB entries
+
+Where not using the UI - template, assets and their linking can be configured directly in the database.
+
+These example database entries show an uploaded template, and a single asset for it, and also an entry to associate the two. The relevant ID's are highlighted:
+
+```bash {11,23,37,38}
+==================================
+FILE_STORAGE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2025-03-01 18:11:40.270(n:0,s:1102)      NANO_TIMESTAMP      
+CREATED_AT                               2025-03-01 18:11:40.269 +0000            DATETIME            
+CREATED_BY                               admin                                    STRING              
+FILE_NAME                                Trade_Report.pdf                         STRING              
+FILE_SIZE                                914333                                   LONG                
+FILE_STORAGE_ID                          000000000000001FFLO1                     STRING              
+FILE_TYPE                                DOCUMENT_TEMPLATE                        ENUM[USER_DOCUMENT DOCUMENT_TEMPLATE TEMPLATE_ASSET]
+LOCATION_DETAILS                         templates/Trade_Report.pdf               STRING              
+MODIFIED_AT                              2025-03-01 18:11:40.269 +0000            DATETIME            
+MODIFIED_BY                              admin                                    STRING              
+STORAGE_MANAGER                          LOCAL_STORAGE                            STRING              
+-------------------------------------------------------------------------------------------
+TIMESTAMP                                2025-03-01 18:13:41.954(n:0,s:1102)      NANO_TIMESTAMP      
+CREATED_AT                               2025-03-01 18:13:41.658 +0000            DATETIME            
+CREATED_BY                               admin                                    STRING              
+FILE_NAME                                CompanyLogo.png                          STRING              
+FILE_SIZE                                8415555                                  LONG                
+FILE_STORAGE_ID                          000000000000002FFLO1                     STRING              
+FILE_TYPE                                TEMPLATE_ASSET                           ENUM[USER_DOCUMENT DOCUMENT_TEMPLATE TEMPLATE_ASSET]
+LOCATION_DETAILS                         template_assets/CompanyLogo.png          STRING              
+MODIFIED_AT                              2025-03-01 18:13:41.658 +0000            DATETIME            
+MODIFIED_BY                              admin                                    STRING              
+STORAGE_MANAGER                          LOCAL_STORAGE                            STRING        
+-------------------------------------------------------------------------------------------
+
+==================================
+TEMPLATE_ASSET
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2025-03-01 18:14:21.821(n:0,s:1102)      NANO_TIMESTAMP      
+ASSET_ID                                 000000000000002FFLO1                     STRING              
+TEMPLATE_ID                              000000000000001FFLO1                     STRING      
+```
+
+In this example, the `Trade_Report.pdf` template is associated with the `CompanyLogo.png` via the `TEMPLATE_ASSET` table, so that the template can include the logo in it's output. Each template can have as many assets associated to it as needed.
+
+
+### Using the API
+
+There are two methods for generating documents:
+
+- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `.xlsx` files.
+- `generateAndStore` generates a file based on the template provided. The resulting file is added to `FILE_STORAGE` and the corresponding `FileStorageID` is returned.
+
+#### `DocumentContentConfiguration`
+
+The `generateContent` method takes in an object with the following parameters:
+- `templateId` is the `FileStorageId` of the template you want to generate the document from.
+- `userName` is the username of the user generating the document.
+- `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
+- `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
+- `workingDirectory` is the optional path to a working directory (default: a temporary directory is created in the system).
+
+For example:
+```kotlin
+DocumentContentConfiguration(
+    templateId = "000000000000003FFLO1",
+    userName = "System",
+    data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")))
+```
+
+#### `DocumentContentResult`
+
+The `generateContent` method returns an object with the following parameters:
+- `rawContent` is the content of the resulting document generation.
+- `assetIds` is a list of corresponding asset ids that are mapped to the provided template.
+
+For example:
+```kotlin
+DocumentContentResult(
+    rawContent = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">...",
+    assetIds = listOf("ASSET_001", "ASSET_002")
+)
+```
+
+#### `DocumentStorageConfiguration`
+
+The `generateAndStore` method takes in an object with the following parameters:
+- everything in [`DocumentContentConfiguration`](#documentcontentconfiguration).
+- `fileName` is the file name for the document you would like to generate. This must include the file extension of the type of file that you want to generate.
+
+For example:
+```kotlin
+DocumentStorageConfiguration(
+    templateId = "000000000000004FFLO1",
+    fileName = "trades-pdf-gen.pdf",
+    userName = "System",
+    data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")),
+    deleteOnExit = false,
+    workingDirectory = "/reports")
+```
+
+#### `DocumentStorageResult`
+
+The `generateAndStore` method returns an object with the following parameters:
+- `fileStorageId` is the FileStorageId of the generated file.
+
+For example:
+```kotlin
+DocumentStorageResult(
+    fileStorageId = "000000000000005FFLO1"
+)
+```
+
+### Template types
+
+#### HTML templates
+
+HTML templates can be used to generate html, for example to include in the body of an email, or more commonly to produce `.pdf` files.
+
+When you provide an HTML template, Thymeleaf is used to output the processed text. You can find more examples and details on how to create [Thymeleaf templates here](https://www.thymeleaf.org/documentation.html). The following shows examples of how Genesis code and Thymeleaf templates combine to generate rich `html`/`pdf` documents.
+
+##### Example usage
+
+Thymeleaf can process complex data objects, so the HTML template can include loops (as shown in the example below). This enables you to provide more than one row of data. 
+
+Here is an example of part of an HTML template file which would expect to be passed an map called `trades`, and would expect each of the objects to include properties listed in the `td` elements (`price`, `quantity`, etc...):
+
+```html
+<tbody>
+    <tr th:each="trade : ${trades}">
+        <td th:text="${trade.price}">1.00</td>
+        <td th:text="${trade.quantity}">1000</td>
+        <td th:text="${trade.counterparty}">Counterparty1</td>
+        <td th:text="${trade.side}">BUY</td>
+        <td th:text="${trade.account}">Account1</td>
+    </tr>
+</tbody>
+```
+
+The data object could be as below, where the key of each object in the map must correspond to a placeholder in the html template.
+
+```kotlin
+val trade = Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "Genesis", side = Side.BUY, account = "Cash")
+
+DocumentStorageConfiguration(
+    templateId = "000000000000004FFLO1",
+    fileName = "trades-pdf-gen.pdf",
+    userName = "System",
+    data = mapOf("trades" to listOf(trade)),
+    deleteOnExit = false,
+    workingDirectory = "/reports")
+```
+
+:::tip
+If you aren't seeing your data populated in the generated document, make sure the name of the objects in the template is aligned with your code. For example making sure `trades` is the name of the list of trade objects passed to `data` in the `DocumentStorageConfiguration`.
+:::
+
+The `data` map can contain many objects, this allows you to create very rich PDFs containing lots of application data, for example a client specific report including their current positions, trades from the past month, and any other dynamic data you wish.
+
+More likely you will want to include data read from the application's database to include in the report. The following is a more realistic example where an [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) is triggering the generation of a PDF document, populating it with data from the database.
+
+```kotlin
+val documentGenerator = inject<DocumentGenerator>()
+
+eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val details = event.details
+            val trade = entityDb.get(Trade.byId(details.tradeId))
+            val tradeMap : Map<String, Any> = mapOf(
+                "trades" to listOf(trade)
+            )
+
+            val documentStorageResult =
+                documentGenerator.generateAndStore(
+                    DocumentStorageConfiguration(
+                        templateId = "000000000000006FFLO1",
+                        fileName = "trades-pdf-gen.pdf",
+                        userName = "System",
+                        data = tradeMap,
+                        deleteOnExit = false,
+                        workingDirectory = "/reports")
+                )
+
+            // custom code block ...
+
+            ack()
+        }
+    }
+```
+
+
+#### TXT templates
+
+TXT based templates can be provided to generate plain text output. An example usage is including simple formatted text in the body of an email or in a document to be passed to another system as it can be more easily parsed and read.
+
+##### Example usage
+
+When a TXT template is provided, the TXT template engine uses a simple substitution syntax. Thus, each field must be added individually.
+The TXT engine automatically gets system definition keys as well as any environment variables as part of its data context.
+
+For example, a TXT template can include the following:
+
+```text
+Price: {{PRICE}}
+Quantity: {{QUANTITY}}
+Counterparty: {{COUNTERPARTY}}
+Side: {{SIDE}}
+Account: {{ACCOUNT}}
+```
+
+The corresponding data object would be:
+```kotlin
+val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_id", "SIDE" to Side.BUY, "ACCOUNT" to "account_id")
+```
+
+A more realistic example might be to pass in an object, note that with this approach the template syntax must reflect, for example the following code:
+
+```kotlin
+val trade = entityDb.get(TradeView.ById(event.details.tradeId))!!
+
+val documentResult = documentGenerator.generateContent(
+    DocumentContentConfiguration(
+        templateId = "000000000000008FFLO1",
+        userName = "System",
+        data = mapOf("trade" to trade),
+        deleteOnExit = true
+    )
+)
+```
+
+Works with the following template:
+
+```txt
+Trade ID: {{trade.tradeId}}
+Order ID: {{trade.orderId}}
+Counterparty: {{trade.counterpartyName}}
+Instrument: {{trade.symbol}}
+Direction: {{trade.direction}}
+Price: {{trade.tradedPrice}}
+Quantity: {{trade.tradedQuantity}}
+```
+
+#### Excel templates
+
+Excel documents can be generated from a template too. [JXLS](https://jxls.sourceforge.net/getting-started.html) is used as the templating engine and allows you to inject data into the document.
+
+
+##### Example usage
+
+The following shows an example template setup along with matching example code to generate the resulting document.
+
+![JXLS Template Example](/img/001_develop/04_business-components/05_doc-generator/jxls-template-example.png)
+
+With JXLS the template is an excel file itself with template notation. The following points are important to bear in mind and reference this example:
+
+1. Cell `A1` requires a note to be added which contains the text `jx:area(lastCell="J5")` , where `J5` is the cell furthest away (horizontally and vertically) from cell `A1` which contains templated data to be substituted.
+1. Individual properties can be added using `${parameter}` in line in the cell for example `${counterpartyName}`.
+1. Lists or maps of data can be templated and require the left and uppermost cell to include a note which contains the text `jx:each(items="orders", var="order", lastCell="J5")` where `orders` is the data object containing the list, `order` is a reference to the underlying objects being iterated, which should be used in the row of data to reference it's parameters, and `J5` is the cell furthest away (horizontally and vertically) from the cell which contains templated data to be substituted.
+
+The following code shows example counterpart to this template:
+
+```kotlin
+    //Get the counterparty name
+    val counterpartyName = entityDb.get(Counterparty.byId((event.details.counterpartyId)))!!.counterpartyName
+    //Get all orders for the counterparty
+    val orders = entityDb.getRange(OrderView.byCounterpartyId(event.details.counterpartyId)).toList()
+    //Create a filename which includes the time the file is being generated
+    val filename = "Orders_Report_${counterpartyName}_${datetimeNowForFilename()}.xlsx"
+
+    // Add the counterpartyName and list of orders to the dataMap to supply to `documentGenerator`
+    val dataMap = mapOf(
+        "counterpartyName" to counterpartyName,
+        "orders" to orders
+    )
+
+    //Generate and store excel document
+    val documentResult = documentGenerator.generateAndStore(
+        DocumentStorageConfiguration(
+            templateId = getCounterpartyOrdersTemplateId(),
+            userName = "System User",
+            data = dataMap,
+            deleteOnExit = true,
+            fileName = filename
+        )
+    )
+```
+
+### Using Document Generator in a module constructor
+
+This example injects Document Generator into a module constructor.
+
+```kotlin
+@Module
+class GeneratePdf @Inject constructor(
+    val entityDb: AsyncEntityDb,
+    private val documentGenerator: DocumentGenerator
+) {
+
+    val trades = entityDb.getBulk(TRADE).toList()
+            val tradeMap : Map<String, Any> = mapOf(
+                "trades" to listOf(trades)
+            )
+
+    val documentContentResult =
+                documentGenerator.generateContent(
+                    DocumentContentConfiguration(
+                        templateId = "000000000000007FFLO1",
+                        userName = "System",
+                        data = tradeMap,
+                        deleteOnExit = false,
+                        workingDirectory = "/reports")
+                )
+    // custom code block ...
+}
+```
+
+## Integrations
+
+The Document Generation component integrates with other Genesis components to handle respective functionality:
+
+- [Document Manager](/develop/business-components/doc-management/) : for managing templates, template assets, and generated reports

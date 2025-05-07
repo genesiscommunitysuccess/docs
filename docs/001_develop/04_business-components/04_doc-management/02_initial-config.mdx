@@ -9,59 +9,108 @@ tags:
   - server-configuration
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+## Setup
 
-## Initialising and adding to a new application
+In order to setup the Document Management PBC you'll need to install it into your project, and then perform some basic configuration.
 
-The best way to add the Document Management component to a new application is to use GenX - see [GenX CLI](/develop/development-environment/genx/) for more details.
+### Installing during Genesis Create
 
-For example, the following command initialises a new application called `myapp` and adds the Document Management component to it.
+When configuring a new application via Genesis Create you can install the Document Management PBC by selecting it as a component on the project attributes screen.
 
-<Tabs
-    defaultValue="windows"
-    values={[
-        { label: 'Windows', value: 'windows', },
-        { label: 'Mac and Linux', value: 'mac-and-linux', }
-    ]
-    }>
-    <TabItem value="windows">
-        ```shell title="Powershell"
-        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
+### Installing in a modern Genesis application
 
-    <TabItem value= 'mac-and-linux'>
-        ```shell title="Bash"
-        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-</Tabs>
+If you have a modern Genesis application (an application using the unified monorepo structure) you can run the following command in the project root to install the PBC:
 
-## Adding to an existing application
+```bash
+npx -y @genesislcap/genx@latest add -s pbc-documents-seed -x --no-shell
+```
 
-To add the Document Management component to an existing application, run this command, which uses genx to install the components (change _app-folder-name_ to the name of your app folder):
+This will install and configure the client and server modules
 
-<Tabs
-    defaultValue="windows"
-    values={[
-        { label: 'Windows', value: 'windows', },
-        { label: 'Mac and Linux', value: 'mac-and-linux', }
-    ]
-    }>
-    <TabItem value="windows">
-        ```shell title="Powershell"
-        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
+If this doesn't work you can try the next method as a backup.
 
-    <TabItem value= 'mac-and-linux'>
-        ```shell title="Bash"
-        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-</Tabs>
+### Manually adding the component
 
-:::important
-You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
-:::
+If you're not able to install the component via the above methods you can install it manually as a component. Ensure you're using the versions mentioned above.
+
+#### Client installation
+
+Add the following to the `dependencies` section of `client/package.json` in your project:
+
+```json
+"@genesislcap/pbc-documents-ui": "<version>"
+```
+
+Set up a route for the component in  the file `client/src/routes/config.ts`. This makes the component visible to your application:
+
+```typescript
+{
+  title: 'Document Management',
+  path: 'document-management',
+  name: 'document-management',
+  element: async () => (await import('@genesislcap/pbc-documents-ui')).FoundationDocumentManager,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'header',
+      title: 'Document Management',
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+      placementIndex: 35,
+    },
+    {
+      navId: 'side',
+      title: 'Special Document Manager',
+      routePath: 'document-management/foo', // < example if there were child routes
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+    },
+  ]
+}
+```
+
+#### Server installation
+
+To manually add the Reporting server component to your project, you must add some dependencies to your server and client packages.
+
+Add `fileServerVersion` to the file `server/gradle.properties`:
+
+```yaml
+reportingVersion=x.y.z
+```
+
+Then add the following dependency to the `server/settings.gradle.kts` file in your project:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    ...
+    dependencies {
+        ...
+        dependency("global.genesis:file-server:${extra.properties["fileServerVersion"]}")
+        ...
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
