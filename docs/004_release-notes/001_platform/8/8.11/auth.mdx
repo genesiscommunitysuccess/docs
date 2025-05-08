@@ -7,8 +7,8 @@ id: '8.11-auth'
 
 ### Fixes
 
-- fix(auth-manager): fix deadlock in logon process (AUTH-438) by @kievitsp in https://github.com/genesislcap/platform-auth/pull/558
-- fix: remove auth-config runtime dependency (AUTH-439) by @kievitsp in https://github.com/genesislcap/platform-auth/pull/564
+* `auth-manager` : Fix deadlock from occurring in logon process where `AUTH_MANAGER` receives too many concurrent user logins 
+* Remove auth-config runtime dependency 
 
 ### Patch releases
 
