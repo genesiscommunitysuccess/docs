@@ -9,31 +9,28 @@ tags:
   - reports
   - user
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 This page provides an overview of how to use the reporting module. It is intended for users configuring and running reports. Developers should refer to the [reporting developer guide](/develop/business-components/reporting/developer-guide/).
 
 :::tip
 This guide gives a high-level overview. Tooltips are available throughout the reporting module UI to give additional context for specific elements.
-
-!ADD TOOLTIP SCREENSHOTS!
-
+<img src={useBaseUrl('/img/001_develop/04_business-components/reporting/reporting-tooltip.png')} alt="Reporting Tooltip" class="center-image" />
 :::
 
 ## Accessing the reporting module
 
-Click **Reporting** in the application header to open the module. It is included in the header by default.
+Click **Reporting** in the application header to open the module. It is included in the header by default. 
 
-!Add screenshot of the header!
+![Reporting header](/img/001_develop/04_business-components/reporting/reporting-header.png)
 
 ## Report configuration
 
 This is the landing section when opening the reporting module. It lists all configured reports in the application.
 
-! Screenshot of the report configuration list of reports!
-
 Click **Add new report** to create a new report configuration. Details on using the editor are in [report configuration editor](#report-configuration-editor).
 
-! Add report button!
+![Reporting configuration](/img/001_develop/04_business-components/reporting/reporting-configuration.png)
 
 Each report listed has an ellipsis button offering the following actions:
 - **Run**: Execute the report with its current configuration.
@@ -49,27 +46,36 @@ A stepper at the top guides you through each configuration stage.
 - **Save and Close**: Saves the current report configuration (even if incomplete) and exits.
 - **Discard changes**: Exits without saving. For a new report, this will discard all progress.
 
+Use the **Next** and **Back** buttons to step forwards and back through the report configuration editor.
+
+![Reporting configuration editor](/img/001_develop/04_business-components/reporting/reporting-configuration-editor.png)
+
 #### Report setup
 
 The first page of setup requires you to:
 - Provide a unique name for the report.
 - Select a **File type** (CSV, Excel, or PDF).
 - Specify a **File name** for generated files.
-- Choose an **Output directory** within the Document Manager (?Doc manager link?).
+- Choose an **Output directory** under which reports that are generated will be placed within the [Document Manager](/develop/business-components/doc-management/).
 
 You can optionally add a full description for the report.
 
 ##### Templated reports
 
-If creating a templated report (PDF or Excel), select a file template. The dropdown will show available templates in Document Manager marked as "Document Template."
-
-! Doc Manager GIF !
+If creating a templated report (PDF or Excel), select a file template. The dropdown will show available templates in the **Document Manager** (a separate component, find it in the header) marked as "Document Template"
 
 For PDF reports, selecting a template is mandatory.
 
-Templated reports can also reference assets, such as logos or images, which must be linked to the selected template in Document Manager.
+Here you can see how you can upload a template using the Document Manager:
 
-! Doc Manager gif asset linking !
+![Template upload](/img/001_develop/04_business-components/doc-manager/doc-manager-template-upload.gif)
+
+
+Templated reports can also reference assets, such as logos or images, which must be linked to the selected template in Document Manager by selecting "Link Assets" on the template you wish to link them to.
+
+![Link assets](/img/001_develop/04_business-components/doc-manager/doc-man-link-assets.gif)
+
+Only documents marked as Template Asset are available to select. Assets will need to be uploaded first, in the same way as templates are but with the file type in the top right instead set to **TEMPLATE_ASSET**. 
 
 #### Add datasources
 
@@ -100,9 +106,13 @@ Choose which columns to include in the final report.
 
 Unselected fields will not appear in the report output.
 
-#### Format?
+#### Formatting
 
-(*Note: No explanation yet under this heading — consider adding one or removing this heading.*)
+Visible data fields can optionally have a format set in this section. This helps especially where there is no template defined which could add it's own formatting, for example a simple csv report.
+
+Currently only *DATE* and *DATE_TIME* fields may be formatted. Where they are left unformatted the epoch timestamp (which isn't human readable, but is the format in which these fields are stored) will be included in the report.
+
+Please note that fields set with a format will be served as a String to any templated reports as opposed to the field's true data type.
 
 #### Column renames
 
@@ -120,17 +130,17 @@ Schedule automated report generation here.
 Configure the timing and timezone for report runs.
 More information on recurrence types is available [here](/develop/client-capabilities/interaction/client-interaction-scheduler/#recurrence-types).
 
-! Scheduler screenshot !
+<img src={useBaseUrl('/img/001_develop/04_business-components/reporting/reporting-scheduling.png')} alt="Reporting Scheduling" class="center-image" />  
 
 You can also select delivery destinations (configured under [Report destinations](#report-destinations)).
 
-Multiple destinations can be selected for broader distribution.
-
-! Destination screenshot!
+Multiple destinations can be selected for broader distribution. See [the Report destinations section](#report-destinations) for more details.
 
 ## Report destinations
 
 This screen manages available destinations for report distribution.
+
+![Report destinations](/img/001_develop/04_business-components/reporting/report-destinations.png)
 
 Current distribution options:
 - **Email routes**: Sends the report by email based on the route configuration.
@@ -138,7 +148,9 @@ Current distribution options:
 
 Report distribution uses [Genesis Notify](/develop/business-components/notifications/), and only routes configured there are available for selection.
 
-Destinations listed here become selectable in the [Delivery section of report configuration](#delivery).
+Destinations listed here become selectable in the [delivery section of report configuration](#delivery):
+
+![Report config destinations](/img/001_develop/04_business-components/reporting/report-config-destinations.gif)
 
 ## Generated reports
 
@@ -153,7 +165,7 @@ You can **download** or **delete** generated reports from this page.
 
 Reports are also accessible in the Document Manager under the same hierarchy as when the report was run.
 
-## Access Permissions
+## Access permissions
 
 The following tables shows the permission codes associated with the reporting component functionality listed in this User Guide. If you are unable to see or use parts of the Reporting component in your application, speak to an application administrator who will be able to provide access.
 

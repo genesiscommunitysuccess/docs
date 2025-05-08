@@ -26,15 +26,14 @@ The Document Generation PBC contains an API for generating documents in code, fo
 
 Templates used to generate documents must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `DOCUMENT_TEMPLATE`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
 
-! Add screenshot of doc manager - template !
+![Template upload](/img/001_develop/04_business-components/doc-manager/doc-manager-template-upload.gif)
 
 Templates may reference "assets" too, for example a html template referencing images, or css files. Similarly to templates the easiest way is to upload the asset via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `TEMPLATE_ASSET`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
 
-! Add screenshot of doc manager - asset !
 
 For assets to be included in the generated document, you must also link the template to the assets. The easiest is using the UI. This GIF gives an example of uploading a template, an asset, and linking them:
 
-! Add GIF for template asset linking !
+![Link assets](/img/001_develop/04_business-components/doc-manager/doc-man-link-assets.gif)
 
 Linking assets creates `TEMPLATE_ASSET` record that maps these assets to the template. 
 
