@@ -162,7 +162,7 @@ HTML templates can be used to generate html, for example to include in the body 
 
 When you provide an HTML template, Thymeleaf is used to output the processed text. You can find more examples and details on how to create [Thymeleaf templates here](https://www.thymeleaf.org/documentation.html). The following shows examples of how Genesis code and Thymeleaf templates combine to generate rich `html`/`pdf` documents.
 
-##### Example usage
+##### HTML Example usage
 
 Thymeleaf can process complex data objects, so the HTML template can include loops (as shown in the example below). This enables you to provide more than one row of data. 
 
@@ -239,7 +239,7 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
 
 TXT based templates can be provided to generate plain text output. An example usage is including simple formatted text in the body of an email or in a document to be passed to another system as it can be more easily parsed and read.
 
-##### Example usage
+##### TXT Example usage
 
 When a TXT template is provided, the TXT template engine uses a simple substitution syntax. Thus, each field must be added individually.
 The TXT engine automatically gets system definition keys as well as any environment variables as part of its data context.
@@ -291,7 +291,7 @@ Quantity: {{trade.tradedQuantity}}
 Excel documents can be generated from a template too. [JXLS](https://jxls.sourceforge.net/getting-started.html) is used as the templating engine and allows you to inject data into the document.
 
 
-##### Example usage
+##### Excel Example usage
 
 The following shows an example template setup along with matching example code to generate the resulting document.
 

@@ -70,12 +70,17 @@ Here you can see how you can upload a template using the Document Manager:
 
 ![Template upload](/img/001_develop/04_business-components/doc-manager/doc-manager-template-upload.gif)
 
-
 Templated reports can also reference assets, such as logos or images, which must be linked to the selected template in Document Manager by selecting "Link Assets" on the template you wish to link them to.
 
 ![Link assets](/img/001_develop/04_business-components/doc-manager/doc-man-link-assets.gif)
 
 Only documents marked as Template Asset are available to select. Assets will need to be uploaded first, in the same way as templates are but with the file type in the top right instead set to **TEMPLATE_ASSET**. 
+
+The Document Generator component developer documents give an example of how to reference data in templates. With the reporting engine you do not need to worry around the code elements in it's examples, but the templating guidance can help. An important consideration is that where used, 
+[column renames](#column-renames) need to be referenced in the template, not the actual UPPERCASE_FORMATTED field name - which must be used where column renames have not been set.
+
+- [PDF (html) guidance](/develop/business-components/doc-generate/developer-guide/#html-example-usage)
+- [Excel guidance](/develop/business-components/doc-generate/developer-guide/#excel-example-usage)
 
 #### Add datasources
 
