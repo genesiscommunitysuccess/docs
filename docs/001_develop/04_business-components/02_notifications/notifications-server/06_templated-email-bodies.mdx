@@ -19,7 +19,7 @@ For example, you could have an HTML template for generating a trade confirmation
 
 ![](/img/example-notification.png)
 
-After you have created the HTML template and any embedded image files, load these to `FILE_STORAGE`. (Behind the scenes, the email builder uses the [Document Generation](../../../generated-docs/generated-docs-server) to create the email bodies.) Once the files are in the correct location, you can use them to generate your email bodies.
+After you have created the HTML template and any embedded image files, load these to `FILE_STORAGE`. (Behind the scenes, the email builder uses the [Document Generation](/develop/business-components/doc-generate/) to create the email bodies.) Once the files are in the correct location, you can use them to generate your email bodies.
 
 This feature is currently supported by these Gateway types:
 
@@ -37,7 +37,7 @@ The same email template will work with both gateways.
 ## HTML templates
 
 ### Sourced data to be displayed in the email
-There are examples of how to structure the data in your HTML templates in our [Document Generation](/develop/business-components/generated-docs/generated-docs-server/#html-templates) pages. 
+There are examples of how to structure the data in your HTML templates in our [Document Generation](/develop/business-components/doc-generate/developer-guide/#html-templates) pages. 
 
 Note that the data referenced in the email bodies is queried by the `tableName` and `tableEntityId` fields, which we look at in detail below. At the moment you can only query a single record per email.
 
