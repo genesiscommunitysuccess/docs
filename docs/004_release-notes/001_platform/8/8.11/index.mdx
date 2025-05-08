@@ -137,3 +137,19 @@ There are currently no patch releases for this version
 
 ## Impactful changes
 
+### Changes in `genesis-processes.xml` and `genesis-service-definitions.xml`
+
+The `genesis-processes.xml` and `genesis-service-definitions.xml` files found in the core genesis distribution for version 8.11 have been updated with new and necessary configuration to run the new `GENESIS_MCP` service.
+If your application overrides `genesis-processes.xml` or `genesis-service-definitions.xml` using the `site-specific` approach, please ensure the overridden configuration aligns with the new changes to avoid incompatibilities at the `genesisInstall` stage.
+
+To avoid these sort of configuration override conflicts we recommend using `processes.xml` system definition overrides documented [here](/develop/server-capabilities/runtime-configuration/system-definition).
+This mechanism works in a fine grain fashion so only the specified process settings are overridden and avoids overriding entire `*-processes.xml` files in site-specific, which leads to necessary manual 3-way diff checks when upgrading platform versions.
+
+### Change in mandatory field validation
+
+A bugfix introduced in this release, and backported to other releases, solves an issue at the automatic message validation provided by event handlers.
+In more detail, if a mandatory field is found to be missing as part of the event handler validation stage, the generated error message now contains the `FIELD` property with the correct field name instead of containing the text "DETAILS".
+Please ensure your application tests and frontend validation behaves accordingly and make any necessary changes if required to accommodate the fixed behaviour.
+
+Bugfix reference:
+`genesis-net` : Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation
