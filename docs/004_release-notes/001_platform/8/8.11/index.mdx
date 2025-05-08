@@ -1,0 +1,139 @@
+---
+title: '8.11'
+sidebar_label: '8.11'
+sidebar_position: 11
+id: '8.11'
+---
+
+## Server
+
+:::tip
+This release contains [impactful changes](#impactful-changes). They are not breaking but typical stumbling blocks for older applications upgrading. These are listed at the end of this page, along with instructions to resolve.
+:::
+
+### Features
+
+- feat(distribution-gradle-plugin): Add support for copying "data" folder automatically to distribution package (GSF-7310) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4493
+- feat(genesis-config): Add `scriptCacheDir`, `UseJsonSystemDefinition` and `ScriptCachePerService` system definition settings (GSF-7271) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4352
+- feat(genesis-config): add compiler warning for unsupported sys def types (GSF-7273) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4353
+- feat(genesis-criteria): Added additional functions in criteria API (isNullOrBlank, longtoDate, longToDateTime) (GSF-7253) by @tgosling-genesis in https://github.com/genesislcap/genesis-server/pull/4261
+- feat(genesis-db): try to detect sql layer deadlocks (GSF-7281) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4462
+- feat(genesis-environment): Allow processes.xml configuration to be overridden using system definition properties (GSF-7284) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4385
+- feat(genesis-junit): create GenesisSharedContextTest where the microservice survives the test to improve performance in some scenarios (GSF-7265) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4481
+- feat(genesis-logging): Support configurable log directories and system definition option to disable automatic archiving (GSF-7290) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4402
+- feat(genesis-mcp): Added a new MCP server process that dynamically creates LLM compatible tools from Genesis resources (GSF-7283) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4482
+- feat(genesis-pal-datapipeline): add delayBetweenBatches + delayBetweenReads to db batch polling source (GSF-7296) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/4430
+- feat(genesis-pal-dataserver): improve memory profile of data server enriched fields (GSF-7294) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4422
+- feat(genesis-router): Handle Netty exceptions when creating a TextWebsocketFrame in a graceful manner  (GSF-7284) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4415
+- feat(genesis-router): improve handling of `triggerEvent` in custom webhandler script (GSF-6934) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4471
+- feat(genesis-subcore): Update nginx.conf to include commonly required settings (GSF-0) by @jay-taylerson in https://github.com/genesislcap/genesis-server/pull/4347
+- feat(genesis-transform): Added value formatting as first class operation within Transformer Engine (GSF-7303) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4467
+
+### Fixes
+
+- fix(Router): Cookie based auth doesn't work on multipart HTTP messages (GSF-7255) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4277
+- fix(db): Change default Backwards Join Cache mode to Sync (GSF-7267) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4317
+- fix(db): Do not use SQL thread pool for RxDb transactions to avoid deadlock (GSF-7264) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4306
+- fix(db): correct upsert operation on SQL (GSF-7259) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4289
+- fix(distribution-gradle-plugin): Ensure only PBC projects copy the "data" directory to the distribution package (GSF-7310) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4515
+- fix(exec-gradle-plugin): Ensure exec gradle plugin doesn't throw a null pointer exception when no system definition environment is found (GSF-7298) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4435
+- fix(genesis-clustersupport): fall back to db if service discovery cache missing entry (GSF-7314) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4524
+- fix(genesis-codegen): prioritise project dictionary file over dependency dictionary file during codegen (GSF-7278) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4362
+- fix(genesis-config): support `String` input for sys def ProcessDependencyTimeoutSeconds (GSF-7273) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4368
+- fix(genesis-console): EVENT_START_PROCESS and EVENT_STOP_PROCESS now work as expected (GSF-7288) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4390
+- fix(genesis-db): ensure "audited" db API runs audit operations in the same transaction and fix transactional db listeners (GSF-7302) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4473
+- fix(genesis-db): handle sql getRange operation with continuation (GSF-7281) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4377
+- fix(genesis-db): upsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode (GSF-7252) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4260
+- fix(genesis-environment): Ensure `GlobalClasspathAdditions` sysdef item is handled correctly as part of `startProcess` classpath generation (GSF-7311) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4506
+- fix(genesis-environment): Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation (GSF-7297) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4434
+- fix(genesis-environment): GENESIS_SYSDEF_ environment variable now work as expected within python scripts (GSF-7287) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4389
+- fix(genesis-environment): `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml (GSF-7299) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4443
+- fix(genesis-gradle): Also use site specific template files when checking for overridden processes (GSF-7280) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4371
+- fix(genesis-gradle): Sys Def gradle caching when Sys Def values have a mix of Ints and Longs (GSF-7291) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4406
+- fix(genesis-junit): Ensure injected test properties are initialised before test startup (GSF-7318) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4523
+- fix(genesis-junit): Ensure super classes for nested inner classes are also scanned for injectable properties (GSF-7316) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4512
+- fix(genesis-junit): detect annotations on super classes (GSF-7260) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4294
+- fix(genesis-junit): fix handling of nested classes (GSF-7269) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4325
+- fix(genesis-junit): test process exit code (GSF-7104) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4340
+- fix(genesis-logging): Add default log paths to the log4j2-default.xml file if L and RL env variables are not found (GSF-7301) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4459
+- fix(genesis-logging): Only check if process is running on `startServer` if log file ends in .log or .log.err (GSF-7295) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4426
+- fix(genesis-net): Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation (GSF-7274) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4354
+- fix(genesis-pal-streamer): ensure response to client when more data is available and records in lookup all filtered out (GSF-7275) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4360
+- fix(genesis-pal-streamer): set streamer process to warn when stream terminated (GSF-7276) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/4370
+- fix(genesis-router): Fix package scan definition in processes.xml to only include console router extensions (GSF-7286) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4388
+- fix(genesis-transform): Ensure column renames specification order does not matter (GSF-7305) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4478
+- fix(gradle-plugins): Ensure automatic dependency resolution handles exceptions correctly (GSF-7261) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4298
+- fix(pal-consolidator): Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations (GSF-7263) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4305
+- fix(pal-dataserver): `String` overflow handling logic is now applied correctly when priming (GSF-7257) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4287
+- fix(pal-dataserver): data server priming progress (GSF-7270) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4329
+- fix(pal-requestserver): Range requests using FROM/TO are now evaluated correctly (GSF-7254) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4267
+- fix(pal-streamer): added logger to streamer definition interface (GSF-7272) by @ZuhaaJamani in https://github.com/genesislcap/genesis-server/pull/4351
+- fix(settings-plugin): add script dependencies on script-config module if present (GSF-7262) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4302
+- fix: Ensure transformer configurations with multiple column formats are processed correctly (GSF-0) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/4495
+- fix: Fix `ClassCastException` issue in backwards join cache (GSF-7266) by @jacinpoz in https://github.com/genesislcap/genesis-server/pull/4316
+- fix: fix issue in conditional annotations usage with multiple package scans (GSF-7256) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4282
+- fix: improve genesis set handling in GenesisMessageClient (GSF-7268) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/4324
+
+### Dependency changes
+
+- build(deps): bump apachePoi from 5.4.0 to 5.4.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4321
+- build(deps): bump byteBuddyVersion from 1.17.2 to 1.17.4 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4247
+- build(deps): bump byteBuddyVersion from 1.17.4 to 1.17.5 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4285
+- build(deps): bump camelVersion from 4.10.2 to 4.10.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4284
+- build(deps): bump com.github.oshi:oshi-core from 6.8.0 to 6.8.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4398
+- build(deps): bump com.google.errorprone:error_prone_annotations from 2.37.0 to 2.38.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4420
+- build(deps): bump com.google.protobuf:protobuf-java from 4.30.1 to 4.30.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4275
+- build(deps): bump com.zaxxer:HikariCP from 6.2.1 to 6.3.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4259
+- build(deps): bump commons-io:commons-io from 2.18.0 to 2.19.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4373
+- build(deps): bump dcarbone/install-jq-action from 3.0.1 to 3.1.1 by @dependabot in https://github.com/genesislcap/genesis-server/pull/4283
+- build(deps): bump debeziumVersion from 3.0.8.Final to 3.1.0.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4307
+- build(deps): bump debeziumVersion from 3.1.0.Final to 3.1.1.Final in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4445
+- build(deps): bump info.picocli:picocli from 4.7.6 to 4.7.7 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4419
+- build(deps): bump joda-time:joda-time from 2.13.1 to 2.14.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4281
+- build(deps): bump junitVersion from 5.12.1 to 5.12.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4375
+- build(deps): bump kotlinCoroutinesVersion from 1.10.1 to 1.10.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4343
+- build(deps): bump micrometerVersion from 1.14.5 to 1.14.6 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4374
+- build(deps): bump mockitoVersion from 5.16.1 to 5.17.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4320
+- build(deps): bump org.apache.fury:fury-core from 0.10.0 to 0.10.1 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4387
+- build(deps): bump org.apache.shiro:shiro-core from 2.0.2 to 2.0.3 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4349
+- build(deps): bump org.apache.shiro:shiro-core from 2.0.3 to 2.0.4 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4421
+- build(deps): bump org.checkerframework:checker-qual from 3.49.1 to 3.49.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4292
+- build(deps): bump org.junit.platform:junit-platform-launcher from 1.12.1 to 1.12.2 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4372
+- build(deps): bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.5 to 2.5.6 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4350
+- build(deps): bump testcontainersVersion from 1.20.6 to 1.21.0 in /genesis-conventions by @dependabot in https://github.com/genesislcap/genesis-server/pull/4444
+
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Client
+
+### Features
+
+* feat(foundation-ui): allow Customization of Scrollbar Size in multiselect - FUI-2300 by @ArturKrasinski in https://github.com/genesislcap/foundation-ui/pull/1775
+* feat: create value expression builder component and add utils RPT-95 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1781
+* feat(foundation-ui): dispatch explicit null event detail for blank rule RPT-95 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1783
+* feat(expression-builder): allow lazy loading of config RPT-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1788
+* feat(expression-builder): handle null configs when lazy loading FUI-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1795
+
+### Fixes
+
+* fix(foundation-openfin): update workspace version FUI-0 by @SzymonZur in https://github.com/genesislcap/foundation-ui/pull/1776
+* fix(foundation-login): unset user before refreshCredentials login PA-1613 by @SzymonZur in https://github.com/genesislcap/foundation-ui/pull/1777
+* fix(foundation-comms): support isEqualDate for criteria PA-1620 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1780
+* fix(grid-pro): do not persist state when all columns filtered PA-1593 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1750
+* chore(foundation-storybook): update storybook package + package cleanup - FUI-0 by @MrBrunoWolff in https://github.com/genesislcap/foundation-ui/pull/1778
+* fix(foundation-entity-management): support disabling requestAutoSetup PA-1620 by @skawian in https://github.com/genesislcap/foundation-ui/pull/1782
+* fix(foundation-comms): prevent session extension happening on multiple windows at the same time by @skawian in https://github.com/genesislcap/foundation-ui/pull/1784
+* fix: expression builder cominator link text styles RPT-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1787
+* fix(foundation-utils): handle enum schema with oneof null values FUI-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1790
+* fix(foundation-ui): also handle expr builder lazy loading in components FUI-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1791
+* fix: add success type to snackbar types (PA-1634) by @Gareth-Spencer-Genesis in https://github.com/genesislcap/foundation-ui/pull/1789
+* chore(client-app): update gsf to the latest version by @skawian in https://github.com/genesislcap/foundation-ui/pull/1793
+* fix(foundation-entity-management): address getters using incorrect object ref - FUI-2304 by @MrBrunoWolff in https://github.com/genesislcap/foundation-ui/pull/1792
+* fix: expression builder styling and UX tweaks FUI-0 by @matteematt in https://github.com/genesislcap/foundation-ui/pull/1797
+
+
+## Impactful changes
+
