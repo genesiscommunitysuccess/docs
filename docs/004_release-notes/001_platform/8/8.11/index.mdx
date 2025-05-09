@@ -1,0 +1,154 @@
+---
+title: '8.11'
+sidebar_label: '8.11'
+sidebar_position: 10
+id: '8.11'
+---
+
+## Server
+
+:::tip
+This release contains [impactful changes](#impactful-changes). They are not breaking but typical stumbling blocks for older applications upgrading. These are listed at the end of this page, along with instructions to resolve.
+:::
+
+### Features
+
+* `distribution-gradle-plugin` : Add support for copying "data" folder automatically to distribution package 
+* `genesis-config` : Add `scriptCacheDir`, `UseJsonSystemDefinition` and `ScriptCachePerService` system definition settings 
+* `genesis-config` : Add compiler warning for unsupported sys def types 
+* `genesis-criteria` : Added additional functions in criteria API (`isNullOrBlank`, `longtoDate`, `longToDateTime`) 
+* `genesis-db` : Try to detect sql layer deadlocks 
+* `genesis-environment` : Allow processes.xml configuration to be overridden using system definition properties 
+* `genesis-testsupport` : Create GenesisSharedContextTest where the microservice survives the test to improve performance in some scenarios 
+* `genesis-logging` : Support configurable log directories and system definition option to disable automatic archiving 
+* `genesis-mcp` : Added a new MCP server process that dynamically creates LLM compatible tools from Genesis resources 
+* `genesis-pal-datapipeline` : Add delayBetweenBatches + delayBetweenReads to db batch polling source 
+* `genesis-pal-dataserver` : Improve memory profile of data server enriched fields 
+* `genesis-router` : Handle Netty exceptions when creating a TextWebsocketFrame in a graceful manner  
+* `genesis-router` : Improve handling of `triggerEvent` in custom webhandler script 
+* `genesis-subcore` : Update nginx.conf to include commonly required settings 
+* `genesis-transform` : Added value formatting as first class operation within Transformer Engine 
+
+### Fixes
+
+* `genesis-router` : Cookie based auth doesn't work on multipart HTTP messages 
+* `genesis-db` : Change default Backwards Join Cache mode to Sync 
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
+* `distribution-gradle-plugin` : Ensure only PBC projects copy the "data" directory to the distribution package 
+* `exec-gradle-plugin` : Ensure exec gradle plugin doesn't throw a null pointer exception when no system definition environment is found 
+* `genesis-clustersupport` : Fall back to db if service discovery cache missing entry 
+* `genesis-codegen` : Prioritise project dictionary file over dependency dictionary file during codegen 
+* `genesis-config` : Support `String` input for sys def ProcessDependencyTimeoutSeconds 
+* `genesis-console` : Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform. 
+* `genesis-db` : Ensure "audited" db API runs audit operations in the same transaction and fix transactional db listeners 
+* `genesis-db` : Handle sql getRange operation with continuation 
+* `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
+* `genesis-environment` : Ensure `GlobalClasspathAdditions` sysdef item is handled correctly as part of `startProcess` classpath generation 
+* `genesis-environment` : Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation 
+* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts 
+* `genesis-environment` : `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml 
+* `genesis-gradle` : Also use site specific template files when checking for overridden processes 
+* `genesis-gradle` : Fixed an issue where the gradle cache was reading system definition items defined with type `LONG` as `INT` values. This lead to constant cache misses even when the values were unchanged, which contributed to longer build times. 
+* `genesis-testsupport` : Ensure injected test properties are initialised before test startup 
+* `genesis-testsupport` : Ensure super classes for nested inner classes are also scanned for injectable properties 
+* `genesis-testsupport` : Detect annotations on super classes 
+* `genesis-testsupport` : Fix handling of nested classes 
+* `genesis-testsupport` : Test process exit code 
+* `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
+* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process 
+* `genesis-net` : Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation 
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+* `genesis-pal-streamer` : Set streamer process to warn when stream terminated 
+* `genesis-router` : Fix package scan definition in processes.xml to only include console router extensions 
+* `genesis-transform` : Ensure column renames specification order does not matter 
+* `gradle-plugins` : Ensure automatic dependency resolution handles exceptions correctly 
+* `genesis-pal-consolidator` : Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations 
+* `genesis-pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
+* `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed 
+* `genesis-pal-requestserver` : Range requests using FROM/TO are now evaluated correctly 
+* `pal-streamer` : Added logger to streamer definition interface 
+* `settings-plugin` : Add script dependencies on script-config module if present 
+* Ensure transformer configurations with multiple column formats are processed correctly 
+* Fix `ClassCastException` issue in backwards join cache 
+* Fix issue in conditional annotations usage with multiple package scans 
+* Fixed a test-only edge case in `GenesisMessageClient` where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed 
+
+### Dependency changes
+
+* Bump apachePoi from 5.4.0 to 5.4.1
+* Bump byteBuddyVersion from 1.17.2 to 1.17.4
+* Bump byteBuddyVersion from 1.17.4 to 1.17.5
+* Bump camelVersion from 4.10.2 to 4.10.3
+* Bump com.github.oshi:oshi-core from 6.8.0 to 6.8.1
+* Bump com.google.errorprone:error_prone_annotations from 2.37.0 to 2.38.0
+* Bump com.google.protobuf:protobuf-java from 4.30.1 to 4.30.2
+* Bump com.zaxxer:HikariCP from 6.2.1 to 6.3.0
+* Bump commons-io:commons-io from 2.18.0 to 2.19.0
+* Bump dcarbone/install-jq-action from 3.0.1 to 3.1.1
+* Bump debeziumVersion from 3.0.8.Final to 3.1.0.Final
+* Bump debeziumVersion from 3.1.0.Final to 3.1.1.Final
+* Bump info.picocli:picocli from 4.7.6 to 4.7.7
+* Bump joda-time:joda-time from 2.13.1 to 2.14.0
+* Bump junitVersion from 5.12.1 to 5.12.2
+* Bump kotlinCoroutinesVersion from 1.10.1 to 1.10.2
+* Bump micrometerVersion from 1.14.5 to 1.14.6
+* Bump mockitoVersion from 5.16.1 to 5.17.0
+* Bump org.apache.fury:fury-core from 0.10.0 to 0.10.1
+* Bump org.apache.shiro:shiro-core from 2.0.2 to 2.0.3
+* Bump org.apache.shiro:shiro-core from 2.0.3 to 2.0.4
+* Bump org.checkerframework:checker-qual from 3.49.1 to 3.49.2
+* Bump org.junit.platform:junit-platform-launcher from 1.12.1 to 1.12.2
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.5 to 2.5.6
+* Bump testcontainersVersion from 1.20.6 to 1.21.0
+
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Client
+
+### Features
+
+* `foundation-ui` : Allow Customization of Scrollbar Size in multiselect 
+* Create value expression builder component and add utils 
+* `expression-builder` : Dispatch explicit null event detail for blank rule 
+* `expression-builder` : Allow lazy loading of config 
+* `expression-builder` : Handle null configs when lazy loading 
+
+### Fixes
+
+* `foundation-openfin` : Update workspace version 
+* `foundation-login` : Unset user before refreshCredentials login 
+* `foundation-comms` : Support isEqualDate for criteria 
+* `grid-pro` : Do not persist state when all columns filtered 
+* `foundation-storybook` : Update storybook package + package cleanup 
+* `foundation-entity-management` : Support disabling requestAutoSetup 
+* `foundation-comms` : Prevent session extension happening on multiple windows at the same time
+* Expression builder cominator link text styles 
+* `foundation-utils` : Handle enum schema with oneof null values 
+* `foundation-ui` : Also handle expr builder lazy loading in components 
+* Add success type to snackbar types 
+* `foundation-entity-management` : Address getters using incorrect object ref 
+* Expression builder styling and UX tweaks 
+
+
+## Impactful changes
+
+### Changes in `genesis-processes.xml` and `genesis-service-definitions.xml`
+
+The `genesis-processes.xml` and `genesis-service-definitions.xml` files found in the core genesis distribution for version 8.11 have been updated with new and necessary configuration to run the new `GENESIS_MCP` service.
+If your application overrides `genesis-processes.xml` or `genesis-service-definitions.xml` using the `site-specific` approach, please ensure the overridden configuration aligns with the new changes to avoid incompatibilities at the `genesisInstall` stage.
+
+To avoid these sort of configuration override conflicts we recommend using `processes.xml` system definition overrides documented [here](/develop/server-capabilities/runtime-configuration/system-definition/#overriding-processesxml-settings).
+This mechanism works in a fine grain fashion so only the specified process settings are overridden and avoids overriding entire `*-processes.xml` files in site-specific, which leads to necessary manual 3-way diff checks when upgrading platform versions.
+
+### Change in mandatory field validation
+
+A bugfix introduced in this release, and backported to other releases, solves an issue at the automatic message validation provided by event handlers.
+In more detail, if a mandatory field is found to be missing as part of the event handler validation stage, the generated error message now contains the `FIELD` property with the correct field name instead of containing the text "DETAILS".
+Please ensure your application tests and frontend validation behaves accordingly and make any necessary changes if required to accommodate the fixed behaviour.
+
+Bugfix reference:
+`genesis-net` : Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation
