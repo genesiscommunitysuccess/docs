@@ -130,7 +130,6 @@ There are currently no patch releases for this version
 * `foundation-utils` : Handle enum schema with oneof null values 
 * `foundation-ui` : Also handle expr builder lazy loading in components 
 * Add success type to snackbar types 
-* `client-app` : Update gsf to the latest version
 * `foundation-entity-management` : Address getters using incorrect object ref 
 * Expression builder styling and UX tweaks 
 
@@ -142,7 +141,7 @@ There are currently no patch releases for this version
 The `genesis-processes.xml` and `genesis-service-definitions.xml` files found in the core genesis distribution for version 8.11 have been updated with new and necessary configuration to run the new `GENESIS_MCP` service.
 If your application overrides `genesis-processes.xml` or `genesis-service-definitions.xml` using the `site-specific` approach, please ensure the overridden configuration aligns with the new changes to avoid incompatibilities at the `genesisInstall` stage.
 
-To avoid these sort of configuration override conflicts we recommend using `processes.xml` system definition overrides documented [here](/develop/server-capabilities/runtime-configuration/system-definition).
+To avoid these sort of configuration override conflicts we recommend using `processes.xml` system definition overrides documented [here](/develop/server-capabilities/runtime-configuration/system-definition/#overriding-processesxml-settings).
 This mechanism works in a fine grain fashion so only the specified process settings are overridden and avoids overriding entire `*-processes.xml` files in site-specific, which leads to necessary manual 3-way diff checks when upgrading platform versions.
 
 ### Change in mandatory field validation
