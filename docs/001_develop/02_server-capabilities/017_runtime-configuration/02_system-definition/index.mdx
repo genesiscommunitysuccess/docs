@@ -191,6 +191,58 @@ GENESIS_SYSDEF_ENCRYPTED_DbPassword=a8a4d770afe25446434c2a13fa614be74274220c10a5
 GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 ```
 
+## Overriding processes.xml settings
+You can override the values defined for a process definition inside the [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes) file by using the following naming convention:
+`<process_name>_PROCESS_<property>`
+
+This approach makes it really easy to set the properties for a process definition without having to override/modify the corresponding `processes.xml` file directly, which simplifies the deployment process and long term maintenance.
+Additionally, this mechanism works both for a local development environment (using [Genesis Start](/develop/development-environment/genesis-start/) or the [IntelliJ plugin](/develop/development-environment/intellij-plugin/)) and for a deployed environment.
+
+For example, to set the `start` property to false for a process named `GENESIS_AUTH_PERMS` with the following configuration:
+```xml
+    <process name="GENESIS_AUTH_PERMS">
+        <groupId>AUTH</groupId>
+        <start>true</start>
+        <scheduleRestart>true</scheduleRestart>
+        <options>-Xmx256m -DXSD_VALIDATE=false</options>
+        <module>auth-perms</module>
+        <package>global.genesis.auth.perms</package>
+        <description>Manages entity level user authorisation</description>
+    </process>
+```
+You can set the following system definition property in your `genesis-system-definition.kts` file:
+
+```kotlin
+item(name = "GENESIS_AUTH_PERMS_PROCESS_START", value = "false")
+```
+
+The process property names follow the uppercase underscore naming convention for consistency with the process name.
+See table below with all the available properties and the mapping to the corresponding xml tags in [processes.xml](/develop/server-capabilities/runtime-configuration/processes) :
+
+| Sysdef Name           | XML tag Name            |
+|-----------------------|-------------------------|
+| GROUP_ID              | `<groupId>`             |
+| DESCRIPTION           | `<description>`         |
+| START                 | `<start>`               |
+| OPTIONS               | `<options>`             |
+| CONFIG_OVERRIDES_FILE | `<configOverridesFile>` |
+| MODULE                | `<module>`              |
+| PACKAGE               | `<package>`             |
+| PRIMARY_ONLY          | `<primaryOnly>`         |
+| CLASSPATH             | `<classpath>`           |
+| SCHEDULE_RESTART      | `<scheduleRestart>`     |
+| ARGUMENTS             | `<arguments>`           |
+| COMPACT_PROCESS       | `<compactProcess>`      |
+| CONFIG                | `<config>`              |
+| SCRIPT                | `<script>`              |
+| LOGGING_LEVEL         | `<loggingLevel>`        |
+| DEPENDENCY            | `<dependency>`          |
+| LANGUAGE              | `<language>`            |
+
+:::info
+The `JVM_OPTIONS` system definition item will still be taken into account when overriding the process `<options>` property.
+:::
+
 ## Retrieving system-definition properties
 
 There are examples of how to retrieve properties from an application's system definition in our page on [dependency injection](/develop/server-capabilities/custom-components/#injectable-properties-from-system-definition) in the API section.
