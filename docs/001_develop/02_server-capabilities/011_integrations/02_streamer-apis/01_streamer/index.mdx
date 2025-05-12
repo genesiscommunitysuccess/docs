@@ -178,7 +178,9 @@ streams {
 }
 ```
 
-By default `terminateOnError` is set to true, which means the streamer process will crash as soon as the first record hits the `toGenesisSet` transformation. If set to `false`, the exception will be logged, but the streamer will continue process rows.
+By default `terminateOnError` is set to true, which means the streamer process will crash as soon as the first record hits the `toGenesisSet` transformation.  
+When the stream is terminated, the process will go into a WARNING state with the terminated streamer name detailed in the message column of `mon`.  
+If set to `false`, the exception will be logged, but the streamer will continue process rows.
 
 
 #### `where`
