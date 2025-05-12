@@ -100,7 +100,7 @@ For more details on how the `$RL` and `$AL` directories are used in practice, re
 
 By default, messages sent to standard output (stdout) and standard error (stderr) by Genesis processes are not captured in the log files. This standard output is ignored by default and standard error is written to a `log.err` file in the `$L` directory.
 
-If you want to capture *all* output, including stdout and stderr, directly within the process's log files, you can change this behavior by setting the genesis system definiiton property `RedirectStreamsToLog` to `true`.
+If you want to capture **all** output, including stdout and stderr, directly within the process's log files, you can change this behavior by setting the genesis system definiiton property `RedirectStreamsToLog` to `true`.
 
 Setting this property to `true` ensures that standard output and error messages are written to the same log files managed by Log4j2, providing a consolidated view of all process output that will be managed the same way as other log messages.
 

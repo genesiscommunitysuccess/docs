@@ -1408,7 +1408,7 @@ startProcess APP_NOTIFY -s node1
 ```
 
 :::info
-The -s option requires the `EnableDaemonScriptController` system definition property to be enabled and set to "true". This will allow the daemon to execute commands on the specified node, as well as reach out to other existing daemons, as long as the network configuration allows it. This behaviour may be considered insecure, so it is disabled by default.
+The `-s` option requires the `EnableDaemonScriptController` system definition property to be enabled and set to "true". This will allow the daemon to execute commands on the specified node, as well as reach out to other existing daemons, as long as the network configuration allows it. This behaviour may be considered insecure, so it is disabled by default.
 :::
 
 The script looks in the [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) file to find out how to start the process. For example `startProcess GENESIS_AUTH_DATASERVER` starts the process with the correct classpath and extra arguments defined in the `processes.xml` file. Something similar to:
