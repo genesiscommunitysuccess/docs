@@ -105,7 +105,7 @@ If the file `reporting-system-definition.kts` does not exist in your application
 
 When using Genesis Create this will automatically be populated with all of the endpoints configured during the create process.
 
-If you list an endpoint which is not valid for reporting (for example a Data Server) else a non existent datasource, no errors will occur but these items will not be displayed to the user for selection.
+Only [Request Server endpoints](/develop/server-capabilities/snapshot-queries-request-server/#request) are valid report data sources. Anything listed in `REPORTING_DATASOURCE_LIST` which is not a valid request server endpoint in the application will be ignored.
 
 ## UI customisations
 
