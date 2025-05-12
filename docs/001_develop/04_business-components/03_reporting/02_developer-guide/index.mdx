@@ -1,0 +1,284 @@
+---
+title: 'Reporting - Developer guide'
+sidebar_label: 'Developer guide'
+sidebar_position: 2
+id: business-components-reporting-dev-guide
+keywords: [reporting, reports, developer]
+tags:
+  - reporting
+  - reports
+  - developer
+---
+
+## Setup
+
+In order to setup the Reporting PBC you'll need to install it into your project, and then perform some basic configuration.
+
+Ensure you're using these versions:
+* At least version `2.0.0` `@genesislcap/pbc-reporting-ui`
+* At least version `8.11` of the Genesis Server.
+* At least version `14.263.0` of Foundation UI.
+
+:::tip
+You will want to additionally setup the Document Management PBC to be able to use the full functionality of the Reporting PBC.
+:::
+
+### Installing during Genesis Create
+
+When configuring a new application via Genesis Create you can install the Reporting PBC by selecting it as a component on the project attributes screen.
+
+### Installing in a modern Genesis application
+
+If you have a modern Genesis application (an application using the unified monorepo structure) you can run the following command in the project root to install the PBC:
+
+```bash
+npx -y @genesislcap/genx@latest add -s pbc-reporting-seed -x --no-shell
+```
+
+This will install and configure the client and server modules
+
+If this doesn't work you can try the next method as a backup.
+
+### Manually adding the component
+
+If you're not able to install the component via the above methods you can install it manually as a component. Ensure you're using the versions mentioned above.
+
+#### Client installation
+
+Add the following to the `dependencies` section of `client/package.json` in your project:
+
+```json
+"@genesislcap/pbc-reporting-ui": "<version>"
+```
+
+[You can find the latest version of the pbc-reporting-ui component here](https://www.npmjs.com/package/@genesislcap/pbc-reporting-ui)
+
+##### PBC route installation (recommended)
+
+Set up a route for the component in  the file `client/src/routes/config.ts`. This makes the component visible to your application:
+
+```typescript
+{
+  title: 'Reporting',
+  path: 'reporting',
+  name: 'reporting',
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).RapidReporting,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'header',
+      title: 'Reporting',
+      icon: {
+        name: 'cog',
+        variant: 'solid',
+      },
+      placementIndex: 35,
+    },
+    ,
+  ]
+}
+```
+
+##### Component installation
+
+Instead of installing the component as a PBC you may install and use the reporting UI as you would with any other component. This isn't recommended, unless you have a specific need to - such as needing to customise the styling at the component level. Here is an example component using the Genesis syntax.
+
+```typescript
+// Register the component. You could instead do this in a file such as components.ts
+import { RapidReporting } from '@genesislcap/pbc-reporting-ui'
+RapidReporting;
+
+@customElement({
+  name: 'reporting-pbc',
+  template: html`<rapid-reporting></rapid-reporting>`,
+})
+export class PBCReporting extends GenesisElement { }
+```
+
+You will then need to install this component into the header via whatever framework you're using. Search for one of the header buttons you can see in your application, copy the config, and then set this new config to be "Reporting" and loading the `PBCReporting` component from above.
+
+For example, if you have a `Home` route in your application and you're using Genesis syntax you can search for "Home" to find this config.
+
+```json
+{
+path: 'home',
+element: Home,
+title: 'Home',
+name: 'home',
+navItems: [
+    {
+    title: 'Home',
+    icon: {
+        name: 'cog',
+        variant: 'solid',
+    },
+    permission: '',
+    },
+],
+},
+```
+You can then copy this config and then alter it to install your new PBC component. Don't forget to register the component if required!
+```json
+{
+path: 'reporting',
+element: PBCReporting,
+title: 'Reporting',
+name: 'reporting',
+navItems: [
+    {
+    title: 'Reporting',
+    icon: {
+        name: 'cog',
+        variant: 'solid',
+    },
+    permission: '',
+    },
+],
+},
+```
+You can follow a similar process for React and Angular applications - though remember the route config in those frameworks are slightly different! If you don't have a `Home` route then you can search for any of the current routes that are setup in your application.
+
+#### Server installation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To manually add the Reporting server component to your project, you must add some dependencies to your server and client packages.
+
+1. Add `fileServerVersion` to the file **server/gradle.properties**:
+
+```xml
+reportingVersion=x.y.z
+```
+
+2. Then add the following dependency to the **server/settings.gradle.kts** file in your project:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    ...
+    dependencies {
+        ...
+        dependency("global.genesis:reporting:${extra.properties["reportingVersion"]}")
+        ...
+    }
+}
+```
+
+
+## Server configuration
+
+Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information).
+
+To make a resource available as a source of data for a report, add the resource name to the `REPORTING_DATASOURCE_LIST` system definition in the file `reporting-system-definition.kts`.
+
+Here is an example `REPORTING_DATASOURCE_LIST` from a `reporting-system-definition.kts` file. It makes four request servers available to the Reporting Server:
+
+```kotlin
+   item("REPORTING_DATASOURCE_LIST", listOf("TRADE", "ORDER", "TRADE_VIEW", "ORDER_VIEW"))
+```
+
+:::info
+If the file `reporting-system-definition.kts` does not exist in your application codebase, [override it in your application](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) and edit the system definition item.
+:::
+
+When using Genesis Create this will automatically be populated with all of the endpoints configured during the create process.
+
+Only [Request Server endpoints](/develop/server-capabilities/snapshot-queries-request-server/#request) are valid report data sources. Anything listed in `REPORTING_DATASOURCE_LIST` which is not a valid request server endpoint in the application will be ignored.
+
+## UI customisations
+
+### Component sizing configuration
+
+The PBC has styling configured to ensure that all of the components fit inside of the browser without overflow for any browser window size. In order to do that the Reporting PBC must be configured with the size of the application taken up by components outside of the component itself.
+
+It's recommended that the reporting PBC takes up an entire route in your application, and therefore the only component on the screen in addition to the component should be your application header. The default header height of all modern Genesis applications is `60px` - if your application has not changed this, then you don't need to make any changes.
+
+If you've changed the height of your header, using a custom header, or there are more elements on the DOM in addition to your reporting component and header then you need to override this value with the height value that all of these elements are taking up. See the following example where the height of all elements on the page which are not from the reporting module is `100px`.
+
+```typescript
+@customElement({
+  name: 'reporting-pbc',
+  template: html`<rapid-reporting></rapid-reporting>`,
+  styles: css`
+    :host {
+      --app-top-height: 100px;
+    }
+  `
+})
+export class PBCReporting extends GenesisElement { }
+```
+
+If you've installed the PBC via `genx` or Genesis Create then you can simply add the following block in your top level component (likely `main.styles.ts`).
+```css
+  :host {
+    --app-top-height: 100px;
+  }
+```
+
+### Design tokens
+
+The styles of the PBC are configured to use the standard css design tokens which are used in any Genesis application. If you're already using the rapid design system and you've configured the design tokens at the top level they should be automatically applied. However, if you're using a different design system for your app you will need to set the tokens for the rapid design system used on your PBC. For example:
+
+```css
+  rapid-reporting,
+  rapid-design-system-provider {
+    --neutral-layer-3: white;
+    --neutral-layer-2: #f5f5f5;
+    --neutral-layer-4: #fafafa;
+  }
+```
+
+You set this css as either in your component or at the top level, as with the above example. If you've installed the component using the PBC route method and you're struggling to apply custom styles to it, you may want to alter your config to use the component installation method instead; then you can apply the styling to the wrapper component.
+
+## Integrations
+
+The reporting component integrates with other Genesis components to handle respective functionality:
+
+- [Document Manager](/develop/business-components/doc-management/) : for managing templates, template assets, and generated reports
+- [Document Generation](/develop/business-components/doc-generate/) : for the generation of reports from a template
+- [Notify](/develop/business-components/notifications/) : for distributing generated reports
+
+## Legacy configuration
+
+By default you will get the latest and greatest version of the reporting PBC. If for any reason you need to use the legacy reporting module you can make changes in your application to do this. If you've installed via `genx` or Genesis Create then you'll need to make the following change in your `reporting/routes.ts` file.
+
+```typescript {11}
+import type { AppRoute } from '@genesislcap/foundation-shell/app';
+
+/**
+ * Reporting route
+ * @public
+ */
+export const reporting: AppRoute = {
+  title: 'Reporting',
+  path: 'reporting',
+  name: 'reporting',
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).LegacyReporting.RapidReporting,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'side-nav',
+      title: 'Reporting',
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+    },
+  ],
+};
+```
+
+Specifically, you need to add the `LegacyReporting` namespace as part of your dynamic import.
+
+If you instead installed it manually you'd change the import in the component you've written to the following
+```typescript
+// Register the component. You could instead do this in a file such as components.ts
+import { LegacyReporting } from '@genesislcap/pbc-reporting-ui'
+LegacyReporting.RapidReporting;
+```
+
+:::warning
+The legacy reporting is deprecated and will be removed in a future version. If you've decided to opt into using the legacy reporting module you'll then receive a breaking change when it's removed.
+:::
+

@@ -18,7 +18,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 * Added endpoint to get asset details for a given document template ID 
 * Added new HTTP endpoint to replace binary content of file 
-* Added support for Apache Freemarker templates in Document Generator 
+* Added support for Apache Freemarker templates in Document Generation
 * Handle FILE_TYPE, add asset + template linking, modify upload, error handling, and UX improvements 
 
 ### Fixes
@@ -38,4 +38,4 @@ There are currently no patch releases for this version
 
 #### `IS_TEMPLATE` replaced by `FILE_TYPE`
 
-If your project is using Document Generator and with it, template documents in Document Manager, with this change any `FILE_STORAGE` document and templates which are marked `IS_TEMPLATE` as true will need to be manually updated to set `FILE_TYPE` with a value of `DOCUMENT_TEMPLATE`. 
+If your project is using Document Generation component and with it, template documents in Document Manager, with this change any `FILE_STORAGE` document and templates which are marked `IS_TEMPLATE` as true will need to be manually updated to set `FILE_TYPE` with a value of `DOCUMENT_TEMPLATE`. 
