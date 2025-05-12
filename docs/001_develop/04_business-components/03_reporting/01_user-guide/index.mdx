@@ -24,6 +24,25 @@ Click **Reporting** in the application header to open the module. It is included
 
 ![Reporting header](/img/001_develop/04_business-components/reporting/reporting-header.png)
 
+If you can't see this in your application, it is likely that your user needs to be granted the correct [access permissions](#access-permissions) or that the component needs to be installed (which developers can add following the [Developer guide setup instructions](/develop/business-components/reporting/developer-guide/#setup)).
+
+### Access permissions
+
+The following tables shows the permission codes associated with the reporting component functionality listed in this User Guide. If you are unable to see or use parts of the Reporting component in your application, speak to an application administrator who will be able to provide access.
+
+| Functional group | Permission Code | Description |
+|------------------|-----------------|-------------|
+| Report Configuration | `ReportConfigurationView` | View report configurations (both the overall list and the individual configuration), but not delete, edit, or create them. |
+| Report Configuration | `ReportConfigurationUpdate` | Create and update report configurations. With this disabled but `ReportConfigurationView` enabled, a user can open a report configuration but they can't interact with the form or save any changes. Requires `ReportConfigurationView`. |
+| Report Configuration | `ReportConfigurationDelete` | Delete report configurations. Requires `ReportConfigurationView`.|
+| Report Generation | `ReportRun` | Execute an existing report config, and view generated reports (even if `ReportView` isn't enabled). |
+| Report Generation | `ReportView` | View generated reports. |
+| Report Generation | `ReportDelete` | Delete generated reports. Requires `ReportRun` or `ReportView`. |
+| Report Destination Configuration | `ReportDestinationView` | View report destinations, but not delete, edit, or create them. If the user has `ReportConfigurationUpdate` but not `ReportDestinationView` then they can't view or select them when configuring a report. |
+| Report Destination Configuration | `ReportDestinationUpdate` | Create and edit report destinations. Requires `ReportDestinationView`. |
+| Report Destination Configuration | `ReportDestinationDelete` | Delete report destinations. Requires `ReportDestinationView`.  |
+
+
 ## Report configuration
 
 This is the landing section when opening the reporting module. It lists all configured reports in the application.
@@ -171,19 +190,3 @@ Each entry includes:
 You can **download** or **delete** generated reports from this page.
 
 Reports are also accessible in the Document Manager under the same hierarchy as when the report was run.
-
-## Access permissions
-
-The following tables shows the permission codes associated with the reporting component functionality listed in this User Guide. If you are unable to see or use parts of the Reporting component in your application, speak to an application administrator who will be able to provide access.
-
-| Functional group | Permission Code | Description |
-|------------------|-----------------|-------------|
-| Report Configuration | `ReportConfigurationView` | View report configurations (both the overall list and the individual configuration), but not delete, edit, or create them. |
-| Report Configuration | `ReportConfigurationUpdate` | Create and update report configurations. With this disabled but `ReportConfigurationView` enabled, a user can open a report configuration but they can't interact with the form or save any changes. Requires `ReportConfigurationView`. |
-| Report Configuration | `ReportConfigurationDelete` | Delete report configurations. Requires `ReportConfigurationView`.|
-| Report Generation | `ReportRun` | Execute an existing report config, and view generated reports (even if `ReportView` isn't enabled). |
-| Report Generation | `ReportView` | View generated reports. |
-| Report Generation | `ReportDelete` | Delete generated reports. Requires `ReportRun` or `ReportView`. |
-| Report Destination Configuration | `ReportDestinationView` | View report destinations, but not delete, edit, or create them. If the user has `ReportConfigurationUpdate` but not `ReportDestinationView` then they can't view or select them when configuring a report. |
-| Report Destination Configuration | `ReportDestinationUpdate` | Create and edit report destinations. Requires `ReportDestinationView`. |
-| Report Destination Configuration | `ReportDestinationDelete` | Delete report destinations. Requires `ReportDestinationView`.  |
