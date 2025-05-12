@@ -465,8 +465,8 @@ If no `batchSize` is provided, the elements from the database poll will be retur
 If a `batchSize` is provided, the elements from the database poll will be batched into the size you have specified in order of the index provided and returned as a list. The persistence manager will use the index from the last record of this batch. So, if the system goes down whilst in the middle of processing a batch of records, it recovers by continuing from the beginning of that batch. This gives an *at least once* guarantee. This option greatly increases processing speeds when working with large amounts of data.
 
 When using the batching functionality, you also have the following flags available to set in the configuration:
-- delayBetweenBatches (optional): this determines whether the source should wait before sending through the next batch of records. If set, the delay time is the same as `dbLookupDelayMs` as mentioned above. This flag is defaulted to false.
-- delayBetweenReads (optional): this determines whether the source should wait before polling the db again after sending through the batches for that read. If set, the delay time is the same as `dbLookupDelayMs` as mentioned above. This flag is defaulted to false.
+- `delayBetweenBatches` (optional): this determines whether the source should wait before sending through the next batch of records. If set, the delay time is the same as `dbLookupDelayMs` as mentioned above. This flag is defaulted to `false`.
+- `delayBetweenReads` (optional): this determines whether the source should wait before polling the db again after sending through the batches for that read. If set, the delay time is the same as `dbLookupDelayMs` as mentioned above. This flag is defaulted to `false`.
 
 ```kotlin
 // specify batchSize as shown below
