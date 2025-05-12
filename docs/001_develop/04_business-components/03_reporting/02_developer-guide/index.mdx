@@ -45,7 +45,43 @@ If you're not able to install the component via the above methods you can instal
 
 #### Client installation
 
-Then you can install and use the reporting UI as you would with any other component. Here is an example component using the Genesis syntax.
+Add the following to the `dependencies` section of `client/package.json` in your project:
+
+```json
+"@genesislcap/pbc-reporting-ui": "<version>"
+```
+
+[You can find the latest version of the pbc-reporting-ui component here](https://www.npmjs.com/package/@genesislcap/pbc-reporting-ui)
+
+##### PBC route installation (recommended)
+
+Set up a route for the component in  the file `client/src/routes/config.ts`. This makes the component visible to your application:
+
+```typescript
+{
+  title: 'Reporting',
+  path: 'reporting',
+  name: 'reporting',
+  element: async () => (await import('@genesislcap/pbc-reporting-ui')).RapidReporting,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'header',
+      title: 'Reporting',
+      icon: {
+        name: 'cog',
+        variant: 'solid',
+      },
+      placementIndex: 35,
+    },
+    ,
+  ]
+}
+```
+
+##### Component installation
+
+Instead of installing the component as a PBC you may install and use the reporting UI as you would with any other component. This isn't recommended, unless you have a specific need to - such as needing to customise the styling at the component level. Here is an example component using the Genesis syntax.
 
 ```typescript
 // Register the component. You could instead do this in a file such as components.ts
@@ -58,6 +94,49 @@ RapidReporting;
 })
 export class PBCReporting extends GenesisElement { }
 ```
+
+You will then need to install this component into the header via whatever framework you're using. Search for one of the header buttons you can see in your application, copy the config, and then set this new config to be "Reporting" and loading the `PBCReporting` component from above.
+
+For example, if you have a `Home` route in your application and you're using Genesis syntax you can search for "Home" to find this config.
+
+```json
+{
+path: 'home',
+element: Home,
+title: 'Home',
+name: 'home',
+navItems: [
+    {
+    title: 'Home',
+    icon: {
+        name: 'cog',
+        variant: 'solid',
+    },
+    permission: '',
+    },
+],
+},
+```
+You can then copy this config and then alter it to install your new PBC component. Don't forget to register the component if required!
+```json
+{
+path: 'reporting',
+element: PBCReporting,
+title: 'Reporting',
+name: 'reporting',
+navItems: [
+    {
+    title: 'Reporting',
+    icon: {
+        name: 'cog',
+        variant: 'solid',
+    },
+    permission: '',
+    },
+],
+},
+```
+You can follow a similar process for React and Angular applications - though remember the route config in those frameworks are slightly different! If you don't have a `Home` route then you can search for any of the current routes that are setup in your application.
 
 #### Server installation
 
@@ -150,7 +229,7 @@ The styles of the PBC are configured to use the standard css design tokens which
   }
 ```
 
-You set this css as either in your component or at the top level, as with the above example.
+You set this css as either in your component or at the top level, as with the above example. If you've installed the component using the PBC route method and you're struggling to apply custom styles to it, you may want to alter your config to use the component installation method instead; then you can apply the styling to the wrapper component.
 
 ## Integrations
 
