@@ -76,8 +76,8 @@ Templated reports can also reference assets, such as logos or images, which must
 
 Only documents marked as Template Asset are available to select. Assets will need to be uploaded first, in the same way as templates are but with the file type in the top right instead set to **TEMPLATE_ASSET**. 
 
-The Document Generator component developer documents give an example of how to reference data in templates. With the reporting engine you do not need to worry around the code elements in it's examples, but the templating guidance can help. An important consideration is that where used, 
-[column renames](#column-renames) need to be referenced in the template, not the actual UPPERCASE_FORMATTED field name - which must be used where column renames have not been set.
+The Document Generator component developer guide provides an example of how to reference data in templates. With the reporting engine you do not need to worry around the code elements in it's examples, but the templating guidance can help. An important consideration is that where used, 
+[column aliases](#column-renames--aliases) need to be referenced in the template, not the true `UPPERCASE_FORMATTED` field name - which must be used where column aliases have not been set.
 
 - [PDF (html) guidance](/develop/business-components/doc-generate/developer-guide/#html-example-usage)
 - [Excel guidance](/develop/business-components/doc-generate/developer-guide/#excel-example-usage)
@@ -119,14 +119,16 @@ Currently only *DATE* and *DATE_TIME* fields may be formatted. Where they are le
 
 Please note that fields set with a format will be served as a String to any templated reports as opposed to the field's true data type.
 
-#### Column renames
+#### Column renames / aliases
 
-Control how columns are labeled in the output:
+The name of this step changes depending on your report configuration. Column **renames** when not using a template, and Column **aliases** when a template is selected.
 
-- Use the checkboxes to select fields to rename.
+This page controls how columns are labeled in the output:
+
+- Use the checkboxes to select fields to rename / create a new alias for.
 - Set a **Display Name** for each selected column.
 
-For templated reports, use the renamed column name in the template, not the original field name.
+For [templated reports](#templated-reports), for any columns selected in this section you must use the column alias name you have set here in your template, not the original field name.
 
 #### Delivery
 
