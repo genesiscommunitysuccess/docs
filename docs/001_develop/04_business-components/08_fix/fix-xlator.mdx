@@ -83,7 +83,8 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
 }
 ```
 
-There is an optional `onParsingError` handler that you can use to describe what behaviour you want to happen if there is an exception thrown when parsing the fix message.
+There is an optional `onParsingError` handler that you can use to describe what behaviour you want to happen if there is an exception thrown when parsing the fix message. 
+
 Here you have access to the entity which caused the exception as well as the exception itself:
 
 ```kotlin
@@ -93,8 +94,8 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
     }
 
     onParsingError {
-            LOG.error("STREAM THREW PARSING EXCEPTION FOR {}", entity, throwable)
-            throw throwable
+        LOG.error("STREAM THREW PARSING EXCEPTION FOR {}", entity, throwable)
+        throw throwable
     }
 }
 ```
