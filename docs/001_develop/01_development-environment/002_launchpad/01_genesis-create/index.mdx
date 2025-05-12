@@ -179,7 +179,7 @@ The transformation process follows these rules:
 - The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where the process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
 - Column A is used as the primary key for the entity (or root entity of the view).
 - A column attribute is ignored if it has no data in any rows.
-- Where a column is formatted as Excel Date type, the values for**all** rows in the column must be formatted properly and compliant with the specified date format.
+- Where a column is formatted as Excel Date type, the values for **all** rows in the column must be formatted properly and compliant with the specified date format.
 - If any column in an Excel sheet has a datetime value, this is converted to DATE type in the format yyyy-MM-dd.
 - [Entity references](#entity-references) are created (and used to set up views) where a worksheet contains a VLOOKUP that looks at a column on the same sheet, and looks up a dataset looked on a different sheet. 
 
