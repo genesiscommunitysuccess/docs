@@ -113,7 +113,7 @@ Only [Request Server endpoints](/develop/server-capabilities/snapshot-queries-re
 
 The PBC has styling configured to ensure that all of the components fit inside of the browser without overflow for any browser window size. In order to do that the Reporting PBC must be configured with the size of the application taken up by components outside of the component itself.
 
-It's recommended that the reporting PBC takes up an entire route in your application, and therefore the only component on the screen in addition to the component should be your application header. The default of all modern Genesis applications use a header height of `60px` - if you've not changed this then you don't need to make any changes.
+It's recommended that the reporting PBC takes up an entire route in your application, and therefore the only component on the screen in addition to the component should be your application header. The default header height of all modern Genesis applications is `60px` - if your application has not changed this, then you don't need to make any changes.
 
 If you've changed the height of your header, using a custom header, or there are more elements on the DOM in addition to your reporting component and header then you need to override this value with the height value that all of these elements are taking up. See the following example where the height of all elements on the page which are not from the reporting module is `100px`.
 
