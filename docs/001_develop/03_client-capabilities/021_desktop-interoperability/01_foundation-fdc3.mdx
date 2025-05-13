@@ -10,32 +10,14 @@ tags:
   - fdc3
 ---
 
-# Genesis Foundation FDC3
-
-This provides a robust implementation of the FDC3 standard, facilitating interoperability between desktop financial applications. It leverages the `@finos/fdc3` library to implement an API that covers intents, context sharing, and channels, enhancing the communication and interaction capabilities of applications within the financial domain.
-
-## API documentation
-
-For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
-
-## Installation
-
-To include `@genesislcap/foundation-fdc3` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation.
-
-```json
-{
-  "dependencies": {
-    "@genesislcap/foundation-fdc3": "latest"
-  }
-}
-```
+This package provides a robust implementation of the FDC3 standard, enabling you to set up interoperability between desktop financial applications. It uses the `@finos/fdc3` library to implement an API that covers intents, context sharing, and channels.
 
 ## Key features
 
 - **FDC3 Standard Compliance:** Implements FDC3 API standards, ensuring compatibility and interoperability across financial desktop applications.
 - **Event and Context Management:** Supports handling and broadcasting of various event types and contexts, enabling rich interaction patterns between applications.
 - **Channel Support:** Offers utilities for channel management, allowing applications to join, create, or broadcast over specific channels for targeted communication.
-- **Intent Handling:** Provides mechanisms to raise, listen for, and handle intents, facilitating action-driven communication between applications.
+- **Intent Handling:** Provides mechanisms to raise, listen for, and handle intents, which enable action-driven communication between applications.
 
 ## Usage examples
 
@@ -91,11 +73,27 @@ export class MyComponent extends FASTElement {
 
 ## Best practice
 
-- **Intent and Context Definition:** Clearly define the intents and contexts your application will use or listen for, ensuring they align with FDC3 standards and facilitate meaningful interactions between applications.
+- **Intent and Context Definition:** Clearly define the intents and contexts your application will use or listen for. Ensure that they align with FDC3 standards and facilitate meaningful interactions between applications.
 - **Error Handling:** Implement robust error handling for intent raising and context sharing operations, especially when dealing with asynchronous actions.
-- **Channel Usage:** When using channels for communication, ensure proper management of channel membership and context broadcasting to avoid unintended interactions.
+- **Channel Usage:** To avoid unintended interactions when using channels for communication, ensure that channel membership and context broadcasting are properly managed.
 
 ## Dependency injection and service configuration
 
-The FDC3 service is designed to be easily integrated and configured within your application using dependency injection. This approach allows for flexible instantiation and usage of the FDC3 API, ensuring that financial desktop applications can leverage standard communication protocols for enhanced interoperability.
+The FDC3 service is designed to be easily integrated and configured within your application using dependency injection. This approach allows for flexible instantiation and usage of the FDC3 API, ensuring that financial desktop applications can use standard communication protocols for enhanced interoperability.
+
+## API documentation
+
+For more detailed information on API and configurations, refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
+
+## Installation
+
+To include `@genesislcap/foundation-fdc3` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-fdc3": "latest"
+  }
+}
+```
 

@@ -13,6 +13,97 @@ sidebar_position: 4
 
 This page relates to Server logging.
 
+## Overview
+
+Genesis uses [slf4j](https://www.slf4j.org/) for logging and the internal logging framework is [log4j2](https://logging.apache.org/log4j/2.12.x/).
+Logging settings are configured using a log4j2 configuration file, which by default is named `log4j2-default.xml` and can be overridden by a user-defined file with the same name in `site-specific/cfg/`.
+
+See default file below:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="default-logs" value="${env:GENESIS_HOME}/runtime/logs"/>
+        <Property name="default-rolling-logs" value="${env:GENESIS_HOME}/runtime/logs/currentRun"/>
+    </Properties>
+    <Appenders>
+        <RollingRandomAccessFile name="RollingFile" fileName="${env:L:-${main:default-logs}}/${sys:PROCESS_NAME}.log"
+                                 filePattern="${env:RL:-${main:default-rolling-logs}}/${sys:PROCESS_NAME}_%d{yyyy-MM-dd}-%i.log.gz"
+                                 ignoreExceptions="false" append="true" >
+            <PatternLayout>
+                <Pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%t] %-5level %logger{35} - %m%n</Pattern>
+                <header>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%t] INFO  logger.config - New ${sys:PROCESS_NAME} log file created\n</header>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+
+        <RollingFile name="MetricsRollingFile" fileName="${env:L:-${main:default-logs}}/${sys:PROCESS_NAME}.log.metrics"
+                     filePattern="${env:RL:-${main:default-rolling-logs}}/${sys:PROCESS_NAME}_%d{yyyy-MM-dd}-%i.log.metrics.gz"
+                     ignoreExceptions="false" append="true" createOnDemand="true" bufferedIO="true">
+            <PatternLayout>
+                <Pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%t] %-5level %logger{35} - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <AsyncLogger name="global.genesis." level="info" includeLocation="false" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </AsyncLogger>
+        <AsyncLogger name="org.apache.commons.configuration" level="info" includeLocation="false" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </AsyncLogger>
+        <AsyncLogger name="global.genesis.metrics" level="debug" includeLocation="false" additivity="false">
+            <AppenderRef ref="MetricsRollingFile"/>
+        </AsyncLogger>
+        <AsyncRoot level="info" includeLocation="false">
+            <AppenderRef ref="RollingFile"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>
+```
+
+## Log directories
+
+Genesis utilizes three key environment variables to define log directory locations:
+
+1.  **`$L` (Log Directory):**
+*   **Purpose:** The main directory for current log files. This is where Genesis writes logs during its active operation.
+*   **Default:** `${GENESIS_HOME}/runtime/logs`
+*   **Used By:** `log4j2-default.xml` for current log output.
+
+2.  **`$RL` (Rolling Log Directory):**
+*   **Purpose:** Stores rolling logs. Log files are often "rolled over" (archived and replaced with new ones) based on size or time to prevent them from becoming too large. This directory also holds logs moved during the `startProcess` command execution.
+*   **Default:** `${L}/currentRun` (a subdirectory within the main log directory `$L`)
+*   **Used By:** `log4j2-default.xml` for rolling log configurations and the [`startProcess`](/build-deploy-operate/operate/commands/#startprocess) command.
+
+3.  **`$AL` (Archive Log Directory):**
+*   **Purpose:** Stores archived logs, typically older logs moved during server startup processes, for long-term storage.
+*   **Default:** `${L}/archive` (another subdirectory within the main log directory `$L`)
+*   **Used By:** The [`startServer`](/build-deploy-operate/operate/commands/#startserver) command for archiving previous logs.
+
+### Configuration
+
+*   **Automatic Setup:** These environment variables (`$L`, `$RL`, `$AL`) are automatically configured with their default values when you source the setup script located at `$GENESIS_HOME/genesis/util/setup.sh`.
+*   **Customization:** If you need to use different locations for your logs, you can define `$L`, `$RL`, or `$AL` as environment variables *before* sourcing the `setup.sh` script. Your custom values will then take precedence over the defaults.
+
+For more details on how the `$RL` and `$AL` directories are used in practice, refer to the documentation for the [`startServer`](/build-deploy-operate/operate/commands/#startserver) and [`startProcess`](/build-deploy-operate/operate/commands/#startprocess) commands.
+
+## Redirecting Standard Output and Error
+
+By default, messages sent to standard output (stdout) and standard error (stderr) by Genesis processes are not captured in the log files. This standard output is ignored by default and standard error is written to a `log.err` file in the `$L` directory.
+
+If you want to capture **all** output, including stdout and stderr, directly within the process's log files, you can change this behavior by setting the genesis system definiiton property `RedirectStreamsToLog` to `true`.
+
+Setting this property to `true` ensures that standard output and error messages are written to the same log files managed by Log4j2, providing a consolidated view of all process output that will be managed the same way as other log messages.
+
 ## Logging level
 
 The default logging level for processes is set in the [processes xml definition file](/develop/server-capabilities/runtime-configuration/processes/#tags).

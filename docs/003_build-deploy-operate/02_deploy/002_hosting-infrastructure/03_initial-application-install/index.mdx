@@ -14,35 +14,44 @@ tags:
 ---
 This section describes installing an application built on the Genesis Application Platform. Readers need to have some experience of Linux system administration.
 
-## Installing build artifacts
+## Required artifacts
 
-### Transferring the build artifacts
+### Application distribution
 
-After a build process is finished, the result is a set of build artifacts ready to be installed. At present, Genesis applications are built as ZIP files ready to be copied to and unzipped on the target host(s). The application's developer can advise which are the correct ZIP files.
+After a build process is finished, the result is an application distribution artifact. At present, Genesis applications are built as ZIP files ready to be copied to and unzipped on the target host(s). 
 
-Copy the build artifact onto the host by whatever means your local security policies allow.  
+When using the standard configuration of a Genesis application, a build will generate:
+
+- an application distribution named `genesisproduct-{appName}-distribution-{appVersion}-bin.zip` which contains the application's own libraries, config and scripts
+- a site-specific distribution names `{app-name}-site-specific-{appVersion}-bin.zip` which contains the [site-specific configuration and scripts for the application](/develop/server-capabilities/runtime-configuration/site-specific/).
+
+These, along with dependent Genesis distributions required by the app, will need to be installed on hosts per the instructions further down in this page.
+
+#### Genesis distributions
+
+These are distributions which are maintained by Genesis, and power all Genesis applications. They include all the libraries, scripts and config required by the given module. These include:
+
+- Genesis Server Framework
+- Further Genesis Component distributions - those required are determined by [the application's configured dependencies](/build-deploy-operate/build/plugins/#dependencies)
+
+These distribution zip bundles are released to the Genesis artifactory along with the underlying libs, and are contained in `*-distribution` folders under the `libs-release-client` repository. For example the main [Genesis Server framework distributions are found here](https://genesisglobal.jfrog.io/ui/repos/tree/General/libs-release-client/global/genesis/genesis-distribution). You'll need [access to Genesis Server artifacts](/build-deploy-operate/build/library-access/#server-artifacts).
+
+When the version of any of these Genesis dependencies is updated in the application, the related distribution zip for that release needs to be added onto the box and **replace** the respective distribution that is already there.
+
+Where using the [Genesis build plugin's](/build-deploy-operate/deploy/hosting-infrastructure/containers/#using-the-plugin) `buildImage`, it will read the application codebase to determine the module versions to include and further docker commands can be used to deploy them. If you are setting things up manually, you can to determine which module versions in the same way `buildImage` does by [reading the dependencies](/build-deploy-operate/build/plugins/#dependencies) from the application's codebase.
 
 ## Installing code
 
-The build artifact is unlikely to contain absolute paths for its files, so it is important to have the correct extract directory when unzipping them.
+All of the required distribution zips (those of the application, and it's Genesis dependencies) will need to be put onto the host and unzipped. To recap, here's an overview of the distributions needed:
 
-You can use the `zipinfo` command (part of the unzip package) to examine the files inside the ZIP. 
+* The application distribution zip file
+* The application site-specific distribution zip file
+* The Genesis dependency distribution zip files
+* The client code zip file
 
-Below is sample output for part of a distribution ZIP. Your application will probably have a different top-level directory; typically, this is named after the application.
+When using the `buildImage` and docker deployment scripts, a lot of this will be taken care of. The following section gives an overview of what is happening and advice in case you are building your own build and deployment scripts.
 
-```shell
-$ zipinfo genesis-distribution-6.1.0-bin.zip 
-Archive:  genesis-distribution-6.1.0-bin.zip
-Zip file size: 234214088 bytes, number of entries: 573
-drwxr-xr-x  2.0 unx        0 b- defN 22-Jul-10 16:24 genesis/
-drwxr-xr-x  2.0 unx        0 b- defN 22-Jul-10 16:24 genesis/bin/
--rw-r--r--  2.0 unx   118037 b- defN 22-Jul-10 16:04 genesis/bin/genesis-consolidator2-6.1.0.jar
--rw-r--r--  2.0 unx   531691 b- defN 22-Jul-10 16:04 genesis/bin/genesis-cluster-6.1.0.jar
--rw-r--r--  2.0 unx   101884 b- defN 22-Jul-10 16:24 genesis/bin/genesis-webmon-6.1.0.jar
-(and more)
-```
-
-## Application paths
+### Application paths
 
 The default application install path for Genesis-built applications is chosen to divide the application up (for when more than one application is installed on a host) and to manage versions.  
 
@@ -73,9 +82,31 @@ rm -f /data/${runUser}/web
 ln -s /data/${runUser}/web-${installDate} /data/${runUser}/web
 ```
 
-## Unzipping the code
+### Unzipping the code
 
-### Application code
+#### A quick note on absolute paths
+
+The build artifacts are unlikely to contain absolute paths for files, so it is important to have the correct extract directory when unzipping them.
+
+You can use the `zipinfo` command (part of the unzip package) to examine the files inside the ZIP. 
+
+Below is sample output for part of a Genesis Server Framework distribution ZIP. 
+
+```shell
+$ zipinfo genesis-distribution-6.1.0-bin.zip 
+Archive:  genesis-distribution-6.1.0-bin.zip
+Zip file size: 234214088 bytes, number of entries: 573
+drwxr-xr-x  2.0 unx        0 b- defN 22-Jul-10 16:24 genesis/
+drwxr-xr-x  2.0 unx        0 b- defN 22-Jul-10 16:24 genesis/bin/
+-rw-r--r--  2.0 unx   118037 b- defN 22-Jul-10 16:04 genesis/bin/genesis-consolidator2-6.1.0.jar
+-rw-r--r--  2.0 unx   531691 b- defN 22-Jul-10 16:04 genesis/bin/genesis-cluster-6.1.0.jar
+-rw-r--r--  2.0 unx   101884 b- defN 22-Jul-10 16:24 genesis/bin/genesis-webmon-6.1.0.jar
+(and more)
+```
+
+#### Server distributions
+
+The following is applicable to all of your application's server distribution artifacts, including the application, site-specific and the genesis provided distributions detailed earlier in this page.
 
 The ZIP files contain relative paths, so the extract path matters. Therefore, either `chdir` to the correct directory, or use a command-line argument to unzip.
 
@@ -90,7 +121,7 @@ cd /data/${runUser}/server/${installDate}/run; unzip <absolute path to applicati
 unzip <absolute path to application ZIP> -d /data/${runUser}/server/${installDate}/run
 ```
 
-### Web code
+#### Web code
 
 The web ZIP is also likely to contain relative paths, so again, the extract path matters.  Therefore, either `chdir` to
 the correct directory, or use a command-line argument to unzip.
@@ -106,38 +137,9 @@ cd /data/${runUser}/web-${installDate}; unzip <absolute path to web ZIP>
 unzip <absolute path to web ZIP> -d /data/${runUser}/web-${installDate}
 ```
 
-
-## Installing site-specific configuration
-
-The final build artifact is the configuration for the run environment. There are two options here:
-
-- separate config, where only the given environment config is provided
-- unified config, where each separate environment is specified in the config
-
-Each approach has its virtues. Separate config maintains separation between environments. Unified config provides a single artifact for all environments. This helps to confirm that what is live is what was tested.
-
-This is also a ZIP file, containing relative paths (the top-level directory is always **site-specfic**).
-
-This needs to be installed in the server-side code directory, following a very similar pattern to installing the server-side code.
-
-```shell
-installDir=$(date %Y%m%d)
-runUser=<provide the username the application will run as>
-
-cd /data/${runUser}/server/${installDate}/run; unzip <absolute path to site-specific ZIP>
-
-# OR
-
-unzip <absolute path to site-specific ZIP> -d /data/${runUser}/server/${installDate}/run
-```
-
 ## Post-install tasks
 
-Any last changes to the configuration files should be made *before* proceeding. Whether the site-specific config provides a complete configuration set is a matter that needs to be agreed between the developer and the system administrator.
-
-If anything cannot be determined at site-specific ZIP build time, it might need to be changed manually on the host.
-
-Following this, two key Genesis commands must be run to complete the installation. Both must be run as the application user, as they will generate files with the ownership of the user running the command.
+Following the installation of the distributions, two key Genesis commands must be run to complete the installation. Both must be run as the application user, as they will generate files with the ownership of the user running the command.
 
 - The command `genesisInstall` creates a set of files, consolidating config to create a unified view of it, which the processes will consume. It is needed after an install or an upgrade. For more details, see the [commands reference](/build-deploy-operate/operate/commands/#genesisinstall).
 

@@ -17,11 +17,11 @@ tags:
   - mock
 ---
 
-A common pattern you'll need when unit testing is mocking out functions and data.
+A common pattern for unit testing is mocking out functions and data.
 
 ## Theory
 
-When writing a unit test you want to be running as little code as possible outside of the unit under test. Testing something like a pure function (a function deterministic on it's inputs and producing no side effects) will always follow this pattern. However, if you need to test a function or component which has side effects then you'll want to isolate them from the tests.
+When writing a unit test, you want to run as little code as possible outside the unit that you are testing. Any test on something like a pure function (a function deterministic on its inputs and producing no side effects) will always follow this pattern. However, if you need to test a function or component that has side effects, then you'll want to isolate them from the tests.
 
 You can use a stub to configure how certain functions and data are returned.
 
@@ -29,7 +29,7 @@ You can use a stub to configure how certain functions and data are returned.
 
 ### Code under test
 
-Consider this function which reads a value from a redux store and transforms the data before returning it. Notice the import of the `selector` from another file, which is used to read the data.
+Consider this function, which reads a value from a redux store and transforms the data before returning it. Notice the import of the `selector` from another file, which is used to read the data.
 
 ```typescript
 import { selector } from '../../store';
@@ -40,12 +40,12 @@ function getNamesForDisplay() {
 }
 ```
 
-This function has a side effect because it reads `.users.names` from an external store. The unit tests could be written to have code which sets up the store with data and then test the function. However, this has issues:
+This function has a side effect because it reads `.users.names` from an external store. You could write the unit tests to have code that sets up the store with data and then tests the function. However, this has issues:
 
-1. The boilerplate quickly becomes large and distracts from reading the test logic itself.
-2. The data external to the test will persist between each test case, so reordering tests or changing tests can break other tests. This is bad practise - all unit tests should be completely independent.
+- The boilerplate quickly becomes large and distracts from reading the test logic itself.
+- The data external to the test will persist between each test case, so reordering tests or changing tests can break other tests. This is bad practice - all unit tests should be completely independent.
 
-Instead we can use a stub to control the data directly in the test.
+To address this, you can use a stub to control the data directly in the test.
 
 ### Unit test
 
@@ -82,13 +82,13 @@ GetNamesForDisplaySuite('Returns empty array when names array is empty', () => {
 GetNamesForDisplaySuite.run();
 ```
 
-In each test `sinon` is used to stub the data which is returned when the code under test accesses `selectors.users.names`. This allows you to control the test cases for the unit test, and if any implementations change in other places that shouldn't change these two unit tests as they're isolated like unit tests should be.
+In each test, `sinon` is used to stub the data that is returned when the code under test accesses `selectors.users.names`. This allows you to control the test cases for the unit test. If any implementations change in other places, this shouldn't change these two unit tests, as they're isolated (in accordance with best practice).
 
 :::tip
 The `sinon` import allows other types of stubbing and mocking to be used in your tests. See the [Sinon.JS](https://sinonjs.org/releases/v18/) documentation for more information. Conversing with AI chatbots is also a useful way to learn how to write mocks for unit tests.
 :::
 
-## Best practises
+## Best practices
 
 In the [above example](#unit-test) there is the following code.
 
@@ -98,6 +98,8 @@ GetNamesForDisplaySuite.before.each(() => {
 });
 ```
 
-The ensures that before every test runs that all `sinon` mocks are cleared and the code runs as normal. With only the two examples tests written this isn't strictly necessary.
+This ensures that before every test runs, all `sinon` mocks are cleared and the code runs as normal. 
 
-However, imagine a more complex function under test where you stub many different functions at different times in the same unit test file. As stated earlier you should ensure that each unit test is completely independent from each other. This means you shouldn't have one unit test setup a mock which a later unit test in the file relies on. Resetting all of the stubs helps to ensure that doesn't happen, and allows you to quickly remove any stubs so functions can be used as normal in other test suites.
+For our simple example, this isn't strictly necessary. But it is very useful in more complex examples. 
+
+Imagine a more complex function under test where you stub many different functions at different times in the same unit test file. As stated earlier, you should ensure that each unit test is completely independent from the others. This means you should not have a unit test that sets up a mock which a later unit test in the file relies on. Resetting all the stubs helps to ensure that doesn't happen, and enables you to quickly remove any stubs so that functions can be used as normal in other test suites.

@@ -10,8 +10,6 @@ tags:
     - DBMon
 ---
 
-# DbMon
-
 DbMon is the Genesis database client. It provides a set of commands that enable you to view and change the database as necessary. DbMon hides the details of the specific database technology, so this does not affect your usage.
 
 You can use Generic database clients to work with the Genesis Application Platform, but we recommend that you use DbMon.
@@ -49,7 +47,7 @@ A Genesis database organizes information in tables and views. DbMon enables you 
 - select a view to examine (`view`)
 
 
-The [`showTables`](#dbmon-commands) and [`showViews`](#dbmon-commands) commands display an alphabetical list of available tables or views. For example, here we have used the command `showTables`:
+The [`showTables`](#dbmon-commands) and [`showViews`](#dbmon-commands) commands display an alphabetic list of available tables or views. For example, here we have used the command `showTables`:
 
 ```javascript
 ==================================
@@ -187,7 +185,7 @@ BROKER
 ==================================
 Field Name                Value                                     Type
 ===========================================================================================
-TIMESTAMP                 2022-07-08 14:14:26.818(n:0,s:2630)       NANO_TIMESTAMP
+TIMESTAMP                 2024-07-08 14:14:26.818(n:0,s:2630)       NANO_TIMESTAMP
 BROKER_ID                 725                                       INT
 BROKER_PARENT_ID          724                                       INT
 CODE                      114216                                    STRING
@@ -199,8 +197,8 @@ EXTERNAL_ID               725N                                      STRING
 FID_BROKER_ID             WALSH                                     STRING
 IS_ACTIVE                 true                                      BOOLEAN
 LEI_NUMBER                MP6I5ZYZBEU3UXPYFY54                      STRING
-MODIFIED_DATE             2022-03-14 09:44:25.703 +0000             DATETIME
-MODIFIED_USER             ismail.augustine                              STRING
+MODIFIED_DATE             2024-03-14 09:44:25.703 +0000             DATETIME
+MODIFIED_USER             ismail.augustine                          STRING
 NAME                      WALSH Bank Plc                            STRING
 NETTING_GROUP_ID                                                    INT
 REGION                    UK                                        STRING
@@ -772,16 +770,16 @@ Here is a full list of DbMon commands and their arguments.
 | [distinct](#finding-distinct-records)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                             |
 | [displayFields](#viewing-selected-columns)     | `<field_names>`                             | display only selected columns                                          |
 | [find](#finding-and-viewing-a-specific-record)                        | `<key_name>`                                | find a specific record in a index                                      |
-| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                                        |
-| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                                        |
+| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |  set the next sequence number for the specified field; **only use when all processes have been stopped**   |
+| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |          set the next sequence number for the specified field; **only use when all processes have been stopped** |
 | [first](#finding-the-first-and-last-record)             | `<key_name>`                                | get the first record by key                                            |
 | help                                 |                                             | list all commands                                                      |
 | [insert](#inserting-a-new-record)                    |                                             | insert a new record with the currently selected fields                                                    |
 | [last](#finding-the-first-and-last-record)              | `<key_name>`                                | get the last record by key                                             |
-| listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                                        |
+| listAll                              | `<key_name> <num_key_fields> <max_records>` |  requires the [table or view context](#finding-and-viewing-information) and the record context; lists all the records from the table or view, which have the same value as the context record for the first fields of the key (if all the fields for the key are used, only one record is returned)  |
 | [next](#displaying-the-next-record)                        | `<key_name>`                                | get the next record by key                                             |
-| qsearch                              | `<condition> [-l <limit>]`                  |                                                                        |
-| qshow                                |                                             |                                                                        |
+| qsearch                              | `<condition> [-l <limit>]`                  |  return the records that match the criteria, excluding columns with null values  |
+| qshow                                |                                             |   display the current record, excluding columns with null values          |
 | [search](#searching-for-one-or-more-records)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                             |
 | [set](#changing-the-value-of-a-field)                | `<field_name> <field_value>`                | set a field                                                            |
 | sequenceNumber                       | `<sequence_name>`                           | displays the last generated sequence number for the table or view      |

@@ -1,6 +1,6 @@
 ---
-title: 'Criteria Overview'
-sidebar_label: 'Criteria Overview'
+title: 'Criteria overview'
+sidebar_label: 'Criteria overview'
 id: form-criteria-overview
 keywords: [foundation, ui, comms, resource, criteria, filtering, formatters, groovy, filtering, charts, grids]
 tags:
@@ -19,13 +19,16 @@ tags:
 
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase';
 
-The FoundationUI framework has several components that communicate directly with the backend. The Grids, Charts components take a `resourceName` parameter which specifies the service. The `Connect` class snapshot and stream methods can also be used to get data from the backend.
+The FoundationUI framework has several components that communicate directly with the back end. 
 
-You can filter the responses by creating Groovy expressions to only see rows that match your use case.
+- The Grids and Charts components take a `resourceName` parameter, which specifies the service. 
+- The `Connect` class snapshot and stream methods can also be used to get data from the back end.
 
-You can use `foundation-criteria` module to create expressions using the suite of helper functions.
+You can filter the responses by creating Groovy expressions to see only the rows that match your use case.
 
-To add the package to your application, update your **package.json**
+You can use the `foundation-criteria` module to create expressions using the suite of helper functions.
+
+To add the package to your application, update your **package.json**:
 
 ```json
 {
@@ -39,14 +42,14 @@ You can then import and make use of its helper classes and functions to construc
 
 ## Elements using criteria
 
-Some elements in FoundationUI communicate directly with the backend to retrieve and display data. The data retrieved can be filtered using valid criteria Groovy expressions.
+Some elements in FoundationUI communicate directly with the back end to retrieve and display data. The data retrieved can be filtered using valid criteria Groovy expressions.
 
 ### Chart and chart datasource
 
-The `rapid-g2plot-chart` component can be populated with data using the `chart-datasource` component.
+To populate the `rapid-g2plot-chart` component with data, use the `chart-datasource` component.
 
 
-<CollapsibleSlot title="Price history resources" description="The price history table and dataserver would look like this">
+<CollapsibleSlot title="Price history resources" description="Click the button to see the code for these resources.">
 
     **tables-dictionary.kts**
     ```kts
@@ -68,7 +71,7 @@ The `rapid-g2plot-chart` component can be populated with data using the `chart-d
     ```
 </CollapsibleSlot>
 
-This example is a simple line chart which retrieves data from a **Price history**
+This example is a simple line chart that retrieves data from a **Price history**:
 
 ```ts
 import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
@@ -115,9 +118,9 @@ export class MyComponent extends FoundationElement {
 }
 ```
 
-The next two examples are based on the same backend resources. Click to the button to show.
+The next two examples are based on the same back-end resources. 
 
-<CollapsibleSlot title="Trade Resources" description="The trade table could look something like this">
+<CollapsibleSlot title="Trade Resources" description="Click the button to view a relevant example of a TRADE table:">
 
 **tables-dictionary.kts**
 ```kts
@@ -143,9 +146,9 @@ dataServer {
 
 ### Grid Pro and Grid datasource
 
-The `rapid-grid-pro` can be populated with data using the `grid-pro-datasource` component. In addition to `resourceName` attribute you can also set a `criteria` attribute.
+To populate the `rapid-grid-pro` with data, use the `grid-pro-datasource` component. In addition to the `resourceName` attribute, you can also set a `criteria` attribute.
 
-In this example we only want to see trades made against 'GNYS' ticker and with a status not equals to 'Cancelled'
+In this example, we only want to see trades made against 'GNYS' ticker and with a status not equal to 'Cancelled':
 
 ```ts
 import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
@@ -172,7 +175,7 @@ const filterCriteria = new CriteriaBuilder()
   .withExpression(tradeStatusExpression)
   .build();
 
-// filterCriteria is equal to '((TICKER == "GNYS" && STATUS ! "Cancelled")'
+// filterCriteria is equal to '(TICKER == "GNYS" && STATUS ! "Cancelled")'
 
 @customElement({
   name: 'my-component',

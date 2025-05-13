@@ -7,6 +7,7 @@ format: md
 
 ## SSOConfig type
 
+If you don't provide SSOConfig on the login config then SSO is disabled completely.
 
 **Signature:**
 
@@ -16,3 +17,20 @@ export type SSOConfig = {
     identityProvidersPath: string;
 };
 ```
+
+## Remarks
+
+`toggled` - Optionally toggle the SSO journey on/off by default. If `toggled` is set to `true`, the SSO option is presented as enabled to the user (e.g., the SSO checkbox is checked, or SSO providers are immediately displayed). If `toggled` is set to `false` (or if the parameter is omitted entirely), the SSO option starts as disabled. The user would then need to explicitly enable it (e.g., by checking a checkbox) to initiate the SSO flow.
+
+`identityProvidersPath` - The identity providers path under the current host. This is a \*required\* string parameter. It specifies the URL path where the application can fetch the list of available Identity Providers (IDPs) for SSO. This path is relative to the `API_HOST` or the `host` you are setting in the parent component. The login component will make a request to this endpoint to retrieve the IDPs. The response from this endpoint is expected to be in a format that the component can understand (as defined by the `IDP` and `IDPResponse` types in your code). The response is expected to be a JSON object containing an array of identity providers. Example: If your `API_HOST` is `https://example.com/gwf` and `identityProvidersPath` is set to `'sso/list'`, the component will fetch the IDP list from `https://example.com/gwf/sso/list`. This endpoint should be implemented on your backend to return the available SSO providers.
+
+## Example
+
+
+```ts
+const config: SSOConfig = {
+  toggled: true,
+  identityProvidersPath: 'sso/list',
+}
+```
+

@@ -1,0 +1,427 @@
+---
+title: 'Multiselect'
+sidebar_label: 'Multiselect'
+id: client-interaction-multiselect
+keywords: [interaction, interactive, select, form, submit, data, multiselect, dropdown, options, filter, search, async, multiple selection]
+tags:
+- interaction
+- interactive
+- select
+- form
+- submit
+- data
+- multiselect
+- dropdown
+- search
+- filter
+- multiple selection
+- custom options
+sidebar_position: 8
+---
+
+import MultiselectDemo from '../../../../../examples/ui/client-capabilities/interaction/multiselect.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Use cases:
+* Selecting one or more from a list of options
+* Adding extra information to the options in addition to what is possible with the standard select component
+
+## Example
+
+<MultiselectDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-multiselect></rapid-multiselect>
+    ```
+
+    Usage
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-multiselect
+      ${ref('multiselect')}
+      @selectionChange=${(x) => x.onChange()}
+      :options=${(x) => x.options}
+    >
+    </rapid-multiselect>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable multiselect: Multiselect;
+  const options = [
+    {
+      value: 'First value',
+      label: 'This is the first value',
+    },
+    {
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ]
+  onChange() {
+    // You can also get the selected options via `event.detail`
+    console.log(this.multiselect.selectedOptions)
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-multiselect></rapid-multiselect>
+  ```
+  Usage
+```tsx
+export function MyComponent() {
+  const [selectedOptions, setSelectedOptions] = useState([])
+
+  const options = [
+    {
+      value: 'First value',
+      label: 'This is the first value',
+    },
+    {
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ]
+
+  const selectionChange = (e) => {
+    console.log(e.detail)
+    setSelectedOptions(e.detail)
+  }
+
+  return (
+    <rapid-multiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
+    </rapid-multiselect>
+  )
+}
+```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-multiselect></rapid-multiselect>
+  ```
+
+  Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-multiselect
+      [options]="options"
+      [selectedOptions]="selectedOptions"
+      (selectionChange)="selectionChange($event)">
+    </rapid-multiselect>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent {
+  selectedOptions: any[] = [];
+
+  options = [
+    {
+      value: 'First value',
+      label: 'This is the first value',
+    },
+    {
+      value: 'Second value',
+      label: 'This is the second value',
+    },
+    {
+      value: 'Third value',
+      label: "This is the third value, and it's disabled",
+      disabled: true,
+    },
+  ];
+
+  selectionChange(event: CustomEvent) {
+    console.log(event.detail);
+    this.selectedOptions = event.detail;
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>The name of the multiselect component.</td>
+<td>
+
+```typescript
+<rapid-multiselect name="myMultiselect">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>autoPosition</td>
+      <td><code>boolean</code></td>
+      <td>Controls if dropdown automatically positions based on available space.</td>
+<td>
+
+```typescript
+<rapid-multiselect autoPosition>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>all</td>
+      <td><code>boolean</code></td>
+      <td>Whether to show "Select All" option. Default <code>true</code>.</td>
+<td>
+
+```typescript
+<rapid-multiselect all>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>allSelected</td>
+      <td><code>boolean</code></td>
+      <td>Whether all options are selected by default.</td>
+<td>
+
+```typescript
+<rapid-multiselect allSelected>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>search</td>
+      <td><code>boolean</code></td>
+      <td>Whether to enable search functionality. Default <code>true</code>.</td>
+<td>
+
+```typescript
+<rapid-multiselect search>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Whether the component is disabled.</td>
+<td>
+
+```typescript
+<rapid-multiselect disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>creatable</td>
+      <td><code>boolean</code></td>
+      <td>Whether new options can be created.</td>
+<td>
+
+```typescript
+<rapid-multiselect creatable>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>async</td>
+      <td><code>boolean</code></td>
+      <td>Whether to use async data loading.</td>
+<td>
+
+```typescript
+<rapid-multiselect async>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>debounce</td>
+      <td><code>number</code></td>
+      <td>Debounce time for async searches.</td>
+<td>
+
+```typescript
+<rapid-multiselect debounce=300>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>filterByContains</td>
+      <td><code>boolean</code></td>
+      <td>Whether to filter using "contains" vs "starts with". Default <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-multiselect filterByContains>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>"below" | "above"</code></td>
+      <td>Controls dropdown positioning (positioning enum).</td>
+<td>
+
+```typescript
+<rapid-multiselect position="BELOW">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>valueFormatter</td>
+      <td><code>function</code></td>
+      <td>Function to format option display values.</td>
+<td>
+
+```typescript
+<rapid-multiselect :valueFormatter=${() => (option: MultiselectOption) => `${option.label} (${option.value})`}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>options</td>
+      <td><code>MultiselectOption[]</code></td>
+      <td>Available options.</td>
+<td>
+
+```typescript
+<rapid-multiselect :options=${() => [
+  { value: 'opt1', label: 'Option 1' },
+  { value: 'opt2', label: 'Option 2' }
+]}>
+<rapid-multiselect :options=${(x) => x.options}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>selectedOptions</td>
+      <td><code>string[]</code></td>
+      <td>Currently selected option values.</td>
+<td>
+
+```typescript
+<rapid-multiselect :selectedOptions=${() => ['opt1', 'opt3']}>
+<rapid-multiselect :selectedOptions=${(x) => x.selectedOptions}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>onAllSelectedCallback</td>
+      <td><code>function</code></td>
+      <td>Callback when "select all" state changes.</td>
+<td>
+
+```typescript
+<rapid-multiselect :onAllSelectedCallback=${() => (allSelected: boolean) => console.log('All selected:', allSelected)}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+| Name | Description |
+|---|---|
+| label | Slot for the component label |
+| indicator | Slot used for the loading indicator |
+| Default | Used for datasource elements |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| label | Part for the label element |
+| root | Part for the root container |
+| control | Part for the control container |
+| filter-search | Part for the search input field |
+| indicator | Part for the dropdown indicator/arrow |
+| options-ol | Part for the options list container |
+| checkbox | Part for the checkbox components |
+| option-label | Part for the label of each option |
+
+### Events fired
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>selectionChange</td>
+      <td><code>string[]</code></td>
+      <td>Emitted when a single option is selected or deselected, or when the "Select All" functionality is used. The event detail contains an array of selected option values.</td>
+<td>
+
+```typescript
+<rapid-multiselect @selectionChange="${(e) => handleSelectionChange(e.detail)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+

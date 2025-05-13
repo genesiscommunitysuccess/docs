@@ -98,7 +98,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Dependency changes
 - Fixing snapshot version
-- Bump jacksonVersion from 2.16.2 to 2.17.0 in /genesis-conventions
+- Bump jacksonVersion from 2.16.2 to 2.17.0
 - Move awsJdbcWrapperVersion from genesis-db to genesis-dependencies
 - Update owasp-false-positives.xml to exclude Quartz forever
 - Upgrade gradle license report plugin from 2.0 to 2.7
@@ -106,93 +106,108 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 - Bump actions/checkout from 2 to 4
 - Bump up actions/upload-artifact from 2 to 4
 - Bump up actions/upload-artifact from 3 to 4
-- Bump aeronVersion from 1.43.0 to 1.44.0 in /genesis-conventions
-- Bump byteBuddyVersion from 1.14.11 to 1.14.13 in /genesis-conventions
-- Bump camelVersion from 4.3.0 to 4.4.0 in /genesis-conventions
-- Bump camelVersion from 4.4.0 to 4.4.1 in /genesis-conventions
-- Bump camelVersion from 4.4.1 to 4.5.0 in /genesis-conventions
-- Bump com.github.oshi:oshi-core from 6.4.11 to 6.4.12 in /genesis-conventions
-- Bump com.github.oshi:oshi-core from 6.4.12 to 6.4.13 in /genesis-conventions
-- Bump com.github.oshi:oshi-core from 6.4.13 to 6.5.0 in /genesis-conventions
-- Bump ump com.github.vertical-blank:sql-formatter from 2.0.4 to 2.0.5 in /genesis-parent/genesis-environment
-- Bump com.google.errorprone:error_prone_annotations from 2.24.1 to 2.25.0 in /genesis-conventions
-- Bump com.google.errorprone:error_prone_annotations from 2.25.0 to 2.26.0 in /genesis-conventions
-- Bump com.google.errorprone:error_prone_annotations from 2.26.0 to 2.26.1 in /genesis-conventions
-- Bump com.google.guava:guava from 32.1.3-jre to 33.0.0-jre in /genesis-conventions/genesis-dependencies
-- Bump com.google.guava:guava from 33.0.0-jre to 33.1.0-jre in /genesis-conventions
-- Bump com.google.jimfs:jimfs from 1.1 to 1.3.0 in /genesis-parent/genesis-environment
-- Bump com.google.protobuf:protobuf-java from 3.25.2 to 3.25.3 in /genesis-conventions
-- Bump com.google.protobuf:protobuf-java from 3.25.3 to 4.26.0 in /genesis-conventions
-- Bump com.google.protobuf:protobuf-java from 4.26.0 to 4.26.1 in /genesis-conventions
-- Bump com.jakewharton.fliptables:fliptables from 1.1.0 to 1.1.1 in /genesis-parent/genesis-environment
-- Bump com.jfrog.artifactory from 5.1.10 to 5.1.14 in /genesis-conventions
-- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0 in /genesis-conventions
-- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0 in /genesis-publish-config
-- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.2.jre11 to 12.6.0.jre11 in /genesis-conventions
-- Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.0.jre11 to 12.6.1.jre11 in /genesis-conventions
-- Bump commons-codec:commons-codec from 1.16.0 to 1.16.1 in /genesis-parent/genesis-cluster
-- Bump commons-io:commons-io from 2.15.1 to 2.16.0 in /genesis-conventions
-- Bump commons-io:commons-io from 2.16.0 to 2.16.1 in /genesis-conventions
-- Bump debeziumVersion from 2.5.0.Final to 2.5.1.Final in /genesis-conventions
-- Bump debeziumVersion from 2.5.1.Final to 2.5.2.Final in /genesis-conventions
-- Bump debeziumVersion from 2.5.2.Final to 2.5.3.Final in /genesis-conventions
-- Bump debeziumVersion from 2.5.3.Final to 2.5.4.Final in /genesis-conventions
-- Bump debeziumVersion from 2.5.4.Final to 2.6.0.Final in /genesis-conventions
+- Bump aeronVersion from 1.43.0 to 1.44.0
+- Bump byteBuddyVersion from 1.14.11 to 1.14.13
+- Bump camelVersion from 4.3.0 to 4.4.0
+- Bump camelVersion from 4.4.0 to 4.4.1
+- Bump camelVersion from 4.4.1 to 4.5.0
+- Bump com.github.oshi:oshi-core from 6.4.11 to 6.4.12
+- Bump com.github.oshi:oshi-core from 6.4.12 to 6.4.13
+- Bump com.github.oshi:oshi-core from 6.4.13 to 6.5.0
+- Bump ump com.github.vertical-blank:sql-formatter from 2.0.4 to 2.0.5
+- Bump com.google.errorprone:error_prone_annotations from 2.24.1 to 2.25.0
+- Bump com.google.errorprone:error_prone_annotations from 2.25.0 to 2.26.0
+- Bump com.google.errorprone:error_prone_annotations from 2.26.0 to 2.26.1
+- Bump com.google.guava:guava from 32.1.3-jre to 33.0.0-jre
+- Bump com.google.guava:guava from 33.0.0-jre to 33.1.0-jre
+- Bump com.google.jimfs:jimfs from 1.1 to 1.3.0
+- Bump com.google.protobuf:protobuf-java from 3.25.2 to 3.25.3
+- Bump com.google.protobuf:protobuf-java from 3.25.3 to 4.26.0
+- Bump com.google.protobuf:protobuf-java from 4.26.0 to 4.26.1
+- Bump com.jakewharton.fliptables:fliptables from 1.1.0 to 1.1.1
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.14
+- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0
+- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.2.jre11 to 12.6.0.jre11
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.0.jre11 to 12.6.1.jre11
+- Bump commons-codec:commons-codec from 1.16.0 to 1.16.1
+- Bump commons-io:commons-io from 2.15.1 to 2.16.0
+- Bump commons-io:commons-io from 2.16.0 to 2.16.1
+- Bump debeziumVersion from 2.5.0.Final to 2.5.1.Final
+- Bump debeziumVersion from 2.5.1.Final to 2.5.2.Final
+- Bump debeziumVersion from 2.5.2.Final to 2.5.3.Final
+- Bump debeziumVersion from 2.5.3.Final to 2.5.4.Final
+- Bump debeziumVersion from 2.5.4.Final to 2.6.0.Final
 - Bump gradle/gradle-build-action from 2 to 3
-- Bump groovyVersion from 3.0.20 to 3.0.21 in /genesis-conventions
-- Bump io.github.classgraph:classgraph from 4.8.165 to 4.8.167 in /genesis-conventions
-- Bump io.github.classgraph:classgraph from 4.8.167 to 4.8.168 in /genesis-conventions
-- Bump io.github.classgraph:classgraph from 4.8.168 to 4.8.170 in /genesis-conventions
-- Bump io.netty:netty-all from 4.1.104.Final to 4.1.106.Final in /genesis-conventions/genesis-dependencies
-- Bump io.netty:netty-all from 4.1.106.Final to 4.1.107.Final in /genesis-conventions
-- Bump jacksonVersion from 2.16.1 to 2.16.2 in /genesis-conventions
-- Bump joda-time:joda-time from 2.12.6 to 2.12.7 in /genesis-conventions
-- Bump junitVersion from 5.10.1 to 5.10.2 in /genesis-conventions
-- Bump ktorVersion from 2.3.7 to 2.3.8 in /genesis-conventions/genesis-dependencies
-- Bump ktorVersion from 2.3.8 to 2.3.9 in /genesis-conventions
-- Bump ktorVersion from 2.3.9 to 2.3.10 in /genesis-conventions
-- Bump log4jVersion from 2.22.1 to 2.23.0 in /genesis-conventions
-- Bump log4jVersion from 2.23.0 to 2.23.1 in /genesis-conventions
-- Bump micrometerVersion from 1.12.1 to 1.12.2 in /genesis-conventions
-- Bump micrometerVersion from 1.12.1 to 1.12.2 in /genesis-conventions/genesis-dependencies
-- Bump micrometerVersion from 1.12.2 to 1.12.3 in /genesis-conventions
-- Bump micrometerVersion from 1.12.3 to 1.12.4 in /genesis-conventions
-- Bump micrometerVersion from 1.12.4 to 1.12.5 in /genesis-conventions
-- Bump mockitoVersion from 5.10.0 to 5.11.0 in /genesis-conventions
-- Bump mockitoVersion from 5.8.0 to 5.9.0 in /genesis-conventions/genesis-dependencies
-- Bump mockitoVersion from 5.9.0 to 5.10.0 in /genesis-conventions/genesis-dependencies
-- Bump msgpackVersion from 0.9.7 to 0.9.8 in /genesis-conventions/genesis-dependencies
-- Bump nettyVersion from 4.1.107.Final to 4.1.108.Final in /genesis-conventions
-- Bump org.agrona:agrona from 1.20.0 to 1.21.0 in /genesis-conventions
-- Bump org.agrona:agrona from 1.21.0 to 1.21.1 in /genesis-conventions
-- Bump org.apache.activemq:artemis-jakarta-client from 2.32.0 to 2.33.0 in /genesis-conventions
-- Bump org.apache.commons:commons-compress from 1.25.0 to 1.26.0 in /genesis-conventions
-- Bump org.apache.commons:commons-compress from 1.26.0 to 1.26.1 in /genesis-conventions
-- Bump org.assertj:assertj-core from 3.25.1 to 3.25.2 in /genesis-conventions
-- Bump org.assertj:assertj-core from 3.25.2 to 3.25.3 in /genesis-conventions
-- Bump org.java-websocket:Java-WebSocket from 1.5.5 to 1.5.6 in /genesis-conventions
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0 in /genesis-conventions
-- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0 in /genesis-publish-config
-- Bump org.jline:jline from 3.24.1 to 3.25.1 in /genesis-conventions/genesis-dependencies
-- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 12.1.0 in /genesis-conventions
-- Bump org.mockito.kotlin:mockito-kotlin from 5.2.1 to 5.3.1 in /genesis-conventions
-- Bump org.postgresql:postgresql from 42.7.1 to 42.7.2 in /genesis-conventions
-- Bump org.postgresql:postgresql from 42.7.2 to 42.7.3 in /genesis-conventions
-- Bump org.zeromq:jeromq from 0.5.4 to 0.6.0 in /genesis-conventions
-- Bump slf4jVersion from 2.0.11 to 2.0.12 in /genesis-conventions
-- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.2 to 2.3.3 in /genesis-conventions/genesis-dependencies
-- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.3 to 2.3.4 in /genesis-conventions
-- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.4 to 2.3.5 in /genesis-conventions
-- Bump sshdVersion from 2.11.0 to 2.12.0 in /genesis-conventions
-- Bump sshdVersion from 2.11.0 to 2.12.0 in /genesis-conventions/genesis-dependencies
-- Bump sshdVersion from 2.12.0 to 2.12.1 in /genesis-conventions
-- Bump testcontainersVersion from 1.19.3 to 1.19.4 in /genesis-conventions/genesis-dependencies
-- Bump testcontainersVersion from 1.19.4 to 1.19.5 in /genesis-conventions
-- Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
-- Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
+- Bump groovyVersion from 3.0.20 to 3.0.21
+- Bump io.github.classgraph:classgraph from 4.8.165 to 4.8.167
+- Bump io.github.classgraph:classgraph from 4.8.167 to 4.8.168
+- Bump io.github.classgraph:classgraph from 4.8.168 to 4.8.170
+- Bump io.netty:netty-all from 4.1.104.Final to 4.1.106.Final
+- Bump io.netty:netty-all from 4.1.106.Final to 4.1.107.Final
+- Bump jacksonVersion from 2.16.1 to 2.16.2
+- Bump joda-time:joda-time from 2.12.6 to 2.12.7
+- Bump junitVersion from 5.10.1 to 5.10.2
+- Bump ktorVersion from 2.3.7 to 2.3.8
+- Bump ktorVersion from 2.3.8 to 2.3.9
+- Bump ktorVersion from 2.3.9 to 2.3.10
+- Bump log4jVersion from 2.22.1 to 2.23.0
+- Bump log4jVersion from 2.23.0 to 2.23.1
+- Bump micrometerVersion from 1.12.1 to 1.12.2
+- Bump micrometerVersion from 1.12.1 to 1.12.2
+- Bump micrometerVersion from 1.12.2 to 1.12.3
+- Bump micrometerVersion from 1.12.3 to 1.12.4
+- Bump micrometerVersion from 1.12.4 to 1.12.5
+- Bump mockitoVersion from 5.10.0 to 5.11.0
+- Bump mockitoVersion from 5.8.0 to 5.9.0
+- Bump mockitoVersion from 5.9.0 to 5.10.0
+- Bump msgpackVersion from 0.9.7 to 0.9.8
+- Bump nettyVersion from 4.1.107.Final to 4.1.108.Final
+- Bump org.agrona:agrona from 1.20.0 to 1.21.0
+- Bump org.agrona:agrona from 1.21.0 to 1.21.1
+- Bump org.apache.activemq:artemis-jakarta-client from 2.32.0 to 2.33.0
+- Bump org.apache.commons:commons-compress from 1.25.0 to 1.26.0
+- Bump org.apache.commons:commons-compress from 1.26.0 to 1.26.1
+- Bump org.assertj:assertj-core from 3.25.1 to 3.25.2
+- Bump org.assertj:assertj-core from 3.25.2 to 3.25.3
+- Bump org.java-websocket:Java-WebSocket from 1.5.5 to 1.5.6
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0
+- Bump org.jline:jline from 3.24.1 to 3.25.1
+- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 12.1.0
+- Bump org.mockito.kotlin:mockito-kotlin from 5.2.1 to 5.3.1
+- Bump org.postgresql:postgresql from 42.7.1 to 42.7.2
+- Bump org.postgresql:postgresql from 42.7.2 to 42.7.3
+- Bump org.zeromq:jeromq from 0.5.4 to 0.6.0
+- Bump slf4jVersion from 2.0.11 to 2.0.12
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.2 to 2.3.3
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.3 to 2.3.4
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.4 to 2.3.5
+- Bump sshdVersion from 2.11.0 to 2.12.0
+- Bump sshdVersion from 2.11.0 to 2.12.0
+- Bump sshdVersion from 2.12.0 to 2.12.1
+- Bump testcontainersVersion from 1.19.3 to 1.19.4
+- Bump testcontainersVersion from 1.19.4 to 1.19.5
+- Bump testcontainersVersion from 1.19.5 to 1.19.6
+- Bump testcontainersVersion from 1.19.6 to 1.19.7
 
 ### Patch releases
 
+#### 7.2.25
+
+###### Fixes
+
+* `genesis-pal-dataserver` : Correct handling of out of sequence update processing 
+
+#### 7.2.24
+
+###### Features
+
+* `genesis-pal-dataserver` : Improve memory profile of data server enriched fields 
+
+###### Fixes
+
+* `genesis-dataserver2` : Fixed a race condition when a modify event matching the `where` clause quickly follows a non-matching insert event
 
 #### 7.2.23
 
@@ -232,7 +247,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ###### Fixes
 
-- fix: remove ReflectionToStringBuilder from ClusterMessage#### 7.2.19
+* Remove ReflectionToStringBuilder from ClusterMessage
 
 #### 7.2.19 
 

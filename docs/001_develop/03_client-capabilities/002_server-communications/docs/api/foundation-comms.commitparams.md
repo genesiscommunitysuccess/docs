@@ -17,5 +17,6 @@ export type CommitParams = {
     HOSTNAME?: string;
     IGNORE_WARNINGS?: boolean;
     VALIDATE?: boolean;
+    [key: string]: any;
 };
 ```

@@ -580,7 +580,7 @@ Additionally, the `triggerEvent` function is available to trigger events from th
 endpoint<Trade, Trade>(POST, "insert-trade") {
     handleRequest {
         val trade = tradeClient.createTrade(body).data
-        triggerEvent("NOTIFY_TRADE_CREATED", trade)
+        triggerEvent("EVENT_NOTIFY_TRADE_CREATED", trade)
         trade
     }
 }

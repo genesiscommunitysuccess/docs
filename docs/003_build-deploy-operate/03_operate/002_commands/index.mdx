@@ -880,15 +880,6 @@ A log file called `purge_<time_of_run>` will be created in the `$GENESIS_HOME/ru
 
 The functions and filters below give you different ways of purging data.
 
-###### Inject repository
-You can inject any repository into the purger script; for example:
-
-```kotlin
-purgers{
-    val userSessionRepo = inject<UserSessionRx2Repository>()
-}
-```
-
 ### Purge by date
 
 The purger supports purging based on days. You can specify the max age of a record in terms of either calendar days or business days.
@@ -922,10 +913,10 @@ Range purger is similar to bulkPurger, but it performs efficient index range sea
 - Purger has special function called `whereRange` which is used to filter based on index value
 
 ```kotlin
-import global.genesis.gen.dao.repository.UserSessionRx2Repository
+import global.genesis.gen.dao.repository.UserSessionRx3Repository
 purgers {
  // Inject repo
- val userSessionRepo = inject<UserSessionRx2Repository>()
+ val userSessionRepo = inject<UserSessionRx3Repository>()
 
  config {
      batchSize = 1000
@@ -974,6 +965,26 @@ purgers {
 // Purge USER_SESSION older than 8 business days in country India
  bulkPurger(USER_SESSION)
   .filterBusinessDays(8, "INDIA")
+}
+```
+
+### Custom purgers
+
+If you need more complicated purging logic, you can create custom purgers.
+These enable you to return a `Collection` or `Flow` of entities as a purger instruction.
+
+For example, this custom purger removes all users who do not have a corresponding user session:
+
+```kotlin
+customPurger(USER) {
+    val usersWithSession = entityDb.getBulk(USER_SESSION)
+        .map { it.userName }
+        .toSet()
+
+    entityDb.getBulk(USER)
+        .filterNot { it.userName in usersWithSession }
+        .map { it.byName() }
+        .asPurgerInstruction()
 }
 ```
 
@@ -1362,7 +1373,7 @@ SetSequence -f SeqVals.csv
 
 ## `startProcess`
 
-This command starts a Genesis process.
+This command starts a Genesis process defined in the [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) file.
 
 ###### Syntax
 
@@ -1396,15 +1407,27 @@ The following example starts the APP_NOTIFY process on node1 only:
 startProcess APP_NOTIFY -s node1
 ```
 
-The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
+:::info
+The `-s` option requires the `EnableDaemonScriptController` system definition property to be enabled and set to "true". This will allow the daemon to execute commands on the specified node, as well as reach out to other existing daemons, as long as the network configuration allows it. This behaviour may be considered insecure, so it is disabled by default.
+:::
+
+The script looks in the [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) file to find out how to start the process. For example `startProcess GENESIS_AUTH_DATASERVER` starts the process with the correct classpath and extra arguments defined in the `processes.xml` file. Something similar to:
 
 ```bash
-java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
+java -Xmx256m -DXSD_VALIDATE=false global.genesis.process.GenesisProcessBootstrap -name GENESIS_AUTH_DATASERVER -scan global.genesis.dataserver.pal -module genesis-pal-dataserver -script genesis-dataserver.kts -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/GENESIS_AUTH_DATASERVER.log.err &
 ```
+
+###### Logging
+`startProcess` will redirect the standard error stream to a log file in the `$L` directory. The log file will be named `<process_name>.log.err` (for example, `GENESIS_AUTH_DATASERVER.log.err`).
+If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file managed by Log4j2.
+
+`startProcess` will also compress and move existing process logs in the `$L` directory by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$RL` directory. This only affects the logs of the process you are starting.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+
 
 ## `startServer`
 
-This command starts the server of an application. It reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
+This command starts all the processes defined for an application. It reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
 ###### Syntax
 
@@ -1430,40 +1453,11 @@ The example below starts the server on node1 without starting/killing the daemon
 startServer  -s node1 -i
 ```
 
-The **processes.xml** file looks like this:
+:::info
+The -s option requires the `EnableDaemonScriptController` system definition property to be enabled and set to "true". This will allow the daemon to execute commands on the specified node, as well as reach out to other existing daemons, as long as the network configuration allows it. This behaviour may be considered insecure, so it is disabled by default.
+:::
 
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration>
-    <process name="GENESIS_AUTH_MANAGER">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>auth-manager</module>
-        <package>global.genesis.dta.auth.manager</package>
-        <classpath>quickfixj-core-2.1.0.jar</classpath>
-    </process>
-    <process name="GENESIS_AUTH_DATASERVER">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>dataserver</module>
-        <package>global.genesis.dataserver</package>
-        <config>auth-dataserver.xml</config>
-        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-    </process>
-    <process name="GENESIS_AUTH_PERMS">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>auth-perms</module>
-        <package>global.genesis.dta.auth.perms</package>
-        <dependency>AUTH_MANAGER,AUTH_DATASERVER</dependency>
-    </process>
-</configuration>
-```
+###### Logging
+`startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
 
-Each process property is defined in here, including Java arguments, configuration files, and scripts.
-
-The `dependency` tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
-
-The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
-
-The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a `lib` directory for one of the Genesis applications in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.

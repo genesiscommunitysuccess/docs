@@ -102,6 +102,19 @@ id: '8.6'
 
 ### Patch releases
 
+#### 8.6.19
+
+###### Fixes
+
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+
+#### 8.6.18
+
+###### Fixes
+
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-net` : Ensure the `SetProblems` object returns errors and warnings appropriately when used in an event handler and populate the `FIELD` property correctly when applying automatic mandatory field validation 
+
 #### 8.6.17
 
 ###### Fixes
@@ -239,6 +252,7 @@ id: '8.6'
 
 ###### Fixes
 - Exec plugin should take clientName override into account.
+* `auth-manager` : Fix deadlock from occurring in logon process where `AUTH_MANAGER` receives too many concurrent user logins 
 
 ## Client
 
