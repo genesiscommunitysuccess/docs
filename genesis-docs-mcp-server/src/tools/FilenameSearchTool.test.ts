@@ -48,8 +48,8 @@ describe('FilenameSearchTool', () => {
 
       // Expect to find grid-pro related paths in the results
       const results = result as string[];
-      expect(results.some(path => path.includes('grid-pro'))).toBe(true);
-      
+      expect(results.some((path) => path.includes('grid-pro'))).toBe(true);
+
       // All matching files should be included
       expect(results).toContain('docs/003_grid-pro/index.md');
       expect(results).toContain('docs/003_grid-pro/grid-pro-introduction.md');
@@ -103,15 +103,15 @@ describe('FilenameSearchTool', () => {
         ]);
 
       // Test with strictWordBoundaries as 'true'
-      const result1 = await tool.execute({ 
+      const result1 = await tool.execute({
         searchString: 'test',
-        strictWordBoundaries: 'true'
+        strictWordBoundaries: 'true',
       });
 
       // Test with strictWordBoundaries as 'false'
-      const result2 = await tool.execute({ 
+      const result2 = await tool.execute({
         searchString: 'test',
-        strictWordBoundaries: 'false'
+        strictWordBoundaries: 'false',
       });
 
       // Just verify the tool accepts the parameter and returns arrays
@@ -153,18 +153,18 @@ describe('FilenameSearchTool', () => {
         ]);
 
       // Search for "api" with showApiDocs=true
-      const result = await tool.execute({ 
-        searchString: 'api', 
-        showApiDocs: 'true' 
+      const result = await tool.execute({
+        searchString: 'api',
+        showApiDocs: 'true',
       });
 
       // Result should include API directory files
       expect(Array.isArray(result)).toBe(true);
       const results = result as string[];
       expect(results).toContain('docs/api-guide.md');
-      
+
       // API directory files should be included
-      const hasApiDocs = results.some(path => path.includes('docs/api/'));
+      const hasApiDocs = results.some((path) => path.includes('docs/api/'));
       expect(hasApiDocs).toBe(true);
     });
 
@@ -186,11 +186,11 @@ describe('FilenameSearchTool', () => {
       // Result should include all files from the grid-pro directory
       expect(Array.isArray(result)).toBe(true);
       const results = result as string[];
-      
+
       expect(results).toContain('docs/grid-pro/advanced.md');
       expect(results).toContain('docs/grid-pro/index.md');
       expect(results).toContain('docs/grid-pro/features.md');
-      
+
       // Should not include files from other directories
       expect(results).not.toContain('docs/charts/index.md');
       expect(results).not.toContain('docs/charts/basic.md');

@@ -15,7 +15,7 @@ enum TestTool {
   FileView = 'fileview',
   RulesView = 'rules',
   ToolsInfo = 'info',
-  All = 'all'
+  All = 'all',
 }
 
 // Parse command-line options for filename search
@@ -26,10 +26,7 @@ interface FilenameSearchOptions {
 }
 
 // Simple test function for the FilenameSearchTool
-async function testFilenameSearch(
-  searchTerm: string,
-  options: FilenameSearchOptions
-) {
+async function testFilenameSearch(searchTerm: string, options: FilenameSearchOptions) {
   console.log(`Testing FilenameSearchTool with search term: "${searchTerm}"`);
   console.log(`API docs: ${options.showApiDocs === 'true' ? 'enabled' : 'disabled'}`);
   console.log(
@@ -81,7 +78,6 @@ async function testContentSearch(searchTerm: string, showContent = false) {
 
     console.log('\nResults:');
     console.log(result);
-
   } catch (error) {
     console.error('Error executing DocContentSearchTool:', error);
   }
@@ -104,7 +100,6 @@ async function testFileView(filePath: string, offset?: number, maxLines?: number
 
     console.log('\nFile content:');
     console.log(result);
-
   } catch (error) {
     console.error('Error executing DocFileViewTool:', error);
   }
@@ -113,10 +108,10 @@ async function testFileView(filePath: string, offset?: number, maxLines?: number
 // Function to test the rules view tool
 async function testRulesView(ruleName?: string) {
   console.log('\nTesting RulesViewTool');
-  
+
   try {
     const tool = new RulesViewTool();
-    
+
     if (ruleName) {
       console.log(`Looking up rule: ${ruleName}`);
       const result = await tool.execute({ ruleName });
@@ -136,10 +131,10 @@ async function testRulesView(ruleName?: string) {
 // Function to test the docs readme tool
 async function testDocsReadme(detail?: string) {
   console.log('\nTesting GenesisDocsReadmeTool');
-  
+
   try {
     const tool = new GenesisDocsReadmeTool();
-    
+
     if (detail) {
       console.log(`Getting detailed info about: ${detail}`);
       const result = await tool.execute({ detail });
@@ -169,19 +164,18 @@ async function main() {
 
   // Default to filename search if no tool specified
   let toolToRun = TestTool.FilenameSearch;
-  
+
   // Parse the tool selection
-  const toolArg = process.argv.find(arg => 
-    arg.startsWith('--tool=') || 
-    arg.startsWith('-t=')
-  );
-  
+  const toolArg = process.argv.find((arg) => arg.startsWith('--tool=') || arg.startsWith('-t='));
+
   if (toolArg) {
     const toolValue = toolArg.split('=')[1].toLowerCase();
     if (Object.values(TestTool).includes(toolValue as TestTool)) {
       toolToRun = toolValue as TestTool;
     } else {
-      console.error(`Unknown tool: ${toolValue}. Available tools: ${Object.values(TestTool).join(', ')}`);
+      console.error(
+        `Unknown tool: ${toolValue}. Available tools: ${Object.values(TestTool).join(', ')}`
+      );
       process.exit(1);
     }
   }
@@ -190,7 +184,7 @@ async function main() {
   let searchTerm = 'grid'; // Default value
   for (let i = 2; i < process.argv.length; i++) {
     const arg = process.argv[i];
-    if (!arg.startsWith('-') && !process.argv[i-1]?.startsWith('--')) {
+    if (!arg.startsWith('-') && !process.argv[i - 1]?.startsWith('--')) {
       // Remove any surrounding quotes if present
       searchTerm = arg.replace(/^["'](.*)["']$/, '$1');
       break;
@@ -201,39 +195,39 @@ async function main() {
   const showApiDocs = process.argv.includes('--show-api') ? 'true' : '';
   const strictWordBoundaries = process.argv.includes('--no-strict-boundaries') ? 'false' : 'true';
   const showContent = process.argv.includes('--show-content');
-  
+
   // Parse file view options
-  const filePathArg = process.argv.find(arg => arg.startsWith('--file='));
+  const filePathArg = process.argv.find((arg) => arg.startsWith('--file='));
   const filePath = filePathArg ? filePathArg.split('=')[1] : undefined;
-  
-  const offsetArg = process.argv.find(arg => arg.startsWith('--offset='));
+
+  const offsetArg = process.argv.find((arg) => arg.startsWith('--offset='));
   const offset = offsetArg ? parseInt(offsetArg.split('=')[1], 10) : undefined;
-  
-  const maxLinesArg = process.argv.find(arg => arg.startsWith('--max-lines='));
+
+  const maxLinesArg = process.argv.find((arg) => arg.startsWith('--max-lines='));
   const maxLines = maxLinesArg ? parseInt(maxLinesArg.split('=')[1], 10) : undefined;
-  
+
   // Parse rules view options
-  const ruleNameArg = process.argv.find(arg => arg.startsWith('--rule='));
+  const ruleNameArg = process.argv.find((arg) => arg.startsWith('--rule='));
   const ruleName = ruleNameArg ? ruleNameArg.split('=')[1] : undefined;
-  
+
   // Parse tools info options
-  const detailArg = process.argv.find(arg => arg.startsWith('--detail='));
+  const detailArg = process.argv.find((arg) => arg.startsWith('--detail='));
   const detail = detailArg ? detailArg.split('=')[1] : undefined;
 
   // Run selected tool(s)
   switch (toolToRun) {
     case TestTool.FilenameSearch:
-      await testFilenameSearch(searchTerm, { 
-        searchTerm, 
-        showApiDocs, 
-        strictWordBoundaries 
+      await testFilenameSearch(searchTerm, {
+        searchTerm,
+        showApiDocs,
+        strictWordBoundaries,
       });
       break;
-      
+
     case TestTool.ContentSearch:
       await testContentSearch(searchTerm, showContent);
       break;
-      
+
     case TestTool.FileView:
       if (!filePath) {
         console.error('Error: --file parameter is required for file view tool');
@@ -241,21 +235,21 @@ async function main() {
       }
       await testFileView(filePath, offset, maxLines);
       break;
-      
+
     case TestTool.RulesView:
       await testRulesView(ruleName);
       break;
-      
+
     case TestTool.ToolsInfo:
       await testDocsReadme(detail);
       break;
-      
+
     case TestTool.All:
       console.log('=== Running all tools ===');
-      await testFilenameSearch(searchTerm, { 
-        searchTerm, 
-        showApiDocs, 
-        strictWordBoundaries 
+      await testFilenameSearch(searchTerm, {
+        searchTerm,
+        showApiDocs,
+        strictWordBoundaries,
       });
       await testContentSearch(searchTerm, showContent);
       if (filePath) {
@@ -264,7 +258,7 @@ async function main() {
       await testRulesView(ruleName);
       await testDocsReadme(detail);
       break;
-      
+
     default:
       console.error(`Unsupported tool: ${toolToRun}`);
       process.exit(1);
@@ -319,7 +313,7 @@ Examples:
 }
 
 // Run the main function
-main().catch(error => {
+main().catch((error) => {
   console.error('Unhandled error:', error);
   process.exit(1);
 });

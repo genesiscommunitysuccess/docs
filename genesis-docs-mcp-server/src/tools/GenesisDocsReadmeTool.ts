@@ -7,8 +7,7 @@ interface GenesisDocsReadmeInput {
 
 class GenesisDocsReadmeTool extends MCPTool<GenesisDocsReadmeInput> {
   name = 'genesis-docs-readme';
-  description =
-    'Provides a comprehensive readme for using Genesis documentation tools with AI';
+  description = 'Provides a comprehensive readme for using Genesis documentation tools with AI';
 
   schema = {
     detail: {
