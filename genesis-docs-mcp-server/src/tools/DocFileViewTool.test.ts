@@ -22,6 +22,9 @@ describe('DocFileViewTool', () => {
       // Mock the readDocFile method to return predictable content
       const mockContent = '# Test Markdown\n\nThis is a test file.';
       jest.spyOn(fileSystem, 'readDocFile').mockResolvedValueOnce(mockContent);
+      // Mock the sibling files
+      const mockSiblings = ['docs/test-file.md', 'docs/other-file.md'];
+      jest.spyOn(fileSystem, 'listSiblingDocFiles').mockResolvedValueOnce(mockSiblings);
 
       // Execute the tool with a mock file path
       const result = await tool.execute({ filePath: 'docs/test-file.md' });
@@ -33,7 +36,7 @@ describe('DocFileViewTool', () => {
       const expectedResponse = `${expectedHeader}\n\n---\n\n${mockContent}`;
 
       // Verify the result
-      expect(result).toEqual(expectedResponse);
+      expect(result).toEqual({ fileContent: expectedResponse, siblingFiles: mockSiblings });
 
       // Verify the file system service was called correctly
       expect(fileSystem.readDocFile).toHaveBeenCalledWith(
@@ -41,12 +44,16 @@ describe('DocFileViewTool', () => {
         undefined,
         undefined
       );
+      expect(fileSystem.listSiblingDocFiles).toHaveBeenCalledWith('docs/test-file.md');
     });
 
     it('should handle offset and maxLines parameters', async () => {
       // Mock readDocFile to return a subset of content
       const mockTruncatedContent = 'Line 3\nLine 4\nLine 5';
       jest.spyOn(fileSystem, 'readDocFile').mockResolvedValueOnce(mockTruncatedContent);
+      // Mock the sibling files
+      const mockSiblings = ['docs/test-file.md', 'docs/other-file.md'];
+      jest.spyOn(fileSystem, 'listSiblingDocFiles').mockResolvedValueOnce(mockSiblings);
 
       // Execute with offset and maxLines
       const result = await tool.execute({
@@ -62,22 +69,25 @@ describe('DocFileViewTool', () => {
       const expectedResponse = `${expectedHeader}\n\n---\n\n${mockTruncatedContent}`;
 
       // Verify result
-      expect(result).toEqual(expectedResponse);
+      expect(result).toEqual({ fileContent: expectedResponse, siblingFiles: mockSiblings });
 
       // Verify file system was called with correct parameters
       expect(fileSystem.readDocFile).toHaveBeenCalledWith('docs/test-file.md', 2, 3);
+      expect(fileSystem.listSiblingDocFiles).toHaveBeenCalledWith('docs/test-file.md');
     });
 
     it('should handle errors when reading files', async () => {
       // Mock readDocFile to throw an error
       const errorMessage = 'Failed to read documentation file: docs/nonexistent.md';
       jest.spyOn(fileSystem, 'readDocFile').mockRejectedValueOnce(new Error(errorMessage));
+      // Mock sibling files (should not be called, but mock just in case)
+      jest.spyOn(fileSystem, 'listSiblingDocFiles').mockResolvedValueOnce([]);
 
       // Execute with a non-existent file
       const result = await tool.execute({ filePath: 'docs/nonexistent.md' });
 
       // Expected error message
-      const expectedResponse = `ERROR: ${errorMessage}`;
+      const expectedResponse = { error: `ERROR: ${errorMessage}` };
 
       // Verify we get back a properly formatted error message
       expect(result).toEqual(expectedResponse);

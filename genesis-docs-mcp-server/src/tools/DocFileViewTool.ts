@@ -52,10 +52,19 @@ class DocFileViewTool extends MCPTool<DocFileViewInput> {
       // Combine header and content with clear separation
       const formattedResponse = `${header}\n\n---\n\n${content}`;
 
-      return formattedResponse;
+      // Get sibling files in the same directory
+      const siblingFiles = await fileSystem.listSiblingDocFiles(input.filePath);
+
+      // Return both the file content and sibling files
+      return {
+        fileContent: formattedResponse,
+        siblingFiles,
+      };
     } catch (error) {
       // Return error message in a consistent format
-      return `ERROR: ${error instanceof Error ? error.message : 'Unknown error occurred'}`;
+      return {
+        error: `ERROR: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
+      };
     }
   }
 }

@@ -27,6 +27,7 @@ export type FileSystem = {
   rulesFiles: () => Promise<string[]>;
   readRuleFile: (filePath: string) => Promise<string>;
   listRules: () => Promise<string[]>;
+  listSiblingDocFiles: (filePath: string) => Promise<string[]>;
 };
 
 export async function runGlobby(searchTerm: string) {
@@ -212,6 +213,26 @@ export const fileSystemBuilder = (): FileSystem => {
         console.error(`Error searching doc files for ${searchTerm}:`, error);
         return [];
       }
+    },
+
+    async listSiblingDocFiles(filePath: string): Promise<string[]> {
+      // Normalize the file path to be relative to dist/
+      let relativePath = filePath;
+      if (relativePath.includes('/dist/')) {
+        relativePath = relativePath.split('/dist/').pop() || relativePath;
+      }
+      // Remove leading slashes
+      relativePath = relativePath.replace(/^\/*/, '');
+      // Get the directory
+      const dir = path.dirname(relativePath);
+      // Get all docs files
+      const allDocs = await this.docsFiles();
+      // Filter for files in the same directory
+      const siblings = allDocs
+        .map((f) => f.replace(/^.*dist\//, ''))
+        .filter((f) => path.dirname(f) === dir)
+        .sort();
+      return siblings;
     },
   };
 };

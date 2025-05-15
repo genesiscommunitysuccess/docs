@@ -100,44 +100,39 @@ async function testDocFileView() {
     console.log('\nRaw Response:');
     console.log(response);
 
-    // Handle the response
-    if (typeof response === 'string') {
-      // Check if it's an error response
-      if (response.startsWith('ERROR:')) {
-        console.log(`\n${response}`);
+    // Handle the new object response format
+    if (response && typeof response === 'object') {
+      if ('error' in response) {
+        console.log(`\n${response.error}`);
         process.exit(1);
       }
-
-      // Handle the format with header and content separated by ---
-      if (response.includes('---')) {
-        const [header, content] = response.split('\n\n---\n\n');
-
-        // Display the header information
-        console.log(`\n${header}`);
-
-        // Calculate some additional information about the content
-        const contentLines = content.split('\n');
-        console.log(`Lines: ${contentLines.length}`);
-        console.log(`Size: ${content.length} bytes`);
-
-        // Show preview of the content
-        console.log('\nContent Preview:');
-        console.log('----------------------------------------');
-        console.log(content.slice(0, 500) + (content.length > 500 ? '...' : ''));
-        console.log('----------------------------------------');
-
-        // Provide instructions for viewing entire content or specific parts
-        console.log(
-          '\nTo see more content, use: node dist/test-cli.js view <path> [offset] [maxLines]'
-        );
-        console.log(`For example: node dist/test-cli.js view ${filePath} 10 20`);
+      // Print file content
+      if ('fileContent' in response) {
+        const { fileContent, siblingFiles } = response;
+        // Print the header and content
+        if (fileContent.includes('---')) {
+          const [header, content] = fileContent.split('\n\n---\n\n');
+          console.log(`\n${header}`);
+          const contentLines = content.split('\n');
+          console.log(`Lines: ${contentLines.length}`);
+          console.log(`Size: ${content.length} bytes`);
+          console.log('\nContent Preview:');
+          console.log('----------------------------------------');
+          console.log(content.slice(0, 500) + (content.length > 500 ? '...' : ''));
+          console.log('----------------------------------------');
+        } else {
+          console.log(fileContent);
+        }
+        // Print sibling files
+        if (Array.isArray(siblingFiles)) {
+          console.log('\nSibling files in the same directory:');
+          siblingFiles.forEach((f) => console.log(`- ${f}`));
+        }
       } else {
-        // Unknown response format
-        console.log('Unexpected response format:');
-        console.log(response);
+        console.log('Unexpected response format:', response);
       }
     } else {
-      console.error('Unexpected response type:', typeof response);
+      console.log('Unexpected response type:', typeof response);
     }
   } catch (error) {
     console.error('Error during test:', error);
