@@ -1,5 +1,4 @@
 import { describe, expect, it, beforeEach, afterEach, jest } from '@jest/globals';
-import path from 'path';
 import fs from 'fs/promises';
 import { fileSystem, fileSystemBuilder, runGlobby, SearchResult } from './FileSystem.js';
 
@@ -123,7 +122,7 @@ describe('FileSystem', () => {
 
   describe('readDocFile', () => {
     // Create a mock file system for reading file tests
-    let mockFs: any;
+    let mockFs: ReturnType<typeof fileSystemBuilder>;
 
     beforeEach(() => {
       // Create a fresh file system for each test
@@ -132,7 +131,7 @@ describe('FileSystem', () => {
       // Mock the fs.readFile function to avoid actual file system access
       jest.spyOn(fs, 'readFile').mockImplementation(
         // Use a generic typed function to satisfy TypeScript
-        (path: unknown, ...args: unknown[]) => {
+        (path: unknown, ..._args: unknown[]) => {
           // Check if the path is a nonexistent file
           if (typeof path === 'string' && path.includes('nonexistent')) {
             return Promise.reject(new Error('ENOENT: no such file or directory'));

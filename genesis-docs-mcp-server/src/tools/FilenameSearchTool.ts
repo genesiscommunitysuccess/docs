@@ -1,7 +1,6 @@
 import { MCPTool } from 'mcp-framework';
 import { z } from 'zod';
 import { fileSystem } from '../services/FileSystem.js';
-import Fuse from 'fuse.js';
 
 interface FilenameSearchInput {
   searchString: string;
