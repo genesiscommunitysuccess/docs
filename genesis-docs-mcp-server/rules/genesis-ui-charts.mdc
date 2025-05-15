@@ -1,0 +1,215 @@
+---
+description: Genesis charts syntax, to create charts linked to dataservers and views
+globs: **
+alwaysApply: true
+---
+### Genesis Charts Component Rules
+
+Genesis charts are based on `G2plot`, a powerful charting library that provides various customizable chart types, enabling you to create interactive and visually appealing data visualizations.
+
+The `G2PlotChart` component has several key properties that allow you to configure and display the chart with your desired data and settings. These properties give you full control over how the chart behaves and looks:
+
+1. **Core Requirements**
+- ALWAYS use `<rapid-g2plot-chart>` as the main grid component
+- CHECK the height of the form component, to make sure it's displaying the grid correctly
+
+- `config` - The configuration to use for the chart. Check ChartConfig for possible options. This allows for detailed customization of the chart's appearance, behavior, and functionality.
+
+- `data` - The data to display in the chart. This is the dataset that will be visualized, and it can be dynamically updated based on user interaction or data source changes.
+
+- `type` - The type to use for the chart. If not set, the default bar chart type will be used. You can specify different chart types such as line, area, pie, and others to best match your data and analytical needs.
+
+- These properties, combined with the wide range of chart types available, offer a flexible way to present data visually and interactively, making complex information more accessible and easier to analyze.
+
+
+2. **Resource Rules**
+  - To get data into the chart, use a chart-datasource element.
+  Example:
+
+    ```typescript
+      <rapid-g2plot-chart
+          type="bar"
+          :config=${() => chartConfiguration}
+      >
+        <chart-datasource
+          resourceName="ALL_INSTRUMENT_PRICE_HISTORY"
+          server-fields="MARKET_DATE OPEN_PRICE INSTRUMENT_ID"
+          chart-fields="date open instrumentId"
+          isSnapshot="false"
+          maxRows="1000"
+          orderBy="MARKET_DATE"
+          criteria="INSTRUMENT_ID == 'INST_ID_123'"
+        ></chart-datasource>
+      </rapid-g2plot-chart>
+    ```
+  - Alternatively to populate the data from the client code use the data property on the rapid-g2plot-chart component
+    ```typescript
+        <rapid-g2plot-chart :data=${(x) => x.chartData}>
+    ```
+
+4. **Chart Types**
+Available Chart types include:
+
+- line - for continuous data trends
+- area - ideal for visualizing cumulative values
+- column and Bar - for category comparisons
+- pie - representing parts of a whole
+- donut - representing parts of a whole
+- dualaxes - for layered, multi-metric displays
+- rose - useful for categorical distribution
+- scatter - showing relationships between variables
+- stock - tracking stock performance over time
+- mix - combining multiple chart types for complex data
+
+### Component Template Rules
+
+1. **Core Requirements**
+- ALWAYS set type and config and data properties on the html element
+- ALWAYS use either a local datasource via the data property or a chart-datasource component embedded in the g2plot component.
+- Each chart type have his own chart configuration, where it can differs from other types of charts.
+
+## 2. Component Examples
+
+### 2.0 Foundation Bar Chart Simple Example
+```typescript
+const chartConfiguration = {
+    width: 700,
+    xField: "value",
+    yField: "groupBy",
+    seriesField: "series",
+    legend: {
+      position: "top-left",
+    },
+  };
+
+  const chartData = [
+    { groupBy: "1951", value: 38, series: "3" },
+    { groupBy: "1952", value: 52, series: "5" },
+    { groupBy: "1956", value: 61, series: "1" },
+    { groupBy: "1957", value: 145, series: "2" },
+    { groupBy: "1958", value: 48, series: "4" },
+    { groupBy: "1996", value: 38, series: "6" },
+    { groupBy: "1997", value: 52, series: "7" },
+    { groupBy: "1999", value: 61, series: "8" },
+    { groupBy: "1995", value: 145, series: "9" },
+    { groupBy: "1994", value: 48, series: "10" },
+  ];
+
+
+@customElement({
+  name: 'g2plot-chart-example',
+  template: html`
+    <rapid-g2plot-chart
+      type="bar"
+      :config=${() => chartConfiguration}
+      :data=${() => chartData}
+    ></rapid-g2plot-chart>
+  `,
+})
+export class G2PlotChartExample extends GenesisElement {}
+```
+
+### 2.1 Chart declaration
+```html
+<rapid-g2plot-chart
+  type="donut"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+### 2.2 Bar Chart configuration
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "value",
+  yField: "groupBy",
+  seriesField: "series",
+  legend: {
+    position: "top-left",
+  },
+};
+```
+
+### 2.3 Pie Chart configuration
+```typescript
+const chartConfiguration = {
+  width: 600,
+  angleField: 'value',
+  colorField: 'groupBy',
+  radius: 0.75,
+  label: {
+    type: 'spider',
+    labelHeight: 28,
+    content: '{name}\n{percentage}',
+    style: {
+      fill: 'white',
+    },
+  },
+  interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  statistic: {
+    title: false,
+    content: {
+      content: '',
+    },
+  },
+};
+```
+
+### 2.4 Donut Chart configuration
+```typescript
+const chartConfiguration = {
+  width: 600,
+  angleField: 'value',
+  colorField: 'groupBy',
+  radius: 0.75,
+  label: {
+    type: 'spider',
+    labelHeight: 28,
+    content: '{name}\n{percentage}',
+    style: {
+      fill: 'white',
+    },
+  },
+  interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  statistic: {
+    title: false,
+    content: {
+      content: '',
+    },
+  },
+};
+```
+
+### 2.5 Dual Axes Chart configuration
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "type",
+  yField: ["value", "count"],
+  geometryOptions: [
+    {
+      geometry: "line",
+      color: "#5B8FF9",
+    },
+    {
+      geometry: "line",
+      color: "#5AD8A6",
+    },
+  ],
+};
+```
+
+### 2.6 Rose Chart configuration
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: 'groupBy',
+  yField: 'value',
+  seriesField: 'series',
+  radius: 0.9,
+  legend: {
+    position: 'bottom',
+  },
+};
+```

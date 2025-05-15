@@ -1,0 +1,67 @@
+---
+description: Genesis rapid grid syntax, to create grids/tables that doens't need CRUD operations or custom grids.
+globs: **
+alwaysApply: true
+---
+### Grid Component Rules
+
+1. **Core Requirements**
+- ALWAYS use `<rapid-grid-pro>` as the main grid component
+- ALWAYS use `<rapid-grid-pro-column>` for columns
+- ALWAYS include a datasource component
+- ALWAYS enable real-time updates with `enable-row-flashing` and `enable-cell-flashing`
+- CHECK the height of the grid component, to make sure it's displaying the grid correctly
+
+2. **Datasource Rules**
+- Use datasource components inside of the `<rapid-grid-pro>` components to connect the grid to the data source.
+- Use `grid-pro-server-side-datasource` for:
+  - Large datasets
+  - Server-side pagination
+  - Real-time updates
+- Use `grid-pro-client-side-datasource` for:
+  - Small datasets
+  - Client-side filtering/sorting
+
+  Note:
+    If using `grid-pro-server-side-datasource` then the following imports are required in main.ts :
+      import { ModuleRegistry } from '@ag-grid-community/core';
+      import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
+    and the ag grid dependency needs to be added to the pacakge.json file:
+      "@ag-grid-enterprise/server-side-row-model": "29.2.0"
+
+3. **Common Grid Attributes**
+- `resource-name`: Data Server resource name
+- `pagination`: Enable server-side pagination
+- `live-updates`: Enable real-time updates
+- `sort`: Enable column sorting
+
+### Grid Component Template Rules
+
+1. **Core Requirements**
+- ALWAYS use Rapid Design System components (rapid-*)
+- ALWAYS bind to observable properties
+- ALWAYS use proper event binding syntax
+- NEVER use Zero Design System components (zero-*)
+
+## 2. Component Examples
+
+### 2.1 Grid Component Example
+```typescript
+@customElement({
+    name: 'app-grid-name',
+    template
+})
+export class GridComponent extends FastElement {
+    static template = html`
+        <rapid-grid-pro enable-row-flashing enable-cell-flashing>
+            <grid-pro-server-side-datasource
+                resource-name="ALL_TRADES"
+                pagination
+                live-updates
+            ></grid-pro-server-side-datasource>
+            <rapid-grid-pro-column field="TRADE_ID" header="Trade ID" sort></rapid-grid-pro-column>
+            <rapid-grid-pro-column field="PRICE" header="Price" sort></rapid-grid-pro-column>
+        </rapid-grid-pro>
+    `;
+}
+```
