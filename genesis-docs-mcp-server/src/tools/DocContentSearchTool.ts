@@ -6,7 +6,6 @@ interface DocContentSearchInput {
   searchString: string;
   showContent?: string;
   noFallbackSearch?: string;
-  // TODO: return sibling files?
 }
 
 interface FallbackStrategy {
@@ -16,11 +15,11 @@ interface FallbackStrategy {
 
 const fallbacks: FallbackStrategy[] = [
   {
-    description: 'Change alpha to rapid, as rapid is the favoured design system.',
+    description: 'Change alpha to rapid, as rapid is the favoured design system. Components in different design systems should be functionally identical.',
     strategy: (x) => (x.includes('alpha') ? x.replaceAll('alpha', 'rapid') : null),
   },
   {
-    description: 'Change zero to rapid, as rapid is the favoured design system.',
+    description: 'Change zero to rapid, as rapid is the favoured design system. Components in different design systems should be functionally identical.',
     strategy: (x) => (x.includes('zero') ? x.replaceAll('zero', 'rapid') : null),
   },
   {
