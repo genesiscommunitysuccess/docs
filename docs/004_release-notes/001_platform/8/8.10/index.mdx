@@ -186,10 +186,14 @@ We have had to move onto version 8.10.2 of Gradle as part of a security vulnerab
 
 Firstly, upgrade your server dependencies to use 8.10.* where * is the latest patch version at the time of your upgrade. This must be completed before then following these instructions:
 
-1. Under your project root directory run this command twice: `./gradlew wrapper --gradle-version 8.10.2`
-1. Then move into the project's `server` directory, and run the same command twice again: `./gradlew wrapper --gradle-version 8.10.2`
+1. Ensure there is a reachable local Gradle installation using the `gradle` command with version 8.10.2 in your local environment.
+2. Under your project root directory run this command: `gradle wrapper --gradle-version 8.10.2`. Make sure not to use `gradlew` and use the local `gradle` version instead.
+3. Then move into the project's `server` directory, and run the same command again: `gradle wrapper --gradle-version 8.10.2`
 
-Please note, if the instructions above fail to download the new version it is likely that your IT department may be blocking gradle downloads. In which case speak to your IT team about where you can download Gradle version 8.10.2 within your enterprise, requesting they add it if this version isn't yet available. 
+Please note, if the instructions above fail to download the new version it is likely that your IT department may be blocking gradle downloads. In which case speak to your IT team about where you can download Gradle version 8.10.2 within your enterprise, requesting they add it if this version isn't yet available.
+
+Additionally, genesis provides a `bash` script that can automate the gradle wrapper upgrade step for a streamlined process.
+See bash script [here](https://genesisglobal.jfrog.io/ui/repos/tree/General/platform-release-notes/utilities/update_gradle_wrappers.sh) and guide [here](https://genesisglobal.jfrog.io/ui/repos/tree/General/platform-release-notes/utilities/update_gradle_wrappers_guide.pdf).
 
 [Click here for more details on the gradle issue which forced the upgrade](https://github.com/gradle/gradle/issues/30949)  
 [Click here for further details on upgrading Gradle](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:upgrading_wrapper)  
