@@ -13,13 +13,19 @@ interface FallbackStrategy {
   description: string;
 }
 
+const designSystemInfo = `, as rapid is the favoured design system.
+Components in different design systems should be functionally identical.
+If the user has asked about a component in a different design system to rapid you can continue to refer to their chosen design system.
+But just know the docs will talk about rapid instead of any other design system.
+`;
+
 const fallbacks: FallbackStrategy[] = [
   {
-    description: 'Change alpha to rapid, as rapid is the favoured design system. Components in different design systems should be functionally identical.',
+    description: 'Change alpha to rapid' + designSystemInfo,
     strategy: (x) => (x.includes('alpha') ? x.replaceAll('alpha', 'rapid') : null),
   },
   {
-    description: 'Change zero to rapid, as rapid is the favoured design system. Components in different design systems should be functionally identical.',
+    description: 'Change zero to rapid' + designSystemInfo,
     strategy: (x) => (x.includes('zero') ? x.replaceAll('zero', 'rapid') : null),
   },
   {
