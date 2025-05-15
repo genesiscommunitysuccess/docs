@@ -75,7 +75,11 @@ class FilenameSearchTool extends MCPTool<FilenameSearchInput> {
       ...new Set(filteredDocsFiles.filter((path) => validDirs.some((dir) => path.includes(dir)))),
     ].sort();
 
-    return filteredFiles.map((filePath) => 'docs' + filePath.split('dist/docs')[1]);
+    const fileResults = filteredFiles.map((filePath) => 'docs' + filePath.split('dist/docs')[1]);
+    if (fileResults.length === 0) {
+      return [];
+    }
+    return fileResults.concat(['\nTo read the contents of any file above, use the doc-file-view tool with the filePath.']);
   }
 }
 

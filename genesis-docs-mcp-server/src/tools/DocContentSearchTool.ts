@@ -119,7 +119,8 @@ ${res.matches.map((f, i) => `(Match ${i}, offset ${f.offset}): ${s ? f.text : ''
 -----
 `
         )
-        .join('\n\n')
+        .join('\n\n') +
+      '\nTo read the contents of any file above, use the doc-file-view tool with the filePath.'
     );
   }
 }
