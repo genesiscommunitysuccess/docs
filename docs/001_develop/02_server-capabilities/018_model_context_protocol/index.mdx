@@ -1,0 +1,201 @@
+---
+title: 'Model Context Protocol - Overview'
+sidebar_label: 'MCP - Model Context Protocol'
+id: model-context-protocol
+keywords: [AI, MCP, model, context, protocol]
+tags:
+- AI
+- MCP
+- model
+- context
+- protocol
+sidebar_position: 18
+---
+
+# MCP - Model Context Protocol
+
+Genesis now supports exposing application endpoints through **MCP (Model Context Protocol)**, enabling seamless interaction between your applications and Large Language Models (LLMs). This new capability allows any LLM (e.g., ChatGPT, Claude, Gemini) to understand and invoke functionality within your Genesis-built apps using structured interfaces.
+
+This opens up use cases like:
+- AI copilots triggering backend workflows
+- LLMs querying real-time application data
+- Conversational automation across multiple applications
+
+```mermaid
+graph LR
+
+  subgraph "AI Model (Cloud or Local)"
+    LLM[LLM]
+  end
+
+  subgraph AI Host Application
+    HostApp[Host Application]
+    MCPClient[MCP Client]
+  end
+
+  subgraph Genesis Application
+    MCPServer[MCP Server]
+    EventHandler[Event Handler]
+    RequestServer[Request Server]
+  end
+
+  User -->|Prompt| HostApp
+  HostApp -->|Prompt with Tool Info| LLM
+  LLM -->|Invoke Tool Request| HostApp
+  HostApp -->|Invoke Tool| MCPClient
+  MCPClient <-->|MCP Protocol| MCPServer
+  MCPServer <--> EventHandler
+  MCPServer <--> RequestServer
+```
+
+## What is MCP?
+
+MCP (Model Context Protocol) is a standard interface that exposes application capabilities in a format that LLMs can understand and interact with. These capabilities are described via metadata, which lets an LLM know:
+- What operations are available
+- What inputs are required
+- What responses to expect
+
+Because all Genesis Event Handlers and Request Servers automatically generate and publish metadata describing the request and response formats, any one of these endpoints can easily be enabled for interaction via AI through MCP.
+
+More information on MCP can be found on the official website, [here](https://modelcontextprotocol.io/introduction)
+
+## Getting Started
+
+### Step 1: Enable the MCP Server Process
+
+As an experimental feature, MCP is disabled for applications by default and is an opt-in feature. In order to enable MCP and have the `GENESIS_MCP` process appear in your application, add the following sysdef item to your system-definition.kts file:
+
+```kotlin
+item(name = "GENESIS_MCP_PROCESS_START", value = "true")
+```
+
+### Step 2: Configure your application MCP server
+
+By default, the MCP server opens an HTTP server on port 3001. This can be configured by creating a file called genesis-mcp-server.kts, which will override the default service config.
+Other attributes such as the server name, version and how often the server will scan for new tools can also be configured.
+
+The service configuration offers several options for added security through different authentication strategies. These are described in depth in a later section.
+
+```kotlin
+server {
+    serverName = "genesis" // The name of your MCP server
+    version = "1.0.0" // The name of your MCP server
+    port = 3001 // The port the HTTP server will run on
+    toolRefreshIntervalMillis = 10000L // The amount of time the server will wait before checking the app metadata again for any new resources
+
+    authenticationStrategy {
+        staticUser {
+            userName = "admin"
+            requiresApproval = true
+        }
+    }
+}
+```
+
+### Step 3: Enable Event Handlers and Request Servers for MCP
+
+We then need to enable individual resources for MCP, as we do not want to expose all resources by default. We can do that by creating an `<application>-mcp.kts` file in `<your-application-module>/src/main/genesis/scripts`.
+
+Here is an example file with an example entry:
+
+```kotlin
+mcp {
+    enableMcp("MY_ENDPOINT") {
+        this.context = """
+            Type your context here
+        """.trimIndent()
+    }
+}
+```
+
+The context is provided to the LLM as the description of the MCP tool that will be created to call that resource. This text can be as long as required, and should include specific examples and guidelines on how to use the tool, to guide the LLM.
+
+## Authentication / Security
+
+Different authentication methods are available for added security around tool usage:
+### Static user
+With the static user strategy, each message created as a result of a tool call request will be sent from a single static user account. This strategy allows you to configure whether invocations of event handlers are always subject to approval by another user (it is recommended to set this to true).
+Example:
+```kotlin
+authenticationStrategy {
+  staticUser {
+    userName = "admin"
+    requiresApproval = true
+  }
+}
+```
+
+### Provided User
+If you use this strategy, an additional mandatory user name parameter will be added to the definition of each MCP tool. The LLM / host application / proxy process will be responsible for making sure this is populated.
+Example:
+```kotlin
+authenticationStrategy {
+  providedUserName {
+    addToToolSpec = true
+  }
+}
+```
+
+### Session Token
+If you use this strategy, an additional mandatory session token parameter will be added to the definition of each MCP tool. The LLM / host application / proxy process will be responsible for making sure this is populated, requiring a login to the Genesis Application.
+Example:
+```kotlin
+authenticationStrategy {
+  sessionAuthToken {
+    addToToolSpec = true
+  }
+}
+```
+
+## Connecting an AI agent to the MCP server
+
+In order to connect an AI enabled application to the Genesis MCP Server, you will need access to an AI model.
+
+Some application such as Claude Desktop automatically send requests to and from a model hosted in the cloud, however it is possible to test the MCP server entirely with a local stack.
+
+### Using an MCP Proxy
+The MCP protocol can operate via stdio (for command line based tools) and over HTTP. The Genesis MCP server opens an http port (3001).
+However, most desktop tools including Claude Desktop and mcphost only support stdio.
+In order to connect these tools to the Genesis HTTP MCP server, you can use an mcp-proxy process that does the conversion between the two protocols.
+
+Proxy tools are available in various languages and build systems on github.
+
+### Using Claude desktop
+Instructions on how to enable Claude Desktop for MCP server integration can be found [here](https://modelcontextprotocol.io/quickstart/user).
+
+### Using `mcphost`
+`mcphost` is a simple command line application, written in Go, that provides the bare minimum functionality to integrate MCP servers with an AI model. It supports OpenAI/Anthropic models in the cloud, as well as models running locally through ollama.
+Installation instructions for mcphost can be found [here](https://github.com/mark3labs/mcphost).
+
+`mcphost` by default uses a json config file located at $USER_HOME/.mcp.json, and it will create this file if it does not exist.
+
+In order to connect the host app to the MCP server, insert the following config in the json file:
+
+```json
+{
+  "mcpServers": {
+    "custom" : {
+      "command" : "mcp-proxy",
+      "args" : [
+        "http://localhost:3001/sse"
+      ]
+    }
+  }
+}
+```
+
+This will invoke the proxy as a command when the host app is started. (Therefore the `mcp-proxy` command must be on the PATH. Note also the syntax above is for the python version, syntax may differ slightly between proxy tools in different languages)
+
+You can then run the command to run mcphost, which will act as your expert chat app:
+###### Using Ollama (No API Key Required)
+`mcphost -m ollama:<your model>`
+
+###### Using Anthropic (API Key Required)
+`mcphost -m anthropic:claude-3-5-sonnet-latest --anthropic-api-key <key> --anthropic-url <url>`
+
+###### With OpenAI (API Key Required)
+`mcphost -m openai:gpt-4 --openai-api-key <key> --open-ai-url <url>`
+
+You can get additional help with
+`mcphost -h`
+
