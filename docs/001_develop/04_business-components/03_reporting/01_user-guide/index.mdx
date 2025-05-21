@@ -43,6 +43,26 @@ The following tables shows the permission codes associated with the reporting co
 | Report Destination Configuration | `ReportDestinationDelete` | Delete report destinations. Requires `ReportDestinationView`.  |
 
 
+### User context for report execution
+
+When a report is run, it will run as a user:
+
+* **Run button** : The user who clicked the button for any "ad-hoc" running of the report (from the Run configuration's screen)
+* **Scheduled report run** : The user who last edited the report configuration
+
+This matters because the data sources configured for a report may have authorization permissions set, for example, you may be using **Orders** data and the user may only see rows for **Counterparty's** that they have been permitted to see in the application.
+
+If you see any data discrepancies, this is likely the cause. If you are unsure/unaware of the authorization that has been set up in your application, speak to a developer who can check the underlying data source for any authorization configuration being applied to the data source.
+
+When a report runs, it uses the permissions of a specific user:
+
+- **Run button**: The user who manually triggered the report from the **Run Configuration** screen.
+- **Scheduled run**: The user who last edited the report configuration.
+
+This is important because report data sources may have user-specific authorization rules. For example, if a report uses **Orders** data, it may be set up in such a way that a user may only see rows related to **Counterparties** they’re authorized to view. Any reports run as this user will only contain data that user is permitted to see.
+
+If you notice missing or unexpected data, this is often the reason. If you're unsure about the authorization setup, speak to a developer who can check the data source configuration.
+
 ## Report configuration
 
 This is the landing section when opening the reporting module. It lists all configured reports in the application.
