@@ -44,8 +44,8 @@ Declaration:
 ```html
 <foundation-form
   design-system-prefix="rapid"
-  :jsonSchema="${sampleJsonSchema}"
-  :uischema="${simpleTradeUiSchema}"
+  :jsonSchema="${() => sampleJsonSchema}"
+  :uischema="${() => simpleTradeUiSchema}"
 ></foundation-form>
 ```
 
@@ -100,8 +100,8 @@ export const simpleTradeUiSchema: UiSchema = {
   template: html`
     <foundation-form
       design-system-prefix="rapid"
-      :jsonSchema="${sampleJsonSchema}"
-      :uischema="${simpleTradeUiSchema}"
+      :jsonSchema="${() => sampleJsonSchema}"
+      :uischema="${() => simpleTradeUiSchema}"
     ></foundation-form>
   `,
 })
@@ -115,8 +115,8 @@ Declaration:
 ```html
 <foundation-form
   design-system-prefix="rapid"
-  jsonSchema={sampleJsonSchema}
-  uischema=${simpleTradeUiSchema}
+  jsonSchema={() => sampleJsonSchema}
+  uischema=${() => simpleTradeUiSchema}
 ></foundation-form>
 ```
 
@@ -321,8 +321,8 @@ Declaration:
 ```html
 <foundation-form
   design-system-prefix="rapid"
-  :jsonSchema="${sampleJsonSchema}"
-  :uischema="${simpleTradeUiSchema}"
+  :jsonSchema="${() => sampleJsonSchema}"
+  :uischema="${() => simpleTradeUiSchema}"
 ></foundation-form>
 ```
 
@@ -416,8 +416,8 @@ export const tradeUISchema: UiSchema = {
   template: html`
     <foundation-form
       design-system-prefix="rapid"
-      :jsonSchema="${sampleJsonSchema}"
-      :uischema="${simpleTradeUiSchema}"
+      :jsonSchema="${() => sampleJsonSchema}"
+      :uischema="${() => simpleTradeUiSchema}"
     ></foundation-form>
   `,
 })
