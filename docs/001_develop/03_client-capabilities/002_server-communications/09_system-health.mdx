@@ -1,0 +1,69 @@
+---
+title: 'System Health Overlay'
+sidebar_label: 'System Health Overlay'
+id: system-health-overlay
+keywords: [genesis, foundation, system health, overlay, network monitor]
+tags:
+  - comms
+  - system-health
+  - overlay
+---
+
+# System Health Overlay
+
+The `SystemHealthOverlay` is a UI component that provides real-time visibility into the health of your application's network connectivity, WebSocket status, and resource subscriptions. It is designed to help users and developers quickly diagnose connectivity issues and monitor the overall health of the system.
+
+## Key Features
+
+- **Live System Health Status:** Displays whether the application is online, authenticated, and healthy.
+- **WebSocket Monitoring:** Shows WebSocket connection status, reconnection attempts, and reasons for disconnection.
+- **Resource Health:** Lists all monitored resources, their connection status, last checked time, and active subscriptions.
+- **User Controls:** Allows users to manually update status, report issues, save data, reload the window, or dismiss the overlay.
+- **Automatic and Manual Display:** The overlay can open automatically on health issues or be triggered by user keyboard shortcuts.
+- **Customizable and Extensible:** Supports configuration via DI and can be extended for app-specific needs.
+
+## Usage Example
+
+Below is a basic example of how to use the `SystemHealthOverlay` in a GenesisElement-based application:
+
+```typescript
+import { SystemHealthOverlay } from '@genesislcap/foundation-ui';
+import { GenesisElement } from '@microsoft/web-core';
+
+export class MyApp extends GenesisElement {
+  // Optionally provide a callback for saving app data
+  onSaveAppData() {
+    // Custom save logic
+  }
+}
+```
+
+```html title="main.template.ts"
+<rapid-system-health-overlay :saveDataCallback="${(x) => x.onSaveAppData}"></rapid-system-health-overlay>
+```
+
+## Keyboard Shortcuts
+
+- **Ctrl + Alt + ↑**: Open the overlay
+- **Ctrl + Alt + ↓**: Close the overlay
+- **Esc**: Dismiss the overlay (if open)
+
+## Properties & Configuration
+
+- `log-level`: Sets the logging level for the network monitor (e.g., error, debug).
+- `saveDataCallback`: Optional callback for saving application data when the system is unhealthy.
+
+## Events & Status
+
+The overlay listens for system health changes via the `NetworkMonitor` and updates its display accordingly. It shows:
+
+- **Network Status:** Online/offline, authentication, user, platform, OS, browser info, and update timings.
+- **WebSocket Status:** Configured, connected, reconnecting, disconnection reasons, and codes.
+- **Resource Status:** Name, health, last checked, subscriptions, and source references.
+
+
+## Example UI
+
+The overlay provides a full-screen or minimized (dismissed) view, color-coded for healthy/unhealthy states, and includes actionable controls for users and developers.
+
+![System Health Overlay](/img/001_develop/03_client-capabilities/system-health-overlay.png)
