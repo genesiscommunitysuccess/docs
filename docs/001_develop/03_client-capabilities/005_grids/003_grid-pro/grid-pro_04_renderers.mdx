@@ -17,6 +17,7 @@ import {
   GridProExampleActionsMenuRenderer,
   GridProExampleBooleanRenderer,
   GridProExampleEditableRenderer,
+  GridProExampleSelectRenderer,
   GridProExampleSelectEditorRenderer,
   GridProExampleNumberEditor,
   GridProExampleMultiselectEditor,
@@ -137,6 +138,62 @@ const booleanRendererColDef = {
     isDisabled: (rowData) => !rowData.canEdit
   },
   // other column options
+}
+```
+
+### Select renderer (`select`)
+
+Renders a dropdown select within a grid cell, allowing users to select from a list of options.
+
+<GridProExampleSelectRenderer />
+
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selectrenderer/).
+
+#### Key features
+
+- Supports dynamic options through a function
+- Customizable option display names
+- Supports disabled state per option
+- Handles selection changes with callback
+- Configurable dropdown position based on row index
+
+#### Usage example
+
+```typescript
+const ROW_INDEX_LIMIT = 5;
+
+const setDropdownPosition = (rowData, allRows) => {
+  const rowIndex = allRows.findIndex(row => 
+    row.make === rowData.make && 
+    row.model === rowData.model
+  );
+  return rowIndex > ROW_INDEX_LIMIT ? 'above' : 'below';
+};
+
+const selectRendererColDef = {
+  headerName: 'Status',
+  field: 'status',
+  cellRenderer: 'select',
+  cellStyle: {
+    overflow: 'visible',
+  },
+  cellRendererParams: {
+    options: () => [
+      {
+        name: 'available',
+        displayName: 'Available',
+        isDisabled: (rowData) => rowData.price > 50000,
+      },
+      { 
+        name: 'reserved', 
+        displayName: 'Reserved',
+        isDisabled: (rowData) => rowData.year < 2020,
+      },
+    ],
+    onSelect: (rowData) => handleStatusChange(rowData),
+    accessor: 'status',
+    position: (rowData) => setDropdownPosition(rowData, allRows),
+  }
 }
 ```
 
