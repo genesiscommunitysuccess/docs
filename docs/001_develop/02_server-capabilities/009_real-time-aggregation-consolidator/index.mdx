@@ -845,7 +845,7 @@ onCommit {
 
 `groupBy` allows us to define the relevant consolidations group to aggregate our input table into our output table.
 
-For example, one common use case would be to aggregate all `Trade` entities based on their INSTRUMENT_ID and COUNTERPARTY_ID values into the `Position` table. This would reveal how much an instrument has been traded for each specific counterparty in the database.
+For example, one common use case would be to aggregate all `Trade` entities based on their `INSTRUMENT_ID` and `COUNTERPARTY_ID` values into the `Position` table. This would reveal how much an instrument has been traded for each specific counterparty in the database.
 
 The syntax of `groupBy` can be significantly different between service Consolidators and on-demand Consolidators.
 For service Consolidators, table syntax can add complexity, as records might need to be loaded, created or re-scanned (see [indexScan](#indexscan))
