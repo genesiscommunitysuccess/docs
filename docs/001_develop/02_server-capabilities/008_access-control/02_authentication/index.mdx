@@ -61,7 +61,9 @@ See [setting up SSO](#setting-up-sso) for more details
 
 ## Configuration options
 
-`auth-preferences.kts` is the main file used to configure authentication for a Genesis application. This should be placed in your application's `scripts` folder. 
+`auth-preferences.kts` is the main file used to configure authentication for a Genesis application. This should be placed in your application's `scripts` folder.
+
+See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.
 
 Everything is configured under the outer block `security`
 
@@ -1571,6 +1573,7 @@ You can see these additions highlighted in the example below:
 Additionally, you need a file `<app_name>-saml-config.kts` file in your `scripts` directory. Copy the configuration below and set according to the comment descriptions.
 
 This file does not need to be configured anywhere. As long as the filename ends `-saml-config.kts` it will be used in authentication configuration.
+See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.
 
 ```kotlin
 saml {
