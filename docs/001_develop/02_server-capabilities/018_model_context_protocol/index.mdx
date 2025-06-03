@@ -12,9 +12,7 @@ tags:
 sidebar_position: 18
 ---
 
-# MCP - Model Context Protocol
-
-Genesis now supports exposing application endpoints through **MCP (Model Context Protocol)**, enabling seamless interaction between your applications and Large Language Models (LLMs). This new capability allows any LLM (e.g., ChatGPT, Claude, Gemini) to understand and invoke functionality within your Genesis-built apps using structured interfaces.
+Genesis supports exposing application endpoints through **MCP (Model Context Protocol)**, enabling seamless interaction between your applications and Large Language Models (LLMs). This new capability allows any LLM (e.g., ChatGPT, Claude, Gemini) to understand and invoke functionality within your Genesis-built apps using structured interfaces.
 
 This opens up use cases like:
 - AI copilots triggering backend workflows
@@ -63,7 +61,7 @@ More information on MCP can be found on the official website, [here](https://mod
 
 ### Step 1: Enable the MCP Server Process
 
-As an experimental feature, MCP is disabled for applications by default and is an opt-in feature. In order to enable MCP and have the `GENESIS_MCP` process appear in your application, add the following sysdef item to your system-definition.kts file:
+MCP is an experimental feature that is disabled by default for applications. Developers must opt in to enable it. To enable MCP and have the `GENESIS_MCP` process appear in your application, add the following sysdef item to your application's [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/):
 
 ```kotlin
 item(name = "GENESIS_MCP_PROCESS_START", value = "true")
@@ -71,17 +69,26 @@ item(name = "GENESIS_MCP_PROCESS_START", value = "true")
 
 ### Step 2: Configure your application MCP server
 
-By default, the MCP server opens an HTTP server on port 3001. This can be configured by creating a file called genesis-mcp-server.kts, which will override the default service config.
-Other attributes such as the server name, version and how often the server will scan for new tools can also be configured.
+By default, the MCP server opens an HTTP server on port 3001. This, and other settings, can be re-configured by overriding the platform-provided `genesis-mcp-server.kts` file, [instructions on how to do this can be found here](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files).
 
-The service configuration offers several options for added security through different authentication strategies. These are described in depth in a later section.
+The full set of attributes which can be reconfigured are:
+
+|Attribute                  |Description                |Default value|
+|---------------------------|---------------------------|-------------|
+|`serverName`               |The name of your MCP server, this is the name AI will call your application by|`genesis`|
+|`version`                  |The version of your MCP server. You should increment this with your product where new functionality is made available to AI|`1.0.0`|
+|`port`                     |The port the HTTP server will run on|`3001`|
+|`toolRefreshIntervalMillis`|The amount of time the server will wait before checking the app metadata again for any new resources|`10000L`|
+|`authenticationStrategy`   |See the [authentication strategy section](#authentication--security) for more details|`staticUser`|
+
+Example configuration:
 
 ```kotlin
 server {
-    serverName = "genesis" // The name of your MCP server
-    version = "1.0.0" // The version of your MCP server
-    port = 3001 // The port the HTTP server will run on
-    toolRefreshIntervalMillis = 10000L // The amount of time the server will wait before checking the app metadata again for any new resources
+    serverName = "genesis"
+    version = "1.0.0" 
+    port = 3001
+    toolRefreshIntervalMillis = 10000L 
 
     authenticationStrategy {
         staticUser {
@@ -94,27 +101,42 @@ server {
 
 ### Step 3: Enable Event Handlers and Request Servers for MCP
 
-We then need to enable individual resources for MCP, as we do not want to expose all resources by default. We can do that by creating an `<application>-mcp.kts` file in `<your-application-module>/src/main/genesis/scripts`.
+We then need to enable individual resources for MCP, as we do not want to expose all resources by default. We can do that by creating an `<application>-mcp.kts` file in `<application>-app/src/main/genesis/scripts` where `<application>` should be substituted by your application's name.
 
-Here is an example file with an example entry:
+Here is a short example file containing one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) endpoint and one [request server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint:
 
 ```kotlin
 mcp {
-    enableMcp("MY_ENDPOINT") {
+    enableMcp("EVENT_INSERT_TRADE") {
         this.context = """
-            Type your context here
+            Event used to enter a new trade into the system.
+        """.trimIndent()
+    }
+    enableMcp("TRADE") {
+        this.context = """
+            Query providing details of the trades available in the application.
         """.trimIndent()
     }
 }
 ```
 
-The context is provided to the LLM as the description of the MCP tool that will be created to call that resource. This text can be as long as required, and should include specific examples and guidelines on how to use the tool, to guide the LLM.
+The context is passed to the LLM as the description of the MCP tool created for the resource. Assuming matching event handler and request server names, MCP reads their metadata to infer attributes and types. Events are matched by lowercase name; request servers use the name with _query appended. The resulting endpoints for the example above are:
+
+- `event_insert_trade`
+- `trade_query`
+
+The `context` attribute is used to provide further context to the MCP Tool, and can be as long as required. You can include specific examples and guidelines on how to use the tool, to guide the LLM. When using older, slower models it is sometimes desirable to add more context.
 
 ## Authentication / Security
 
-Different authentication methods are available for added security around tool usage:
+Security must be a strong consideration when using MCP in your application. The `authenticationStrategy` block defines which user's details will be used to query the system and that user's permissions will be used when interacting with your application.
+
+Here we detail the different authentication methods available:
+
 ### Static user
+
 With the static user strategy, each message created as a result of a tool call request will be sent from a single static user account. This strategy allows you to configure whether invocations of event handlers are always subject to approval by another user (it is recommended to set this to true).
+
 Example:
 ```kotlin
 authenticationStrategy {
@@ -124,8 +146,12 @@ authenticationStrategy {
   }
 }
 ```
+:::warning
+This configuration should be used with caution in systems with strict [`authorization setups`](/develop/server-capabilities/access-control/authorization/)
+:::
 
-### Provided User
+### Provided user
+
 If you use this strategy, an additional mandatory user name parameter will be added to the definition of each MCP tool. The LLM / host application / proxy process will be responsible for making sure this is populated.
 Example:
 ```kotlin
@@ -136,7 +162,8 @@ authenticationStrategy {
 }
 ```
 
-### Session Token
+### Session token
+
 If you use this strategy, an additional mandatory session token parameter will be added to the definition of each MCP tool. The LLM / host application / proxy process will be responsible for making sure this is populated, requiring a login to the Genesis Application.
 Example:
 ```kotlin
@@ -184,9 +211,12 @@ In order to connect the host app to the MCP server, insert the following config 
 }
 ```
 
-This will invoke the proxy as a command when the host app is started. (Therefore the `mcp-proxy` command must be on the PATH. Note also the syntax above is for the python version, syntax may differ slightly between proxy tools in different languages)
+The `args` should be configured to point to your host and port running the MCP server. Be sure to use https where the host has a valid SSL certificate.
+
+This will invoke the proxy as a command when the host app is started. (Therefore the `mcp-proxy` command must be on the `PATH`. Note also the syntax above is for the python version, syntax may differ slightly between proxy tools in different languages)
 
 You can then run the command to run mcphost, which will act as your expert chat app:
+
 ###### Using Ollama (No API Key Required)
 `mcphost -m ollama:<your model>`
 
