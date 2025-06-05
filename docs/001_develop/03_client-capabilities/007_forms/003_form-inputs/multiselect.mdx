@@ -198,6 +198,29 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 ```typescript
 <rapid-multiselect autoPosition>
 ```
+</td>
+    </tr>
+    <tr>
+      <td>delimiterValues</td>
+      <td><code>string</code></td>
+      <td>Delimiter for array values.</td>
+<td>
+
+```typescript
+<rapid-multiselect delimiterValues=";">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>delimiterLabels</td>
+      <td><code>string</code></td>
+      <td>Delimiter for array labels.</td>
+<td>
+
+```typescript
+<rapid-multiselect delimiterLabels=",">
+```
 
 </td>
     </tr>
@@ -370,6 +393,18 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 </td>
     </tr>
+    <tr>
+      <td>itemRenderer</td>
+      <td><code>function</code></td>
+      <td>Custom renderer function for option items. Receives option, parent component and prefix as parameters.</td>
+<td>
+
+```typescript
+<rapid-multiselect :itemRenderer=${() => (option, parent, prefix) => html`<span>${option.label}</span>`}>
+```
+
+</td>
+    </tr>
   </tbody>
 </table>
 
@@ -380,6 +415,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 | label | Slot for the component label |
 | indicator | Slot used for the loading indicator |
 | Default | Used for datasource elements |
+| options-header | Slot for adding custom header content above the options list |
 
 ### Parts
 
@@ -424,4 +460,3 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 ### Events listened to
 
 This component doesn't listen to any events.
-
