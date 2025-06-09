@@ -11,8 +11,8 @@ sidebar_position: 1
 ---
 
 ## Genesis Platform Abstraction Language
-This is our own scripting language, which plugs in to IntelliJ.
-It means that you have access to autocompletion, help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components.
+GPAL is Genesis's Kotlin based DSL, used to configure applications easily and quickly. It can provide more than just configuration, as it allows users to define logic and code where necessary, but also allows users to inject and invoke Java code too.
+When using compatible IDEs/plugins it enables features such as autocompletion, help and error highlighting as you code.
 
 ## What's available in a GPAL Script?
 
@@ -31,6 +31,21 @@ These are the imports which are available in all scripts when using these config
 
 Within your script you will also have access to:
 - `LOG` - this is a SLF4J Logger which will log under the relative script definition class
-- System definitions as per your generated `SysDef` class
+- System definitions as per your generated `SysDef` class, matching the name you provide it in your system definition file
 
-Some scripts will have behaviour specific to that implementation, please see the documentation for that script for further information.
+For example, if you have a system definition defined as:
+```kotlin
+item(name = "MY_PIPELINE_ENABLED", value = false)
+```
+
+Then within your GPAL script, you can directly reference the system definition like so:
+```kotlin
+pipelines {
+    if (MY_PIPELINE_ENABLED) {
+        pipeline(name = "My Pipeline") {
+        }
+    }
+}
+```
+
+Some component's scripts will have behaviour specific to that implementation, please see the documentation for that component for further information.

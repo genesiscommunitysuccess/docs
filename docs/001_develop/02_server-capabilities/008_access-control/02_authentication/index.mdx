@@ -14,6 +14,7 @@ sidebar_position: 7
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CommonGpalStandards from '/snippet/_common-gpal-standards.md'
 
 Authentication is required to use a Genesis application, whether it be via a user interface, or using a client API.
 
@@ -63,7 +64,7 @@ See [setting up SSO](#setting-up-sso) for more details
 
 `auth-preferences.kts` is the main file used to configure authentication for a Genesis application. This should be placed in your application's `scripts` folder.
 
-See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.
+<CommonGpalStandards />
 
 Everything is configured under the outer block `security`
 
@@ -1573,7 +1574,7 @@ You can see these additions highlighted in the example below:
 Additionally, you need a file `<app_name>-saml-config.kts` file in your `scripts` directory. Copy the configuration below and set according to the comment descriptions.
 
 This file does not need to be configured anywhere. As long as the filename ends `-saml-config.kts` it will be used in authentication configuration.
-See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.
+<CommonGpalStandards />
 
 ```kotlin
 saml {

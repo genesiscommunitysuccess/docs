@@ -16,6 +16,7 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CommonGpalStandards from '/snippet/_common-gpal-standards.md'
 
 The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly in your Genesis application. 
 
@@ -103,7 +104,7 @@ The other configuration options are :
 ### Using the Client directly
 In order to use the Bloomberg Client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the Client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
 
-See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.
+<CommonGpalStandards />
 
 <details>
 <summary>Code Examples</summary>
