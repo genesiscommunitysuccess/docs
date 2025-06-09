@@ -23,6 +23,7 @@ import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonGpalStandards from '/snippet/_common-gpal-standards.md'
 
 ## Overview
 
@@ -46,6 +47,8 @@ C --> |4. Changes in table/view trigger a read|B
 When the client first requests to subscribe to a query in a Data Server, the initial data is returned, and the subscription between the client and the query remains active. The data server will continue to push data updates to the client, for example newer entries or modifications to data rows already sent to the client. The client can also make changes for example to request more rows.
 
 Genesis Data Servers are defined in the `*-dataserver.kts` files.
+
+<CommonGpalStandards />
 
 All Data Server queries are available via REST automatically too.
 
