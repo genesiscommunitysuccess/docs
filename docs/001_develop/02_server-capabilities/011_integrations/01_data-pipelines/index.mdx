@@ -359,7 +359,7 @@ camelFileSource {
 ```
 
 :::important
-`camelFileSource` is a single consumer source and can only be called on by one pipeline at a time, using the same camel file source for multiple pipelines will result in an error where the pipeline and its relevant process are not able to start.
+`camelFileSource` is a single consumer source and can only be called on by one pipeline at a time, using the same instance for multiple pipelines will result in an error where the pipeline and the process configured to run it are not able to start.
 :::
 
 ###### Reading from a local directory
