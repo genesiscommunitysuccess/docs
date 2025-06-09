@@ -358,6 +358,10 @@ camelFileSource {
 }
 ```
 
+:::important
+This is a single consumer source and can only be called on by one pipeline at a time, using the same camel file source for multiple pipelines will result in an error where the pipeline is not able to start.
+:::
+
 ###### Reading from a local directory
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {

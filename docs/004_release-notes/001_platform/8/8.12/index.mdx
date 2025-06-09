@@ -23,4 +23,9 @@ TBR
 
 ## Breaking changes
 
-### 
+### Single Consumer Camel File Source (Data Pipelines)
+
+The [Camel File Source](/develop/server-capabilities/integrations/data-pipelines/#camelfilesource) can now only be called on by one pipeline at a time.
+If you are currently using the same instance of a camel file source for multiple pipelines, this will result in an error where the pipeline is not able to start.
+
+You can resolve this by creating a new instance of the source for each pipeline.
