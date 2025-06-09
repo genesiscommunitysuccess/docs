@@ -23,4 +23,9 @@ TBR
 
 ## Breaking changes
 
-### 
+### Single Consumer `camelFileSource` (Data Pipelines)
+
+The [`camelFileSource`](/develop/server-capabilities/integrations/data-pipelines/#camelfilesource) can now only be called on by one pipeline at a time.
+If you are currently using the same instance for multiple pipelines, this will result in an error where the pipeline and the process configured to run it are not able to start.
+
+In the rare situations this is encountered when upgrading to 8.12+, this should be resolved by ensuring a new instance of `camelFileSource` is created for each pipeline.
