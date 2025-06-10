@@ -12,6 +12,234 @@ tags:
 sidebar_position: 3
 ---
 
-QA UI docs intro
+## UI Steps Documentation
 
-QA UI docs content
+### Introduction
+
+
+In addition to API automation, Genesis also offers a robust set of reusable UI automation steps.
+These steps simplify tasks like element identification, interaction with UI components, and validation of user interface behavior.
+With customizable and extendable options, users can efficiently test UI functionality, ensuring consistent and reliable user experiences.
+
+Below, a list of existing steps and examples on how to use them.
+You can quickly navigate to any section by clicking the links:
+
+1. [User logs in](#1-user-logs-in)
+2. [User clicks on button](#2-user-clicks-on-button)
+3. [User clicks on button at a specific index](#3-user-clicks-on-button-at-a-specific-index)
+4. [User clicks on button and waits](#4-user-clicks-on-button-and-waits)
+5. [User performs a double click/right click/enter](#5-user-performs-a-double-click-right-click-or-enters)
+6. [Fill the fields from the Data Table](#6-fill-the-page-the-data-table)
+7. [Fill the fields from an Excel sheet](#7-fill-the-fields-from-an-excel-sheet)
+8. [Compare Page with Screenshot](#8-compare-page-with-screenshot)
+9. [Check field is Visible or not](#9-check-element-is-visible-or-not)
+10. [Extract field and verify](#10-extract-fields-value-and-verify-it-with-expected-value)
+
+### 1. User logs in
+
+```gherkin
+Given User fills "locators" with values "values" and clicks "clickLocators"
+Given User fills "username,password" with values "JohnDoe,Password11*" and clicks "clickLocators"
+```
+
+**Purpose:**
+> Logs in to the environment.
+
+**Parameters:**
+> `locators`: Locators for the fields that the user wants to fill. The user can fill any number of fields by providing
+> the locators. A locator can be a name, text, class, ID, data-test-id, col-id, or aria-label.
+>
+> `values`: Corresponding values for the specified locators.
+>
+> `clickLocators`: Locator for clicking on any button, such as a checkbox, login, or submit button.
+---
+
+### 2. User clicks on button
+
+```gherkin
+Given User "clicks" on "Create Project"
+```
+
+**Purpose:**
+> Triggers actions like clicking a button, combobox, checkbox, list, selecting an option, or enabling/disabling a toggle
+> at default index 0.
+
+---
+
+### 3. User clicks on button at a specific index
+
+```gherkin
+Given User "clicks" on "Create Project" at index "<index>"
+```
+
+**Purpose:**
+> Clicks on a button whose locator index is `<index>`.
+
+**Details:**
+> - This allows interaction with an element at a specific index when multiple elements share the same locator.
+> - If no index is provided, the default index is `0`.
+
+---
+
+### 4. User clicks on button and waits
+
+```gherkin
+Given User "clicks" on "Create Project" at index "<index>" and waits for the page to load "<seconds>" seconds
+```
+
+**Purpose:**
+> Clicks on an element at a specific index and waits for the page to load for the specified duration.
+
+---
+
+### 5. User performs a double click, right click or enters
+
+```gherkin
+Given User "<action>" on the "<locator>"
+```
+
+```gherkin
+Given User "doubleclick" on the "<locator>"
+```
+
+```gherkin
+Given User "rightclick" on the "<locator>"
+```
+
+```gherkin
+Given User "enters" on the "<locator>"
+```
+
+**Purpose:**
+> Performs a double-click, right-click, or single-click action on a page element.
+
+**Parameters:**
+> `action`: Specifies whether it's a single - click, doubleclick, or rightclick action.
+>
+> `locator`: Locator of the field on which the action is performed.
+>
+> `index`: Refers to the position of the element within a collection (default: `0`).
+
+---
+
+### 6. Fill the page the Data Table
+
+```gherkin
+Given User fill the details from the Data table
+| fieldName                                  | value               |
+|---------------------------------|--------------------|
+| project-attributes-text-field-project-name | Create-Automation |
+| project-description | This is Create Automation |
+```
+
+**Purpose:**
+> Fills the form using a data table where `fieldName` contains locators and `value` contains respective values.
+
+---
+
+### 7. Fill the fields from an Excel sheet
+
+```gherkin
+Given User fills the form using Excel sheet "<filename.xlsx>"
+```
+
+**Purpose:**
+> Populates form fields using data from an Excel sheet.
+
+**Details:**
+> - The Excel file should be inside the `input` folder.
+> - The sheet must contain columns: `username` (for locator) and `password` (for value).
+
+---
+
+### 8. Compare Page with Screenshot
+
+```gherkin
+Then User compares the page using screenshot "<expectedScreenshot.jpeg>"
+```
+
+**Purpose:**
+> Compares the UI page by taking a screenshot and matching it with the expected image.
+
+**Details:**
+> - The actual screenshot is saved in the `2-actual` folder as `A_<filename>.jpeg`.
+> - The expected screenshot should be named `E_<filename>.jpeg` and placed inside the `3-expected` folder.
+
+---
+
+### 9. Check element is Visible or not
+
+```gherkin
+Then User checks if element "<locator>" is "<visibility>"
+```
+
+**Purpose:**
+> Checks whether an element is visible or not at a specific index.
+
+**Parameters:**
+> `locator`: Name or identifier of the element to check (e.g., ID, name, etc.).
+>
+> `visibility`: Expected visibility status (`visible` or `notVisible`).
+>
+> `index`: Position of the element if there are multiple matching elements (default: `0`).
+
+---
+
+### 10. Extract field's value and verify it with expected value
+
+```gherkin
+When Extract value and verify it with expected result "<expectedValue>" for field "<Locator>"
+When Extract value and verify it with expected result "<expectedValue>" for field "<Locator>" at index "indexValue"
+```
+
+**Purpose:**
+> Extracts the value of a field using the provided locator and compares it with the expected value to ensure accuracy.
+> User can also specify index if required. It's optional for user. Default index is '0'.
+
+**Parameters:**
+> locator: The identifier or selector for the field to be extracted (e.g., ID, name, aria-label, etc.).
+> expectedValue: The value that the field should contain, which will be compared against the extracted value.
+> index: (Optional) The position of the field if there are multiple matches for the locator (default: 0).
+
+```gherkin
+When Extract and verify following values:
+| fieldName | value |
+| locator | expectedValue |
+| currency | CAD |
+```
+
+**Purpose:**
+> Iteratively extracts values of multiple fields and verifies them against expected results.
+
+**Parameters:**
+> fieldName: The name or locator of the field.
+> value: The expected value to verify.
+
+```gherkin
+When Extract and verify following values from "<excelFile>"
+```
+
+**Purpose:**
+> Reads a list of field-value pairs from an Excel file and verifies each field’s value from the UI.
+
+**Parameters:**
+> excelFile: The path or name of the Excel file containing field-value pairs.
+
+### 11. User clicks and download the file in expected folder
+
+```gherkin
+When User "click" on "locator" and downloads the file named "fileNameWithExtension"
+When User "click" on "export" and downloads the file named "abc.xlsx"
+```
+
+**Purpose:**
+> Step is used to perform download action. It will download the file in expected folder when you click on something that
+> downloads.
+
+**Parameters:**
+> click: The action to be performed. Supports multiple actions such as click, doubleClick, rightClick, or enter.
+>
+> `locators`: Locators for the fields that the user wants to fill. The user can fill any number of fields by providing the locators. A locator can be a name, text, class, ID, data-test-id, col-id, or aria-label.
+>
+> fileNameWithExtension: The expected name of the downloaded file (including its extension, e.g., "abc.xlsx" or "
+> report.csv"). It will get downloaded inside the expected folder.

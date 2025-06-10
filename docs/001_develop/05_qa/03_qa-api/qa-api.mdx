@@ -11,6 +11,763 @@ tags:
 sidebar_position: 2
 ---
 
-QA API docs intro
+## API Steps Documentation
 
-QA API docs content
+### Introduction
+Genesis, a powerful automation framework, provides reusable steps designed to streamline and enhance API automation processes.
+These reusable steps encapsulate common test scenarios and functionalities such as authentication, response validation, and data manipulation, allowing for quick integration into various testing workflows.
+The beauty of Genesis lies in its flexibility: these predefined steps can be easily extended by end users to meet specific project requirements.
+Whether you need to implement custom validation logic, integrate unique data setups, or tailor testing flows, the framework allows you to extend and modify steps without compromising the integrity of the overall system.
+
+Below, a list of existing steps and examples on how to use them.
+You can quickly navigate to any section by clicking the links:
+
+1. [Health Check](#1-health-check)
+2. [Authentication](#2-authentication)
+3. [External Source Connection](#3-external-source-connection)
+4. [Copy File To External Location](#4-copy-file-to-external-location)
+5. [Wait for 'n' Number Second](#5-wait-for-n-number-second)
+6. [Compare Actual JSON to Expected JSON](#6-compare-actual-json-to-expected-json)
+7. [Compare Actual CSV to Expected CSV](#7-compare-actual-csv-to-expected-csv)
+8. [Database Connection and Run Query](#8-database-interaction)
+9. [Real-Time Queries (Data Server)](#9-real-time-queries-data-server)
+10. [Snapshot Queries (Request Server)](#10-snapshot-queries-request-server)
+11. [Core Business Logic (Event Handler)](#11-core-business-logic-event-handler)
+12. [Guide To HTTP Request Steps](#12-comprehensive-guide-to-http-request-step-definitions-with-dynamic-payload-handling)
+13. [Find and Replace Text in Files](#13-text-replacement-in-files)
+14. [Start or Stop Process](#14-start-or-stop-process)
+15. [Execute K6 Script Step](#15-execute-k6-script-step)
+16. [Execute cURL Command](#16-execute-curl-command)
+
+### 1. Health Check
+
+```gherkin
+Given User check the readiness of the system
+Given User check the readiness of the system with expected result "E_HealthStatusAndLogin.json"
+```
+
+Purpose:
+> This step performs a health check on the system by sending requests to a health status endpoint and validating the
+> response against an expected result file.
+>
+If no expected file is provided in the step, the expected result file must be under`resources/3-expected/1-HealthStatusAndLogin/<hostname>/E_1-HealthStatusAndLogin.json`
+>
+> If an expected file is explicitly passed, the system will look for the file under `resources/3-expected/<featurename>`
+>
+> The process continues until the system is ready or the maximum wait time is exceeded. If the health check fails within
+> the allowed duration, the test execution is stopped
+
+Parameters:
+> `healthCheckMaxWait`: The maximum wait time (in minutes) for the health check to pass (default: 10 minutes). Found in
+> `resources/4-config/config.properties`
+---
+
+### 2. Authentication
+
+```gherkin
+Given User connect with username "<username>" and password "<password>"
+```
+
+Purpose:
+> This step is used to log in to the application through the API using the credentials - username and password.
+
+Requirements:
+> User should've `P_login.json` file to do successful request, located at `resources/1-payload/global`.
+> The step retrieves a `SESSION_AUTH_TOKEN` and `SOURCE_REF` upon successful authentication and stores it in the
+`SharedContext` for use in later steps.
+>
+*NOTE: `P_login.json`a file would be already present in `resources/1-payload/global` directory if the folder structure
+is created using createTestResourceFolders task*
+
+Parameters:
+> `username`: The username of the user to connect
+>
+> `password`: The password of the user to connect
+
+#### 2.a. MFA Authentication
+
+```gherkin
+Given User connect with endpoint "<endpoint>" and payload "<payload>"
+```
+Purpose:
+> This step is used to do MFA Authentication.
+
+Requirements:
+> User should've `P_MFA_login.json` file to do successful request, located at `resources/1-payload/global`.
+>
+*NOTE: `P_MFA_login.json`a file would be already present in `resources/1-payload/global` directory if the folder structure
+is created using createTestResourceFolders task*
+
+Parameters:
+> `endpoint`: The event endpoint to send request for MFA Auth
+>
+> `payload`: The payload for to MFA Auth
+
+#### 2.b. Log Out
+
+```gherkin
+Given User logout with username "<username>"
+Given User logout with username "<username>" and session id "<session_id>"
+```
+Purpose:
+> This step is used to do log out.
+>
+> The session id is optional
+>
+
+Requirements:
+> User should've `P_logout.json` file to do successful request, located at `resources/1-payload/global`.
+>
+> User `config.properties` file should contain key as `getEventAfterLogout`
+> and pass any `ReqRep` event assumed it will be `GET` http method.
+
+*NOTE: `P_logout.json`a file would be already present in `resources/1-payload/global` directory if the folder structure
+is created using createTestResourceFolders task*
+
+Parameters:
+> `username`: The username of the user to connect and will use to log out
+>
+> `session_id`: The session id of the user, retrieved after login with user
+
+---
+
+### 3. External Source Connection
+
+```gherkin
+Given User connect to <SourceLocation> with a connection <param>
+```
+
+Purpose:
+> Step is used to establish a connection to a specified location, such as SFTP, Amazon S3,Docker, or a local
+> environment, using the provided connection parameters.
+
+Parameters:
+> `SourceLocation`: The type of location to connect to (Docker, SFTP, AmazonS3, Local).
+>
+> `param`: The connection details needed for the location (e.g.host,username,password for SFTP).
+
+---
+
+### 4. Copy File To External Location
+
+```gherkin
+When User copy a file named <filename> to <FileDestination>
+```
+
+Purpose:
+> This step allows users to copy a specified file to a destination path.
+
+Requirements:
+> The file must exist in the `resources/5-input/<featurename>` directory.
+> Connection must be established with the destination location before executing this step.
+
+Parameters:
+> `filename`: The name of the file to be copied
+>
+> `FileDestination`: The destination path where the file should be copied. Example;
+`app/run/localDevFileDrop/coppClarkSimple`
+
+---
+
+### 5. Wait for 'n' Number Second
+
+```gherkin
+Given User waits seconds> seconds to process the request
+```
+
+Purpose:
+> Step allows user to add a delay in execution to wait a specific number of seconds before proceeding with a subsequent
+> step.
+
+Parameter:
+> `seconds`:The number of seconds to wait before proceeding
+
+Example:
+> Given User waits "5" seconds to process the request
+
+---
+
+### 6. Compare Actual JSON to Expected JSON
+
+```gherkin
+Then User verifies the <object> processed comparing to the <expected_result> with <primary_key> and <keys_to_ignore>
+```
+
+**NOTE: Before using this step, the actual result must be generated by a step.**
+
+Purpose:
+> Compares the actual API response with the expected result, ensuring the data matches as expected. It allows ignoring
+> specific fields and comparing based on a primary key.
+
+Parameters:
+
+> `object`: A description of the feature or entity being verified. Example; TRADE, DEAL
+>
+> `expected_result`: File name of the expected result. Example; `E_InsertTradeQuery.json`. The ExpectedResult file must
+> exist in the `resources/3-expected/<featurename>`
+>
+> `primary_key`: key is used to uniquely identify a JSON object within an array if there are multiple objects.
+> Example; DEAL_NAME.primary_key.It can be left empty if there is only one object in the array.
+>
+> `keys_to_ignore`: A comma-separated list of keys to ignore during the comparison. Example; timestamp,metadata
+
+```gherkin
+Then User compares response with expected result <expected_result>
+Then User compares response with expected result <expected_result> with Primary Key <primary_key>
+Then User compares response with expected result <expected_result> and ignore <keys_to_ignore>
+Then User compares response with expected result <expected_result> with Primary Key <primary_key> and ignore
+<keys_to_ignore>
+```
+
+Purpose:
+> This step is used to validate that the actual response matches the expected result file. It allows users to:
+>
+> 1. Validate if the actual response matches the expected result.
+>
+> 2. Specify a primary key to uniquely identify objects in an array during comparison.
+>
+> 3. Optionally ignore specific fields during the comparison (e.g., dynamic metadata or timestamps).
+>
+> 4. It can also compare values against specified thresholds: if the config folder contains a featureFile.properties file with fields and their corresponding threshold conditions (e.g., price.lower=10%), the comparison logic will allow acceptable differences between actual and expected values. Thresholds can be defined as percentages (e.g., 10%). A threshold like 10% means the actual value can differ from the expected by up to 10% based on the bound.
+> Use .lower to allow the value to be up to X% less than expected.
+> Use .upper to allow the value to be up to X% more than expected.
+> If both lower and upper thresholds are specified, the actual value must fall within that full range — i.e., between expected - lower and expected + upper.
+> For exact matches, you can set both bounds to 0% (or omit them entirely).
+
+>Example featureFile.properties:
+metrics.ws_sessions.count.lower=10%
+metrics.ws_sessions.count.upper=10%
+metrics.vus.value.lower=5%
+metrics.vus.value.upper=5%
+
+>Parameters:
+
+> `expected_result`: File name of the expected result. Example;`E_R_InsertTradeQuery.json`.
+> The ExpectedResult file must exist in the `resources/3-expected/<featurename>`
+>
+> `primary_key(Optional)`: key is used to uniquely identify a JSON object within an array if there are multiple
+> objects. Example; `DEAL_ID`. It can be left empty if there is only one object in the array.
+>
+> `keys_to_ignore(Optional)`: A comma-separated list of keys to ignore during the comparison. Example;
+> timestamp, metadata. It can also be left empty if there is no need to ignore any key or no key is dynamic.
+
+Enhancement:
+If the JSON structure has a parent node with nested objects, and you want to ignore fields inside a specific node, users
+should specify the full path to that key. For example:
+JSON Structure:
+
+```json
+{
+  "GENERATED": {
+    "A": {
+      "DEAL_ID": "12345",
+      "DEAL_NAME": "Trade1"
+    }
+  },
+  "ACTIVE": {
+    "STATUS": "Active"
+  }
+}
+```
+
+> To ignore DEAL_ID inside the GENERATED.A node, users should provide the path as: GENERATED.A.DEAL_ID.
+> This specifies that the DEAL_ID field inside the nested A object should be ignored during comparison.
+
+*Before using this step, the actual result must be generated by a step.*
+
+---
+
+### 7. Compare Actual CSV to Expected CSV
+
+```gherkin
+Then User compares the expected csv files "<expected_result>" and ignore "<keys_to_ignore>"
+Then User compares the expected csv files "<expected_result>" to the actual csv files "<expected_result>" and ignore "<keys_to_ignore>"
+```
+
+Purpose:
+> This step allows the user to compare the contents of two CSV files:
+>
+> The actual result (e.g., generated by a previous step, such as a database query or API response exported to CSV).
+>
+> Also, The actual result can be passed as optional in the case comparison of CSV to CSV
+>
+> The expected result (a pre-defined CSV file)
+
+Parameters:
+
+> `expected_result`: File name of the expected result. Example; E_Q_query.csv.
+> The ExpectedResult file must exist in the `resources/3-expected/<featurename>`
+>
+> `keys_to_ignore`: A comma-separated list of keys to ignore during the comparison. Example; timestamp,metadata.
+> It can also be left empty if there is no need to ignore any key or no key is dynamic.
+
+*NOTE: Before using this step, the actual result must be generated by a step.*
+
+---
+
+### 8. Database Interaction
+
+```gherkin
+Given User connects to the database and executes the query <query>
+When User connects to the database and executes the query <query> with updated keys <fieldsToUpdate>
+```
+
+Purpose:
+> These steps allow users to execute queries on a connected database, with optional dynamic updates to query parameters.
+>
+> It allows users to:
+> 1. Execute the specified query without any updates.
+> 2. Updates dynamic fields in the query before execution.
+
+Parameters:
+
+> `query`: File name containing query with .txt extension.
+> Example; Query_Select_Trade.txt. The query file must exist in the `resources/1-payload/<featurename>`
+>
+> `fieldsToUpdate(Optional)`: This parameter is used to modify or update fields within the query file before querying
+> the DB.
+>
+> The values can be:
+> **Format**: A comma-separated list of keys and values.It can be Direct values (e.g., key=value) or Dynamically
+> extracted
+> values (e.g., key=$extractedKey)
+> Example: User connects to the database and executes the query "query.txt" with updated keys "
+> counterparty_account_id=106501CALO1, account_name=WSC-SWBF0838002"
+
+Example query
+
+```sql
+SELECT *
+FROM t_ref_counterparty_account
+WHERE account_master_id = ?
+```
+
+Corresponding step
+
+```gherkin
+Given User connects to the database and executes the query "query.txt" with updated keys "account_master_id =123"
+```
+
+In this case query in the file will be updated as below before execution
+
+```sql
+SELECT *
+FROM t_ref_counterparty_account
+WHERE account_master_id = '123 '
+```
+
+updates based on dynamic value
+
+```gherkin
+Given User connects to the database and executes the query "query.txt" with updated keys "account_master_id =$Account_Master_Id"
+```
+
+In this case ? will be replaced with the value of Account_Master_Id stored in scenario context before executing the
+query
+
+Multiple dynamic values
+
+```sql
+SELECT *
+FROM t_ref_counterparty_account
+WHERE account_master_id = ?
+  AND account_name = ?
+```
+
+```gherkin
+Given User connects to the database and executes the query "query.txt" with updated keys "account_master_id=1234,account_name=$Account_Name"
+```
+The config.properties should contain below properties. By default the properties will be there if gradle task is used to generate config file. User only needs to update the values. Else user needs to add both key and values in the config file*
+
+```Config
+DB_SYSTEM=PostgreSQL
+DATABASE_URL=jdbc:postgresql://<domain>:5432/postgres
+DATABASE_USERNAME=<username>
+DATABASE_PASSWORD=<password>
+DATABASE_SCHEMA=<schema>
+MAX_MEMORY=<mb>
+```
+
+
+*NOTE: The step will not order the result by any column, user needs to specify in the query*
+
+---
+
+### 9. Real-Time Queries (Data Server)
+
+#### _9.a Websocket_
+
+```gherkin
+Given User creates a websocket subscription to dataserver "<endpoint>" with the payload "<payloadName>"
+```
+
+Purpose:
+> This step allows the user to connect to a websocket client and create a subscription.
+>
+> It will keep listening to the subscription until the connection shutdown.
+>
+> It will dump the response from the data server into the `.json` under the actual folder.
+
+Requirements:
+
+> - It requires payload to create a subscription to a specific Data Server.
+> - The payload to create must exist in the `resources/1-payload/<featurename>/P_WS_<filename>.json`format.
+> - Expected to payload file naming convention like `P_WS_ALL_TRADES.json`.
+    >
+
+- *The file name will be used to generate actual and expected files, so the files can be found easy within directories*
+
+> - The payload must contain field called as `SOURCE_REF` and `SESSION_AUTH_TOKEN`
+> - Also, It requires to the User logged in before creating data server subscription
+> - ``wsURI`` is required in the `config.properties` files because, that field indicates the URI of connection.
+    >
+
+- *If `wsURI`domain is same as `defaultHost`, can leave empty.*
+
+> - *The config.properties will contain `wsURI` by default when is gradle task used to generate config file*
+
+Parameters:
+
+> `endpoint`: It doesn't affect anything but, differentiate the domain in the .feature file
+>
+> `payloadName`: File name to start subscription data server.
+
+Example;
+
+```json
+{
+  "SOURCE_REF": "188f9e90-519e-45d9-b265-91bd7f19ae76",
+  "MESSAGE_TYPE": "DATA_LOGON",
+  "DETAILS": {
+    "DATASOURCE_NAME": "ALL_CLIENT_TRADES",
+    "CRITERIA_MATCH": "ORIGINATOR_TRADE_ID=='AUTest17-215.1.1'",
+    "MAX_ROWS": 10000,
+    "MAX_VIEW": 10000,
+    "MOVING_VIEW": true,
+    "REVERSE": true
+  },
+  "SESSION_AUTH_TOKEN": "031aMja4cV7Pfqf1gRDUu9bIh4UuCb88"
+}
+```
+
+Notes:
+
+- The method will update the `SOURCE_REF` and `SESSION_AUTH_TOKEN` with the new values after the login
+- *Websocket connection will shut down within the `teardown` method.*
+
+#### _9.b Rest API_
+
+```gherkin
+
+Scenario: Example Usage of Data Server with Rest API
+When User sends http "<httpMethod>" request to endpoint "<endpoint>" with payload "<event_payload>"
+And User sends http "GET" request to endpoint "ALL_TRADES" with payload "P_ALL_TRADES.json"
+Then User compares response with expected result "<expected>" with Primary Key "<primary_key>" and ignore "<ignore_keys>"
+```
+
+Purpose:
+> Above, that can be view how data server request can be used via Rest API.
+
+> An object needs to be inserted to receive query update when sent the GET request.
+>
+> It required using the same `SOURCE_REF` within the LOGIN to the app.
+>
+> GET request needs to send desired endpoint using the payload
+>
+> The payload naming should follow the pattern explained on [Section 12](#12-comprehensive-guide-to-http-request-step-definitions-with-dynamic-payload-handling).
+>
+> Example; `P_D_ALL_TRADES.json`
+
+
+Parameters:
+
+> `httpMethod`:HTTP method to be used for the request.Example; POST, GET
+>
+> `endpoint`:The endpoint being accessed
+>
+> `payload`:The name of the file containing the request payload, located in `resources/1-payload/<featurename>`
+
+---
+
+### 10. Snapshot Queries (Request Server)
+
+```gherkin
+When User sends http "GET" request to endpoint "REQ_TRADES" with payload <ds_payload>
+```
+
+Purpose:
+> This steps allows user to send `GET` http request to the specific endpoint to retrieve data from a database.
+>
+> The payload used to pass query params to filter the data will receive.
+>
+> The payload naming should follow the pattern explained on [Section 12](#12-comprehensive-guide-to-http-request-step-definitions-with-dynamic-payload-handling).
+>
+> Example; `P_R_REQ_TRADES.json`
+
+Parameters:
+
+> `httpMethod`:HTTP method to be used for the request.Example; POST, GET
+>
+> `endpoint`:The endpoint being accessed
+>
+> `payload`:The name of the file containing the request payload, located in `resources/1-payload/<featurename>`
+
+
+Example of a Payload file:
+
+```json
+{
+  "QUERY_PARAM": "OBJECT_ID=TEST.1.1"
+}
+```
+
+---
+
+### 11. Core Business Logic (Event Handler)
+
+```gherkin
+When User sends http "POST" request to endpoint "EVENT_OBJECT_INSERT" with payload <payload>
+```
+
+Purpose:
+> The purpose of the step is used to send `EVENT_HANDLER` requests.
+>
+> The payload naming should follow the pattern explained on [Section 12](#12-comprehensive-guide-to-http-request-step-definitions-with-dynamic-payload-handling).
+>
+> Example; `P_E_EVENT_OBJECT_INSERT.json`
+
+Parameters:
+
+> `httpMethod`:HTTP method to be used for the request.Example; POST, GET
+>
+> `endpoint`:The endpoint being accessed
+>
+> `payload`:The name of the file containing the request payload, located in `resources/1-payload/<featurename>`
+
+---
+
+### 12. Comprehensive Guide to HTTP Request Step Definitions with Dynamic Payload Handling
+
+```gherkin
+When User sends http <httpMethod> request to endpoint <endpoint> with payload <payload>
+When User sends http <httpMethod> request to endpoint <endpoint> with payload <payload> and extract fields <fieldsToExtract>
+When User sends http <httpMethod> request to endpoint <endpoint> with payload <payload> with updated fields <fieldsToUpdate>
+When User sends http <httpMethod> request to endpoint <endpoint> with payload <payload> with filename <filename>
+```
+
+Purpose:
+> This step allows users to send HTTP requests to an endpoint with payload along with optional operations, such as
+> extracting specific fields from the response or updating the payload before sending the request.
+
+The primary scenarios covered include:
+
+> 1. **Basic Request**: The first step includes basic request. The step sends an simple HTTP request.
+> 2. **Extract Data from response**: The second step includes sending http request and extract data from response.
+     Extract specific fields from the response JSON and store them in the shared context for subsequent use. Can be used
+     in scenarios where data returned in the API response is needed for chaining requests or dynamic payload creation.
+> 3. **Modify Payload**: The third step includes sending http request with dynamically updated fields . Update a payload
+     file with extracted or specified data before sending it in the HTTP request. Can be used in scenarios where the
+     payload needs to be customized based on dynamic values, such as those retrieved from earlier steps or runtime
+     parameters. Supports both key-value updates and key-only updates.
+> 4. **Import File**: The forth step retrieves required form-data values from payload and uses filename to import file
+     from resources.
+
+> **The payload file must exist in the `resources/1-payload/<featurename>`**
+> **Payload file must be in below format: P_REQUEST_TYPE_ScenarioName where,**
+> REQUEST_TYPE = R for REQ_REPLY
+> REQUEST_TYPE = D for DATA_SERVER
+> REQUEST_TYPE = E for EVENT
+> REQUEST_TYPE = I for IMPORT
+> REQUEST_TYPE = WS for WEBSOCKET
+> REQUEST_TYPE = G for GENERIC REQUEST
+> Example; P_E_InsertTrade.json, P_R_InsertTrade.json
+
+
+Parameters:
+
+> `httpMethod`:HTTP method to be used for the request.Example; POST, GET
+>
+> `endpoint`:The endpoint being accessed. Notes; Generic request required the full path of the endpoint
+>
+> `payload`:The name of the file containing the request payload, located in `resources/1-payload/<featurename>`
+
+**NOTE: An import file retrieves form-data values from payload, so we can pass the form-data values to payload like
+the following:**
+
+```json
+{
+  "IS_DRAFT": true
+}
+```
+
+Parameters:
+
+> `fieldsToExtract`: This parameter is used to extract specific fields from the response JSON and store their values in
+> the shared context. These extracted values can later be used in subsequent steps.
+> **Format**: A comma-separated list of keys to extract.
+> **Example**: When User sends http "GET" request to endpoint "exampleEndpoint" with payload "examplePayload" and
+> extract
+> fields "Deal_ID"
+> Here, the response JSON will be searched for the key Deal_ID, and its value (e.g., 121) will be stored in the
+> shared context.
+> Use Case: This can be used to chain requests or update payloads dynamically in the following steps.
+>
+> `fieldsToUpdate`: This parameter is used to modify or update fields within the payload file before sending the
+> request.
+> The values can be:
+> **Format**: A comma-separated list of keys with optional values. It can be Direct values (e.g., key=value) or
+> Dynamically
+> extracted values (e.g., key=$extractedKey)
+> **Example**: When User sends http "POST" request to endpoint "exampleEndpoint1" with payload "examplePayload1" with
+> updated fields Name,Age=12
+>
+> `Result`:Name will be added/updated without a value (Value is already extracted from previous step). Age will be
+> updated to 12.
+
+> `Update key with array`:if user needs to update a key with array, user needs to send the values in [] with each value in [] separated by |
+
+> **Example**:TRADE_ID=[TR123|$TRADE_ID]
+> "TRADE_ID":["TR123","TR345"]
+
+> `Update key with multiple value separated by any char`:if user needs to update a key with a set of values separated by a char,user needs to send values separated by \~. User also need to update apiTagSeparator present in  config. By default, space will be added as separator
+> **Example**:TRADE_ID=TR123~$TRADE_ID will be updated as
+
+> "TRADE_ID":"TR123 TR345"
+
+> **Example**:TRADE_ID=[TR123|$TRADE_ID]
+> "tradeId":["TR123","TR345"]
+
+
+Payload file before update:
+
+```json
+{
+  "userId": "defaultUser",
+  "status": "Pending"
+}
+```
+
+Fields to update:
+> userId=$transactionId,transactionAmount=200,userName,Leg=$transactionId&&_1,tradeId=[$TradeID1|$TradeID2],orderId=$OrderID1|$OrderID2
+
+Payload after update :
+
+```json
+{
+  "userId": "1234",
+  // Replaced with previously extracted transactionId
+  "transactionAmount": 100,
+  //new key value added
+  "userName": "Test",
+  // Key and value from the shared context added
+  "status": "Pending",
+  "Leg": "1234_1",
+  // Replaced with previously extracted transactionId appended with "_1"
+  "tradeId":["TR123","TR345"],
+  //replaced with array of trade ids
+  "orderId":"OD123 OD345"
+  //replaced order ids separated by  space
+}
+```
+
+filename: Filename to import that located in ``src/test/resources/5-input``
+
+---
+
+### 13. Text Replacement in Files
+
+```gherkin
+Given User replace "find" with "replace" in "P_payload.txt"
+Given User replace "find1,find2" with "replace1,replace2" in "E_file.json"
+Given User replace "find1,find2" with "replace1,replace2" in "File1.json,E_file2.xml"
+Given User replace "find1" with "replace1" in "P_file1.json,E_file2.xml,P_file3.json"
+Given User replace "John Doe" with "$name" in "P_abc.txt"
+Given User replace "John Doe,Name" with "$name,$name1" in "P_abc.txt"
+Given User replace "12-09-2000" with "$todayDate_mmddyyyy" in "P_file.txt"
+Given User replace "date" with "$epochTodayDate" in "P_file.txt"
+Given User replace "dateTime" with $epochTodayDateTime" in "P_file.txt"
+Given User replace "12-09-2000" with "$todayDate-1_mm-dd-yyyy" in "P_file.txt"
+Given User replace "date-1" with "$epochTodayDate-1" in "P_file.txt"
+Given User replace "dateTime-1" with $epochTodayDateTime-1" in "P_file.txt"
+Given User replace "12-09-2000" with "$todayDate+9_yyyy/mm/dd" in "P_file.txt"
+Given User replace "date+9b" with "$epochTodayDate+9b" in "P_file.txt"
+Given User replace "dateTime+9b" with $epochTodayDateTime+9b" in "P_file.txt"
+Given User replace "12-09-2000" with "$todayDate+9_yyyy/mm/dd" in "P_file.txt"
+```
+
+Purpose:
+>These steps perform dynamic text replacements in various files under different folders (Payload, Expected, Input) based on specific conditions.
+> - If the file starts with "P_", it will be searched in the Payload folder.
+> - If the file starts with "E_", it will be searched in the Expected folder.
+> - Any other file name will be searched in the Input folder.
+>
+>The replacements can occur in a single file or across multiple files at once.
+> - It allows for replacement of both static and dynamic values.
+> - If a step contains "$", the value will be replaced with the corresponding value stored in the shared context.
+> - If a step contains a direct value without "$", then the value will be replaced as is.
+> - If a step contains "$todaysDate_dateFormat", it would be replaced by today date in the spcified format defined by user. Date format could be anything.For eg-mm/dd/yyyy, yyyy-mm-dd, YYYYMMDD, etc.
+> - If step contains "todaysDate-1_dateFormat | todaysDate+9_dateFromat", it will subtract or add the specified number of days to the current date.
+> - If a step contains "$epochTodayDate" or "$epochTodayDateTime" it would be replaced by today date in epoch time format.
+> - If a step contains "$epochTodayDate-10b" or "$epochTodayDateTime+3b" it would be replaced by the requested date in epoch time format within the business days.
+> - If step contains "$epochTodayDate-1 | $epochTodayDateTime+9", it will subtract or add the specified number of days to the current date.
+
+
+---
+
+### 14. Start or Stop Process
+
+```gherkin
+Given User Start process "<processName>" using payload "<payloadFile>"
+Given User Stop process "<processName1>,<processName2>" using payload "<payloadFile>"
+```
+
+Purpose:
+>This step is used to start or stop one or more system processes by sending a POST request using a specific payload. It dynamically updates the payload with the process name(s), sends the request to the appropriate endpoint, and verifies the result.
+
+Parameters:
+
+> `processName`:Comma-separated names of the processes to start or stop
+>
+>
+> `payload`:The name of the file containing the request payload, located in `resources/1-payload/<featurename>`(e.g., P_E_STOP_PROCESS.json)
+
+**NOTE: User needs to login before running this step**
+
+Example of a Payload file:
+
+```json
+{
+  "DETAILS" : {
+    "PROCESS_NAME" : "ISSUANCE_INSERT_HANDLER,GENESIS_ROUTER"
+  }
+}
+```
+
+### 15. Execute K6 Script Step
+
+## Gherkin Syntax
+```gherkin
+Given the user executes the script "<scriptName>" using script type "<scriptType>"
+```
+Purpose:
+>This step is used to execute a performance test script (currently supporting the "k6" script type). The script execution is based on properties defined in both global and local configuration files. These properties include timeout settings, log intervals, and expected exit codes. The script is run with specific arguments passed as part of the configuration.
+
+Parameters:
+>scriptName:
+The name of the K6 script to execute, for example, loadTest.js. This file should be located at the specified path as per the configuration.
+
+>scriptType:
+The type of script to execute, currently only "k6" is supported, but future versions may allow other types of scripts.
+
+
+### 16. Execute cURL Command
+
+## Gherkin Syntax
+```gherkin
+Given User sends CURL request in the "<payload>"
+```
+Purpose:
+>This step is used to execute cURL commands. It will parse the curl command configurations and will convert into the rest call. It will save the response under the actual folder with the corresponding file name to payload
+
+Parameters:
+>payload: the file that contains the curl command
