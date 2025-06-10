@@ -334,6 +334,10 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
+:::note
+`camelFileSource` is a single consumer source and can only be called on by one pipeline at a time, using the same instance for multiple pipelines will result in an error where the pipeline and the process configured to run it are not able to start.
+:::
+
 There are two ways to create a camel source. One is by setting the location URL, the second is by using Route Builder.
  - The location URL is a simple string that defines the location. 
  - The routeHandler function exposes the full Camel Route Builder. 
@@ -354,12 +358,14 @@ camelFileSource {
   routeHandler {
     from("file://src/test/resources/camel-source-test?noop=true")
       .process(dataPipelineProcessor)
+      .routeId("MY_ROUTE_ID")
   }
 }
 ```
 
 :::important
-`camelFileSource` is a single consumer source and can only be called on by one pipeline at a time, using the same instance for multiple pipelines will result in an error where the pipeline and the process configured to run it are not able to start.
+If there is a requirement to stop the pipeline using the pipeline manager API, you must set a `routeID` on all routes created within the route builder function so that these routes can be removed from the `CamelContext` when the pipeline is stopped.
+If no `routeId` is provided, one will be assigned by Camel internally, and the pipeline runtime will be unable to deregister the route. This means if the pipeline is stopped but the process is still running, Camel will continue to process files.
 :::
 
 ###### Reading from a local directory
