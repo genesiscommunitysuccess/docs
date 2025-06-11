@@ -60,7 +60,9 @@ format: md
 |  [GridProErrorItem](./grid-pro.gridproerroritem.md) | Grid Pro Error Item |
 |  [MultiselectEditorParams](./grid-pro.multiselecteditorparams.md) | Parameters used to configure [MultiselectEditor](./grid-pro.multiselecteditor.md) |
 |  [NumberEditorParams](./grid-pro.numbereditorparams.md) | Parameters used to configure [NumberEditor](./grid-pro.numbereditor.md) |
+|  [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) | The interface for the select renderer parameters |
 |  [SelectEditorParams](./grid-pro.selecteditorparams.md) | Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md) |
+|  [SelectRendererOptions](./grid-pro.selectrendereroptions.md) | The interface for each select renderer option |
 |  [StatePersistence](./grid-pro.statepersistence.md) | Represents a state persistence and its capabilities. Provides methods to set and get columns from the storage. |
 |  [StringEditorParams](./grid-pro.stringeditorparams.md) | Parameters used to configure [StringEditor](./grid-pro.stringeditor.md) |
 
@@ -153,4 +155,5 @@ format: md
 |  [GridProGenesisDatasourceErrorEventDetail](./grid-pro.gridprogenesisdatasourceerroreventdetail.md) | The event detail for the grid pro genesis datasource <code>error</code> event. |
 |  [GrigProGenesisDatasourceSizeChangedEvent](./grid-pro.grigprogenesisdatasourcesizechangedevent.md) | The change size event grid pro genesis datasource. |
 |  [GrigProGenesisDatasourceSizeChangedEventDetail](./grid-pro.grigprogenesisdatasourcesizechangedeventdetail.md) | The event detail for the grid pro genesis datasource <code>sizeChanged</code> event. |
+|  [MoreRowsDetail](./grid-pro.morerowsdetail.md) | The Genesis Datasource event payload types. |
 

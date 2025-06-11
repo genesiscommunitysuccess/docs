@@ -13,7 +13,7 @@ format: md
 |  --- | --- |
 |  [FoundationHeader](./foundation-header.foundationheader.md) | FoundationHeader. |
 |  [Navigation](./foundation-header.navigation.md) | Navigation micro-frontend includes navigation bar and flyout menu |
-|  [ZeroHeader](./foundation-header.zeroheader.md) | ZeroHeader is a zero version of the header micro-frontend. |
+|  [RapidHeader](./foundation-header.rapidheader.md) | RapidHeader is a rapid version of the header micro-frontend. |
 
 ## Functions
 
@@ -33,7 +33,7 @@ format: md
 |  --- | --- |
 |  [defaultHeaderConfig](./foundation-header.defaultheaderconfig.md) | Default HeaderConfig DI implementation. |
 |  [MainStyles](./foundation-header.mainstyles.md) | Base styles for the foundation-header |
-|  [NavTemplate](./foundation-header.navtemplate.md) | Template for Navigation class |
+|  [navTemplate](./foundation-header.navtemplate.md) | Template for Navigation class |
 
 ## Type Aliases
 

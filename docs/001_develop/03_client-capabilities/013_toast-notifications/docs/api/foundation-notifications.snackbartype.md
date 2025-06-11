@@ -12,5 +12,5 @@ type for snackbar type
 **Signature:**
 
 ```typescript
-export type SnackbarType = 'error';
+export type SnackbarType = 'error' | 'success';
 ```

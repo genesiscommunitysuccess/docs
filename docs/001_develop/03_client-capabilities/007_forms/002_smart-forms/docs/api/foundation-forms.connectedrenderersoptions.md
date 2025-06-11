@@ -19,5 +19,6 @@ export type ConnectedRenderersOptions = {
     valueField?: string;
     labelField?: string;
     data?: any[];
+    allowCustomOptions?: boolean;
 };
 ```

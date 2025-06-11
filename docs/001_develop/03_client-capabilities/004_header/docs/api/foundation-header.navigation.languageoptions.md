@@ -7,6 +7,8 @@ format: md
 
 ## Navigation.languageOptions property
 
+Object which defines the language options to be displayed in the language selector
+
 **Signature:**
 
 ```typescript

@@ -14,6 +14,9 @@ Configuration options available for array renderer.
 ```typescript
 export type ArrayRendererOptions = {
     childUiSchema?: UiSchema;
+    addLabel?: string;
+    deleteLabel?: string;
+    border?: boolean;
 };
 ```
 **References:** [UiSchema](./foundation-forms.uischema.md)

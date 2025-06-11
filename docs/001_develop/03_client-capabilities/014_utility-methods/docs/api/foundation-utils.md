@@ -35,10 +35,13 @@ format: md
 |  [formatDateTimestamp(timestamp)](./foundation-utils.formatdatetimestamp.md) | Formats \[DATE\] UNIX Timestamps (without time) to readable strings |
 |  [formatDateTimeTimestamp(timestamp)](./foundation-utils.formatdatetimetimestamp.md) | Formats \[DATETIME\] UNIX Timestamps (with time) to readable strings |
 |  [formatTimestamp(timestamp, withTime)](./foundation-utils.formattimestamp.md) | Formats \[DATE\|DATETIME\] Unix Timestamps to readable strings |
+|  [getCurrentDesignSystemPrefix(element, fallbackPrefix)](./foundation-utils.getcurrentdesignsystemprefix.md) | Get the current design system prefix by checking available providers. If no provider is found, falls back to the provided prefix. |
 |  [getDateFormatter(locale, options)](./foundation-utils.getdateformatter.md) |  |
 |  [getNumberFormatter(format, locale)](./foundation-utils.getnumberformatter.md) |  |
 |  [JSONReplacer(key, value)](./foundation-utils.jsonreplacer.md) | JSON replacer function. |
 |  [JSONReviver(key, value)](./foundation-utils.jsonreviver.md) | JSON reviver function. |
+|  [mapGenesisJsonSchema(jsonSchemResponse)](./foundation-utils.mapgenesisjsonschema.md) | Takes in a valid response from <code>connect.getJsonSchema(resourceName)</code> and maps it to a JsonSchema extended with the genesisType metadata for a field |
+|  [mapJsonSchemaFieldToExprBuilderField(\[name, schema\])](./foundation-utils.mapjsonschemafieldtoexprbuilderfield.md) | <p>Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.</p><p>Only sets the properties that are \*required\*. Optional properties, such as <code>defaultValue</code>, must be explicitly set by the user separately.</p> |
 |  [reactive(object, deep)](./foundation-utils.reactive.md) | **_(BETA)_** Converts a plain object to a reactive, observable object. |
 |  [renderOnChange(target, name)](./foundation-utils.renderonchange.md) | Defines a property changed handler that calls a render() method on the target as an internal observation enhancement. |
 |  [sync(binding, conversionType, eventName, keyAttr)](./foundation-utils.sync.md) | Creates a synchronization directive that binds a data source to an HTML element, |
@@ -71,6 +74,7 @@ format: md
 |  --- | --- |
 |  [DatabaseAccessResult](./foundation-utils.databaseaccessresult.md) | Namespace for database access result types. |
 |  [DatabaseEvent](./foundation-utils.databaseevent.md) | Namespace for database events. |
+|  [Genesis](./foundation-utils.genesis.md) |  |
 
 ## Variables
 
@@ -78,15 +82,22 @@ format: md
 |  --- | --- |
 |  [activeColorScheme](./foundation-utils.activecolorscheme.md) | A design token that represents the active color scheme (light or dark). |
 |  [API\_HOST](./foundation-utils.api_host.md) | The Genesis Server URL (WebSocket or HTTP). |
+|  [BUILDER](./foundation-utils.builder.md) | The builder aka file bundler. |
+|  [CHANGE\_PASSWORD\_URL](./foundation-utils.change_password_url.md) |  |
 |  [createErrorMap](./foundation-utils.createerrormap.md) | A factory to create the error map. |
 |  [createObserver](./foundation-utils.createobserver.md) | Creates a new event observer instance. |
+|  [decodeFromBase64](./foundation-utils.decodefrombase64.md) | Decodes a value from base64. |
+|  [decodeFromBase64WithPrefix](./foundation-utils.decodefrombase64withprefix.md) | Decodes a value from base64 with a prefix. |
 |  [DEFAULT\_ORGANISATION](./foundation-utils.default_organisation.md) | The default Organisation value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
 |  [DEFAULT\_PASSWORD](./foundation-utils.default_password.md) | The default Password value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
 |  [DEFAULT\_USER](./foundation-utils.default_user.md) | The default Username value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
 |  [defaultEventMap](./foundation-utils.defaulteventmap.md) | A map that associates specific HTML element tags with their corresponding default event names. |
 |  [defaultJSONSerializerConfig](./foundation-utils.defaultjsonserializerconfig.md) | A Default JSONSerializer Config for serializing and deserializing functions. |
 |  [defaultLoggerOptions](./foundation-utils.defaultloggeroptions.md) | The default logger options. |
+|  [encodeToBase64](./foundation-utils.encodetobase64.md) | Encodes the given value to base64. |
+|  [encodeToBase64WithPrefix](./foundation-utils.encodetobase64withprefix.md) | Encodes the given value with a prefix to base64. |
 |  [FORCE\_HTTP](./foundation-utils.force_http.md) | The path to a JSON config file for the HTTP mode. |
+|  [FORGOT\_PASSWORD\_URL](./foundation-utils.forgot_password_url.md) |  |
 |  [GENESIS\_SOCKET\_URL](./foundation-utils.genesis_socket_url.md) | Genesis Socket URL |
 |  [getFontMixin](./foundation-utils.getfontmixin.md) | Generates a CSS mixin for the specified font family, style, and weight. |
 |  [HTTP\_CONFIG](./foundation-utils.http_config.md) | Configuration settings for HTTP, used in http connect flow \[<code>genesislcap-foundation-comms.HttpConnectConfig</code>\](https://link-to-docs). |
@@ -100,15 +111,23 @@ format: md
 |  [LifecycleMixin](./foundation-utils.lifecyclemixin.md) | **_(BETA)_** Mixin class to expose <code>shouldRunConnect</code> and <code>shouldRunDisconnect</code> |
 |  [loadFontFaces](./foundation-utils.loadfontfaces.md) | Loads font faces by inserting a style element with the specified font face rules into the document. |
 |  [logger](./foundation-utils.logger.md) | Logger for the foundation-utils package |
+|  [LOGIN\_DETAILS\_URL](./foundation-utils.login_details_url.md) |  |
+|  [LOGIN\_REFRESH\_URL](./foundation-utils.login_refresh_url.md) |  |
+|  [LOGIN\_URL](./foundation-utils.login_url.md) |  |
+|  [LOGOUT\_URL](./foundation-utils.logout_url.md) |  |
 |  [openPopup](./foundation-utils.openpopup.md) | Opens a new browser window with the specified URL, target, width, and height. |
 |  [PendingState](./foundation-utils.pendingstate.md) | The <code>PendingState</code> mixin. |
 |  [POPUP\_DEFAULT\_HEIGHT](./foundation-utils.popup_default_height.md) | The default height (in pixels) for pop-up windows. |
 |  [POPUP\_DEFAULT\_WIDTH](./foundation-utils.popup_default_width.md) | The default width (in pixels) for pop-up windows. |
+|  [PUBLIC\_PATH](./foundation-utils.public_path.md) | The public path. |
+|  [RESET\_PASSWORD\_URL](./foundation-utils.reset_password_url.md) |  |
 |  [resolveAfter](./foundation-utils.resolveafter.md) | Resolve a promise after a timeout. |
 |  [ResourceType](./foundation-utils.resourcetype.md) | An object that defines two resource types: "local" and "remote". |
 |  [respondToVisibility](./foundation-utils.respondtovisibility.md) | Setup an <code>IntersectionObserver</code> which will activate a callback function when an element becomes visible on screen |
 |  [ServerRowDTOMapper](./foundation-utils.serverrowdtomapper.md) | A DI token used to obtain a <code>ServerRowDTOMapper</code> instance. |
 |  [SOCKET\_EXT](./foundation-utils.socket_ext.md) | The sub-path used for WebSocket connections when API\_HOST is not set |
+|  [SSO\_LIST\_URL](./foundation-utils.sso_list_url.md) |  |
+|  [SSO\_LOGIN\_URL](./foundation-utils.sso_login_url.md) |  |
 |  [TypeRampValues](./foundation-utils.typerampvalues.md) | An object containing type ramp values. |
 |  [UUID](./foundation-utils.uuid.md) | A dependency injection token for the UUID interface. |
 

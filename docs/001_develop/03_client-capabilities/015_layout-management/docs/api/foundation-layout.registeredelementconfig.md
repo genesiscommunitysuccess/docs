@@ -25,6 +25,7 @@ export interface RegisteredElementConfig
 |  --- | --- | --- | --- |
 |  [closable?](./foundation-layout.registeredelementconfig.closable.md) |  | boolean | _(Optional)_ |
 |  [registration](./foundation-layout.registeredelementconfig.registration.md) |  | string |  |
+|  [showMaximiseButton?](./foundation-layout.registeredelementconfig.showmaximisebutton.md) |  | boolean | _(Optional)_ |
 |  [size?](./foundation-layout.registeredelementconfig.size.md) |  | string | _(Optional)_ |
 |  [title?](./foundation-layout.registeredelementconfig.title.md) |  | string | _(Optional)_ |
 

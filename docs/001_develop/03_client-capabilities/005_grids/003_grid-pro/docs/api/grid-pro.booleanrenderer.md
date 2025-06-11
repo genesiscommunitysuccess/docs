@@ -29,7 +29,6 @@ export declare class BooleanRenderer extends FoundationElement implements ICellR
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [changeHandler(e)](./grid-pro.booleanrenderer.changehandler.md) |  |  |
 |  [destroy()](./grid-pro.booleanrenderer.destroy.md) |  |  |
 |  [getGui()](./grid-pro.booleanrenderer.getgui.md) |  |  |
 |  [getValue()](./grid-pro.booleanrenderer.getvalue.md) |  |  |

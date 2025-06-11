@@ -14,6 +14,7 @@ Events dispatched by the navigation control buttons
 ```typescript
 export type NavEventDetailMap = {
     'luminance-icon-clicked': void;
+    'logout-clicked': void;
     'misc-icon-clicked': void;
     'notification-icon-clicked': void;
     'language-changed': void;

@@ -13,8 +13,6 @@ format: md
 |  --- | --- |
 |  [EntityManagement](./foundation-entity-management.entitymanagement.md) | Main class which defines the entity management functionality |
 |  [MainApplication](./foundation-entity-management.mainapplication.md) |  |
-|  [Profiles](./foundation-entity-management.profiles.md) | Main class which defined the profile management functionality |
-|  [Users](./foundation-entity-management.users.md) | Main class which defines the user management functionality |
 
 ## Variables
 
@@ -23,7 +21,6 @@ format: md
 |  [buttonCellRenderer](./foundation-entity-management.buttoncellrenderer.md) |  |
 |  [getErrorFormat](./foundation-entity-management.geterrorformat.md) | Format the error as a string with a different format depending on whether <code>err</code> has a <code>FIELD</code> property or not |
 |  [logger](./foundation-entity-management.logger.md) |  |
-|  [UsersColumnConfig](./foundation-entity-management.userscolumnconfig.md) | Defines the default columns which are present on the user management component |
 
 ## Type Aliases
 
