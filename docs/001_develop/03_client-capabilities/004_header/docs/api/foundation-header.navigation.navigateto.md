@@ -19,7 +19,7 @@ navigateTo(path: string): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  path | string | string represeting the new route to move to |
+|  path | string | string representing the new route to move to |
 
 **Returns:**
 
@@ -27,5 +27,5 @@ void
 
 ## Remarks
 
-Requires setup of the Router and usage of the FAST Router
+Requires setup of the Router and usage of the Router
 

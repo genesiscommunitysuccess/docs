@@ -24,15 +24,15 @@ export declare class Navigation extends Navigation_base
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [auth](./foundation-header.navigation.auth.md) |  | Auth |  |
-|  [credentialManager](./foundation-header.navigation.credentialmanager.md) |  | CredentialManager |  |
+|  [authRouting](./foundation-header.navigation.authrouting.md) |  | AuthRouting |  |
+|  [container](./foundation-header.navigation.container.md) |  | Container |  |
 |  [headerConfig](./foundation-header.navigation.headerconfig.md) |  | [HeaderConfig](./foundation-header.headerconfig.md) |  |
 |  [hideSideBar](./foundation-header.navigation.hidesidebar.md) |  | boolean | Boolean attribute which controls whether to include the sideNav component Control via<code>hide-side-bar</code> |
 |  [i18next](./foundation-header.navigation.i18next.md) |  | I18next |  |
-|  [languageOptions](./foundation-header.navigation.languageoptions.md) |  | [LanguageOptions](./foundation-header.languageoptions.md) |  |
-|  [logoAltText](./foundation-header.navigation.logoalttext.md) |  | string |  |
+|  [languageOptions](./foundation-header.navigation.languageoptions.md) |  | [LanguageOptions](./foundation-header.languageoptions.md) | Object which defines the language options to be displayed in the language selector |
+|  [loginRouting](./foundation-header.navigation.loginrouting.md) |  | LoginRouting |  |
+|  [logoAltText](./foundation-header.navigation.logoalttext.md) |  | string | Optional attribute which controls the alt text of the logo Control via <code>logo-alt-text</code> |
 |  [logoSrc](./foundation-header.navigation.logosrc.md) |  | any | Optional attribute which controls the icon to show on the navigation bar and flyout Control via <code>logo-src</code> |
-|  [ready](./foundation-header.navigation.ready.md) |  | boolean |  |
 |  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
 |  [routeNavItems](./foundation-header.navigation.routenavitems.md) |  | FoundationRouteNavItem\[\] | If present the defined  will be rendered in the header 'routes' slot |
 |  [showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md) |  | boolean | Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via <code>show-connection-indicator</code> |
@@ -40,7 +40,7 @@ export declare class Navigation extends Navigation_base
 |  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
 |  [showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via <code>show-luminance-toggle-button</code> |
 |  [showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md) |  | boolean | Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via <code>show-notification-button</code> |
-|  [sideNavOpen](./foundation-header.navigation.sidenavopen.md) |  | boolean |  |
+|  [user](./foundation-header.navigation.user.md) |  | User |  |
 |  [userName](./foundation-header.navigation.username.md) |  | string | Username of the logged in user |
 
 ## Methods
@@ -48,9 +48,9 @@ export declare class Navigation extends Navigation_base
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [changeLanguage(e)](./foundation-header.navigation.changelanguage.md) |  | Changes the language of the application |
-|  [connectedCallback()](./foundation-header.navigation.connectedcallback.md) |  |  |
+|  [connectedCallback()](./foundation-header.navigation.connectedcallback.md) |  | Called when the component is connected to the DOM |
 |  [logout()](./foundation-header.navigation.logout.md) |  | Logs the user out of their session |
 |  [navigateTo(path)](./foundation-header.navigation.navigateto.md) |  | Changes the route of the current page |
-|  [selectTemplate()](./foundation-header.navigation.selecttemplate.md) |  |  |
+|  [selectTemplate()](./foundation-header.navigation.selecttemplate.md) |  | Selects the appropriate template based on the component's state |
 |  [toLocalisedText(text)](./foundation-header.navigation.tolocalisedtext.md) |  | To localised text |
 

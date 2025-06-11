@@ -7,6 +7,8 @@ format: md
 
 ## Navigation.connectedCallback() method
 
+Called when the component is connected to the DOM
+
 **Signature:**
 
 ```typescript
