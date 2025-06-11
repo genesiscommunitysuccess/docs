@@ -13,8 +13,9 @@ The Genesis Datasource events names.
 
 ```typescript
 gridProGenesisDatasourceEventNames: {
-    error: string;
-    dataInit: string;
-    sizeChanged: string;
+    readonly error: "datasource-error";
+    readonly dataInit: "datasource-init";
+    readonly sizeChanged: "datasource-size-changed";
+    readonly moreRowsChanged: "more-rows-changed";
 }
 ```
