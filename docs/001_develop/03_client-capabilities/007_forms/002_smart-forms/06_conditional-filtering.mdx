@@ -1,0 +1,133 @@
+---
+title: 'Foundation Forms - Conditional Filtering'
+sidebar_label: 'Conditional Filtering'
+id: foundation-forms-conditional-filtering
+keywords: [genesis, foundation, ui, forms, smart forms, conditional filtering]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+  - conditional filtering
+---
+
+import ConditionalFilteringExample from './examples/conditional_filtering_example.js';
+
+# Foundation Forms - Conditional Filtering
+
+Conditional filtering is a powerful feature that enables you to create dynamic, dependent form fields where the options of one field are filtered based on the selection of another field. This is particularly useful for implementing nested or cascading dropdowns, where each selection narrows down the available options in subsequent fields. Common use cases include country-city selection, counterparty-trader relationships, category-subcategory hierarchies, and department-employee mappings. This creates a more intuitive and guided user experience by preventing invalid selections and reducing the number of choices presented to the user.
+
+## Example
+
+The following example demonstrates a location selection form where cities are filtered based on the selected country. The key to this implementation is the `data-change` event handler, which triggers whenever the form data changes. This event allows us to detect when the country selection changes and update the available cities accordingly:
+
+### JSON Schema
+
+```typescript
+const locationJsonSchema = {
+  properties: {
+    COUNTRY_ID: {
+      type: 'number',
+      title: 'Country'
+    },
+    CITY_ID: {
+      type: 'number',
+      title: 'City'
+    }
+  }
+};
+```
+
+### UI Schema
+
+```typescript
+const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema => ({
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Country',
+      scope: '#/properties/COUNTRY_ID',
+      options: {
+        valueField: 'COUNTRY_ID',
+        labelField: 'COUNTRY_NAME',
+        data: countries
+      }
+    },
+    {
+      type: 'Control',
+      label: 'City',
+      scope: '#/properties/CITY_ID',
+      options: {
+        valueField: 'CITY_ID',
+        labelField: 'CITY_NAME',
+        data: cities
+      }
+    }
+  ]
+});
+```
+
+### Component Implementation
+
+```typescript
+@customElement({
+  name: 'location-form',
+  template: html<LocationForm>`
+    <foundation-form
+      :data="${(x) => x.existingData}"
+      :jsonSchema="${(x) => x.jsonSchema}"
+      :uischema="${(x) => x.uiSchema}"
+      @data-change=${(x, c) => x.handleDataChange(c.event as CustomEvent)}
+    ></foundation-form>
+  `
+})
+export class LocationForm extends GenesisElement {
+  jsonSchema = locationJsonSchema;
+  @observable uiSchema: UiSchema;
+  @observable existingData = { COUNTRY_ID: undefined, CITY_ID: undefined };
+  @observable countries = [];
+  @observable cities = [];
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.loadCountries();
+    await this.loadCities();
+    this.uiSchema = locationUISchema(this.countries, []);
+  }
+
+  async loadCountries() {
+    this.countries = [
+      { COUNTRY_ID: 1, COUNTRY_NAME: 'United States' },
+      { COUNTRY_ID: 2, COUNTRY_NAME: 'United Kingdom' }
+    ];
+  }
+
+  async loadCities() {
+    this.cities = [
+      { CITY_ID: 1, COUNTRY_ID: 1, CITY_NAME: 'New York' },
+      { CITY_ID: 2, COUNTRY_ID: 1, CITY_NAME: 'Los Angeles' },
+      { CITY_ID: 3, COUNTRY_ID: 2, CITY_NAME: 'London' },
+      { CITY_ID: 4, COUNTRY_ID: 2, CITY_NAME: 'Manchester' }
+    ];
+  }
+
+  filterCities(countryId: number) {
+    return this.cities.filter(city => city.COUNTRY_ID === countryId);
+  }
+
+  handleDataChange(evt: CustomEvent) {
+    const { data } = evt.detail;
+    if (this.existingData.COUNTRY_ID !== data.COUNTRY_ID) {
+      this.existingData = { ...data, CITY_ID: undefined };
+      const filteredCities = this.filterCities(data.COUNTRY_ID);
+      this.uiSchema = locationUISchema(this.countries, filteredCities);
+    }
+  }
+}
+```
+
+Here's a live example of conditional filtering in action:
+
+<ConditionalFilteringExample/> 
