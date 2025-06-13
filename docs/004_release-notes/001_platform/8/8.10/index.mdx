@@ -96,6 +96,20 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.10.9
+
+###### Features
+
+* `core` : `startProcess` appends environment variable `GENESIS_SYSDEF_JVM_OPTIONS` to the process jvm options 
+* `genesis-dbtest` : Option to generate random SQL schema name for tests 
+
+###### Fixes
+
+* `distribution-gradle-plugin` : Fix incorrect initialisation logic 
+* `genesis-pal-dataserver` : Fury serializer can now handle payloads greater than 512 bytes correctly 
+* `genesis-pal-dataserver` : Setting `MAX_VIEW = 0` should allow views to grow without boundaries other than `Integer.MAX_VALUE` 
+* `genesis-testsupport` : Do not register lifecycle manager JVM shutdown hook for tests 
+
 #### 8.10.8
 
 ###### Fixes
