@@ -2,7 +2,7 @@
  * Importing stuff we need for iife generation.
  * Based on packages/showcase/documentation-components/src/index.ts
  */
-import { baseComponents, provideDesignSystem } from '@genesislcap/alpha-design-system';
+import { baseComponents, provideDesignSystem } from '@genesislcap/rapid-design-system';
 import { foundationGridComponents } from '@genesislcap/grid-pro';
 
 provideDesignSystem().register(baseComponents, foundationGridComponents);
