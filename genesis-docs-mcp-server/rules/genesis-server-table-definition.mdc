@@ -1,0 +1,195 @@
+---
+description: The data model is a fundamental part of any Genesis Application. Within the data model we define the entities (tables) relevant to the application which will store the application's data.
+globs: **/server/**/src/main/genesis/cfg/**-tables-dictionary.kts
+alwaysApply: true
+---
+## 1. Table Dictionary (`{app-name}-tables-dictionary.kts`)
+
+### 1.1 Core Rules
+1. Must declare a unique numeric ID (range 11000 to 99999)
+2. Use uppercase snake case for:
+    - Table names (e.g., `TRADE_ORDER`)
+    - Field names (e.g., `ORDER_ID`)
+
+### 1.2 Critical Syntax Rules
+1. ALWAYS use the `field()` function for field definitions
+2. ALWAYS use method chaining for field properties
+3. ALWAYS use UPPERCASE for Genesis types (STRING, DOUBLE, DATETIME, etc.)
+4. ALWAYS wrap field names in quotes inside field() function
+5. ALWAYS use proper Genesis types, not Kotlin types
+6. ALWAYS name your indices using the .name() method
+7. ALWAYS follow the pattern: `field("NAME", TYPE).constraint()`
+8. NEVER use direct field assignments
+9. NEVER use lowercase for Genesis types
+10. NEVER skip the field() function wrapper
+
+### 1.3 Field Definition Examples
+```kotlin
+// CORRECT
+field("ORDER_ID", LONG).primaryKey().autoIncrement()
+field("SYMBOL", STRING(20)).notNull()
+field("NAME", STRING(20))
+field("AMOUNT", DOUBLE).default(0.0)
+field("STATUS", ENUM("ACTIVE", "INACTIVE"))
+field("IS_ACTIVE", BOOLEAN).default(true)
+
+// INCORRECT
+ORDER_ID LONG primaryKey           // Don't use direct field names
+field("NAME", string(20))         // Types must be UPPERCASE
+field("AMOUNT", Double)           // Don't use Kotlin types
+```
+
+### 1.4 Index Definition Examples
+```kotlin
+// CORRECT
+indices {
+    nonUnique("FIELD_NAME")
+    nonUnique("FIELD1", "FIELD2")
+}
+
+// INCORRECT
+indices {
+    nonUnique("FIELD1, FIELD2")  // Don't use comma-separated string
+    nonUnique(listOf("FIELD1", "FIELD2"))  // Don't use listOf
+    nonUnique("FIELD")  // Missing name
+}
+```
+
+### 1.5 Complete Table Example
+```kotlin
+tables {
+
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_ID", LONG).notNull()
+    field("DATE", DATE).notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY")
+    field("INSTRUMENT_ID", LONG).notNull()
+    field("QUANTITY", INT).notNull()
+    field("TRADE_PRICE", DOUBLE).notNull()
+
+    primaryKey("TRADE_ID")
+
+    indices {
+      nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
+      nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
+      nonUnique("DATE").name("TRADE_BY_DATE")
+      nonUnique("COUNTERPARTY_ID", "DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+    }
+  }
+
+  table(name = "INSTRUMENT", id = 11_001) {
+    field("INSTRUMENT_ID", LONG).autoIncrement()
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+
+    primaryKey("INSTRUMENT_ID")
+
+  }
+
+  table(name = "COUNTERPARTY", id = 11_002) {
+    field("COUNTERPARTY_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_CODE", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+
+    primaryKey("COUNTERPARTY_ID")
+
+  }
+
+}
+```
+
+### 1.6 Field Properties
+- `.notNull()` - field cannot be null, is not required for ENUM fields
+- `.default(value)` - sets default value
+- `.timestamp()` - automatically sets timestamp
+- `.sequence()` - auto-incrementing sequence
+- `.uuid()` - automatically generates UUID
+
+### 1.7 Sequence Fields
+When defining a sequence field in a Genesis table:
+
+1. **Basic Syntax**
+   ```kotlin
+   field("FIELD_NAME", STRING).sequence("XX")
+   ```
+    - Use just `STRING` without length specification
+    - Sequence reference must be exactly 2 characters (e.g., "IN", "TR")
+
+2. **Avoid Redundant Declarations**
+    - Don't specify `.notNull()` when it's a primary key
+    - Don't add metadata block for maxLength
+    - Don't specify STRING length parameter
+
+Example:
+```kotlin
+// CORRECT
+table(name = "INSTRUMENTS", id = 11_002) {
+    field("INSTRUMENT_ID", STRING).sequence("IN")
+    primaryKey("INSTRUMENT_ID")
+}
+
+// INCORRECT - Don't do this
+table(name = "INSTRUMENTS", id = 11_002) {
+    field("INSTRUMENT_ID", STRING(9)).sequence("INST").notNull().metadata {  // ❌ Too many specifications
+        maxLength = 9
+    }
+    primaryKey("INSTRUMENT_ID")
+}
+```
+
+This follows the sequence field specification which requires a 2-character reference as a value.
+
+## 2. Best Practices
+1. Group related tables together
+2. Use consistent naming conventions
+3. Use `.notNull()` for mandatory fields
+4. Plan indices based on query patterns
+5. Name indices descriptively (e.g., "TABLE_BY_FIELD")
+6. Document complex table relationships
+7. Use appropriate field types and lengths
+
+## 3. Table Field Consistency Rules
+
+When writing code that interacts with Genesis tables (especially tests and event handlers), always:
+
+1. **Reference the tables-dictionary.kts file** to ensure you're only using fields that are actually defined in the table
+
+2. **Match field names exactly** as they appear in the table definition:
+    - Use the exact field names (e.g., `TRADED_QTY` becomes `tradedQty` in Kotlin)
+    - Include all required fields (those marked as `notNull()`)
+    - Don't add fields that aren't defined in the table
+
+3. **Follow field validation rules** based on:
+    - Field types defined in the table (e.g., STRING, DOUBLE)
+    - Any metadata constraints (e.g., maxLength)
+    - Primary key requirements
+
+Example:
+```kotlin
+// In tables-dictionary.kts
+table(name = "TRADE", id = 11_001) {
+    field("INSTRUMENT_ID", STRING(100)).notNull()
+    field("ORDER_ID", STRING(100)).notNull()
+    field("TRADED_QTY", DOUBLE).notNull()
+    field("TRADE_ID", STRING(100)).notNull()
+    primaryKey("TRADE_ID")
+}
+
+// In tests/code - CORRECT
+import global.genesis.gen.dao.Trade  // Use generated DAO class
+
+Trade {
+    tradeId = "TRADE001"      // Required primary key
+    instrumentId = "AAPL"      // Required field
+    orderId = "ORDER001"       // Required field
+    tradedQty = 100.0         // Required field
+}
+```
+
+This rule helps prevent runtime errors and ensures that your code accurately reflects your data model.

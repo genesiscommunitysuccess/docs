@@ -1,0 +1,371 @@
+---
+description: Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set
+globs: **/server/**/src/main/genesis/scripts/**-eventhandler.kts
+alwaysApply: true
+---
+
+## Event Handler Structure
+1. **Top-Level Block Requirement**
+   - ALL event handlers MUST be defined inside the top-level `eventHandler` block
+   - This applies to ALL custom event handlers (insert, modify, delete)
+   - The structure should be:
+   ```kotlin
+   eventHandler {
+     eventHandler<Entity>("EVENT_NAME") {
+       // Event handler implementation
+     }
+   }
+   ```
+   - NEVER define event handlers outside the top-level block
+
+Example:
+```kotlin
+// CORRECT
+eventHandler {
+  eventHandler<Trade>("TRADE_INSERT") { /* ... */ }
+  eventHandler<Trade>("TRADE_MODIFY") { /* ... */ }
+}
+
+// INCORRECT ❌
+eventHandler<Trade>("TRADE_INSERT") { /* ... */ }
+```
+
+// ... existing code ...
+
+## Event Handler Best Practices
+
+### Event Handler Field Validation
+
+1. **Validate Only Existing Fields**
+   - Focus on business logic validation
+   - Reference the table definition before writing validation logic
+   - Only validate fields that are defined in the table definition and that are actually present in the event details
+   - Don't validate fields if using Entity.ById as it only contains the ID field
+   - Use the exact field names as they appear in the generated DAO classes
+   - Use clear error messages that reference the correct field names
+   - Don't add null checks for fields marked as notNull in tables dictionary
+     e.g.
+       ❌ Don't:
+       ```kotlin
+       onValidate { event ->
+           require(event.details.field != null) { // Unnecessary if field is non-null in tables dictionary
+           "Field must be specified"
+         }
+       }
+       ```
+       ✅ Do:
+       ```kotlin
+       onValidate { event ->
+         // Only validate business rules
+         require(event.details.field > 0) {
+           "Field must be greater than zero"
+         }
+       }
+       ```
+
+2. **Use Correct Primary Key References**
+   - Use `Entity.ById` for tables with a single primary key if the primary key field has the same name as the table
+   - Use `Entity.ByFieldName` for other indices defined in the table, or if the primary key field has a different name to the table
+   - Never create custom index names that don't match the table definition
+
+When looking up records by primary key, if the table name matches the primary key field name, the correct finder to pass to the entity db interface is {EntityName}.ById({idVariable})...
+
+Example:
+    ```kotlin
+    // In tables-dictionary.kts
+    table(name = "TRADE", id = 11_001) {
+        field("TRADE_ID", STRING(100)).notNull()
+        field("TRADED_QTY", DOUBLE).notNull()
+        primaryKey("TRADE_ID")
+    }
+
+    // CORRECT Event Handler
+    eventHandler<Trade>("TRADE_INSERT") {
+        onValidate { event ->
+            require(event.details.tradedQty > 0.0) { "Traded quantity must be greater than 0" }
+            ack()
+        }
+    }
+    eventHandler<Trade.ById>("TRADE_DELETE") {  // Correct primary key reference
+        onCommit { event -> /* ... */ }
+    }
+
+// INCORRECT Event Handler
+    eventHandler<Trade>("TRADE_INSERT") {
+        onValidate { event ->
+            require(event.details.price > 0.0)  // ❌ Field not in table
+            require(event.details.quantity > 0)  // ❌ Wrong field name
+            ack()
+        }
+    }
+    eventHandler<Trade.ByTradeId>("TRADE_DELETE") {  // ❌ Wrong primary key reference
+        onCommit { event -> /* ... */ }
+    }
+    ```
+
+    - `eventHandler<Type>("NAME")` must be inside an object `eventHandler` like this:
+
+Example:
+```kotlin
+eventHandler {
+  eventHandler<NewRequestUI>("REQUEST_INSERT", transactional = true) {
+    onCommit { event ->
+      val details = event.details.toDAO()
+      val insertedRow = entityDb.insert(details)
+      // return an ack response which contains a list of record IDs
+      ack(listOf(mapOf(
+        "REQUEST_ID" to insertedRow.record.requestId,
+      )))
+    }
+  }
+  eventHandler<RequestUI>("REQUEST_MODIFY", transactional = true) {
+    onCommit { event ->
+      val details = event.details.toDAO()
+      val orders = entityDb.getRange(Order.byRequestId(details.requestId))
+        .map { it.fromRequest(details) }
+        .filterNotNull()
+        .toList()
+      if (orders.isNotEmpty()) {
+        entityDb.modifyAll(orders)
+      }
+      entityDb.modify(details)
+      ack()
+    }
+  }
+}
+```
+
+3. **Naming Best Practices**
+   -  event names do not use "EVENT_" as a prefix.
+
+### Handling Generated IDs
+When working with sequence fields or other auto-generated IDs, the event handler should return the generated ID
+
+1. **Returning Generated IDs**
+   ```kotlin
+   // In event handler
+   onCommit { event ->
+     val result = entityDb.insert(details)
+     ack(listOf(mapOf("FIELD_NAME" to result.record.fieldId)))
+   }
+   ```
+
+### Event Handler Error Handling
+
+When handling event validation failures, Genesis provides two approaches:
+
+1. **Using nack()**
+   ```kotlin
+   onValidate { event ->
+     if (someCondition) {
+       return@onValidate nack("error message")  // Returns immediately with error
+     }
+     ack()
+   }
+   ```
+
+2. **Using Exceptions**
+   ```kotlin
+   onValidate { event ->
+     if (someCondition) {
+       throw Exception("error message")  // Genesis converts to EventNack
+     }
+     ack()
+   }
+   ```
+
+Both approaches result in an EventNack response, but they offer different ways to express validation logic:
+- Use `nack()` for expected validation failures
+- Use exceptions for unexpected or exceptional conditions
+- Both approaches can be mixed in the same event handler
+
+
+### Event Handler Warning Messages
+
+Genesis provides a way to return warnings while still allowing the operation to proceed using `warningNack`:
+
+Key Points:
+- Use `warningNack()` to return warning messages
+- Access warning messages in tests via `nack.warning[0].text`
+- Warnings don't prevent the operation from proceeding
+- Useful for informational messages or soft validations
+- Can be combined with other validation approaches
+
+1. **Using warningNack in Event Handlers**
+   ```kotlin
+   onValidate { event ->
+     // Check condition that should trigger warning
+     if (someWarningCondition) {
+       return@onValidate warningNack("Warning message")
+     }
+     ack()
+   }
+   ```
+
+### Event Handler Verification
+
+When validating record existence in event handlers, Genesis provides a clean approach using verify blocks and infix notation:
+
+1. **Using verify block with hasEntry**
+   ```kotlin
+   onValidate { event ->
+     verify {
+       entityDb hasEntry Entity.ById(id)  // Infix notation for cleaner syntax
+     }
+     // Rest of validation...
+   }
+   ```
+
+2. **Key Points**
+   - Use `verify` block for existence checks and preconditions
+   - Use infix notation (`entityDb hasEntry`) instead of dot notation
+   - Genesis handles the error message if verification fails
+   - Place verify blocks before other validations
+   - do not place if statements within verify blocks, when an if statement is required, surround a verify block with the if statement.
+
+Example:
+```kotlin
+eventHandler<Instruments>("INSTRUMENTS_MODIFY") {
+    onValidate { event ->
+        verify {
+            entityDb hasEntry Instruments.ByInstrumentId(event.details.instrumentId)
+        }
+
+        if (event.details.instrumentCurrency!=null) {
+          verify {
+            entityDb hasEntry Currency.ById(event.details.instrumentCurrency)
+          }
+        }
+
+        // Proceed with other validations only if record exists
+        require(event.details.currency.length == 3) { "Currency code must be 3 characters" }
+        ack()
+    }
+}
+
+
+
+# 2 - Testing
+
+Refer to documentation located in server-capabilities/core-business-logic-event-handler/#testing
+
+## 2.1 **Testing Error Responses**
+
+   - EventNack contains a list of GenesisError objects
+   - Access error messages through `error[index].text`
+   - Always verify both the nack response and its error text in tests
+
+   ```kotlin
+   val nack = result.assertedCast<EventReply.EventNack>()
+   assertEquals("expected error message", nack.error[0].text)  // Access first error's text
+   ```
+
+### 2.1.1 **Accessing Generated IDs in Tests**
+
+When working with sequence fields or other auto-generated IDs, the event handler should return the generated ID
+
+   - Access generated values through the `EventAck.generated` property
+   - The `generated` property contains a list of maps with field names and values
+   - Cast the value to the expected type (usually String for IDs)
+
+   ```kotlin
+   val ack = result.assertedCast<EventReply.EventAck>()
+   val generatedId = ack.generated[0]["FIELD_NAME"] as String
+   ```
+
+Example returning the instrument id to the event caller:
+```kotlin
+    eventHandler<Instruments>("INSTRUMENTS_INSERT", transactional = true) {
+        onCommit { event ->
+            val result = entityDb.insert(event.details)
+            ack(listOf(mapOf("INSTRUMENT_ID" to result.record.instrumentId)))
+        }
+    }
+
+    // Test File
+    @Test
+    fun `test insert with generated ID`() = runBlocking {
+        val result = client.sendEvent(/* event details */)
+        val ack = result.assertedCast<EventReply.EventAck>()
+        val generatedId = ack.generated[0]["INSTRUMENT_ID"] as String
+        // Use generatedId for verification
+    }
+```
+
+### 2.1.2 **Asserting that the result is a nack**
+
+```kotlin
+    @Test
+    fun `test modification fails`() = runBlocking {
+        val result = client.sendEvent(/* event details */)
+        val nack = result.assertedCast<EventReply.EventNack>()
+        assertEquals("expected error message", nack.error[0].text)
+    }
+```
+
+### 2.1.3 **Testing Warning Messages**
+```kotlin
+   @Test
+   fun `test warning condition`() = runBlocking {
+     val result = client.sendEvent(/* event details */)
+     val nack = result.assertedCast<EventReply.EventNack>()
+     assertEquals("Warning message", nack.warning[0].text)
+   }
+```
+
+
+# Event Handler File Complete Simple implementation
+
+```kotlin
+eventHandler {
+  eventHandler<Order>("ORDER_INSERT", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      val insertedRow = entityDb.insert(details)
+      // return an ack response which contains a list of record IDs
+      ack(listOf(mapOf(
+        "ORDER_ID" to insertedRow.record.orderId,
+      )))
+    }
+  }
+  eventHandler<Order>("ORDER_MODIFY", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      entityDb.modify(details)
+      ack()
+    }
+  }
+  eventHandler<Order.ById>("ORDER_DELETE", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      entityDb.delete(details)
+      ack()
+    }
+  }
+}
+```
+
+### Enum comparisons
+- When using enums in any logic ensure the fully qualified path to the enum is used
+Example:
+```kotlin
+// CORRECT
+  /* ... */
+  existingTrade.status = global.genesis.gen.dao.enums.positions_ai.trade.Status.CANCELLED
+  /* ... */
+```
+
+```kotlin
+// INCORRECT ❌
+  /* ... */
+  existingTrade.status = "CANCELLED"
+  /* ... */
+```
+
+### Getting data from the database
+- When retrieving multiple records from a table when using a non-unique index, use entityDb.getRange and not getBulk.
+append .toList() to this if you want to count or loop the response from getRange
+Example:
+```kotlin
+  val existingCommissions = entityDb.getRange(Commission.byTradeId(event.details.tradeId)).toList()
+```
