@@ -42,12 +42,17 @@ Only supports Client-Side Row Model.
 |  [destroy()](./grid-pro.gridprogenesisdatasource.destroy.md) |  | Destroys the datasource, resetting it to its initial state. |
 |  [disconnectedCallback()](./grid-pro.gridprogenesisdatasource.disconnectedcallback.md) |  |  |
 |  [handleErrors(errors)](./grid-pro.gridprogenesisdatasource.handleerrors.md) |  |  |
+|  [handleStreamDeletes(deletes)](./grid-pro.gridprogenesisdatasource.handlestreamdeletes.md) |  | Handles stream deletes by removing records from the grid. |
+|  [handleStreamInserts(inserts)](./grid-pro.gridprogenesisdatasource.handlestreaminserts.md) |  |  |
+|  [handleStreamUpdates(updates)](./grid-pro.gridprogenesisdatasource.handlestreamupdates.md) |  |  |
 |  [init(columnDefinitions, columnStates)](./grid-pro.gridprogenesisdatasource.init.md) |  | Initializes the datasource. |
+|  [loadMore()](./grid-pro.gridprogenesisdatasource.loadmore.md) |  |  |
 |  [refreshRows()](./grid-pro.gridprogenesisdatasource.refreshrows.md) |  | Force the grid to redispatch the current rows |
+|  [reloadResourceData()](./grid-pro.gridprogenesisdatasource.reloadresourcedata.md) |  | Resets the grid data while keeping columnDefs and sends a DATA\_LOGOFF message if it's a stream. Loads resource data without full initialization (no metadata fetch). |
 |  [removeFilter(fieldName)](./grid-pro.gridprogenesisdatasource.removefilter.md) |  |  |
 |  [requestChanged(oldRequest, newRequest)](./grid-pro.gridprogenesisdatasource.requestchanged.md) |  |  |
 |  [reset()](./grid-pro.gridprogenesisdatasource.reset.md) |  | Resets the datasource to its initial state. |
 |  [resourceNameChanged(oldValue, newValue)](./grid-pro.gridprogenesisdatasource.resourcenamechanged.md) |  |  |
-|  [restart()](./grid-pro.gridprogenesisdatasource.restart.md) |  | Restarts the datasource, uses <code>deinit</code> and <code>init</code> in sequence. |
+|  [restart()](./grid-pro.gridprogenesisdatasource.restart.md) |  | Restarts the datasource, uses <code>destroy</code> and <code>init</code> in sequence. |
 |  [setFilter(fieldName, newFilter)](./grid-pro.gridprogenesisdatasource.setfilter.md) |  |  |
 
