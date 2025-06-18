@@ -16,7 +16,14 @@ import ConditionalFilteringExample from './examples/conditional_filtering_exampl
 
 # Foundation Forms - Conditional Filtering
 
-Conditional filtering is a powerful feature that enables you to create dynamic, dependent form fields where the options of one field are filtered based on the selection of another field. This is particularly useful for implementing nested or cascading dropdowns, where each selection narrows down the available options in subsequent fields. Common use cases include country-city selection, counterparty-trader relationships, category-subcategory hierarchies, and department-employee mappings. This creates a more intuitive and guided user experience by preventing invalid selections and reducing the number of choices presented to the user.
+Conditional filtering is a powerful feature that enables you to create dynamic, dependent form fields where the options of one field are filtered based on the selection of another field. This is particularly useful for implementing nested or cascading dropdowns, where each selection narrows down the available options in subsequent fields. Common use cases include:
+
+- Country-city selection
+- Counterparty-trader relationships
+- Category-subcategory hierarchies
+- Department-employee mappings
+
+This creates a more intuitive and guided user experience by preventing invalid selections and reducing the number of choices presented to the user.
 
 ## Example
 
@@ -77,14 +84,13 @@ const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema =
   template: html<LocationForm>`
     <foundation-form
       :data="${(x) => x.existingData}"
-      :jsonSchema="${(x) => x.jsonSchema}"
+      :jsonSchema="${() => locationJsonSchema}"
       :uischema="${(x) => x.uiSchema}"
       @data-change=${(x, c) => x.handleDataChange(c.event as CustomEvent)}
     ></foundation-form>
   `
 })
 export class LocationForm extends GenesisElement {
-  jsonSchema = locationJsonSchema;
   @observable uiSchema: UiSchema;
   @observable existingData = { COUNTRY_ID: undefined, CITY_ID: undefined };
   @observable countries = [];
