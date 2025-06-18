@@ -13,15 +13,61 @@ All `grid-tabulator` components.
 
 ```typescript
 foundationGridTabulatorComponents: {
-    foundationGridTabulatorActionRenderer: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    foundationDateEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-renderers").ActionRenderer, any>;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/date.editor").DateEditor, any>;
     }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
         baseName: string;
         styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-renderers").ActionRenderer, any>;
-    }, typeof import("./cell-renderers").ActionRenderer>;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/date.editor").DateEditor, any>;
+    }, typeof import("./cell-editors/date.editor").DateEditor>;
+    foundationNumberEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/number.editor").NumberEditor, any>;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/number.editor").NumberEditor, any>;
+    }, typeof import("./cell-editors/number.editor").NumberEditor>;
+    foundationSelectEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/select.editor").SelectEditor, any>;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/select.editor").SelectEditor, any>;
+    }, typeof import("./cell-editors/select.editor").SelectEditor>;
+    foundationStringEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/string.editor").StringEditor, any>;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/string.editor").StringEditor, any>;
+    }, typeof import("./cell-editors/string.editor").StringEditor>;
+    foundationMultiselectEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/multiselect.editor").MultiselectEditor, any>;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors/multiselect.editor").MultiselectEditor, any>;
+    }, typeof import("./cell-editors/multiselect.editor").MultiselectEditor>;
+    foundationGridTabulatorColumn: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+    }, typeof GridTabulatorColumn>;
+    foundationGridTabulatorCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+    }, typeof GridTabulatorCell>;
     foundationGridTabulator: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         shadowOptions: any;
         baseName: string;

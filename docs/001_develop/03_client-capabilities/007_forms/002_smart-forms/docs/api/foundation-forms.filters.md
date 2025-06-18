@@ -20,11 +20,26 @@ export declare class Filters extends FoundationElement
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [allSavedFilters](./foundation-forms.filters.allsavedfilters.md) |  | any\[\] |  |
 |  [data](./foundation-forms.filters.data.md) |  | any | Initial data for the filters. |
+|  [filterName](./foundation-forms.filters.filtername.md) |  | string |  |
 |  [jsonSchema](./foundation-forms.filters.jsonschema.md) |  | JSONSchema7 | Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client. |
+|  [kvStorage](./foundation-forms.filters.kvstorage.md) |  | KVStorage |  |
 |  [prefix](./foundation-forms.filters.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
 |  [renderers](./foundation-forms.filters.renderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default. |
 |  [resourceName](./foundation-forms.filters.resourcename.md) |  | string | Name of the backend resource which will provide metadata used to generate filters. |
+|  [showFilterPersistenceControls](./foundation-forms.filters.showfilterpersistencecontrols.md) |  | boolean | Controls the visibility of the filter persistence controls UI. |
 |  [uischema](./foundation-forms.filters.uischema.md) |  | [UiSchema](./foundation-forms.uischema.md) | UI schema used to define configuration of the layout and elements in the filters Check [UiSchema](./foundation-forms.uischema.md) for possible options. |
 |  [value](./foundation-forms.filters.value.md) |  | string | Created criteria based on the given data that can be used to filter the data. |
+
+## Methods
+
+|  Method | Modifiers | Description |
+|  --- | --- | --- |
+|  [connectedCallback()](./foundation-forms.filters.connectedcallback.md) |  |  |
+|  [deleteFilter()](./foundation-forms.filters.deletefilter.md) |  |  |
+|  [filterNameChanged(oldValue, newValue)](./foundation-forms.filters.filternamechanged.md) |  |  |
+|  [loadAllSavedFilters()](./foundation-forms.filters.loadallsavedfilters.md) |  |  |
+|  [loadFilterData(filterKey)](./foundation-forms.filters.loadfilterdata.md) |  |  |
+|  [saveFilter()](./foundation-forms.filters.savefilter.md) |  |  |
 

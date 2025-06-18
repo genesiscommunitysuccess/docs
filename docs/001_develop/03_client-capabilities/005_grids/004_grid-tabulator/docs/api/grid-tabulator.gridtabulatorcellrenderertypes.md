@@ -22,6 +22,7 @@ export declare enum GridTabulatorCellRendererTypes
 |  action | <code>&quot;action&quot;</code> |  |
 |  actionsMenu | <code>&quot;actionsMenu&quot;</code> |  |
 |  boolean | <code>&quot;boolean&quot;</code> |  |
+|  editable | <code>&quot;editable&quot;</code> |  |
 |  select | <code>&quot;select&quot;</code> |  |
 |  text | <code>&quot;text&quot;</code> |  |
 

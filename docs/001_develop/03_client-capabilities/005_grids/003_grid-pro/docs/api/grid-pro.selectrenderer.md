@@ -22,7 +22,7 @@ export declare class SelectRenderer extends FoundationElement implements ICellRe
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [params](./grid-pro.selectrenderer.params.md) |  | SelectCellRendererParams |  |
+|  [params](./grid-pro.selectrenderer.params.md) |  | [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) |  |
 |  [selectionChanged](./grid-pro.selectrenderer.selectionchanged.md) |  | (e: any) =&gt; void |  |
 |  [value](./grid-pro.selectrenderer.value.md) |  | string |  |
 

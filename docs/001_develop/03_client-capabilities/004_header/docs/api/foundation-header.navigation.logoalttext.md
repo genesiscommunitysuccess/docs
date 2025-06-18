@@ -7,8 +7,15 @@ format: md
 
 ## Navigation.logoAltText property
 
+Optional attribute which controls the alt text of the logo Control via `logo-alt-text`
+
 **Signature:**
 
 ```typescript
 logoAltText: string;
 ```
+
+## Remarks
+
+If this attribute is not set then the alt text is set to 'Corporate Logo'
+

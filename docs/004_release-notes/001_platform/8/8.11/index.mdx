@@ -105,7 +105,20 @@ This release contains [impactful changes](#impactful-changes). They are not brea
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.11.1
+
+###### Features
+
+* `genesis-gradle` : Support site-specific in product details plugin 
+
+###### Fixes
+
+* `genesis-codegen` : Fix bug in generated `buildRequest` function 
+* `genesis-config` : Ensure filesystem handling logic when reading classpath resources can recover gracefully from exceptions in some scenarios 
+* `genesis-dictionary` : Dao codegen is cached correctly when there are DateTime fields with default values 
+* `genesis-testsupport` : Ensure combination of super classes, nested classes and enclosing classes can set injectable properties correctly 
+* `genesis-pal-requestserver` : Ensure `SOURCE_REF` is always set when a server side timeout is triggered in a custom request reply 
+* `genesis-mcp` : Change `groupId` of MCP process to prevent it being compacted with core services 
 
 ## Client
 

@@ -139,7 +139,7 @@ Declaration:
 ```html
 <foundation-form
   design-system-prefix="rapid"
-  :jsonSchema="${sampleJsonSchema}"
+  :jsonSchema="${() => sampleJsonSchema}"
 ></foundation-form>
 ```
 
@@ -164,7 +164,7 @@ const sampleJsonSchema = {
   template: html`
     <foundation-form
       design-system-prefix="rapid"
-      :jsonSchema="${sampleJsonSchema}"
+      :jsonSchema="${() => sampleJsonSchema}"
     ></foundation-form>
   `,
 })

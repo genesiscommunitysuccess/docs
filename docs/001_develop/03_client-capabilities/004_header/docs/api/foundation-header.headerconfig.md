@@ -12,9 +12,9 @@ HeaderConfig DI interface.
 **Signature:**
 
 ```typescript
-export interface HeaderConfig extends PartialFASTElementDefinition 
+export interface HeaderConfig extends PartialGenesisElementDefinition 
 ```
-**Extends:** PartialFASTElementDefinition
+**Extends:** PartialGenesisElementDefinition
 
 ## Properties
 

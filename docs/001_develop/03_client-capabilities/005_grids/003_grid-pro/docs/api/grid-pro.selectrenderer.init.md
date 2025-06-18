@@ -17,7 +17,7 @@ init(params: SelectCellRendererParams): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | SelectCellRendererParams |  |
+|  params | [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) |  |
 
 **Returns:**
 

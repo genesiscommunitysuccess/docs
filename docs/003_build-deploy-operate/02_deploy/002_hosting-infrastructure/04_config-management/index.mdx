@@ -73,6 +73,10 @@ For a manual set-up of nginx, we recommend using this nginx.conf file:
 <!-- This code below is manually kept in line with https://github.com/genesislcap/genesis-server/blob/master/genesis-subcore/deploy-gradle-plugin/src/main/resources/docker/nginx.conf --> 
 
 ```text
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
 worker_processes auto;
 error_log /var/log/nginx/error.log;
 user nginx;
@@ -85,11 +89,12 @@ events {
 }
 
 http {
-
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
+
     access_log  /var/log/nginx/access.log  main;
+
     sendfile            on;
     tcp_nopush          on;
     tcp_nodelay         on;
@@ -106,11 +111,11 @@ http {
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
     include /etc/nginx/conf.d/*.conf;
+
     map $http_upgrade $connection_upgrade {
         default upgrade;
         ''      close;
     }
-
     server {
         listen 8080;
         listen 8443 ssl http2;
@@ -118,6 +123,7 @@ http {
         root /app/web;
         index index.html index.htm;
         underscores_in_headers on;
+
         location ~ ^/(sm|gwf)(.*)$ {
             proxy_set_header        Host $host:$server_port;
             proxy_pass              http://127.0.0.1:9064$2$is_args$args;
@@ -130,6 +136,8 @@ http {
             proxy_set_header        Upgrade $http_upgrade;
             proxy_set_header        Connection $connection_upgrade;
         }
+
+
         ssl_certificate     /etc/ssl/certs/certs.pem;
         ssl_certificate_key /etc/ssl/certs/certs.key;
         ssl_protocols       TLSv1.2;

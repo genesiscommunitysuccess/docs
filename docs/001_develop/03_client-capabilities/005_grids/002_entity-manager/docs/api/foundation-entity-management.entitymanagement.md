@@ -45,7 +45,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [crudActionMenuName](./foundation-entity-management.entitymanagement.crudactionmenuname.md) |  | string | The label of the crud action menu |
 |  [crudMenuPosition](./foundation-entity-management.entitymanagement.crudmenuposition.md) |  | CrudMenuPosition | Determines where the buttons will appear |
 |  [crudMenuStyle](./foundation-entity-management.entitymanagement.crudmenustyle.md) |  | ActionsMenuStyle | Determines the style of the buttons |
-|  [datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md) |  | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | The configuration which is used when interacting with the resource on the backend |
+|  [datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md) |  | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | Get the configuration which is used when interacting with the resource on the backend |
 |  [datasourceType](./foundation-entity-management.entitymanagement.datasourcetype.md) |  | DatasourceType | If set to 'server' it will enable Server-Side Row Model and use <code>grid-pro-server-side-datasource</code> for the grid of the <code>entity-list</code> sub-component. By default <code>grid-pro-client-side-datasource</code> will be used. |
 |  [defaultEntityValues](./foundation-entity-management.entitymanagement.defaultentityvalues.md) |  | Record&lt;string, unknown&gt; | The default values to populate the form with when the user is adding an entity |
 |  [deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md) |  | string | Name of the event handler on the Genesis server which handles deleting the entity |
@@ -72,4 +72,10 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [title](./foundation-entity-management.entitymanagement.title.md) |  | string | Title of the grid |
 |  [updateEvent](./foundation-entity-management.entitymanagement.updateevent.md) |  | string | Name of the event handler on the Genesis server which handles updating the entity |
 |  [updateFormUiSchema](./foundation-entity-management.entitymanagement.updateformuischema.md) |  | UiSchema | Enables you to supply a schema to configure an update form. |
+
+## Methods
+
+|  Method | Modifiers | Description |
+|  --- | --- | --- |
+|  [setDSConfigWithoutUpdatingBaseCriteria(config)](./foundation-entity-management.entitymanagement.setdsconfigwithoutupdatingbasecriteria.md) |  | Usually when the datasource config is updated we need to cache the criteria so it can be combined with the searchbar, but this function allows you to set the datasource config without doing that (so we don't cache the search bar criteria) |
 

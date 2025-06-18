@@ -7,12 +7,16 @@ format: md
 
 ## Navigation.selectTemplate() method
 
+Selects the appropriate template based on the component's state
+
 **Signature:**
 
 ```typescript
-selectTemplate(): import("@microsoft/fast-element").ViewTemplate<Navigation, any>;
+selectTemplate(): ViewTemplate<Navigation>;
 ```
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[Navigation](./foundation-header.navigation.md), any&gt;
+ViewTemplate&lt;[Navigation](./foundation-header.navigation.md)&gt;
+
+{ViewTemplate<Navigation>}
 

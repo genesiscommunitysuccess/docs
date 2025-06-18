@@ -46,7 +46,8 @@ operations = [
     {"type": "string", "find": "* `genesis-clustersupport` : Only initialise process metadata service if table exists in db", "replace": "* `genesis-clustersupport` : Only initialise process metadata service where the `PROCESS_MET_DATA` table exists in the db" },
     {"type": "string", "find": "* `genesis-logging` : Only check if process is running on `startServer` if log file ends in .log or .log.err", "replace": "* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process"},
     {"type": "string", "find": "Add several enhancements in the requestData area, data response wrapping, logging capabilities and sequence decoding", "replace": "Add several enhancements in the `requestData` area : Data response wrapping, logging capabilities and sequence decoding"},
-
+    {"type": "string", "find": "Fix wrong initialisation logic", "replace": "Fix incorrect initialisation logic"},
+    {"type": "string", "find": "* Change groupId of MCP process to prevent it being compacted with core services", "replace": "* `genesis-mcp` : Change `groupId` of MCP process to prevent it being compacted with core services"}, 
 
     # Component tidy up
     {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
