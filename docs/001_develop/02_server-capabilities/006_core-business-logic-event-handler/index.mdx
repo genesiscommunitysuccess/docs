@@ -20,6 +20,7 @@ import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
 import CommonOpenAPI from '/snippet/_common-open-api.md'
+import CommonGpalStandards from '/snippet/_common-gpal-standards.md'
 
 ## Overview
 
@@ -35,6 +36,8 @@ B <-->|2. Read/Write|C[Database]
 Nearly every table defined in your application's data model in an app will need events to affect the data. The standard events for most tables are **Insert**, **Modify** and **Delete** (but not every table will need all these events); depending on your application workflow, you could need many more.
 
 You have to specify the business logic to process each of these events. You do this in the `*-eventhandler.kts` files.
+
+<CommonGpalStandards />
 
 All the events that you specify are available via REST automatically, including Open API.
 
