@@ -18,7 +18,3 @@ logout(): Promise<void>;
 
 Promise&lt;void&gt;
 
-## Remarks
-
-Activated when the user clicks on the logout button on the right hand side of the navigation bar. Requires the usage of the auth functionality from .
-

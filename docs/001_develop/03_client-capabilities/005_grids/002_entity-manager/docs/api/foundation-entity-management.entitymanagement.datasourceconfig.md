@@ -7,12 +7,12 @@ format: md
 
 ## EntityManagement.datasourceConfig property
 
-The configuration which is used when interacting with the resource on the backend
+Get the configuration which is used when interacting with the resource on the backend
 
 **Signature:**
 
 ```typescript
-datasourceConfig: DatasourceConfiguration;
+set datasourceConfig(config: DatasourceConfiguration);
 ```
 
 ## Remarks

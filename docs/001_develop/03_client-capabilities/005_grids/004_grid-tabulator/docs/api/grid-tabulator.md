@@ -11,13 +11,15 @@ format: md
 
 |  Class | Description |
 |  --- | --- |
-|  [ActionRenderer](./grid-tabulator.actionrenderer.md) | The Tabulator Action Renderer element. |
+|  [GridTabulatorCell](./grid-tabulator.gridtabulatorcell.md) | The GridTabulator Cell element. |
+|  [GridTabulatorColumn](./grid-tabulator.gridtabulatorcolumn.md) | The GridTabulator Column element. |
 
 ## Enumerations
 
 |  Enumeration | Description |
 |  --- | --- |
 |  [GridCSSVars](./grid-tabulator.gridcssvars.md) | All official Tabulator CSS variables |
+|  [GridTabulatorCellEditorTypes](./grid-tabulator.gridtabulatorcelleditortypes.md) | The available <code>grid-tabulator</code> Editor Types |
 |  [GridTabulatorCellRendererTypes](./grid-tabulator.gridtabulatorcellrenderertypes.md) | The available <code>grid-tabulator</code> Renderer Types |
 |  [GridTabulatorTheme](./grid-tabulator.gridtabulatortheme.md) | The available <code>grid-tabulator</code> themes |
 
@@ -25,32 +27,36 @@ format: md
 
 |  Function | Description |
 |  --- | --- |
+|  [actionFormatter(cell, formatterParams)](./grid-tabulator.actionformatter.md) | Formatter that displays an action button in the cell. Styled to match grid-pro action renderer. |
+|  [actionsMenuFormatter(cell, formatterParams)](./grid-tabulator.actionsmenuformatter.md) | Formatter that displays a dropdown menu of actions in the cell. Styled to match grid-pro actions-menu renderer. |
+|  [booleanFormatter(cell, formatterParams)](./grid-tabulator.booleanformatter.md) | Formatter that displays boolean values using a checkbox component. Styled to match grid-pro boolean renderer. |
 |  [dateTimeValueFormatter({ value })](./grid-tabulator.datetimevalueformatter.md) | Format a date time value to a readable string. |
 |  [dateValueFormatter({ value })](./grid-tabulator.datevalueformatter.md) | Format a date value. |
+|  [editableFormatter(cell, formatterParams)](./grid-tabulator.editableformatter.md) | Formatter that displays an editable cell with validation state |
 |  [formatDateExtra(epoch)](./grid-tabulator.formatdateextra.md) | Format am epoch value to a readable ISO date string. |
 |  [getColumnType(metadataType)](./grid-tabulator.getcolumntype.md) | Get the column type based on the metadata type. |
 |  [getFilterByFieldType(type)](./grid-tabulator.getfilterbyfieldtype.md) | Get the filter type based on the field type. |
 |  [getFilterParamsByFieldType(type)](./grid-tabulator.getfilterparamsbyfieldtype.md) | Get the filter params based on the field type. |
+|  [selectFormatter(cell, formatterParams)](./grid-tabulator.selectformatter.md) | Formatter that displays a value from a select list of options Styled to match grid-pro select renderer. |
+|  [textFormatter(cell, formatterParams)](./grid-tabulator.textformatter.md) | Text formatter for customized display of values. Styled to match grid-pro text renderer. |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
+|  [CellRendererParams](./grid-tabulator.cellrendererparams.md) | Parameters for custom cell renderers |
 |  [RowDataTransaction](./grid-tabulator.rowdatatransaction.md) | Transaction object to handle row data updates. |
 
 ## Variables
 
 |  Variable | Description |
 |  --- | --- |
-|  [actionHeightMultiplier](./grid-tabulator.actionheightmultiplier.md) | The base height multiplier for the action renderer. |
 |  [defaultGridTabulatorConfig](./grid-tabulator.defaultgridtabulatorconfig.md) | The default grid-tabulator configuration. |
-|  [foundationGridTabulatorActionRenderer](./grid-tabulator.foundationgridtabulatoractionrenderer.md) | A function that returns a Foundation Action Renderer for configuring the component with a DesignSystem. |
 |  [foundationGridTabulatorComponents](./grid-tabulator.foundationgridtabulatorcomponents.md) | All <code>grid-tabulator</code> components. |
 |  [gridTabulatorShadowOptions](./grid-tabulator.gridtabulatorshadowoptions.md) | The grid-tabulator component registration. |
 |  [gridTabulatorStyles](./grid-tabulator.gridtabulatorstyles.md) | The styles for the grid-tabulator component |
 |  [gridTabulatorTemplate](./grid-tabulator.gridtabulatortemplate.md) | The template for the <code>grid-tabulator</code> component. |
 |  [logger](./grid-tabulator.logger.md) | Logger for the <code>grid-tabulator</code> package |
-|  [tabulatorActionRendererStyles](./grid-tabulator.tabulatoractionrendererstyles.md) | The Tabulator Action Renderer Styles. |
 |  [tabulatorExternalStockStyles](./grid-tabulator.tabulatorexternalstockstyles.md) | External styles for the Tabulator grid. |
 |  [tabulatorThemeSimpleCSS](./grid-tabulator.tabulatorthemesimplecss.md) | External styles for the Tabulator grid. |
 |  [themeFontsId](./grid-tabulator.themefontsid.md) | Get the Fonts ID for the theme's name |
@@ -61,5 +67,5 @@ format: md
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [ActionRendererParams](./grid-tabulator.actionrendererparams.md) | Parameters for the <code>grid-tabulator</code> action renderer. |
+|  [CellRendererFunc](./grid-tabulator.cellrendererfunc.md) | Function type for cell renderer |
 

@@ -17,6 +17,7 @@ Routes: {
     readonly 'reset-password': "reset-password";
     readonly 'forgot-password': "forgot-password";
     readonly verify: "verify";
+    readonly 'mfa-mail-sent': "mfa-mail-sent";
     readonly protected: "protected";
     readonly 'not-found': "not-found";
 }

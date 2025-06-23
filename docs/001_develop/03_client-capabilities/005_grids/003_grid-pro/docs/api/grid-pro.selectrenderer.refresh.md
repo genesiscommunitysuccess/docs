@@ -17,7 +17,7 @@ refresh(params: SelectCellRendererParams): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | SelectCellRendererParams |  |
+|  params | [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) |  |
 
 **Returns:**
 

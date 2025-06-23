@@ -1,0 +1,51 @@
+---
+title: 'GPAL Standards'
+sidebar_label: 'GPAL Standards'
+id: gpal-standards
+keywords: [gpal, standards, script]
+tags:
+- gpal
+- standards
+- script
+sidebar_position: 1
+---
+
+## Genesis Platform Abstraction Language
+GPAL is Genesis's Kotlin based DSL, used to configure applications easily and quickly. It can provide more than just configuration, as it allows users to define logic and code where necessary, but also allows users to inject and invoke Java code too.
+When using compatible IDEs/plugins it enables features such as autocompletion, help and error highlighting as you code.
+
+## What's available in a GPAL Script?
+
+GPAL scripts come with default behaviour such as imports that give you access to a variety of classes including generated DAO, SysDef and Fields instances.
+These are the imports which are available in all scripts when using these configurations:
+- `global.genesis.gen.config.tables.*`
+- `global.genesis.gen.config.view.*`
+- `global.genesis.gen.dao.enums.*`
+- `global.genesis.gen.view.entity.*`
+- `global.genesis.gen.dao.*`
+- `global.genesis.commons.model.GenesisSet`
+- `global.genesis.commons.model.GenesisSet.genesisSet`
+- `global.genesis.config.dsl.ScriptModules`
+- `org.joda.time.DateTime`
+- `org.joda.time.DateTime.now`
+
+Within your script you will also have access to:
+- `LOG` - this is a SLF4J Logger which will log under the relative script definition class
+- System definitions as per your generated `SysDef` class, matching the name you provide it in your system definition file
+
+For example, if you have a system definition defined as:
+```kotlin
+item(name = "MY_PIPELINE_ENABLED", value = false)
+```
+
+Then within your GPAL script, you can directly reference the system definition like so:
+```kotlin
+pipelines {
+    if (MY_PIPELINE_ENABLED) {
+        pipeline(name = "My Pipeline") {
+        }
+    }
+}
+```
+
+Some component's scripts will have behaviour specific to that implementation, please see the documentation for that component for further information.
