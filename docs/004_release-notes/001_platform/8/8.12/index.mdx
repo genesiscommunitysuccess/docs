@@ -196,9 +196,9 @@ If you are currently using the same instance for multiple pipelines, this will r
 
 In the rare situations this is encountered when upgrading to 8.12+, this should be resolved by ensuring a new instance of `camelFileSource` is created for each pipeline.
 
-### Removing `debugMode` property from Dockerfile
+### Removing `debugMode` property from `dockerConfig`
 
-This property wasn't working. If you have it in any of your Dockerfiles and receive an error upon upgrading to 8.12.0+, please just remove the property from your file.
+This property wasn't working. If you have a `dockerConfig` configuration block in your `server/<app_name>/build.docker.gradle` file and it contains `debugMode`, it should be removed.
 
 ## Impactful change guidance
 
