@@ -5,7 +5,13 @@ sidebar_position: 1
 id: '8.12-auth'
 ---
 
-No changes
+### Features
+
+* `auth-manager` : Provide auth-preferences configuration option to omit HOST value from MAX_ACTIVE_SESSIONS_REACHED error messages 
+
+### Fixes
+
+* `auth-manager` : Rework database table access sequence in authentication message flow to avoid potential deadlocks and remove unnecessary database lookups and record modifications 
 
 ### Patch releases
 

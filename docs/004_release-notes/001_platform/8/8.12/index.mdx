@@ -8,10 +8,92 @@ id: '8.12'
 ## Server
 
 :::tip
-This release contains [breaking changes](#breaking-changes). They are not breaking but typical stumbling blocks for older applications upgrading. These are listed at the end of this page, along with instructions to resolve.
+This release contains [breaking changes](#breaking-change-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+:::tip
+This release contains [impactful changes](#impactful-change-guidance). They are not breaking but typical stumbling blocks for older applications upgrading. Further details are listed at the end of this page, along with instructions to resolve.
 :::
 
-TBR
+
+### Breaking changes
+
+* `deploy-gradle-plugin` : Update the docker gradle plugin to support custom Dockerfiles and remove non working `debugMode` property 
+* `genesis-eventhandler` : If `IGNORE_WARNINGS` flag is set to true and a warning nack is returned as part of the `onValidate` step, the `onCommit` step should be executed 
+* `genesis-pal-datapipeline` : Camel source should reset routes upon pipeline restart 
+* `core` : GPAL scripts now use the same compilation and evaluation config 
+* `core` : Make eventhandler + reqrep scripts receive sys defs 
+* `genesis-router` : Default value for `IGNORE_WARNINGS` should be false when using HTTP requests 
+
+### Features
+
+* `core` : `startProcess` appends environment variable `GENESIS_SYSDEF_JVM_OPTIONS` to the process jvm options 
+* `distribution-gradle-plugin` : Add support for copying "data" folder automatically to distribution package 
+* `genesis-db` : Add support for getting and setting sequence and autoincrement values for table columns when using H2 SQL layer 
+* `genesis-db` : Try to detect sql layer deadlocks 
+* `genesis-dbtest` : Option to generate random SQL schema name for tests 
+* `genesis-environment` : Add `PurgersReader.purgeDerivedRangeFlow` 
+* `genesis-environment` : Return purged record in `PurgersReader.purgeDerivedRecord` 
+* `genesis-environment` : In `genesisInstall`, fail execution if host is matched against multiple environments 
+* `genesis-gradle` : Support site-specific in product details plugin 
+* `genesis-testsupport` : Add additional data server support for data logoff messages, add table reset support between tests for GenesisSharedTestContext and extra validation checks for unsupported test annotations at function level 
+* `genesis-testsupport` : Implement `clear(authMap)` method to remove all entries fro an authMap in InMemoryTestAuthCache class 
+* `genesis-testsupport` : Create GenesisSharedContextTest where the microservice survives the test to improve performance in some scenarios 
+* `genesis-mcp` : Add support for nullable fields, enums and nested objects in MCP tool schema 
+* `genesis-mcp` : Added a new MCP server process that dynamically creates LLM compatible tools from Genesis resources 
+* `genesis-metrics` : Register default metrics if open telemetry agent is configured 
+* `genesis-pal-consolidator` : Support cold start by using `CONSOLIDATOR_COLDSTART` sys def value 
+* `genesis-router` : Improve handling of `triggerEvent` in custom webhandler script 
+* `genesis-transform` : Added value formatting as first class operation within Transformer Engine 
+
+### Fixes
+
+* `deploy-gradle-plugin` : Fix docker image build when web deployment doesn't exist 
+* `distribution-gradle-plugin` : Ensure only PBC projects copy the "data" directory to the distribution package 
+* `distribution-gradle-plugin` : Fix incorrect initialisation logic 
+* `genesis-clustersupport` : Fall back to db if service discovery cache missing entry 
+* `genesis-clustersupport` : Only initialise process metadata service where the `PROCESS_MET_DATA` table exists in the db 
+* `genesis-codegen` : Fix bug in generated `buildRequest` function 
+* `genesis-config` : Ensure filesystem handling logic when reading classpath resources can recover gracefully from exceptions in some scenarios 
+* `genesis-config` : Only use genesis-system-definition to determine environment 
+* `genesis-db` : Fixed assortment of race condition bugs leading to database cache inconsistencies and add defensive copying to cache operations 
+* `genesis-db` : Ensure "audited" db API runs audit operations in the same transaction and fix transactional db listeners 
+* `genesis-dictionary` : Dao codegen is cached correctly when there are DateTime fields with default values 
+* `genesis-environment` : Ensure `GlobalClasspathAdditions` sysdef item is handled correctly as part of `startProcess` classpath generation 
+* `genesis-environment` : Fix issue preventing all script.kts file evaluations 
+* `genesis-testsupport` : Ensure combination of super classes, nested classes and enclosing classes can set injectable properties correctly 
+* `genesis-testsupport` : Ensure injected test properties are initialised before test startup 
+* `genesis-testsupport` : Ensure super classes for nested inner classes are also scanned for injectable properties 
+* `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
+* `genesis-pal` : Improve error message when unable to find joined index 
+* `genesis-pal-dataserver` : Ensure an additional QUERY_UPDATE message with MORE_ROWS=false is sent to query subscriptions using the `chunkLargeMessages` option, if no more rows are available after a DATA_LOGON or MORE_ROWS request 
+* `genesis-pal-dataserver` : Fix numerous out of sync update processing issues 
+* `genesis-pal-dataserver` : Fury serializer can now handle payloads greater than 512 bytes correctly 
+* `genesis-pal-dataserver` : Correct handling of out of sequence update processing 
+* `genesis-pal-dataserver` : Setting `MAX_VIEW = 0` should allow views to grow without boundaries other than `Integer.MAX_VALUE` 
+* `genesis-pal-requestserver` : Ensure `SOURCE_REF` is always set when a server side timeout is triggered in a custom request reply 
+* `genesis-pal-requestserver` : Fix bug in handling of a `_FROM` => `_TO` range 
+* `genesis-testsupport` : Do not register lifecycle manager JVM shutdown hook for tests 
+* `genesis-transform` : Ensure column renames specification order does not matter 
+* `genesis-mcp` : Change `groupId` of MCP process to prevent it being compacted with core services 
+* Downgrade to quartz 2.4.0 to remove regression bug with nearest weekday to Nth day of month 
+* Ensure no error is thrown if no systems are defined in system definition 
+* Ensure transformer configurations with multiple column formats are processed correctly 
+* `genesis-environment` : Revert `GenesisInjector` changes for `PurgeTables` and related scripts 
+
+### Dependency changes
+
+* Bump Open Telemetry from 1.31.0 to 1.49.0, and instrumentation and java agent from 1.31.0 to 2.15.0
+* Bump com.opencsv:opencsv from 5.10 to 5.11
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.15.0 to 2.16.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.49.0 to 1.50.0
+* Bump micrometerVersion from 1.14.6 to 1.15.0
+* Bump mockitoVersion from 5.17.0 to 5.18.0
+* Bump oracleJdbcVersion from 23.7.0.25.01 to 23.8.0.25.04
+* Bump org.apache.activemq:artemis-jakarta-client from 2.40.0 to 2.41.0
+* Bump org.apache.fury:fury-core from 0.10.1 to 0.10.2
+* Bump org.checkerframework:checker-qual from 3.49.2 to 3.49.3
+* Bump org.openapitools:openapi-generator from 7.11.0 to 7.13.0
+* Bump testcontainersVersion from 1.21.0 to 1.21.1
 
 ### Patch releases
 
@@ -21,7 +103,7 @@ There are currently no patch releases for this version
 
 TBR
 
-## Breaking changes
+## Breaking change guidance
 
 ### Single Consumer `camelFileSource` (Data Pipelines)
 
@@ -29,3 +111,27 @@ The [`camelFileSource`](/develop/server-capabilities/integrations/data-pipelines
 If you are currently using the same instance for multiple pipelines, this will result in an error where the pipeline and the process configured to run it are not able to start.
 
 In the rare situations this is encountered when upgrading to 8.12+, this should be resolved by ensuring a new instance of `camelFileSource` is created for each pipeline.
+
+### Removing `debugMode` property from Dockerfile
+
+This property wasn't working. If you have it in any of your Dockerfiles and receive an error upon upgrading to 8.12.0+, please just remove the property from your file.
+
+## Impactful change guidance
+
+### `IGNORE_WARNINGS` changes
+
+`IGNORE_WARNINGS` now behaves as it should, in that any warnings (sent as [`warningNack`](/develop/server-capabilities/core-business-logic-event-handler/#warningnack)) will be ignored and the event handler will continue to execute the code in `onCommit`, where `IGNORE_WARNINGS` is set to `true` by the client sending it. 
+Additionally, when the HTTP API is being used to trigger an event, the default value where not specified was to set `IGNORE_WARNINGS` as `true`. This has now been updated to be `false` to ensure warnings (aka soft errors) are not ignored.
+
+These changes are noted as an impactful change as the platform has operated differently for some time and although unlikely (given warningNack isn't used in many projects), this fix may cause change in an application's current behaviour.
+
+### GPAL script updates to auto-import sydefs and other standard and helpful 
+
+We have standardised the way all GPAL scripts auto-import items into the script such as tables, views, enums, sysdef items, and also DateTime now() imports.
+
+In the rare case you see errors on upgrading to 8.12.0+ it could be due to clashing of newly imported properties, for example:
+
+* You have a function called `now()` already defined in your script which is also a function from Joda DateTime.
+* You have used a variable which clashes with a system definition item.
+
+Where affected by this, simply rename your local scripts variables/functions not to clash with those now automatically imported.
