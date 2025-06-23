@@ -101,6 +101,10 @@ There are currently no patch releases for this version
 
 ## Client
 
+### Breaking changes
+
+* Removed and replaced multiple deprecated packages
+
 ### Features
 
 * `grid-pro` : Allow arrow key navigation in text renderer during focus 
@@ -138,6 +142,52 @@ There are currently no patch releases for this version
 * `foundation-entity-management` : Regression with edit entity with inline crud buttons 
 
 ## Breaking change guidance
+
+### FUI Package Removals and Replacements
+
+The following packages have been removed or replaced. You must update your import paths and dependencies to maintain compatibility.
+
+###### Replaced Packages
+
+- **Reporting**
+- `@genesislcap/foundation-reporting` → `@genesislcap/pbc-reporting-ui`
+
+- **Entity Management**
+- `@genesislcap/foundation-entity-management` → `@genesislcap/pbc-auth-ui`
+
+- **Inbox**
+- `@genesislcap/foundation-inbox` → `@genesislcap/pbc-notify-ui`
+
+- **Notification Dashboard**
+- `@genesislcap/foundation-notification-dashboard` → `@genesislcap/pbc-notify-ui`
+
+###### Removed Packages 
+
+The following deprecated packages have been removed with no direct replacement following deprecation for over a year:
+
+- `@genesislcap/alpha-design-system`
+- `@genesislcap/foundation-settings`
+
+Please remove usage of these packages and migrate any necessary functionality to supported platform alternatives.
+
+###### Migration Instructions
+
+1. Search for usage of the following deprecated packages:
+- `@genesislcap/foundation-reporting`
+- `@genesislcap/foundation-entity-management`
+- `@genesislcap/foundation-inbox`
+- `@genesislcap/foundation-notification-dashboard`
+- `@genesislcap/alpha-design-system`
+- `@genesislcap/foundation-settings`
+2. Update import paths:
+- Use `@genesislcap/pbc-reporting-ui`, `@genesislcap/pbc-auth-ui`, and `@genesislcap/pbc-notify-ui` where applicable.
+- Remove unsupported packages and their usage.
+3. Update your `package.json` dependencies and reinstall:
+```bash
+npm install
+# or
+yarn install
+```
 
 ### Single Consumer `camelFileSource` (Data Pipelines)
 
