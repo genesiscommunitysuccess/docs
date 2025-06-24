@@ -76,6 +76,17 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.28
+
+###### Features
+
+* `genesis-pal-streamerclient` : Add additional logging when moving to error state 
+
+###### Fixes
+
+* `genesis-pal-dataserver` : Fix numerous out of sync update processing issues 
+* `genesis-pal-dataserver` : Improve handling of data server on unrecoverable key errors 
+
 #### 8.8.27
 
 ###### Features
@@ -84,7 +95,7 @@ id: '8.8'
 
 #### 8.8.26
 
-### Fixes
+###### Fixes
 
 * `genesis-pal-dataserver` : Ensure an additional `QUERY_UPDATE` message with `MORE_ROWS=false` is sent to query subscriptions using the `chunkLargeMessages` option, if no more rows are available after a `DATA_LOGON` or `MORE_ROWS` request (GSF-7356)
 * `genesis-pal-requestserver` : Fix bug in handling of a `_FROM` => `_TO` range 
