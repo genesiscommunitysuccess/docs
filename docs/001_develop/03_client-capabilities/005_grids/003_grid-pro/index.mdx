@@ -254,6 +254,227 @@ export class AppModule {}
 
 </Tabs>
 
+## Grid Attributes
+
+| Attribute                        | Type          | Default     | Description           |
+| -------------------------------- | ------------- | ----------- | --------------------- |
+| `:rowData`                       | `any[]`       | -           | **Manual data**: Array of row data for scenarios where you set data manually without using datasource components. |
+| `:gridComponents`                | `{[componentName: string]: any}` | - | **Custom components**: Object containing custom AG Grid components (cell renderers, editors, filters). |
+| `:eventsAndCallbacks`            | `GridProEventsAndCallbacks` | - | **AG Grid events**: Object containing AG Grid event handlers and callbacks. |
+| `:gridFontFace`                  | `string`      | `defaultAgGridFontFace` | **Font configuration**: Font face configuration for AG Grid themes. |
+| `auto-cell-renderer-by-type`     | `boolean`     | `false`     | **Genesis-specific**: Enable automatic cell renderer selection by data type. |
+| `only-template-col-defs`         | `boolean`     | `false`     | **Genesis-specific**: Use only template-defined column definitions, ignore metadata. |
+| `grid-autosizing`                | `boolean`     | `false`     | **Important**: Controls automatic column sizing on interaction. Disables manual column widths and local storage persistence of widths. |
+| `add-index`                      | `number`      | `0`         | Index position for new rows when using `applyTransaction` or `applyTransactionAsync`. |
+| `async-add`                      | `boolean`     | `false`     | Use `applyTransactionAsync` for add transactions (better performance for large datasets). |
+| `async-remove`                   | `boolean`     | `false`     | Use `applyTransactionAsync` for remove transactions (better performance for large datasets). |
+| `async-update`                   | `boolean`     | `true`      | Use `applyTransactionAsync` for update transactions (enabled by default for performance). |
+| `enable-cell-flashing`           | `boolean`     | `false`     | Enable cell flashing animations when cell values change. |
+| `enable-row-flashing`            | `boolean`     | `false`     | Enable row flashing animations for add transactions. |
+| `enabled-row-flashing`           | `boolean`     | `false`     | **@deprecated** - Use `enable-row-flashing` instead. |
+| `persist-column-state-key`       | `string`      | -           | **Key for persisting column state** in local browser or KV storage. Essential for maintaining user preferences. |
+| `persist-filter-model-key`       | `string`      | -           | **Key for persisting filter model** in local browser or KV storage. Maintains filter state across sessions. |
+| `header-case-type`               | `GridProCaseType` | `CONSTANT_CASE` | Transform header names: `camelCase`, `capitalCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`. |
+| `column-component-name`          | `string`      | `grid-pro-column` | **Internal**: Name of the column component to use. |
+| `header-height`                  | `number`      | -           | Custom header height in pixels. Overrides theme defaults. |
+| `row-height`                     | `number`      | -           | Custom row height in pixels. Overrides theme defaults. |
+| `theme`                          | `string`      | `alpine`    | AG Grid theme name. Available: `alpine`, `alpine-dark`, `balham`, `balham-dark`, `material`. |
+| `pagination`                     | `boolean`     | `false`     | **Enables pagination**. Basic pagination works with AG Grid Community edition. **Enterprise features** like custom pagination components require AG Grid Enterprise. Works with both client-side and server-side datasources. |
+| `pagination-page-size`           | `number`      | `25`        | Number of rows per page when pagination is enabled. **Client-side datasources only** - does not work with server-side datasources. |
+| `with-status-bar`                | `boolean`     | `false`     | **Enterprise Feature**: Enables status bar at bottom of grid. **Requires AG Grid Enterprise module**. |
+| `:statusBarConfig`               | `GridProStatusBarConfig` | `DEFAULT_STATUS_BAR_CONFIG` | **Enterprise Feature**: Configuration for status bar components. Must use binding syntax with observable property. |
+
+### Status Bar Configuration
+
+**Enterprise License Required**: Status bar functionality requires the AG Grid Enterprise module. Status bar components will only be displayed if the Enterprise module is properly licensed and configured.
+
+**Important Datasource Behavior:**
+
+- **Client-side datasources**: All status bar components are available (`rows`, `maxRows`, `loadMore`, `reload`)
+- **Server-side datasources**: `loadMore` component is **automatically disabled** and will not be shown, even if configured
+
+```typescript
+interface GridProStatusBarConfig {
+  rows?: boolean;                                    // Enable row count component (default: true)
+  maxRows?: boolean;                                 // Enable max rows label-value component (default: false)
+  loadMore?: boolean | GridProStatusBarLoadMoreConfig; // Enable/configure load more button (CLIENT-SIDE ONLY)
+  reload?: boolean | GridProStatusBarReloadConfig;     // Enable/configure reload button
+}
+
+interface GridProStatusBarLoadMoreConfig {
+  onLoadMore?: () => void;    // Custom callback function (defaults to datasource.loadMore())
+  appearance?: string;        // Button appearance: 'accent', 'lightweight', 'neutral', 'outline', 'stealth'
+  tooltip?: string;          // Custom tooltip text
+}
+
+interface GridProStatusBarReloadConfig {
+  onReload?: () => void;     // Custom callback function (defaults to datasource restart/reload)
+  icon?: string;            // Custom icon name (default: 'refresh')
+  tooltip?: string;         // Custom tooltip text
+}
+```
+
+**Status Bar Component Availability by Datasource Type:**
+
+| Component | Client-Side Datasource | Server-Side Datasource | Description |
+|-----------|------------------------|-------------------------|-------------|
+| `rows` | Available | Available | Shows row count information |
+| `maxRows` | Available | Available | Shows maximum rows limit |
+| `loadMore` | Available | **Disabled** | Load more button (infinite scroll alternative) |
+| `reload` | Available | Available | Reload/refresh button |
+
+**Complete Usage Examples:**
+
+**1. Client-Side Grid with All Status Bar Components:**
+
+```typescript
+@customElement({
+  name: 'client-side-grid-example',
+  template: html`
+    <grid-pro 
+      pagination
+      pagination-page-size="50"
+      with-status-bar
+      :statusBarConfig="${(x) => x.clientStatusBarConfig}"
+      persist-column-state-key="client-grid-columns"
+      persist-filter-model-key="client-grid-filters"
+      enable-row-flashing
+      enable-cell-flashing
+      header-case-type="headerCase"
+      theme="alpine-dark"
+      async-update
+      auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource
+        resource-name="ALL_TRADES"
+        max-rows="1000"
+      ></grid-pro-client-side-datasource>
+    </grid-pro>
+  `
+})
+export class ClientSideGridExample extends GenesisElement {
+  // Client-side datasource: ALL status bar components available
+  @observable clientStatusBarConfig: GridProStatusBarConfig = {
+    rows: true,              // Available
+    maxRows: true,           // Available  
+    loadMore: {              // Available - shows load more button
+      appearance: 'accent',
+      tooltip: 'Load more trades from server'
+    },
+    reload: {                // Available
+      tooltip: 'Refresh all trade data'
+    }
+  };
+}
+```
+
+**2. Server-Side Grid (loadMore Automatically Disabled):**
+
+```typescript
+@customElement({
+  name: 'server-side-grid-example',
+  template: html`
+    <grid-pro 
+      pagination
+      with-status-bar
+      :statusBarConfig="${(x) => x.serverStatusBarConfig}"
+      persist-column-state-key="server-grid-columns"
+      enable-row-flashing
+      theme="balham">
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        max-rows="500"
+      ></grid-pro-server-side-datasource>
+    </grid-pro>
+  `
+})
+export class ServerSideGridExample extends GenesisElement {
+  // Server-side datasource: loadMore automatically disabled
+  @observable serverStatusBarConfig: GridProStatusBarConfig = {
+    rows: true,              // Available - shows row counts
+    maxRows: true,           // Available - shows max rows info
+    loadMore: true,          // DISABLED - even if true, will not show (by design when it is a server-side datasource)
+    reload: {                // Available - shows reload button
+      tooltip: 'Refresh trade data from server'
+    }
+  };
+}
+```
+
+**3. Manual Data Grid with Custom Components:**
+
+```typescript
+@customElement({
+  name: 'manual-data-grid',
+  template: html`
+    <grid-pro 
+      :rowData="${(x) => x.rowData}"
+      :gridComponents="${(x) => x.gridComponents}"
+      :eventsAndCallbacks="${(x) => x.eventsAndCallbacks}"
+      theme="balham"
+      header-height="50"
+      persist-column-state-key="manual-grid-state"
+      enable-cell-flashing>
+    </grid-pro>
+  `
+})
+export class ManualDataGrid extends GenesisElement {
+  @observable rowData = [
+    { id: 1, name: 'John Doe', age: 30, department: 'Engineering' },
+    { id: 2, name: 'Jane Smith', age: 25, department: 'Marketing' },
+    // ... more data
+  ];
+
+  @observable gridComponents = {
+    customRenderer: CustomCellRenderer,
+    customEditor: CustomCellEditor,
+    customFilter: CustomFilter
+  };
+
+  @observable eventsAndCallbacks = {
+    onCellValueChanged: (event) => {
+      console.log('Cell value changed:', event);
+      // Handle cell value changes
+    },
+    onRowSelected: (event) => {
+      console.log('Row selected:', event);
+      // Handle row selection
+    },
+    onGridReady: (event) => {
+      console.log('Grid ready:', event);
+      // Grid initialization complete
+    }
+  };
+}
+```
+
+**4. Theme and Font Customization:**
+
+```typescript
+@customElement({
+  name: 'themed-grid',
+  template: html`
+    <grid-pro 
+      theme="material"
+      :gridFontFace="${(x) => x.customFontFace}"
+      header-height="48"
+      row-height="42"
+      header-case-type="sentenceCase">
+      <grid-pro-server-side-datasource
+        resource-name="ALL_POSITIONS"
+      ></grid-pro-server-side-datasource>
+    </grid-pro>
+  `
+})
+export class ThemedGrid extends GenesisElement {
+  @observable customFontFace = `
+    @font-face {
+      font-family: 'CustomGridFont';
+      src: url('path/to/custom-font.woff2') format('woff2');
+    }
+  `;
+}
+```
+
 ## Supported row models
 
 We support all the AG’s Row Models.  More on [JavaScript Grid: Row Models | AG Grid (ag-grid.com)](https://www.ag-grid.com/javascript-data-grid/row-models/).

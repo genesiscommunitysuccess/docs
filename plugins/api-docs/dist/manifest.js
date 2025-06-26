@@ -49,7 +49,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+                directory: "./docs/001_develop/03_client-capabilities/002_server-communications",
                 api_docs: "docs/api",
                 readme: "index.mdx",
                 keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
@@ -169,7 +169,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
+                directory: "./docs/001_develop/03_client-capabilities/006_charts",
                 api_docs: "docs/api",
                 readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
