@@ -42,6 +42,11 @@
     "description": "This section provides full details of the Genesis Application Platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
     "items": [
       {
+        "href": "/develop/server-capabilities/gpal-standards/",
+        "imageUrl": "/svg/categories-icons/gpal-standards.svg",
+        "description": "An overview of GPAL – the Genesis Platform Abstraction Language – and its built-in access to the data model, system config, and logging."
+      },
+      {
         "href": "/develop/server-capabilities/data-model/",
         "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
         "description": "Define the object and relational data model for the application. This is the metadata that drives the capabilities of the entire platform."
