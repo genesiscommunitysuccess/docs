@@ -217,6 +217,37 @@ export class HeaderDynamicRoutesExampleComponent implements AfterViewInit {
 
 <DynamicRoutesHeaderExample />
 
+### Configuration attributes
+
+The following attributes control the appearance and behavior of the header:
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Attribute</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sidebar</td>
+      <td><code>hide-side-bar</code></td>
+      <td>Hides the sidebar in the navigation menu. Default is <code>false</code>.</td>
+    </tr>
+    <tr>
+      <td>Logout Button Position</td>
+      <td><code>logout-button-position</code></td>
+      <td>Controls the position of the logout button. Can be <code>'side-nav'</code>, <code>'account-menu'</code>, or <code>'none'</code>. Default is <code>'side-nav'</code>.</td>
+    </tr>
+    <tr>
+      <td>Account Menu</td>
+      <td><code>show-account-menu</code></td>
+      <td>Shows the account menu in the navigation. Default is <code>false</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
 ### Control buttons
 
 There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined.
@@ -306,3 +337,24 @@ To set the content of the flyout menu, add the content in the html within an ele
   </div>
 </foundation-header>
 ```
+
+You can also customize the account menu content by using the `slot="account-menu"` attribute when `show-account-menu` is enabled:
+
+```html
+<foundation-header show-account-menu>
+  <div slot="account-menu">
+    <!-- Custom account menu content -->
+    <p>Welcome, User!</p>
+    <rapid-button>Profile Settings</rapid-button>
+  </div>
+</foundation-header>
+```
+
+### Slots
+
+| Name | Description |
+|---|---|
+| routes | Slot for navigation route buttons in the header |
+| routes-end | Slot for additional navigation buttons at the end of the header |
+| menu-contents | Slot for content in the side navigation menu |
+| account-menu | Slot for custom account menu content when account menu is enabled |
