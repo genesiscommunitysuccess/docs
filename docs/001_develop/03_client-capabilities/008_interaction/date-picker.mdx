@@ -1,0 +1,323 @@
+---
+title: 'Date Picker'
+sidebar_label: 'Date Picker'
+id: client-interaction-datepicker
+keywords: [interaction, interactive, date, date picker, click, toggle]
+tags:
+- interaction
+- interactive
+- date
+- date-picker
+- click
+- toggle
+sidebar_position: 8
+---
+
+import DatePickerDemo from '../../../../examples/ui/client-capabilities/interaction/date-picker.js';
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Date Picker
+
+A date picker is an interactive element for selecting and displaying a date from a calendar.
+
+By default, the date picker starts in a closed state.
+
+Use cases:
+* selecting a date
+* displaying a date
+
+## Example
+
+<DatePickerDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <rapid-date-picker></rapid-date-picker>
+        ```
+
+        Usage
+        ```typescript
+        @customElement({
+            name: 'my-element',
+            template: html`
+                <rapid-date-picker @value-changed=${(x, ctx) => x.valueChanged(customEvent(ctx))}>
+                </rapid-date-picker>
+            `,
+        })
+        export class MyElement extends GenesisElement {
+            valueChanged(e: CustomEvent) {
+                console.log('date picker value changed', e.detail);
+            }
+        }
+        ```
+    </TabItem>
+    <TabItem value="react">
+        Declaration
+        ```html
+        <rapid-date-picker></rapid-date-picker>
+        ```
+
+        Usage
+        ```tsx
+        export function MyComponent() {
+            const modalRef = useRef(null);
+
+            useEffect(() => {
+                if (modalRef.current) {
+                    modalRef.current.onShowCallback = () => console.log('modal shown')
+                    modalRef.current.onCloseCallback = () => console.log('modal closed')
+                }
+            })
+
+            const handleClick = (ref) => {
+                if (modalRef.current) {
+                    modalRef.current.show();
+                }
+            };
+
+            return (
+                <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
+                <rapid-date-picker
+                    ref={modalRef}
+                >
+                    <h3 slot="top">Top slot</h3>
+                    Main content in the modal
+                    <div slot="bottom">
+                        <i>Slotted content in the bottom</i>
+                    </div>
+                </rapid-date-picker>
+            );
+        }
+        ```
+    </TabItem>
+    <TabItem value="angular">
+    Usage
+    ```typescript
+    import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+
+    @Component({
+    selector: 'modal-example',
+    template: `
+      <rapid-button (click)="showModal()">Show modal</rapid-button>
+      <rapid-date-picker #modal
+      >
+          <h3 slot="top">Top slot</h3>
+          Main content in the modal
+          <div slot="bottom">
+              <i>Slotted content in the bottom</i>
+          </div>
+      </rapid-date-picker>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class ModalExampleComponent implements AfterViewInit {
+      @ViewChild('modal') modalRef!: ElementRef;
+
+        ngAfterViewInit() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.onShowCallback = this.showCallback.bind(this);
+                this.modalRef.nativeElement.onCloseCallback = this.closeCallback.bind(this);
+            }
+        }
+
+        showModal() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.show()
+            }
+        }
+
+        showCallback() {
+            console.log('modal shown')
+        }
+
+        closeCallback() {
+            console.log('modal close')
+        }
+    }
+    ```
+    </TabItem>
+</Tabs>
+
+## DOM API
+
+The sections below provide property and attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>format</td>
+            <td><code>string</code></td>
+            <td>The date format shown defaults to <code>MM-DD-YYYY</code> and can accept any <a href="https://day.js.org/docs/en/display/format">valid dayjs format</a></td>
+            <td>
+
+            ```typescript
+            <rapid-date-picker format="DD-MM-YYYY">
+            ```
+
+            </td>
+        </tr>
+        <tr>
+            <td>lang</td>
+            <td><code>string</code></td>
+            <td>Determines the defuault locale. Defaults to <code>en-US</code> and can accept any <a href="https://day.js.org/docs/en/i18n/changing-locale">valid day js lang</a></td>
+            <td>
+
+            ```typescript
+            <rapid-date-picker lang="en-US">
+            ```
+
+            </td>
+        </tr>
+        <tr>
+            <td>visible</td>
+            <td><code>boolean</code></td>
+            <td>Displays the calendar by default. Defaults to <code>false</code></td>
+            <td>
+
+            ```typescript
+            <rapid-date-picker visible>
+            ```
+
+            </td>
+        </tr>
+        <tr>
+            <td>inline-calendar</td>
+            <td><code>boolean</code></td>
+            <td>Displays the calendar as an inline block element as opposed to being absolutely positioned relative to it's parent. Defaults to <code>false</code></td>
+            <td>
+
+            ```typescript
+            <rapid-date-picker inline-calendar>
+            ```
+
+            </td>
+        </tr>
+        <tr>
+          <td>hide-weekends</td>
+          <td><code>boolean</code></td>
+          <td>Hides Saturday and Sundays restricting user to selecting only week days. Defaults to <code>false</code></td>
+          <td>
+            ```typescript
+            <rapid-date-picker hide-weekends>
+            ```
+          </td>
+        </tr>
+        <tr>
+          <td>position</td>
+          <td><code>string</code></td>
+          <td>Determines the position of the calendar. Possible options 'right', 'left', 'center' or 'left'.</td>
+          <td>
+            ```typescript
+              <rapid-date-picker position="right">
+            ```
+          </td>
+        </tr>
+        <tr>
+          <td>label</td>
+          <td><code>string</code></td>
+          <td>Sets the label that will be displayed next to the date input text field</td>
+          <td>
+            ```typescript
+              <rapid-date-picker label="Trade Date">
+            ```
+          </td>
+        </tr>
+        <tr>
+          <td>value</td>
+          <td><code>string</code></td>
+          <td>Sets the date value as string in the configured format on the date picker.</td>
+          <td>
+            ```typescript
+              <rapid-date-picker label="06-20-2025">
+            ```
+          </td>
+        </tr>
+      </tbody>
+  </table>
+
+:::note
+If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
+:::
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>disabledDaysOfWeek</td>
+      <td><code>() => [2,3]</code></td>
+      <td>An array of numbers disabling days of the week with 0 being Sunday and 6 being Saturday</td>
+      <td>
+        ```typescript
+          <rapid-date-picker :disabledDaysOfTheWeek="${() => [1]}">
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Component Methods
+
+This component doesn't have any methods.
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| Default | The default slot for the main content of the modal. |
+| end | The icon in the calendar toggle. |
+| bottom | The bottom of the calendar. |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| date-toggle | The calendar toggle element which shows the current value and toggle icon |
+| input-icon-container | The icon in the calendar toggle |
+
+### Events fired
+
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr>
+      <td>value-changed</td>
+      <td><code>event</code></td>
+      <td>Emits a custom change event when the a date is selected in the calendar. Access the value on the event via <code>.target.value</code>.</td>
+  <td>
+
+    ```typescript
+    <rapid-date-picker @value-changed="${(x) => x.myChangeHandler(event)}">
+    ```
+
+  </td>
+  </tr>
+  </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
