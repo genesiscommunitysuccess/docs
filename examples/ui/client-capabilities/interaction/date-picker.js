@@ -14,13 +14,12 @@ export default function DatePickerDemo({ inIndex = false }) {
   const datePickerRef = useRef(null);
   const [value, setValue] = useState('Not changed');
   const handleValueChanged = (value) => {
-    console.log(value, 'date-picker-value');
-    setValue(value);
+    setValue(value.detail);
   }
 
   useEffect(() => {
     if (datePickerRef.current) {
-      datePickerRef.current.handleValueChanged = (e) => handleValueChanged(e.detail);
+      datePickerRef.current.addEventListener('value-changed', handleValueChanged);
     }
   }, []);
 
@@ -29,7 +28,7 @@ export default function DatePickerDemo({ inIndex = false }) {
       <CodeSection>
         <div style={{ color: 'var(--neutral-foreground-rest)'}}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-            <rapid-date-picker onValueChanged={(e) => handleValueChanged(e)}>
+            <rapid-date-picker ref={datePickerRef}>
             </rapid-date-picker>
             <div>Date picker value: {value}</div>
           </div>

@@ -27,6 +27,7 @@ By default, the date picker starts in a closed state.
 Use cases:
 * selecting a date
 * displaying a date
+* disable selecting specific days of the week
 
 ## Example
 
@@ -64,82 +65,46 @@ Use cases:
         Usage
         ```tsx
         export function MyComponent() {
-            const modalRef = useRef(null);
 
-            useEffect(() => {
-                if (modalRef.current) {
-                    modalRef.current.onShowCallback = () => console.log('modal shown')
-                    modalRef.current.onCloseCallback = () => console.log('modal closed')
-                }
-            })
+          const datePickerRef = useRef(null);
+          const [value, setValue] = useState('Not changed');
+          const handleValueChanged = (value) => {
+            setValue(value.detail);
+          }
 
-            const handleClick = (ref) => {
-                if (modalRef.current) {
-                    modalRef.current.show();
-                }
-            };
+          useEffect(() => {
+            if (datePickerRef.current) {
+              datePickerRef.current.addEventListener('value-changed', handleValueChanged);
+            }
+          }, []);
 
-            return (
-                <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
-                <rapid-date-picker
-                    ref={modalRef}
-                >
-                    <h3 slot="top">Top slot</h3>
-                    Main content in the modal
-                    <div slot="bottom">
-                        <i>Slotted content in the bottom</i>
-                    </div>
-                </rapid-date-picker>
-            );
+          return (
+            <rapid-date-picker ref={datePickerRef}>
+            </rapid-date-picker>
+          );
         }
         ```
     </TabItem>
     <TabItem value="angular">
-    Usage
-    ```typescript
-    import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+      Usage
+      ```typescript
+      import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
 
-    @Component({
-    selector: 'modal-example',
-    template: `
-      <rapid-button (click)="showModal()">Show modal</rapid-button>
-      <rapid-date-picker #modal
-      >
-          <h3 slot="top">Top slot</h3>
-          Main content in the modal
-          <div slot="bottom">
-              <i>Slotted content in the bottom</i>
-          </div>
-      </rapid-date-picker>
-      `,
-      standalone: true,
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-    export class ModalExampleComponent implements AfterViewInit {
-      @ViewChild('modal') modalRef!: ElementRef;
-
-        ngAfterViewInit() {
-            if (this.modalRef.nativeElement) {
-                this.modalRef.nativeElement.onShowCallback = this.showCallback.bind(this);
-                this.modalRef.nativeElement.onCloseCallback = this.closeCallback.bind(this);
-            }
-        }
-
-        showModal() {
-            if (this.modalRef.nativeElement) {
-                this.modalRef.nativeElement.show()
-            }
-        }
-
-        showCallback() {
-            console.log('modal shown')
-        }
-
-        closeCallback() {
-            console.log('modal close')
-        }
-    }
-    ```
+      @Component({
+      selector: 'date-picker-example',
+      template: `
+        <rapid-date-picker (value-changed)="handleValueChanged($event)">
+        </rapid-date-picker>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      })
+      export class DatePickerExampleComponent implements AfterViewInit {
+          valueChanged(e) {
+            console.log(e.detail);
+          }
+      }
+      ```
     </TabItem>
 </Tabs>
 
@@ -250,10 +215,6 @@ The sections below provide property and attribute binding examples for Genesis C
       </tbody>
   </table>
 
-:::note
-If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
-:::
-
 ### Properties
 
 <table>
@@ -287,7 +248,6 @@ This component doesn't have any methods.
 
 | Slot | Use |
 |---|---|
-| Default | The default slot for the main content of the modal. |
 | end | The icon in the calendar toggle. |
 | bottom | The bottom of the calendar. |
 
