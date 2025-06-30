@@ -128,89 +128,97 @@ The sections below provide property and attribute binding examples for Genesis C
             <td>format</td>
             <td><code>string</code></td>
             <td>The date format shown defaults to <code>MM-DD-YYYY</code> and can accept any <a href="https://day.js.org/docs/en/display/format">valid dayjs format</a></td>
-            <td>
+<td>
 
-            ```typescript
-            <rapid-date-picker format="DD-MM-YYYY">
-            ```
+```typescript
+<rapid-date-picker format="DD-MM-YYYY">
+```
 
-            </td>
+</td>
         </tr>
         <tr>
             <td>lang</td>
             <td><code>string</code></td>
             <td>Determines the defuault locale. Defaults to <code>en-US</code> and can accept any <a href="https://day.js.org/docs/en/i18n/changing-locale">valid day js lang</a></td>
-            <td>
+<td>
 
-            ```typescript
-            <rapid-date-picker lang="en-US">
-            ```
+```typescript
+<rapid-date-picker lang="en-US">
+```
 
-            </td>
+</td>
         </tr>
         <tr>
             <td>visible</td>
             <td><code>boolean</code></td>
             <td>Displays the calendar by default. Defaults to <code>false</code></td>
-            <td>
+<td>
 
-            ```typescript
-            <rapid-date-picker visible>
-            ```
+```typescript
+<rapid-date-picker ?visible=${(x) => x.visible}>
+```
 
-            </td>
+</td>
         </tr>
         <tr>
             <td>inline-calendar</td>
             <td><code>boolean</code></td>
             <td>Displays the calendar as an inline block element as opposed to being absolutely positioned relative to it's parent. Defaults to <code>false</code></td>
-            <td>
+<td>
 
-            ```typescript
-            <rapid-date-picker inline-calendar>
-            ```
+```typescript
+<rapid-date-picker inline-calendar>
+```
 
-            </td>
+</td>
         </tr>
         <tr>
           <td>hide-weekends</td>
           <td><code>boolean</code></td>
           <td>Hides Saturday and Sundays restricting user to selecting only week days. Defaults to <code>false</code></td>
-          <td>
-            ```typescript
-            <rapid-date-picker hide-weekends>
-            ```
-          </td>
+<td>
+
+  ```typescript
+  <rapid-date-picker hide-weekends>
+  ```
+
+</td>
         </tr>
         <tr>
           <td>position</td>
           <td><code>string</code></td>
           <td>Determines the position of the calendar. Possible options 'right', 'left', 'center' or 'left'.</td>
-          <td>
-            ```typescript
-              <rapid-date-picker position="right">
-            ```
-          </td>
+<td>
+
+```typescript
+<rapid-date-picker position="right">
+```
+
+</td>
         </tr>
         <tr>
           <td>label</td>
           <td><code>string</code></td>
           <td>Sets the label that will be displayed next to the date input text field</td>
-          <td>
-            ```typescript
-              <rapid-date-picker label="Trade Date">
-            ```
-          </td>
+<td>
+
+```typescript
+<rapid-date-picker label="Trade Date">
+```
+
+</td>
         </tr>
         <tr>
           <td>value</td>
           <td><code>string</code></td>
           <td>Sets the date value as string in the configured format on the date picker.</td>
-          <td>
-            ```typescript
-              <rapid-date-picker label="06-20-2025">
-            ```
-          </td>
+<td>
+
+```typescript
+<rapid-date-picker label="06-20-2025">
+```
+
+</td>
         </tr>
       </tbody>
   </table>
@@ -229,13 +237,15 @@ The sections below provide property and attribute binding examples for Genesis C
   <tbody>
     <tr>
       <td>disabledDaysOfWeek</td>
-      <td><code>() => [2,3]</code></td>
+      <td><code>() => number[]</code></td>
       <td>An array of numbers disabling days of the week with 0 being Sunday and 6 being Saturday</td>
-      <td>
-        ```typescript
-          <rapid-date-picker :disabledDaysOfTheWeek="${() => [1]}">
-        ```
-      </td>
+<td>
+
+  ```typescript
+    <rapid-date-picker :disabledDaysOfTheWeek="${() => [1]}">
+  ```
+
+</td>
     </tr>
   </tbody>
 </table>
@@ -255,8 +265,8 @@ This component doesn't have any methods.
 
 | Part | Use |
 |---|---|
-| date-toggle | The calendar toggle element which shows the current value and toggle icon |
-| input-icon-container | The icon in the calendar toggle |
+| date-toggle | The calendar toggle element which shows the current value and toggle icon. |
+| input-icon-container | The icon in the calendar toggle. |
 
 ### Events fired
 
