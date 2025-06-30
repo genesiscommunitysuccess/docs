@@ -194,7 +194,7 @@ The following details can be added when you use the `audit = details()` paramete
 |----------------|-----------|-----------------------------------------------------------------------------|
 | `id`           | `Integer` | **Unique** `id` for the audit table                                         |
 | `sequence`     | `String`  | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
-| `tskey`        | `Boolean` | Set a timestamp index (defaulted to false where not specified)              |
+| `tsKey`        | `Boolean` | Set a timestamp index (defaulted to false where not specified) on the audit table. The index name will be `<source-table>_AUDIT_BY_TIMESTAMP`|
 
 
 The audit table that is created has the same name as the source table, plus the suffix `_AUDIT`. Here is an example table definition, for a table `TRADE` which will have a `TRADE_AUDIT` table automatically generated to store audit records.
