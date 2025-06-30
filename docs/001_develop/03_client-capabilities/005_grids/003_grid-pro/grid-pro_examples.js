@@ -378,8 +378,8 @@ export function GridProExampleSelectRenderer() {
   const ROW_INDEX_LIMIT = 5; // Show dropdown above for rows after index 5
 
   const setDropdownPosition = (params, rowData) => {
-    const rowIndex = rowData.findIndex(row => 
-      row.make === params.make && 
+    const rowIndex = rowData.findIndex(row =>
+      row.make === params.make &&
       row.model === params.model
     );
     return rowIndex > ROW_INDEX_LIMIT ? 'above' : 'below';
@@ -410,11 +410,13 @@ export function GridProExampleSelectRenderer() {
                 name: 'available',
                 displayName: 'Available',
                 isDisabled: (rowData) => rowData.price > 50000,
+                tooltip: 'This car is available',
               },
-              { 
-                name: 'reserved', 
+              {
+                name: 'reserved',
                 displayName: 'Reserved',
                 isDisabled: (rowData) => rowData.year < 2020,
+                tooltip: 'This car is not available',
               },
             ],
             onSelect: (data) => console.log('Status changed:', data),

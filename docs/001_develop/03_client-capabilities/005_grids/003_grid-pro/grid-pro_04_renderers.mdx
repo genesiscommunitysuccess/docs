@@ -163,8 +163,8 @@ Renders a dropdown select within a grid cell, allowing users to select from a li
 const ROW_INDEX_LIMIT = 5;
 
 const setDropdownPosition = (rowData, allRows) => {
-  const rowIndex = allRows.findIndex(row => 
-    row.make === rowData.make && 
+  const rowIndex = allRows.findIndex(row =>
+    row.make === rowData.make &&
     row.model === rowData.model
   );
   return rowIndex > ROW_INDEX_LIMIT ? 'above' : 'below';
@@ -183,11 +183,13 @@ const selectRendererColDef = {
         name: 'available',
         displayName: 'Available',
         isDisabled: (rowData) => rowData.price > 50000,
+        tooltip: 'This car is available',
       },
-      { 
-        name: 'reserved', 
+      {
+        name: 'reserved',
         displayName: 'Reserved',
         isDisabled: (rowData) => rowData.year < 2020,
+        tooltip: 'This car is not available',
       },
     ],
     onSelect: (rowData) => handleStatusChange(rowData),
@@ -228,7 +230,7 @@ Renders a dropdown select editor within a grid cell, allowing users to edit cell
 
 <GridProExampleSelectEditorRenderer />
 
-<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selecteditor/). 
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selecteditor/).
 
 #### Key features
 
@@ -352,7 +354,7 @@ Provides a text input editor within a grid cell, allowing users to input or edit
 
 <GridProExampleStringEditor />
 
-<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.stringeditor/). 
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.stringeditor/).
 
 #### Key features
 
@@ -381,9 +383,9 @@ To create a custom renderer component, you need to implement the `ICellRendererC
 #### 1. Basic renderer structure
 
 ```typescript
-import { 
-  ICellRendererComp, 
-  ICellRendererParams 
+import {
+  ICellRendererComp,
+  ICellRendererParams
 } from '@ag-grid-community/core';
 import { GenesisElement, html, observable } from '@genesislcap/web-core';
 import { logger } from '../utils';
@@ -435,7 +437,7 @@ export class CustomRenderer extends GenesisElement implements ICellRendererComp 
   // Handle value changes
   public changeHandler = (newValue: any) => {
     this.value = newValue;
-    
+
     if (typeof this.params?.onChange === 'function') {
       this.params.onChange(newValue, this.params);
     }
