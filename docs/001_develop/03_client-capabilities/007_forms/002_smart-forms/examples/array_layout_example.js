@@ -32,7 +32,32 @@ export const formsWithArraysJsonSchema = {
     elements: [
       {
         type: 'Control',
-        scope: '#/properties/swapDates'
+        scope: '#/properties/swapDates',
+        options: {
+          childUiSchema: {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                scope: "#/properties/date",
+                label: "Date",
+              },
+              {
+                type: "Control",
+                scope: "#/properties/amount",
+                label: "Amount",
+              },
+              {
+                type: "Control",
+                scope: "#/properties/notes",
+                label: "Notes",
+                options: {
+                  textarea: true,
+                }
+              },
+            ],
+          },
+        }
       }
     ]
   }
