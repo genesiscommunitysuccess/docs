@@ -169,8 +169,6 @@ if [ ${#POSITIONAL_ARGS[@]} -eq 1 ]; then
     START_DIR="${POSITIONAL_ARGS[0]}"
 fi
 
-set -e # Ensure set -e is active for the main logic
-
 if [ "$INTERNAL_GRADLE_FLAG" = true ]; then
     echo "INFO: -i option specified. Will download and use Gradle $TARGET_GRADLE_VERSION."
     download_and_extract_gradle "$TARGET_GRADLE_VERSION"
@@ -193,7 +191,6 @@ else
         echo "         2. Run this script with the -i (or --internal-gradle) option."
         echo "------------------------------------------------------------------------------------"
         exit 1
-    # ... (rest of error handling is unchanged) ...
     else # System Gradle exists but version does not match
         echo "------------------------------------------------------------------------------------"
         echo "ERROR: Your system 'gradle' command (version: $SYSTEM_GRADLE_VERSION) does not match the"
