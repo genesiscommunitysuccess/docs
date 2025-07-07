@@ -1,0 +1,9 @@
+.submenu-header-example {
+  --type-ramp-plus-4-font-size: 14px;
+  
+  width: 100%;
+}
+
+.submenu-header-example foundation-header::part(nav-submenu-wrapper) {
+  min-width: auto;
+}
