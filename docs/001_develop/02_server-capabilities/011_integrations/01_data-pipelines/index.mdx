@@ -774,11 +774,27 @@ csvEncoder<Trade> {
 
 ### Sinks
 
-#### `dbSink` 
-This is a sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>`.
-The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'. 
+#### Database Sinks
+Sinks that make modifications to the Genesis Application Database use a common type for the elements they consume; `DbOperation`.
 
-DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
+This is a wrapper object, the type of which defines the type of database operation to perform, and also contains a record to use in the operation.
+The record must extend TableEntity i.e. it must be a DAO object that was created as part of the Genesis code generation process, in order to be compatible with the Genesis database layer.
+
+`DbOperation` has 4 subtypes: Insert, Modify, Upsert and Delete.
+
+For modifications (Upsert and Modify operations types), you can supply a list of modified fields in order to perform a delta update. Only the fields specified will be updated in the database.
+
+```kotlin
+  DbOperation.Update(
+    entity = myTrade,
+    modifiedFields = listOf("FIELD_1", "FIELD_2")
+  )
+```
+
+
+
+##### `dbSink`
+This is a sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'.
 
 ```kotlin
 // Non-transactional db sink
@@ -797,11 +813,8 @@ pipeline("TEST_DB_SINK") {
 }
 ```
 
-#### `txDbSink`
-This is a transactional sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>`.
-The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'. 
-
-DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
+##### `txDbSink`
+This is a transactional sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'.
 
 ```kotlin
 // Transactional db sink
