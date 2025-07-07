@@ -380,7 +380,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
         val idempotentRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
 
-        from("file:${pathStr}")
+        from("file://${pathStr}")
           .idempotentConsumer(
             header("CamelFileName"),
             FileIdempotentRepository.fileIdempotentRepository(File(idempotentRepo), 300000, 15000000)
