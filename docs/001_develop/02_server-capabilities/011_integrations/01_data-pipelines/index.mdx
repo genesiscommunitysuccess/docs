@@ -1091,8 +1091,8 @@ When you configure the JMS source to use as part of your pipeline, you must prov
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
 - queueName (required): the name of the message queue you would like to consume from
-- username (required): the username used to create the queue connection
-- password (required): the password used to create the queue connection
+- username (optional): the username used to create the queue connection - must be provided if password is set
+- password (optional): the password used to create the queue connection - do not set if credentials are not required to establish a broker connection
 - retryDelayMs (optional): how long the source should wait before attempting to connect to the queue again after failure to do so
 - pollTimeoutMs (optional): how long the consumer should wait in milliseconds before attempting to poll the message queue again after no data has been received; the default is 200
 - monitorName (optional): name to be displayed when the process state is set to WARNING; the default name has the format: JMSSourceMonitor-0-`{QUEUE-NAME}`
@@ -1185,8 +1185,8 @@ When you configure the JMS sink to use as part of your pipeline, you must provid
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
 - queueName (required): the name of the message queue you would like to publish to
-- username (required): the username used to create the queue connection
-- password (required): the password used to create the queue connection
+- username (optional): the username used to create the queue connection - must be provided if password is set
+- password (optional): the password used to create the queue connection - do not set if credentials are not required to establish a broker connection
 - buildMessage (required): the lambda to convert from the element sent to your sink to a valid Message object using the JMS session provided by the sink
 - retryDelayMs (optional): how long the sink should wait before attempting to connect to the queue again after failure to do so
 - maxRetries (optional): how many times the producer should attempt to resend the message upon failure; the default is 100
