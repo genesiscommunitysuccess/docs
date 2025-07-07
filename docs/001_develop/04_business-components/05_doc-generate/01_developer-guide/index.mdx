@@ -234,6 +234,70 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
     }
 ```
 
+#### Apache Freemarker Templates
+
+The document generator also supports Apache Freemarker as a templating engine. Apache Freemarker has its own templating language defined in `.ftl` files.
+Unlike Thymeleaf, the templates can not be rendered by themselves, however its versatility and rich list of features makes Freemarker a commonly used alternative.
+For more details on Freemarker's templating capabilities please see the [official documentation](https://freemarker.apache.org/docs/index.html).
+
+##### Freemarker Template Example
+Freemarker has its own templating language which supports powerful features like looping over data structures and defining repeatable template segments through macros.
+
+Referencing data is similar to other templating engines using a `${}` syntax:
+```html
+<#macro reportHeader title>
+  <h1>${title}</h1>
+  <p>Generated on: ${.now?string("yyyy-MM-dd HH:mm:ss")}</p>
+</#macro>
+
+<@reportHeader title=title/>
+
+<h2>Summary</h2>
+<p>Total Users: ${users?size}</p>
+
+<h2>User Details</h2>
+<#list users as user>
+  <div class="user">
+    <h3>${user.name}</h3>
+    <p>Email: ${user.email}</p>
+    <p>Role: ${user.role}</p>
+  </div>
+</#list>
+```
+
+Passing the data to the template means constructing a map of your data that can be referenced by key:
+```kotlin
+val documentGenerator = inject<DocumentGenerator>()
+
+eventHandler<User>(name = "GENERATE_USER_REPORT") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val details = event.details
+            val user = entityDb.get(User.byId(details.userName))
+            val data : Map<String, Any> = mapOf(
+                "users" to listOf(user)
+            )
+
+            val documentStorageResult =
+                documentGenerator.generateAndStore(
+                    DocumentStorageConfiguration(
+                        templateId = "000000000000006FFLO2",
+                        fileName = "user-report.pdf",
+                        userName = "System",
+                        data = data,
+                        deleteOnExit = false,
+                        workingDirectory = "/reports")
+                )
+
+            // custom code block ...
+
+            ack()
+        }
+    }
+```
+
 
 #### TXT templates
 
