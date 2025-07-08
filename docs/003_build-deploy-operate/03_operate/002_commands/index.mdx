@@ -1083,7 +1083,7 @@ The following methods are available for cascading purges within your `finally` o
 
 #### Real-World Examples
 
-##### Example 1: Deleting User Sessions and Related Permissions
+Deleting User Sessions and Related Permissions
 
 ```kotlin
 bulkPurger(USER_SESSION).batchFinally { sessions ->
@@ -1094,7 +1094,7 @@ bulkPurger(USER_SESSION).batchFinally { sessions ->
 }
 ```
 
-##### Example 2: Deleting Trades and All Related Fees with Logging
+Deleting Trades and All Related Fees with Logging
 
 ```kotlin
 bulkPurger(TRADE).batchFinally { trades ->
@@ -1107,7 +1107,7 @@ bulkPurger(TRADE).batchFinally { trades ->
 }
 ```
 
-##### Example 3: Single Record Cascade with Return Value
+Single Record Cascade with Return Value
 
 ```kotlin
 bulkPurger(TRADE).finally { trade ->
@@ -1119,7 +1119,7 @@ bulkPurger(TRADE).finally { trade ->
 }
 ```
 
-##### Example 4: Processing Records During Purge
+Processing Records During Purge
 
 ```kotlin
 bulkPurger(USER_SESSION).batchFinally { sessions ->
