@@ -373,3 +373,70 @@ export function GridProExampleStringEditor() {
     />
   );
 }
+
+export function GridProExampleSelectRenderer() {
+  const ROW_INDEX_LIMIT = 5; // Show dropdown above for rows after index 5
+
+  const setDropdownPosition = (params, rowData) => {
+    const rowIndex = rowData.findIndex(row =>
+      row.make === params.make &&
+      row.model === params.model
+    );
+    return rowIndex > ROW_INDEX_LIMIT ? 'above' : 'below';
+  };
+
+  const modifyGridOptions = (gridOptions) => {
+    const modifiedRowData = gridOptions.rowData.map((row) => ({
+      ...row,
+      status: 'available', // Default status
+    }));
+
+    return {
+      ...gridOptions,
+      columnDefs: [
+        ...gridOptions.columnDefs,
+        {
+          headerName: 'Status',
+          field: 'status',
+          cellRenderer: 'select',
+          cellStyle: {
+            paddingLeft: 0,
+            paddingRight: 0,
+            overflow: 'visible',
+          },
+          cellRendererParams: {
+            options: () => [
+              {
+                name: 'available',
+                displayName: 'Available',
+                isDisabled: (rowData) => rowData.price > 50000,
+                tooltip: 'This car is available',
+              },
+              {
+                name: 'reserved',
+                displayName: 'Reserved',
+                isDisabled: (rowData) => rowData.year < 2020,
+                tooltip: 'This car is not available',
+              },
+            ],
+            onSelect: (data) => console.log('Status changed:', data),
+            accessor: 'status',
+            position: (params) => setDropdownPosition(params, modifiedRowData),
+          },
+          width: 200,
+          pinned: 'right',
+        },
+      ],
+      rowData: modifiedRowData,
+      suppressRowTransform: true,
+    };
+  };
+
+  return (
+    <GridProExampleBase
+      modifyGridOptions={modifyGridOptions}
+      gridHeight="300px"
+      buttonText="Load Grid Pro with Select Renderer"
+    />
+  );
+}
