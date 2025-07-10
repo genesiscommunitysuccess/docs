@@ -40,6 +40,7 @@ export declare class GenesisGridDatasourceElement extends GenesisGridDatasourceE
 |  [request](./grid-pro.genesisgriddatasourceelement.request.md) |  | any |  |
 |  [requestAutoSetup](./grid-pro.genesisgriddatasourceelement.requestautosetup.md) |  | boolean | Attribute to set whether the REQUEST object should be automatically set up. |
 |  [resourceName](./grid-pro.genesisgriddatasourceelement.resourcename.md) |  | string |  |
+|  [restartOnReconnection](./grid-pro.genesisgriddatasourceelement.restartonreconnection.md) |  | boolean | Attribute to set whether the datasource should restart when it reconnects. |
 |  [reverse](./grid-pro.genesisgriddatasourceelement.reverse.md) |  | boolean |  |
 |  [rowDataMapper](./grid-pro.genesisgriddatasourceelement.rowdatamapper.md) |  | Function | Allows grid data updates to be processed via and external function before applying in grid |
 |  [rowId](./grid-pro.genesisgriddatasourceelement.rowid.md) | <p><code>protected</code></p><p><code>readonly</code></p> | string |  |
@@ -51,8 +52,10 @@ export declare class GenesisGridDatasourceElement extends GenesisGridDatasourceE
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [clearErrors()](./grid-pro.genesisgriddatasourceelement.clearerrors.md) |  | Clears error state and emits connected event. |
 |  [datasourceOptions()](./grid-pro.genesisgriddatasourceelement.datasourceoptions.md) | <code>protected</code> |  |
 |  [datasourceStatusChanged(prev, next)](./grid-pro.genesisgriddatasourceelement.datasourcestatuschanged.md) |  |  |
+|  [handleErrors(errors, type)](./grid-pro.genesisgriddatasourceelement.handleerrors.md) |  | Handles errors and emits appropriate error events. |
 |  [removeFilter(fieldName)](./grid-pro.genesisgriddatasourceelement.removefilter.md) |  |  |
 |  [setFilter(fieldName, newFilter)](./grid-pro.genesisgriddatasourceelement.setfilter.md) |  |  |
 

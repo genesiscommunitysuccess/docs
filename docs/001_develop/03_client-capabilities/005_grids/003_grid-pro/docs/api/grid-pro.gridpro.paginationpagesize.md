@@ -17,5 +17,9 @@ paginationPageSize: number;
 
 ## Remarks
 
-\*\*Default Value:\*\* `DatasourceDefaults.DEFAULT_PAGINATION_PAGE_SIZE (25)` (default MAX\_ROWS divided by 10) Only used when pagination is enabled. Note that AG Grid's full pagination functionality requires the Enterprise module.
+\*\*Default Value:\*\* `DatasourceDefaults.DEFAULT_PAGINATION_PAGE_SIZE (25)` (default MAX\_ROWS divided by 10)
+
+\*\*Only used when pagination is enabled on client-side, server-side pagination page size is fixed to MAX\_ROWS.\*\*
+
+Note that AG Grid's full pagination functionality requires the Enterprise module.
 

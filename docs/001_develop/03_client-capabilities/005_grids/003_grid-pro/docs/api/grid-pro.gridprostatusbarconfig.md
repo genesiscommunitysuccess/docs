@@ -23,6 +23,7 @@ This requires AG Grid Enterprise module to be enabled. Status bar components wil
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [aggregation?](./grid-pro.gridprostatusbarconfig.aggregation.md) |  | boolean | _(Optional)_ Enable aggregation status bar component. |
 |  [loadMore?](./grid-pro.gridprostatusbarconfig.loadmore.md) |  | boolean \| [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md) | _(Optional)_ Configure load more button status bar component. |
 |  [maxRows?](./grid-pro.gridprostatusbarconfig.maxrows.md) |  | boolean | _(Optional)_ Enable max rows status bar component. |
 |  [reload?](./grid-pro.gridprostatusbarconfig.reload.md) |  | boolean \| [GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md) | _(Optional)_ Configure reload button status bar component. |

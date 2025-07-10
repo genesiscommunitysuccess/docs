@@ -27,7 +27,6 @@ Only supports Client-Side Row Model.
 |  [applyAsyncFuncName](./grid-pro.gridprogenesisdatasource.applyasyncfuncname.md) |  | string |  |
 |  [applyFuncName](./grid-pro.gridprogenesisdatasource.applyfuncname.md) |  | string |  |
 |  [keepColDefsOnClearRowData](./grid-pro.gridprogenesisdatasource.keepcoldefsonclearrowdata.md) |  | boolean |  |
-|  [restartOnReconnection](./grid-pro.gridprogenesisdatasource.restartonreconnection.md) |  | boolean |  |
 
 ## Methods
 
@@ -41,7 +40,6 @@ Only supports Client-Side Row Model.
 |  [deinit()](./grid-pro.gridprogenesisdatasource.deinit.md) |  | Deinitialises the datasource, resetting it to its initial state. |
 |  [destroy()](./grid-pro.gridprogenesisdatasource.destroy.md) |  | Destroys the datasource, resetting it to its initial state. |
 |  [disconnectedCallback()](./grid-pro.gridprogenesisdatasource.disconnectedcallback.md) |  |  |
-|  [handleErrors(errors)](./grid-pro.gridprogenesisdatasource.handleerrors.md) |  |  |
 |  [handleStreamDeletes(deletes)](./grid-pro.gridprogenesisdatasource.handlestreamdeletes.md) |  | Handles stream deletes by removing records from the grid. |
 |  [handleStreamInserts(inserts)](./grid-pro.gridprogenesisdatasource.handlestreaminserts.md) |  |  |
 |  [handleStreamUpdates(updates)](./grid-pro.gridprogenesisdatasource.handlestreamupdates.md) |  |  |

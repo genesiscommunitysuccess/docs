@@ -60,6 +60,7 @@ exports.default = {
                     "services",
                     "server-communications",
                 ],
+                pages: [],
             },
         },
         {
@@ -228,6 +229,7 @@ exports.default = {
                     "i18n",
                     "internationalization",
                 ],
+                pages: [],
             },
         },
         {
@@ -292,6 +294,7 @@ exports.default = {
                     "toasts",
                     "snackbar"
                 ],
+                pages: [],
             },
         },
         {

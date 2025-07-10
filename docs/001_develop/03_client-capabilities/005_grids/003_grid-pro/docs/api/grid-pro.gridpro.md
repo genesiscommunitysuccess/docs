@@ -59,6 +59,7 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 |  [headerCaseType](./grid-pro.gridpro.headercasetype.md) |  | [GridProCaseType](./grid-pro.gridprocasetype.md) | The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used. |
 |  [headerHeight](./grid-pro.gridpro.headerheight.md) |  | number |  |
 |  [initialised](./grid-pro.gridpro.initialised.md) | <code>protected</code> | boolean |  |
+|  [isServerSide](./grid-pro.gridpro.isserverside.md) | <code>readonly</code> | boolean |  |
 |  [observedAttributes](./grid-pro.gridpro.observedattributes.md) | <code>readonly</code> | string\[\] |  |
 |  [onlyTemplateColDefs](./grid-pro.gridpro.onlytemplatecoldefs.md) |  | boolean |  |
 |  [pagination](./grid-pro.gridpro.pagination.md) |  | boolean | Enable pagination for the grid. |
@@ -79,6 +80,7 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 |  [addEventListener(eventType, listener, options)](./grid-pro.gridpro.addeventlistener.md) |  | Adds an event listener to the grid element. |
 |  [agAttributeChangedCallback(attName, oldValue, newValue)](./grid-pro.gridpro.agattributechangedcallback.md) |  |  |
 |  [applyTemplateDefinitions(columnDefs, deferredColumnDefsOrState)](./grid-pro.gridpro.applytemplatedefinitions.md) |  | Will merge templated column definitions with <code>columnDefs</code> plus localStorage's column state or <code>deferredColumnStates</code>. |
+|  [cacheFilterConfig()](./grid-pro.gridpro.cachefilterconfig.md) |  |  |
 |  [clearLocalGridOptions()](./grid-pro.gridpro.clearlocalgridoptions.md) |  | Clears the local grid options, this is used to clear the grid options when the grid is restarted. |
 |  [combineAllGridComponents(gridOptionsComponents)](./grid-pro.gridpro.combineallgridcomponents.md) |  |  |
 |  [connectedCallback()](./grid-pro.gridpro.connectedcallback.md) |  |  |

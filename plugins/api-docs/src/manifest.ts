@@ -267,6 +267,7 @@ export default {
           "services",
           "server-communications",
         ],
+        pages: [],
       },
     },
     {
@@ -435,6 +436,7 @@ export default {
           "i18n",
           "internationalization",
         ],
+        pages: [],
       },
     },
     {
@@ -499,6 +501,7 @@ export default {
           "toasts",
           "snackbar"
         ],
+        pages: [],
       },
     },
     {
