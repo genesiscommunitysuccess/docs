@@ -1,0 +1,1 @@
+See [GPAL Standards](/develop/server-capabilities/gpal-standards) for more information on GPAL Scripting.

@@ -29,7 +29,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 - **Sorting**: Order by any column, ASC or DESC.
 - **Filtering**:
-  - Filtering options are automatically generated based on the resource’s metadata.
+  - Filtering options are automatically generated based on the resource's metadata.
   - **String Filters**:
     - contains
     - not contains
@@ -76,7 +76,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that column (field) will have sorting enabled.
   - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
 - **Filtering**:
-  - Filtering options are automatically generated, based on the resource’s metadata.
+  - Filtering options are automatically generated, based on the resource's metadata.
   - **String Filters**:
     - blank
     - contains
@@ -111,7 +111,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
 - **Limitations**:
   - Sorting can only be applied to index fields/columns.
-  - `ROWS_COUNT` doesn’t reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
+  - `ROWS_COUNT` doesn't reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
 ### Usage example
@@ -493,6 +493,37 @@ There are additional attributes that can affect the behaviour of a datasource co
     </tr>
   </tbody>
 </table>
+
+## Events Emitted by `<grid-pro-genesis-datasource>`
+
+The `<grid-pro-genesis-datasource>` component emits several custom events to notify consumers about important changes or errors. You can listen for these events on the component to react to data loading, errors, and other state changes.
+
+### List of Events
+
+| Event Name                | When It Fires                                                                 | Payload Type & Example                                                                 |
+|--------------------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `datasource-init`         | When the datasource is successfully initialized and ready to load data.        | *(none)*                                                                              |
+| `datasource-error`        | When an error occurs during data loading, streaming, or initialization.        | `{ message: string }`<br/>Example:<br/>`{ message: "Failed to load data" }`           |
+| `datasource-size-changed` | When the number of rows in the datasource changes (e.g., after data update).   | `{ value: number, oldValue: number }`<br/>Example:<br/>`{ value: 100, oldValue: 50 }` |
+| `more-rows-changed`       | When the server indicates more rows are available to load (infinite scroll).   | `{ moreRows: boolean, sourceRef: string }`<br/>Example:<br/>`{ moreRows: true, sourceRef: "abc123" }` |
+
+#### Event Details
+
+- **`datasource-init`**
+  - *Description*: Emitted when the datasource has been initialized and is ready to load or stream data.
+  - *Payload*: None.
+
+- **`datasource-error`**
+  - *Description*: Emitted when an error occurs during any datasource operation (initialization, data loading, streaming, etc.).
+  - *Payload*: `{ message: string }` — A message describing the error.
+
+- **`datasource-size-changed`**
+  - *Description*: Emitted whenever the number of rows in the datasource changes (for example, after new data is loaded or rows are removed).
+  - *Payload*: `{ value: number, oldValue: number }` — The new and previous row counts.
+
+- **`more-rows-changed`**
+  - *Description*: Emitted when the server signals that more rows are available to be loaded (typically in infinite scroll scenarios).
+  - *Payload*: `{ moreRows: boolean, sourceRef: string }` — Indicates if more rows are available and provides a reference for loading them.
 
 ## Summary
 

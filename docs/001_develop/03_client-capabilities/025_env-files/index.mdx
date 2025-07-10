@@ -1,0 +1,150 @@
+---
+title: 'Env Files'
+sidebar_label: 'Env Files'
+id: client-env-files
+keywords: [genx, env, globals]
+tags:
+- genx
+- env
+- globals
+sidebar_position: 25
+---
+
+The `genx run` and `genx build` commands read the contents of the `client/.env` file to set global variables in the client build. For the typescript compiler to work these values must also be declared in the `client/globals.d.ts` file.
+
+The `.env` file is not created by default so you must create it yourself. You can use this to set global variables at build time that you can use in the client. This can be used for many things such as
+
+- Source urls for images such as logos
+- Endpoints for communicating with backend resources
+- Booleans for determining behavior such as enabling/disabling features
+- Colors to be used in styling
+
+You can also specify an additional file via `DOT_ENV_FILE` parameter. Create another in the format `.env**fileparam**` that matches the value you pass to `DOT_ENV_FILE`. This is done via `-e` command e.g. `genx -e DOT_ENV_FILE=analytics` and creating a file called `client/.env.analytics`
+
+Both the `.env` file and the additional file will be picked up by `genx`. The file specified in the `DOT_ENV_FILE` param will overwrite any files in the default `.env` file.
+
+As this feature adds variables to the global namespace this feature requires that they are prefixed with `GENX_**PROPERY_NAME**`. Only values with the `GENX_` prefix are picked up and added to the global namespace.
+
+
+## Example 1 - Conditionally displaying a component
+
+In this example component we are showing an analytics section if the global variable `GENX_ANALYTICS_ENABLED` equals <code>"true"</code>.
+
+In this example we are adding a flag to enable an analytics feature. In the default build the feature is disabled. In the ***analytics*** build it is enabled.
+
+### `client/.env`
+```
+GENX_ANALYTICS_ENABLED="false"
+```
+
+### `client/.env.analytics`
+```
+GENX_ANALYTICS_ENABLED="true"
+```
+
+### `client/globals.d.ts`
+```ts
+declare global {
+  // Default generated values
+  const API_HOST: string;
+  const ENABLE_SSO: boolean;
+
+  // Additional properties
+  const GENX_ANALYTICS_ENABLED: string
+}
+
+export {};
+```
+
+Running genx with the `DOT_ENV_FILE=analytics` the component will display.
+
+```genx dev -e DOT_ENV_FILE=analytics```
+
+Running genx without the `DOT_ENV_FILE=analytics` the component will not display.
+
+```genx dev -e```
+
+```ts
+import { customElement, html, when } from '@genesislcap/web-core';
+
+@customElement({
+  template: html`
+    <div class="container">
+      <div class="main-section">
+        ...
+      </div>
+      ${when(() => GENX_ANALYTICS_ENABLED === "true", html`
+        <div class="analytics-section">
+
+        </div>
+      `)}
+    </div>
+
+  `,
+  name: 'example-component',
+})
+export class ExampleComponent {}
+```
+
+## Example 2 - Setting a css var in the design system
+
+In this example we want to set the accent color in the design system for different builds. In the default build we want it to be green but we want two additional builds where we set the accent color to red/blue.
+
+### `client/.env`
+```
+GENX_ACCENT_COLOR="green"
+```
+
+### `client/.env.redbank`
+```
+GENX_ACCENT_COLOR="red"
+```
+
+### `client/.env.bluebank`
+```
+GENX_ACCENT_COLOR="blue"
+```
+
+### `client/globals.d.ts`
+```ts
+declare global {
+  // Default generated values
+  const API_HOST: string;
+  const ENABLE_SSO: boolean;
+
+  // Additional properties
+  const GENX_ACCENT_COLOR: string
+}
+
+export {};
+```
+
+### `client/src/main/main.ts`
+
+In the ***main.ts*** file we are overriding the accent color in the design system. This could be used for white labelling a Genesis application.
+
+```ts
+try {
+  if (GENX_ACCENT_COLOR) {
+    const accentPaletteColor: ColorRGBA64 = parseColorHexRGB(GENX_ACCENT_COLOR);
+    accentPalette.setValueFor(
+      this.provider,
+      PaletteRGB.from(SwatchRGB.create(accentPaletteColor.r, accentPaletteColor.g, accentPaletteColor.b))
+    );
+  }
+} catch (e) {
+ // catch error if GENX_ACCENT_COLOR global var is not defined
+}
+```
+
+Running genx with the `DOT_ENV_FILE=redbank` the accent color for buttons will be red.
+
+```genx dev -e DOT_ENV_FILE=redbank```
+
+Running genx with the `DOT_ENV_FILE=bluebank` the accent color for buttons will be red.
+
+```genx dev -e DOT_ENV_FILE=bluebank```
+
+Running genx without the `DOT_ENV_FILE` param the component will not display.
+
+```genx dev -e```
