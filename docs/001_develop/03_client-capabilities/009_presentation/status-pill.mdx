@@ -1,0 +1,320 @@
+---
+title: 'Status Pill'
+sidebar_label: 'Status Pill'
+id: client-presentation-status-pill
+keywords: [presentation, status-pill, countdown]
+tags:
+- presentation
+- status-pill
+- countdown
+sidebar_position: 9
+---
+
+import StatusPillDemo from './examples/status-pill.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Status Pill
+
+The `status-pill` component shows a message or a countdown with a svg icon or initial in a rounded container. The background color can be configured via attributes.
+
+Use cases:
+
+- Highlighting state
+- Showing a countdown
+
+## Example
+<StatusPillDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-status-pill></rapid-status-pill>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-status-pill
+          icon-name="check"
+          text="Success"
+          background-color="green"
+        >
+        </rapid-status-pill>
+        <rapid-status-pill
+          icon-name="xmark"
+          text="Failure"
+          background-color="red"
+        >
+        </rapid-status-pill>
+        <rapid-status-pill
+          icon-initial="S"
+          text="Live"
+          icon-initial-background-color="#0c52b9"
+          background-color="#547cb6"
+        >
+        </rapid-status-pill>
+        <rapid-status-pill
+          icon-initial="S"
+          icon="clock"
+          text="Market expires in"
+          background-color="#9c851b"
+          date-countdown=${x => x.fiveMinutesTimeInMiliseconds}
+        >
+        </rapid-status-pill>
+      `,
+  })
+  export class MyElement extends GenesisElement {
+    @observable fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
+  }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-status-pill></rapid-status-pill>
+    ```
+    Usage
+    ```tsx
+    export function MyComponent() {
+    const fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
+
+    return (
+    <rapid-status-pill
+      icon-name="check"
+      text="Success"
+      background-color="green"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+      icon-name="xmark"
+      text="Failure"
+      background-color="red"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+      icon-initial="S"
+      text="Live"
+      icon-initial-background-color="#0c52b9"
+      background-color="#547cb6"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+      icon="clock"
+      text="Market expires in"
+      background-color="#9c851b"
+      date-countdown={fiveMinutesTimeInMiliseconds}
+    >
+    </rapid-status-pill>
+    );
+  }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-status-pill></rapid-status-pill>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+    selector: 'my-root',
+    template: `
+      <rapid-status-pill
+        icon-name="check"
+        text="Success"
+        background-color="green"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+        icon-name="xmark"
+        text="Failure"
+        background-color="red"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+        icon-initial="S"
+        text="Live"
+        icon-initial-background-color="#0c52b9"
+        background-color="#547cb6"
+      >
+      </rapid-status-pill>
+      <rapid-status-pill
+        icon="clock"
+        text="Market expires in"
+        background-color="#9c851b"
+        [date-countdown]=fiveMinutesTimeInMiliseconds
+      >
+      </rapid-status-pill>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+      fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+### Attributes
+
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr>
+    <td>background-color</td>
+    <td><code>string</code></td>
+    <td>The fill color of the pill. Use a valid color, rgba, rgb or hex value.</td>
+<td>
+
+```typescript
+<rapid-status-pill background-color="#547cb6">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>icon-name</td>
+    <td><code>string</code></td>
+    <td>The name of the icon (matching with the name in fontawesome).</td>
+<td>
+
+```typescript
+<rapid-status-pill icon-name="check">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>icon-src</td>
+    <td><code>string</code></td>
+    <td>A URL for an image asset to be used.</td>
+<td>
+
+```typescript
+<rapid-status-pill icon-src="/logos/custom-image.svg"">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>icon-initial</td>
+    <td><code>string</code></td>
+    <td>Display a single letter at the start of the pill. Note, will only display the first character of the string.</td>
+<td>
+
+```typescript
+<rapid-status-pill icon-initial="S">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>icon-initial-background-colorl</td>
+    <td><code>string</code></td>
+    <td>The fill color of the icon-initial, if the icon-initial is set. Use a valid color, rgba, rgb or hex value.</td>
+<td>
+
+```typescript
+<rapid-status-pill icon-initial-background-color="red">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>icon-size</td>
+    <td><code>"2xs" | "xs" | "sm" | "lg" | "xl" | "2xl" | "1x" | "2x" | "3x" | "4x" | "5x" | "6x" | "7x" | "8x" | "9x" | "10x"</code></td>
+    <td>Controls the size of the icon in the pill. Default: "sm"</td>
+  <td>
+
+```typescript
+<rapid-status-pill icon-size="xl">
+```
+
+  </td>
+  </tr>
+  <tr>
+    <td>text-color</td>
+    <td><code>string</code></td>
+    <td>The text color in the pill. Use a valid color, rgba, rgb or hex value. Note, this will be applied to the icon as well.</td>
+<td>
+
+```typescript
+<rapid-status-pill text-color="red">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>text</td>
+    <td><code>string</code></td>
+    <td>The text in the pill</td>
+<td>
+
+```typescript
+<rapid-status-pill text="Settled">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>date-countdown</td>
+    <td><code>number</code></td>
+    <td>An epoch timestamp value which will create a countdown in hours, minutes and seconds. If the timestamp is in the past an expired message will show.</td>
+<td>
+
+```typescript
+<rapid-status-pill date-countdown="1751550867041">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>date-countdown-completed-message</td>
+    <td><code>string</code></td>
+    <td>A message that is shown when the countdown, if present and completed, is shown. Default 'Expired'</td>
+<td>
+
+```typescript
+<rapid-status-pill date-countdown-completed-message="Market Closed">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
+
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+This component doesn't have any slots.
+
+### Parts
+| Name | Description |
+|---|---|
+| status-pill | The element containing icons, images and text. If you using a large enough icon, you will need to increase the height. Ensure the border radius is exactly half the specified height to achieve rounded corners. |
+
+### Events fired
+This component doesn't fire any events.
+
+### Events listened to
+This component doesn't listen to any events.
