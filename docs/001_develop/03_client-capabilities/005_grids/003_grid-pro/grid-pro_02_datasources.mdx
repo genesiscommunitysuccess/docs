@@ -21,7 +21,45 @@ import GroovyFilterExpressions from '../../../../_includes/_groovy-filter-expres
 
 ## Overview
 
-The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource components. These components are responsible for fetching data for the Genesis Grid Pro component.
+This folder contains implementations of Genesis `datasource` components, responsible for fetching data for Genesis Grid Pro components.
+
+This document outlines the available features of our two "Grid Pro" datasources: `<grid-pro-client-side-datasource>` and `<grid-pro-server-side-datasource>`.
+
+## Enterprise Features and Licensing
+
+**Important:** Server-side datasource features require AG Grid Enterprise licensing:
+
+- **Server-Side Row Model**: Server-side datasource requires `@ag-grid-enterprise/server-side-row-model`
+- **Custom Sort Indicators**: Server-side datasources automatically display always-visible sort indicators
+- **Advanced Filtering**: Some advanced filtering features may require Enterprise modules
+
+For production use, you must obtain appropriate AG Grid Enterprise licenses. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
+
+### Enterprise Module Registration
+
+**REQUIRED for Server-Side Datasource Features**
+
+If you plan to use Server-Side datasource (`<grid-pro-server-side-datasource>`), you **MUST** register the appropriate AG Grid Enterprise module:
+
+```typescript
+import { ModuleRegistry } from '@ag-grid-community/core';
+
+// Required for Server-Side datasource (<grid-pro-server-side-datasource>)
+import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
+
+// Register the enterprise module
+ModuleRegistry.registerModules([
+  ServerSideRowModelModule, // Required for: <grid-pro-server-side-datasource>
+]);
+```
+
+**Module Requirements:**
+
+| Feature | Required Module | Description |
+|---------|-----------------|-------------|
+| `<grid-pro-server-side-datasource>` | `ServerSideRowModelModule` | Server-side row model for large datasets with server-side operations |
+
+**Note:** This module requires a valid AG Grid Enterprise license for production use.
 
 ## `<grid-pro-client-side-datasource>`
 
@@ -69,12 +107,15 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 ## `<grid-pro-server-side-datasource>`
 
+**Enterprise License Required**: Server-side datasource requires AG Grid Enterprise licensing and the `ServerSideRowModelModule` to be registered (see [Enterprise Module Registration](#enterprise-module-registration) above).
+
 ### Server-side features
 
 - **Sorting**: Order by any INDEX column/field, ASC or DESC.
   - This is a server limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it. 
   - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that column (field) will have sorting enabled.
   - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
+  - **Custom Sort Indicators**: Server-side datasources automatically display always-visible sort indicators on sortable columns, providing better visual feedback about which columns can be sorted even when not currently sorted.
 - **Filtering**:
   - Filtering options are automatically generated, based on the resource's metadata.
   - **String Filters**:
@@ -110,7 +151,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - Sorting uses `ORDER_BY` param.
   - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
 - **Limitations**:
-  - Sorting can only be applied to index fields/columns.
+  - Sorting can only be applied to index fields/columns. Also mentioned [here](https://www.notion.so/Grid-Pro-Datasource-Inventory-d11ca7570ee94847bbcb3e7362025b0a?pvs=21). More details [here](https://genesisglobal.atlassian.net/jira/polaris/projects/GPR/ideas/view/4721227?selectedIssue=GPR-171&focusedCommentId=143757) and [here](https://genesis-global-talk.slack.com/archives/C0416MFG360/p1696456988606789).
   - `ROWS_COUNT` doesn't reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
@@ -125,22 +166,22 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 </rapid-grid-pro>
 ```
 
-## Common attributes and properties
+## Datasource Attributes
 
-There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
+There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component.
 
-### Resource-specific
+### Resource Attributes
 
-Some **resource** attributes and properties are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
-These are used to define the resource that the datasource will be fetching data from. The `resource-name` attribute is required for both `DATASERVER` and `REQUEST_SERVER` resources.
+Some **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` specific while others can be used with both.
 
-#### DATASERVER and REQUEST_SERVER attributes
+#### Attributes that are common between DATASERVER and REQUEST_SERVER
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
       <th>Type</th>
+      <th>Default</th>
       <th>Description</th>
       <th>Example</th>
     </tr>
@@ -149,7 +190,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>resource-name</code></td>
       <td><code>string</code></td>
-      <td>**Required** attribute. The name of the target <a href="/develop/server-capabilities/real-time-queries-data-server/">Data Server</a> <code>query</code> or <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> <code>requestReply</code>.</td>
+      <td>-</td>
+      <td><strong>Required</strong>. The name of the target <a href="/develop/server-capabilities/real-time-queries-data-server/">Data Server</a> <code>query</code> or <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> <code>requestReply</code>.</td>
 <td>
 
 ```html
@@ -162,7 +204,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>is-snapshot</code></td>
       <td><code>boolean</code></td>
-      <td>Request a snapshot from the server. Default: <code>false</code></td>
+      <td><code>false</code></td>
+      <td>Request a snapshot from the server.</td>
 <td>
 
 ```html
@@ -175,6 +218,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>criteria</code></td>
       <td><code>string</code></td>
+      <td>-</td>
       <td>Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.</td>
 <td>
 
@@ -188,6 +232,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>max-rows</code></td>
       <td><code>number</code></td>
+      <td><code>250</code></td>
       <td>Maximum number of rows to be returned as part of the initial message and any additional MORE_ROWS messages. <strong>This will not affect the number of rows displayed.</strong></td>
 <td>
 
@@ -201,6 +246,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>view-number</code></td>
       <td><code>number</code></td>
+      <td>-</td>
       <td>The desired view/page you want data from.</td>
 <td>
 
@@ -214,7 +260,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### DATASERVER and REQUEST_SERVER properties
+#### Common datasource properties
 
 <table>
   <thead>
@@ -229,7 +275,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>:rowDataMapper</code></td>
       <td><code>Function</code></td>
-      <td>Function to map the row data before it is sent to the grid. The function should return an array of objects, where each object represents a row in the grid.</td>
+      <td>Allows grid data updates to be processed via an external function before applying in grid. Function to map the row data before it is sent to the grid. The function should return an array of objects, where each object represents a row in the grid.</td>
 <td>
 
 ```html
@@ -248,13 +294,14 @@ These are used to define the resource that the datasource will be fetching data 
 
 <GroovyFilterExpressions />
 
-#### DATASERVER-only attributes
+#### DATASERVER only attributes
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
       <th>Type</th>
+      <th>Default</th>
       <th>Description</th>
       <th>Example</th>
     </tr>
@@ -263,6 +310,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>fields</code></td>
       <td><code>string</code></td>
+      <td>-</td>
       <td>This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them.</td>
 <td>
 
@@ -276,6 +324,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>max-view</code></td>
       <td><code>number</code></td>
+      <td><code>1000</code></td>
       <td>Maximum number of rows to track as part of a client "view".</td>
 <td>
 
@@ -289,7 +338,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>moving-view</code></td>
       <td><code>boolean</code></td>
-      <td>Default: <code>false</code>. If true, when the maximum number of rows defined in <code>max-view</code> is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.</td>
+      <td><code>false</code></td>
+      <td>If true, when the maximum number of rows defined in <code>max-view</code> is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.</td>
 <td>
 
 ```html
@@ -302,6 +352,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>order-by</code></td>
       <td><code>string</code></td>
+      <td>-</td>
       <td>This option can be used to select a <a href="/develop/server-capabilities/real-time-queries-data-server/#indices">Data Server index</a> (defined in the Data Server <code>query</code>), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).</td>
 <td>
 
@@ -315,7 +366,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>reverse</code></td>
       <td><code>boolean</code></td>
-      <td>Default: <code>false</code>. This option changes the <a href="/develop/server-capabilities/real-time-queries-data-server/#indices">Data Server index</a> iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.</td>
+      <td><code>false</code></td>
+      <td>This option changes the <a href="/develop/server-capabilities/real-time-queries-data-server/#indices">Data Server index</a> iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.</td>
 <td>
 
 ```html
@@ -328,13 +380,14 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### REQUEST_SERVER-only attributes
+#### REQUEST_SERVER only attributes
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
       <th>Type</th>
+      <th>Default</th>
       <th>Description</th>
       <th>Example</th>
     </tr>
@@ -343,7 +396,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>disable-polling</code></td>
       <td><code>boolean</code></td>
-      <td>This option disables polling if set to true (data updates for the grid will not be fetched automatically). Defaults to false.</td>
+      <td><code>false</code></td>
+      <td>This option disables polling if set to true (data updates for the grid will not be fetched automatically).</td>
 <td>
 
 ```html
@@ -356,6 +410,7 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>polling-interval</code></td>
       <td><code>number</code></td>
+      <td><code>5000</code></td>
       <td>This option enables you to set a custom polling frequency (in milliseconds) for a <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> resource. Note that this option only works with Request Server resources; if your resource is a Data Server <code>query</code>, your grid is updated in real time.</td>
 <td>
 
@@ -369,7 +424,8 @@ These are used to define the resource that the datasource will be fetching data 
     <tr>
       <td><code>request-auto-setup</code></td>
       <td><code>boolean</code></td>
-      <td>This option, if set to true, will automatically set up the <code>request</code> based on the datasource's metadata. Defaults to false.</td>
+      <td><code>true</code></td>
+      <td>This option, if set to true, will automatically set up the <code>request</code> based on the datasource's metadata.</td>
 <td>
 
 ```html
@@ -382,7 +438,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### REQUEST_SERVER-only properties
+#### REQUEST_SERVER only properties
 
 <table>
   <thead>
@@ -411,7 +467,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-### Datasource-specific attributes
+### Component Attributes
 
 There are additional attributes that can affect the behaviour of a datasource component.
 
@@ -422,6 +478,7 @@ There are additional attributes that can affect the behaviour of a datasource co
     <tr>
       <th>Name</th>
       <th>Type</th>
+      <th>Default</th>
       <th>Description</th>
       <th>Example</th>
     </tr>
@@ -430,7 +487,8 @@ There are additional attributes that can affect the behaviour of a datasource co
     <tr>
       <td><code>restart-on-reconnection</code></td>
       <td><code>boolean</code></td>
-      <td>If set to true, the resource data will be reloaded upon a reconnection event. Default: <code>false</code></td>
+      <td><code>true</code></td>
+      <td>This option, if set to true, will force the resource data to be reloaded upon a reconnection event.</td>
 <td>
 
 ```html
@@ -442,7 +500,8 @@ There are additional attributes that can affect the behaviour of a datasource co
     <tr>
       <td><code>keep-col-defs-on-clear-row-data</code></td>
       <td><code>boolean</code></td>
-      <td>If set to true, column definitions will be retained upon a <code>restart</code> or <code>clearRowData</code> event. Default: <code>false</code></td>
+      <td><code>false</code></td>
+      <td>This option, if set to true, will retain column definitions upon a <code>restart</code> or <code>clearRowData</code> event.</td>
 <td>
 
 ```html
@@ -461,16 +520,17 @@ There are additional attributes that can affect the behaviour of a datasource co
     <tr>
       <th>Name</th>
       <th>Type</th>
+      <th>Default</th>
       <th>Description</th>
       <th>Example</th>
     </tr>
   </thead>
   <tbody>
-
     <tr>
       <td><code>zero-based-view-number</code></td>
       <td><code>boolean</code></td>
-      <td>If set to true, the starting <code>VIEW_NUMBER</code> will be zero-based (starting from 0 instead of 1). Default is false.</td>
+      <td><code>false</code></td>
+      <td>This option, if set to true, will make the starting VIEW_NUMBER zero-based (starting from 0 instead of 1).</td>
 <td>
 
 ```html
@@ -482,7 +542,8 @@ There are additional attributes that can affect the behaviour of a datasource co
     <tr>
       <td><code>live-updates</code></td>
       <td><code>boolean</code></td>
-      <td>Enables live updates for the grid if set to true (default: false).</td>
+      <td><code>false</code></td>
+      <td>Enable live updates for the grid. Only works with DATASERVER resources (StreamDatasource) right now.</td>
 <td>
 
 ```html
@@ -528,4 +589,4 @@ The `<grid-pro-genesis-datasource>` component emits several custom events to not
 ## Summary
 
 - **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client side.
-- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the back end to ensure performance and consistency. Data is fetched as needed, based on user interactions.
+- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the back end to ensure performance and consistency. Data is fetched as needed, based on user interactions. **Requires AG Grid Enterprise licensing**.
