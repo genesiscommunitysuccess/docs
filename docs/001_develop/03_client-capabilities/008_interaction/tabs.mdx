@@ -78,6 +78,22 @@ You can see tabs in action in the example below. This has three tabs; clicking o
             </ol>
           </rapid-tab-panel>
         </rapid-tabs>
+        <rapid-tabs appearance="secondary">
+					<rapid-tab>Counterparties</rapid-tab>
+					<rapid-tab>Accounts</rapid-tab>
+					<rapid-tab-panel>
+						<ol>
+							<ListItem>Counterparty 1</ListItem>
+							<ListItem>Counterparty 2</ListItem>
+						</ol>
+					</rapid-tab-panel>
+					<rapid-tab-panel>
+						<ol>
+							<ListItem>First Bank Account</ListItem>
+							<ListItem>Second Bank Account</ListItem>
+						</ol>
+					</rapid-tab-panel>
+				</rapid-tabs>
       `,
     })
     export class MyElement extends GenesisElement { }
@@ -122,7 +138,24 @@ You can see tabs in action in the example below. This has three tabs; clicking o
               <li>limoncello and Ice Cream with Biscotti</li>
             </ol>
           </rapid-tab-panel>
-        </rapid-tabs>)
+        </rapid-tabs>
+        <rapid-tabs appearance="secondary">
+          <rapid-tab>Counterparties</rapid-tab>
+          <rapid-tab>Accounts</rapid-tab>
+          <rapid-tab-panel>
+            <ol>
+              <ListItem>Counterparty 1</ListItem>
+              <ListItem>Counterparty 2</ListItem>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel>
+            <ol>
+              <ListItem>First Bank Account</ListItem>
+              <ListItem>Second Bank Account</ListItem>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
+        )
     }
     ```
   </TabItem>
@@ -167,6 +200,22 @@ You can see tabs in action in the example below. This has three tabs; clicking o
             </ol>
           </rapid-tab-panel>
         </rapid-tabs>
+        <rapid-tabs appearance="secondary">
+					<rapid-tab>Counterparties</rapid-tab>
+					<rapid-tab>Accounts</rapid-tab>
+					<rapid-tab-panel>
+						<ol>
+							<ListItem>Counterparty 1</ListItem>
+							<ListItem>Counterparty 2</ListItem>
+						</ol>
+					</rapid-tab-panel>
+					<rapid-tab-panel>
+						<ol>
+							<ListItem>First Bank Account</ListItem>
+							<ListItem>Second Bank Account</ListItem>
+						</ol>
+					</rapid-tab-panel>
+				</rapid-tabs>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -225,6 +274,18 @@ API examples shown with Genesis component syntax, and closing tag omitted.
 
 ```typescript
 <rapid-tabs ?activeindicator=${() => false}>
+```
+
+</td>
+        </tr>
+        <tr>
+          <td>appearance</td>
+          <td><code>"primary" | "secondary"</code></td>
+          <td>Controls the appearance of the tabs. Default: <code>primary</code>.</td>
+<td>
+
+```typescript
+<rapid-tabs appearance="secondary">
 ```
 
 </td>
