@@ -317,13 +317,29 @@ Specifies the maximum number of concurrent active sessions a single user can mai
 A value of 1 means that only one session can be logged in at any time; a value of two allows two sessions to be logged in concurrently, and so on.  
 If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted.
 
+When the maximum number of sessions is reached, the system will provide host/IP information for each active session to help the user identify which sessions they may want to log out from.
+
 ```kotlin
 security {
   maxSimultaneousUserLogins = 2
 }
 ```
 
-Default value: 5  
+Default value: 5
+
+### `hideHostsFromMaxActiveSessionsReachedMessage`
+
+Specifies whether to hide host/IP information from the user when they have reached the maximum number of concurrent sessions. When set to `true`, no host or IP information will be sent back to the user once they have reached the `maxSimultaneousUserLogins` number of sessions.
+
+By default, this is set to `false`, which means the host/IP information is sent back to the client. This information can be used by the user to select a specific session to log out from so that a new session can be created.
+
+```kotlin
+security {
+  hideHostsFromMaxActiveSessionsReachedMessage = true
+}
+```
+
+Default value: false  
 
 ### `retry`
 
