@@ -7,6 +7,11 @@ format: md
 
 ## DefaultSocket.hasValidSession property
 
+> Warning: This API is now obsolete.
+> 
+> - Use `User.isAuthenticated` from `@genesislcap/foundation-user` instead.
+> 
+
 **Signature:**
 
 ```typescript

@@ -7,14 +7,14 @@ format: md
 
 ## GridProGenesisDatasource.restart() method
 
-Restarts the datasource, uses `deinit` and `init` in sequence.
+Restarts the datasource, uses `destroy` and `init` in sequence.
 
 **Signature:**
 
 ```typescript
-restart(): void;
+restart(): Promise<void>;
 ```
 **Returns:**
 
-void
+Promise&lt;void&gt;
 

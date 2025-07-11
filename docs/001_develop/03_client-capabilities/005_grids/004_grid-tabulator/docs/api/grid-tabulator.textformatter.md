@@ -12,7 +12,7 @@ Text formatter for customized display of values. Styled to match grid-pro text r
 **Signature:**
 
 ```typescript
-export declare function textFormatter(cell: any, formatterParams?: TextFormatterParams): string;
+export declare function textFormatter<T = any>(cell: any, formatterParams?: TextFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function textFormatter(cell: any, formatterParams?: TextFormatter
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | TextFormatterParams | _(Optional)_ Text formatter parameters |
+|  formatterParams | TextFormatterParams&lt;T&gt; | _(Optional)_ Text formatter parameters |
 
 **Returns:**
 

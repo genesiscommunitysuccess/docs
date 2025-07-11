@@ -12,7 +12,7 @@ Formatter that displays boolean values using a checkbox component. Styled to mat
 **Signature:**
 
 ```typescript
-export declare function booleanFormatter(cell: any, formatterParams?: BooleanFormatterParams): string;
+export declare function booleanFormatter<T = any>(cell: any, formatterParams?: BooleanFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function booleanFormatter(cell: any, formatterParams?: BooleanFor
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | BooleanFormatterParams | _(Optional)_ Boolean formatter parameters |
+|  formatterParams | BooleanFormatterParams&lt;T&gt; | _(Optional)_ Boolean formatter parameters |
 
 **Returns:**
 

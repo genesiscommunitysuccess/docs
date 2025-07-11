@@ -7,6 +7,7 @@ format: md
 
 ## DefaultGenesisResources.getAllResources() method
 
+Returns all available resources.
 
 **Signature:**
 

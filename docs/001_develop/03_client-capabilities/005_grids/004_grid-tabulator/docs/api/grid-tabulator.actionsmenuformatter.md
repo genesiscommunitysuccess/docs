@@ -12,7 +12,7 @@ Formatter that displays a dropdown menu of actions in the cell. Styled to match 
 **Signature:**
 
 ```typescript
-export declare function actionsMenuFormatter(cell: any, formatterParams?: ActionsMenuFormatterParams): string;
+export declare function actionsMenuFormatter<T = any>(cell: any, formatterParams?: ActionsMenuFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function actionsMenuFormatter(cell: any, formatterParams?: Action
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | ActionsMenuFormatterParams | _(Optional)_ Actions menu formatter parameters |
+|  formatterParams | ActionsMenuFormatterParams&lt;T&gt; | _(Optional)_ Actions menu formatter parameters |
 
 **Returns:**
 

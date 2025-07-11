@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> - Use  instead.
+> - Use `User` from `@genesislcap/foundation-user` instead.
 > 
 
 Represents a User object with associated permissions and profiles.

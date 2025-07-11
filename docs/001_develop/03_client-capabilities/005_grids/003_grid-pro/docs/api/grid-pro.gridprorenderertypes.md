@@ -28,6 +28,7 @@ export declare enum GridProRendererTypes
 |  numberEditor | <code>&quot;numberEditor&quot;</code> |  |
 |  select | <code>&quot;select&quot;</code> |  |
 |  selectEditor | <code>&quot;selectEditor&quot;</code> |  |
+|  statusPill | <code>&quot;statusPill&quot;</code> |  |
 |  stringEditor | <code>&quot;stringEditor&quot;</code> |  |
 |  text | <code>&quot;text&quot;</code> |  |
 

@@ -7,12 +7,12 @@ format: md
 
 ## selectFormatter() function
 
-Formatter that displays a value from a select list of options Styled to match grid-pro select renderer.
+Formatter that displays a select component with options. Returns a wrapped div containing the select, similar to boolean.formatter.
 
 **Signature:**
 
 ```typescript
-export declare function selectFormatter(cell: any, formatterParams: SelectFormatterParams): string;
+export declare function selectFormatter<T = any>(cell: any, formatterParams: SelectFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,11 +20,11 @@ export declare function selectFormatter(cell: any, formatterParams: SelectFormat
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | SelectFormatterParams | Select formatter parameters |
+|  formatterParams | SelectFormatterParams&lt;T&gt; | Select formatter parameters |
 
 **Returns:**
 
 string
 
-Text content for the selected option
+An empty string, as the component is added directly to the cell element
 

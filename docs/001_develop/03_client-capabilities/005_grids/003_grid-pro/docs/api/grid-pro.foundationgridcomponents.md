@@ -130,6 +130,16 @@ foundationGridComponents: {
         styles: import("@microsoft/fast-element").ElementStyles;
         template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors").StringEditor, any>;
     }, typeof import("./cell-editors").StringEditor>;
+    foundationStatusPillRenderer: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }, typeof StatusPillRenderer>;
+    StatusPillRenderer: typeof StatusPillRenderer;
     register(container?: Container, ...rest: any[]): void;
 }
 ```

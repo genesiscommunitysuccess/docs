@@ -33,8 +33,11 @@ export declare class Navigation extends Navigation_base
 |  [loginRouting](./foundation-header.navigation.loginrouting.md) |  | LoginRouting |  |
 |  [logoAltText](./foundation-header.navigation.logoalttext.md) |  | string | Optional attribute which controls the alt text of the logo Control via <code>logo-alt-text</code> |
 |  [logoSrc](./foundation-header.navigation.logosrc.md) |  | any | Optional attribute which controls the icon to show on the navigation bar and flyout Control via <code>logo-src</code> |
+|  [logoutButtonPosition](./foundation-header.navigation.logoutbuttonposition.md) |  | 'side-nav' \| 'account-menu' \| 'none' | String attribute which controls the position of the logout button in the header Control via <code>logout-button-position</code> |
 |  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
 |  [routeNavItems](./foundation-header.navigation.routenavitems.md) |  | FoundationRouteNavItem\[\] | If present the defined  will be rendered in the header 'routes' slot |
+|  [shouldShowAccountMenu](./foundation-header.navigation.shouldshowaccountmenu.md) | <code>readonly</code> | boolean | Computed property that determines if the account menu should be shown |
+|  [showAccountMenu](./foundation-header.navigation.showaccountmenu.md) |  | boolean | Boolean attribute which controls whether to show the account menu on the navigation bar Control via <code>show-account-menu</code> |
 |  [showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md) |  | boolean | Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via <code>show-connection-indicator</code> |
 |  [showLanguageSelector](./foundation-header.navigation.showlanguageselector.md) |  | boolean | Boolean attribute which controls whether to show the language selector on the navigation bar Control via <code>show-language-selector</code> |
 |  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
@@ -49,6 +52,7 @@ export declare class Navigation extends Navigation_base
 |  --- | --- | --- |
 |  [changeLanguage(e)](./foundation-header.navigation.changelanguage.md) |  | Changes the language of the application |
 |  [connectedCallback()](./foundation-header.navigation.connectedcallback.md) |  | Called when the component is connected to the DOM |
+|  [handleNavButtonClick(routeNavItem)](./foundation-header.navigation.handlenavbuttonclick.md) |  | Handles the click event for a navigation button |
 |  [logout()](./foundation-header.navigation.logout.md) |  | Logs the user out of their session |
 |  [navigateTo(path)](./foundation-header.navigation.navigateto.md) |  | Changes the route of the current page |
 |  [selectTemplate()](./foundation-header.navigation.selecttemplate.md) |  | Selects the appropriate template based on the component's state |

@@ -6,6 +6,7 @@ pagination_prev: null
 # API documentation
 
 Welcome to the API documentation for this package.
+
 - To view the API documentation, click on the package name link at the bottom of this page.
 - The files are linked to each other in a tree structure. You can drill down to specific implementation details by following the links. A breadcrumb navigation area is displayed at the top of the file to help you navigate and see where you are in the structure.
 - To return to the start page for this documentation, click on the **Home** link.
@@ -22,4 +23,3 @@ Welcome to the API documentation for this package.
 |  Package | Description |
 |  --- | --- |
 |  [@genesislcap/foundation-i18n](./foundation-i18n.md) |  |
-
