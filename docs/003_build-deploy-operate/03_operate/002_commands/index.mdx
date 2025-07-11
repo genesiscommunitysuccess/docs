@@ -1020,6 +1020,7 @@ purgers {
         formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
         backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
         batchSize = 1000
+        maxParallelism = 16
     }
 
     // ...snip...
@@ -1032,6 +1033,8 @@ The example above uses `config` settings:
 - `formatMode` corresponds to the DumpIt argument; records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
 - `backupLocation` is where the the log file is located.
 - `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Only use this when you are using `batchFinally` to include logic for [cascade purges](#cascade-purges). Larger batch sizes result in fewer database operations and a more efficient purge, but they do require more memory.
+- `maxParallelism` is the max number of database threads that will be used concurrently in `purgeAllDerivedRanges` and `purgeAllDerivedRangesFlow` operations by default. If not specified, it will default to 16.
+
 <br></br>For example, if you use `batchFinally` with `batchSize` set to 1,000 and you delete 8,000 records, there will be 8 database operations. By contrast, an unbatched operation using the `finally` filter would have a database operation for every single delete.
 
 ### Cascade purges
@@ -1041,6 +1044,8 @@ It is often necessary to cascade purges so that related records are also deleted
 For this, you can use either `finally` (which performs a delete for each record to be deleted) or `batchFinally` (which batches records and performs a single delete operation on the whole batch).
 
 When you use `finally` or `batchFinally`, you can add extra functionality for every record that is purged, such as the logic for purging related records:
+
+Basic example:
 
 ```kotlin
 bulkPurger(TABLE_A).batchFinally { records ->
@@ -1054,6 +1059,90 @@ bulkPurger(TABLE_A).finally { record ->
     entityDb.purgeDerivedRecord(TableB.byTableAId(record.tableId))
 }
 ```
+
+#### Available Cascade Methods
+
+The following methods are available for cascading purges within your `finally` or `batchFinally` blocks:
+
+| Method | When to Use | Return Value |
+|--------|-------------|-------------|
+| `purgeDerivedRecord(index)` | Delete a single related record | The deleted record, or `null` if not found (`E?`) |
+| `purgeAllDerivedRecords(indices)` | Delete multiple related records (one per index) | List of all deleted records (`List<E>`) |
+| `purgeDerivedRange(index)` | Delete all records matching a range (multiple records possible) | Nothing (`Unit`) |
+| `purgeAllDerivedRanges(indices, maxParallelism)` | Delete all records matching multiple ranges | Nothing (`Unit`) |
+| `purgeDerivedRangeFlow(index)` | Process records as they're being purged from a range | A flow of deleted records (`Flow<E>`) |
+| `purgeAllDerivedRangesFlow(indices, maxParallelism)` | Process records as they're being purged from multiple ranges | A flow of deleted records (`Flow<E>`) |
+| `purgeAllDerivedRecordsFlow(indices)` | Process records as they're being purged from unique indices | A flow of deleted records (`Flow<E>`) |
+
+**Notes:**
+- `indices` is a list of index objects (e.g., `Fee.byTradeId(tradeId)`).
+- `maxParallelism` is optional and controls how many ranges are processed in parallel.
+- `Flow<E>` is a Kotlin flow, which allows you to process each deleted record as it is purged.
+- Non-Flow methods return the deleted records directly (as a single record, a list, or nothing for range deletes).
+- Flow methods are useful for streaming or real-time processing of deleted records.
+
+#### Real-World Examples
+
+Deleting User Sessions and Related Permissions
+
+```kotlin
+bulkPurger(USER_SESSION).batchFinally { sessions ->
+    // Delete related permissions (one per user)
+    val permissionIndices = sessions.map { RightSummary.byUserNameRightCode(it.userName, "meh") }
+    val deletedPermissions = entityDb.purgeAllDerivedRecords(permissionIndices)
+    println("Deleted ${deletedPermissions.size} permission records")
+}
+```
+
+Deleting Trades and All Related Fees with Logging
+
+```kotlin
+bulkPurger(TRADE).batchFinally { trades ->
+    // Delete all fees for each trade with logging
+    val feeIndices = trades.map { Fee.byTradeId(it.tradeId) }
+    entityDb.purgeAllDerivedRangesFlow(feeIndices)
+        .collect { fee ->
+            println("Deleting fee ${fee.feeId} for trade ${fee.tradeId}")
+        }
+}
+```
+
+Single Record Cascade with Return Value
+
+```kotlin
+bulkPurger(TRADE).finally { trade ->
+    // Delete the single fee record for this trade
+    val deletedFee = entityDb.purgeDerivedRecord(Fee.byTradeId(trade.tradeId))
+    if (deletedFee != null) {
+        println("Deleted fee ${deletedFee.feeId} for trade ${trade.tradeId}")
+    }
+}
+```
+
+Processing Records During Purge
+
+```kotlin
+bulkPurger(USER_SESSION).batchFinally { sessions ->
+    val rightIndices = sessions.map { RightSummary.byUserNameRightCode(it.userName) }
+    entityDb.purgeAllDerivedRecordsFlow(rightIndices)
+        .collect { right ->
+            // Process each right as it's being deleted
+            println("Removing right ${right.rightCode} for user ${right.userName}")
+        }
+}
+```
+
+#### Important considerations
+
+All cascade purge methods automatically:
+- Create backups of records before deletion (based on your `backupMode` configuration)
+- Handle errors gracefully and log failures
+- Continue processing even if individual cascade operations fail
+- The purger configuration settings such as batch size and backup location will be respected.
+
+Also:
+- Use `batchFinally` with `purgeAllDerivedRecords` or `purgeAllDerivedRanges` for better performance when processing many records
+- Use `finally` with `purgeDerivedRecord` or `purgeDerivedRange` for simpler cases with individual records
 
 ## `ReconcileDatabaseSync`
 
