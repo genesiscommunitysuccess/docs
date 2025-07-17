@@ -24,6 +24,8 @@ operations = [
 
     # This will remove the tail of the dependabot version bump commit messages
     {"type": "regex","find": r"\s+in /genesis[\w/-]*","replace": ""},
+    # New dependabot stuff commits
+    {"type": "regex", "find": r"\s+by @[\w\[\]-]+ in https?://[^\s)]+", "replace": "" },
 
     # String matches and replacements - add any modificaitons from original notes here (list will get large!)
     #{"type": "string", "find": "FOOOO", "replace": "BARRRR"},

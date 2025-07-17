@@ -76,6 +76,17 @@ id: '8.8'
 
 ### Patch releases
 
+#### 8.8.29
+
+###### Features
+
+* `genesis-environment` : Add PurgersReader.purgeAllDerivedRecordsFlow and PurgersReader.purgeAllDerivedRangesFlow 
+
+###### Fixes
+
+* `genesis-db` : Ensure BulkJoinProcessor listeners close all channels as expected when timeout errors happen 
+* `genesis-pal-dataserver` : Ensure insert updates are evaluated using dataserver where clause 
+
 #### 8.8.28
 
 ###### Features
