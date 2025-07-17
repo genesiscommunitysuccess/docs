@@ -31,7 +31,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-related compon
 - **State persistence**: Ability to save and restore grid state.
 - **Row models**: Support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
 
-## Enterprise Features and Licensing
+## Enterprise features and licensing
 
 **Important:** Some Grid Pro features require AG Grid Enterprise licensing and module registration:
 
@@ -42,7 +42,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-related compon
 
 For production use, you must obtain appropriate AG Grid Enterprise licenses. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
 
-### Enterprise Module Registration
+### Enterprise module registration
 
 **REQUIRED for Status Bar and Server-Side Datasource Features**
 
@@ -83,7 +83,7 @@ If you're unsure where to register the component, search for the `provideDesignS
 
 ## Basic usage
 
-### Manual data (simple data)
+### Local data (simple data setup without a datasource component)
 
 In this example, you'll see how to pass your data directly to the grid. The only thing you need to do is to bind a data structure to the `:rowData` attribute.
 
@@ -265,7 +265,7 @@ export class AppModule {}
 
 </Tabs>
 
-## Grid Attributes
+## Grid attributes
 
 The `<grid-pro>` element supports the following attributes and properties:
 
@@ -297,7 +297,7 @@ The `<grid-pro>` element supports the following attributes and properties:
 | `with-status-bar`                | `boolean`     | `false`     | **Enterprise Feature**: Enables status bar at bottom of grid. **Requires AG Grid Enterprise module**. |
 | `:statusBarConfig`               | `GridProStatusBarConfig` | `DEFAULT_STATUS_BAR_CONFIG` | **Enterprise Feature**: Configuration for status bar components. Must use binding syntax with observable property. |
 
-## Status Bar Configuration
+## Status bar configuration
 
 **Enterprise License Required**: Status bar functionality requires the AG Grid Enterprise license and the `StatusBarModule` to be registered (see [Enterprise Module Registration](#enterprise-module-registration) above). Status bar components will only be displayed if the Enterprise module is properly licensed and configured.
 
@@ -338,9 +338,9 @@ interface GridProStatusBarReloadConfig {
 | `reload` | Available | Available | Reload/refresh button |
 | `aggregation` | Available | Available | Shows aggregation values for selected columns |
 
-## Complete Usage Examples
+## Complete usage examples
 
-### 1. Client-Side Grid with All Status Bar Components
+### 1. Grid Pro with client-side datasource and status bar (`loadMore` is enabled by default)
 
 ```typescript
 @customElement({
@@ -383,7 +383,7 @@ export class ClientSideGridExample extends GenesisElement {
 }
 ```
 
-### 2. Server-Side Grid (loadMore Automatically Disabled)
+### 2. Grid Pro with server-side datasource and status bar (`loadMore` is automatically disabled)
 
 ```typescript
 @customElement({
@@ -418,7 +418,7 @@ export class ServerSideGridExample extends GenesisElement {
 }
 ```
 
-### 3. Manual Data Grid with Custom Components
+### 3. Grid Pro with local data (no datasource component) and custom components
 
 ```typescript
 @customElement({
@@ -465,7 +465,7 @@ export class ManualDataGrid extends GenesisElement {
 }
 ```
 
-### 4. Theme and Font Customization
+### 4. Theme and font customization
 
 ```typescript
 @customElement({

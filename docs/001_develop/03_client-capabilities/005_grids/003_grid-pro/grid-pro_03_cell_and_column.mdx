@@ -22,11 +22,11 @@ import TabItem from '@theme/TabItem';
 
 The cell and column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers. Grid Pro includes a comprehensive set of built-in cell renderers and editors for common data types and use cases.
 
-## Built-in Cell Renderers
+## Built-in cell renderers
 
 Grid Pro provides several predefined cell renderers that can be used without custom implementation:
 
-### Available Renderers
+### Available renderers
 
 - **ActionRenderer**: Renders action buttons for row operations (edit, delete, custom actions)
 - **ActionsMenuRenderer**: Renders a dropdown menu with multiple actions
@@ -37,7 +37,7 @@ Grid Pro provides several predefined cell renderers that can be used without cus
 - **StatusPillRenderer**: Displays status values as colored pills/badges
 - **SelectRenderer**: Dropdown selection for predefined options
 
-### Using Built-in Renderers
+### Using built-in renderers
 
 You can use these renderers by specifying the renderer type in your column definitions:
 
@@ -67,11 +67,11 @@ const columnDefs: ColDef[] = [
 ];
 ```
 
-## Built-in Cell Editors
+## Built-in cell editors
 
 Grid Pro includes predefined cell editors for common data types:
 
-### Available Editors
+### Available editors
 
 - **DateEditor**: Date picker with configurable format and validation
 - **NumberEditor**: Numeric input with formatting and validation options
@@ -79,7 +79,7 @@ Grid Pro includes predefined cell editors for common data types:
 - **SelectEditor**: Dropdown selection with support for dynamic options
 - **MultiselectEditor**: Multi-selection dropdown for multiple values
 
-### Using Built-in Editors
+### Using built-in editors
 
 Configure editors in your column definitions:
 
@@ -215,7 +215,7 @@ You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
 - Consider using built-in renderers and editors before creating custom implementations.
 - Use the `auto-cell-renderer-by-type` attribute on `<grid-pro>` to automatically select appropriate renderers based on data type.
 
-## Custom Components Registration
+## Custom components registration
 
 You can register custom cell renderers, editors, and filters using the `gridComponents` property:
 
@@ -426,7 +426,7 @@ export class MyElementComponent {
   </TabItem>
 </Tabs>
 
-## Editor Configuration
+## Editor configuration
 
 Each editor supports extensive configuration through editor parameters, allowing customization of appearance, validation, and behavior:
 

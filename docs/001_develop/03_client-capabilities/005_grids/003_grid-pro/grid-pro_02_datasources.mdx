@@ -25,7 +25,7 @@ This folder contains implementations of Genesis `datasource` components, respons
 
 This document outlines the available features of our two "Grid Pro" datasources: `<grid-pro-client-side-datasource>` and `<grid-pro-server-side-datasource>`.
 
-## Enterprise Features and Licensing
+## Enterprise features and licensing
 
 **Important:** Server-side datasource features require AG Grid Enterprise licensing:
 
@@ -35,7 +35,7 @@ This document outlines the available features of our two "Grid Pro" datasources:
 
 For production use, you must obtain appropriate AG Grid Enterprise licenses. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
 
-### Enterprise Module Registration
+### Enterprise module registration
 
 **REQUIRED for Server-Side Datasource Features**
 
@@ -166,11 +166,11 @@ ModuleRegistry.registerModules([
 </rapid-grid-pro>
 ```
 
-## Datasource Attributes
+## Datasource attributes
 
 There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component.
 
-### Resource Attributes
+### Resource attributes
 
 Some **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` specific while others can be used with both.
 
@@ -467,7 +467,7 @@ Some **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` specif
   </tbody>
 </table>
 
-### Component Attributes
+### Component attributes
 
 There are additional attributes that can affect the behaviour of a datasource component.
 
@@ -555,11 +555,11 @@ There are additional attributes that can affect the behaviour of a datasource co
   </tbody>
 </table>
 
-## Events Emitted by `<grid-pro-genesis-datasource>`
+## Events emitted by `<grid-pro-genesis-datasource>`
 
 The `<grid-pro-genesis-datasource>` component emits several custom events to notify consumers about important changes or errors. You can listen for these events on the component to react to data loading, errors, and other state changes.
 
-### List of Events
+### List of events
 
 | Event Name                | When It Fires                                                                 | Payload Type & Example                                                                 |
 |--------------------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
@@ -568,7 +568,7 @@ The `<grid-pro-genesis-datasource>` component emits several custom events to not
 | `datasource-size-changed` | When the number of rows in the datasource changes (e.g., after data update).   | `{ value: number, oldValue: number }`<br/>Example:<br/>`{ value: 100, oldValue: 50 }` |
 | `more-rows-changed`       | When the server indicates more rows are available to load (infinite scroll).   | `{ moreRows: boolean, sourceRef: string }`<br/>Example:<br/>`{ moreRows: true, sourceRef: "abc123" }` |
 
-#### Event Details
+#### Event details
 
 - **`datasource-init`**
   - *Description*: Emitted when the datasource has been initialized and is ready to load or stream data.
