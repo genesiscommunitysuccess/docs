@@ -15,5 +15,5 @@ gridProTemplate: ViewTemplate
 
 ## Remarks
 
-HTML Element: &lt;foundation-grid-pro&gt;
+HTML Element: <foundation-grid-pro>
 

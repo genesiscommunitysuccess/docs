@@ -20,6 +20,7 @@ export declare class DatasourceDefaults
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [DATASERVER\_ROW\_ID](./foundation-comms.datasourcedefaults.dataserver_row_id.md) | <p><code>static</code></p><p><code>readonly</code></p> | (not declared) |  |
+|  [DEFAULT\_PAGINATION\_PAGE\_SIZE](./foundation-comms.datasourcedefaults.default_pagination_page_size.md) | <p><code>static</code></p><p><code>readonly</code></p> | (not declared) |  |
 |  [MAX\_ROWS\_250](./foundation-comms.datasourcedefaults.max_rows_250.md) | <p><code>static</code></p><p><code>readonly</code></p> | (not declared) |  |
 |  [MAX\_VIEW\_1000](./foundation-comms.datasourcedefaults.max_view_1000.md) | <p><code>static</code></p><p><code>readonly</code></p> | (not declared) |  |
 |  [REQ\_REP\_POLLING\_INTERVAL\_MS](./foundation-comms.datasourcedefaults.req_rep_polling_interval_ms.md) | <p><code>static</code></p><p><code>readonly</code></p> | (not declared) |  |

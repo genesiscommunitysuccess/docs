@@ -7,7 +7,7 @@ format: md
 
 ## GenesisResources.getAllResources property
 
-All available resources
+Returns all available resources.
 
 **Signature:**
 

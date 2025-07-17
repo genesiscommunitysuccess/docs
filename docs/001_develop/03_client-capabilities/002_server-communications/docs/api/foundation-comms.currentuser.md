@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> - Use  instead.
+> - Use `DefaultUser` from `@genesislcap/foundation-user` instead.
 > 
 
 Represents the current user (i.e. the user that is currently logged in).

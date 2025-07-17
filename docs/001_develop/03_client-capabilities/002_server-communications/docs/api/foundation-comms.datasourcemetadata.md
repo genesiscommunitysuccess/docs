@@ -25,4 +25,5 @@ export interface DatasourceMetadata
 |  [fieldMetadata](./foundation-comms.datasourcemetadata.fieldmetadata.md) | <code>readonly</code> | [FieldMetadata](./foundation-comms.fieldmetadata.md)\[\] |  |
 |  [originalFieldDef](./foundation-comms.datasourcemetadata.originalfielddef.md) | <code>readonly</code> | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
 |  [requestFields](./foundation-comms.datasourcemetadata.requestfields.md) | <code>readonly</code> | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
+|  [startStreamRequired](./foundation-comms.datasourcemetadata.startstreamrequired.md) |  | boolean |  |
 

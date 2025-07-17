@@ -10,7 +10,7 @@ tags:
   - cell
   - column
 pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-datasources
-pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-renderers
 ---
 
 import Tabs from '@theme/Tabs';
@@ -20,7 +20,93 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The cell and column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers.
+The cell and column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers. Grid Pro includes a comprehensive set of built-in cell renderers and editors for common data types and use cases.
+
+## Built-in cell renderers
+
+Grid Pro provides several predefined cell renderers that can be used without custom implementation:
+
+### Available renderers
+
+- **ActionRenderer**: Renders action buttons for row operations (edit, delete, custom actions)
+- **ActionsMenuRenderer**: Renders a dropdown menu with multiple actions
+- **BooleanRenderer**: Displays boolean values as checkboxes or toggle switches
+- **EditableRenderer**: Provides inline editing capabilities for cells
+- **TextRenderer**: Basic text display with optional formatting
+- **TextFieldRenderer**: Text input field for editing
+- **StatusPillRenderer**: Displays status values as colored pills/badges
+- **SelectRenderer**: Dropdown selection for predefined options
+
+### Using built-in renderers
+
+You can use these renderers by specifying the renderer type in your column definitions:
+
+```typescript
+const columnDefs: ColDef[] = [
+  {
+    headerName: 'Status',
+    field: 'status',
+    cellRenderer: 'statusPill',
+    cellRendererParams: {
+      values: [
+        { value: 'active', label: 'Active', color: 'green' },
+        { value: 'inactive', label: 'Inactive', color: 'red' }
+      ]
+    }
+  },
+  {
+    headerName: 'Actions',
+    field: 'actions',
+    cellRenderer: 'action',
+    cellRendererParams: {
+      actionName: 'Edit',
+      appearance: 'primary',
+      actionClick: (rowData) => console.log('Edit', rowData)
+    }
+  }
+];
+```
+
+## Built-in cell editors
+
+Grid Pro includes predefined cell editors for common data types:
+
+### Available editors
+
+- **DateEditor**: Date picker with configurable format and validation
+- **NumberEditor**: Numeric input with formatting and validation options
+- **StringEditor**: Text input with optional validation and placeholder
+- **SelectEditor**: Dropdown selection with support for dynamic options
+- **MultiselectEditor**: Multi-selection dropdown for multiple values
+
+### Using built-in editors
+
+Configure editors in your column definitions:
+
+```typescript
+const columnDefs: ColDef[] = [
+  {
+    headerName: 'Birth Date',
+    field: 'birthDate',
+    editable: true,
+    cellEditor: 'dateEditor',
+    cellEditorParams: {
+      format: 'DD/MM/YYYY',
+      placeholder: 'Select date'
+    }
+  },
+  {
+    headerName: 'Category',
+    field: 'category',
+    editable: true,
+    cellEditor: 'selectEditor',
+    cellEditorParams: {
+      values: ['A', 'B', 'C'],
+      placeholder: 'Choose category'
+    }
+  }
+];
+```
 
 ## `GridProCell` component
 
@@ -110,7 +196,7 @@ The `GridProColumn` component represents a column definition for the Grid Pro.
 <td>
 
 ```typescript
-<grid-pro-column :definition="${(x) = x.columnDefiniton}">
+<grid-pro-column :definition="${(x) => x.columnDefinition}">
 ```
 
 </td>
@@ -126,6 +212,34 @@ You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
 
 - Use `GridProCell` to define [custom cell renderers](../grid-pro-renderers) with dynamic rendering logic.
 - Leverage the `definition` property of `GridProColumn` to configure column-specific settings.
+- Consider using built-in renderers and editors before creating custom implementations.
+- Use the `auto-cell-renderer-by-type` attribute on `<grid-pro>` to automatically select appropriate renderers based on data type.
+
+## Custom components registration
+
+You can register custom cell renderers, editors, and filters using the `gridComponents` property:
+
+```typescript
+@customElement({
+  name: 'my-grid',
+  template: html`
+    <rapid-grid-pro 
+      :gridComponents="${(x) => x.gridComponents}"
+      auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource
+        resource-name="ALL_TRADES">
+      </grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `
+})
+export class MyGrid extends GenesisElement {
+  @observable gridComponents = {
+    customRenderer: CustomCellRenderer,
+    customEditor: CustomCellEditor,
+    customFilter: CustomFilter
+  };
+}
+```
 
 ## Usage example
 
@@ -144,6 +258,27 @@ const customColDefs: ColDef[] = [
       actionClick: (rowData) => console.log('View Data', rowData),
     },
   },
+  {
+    headerName: 'Status',
+    field: 'status',
+    cellRenderer: 'statusPill',
+    cellRendererParams: {
+      values: [
+        { value: 'active', label: 'Active', color: 'green' },
+        { value: 'pending', label: 'Pending', color: 'orange' },
+        { value: 'inactive', label: 'Inactive', color: 'red' }
+      ]
+    }
+  },
+  {
+    headerName: 'Category',
+    field: 'category',
+    editable: true,
+    cellEditor: 'selectEditor',
+    cellEditorParams: {
+      values: ['Technology', 'Finance', 'Healthcare', 'Education']
+    }
+  }
 ];
 ```
 
@@ -291,7 +426,29 @@ export class MyElementComponent {
   </TabItem>
 </Tabs>
 
+## Editor configuration
+
+Each editor supports extensive configuration through editor parameters, allowing customization of appearance, validation, and behavior:
+
+```typescript
+const columnWithAdvancedEditor: ColDef = {
+  headerName: 'Price',
+  field: 'price',
+  editable: true,
+  cellEditor: 'numberEditor',
+  cellEditorParams: {
+    min: 0,
+    max: 10000,
+    precision: 2,
+    step: 0.01,
+    placeholder: 'Enter price'
+  }
+};
+```
+
 ## Performance considerations
 
 - Custom renderers should be lightweight to maintain grid performance.
 - Use observable properties to enable reactive updates.
+- Consider using built-in renderers and editors before implementing custom solutions.
+- Use the `auto-cell-renderer-by-type` feature to automatically select appropriate renderers based on data types.

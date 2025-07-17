@@ -60,8 +60,13 @@ const createOutputDuplexStream = (manifestSettings, outputDir, readmeStreamTrans
     write(chunk, _, callback) {
         const buffer = chunk.toString();
         const pages = buffer.split(PAGE_DELIMETER);
+        if (!Array.isArray(manifestSettings.pages)) {
+            callback(new Error(`Manifest for package ${manifestSettings.directory} is missing the 'pages' property in output or it is not an array.`));
+            return;
+        }
         if (pages.length !== manifestSettings.pages.length) {
             callback(new Error(`Page splits and page config counts do not match for package ${manifestSettings.directory}`));
+            return;
         }
         for (let i = 0; i < pages.length; i++) {
             const writeStream = fs_extra_1.default.createWriteStream(path_1.default.join(outputDir, manifestSettings.readme), { encoding: "utf8" });
