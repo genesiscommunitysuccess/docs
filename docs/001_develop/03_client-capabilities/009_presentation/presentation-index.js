@@ -14,6 +14,7 @@ import IconDemo from './examples/icon.js';
 import ProgressRingDemo from './examples/progress-ring.js';
 import ProgressDemo from './examples/progress.js';
 import SkeletonDemo from './examples/skeleton.js';
+import StatusPillDemo from './examples/status-pill';
 
 const cardData = [
   {
@@ -93,6 +94,12 @@ const cardData = [
     "link": "/develop/client-capabilities/presentation/client-presentation-skeleton/",
     "text": "Show loading state placeholder",
     children: <SkeletonDemo />,
+  },
+  {
+    "heading": "Status Pill",
+    "link": "/develop/client-capabilities/presentation/client-presentation-status-pill/",
+    "text": "Show status pill",
+    children: <StatusPillDemo />,
   },
 ];
 
