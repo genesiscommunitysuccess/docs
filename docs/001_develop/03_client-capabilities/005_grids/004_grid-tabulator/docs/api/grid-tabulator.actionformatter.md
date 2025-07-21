@@ -12,7 +12,7 @@ Formatter that displays an action button in the cell. Styled to match grid-pro a
 **Signature:**
 
 ```typescript
-export declare function actionFormatter(cell: any, formatterParams?: ActionFormatterParams): string;
+export declare function actionFormatter<T = any>(cell: any, formatterParams?: ActionFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function actionFormatter(cell: any, formatterParams?: ActionForma
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | ActionFormatterParams | _(Optional)_ Action formatter parameters |
+|  formatterParams | ActionFormatterParams&lt;T&gt; | _(Optional)_ Action formatter parameters |
 
 **Returns:**
 

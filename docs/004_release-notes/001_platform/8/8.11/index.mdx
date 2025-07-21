@@ -105,6 +105,43 @@ This release contains [impactful changes](#impactful-changes). They are not brea
 
 ### Patch releases
 
+#### 8.11.4
+
+###### Fixes
+
+* `genesis-process` : Stacktrace is now shown again when any issues arise during process startup 
+
+#### 8.11.3
+
+###### Features
+
+* `genesis-criteria` : Add missing Expr functions to criteria validation allowlist 
+
+#### 8.11.2
+
+###### Features
+
+* `core` : `startProcess` appends environment variable `GENESIS_SYSDEF_JVM_OPTIONS` to the process jvm options 
+* `genesis-criteria` : Implement `Expr.dateTimeIsInRange` functionality for time-based filtering and `DATE_TIME_IS_IN_RANGE` method call to support this feature in report generation 
+* `genesis-dbtest` : Option to generate random SQL schema name for tests 
+* `genesis-environment` : Add PurgersReader.purgeAllDerivedRecordsFlow and PurgersReader.purgeAllDerivedRangesFlow 
+* `genesis-environment` : Add `PurgersReader.purgeDerivedRangeFlow` 
+* `genesis-environment` : Return purged record in `PurgersReader.purgeDerivedRecord` 
+* `genesis-pal-consolidator` : Support cold start by using `CONSOLIDATOR_COLDSTART` sys def value 
+* `genesis-pal-dataserver` : Improve data server duplicate key error message and logging around start up 
+
+###### Fixes
+
+* `genesis-config` : Only use genesis-system-definition to determine environment 
+* `genesis-environment` : Fix issue preventing all script.kts file evaluations 
+* `genesis-pal-dataserver` : Ensure an additional QUERY_UPDATE message with MORE_ROWS=false is sent to query subscriptions using the `chunkLargeMessages` option, if no more rows are available after a DATA_LOGON or MORE_ROWS request 
+* `genesis-pal-dataserver` : Ensure insert updates are evaluated using dataserver where clause 
+* `genesis-pal-dataserver` : Fix numerous out of sync update processing issues 
+* `genesis-pal-dataserver` : Fury serializer can now handle payloads greater than 512 bytes correctly 
+* `genesis-pal-dataserver` : Setting `MAX_VIEW = 0` should allow views to grow without boundaries other than `Integer.MAX_VALUE` 
+* `genesis-testsupport` : Do not register lifecycle manager JVM shutdown hook for tests 
+* `genesis-environment` : Revert `GenesisInjector` changes for `PurgeTables` and related scripts 
+
 #### 8.11.1
 
 ###### Features

@@ -12,10 +12,10 @@ Get the datasource element.
 **Signature:**
 
 ```typescript
-get gridProDatasource(): GridProGenesisDatasource | GridProClientSideDatasource | GridProServerSideDatasource;
+get gridProDatasource(): GridProBaseDatasource;
 ```
 
 ## Remarks
 
-This will return the first datasource element found in the light DOM. Can be either `grid-pro-genesis-datasource`, `grid-pro-client-side-datasource`, or `grid-pro-server-side-datasource`.
+This will return the first datasource element found in the light DOM, wrapping all concrete datasource implementations.
 

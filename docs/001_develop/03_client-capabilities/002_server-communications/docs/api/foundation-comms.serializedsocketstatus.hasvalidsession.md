@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> - Use  instead.
+> - Use `User.isAuthenticated` from `@genesislcap/foundation-user` instead.
 > 
 
 **Signature:**

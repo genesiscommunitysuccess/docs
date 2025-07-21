@@ -18,17 +18,25 @@ format: md
 |  [BooleanRenderer](./grid-pro.booleanrenderer.md) | The AG Boolean Renderer element. |
 |  [DateEditor](./grid-pro.dateeditor.md) | The AG Date Editor element. |
 |  [EditableRenderer](./grid-pro.editablerenderer.md) | The AG Editable Renderer element. |
+|  [GenesisGridDatasourceElement](./grid-pro.genesisgriddatasourceelement.md) | The base datasource element for the grid-pro element. |
 |  [GridPro](./grid-pro.gridpro.md) | The Grid Pro element. |
+|  [GridProBaseDatasource](./grid-pro.gridprobasedatasource.md) |  |
 |  [GridProCell](./grid-pro.gridprocell.md) | The Grid Pro Cell element. |
 |  [GridProClientSideDatasource](./grid-pro.gridproclientsidedatasource.md) | The Genesis Datasource element, for client-side \| CSRM-compatible data fetching and used exclusively by the GridPro element. |
 |  [GridProColumn](./grid-pro.gridprocolumn.md) | The Grid Pro Column element. |
 |  [GridProGenesisDatasource](./grid-pro.gridprogenesisdatasource.md) | The Genesis Datasource element, for CSRM-compatible data fetching and used exclusively by the GridPro element. |
+|  [GridProServerSideDatasource](./grid-pro.gridproserversidedatasource.md) | **_(BETA)_** A Genesis Datasource element, for server-side \| SSRM-compatible data fetching and used exclusively by the GridPro element. |
 |  [KVStorageStatePersistence](./grid-pro.kvstoragestatepersistence.md) | Implementation for the KV Storage State Persistence interface. |
+|  [LabelValueStatusBarComponent](./grid-pro.labelvaluestatusbarcomponent.md) | Label Value Status Bar Component |
+|  [LoadMoreStatusBarComponent](./grid-pro.loadmorestatusbarcomponent.md) | A status bar component that shows a "Load More" button when more rows are available |
 |  [LocalStorageStatePersistence](./grid-pro.localstoragestatepersistence.md) | Implementation for the Local Storage State Persistence interface. |
 |  [MultiselectEditor](./grid-pro.multiselecteditor.md) | The AG Multiselect Editor element. |
 |  [NumberEditor](./grid-pro.numbereditor.md) | The AG Number Editor element. |
+|  [PaginationStatusBarComponent](./grid-pro.paginationstatusbarcomponent.md) | Pagination Status Bar Component for AG Grid Displays pagination controls and information about current page and total rows |
+|  [ReloadStatusBarComponent](./grid-pro.reloadstatusbarcomponent.md) | A status bar component that shows a refresh icon to reload the grid data |
 |  [SelectEditor](./grid-pro.selecteditor.md) | The AG Select Editor element. |
 |  [SelectRenderer](./grid-pro.selectrenderer.md) | The AG Select Renderer element. |
+|  [StatusPillRenderer](./grid-pro.statuspillrenderer.md) | The AG Status Pill Renderer element. |
 |  [StringEditor](./grid-pro.stringeditor.md) | The AG String Editor element. |
 
 ## Enumerations
@@ -39,6 +47,7 @@ format: md
 |  [AgGridTheme](./grid-pro.aggridtheme.md) | The available Grid Pro themes. |
 |  [GridProCaseType](./grid-pro.gridprocasetype.md) | The available Grid Pro header case types |
 |  [GridProRendererTypes](./grid-pro.gridprorenderertypes.md) | The available Grid Pro Renderer Types |
+|  [GridProStatusBarTypes](./grid-pro.gridprostatusbartypes.md) | The available Grid Pro Status Bar Types |
 
 ## Functions
 
@@ -58,6 +67,9 @@ format: md
 |  [DateEditorParams](./grid-pro.dateeditorparams.md) | Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md) |
 |  [GridOptionsConfig](./grid-pro.gridoptionsconfig.md) | Grid options config used to configure grids across the application |
 |  [GridProErrorItem](./grid-pro.gridproerroritem.md) | Grid Pro Error Item |
+|  [GridProStatusBarConfig](./grid-pro.gridprostatusbarconfig.md) | Configuration options for the grid status bar components |
+|  [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md) | Configuration options for load more status bar component |
+|  [GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md) | Configuration options for reload status bar component |
 |  [MultiselectEditorParams](./grid-pro.multiselecteditorparams.md) | Parameters used to configure [MultiselectEditor](./grid-pro.multiselecteditor.md) |
 |  [NumberEditorParams](./grid-pro.numbereditorparams.md) | Parameters used to configure [NumberEditor](./grid-pro.numbereditor.md) |
 |  [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) | The interface for the select renderer parameters |
@@ -85,6 +97,7 @@ format: md
 |  [agNumberEditorStyles](./grid-pro.agnumbereditorstyles.md) | The AG Number Editor Styles. |
 |  [agSelectEditorStyles](./grid-pro.agselecteditorstyles.md) | The AG Select Renderer Styles. |
 |  [agSelectRendererStyles](./grid-pro.agselectrendererstyles.md) | The AG Select Renderer Styles. |
+|  [agStatusPillRendererStyles](./grid-pro.agstatuspillrendererstyles.md) | The Status Pill Renderer Styles. |
 |  [agStringEditorStyles](./grid-pro.agstringeditorstyles.md) | The AG String Renderer Styles. |
 |  [agThemeAlpineNofontsCSS](./grid-pro.agthemealpinenofontscss.md) | AG Alpine Theme (no fonts) CSS. |
 |  [agThemeBalhamNofontsCSS](./grid-pro.agthemebalhamnofontscss.md) | AG Balham Theme (no fonts) CSS. |
@@ -96,7 +109,10 @@ format: md
 |  [CellTemplate](./grid-pro.celltemplate.md) | The Grid Pro Cell Template. |
 |  [ColumnTemplate](./grid-pro.columntemplate.md) | The Grid Pro Column Template. |
 |  [convertToKebabCase](./grid-pro.converttokebabcase.md) | Convert string values from 'camelCase' to 'kebab-case' |
+|  [criteriaDelimiter](./grid-pro.criteriadelimiter.md) | The delimiter for the criteria string. |
+|  [criteriaJoin](./grid-pro.criteriajoin.md) | The join for the criteria string. |
 |  [csvExportParams](./grid-pro.csvexportparams.md) | Allows secure export of CSV https://owasp.org/www-community/attacks/CSV\_Injection |
+|  [DEFAULT\_STATUS\_BAR\_CONFIG](./grid-pro.default_status_bar_config.md) | Default status bar configuration |
 |  [defaultAgGridFontFace](./grid-pro.defaultaggridfontface.md) | The default font face for Grid Pro (agGridAlpine). |
 |  [defaultGridOptionsConfig](./grid-pro.defaultgridoptionsconfig.md) | Default grid options |
 |  [defaultGridProConfig](./grid-pro.defaultgridproconfig.md) | Grid Pro default configuration. |
@@ -117,6 +133,7 @@ format: md
 |  [foundationMultiselectEditor](./grid-pro.foundationmultiselecteditor.md) |  |
 |  [foundationNumberEditor](./grid-pro.foundationnumbereditor.md) |  |
 |  [foundationSelectEditor](./grid-pro.foundationselecteditor.md) |  |
+|  [foundationStatusPillRenderer](./grid-pro.foundationstatuspillrenderer.md) | A function that returns a Foundation Status Pill Renderer registration for configuring the component with a DesignSystem. |
 |  [foundationStringEditor](./grid-pro.foundationstringeditor.md) |  |
 |  [getActionsMenuDef](./grid-pro.getactionsmenudef.md) | Helper function to get ColDef [https://www.ag-grid.com/javascript-data-grid/column-properties/](https://www.ag-grid.com/javascript-data-grid/column-properties/) for Actions Menu Renderer. Will take the parameter values for a base ColDef and merge them with the overrideDef (if specified). |
 |  [getAgBooleanRendererTemplate](./grid-pro.getagbooleanrenderertemplate.md) | Get a Design System prefixed Checkbox template. |
@@ -127,6 +144,7 @@ format: md
 |  [getNumberEditorTemplate](./grid-pro.getnumbereditortemplate.md) | Get a Design System prefixed Select template. |
 |  [getSelectEditorTemplate](./grid-pro.getselecteditortemplate.md) | Get a Design System prefixed Select template. |
 |  [getSelectRendererTemplate](./grid-pro.getselectrenderertemplate.md) | Get a Design System prefixed Select template. |
+|  [getStatusPillRendererTemplate](./grid-pro.getstatuspillrenderertemplate.md) | Get a Design System prefixed Status Pill template. |
 |  [getStringEditorTemplate](./grid-pro.getstringeditortemplate.md) | Get a Design System prefixed String template. |
 |  [getTextFieldRendererTemplate](./grid-pro.gettextfieldrenderertemplate.md) | Get a Design System prefixed Text Field template. |
 |  [getTextRendererTemplate](./grid-pro.gettextrenderertemplate.md) |  |
@@ -155,5 +173,9 @@ format: md
 |  [GridProGenesisDatasourceErrorEventDetail](./grid-pro.gridprogenesisdatasourceerroreventdetail.md) | The event detail for the grid pro genesis datasource <code>error</code> event. |
 |  [GrigProGenesisDatasourceSizeChangedEvent](./grid-pro.grigprogenesisdatasourcesizechangedevent.md) | The change size event grid pro genesis datasource. |
 |  [GrigProGenesisDatasourceSizeChangedEventDetail](./grid-pro.grigprogenesisdatasourcesizechangedeventdetail.md) | The event detail for the grid pro genesis datasource <code>sizeChanged</code> event. |
+|  [LabelValueStatusBarParams](./grid-pro.labelvaluestatusbarparams.md) | Label Value Status Bar Component |
+|  [LoadMoreStatusBarParams](./grid-pro.loadmorestatusbarparams.md) | The parameters for the load more status bar component. |
 |  [MoreRowsDetail](./grid-pro.morerowsdetail.md) | The Genesis Datasource event payload types. |
+|  [ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md) | The parameters for the reload status bar component. |
+|  [StatusPillRendererParams](./grid-pro.statuspillrendererparams.md) | Parameters used to configure [StatusPillRenderer](./grid-pro.statuspillrenderer.md) |
 

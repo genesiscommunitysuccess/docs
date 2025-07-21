@@ -12,7 +12,7 @@ Formatter that displays an editable cell with validation state
 **Signature:**
 
 ```typescript
-export declare function editableFormatter(cell: any, formatterParams?: EditableFormatterParams): string;
+export declare function editableFormatter<T = any>(cell: any, formatterParams?: EditableFormatterParams<T>): string;
 ```
 
 ## Parameters
@@ -20,7 +20,7 @@ export declare function editableFormatter(cell: any, formatterParams?: EditableF
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  cell | any | The cell component provided by Tabulator |
-|  formatterParams | EditableFormatterParams | _(Optional)_ Editable formatter parameters |
+|  formatterParams | EditableFormatterParams&lt;T&gt; | _(Optional)_ Editable formatter parameters |
 
 **Returns:**
 

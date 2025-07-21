@@ -94,6 +94,7 @@ format: md
 |  [defaultEventMap](./foundation-utils.defaulteventmap.md) | A map that associates specific HTML element tags with their corresponding default event names. |
 |  [defaultJSONSerializerConfig](./foundation-utils.defaultjsonserializerconfig.md) | A Default JSONSerializer Config for serializing and deserializing functions. |
 |  [defaultLoggerOptions](./foundation-utils.defaultloggeroptions.md) | The default logger options. |
+|  [delay](./foundation-utils.delay.md) | Delay for a given number of milliseconds |
 |  [encodeToBase64](./foundation-utils.encodetobase64.md) | Encodes the given value to base64. |
 |  [encodeToBase64WithPrefix](./foundation-utils.encodetobase64withprefix.md) | Encodes the given value with a prefix to base64. |
 |  [FORCE\_HTTP](./foundation-utils.force_http.md) | The path to a JSON config file for the HTTP mode. |

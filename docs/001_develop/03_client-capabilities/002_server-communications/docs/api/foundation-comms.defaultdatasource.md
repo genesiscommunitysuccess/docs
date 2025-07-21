@@ -26,13 +26,11 @@ export declare class DefaultDatasource implements Datasource
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [allParams](./foundation-comms.defaultdatasource.allparams.md) | <code>readonly</code> | any |  |
 |  [auth](./foundation-comms.defaultdatasource.auth.md) | <code>protected</code> | [Auth](./foundation-comms.auth.md) |  |
 |  [availableIndexes](./foundation-comms.defaultdatasource.availableindexes.md) |  | [IndexDetail](./foundation-comms.indexdetail.md)\[\] |  |
 |  [config](./foundation-comms.defaultdatasource.config.md) | <code>protected</code> | [DatasourceConfig](./foundation-comms.datasourceconfig.md) |  |
 |  [connect](./foundation-comms.defaultdatasource.connect.md) | <code>protected</code> | [Connect](./foundation-comms.connect.md) |  |
 |  [customRequestFields](./foundation-comms.defaultdatasource.customrequestfields.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [dataserverParams](./foundation-comms.defaultdatasource.dataserverparams.md) | <code>readonly</code> | [DataserverParams](./foundation-comms.dataserverparams.md) |  |
 |  [fetchMetadataRequired](./foundation-comms.defaultdatasource.fetchmetadatarequired.md) |  | boolean |  |
 |  [fieldMetadata](./foundation-comms.defaultdatasource.fieldmetadata.md) |  | [FieldMetadata](./foundation-comms.fieldmetadata.md)\[\] |  |
 |  [initialized](./foundation-comms.defaultdatasource.initialized.md) | <code>readonly</code> | boolean | Indicates whether the datasource has been initialized. |
@@ -40,7 +38,6 @@ export declare class DefaultDatasource implements Datasource
 |  [originalFieldDef](./foundation-comms.defaultdatasource.originalfielddef.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
 |  [readOnly](./foundation-comms.defaultdatasource.readonly.md) |  | boolean |  |
 |  [requestFields](./foundation-comms.defaultdatasource.requestfields.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [requestParams](./foundation-comms.defaultdatasource.requestparams.md) | <code>readonly</code> | [RequestParams](./foundation-comms.requestparams.md) |  |
 |  [resources](./foundation-comms.defaultdatasource.resources.md) | <code>protected</code> | [GenesisResources](./foundation-comms.genesisresources.md) |  |
 |  [resourceType](./foundation-comms.defaultdatasource.resourcetype.md) |  | [ResourceType](./foundation-comms.resourcetype.md) |  |
 |  [startStreamRequired](./foundation-comms.defaultdatasource.startstreamrequired.md) |  | boolean |  |
