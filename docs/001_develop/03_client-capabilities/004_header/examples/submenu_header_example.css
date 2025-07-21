@@ -4,6 +4,6 @@
   width: 100%;
 }
 
-.submenu-header-example foundation-header::part(nav-submenu-wrapper) {
-  min-width: auto;
+.submenu-header-example::part(nav-button) {
+  width: calc(100% - var(--design-unit) * 2px);
 }
