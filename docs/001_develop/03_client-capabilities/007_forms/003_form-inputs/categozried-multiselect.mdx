@@ -64,17 +64,22 @@ export class MyElement extends GenesisElement {
       label: 'This is the first value',
       description:
         'Here you can add further information about each categorized multiselect item if you would like to',
+      icon: 'mountain',
+      iconColor: '#4CAF50',
     },
     {
       type: "Second category",
       value: 'Second value',
       label: 'This is the second value',
+      svg: '/path/to/icon.svg',
     },
     {
       type: "Second category",
       value: 'Third value',
       label: "This is the third value, and it's disabled",
       disabled: true,
+      icon: 'warning',
+      iconColor: '#FF9800',
     },
   ]
   onChange() {
@@ -103,17 +108,22 @@ export function MyComponent() {
       label: 'This is the first value',
       description:
         'Here you can add further information about each categorized multiselect item if you would like to',
+      icon: 'mountain',
+      iconColor: '#4CAF50',
     },
     {
       type: "Second category",
       value: 'Second value',
       label: 'This is the second value',
+      svg: '/path/to/icon.svg',
     },
     {
       type: "Second category",
       value: 'Third value',
       label: "This is the third value, and it's disabled",
       disabled: true,
+      icon: 'warning',
+      iconColor: '#FF9800',
     },
   ]
 
@@ -161,17 +171,22 @@ export class MyComponent {
       label: 'This is the first value',
       description:
         'Here you can add further information about each categorized multiselect item if you would like to',
+      icon: 'mountain',
+      iconColor: '#4CAF50',
     },
     {
       type: "Second category",
       value: 'Second value',
       label: 'This is the second value',
+      svg: '/path/to/icon.svg',
     },
     {
       type: "Second category",
       value: 'Third value',
       label: "This is the third value, and it's disabled",
       disabled: true,
+      icon: 'warning',
+      iconColor: '#FF9800',
     },
   ]
 
@@ -287,6 +302,42 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 ```typescript
 <rapid-categorized-multiselect :position=${() => Position.ABOVE}>
 <rapid-categorized-multiselect :position=${(x) => x.dropdownPosition}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td><code>string</code></td>
+      <td>Optional. Name of the icon to display for the option (uses the icon set available in your project).</td>
+<td>
+
+```typescript
+{ icon: 'mountain' }
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>iconColor</td>
+      <td><code>string</code></td>
+      <td>Optional. Color of the icon (any valid CSS color value).</td>
+<td>
+
+```typescript
+{ icon: 'mountain', iconColor: '#4CAF50' }
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>svg</td>
+      <td><code>string</code></td>
+      <td>Optional. Path or URL to a custom SVG icon for the option.</td>
+<td>
+
+```typescript
+{ svg: '/path/to/icon.svg' }
 ```
 
 </td>
