@@ -359,6 +359,12 @@ internal class EnableInMemoryTestAuthCacheExamples {
     @Inject
     lateinit var authCache: InMemoryTestAuthCache
 
+    @BeforeEach
+    fun setUp() {
+        // Clear the entire auth map before each test
+        authCache.clear("TRADE_VISIBILITY")
+    }
+
     @Test
     fun testAuthorizeAndRevokeAuthCache() {
         // to authorize:
@@ -369,7 +375,7 @@ internal class EnableInMemoryTestAuthCacheExamples {
         )
 
         // and then to revoke authorisation:
-        authCache.authorise(
+        authCache.revoke(
             authMap = "TRADE_VISIBILITY",
             entityCode = "00000000001TRSP0",
             userName = "JohnDoe"
@@ -391,6 +397,12 @@ public class EnableInMemoryTestAuthCacheExamplesJavaTest {
      */
     @Inject
     private InMemoryTestAuthCache authCache = null;
+
+    @BeforeEach
+    public void setUp() {
+        // Clear the entire auth map before each test
+        authCache.clear("TRADE_VISIBILITY");
+    }
 
     @Test
     public void testAuthorizeAndRevokeAuthCache() {
