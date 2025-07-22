@@ -11,27 +11,31 @@ tags:
 sidebar_position: 1
 ---
 
-Genesis has a new powerful E2E automation framework designed to make test automation accessible, scalable, and maintainable for both technical and non-technical users.
-This framework is built on top of three industry-leading tools: Rest Assured for backend API testing, Playwright for frontend UI automation, and Cucumber for behaviour-driven development (BDD).
-It brings together the best of each technology to create a unified testing platform that encourages collaboration, speeds up test development, and reduces the technical barriers often associated with automation.
+The Genesis platform includes a powerful E2E test automation framework designed to make test automation accessible, scalable, and maintainable for both technical and non-technical users.
+This framework is built on top of three industry-leading tools: 
 
-The core goal of the framework is to enable non-technical users, such as business analysts, and manual testers, to contribute directly to automation efforts without writing code.
+1. [**Rest Assured**](https://rest-assured.io/) : for backend API testing
+2. [**Playwright**](https://playwright.dev/) : for frontend UI automation
+3. [**Cucumber**](https://cucumber.io/) : for behavior-driven development (BDD)
+
+The Genesis test automation framework brings together the best of each technology to create a unified testing platform that encourages collaboration, speeds up test development, and reduces the technical barriers often associated with automation.
+
+The core goal of the framework is to enable non-technical users, such as business analysts, and manual testers, to contribute directly to automation efforts without having to learn to write code.
 By leveraging Cucumber's Gherkin syntax, users can define test cases in plain English.
 These scenarios are then executed using a robust library of pre-built, reusable step definitions, which perform the heavy lifting behind the scenes. This allows teams to shift left and integrate quality into every stage of development.
 
-A standout feature of the framework is its deep integration with Genesis platform components, such as DataServers and Event Handlers. Through specially designed built-in steps, users can interact with backend systems in a natural and intuitive way. Whether it’s inserting test data, validating backend state changes, subscribing to system events, or simulating real-time workflows.
+A standout feature of the framework is its deep integration with Genesis platform components, such as [Data Servers](/develop/server-capabilities/real-time-queries-data-server/), [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/) and [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/). Through specially designed built-in steps, users can interact with the backend of Genesis applications in a natural and intuitive way. Whether it’s inserting test data, validating backend state changes, subscribing to system events, or simulating real-time workflows.
 These steps make it possible to test complex scenarios with minimal effort.
 The seamless interaction between the automation framework and Genesis ensures tests are both business-aware and production-relevant.
 
 On the frontend, the framework harnesses the speed and reliability of Playwright, supporting cross-browser and cross-platform UI automation.
 Built-in steps support a wide range of UI actions—clicks, form inputs, validations, navigation, and user journey flows—without requiring users to interact directly with selectors or scripts.
-This significantly lowers the barrier to entry and ensures consistent test behaviour across teams.
+This significantly lowers the barrier to entry and ensures consistent test behavior across teams.
 
-In addition to its core features, the framework is designed with enterprise readiness in mind. It includes built-in reporting, test data management, environment configuration, and CI/CD integration hooks out of the box. Technical users can extend the framework by adding custom step definitions or utilities, while non-technical users can rely on the growing library of built-in steps to create and maintain rich, meaningful tests.
+In addition to its core features, the framework is designed with enterprise readiness in mind. It includes built-in test reporting, test data management, environment configuration, and CI/CD integration hooks out of the box. Technical users can extend the framework by adding custom step definitions or utilities, while non-technical users can rely on the growing library of built-in steps to create and maintain rich, meaningful tests.
 By combining the structure of BDD with the power of Rest Assured, Playwright, and Genesis integration, this framework transforms how teams collaborate on quality. It shortens feedback loops, improves test coverage, and creates a shared language between business and development.
-To explore the full range of capabilities and see examples of the available built-in steps for backend, UI, and Genesis integration, please refer to the step definition documentation. This resource provides detailed usage patterns and guides to help all users—from beginners to advanced engineers—get the most out of the framework.
+To explore the full range of capabilities and see examples of the available built-in steps for backend, UI, and Genesis integration, please refer to the [API](/develop/qa/qa-api/qa-api/) and [UI](/develop/qa/qa-ui/qa-ui/) documentation. These resource provides detailed usage patterns and guides to help all users—from beginners to advanced engineers—get the most out of the framework.
 
-
- The Genesis framework follows a monthly release cycle to ensure compatibility with the latest Genesis Platform updates.
+ The Genesis test automation framework follows a monthly release cycle to ensure compatibility with the latest Genesis Platform updates.
  These regular releases are designed to fix bugs, add new reusable steps, and enhance the overall framework.
  This continuous improvement helps simplify the end user’s automation experience, keeping the tool aligned with evolving technologies and user needs.

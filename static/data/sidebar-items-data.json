@@ -264,22 +264,22 @@
     ]
   },
   "/develop/qa": {
-    "description": "Introduction : tools to make sure your app works as it should.",
+    "description": "This section provides full details of the Genesis Application Platform's E2E test automation framework. Each section details how the capability works, along with examples and full documentation on configuration.",
     "items": [
       {
         "href": "/develop/qa/qa-overview/qa-overview",
-        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
-        "description": "Overview stuff"
+        "imageUrl": "/svg/categories-icons/qa-overview.svg",
+        "description": "A detailed overview of the Genesis E2E test automation framework and its capabilities"
       },
       {
         "href": "/develop/qa/qa-api/qa-api",
-        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
-        "description": "API stuff"
+        "imageUrl": "/svg/categories-icons/qa-api.svg",
+        "description": "Define your backend tests using the API test automation framework."
       },
       {
         "href": "/develop/qa/qa-ui/qa-ui",
-        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
-        "description": "UI stuff"
+        "imageUrl": "/svg/categories-icons/qa-ui.svg",
+        "description": "Define your frontend E2E tests using the UI test automation framework."
       }
     ]
   }
