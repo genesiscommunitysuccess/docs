@@ -75,6 +75,12 @@ Local values can be specified in this block. **These values override the global 
 
 This hierarchy enables you to specify multiple environments with a single unchanged built application. You can specify separate `DEV`, `UAT` and `PROD` environments and overrides to system configuration for each, for example.
 
+:::note
+**System block resolution**: The `system` blocks are resolved in sequence from top to bottom by reading the `hosts` information within each `system` block. The `genesis-system-definition.kts` file is used to determine the order of `system` declarations.
+
+If other `system` blocks are defined in a different order in other `system-definition.kts` files that are not `genesis-system-definition.kts`, it won't affect the resolution order of `genesis-system-definition.kts`.
+:::
+
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
@@ -316,6 +322,14 @@ systems {
 ```
 
 During runtime the `hosts` block will be read to find configurations applicable to this host.
+
+:::important
+**LOCAL_HOST special behavior**: Any `system` using the `LOCAL_HOST` special value will always match in any environment, and therefore must be defined at the bottom of the system definition file.
+
+By defining `LOCAL_HOST` at the bottom of the system definition file, the application will try to match other `system` blocks in sequence first, avoiding the scenario where a "DEV" `system` with `LOCAL_HOST` would match when a more specific "UAT" or "PROD" `system` block should be used instead.
+
+`LOCAL_HOST` is most useful for local development (like running a Genesis application using [Genesis Start](/develop/development-environment/genesis-start/) or the [IntelliJ plugin](/develop/development-environment/intellij-plugin/)).
+:::
 
 ## HashiCorp Vault support
 
