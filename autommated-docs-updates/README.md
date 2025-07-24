@@ -68,7 +68,7 @@ Build and run with custom paths:
 npm run build
 
 # Run with custom repository paths
-node dist/index.js <docs-repo-path> <foundation-ui-repo-path>
+node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 ```
 
 ### Available Scripts
@@ -81,9 +81,10 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path>
 
 ### Argument Validation
 
-The script requires exactly 2 command-line arguments:
+The script requires exactly 3 command-line arguments:
 1. **docs-repo-path**: Path to the documentation repository
 2. **foundation-ui-repo-path**: Path to the foundation-ui platform repository
+3. **commit-hash**: Git commit hash to process
 
 ### Automatic Repository Setup
 

@@ -9,6 +9,7 @@ const args = validateAndParseArgs();
 console.log("=== Automated Docs Updates Script ===");
 console.log(`Docs Repository: ${args.docsRepoPath}`);
 console.log(`Foundation UI Repository: ${args.foundationUiRepoPath}`);
+console.log(`Commit Hash: ${args.commitHash}`);
 
 // Handle docs repository
 if (args.needsDocsRepo) {
