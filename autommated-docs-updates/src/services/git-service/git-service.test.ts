@@ -8,11 +8,10 @@ async function testGitService() {
   // Test with docs repository
   console.log('\n📖 Testing docs repository...');
   const docsGitService = createGitService({ 
-    repositoryType: 'docs',
     useMock: true 
   });
   
-  const docsResult = await docsGitService.getCommitInfo('abc12345');
+  const docsResult = await docsGitService.getCommitInfo('abc12345', 'docs');
   if (Result.isSuccess(docsResult)) {
     const commitInfo = docsResult.value;
     console.log(`✅ Docs Repository:`);
@@ -27,11 +26,10 @@ async function testGitService() {
   // Test with foundation-ui repository
   console.log('\n🔧 Testing foundation-ui repository...');
   const fuiGitService = createGitService({ 
-    repositoryType: 'foundation-ui',
     useMock: true 
   });
   
-  const fuiResult = await fuiGitService.getCommitInfo('abc12345');
+  const fuiResult = await fuiGitService.getCommitInfo('abc12345', 'foundation-ui');
   if (Result.isSuccess(fuiResult)) {
     const commitInfo = fuiResult.value;
     console.log(`✅ Foundation UI Repository:`);
@@ -46,11 +44,10 @@ async function testGitService() {
   // Test with real services (if available)
   console.log('\n🔍 Testing real services...');
   const realGitService = createGitService({ 
-    repositoryType: 'docs',
     useMock: false 
   });
   
-  const realResult = await realGitService.getCommitInfo('7fa4045be');
+  const realResult = await realGitService.getCommitInfo('7fa4045be', 'docs');
   if (Result.isSuccess(realResult)) {
     const commitInfo = realResult.value;
     console.log(`✅ Real Docs Repository:`);
@@ -70,7 +67,7 @@ async function testGitService() {
   
   // Test docs repository pull
   console.log('\n📖 Testing docs repository pull...');
-  const docsPullResult = await docsGitService.pullLatest();
+  const docsPullResult = await docsGitService.pullLatest('docs');
   if (Result.isSuccess(docsPullResult)) {
     console.log(`✅ Docs repository pull successful`);
   } else {
@@ -82,7 +79,7 @@ async function testGitService() {
   
   // Test foundation-ui repository pull
   console.log('\n🔧 Testing foundation-ui repository pull...');
-  const fuiPullResult = await fuiGitService.pullLatest();
+  const fuiPullResult = await fuiGitService.pullLatest('foundation-ui');
   if (Result.isSuccess(fuiPullResult)) {
     console.log(`✅ Foundation UI repository pull successful`);
   } else {

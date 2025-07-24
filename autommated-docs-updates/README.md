@@ -145,36 +145,72 @@ The project uses repositories for data access and services for business logic:
 
 #### Git Service Usage
 
-The git service wraps the repository service and can be configured for different repositories:
+The git service wraps the repository service and can work with any repository type:
 
 ```typescript
-// Create git service for docs repository
-const docsGitService = createGitService({ 
-  repositoryType: 'docs',
+// Create git service (works with both docs and foundation-ui)
+const gitService = createGitService({ 
   useMock: true 
 });
 
-// Create git service for foundation-ui repository
-const fuiGitService = createGitService({ 
-  repositoryType: 'foundation-ui',
-  useMock: false 
-});
-
-// Get commit information
-const result = await docsGitService.getCommitInfo('abc12345');
-if (Result.isSuccess(result)) {
-  console.log(result.value.message);
+// Get commit information from docs repository
+const docsResult = await gitService.getCommitInfo('abc12345', 'docs');
+if (Result.isSuccess(docsResult)) {
+  console.log(docsResult.value.message);
 } else {
-  console.log(result.message.message);
+  console.log(docsResult.message.message);
 }
 
-// Pull latest changes
-const pullResult = await docsGitService.pullLatest();
-if (Result.isSuccess(pullResult)) {
-  console.log('Repository updated successfully'); // pullResult.value is true
+// Get commit information from foundation-ui repository
+const fuiResult = await gitService.getCommitInfo('abc12345', 'foundation-ui');
+if (Result.isSuccess(fuiResult)) {
+  console.log(fuiResult.value.message);
 } else {
-  console.log(`Pull failed: ${pullResult.message.message}`);
+  console.log(fuiResult.message.message);
 }
+
+// Pull latest changes from docs repository
+const docsPullResult = await gitService.pullLatest('docs');
+if (Result.isSuccess(docsPullResult)) {
+  console.log('Docs repository updated successfully'); // docsPullResult.value is true
+} else {
+  console.log(`Docs pull failed: ${docsPullResult.message.message}`);
+}
+
+// Pull latest changes from foundation-ui repository
+const fuiPullResult = await gitService.pullLatest('foundation-ui');
+if (Result.isSuccess(fuiPullResult)) {
+  console.log('Foundation UI repository updated successfully'); // fuiPullResult.value is true
+} else {
+  console.log(`Foundation UI pull failed: ${fuiPullResult.message.message}`);
+}
+```
+
+#### Services Type Usage
+
+The Services type provides centralized management of all application services:
+
+```typescript
+import { Services } from './types/services';
+import { createGitService } from './services/git-service';
+import { createAIService } from './services/ai-service';
+
+// Create services object with all initialized services
+const services: Services = {
+  git: createGitService({ useMock: true }),
+  ai: createAIService({ useMock: true })
+};
+
+// Use services through the centralized object
+const commitResult = await services.git.getCommitInfo('abc123', 'docs');
+const needsUpdate = await services.ai.shouldUpdateDocs('abc123');
+
+// Benefits:
+// - Centralized service management
+// - Type-safe access to all services
+// - Easy to pass services to functions
+// - Clear dependency structure
+// - Simplified testing and mocking
 ```
 
 #### AI Service Usage
@@ -268,8 +304,11 @@ If the specified directories don't exist, the script will:
 - **Purpose**: Shared type definitions and utilities
 - **Files**:
   - `result.ts`: Result type for error handling
+  - `services.ts`: Services container type for centralized service management
   - `index.ts`: Type exports
-- **Features**: Provides functional programming patterns for error handling
+- **Features**: 
+  - Provides functional programming patterns for error handling
+  - Centralized service management with type safety
 
 #### `src/args.ts`
 - **Purpose**: Argument validation and parsing
@@ -294,9 +333,10 @@ If the specified directories don't exist, the script will:
   - `types.ts`: Git service interfaces and types
   - `index.ts`: Git service implementation and factory
 - **Features**: 
-  - Takes repository type as configuration parameter
+  - Repository type determined on each function call
   - Delegates to underlying git repository service
   - Provides unified interface for git operations
+  - Supports both docs and foundation-ui repositories dynamically
 
 #### `src/repositories/ai/`
 - **Purpose**: AI repository implementations
@@ -319,7 +359,8 @@ If the specified directories don't exist, the script will:
   - Handles directory creation and git cloning
   - Provides user feedback during operations
   - Uses Result types for robust error handling
-  - Uses git service for foundation-ui repository operations
+  - Creates centralized Services object with git and AI services
+  - Uses services for repository operations and AI analysis
 
 ### TypeScript Configuration
 

@@ -3,6 +3,7 @@ import { validateAndParseArgs } from './args';
 import { createAIService } from './services/ai-service';
 import { createGitService } from './services/git-service';
 import { Result } from './types/result';
+import { Services } from './types/services';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
@@ -52,17 +53,19 @@ async function main() {
   // Determine whether to use mock services based on environment variable
   const useMockServices = process.env.USE_MOCK_SERVICES === 'true';
   
-  // Initialize git service for foundation-ui repository
-  console.log("\n📁 Getting commit information...");
-  const gitService = createGitService({ 
-    repositoryType: 'foundation-ui',
-    useMock: useMockServices 
-  });
+  // Initialize all services
+  console.log("\n🔧 Initializing services...");
+  const services: Services = {
+    git: createGitService({ useMock: useMockServices }),
+    ai: createAIService({ useMock: useMockServices })
+  };
+  
+  console.log("✅ All services initialized successfully");
 
   // Test git service
   try {
     console.log("\n🔍 Checking git repository...");
-    const commitResult = await gitService.getCommitInfo(args.commitHash);
+    const commitResult = await services.git.getCommitInfo(args.commitHash, 'foundation-ui');
     
     if (Result.isSuccess(commitResult)) {
       const commitInfo = commitResult.value;
@@ -86,7 +89,7 @@ async function main() {
 
     // Test git pull functionality
     console.log("\n📥 Testing git pull functionality...");
-    const pullResult = await gitService.pullLatest();
+    const pullResult = await services.git.pullLatest('foundation-ui');
     
     if (Result.isSuccess(pullResult)) {
       console.log(`✅ Git pull successful`);
@@ -105,14 +108,11 @@ async function main() {
     process.exit(1);
   }
 
-  // Initialize AI service and analyze commit
+  // Analyze commit with AI service
   console.log("\n🔍 Analyzing commit with AI service...");
-  
-  // Initialize AI service
-  const aiService = createAIService({ useMock: useMockServices });
 
   try {
-    const needsUpdate = await aiService.shouldUpdateDocs(args.commitHash);
+    const needsUpdate = await services.ai.shouldUpdateDocs(args.commitHash);
     console.log(`AI Analysis Result: ${needsUpdate ? '📝 Documentation updates needed' : '✅ No documentation updates required'}`);
     
     if (needsUpdate) {
