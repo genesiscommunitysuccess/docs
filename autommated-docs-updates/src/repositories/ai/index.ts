@@ -2,6 +2,8 @@ import { AIRepository, AIRepositoryConfig } from './types';
 import { MockAIRepository } from './mock';
 import { LangChainAIRepository } from './langchain';
 
+export { AIRepository, AIRepositoryConfig };
+
 /**
  * Factory function to create an AI repository
  * @param config - Configuration for the AI repository

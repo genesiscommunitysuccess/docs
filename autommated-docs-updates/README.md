@@ -19,6 +19,9 @@ autommated-docs-updates/
 │   │   ├── result.ts     # Result type for error handling
 │   │   └── index.ts      # Type exports
 │   ├── services/
+│   │   ├── ai-service/   # AI service implementations
+│   │   │   ├── types.ts      # TypeScript interfaces
+│   │   │   └── index.ts      # Factory function
 │   │   └── git-service/  # Git service implementations
 │   │       ├── types.ts      # TypeScript interfaces
 │   │       └── index.ts      # Factory function
@@ -166,6 +169,22 @@ if (Result.isSuccess(result)) {
 }
 ```
 
+#### AI Service Usage
+
+The AI service wraps the AI repository and provides business logic:
+
+```typescript
+// Create AI service with mock implementation
+const mockAIService = createAIService({ useMock: true });
+
+// Create AI service with LangChain implementation
+const realAIService = createAIService({ useMock: false });
+
+// Use the service
+const needsUpdate = await mockAIService.shouldUpdateDocs('abc12345');
+console.log(`Documentation updates needed: ${needsUpdate}`);
+```
+
 #### AI Repository Usage
 
 The AI repository provides AI analysis capabilities:
@@ -231,6 +250,16 @@ If the specified directories don't exist, the script will:
   - `ScriptArgs` interface
   - `validateAndParseArgs()` function
 - **Features**: Returns flags indicating which repositories need to be created
+
+#### `src/services/ai-service/`
+- **Purpose**: AI service that wraps AI repository
+- **Files**:
+  - `types.ts`: AI service interfaces and types
+  - `index.ts`: AI service implementation and factory
+- **Features**: 
+  - Delegates to underlying AI repository
+  - Provides business logic for AI operations
+  - Consistent interface for AI analysis
 
 #### `src/services/git-service/`
 - **Purpose**: Git service that wraps repository services
