@@ -1,5 +1,6 @@
 import { createAIService } from './index';
 import { createGitService } from '../git-service';
+import { createFilesystemService } from '../filesystem-service';
 import { Services } from '../../types/services';
 import { Result } from '../../types/result';
 
@@ -7,7 +8,12 @@ import { Result } from '../../types/result';
 function createMockServices(): Services {
   return {
     git: createGitService({ useMock: true }),
-    ai: createAIService({ useMock: true })
+    ai: createAIService({ useMock: true }),
+    filesystem: createFilesystemService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    })
   };
 }
 

@@ -1,6 +1,7 @@
 import { Services } from './services';
 import { createGitService } from '../services/git-service';
 import { createAIService } from '../services/ai-service';
+import { createFilesystemService } from '../services/filesystem-service';
 import { Result } from './result';
 
 // Example demonstrating the Services type and centralized service management
@@ -11,7 +12,12 @@ async function testServicesType() {
   console.log('\n🔧 Creating services object...');
   const services: Services = {
     git: createGitService({ useMock: true }),
-    ai: createAIService({ useMock: true })
+    ai: createAIService({ useMock: true }),
+    filesystem: createFilesystemService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    })
   };
   
   console.log('✅ Services object created successfully');

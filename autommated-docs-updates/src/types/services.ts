@@ -1,5 +1,6 @@
 import { GitService } from '../services/git-service/types';
 import { AIService } from '../services/ai-service/types';
+import { FilesystemService } from '../services/filesystem-service/types';
 
 /**
  * Services container type
@@ -12,4 +13,6 @@ export interface Services {
   git: GitService;
   /** AI service for documentation analysis */
   ai: AIService;
+  /** Filesystem service for file operations */
+  filesystem: FilesystemService;
 } 

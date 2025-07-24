@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import { validateAndParseArgs } from './args';
 import { createAIService } from './services/ai-service';
 import { createGitService } from './services/git-service';
+import { createFilesystemService } from './services/filesystem-service';
 import { Result } from './types/result';
 import { Services } from './types/services';
 import { execSync } from 'child_process';
@@ -57,10 +58,64 @@ async function main() {
   console.log("\n🔧 Initializing services...");
   const services: Services = {
     git: createGitService({ useMock: useMockServices }),
-    ai: createAIService({ useMock: useMockServices })
+    ai: createAIService({ useMock: useMockServices }),
+    filesystem: createFilesystemService({ 
+      useMock: useMockServices,
+      docsRepositoryPath: args.docsRepoPath,
+      foundationUiRepositoryPath: args.foundationUiRepoPath
+    })
   };
   
   console.log("✅ All services initialized successfully");
+
+  // Test filesystem service
+  try {
+    console.log("\n🔍 Testing filesystem grep functionality...");
+    const grepResult = await services.filesystem.grepDocs('test');
+    
+    if (Result.isSuccess(grepResult)) {
+      const results = grepResult.value;
+      console.log(`✅ Filesystem grep successful - found ${results.length} matches`);
+      results.forEach((result, index) => {
+        console.log(`   ${index + 1}. ${result.filePath}:${result.lineNumber} - "${result.line}"`);
+      });
+    } else {
+      const error = grepResult.message;
+      console.log(`❌ Filesystem grep failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
+
+    // Test readDocFile functionality
+    console.log("\n📖 Testing filesystem readDocFile functionality...");
+    const readResult = await services.filesystem.readDocFile('001_develop/01_development-environment/007_genx/index.mdx', { lineCount: 10, offset: 0 });
+    
+    if (Result.isSuccess(readResult)) {
+      const content = readResult.value;
+      console.log(`✅ Filesystem readDocFile successful:`);
+      console.log(`   File: ${content.relativePath}`);
+      console.log(`   Total lines: ${content.totalLines}`);
+      console.log(`   Lines read: ${content.linesRead} (offset: ${content.offset})`);
+      console.log(`   Content preview:`);
+      content.lines.forEach((line, index) => {
+        console.log(`   ${content.offset + index + 1}: ${line}`);
+      });
+    } else {
+      const error = readResult.message;
+      console.log(`❌ Filesystem readDocFile failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
+  } catch (error) {
+    console.error("❌ Error with filesystem operations:", error);
+    process.exit(1);
+  }
 
   // Test git service
   try {

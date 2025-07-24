@@ -22,8 +22,12 @@ autommated-docs-updates/
 │   │   ├── ai-service/   # AI service implementations
 │   │   │   ├── types.ts      # TypeScript interfaces
 │   │   │   └── index.ts      # Factory function
-│   │   └── git-service/  # Git service implementations
+│   │   ├── git-service/  # Git service implementations
+│   │   │   ├── types.ts      # TypeScript interfaces
+│   │   │   └── index.ts      # Factory function
+│   │   └── filesystem-service/ # Filesystem service implementations
 │   │       ├── types.ts      # TypeScript interfaces
+│   │       ├── filesystem-service.test.ts # Test file
 │   │       └── index.ts      # Factory function
 │   └── repositories/
 │       ├── ai/           # AI repository implementations
@@ -31,7 +35,12 @@ autommated-docs-updates/
 │       │   ├── mock.ts       # Mock implementation
 │       │   ├── langchain.ts  # LangChain implementation
 │       │   └── index.ts      # Factory function
-│       └── git/          # Git repository service
+│       ├── git/          # Git repository service
+│       │   ├── types.ts      # TypeScript interfaces
+│       │   ├── mock.ts       # Mock implementation
+│       │   ├── repository.ts # Real implementation
+│       │   └── index.ts      # Factory function
+│       └── filesystem/   # Filesystem repository service
 │           ├── types.ts      # TypeScript interfaces
 │           ├── mock.ts       # Mock implementation
 │           ├── repository.ts # Real implementation
@@ -245,6 +254,88 @@ const needsUpdate = await mockAIRepository.shouldUpdateDocs('abc12345');
 console.log(`Documentation updates needed: ${needsUpdate}`);
 ```
 
+#### Filesystem Service Usage
+
+The filesystem service provides file operations for documentation:
+
+```typescript
+// Create filesystem service with mock implementation
+const mockFilesystemService = createFilesystemService({
+  useMock: true,
+  docsRepositoryPath: '/mock/docs/path',
+  foundationUiRepositoryPath: '/mock/foundation-ui/path'
+});
+
+// Create filesystem service with real implementation
+const realFilesystemService = createFilesystemService({
+  useMock: false,
+  docsRepositoryPath: '/Users/matt.walker/genesis/docs',
+  foundationUiRepositoryPath: '/Users/matt.walker/genesis/foundation-ui'
+});
+
+// Use the service to search for content in docs
+const searchResults = await mockFilesystemService.grepDocs('component');
+if (Result.isSuccess(searchResults)) {
+  searchResults.value.forEach(result => {
+    console.log(`${result.filePath}:${result.lineNumber} - "${result.line}"`);
+  });
+}
+
+// Use the service to read doc files with optional line count and offset
+const fileContent = await mockFilesystemService.readDocFile('path/to/file.md', { 
+  lineCount: 20, 
+  offset: 10 
+});
+if (Result.isSuccess(fileContent)) {
+  const content = fileContent.value;
+  console.log(`File: ${content.relativePath}`);
+  console.log(`Total lines: ${content.totalLines}`);
+  console.log(`Lines read: ${content.linesRead} (offset: ${content.offset})`);
+  content.lines.forEach((line, index) => {
+    console.log(`${content.offset + index + 1}: ${line}`);
+  });
+}
+
+// Integration example: Use grep results as input for readDocFile
+const grepResults = await mockFilesystemService.grepDocs('important');
+if (Result.isSuccess(grepResults) && grepResults.value.length > 0) {
+  const firstMatch = grepResults.value[0];
+  console.log(`Found match in: ${firstMatch.filePath} at line ${firstMatch.lineNumber}`);
+  
+  // Use the filePath from grep result directly with readDocFile
+  const fileContent = await mockFilesystemService.readDocFile(firstMatch.filePath);
+  if (Result.isSuccess(fileContent)) {
+    console.log(`Successfully read file: ${fileContent.value.relativePath}`);
+  }
+}
+```
+
+#### Filesystem Repository Usage
+
+The filesystem repository provides file search capabilities:
+
+```typescript
+// Create filesystem repository with mock implementation
+const mockFilesystemRepository = createFilesystemRepository({
+  useMock: true,
+  docsRepositoryPath: '/mock/docs/path',
+  foundationUiRepositoryPath: '/mock/foundation-ui/path'
+});
+
+// Create filesystem repository with real implementation
+const realFilesystemRepository = createFilesystemRepository({
+  useMock: false,
+  docsRepositoryPath: '/Users/matt.walker/genesis/docs',
+  foundationUiRepositoryPath: '/Users/matt.walker/genesis/foundation-ui'
+});
+
+// Use the repository to search for content
+const searchResults = await mockFilesystemRepository.grepDocs('component');
+if (Result.isSuccess(searchResults)) {
+  console.log(`Found ${searchResults.value.length} matches`);
+}
+```
+
 ### Git Repository Error Types
 
 The git repository service returns specific error types:
@@ -254,6 +345,17 @@ The git repository service returns specific error types:
 - `repository_not_git`: Path exists but is not a git repository
 - `git_command_failed`: Git command execution failed
 - `unknown`: Unexpected errors
+
+### Filesystem Repository Error Types
+
+The filesystem repository service returns specific error types:
+
+- `docs_directory_not_found`: Docs directory doesn't exist at the specified path
+- `search_pattern_invalid`: Search pattern is empty or invalid
+- `file_read_error`: Error reading a specific file during search
+- `file_not_found`: Requested file doesn't exist
+- `invalid_file_path`: File path is empty, invalid, or contains directory traversal
+- `unknown`: Unexpected errors during filesystem operations
 
 ### Git Repository Primary Branches
 
@@ -338,6 +440,18 @@ If the specified directories don't exist, the script will:
   - Provides unified interface for git operations
   - Supports both docs and foundation-ui repositories dynamically
 
+#### `src/services/filesystem-service/`
+- **Purpose**: Filesystem service that wraps filesystem repository
+- **Files**:
+  - `types.ts`: Filesystem service interfaces and types
+  - `index.ts`: Filesystem service implementation and factory
+  - `filesystem-service.test.ts`: Test file for filesystem service
+- **Features**: 
+  - Delegates to underlying filesystem repository
+  - Provides business logic for filesystem operations
+  - Consistent interface for file search operations
+  - Supports grep functionality for documentation content
+
 #### `src/repositories/ai/`
 - **Purpose**: AI repository implementations
 - **Files**:
@@ -352,6 +466,36 @@ If the specified directories don't exist, the script will:
   - Fallback analysis when AI analysis fails
   - Factory pattern for easy switching between implementations
 
+#### `src/repositories/git/`
+- **Purpose**: Git repository service
+- **Files**:
+  - `types.ts`: TypeScript interfaces
+  - `mock.ts`: Mock implementation
+  - `repository.ts`: Real implementation
+  - `index.ts`: Factory function
+- **Features**:
+  - Mock implementation for testing without git access
+  - Real implementation for actual git operations
+  - Support for multiple repository types (docs, foundation-ui)
+  - Commit information and diff extraction
+  - Repository pull operations
+
+#### `src/repositories/filesystem/`
+- **Purpose**: Filesystem repository service
+- **Files**:
+  - `types.ts`: TypeScript interfaces
+  - `mock.ts`: Mock implementation
+  - `repository.ts`: Real implementation
+  - `index.ts`: Factory function
+- **Features**:
+  - Mock implementation for testing without filesystem access
+  - Real implementation for actual file search operations
+  - Recursive directory traversal with intelligent filtering
+  - Line-by-line search with context preservation
+  - File reading functionality with optional line count and offset
+  - Path validation and security checks
+  - Seamless integration between grep and readDocFile (grep results can be used directly as readDocFile input)
+
 #### `src/index.ts`
 - **Purpose**: Main script execution
 - **Features**:
@@ -359,8 +503,8 @@ If the specified directories don't exist, the script will:
   - Handles directory creation and git cloning
   - Provides user feedback during operations
   - Uses Result types for robust error handling
-  - Creates centralized Services object with git and AI services
-  - Uses services for repository operations and AI analysis
+  - Creates centralized Services object with git, AI, and filesystem services
+  - Uses services for repository operations, AI analysis, and file search
 
 ### TypeScript Configuration
 

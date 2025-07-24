@@ -1,5 +1,6 @@
 import { LangChainAIRepository } from './langchain';
 import { createGitService } from '../../services/git-service';
+import { createFilesystemService } from '../../services/filesystem-service';
 import { Services } from '../../types/services';
 import { CommitInfo } from '../git/types';
 import { Result } from '../../types/result';
@@ -8,7 +9,12 @@ import { Result } from '../../types/result';
 function createMockServices(): Services {
   return {
     git: createGitService({ useMock: true }),
-    ai: {} as any // Not used in this test
+    ai: {} as any, // Not used in this test
+    filesystem: createFilesystemService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    })
   };
 }
 
