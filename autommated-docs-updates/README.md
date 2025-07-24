@@ -14,7 +14,13 @@ This script is designed to work with two main repositories:
 autommated-docs-updates/
 ├── src/
 │   ├── index.ts          # Main script execution
-│   └── args.ts           # Argument validation and parsing
+│   ├── args.ts           # Argument validation and parsing
+│   └── services/
+│       └── ai-service/   # AI service implementations
+│           ├── types.ts      # TypeScript interfaces
+│           ├── mock.ts       # Mock implementation
+│           ├── langchain.ts  # LangChain implementation
+│           └── index.ts      # Factory function
 ├── dist/                 # Compiled JavaScript output
 ├── package.json          # Project configuration and scripts
 ├── tsconfig.json         # TypeScript configuration

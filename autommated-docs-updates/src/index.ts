@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { validateAndParseArgs } from './args';
-import { createAIService } from './ai-service';
+import { createAIService } from './services/ai-service';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
