@@ -72,7 +72,7 @@ autommated-docs-updates/
   - `false`: Use real services (requires API keys)
 - `DOCS_REPOSITORY_PATH`: Path to the docs repository (defaults to `/Users/matt.walker/genesis/docs`)
 - `FOUNDATION_UI_REPOSITORY_PATH`: Path to the foundation-ui repository (defaults to `/Users/matt.walker/genesis/foundation-ui`)
-- `ANTHROPIC_API_KEY`: Required for real AI service (LangChain)
+- `ANTHROPIC_API_KEY`: Required for real AI service (LangChain with Claude)
 
 ### Development Setup
 
@@ -228,6 +228,16 @@ The git repository service uses specific primary branches for each repository:
 
 When pulling latest changes, the service automatically checks out the appropriate primary branch before executing the pull.
 
+### LangChain AI Analysis
+
+The AI repository uses LangChain with Anthropic's Claude to intelligently analyze commits:
+
+- **Model**: Claude 3.5 Sonnet (latest)
+- **Analysis Factors**: New features, API changes, configuration changes, breaking changes, bug fixes, security updates
+- **Structured Prompts**: Expert-level analysis with clear decision criteria
+- **Fallback Analysis**: Simple heuristic when AI analysis fails
+- **Response Parsing**: Intelligent parsing of AI responses for consistent results
+
 ### Argument Validation
 
 The script requires exactly 3 command-line arguments:
@@ -293,11 +303,13 @@ If the specified directories don't exist, the script will:
 - **Files**:
   - `types.ts`: AI repository interfaces and types
   - `mock.ts`: Mock AI repository for testing
-  - `langchain.ts`: LangChain AI repository implementation
+  - `langchain.ts`: LangChain AI repository implementation with Anthropic Claude
   - `index.ts`: AI repository factory function
 - **Features**: 
   - Mock implementation for testing without API calls
-  - LangChain implementation for real AI analysis
+  - LangChain implementation with Anthropic Claude for real AI analysis
+  - Intelligent commit analysis with structured prompts
+  - Fallback analysis when AI analysis fails
   - Factory pattern for easy switching between implementations
 
 #### `src/index.ts`
