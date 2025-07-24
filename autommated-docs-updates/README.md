@@ -52,12 +52,21 @@ The project is configured with TypeScript and includes:
 Run the script with pre-configured paths for development:
 
 ```bash
+# Use mock AI service (default)
 npm run dev
+
+# Explicitly use mock AI service for testing
+npm run dev:mock
+
+# Use real AI service (when implemented)
+npm run dev:real
 ```
 
 This uses the following default paths:
 - Docs Repository: `/Users/matt.walker/genesis/docs`
 - Foundation UI Repository: `/Users/matt.walker/genesis/foundation-ui`
+
+**Note**: All dev commands require a commit hash as an additional argument.
 
 ### Production Mode
 
@@ -75,7 +84,9 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 
 - `npm run build` - Compiles TypeScript to JavaScript
 - `npm start` - Runs compiled JavaScript (requires manual arguments)
-- `npm run dev` - Runs TypeScript directly with pre-configured paths
+- `npm run dev` - Runs TypeScript directly with pre-configured paths (uses mock AI service)
+- `npm run dev:mock` - Runs with mock AI service for testing
+- `npm run dev:real` - Runs with real AI service (when implemented)
 
 ## Features
 
@@ -152,6 +163,7 @@ This foundation is ready for:
 - `typescript` - TypeScript compiler
 - `@types/node` - Node.js type definitions
 - `ts-node` - TypeScript execution engine
+- `cross-env` - Cross-platform environment variable handling
 
 ## Configuration Files
 

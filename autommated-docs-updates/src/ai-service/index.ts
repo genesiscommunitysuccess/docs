@@ -15,11 +15,11 @@ import { MockAIService } from './mock';
  */
 export function createAIService(config: AIServiceConfig = {}): AIService {
   if (config.useMock) {
+    console.log('🤖 Using mock AI service');
     return new MockAIService();
   }
   
   // TODO: Return real AI service implementation when available
-  // For now, default to mock service
-  console.log('Using mock AI service (real implementation not yet available)');
+  console.log('🤖 Using real AI service (implementation not yet available, falling back to mock)');
   return new MockAIService();
 } 

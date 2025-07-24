@@ -45,7 +45,10 @@ async function main() {
 
   // Initialize AI service and analyze commit
   console.log("\n🔍 Analyzing commit with AI service...");
-  const aiService = createAIService({ useMock: true });
+  
+  // Determine which AI service to use based on environment variable
+  const useMockAI = process.env.USE_MOCK_AI === 'true' || process.env.USE_MOCK_AI !== 'false';
+  const aiService = createAIService({ useMock: useMockAI });
 
   try {
     const needsUpdate = await aiService.shouldUpdateDocs(args.commitHash);
