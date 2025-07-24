@@ -64,6 +64,8 @@ autommated-docs-updates/
 - `USE_MOCK_SERVICES`: Controls whether to use mock or real services
   - `true`: Use mock services (default for development)
   - `false`: Use real services (requires API keys)
+- `DOCS_REPOSITORY_PATH`: Path to the docs repository (defaults to `/Users/matt.walker/genesis/docs`)
+- `FOUNDATION_UI_REPOSITORY_PATH`: Path to the foundation-ui repository (defaults to `/Users/matt.walker/genesis/foundation-ui`)
 - `ANTHROPIC_API_KEY`: Required for real AI service (LangChain)
 
 ### Development Setup
@@ -82,9 +84,6 @@ Run the script with pre-configured paths for development:
 ```bash
 # Use mock services (default)
 npm run dev
-
-# Explicitly use mock services for testing
-USE_MOCK_SERVICES=true npm run dev
 
 # Use real services
 USE_MOCK_SERVICES=false npm run dev
@@ -133,6 +132,32 @@ This provides:
 - **Explicit Error States**: No hidden exceptions
 - **Functional Programming**: Immutable, composable results
 - **Rich Error Information**: Detailed error types and messages
+
+### Git Service Usage
+
+The git service wraps the repository service and can be configured for different repositories:
+
+```typescript
+// Create git service for docs repository
+const docsGitService = createGitService({ 
+  repositoryType: 'docs',
+  useMock: true 
+});
+
+// Create git service for foundation-ui repository
+const fuiGitService = createGitService({ 
+  repositoryType: 'foundation-ui',
+  useMock: false 
+});
+
+// Use the service
+const result = await docsGitService.getCommitInfo('abc12345');
+if (Result.isSuccess(result)) {
+  console.log(result.value.message);
+} else {
+  console.log(result.message.message);
+}
+```
 
 ### Git Repository Error Types
 
@@ -184,6 +209,16 @@ If the specified directories don't exist, the script will:
   - `validateAndParseArgs()` function
 - **Features**: Returns flags indicating which repositories need to be created
 
+#### `src/services/git-service/`
+- **Purpose**: Git service that wraps repository services
+- **Files**:
+  - `types.ts`: Git service interfaces and types
+  - `index.ts`: Git service implementation and factory
+- **Features**: 
+  - Takes repository type as configuration parameter
+  - Delegates to underlying git repository service
+  - Provides unified interface for git operations
+
 #### `src/index.ts`
 - **Purpose**: Main script execution
 - **Features**:
@@ -191,6 +226,7 @@ If the specified directories don't exist, the script will:
   - Handles directory creation and git cloning
   - Provides user feedback during operations
   - Uses Result types for robust error handling
+  - Uses git service for repository operations
 
 ### TypeScript Configuration
 
