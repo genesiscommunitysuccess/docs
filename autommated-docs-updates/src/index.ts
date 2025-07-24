@@ -112,14 +112,21 @@ async function main() {
   console.log("\n🔍 Analyzing commit with AI service...");
 
   try {
-    const needsUpdate = await services.ai.shouldUpdateDocs(args.commitHash);
-    console.log(`AI Analysis Result: ${needsUpdate ? '📝 Documentation updates needed' : '✅ No documentation updates required'}`);
+    const updateResult = await services.ai.shouldUpdateDocs(services, args.commitHash);
     
-    if (needsUpdate) {
-      console.log("🚀 Proceeding with documentation update process...");
-      // TODO: Implement documentation update logic
+    if (Result.isSuccess(updateResult)) {
+      const needsUpdate = updateResult.value;
+      console.log(`AI Analysis Result: ${needsUpdate ? '📝 Documentation updates needed' : '✅ No documentation updates required'}`);
+      
+      if (needsUpdate) {
+        console.log("🚀 Proceeding with documentation update process...");
+        // TODO: Implement documentation update logic
+      } else {
+        console.log("✨ No action needed - documentation is up to date");
+      }
     } else {
-      console.log("✨ No action needed - documentation is up to date");
+      console.error(`❌ AI Analysis Error: ${updateResult.message}`);
+      process.exit(1);
     }
   } catch (error) {
     console.error("❌ Error during AI analysis:", error);

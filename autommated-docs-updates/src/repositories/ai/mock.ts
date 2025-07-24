@@ -1,4 +1,7 @@
 import { AIRepository } from './types';
+import { Services } from '../../types/services';
+import { CommitInfo } from '../git/types';
+import { Result } from '../../types/result';
 
 /**
  * Mock implementation of the AI repository for testing
@@ -11,24 +14,39 @@ import { AIRepository } from './types';
 export class MockAIRepository implements AIRepository {
   /**
    * Mock implementation that simulates AI analysis
-   * @param commitHash - The git commit hash to analyze
-   * @returns Promise<boolean> - Mock determination of whether docs need updates
+   * @param services - The services object containing git and ai services
+   * @param commitInfo - The commit information to analyze
+   * @returns Promise<Result<boolean, string>> - Mock determination of whether docs need updates
    */
-  async shouldUpdateDocs(commitHash: string): Promise<boolean> {
+  async shouldUpdateDocs(services: Services, commitInfo: CommitInfo): Promise<Result<boolean, string>> {
     // Simulate some processing time
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Mock logic based on commit hash patterns
-    if (commitHash.includes('docs') || commitHash.includes('update')) {
-      return true; // Commit suggests documentation updates
+    // Mock logic based on commit message and files changed
+    const message = commitInfo.message.toLowerCase();
+    const files = commitInfo.filesChanged.join(' ').toLowerCase();
+    
+    // Check for indicators that suggest docs updates are needed
+    if (message.includes('feature') || message.includes('api') || message.includes('breaking')) {
+      return Result.success(true); // New features, API changes, or breaking changes need docs
     }
     
-    if (commitHash.includes('fix') || commitHash.includes('bug')) {
-      return false; // Bug fixes typically don't need doc updates
+    if (message.includes('fix') || message.includes('bug') || message.includes('typo')) {
+      return Result.success(false); // Bug fixes and typos typically don't need doc updates
+    }
+    
+    // Check file patterns
+    if (files.includes('api') || files.includes('docs') || files.includes('readme')) {
+      return Result.success(true); // Changes to API or documentation files suggest updates needed
+    }
+    
+    if (files.includes('test') || files.includes('spec') || files.includes('internal')) {
+      return Result.success(false); // Test files and internal changes don't need docs
     }
     
     // Default behavior: random but consistent for same commit hash
-    const hashSum = commitHash.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    return hashSum % 3 === 0; // 33% chance of needing updates
+    const hashSum = commitInfo.hash.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const needsUpdate = hashSum % 3 === 0; // 33% chance of needing updates
+    return Result.success(needsUpdate);
   }
 } 

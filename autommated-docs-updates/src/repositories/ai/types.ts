@@ -1,13 +1,18 @@
+import { Services } from '../../types/services';
+import { CommitInfo } from '../git/types';
+import { Result } from '../../types/result';
+
 /**
  * AI Repository interface for automated documentation updates
  */
 export interface AIRepository {
   /**
-   * Analyzes a commit hash to determine if documentation updates are needed
-   * @param commitHash - The git commit hash to analyze
-   * @returns Promise<boolean> - True if documentation updates are needed, false otherwise
+   * Analyzes a commit to determine if documentation updates are needed
+   * @param services - The services object containing git and ai services
+   * @param commitInfo - The commit information to analyze
+   * @returns Promise<Result<boolean, string>> - Success with boolean indicating if docs should be updated, or error with failure reason
    */
-  shouldUpdateDocs(commitHash: string): Promise<boolean>;
+  shouldUpdateDocs(services: Services, commitInfo: CommitInfo): Promise<Result<boolean, string>>;
 }
 
 /**

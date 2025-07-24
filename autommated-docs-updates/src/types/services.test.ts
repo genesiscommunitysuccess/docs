@@ -32,9 +32,13 @@ async function testServicesType() {
   
   // Test AI service through services object
   console.log('\n🤖 Testing AI service through services object...');
-  const needsUpdate = await services.ai.shouldUpdateDocs('test-commit-123');
-  console.log(`✅ AI Service Test:`);
-  console.log(`   Documentation updates needed: ${needsUpdate}`);
+  const updateResult = await services.ai.shouldUpdateDocs(services, 'test-commit-123');
+  if (Result.isSuccess(updateResult)) {
+    console.log(`✅ AI Service Test:`);
+    console.log(`   Documentation updates needed: ${updateResult.value}`);
+  } else {
+    console.log(`❌ AI Service Test Error: ${updateResult.message}`);
+  }
   
   // Test git service with different repository type
   console.log('\n🔧 Testing git service with foundation-ui repository...');
