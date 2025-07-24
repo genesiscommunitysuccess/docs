@@ -18,6 +18,13 @@ export interface GitRepositoryService {
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed
    */
   pullLatest(repositoryType: RepositoryType): Promise<Result<true, GitError>>;
+
+  /**
+   * Gets the current branch name for the specified repository
+   * @param repositoryType - Which repository to get the current branch for
+   * @returns Promise<Result<string, GitError>> - Current branch name or error
+   */
+  getCurrentBranch(repositoryType: RepositoryType): Promise<Result<string, GitError>>;
 }
 
 /**

@@ -84,6 +84,26 @@ export class MockGitRepositoryService implements GitRepositoryService {
     return Result.success(true);
   }
 
+  /**
+   * Mock implementation that simulates getting the current branch
+   * @param repositoryType - Which repository to get the current branch for
+   * @returns Promise<Result<string, GitError>> - Mock current branch name
+   */
+  async getCurrentBranch(repositoryType: RepositoryType): Promise<Result<string, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Return different branches based on repository type for testing
+    switch (repositoryType) {
+      case RepositoryType.DOCS:
+        return Result.success('main'); // Could be 'preprod' for testing
+      case RepositoryType.FOUNDATION_UI:
+        return Result.success('master');
+      default:
+        return Result.success('main');
+    }
+  }
+
   private createMockDocsCommit(commitHash: string): CommitInfo {
     return {
       hash: commitHash,

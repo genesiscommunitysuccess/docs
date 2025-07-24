@@ -307,4 +307,27 @@ export class RealGitRepositoryService implements GitRepositoryService {
       });
     }
   }
+
+  /**
+   * Gets the current branch name for the specified repository
+   * @param repositoryType - Which repository to get the current branch for
+   * @returns Promise<Result<string, GitError>> - Current branch name or error
+   */
+  async getCurrentBranch(repositoryType: RepositoryType): Promise<Result<string, GitError>> {
+    try {
+      const branchResult = this.executeGitCommand('rev-parse --abbrev-ref HEAD', repositoryType);
+      if (Result.isError(branchResult)) {
+        return branchResult;
+      }
+      
+      return Result.success(branchResult.value.trim());
+    } catch (error) {
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error getting current branch for ${repositoryType} repository`,
+        repositoryType,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
 } 

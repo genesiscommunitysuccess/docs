@@ -3,8 +3,10 @@ import { validateAndParseArgs } from './args';
 import { createAIService } from './services/ai-service';
 import { createGitService } from './services/git-service';
 import { createFilesystemService } from './services/filesystem-service';
+import { createFileEditingService } from './services/file-editing-service';
 import { Result } from './types/result';
 import { Services } from './types/services';
+import { RepositoryType } from './repositories/git/types';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
@@ -63,6 +65,13 @@ async function main() {
       useMock: useMockServices,
       docsRepositoryPath: args.docsRepoPath,
       foundationUiRepositoryPath: args.foundationUiRepoPath
+    }),
+    fileEditing: createFileEditingService({
+      useMock: useMockServices,
+      docsRepositoryPath: args.docsRepoPath,
+      foundationUiRepositoryPath: args.foundationUiRepoPath,
+      createBackups: true,
+      backupDirectory: '.backups'
     })
   };
   
@@ -202,6 +211,51 @@ async function main() {
     }
   } catch (error) {
     console.error("❌ Error during AI analysis:", error);
+    process.exit(1);
+  }
+
+  // Test file editing service
+  try {
+    console.log("\n✏️ Testing file editing service...");
+    
+    // Get commit info for testing
+    const commitResult = await services.git.getCommitInfo(args.commitHash, RepositoryType.FOUNDATION_UI);
+    if (Result.isSuccess(commitResult)) {
+      const commitInfo = commitResult.value;
+      
+      // Test file editing with a mock file path
+      const updateResult = await services.fileEditing.updateDocFile(
+        'test-file.md',
+        commitInfo,
+        'Add documentation for the new authentication system'
+      );
+      
+      if (Result.isSuccess(updateResult)) {
+        const update = updateResult.value;
+        console.log(`✅ File editing successful:`);
+        console.log(`   File: ${update.filePath}`);
+        console.log(`   Lines changed: ${update.linesChanged}`);
+        console.log(`   Backup created: ${update.backupPath ? 'Yes' : 'No'}`);
+        console.log(`   Timestamp: ${update.timestamp.toISOString()}`);
+        console.log(`   Content preview (first 200 chars):`);
+        console.log(`   "${update.newContent.substring(0, 200)}..."`);
+      } else {
+        const error = updateResult.message;
+        console.log(`❌ File editing failed:`);
+        console.log(`   Type: ${error.type}`);
+        console.log(`   Message: ${error.message}`);
+        if (error.details) {
+          console.log(`   Details: ${error.details}`);
+        }
+        if (error.currentBranch) {
+          console.log(`   Current Branch: ${error.currentBranch}`);
+        }
+      }
+    } else {
+      console.log(`❌ Could not get commit info for file editing test: ${commitResult.message.message}`);
+    }
+  } catch (error) {
+    console.error("❌ Error with file editing operations:", error);
     process.exit(1);
   }
 
