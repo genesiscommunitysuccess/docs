@@ -50,12 +50,15 @@ async function main() {
     console.log(`✅ Foundation UI repository already exists at: ${args.foundationUiRepoPath}`);
   }
 
+  // Determine whether to use mock services based on environment variable
+  const useMockServices = process.env.USE_MOCK_SERVICES === 'true';
+  
   // Initialize git repository service with both repositories
   console.log("\n📁 Getting commit information...");
   const gitService = createGitRepositoryService({ 
     docsRepositoryPath: args.docsRepoPath,
     foundationUiRepositoryPath: args.foundationUiRepoPath,
-    useMock: true // Use mock for now
+    useMock: useMockServices
   });
 
   // Test both repositories
@@ -114,9 +117,8 @@ async function main() {
   // Initialize AI service and analyze commit
   console.log("\n🔍 Analyzing commit with AI service...");
   
-  // Determine which AI service to use based on environment variable
-  const useMockAI = process.env.USE_MOCK_AI === 'true' || process.env.USE_MOCK_AI !== 'false';
-  const aiService = createAIService({ useMock: useMockAI });
+  // Initialize AI service
+  const aiService = createAIService({ useMock: useMockServices });
 
   try {
     const needsUpdate = await aiService.shouldUpdateDocs(args.commitHash);
