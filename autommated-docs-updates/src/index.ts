@@ -1,6 +1,8 @@
 import { config } from 'dotenv';
 import { validateAndParseArgs } from './args';
 import { createAIService } from './services/ai-service';
+import { createGitRepositoryService } from './repositories/git';
+import { RepositoryType } from './repositories/git/types';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
@@ -45,6 +47,43 @@ async function main() {
     }
   } else {
     console.log(`✅ Foundation UI repository already exists at: ${args.foundationUiRepoPath}`);
+  }
+
+  // Initialize git repository service with both repositories
+  console.log("\n📁 Getting commit information...");
+  const gitService = createGitRepositoryService({ 
+    docsRepositoryPath: args.docsRepoPath,
+    foundationUiRepositoryPath: args.foundationUiRepoPath,
+    useMock: true // Use mock for now
+  });
+
+  // Test both repositories
+  try {
+    // Test docs repository
+    console.log("\n📖 Checking docs repository...");
+    const docsCommitInfo = await gitService.getCommitInfo(args.commitHash, RepositoryType.DOCS);
+    console.log(`✅ Docs Repository Commit Info:`);
+    console.log(`   Hash: ${docsCommitInfo.hash}`);
+    console.log(`   Author: ${docsCommitInfo.author} (${docsCommitInfo.authorEmail})`);
+    console.log(`   Date: ${docsCommitInfo.date.toISOString()}`);
+    console.log(`   Message: ${docsCommitInfo.message}`);
+    console.log(`   Files Changed: ${docsCommitInfo.filesChanged.length}`);
+    console.log(`   Diffs: ${docsCommitInfo.diffs.length} file(s) with changes`);
+    
+    // Test foundation-ui repository
+    console.log("\n🔧 Checking foundation-ui repository...");
+    const fuiCommitInfo = await gitService.getCommitInfo(args.commitHash, RepositoryType.FOUNDATION_UI);
+    console.log(`✅ Foundation UI Repository Commit Info:`);
+    console.log(`   Hash: ${fuiCommitInfo.hash}`);
+    console.log(`   Author: ${fuiCommitInfo.author} (${fuiCommitInfo.authorEmail})`);
+    console.log(`   Date: ${fuiCommitInfo.date.toISOString()}`);
+    console.log(`   Message: ${fuiCommitInfo.message}`);
+    console.log(`   Files Changed: ${fuiCommitInfo.filesChanged.length}`);
+    console.log(`   Diffs: ${fuiCommitInfo.diffs.length} file(s) with changes`);
+    
+  } catch (error) {
+    console.error("❌ Error getting commit info:", error);
+    process.exit(1);
   }
 
   // Initialize AI service and analyze commit
