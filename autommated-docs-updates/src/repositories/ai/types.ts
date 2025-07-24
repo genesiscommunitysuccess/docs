@@ -1,7 +1,7 @@
 /**
- * AI Service interface for automated documentation updates
+ * AI Repository interface for automated documentation updates
  */
-export interface AIService {
+export interface AIRepository {
   /**
    * Analyzes a commit hash to determine if documentation updates are needed
    * @param commitHash - The git commit hash to analyze
@@ -11,12 +11,12 @@ export interface AIService {
 }
 
 /**
- * Configuration options for AI services
+ * Configuration options for AI repositories
  */
-export interface AIServiceConfig {
+export interface AIRepositoryConfig {
   /** Whether to use mock implementation for testing */
   useMock?: boolean;
-  /** Additional configuration options for real AI service */
+  /** Additional configuration options for real AI repository */
   apiKey?: string;
   model?: string;
   temperature?: number;

@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { validateAndParseArgs } from './args';
-import { createAIService } from './services/ai-service';
+import { createAIRepository } from './repositories/ai';
 import { createGitService } from './services/git-service';
 import { Result } from './types/result';
 import { execSync } from 'child_process';
@@ -92,11 +92,11 @@ async function main() {
   // Initialize AI service and analyze commit
   console.log("\n🔍 Analyzing commit with AI service...");
   
-  // Initialize AI service
-  const aiService = createAIService({ useMock: useMockServices });
+  // Initialize AI repository
+  const aiRepository = createAIRepository({ useMock: useMockServices });
 
   try {
-    const needsUpdate = await aiService.shouldUpdateDocs(args.commitHash);
+    const needsUpdate = await aiRepository.shouldUpdateDocs(args.commitHash);
     console.log(`AI Analysis Result: ${needsUpdate ? '📝 Documentation updates needed' : '✅ No documentation updates required'}`);
     
     if (needsUpdate) {

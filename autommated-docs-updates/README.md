@@ -19,12 +19,15 @@ autommated-docs-updates/
 │   │   ├── result.ts     # Result type for error handling
 │   │   └── index.ts      # Type exports
 │   ├── services/
-│   │   └── ai-service/   # AI service implementations
+│   │   └── git-service/  # Git service implementations
 │   │       ├── types.ts      # TypeScript interfaces
-│   │       ├── mock.ts       # Mock implementation
-│   │       ├── langchain.ts  # LangChain implementation
 │   │       └── index.ts      # Factory function
 │   └── repositories/
+│       ├── ai/           # AI repository implementations
+│       │   ├── types.ts      # TypeScript interfaces
+│       │   ├── mock.ts       # Mock implementation
+│       │   ├── langchain.ts  # LangChain implementation
+│       │   └── index.ts      # Factory function
 │       └── git/          # Git repository service
 │           ├── types.ts      # TypeScript interfaces
 │           ├── mock.ts       # Mock implementation
@@ -133,7 +136,11 @@ This provides:
 - **Functional Programming**: Immutable, composable results
 - **Rich Error Information**: Detailed error types and messages
 
-### Git Service Usage
+### Repository Usage
+
+The project uses repositories for data access and services for business logic:
+
+#### Git Service Usage
 
 The git service wraps the repository service and can be configured for different repositories:
 
@@ -157,6 +164,22 @@ if (Result.isSuccess(result)) {
 } else {
   console.log(result.message.message);
 }
+```
+
+#### AI Repository Usage
+
+The AI repository provides AI analysis capabilities:
+
+```typescript
+// Create AI repository with mock implementation
+const mockAIRepository = createAIRepository({ useMock: true });
+
+// Create AI repository with LangChain implementation
+const realAIRepository = createAIRepository({ useMock: false });
+
+// Use the repository
+const needsUpdate = await mockAIRepository.shouldUpdateDocs('abc12345');
+console.log(`Documentation updates needed: ${needsUpdate}`);
 ```
 
 ### Git Repository Error Types
@@ -218,6 +241,18 @@ If the specified directories don't exist, the script will:
   - Takes repository type as configuration parameter
   - Delegates to underlying git repository service
   - Provides unified interface for git operations
+
+#### `src/repositories/ai/`
+- **Purpose**: AI repository implementations
+- **Files**:
+  - `types.ts`: AI repository interfaces and types
+  - `mock.ts`: Mock AI repository for testing
+  - `langchain.ts`: LangChain AI repository implementation
+  - `index.ts`: AI repository factory function
+- **Features**: 
+  - Mock implementation for testing without API calls
+  - LangChain implementation for real AI analysis
+  - Factory pattern for easy switching between implementations
 
 #### `src/index.ts`
 - **Purpose**: Main script execution
