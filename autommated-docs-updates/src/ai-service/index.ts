@@ -3,10 +3,12 @@ export * from './types';
 
 // Export implementations
 export { MockAIService } from './mock';
+export { LangChainAIService } from './langchain';
 
 // Factory function to create AI service instances
 import { AIService, AIServiceConfig } from './types';
 import { MockAIService } from './mock';
+import { LangChainAIService } from './langchain';
 
 /**
  * Factory function to create an AI service instance
@@ -19,7 +21,6 @@ export function createAIService(config: AIServiceConfig = {}): AIService {
     return new MockAIService();
   }
   
-  // TODO: Return real AI service implementation when available
-  console.log('🤖 Using real AI service (implementation not yet available, falling back to mock)');
-  return new MockAIService();
+  console.log('🤖 Using LangChain AI service');
+  return new LangChainAIService();
 } 

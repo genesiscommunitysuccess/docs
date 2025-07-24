@@ -1,8 +1,12 @@
+import { config } from 'dotenv';
 import { validateAndParseArgs } from './args';
 import { createAIService } from './ai-service';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
+
+// Load environment variables from .env file
+config();
 
 async function main() {
   // Validate and parse command line arguments

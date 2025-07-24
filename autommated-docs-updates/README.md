@@ -29,6 +29,7 @@ autommated-docs-updates/
 - Node.js >= 20.10.0
 - Git (for repository cloning)
 - SSH access to the Genesis repositories
+- Anthropic API key (for real AI service)
 
 ### Installation
 
@@ -36,6 +37,11 @@ autommated-docs-updates/
 2. Install dependencies:
    ```bash
    npm install
+   ```
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your Anthropic API key
    ```
 
 ### Development Setup
@@ -58,8 +64,8 @@ npm run dev
 # Explicitly use mock AI service for testing
 npm run dev:mock
 
-# Use real AI service (when implemented)
-npm run dev:real
+# Use LangChain AI service
+npm run dev:langchain
 ```
 
 This uses the following default paths:
@@ -86,7 +92,7 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 - `npm start` - Runs compiled JavaScript (requires manual arguments)
 - `npm run dev` - Runs TypeScript directly with pre-configured paths (uses mock AI service)
 - `npm run dev:mock` - Runs with mock AI service for testing
-- `npm run dev:real` - Runs with real AI service (when implemented)
+- `npm run dev:langchain` - Runs with LangChain AI service
 
 ## Features
 
@@ -157,7 +163,7 @@ This foundation is ready for:
 ## Dependencies
 
 ### Production Dependencies
-- None currently (pure Node.js/TypeScript)
+- `dotenv` - Environment variable loading
 
 ### Development Dependencies
 - `typescript` - TypeScript compiler
