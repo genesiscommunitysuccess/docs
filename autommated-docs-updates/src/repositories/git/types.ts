@@ -1,3 +1,5 @@
+import { Result } from '../../types/result';
+
 /**
  * Git Repository Service interface for automated documentation updates
  */
@@ -6,9 +8,9 @@ export interface GitRepositoryService {
    * Gets commit information and diffs for a specific commit hash
    * @param commitHash - The git commit hash to analyze
    * @param repositoryType - Which repository to query (docs or foundation-ui)
-   * @returns Promise<CommitInfo> - Commit information and diffs
+   * @returns Promise<Result<CommitInfo, GitError>> - Commit information and diffs or error
    */
-  getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<CommitInfo>;
+  getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<Result<CommitInfo, GitError>>;
 }
 
 /**
@@ -17,6 +19,22 @@ export interface GitRepositoryService {
 export enum RepositoryType {
   DOCS = 'docs',
   FOUNDATION_UI = 'foundation-ui'
+}
+
+/**
+ * Git-specific error types
+ */
+export interface GitError {
+  /** Type of git error */
+  type: 'invalid_commit_hash' | 'repository_not_found' | 'git_command_failed' | 'repository_not_git' | 'unknown';
+  /** Human-readable error message */
+  message: string;
+  /** Original error details if available */
+  details?: string;
+  /** Repository type where the error occurred */
+  repositoryType: RepositoryType;
+  /** Commit hash that caused the error */
+  commitHash?: string;
 }
 
 /**

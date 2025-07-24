@@ -3,6 +3,7 @@ import { validateAndParseArgs } from './args';
 import { createAIService } from './services/ai-service';
 import { createGitRepositoryService } from './repositories/git';
 import { RepositoryType } from './repositories/git/types';
+import { Result } from './types/result';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
@@ -61,25 +62,49 @@ async function main() {
   try {
     // Test docs repository
     console.log("\n📖 Checking docs repository...");
-    const docsCommitInfo = await gitService.getCommitInfo(args.commitHash, RepositoryType.DOCS);
-    console.log(`✅ Docs Repository Commit Info:`);
-    console.log(`   Hash: ${docsCommitInfo.hash}`);
-    console.log(`   Author: ${docsCommitInfo.author} (${docsCommitInfo.authorEmail})`);
-    console.log(`   Date: ${docsCommitInfo.date.toISOString()}`);
-    console.log(`   Message: ${docsCommitInfo.message}`);
-    console.log(`   Files Changed: ${docsCommitInfo.filesChanged.length}`);
-    console.log(`   Diffs: ${docsCommitInfo.diffs.length} file(s) with changes`);
+    const docsCommitResult = await gitService.getCommitInfo(args.commitHash, RepositoryType.DOCS);
+    
+    if (Result.isSuccess(docsCommitResult)) {
+      const commitInfo = docsCommitResult.value;
+      console.log(`✅ Docs Repository Commit Info:`);
+      console.log(`   Hash: ${commitInfo.hash}`);
+      console.log(`   Author: ${commitInfo.author} (${commitInfo.authorEmail})`);
+      console.log(`   Date: ${commitInfo.date.toISOString()}`);
+      console.log(`   Message: ${commitInfo.message}`);
+      console.log(`   Files Changed: ${commitInfo.filesChanged.length}`);
+      console.log(`   Diffs: ${commitInfo.diffs.length} file(s) with changes`);
+    } else {
+      const error = docsCommitResult.message;
+      console.log(`❌ Docs Repository Error:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
     
     // Test foundation-ui repository
     console.log("\n🔧 Checking foundation-ui repository...");
-    const fuiCommitInfo = await gitService.getCommitInfo(args.commitHash, RepositoryType.FOUNDATION_UI);
-    console.log(`✅ Foundation UI Repository Commit Info:`);
-    console.log(`   Hash: ${fuiCommitInfo.hash}`);
-    console.log(`   Author: ${fuiCommitInfo.author} (${fuiCommitInfo.authorEmail})`);
-    console.log(`   Date: ${fuiCommitInfo.date.toISOString()}`);
-    console.log(`   Message: ${fuiCommitInfo.message}`);
-    console.log(`   Files Changed: ${fuiCommitInfo.filesChanged.length}`);
-    console.log(`   Diffs: ${fuiCommitInfo.diffs.length} file(s) with changes`);
+    const fuiCommitResult = await gitService.getCommitInfo(args.commitHash, RepositoryType.FOUNDATION_UI);
+    
+    if (Result.isSuccess(fuiCommitResult)) {
+      const commitInfo = fuiCommitResult.value;
+      console.log(`✅ Foundation UI Repository Commit Info:`);
+      console.log(`   Hash: ${commitInfo.hash}`);
+      console.log(`   Author: ${commitInfo.author} (${commitInfo.authorEmail})`);
+      console.log(`   Date: ${commitInfo.date.toISOString()}`);
+      console.log(`   Message: ${commitInfo.message}`);
+      console.log(`   Files Changed: ${commitInfo.filesChanged.length}`);
+      console.log(`   Diffs: ${commitInfo.diffs.length} file(s) with changes`);
+    } else {
+      const error = fuiCommitResult.message;
+      console.log(`❌ Foundation UI Repository Error:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
     
   } catch (error) {
     console.error("❌ Error getting commit info:", error);

@@ -1,4 +1,5 @@
-import { GitRepositoryService, CommitInfo, FileDiff, RepositoryType } from './types';
+import { GitRepositoryService, CommitInfo, FileDiff, RepositoryType, GitError } from './types';
+import { Result } from '../../types/result';
 
 /**
  * Mock implementation of the git repository service for testing
@@ -7,6 +8,7 @@ import { GitRepositoryService, CommitInfo, FileDiff, RepositoryType } from './ty
  * - Returns mock commit information based on commit hash patterns
  * - Simulates different types of file changes
  * - Supports both docs and foundation-ui repositories
+ * - Simulates various error conditions
  */
 export class MockGitRepositoryService implements GitRepositoryService {
   private docsRepositoryPath: string;
@@ -21,21 +23,41 @@ export class MockGitRepositoryService implements GitRepositoryService {
    * Mock implementation that simulates git commit analysis
    * @param commitHash - The git commit hash to analyze
    * @param repositoryType - Which repository to query
-   * @returns Promise<CommitInfo> - Mock commit information and diffs
+   * @returns Promise<Result<CommitInfo, GitError>> - Mock commit information and diffs or error
    */
-  async getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<CommitInfo> {
+  async getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<Result<CommitInfo, GitError>> {
     // Simulate some processing time
     await new Promise(resolve => setTimeout(resolve, 200));
     
+    // Simulate invalid commit hash error
+    if (commitHash === 'invalid' || commitHash.length < 7) {
+      return Result.error({
+        type: 'invalid_commit_hash',
+        message: `Invalid commit hash: ${commitHash}. Commit hashes must be at least 7 characters long.`,
+        repositoryType,
+        commitHash
+      });
+    }
+    
+    // Simulate repository not found error
+    if (commitHash === 'repo_not_found') {
+      return Result.error({
+        type: 'repository_not_found',
+        message: `Repository not found for ${repositoryType}`,
+        repositoryType,
+        commitHash
+      });
+    }
+    
     // Mock logic based on commit hash patterns and repository type
     if (repositoryType === RepositoryType.DOCS) {
-      return this.createMockDocsCommit(commitHash);
+      return Result.success(this.createMockDocsCommit(commitHash));
     } else if (repositoryType === RepositoryType.FOUNDATION_UI) {
-      return this.createMockFoundationUiCommit(commitHash);
+      return Result.success(this.createMockFoundationUiCommit(commitHash));
     }
     
     // Fallback to generic commit
-    return this.createMockGenericCommit(commitHash, repositoryType);
+    return Result.success(this.createMockGenericCommit(commitHash, repositoryType));
   }
 
   private createMockDocsCommit(commitHash: string): CommitInfo {

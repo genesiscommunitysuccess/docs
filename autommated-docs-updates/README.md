@@ -111,6 +111,30 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 
 ## Features
 
+### Error Handling with Result Types
+
+The project uses a robust `Result<S, E>` type for error handling throughout the codebase:
+
+```typescript
+type Result<S, E> = Success<S> | Error<E>
+```
+
+This provides:
+- **Type Safety**: Compile-time error handling
+- **Explicit Error States**: No hidden exceptions
+- **Functional Programming**: Immutable, composable results
+- **Rich Error Information**: Detailed error types and messages
+
+### Git Repository Error Types
+
+The git repository service returns specific error types:
+
+- `invalid_commit_hash`: Commit hash is malformed or doesn't exist
+- `repository_not_found`: Repository path doesn't exist
+- `repository_not_git`: Path exists but is not a git repository
+- `git_command_failed`: Git command execution failed
+- `unknown`: Unexpected errors
+
 ### Argument Validation
 
 The script requires exactly 3 command-line arguments:
@@ -137,6 +161,13 @@ If the specified directories don't exist, the script will:
 
 ### Module Structure
 
+#### `src/types/`
+- **Purpose**: Shared type definitions and utilities
+- **Files**:
+  - `result.ts`: Result type for error handling
+  - `index.ts`: Type exports
+- **Features**: Provides functional programming patterns for error handling
+
 #### `src/args.ts`
 - **Purpose**: Argument validation and parsing
 - **Exports**: 
@@ -150,6 +181,7 @@ If the specified directories don't exist, the script will:
   - Imports and uses argument validation
   - Handles directory creation and git cloning
   - Provides user feedback during operations
+  - Uses Result types for robust error handling
 
 ### TypeScript Configuration
 

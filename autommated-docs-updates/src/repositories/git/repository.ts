@@ -1,4 +1,5 @@
-import { GitRepositoryService, CommitInfo, FileDiff, RepositoryType } from './types';
+import { GitRepositoryService, CommitInfo, FileDiff, RepositoryType, GitError } from './types';
+import { Result } from '../../types/result';
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 
@@ -13,28 +14,47 @@ export class RealGitRepositoryService implements GitRepositoryService {
   private foundationUiRepositoryPath: string;
 
   constructor(docsRepositoryPath: string, foundationUiRepositoryPath: string) {
-    this.docsRepositoryPath = this.validateRepositoryPath(docsRepositoryPath, 'docs');
-    this.foundationUiRepositoryPath = this.validateRepositoryPath(foundationUiRepositoryPath, 'foundation-ui');
+    const docsResult = this.validateRepositoryPath(docsRepositoryPath, 'docs');
+    const fuiResult = this.validateRepositoryPath(foundationUiRepositoryPath, 'foundation-ui');
+    
+    if (Result.isError(docsResult)) {
+      throw new Error(docsResult.message.message);
+    }
+    if (Result.isError(fuiResult)) {
+      throw new Error(fuiResult.message.message);
+    }
+    
+    this.docsRepositoryPath = docsResult.value;
+    this.foundationUiRepositoryPath = fuiResult.value;
   }
 
   /**
    * Validates that the repository path exists and is a git repository
    * @param repositoryPath - Path to the git repository
    * @param repositoryName - Name of the repository for error messages
-   * @returns string - Validated repository path
-   * @throws Error if repository doesn't exist or is not a git repository
+   * @returns Result<string, GitError> - Validated repository path or error
    */
-  private validateRepositoryPath(repositoryPath: string, repositoryName: string): string {
+  private validateRepositoryPath(repositoryPath: string, repositoryName: string): Result<string, GitError> {
     if (!existsSync(repositoryPath)) {
-      throw new Error(`${repositoryName} repository path does not exist: ${repositoryPath}`);
+      return Result.error({
+        type: 'repository_not_found',
+        message: `${repositoryName} repository path does not exist: ${repositoryPath}`,
+        repositoryType: repositoryName === 'docs' ? RepositoryType.DOCS : RepositoryType.FOUNDATION_UI,
+        details: `Path not found: ${repositoryPath}`
+      });
     }
 
     const gitDir = `${repositoryPath}/.git`;
     if (!existsSync(gitDir)) {
-      throw new Error(`Path is not a git repository (${repositoryName}): ${repositoryPath}`);
+      return Result.error({
+        type: 'repository_not_git',
+        message: `Path is not a git repository (${repositoryName}): ${repositoryPath}`,
+        repositoryType: repositoryName === 'docs' ? RepositoryType.DOCS : RepositoryType.FOUNDATION_UI,
+        details: `No .git directory found at: ${gitDir}`
+      });
     }
 
-    return repositoryPath;
+    return Result.success(repositoryPath);
   }
 
   /**
@@ -57,18 +77,45 @@ export class RealGitRepositoryService implements GitRepositoryService {
    * Executes a git command in the specified repository
    * @param command - Git command to execute
    * @param repositoryType - Which repository to execute the command in
-   * @returns string - Command output
+   * @returns Result<string, GitError> - Command output or error
    */
-  private executeGitCommand(command: string, repositoryType: RepositoryType): string {
+  private executeGitCommand(command: string, repositoryType: RepositoryType): Result<string, GitError> {
     const repositoryPath = this.getRepositoryPath(repositoryType);
     
     try {
-      return execSync(`git -C "${repositoryPath}" ${command}`, { 
+      const output = execSync(`git -C "${repositoryPath}" ${command}`, { 
         encoding: 'utf8',
         stdio: 'pipe'
       }).trim();
+      return Result.success(output);
     } catch (error) {
-      throw new Error(`Git command failed in ${repositoryType} repository: ${command}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      // Check for specific git error patterns
+      if (errorMessage.includes('fatal: bad object')) {
+        return Result.error({
+          type: 'invalid_commit_hash',
+          message: `Invalid commit hash in ${repositoryType} repository`,
+          repositoryType,
+          details: errorMessage
+        });
+      }
+      
+      if (errorMessage.includes('fatal: not a git repository')) {
+        return Result.error({
+          type: 'repository_not_git',
+          message: `Not a git repository: ${repositoryPath}`,
+          repositoryType,
+          details: errorMessage
+        });
+      }
+      
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Git command failed in ${repositoryType} repository: ${command}`,
+        repositoryType,
+        details: errorMessage
+      });
     }
   }
 
@@ -147,24 +194,47 @@ export class RealGitRepositoryService implements GitRepositoryService {
    * Gets commit information and diffs for a specific commit hash
    * @param commitHash - The git commit hash to analyze
    * @param repositoryType - Which repository to query
-   * @returns Promise<CommitInfo> - Commit information and diffs
+   * @returns Promise<Result<CommitInfo, GitError>> - Commit information and diffs or error
    */
-  async getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<CommitInfo> {
+  async getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<Result<CommitInfo, GitError>> {
     try {
+      // Validate commit hash format
+      if (!commitHash || commitHash.length < 7) {
+        return Result.error({
+          type: 'invalid_commit_hash',
+          message: `Invalid commit hash: ${commitHash}. Commit hashes must be at least 7 characters long.`,
+          repositoryType,
+          commitHash
+        });
+      }
+
       // Get commit details
-      const commitDetails = this.executeGitCommand(`show --format=format:"%H%n%an%n%ae%n%aI%n%s" --no-patch ${commitHash}`, repositoryType);
-      const [hash, author, authorEmail, dateString, message] = commitDetails.split('\n');
+      const commitDetailsResult = this.executeGitCommand(`show --format=format:"%H%n%an%n%ae%n%aI%n%s" --no-patch ${commitHash}`, repositoryType);
+      if (Result.isError(commitDetailsResult)) {
+        return commitDetailsResult;
+      }
+      
+      const [hash, author, authorEmail, dateString, message] = commitDetailsResult.value.split('\n');
 
       // Get list of files changed
-      const filesChanged = this.executeGitCommand(`show --name-only --format=format: ${commitHash}`, repositoryType)
+      const filesChangedResult = this.executeGitCommand(`show --name-only --format=format: ${commitHash}`, repositoryType);
+      if (Result.isError(filesChangedResult)) {
+        return filesChangedResult;
+      }
+      
+      const filesChanged = filesChangedResult.value
         .split('\n')
         .filter(file => file.trim() !== '');
 
       // Get the full diff
-      const diffOutput = this.executeGitCommand(`show --no-color ${commitHash}`, repositoryType);
-      const diffs = this.parseDiffs(diffOutput);
+      const diffOutputResult = this.executeGitCommand(`show --no-color ${commitHash}`, repositoryType);
+      if (Result.isError(diffOutputResult)) {
+        return diffOutputResult;
+      }
+      
+      const diffs = this.parseDiffs(diffOutputResult.value);
 
-      return {
+      return Result.success({
         hash,
         author,
         authorEmail,
@@ -173,9 +243,15 @@ export class RealGitRepositoryService implements GitRepositoryService {
         filesChanged,
         diffs,
         repositoryType
-      };
+      });
     } catch (error) {
-      throw new Error(`Failed to get commit info for ${commitHash} in ${repositoryType} repository: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error getting commit info for ${commitHash} in ${repositoryType} repository`,
+        repositoryType,
+        commitHash,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 } 
