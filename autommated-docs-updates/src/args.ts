@@ -3,6 +3,8 @@ import { existsSync } from 'fs';
 export interface ScriptArgs {
   docsRepoPath: string;
   foundationUiRepoPath: string;
+  needsDocsRepo: boolean;
+  needsFoundationUiRepo: boolean;
 }
 
 export function validateAndParseArgs(): ScriptArgs {
@@ -20,19 +22,14 @@ export function validateAndParseArgs(): ScriptArgs {
 
   const [docsRepoPath, foundationUiRepoPath] = args;
 
-  // Validate that the paths exist
-  if (!existsSync(docsRepoPath)) {
-    console.error(`Error: Docs repository path does not exist: ${docsRepoPath}`);
-    process.exit(1);
-  }
-
-  if (!existsSync(foundationUiRepoPath)) {
-    console.error(`Error: Foundation UI repository path does not exist: ${foundationUiRepoPath}`);
-    process.exit(1);
-  }
+  // Check if the paths exist
+  const needsDocsRepo = !existsSync(docsRepoPath);
+  const needsFoundationUiRepo = !existsSync(foundationUiRepoPath);
 
   return {
     docsRepoPath,
-    foundationUiRepoPath
+    foundationUiRepoPath,
+    needsDocsRepo,
+    needsFoundationUiRepo
   };
 } 
