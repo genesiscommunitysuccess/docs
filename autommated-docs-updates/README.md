@@ -15,11 +15,20 @@ autommated-docs-updates/
 ├── src/
 │   ├── index.ts          # Main script execution
 │   ├── args.ts           # Argument validation and parsing
-│   └── services/
-│       └── ai-service/   # AI service implementations
+│   ├── types/            # Shared type definitions
+│   │   ├── result.ts     # Result type for error handling
+│   │   └── index.ts      # Type exports
+│   ├── services/
+│   │   └── ai-service/   # AI service implementations
+│   │       ├── types.ts      # TypeScript interfaces
+│   │       ├── mock.ts       # Mock implementation
+│   │       ├── langchain.ts  # LangChain implementation
+│   │       └── index.ts      # Factory function
+│   └── repositories/
+│       └── git/          # Git repository service
 │           ├── types.ts      # TypeScript interfaces
 │           ├── mock.ts       # Mock implementation
-│           ├── langchain.ts  # LangChain implementation
+│           ├── repository.ts # Real implementation
 │           └── index.ts      # Factory function
 ├── dist/                 # Compiled JavaScript output
 ├── package.json          # Project configuration and scripts
