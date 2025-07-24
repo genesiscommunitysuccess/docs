@@ -98,6 +98,59 @@ export class RealAIService implements AIService {
       return apiDocsPatterns.some(pattern => pattern.test(file));
     });
   }
+
+  /**
+   * Finds documentation files that need to be edited based on a commit
+   * @param services - The services object containing git, ai, and filesystem services
+   * @param commitHash - The git commit hash to analyze
+   * @returns Promise<Result<string[], string>> - Success with array of filepaths relative to docsDir/root, or error with failure reason
+   */
+  async findDocsFilesToEdit(services: Services, commitHash: string): Promise<Result<string[], string>> {
+    try {
+      console.log(`🔍 Finding docs files to edit for commit ${commitHash}`);
+
+      // Step 1: Pull latest changes from foundation-ui repository
+      console.log('📥 Pulling latest changes from foundation-ui repository...');
+      const pullResult = await services.git.pullLatest('foundation-ui');
+      if (Result.isError(pullResult)) {
+        return Result.error(`Failed to pull latest changes from foundation-ui repository: ${pullResult.message.message}`);
+      }
+
+      // Step 2: Get commit information
+      console.log('📋 Getting commit information...');
+      const commitResult = await services.git.getCommitInfo(commitHash, 'foundation-ui');
+      if (Result.isError(commitResult)) {
+        return Result.error(`Failed to get commit information: ${commitResult.message.message}`);
+      }
+
+      const commitInfo = commitResult.value;
+      console.log(`📝 Commit: ${commitInfo.message} by ${commitInfo.author}`);
+
+      // Step 3: Use AI to find docs files to edit
+      console.log('🤖 Using AI to find docs files that need editing...');
+      const aiResult = await this.aiRepository.findDocsFilesToEdit(services, commitInfo);
+      
+      if (Result.isSuccess(aiResult)) {
+        const filePaths = aiResult.value;
+        console.log(`🤖 AI Analysis Result: Found ${filePaths.length} docs files to edit`);
+        if (filePaths.length > 0) {
+          console.log('📁 Files to edit:');
+          filePaths.forEach((filePath, index) => {
+            console.log(`   ${index + 1}. ${filePath}`);
+          });
+        }
+        return Result.success(filePaths);
+      } else {
+        console.log(`❌ AI Analysis Error: ${aiResult.message}`);
+        return Result.error(`AI analysis failed: ${aiResult.message}`);
+      }
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('❌ Error in findDocsFilesToEdit:', errorMessage);
+      return Result.error(`Error finding docs files to edit: ${errorMessage}`);
+    }
+  }
 }
 
 /**

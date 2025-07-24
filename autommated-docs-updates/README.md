@@ -134,6 +134,15 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 
 ## Features
 
+### AI-Powered Documentation Analysis
+
+The project provides intelligent AI analysis for automated documentation updates:
+
+- **Commit Analysis**: Determines if documentation updates are needed based on code changes
+- **File Discovery**: Uses agentic AI flow to find specific documentation files that need editing
+- **Intelligent Search**: Generates contextually relevant search terms for documentation discovery
+- **Multi-step Evaluation**: Progressive refinement from commit analysis to file selection
+
 ### Error Handling with Result Types
 
 The project uses a robust `Result<S, E>` type for error handling throughout the codebase:
@@ -233,9 +242,19 @@ const mockAIService = createAIService({ useMock: true });
 // Create AI service with LangChain implementation
 const realAIService = createAIService({ useMock: false });
 
-// Use the service
-const needsUpdate = await mockAIService.shouldUpdateDocs('abc12345');
-console.log(`Documentation updates needed: ${needsUpdate}`);
+// Use the service to determine if docs need updates
+const needsUpdate = await mockAIService.shouldUpdateDocs(services, 'abc12345');
+if (Result.isSuccess(needsUpdate) && needsUpdate.value) {
+  console.log('Documentation updates needed');
+  
+  // Find specific docs files to edit
+  const filesToEdit = await mockAIService.findDocsFilesToEdit(services, 'abc12345');
+  if (Result.isSuccess(filesToEdit)) {
+    console.log(`Files to edit: ${filesToEdit.value.join(', ')}`);
+  }
+} else {
+  console.log('No documentation updates required');
+}
 ```
 
 #### AI Repository Usage
@@ -249,9 +268,19 @@ const mockAIRepository = createAIRepository({ useMock: true });
 // Create AI repository with LangChain implementation
 const realAIRepository = createAIRepository({ useMock: false });
 
-// Use the repository
-const needsUpdate = await mockAIRepository.shouldUpdateDocs('abc12345');
-console.log(`Documentation updates needed: ${needsUpdate}`);
+// Use the repository to determine if docs need updates
+const needsUpdate = await mockAIRepository.shouldUpdateDocs(services, commitInfo);
+if (Result.isSuccess(needsUpdate) && needsUpdate.value) {
+  console.log('Documentation updates needed');
+  
+  // Find specific docs files to edit using agentic AI flow
+  const filesToEdit = await mockAIRepository.findDocsFilesToEdit(services, commitInfo);
+  if (Result.isSuccess(filesToEdit)) {
+    console.log(`Files to edit: ${filesToEdit.value.join(', ')}`);
+  }
+} else {
+  console.log('No documentation updates required');
+}
 ```
 
 #### Filesystem Service Usage
@@ -375,6 +404,22 @@ The AI repository uses LangChain with Anthropic's Claude to intelligently analyz
 - **Structured Prompts**: Expert-level analysis with clear decision criteria
 - **Fallback Analysis**: Simple heuristic when AI analysis fails
 - **Response Parsing**: Intelligent parsing of AI responses for consistent results
+
+### Agentic AI Flow for Finding Docs Files
+
+The AI repository implements an agentic flow to find documentation files that need editing:
+
+1. **Commit Analysis**: AI analyzes the commit to understand what changed
+2. **Search Term Generation**: AI generates specific search terms based on the analysis
+3. **Documentation Search**: Uses filesystem service to search docs with generated terms
+4. **File Evaluation**: AI evaluates each candidate file to determine relevance
+5. **Result Compilation**: Returns array of filepaths that need updates
+
+**Features**:
+- **Intelligent Search**: AI generates contextually relevant search terms
+- **Multi-step Analysis**: Progressive refinement from commit analysis to file selection
+- **Fallback Mechanisms**: Graceful degradation when AI analysis fails
+- **File Content Evaluation**: AI reads file content to make informed decisions
 
 ### Argument Validation
 
@@ -525,10 +570,12 @@ The project uses a modern TypeScript configuration:
 ## Future Enhancements
 
 This foundation is ready for:
-- LangChain integration for AI-powered documentation updates
-- Automated content generation and processing
-- Integration with CI/CD pipelines
-- Advanced repository management features
+- **Documentation Update Logic**: Implement the actual documentation update process for identified files
+- **Content Generation**: AI-powered content generation for new documentation sections
+- **Content Modification**: Intelligent editing of existing documentation content
+- **Integration with CI/CD pipelines**: Automated documentation updates in deployment workflows
+- **Advanced repository management features**: More sophisticated git operations and branching strategies
+- **Multi-repository support**: Extend to support additional repositories beyond docs and foundation-ui
 
 ## Dependencies
 

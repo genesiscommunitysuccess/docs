@@ -175,7 +175,24 @@ async function main() {
       
       if (needsUpdate) {
         console.log("🚀 Proceeding with documentation update process...");
-        // TODO: Implement documentation update logic
+        
+        // Find docs files to edit
+        console.log("\n🔍 Finding docs files to edit...");
+        const filesResult = await services.ai.findDocsFilesToEdit(services, args.commitHash);
+        
+        if (Result.isSuccess(filesResult)) {
+          const filesToEdit = filesResult.value;
+          console.log(`📁 Found ${filesToEdit.length} docs files to edit:`);
+          filesToEdit.forEach((filePath, index) => {
+            console.log(`   ${index + 1}. ${filePath}`);
+          });
+          
+          // TODO: Implement documentation update logic for the identified files
+          console.log("🔄 Documentation update logic will be implemented in the next phase");
+        } else {
+          console.error(`❌ Error finding docs files to edit: ${filesResult.message}`);
+          process.exit(1);
+        }
       } else {
         console.log("✨ No action needed - documentation is up to date");
       }
