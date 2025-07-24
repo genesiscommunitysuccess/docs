@@ -64,6 +64,33 @@ async function testGitService() {
     console.log(`   Type: ${error.type}`);
     console.log(`   Message: ${error.message}`);
   }
+
+  // Test git pull functionality
+  console.log('\n📥 Testing git pull functionality...');
+  
+  // Test docs repository pull
+  console.log('\n📖 Testing docs repository pull...');
+  const docsPullResult = await docsGitService.pullLatest();
+  if (Result.isSuccess(docsPullResult)) {
+    console.log(`✅ Docs repository pull successful`);
+  } else {
+    const error = docsPullResult.message;
+    console.log(`❌ Docs repository pull failed:`);
+    console.log(`   Type: ${error.type}`);
+    console.log(`   Message: ${error.message}`);
+  }
+  
+  // Test foundation-ui repository pull
+  console.log('\n🔧 Testing foundation-ui repository pull...');
+  const fuiPullResult = await fuiGitService.pullLatest();
+  if (Result.isSuccess(fuiPullResult)) {
+    console.log(`✅ Foundation UI repository pull successful`);
+  } else {
+    const error = fuiPullResult.message;
+    console.log(`❌ Foundation UI repository pull failed:`);
+    console.log(`   Type: ${error.type}`);
+    console.log(`   Message: ${error.message}`);
+  }
 }
 
 // Run the test

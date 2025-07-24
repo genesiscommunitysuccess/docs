@@ -160,12 +160,20 @@ const fuiGitService = createGitService({
   useMock: false 
 });
 
-// Use the service
+// Get commit information
 const result = await docsGitService.getCommitInfo('abc12345');
 if (Result.isSuccess(result)) {
   console.log(result.value.message);
 } else {
   console.log(result.message.message);
+}
+
+// Pull latest changes
+const pullResult = await docsGitService.pullLatest();
+if (Result.isSuccess(pullResult)) {
+  console.log('Repository updated successfully'); // pullResult.value is true
+} else {
+  console.log(`Pull failed: ${pullResult.message.message}`);
 }
 ```
 
@@ -210,6 +218,15 @@ The git repository service returns specific error types:
 - `repository_not_git`: Path exists but is not a git repository
 - `git_command_failed`: Git command execution failed
 - `unknown`: Unexpected errors
+
+### Git Repository Primary Branches
+
+The git repository service uses specific primary branches for each repository:
+
+- **Docs Repository**: `preprod` branch
+- **Foundation UI Repository**: `master` branch
+
+When pulling latest changes, the service automatically checks out the appropriate primary branch before executing the pull.
 
 ### Argument Validation
 
@@ -290,7 +307,7 @@ If the specified directories don't exist, the script will:
   - Handles directory creation and git cloning
   - Provides user feedback during operations
   - Uses Result types for robust error handling
-  - Uses git service for repository operations
+  - Uses git service for foundation-ui repository operations
 
 ### TypeScript Configuration
 

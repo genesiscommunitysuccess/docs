@@ -60,6 +60,30 @@ export class MockGitRepositoryService implements GitRepositoryService {
     return Result.success(this.createMockGenericCommit(commitHash, repositoryType));
   }
 
+  /**
+   * Mock implementation that simulates git pull
+   * @param repositoryType - Which repository to pull from
+   * @returns Promise<Result<true, GitError>> - Mock pull result
+   */
+  async pullLatest(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Simulate network error
+    if (repositoryType === RepositoryType.DOCS && Math.random() < 0.1) {
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Failed to pull latest changes from ${repositoryType} repository`,
+        repositoryType,
+        details: 'Network timeout'
+      });
+    }
+    
+    // Simulate successful pull
+    console.log(`📥 Mock git pull successful for ${repositoryType} repository`);
+    return Result.success(true);
+  }
+
   private createMockDocsCommit(commitHash: string): CommitInfo {
     return {
       hash: commitHash,

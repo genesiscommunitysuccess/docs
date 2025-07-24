@@ -11,6 +11,13 @@ export interface GitRepositoryService {
    * @returns Promise<Result<CommitInfo, GitError>> - Commit information and diffs or error
    */
   getCommitInfo(commitHash: string, repositoryType: RepositoryType): Promise<Result<CommitInfo, GitError>>;
+
+  /**
+   * Pulls the latest changes from the remote repository
+   * @param repositoryType - Which repository to pull from (docs or foundation-ui)
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  pullLatest(repositoryType: RepositoryType): Promise<Result<true, GitError>>;
 }
 
 /**

@@ -44,6 +44,20 @@ export class RealGitService implements GitService {
     // Delegate to the underlying git repository service
     return this.gitRepositoryService.getCommitInfo(commitHash, repoType);
   }
+
+  /**
+   * Pulls the latest changes from the remote repository
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async pullLatest(): Promise<Result<true, GitError>> {
+    // Map our repository type to the underlying repository service type
+    const repoType = this.repositoryType === 'docs' 
+      ? RepositoryType.DOCS 
+      : RepositoryType.FOUNDATION_UI;
+
+    // Delegate to the underlying git repository service
+    return this.gitRepositoryService.pullLatest(repoType);
+  }
 }
 
 /**

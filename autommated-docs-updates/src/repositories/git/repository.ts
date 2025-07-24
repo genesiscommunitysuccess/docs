@@ -254,4 +254,57 @@ export class RealGitRepositoryService implements GitRepositoryService {
       });
     }
   }
+
+  /**
+   * Gets the primary branch name for the specified repository type
+   * @param repositoryType - Which repository to get the branch for
+   * @returns string - Primary branch name
+   */
+  private getPrimaryBranch(repositoryType: RepositoryType): string {
+    switch (repositoryType) {
+      case RepositoryType.DOCS:
+        return 'preprod';
+      case RepositoryType.FOUNDATION_UI:
+        return 'master';
+      default:
+        throw new Error(`Unknown repository type: ${repositoryType}`);
+    }
+  }
+
+  /**
+   * Pulls the latest changes from the remote repository
+   * @param repositoryType - Which repository to pull from
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async pullLatest(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    try {
+      const repositoryPath = this.getRepositoryPath(repositoryType);
+      const primaryBranch = this.getPrimaryBranch(repositoryType);
+      
+      console.log(`📥 Pulling latest changes from ${repositoryType} repository (${primaryBranch} branch)...`);
+      
+      // Checkout the primary branch
+      const checkoutResult = this.executeGitCommand(`checkout ${primaryBranch}`, repositoryType);
+      if (Result.isError(checkoutResult)) {
+        return checkoutResult;
+      }
+      
+      // Pull the latest changes
+      const pullResult = this.executeGitCommand('pull', repositoryType);
+      if (Result.isError(pullResult)) {
+        return pullResult;
+      }
+      
+      console.log(`✅ Successfully pulled latest changes from ${repositoryType} repository`);
+      return Result.success(true);
+      
+    } catch (error) {
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error pulling latest changes from ${repositoryType} repository`,
+        repositoryType,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
 } 

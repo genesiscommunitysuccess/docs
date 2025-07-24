@@ -52,10 +52,10 @@ async function main() {
   // Determine whether to use mock services based on environment variable
   const useMockServices = process.env.USE_MOCK_SERVICES === 'true';
   
-  // Initialize git service for docs repository
+  // Initialize git service for foundation-ui repository
   console.log("\n📁 Getting commit information...");
   const gitService = createGitService({ 
-    repositoryType: 'docs',
+    repositoryType: 'foundation-ui',
     useMock: useMockServices 
   });
 
@@ -83,9 +83,25 @@ async function main() {
         console.log(`   Details: ${error.details}`);
       }
     }
+
+    // Test git pull functionality
+    console.log("\n📥 Testing git pull functionality...");
+    const pullResult = await gitService.pullLatest();
+    
+    if (Result.isSuccess(pullResult)) {
+      console.log(`✅ Git pull successful`);
+    } else {
+      const error = pullResult.message;
+      console.log(`❌ Git pull failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
     
   } catch (error) {
-    console.error("❌ Error getting commit info:", error);
+    console.error("❌ Error with git operations:", error);
     process.exit(1);
   }
 

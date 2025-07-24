@@ -12,6 +12,12 @@ export interface GitService {
    * @returns Promise<Result<CommitInfo, GitError>> - Commit information and diffs or error
    */
   getCommitInfo(commitHash: string): Promise<Result<CommitInfo, GitError>>;
+
+  /**
+   * Pulls the latest changes from the remote repository
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  pullLatest(): Promise<Result<true, GitError>>;
 }
 
 /**
