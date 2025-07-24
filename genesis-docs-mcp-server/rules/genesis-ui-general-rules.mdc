@@ -1,0 +1,16 @@
+---
+description: Genesis rapid grid syntax, to create grids/tables that doens't need CRUD operations.
+globs: **
+alwaysApply: true
+---
+## 1. UI Component Generation Rules
+
+### 1.1 General Component Rules
+1. ALWAYS use `@customElement` decorator for custom components
+2. ALWAYS extend from `FastElement` for custom components
+3. ALWAYS follow the naming pattern `app-{component-name}`
+4. NEVER skip component registration in the application's root module
+5. ALWAYS create a template file separated from the .ts file for the html.
+6. ALWAYS create a style file separated from the .ts file for the css.
+
+

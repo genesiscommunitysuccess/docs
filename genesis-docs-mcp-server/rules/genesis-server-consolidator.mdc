@@ -1,0 +1,164 @@
+---
+description: Genesis directory and project structure
+globs: **
+alwaysApply: true
+---
+## Overview
+
+A Consolidator is a real-time aggregation mechanism that:
+1. Takes input from one or more source tables
+2. Groups data based on specified keys
+3. Performs aggregation calculations (e.g., SUM, COUNT)
+4. Writes results to target tables
+5. Updates automatically when source data changes
+
+Refer to detailed online documentation @https://docs.genesis.global/docs/develop/server-capabilities/real-time-aggregation-consolidator/
+
+### Basic Structure
+```kotlin
+consolidator("NAME", SOURCE_TABLE, OUTPUT_TABLE) {
+    config {
+        groupBy = listOf("FIELD1", "FIELD2")  // Grouping fields
+        fields {
+            SUM("QUANTITY")     // Aggregation functions
+            COUNT("ORDER_ID")
+        }
+    }
+}
+```
+
+### Build Block Behavior
+The `build` block in a consolidator serves a specific purpose:
+1. It defines the initial state of the output record
+2. Fields should be initialized to their default values (e.g., 0.0 for numeric fields)
+3. The consolidator framework automatically applies aggregated values after initialization
+4. Do NOT try to reference aggregated values directly in the build block
+
+❌ Incorrect - Don't do this:
+```kotlin
+build {
+  TargetTable {
+    quantity = AGGREGATED_VALUE ?: 0.0  // Wrong! Don't reference aggregated values
+  }
+}
+```
+
+✅ Correct - Do this:
+```kotlin
+build {
+  TargetTable {
+    quantity = 0.0  // Correct! Initialize to default value
+  }
+}
+```
+
+### Enum Handling in Consolidators
+When working with ENUM fields in consolidators:
+1. ALWAYS use the generated enum class (e.g., `Side.BUY` not `"BUY"`)
+2. NEVER use string literals for enum values
+3. Reference enums using proper casing as defined in the tables dictionary
+
+❌ Incorrect - Don't do this:
+```kotlin
+select {
+  OUTPUT_TABLE {
+    sum {
+      when(side) {
+        "BUY" -> quantity  // Wrong! Don't use string literals for enums
+        else -> 0.0
+      }
+    } into QUANTITY
+  }
+}
+```
+
+✅ Correct - Do this:
+```kotlin
+select {
+  OUTPUT_TABLE {
+    sum {
+      when(side) {
+        Side.BUY -> quantity  // Correct! Use the proper enum reference
+        else -> 0.0
+      }
+    } into QUANTITY
+  }
+}
+```
+
+### Field Name Matching Rule
+When using `into` in the select block:
+1. The field name MUST match exactly with a field in the output table
+2. Do NOT create new field names that don't exist in the output table
+3. Check your tables dictionary to ensure field names match
+
+❌ Incorrect - Don't do this:
+```kotlin
+select {
+  OUTPUT_TABLE {
+    sum { quantity } into TOTAL_QUANTITY  // Wrong! TOTAL_QUANTITY doesn't exist in output table
+  }
+}
+```
+
+✅ Correct - Do this:
+```kotlin
+select {
+  OUTPUT_TABLE {
+    sum { quantity } into QUANTITY  // Correct! QUANTITY exists in output table
+  }
+}
+```
+
+## Setup
+When creating a new consolidator ensure that
+1. There is a process defined for the consolidator in `*-process.xml`
+2. There is a service defined in `*-service-definitions.xml` for the consolidator process
+3. Use global.genesis.pal.consolidator for the package in the process definition
+
+For details reference https://docs.genesis.global/docs/develop/server-capabilities/real-time-aggregation-consolidator/#runtime-configuration
+
+Example:
+```kotlin
+consolidators {
+  consolidator("BOOK_CONSOLIDATOR", ORDERS, BOOK) {
+
+    select {
+      BOOK {
+        sum {quantity } into QUANTITY
+      }
+    }
+
+    groupBy {
+      Book.byId(bookId)
+    } into {
+      build {
+        Book {
+          bookId = groupId.bookId
+          quantity = 0.0
+        }
+      }
+    }
+  }
+}
+```
+
+### onCommit Block Usage
+The `onCommit` block allows final modifications to the output record before it is saved:
+1. ALWAYS use the `output` variable to reference the output record
+2. NEVER use a parameter in the onCommit lambda
+3. Modifications in onCommit are applied after aggregation but before saving
+
+❌ Incorrect - Don't do this:
+```kotlin
+onCommit { record ->  // Wrong! Don't use a parameter
+  record.quantity = record.quantity / 100.0
+}
+```
+
+✅ Correct - Do this:
+```kotlin
+onCommit {  // Correct! Use the implicit output variable
+  output.quantity = output.quantity / 100.0
+}
+```
