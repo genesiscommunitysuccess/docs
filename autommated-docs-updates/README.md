@@ -15,6 +15,7 @@ autommated-docs-updates/
 ├── src/
 │   ├── index.ts          # Main script execution
 │   ├── args.ts           # Argument validation and parsing
+│   ├── service-checks.ts # Service validation and testing functions
 │   ├── types/            # Shared type definitions
 │   │   ├── result.ts     # Result type for error handling
 │   │   └── index.ts      # Type exports
@@ -79,6 +80,9 @@ autommated-docs-updates/
 - `USE_MOCK_SERVICES`: Controls whether to use mock or real services
   - `true`: Use mock services (default for development)
   - `false`: Use real services (requires API keys)
+- `RUN_SERVICE_CHECKS`: Controls whether to run comprehensive service checks
+  - `true`: Run service checks (filesystem, git, AI, file editing)
+  - `false` or unset: Skip service checks (default)
 - `DOCS_REPOSITORY_PATH`: Path to the docs repository (defaults to `/Users/matt.walker/genesis/docs`)
 - `FOUNDATION_UI_REPOSITORY_PATH`: Path to the foundation-ui repository (defaults to `/Users/matt.walker/genesis/foundation-ui`)
 - `ANTHROPIC_API_KEY`: Required for real AI service (LangChain with Claude)
@@ -129,8 +133,12 @@ node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 - `npm run dev` - Runs TypeScript directly with pre-configured paths (uses mock services by default)
 - `npm run dev:mock` - Runs with mock services for testing
 - `npm run dev:real` - Runs with real services (requires API keys)
+- `npm run dev:checks` - Runs with service checks enabled (uses mock services by default)
+- `npm run dev:checks:mock` - Runs with service checks and mock services
+- `npm run dev:checks:real` - Runs with service checks and real services (requires API keys)
 - `USE_MOCK_SERVICES=true npm run dev` - Explicitly use mock services for testing
 - `USE_MOCK_SERVICES=false npm run dev` - Use real services (requires API keys)
+- `RUN_SERVICE_CHECKS=true npm run dev` - Enable service checks with default settings
 
 ## Features
 
@@ -448,6 +456,37 @@ The AI repository implements an agentic flow to find documentation files that ne
 - **Fallback Mechanisms**: Graceful degradation when AI analysis fails
 - **File Content Evaluation**: AI reads file content to make informed decisions
 
+### Service Checks
+
+The application includes comprehensive service checks that can be enabled via the `RUN_SERVICE_CHECKS` environment variable. When enabled, the script will:
+
+1. **Filesystem Service Tests**:
+   - Test grep functionality for searching documentation
+   - Test file reading with line count and offset options
+   - Validate file path handling and error conditions
+
+2. **Git Service Tests**:
+   - Test commit information retrieval
+   - Test repository pull functionality
+   - Test branch operations (creation, existence checking, current branch)
+   - Validate git command execution and error handling
+
+3. **AI Service Tests**:
+   - Test commit analysis for documentation update requirements
+   - Test file discovery using agentic AI flow
+   - Validate AI response parsing and error handling
+
+4. **File Editing Service Tests**:
+   - Test file update operations
+   - Test backup creation functionality
+   - Validate file editing error conditions
+
+Service checks are useful for:
+- **Development**: Validating all services work correctly during development
+- **Testing**: Ensuring mock services behave as expected
+- **Debugging**: Isolating issues with specific service components
+- **CI/CD**: Automated validation of service functionality
+
 ### Argument Validation
 
 The script requires exactly 3 command-line arguments:
@@ -490,6 +529,25 @@ If the specified directories don't exist, the script will:
   - `ScriptArgs` interface
   - `validateAndParseArgs()` function
 - **Features**: Returns flags indicating which repositories need to be created
+
+#### `src/service-checks.ts`
+- **Purpose**: Comprehensive service validation and testing
+- **Exports**: 
+  - `runServiceChecks()` function
+- **Features**: 
+  - Tests all service functionality (filesystem, git, AI, file editing)
+  - Provides detailed error reporting and validation
+  - Can be enabled/disabled via environment variable
+  - Useful for development, testing, and debugging
+
+#### `src/index.ts`
+- **Purpose**: Main script execution and orchestration
+- **Features**: 
+  - Validates arguments and sets up repositories
+  - Initializes all services with mock/real implementations
+  - Conditionally runs service checks based on environment variable
+  - Executes main application flow
+  - Handles error conditions and exit codes
 
 #### `src/services/ai-service/`
 - **Purpose**: AI service that wraps AI repository

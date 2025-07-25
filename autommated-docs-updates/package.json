@@ -8,6 +8,9 @@
     "dev": "ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
     "dev:mock": "cross-env USE_MOCK_SERVICES=true ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
     "dev:real": "cross-env USE_MOCK_SERVICES=false ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
+    "dev:checks": "cross-env RUN_SERVICE_CHECKS=true ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
+    "dev:checks:mock": "cross-env RUN_SERVICE_CHECKS=true USE_MOCK_SERVICES=true ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
+    "dev:checks:real": "cross-env RUN_SERVICE_CHECKS=true USE_MOCK_SERVICES=false ts-node src/index.ts /Users/matt.walker/genesis/docs /Users/matt.walker/genesis/foundation-ui",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
