@@ -330,4 +330,168 @@ export class RealGitRepositoryService implements GitRepositoryService {
       });
     }
   }
+
+  /**
+   * Validates a branch name for git compatibility
+   * @param branchName - The branch name to validate
+   * @param repositoryType - Which repository this validation is for (for error context)
+   * @returns Result<string, GitError> - Validated branch name or error
+   */
+  private validateBranchName(branchName: string, repositoryType: RepositoryType): Result<string, GitError> {
+    // Git branch name rules: https://git-scm.com/docs/git-check-ref-format
+    const invalidPatterns = [
+      /^\./, // Cannot start with a dot
+      /\.\./, // Cannot contain consecutive dots
+      /[~^:?*[\\]/, // Cannot contain certain special characters
+      /\/$/, // Cannot end with a slash
+      /^-/, // Cannot start with a dash
+      /\.lock$/, // Cannot end with .lock
+      /@{/, // Cannot contain @{
+      /\/\//, // Cannot contain consecutive slashes
+    ];
+
+    for (const pattern of invalidPatterns) {
+      if (pattern.test(branchName)) {
+        return Result.error({
+          type: 'invalid_branch_name',
+          message: `Invalid branch name: ${branchName}`,
+          branchName,
+          repositoryType,
+          details: `Branch name contains invalid characters or pattern`
+        });
+      }
+    }
+
+    if (branchName.length === 0) {
+      return Result.error({
+        type: 'invalid_branch_name',
+        message: 'Branch name cannot be empty',
+        branchName,
+        repositoryType,
+        details: 'Branch name must be at least 1 character long'
+      });
+    }
+
+    return Result.success(branchName);
+  }
+
+  /**
+   * Checks if a branch exists in the specified repository
+   * @param branchName - Name of the branch to check
+   * @param repositoryType - Which repository to check
+   * @returns Promise<Result<boolean, GitError>> - True if branch exists, false if not, error if failed
+   */
+  async branchExists(branchName: string, repositoryType: RepositoryType): Promise<Result<boolean, GitError>> {
+    try {
+      // Validate branch name first
+      const validationResult = this.validateBranchName(branchName, repositoryType);
+      if (Result.isError(validationResult)) {
+        return validationResult;
+      }
+
+      // Check if branch exists locally
+      const localBranchResult = this.executeGitCommand(`show-ref --verify --quiet refs/heads/${branchName}`, repositoryType);
+      if (Result.isSuccess(localBranchResult)) {
+        return Result.success(true);
+      }
+
+      // Check if branch exists remotely
+      const remoteBranchResult = this.executeGitCommand(`show-ref --verify --quiet refs/remotes/origin/${branchName}`, repositoryType);
+      if (Result.isSuccess(remoteBranchResult)) {
+        return Result.success(true);
+      }
+
+      // Branch doesn't exist
+      return Result.success(false);
+    } catch (error) {
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error checking if branch exists: ${branchName} in ${repositoryType} repository`,
+        repositoryType,
+        branchName,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Creates a new branch from the specified base branch
+   * @param branchName - Name of the new branch to create
+   * @param baseBranch - Name of the base branch to create from
+   * @param repositoryType - Which repository to create the branch in
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async createBranch(branchName: string, baseBranch: string, repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    try {
+      // Validate branch name
+      const validationResult = this.validateBranchName(branchName, repositoryType);
+      if (Result.isError(validationResult)) {
+        return validationResult;
+      }
+
+      // Check if branch already exists
+      const existsResult = await this.branchExists(branchName, repositoryType);
+      if (Result.isError(existsResult)) {
+        return existsResult;
+      }
+
+      if (existsResult.value) {
+        return Result.error({
+          type: 'branch_already_exists',
+          message: `Branch '${branchName}' already exists in ${repositoryType} repository`,
+          repositoryType,
+          branchName,
+          details: 'Cannot create a branch that already exists'
+        });
+      }
+
+      // Check if base branch exists
+      const baseExistsResult = await this.branchExists(baseBranch, repositoryType);
+      if (Result.isError(baseExistsResult)) {
+        return baseExistsResult;
+      }
+
+      if (!baseExistsResult.value) {
+        return Result.error({
+          type: 'branch_not_found',
+          message: `Base branch '${baseBranch}' does not exist in ${repositoryType} repository`,
+          repositoryType,
+          branchName: baseBranch,
+          details: 'Cannot create branch from non-existent base branch'
+        });
+      }
+
+      console.log(`🌿 Creating branch '${branchName}' from '${baseBranch}' in ${repositoryType} repository...`);
+
+      // Checkout the base branch first
+      const checkoutResult = this.executeGitCommand(`checkout ${baseBranch}`, repositoryType);
+      if (Result.isError(checkoutResult)) {
+        return checkoutResult;
+      }
+
+      // Pull latest changes to ensure we're up to date
+      const pullResult = this.executeGitCommand('pull', repositoryType);
+      if (Result.isError(pullResult)) {
+        return pullResult;
+      }
+
+      // Create the new branch
+      const createResult = this.executeGitCommand(`checkout -b ${branchName}`, repositoryType);
+      if (Result.isError(createResult)) {
+        return createResult;
+      }
+
+      console.log(`✅ Successfully created branch '${branchName}' from '${baseBranch}' in ${repositoryType} repository`);
+      return Result.success(true);
+
+    } catch (error) {
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error creating branch '${branchName}' in ${repositoryType} repository`,
+        repositoryType,
+        branchName,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
 } 

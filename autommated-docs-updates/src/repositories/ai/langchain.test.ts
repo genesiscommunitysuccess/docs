@@ -1,6 +1,7 @@
 import { LangChainAIRepository } from './langchain';
 import { createGitService } from '../../services/git-service';
 import { createFilesystemService } from '../../services/filesystem-service';
+import { createFileEditingService } from '../../services/file-editing-service';
 import { Services } from '../../types/services';
 import { CommitInfo } from '../git/types';
 import { Result } from '../../types/result';
@@ -14,6 +15,13 @@ function createMockServices(): Services {
       useMock: true,
       docsRepositoryPath: '/mock/docs/path',
       foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    }),
+    fileEditing: createFileEditingService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path',
+      createBackups: true,
+      backupDirectory: '.backups'
     })
   };
 }

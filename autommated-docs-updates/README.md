@@ -202,6 +202,30 @@ if (Result.isSuccess(fuiPullResult)) {
 } else {
   console.log(`Foundation UI pull failed: ${fuiPullResult.message.message}`);
 }
+
+// Get current branch from docs repository
+const currentBranchResult = await gitService.getCurrentBranch('docs');
+if (Result.isSuccess(currentBranchResult)) {
+  console.log(`Current branch: ${currentBranchResult.value}`);
+} else {
+  console.log(`Failed to get current branch: ${currentBranchResult.message.message}`);
+}
+
+// Check if a branch exists in docs repository
+const branchExistsResult = await gitService.branchExists('feature/new-auth', 'docs');
+if (Result.isSuccess(branchExistsResult)) {
+  console.log(`Branch exists: ${branchExistsResult.value}`);
+} else {
+  console.log(`Failed to check branch existence: ${branchExistsResult.message.message}`);
+}
+
+// Create a new branch in docs repository
+const createBranchResult = await gitService.createBranch('docs/update-auth-system', 'main', 'docs');
+if (Result.isSuccess(createBranchResult)) {
+  console.log('Branch created successfully');
+} else {
+  console.log(`Failed to create branch: ${createBranchResult.message.message}`);
+}
 ```
 
 #### Services Type Usage
@@ -373,6 +397,9 @@ The git repository service returns specific error types:
 - `repository_not_found`: Repository path doesn't exist
 - `repository_not_git`: Path exists but is not a git repository
 - `git_command_failed`: Git command execution failed
+- `branch_already_exists`: Attempted to create a branch that already exists
+- `branch_not_found`: Attempted to create a branch from a non-existent base branch
+- `invalid_branch_name`: Branch name contains invalid characters or patterns
 - `unknown`: Unexpected errors
 
 ### Filesystem Repository Error Types
@@ -485,124 +512,4 @@ If the specified directories don't exist, the script will:
   - Provides unified interface for git operations
   - Supports both docs and foundation-ui repositories dynamically
 
-#### `src/services/filesystem-service/`
-- **Purpose**: Filesystem service that wraps filesystem repository
-- **Files**:
-  - `types.ts`: Filesystem service interfaces and types
-  - `index.ts`: Filesystem service implementation and factory
-  - `filesystem-service.test.ts`: Test file for filesystem service
-- **Features**: 
-  - Delegates to underlying filesystem repository
-  - Provides business logic for filesystem operations
-  - Consistent interface for file search operations
-  - Supports grep functionality for documentation content
-
-#### `src/repositories/ai/`
-- **Purpose**: AI repository implementations
-- **Files**:
-  - `types.ts`: AI repository interfaces and types
-  - `mock.ts`: Mock AI repository for testing
-  - `langchain.ts`: LangChain AI repository implementation with Anthropic Claude
-  - `index.ts`: AI repository factory function
-- **Features**: 
-  - Mock implementation for testing without API calls
-  - LangChain implementation with Anthropic Claude for real AI analysis
-  - Intelligent commit analysis with structured prompts
-  - Fallback analysis when AI analysis fails
-  - Factory pattern for easy switching between implementations
-
-#### `src/repositories/git/`
-- **Purpose**: Git repository service
-- **Files**:
-  - `types.ts`: TypeScript interfaces
-  - `mock.ts`: Mock implementation
-  - `repository.ts`: Real implementation
-  - `index.ts`: Factory function
-- **Features**:
-  - Mock implementation for testing without git access
-  - Real implementation for actual git operations
-  - Support for multiple repository types (docs, foundation-ui)
-  - Commit information and diff extraction
-  - Repository pull operations
-
-#### `src/repositories/filesystem/`
-- **Purpose**: Filesystem repository service
-- **Files**:
-  - `types.ts`: TypeScript interfaces
-  - `mock.ts`: Mock implementation
-  - `repository.ts`: Real implementation
-  - `index.ts`: Factory function
-- **Features**:
-  - Mock implementation for testing without filesystem access
-  - Real implementation for actual file search operations
-  - Recursive directory traversal with intelligent filtering
-  - Line-by-line search with context preservation
-  - File reading functionality with optional line count and offset
-  - Path validation and security checks
-  - Seamless integration between grep and readDocFile (grep results can be used directly as readDocFile input)
-
-#### `src/index.ts`
-- **Purpose**: Main script execution
-- **Features**:
-  - Imports and uses argument validation
-  - Handles directory creation and git cloning
-  - Provides user feedback during operations
-  - Uses Result types for robust error handling
-  - Creates centralized Services object with git, AI, and filesystem services
-  - Uses services for repository operations, AI analysis, and file search
-
-### TypeScript Configuration
-
-The project uses a modern TypeScript configuration:
-- **Target**: ES2020
-- **Module**: CommonJS
-- **Strict Mode**: Enabled
-- **Source Maps**: Generated for debugging
-- **Declaration Files**: Generated for type information
-
-## Development Workflow
-
-1. **Write TypeScript** in the `src/` directory
-2. **Build** with `npm run build` to compile to JavaScript
-3. **Test** with `npm run dev` for development or `npm start` for production
-4. **Deploy** by running the compiled JavaScript with appropriate arguments
-
-## Future Enhancements
-
-This foundation is ready for:
-- **Documentation Update Logic**: Implement the actual documentation update process for identified files
-- **Content Generation**: AI-powered content generation for new documentation sections
-- **Content Modification**: Intelligent editing of existing documentation content
-- **Integration with CI/CD pipelines**: Automated documentation updates in deployment workflows
-- **Advanced repository management features**: More sophisticated git operations and branching strategies
-- **Multi-repository support**: Extend to support additional repositories beyond docs and foundation-ui
-
-## Dependencies
-
-### Production Dependencies
-- `dotenv` - Environment variable loading
-
-### Development Dependencies
-- `typescript` - TypeScript compiler
-- `@types/node` - Node.js type definitions
-- `ts-node` - TypeScript execution engine
-- `cross-env` - Cross-platform environment variable handling
-
-## Configuration Files
-
-### `tsconfig.json`
-- Configured for Node.js development
-- Includes source maps and declaration files
-- Excludes `node_modules` and `dist` directories
-
-### `.gitignore`
-- Excludes `node_modules`, `dist`, and other build artifacts
-- Ignores environment files and IDE configurations
-- Includes LangChain-specific patterns for future use
-
-## Notes
-
-- The script uses SSH URLs for git cloning, requiring proper SSH key setup
-- Repository paths are validated but not checked for git repository status
-- The script creates parent directories recursively if they don't exist
-- All git operations use `stdio: 'inherit'` for real-time progress feedback 
+#### `

@@ -1,6 +1,7 @@
 import { createAIService } from './index';
 import { createGitService } from '../git-service';
 import { createFilesystemService } from '../filesystem-service';
+import { createFileEditingService } from '../file-editing-service';
 import { Services } from '../../types/services';
 import { Result } from '../../types/result';
 
@@ -13,6 +14,13 @@ function createMockServices(): Services {
       useMock: true,
       docsRepositoryPath: '/mock/docs/path',
       foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    }),
+    fileEditing: createFileEditingService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path',
+      createBackups: true,
+      backupDirectory: '.backups'
     })
   };
 }

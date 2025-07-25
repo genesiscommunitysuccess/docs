@@ -25,6 +25,23 @@ export interface GitRepositoryService {
    * @returns Promise<Result<string, GitError>> - Current branch name or error
    */
   getCurrentBranch(repositoryType: RepositoryType): Promise<Result<string, GitError>>;
+
+  /**
+   * Creates a new branch from the specified base branch
+   * @param branchName - Name of the new branch to create
+   * @param baseBranch - Name of the base branch to create from (defaults to primary branch)
+   * @param repositoryType - Which repository to create the branch in
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  createBranch(branchName: string, baseBranch: string, repositoryType: RepositoryType): Promise<Result<true, GitError>>;
+
+  /**
+   * Checks if a branch exists in the specified repository
+   * @param branchName - Name of the branch to check
+   * @param repositoryType - Which repository to check
+   * @returns Promise<Result<boolean, GitError>> - True if branch exists, false if not, error if failed
+   */
+  branchExists(branchName: string, repositoryType: RepositoryType): Promise<Result<boolean, GitError>>;
 }
 
 /**
@@ -40,7 +57,7 @@ export enum RepositoryType {
  */
 export interface GitError {
   /** Type of git error */
-  type: 'invalid_commit_hash' | 'repository_not_found' | 'git_command_failed' | 'repository_not_git' | 'unknown';
+  type: 'invalid_commit_hash' | 'repository_not_found' | 'git_command_failed' | 'repository_not_git' | 'branch_already_exists' | 'branch_not_found' | 'invalid_branch_name' | 'unknown';
   /** Human-readable error message */
   message: string;
   /** Original error details if available */
@@ -49,6 +66,8 @@ export interface GitError {
   repositoryType: RepositoryType;
   /** Commit hash that caused the error */
   commitHash?: string;
+  /** Branch name that caused the error */
+  branchName?: string;
 }
 
 /**

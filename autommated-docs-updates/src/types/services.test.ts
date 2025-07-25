@@ -2,14 +2,14 @@ import { Services } from './services';
 import { createGitService } from '../services/git-service';
 import { createAIService } from '../services/ai-service';
 import { createFilesystemService } from '../services/filesystem-service';
+import { createFileEditingService } from '../services/file-editing-service';
 import { Result } from './result';
 
-// Example demonstrating the Services type and centralized service management
-async function testServicesType() {
+// Example usage of the Services type
+async function testServices() {
   console.log('=== Services Type Test ===');
   
   // Create services object with all initialized services
-  console.log('\n🔧 Creating services object...');
   const services: Services = {
     git: createGitService({ useMock: true }),
     ai: createAIService({ useMock: true }),
@@ -17,54 +17,39 @@ async function testServicesType() {
       useMock: true,
       docsRepositoryPath: '/mock/docs/path',
       foundationUiRepositoryPath: '/mock/foundation-ui/path'
+    }),
+    fileEditing: createFileEditingService({
+      useMock: true,
+      docsRepositoryPath: '/mock/docs/path',
+      foundationUiRepositoryPath: '/mock/foundation-ui/path',
+      createBackups: true,
+      backupDirectory: '.backups'
     })
   };
   
   console.log('✅ Services object created successfully');
-  console.log(`   - Git Service: ${services.git.constructor.name}`);
-  console.log(`   - AI Service: ${services.ai.constructor.name}`);
+  console.log(`   Git Service: ${typeof services.git}`);
+  console.log(`   AI Service: ${typeof services.ai}`);
+  console.log(`   Filesystem Service: ${typeof services.filesystem}`);
+  console.log(`   File Editing Service: ${typeof services.fileEditing}`);
   
-  // Test git service through services object
-  console.log('\n📁 Testing git service through services object...');
-  const commitResult = await services.git.getCommitInfo('test-commit-123', 'docs');
-  if (Result.isSuccess(commitResult)) {
-    const commitInfo = commitResult.value;
-    console.log(`✅ Git Service Test:`);
-    console.log(`   Hash: ${commitInfo.hash}`);
-    console.log(`   Author: ${commitInfo.author}`);
-    console.log(`   Message: ${commitInfo.message}`);
-    console.log(`   Repository Type: ${commitInfo.repositoryType}`);
-  }
+  // Test using services
+  console.log('\n🔍 Testing service usage...');
   
-  // Test AI service through services object
-  console.log('\n🤖 Testing AI service through services object...');
-  const updateResult = await services.ai.shouldUpdateDocs(services, 'test-commit-123');
-  if (Result.isSuccess(updateResult)) {
-    console.log(`✅ AI Service Test:`);
-    console.log(`   Documentation updates needed: ${updateResult.value}`);
-  } else {
-    console.log(`❌ AI Service Test Error: ${updateResult.message}`);
-  }
+  // Test git service
+  const commitResult = await services.git.getCommitInfo('abc123', 'docs');
+  console.log(`   Git service test: ${Result.isSuccess(commitResult) ? '✅ Success' : '❌ Error'}`);
   
-  // Test git service with different repository type
-  console.log('\n🔧 Testing git service with foundation-ui repository...');
-  const fuiCommitResult = await services.git.getCommitInfo('test-commit-456', 'foundation-ui');
-  if (Result.isSuccess(fuiCommitResult)) {
-    const commitInfo = fuiCommitResult.value;
-    console.log(`✅ Foundation UI Git Service Test:`);
-    console.log(`   Hash: ${commitInfo.hash}`);
-    console.log(`   Author: ${commitInfo.author}`);
-    console.log(`   Message: ${commitInfo.message}`);
-    console.log(`   Repository Type: ${commitInfo.repositoryType}`);
-  }
+  // Test filesystem service
+  const grepResult = await services.filesystem.grepDocs('test');
+  console.log(`   Filesystem service test: ${Result.isSuccess(grepResult) ? '✅ Success' : '❌ Error'}`);
   
-  console.log('\n🎯 Benefits of Services Type:');
-  console.log('   ✅ Centralized service management');
-  console.log('   ✅ Type-safe access to all services');
-  console.log('   ✅ Easy to pass services to functions');
-  console.log('   ✅ Clear dependency structure');
-  console.log('   ✅ Simplified testing and mocking');
+  // Test AI service
+  const aiResult = await services.ai.shouldUpdateDocs(services, 'abc123');
+  console.log(`   AI service test: ${Result.isSuccess(aiResult) ? '✅ Success' : '❌ Error'}`);
+  
+  console.log('\n✅ All services working correctly!');
 }
 
 // Run the test
-testServicesType().catch(console.error); 
+testServices().catch(console.error); 

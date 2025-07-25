@@ -104,6 +104,84 @@ export class MockGitRepositoryService implements GitRepositoryService {
     }
   }
 
+  /**
+   * Mock implementation that simulates checking if a branch exists
+   * @param branchName - Name of the branch to check
+   * @param repositoryType - Which repository to check
+   * @returns Promise<Result<boolean, GitError>> - Mock branch existence result
+   */
+  async branchExists(branchName: string, repositoryType: RepositoryType): Promise<Result<boolean, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 150));
+    
+    // Simulate invalid branch name error
+    if (branchName === 'invalid/branch/name' || branchName.includes('..')) {
+      return Result.error({
+        type: 'invalid_branch_name',
+        message: `Invalid branch name: ${branchName}`,
+        branchName,
+        repositoryType,
+        details: 'Branch name contains invalid characters or pattern'
+      });
+    }
+    
+    // Mock logic: return true for common branch names, false for others
+    const existingBranches = ['main', 'master', 'preprod', 'develop', 'feature/test-branch'];
+    const exists = existingBranches.includes(branchName);
+    
+    console.log(`🔍 Mock branch check: '${branchName}' ${exists ? 'exists' : 'does not exist'} in ${repositoryType} repository`);
+    return Result.success(exists);
+  }
+
+  /**
+   * Mock implementation that simulates creating a new branch
+   * @param branchName - Name of the new branch to create
+   * @param baseBranch - Name of the base branch to create from
+   * @param repositoryType - Which repository to create the branch in
+   * @returns Promise<Result<true, GitError>> - Mock branch creation result
+   */
+  async createBranch(branchName: string, baseBranch: string, repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Simulate invalid branch name error
+    if (branchName === 'invalid/branch/name' || branchName.includes('..')) {
+      return Result.error({
+        type: 'invalid_branch_name',
+        message: `Invalid branch name: ${branchName}`,
+        branchName,
+        repositoryType,
+        details: 'Branch name contains invalid characters or pattern'
+      });
+    }
+    
+    // Simulate branch already exists error
+    if (branchName === 'existing-branch') {
+      return Result.error({
+        type: 'branch_already_exists',
+        message: `Branch '${branchName}' already exists in ${repositoryType} repository`,
+        branchName,
+        repositoryType,
+        details: 'Cannot create a branch that already exists'
+      });
+    }
+    
+    // Simulate base branch not found error
+    if (baseBranch === 'non-existent-base') {
+      return Result.error({
+        type: 'branch_not_found',
+        message: `Base branch '${baseBranch}' does not exist in ${repositoryType} repository`,
+        branchName: baseBranch,
+        repositoryType,
+        details: 'Cannot create branch from non-existent base branch'
+      });
+    }
+    
+    // Simulate successful branch creation
+    console.log(`🌿 Mock branch creation successful: '${branchName}' from '${baseBranch}' in ${repositoryType} repository`);
+    return Result.success(true);
+  }
+
   private createMockDocsCommit(commitHash: string): CommitInfo {
     return {
       hash: commitHash,

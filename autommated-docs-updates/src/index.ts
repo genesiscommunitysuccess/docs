@@ -166,6 +166,67 @@ async function main() {
         console.log(`   Details: ${error.details}`);
       }
     }
+
+    // Test branch creation functionality
+    console.log("\n🌿 Testing branch creation functionality...");
+    
+    // Test current branch retrieval
+    console.log("\n📖 Testing current branch retrieval...");
+    const currentBranchResult = await services.git.getCurrentBranch('docs');
+    
+    if (Result.isSuccess(currentBranchResult)) {
+      console.log(`✅ Current branch: ${currentBranchResult.value}`);
+    } else {
+      const error = currentBranchResult.message;
+      console.log(`❌ Current branch retrieval failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
+
+    // Test branch existence checking
+    console.log("\n🔍 Testing branch existence checking...");
+    const branchExistsResult = await services.git.branchExists('main', 'docs');
+    
+    if (Result.isSuccess(branchExistsResult)) {
+      console.log(`✅ Branch existence check: 'main' exists = ${branchExistsResult.value}`);
+    } else {
+      const error = branchExistsResult.message;
+      console.log(`❌ Branch existence check failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
+
+    // Test branch creation (with a unique branch name to avoid conflicts)
+    console.log("\n🌿 Testing branch creation...");
+    const uniqueBranchName = `docs/update-test-${Date.now()}`;
+    const createBranchResult = await services.git.createBranch(uniqueBranchName, 'main', 'docs');
+    
+    if (Result.isSuccess(createBranchResult)) {
+      console.log(`✅ Branch creation successful: '${uniqueBranchName}'`);
+      
+      // Verify the branch was created
+      const verifyResult = await services.git.branchExists(uniqueBranchName, 'docs');
+      if (Result.isSuccess(verifyResult) && verifyResult.value) {
+        console.log(`✅ Branch verification successful: '${uniqueBranchName}' exists`);
+      } else {
+        console.log(`⚠️ Branch verification failed: '${uniqueBranchName}' may not exist`);
+      }
+    } else {
+      const error = createBranchResult.message;
+      console.log(`❌ Branch creation failed:`);
+      console.log(`   Type: ${error.type}`);
+      console.log(`   Message: ${error.message}`);
+      console.log(`   Branch Name: ${error.branchName}`);
+      if (error.details) {
+        console.log(`   Details: ${error.details}`);
+      }
+    }
     
   } catch (error) {
     console.error("❌ Error with git operations:", error);
