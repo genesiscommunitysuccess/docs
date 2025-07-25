@@ -211,27 +211,38 @@ export class MockGitRepositoryService implements GitRepositoryService {
   }
 
   private createMockFoundationUiCommit(commitHash: string): CommitInfo {
+    // Generate different commit messages based on hash patterns for testing
+    let message: string;
+    let filesChanged: string[];
+    
+    if (commitHash.startsWith('fix')) {
+      message = 'fix: resolve authentication bug';
+      filesChanged = ['src/auth.ts', 'src/bugfix.ts'];
+    } else if (commitHash.startsWith('bug')) {
+      message = 'bug: fix user login issue';
+      filesChanged = ['src/login.ts', 'src/validation.ts'];
+    } else if (commitHash.startsWith('typo')) {
+      message = 'fix: correct typo in error message';
+      filesChanged = ['src/errors.ts'];
+    } else {
+      message = 'feat: add new user authentication system';
+      filesChanged = ['src/auth.ts', 'src/types.ts', 'tests/auth.test.ts'];
+    }
+    
     return {
       hash: commitHash,
       author: 'Jane Smith',
       authorEmail: 'jane.smith@example.com',
       date: new Date('2024-01-14T15:45:00Z'),
-      message: 'feat: add new user authentication system',
-      filesChanged: ['src/auth.ts', 'src/types.ts', 'tests/auth.test.ts'],
+      message,
+      filesChanged,
       diffs: [
         {
-          filePath: 'src/auth.ts',
-          changeType: 'added',
-          diff: '@@ -0,0 +1,50 @@\n+export class AuthService {\n+  private apiKey: string;\n+\n+  constructor(apiKey: string) {\n+    this.apiKey = apiKey;\n+  }\n+\n+  async authenticate(): Promise<boolean> {\n+    // Authentication logic here\n+    return true;\n+  }\n+}',
-          linesAdded: 50,
-          linesDeleted: 0
-        },
-        {
-          filePath: 'src/types.ts',
+          filePath: filesChanged[0],
           changeType: 'modified',
-          diff: '@@ -5,8 +5,12 @@\n export interface User {\n   id: string;\n   name: string;\n+  email: string;\n+  permissions: string[];\n }\n+\n+export interface AuthConfig {\n+  apiKey: string;\n+  timeout: number;\n+}',
-          linesAdded: 4,
-          linesDeleted: 0
+          diff: '@@ -25,7 +25,7 @@\n   try {\n-    return JSON.parse(data);\n+    return JSON.parse(data.trim());\n   } catch (error) {\n     console.error(\'Failed to parse JSON\', error);\n     return null;\n   }',
+          linesAdded: 1,
+          linesDeleted: 1
         }
       ],
       repositoryType: RepositoryType.FOUNDATION_UI
