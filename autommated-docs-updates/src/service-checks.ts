@@ -21,6 +21,9 @@ export async function runServiceChecks(services: Services, commitHash: string): 
   // Test file editing service
   await testFileEditingService(services, commitHash);
 
+  // Test GitHub service
+  await testGitHubService(services);
+
   console.log("\n✅ All service checks completed successfully!");
 }
 
@@ -280,6 +283,90 @@ async function testFileEditingService(services: Services, commitHash: string): P
     }
   } catch (error) {
     console.error("❌ Error with file editing operations:", error);
+    throw error;
+  }
+}
+
+/**
+ * Tests GitHub service functionality including pull request operations.
+ */
+async function testGitHubService(services: Services): Promise<void> {
+  try {
+    console.log("\n🔍 Testing GitHub service...");
+
+    // Test configuration validation
+    console.log("\n🔧 Testing configuration validation...");
+    const validationResult = await services.github.validateConfiguration();
+    if (Result.isSuccess(validationResult)) {
+      console.log("✅ GitHub configuration validation successful");
+    } else {
+      console.error(`❌ GitHub configuration validation failed: ${validationResult.message.message}`);
+      throw new Error(`GitHub service failed: ${validationResult.message.message}`);
+    }
+
+    // Test branch existence check
+    console.log("\n🔍 Testing branch existence check...");
+    const branchExistsResult = await services.github.branchExists('test-branch');
+    if (Result.isSuccess(branchExistsResult)) {
+      console.log(`✅ Branch existence check successful: ${branchExistsResult.value}`);
+    } else {
+      console.error(`❌ Branch existence check failed: ${branchExistsResult.message.message}`);
+      throw new Error(`GitHub service failed: ${branchExistsResult.message.message}`);
+    }
+
+    // Test pull request creation (mock only)
+    console.log("\n🔍 Testing pull request creation...");
+    const createPRResult = await services.github.createPullRequest(
+      'Test Pull Request',
+      'This is a test pull request created by the automated docs updates script.',
+      'test-branch',
+      'main',
+      {
+        draft: false, // This will be ignored - always creates as draft for safety
+        labels: ['documentation', 'test'],
+        assignees: ['test-user']
+      }
+    );
+
+    if (Result.isSuccess(createPRResult)) {
+      const pr = createPRResult.value;
+      console.log(`✅ Pull request creation successful: #${pr.number} - ${pr.title}`);
+      console.log(`   URL: ${pr.url}`);
+      console.log(`   Head: ${pr.head} -> Base: ${pr.base}`);
+      console.log(`   Draft: ${pr.draft} (always true for safety)`);
+
+      // Test pull request retrieval
+      console.log("\n🔍 Testing pull request retrieval...");
+      const getPRResult = await services.github.getPullRequest(pr.number);
+      if (Result.isSuccess(getPRResult)) {
+        console.log(`✅ Pull request retrieval successful: #${getPRResult.value.number}`);
+      } else {
+        console.error(`❌ Pull request retrieval failed: ${getPRResult.message.message}`);
+        throw new Error(`GitHub service failed: ${getPRResult.message.message}`);
+      }
+
+      // Test pull request update
+      console.log("\n🔍 Testing pull request update...");
+      const updatePRResult = await services.github.updatePullRequest(pr.number, {
+        title: 'Updated Test Pull Request',
+        labels: ['documentation', 'test', 'updated']
+      });
+
+      if (Result.isSuccess(updatePRResult)) {
+        console.log(`✅ Pull request update successful: #${updatePRResult.value.number}`);
+        console.log(`   New title: ${updatePRResult.value.title}`);
+      } else {
+        console.error(`❌ Pull request update failed: ${updatePRResult.message.message}`);
+        throw new Error(`GitHub service failed: ${updatePRResult.message.message}`);
+      }
+
+    } else {
+      console.error(`❌ Pull request creation failed: ${createPRResult.message.message}`);
+      throw new Error(`GitHub service failed: ${createPRResult.message.message}`);
+    }
+
+  } catch (error) {
+    console.error("❌ Error during GitHub service test:", error);
     throw error;
   }
 } 

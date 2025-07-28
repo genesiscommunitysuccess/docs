@@ -26,9 +26,17 @@ autommated-docs-updates/
 │   │   ├── git-service/  # Git service implementations
 │   │   │   ├── types.ts      # TypeScript interfaces
 │   │   │   └── index.ts      # Factory function
-│   │   └── filesystem-service/ # Filesystem service implementations
+│   │   ├── filesystem-service/ # Filesystem service implementations
+│   │   │   ├── types.ts      # TypeScript interfaces
+│   │   │   ├── filesystem-service.test.ts # Test file
+│   │   │   └── index.ts      # Factory function
+│   │   ├── file-editing-service/ # File editing service implementations
+│   │   │   ├── types.ts      # TypeScript interfaces
+│   │   │   ├── file-editing-service.test.ts # Test file
+│   │   │   └── index.ts      # Factory function
+│   │   └── github-service/ # GitHub service implementations
 │   │       ├── types.ts      # TypeScript interfaces
-│   │       ├── filesystem-service.test.ts # Test file
+│   │       ├── github-service.test.ts # Test file
 │   │       └── index.ts      # Factory function
 │   └── repositories/
 │       ├── ai/           # AI repository implementations
@@ -41,10 +49,20 @@ autommated-docs-updates/
 │       │   ├── mock.ts       # Mock implementation
 │       │   ├── repository.ts # Real implementation
 │       │   └── index.ts      # Factory function
-│       └── filesystem/   # Filesystem repository service
+│       ├── filesystem/   # Filesystem repository service
+│       │   ├── types.ts      # TypeScript interfaces
+│       │   ├── mock.ts       # Mock implementation
+│       │   ├── repository.ts # Real implementation
+│       │   └── index.ts      # Factory function
+│       ├── file-editing/ # File editing repository service
+│       │   ├── types.ts      # TypeScript interfaces
+│       │   ├── mock.ts       # Mock implementation
+│       │   ├── repository.ts # Real implementation
+│       │   └── index.ts      # Factory function
+│       └── github/       # GitHub repository service
 │           ├── types.ts      # TypeScript interfaces
 │           ├── mock.ts       # Mock implementation
-│           ├── repository.ts # Real implementation
+│           ├── api.ts        # Octokit implementation
 │           └── index.ts      # Factory function
 ├── dist/                 # Compiled JavaScript output
 ├── package.json          # Project configuration and scripts
@@ -81,11 +99,15 @@ autommated-docs-updates/
   - `true`: Use mock services (default for development)
   - `false`: Use real services (requires API keys)
 - `RUN_SERVICE_CHECKS`: Controls whether to run comprehensive service checks
-  - `true`: Run service checks (filesystem, git, AI, file editing)
+  - `true`: Run service checks (filesystem, git, AI, file editing, GitHub)
   - `false` or unset: Skip service checks (default)
 - `DOCS_REPOSITORY_PATH`: Path to the docs repository (defaults to `/Users/matt.walker/genesis/docs`)
 - `FOUNDATION_UI_REPOSITORY_PATH`: Path to the foundation-ui repository (defaults to `/Users/matt.walker/genesis/foundation-ui`)
 - `ANTHROPIC_API_KEY`: Required for real AI service (LangChain with Claude)
+- `GITHUB_API_TOKEN`: Required for real GitHub service (Octokit with GitHub API)
+- `GITHUB_OWNER`: GitHub organization/owner name (defaults to `genesiscommunitysuccess`)
+- `GITHUB_REPO`: GitHub repository name (defaults to `docs`)
+- `GITHUB_API_BASE_URL`: GitHub API base URL (optional, for GitHub Enterprise)
 
 ### Development Setup
 
@@ -371,6 +393,86 @@ if (Result.isSuccess(grepResults) && grepResults.value.length > 0) {
 }
 ```
 
+#### GitHub Service Usage
+
+The GitHub service provides pull request operations for the docs repository:
+
+**Safety Note**: All pull requests are automatically created as drafts for safety. This ensures that automated documentation updates require human review before being merged.
+
+```typescript
+// Create GitHub service with mock implementation
+const mockGitHubService = createGitHubService({
+  useMock: true,
+  owner: 'test-owner',
+  repo: 'test-repo'
+});
+
+// Create GitHub service with real implementation
+const realGitHubService = createGitHubService({
+  useMock: false,
+  apiToken: process.env.GITHUB_API_TOKEN,
+  owner: 'genesiscommunitysuccess',
+  repo: 'docs'
+});
+
+// Use the service to create a pull request
+const prResult = await mockGitHubService.createPullRequest(
+  'Update authentication documentation',
+  'This PR updates the authentication documentation to reflect the latest changes.',
+  'docs/update-auth-system',
+  'preprod',
+  {
+    draft: false, // This will be ignored - always creates as draft for safety
+    labels: ['documentation', 'automated'],
+    assignees: ['reviewer1', 'reviewer2']
+  }
+);
+
+if (Result.isSuccess(prResult)) {
+  const pr = prResult.value;
+  console.log(`✅ Pull request created: #${pr.number} - ${pr.title}`);
+  console.log(`   URL: ${pr.url}`);
+  console.log(`   Head: ${pr.head} -> Base: ${pr.base}`);
+  console.log(`   Labels: ${pr.labels.join(', ')}`);
+  console.log(`   Assignees: ${pr.assignees.join(', ')}`);
+} else {
+  console.error(`❌ Pull request creation failed: ${prResult.message.message}`);
+}
+
+// Use the service to get a pull request
+const getPRResult = await mockGitHubService.getPullRequest(123);
+if (Result.isSuccess(getPRResult)) {
+  const pr = getPRResult.value;
+  console.log(`Pull request #${pr.number}: ${pr.title}`);
+  console.log(`State: ${pr.state}, Draft: ${pr.draft}`);
+}
+
+// Use the service to update a pull request
+const updatePRResult = await mockGitHubService.updatePullRequest(123, {
+  title: 'Updated title',
+  labels: ['documentation', 'updated'],
+  assignees: ['new-reviewer']
+});
+
+if (Result.isSuccess(updatePRResult)) {
+  console.log(`✅ Pull request updated: #${updatePRResult.value.number}`);
+}
+
+// Use the service to check if a branch exists
+const branchExistsResult = await mockGitHubService.branchExists('feature/new-auth');
+if (Result.isSuccess(branchExistsResult)) {
+  console.log(`Branch exists: ${branchExistsResult.value}`);
+}
+
+// Use the service to validate configuration
+const validationResult = await mockGitHubService.validateConfiguration();
+if (Result.isSuccess(validationResult)) {
+  console.log('✅ GitHub configuration is valid');
+} else {
+  console.error(`❌ GitHub configuration validation failed: ${validationResult.message.message}`);
+}
+```
+
 #### Filesystem Repository Usage
 
 The filesystem repository provides file search capabilities:
@@ -420,6 +522,19 @@ The filesystem repository service returns specific error types:
 - `file_not_found`: Requested file doesn't exist
 - `invalid_file_path`: File path is empty, invalid, or contains directory traversal
 - `unknown`: Unexpected errors during filesystem operations
+
+### GitHub Repository Error Types
+
+The GitHub repository service returns specific error types:
+
+- `invalid_token`: GitHub API token is missing or invalid
+- `repository_not_found`: Repository doesn't exist or access is denied
+- `branch_not_found`: Branch doesn't exist in the repository
+- `pull_request_creation_failed`: Failed to create pull request (branch conflicts, etc.)
+- `api_rate_limit_exceeded`: GitHub API rate limit exceeded
+- `invalid_pull_request_data`: Invalid data provided for pull request operations
+- `authentication_failed`: GitHub authentication failed
+- `unknown`: Unexpected errors during GitHub API operations
 
 ### Git Repository Primary Branches
 
@@ -480,6 +595,12 @@ The application includes comprehensive service checks that can be enabled via th
    - Test file update operations
    - Test backup creation functionality
    - Validate file editing error conditions
+
+5. **GitHub Service Tests**:
+   - Test configuration validation
+   - Test branch existence checking
+   - Test pull request creation, retrieval, and updates
+   - Validate GitHub API error handling
 
 Service checks are useful for:
 - **Development**: Validating all services work correctly during development

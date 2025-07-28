@@ -4,6 +4,7 @@ import { createAIService } from './services/ai-service';
 import { createGitService } from './services/git-service';
 import { createFilesystemService } from './services/filesystem-service';
 import { createFileEditingService } from './services/file-editing-service';
+import { createGitHubService } from './services/github-service';
 import { Result } from './types/result';
 import { Services } from './types/services';
 import { RepositoryType } from './repositories/git/types';
@@ -73,6 +74,9 @@ async function main() {
       foundationUiRepositoryPath: args.foundationUiRepoPath,
       createBackups: true,
       backupDirectory: '.backups'
+    }),
+    github: createGitHubService({
+      useMock: useMockServices
     })
   };
   

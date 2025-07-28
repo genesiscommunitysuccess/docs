@@ -3,6 +3,7 @@ import { createGitService } from '../services/git-service';
 import { createAIService } from '../services/ai-service';
 import { createFilesystemService } from '../services/filesystem-service';
 import { createFileEditingService } from '../services/file-editing-service';
+import { createGitHubService } from '../services/github-service';
 import { Result } from './result';
 
 // Example usage of the Services type
@@ -24,6 +25,9 @@ async function testServices() {
       foundationUiRepositoryPath: '/mock/foundation-ui/path',
       createBackups: true,
       backupDirectory: '.backups'
+    }),
+    github: createGitHubService({
+      useMock: true
     })
   };
   
@@ -32,6 +36,7 @@ async function testServices() {
   console.log(`   AI Service: ${typeof services.ai}`);
   console.log(`   Filesystem Service: ${typeof services.filesystem}`);
   console.log(`   File Editing Service: ${typeof services.fileEditing}`);
+  console.log(`   GitHub Service: ${typeof services.github}`);
   
   // Test using services
   console.log('\n🔍 Testing service usage...');
@@ -47,6 +52,10 @@ async function testServices() {
   // Test AI service
   const aiResult = await services.ai.shouldUpdateDocs(services, 'abc123');
   console.log(`   AI service test: ${Result.isSuccess(aiResult) ? '✅ Success' : '❌ Error'}`);
+  
+  // Test GitHub service
+  const githubResult = await services.github.validateConfiguration();
+  console.log(`   GitHub service test: ${Result.isSuccess(githubResult) ? '✅ Success' : '❌ Error'}`);
   
   console.log('\n✅ All services working correctly!');
 }
