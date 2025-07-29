@@ -40,7 +40,7 @@ Here's a quick example of a GET request using the Genesis HTTP Client within a R
 
 ```kotlin
 import global.genesis.httpclient.GenesisHttpClient
-...
+
 requestReply<Unit, HelloWorld>("HELLO_WORLD") {
     val client = GenesisHttpClient()
 
@@ -68,7 +68,7 @@ This example shows how to use the Genesis HTTP Client in a Request Server to fet
 import global.genesis.httpclient.GenesisHttpClient
 import global.genesis.httpclient.response.UnexpectedResponseException
 import global.genesis.message.core.HttpStatusCode
-...
+
 requestReplies {
   requestReply<TradeRequest, TradeDetails>("FETCH_TRADE_DETAILS") {
     val client = GenesisHttpClient()
@@ -238,7 +238,6 @@ val apacheClient = HttpClient(Apache5) {
         socketTimeout = 10_000
         connectTimeout = 10_000
         connectionRequestTimeout = 20_000
-        ...
     }
 }
 
@@ -268,7 +267,7 @@ You can configure requests using a DSL within a lambda function. Common configur
 Example:
 ```kotlin
 import global.genesis.httpclient.GenesisHttpClient
-...
+
 val httpClient = GenesisHttpClient()
 ...
     eventHandler<Account>("API_TRADE_INSERT") {
@@ -280,6 +279,7 @@ val httpClient = GenesisHttpClient()
                 }
         }
     }
+...
 ```
 
 ### OpenAPI code generation
@@ -321,7 +321,7 @@ tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
 
 ```kotlin
 import global.genesis.message.core.HttpStatusCode
-...
+
 val accountsApi = AccountsControllerApi("https://my-external-api")
 accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
     registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
@@ -351,6 +351,12 @@ The `TypedHttpResponse<T>` object found in `global.genesis.httpclient.response.T
 Example:
 
 ```kotlin
+
+import global.genesis.httpclient.GenesisHttpClient
+
+val client = GenesisHttpClient()
+
+...
   eventHandler("API_TRADE_INSERT") {
     onCommit { event ->
       client.get<String>(
