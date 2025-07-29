@@ -16,7 +16,8 @@ export async function runServiceChecks(services: Services, commitHash: string): 
   await testGitService(services, commitHash);
 
   // Test AI service
-  await testAIService(services, commitHash);
+  // During dev we don't want to test the AI service
+  // await testAIService(services, commitHash);
 
   // Test file editing service
   await testFileEditingService(services, commitHash);

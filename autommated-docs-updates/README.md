@@ -116,6 +116,56 @@ The project is configured with TypeScript and includes:
 - **ts-node**: For running TypeScript directly during development
 - **@types/node**: Type definitions for Node.js
 
+## ⚙️ **Configuration**
+
+### **Centralized Repository Paths**
+
+Repository paths are now centralized in `src/config.ts` for easy maintenance:
+
+```typescript
+export const config = {
+  repositories: {
+    docs: '/tmp/repos/docs',
+    foundationUi: '/tmp/repos/foundation-ui'
+  }
+} as const;
+```
+
+**Benefits:**
+- ✅ **DRY Principle**: Paths defined once, used everywhere
+- ✅ **Easy Maintenance**: Change paths in one location
+- ✅ **Consistent Configuration**: All scripts use the same paths automatically
+
+### **Command Usage**
+
+Scripts now support **two modes**:
+
+**1. Simple Mode (Recommended)** - Uses default paths from config:
+```bash
+npm run dev:checks <commit-hash>
+npm run dev:doc-automation <commit-hash>
+```
+
+**2. Custom Paths Mode** - Override with explicit paths:
+```bash
+npm run start checks /custom/docs/path /custom/foundation-ui/path <commit-hash>
+npm run start doc-automation /custom/docs/path /custom/foundation-ui/path <commit-hash>
+```
+
+### **Repository Cleanup**
+
+Clean up cloned repository directories with a simple cross-platform command:
+
+```bash
+npm run cleanup
+```
+
+**Features:**
+- ✅ **Cross-platform**: Works on Windows, Mac, and Linux
+- ✅ **Safe**: Always exits with code 0, even if directories don't exist
+- ✅ **Smart**: Uses centralized paths from config
+- ✅ **Informative**: Shows what was deleted vs skipped
+
 ## Usage
 
 ### Development Mode
@@ -161,6 +211,7 @@ node dist/index.js checks <docs-repo-path> <foundation-ui-repo-path> <commit-has
 
 - `npm run build` - Compiles TypeScript to JavaScript
 - `npm start` - Runs compiled JavaScript (requires manual arguments)
+- `npm run cleanup` - Deletes cloned repository directories (cross-platform, safe)
 
 #### Documentation Automation Scripts
 - `npm run dev:doc-automation` - Runs documentation automation with mock services
@@ -783,5 +834,7 @@ The `runServiceChecks` workflow has been successfully implemented and **proves t
 npm run dev:checks [commit-hash]    # Mock services (safe testing)
 npm run dev:checks:real [commit-hash]  # Real services (creates actual files)
 ```
+
+> **✨ New:** Commands now use centralized repository paths from `src/config.ts` - much cleaner and easier to maintain!
 
 Both commands successfully validate the entire service architecture and prove the automation system is ready for production use.
