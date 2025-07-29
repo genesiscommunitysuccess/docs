@@ -262,7 +262,6 @@ You can configure requests using a DSL within a lambda function. Common configur
 - `url`: the endpoint URL
 - `header`: HTTP headers
 - `query`: query parameters
-- `body`: request body (for POST, PUT)
 
 Example:
 ```kotlin
@@ -270,13 +269,15 @@ import global.genesis.httpclient.GenesisHttpClient
 
 val httpClient = GenesisHttpClient()
 ...
-    eventHandler<Account>("API_TRADE_INSERT") {
+    eventHandler<Account>("API_ACCOUNT_INSERT") {
         onCommit {
-            httpClient
-                .post<Account> {
-                    url = "http://my-external-api/account"
-                    header("Authorization", "Basic ABCDEFG")
-                }
+            val data = httpClient.get<String> {
+               url = "https://my-external-api/accounts"
+               header("Authorization", "Basic ABCDEFG")
+               query("accountId", event.details.accountId)
+            }.data
+            ...
+            ack()
         }
     }
 ...
@@ -357,15 +358,17 @@ import global.genesis.httpclient.GenesisHttpClient
 val client = GenesisHttpClient()
 
 ...
-  eventHandler("API_TRADE_INSERT") {
+  eventHandler<Trade>("API_TRADE_INSERT") {
     onCommit { event ->
-      client.get<String>(
+      ...
+      client.post<String>(
         path = "https://my-external-api/trades",
         request = event.details
       ) {
         header("Authorization", "Basic ABCDEFG")
         query("tradeId", event.details.tradeId)
       }.data
+      ...
       ack()
   }
 }
