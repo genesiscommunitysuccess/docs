@@ -1,5 +1,5 @@
 import { Result } from '../../types/result';
-import { CommitInfo } from '../git/types';
+import { CommitInfo, GitRepositoryService } from '../git/types';
 
 /**
  * File Editing Repository Service interface for automated documentation updates
@@ -10,12 +10,14 @@ export interface FileEditingRepositoryService {
    * @param filePath - The file path relative to docsRepoPath/docs
    * @param commitInfo - Information about the commit that triggered the update
    * @param updateInstructions - Instructions for what content to generate
+   * @param gitRepositoryService - Git repository service to use for branch checking
    * @returns Promise<Result<FileUpdateResult, FileEditingError>> - Update result or error
    */
   updateDocFile(
     filePath: string, 
     commitInfo: CommitInfo, 
-    updateInstructions: string
+    updateInstructions: string,
+    gitRepositoryService: GitRepositoryService
   ): Promise<Result<FileUpdateResult, FileEditingError>>;
 }
 

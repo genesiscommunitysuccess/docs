@@ -115,6 +115,59 @@ export class RealGitService implements GitService {
     // Delegate to the underlying git repository service
     return this.gitRepositoryService.branchExists(branchName, repoType);
   }
+
+  /**
+   * Stages all changes for commit
+   * @param repositoryType - The type of repository to stage changes in ('docs' | 'foundation-ui')
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async stageAllChanges(repositoryType: 'docs' | 'foundation-ui'): Promise<Result<true, GitError>> {
+    console.log(`📦 Staging all changes in ${repositoryType} repository...`);
+    
+    // Map our repository type to the underlying repository service type
+    const repoType = repositoryType === 'docs' 
+      ? RepositoryType.DOCS 
+      : RepositoryType.FOUNDATION_UI;
+
+    // Delegate to the underlying git repository service
+    return this.gitRepositoryService.stageAllChanges(repoType);
+  }
+
+  /**
+   * Commits all staged changes with a commit message
+   * @param message - Commit message
+   * @param repositoryType - The type of repository to commit in ('docs' | 'foundation-ui')
+   * @returns Promise<Result<string, GitError>> - Commit hash if successful, error if failed
+   */
+  async commitChanges(message: string, repositoryType: 'docs' | 'foundation-ui'): Promise<Result<string, GitError>> {
+    console.log(`💾 Committing changes in ${repositoryType} repository with message: "${message}"...`);
+    
+    // Map our repository type to the underlying repository service type
+    const repoType = repositoryType === 'docs' 
+      ? RepositoryType.DOCS 
+      : RepositoryType.FOUNDATION_UI;
+
+    // Delegate to the underlying git repository service
+    return this.gitRepositoryService.commitChanges(message, repoType);
+  }
+
+  /**
+   * Pushes the current branch to the remote repository
+   * @param branchName - Name of the branch to push
+   * @param repositoryType - The type of repository to push from ('docs' | 'foundation-ui')
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async pushBranch(branchName: string, repositoryType: 'docs' | 'foundation-ui'): Promise<Result<true, GitError>> {
+    console.log(`🚀 Pushing branch '${branchName}' to remote in ${repositoryType} repository...`);
+    
+    // Map our repository type to the underlying repository service type
+    const repoType = repositoryType === 'docs' 
+      ? RepositoryType.DOCS 
+      : RepositoryType.FOUNDATION_UI;
+
+    // Delegate to the underlying git repository service
+    return this.gitRepositoryService.pushBranch(branchName, repoType);
+  }
 }
 
 /**

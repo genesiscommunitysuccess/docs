@@ -469,10 +469,14 @@ export class RealGitRepositoryService implements GitRepositoryService {
         return checkoutResult;
       }
 
-      // Pull latest changes to ensure we're up to date
+      // Pull latest changes to ensure we're up to date (ignore failures for now)
+      console.log(`📥 Attempting to pull latest changes from ${repositoryType} repository...`);
       const pullResult = this.executeGitCommand('pull', repositoryType);
       if (Result.isError(pullResult)) {
-        return pullResult;
+        console.log(`⚠️ Pull failed, continuing with branch creation: ${pullResult.message.message}`);
+        // Continue anyway - the pull failure shouldn't prevent branch creation
+      } else {
+        console.log(`✅ Successfully pulled latest changes from ${repositoryType} repository`);
       }
 
       // Create the new branch
@@ -488,6 +492,104 @@ export class RealGitRepositoryService implements GitRepositoryService {
       return Result.error({
         type: 'unknown',
         message: `Unexpected error creating branch '${branchName}' in ${repositoryType} repository`,
+        repositoryType,
+        branchName,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+  
+  /**
+   * Stages all changes for commit
+   * @param repositoryType - Which repository to stage changes in
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async stageAllChanges(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    try {
+      console.log(`📦 Staging all changes in ${repositoryType} repository...`);
+      
+      const result = this.executeGitCommand('add -A', repositoryType);
+      if (Result.isError(result)) {
+        return result;
+      }
+
+      console.log(`✅ Successfully staged all changes in ${repositoryType} repository`);
+      return Result.success(true);
+
+    } catch (error) {
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Failed to stage changes in ${repositoryType} repository`,
+        repositoryType,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Commits all staged changes with a commit message
+   * @param message - Commit message
+   * @param repositoryType - Which repository to commit in
+   * @returns Promise<Result<string, GitError>> - Commit hash if successful, error if failed
+   */
+  async commitChanges(message: string, repositoryType: RepositoryType): Promise<Result<string, GitError>> {
+    try {
+      console.log(`💾 Committing changes in ${repositoryType} repository with message: "${message}"...`);
+      
+      // Escape quotes and handle multiline messages properly
+      const escapedMessage = message.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+      const result = this.executeGitCommand(`commit -m "${escapedMessage}"`, repositoryType);
+      if (Result.isError(result)) {
+        return result;
+      }
+
+      // Get the commit hash of the new commit
+      const hashResult = this.executeGitCommand('rev-parse HEAD', repositoryType);
+      if (Result.isError(hashResult)) {
+        return Result.error({
+          type: 'git_command_failed',
+          message: `Failed to get commit hash after commit in ${repositoryType} repository`,
+          repositoryType,
+          details: hashResult.message.details
+        });
+      }
+
+      const commitHash = hashResult.value.trim();
+      console.log(`✅ Successfully committed changes in ${repositoryType} repository. Commit hash: ${commitHash}`);
+      return Result.success(commitHash);
+
+    } catch (error) {
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Failed to commit changes in ${repositoryType} repository`,
+        repositoryType,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
+   * Pushes the current branch to the remote repository
+   * @param branchName - Name of the branch to push
+   * @param repositoryType - Which repository to push from
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async pushBranch(branchName: string, repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    try {
+      console.log(`🚀 Pushing branch '${branchName}' to remote in ${repositoryType} repository...`);
+      
+      const result = this.executeGitCommand(`push -u origin ${branchName}`, repositoryType);
+      if (Result.isError(result)) {
+        return result;
+      }
+
+      console.log(`✅ Successfully pushed branch '${branchName}' to remote in ${repositoryType} repository`);
+      return Result.success(true);
+
+    } catch (error) {
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Failed to push branch '${branchName}' in ${repositoryType} repository`,
         repositoryType,
         branchName,
         details: error instanceof Error ? error.message : 'Unknown error'

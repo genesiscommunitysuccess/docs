@@ -1,18 +1,20 @@
-import { FileEditingRepositoryService, FileUpdateResult, FileEditingError, FileEditingRepositoryConfig } from './types';
 import { Result } from '../../types/result';
-import { CommitInfo } from '../git/types';
+import { 
+  FileEditingRepositoryService, 
+  FileEditingRepositoryConfig, 
+  FileUpdateResult, 
+  FileEditingError 
+} from './types';
+import { CommitInfo, RepositoryType, GitRepositoryService } from '../git/types';
 
 /**
- * Mock file editing repository service implementation for testing
- * 
- * This service provides mock responses for file editing operations
- * without actually modifying any files.
+ * Mock implementation of FileEditingRepositoryService for testing
  */
 export class MockFileEditingRepositoryService implements FileEditingRepositoryService {
-  private docsRepositoryPath: string;
-  private foundationUiRepositoryPath: string;
-  private createBackups: boolean;
-  private backupDirectory: string;
+  private readonly docsRepositoryPath: string;
+  private readonly foundationUiRepositoryPath: string;
+  private readonly createBackups: boolean;
+  private readonly backupDirectory: string;
 
   constructor(config: FileEditingRepositoryConfig) {
     this.docsRepositoryPath = config.docsRepositoryPath;
@@ -22,49 +24,73 @@ export class MockFileEditingRepositoryService implements FileEditingRepositorySe
   }
 
   /**
-   * Mock implementation of updateDocFile
-   * Simulates updating a documentation file with AI-generated content
+   * Mock implementation of updating a documentation file
+   * @param filePath - The file path relative to docsRepoPath/docs
+   * @param commitInfo - Information about the commit that triggered the update
+   * @param updateInstructions - Instructions for what content to generate
+   * @param gitRepositoryService - Git repository service to use for branch checking
+   * @returns Promise<Result<FileUpdateResult, FileEditingError>> - Mock update result
    */
   async updateDocFile(
     filePath: string, 
     commitInfo: CommitInfo, 
-    updateInstructions: string
+    updateInstructions: string,
+    gitRepositoryService: GitRepositoryService
   ): Promise<Result<FileUpdateResult, FileEditingError>> {
-    // Simulate validation checks
-    if (!this.isFileInDocsDirectory(filePath)) {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    console.log(`📝 [MOCK] Updating documentation file: ${filePath}`);
+    console.log(`🔍 [MOCK] Using commit info for: ${commitInfo.hash}`);
+    console.log(`📋 [MOCK] Update instructions: ${updateInstructions.substring(0, 100)}...`);
+
+    // Check current branch using the provided git service
+    const branchResult = await gitRepositoryService.getCurrentBranch(RepositoryType.DOCS);
+    if (Result.isError(branchResult)) {
       return Result.error({
-        type: 'file_not_in_docs_directory',
-        message: `File path is not within the docs directory: ${filePath}`,
-        filePath,
-        details: `File must be within ${this.docsRepositoryPath}/docs directory`
+        type: 'unknown',
+        message: `Failed to get current branch: ${branchResult.message.message}`,
+        filePath
       });
     }
+
+    const currentBranch = branchResult.value;
+    console.log(`🌿 [MOCK] Current branch: ${currentBranch}`);
 
     // Simulate preprod branch check
-    const currentBranch = this.getMockCurrentBranch(); // Mock current branch
     if (currentBranch === 'preprod') {
+      console.log(`⚠️ [MOCK] Cannot edit files on preprod branch`);
       return Result.error({
         type: 'preprod_branch_active',
-        message: 'Cannot edit files while on preprod branch',
+        message: 'Cannot edit documentation files while on preprod branch. Please switch to a feature branch.',
         filePath,
-        currentBranch,
-        details: 'File editing is disabled on preprod branch for safety'
+        currentBranch
       });
     }
 
-    // Simulate file existence check
-    if (!this.mockFileExists(filePath)) {
-      return Result.error({
-        type: 'file_not_found',
-        message: `File not found: ${filePath}`,
-        filePath,
-        details: `Mock file does not exist: ${filePath}`
-      });
-    }
+    // Simulate file creation or update
+    const originalContent = '';  // In mock, we simulate starting with empty content
+    console.log(`📄 [MOCK] File operation: ${filePath} (creating/updating)`);
 
-    // Generate mock content based on commit info and instructions
-    const originalContent = this.generateMockOriginalContent(filePath);
-    const newContent = this.generateMockNewContent(originalContent, commitInfo, updateInstructions);
+    // Simulate AI-generated content update
+    const newContent = `# Mock Updated Documentation
+
+This is mock updated content for: ${filePath}
+
+**Update Instructions:** ${updateInstructions}
+
+**Commit Information:**
+- Hash: ${commitInfo.hash}
+- Author: ${commitInfo.author}
+- Message: ${commitInfo.message}
+- Date: ${commitInfo.date.toISOString()}
+
+**Generated:** ${new Date().toISOString()}
+
+This content was generated by the mock file editing service for testing purposes.
+`;
+
+    console.log(`✅ [MOCK] File updated successfully: ${filePath}`);
     
     // Calculate lines changed
     const linesChanged = this.calculateLinesChanged(originalContent, newContent);
@@ -170,13 +196,5 @@ The update instructions were: "${updateInstructions}"
     const fileName = filePath.split('/').pop() || 'unknown';
     const backupFileName = `${fileName}.backup.${timestamp}`;
     return `${this.backupDirectory}/${backupFileName}`;
-  }
-
-  /**
-   * Gets the mock current branch (for testing different scenarios)
-   */
-  private getMockCurrentBranch(): string {
-    // In mock mode, we can simulate different branches for testing
-    return 'main'; // Could be 'preprod' for testing the error case
   }
 } 

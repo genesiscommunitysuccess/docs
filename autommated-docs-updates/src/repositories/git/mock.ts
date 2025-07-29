@@ -182,6 +182,56 @@ export class MockGitRepositoryService implements GitRepositoryService {
     return Result.success(true);
   }
 
+  /**
+   * Mock implementation of staging all changes
+   * @param repositoryType - Which repository to stage changes in
+   * @returns Promise<Result<true, GitError>> - Always successful in mock
+   */
+  async stageAllChanges(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    console.log(`📦 [MOCK] Staging all changes in ${repositoryType} repository...`);
+    console.log(`✅ [MOCK] Successfully staged all changes in ${repositoryType} repository`);
+    
+    return Result.success(true);
+  }
+
+  /**
+   * Mock implementation of committing changes
+   * @param message - Commit message
+   * @param repositoryType - Which repository to commit in
+   * @returns Promise<Result<string, GitError>> - Mock commit hash or error
+   */
+  async commitChanges(message: string, repositoryType: RepositoryType): Promise<Result<string, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    console.log(`💾 [MOCK] Committing changes in ${repositoryType} repository with message: "${message}"...`);
+    
+    // Generate a mock commit hash based on timestamp
+    const mockCommitHash = `abc${Date.now().toString().slice(-6)}`;
+    
+    console.log(`✅ [MOCK] Successfully committed changes in ${repositoryType} repository. Commit hash: ${mockCommitHash}`);
+    return Result.success(mockCommitHash);
+  }
+
+  /**
+   * Mock implementation of pushing a branch
+   * @param branchName - Name of the branch to push
+   * @param repositoryType - Which repository to push from
+   * @returns Promise<Result<true, GitError>> - Always successful in mock
+   */
+  async pushBranch(branchName: string, repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    console.log(`🚀 [MOCK] Pushing branch '${branchName}' to remote in ${repositoryType} repository...`);
+    console.log(`✅ [MOCK] Successfully pushed branch '${branchName}' to remote in ${repositoryType} repository`);
+    
+    return Result.success(true);
+  }
+
   private createMockDocsCommit(commitHash: string): CommitInfo {
     return {
       hash: commitHash,

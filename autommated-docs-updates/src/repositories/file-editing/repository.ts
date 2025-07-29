@@ -1,47 +1,47 @@
-import { FileEditingRepositoryService, FileUpdateResult, FileEditingError, FileEditingRepositoryConfig } from './types';
-import { Result } from '../../types/result';
-import { CommitInfo, RepositoryType } from '../git/types';
-import { RealGitRepositoryService } from '../git/repository';
+import { promises as fs } from 'fs';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { join, dirname, resolve } from 'path';
+import path from 'path';
+import { Result } from '../../types/result';
+import { 
+  FileEditingRepositoryService, 
+  FileEditingRepositoryConfig, 
+  FileUpdateResult, 
+  FileEditingError 
+} from './types';
+import { CommitInfo, RepositoryType, GitRepositoryService } from '../git/types';
 
 /**
- * Real file editing repository service implementation
- * 
- * This service provides actual file editing capabilities with safety checks:
- * - Validates files are within the docs directory
- * - Prevents editing when on preprod branch
- * - Creates backups before editing
- * - Uses AI-generated content for updates
+ * Real implementation of FileEditingRepositoryService that actually edits files
  */
 export class RealFileEditingRepositoryService implements FileEditingRepositoryService {
-  private docsRepositoryPath: string;
-  private foundationUiRepositoryPath: string;
-  private createBackups: boolean;
-  private backupDirectory: string;
-  private gitService: RealGitRepositoryService;
+  private readonly docsRepositoryPath: string;
+  private readonly foundationUiRepositoryPath: string;
+  private readonly createBackups: boolean;
+  private readonly backupDirectory: string;
 
   constructor(config: FileEditingRepositoryConfig) {
     this.docsRepositoryPath = config.docsRepositoryPath;
     this.foundationUiRepositoryPath = config.foundationUiRepositoryPath;
     this.createBackups = config.createBackups ?? true;
     this.backupDirectory = config.backupDirectory ?? '.backups';
-    this.gitService = new RealGitRepositoryService(this.docsRepositoryPath, this.foundationUiRepositoryPath);
   }
 
   /**
-   * Updates a documentation file with AI-generated content based on commit information
+   * Updates a documentation file with AI-generated content
    * @param filePath - The file path relative to docsRepoPath/docs
    * @param commitInfo - Information about the commit that triggered the update
    * @param updateInstructions - Instructions for what content to generate
+   * @param gitRepositoryService - Git repository service to use for branch checking
    * @returns Promise<Result<FileUpdateResult, FileEditingError>> - Update result or error
    */
   async updateDocFile(
     filePath: string, 
     commitInfo: CommitInfo, 
-    updateInstructions: string
+    updateInstructions: string,
+    gitRepositoryService: GitRepositoryService
   ): Promise<Result<FileUpdateResult, FileEditingError>> {
     try {
+      console.log(`📝 Updating documentation file: ${filePath}`);
       // Validate file path is within docs directory
       const validationResult = this.validateFilePath(filePath);
       if (Result.isError(validationResult)) {
@@ -49,7 +49,7 @@ export class RealFileEditingRepositoryService implements FileEditingRepositorySe
       }
 
       // Check current branch - prevent editing on preprod
-      const branchResult = await this.gitService.getCurrentBranch(RepositoryType.DOCS);
+      const branchResult = await gitRepositoryService.getCurrentBranch(RepositoryType.DOCS);
       if (Result.isError(branchResult)) {
         return Result.error({
           type: 'unknown',
@@ -70,19 +70,26 @@ export class RealFileEditingRepositoryService implements FileEditingRepositorySe
         });
       }
 
-      // Check if file exists
-      const fullPath = join(this.docsRepositoryPath, 'docs', filePath);
+      // Check if file exists, if not create it
+      const fullPath = path.join(this.docsRepositoryPath, 'docs', filePath);
+      let originalContent = '';
+      
       if (!existsSync(fullPath)) {
-        return Result.error({
-          type: 'file_not_found',
-          message: `File not found: ${filePath}`,
-          filePath,
-          details: `File does not exist at: ${fullPath}`
-        });
+        console.log(`📄 File does not exist, creating new file: ${filePath}`);
+        
+        // Ensure directory exists
+        const dirPath = path.dirname(fullPath);
+        if (!existsSync(dirPath)) {
+          mkdirSync(dirPath, { recursive: true });
+        }
+        
+        // Create empty file
+        writeFileSync(fullPath, '', 'utf8');
+        originalContent = '';
+      } else {
+        // Read original content
+        originalContent = readFileSync(fullPath, 'utf8');
       }
-
-      // Read original content
-      const originalContent = readFileSync(fullPath, 'utf8');
 
       // Create backup if enabled
       let backupPath: string | undefined;
@@ -172,10 +179,10 @@ export class RealFileEditingRepositoryService implements FileEditingRepositorySe
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const fileName = filePath.split('/').pop() || 'unknown';
       const backupFileName = `${fileName}.backup.${timestamp}`;
-      const backupPath = join(this.docsRepositoryPath, this.backupDirectory, backupFileName);
+      const backupPath = path.join(this.docsRepositoryPath, this.backupDirectory, backupFileName);
 
       // Ensure backup directory exists
-      const backupDir = dirname(backupPath);
+      const backupDir = path.dirname(backupPath);
       if (!existsSync(backupDir)) {
         mkdirSync(backupDir, { recursive: true });
       }
