@@ -283,6 +283,29 @@ val httpClient = GenesisHttpClient()
 ...
 ```
 
+It is important to highlight that if a payload needs to be provided as part of the HTTP request body (very common for `POST` requests), then it must be provided as a `request` parameter with a target `path` as shown below:
+
+```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+
+val client = GenesisHttpClient()
+...
+  eventHandler<Trade>("API_TRADE_INSERT") {
+    onCommit { event ->
+      ...
+      client.post<String>(
+        path = "https://my-external-api/trades",
+        request = event.details
+      ) {
+        header("Authorization", "Basic ABCDEFG")
+        query("tradeId", event.details.tradeId)
+      }.data
+      ...
+      ack()
+  }
+}
+```
+
 ### OpenAPI code generation
 
 This approach uses code generated from an OpenAPI/Swagger specification, providing the simplest and most type-safe way to make API calls.
@@ -352,11 +375,9 @@ The `TypedHttpResponse<T>` object found in `global.genesis.httpclient.response.T
 Example:
 
 ```kotlin
-
 import global.genesis.httpclient.GenesisHttpClient
 
 val client = GenesisHttpClient()
-
 ...
   eventHandler<Trade>("API_TRADE_INSERT") {
     onCommit { event ->
