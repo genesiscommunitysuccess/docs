@@ -13,9 +13,12 @@ This script is designed to work with two main repositories:
 ```
 autommated-docs-updates/
 ├── src/
-│   ├── index.ts          # Main script execution
+│   ├── index.ts          # Main script execution and routing
 │   ├── args.ts           # Argument validation and parsing
 │   ├── service-checks.ts # Service validation and testing functions
+│   ├── scripts/          # Individual script implementations
+│   │   ├── doc-automation.ts  # Documentation automation script
+│   │   └── service-checks.ts  # Service checks script
 │   ├── types/            # Shared type definitions
 │   │   ├── result.ts     # Result type for error handling
 │   │   └── index.ts      # Type exports
@@ -98,9 +101,6 @@ autommated-docs-updates/
 - `USE_MOCK_SERVICES`: Controls whether to use mock or real services
   - `true`: Use mock services (default for development)
   - `false`: Use real services (requires API keys)
-- `RUN_SERVICE_CHECKS`: Controls whether to run comprehensive service checks
-  - `true`: Run service checks (filesystem, git, AI, file editing, GitHub)
-  - `false` or unset: Skip service checks (default)
 - `DOCS_REPOSITORY_PATH`: Path to the docs repository (defaults to `/Users/matt.walker/genesis/docs`)
 - `FOUNDATION_UI_REPOSITORY_PATH`: Path to the foundation-ui repository (defaults to `/Users/matt.walker/genesis/foundation-ui`)
 - `ANTHROPIC_API_KEY`: Required for real AI service (LangChain with Claude)
@@ -123,16 +123,22 @@ The project is configured with TypeScript and includes:
 Run the script with pre-configured paths for development:
 
 ```bash
-# Use mock services (default)
-npm run dev
+# Run documentation automation with mock services (default)
+npm run dev:doc-automation
 
-# Use real services
-USE_MOCK_SERVICES=false npm run dev
+# Run documentation automation with real services
+npm run dev:doc-automation:real
+
+# Run service checks with mock services (default)
+npm run dev:checks
+
+# Run service checks with real services
+npm run dev:checks:real
 ```
 
 This uses the following default paths:
-- Docs Repository: `/Users/matt.walker/genesis/docs`
-- Foundation UI Repository: `/Users/matt.walker/genesis/foundation-ui`
+- Docs Repository: `/tmp/repos/docs`
+- Foundation UI Repository: `/tmp/repos/foundation-ui`
 
 **Note**: All dev commands require a commit hash as an additional argument.
 
@@ -144,23 +150,27 @@ Build and run with custom paths:
 # Build TypeScript to JavaScript
 npm run build
 
-# Run with custom repository paths
-node dist/index.js <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
+# Run documentation automation with custom repository paths
+node dist/index.js doc-automation <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
+
+# Run service checks with custom repository paths
+node dist/index.js checks <docs-repo-path> <foundation-ui-repo-path> <commit-hash>
 ```
 
 ### Available Scripts
 
 - `npm run build` - Compiles TypeScript to JavaScript
 - `npm start` - Runs compiled JavaScript (requires manual arguments)
-- `npm run dev` - Runs TypeScript directly with pre-configured paths (uses mock services by default)
-- `npm run dev:mock` - Runs with mock services for testing
-- `npm run dev:real` - Runs with real services (requires API keys)
-- `npm run dev:checks` - Runs with service checks enabled (uses mock services by default)
-- `npm run dev:checks:mock` - Runs with service checks and mock services
-- `npm run dev:checks:real` - Runs with service checks and real services (requires API keys)
-- `USE_MOCK_SERVICES=true npm run dev` - Explicitly use mock services for testing
-- `USE_MOCK_SERVICES=false npm run dev` - Use real services (requires API keys)
-- `RUN_SERVICE_CHECKS=true npm run dev` - Enable service checks with default settings
+
+#### Documentation Automation Scripts
+- `npm run dev:doc-automation` - Runs documentation automation with mock services
+- `npm run dev:doc-automation:mock` - Runs documentation automation with mock services (explicit)
+- `npm run dev:doc-automation:real` - Runs documentation automation with real services (requires API keys)
+
+#### Service Check Scripts  
+- `npm run dev:checks` - Runs service checks with mock services
+- `npm run dev:checks:mock` - Runs service checks with mock services (explicit)
+- `npm run dev:checks:real` - Runs service checks with real services (requires API keys)
 
 ## Features
 
@@ -573,7 +583,7 @@ The AI repository implements an agentic flow to find documentation files that ne
 
 ### Service Checks
 
-The application includes comprehensive service checks that can be enabled via the `RUN_SERVICE_CHECKS` environment variable. When enabled, the script will:
+The application includes comprehensive service checks that can be run using the `checks` script. When run, the script will:
 
 1. **Filesystem Service Tests**:
    - Test grep functionality for searching documentation
@@ -610,10 +620,15 @@ Service checks are useful for:
 
 ### Argument Validation
 
-The script requires exactly 3 command-line arguments:
-1. **docs-repo-path**: Path to the documentation repository
-2. **foundation-ui-repo-path**: Path to the foundation-ui platform repository
-3. **commit-hash**: Git commit hash to process
+The script requires exactly 4 command-line arguments:
+1. **script-name**: Script to run ('checks' or 'doc-automation')
+2. **docs-repo-path**: Path to the documentation repository
+3. **foundation-ui-repo-path**: Path to the foundation-ui platform repository
+4. **commit-hash**: Git commit hash to process
+
+#### Available Scripts
+- **checks**: Run service checks and validation
+- **doc-automation**: Run automated documentation updates
 
 ### Automatic Repository Setup
 
@@ -662,13 +677,22 @@ If the specified directories don't exist, the script will:
   - Useful for development, testing, and debugging
 
 #### `src/index.ts`
-- **Purpose**: Main script execution and orchestration
+- **Purpose**: Main script execution and routing
 - **Features**: 
   - Validates arguments and sets up repositories
   - Initializes all services with mock/real implementations
-  - Conditionally runs service checks based on environment variable
-  - Executes main application flow
+  - Routes to appropriate script based on script name argument
   - Handles error conditions and exit codes
+
+#### `src/scripts/`
+- **Purpose**: Individual script implementations
+- **Files**:
+  - `doc-automation.ts`: Documentation automation workflow
+  - `service-checks.ts`: Service validation and testing
+- **Features**: 
+  - Modular script organization
+  - Clear separation of concerns
+  - Consistent service interface usage
 
 #### `src/services/ai-service/`
 - **Purpose**: AI service that wraps AI repository

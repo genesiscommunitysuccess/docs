@@ -5,12 +5,12 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
-    "dev:mock": "cross-env USE_MOCK_SERVICES=true ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
-    "dev:real": "cross-env USE_MOCK_SERVICES=false ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
-    "dev:checks": "cross-env RUN_SERVICE_CHECKS=true ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
-    "dev:checks:mock": "cross-env RUN_SERVICE_CHECKS=true USE_MOCK_SERVICES=true ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
-    "dev:checks:real": "cross-env RUN_SERVICE_CHECKS=true USE_MOCK_SERVICES=false ts-node src/index.ts /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:doc-automation": "ts-node src/index.ts doc-automation /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:doc-automation:mock": "cross-env USE_MOCK_SERVICES=true ts-node src/index.ts doc-automation /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:doc-automation:real": "cross-env USE_MOCK_SERVICES=false ts-node src/index.ts doc-automation /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:checks": "ts-node src/index.ts checks /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:checks:mock": "cross-env USE_MOCK_SERVICES=true ts-node src/index.ts checks /tmp/repos/docs /tmp/repos/foundation-ui",
+    "dev:checks:real": "cross-env USE_MOCK_SERVICES=false ts-node src/index.ts checks /tmp/repos/docs /tmp/repos/foundation-ui",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

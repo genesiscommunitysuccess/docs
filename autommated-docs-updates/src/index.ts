@@ -5,13 +5,12 @@ import { createGitService } from './services/git-service';
 import { createFilesystemService } from './services/filesystem-service';
 import { createFileEditingService } from './services/file-editing-service';
 import { createGitHubService } from './services/github-service';
-import { Result } from './types/result';
 import { Services } from './types/services';
-import { RepositoryType } from './repositories/git/types';
-import { runServiceChecks } from './service-checks';
 import { execSync } from 'child_process';
 import { mkdirSync } from 'fs';
 import path from 'path';
+import { runDocAutomation } from './scripts/doc-automation';
+import { runServiceChecksScript } from './scripts/service-checks';
 
 // Load environment variables from .env file
 config();
@@ -21,6 +20,7 @@ async function main() {
   const args = validateAndParseArgs();
 
   console.log("=== Automated Docs Updates Script ===");
+  console.log(`Script: ${args.scriptName}`);
   console.log(`Docs Repository: ${args.docsRepoPath}`);
   console.log(`Foundation UI Repository: ${args.foundationUiRepoPath}`);
   console.log(`Commit Hash: ${args.commitHash}`);
@@ -82,68 +82,18 @@ async function main() {
   
   console.log("✅ All services initialized successfully");
 
-  // Run service checks if enabled via environment variable
-  const runServiceChecksEnabled = process.env.RUN_SERVICE_CHECKS === 'true';
-  if (runServiceChecksEnabled) {
-    try {
-      await runServiceChecks(services, args.commitHash);
-    } catch (error) {
-      console.error("❌ Service checks failed:", error);
+  // Route to the appropriate script based on scriptName
+  switch (args.scriptName) {
+    case 'checks':
+      await runServiceChecksScript(services, args);
+      break;
+    case 'doc-automation':
+      await runDocAutomation(services, args);
+      break;
+    default:
+      console.error(`❌ Unknown script: ${args.scriptName}`);
       process.exit(1);
-    }
-  } else {
-    console.log("\n⏭️ Service checks skipped (RUN_SERVICE_CHECKS not set to 'true')");
   }
-
-  // Main application flow
-  console.log("\n🚀 Starting main application flow...");
-  
-  // Analyze commit with AI service
-  console.log("\n🔍 Analyzing commit with AI service...");
-
-  try {
-    const updateResult = await services.ai.shouldUpdateDocs(services, args.commitHash);
-    
-    if (!Result.isSuccess(updateResult)) {
-      console.error(`❌ AI Analysis Error: ${updateResult.message}`);
-      process.exit(1);
-    }
-
-    const needsUpdate = updateResult.value;
-    console.log(`AI Analysis Result: ${needsUpdate ? '📝 Documentation updates needed' : '✅ No documentation updates required'}`);
-    
-    if (!needsUpdate) {
-      console.log("✨ No action needed - documentation is up to date");
-      console.log("\nArguments validated and repositories ready!");
-      return;
-    }
-
-    console.log("🚀 Proceeding with documentation update process...");
-    
-    // Find docs files to edit
-    console.log("\n🔍 Finding docs files to edit...");
-    const filesResult = await services.ai.findDocsFilesToEdit(services, args.commitHash);
-    
-    if (!Result.isSuccess(filesResult)) {
-      console.error(`❌ Error finding docs files to edit: ${filesResult.message}`);
-      process.exit(1);
-    }
-
-    const filesToEdit = filesResult.value;
-    console.log(`📁 Found ${filesToEdit.length} docs files to edit:`);
-    filesToEdit.forEach((filePath, index) => {
-      console.log(`   ${index + 1}. ${filePath}`);
-    });
-    
-    // TODO: Implement documentation update logic for the identified files
-    console.log("🔄 Documentation update logic will be implemented in the next phase");
-    
-  } catch (error) {
-    console.error("❌ Error during AI analysis:", error);
-    process.exit(1);
-  }
-
-  console.log("\nArguments validated and repositories ready!");
 }
 
 // Run the main function
