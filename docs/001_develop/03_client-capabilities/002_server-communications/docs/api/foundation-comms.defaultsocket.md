@@ -29,6 +29,7 @@ export declare class DefaultSocket implements Socket
 |  [config](./foundation-comms.defaultsocket.config.md) | <code>protected</code> | [ConnectConfig](./foundation-comms.connectconfig.md) |  |
 |  [hasValidSession](./foundation-comms.defaultsocket.hasvalidsession.md) |  | boolean |  |
 |  [host](./foundation-comms.defaultsocket.host.md) | <code>readonly</code> | string |  |
+|  [http](./foundation-comms.defaultsocket.http.md) |  | [Http](./foundation-comms.http.md) |  |
 |  [isConfigured](./foundation-comms.defaultsocket.isconfigured.md) | <code>readonly</code> | boolean |  |
 |  [isConnected](./foundation-comms.defaultsocket.isconnected.md) | <code>readonly</code> | boolean |  |
 |  [isConnectedSubject](./foundation-comms.defaultsocket.isconnectedsubject.md) | <code>readonly</code> | import("rxjs").BehaviorSubject&lt;boolean&gt; |  |

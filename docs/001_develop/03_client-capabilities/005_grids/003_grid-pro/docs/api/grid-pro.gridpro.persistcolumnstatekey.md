@@ -7,7 +7,7 @@ format: md
 
 ## GridPro.persistColumnStateKey property
 
-The key to use for persisting the column state in local broswer or KV storage.
+The key to use for persisting the column state in local browser or KV storage.
 
 **Signature:**
 

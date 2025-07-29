@@ -15,6 +15,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TradeFiltersExample from './examples/filter_example.js'
+import TradeFiltersSaveExample from './examples/save_filter_example.js'
 
 A filter is a display that connects to a server resource, such as a Data Server. It enables the user to set one or more fields from the resource to filter information. For example, the user could select trades with a specific broker or trades within a specified value range.
 
@@ -39,6 +40,8 @@ Below is an example of a `foundation-filters` using the `resourceName` attribute
 ```
 
 <TradeFiltersExample/>
+
+
 
 ### Configure form using UI schema
 
@@ -377,6 +380,30 @@ From this point, the criteria used in the foundation-filter are stored in the `a
 ```
 
 The outcome is that the foundation-filter displays a form showing all the available fields in the resource. This enables the user to select specific criteria for each field. Beneath this, the zero-grid-pro displays the data filtered by the input criteria.
+
+
+### Filter persistence
+
+Foundation Filters can be saved to the server and retrieved from the UI using the attribute "show-filter-persistence-controls"
+
+```typescript tile="Example 5" {1,4}
+import {sync} from '@genesislcap/foundation-utils';
+...
+  ...
+    <foundation-filters
+      design-system-prefix="rapid"
+      resourceName="ALL_USERS"
+      :value=${sync((x) => x.allTradesfilters)}>
+      show-filter-persistence-controls
+    </foundation-filters>
+  ...
+...
+```
+
+This will show additional controls within the filter form that allow the user to create and delete filters.
+These filters are persisted on the back end using the Key Value storage feature [Key Value storage](/develop/client-capabilities/server-communications/comms-storage):
+
+![](/img/foundation-filter-save.png)
 
 :::tip
 It is crucial to manipulate the style of the foundation-filter in order to see the `zero-grid-pro` beneath it.

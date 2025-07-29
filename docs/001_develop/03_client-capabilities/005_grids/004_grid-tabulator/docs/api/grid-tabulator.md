@@ -37,7 +37,7 @@ format: md
 |  [getColumnType(metadataType)](./grid-tabulator.getcolumntype.md) | Get the column type based on the metadata type. |
 |  [getFilterByFieldType(type)](./grid-tabulator.getfilterbyfieldtype.md) | Get the filter type based on the field type. |
 |  [getFilterParamsByFieldType(type)](./grid-tabulator.getfilterparamsbyfieldtype.md) | Get the filter params based on the field type. |
-|  [selectFormatter(cell, formatterParams)](./grid-tabulator.selectformatter.md) | Formatter that displays a value from a select list of options Styled to match grid-pro select renderer. |
+|  [selectFormatter(cell, formatterParams)](./grid-tabulator.selectformatter.md) | Formatter that displays a select component with options. Returns a wrapped div containing the select, similar to boolean.formatter. |
 |  [textFormatter(cell, formatterParams)](./grid-tabulator.textformatter.md) | Text formatter for customized display of values. Styled to match grid-pro text renderer. |
 
 ## Interfaces

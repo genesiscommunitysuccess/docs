@@ -97,7 +97,23 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.12.1
+
+###### Features
+
+* `genesis-criteria` : Add missing Expr functions to criteria validation allowlist 
+* `genesis-criteria` : Implement `Expr.dateTimeIsInRange` functionality for time-based filtering and `DATE_TIME_IS_IN_RANGE` method call to support this feature in report generation 
+* `genesis-environment` : Add PurgersReader.purgeAllDerivedRecordsFlow and PurgersReader.purgeAllDerivedRangesFlow 
+* `genesis-pal-dataserver` : Improve data server duplicate key error message and logging around start up 
+
+###### Fixes
+
+* `genesis-db` : Ensure BulkJoinProcessor listeners close all channels as expected when timeout errors happen 
+* `genesis-dbmon` : Fix bug in DbMon handling of search command when using FoundationDB as the database engine 
+* `genesis-evaluator` : Ensure responses to events triggered by evaluator rules do not cause errors when running in compact mode 
+* `genesis-gradle` : Account for product sys def when processing templated process file with Exec plugin 
+* `genesis-pal-dataserver` : Ensure insert updates are evaluated using dataserver where clause 
+* `genesis-process` : Stacktrace is now shown again when any issues arise during process startup 
 
 ## Client
 

@@ -1,0 +1,9 @@
+.submenu-header-example {
+  --type-ramp-plus-4-font-size: 14px;
+  
+  width: 100%;
+}
+
+.submenu-header-example::part(nav-button) {
+  width: calc(100% - var(--design-unit) * 2px);
+}

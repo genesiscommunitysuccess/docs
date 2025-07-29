@@ -54,19 +54,24 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 |  [gridOptions](./grid-pro.gridpro.gridoptions.md) |  | GridOptions |  |
 |  [gridOptionsConfig](./grid-pro.gridpro.gridoptionsconfig.md) |  | [GridOptionsConfig](./grid-pro.gridoptionsconfig.md) | Injectable config that allows to change grid options on an app level basis To modify options, register instance of the config in DOM container that is above the grid or on the top level of the application, so it applies to all grids. |
 |  [gridParams](./grid-pro.gridpro.gridparams.md) | <code>readonly</code> | GridParams |  |
-|  [gridProDatasource](./grid-pro.gridpro.gridprodatasource.md) | <code>readonly</code> | [GridProGenesisDatasource](./grid-pro.gridprogenesisdatasource.md) \| [GridProClientSideDatasource](./grid-pro.gridproclientsidedatasource.md) \| GridProServerSideDatasource | Get the datasource element. |
+|  [gridProDatasource](./grid-pro.gridpro.gridprodatasource.md) | <code>readonly</code> | [GridProBaseDatasource](./grid-pro.gridprobasedatasource.md) | Get the datasource element. |
 |  [gridSlot](./grid-pro.gridpro.gridslot.md) |  | HTMLSlotElement |  |
 |  [headerCaseType](./grid-pro.gridpro.headercasetype.md) |  | [GridProCaseType](./grid-pro.gridprocasetype.md) | The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used. |
 |  [headerHeight](./grid-pro.gridpro.headerheight.md) |  | number |  |
 |  [initialised](./grid-pro.gridpro.initialised.md) | <code>protected</code> | boolean |  |
+|  [isServerSide](./grid-pro.gridpro.isserverside.md) | <code>readonly</code> | boolean |  |
 |  [observedAttributes](./grid-pro.gridpro.observedattributes.md) | <code>readonly</code> | string\[\] |  |
 |  [onlyTemplateColDefs](./grid-pro.gridpro.onlytemplatecoldefs.md) |  | boolean |  |
-|  [persistColumnStateKey](./grid-pro.gridpro.persistcolumnstatekey.md) |  | string | The key to use for persisting the column state in local broswer or KV storage. |
+|  [pagination](./grid-pro.gridpro.pagination.md) |  | boolean | Enable pagination for the grid. |
+|  [paginationPageSize](./grid-pro.gridpro.paginationpagesize.md) |  | number | Number of rows per page when pagination is enabled. |
+|  [persistColumnStateKey](./grid-pro.gridpro.persistcolumnstatekey.md) |  | string | The key to use for persisting the column state in local browser or KV storage. |
 |  [persistFilterModelKey](./grid-pro.gridpro.persistfiltermodelkey.md) |  | string | The key to use for persisting the filter model in local browser or KV storage. |
 |  [rowData](./grid-pro.gridpro.rowdata.md) |  | any\[\] | The row data to display in the grid. |
 |  [rowHeight](./grid-pro.gridpro.rowheight.md) |  | number |  |
 |  [statePersistence](./grid-pro.gridpro.statepersistence.md) |  | [StatePersistence](./grid-pro.statepersistence.md) |  |
+|  [statusBarConfig](./grid-pro.gridpro.statusbarconfig.md) |  | [GridProStatusBarConfig](./grid-pro.gridprostatusbarconfig.md) | Configuration for the grid status bar components. |
 |  [theme](./grid-pro.gridpro.theme.md) |  | string |  |
+|  [withStatusBar](./grid-pro.gridpro.withstatusbar.md) |  | boolean | Enables or disables the grid status bar. |
 
 ## Methods
 
@@ -75,6 +80,8 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 |  [addEventListener(eventType, listener, options)](./grid-pro.gridpro.addeventlistener.md) |  | Adds an event listener to the grid element. |
 |  [agAttributeChangedCallback(attName, oldValue, newValue)](./grid-pro.gridpro.agattributechangedcallback.md) |  |  |
 |  [applyTemplateDefinitions(columnDefs, deferredColumnDefsOrState)](./grid-pro.gridpro.applytemplatedefinitions.md) |  | Will merge templated column definitions with <code>columnDefs</code> plus localStorage's column state or <code>deferredColumnStates</code>. |
+|  [cacheFilterConfig()](./grid-pro.gridpro.cachefilterconfig.md) |  |  |
+|  [clearLocalGridOptions()](./grid-pro.gridpro.clearlocalgridoptions.md) |  | Clears the local grid options, this is used to clear the grid options when the grid is restarted. |
 |  [combineAllGridComponents(gridOptionsComponents)](./grid-pro.gridpro.combineallgridcomponents.md) |  |  |
 |  [connectedCallback()](./grid-pro.gridpro.connectedcallback.md) |  |  |
 |  [disconnectedCallback()](./grid-pro.gridpro.disconnectedcallback.md) |  |  |
@@ -86,6 +93,7 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 |  [restoreCachedFilterConfig()](./grid-pro.gridpro.restorecachedfilterconfig.md) |  |  |
 |  [rowDataChanged(\_, rowData)](./grid-pro.gridpro.rowdatachanged.md) |  |  |
 |  [setFilterModel(value)](./grid-pro.gridpro.setfiltermodel.md) |  |  |
+|  [setupPaginationAndStatusBar(gridOptions)](./grid-pro.gridpro.setuppaginationandstatusbar.md) | <code>protected</code> |  |
 |  [statePersistanceEnabled()](./grid-pro.gridpro.statepersistanceenabled.md) |  |  |
 |  [themeChanged(oldValue, newValue)](./grid-pro.gridpro.themechanged.md) |  |  |
 

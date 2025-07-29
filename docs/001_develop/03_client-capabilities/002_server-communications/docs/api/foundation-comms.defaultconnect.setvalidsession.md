@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> - Please reference  instead.',
+> - Please reference `User` from `@genesislcap/foundation-user` instead.
 > 
 
 **Signature:**

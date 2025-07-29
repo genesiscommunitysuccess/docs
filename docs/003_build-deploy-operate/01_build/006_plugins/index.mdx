@@ -133,7 +133,7 @@ Other Gradle plugins that are necessary for your project are automatically added
 | Genesis Distribution | global.genesis.distribution | Creates the project's server distribution zip file. presently, this is based on the default configuration within the plugin. If you want to customize your distribution then you will need to disable this plugin and create your own configuration using the Gradle distribution plugin. In the future we will support customization from this plugin directly. | Yes |
 | Genesis Site Specific Distribution | global.genesis.site-specific.distribution | Creates the site-specific distribution zip file. Presently, this is based on the default configuration within the plugin, the same as the Genesis Distribution plugin. | Yes, if project type is APPLICATION |
 | Genesis Publication Disabler | global.genesis.publication-disabler | Used to disable dictionary-cache sub-module publishing tasks if the project is of type PBC | Yes, if project type is PBC |
-| Genesis Exec | global.genesis.exec | Creates Gradle tasks used by the Genesis IntelliJ plugin | Yes |
+| Genesis Exec | global.genesis.exec | Creates Gradle tasks used by the Genesis IntelliJ plugin and Genesis Start. Applied to the main module. | Yes |
 | Genesis Deploy | global.genesis.deploy | Creates deployment gradle tasks (Note: not required if using Genesis IntelliJ plugin for local development) | No |
 
 
@@ -184,3 +184,27 @@ dependencies {
 ##### Gradle Configuration Cache
 
 Genesis Gradle plugins are compatible with the [Gradle configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html), which is enabled by default in the new project seed. This can greatly improve build times.
+
+## Exec Plugin
+
+The Exec plugin is key to running a Genesis application locally with either the Genesis IntelliJ plugin or Genesis Start. It is enabled by default and applied to the main module of the project.
+
+### Configuration
+
+The Exec plugin has a Gradle extension to customise its configuration.
+
+#### Open Telemetry
+
+You can enable running your Genesis application processes locally with Open Telemetry. You can also provide extra JVM options which may be useful due to the many configuration options that can be provided to the Open Telemetry agent.
+
+Example:
+
+```kotlin
+genesisExec {
+    openTelemetry {
+        enabled = true // false by default
+        extraOptions = "-Dotel.traces.exporter=zipkin" // null by default
+        serviceNameEnabled = true // true by default
+    }
+}
+```

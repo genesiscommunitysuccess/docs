@@ -380,7 +380,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
         val idempotentRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
 
-        from("file:${pathStr}")
+        from("file://${pathStr}")
           .idempotentConsumer(
             header("CamelFileName"),
             FileIdempotentRepository.fileIdempotentRepository(File(idempotentRepo), 300000, 15000000)
@@ -774,11 +774,27 @@ csvEncoder<Trade> {
 
 ### Sinks
 
-#### `dbSink` 
-This is a sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>`.
-The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'. 
+#### Database Sinks
+Sinks that make modifications to the Genesis Application Database use a common type for the elements they consume; `DbOperation`.
 
-DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
+This is a wrapper object, the type of which defines the type of database operation to perform, and also contains a record to use in the operation.
+The record must extend TableEntity i.e. it must be a DAO object that was created as part of the Genesis code generation process, in order to be compatible with the Genesis database layer.
+
+`DbOperation` has 4 subtypes: Insert, Modify, Upsert and Delete.
+
+For modifications (Upsert and Modify operations types), you can supply a list of modified fields in order to perform a delta update. Only the fields specified will be updated in the database.
+
+```kotlin
+  DbOperation.Update(
+    entity = myTrade,
+    modifiedFields = listOf("FIELD_1", "FIELD_2")
+  )
+```
+
+
+
+##### `dbSink`
+This is a sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'.
 
 ```kotlin
 // Non-transactional db sink
@@ -797,11 +813,8 @@ pipeline("TEST_DB_SINK") {
 }
 ```
 
-#### `txDbSink`
-This is a transactional sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>`.
-The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'. 
-
-DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
+##### `txDbSink`
+This is a transactional sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'.
 
 ```kotlin
 // Transactional db sink
@@ -1091,8 +1104,8 @@ When you configure the JMS source to use as part of your pipeline, you must prov
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
 - queueName (required): the name of the message queue you would like to consume from
-- username (required): the username used to create the queue connection
-- password (required): the password used to create the queue connection
+- username (optional): the username used to create the queue connection - must be provided if password is set
+- password (optional): the password used to create the queue connection - do not set if credentials are not required to establish a broker connection
 - retryDelayMs (optional): how long the source should wait before attempting to connect to the queue again after failure to do so
 - pollTimeoutMs (optional): how long the consumer should wait in milliseconds before attempting to poll the message queue again after no data has been received; the default is 200
 - monitorName (optional): name to be displayed when the process state is set to WARNING; the default name has the format: JMSSourceMonitor-0-`{QUEUE-NAME}`
@@ -1185,8 +1198,8 @@ When you configure the JMS sink to use as part of your pipeline, you must provid
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
 - queueName (required): the name of the message queue you would like to publish to
-- username (required): the username used to create the queue connection
-- password (required): the password used to create the queue connection
+- username (optional): the username used to create the queue connection - must be provided if password is set
+- password (optional): the password used to create the queue connection - do not set if credentials are not required to establish a broker connection
 - buildMessage (required): the lambda to convert from the element sent to your sink to a valid Message object using the JMS session provided by the sink
 - retryDelayMs (optional): how long the sink should wait before attempting to connect to the queue again after failure to do so
 - maxRetries (optional): how many times the producer should attempt to resend the message upon failure; the default is 100
@@ -1247,148 +1260,6 @@ If you wish to run a dedicated process as a data pipeline, the following gives a
 ## Creating custom elements
 
 All of the elements within the data pipelines eco system implement a simple interface that allows new implementations to be added easily and rapidly. Most of these interfaces are functional, with only a single method, which allows them to be defined inline in the pipelines script. However, for complex pieces of business logic you may want to implement the element as a class in Java or Kotlin, for easier code management, and testing. In this section you will find examples of how to write custom components as classes, by implementing the interfaces defined in the Pipelines API.
-
-### Map operator
-Interface:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      fun interface SuspendElementOperator<INPUT, OUTPUT> {
-        suspend fun apply(input: INPUT): OUTPUT?
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public interface ElementOperator<INPUT, OUTPUT> {
-        @Nullable
-        OUTPUT apply(INPUT element);
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-Example:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      class MyCustomMapper : SuspendElementOperator<INPUT, OUTPUT> {
-        override suspend fun apply(input: INPUT): OUTPUT? {
-          // your logic here
-        }
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public class MyCustomMapper implements ElementOperator<INPUT, OUTPUT> {
-
-        @Nullable
-        @Override
-        public OUTPUT apply(INPUT element) {
-          // your logic here
-        }
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-
-### Split operator
-Interface:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      fun interface SplitOperator<INPUT, OUTPUT> {
-        suspend fun apply(input: INPUT): Flow<OUTPUT>
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public interface RxSplitOperator<INPUT, OUTPUT> {
-        @NotNull
-        Flowable<OUTPUT> apply(@NotNull INPUT element); 
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-Example:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      class MyCustomSplitter : SplitOperator<INPUT, OUTPUT> {
-        override suspend fun apply(input: INPUT): Flow<OUTPUT> {
-          // your logic here
-        }
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public class MyCustomMapper implements RxSplitOperator<INPUT, OUTPUT> {
-
-        @NotNull
-        @Override
-        public Flowable<OUTPUT> apply(@NotNull INPUT integer) {
-          // your logic here
-        }
-
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-
-### Transform operator
-Interface:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      fun interface StreamOperator<INPUT, OUTPUT> {
-        suspend fun process(inputFlow: Flow<INPUT>): Flow<OUTPUT>
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public interface RxStreamOperator<INPUT, OUTPUT> {
-        @NotNull
-        Flowable<OUTPUT> process(@NotNull Flowable<INPUT> stream);
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-Example:
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-    <TabItem value="kotlin">
-      ```kotlin
-      class MyCustomTransformer : StreamOperator<INPUT, OUTPUT> {
-        override suspend fun process(inputFlow: Flow<INPUT>): Flow<OUTPUT> {
-          // your logic here
-        }
-      }
-      ```
-    </TabItem>
-    <TabItem value="java">
-      ```java
-      public class MyCustomTransformer implements RxStreamOperator<INPUT, OUTPUT> {
-
-        @NotNull
-        @Override
-        public Flowable<OUTPUT> process(@NotNull Flowable<INPUT> flowable) {
-          // your logic here
-        }
-
-      }
-      ```
-    </TabItem>
-</Tabs>
-
-### Filter operator
-Filter operators are the exception and do not have a well defined interface, instead the filter method on the pipeline builder takes a predicate function as an argument. This predicate function takes an instance of the current pipeline output type and returns a boolean value.
 
 ### Source
 
@@ -1453,7 +1324,7 @@ Filter operators are the exception and do not have a well defined interface, ins
       </TabItem>
 
       <TabItem value="ack">
-      Interface: 
+      Interface:
       ```kotlin
       interface AckSource<INPUT> : Source<INPUT> {
         suspend fun acknowledge(context: PipelineContext<INPUT>)
@@ -1504,11 +1375,11 @@ Filter operators are the exception and do not have a well defined interface, ins
         public void stop() {
             // your logic here
         }
-      } 
+      }
       ```
       </TabItem>
       <TabItem value="batch">
-      Interface: 
+      Interface:
       ```java
       public interface RxBatchSource<T> {
         @NotNull
@@ -1561,7 +1432,7 @@ Filter operators are the exception and do not have a well defined interface, ins
 </Tabs>
 
 
-##### Using the persistence manager
+#### Using the persistence manager
 There is a persistence manager interface available in the genesis-pipeline-api module, which enables you to decide how to manage tracking what you have last processed.
 
 If you use the default DbPersistenceManager implementation, you can directly inject the interface into your class.
@@ -1594,11 +1465,11 @@ Example:
         ) : AckSource<Long> {
           override suspend fun acknowledge(context: PipelineContext<Long>) {
             persistenceManager.persistIndex(
-              source = "My Source", 
-              index = context.data, 
-              append = false, 
+              source = "My Source",
+              index = context.data,
+              append = false,
               transactionHandle = context.entityDb)
-          } 
+          }
 
           override suspend fun read(): Flow<Long> {
             return (1L..10L).toList().asFlow()
@@ -1706,7 +1577,7 @@ Example:
       </TabItem>
 
       <TabItem value="tx-stream">
-      Interface: 
+      Interface:
       ```kotlin
       fun interface TransactionalStreamSink<OUTPUT> : StreamSink<OUTPUT>
       ```
@@ -1753,7 +1624,7 @@ Example:
       ```
       </TabItem>
       <TabItem value="stream">
-      Interface: 
+      Interface:
       ```java
       public interface RxSink<OUTPUT> extends Stoppable {
         void sink(@NotNull Flowable<OUTPUT> flowable, @NotNull PipelineContext<?> context);
@@ -1824,7 +1695,292 @@ Example:
   </TabItem>
 </Tabs>
 
-### Operation error handler
+### Operators
+
+#### Map operator
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      fun interface SuspendElementOperator<INPUT, OUTPUT> {
+        suspend fun apply(input: INPUT): OUTPUT?
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public interface ElementOperator<INPUT, OUTPUT> {
+        @Nullable
+        OUTPUT apply(INPUT element);
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      class MyCustomMapper : SuspendElementOperator<INPUT, OUTPUT> {
+        override suspend fun apply(input: INPUT): OUTPUT? {
+          // your logic here
+        }
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public class MyCustomMapper implements ElementOperator<INPUT, OUTPUT> {
+
+        @Nullable
+        @Override
+        public OUTPUT apply(INPUT element) {
+          // your logic here
+        }
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+
+#### Split operator
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      fun interface SplitOperator<INPUT, OUTPUT> {
+        suspend fun apply(input: INPUT): Flow<OUTPUT>
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public interface RxSplitOperator<INPUT, OUTPUT> {
+        @NotNull
+        Flowable<OUTPUT> apply(@NotNull INPUT element); 
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      class MyCustomSplitter : SplitOperator<INPUT, OUTPUT> {
+        override suspend fun apply(input: INPUT): Flow<OUTPUT> {
+          // your logic here
+        }
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public class MyCustomMapper implements RxSplitOperator<INPUT, OUTPUT> {
+
+        @NotNull
+        @Override
+        public Flowable<OUTPUT> apply(@NotNull INPUT integer) {
+          // your logic here
+        }
+
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+
+#### Transform operator
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      fun interface StreamOperator<INPUT, OUTPUT> {
+        suspend fun process(inputFlow: Flow<INPUT>): Flow<OUTPUT>
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public interface RxStreamOperator<INPUT, OUTPUT> {
+        @NotNull
+        Flowable<OUTPUT> process(@NotNull Flowable<INPUT> stream);
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+    <TabItem value="kotlin">
+      ```kotlin
+      class MyCustomTransformer : StreamOperator<INPUT, OUTPUT> {
+        override suspend fun process(inputFlow: Flow<INPUT>): Flow<OUTPUT> {
+          // your logic here
+        }
+      }
+      ```
+    </TabItem>
+    <TabItem value="java">
+      ```java
+      public class MyCustomTransformer implements RxStreamOperator<INPUT, OUTPUT> {
+
+        @NotNull
+        @Override
+        public Flowable<OUTPUT> process(@NotNull Flowable<INPUT> flowable) {
+          // your logic here
+        }
+
+      }
+      ```
+    </TabItem>
+</Tabs>
+
+#### Filter operator
+Filter operators are the exception and do not have a well defined interface, instead the filter method on the pipeline builder takes a predicate function as an argument. This predicate function takes an instance of the current pipeline output type and returns a boolean value.
+
+### Context-aware Operators
+
+In addition to the standard element, split, and transform operators, the Pipelines API also supports **context-aware** variants. These allow access to the `PipelineContext`, which is useful for transactional logic, metadata handling, or tracing.
+
+#### Map operator (with context)
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    fun interface SuspendElementContextOperator<INPUT, OUTPUT> {
+      suspend fun apply(input: INPUT, context: PipelineContext<*>): OUTPUT?
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public interface ElementContextOperator<INPUT, OUTPUT> {
+      @Nullable
+      OUTPUT apply(@NotNull INPUT element, @NotNull PipelineContext<?> context);
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    class MyCustomContextMapper : SuspendElementContextOperator<INPUT, OUTPUT> {
+      override suspend fun apply(input: INPUT, context: PipelineContext<*>): OUTPUT? {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public class MyCustomContextMapper implements ElementContextOperator<INPUT, OUTPUT> {
+
+      @Nullable
+      @Override
+      public OUTPUT apply(@NotNull INPUT element, @NotNull PipelineContext<?> context) {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+#### Split operator (with context)
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    fun interface SplitContextOperator<INPUT, OUTPUT> {
+      suspend fun apply(input: INPUT, pipelineContext: PipelineContext<*>): Flow<OUTPUT>
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public interface RxSplitContextOperator<INPUT, OUTPUT> {
+      @NotNull
+      Flowable<OUTPUT> apply(@NotNull INPUT element, @NotNull PipelineContext<?> context);
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    class MyCustomContextSplitter : SplitContextOperator<INPUT, OUTPUT> {
+      override suspend fun apply(input: INPUT, pipelineContext: PipelineContext<*>): Flow<OUTPUT> {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public class MyCustomContextSplitter implements RxSplitContextOperator<INPUT, OUTPUT> {
+
+      @NotNull
+      @Override
+      public Flowable<OUTPUT> apply(@NotNull INPUT element, @NotNull PipelineContext<?> context) {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+#### Transform operator (with context)
+Interface:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    fun interface StreamContextOperator<INPUT, OUTPUT> {
+      suspend fun process(inputFlow: Flow<INPUT>, context: PipelineContext<*>): Flow<OUTPUT>
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public interface RxStreamContextOperator<INPUT, OUTPUT> {
+      @NotNull
+      Flowable<OUTPUT> process(@NotNull Flowable<INPUT> stream, @NotNull PipelineContext<?> context);
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Example:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+  <TabItem value="kotlin">
+    ```kotlin
+    class MyCustomContextTransformer : StreamContextOperator<INPUT, OUTPUT> {
+      override suspend fun process(inputFlow: Flow<INPUT>, context: PipelineContext<*>): Flow<OUTPUT> {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem value="java">
+    ```java
+    public class MyCustomContextTransformer implements RxStreamContextOperator<INPUT, OUTPUT> {
+
+      @NotNull
+      @Override
+      public Flowable<OUTPUT> process(@NotNull Flowable<INPUT> stream, @NotNull PipelineContext<?> context) {
+        // your logic here
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+### Error Handlers
+
+#### Operation error handler
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1871,7 +2027,7 @@ Example:
     </TabItem>
 </Tabs>
 
-### Uncaught error handler
+#### Uncaught error handler
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1912,8 +2068,3 @@ Example:
         ```
     </TabItem>
 </Tabs>
-
-
-
-
-

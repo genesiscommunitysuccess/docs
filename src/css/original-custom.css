@@ -184,25 +184,25 @@ img[alt^="masthead-cut"] {
   clip-path: polygon(0% 0%,100.00% 0.00%,100.00% 80.00%,95.00% 100.00%,90.00% 80.00%,85.00% 100.00%,80.00% 80.00%,75.00% 100.00%,70.00% 80.00%,65.00% 100.00%,60.00% 80.00%,55.00% 100.00%,50.00% 80.00%,45.00% 100.00%,40.00% 80.00%,35.00% 100.00%,30.00% 80.00%,25.00% 100.00%,20.00% 80.00%,15.00% 100.00%,10.00% 80.00%,5.00% 100.00%,0.00% 80.00%);
 }
 
-alpha-avatar {
+rapid-avatar {
   --avatar-fill-accent-primary: #0EAFE2;
 }
 
-alpha-horizontal-scroll {
+rapid-horizontal-scroll {
   max-width: 400px;
 }
 
-alpha-card {
+rapid-card {
   padding: 20px;
   --zero-card-fill-color: var(--neutral-layer-1);
   --zero-card-foreground-color: var(--neutral-foreground-rest);
 }
 
-alpha-horizontal-scroll alpha-card {
+rapid-horizontal-scroll rapid-card {
   width: 170px;
 }
 
-alpha-skeleton {
+rapid-skeleton {
   border-radius: 4px;
   width: 50px;
   height: 50px;
@@ -213,15 +213,15 @@ alpha-skeleton {
   --ifm-heading-color: var(--neutral-foreground-rest);
 }
 
-alpha-button .icon {
+rapid-button .icon {
   margin-right: 5px;
 }
 
-.button-examples alpha-button {
+.button-examples rapid-button {
   margin-right: 10px;
 }
 
-.button-examples alpha-button .icon {
+.button-examples rapid-button .icon {
   padding-right: 5px;
 }
 
@@ -229,7 +229,7 @@ alpha-button .icon {
   color: var(--neutral-foreground-rest);
 }
 
-[class^="playgroundPreview"] alpha-anchored-region  {
+[class^="playgroundPreview"] rapid-anchored-region  {
   color: var(--neutral-foreground-rest);
   background: var(--accent-fill-rest);
   padding: 10px;

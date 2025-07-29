@@ -1,0 +1,170 @@
+---
+title: '8.13'
+sidebar_label: '8.13'
+sidebar_position: 8
+id: '8.13'
+---
+
+:::tip
+This release contains [impactful changes](#impactful-change-guidance). They are not breaking but typical stumbling blocks for older applications upgrading. Further details are listed at the end of this page, along with instructions to resolve.
+:::
+
+## Server
+
+### Features
+
+* `genesis-criteria` : Implement `Expr.dateTimeIsInRange` functionality for time-based filtering and `DATE_TIME_IS_IN_RANGE` method call to support this feature in report generation 
+* `genesis-environment` : Add PurgersReader.purgeAllDerivedRecordsFlow and PurgersReader.purgeAllDerivedRangesFlow 
+* `genesis-gradle` : Implement custom build service to cache and close classloaders when not in use as well as other build improvements 
+* `genesis-testsupport` : Add support for annotation driven database-only test 
+* `genesis-testsupport` : Add support for parameterised `GenesisJUnit` tests and method parameters 
+* `genesis-pal-dataserver` : Improve data server duplicate key error message and logging around start up 
+* `genesis-pal-eventhandler` : Add metadata field override support to transform mandatory fields into optional as long as a `default` value is provided 
+
+### Fixes
+
+* `deploy-gradle-plugin` : Fix docker image build when web deployment doesn't exist 
+* `genesis-db` : Ensure BulkJoinProcessor listeners close all channels as expected when timeout errors happen 
+* `genesis-dbmon` : Fix bug in DbMon handling of search command when using FoundationDB as the database engine 
+* `genesis-evaluator` : Ensure responses to events triggered by evaluator rules do not cause errors when running in compact mode 
+* `genesis-evaluator` : GENESIS_EVALUATOR should not crash when processing invalid cron rules and instead just print a warning message 
+* `genesis-gradle` : Account for product sys def when processing templated process file with Exec plugin 
+* `genesis-testsupport` : Fix regression in type binding when using the @ProvidedInstance annotation in `GenesisJUnit` tests 
+* `genesis-pal-dataserver` : Ensure an additional QUERY_UPDATE message with MORE_ROWS=false is sent to query subscriptions using the `chunkLargeMessages` option, if no more rows are available after a DATA_LOGON or MORE_ROWS request 
+* `genesis-pal-dataserver` : Ensure insert updates are evaluated using dataserver where clause 
+* `genesis-pal-dataserver` : Improve handling of data server on unrecoverable key errors 
+* `genesis-pal-requestserver` : Fix bug in handling of a `_FROM` => `_TO` range 
+* `packagescan-gradle-plugin` : Package scans for the same module are not generating the correct cache file 
+* Ensure complex event handler payloads are supported by MCP schema 
+* Ensure no error is thrown if no systems are defined in system definition 
+
+### Dependency changes
+
+* Force upgrade Kafka client dependencies from 3.9.0 to 4.0.0 to address CVE-2025-27817
+* Upgrade to Kotlin 2.1.21 (bugfixes and performance improvements)
+* Bump byteBuddyVersion from 1.17.5 to 1.17.6
+* Bump com.github.oshi:oshi-core from 6.8.1 to 6.8.2
+* Bump com.google.errorprone:error_prone_annotations from 2.38.0 to 2.39.0
+* Bump com.google.guava:guava from 33.4.0-jre to 33.4.8-jre
+* Bump com.google.protobuf:protobuf-java from 4.30.2 to 4.31.1
+* Bump com.microsoft.sqlserver:mssql-jdbc from 12.10.0.jre11 to 12.10.1.jre11
+* Bump com.opencsv:opencsv from 5.11 to 5.11.2
+* Bump com.squareup:kotlinpoet from 1.14.2 to 2.2.0
+* Bump debeziumVersion from 3.1.1.Final to 3.1.2.Final
+* Bump debeziumVersion from 3.1.2.Final to 3.1.3.Final
+* Bump groovyVersion from 3.0.24 to 3.0.25
+* Bump io.github.classgraph:classgraph from 4.8.179 to 4.8.180
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.16.0 to 2.17.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.15.0 to 2.17.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.50.0 to 1.51.0
+* Bump it.unimi.dsi:fastutil-core from 8.5.15 to 8.5.16
+* Bump junitVersion from 5.12.2 to 5.13.1
+* Bump junitVersion from 5.13.1 to 5.13.2
+* Bump log4jVersion from 2.24.3 to 2.25.0
+* Bump micrometerVersion from 1.15.0 to 1.15.1
+* Bump org.apache.fury:fury-core from 0.10.2 to 0.10.3
+* Bump org.checkerframework:checker-qual from 3.49.3 to 3.49.5
+* Bump org.jline:jline from 3.28.0 to 3.30.4
+* Bump org.jlleitschuh.gradle:ktlint-gradle from 11.5.1 to 12.3.0
+* Bump org.junit.platform:junit-platform-launcher from 1.12.2 to 1.13.1
+* Bump org.junit.platform:junit-platform-launcher from 1.13.1 to 1.13.2
+* Bump org.kiwiproject:consul-client from 1.5.0 to 1.5.1
+* Bump org.openapitools:openapi-generator from 7.13.0 to 7.14.0
+* Bump org.postgresql:postgresql from 42.7.5 to 42.7.7
+* Bump pekkoVersion from 1.1.3 to 1.1.4
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.6 to 2.6.0
+* Bump testcontainersVersion from 1.21.1 to 1.21.2
+* Bump testcontainersVersion from 1.21.2 to 1.21.3
+
+### Patch releases
+
+#### 8.13.2
+
+###### Fixes
+
+* `genesis-gradle` : Show correct process name in `preCompileScripts` gradle task output 
+* `remap` : Ensure auto increment fields are handled correctly when migrating to new table syntax 
+
+#### 8.13.1
+
+###### Features
+
+* `genesis-criteria` : Add missing Expr functions to criteria validation allowlist 
+* `genesis-pal-streamerclient` : Add additional logging when moving to error state 
+
+###### Fixes
+
+* `genesis-process` : Stacktrace is now shown again when any issues arise during process startup 
+
+## Client
+
+### Features
+
+* `grid-pro` : Add load more, reload, pagination status-bar components + easy pagination setup 
+* `grid-pro` : Allow setting data test id on boolean renderer 
+* `foundation-ui` : Multiselect allow object values 
+* `foundation-forms` : Add finer grained text field searching in filter forms 
+* `foundation-header` : Add user account dropdown 
+* `foundation-header` : Enable submenu support in foundation-header 
+* Add tabulator select formatter + extras 
+* `grid-pro` : Add new statusBar item (agAggregationComponent) 
+* `foundation-ui` : Add status pill and status pill grid renderer 
+
+### Fixes
+
+* `form-filters` : Fixes for form filters 
+* `foundation-ui` : Fix styling on segmented control when only one element 
+* `foundation-ui` : Styling changes for date picker 
+* Revert removal of index.federated file for the DSC package 
+* `grid-pro` : Address missing README bits after latest withStatusBar changes 
+* `grid-pro` : README updates and cleanup around statusBar 
+* Connected Select Renderer Not Displaying Initial Selected Value
+* Number field to allow negative zero and trailing decimal zeros; move validation to blur 
+* Replace hardcoded precision with provided value 
+* Refresh data to trigger validation in forms 
+* `grid-pro` : Grid load clears saved column filters 
+* Check if user is authenticated before checking permissions 
+* `grid-pro` : Fixing registration, change detection 
+
+## Impactful change guidance
+
+This release includes several noteworthy updates aimed at improving performance, stability, and maintainability. While none of these are breaking changes, some may require action or awareness from developers.
+
+---
+
+### 🔧 Gradle Plugin Rewrite & Build Service Enhancements
+
+A major internal rewrite of the Gradle plugins introduces a custom build service to **improve memory usage** by caching and closing classloaders when not in use.
+
+- **Impact**: Substantial improvement in Gradle daemon performance and memory efficiency.
+- **Action**: Ensure your app includes the required extra JVM flag - [this PR shows the changes needed in existing projects](https://github.com/genesiscommunitysuccess/blank-app-seed/commit/f0deb5c2617fb828aab4a9a8247fe73e55ca0775).
+- **Note**: This is a significant change, and while not breaking, it may surface edge-case issues during builds.
+
+---
+
+### 🕒 Evaluator Stability Improvements
+
+The `GENESIS_EVALUATOR` will now **log a warning instead of crashing** when it encounters invalid cron expressions.
+
+- **Impact**: Increased system resilience.
+- **Action**: Ensure your monitoring tools are reading evaluator logs for any new warnings that may indicate misconfigured cron rules.
+
+---
+
+### 🧬 Kotlin Upgrade to 2.1.21
+
+Updated Kotlin to version 2.1.21, bringing bug fixes and performance improvements.
+
+- **Impact**: Improved stability and performance.
+- **Action**: No mandatory changes for apps. Compatible with existing Kotlin code.
+
+---
+
+### 🧱 Guava Library Upgrade
+
+Guava upgraded to 33.4.8-jre, which includes **changes to nullability and generic types**, particularly in `ListenableFuture`.
+
+- **Impact**: Potential minor changes needed if your app uses `ListenableFuture`.
+- **Action**: Review any app usage of `ListenableFuture`. In the unlikely event your app is using them directly please feel free to contact dev.support@genesis.global with the instances for help in migrating
+
+---

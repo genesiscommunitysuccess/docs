@@ -17,6 +17,7 @@ import {
   GridProExampleActionsMenuRenderer,
   GridProExampleBooleanRenderer,
   GridProExampleEditableRenderer,
+  GridProExampleSelectRenderer,
   GridProExampleSelectEditorRenderer,
   GridProExampleNumberEditor,
   GridProExampleMultiselectEditor,
@@ -24,20 +25,19 @@ import {
   GridProExampleStringEditor,
 } from './grid-pro_examples.js'
 
-# Renderers
+# Renderers and editors
 
 ## Overview
 
-All of our custom cell rendering components are enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns.
+All of our custom cell rendering components are enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns. Grid Pro includes both cell renderers (for display) and cell editors (for data input).
 
-## Default Genesis renderers
+## Built-in Cell Renderers
 
 ### Action renderer (`action`)
 
 Renders a single action button within a grid cell, allowing for row-specific interactions.
 
 <GridProExampleActionRenderer />
-
 
 <br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.actionrenderer/).
 
@@ -69,7 +69,6 @@ const actionRendererColDef = {
 Renders a menu of multiple actions for a grid row.
 
 <GridProExampleActionsMenuRenderer />
-
 
 <br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.actionsmenurenderer/).
 
@@ -119,7 +118,6 @@ Renders a checkbox within a grid cell, allowing direct boolean value editing.
 
 <GridProExampleBooleanRenderer />
 
-
 <br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.booleanrenderer/).
 
 #### Key features
@@ -140,12 +138,153 @@ const booleanRendererColDef = {
 }
 ```
 
+### Status pill renderer (`statusPill`)
+
+Renders status values as colored pills or badges, providing visual status indicators.
+
+#### Key features
+
+- Customizable color schemes for different status values
+- Supports value mapping and display labels
+- Visual status indication with colored backgrounds
+- Flexible configuration for different status types
+
+#### Usage example
+
+```typescript
+const statusPillRendererColDef = {
+  headerName: 'Status',
+  field: 'status',
+  cellRenderer: 'statusPill',
+  cellRendererParams: (params) => {
+    // Checking a boolean flag
+    if (params.value) {
+      return {
+        iconName: 'check',
+        text: 'Enabled',
+        backgroundColor: 'green',
+      };
+    } else {
+      return {
+        iconName: 'xmark',
+        text: 'Disabled',
+        backgroundColor: 'red',
+      };
+    }
+  },
+}
+```
+
+### Text renderer (`text`)
+
+Basic text display renderer with optional formatting capabilities.
+
+#### Key features
+
+- Simple text display
+- Optional text formatting
+- Lightweight rendering for basic text content
+- Supports value formatters
+
+#### Usage example
+
+```typescript
+const textRendererColDef = {
+  headerName: 'Description',
+  field: 'description',
+  cellRenderer: 'text',
+  valueFormatter: (params) => params.value?.toUpperCase()
+}
+```
+
+### Text field renderer (`textField`)
+
+Provides a text input field renderer for inline text editing.
+
+#### Key features
+
+- Inline text input capabilities
+- Customizable placeholder text
+- Supports validation and formatting
+- Direct text editing within cells
+
+#### Usage example
+
+```typescript
+const textFieldRendererColDef = {
+  headerName: 'Notes',
+  field: 'notes',
+  cellRenderer: 'textField',
+  cellRendererParams: {
+    placeholder: 'Add notes here...',
+    maxLength: 200
+  }
+}
+```
+
+### Select renderer (`select`)
+
+Renders a dropdown select within a grid cell, allowing users to select from a list of options.
+
+<GridProExampleSelectRenderer />
+
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selectrenderer/).
+
+#### Key features
+
+- Supports dynamic options through a function
+- Customizable option display names
+- Supports disabled state per option
+- Handles selection changes with callback
+- Configurable dropdown position based on row index
+
+#### Usage example
+
+```typescript
+const ROW_INDEX_LIMIT = 5;
+
+const setDropdownPosition = (rowData, allRows) => {
+  const rowIndex = allRows.findIndex(row =>
+    row.make === rowData.make &&
+    row.model === rowData.model
+  );
+  return rowIndex > ROW_INDEX_LIMIT ? 'above' : 'below';
+};
+
+const selectRendererColDef = {
+  headerName: 'Status',
+  field: 'status',
+  cellRenderer: 'select',
+  cellStyle: {
+    overflow: 'visible',
+  },
+  cellRendererParams: {
+    options: () => [
+      {
+        name: 'available',
+        displayName: 'Available',
+        isDisabled: (rowData) => rowData.price > 50000,
+        tooltip: 'This car is available',
+      },
+      {
+        name: 'reserved',
+        displayName: 'Reserved',
+        isDisabled: (rowData) => rowData.year < 2020,
+        tooltip: 'This car is not available',
+      },
+    ],
+    onSelect: (rowData) => handleStatusChange(rowData),
+    accessor: 'status',
+    position: (rowData) => setDropdownPosition(rowData, allRows),
+  }
+}
+```
+
 ### Editable renderer (`editable`)
 
 Renders a cell with a formatted value and an optional progress indicator.
 
 <GridProExampleEditableRenderer />
-
 
 <br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.editablerenderer/).
 
@@ -165,13 +304,15 @@ const editableRenderercolDef = {
 }
 ```
 
+## Built-in Cell Editors
+
 ### Select editor (`selectEditor`)
 
 Renders a dropdown select editor within a grid cell, allowing users to edit cell values by selecting from a list of options.
 
 <GridProExampleSelectEditorRenderer />
 
-<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selecteditor/). 
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selecteditor/).
 
 #### Key features
 
@@ -212,6 +353,8 @@ Provides a numeric input editor within a grid cell, allowing users to input and 
 - Customizable placeholder text
 - Handles value changes and updates grid data
 - Supports disabling the editor
+- Built-in validation for numeric inputs
+- Configurable precision and range limits
 
 #### Usage example
 
@@ -223,6 +366,10 @@ const numberEditorRendererColDef = {
     formatOptions: { style: 'currency', currency: 'USD' },
     placeholder: 'Enter amount',
     disabled: false,
+    min: 0,
+    max: 10000,
+    precision: 2,
+    step: 0.01
   },
   // other column options
 }
@@ -276,6 +423,8 @@ Provides a date or date-time input editor within a grid cell, allowing users to 
 - Customizable date format
 - Handles value changes and updates grid data
 - Automatically focuses on the editor when opened
+- Built-in date validation
+- Configurable date range restrictions
 
 #### Usage example
 
@@ -284,6 +433,10 @@ const dateEditorRendererColDef = {
   cellEditor: 'dateEditor',
   cellEditorParams: {
     withTime: true, // Set to false for date only
+    format: 'DD/MM/YYYY',
+    placeholder: 'Select date',
+    minDate: '2020-01-01',
+    maxDate: '2030-12-31'
   },
   // other column options
 }
@@ -295,13 +448,15 @@ Provides a text input editor within a grid cell, allowing users to input or edit
 
 <GridProExampleStringEditor />
 
-<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.stringeditor/). 
+<br></br>Further details are available in the [API documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.stringeditor/).
 
 #### Key features
 
 - Customizable placeholder text
 - Handles value changes and updates grid data
 - Automatically focuses on the editor when opened
+- Supports text validation
+- Configurable maximum length
 
 #### Usage example
 
@@ -310,10 +465,29 @@ const stringEditorRendererColDef = {
   cellEditor: 'stringEditor',
   cellEditorParams: {
     placeholder: 'Enter text',
+    maxLength: 100,
+    validator: (value) => value.length >= 3
   },
   // other column options
 }
 ```
+
+## Automatic cell renderer selection
+
+Grid Pro supports automatic cell renderer selection based on data types when using the `auto-cell-renderer-by-type` attribute:
+
+```html
+<rapid-grid-pro auto-cell-renderer-by-type>
+  <grid-pro-client-side-datasource resource-name="ALL_TRADES">
+  </grid-pro-client-side-datasource>
+</rapid-grid-pro>
+```
+
+This feature automatically selects appropriate renderers based on:
+- Boolean values → Boolean renderer
+- Date values → Date formatter
+- Numeric values → Number formatter
+- Status fields → Status pill renderer (when configured)
 
 ## Creating a custom renderer component
 
@@ -324,9 +498,9 @@ To create a custom renderer component, you need to implement the `ICellRendererC
 #### 1. Basic renderer structure
 
 ```typescript
-import { 
-  ICellRendererComp, 
-  ICellRendererParams 
+import {
+  ICellRendererComp,
+  ICellRendererParams
 } from '@ag-grid-community/core';
 import { GenesisElement, html, observable } from '@genesislcap/web-core';
 import { logger } from '../utils';
@@ -378,10 +552,42 @@ export class CustomRenderer extends GenesisElement implements ICellRendererComp 
   // Handle value changes
   public changeHandler = (newValue: any) => {
     this.value = newValue;
-    
+
     if (typeof this.params?.onChange === 'function') {
       this.params.onChange(newValue, this.params);
     }
+  };
+}
+```
+
+## Component registration
+
+Register custom components using the `gridComponents` property:
+
+```typescript
+@customElement({
+  name: 'my-grid',
+  template: html`
+    <rapid-grid-pro 
+      :gridComponents="${(x) => x.gridComponents}"
+      auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES">
+      </grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `
+})
+export class MyGrid extends GenesisElement {
+  @observable gridComponents = {
+    // Custom renderers
+    customRenderer: CustomRenderer,
+    customStatusPill: CustomStatusPillRenderer,
+    
+    // Custom editors
+    customEditor: CustomEditor,
+    advancedDateEditor: AdvancedDateEditor,
+    
+    // Custom filters
+    customFilter: CustomFilter
   };
 }
 ```
