@@ -39,12 +39,14 @@ Ensure your Genesis Platform is updated to at least version 8.1 to use the Genes
 Here's a quick example of a GET request using the Genesis HTTP Client within a Request Server:
 
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+...
 requestReply<Unit, HelloWorld>("HELLO_WORLD") {
     val client = GenesisHttpClient()
 
     replySingle {
         client.get<HelloWorld> {
-            url = "https://my-external-api/hello",
+            url = "https://my-external-api/hello"
             query("name", "John")
         }.data
     }
@@ -63,6 +65,10 @@ This section demonstrates practical examples of using the Genesis HTTP Client in
 This example shows how to use the Genesis HTTP Client in a Request Server to fetch data from an external API, ensuring errors are handled:
 
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+import global.genesis.httpclient.response.UnexpectedResponseException
+import global.genesis.message.core.HttpStatusCode
+...
 requestReplies {
   requestReply<TradeRequest, TradeDetails>("FETCH_TRADE_DETAILS") {
     val client = GenesisHttpClient()
@@ -70,11 +76,11 @@ requestReplies {
     replySingle { request: TradeRequest ->
       try {
         client.get<TradeDetails> {
-          path = "https://my-external-api/trades/${request.tradeId}",
+          url = "https://my-external-api/trades/${request.tradeId}"
         }
       } catch (e: UnexpectedResponseException) {
         when (e.statusCode) {
-          HttpStatusCode.NotFound -> throw NotFoundException("Trade not found")
+          HttpStatusCode.NotFound -> throw Exception("Trade not found")
           else -> throw Exception("Error fetching trade: ${e.message}")
         }
       }
@@ -88,6 +94,8 @@ requestReplies {
 This example demonstrates how to use the Genesis HTTP Client in an Event Handler to send a post to an external service as part of a TradeInsert event
 
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+
 eventHandler {
   data class TradeNotification(
     val tradeId: Long,
@@ -145,7 +153,7 @@ requestReplies {
 
 ### Example 4 - Request Server with OpenAPI client inside an Event Handler
 
-This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in an Event Handler to update a trade in an external system via an external call. 
+This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in an Event Handler to update a trade in an external system via an external call.
 
 ```kotlin
 
@@ -212,24 +220,32 @@ requestReplies {
 The `GenesisHttpClient` is the main class you interact with. It provides methods for making HTTP requests.
 
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+
 val client = GenesisHttpClient()
 ```
 
-You can optionally configure a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). An example is provided below:
+You can optionally configure a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). An example using [Apache5](https://ktor.io/docs/client-engines.html#apache) is provided below:
 
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache5.Apache5
+
 val apacheClient = HttpClient(Apache5) {
     engine {
-        sslContext = SslSettings.getSslContext()
+        followRedirects = true
+        socketTimeout = 10_000
+        connectTimeout = 10_000
+        connectionRequestTimeout = 20_000
+        ...
     }
 }
 
-val client = GenesisHttpClient(apacheClient) 
+val client = GenesisHttpClient(apacheClient)
 ```
 
 You can follow the documented examples on the ktor documentation site as needed, for example [configuring SSL](https://ktor.io/docs/client-ssl.html#configure-ssl) if required in your setup.
-
-Each method below returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
 
 ### Request methods
 The client supports all standard HTTP methods:
@@ -239,7 +255,7 @@ The client supports all standard HTTP methods:
 - PUT: `client.put<T>()`
 - DELETE: `client.delete<T>()`
 
-Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
+Each method above returns a `TypedHttpResponse<T>` object found in `global.genesis.httpclient.response.TypedHttpResponse`, where `T` is the expected response body type.
 
 ### Configuring requests
 You can configure requests using a DSL within a lambda function. Common configuration options include:
@@ -251,6 +267,10 @@ You can configure requests using a DSL within a lambda function. Common configur
 
 Example:
 ```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+...
+val httpClient = GenesisHttpClient()
+...
     eventHandler<Account>("API_TRADE_INSERT") {
         onCommit {
             httpClient
@@ -300,6 +320,8 @@ tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
 ```
 
 ```kotlin
+import global.genesis.message.core.HttpStatusCode
+...
 val accountsApi = AccountsControllerApi("https://my-external-api")
 accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
     registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
@@ -320,7 +342,7 @@ eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
 
 ## Response handling
 
-The `HttpResponse<T>` object contains:
+The `TypedHttpResponse<T>` object found in `global.genesis.httpclient.response.TypedHttpResponse` contains:
 
 - statusCode: the HTTP status code
 - headers: response headers
@@ -333,9 +355,10 @@ Example:
     onCommit { event ->
       client.get<String>(
         path = "https://my-external-api/trades",
-        request = event.details) {
+        request = event.details
+      ) {
         header("Authorization", "Basic ABCDEFG")
-        query("tradeId", event.details)
+        query("tradeId", event.details.tradeId)
       }.data
       ack()
   }
@@ -360,5 +383,15 @@ To use it, add the following dependency to your project's `server/<your-app>/bui
 dependencies {
   ...
   implementation("global.genesis:genesis-http-client")
+}
+```
+
+If you would like to configure a different HTTP client engine, additional Ktor dependencies can be added like this:
+
+```kotlin {3}
+val ktor_version = "3.2.2" // use the Genesis platform ktor version for best compatibility
+dependencies {
+  ...
+  implementation("io.ktor:ktor-client-apache5:$ktor_version")
 }
 ```
