@@ -1,6 +1,7 @@
 import { createFileEditingService } from './index';
 import { Result } from '../../types/result';
 import { RepositoryType } from '../../repositories/git/types';
+import { createGitService } from '../git-service';
 
 /**
  * Test the file editing service functionality
@@ -35,6 +36,9 @@ async function testFileEditingService() {
     repositoryType: RepositoryType.FOUNDATION_UI
   };
 
+  // Create mock git service for testing
+  const mockGitService = createGitService({ useMock: true });
+
   // Test with mock service
   console.log("1. Testing Mock File Editing Service:");
   const mockFileEditingService = createFileEditingService(mockConfig);
@@ -43,7 +47,8 @@ async function testFileEditingService() {
     const mockResult = await mockFileEditingService.updateDocFile(
       'test-file.md',
       mockCommitInfo,
-      'Add documentation for the new authentication system'
+      'Add documentation for the new authentication system',
+      mockGitService
     );
     
     if (Result.isSuccess(mockResult)) {
@@ -72,7 +77,8 @@ async function testFileEditingService() {
     const invalidPathResult = await mockFileEditingService.updateDocFile(
       '../invalid-path.md',
       mockCommitInfo,
-      'Test instructions'
+      'Test instructions',
+      mockGitService
     );
     
     if (Result.isError(invalidPathResult)) {
@@ -90,7 +96,8 @@ async function testFileEditingService() {
     const emptyPathResult = await mockFileEditingService.updateDocFile(
       '',
       mockCommitInfo,
-      'Test instructions'
+      'Test instructions',
+      mockGitService
     );
     
     if (Result.isError(emptyPathResult)) {
@@ -108,7 +115,8 @@ async function testFileEditingService() {
     const nonExistentResult = await mockFileEditingService.updateDocFile(
       'non-existent.txt',
       mockCommitInfo,
-      'Test instructions'
+      'Test instructions',
+      mockGitService
     );
     
     if (Result.isError(nonExistentResult)) {
@@ -126,7 +134,8 @@ async function testFileEditingService() {
     const backupResult = await mockFileEditingService.updateDocFile(
       'test-file.md',
       mockCommitInfo,
-      'Test backup functionality'
+      'Test backup functionality',
+      mockGitService
     );
     
     if (Result.isSuccess(backupResult)) {
@@ -146,7 +155,8 @@ async function testFileEditingService() {
     const contentResult = await mockFileEditingService.updateDocFile(
       'test-file.md',
       mockCommitInfo,
-      'Add comprehensive documentation for authentication'
+      'Add comprehensive documentation for authentication',
+      mockGitService
     );
     
     if (Result.isSuccess(contentResult)) {
