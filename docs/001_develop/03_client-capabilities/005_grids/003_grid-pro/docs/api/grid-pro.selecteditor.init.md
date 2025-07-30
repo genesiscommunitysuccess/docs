@@ -17,9 +17,12 @@ init(params: SelectEditorParams): void;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | [SelectEditorParams](./grid-pro.selecteditorparams.md) |  |
+|  params | [SelectEditorParams](./grid-pro.selecteditorparams.md) | Configuration parameters for the select editor, including: <br> - **position**: Optional function that returns positioning ('above' or 'below') for the dropdown based on row data |
 
 **Returns:**
 
 void
 
+## Remarks
+
+The `init` method configures the select editor with the provided parameters. The `position` parameter in `SelectEditorParams` allows control over where the select dropdown appears relative to its trigger element. The position is determined by a function that receives the row data and returns either 'above' or 'below'.

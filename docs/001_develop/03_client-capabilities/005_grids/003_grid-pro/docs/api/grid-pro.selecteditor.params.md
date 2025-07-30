@@ -7,8 +7,22 @@ format: md
 
 ## SelectEditor.params property
 
+Configuration parameters for the Select Editor component.
+
 **Signature:**
 
 ```typescript
 params: SelectEditorParams;
 ```
+
+### Interface
+
+The `SelectEditorParams` interface extends `ICellEditorParams` with the following properties:
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| labelField | string | Yes | The field to use as the label in the select options |
+| valueField | string | Yes | The field to use as the value in the select options |
+| values | any[] | Yes | Array of values to populate the select options |
+| datasourceOptions | DatasourceOptions[] | Yes | Configuration options for the data source |
+| position | (rowData: any) => string | No | Function that returns the dropdown position ('above' or 'below') based on row data |
