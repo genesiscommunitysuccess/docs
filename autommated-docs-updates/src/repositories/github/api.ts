@@ -317,12 +317,13 @@ export class OctokitGitHubRepository implements GitHubRepository {
   }
 
   /**
-   * Checks if a branch exists using the GitHub API
+   * Checks if a branch exists using the GitHub API with retry logic
    * @param branchName - The branch name to check
    * @returns Promise<Result<boolean, GitHubError>> - Success with boolean indicating if branch exists, or error with failure reason
    */
   async branchExists(branchName: string): Promise<Result<boolean, GitHubError>> {
     console.log(`🔧 GitHub API: Checking if branch '${branchName}' exists`);
+    console.log(`🔧 GitHub API: Repository: ${this.config.owner}/${this.config.repo}`);
 
     try {
       // Validate branch name
@@ -333,31 +334,62 @@ export class OctokitGitHubRepository implements GitHubRepository {
         });
       }
 
-      await this.octokit.repos.getBranch({
-        owner: this.config.owner!,
-        repo: this.config.repo!,
-        branch: branchName
-      });
-
-      console.log(`✅ GitHub API: Branch '${branchName}' exists`);
-      return Result.success(true);
+      return await this.branchExistsWithRetry(branchName, 3, 1000);
 
     } catch (error: any) {
-      if (error.status === 404) {
-        console.log(`✅ GitHub API: Branch '${branchName}' does not exist`);
-        return Result.success(false);
-      } else if (error.status === 401) {
-        return Result.error({
-          type: 'authentication_failed',
-          message: 'GitHub authentication failed. Please check your API token.'
+      return Result.error({
+        type: 'unknown',
+        message: `Unexpected error checking branch existence: ${error.message}`
+      });
+    }
+  }
+
+  /**
+   * Helper method to check branch existence with retry logic
+   * @param branchName - The branch name to check
+   * @param maxRetries - Maximum number of retry attempts
+   * @param baseDelayMs - Base delay in milliseconds (will be doubled for each retry)
+   * @returns Promise<Result<boolean, GitHubError>>
+   */
+  private async branchExistsWithRetry(branchName: string, maxRetries: number, baseDelayMs: number): Promise<Result<boolean, GitHubError>> {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await this.octokit.repos.getBranch({
+          owner: this.config.owner!,
+          repo: this.config.repo!,
+          branch: branchName
         });
-      } else {
-        return Result.error({
-          type: 'unknown',
-          message: `Unexpected error checking branch existence: ${error.message}`
-        });
+
+        console.log(`✅ GitHub API: Branch '${branchName}' exists (attempt ${attempt})`);
+        return Result.success(true);
+
+      } catch (error: any) {
+        if (error.status === 404) {
+          if (attempt < maxRetries) {
+            const delayMs = baseDelayMs * Math.pow(2, attempt - 1);
+            console.log(`⏳ GitHub API: Branch '${branchName}' not found (attempt ${attempt}/${maxRetries}), retrying in ${delayMs}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delayMs));
+            continue;
+          } else {
+            console.log(`✅ GitHub API: Branch '${branchName}' does not exist (confirmed after ${maxRetries} attempts)`);
+            return Result.success(false);
+          }
+        } else if (error.status === 401) {
+          return Result.error({
+            type: 'authentication_failed',
+            message: 'GitHub authentication failed. Please check your API token.'
+          });
+        } else {
+          return Result.error({
+            type: 'unknown',
+            message: `Unexpected error checking branch existence: ${error.message}`
+          });
+        }
       }
     }
+
+    // This should never be reached due to the logic above, but TypeScript requires it
+    return Result.success(false);
   }
 
   /**

@@ -538,16 +538,25 @@ export class RealGitRepositoryService implements GitRepositoryService {
   }
   
   /**
-   * Stages all changes for commit
+   * Stages all changes for commit (excluding backup files)
    * @param repositoryType - Which repository to stage changes in
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed
    */
   async stageAllChanges(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
     try {
       
-      const result = this.executeGitCommand('add -A', repositoryType);
-      if (Result.isError(result)) {
-        return result;
+      // Stage all changes
+      const addResult = this.executeGitCommand('add -A', repositoryType);
+      if (Result.isError(addResult)) {
+        return addResult;
+      }
+
+      // Unstage backup files if they exist
+      const resetResult = this.executeGitCommand('reset HEAD .backups/', repositoryType);
+      if (Result.isError(resetResult)) {
+        // Only log warning for backup reset failure - don't fail the entire operation
+        // This can happen if .backups/ doesn't exist or has no files staged
+        console.log(`⚠️ Warning: Could not unstage .backups/ directory (may not exist): ${resetResult.message.message}`);
       }
 
       return Result.success(true);

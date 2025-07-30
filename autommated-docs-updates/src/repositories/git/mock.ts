@@ -183,7 +183,7 @@ export class MockGitRepositoryService implements GitRepositoryService {
   }
 
   /**
-   * Mock implementation of staging all changes
+   * Mock implementation of staging all changes (excluding backup files)
    * @param repositoryType - Which repository to stage changes in
    * @returns Promise<Result<true, GitError>> - Always successful in mock
    */
@@ -191,7 +191,7 @@ export class MockGitRepositoryService implements GitRepositoryService {
     // Simulate some processing time
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    console.log(`📦 [MOCK] Staging all changes in ${repositoryType} repository...`);
+    console.log(`📦 [MOCK] Staging all changes in ${repositoryType} repository (excluding .backups/)...`);
     console.log(`✅ [MOCK] Successfully staged all changes in ${repositoryType} repository`);
     
     return Result.success(true);

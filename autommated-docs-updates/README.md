@@ -630,6 +630,38 @@ The git repository service uses specific primary branches for each repository:
 
 When pulling latest changes, the service automatically checks out the appropriate primary branch before executing the pull.
 
+### Backup File Handling
+
+The file editing service creates timestamped backup files in `.backups/` for safety during automated documentation updates. These backups provide:
+
+- **Rollback capability** if AI-generated content has issues
+- **Debugging information** to compare original vs. generated content  
+- **Audit trail** of all automated changes
+
+**Git Integration**: The git service automatically excludes backup files from commits using:
+```bash
+git add -A              # Stage all changes
+git reset HEAD .backups/  # Unstage backup files
+```
+
+This ensures that:
+- ✅ **Safety backups are preserved** locally for debugging and rollback
+- ✅ **Clean git history** without backup file pollution
+- ✅ **No manual .gitignore management** required in target repositories
+
+### GitHub API Timing Resilience
+
+The GitHub service implements retry logic to handle timing issues between git push operations and GitHub API visibility:
+
+**Issue**: There can be a small delay between when a branch is pushed to GitHub and when the GitHub API can see it for PR creation.
+
+**Solution**: The `branchExists` method uses exponential backoff retry logic:
+- **3 retry attempts** with delays of 1s, 2s, 4s
+- **Robust error handling** for authentication and network issues
+- **Clear logging** showing retry attempts and delays
+
+This ensures reliable PR creation even when there are temporary synchronization delays between git operations and GitHub's API indexing.
+
 ### LangChain AI Analysis
 
 The AI repository uses LangChain with Anthropic's Claude to intelligently analyze commits:
