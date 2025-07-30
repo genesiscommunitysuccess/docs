@@ -10,7 +10,7 @@ format: md
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-A rule is a single constituent element of a larger expression, and is the smallest whole part of an expression.
+A rule is a single constituent element of a larger expression, and is the smallest whole part of an expression. Rules support various data types including numbers, strings, and dates, with specialized operators available for each type.
 
 **Signature:**
 
@@ -34,15 +34,22 @@ export type Rule = {
 ```
 **References:** [Field](./expression-builder.types.field.md), [UniraryOperator](./expression-builder.types.uniraryoperator.md), [BinaryOperator](./expression-builder.types.binaryoperator.md), [TernararyOperator](./expression-builder.types.ternararyoperator.md), [VariadicOperator](./expression-builder.types.variadicoperator.md)
 
-## Example
+## Examples
 
 
 ```
+// Numeric comparison example
 FIELD : PROFILE_AGE
 OPERATOR : GREATER_THAN
 VALUE : 18
 
-If you're constructing a boolean expression then this rule could be used to restrict users who are 17 or younger.
+// Date operator example
+FIELD : TRANSACTION_DATE
+OPERATOR : IS_CURRENT
+VALUE : DAY
+
+If you're constructing a boolean expression then these rules could be used to:
+1. Restrict users who are 17 or younger
+2. Match transactions from the current day
 ```
 \*
-

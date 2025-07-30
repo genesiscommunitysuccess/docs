@@ -10,12 +10,29 @@ format: md
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-\*
+Represents an operator that can be used in expression rules. Operators can be unary (single operand), binary (two operands), ternary (three operands), or variadic (variable number of operands).
 
 **Signature:**
 
 ```typescript
 export type Operator = UniraryOperator | BinaryOperator | TernararyOperator | VariadicOperator;
 ```
+
 **References:** [UniraryOperator](./expression-builder.types.uniraryoperator.md), [BinaryOperator](./expression-builder.types.binaryoperator.md), [TernararyOperator](./expression-builder.types.ternararyoperator.md), [VariadicOperator](./expression-builder.types.variadicoperator.md)
 
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| nbInputs | number \| 'many' | Number of input values required by the operator |
+| applyTo | string[] | Array of field types this operator can be applied to |
+| optgroup? | string \| null | Optional group name for organizing operators |
+| type | string | The name/type of the operator |
+| tooltip? | string | Optional tooltip text to display |
+| valueType? | FieldTypes | Optional override to change the input type for the operator |
+
+### Remarks
+
+The `valueType` property allows customizing how values are input/displayed for specific operators. For example, a date field could present a string input based on the operator's requirements.
+
+Available operators include standard comparison operators as well as specialized ones like `IS_CURRENT` and `IS_PREVIOUS` for date/time fields.

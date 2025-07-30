@@ -25,4 +25,3 @@ export type Config = {
 };
 ```
 **References:** [Operator](./expression-builder.types.operator.md), [Field](./expression-builder.types.field.md), [Combinator](./expression-builder.types.combinator.md), [Group](./expression-builder.types.group.md)
-

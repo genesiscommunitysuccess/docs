@@ -10,7 +10,7 @@ format: md
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-Configuration for a date input, which has s string value and a date field input \*
+Configuration for a date input, supporting both absolute date values and relative date operations. Includes standard comparisons and temporal range operators like IS_CURRENT and IS_PREVIOUS.
 
 **Signature:**
 
@@ -21,3 +21,9 @@ export type DateInput = {
     validation?: (x: unknown) => string | null;
 };
 ```
+
+**Supported Operators:**
+
+- Standard comparisons (`=`, `>`, `<`, `>=`, `<=`)
+- `IS_CURRENT` - Matches dates in current period (hour/day/week/month/year)
+- `IS_PREVIOUS` - Matches dates in previous period (hour/day/week/month/year)
