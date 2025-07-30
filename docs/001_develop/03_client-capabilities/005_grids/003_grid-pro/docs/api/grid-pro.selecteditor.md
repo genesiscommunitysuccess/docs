@@ -7,7 +7,7 @@ format: md
 
 ## SelectEditor class
 
-The AG Select Editor element.
+The AG Select Editor element. Provides a dropdown selection interface with configurable positioning.
 
 **Signature:**
 
@@ -24,7 +24,8 @@ export declare class SelectEditor extends FoundationElement implements ICellEdit
 |  --- | --- | --- | --- |
 |  [actualWidth](./grid-pro.selecteditor.actualwidth.md) |  | number |  |
 |  [combobox](./grid-pro.selecteditor.combobox.md) |  | any |  |
-|  [params](./grid-pro.selecteditor.params.md) |  | [SelectEditorParams](./grid-pro.selecteditorparams.md) |  |
+|  [params](./grid-pro.selecteditor.params.md) |  | [SelectEditorParams](./grid-pro.selecteditorparams.md) | Configuration parameters including position setting |
+|  [position](./grid-pro.selecteditor.position.md) |  | string | The position of the select dropdown ('below' or 'above') |
 |  [value](./grid-pro.selecteditor.value.md) |  | string |  |
 
 ## Methods
@@ -39,4 +40,3 @@ export declare class SelectEditor extends FoundationElement implements ICellEdit
 |  [isCancelBeforeStart()](./grid-pro.selecteditor.iscancelbeforestart.md) |  |  |
 |  [isPopup()](./grid-pro.selecteditor.ispopup.md) |  |  |
 |  [refresh(params)](./grid-pro.selecteditor.refresh.md) |  |  |
-

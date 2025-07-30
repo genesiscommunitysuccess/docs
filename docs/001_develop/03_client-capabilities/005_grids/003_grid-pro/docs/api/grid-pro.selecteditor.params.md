@@ -12,3 +12,16 @@ format: md
 ```typescript
 params: SelectEditorParams;
 ```
+
+Represents the parameters for configuring the select editor component.
+
+**Interface:**
+
+```typescript
+interface SelectEditorParams extends ICellEditorParams {
+    labelField: string;
+    values: any[];
+    datasourceOptions: DatasourceOptions[];
+    position?: (rowData: any) => string;
+}
+```
