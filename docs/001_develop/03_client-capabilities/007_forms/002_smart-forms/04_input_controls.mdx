@@ -264,6 +264,10 @@ The connected select renderer creates a select input field that populates the li
 
 In the `UISchemaElement` options property, specify the `allOptionsResourceName`. In this example, we use the `ALL_COUNTERPARTIES` endpoint from **sales-forms-examples.dataserver.kts** to use the list of counterparties. The display value is the counterparty name and the underlying value is the counterparty id.
 
+You can also configure the filtering behavior using the `filterMode` property. This controls how the component filters options when users type in the search field:
+
+- `'contains'` (default): Filters options that contain the search text anywhere in the option
+- `'startsWith'`: Filters options that start with the search text
 
 ```ts
 const selectInputJsonSchema: JSONSchema7 = {
@@ -287,7 +291,9 @@ const selectInputUiSchema: UiSchema = {
         valueField: 'COUNTERPARTY_ID',
         labelField: 'NAME',
         //  Use async: true to allow searching instead of loading all options at once
-        async: false, 
+        async: false,
+        // Configure filtering behavior
+        filterMode: 'contains', // or 'startsWith'
       },
     },
   ],
@@ -337,5 +343,3 @@ After you have looked at the basics here, you can find more details in our [API 
 
 Full source code at [Controls](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/form-controls)
 :::
-
-
