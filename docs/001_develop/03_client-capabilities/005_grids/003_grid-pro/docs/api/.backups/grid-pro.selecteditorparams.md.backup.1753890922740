@@ -24,6 +24,6 @@ export interface SelectEditorParams extends ICellEditorParams
 |  [async](./grid-pro.selecteditorparams.async.md) |  | boolean |  |
 |  [datasourceOptions](./grid-pro.selecteditorparams.datasourceoptions.md) |  | DatasourceOptions\[\] |  |
 |  [labelField](./grid-pro.selecteditorparams.labelfield.md) |  | string |  |
-|  [position](./grid-pro.selecteditorparams.position.md) |  | (rowData: any) => string |  |
 |  [valueField](./grid-pro.selecteditorparams.valuefield.md) |  | string |  |
 |  [values](./grid-pro.selecteditorparams.values.md) |  | any\[\] |  |
+
