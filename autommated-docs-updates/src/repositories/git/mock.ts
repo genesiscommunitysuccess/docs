@@ -183,6 +183,21 @@ export class MockGitRepositoryService implements GitRepositoryService {
   }
 
   /**
+   * Mock implementation of removing backup files from staging
+   * @param repositoryType - Which repository to clean up
+   * @returns Promise<Result<true, GitError>> - Always successful in mock
+   */
+  async removeBackupFilesFromStaging(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 50));
+    
+    console.log(`🗑️ [MOCK] Removing backup files from staging area in ${repositoryType} repository...`);
+    console.log(`✅ [MOCK] Successfully removed backup files from staging area in ${repositoryType} repository`);
+    
+    return Result.success(true);
+  }
+
+  /**
    * Mock implementation of staging all changes (excluding backup files)
    * @param repositoryType - Which repository to stage changes in
    * @returns Promise<Result<true, GitError>> - Always successful in mock

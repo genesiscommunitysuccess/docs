@@ -164,11 +164,15 @@ export class MockAIRepository implements AIRepository {
       
       const mockUpdatedContent = this.generateMockUpdatedContent(currentContent, commitInfo, updateInstructions);
       
+      // Simulate line ending preservation and frontmatter preservation
+      const originalLineEnding = this.detectLineEnding(currentContent);
+      const finalMockContent = this.preserveFrontmatter(currentContent, mockUpdatedContent, originalLineEnding);
+      
       // For mock implementation, we'll simulate the file writing
       // In a real scenario, this would write to the actual file system
       console.log('📝 Mock: Writing updated content to file...');
-      console.log(`✅ Mock file updated successfully`);
-      console.log(`📊 Mock lines changed: ${Math.abs(mockUpdatedContent.split('\n').length - currentContent.split('\n').length)}`);
+      console.log(`✅ Mock file updated successfully (preserved ${originalLineEnding === '\r\n' ? 'CRLF' : 'LF'} line endings)`);
+      console.log(`📊 Mock lines changed: ${Math.abs(finalMockContent.split('\n').length - currentContent.split('\n').length)}`);
       console.log(`💾 Mock backup created: ${filePath}.backup.${Date.now()}`)
 
       return Result.success(true);
@@ -235,6 +239,67 @@ export class MockAIRepository implements AIRepository {
       
       return `Update documentation to reflect the changes made in commit "${commitInfo.message}". Ensure users understand the new functionality.`;
     }
+  }
+
+  /**
+   * Detects the line ending style used in the content
+   * @param content - The file content to analyze
+   * @returns The detected line ending ('\r\n' for Windows/CRLF, '\n' for Unix/LF)
+   */
+  private detectLineEnding(content: string): string {
+    // Look for CRLF first, as it's more specific
+    if (content.includes('\r\n')) {
+      return '\r\n';
+    }
+    // Default to LF if no CRLF found
+    return '\n';
+  }
+
+  /**
+   * Normalizes line endings in content to match the target style
+   * @param content - The content to normalize
+   * @param targetLineEnding - The target line ending style ('\r\n' or '\n')
+   * @returns Content with normalized line endings
+   */
+  private normalizeLineEndings(content: string, targetLineEnding: string): string {
+    // First normalize all line endings to LF
+    const normalizedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
+    // If target is CRLF, convert LF to CRLF
+    if (targetLineEnding === '\r\n') {
+      return normalizedContent.replace(/\n/g, '\r\n');
+    }
+    
+    // Otherwise, keep as LF
+    return normalizedContent;
+  }
+
+  /**
+   * Preserves YAML frontmatter exactly from the original file to prevent formatting changes
+   * @param originalContent - The original file content
+   * @param updatedContent - The AI-generated updated content
+   * @param targetLineEnding - The target line ending style
+   * @returns Content with preserved frontmatter and correct line endings
+   */
+  private preserveFrontmatter(originalContent: string, updatedContent: string, targetLineEnding: string): string {
+    // Check if the original content has YAML frontmatter
+    const frontmatterMatch = originalContent.match(/^(---\s*\n[\s\S]*?\n---\s*\n)/);
+    
+    if (frontmatterMatch) {
+      const originalFrontmatter = frontmatterMatch[1];
+      
+      // Remove frontmatter from updated content if it exists
+      const updatedWithoutFrontmatter = updatedContent.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+      
+      // Combine original frontmatter with updated content body
+      const combined = originalFrontmatter + updatedWithoutFrontmatter;
+      
+      // Apply line ending normalization to the combined content
+      return this.normalizeLineEndings(combined, targetLineEnding);
+    }
+    
+    // If no frontmatter, just normalize line endings
+    return this.normalizeLineEndings(updatedContent, targetLineEnding);
   }
 
   /**

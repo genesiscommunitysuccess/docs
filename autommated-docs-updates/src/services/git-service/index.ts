@@ -120,6 +120,23 @@ export class RealGitService implements GitService {
   }
 
   /**
+   * Removes backup files from the staging area
+   * @param repositoryType - The type of repository to clean up ('docs' | 'foundation-ui')
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async removeBackupFilesFromStaging(repositoryType: 'docs' | 'foundation-ui'): Promise<Result<true, GitError>> {
+    console.log(`🗑️ Removing backup files from staging area in ${repositoryType} repository...`);
+    
+    // Map our repository type to the underlying repository service type
+    const repoType = repositoryType === 'docs' 
+      ? RepositoryType.DOCS 
+      : RepositoryType.FOUNDATION_UI;
+
+    // Delegate to the underlying git repository service
+    return this.gitRepositoryService.removeBackupFilesFromStaging(repoType);
+  }
+
+  /**
    * Stages all changes for commit
    * @param repositoryType - The type of repository to stage changes in ('docs' | 'foundation-ui')
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed

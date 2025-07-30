@@ -52,6 +52,13 @@ export interface GitRepositoryService {
   commitChanges(message: string, repositoryType: RepositoryType): Promise<Result<string, GitError>>;
 
   /**
+   * Removes backup files from the staging area
+   * @param repositoryType - Which repository to clean up
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  removeBackupFilesFromStaging(repositoryType: RepositoryType): Promise<Result<true, GitError>>;
+
+  /**
    * Stages all changes for commit
    * @param repositoryType - Which repository to stage changes in
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed

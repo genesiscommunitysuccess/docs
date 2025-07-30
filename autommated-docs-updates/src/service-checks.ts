@@ -474,6 +474,16 @@ This change should be committed and pushed to demonstrate the full automation wo
       throw new Error(`Stage changes failed: ${stageResult.message.message}`);
     }
     console.log(`✅ Successfully staged all changes`);
+    
+    // Clean up any backup files that might have been staged
+    console.log(`\n🗑️ Cleaning up backup files from staging area...`);
+    const cleanupResult = await services.git.removeBackupFilesFromStaging('docs');
+    if (Result.isError(cleanupResult)) {
+      console.log(`⚠️ Backup cleanup warning: ${cleanupResult.message.message}`);
+      console.log(`ℹ️ Continuing with commit despite backup cleanup warning`);
+    } else {
+      console.log(`✅ Backup files removed from staging area`);
+    }
 
     // Step 4: Commit changes
     console.log(`\n💾 Step 4: Committing changes...`);

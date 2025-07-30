@@ -99,12 +99,25 @@ export async function runDocAutomation(services: Services, args: ScriptArgs): Pr
       
       // Stage, commit, and push the changes
       console.log("\n📦 Staging changes...");
+      
+      // First, stage all changes
       const stageResult = await services.git.stageAllChanges('docs');
       if (Result.isError(stageResult)) {
         console.error(`❌ Failed to stage changes: ${stageResult.message.message}`);
         process.exit(1);
       }
       console.log("✅ Changes staged successfully");
+      
+      // Then, explicitly remove any backup files that might have been staged
+      console.log("\n🗑️ Cleaning up backup files from staging area...");
+      const cleanupResult = await services.git.removeBackupFilesFromStaging('docs');
+      if (Result.isError(cleanupResult)) {
+        console.error(`❌ Failed to remove backup files: ${cleanupResult.message.message}`);
+        // Don't exit here - this is not critical, just log the warning
+        console.log("⚠️ Continuing with commit despite backup cleanup failure");
+      } else {
+        console.log("✅ Backup files removed from staging area");
+      }
 
       console.log("\n💾 Committing changes...");
       const commitMessage = `docs: update documentation based on commit ${args.commitHash}\n\nAutomated documentation updates for:\n${filesToEdit.map(f => `- ${f}`).join('\n')}\n\nUpdated ${updatedFilesCount} file${updatedFilesCount === 1 ? '' : 's'}`;

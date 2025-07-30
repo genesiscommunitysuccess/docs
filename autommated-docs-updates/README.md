@@ -253,8 +253,11 @@ The `updateDocFile` functionality provides intelligent documentation updates wit
 **Smart Features**:
 - **Multiple Edits**: Can make multiple edits to the same file if needed
 - **Format Preservation**: Maintains established patterns for spacing, indentation, and line breaks
+- **Line Ending Preservation**: Automatically detects and preserves original line endings (`\r\n` for Windows, `\n` for Unix)
+- **YAML Frontmatter Preservation**: Preserves YAML frontmatter exactly to prevent formatting changes in metadata
 - **Content Validation**: Ensures generated content is contextually appropriate
-- **Backup Creation**: Automatically creates backups before making changes
+- **Backup Creation**: Automatically creates timestamped backups before making changes (excluded from commits)
+- **Robust Git Integration**: Uses multiple strategies to exclude backup files from version control (works even in new branches)
 
 ### Error Handling with Result Types
 
@@ -346,6 +349,14 @@ if (Result.isSuccess(stageResult)) {
   console.log('All changes staged successfully');
 } else {
   console.log(`Failed to stage changes: ${stageResult.message.message}`);
+}
+
+// Explicitly remove backup files from staging (additional safety)
+const cleanupResult = await gitService.removeBackupFilesFromStaging('docs');
+if (Result.isSuccess(cleanupResult)) {
+  console.log('Backup files removed from staging');
+} else {
+  console.log(`Backup cleanup warning: ${cleanupResult.message.message}`);
 }
 
 // Commit changes with a message
@@ -682,16 +693,32 @@ The file editing service creates timestamped backup files in `.backups/` for saf
 - **Debugging information** to compare original vs. generated content  
 - **Audit trail** of all automated changes
 
-**Git Integration**: The git service automatically excludes backup files from commits using:
+**Git Integration**: The git service uses a robust multi-strategy approach to exclude backup files from commits:
+
+1. **Automatic Backup Exclusion**: The `stageAllChanges` method automatically removes backup files from staging
+2. **Explicit Cleanup**: The `removeBackupFilesFromStaging` method provides additional cleanup
+3. **Multiple Detection Strategies**:
+   - Removes entire `.backups/` directories
+   - Finds files with `.backup.[timestamp]` patterns
+   - Checks staged files for backup patterns
+   - Handles nested backup directories
+
+**Backup File Patterns**: Backup files are created with the format `${fileName}.backup.${timestamp}` where timestamp is in ISO format with colons and dots replaced by hyphens.
+
+**Git Commands Used**:
 ```bash
-git add -A              # Stage all changes
-git reset HEAD .backups/  # Unstage backup files
+git add -A                                    # Stage all changes
+git rm --cached --ignore-unmatch -r .backups/ # Remove backup directories
+git ls-files | grep -E "\.backup\.[0-9]+$"    # Find backup files
+git rm --cached --ignore-unmatch <backup-file> # Remove individual backup files
 ```
 
 This ensures that:
 - ✅ **Safety backups are preserved** locally for debugging and rollback
 - ✅ **Clean git history** without backup file pollution
 - ✅ **No manual .gitignore management** required in target repositories
+- ✅ **Robust detection** of various backup file patterns
+- ✅ **Multiple fallback strategies** for comprehensive cleanup
 
 ### GitHub API Timing Resilience
 

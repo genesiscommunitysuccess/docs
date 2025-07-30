@@ -54,6 +54,13 @@ export interface GitService {
   commitChanges(message: string, repositoryType: 'docs' | 'foundation-ui'): Promise<Result<string, GitError>>;
 
   /**
+   * Removes backup files from the staging area
+   * @param repositoryType - The type of repository to clean up ('docs' | 'foundation-ui')
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  removeBackupFilesFromStaging(repositoryType: 'docs' | 'foundation-ui'): Promise<Result<true, GitError>>;
+
+  /**
    * Stages all changes for commit
    * @param repositoryType - The type of repository to stage changes in ('docs' | 'foundation-ui')
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed

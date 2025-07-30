@@ -538,6 +538,72 @@ export class RealGitRepositoryService implements GitRepositoryService {
   }
   
   /**
+   * Removes backup files from the staging area
+   * @param repositoryType - Which repository to clean up
+   * @returns Promise<Result<true, GitError>> - True if successful, error if failed
+   */
+  async removeBackupFilesFromStaging(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
+    try {
+      console.log(`🗑️ Removing backup files from staging area in ${repositoryType} repository...`);
+      
+      // Strategy 1: Remove entire .backups directory and its contents
+      const removeBackupsDirResult = this.executeGitCommand('rm --cached --ignore-unmatch -r .backups/', repositoryType);
+      if (Result.isSuccess(removeBackupsDirResult)) {
+        console.log(`✅ Removed .backups directory from staging`);
+      }
+
+      // Strategy 2: Find and remove individual backup files with timestamp patterns
+      const findBackupFilesResult = this.executeGitCommand('ls-files | grep -E "\\.backup\\.[0-9]+$"', repositoryType);
+      if (Result.isSuccess(findBackupFilesResult) && findBackupFilesResult.value.trim()) {
+        const backupFiles = findBackupFilesResult.value.trim().split('\n').filter(line => line.trim());
+        console.log(`🔍 Found ${backupFiles.length} backup files to unstage:`);
+        
+        for (const backupFile of backupFiles) {
+          console.log(`   - ${backupFile}`);
+          const removeResult = this.executeGitCommand(`rm --cached --ignore-unmatch "${backupFile}"`, repositoryType);
+          if (Result.isError(removeResult)) {
+            console.log(`   ⚠️ Failed to unstage ${backupFile}: ${removeResult.message.message}`);
+          }
+        }
+        console.log(`✅ Unstaged ${backupFiles.length} backup files`);
+      }
+
+      // Strategy 3: Check staged files and remove any backup files
+      const stagedFilesResult = this.executeGitCommand('diff --cached --name-only', repositoryType);
+      if (Result.isSuccess(stagedFilesResult) && stagedFilesResult.value.trim()) {
+        const stagedFiles = stagedFilesResult.value.trim().split('\n').filter(line => line.trim());
+        const backupFilesInStaged = stagedFiles.filter(file => 
+          file.includes('.backup.') || 
+          file.includes('/.backups/') ||
+          file.match(/\.backup\.[0-9]+$/)
+        );
+        
+        if (backupFilesInStaged.length > 0) {
+          console.log(`🔍 Found ${backupFilesInStaged.length} backup files still staged:`);
+          for (const backupFile of backupFilesInStaged) {
+            console.log(`   - ${backupFile}`);
+            const removeResult = this.executeGitCommand(`rm --cached --ignore-unmatch "${backupFile}"`, repositoryType);
+            if (Result.isError(removeResult)) {
+              console.log(`   ⚠️ Failed to unstage ${backupFile}: ${removeResult.message.message}`);
+            }
+          }
+          console.log(`✅ Unstaged ${backupFilesInStaged.length} remaining backup files`);
+        }
+      }
+
+      return Result.success(true);
+
+    } catch (error) {
+      return Result.error({
+        type: 'git_command_failed',
+        message: `Failed to remove backup files from staging in ${repositoryType} repository`,
+        repositoryType,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  /**
    * Stages all changes for commit (excluding backup files)
    * @param repositoryType - Which repository to stage changes in
    * @returns Promise<Result<true, GitError>> - True if successful, error if failed
@@ -551,12 +617,73 @@ export class RealGitRepositoryService implements GitRepositoryService {
         return addResult;
       }
 
-      // Unstage backup files if they exist
-      const resetResult = this.executeGitCommand('reset HEAD .backups/', repositoryType);
-      if (Result.isError(resetResult)) {
-        // Only log warning for backup reset failure - don't fail the entire operation
-        // This can happen if .backups/ doesn't exist or has no files staged
-        console.log(`⚠️ Warning: Could not unstage .backups/ directory (may not exist): ${resetResult.message.message}`);
+      // Unstage backup files using multiple strategies for robustness
+      console.log(`🗑️ Removing backup files from staging area...`);
+      
+      // Strategy 1: Remove entire .backups directory and its contents
+      const removeBackupsDirResult = this.executeGitCommand('rm --cached --ignore-unmatch -r .backups/', repositoryType);
+      if (Result.isSuccess(removeBackupsDirResult)) {
+        console.log(`✅ Removed .backups directory from staging`);
+      }
+
+      // Strategy 2: Find and remove individual backup files with timestamp patterns
+      // Look for files ending with .backup.[timestamp] pattern (matches the actual backup file format)
+      const findBackupFilesResult = this.executeGitCommand('ls-files | grep -E "\\.backup\\.[0-9]+$"', repositoryType);
+      if (Result.isSuccess(findBackupFilesResult) && findBackupFilesResult.value.trim()) {
+        const backupFiles = findBackupFilesResult.value.trim().split('\n').filter(line => line.trim());
+        console.log(`🔍 Found ${backupFiles.length} backup files to unstage:`);
+        
+        for (const backupFile of backupFiles) {
+          console.log(`   - ${backupFile}`);
+          const removeResult = this.executeGitCommand(`rm --cached --ignore-unmatch "${backupFile}"`, repositoryType);
+          if (Result.isError(removeResult)) {
+            console.log(`   ⚠️ Failed to unstage ${backupFile}: ${removeResult.message.message}`);
+          }
+        }
+        console.log(`✅ Unstaged ${backupFiles.length} backup files`);
+      } else {
+        console.log(`ℹ️ No backup files found in staging area`);
+      }
+
+      // Strategy 3: Also check for any files in .backups/ subdirectories (nested backup directories)
+      const findBackupsSubdirResult = this.executeGitCommand('ls-files | grep -E "^.*\\.backups/.*\\.backup\\.[0-9]+$"', repositoryType);
+      if (Result.isSuccess(findBackupsSubdirResult) && findBackupsSubdirResult.value.trim()) {
+        const subdirBackupFiles = findBackupsSubdirResult.value.trim().split('\n').filter(line => line.trim());
+        console.log(`🔍 Found ${subdirBackupFiles.length} backup files in subdirectories:`);
+        
+        for (const backupFile of subdirBackupFiles) {
+          console.log(`   - ${backupFile}`);
+          const removeResult = this.executeGitCommand(`rm --cached --ignore-unmatch "${backupFile}"`, repositoryType);
+          if (Result.isError(removeResult)) {
+            console.log(`   ⚠️ Failed to unstage ${backupFile}: ${removeResult.message.message}`);
+          }
+        }
+        console.log(`✅ Unstaged ${subdirBackupFiles.length} subdirectory backup files`);
+      }
+
+      // Strategy 4: Double-check by listing all staged files and looking for backup patterns
+      const stagedFilesResult = this.executeGitCommand('diff --cached --name-only', repositoryType);
+      if (Result.isSuccess(stagedFilesResult) && stagedFilesResult.value.trim()) {
+        const stagedFiles = stagedFilesResult.value.trim().split('\n').filter(line => line.trim());
+        const backupFilesInStaged = stagedFiles.filter(file => 
+          file.includes('.backup.') || 
+          file.includes('/.backups/') ||
+          file.match(/\.backup\.[0-9]+$/)
+        );
+        
+        if (backupFilesInStaged.length > 0) {
+          console.log(`🔍 Found ${backupFilesInStaged.length} backup files still staged:`);
+          for (const backupFile of backupFilesInStaged) {
+            console.log(`   - ${backupFile}`);
+            const removeResult = this.executeGitCommand(`rm --cached --ignore-unmatch "${backupFile}"`, repositoryType);
+            if (Result.isError(removeResult)) {
+              console.log(`   ⚠️ Failed to unstage ${backupFile}: ${removeResult.message.message}`);
+            }
+          }
+          console.log(`✅ Unstaged ${backupFilesInStaged.length} remaining backup files`);
+        } else {
+          console.log(`✅ No backup files found in staged changes`);
+        }
       }
 
       return Result.success(true);
