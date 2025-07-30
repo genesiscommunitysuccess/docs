@@ -506,23 +506,49 @@ Your response:`;
 
       const { updatedContent, updateInstructions } = updateResult.value;
 
-      // Step 5: Apply the updates using the file editing service
-      console.log('🔍 Step 5: Applying updates using file editing service...');
-      const editResult = await services.fileEditing.updateDocFile(
-        filePath,
-        commitInfo,
-        updateInstructions,
-        services.git
-      );
-
-      if (Result.isError(editResult)) {
-        return Result.error(`Failed to apply file updates: ${editResult.message.message}`);
+      // Step 5: Apply the updates by writing the content directly
+      console.log('🔍 Step 5: Writing updated content to file...');
+      
+      // Use filesystem service to write the updated content directly
+      // First, get the full file path
+      const currentFileResult = await services.filesystem.readDocFile(filePath);
+      if (Result.isError(currentFileResult)) {
+        return Result.error(`Failed to get file path for writing: ${currentFileResult.message.message}`);
       }
-
-      const fileUpdateResult = editResult.value;
-      console.log(`✅ File updated successfully: ${fileUpdateResult.linesChanged} lines changed`);
-      if (fileUpdateResult.backupPath) {
-        console.log(`💾 Backup created: ${fileUpdateResult.backupPath}`);
+      
+      const fullPath = currentFileResult.value.fullPath;
+      
+      // Create backup before writing
+      const timestamp = Date.now();
+      const fileName = filePath.split('/').pop() || 'unknown';
+      const backupFileName = `${fileName}.backup.${timestamp}`;
+      const backupDir = fullPath.split('/').slice(0, -1).join('/') + '/.backups';
+      const backupPath = `${backupDir}/${backupFileName}`;
+      
+      // Ensure backup directory exists and create backup
+      const { existsSync, mkdirSync, writeFileSync, readFileSync } = await import('fs');
+      
+      try {
+        if (!existsSync(backupDir)) {
+          mkdirSync(backupDir, { recursive: true });
+        }
+        
+        const originalContent = readFileSync(fullPath, 'utf8');
+        writeFileSync(backupPath, originalContent, 'utf8');
+        console.log(`💾 Backup created: ${backupPath}`);
+        
+        // Write the updated content
+        writeFileSync(fullPath, updatedContent, 'utf8');
+        console.log(`✅ File updated successfully: ${filePath}`);
+        
+        // Calculate lines changed
+        const originalLines = originalContent.split('\n').length;
+        const newLines = updatedContent.split('\n').length;
+        const linesChanged = Math.abs(newLines - originalLines);
+        console.log(`📊 Lines changed: ${linesChanged}`);
+        
+      } catch (error) {
+        return Result.error(`Failed to write updated content: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
 
       return Result.success(true);
