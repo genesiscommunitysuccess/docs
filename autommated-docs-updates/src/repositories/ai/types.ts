@@ -21,6 +21,15 @@ export interface AIRepository {
    * @returns Promise<Result<string[], string>> - Success with array of filepaths relative to docsDir/root, or error with failure reason
    */
   findDocsFilesToEdit(services: Services, commitInfo: CommitInfo): Promise<Result<string[], string>>;
+
+  /**
+   * Updates a documentation file based on a commit using AI to generate appropriate content
+   * @param services - The services object containing all required services
+   * @param commitInfo - The commit information that triggered this update
+   * @param filePath - The documentation file path to update (relative to docs directory)
+   * @returns Promise<Result<boolean, string>> - Success with true if file was updated, or error with failure reason
+   */
+  updateDocFile(services: Services, commitInfo: CommitInfo, filePath: string): Promise<Result<boolean, string>>;
 }
 
 /**

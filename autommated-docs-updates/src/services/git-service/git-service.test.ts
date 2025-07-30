@@ -7,8 +7,10 @@ async function testGitService() {
   
   // Test with docs repository
   console.log('\n📖 Testing docs repository...');
-  const docsGitService = createGitService({ 
-    useMock: true 
+    const docsGitService = createGitService({
+    useMock: true,
+    docsRepositoryPath: '/mock/docs',
+    foundationUiRepositoryPath: '/mock/foundation-ui'
   });
   
   const docsResult = await docsGitService.getCommitInfo('abc12345', 'docs');
@@ -25,8 +27,10 @@ async function testGitService() {
   
   // Test with foundation-ui repository
   console.log('\n🔧 Testing foundation-ui repository...');
-  const fuiGitService = createGitService({ 
-    useMock: true 
+    const fuiGitService = createGitService({
+    useMock: true,
+    docsRepositoryPath: '/mock/docs',
+    foundationUiRepositoryPath: '/mock/foundation-ui'
   });
   
   const fuiResult = await fuiGitService.getCommitInfo('abc12345', 'foundation-ui');
@@ -43,8 +47,10 @@ async function testGitService() {
   
   // Test with real services (if available)
   console.log('\n🔍 Testing real services...');
-  const realGitService = createGitService({ 
-    useMock: false 
+    const realGitService = createGitService({
+    useMock: false,
+    docsRepositoryPath: '/tmp/docs',
+    foundationUiRepositoryPath: '/tmp/foundation-ui'
   });
   
   const realResult = await realGitService.getCommitInfo('7fa4045be', 'docs');

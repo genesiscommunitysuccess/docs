@@ -16,8 +16,7 @@ export async function runServiceChecks(services: Services, commitHash: string): 
   await testGitService(services, commitHash);
 
   // Test AI service
-  // During dev we don't want to test the AI service
-  // await testAIService(services, commitHash);
+  await testAIService(services, commitHash);
 
   // Test file editing service
   await testFileEditingService(services, commitHash);
@@ -222,8 +221,24 @@ async function testAIService(services: Services, commitHash: string): Promise<vo
             console.log(`   ${index + 1}. ${filePath}`);
           });
           
-          // TODO: Implement documentation update logic for the identified files
-          console.log("🔄 Documentation update logic will be implemented in the next phase");
+          // Test updating the first documentation file
+          if (filesToEdit.length > 0) {
+            console.log("\n✏️ Testing documentation file update...");
+            const firstFile = filesToEdit[0];
+            console.log(`🔄 Testing update of: ${firstFile}`);
+            
+            const updateResult = await services.ai.updateDocFile(services, commitHash, firstFile);
+            
+            if (Result.isSuccess(updateResult)) {
+              const wasUpdated = updateResult.value;
+              console.log(`✅ AI file update successful: ${wasUpdated ? 'File was updated' : 'No changes needed'}`);
+            } else {
+              console.log(`❌ AI file update failed: ${updateResult.message}`);
+              // Don't throw error for AI update failures in tests - they may be expected
+            }
+          } else {
+            console.log("⚠️ No files to test update functionality");
+          }
         } else {
           console.error(`❌ Error finding docs files to edit: ${filesResult.message}`);
           throw new Error(`AI file discovery failed: ${filesResult.message}`);

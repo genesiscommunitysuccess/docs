@@ -151,6 +151,54 @@ export class RealAIService implements AIService {
       return Result.error(`Error finding docs files to edit: ${errorMessage}`);
     }
   }
+
+  /**
+   * Updates a documentation file based on a commit using AI to generate appropriate content
+   * @param services - The services object containing all required services
+   * @param commitHash - The git commit hash that triggered this update
+   * @param filePath - The documentation file path to update (relative to docs directory)
+   * @returns Promise<Result<boolean, string>> - Success with true if file was updated, or error with failure reason
+   */
+  async updateDocFile(services: Services, commitHash: string, filePath: string): Promise<Result<boolean, string>> {
+    try {
+      console.log(`🔄 Updating docs file: ${filePath} based on commit ${commitHash}`);
+
+      // Step 1: Pull latest changes from foundation-ui repository
+      console.log('📥 Pulling latest changes from foundation-ui repository...');
+      const pullResult = await services.git.pullLatest('foundation-ui');
+      if (Result.isError(pullResult)) {
+        return Result.error(`Failed to pull latest changes from foundation-ui repository: ${pullResult.message.message}`);
+      }
+
+      // Step 2: Get commit information
+      console.log('📋 Getting commit information...');
+      const commitResult = await services.git.getCommitInfo(commitHash, 'foundation-ui');
+      if (Result.isError(commitResult)) {
+        return Result.error(`Failed to get commit information: ${commitResult.message.message}`);
+      }
+
+      const commitInfo = commitResult.value;
+      console.log(`📝 Commit: ${commitInfo.message} by ${commitInfo.author}`);
+
+      // Step 3: Use AI repository to update the doc file
+      console.log('🤖 Using AI to update the documentation file...');
+      const aiResult = await this.aiRepository.updateDocFile(services, commitInfo, filePath);
+      
+      if (Result.isSuccess(aiResult)) {
+        const wasUpdated = aiResult.value;
+        console.log(`🤖 AI Update Result: ${wasUpdated ? 'File was updated successfully' : 'No updates were made'}`);
+        return Result.success(wasUpdated);
+      } else {
+        console.log(`❌ AI Update Error: ${aiResult.message}`);
+        return Result.error(`AI file update failed: ${aiResult.message}`);
+      }
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('❌ Error in updateDocFile:', errorMessage);
+      return Result.error(`Error updating documentation file: ${errorMessage}`);
+    }
+  }
 }
 
 /**

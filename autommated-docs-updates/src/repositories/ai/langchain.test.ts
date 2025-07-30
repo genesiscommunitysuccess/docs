@@ -10,7 +10,11 @@ import { Result } from '../../types/result';
 // Create mock services for testing
 function createMockServices(): Services {
   return {
-    git: createGitService({ useMock: true }),
+    git: createGitService({ 
+      useMock: true,
+      docsRepositoryPath: '/mock/docs',
+      foundationUiRepositoryPath: '/mock/foundation-ui'
+    }),
     ai: {} as any, // Not used in this test
     filesystem: createFilesystemService({
       useMock: true,

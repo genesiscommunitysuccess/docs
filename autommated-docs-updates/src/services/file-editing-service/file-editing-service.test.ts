@@ -37,7 +37,11 @@ async function testFileEditingService() {
   };
 
   // Create mock git service for testing
-  const mockGitService = createGitService({ useMock: true });
+  const mockGitService = createGitService({ 
+    useMock: true,
+    docsRepositoryPath: '/mock/docs',
+    foundationUiRepositoryPath: '/mock/foundation-ui'
+  });
 
   // Test with mock service
   console.log("1. Testing Mock File Editing Service:");

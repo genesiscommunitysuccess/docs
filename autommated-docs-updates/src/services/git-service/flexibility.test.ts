@@ -7,8 +7,10 @@ async function testGitServiceFlexibility() {
   
   // Create a single git service instance that can work with both repositories
   console.log('\n🔧 Creating flexible git service...');
-  const gitService = createGitService({ 
-    useMock: true 
+    const gitService = createGitService({
+    useMock: true,
+    docsRepositoryPath: '/mock/docs',
+    foundationUiRepositoryPath: '/mock/foundation-ui'
   });
   
   console.log('\n📖 Testing docs repository operations...');

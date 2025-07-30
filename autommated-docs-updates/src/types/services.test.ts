@@ -12,7 +12,11 @@ async function testServices() {
   
   // Create services object with all initialized services
   const services: Services = {
-    git: createGitService({ useMock: true }),
+    git: createGitService({ 
+      useMock: true,
+      docsRepositoryPath: '/mock/docs',
+      foundationUiRepositoryPath: '/mock/foundation-ui'
+    }),
     ai: createAIService({ useMock: true }),
     filesystem: createFilesystemService({
       useMock: true,
