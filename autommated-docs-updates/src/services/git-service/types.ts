@@ -75,4 +75,8 @@ export interface GitService {
 export interface GitServiceConfig {
   /** Whether to use mock implementation for testing */
   useMock?: boolean;
+  /** Path to the docs repository */
+  docsRepositoryPath: string;
+  /** Path to the foundation-ui repository */
+  foundationUiRepositoryPath: string;
 } 

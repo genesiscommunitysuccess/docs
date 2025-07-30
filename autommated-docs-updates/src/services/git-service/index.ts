@@ -13,9 +13,12 @@ export class RealGitService implements GitService {
   private gitRepositoryService: GitRepositoryService;
 
   constructor(config: GitServiceConfig) {
-    // Get repository paths from environment or use defaults
-    const docsRepoPath = process.env.DOCS_REPOSITORY_PATH || '/Users/matt.walker/genesis/docs';
-    const foundationUiRepoPath = process.env.FOUNDATION_UI_REPOSITORY_PATH || '/Users/matt.walker/genesis/foundation-ui';
+    // Use repository paths directly from config (always provided from args.ts)
+    const docsRepoPath = config.docsRepositoryPath;
+    const foundationUiRepoPath = config.foundationUiRepositoryPath;
+
+    console.log(`🔧 Git Service: Using docs repository path: ${docsRepoPath}`);
+    console.log(`🔧 Git Service: Using foundation-ui repository path: ${foundationUiRepoPath}`);
 
     // Create the underlying git repository service
     this.gitRepositoryService = createGitRepositoryService({

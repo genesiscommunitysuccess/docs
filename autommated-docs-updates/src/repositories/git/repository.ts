@@ -82,11 +82,19 @@ export class RealGitRepositoryService implements GitRepositoryService {
   private executeGitCommand(command: string, repositoryType: RepositoryType): Result<string, GitError> {
     const repositoryPath = this.getRepositoryPath(repositoryType);
     
+    // Store original directory
+    const originalCwd = process.cwd();
+    
     try {
-      const output = execSync(`git -C "${repositoryPath}" ${command}`, { 
+      // Change to the target repository directory
+      process.chdir(repositoryPath);
+      
+      // Execute git command in the target directory
+      const output = execSync(`git ${command}`, { 
         encoding: 'utf8',
         stdio: 'pipe'
       }).trim();
+      
       return Result.success(output);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -110,12 +118,28 @@ export class RealGitRepositoryService implements GitRepositoryService {
         });
       }
       
+      if (errorMessage.includes('fatal: ambiguous argument')) {
+        return Result.error({
+          type: 'invalid_commit_hash',
+          message: `Invalid commit hash in ${repositoryType} repository`,
+          repositoryType,
+          details: errorMessage
+        });
+      }
+      
       return Result.error({
         type: 'git_command_failed',
         message: `Git command failed in ${repositoryType} repository: ${command}`,
         repositoryType,
         details: errorMessage
       });
+    } finally {
+      // Always restore the original directory
+      try {
+        process.chdir(originalCwd);
+      } catch (restoreError) {
+        console.error(`Failed to restore original directory: ${restoreError}`);
+      }
     }
   }
 
@@ -281,8 +305,6 @@ export class RealGitRepositoryService implements GitRepositoryService {
       const repositoryPath = this.getRepositoryPath(repositoryType);
       const primaryBranch = this.getPrimaryBranch(repositoryType);
       
-      console.log(`📥 Pulling latest changes from ${repositoryType} repository (${primaryBranch} branch)...`);
-      
       // Checkout the primary branch
       const checkoutResult = this.executeGitCommand(`checkout ${primaryBranch}`, repositoryType);
       if (Result.isError(checkoutResult)) {
@@ -295,7 +317,6 @@ export class RealGitRepositoryService implements GitRepositoryService {
         return pullResult;
       }
       
-      console.log(`✅ Successfully pulled latest changes from ${repositoryType} repository`);
       return Result.success(true);
       
     } catch (error) {
@@ -461,8 +482,6 @@ export class RealGitRepositoryService implements GitRepositoryService {
         });
       }
 
-      console.log(`🌿 Creating branch '${branchName}' from '${baseBranch}' in ${repositoryType} repository...`);
-
       // Checkout the base branch first
       const checkoutResult = this.executeGitCommand(`checkout ${baseBranch}`, repositoryType);
       if (Result.isError(checkoutResult)) {
@@ -470,13 +489,11 @@ export class RealGitRepositoryService implements GitRepositoryService {
       }
 
       // Pull latest changes to ensure we're up to date (ignore failures for now)
-      console.log(`📥 Attempting to pull latest changes from ${repositoryType} repository...`);
       const pullResult = this.executeGitCommand('pull', repositoryType);
       if (Result.isError(pullResult)) {
-        console.log(`⚠️ Pull failed, continuing with branch creation: ${pullResult.message.message}`);
         // Continue anyway - the pull failure shouldn't prevent branch creation
       } else {
-        console.log(`✅ Successfully pulled latest changes from ${repositoryType} repository`);
+        // console.log(`✅ Successfully pulled latest changes from ${repositoryType} repository`);
       }
 
       // Create the new branch
@@ -485,7 +502,28 @@ export class RealGitRepositoryService implements GitRepositoryService {
         return createResult;
       }
 
-      console.log(`✅ Successfully created branch '${branchName}' from '${baseBranch}' in ${repositoryType} repository`);
+      // Verify that we're actually on the new branch
+      const verifyBranchResult = this.executeGitCommand('rev-parse --abbrev-ref HEAD', repositoryType);
+      if (Result.isError(verifyBranchResult)) {
+        // console.log(`⚠️ Warning: Could not verify branch switch: ${verifyBranchResult.message.message}`);
+      } else {
+        const currentBranch = verifyBranchResult.value.trim();
+        if (currentBranch !== branchName) {
+          // console.log(`⚠️ Warning: Expected to be on branch '${branchName}' but currently on '${currentBranch}'`);
+          // Try to checkout the branch again
+          const recheckoutResult = this.executeGitCommand(`checkout ${branchName}`, repositoryType);
+          if (Result.isError(recheckoutResult)) {
+            return Result.error({
+              type: 'git_command_failed',
+              message: `Branch '${branchName}' was created but could not switch to it`,
+              repositoryType,
+              branchName,
+              details: `Failed to checkout: ${recheckoutResult.message.message}`
+            });
+          }
+        }
+      }
+
       return Result.success(true);
 
     } catch (error) {
@@ -506,14 +544,12 @@ export class RealGitRepositoryService implements GitRepositoryService {
    */
   async stageAllChanges(repositoryType: RepositoryType): Promise<Result<true, GitError>> {
     try {
-      console.log(`📦 Staging all changes in ${repositoryType} repository...`);
       
       const result = this.executeGitCommand('add -A', repositoryType);
       if (Result.isError(result)) {
         return result;
       }
 
-      console.log(`✅ Successfully staged all changes in ${repositoryType} repository`);
       return Result.success(true);
 
     } catch (error) {
@@ -534,7 +570,6 @@ export class RealGitRepositoryService implements GitRepositoryService {
    */
   async commitChanges(message: string, repositoryType: RepositoryType): Promise<Result<string, GitError>> {
     try {
-      console.log(`💾 Committing changes in ${repositoryType} repository with message: "${message}"...`);
       
       // Escape quotes and handle multiline messages properly
       const escapedMessage = message.replace(/"/g, '\\"').replace(/\n/g, '\\n');
@@ -555,7 +590,6 @@ export class RealGitRepositoryService implements GitRepositoryService {
       }
 
       const commitHash = hashResult.value.trim();
-      console.log(`✅ Successfully committed changes in ${repositoryType} repository. Commit hash: ${commitHash}`);
       return Result.success(commitHash);
 
     } catch (error) {
@@ -576,14 +610,12 @@ export class RealGitRepositoryService implements GitRepositoryService {
    */
   async pushBranch(branchName: string, repositoryType: RepositoryType): Promise<Result<true, GitError>> {
     try {
-      console.log(`🚀 Pushing branch '${branchName}' to remote in ${repositoryType} repository...`);
       
       const result = this.executeGitCommand(`push -u origin ${branchName}`, repositoryType);
       if (Result.isError(result)) {
         return result;
       }
 
-      console.log(`✅ Successfully pushed branch '${branchName}' to remote in ${repositoryType} repository`);
       return Result.success(true);
 
     } catch (error) {

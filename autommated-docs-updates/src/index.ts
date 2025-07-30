@@ -61,7 +61,11 @@ async function main() {
   // Initialize all services
   console.log("\n🔧 Initializing services...");
   const services: Services = {
-    git: createGitService({ useMock: useMockServices }),
+    git: createGitService({ 
+      useMock: useMockServices,
+      docsRepositoryPath: args.docsRepoPath,
+      foundationUiRepositoryPath: args.foundationUiRepoPath
+    }),
     ai: createAIService({ useMock: useMockServices }),
     filesystem: createFilesystemService({ 
       useMock: useMockServices,
@@ -76,7 +80,11 @@ async function main() {
       backupDirectory: '.backups'
     }),
     github: createGitHubService({
-      useMock: useMockServices
+      useMock: useMockServices,
+      apiToken: process.env.GITHUB_API_TOKEN,
+      owner: process.env.GITHUB_OWNER || 'genesiscommunitysuccess',
+      repo: process.env.GITHUB_REPO || 'docs',
+      baseUrl: process.env.GITHUB_API_BASE_URL
     })
   };
   
