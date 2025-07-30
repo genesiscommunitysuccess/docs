@@ -25,4 +25,4 @@ export interface SelectCellRendererParams extends ICellRendererParams
 |  [isDisabled?](./grid-pro.selectcellrendererparams.isdisabled.md) |  | (rowData: any) =&gt; boolean | _(Optional)_ |
 |  [onSelect](./grid-pro.selectcellrendererparams.onselect.md) |  | (value: string, params: [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md)) =&gt; void |  |
 |  [options](./grid-pro.selectcellrendererparams.options.md) |  | (rowData: any) =&gt; [SelectRendererOptions](./grid-pro.selectrendereroptions.md)\[\] |  |
-
+|  [position?](./grid-pro.selectcellrendererparams.position.md) |  | (rowData: any) =&gt; string | _(Optional)_ Determines the position of the select dropdown relative to the cell |

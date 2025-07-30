@@ -25,12 +25,13 @@ export declare class SelectEditor extends FoundationElement implements ICellEdit
 |  [actualWidth](./grid-pro.selecteditor.actualwidth.md) |  | number |  |
 |  [combobox](./grid-pro.selecteditor.combobox.md) |  | any |  |
 |  [params](./grid-pro.selecteditor.params.md) |  | [SelectEditorParams](./grid-pro.selecteditorparams.md) |  |
+|  [position](./grid-pro.selecteditor.position.md) |  | string | Controls the positioning of the select dropdown. |
 |  [value](./grid-pro.selecteditor.value.md) |  | string |  |
 
 ## Methods
 
 |  Method | Modifiers | Description |
-|  --- | --- | --- |
+|  --- | --- | --- | 
 |  [afterGuiAttached()](./grid-pro.selecteditor.afterguiattached.md) |  |  |
 |  [changeHandler(event)](./grid-pro.selecteditor.changehandler.md) |  |  |
 |  [getGui()](./grid-pro.selecteditor.getgui.md) |  |  |
@@ -39,4 +40,3 @@ export declare class SelectEditor extends FoundationElement implements ICellEdit
 |  [isCancelBeforeStart()](./grid-pro.selecteditor.iscancelbeforestart.md) |  |  |
 |  [isPopup()](./grid-pro.selecteditor.ispopup.md) |  |  |
 |  [refresh(params)](./grid-pro.selecteditor.refresh.md) |  |  |
-
