@@ -25,6 +25,24 @@ Conditional filtering is a powerful feature that enables you to create dynamic, 
 
 This creates a more intuitive and guided user experience by preventing invalid selections and reducing the number of choices presented to the user.
 
+## Filter Modes
+
+Select controls and comboboxes support different filtering modes that determine how options are filtered based on user input. You can configure the filtering behavior using the `filterMode` option in the UI schema:
+
+```typescript
+{
+  type: 'Control',
+  scope: '#/properties/FIELD',
+  options: {
+    filterMode: 'contains' // or 'startsWith'
+  }
+}
+```
+
+Available filter modes:
+- `contains` (default): Filters options that contain the search text anywhere in the option
+- `startsWith`: Filters options that begin with the search text
+
 ## Example
 
 The following example demonstrates a location selection form where cities are filtered based on the selected country. The key to this implementation is the `data-change` event handler, which triggers whenever the form data changes. This event allows us to detect when the country selection changes and update the available cities accordingly:
@@ -59,7 +77,8 @@ const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema =
       options: {
         valueField: 'COUNTRY_ID',
         labelField: 'COUNTRY_NAME',
-        data: countries
+        data: countries,
+        filterMode: 'contains' // Example of filter mode usage
       }
     },
     {
@@ -69,7 +88,8 @@ const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema =
       options: {
         valueField: 'CITY_ID',
         labelField: 'CITY_NAME',
-        data: cities
+        data: cities,
+        filterMode: 'startsWith' // Example of alternative filter mode
       }
     }
   ]
