@@ -61,8 +61,15 @@ export const fields = [
     type: 'date-time',
     input: 'datetime-local',
   },
+  {
+    fieldId: 'reportingPeriod',
+    label: 'Reporting Period',
+    type: 'date',
+    input: 'date',
+  },
 ];
 
+// Example rule model showing various operators including date-specific ones
 const ruleModel = {
   TYPE: "PREDICATE_EXPRESSION",
   OPERATION: "OR",
@@ -107,6 +114,25 @@ const ruleModel = {
             VALUE: true,
           },
         },
+        {
+          // Example of IS_CURRENT operator for date fields
+          TYPE: "METHOD_EXPRESSION",
+          METHOD: "DATE_TIME_IS_IN_RANGE",
+          PARAMETERS: [
+            {
+              TYPE: "FIELD",
+              NAME: "reportingPeriod"
+            },
+            {
+              TYPE: "STRING",
+              VALUE: "MONTH"
+            },
+            {
+              TYPE: "STRING",
+              VALUE: "CURRENT"
+            }
+          ]
+        }
       ],
     },
   ],

@@ -112,3 +112,31 @@ new ExpressionBuilder().withGroup('group')
     </tr>
     </tbody>
 </table>
+
+## Date Operators
+
+The Expression Builder includes specialized operators for date-based filtering:
+
+### IS_CURRENT
+Checks if a date field matches the current period (hour/day/week/month/year). This is useful for filtering records within the current time period.
+
+```ts
+new ExpressionBuilder()
+  .withField('REPORT_DATE')
+  .withOperator('IS_CURRENT')
+  .withValue('DAY') // Supports: HOUR, DAY, WEEK, MONTH, YEAR
+  .build()
+```
+
+### IS_PREVIOUS
+Checks if a date field matches the previous period (hour/day/week/month/year). This is useful for comparing historical data.
+
+```ts
+new ExpressionBuilder()
+  .withField('REPORT_DATE')
+  .withOperator('IS_PREVIOUS')
+  .withValue('MONTH') // Supports: HOUR, DAY, WEEK, MONTH, YEAR
+  .build()
+```
+
+These date operators are particularly useful for report filtering and time-based analytics where you need to compare current and previous periods.
