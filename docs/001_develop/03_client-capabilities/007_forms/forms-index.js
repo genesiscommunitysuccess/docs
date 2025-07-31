@@ -5,6 +5,7 @@ import ButtonDemo from '/examples/ui/client-capabilities/interaction/button.js';
 import CheckboxDemo from '/examples/ui/client-capabilities/interaction/checkbox.js';
 import ComboboxDemo from '/examples/ui/client-capabilities/interaction/combobox.js';
 import FileUploadDemo from '/examples/ui/client-capabilities/interaction/fileupload.js';
+import FileReaderDemo from '/examples/ui/client-capabilities/interaction/filereader.js';
 import NumberFieldDemo from '/examples/ui/client-capabilities/interaction/number-field.js';
 import RadioGroupDemo from '/examples/ui/client-capabilities/interaction/radiogroup.js';
 import RadioDemo from '/examples/ui/client-capabilities/interaction/radio.js';
@@ -57,6 +58,12 @@ const cardData = [
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-file-upload/",
     "text": "Control for uploading files",
     children: <FileUploadDemo />,
+  },
+  {
+    "heading": "File Reader",
+    "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-file-reader/",
+    "text": "Control for reading and processing files client-side",
+    children: <FileReaderDemo />,
   },
   {
     "heading": "Multiselect",
