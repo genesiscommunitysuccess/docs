@@ -471,6 +471,23 @@ Your response:`;
    * @returns Promise<Result<boolean, string>> - Success with true if file was updated, or error with failure reason
    */
   async updateDocFile(services: Services, commitInfo: CommitInfo, filePath: string): Promise<Result<boolean, string>> {
+    // Delegate to the multi-pass implementation for consistency
+    const result = await this.updateDocFileWithMultiplePasses(services, commitInfo, filePath);
+    if (Result.isSuccess(result)) {
+      return Result.success(result.value.wasUpdated);
+    } else {
+      return Result.error(result.message);
+    }
+  }
+
+  /**
+   * Updates a documentation file using multiple AI passes for iterative refinement
+   * @param services - The services object containing all required services
+   * @param commitInfo - The commit information that triggered this update
+   * @param filePath - The documentation file path to update (relative to docs directory)
+   * @returns Promise<Result<{wasUpdated: boolean, passesUsed: number}, string>> - Success with update result and pass count, or error with failure reason
+   */
+  async updateDocFileWithMultiplePasses(services: Services, commitInfo: CommitInfo, filePath: string): Promise<Result<{wasUpdated: boolean, passesUsed: number}, string>> {
     console.log(`🤖 LangChain AI updating documentation file: ${filePath} for commit: ${commitInfo.hash}`);
 
     try {
@@ -494,36 +511,66 @@ Your response:`;
       const fileType = this.determineFileType(filePath, currentContent);
       console.log(`📋 File type determined: ${fileType}`);
 
-      // Step 4: Generate the updated content using agentic workflow
-      console.log('🔍 Step 4: Generating updated content...');
-      const updateResult = await this.generateFileUpdates(
-        services,
-        commitInfo,
-        filePath,
-        currentContent,
-        fileType,
-        analysisResponse.content as string
-      );
+      // Step 4: Multi-pass editing with iterative refinement
+      console.log('🔍 Step 4: Starting multi-pass editing process...');
+      const maxPasses = 3;
+      let passesUsed = 0;
+      let wasUpdated = false;
+      let shouldContinue = true;
+      let currentContentForPasses = currentContent;
 
-      if (Result.isError(updateResult)) {
-        return Result.error(`Failed to generate file updates: ${updateResult.message}`);
+      for (let passNumber = 1; passNumber <= maxPasses && shouldContinue; passNumber++) {
+        console.log(`🔄 Pass ${passNumber}/${maxPasses}: Generating updates...`);
+        
+        const updateResult = await this.generateFileUpdatesWithPassContext(
+          services,
+          commitInfo,
+          filePath,
+          currentContentForPasses,
+          fileType,
+          analysisResponse.content as string,
+          passNumber,
+          passesUsed > 0 // Indicate if this is a follow-up pass
+        );
+
+        if (Result.isError(updateResult)) {
+          console.log(`❌ Pass ${passNumber} failed: ${updateResult.message}`);
+          break;
+        }
+
+        const { updatedContent, updateInstructions, shouldContinuePass } = updateResult.value;
+        passesUsed++;
+
+        // Check if content actually changed
+        const hasSignificantChanges = this.hasSignificantContentChanges(currentContentForPasses, updatedContent);
+        
+        if (!hasSignificantChanges) {
+          console.log(`✅ Pass ${passNumber}: No significant changes needed - content is already up to date`);
+          shouldContinue = false;
+          break;
+        }
+
+        // Update current content for next pass
+        currentContentForPasses = updatedContent;
+        wasUpdated = true;
+
+        // Check if we should continue to next pass
+        if (!shouldContinuePass) {
+          console.log(`✅ Pass ${passNumber}: AI indicates no more passes needed`);
+          shouldContinue = false;
+          break;
+        }
+
+        console.log(`✅ Pass ${passNumber} completed successfully`);
       }
 
-      const { updatedContent, updateInstructions } = updateResult.value;
-
-      // Step 5: Check if content actually changed before writing
-      console.log('🔍 Step 5: Checking if content has changed...');
-      
-      // More robust content comparison
-      const hasSignificantChanges = this.hasSignificantContentChanges(currentContent, updatedContent);
-      
-      if (!hasSignificantChanges) {
+      if (!wasUpdated) {
         console.log(`✅ No significant changes needed - content is already up to date`);
-        return Result.success(false); // Return false to indicate no update was made
+        return Result.success({ wasUpdated: false, passesUsed });
       }
-      
-      // Step 6: Apply the updates by writing the content directly
-      console.log('🔍 Step 6: Writing updated content to file...');
+
+      // Step 5: Apply the final updates by writing the content
+      console.log('🔍 Step 5: Writing final updated content to file...');
       
       // Use filesystem service to write the updated content directly
       // First, get the full file path
@@ -557,7 +604,7 @@ Your response:`;
         const originalLineEnding = this.detectLineEnding(originalContent);
         
         // Preserve YAML frontmatter exactly as it was to avoid formatting changes
-        const finalContent = this.preserveFrontmatter(originalContent, updatedContent, originalLineEnding);
+        const finalContent = this.preserveFrontmatter(originalContent, currentContentForPasses, originalLineEnding);
         
         // Write the updated content with preserved line endings and frontmatter
         writeFileSync(fullPath, finalContent, 'utf8');
@@ -565,7 +612,7 @@ Your response:`;
         
         // Calculate lines changed
         const originalLines = originalContent.split('\n').length;
-        const newLines = updatedContent.split('\n').length;
+        const newLines = currentContentForPasses.split('\n').length;
         const linesChanged = Math.abs(newLines - originalLines);
         console.log(`📊 Lines changed: ${linesChanged}`);
         
@@ -573,7 +620,7 @@ Your response:`;
         return Result.error(`Failed to write updated content: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
 
-      return Result.success(true);
+      return Result.success({ wasUpdated: true, passesUsed });
 
     } catch (error) {
       console.error('❌ Error during LangChain file update:', error);
@@ -680,33 +727,155 @@ Your analysis:`;
     fileType: 'autogenerated' | 'manual',
     analysis: string
   ): Promise<Result<{updatedContent: string, updateInstructions: string}, string>> {
-    try {
-      // Create appropriate prompt based on file type
-      const updatePrompt = this.createUpdatePrompt(
-        commitInfo,
-        filePath,
-        currentContent,
-        fileType,
-        analysis
-      );
+    const maxRetries = 3;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`🤖 Generating updates for ${fileType} file using AI (attempt ${attempt}/${maxRetries})...`);
+        
+        // Create appropriate prompt based on file type and attempt number
+        const updatePrompt = this.createUpdatePrompt(
+          commitInfo,
+          filePath,
+          currentContent,
+          fileType,
+          analysis,
+          attempt
+        );
 
-      console.log(`🤖 Generating updates for ${fileType} file using AI...`);
-      const updateResponse = await this.model.invoke([new HumanMessage(updatePrompt)]);
-      const responseContent = updateResponse.content as string;
+        const updateResponse = await this.model.invoke([new HumanMessage(updatePrompt)]);
+        const responseContent = updateResponse.content as string;
 
-      // Parse the AI response to extract the updated content and instructions
-      const parseResult = this.parseUpdateResponse(responseContent, fileType);
-      
-      if (Result.isError(parseResult)) {
-        return Result.error(`Failed to parse AI update response: ${parseResult.message}`);
+        // Parse the AI response to extract the updated content and instructions
+        const parseResult = this.parseUpdateResponse(responseContent, fileType);
+        
+        if (Result.isSuccess(parseResult)) {
+          console.log(`✅ AI update generation successful on attempt ${attempt}`);
+          return Result.success(parseResult.value);
+        } else {
+          console.log(`⚠️ AI update generation failed on attempt ${attempt}: ${parseResult.message}`);
+          
+          // If this is the last attempt, return the error
+          if (attempt === maxRetries) {
+            return Result.error(`Failed to generate valid updates after ${maxRetries} attempts: ${parseResult.message}`);
+          }
+          
+          // Wait a bit before retrying
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+
+      } catch (error) {
+        console.error(`❌ Error generating file updates on attempt ${attempt}:`, error);
+        
+        if (attempt === maxRetries) {
+          return Result.error(`Error generating file updates after ${maxRetries} attempts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+        
+        // Wait a bit before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
-
-      return Result.success(parseResult.value);
-
-    } catch (error) {
-      console.error('❌ Error generating file updates:', error);
-      return Result.error(`Error generating file updates: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+
+    return Result.error(`Failed to generate file updates after ${maxRetries} attempts`);
+  }
+
+  /**
+   * Identifies sections in the content that might need updates based on commit changes
+   * @param currentContent - The current file content
+   * @param commitInfo - The commit information
+   * @returns string - Analysis of which sections might need updates
+   */
+  private identifySectionsForUpdate(currentContent: string, commitInfo: CommitInfo): string {
+    const lines = currentContent.split('\n');
+    const sections: Array<{start: number, end: number, title: string, relevance: string}> = [];
+    
+    // Find all headings and their line numbers
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.match(/^#{1,6}\s+/)) {
+        const title = line.replace(/^#{1,6}\s+/, '').trim();
+        
+        // Simple relevance check based on commit message and file changes
+        const relevance = this.assessSectionRelevance(title, commitInfo);
+        
+        sections.push({
+          start: i,
+          end: i, // Will be updated when we find the next heading
+          title,
+          relevance
+        });
+      }
+    }
+    
+    // Update end positions
+    for (let i = 0; i < sections.length; i++) {
+      if (i < sections.length - 1) {
+        sections[i].end = sections[i + 1].start - 1;
+      } else {
+        sections[i].end = lines.length - 1;
+      }
+    }
+    
+    // Filter to only relevant sections
+    const relevantSections = sections.filter(s => s.relevance !== 'low');
+    
+    if (relevantSections.length === 0) {
+      return "No specific sections identified for updates. Consider adding new content if needed.";
+    }
+    
+    return relevantSections.map(section => {
+      const sectionContent = lines.slice(section.start, section.end + 1).join('\n');
+      return `Section: ${section.title} (lines ${section.start + 1}-${section.end + 1})
+Relevance: ${section.relevance}
+Content Preview: ${sectionContent.substring(0, 200)}${sectionContent.length > 200 ? '...' : ''}`;
+    }).join('\n\n');
+  }
+
+  /**
+   * Assesses how relevant a section title is to the commit changes
+   * @param title - The section title
+   * @param commitInfo - The commit information
+   * @returns string - 'high', 'medium', or 'low' relevance
+   */
+  private assessSectionRelevance(title: string, commitInfo: CommitInfo): string {
+    const titleLower = title.toLowerCase();
+    const messageLower = commitInfo.message.toLowerCase();
+    const filesChanged = commitInfo.filesChanged.map(f => f.toLowerCase());
+    
+    // Check for exact matches in commit message
+    if (messageLower.includes(titleLower)) {
+      return 'high';
+    }
+    
+    // Check for related terms
+    const relatedTerms = this.getRelatedTerms(title);
+    for (const term of relatedTerms) {
+      if (messageLower.includes(term) || filesChanged.some(f => f.includes(term))) {
+        return 'medium';
+      }
+    }
+    
+    return 'low';
+  }
+
+  /**
+   * Gets related terms for a section title to help with relevance assessment
+   * @param title - The section title
+   * @returns string[] - Array of related terms
+   */
+  private getRelatedTerms(title: string): string[] {
+    const titleLower = title.toLowerCase();
+    const terms: string[] = [];
+    
+    // Add common variations and related terms
+    if (titleLower.includes('api')) terms.push('api', 'interface', 'endpoint');
+    if (titleLower.includes('config')) terms.push('config', 'configuration', 'settings');
+    if (titleLower.includes('auth')) terms.push('auth', 'authentication', 'login');
+    if (titleLower.includes('install')) terms.push('install', 'setup', 'installation');
+    if (titleLower.includes('example')) terms.push('example', 'usage', 'sample');
+    if (titleLower.includes('error')) terms.push('error', 'exception', 'troubleshoot');
+    
+    return terms;
   }
 
   /**
@@ -716,6 +885,7 @@ Your analysis:`;
    * @param currentContent - The current file content
    * @param fileType - The file type
    * @param analysis - The previous analysis
+   * @param attempt - The current attempt number (for retry logic)
    * @returns string - The update prompt
    */
   private createUpdatePrompt(
@@ -723,7 +893,8 @@ Your analysis:`;
     filePath: string,
     currentContent: string,
     fileType: 'autogenerated' | 'manual',
-    analysis: string
+    analysis: string,
+    attempt: number = 1
   ): string {
     const isAutogenerated = fileType === 'autogenerated';
     
@@ -736,6 +907,9 @@ Lines Deleted: ${diff.linesDeleted}
 Diff Content:
 ${diff.diff || 'No diff content available'}`;
     }).join('\n\n');
+
+    // Identify sections that might need updates
+    const sectionsAnalysis = this.identifySectionsForUpdate(currentContent, commitInfo);
 
     const basePrompt = `You are an expert technical writer updating documentation based on code changes.
 
@@ -753,11 +927,37 @@ ${diffContent}
 ANALYSIS FROM PREVIOUS STEP:
 ${analysis}
 
+SECTIONS ANALYSIS:
+${sectionsAnalysis}
+
 DOCUMENTATION FILE TO UPDATE:
 - Path: ${filePath}
 - File Type: ${fileType}
 - Current Content:
 ${currentContent}
+
+SURGICAL EDITING APPROACH:
+- Make SMALL, TARGETED changes to specific sections only
+- Identify the exact sections that need updates based on the commit changes
+- Leave all other content completely untouched
+- Focus on adding new information or updating specific existing sections
+- Do NOT rewrite the entire file - only modify what actually needs to change
+- Use clear markers to indicate exactly what you changed
+
+CONTENT PRESERVATION RULES:
+- You MUST return the COMPLETE file content, not placeholder descriptions
+- NEVER use phrases like "[Previous content remains unchanged]" or "[Content unchanged until...]"
+- If a section doesn't need changes, leave it exactly as it appears in the current content
+- Only modify sections that actually need updates based on the commit
+- The final content should be a complete, valid document that can be used immediately
+- Do not summarize or describe what content should be there - actually include the content
+
+${attempt > 1 ? `RETRY ATTEMPT ${attempt} - MORE EXPLICIT INSTRUCTIONS:
+- This is retry attempt ${attempt} - the previous attempt generated invalid placeholder content
+- You MUST include the actual content from the current file above, not descriptions of it
+- Copy the existing content exactly as it appears and only modify the specific parts that need updates
+- Do not use any placeholder text, brackets, or descriptions - include the real content
+- If you're unsure about a section, preserve it exactly as it appears in the current content` : ''}
 
 IMPORTANT FORMATTING REQUIREMENTS:
 - Maintain exact spacing, indentation, and line breaks that match the existing file patterns
@@ -966,9 +1166,216 @@ Brief description of what was changed and why
       }
       const updateInstructions = instructionsMatch[1];
 
+      // Validate the content for placeholder text patterns
+      const validationResult = this.validateContentForPlaceholders(updatedContent);
+      if (Result.isError(validationResult)) {
+        return Result.error(`Content validation failed: ${validationResult.message}`);
+      }
+
       return Result.success({
         updatedContent,
         updateInstructions
+      });
+
+    } catch (error) {
+      return Result.error(`Error parsing AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Validates content to detect placeholder text patterns
+   * @param content - The content to validate
+   * @returns Result<true, string> - Success if content is valid, error if placeholders detected
+   */
+  private validateContentForPlaceholders(content: string): Result<true, string> {
+    // Common placeholder patterns that indicate the AI didn't preserve content properly
+    const placeholderPatterns = [
+      /\[.*?content.*?unchanged.*?\]/gi,
+      /\[.*?previous.*?content.*?remains.*?\]/gi,
+      /\[.*?content.*?until.*?\]/gi,
+      /\[.*?section.*?remains.*?\]/gi,
+      /\[.*?above.*?content.*?\]/gi,
+      /\[.*?existing.*?content.*?\]/gi,
+      /\[.*?original.*?content.*?\]/gi,
+      /\[.*?unchanged.*?\]/gi,
+      /\[.*?preserved.*?\]/gi,
+      /\[.*?same.*?as.*?above.*?\]/gi,
+      /\[.*?content.*?as.*?before.*?\]/gi
+    ];
+
+    for (const pattern of placeholderPatterns) {
+      if (pattern.test(content)) {
+        return Result.error(`Detected placeholder text pattern: ${pattern.source}`);
+      }
+    }
+
+    // Check for content that's too short (might indicate placeholder content)
+    const trimmedContent = content.trim();
+    if (trimmedContent.length < 50) {
+      return Result.error('Content is too short - likely placeholder content');
+    }
+
+    // Check for excessive use of brackets (common in placeholder text)
+    const bracketCount = (content.match(/\[/g) || []).length;
+    const contentLength = content.length;
+    const bracketRatio = bracketCount / contentLength;
+    
+    if (bracketRatio > 0.1) { // More than 10% brackets
+      return Result.error('Excessive use of brackets detected - likely placeholder content');
+    }
+
+    return Result.success(true);
+  }
+
+  /**
+   * Generates new content using AI with pass context for multi-pass editing
+   * @param services - The services object containing all required services
+   * @param commitInfo - The commit information
+   * @param filePath - The file path
+   * @param currentContent - The current file content
+   * @param fileType - The file type
+   * @param analysis - The previous analysis
+   * @param passNumber - The current pass number
+   * @param isFollowUpPass - Whether this is a follow-up pass (not the first)
+   * @returns Promise<Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string>>
+   */
+  private async generateFileUpdatesWithPassContext(
+    services: Services,
+    commitInfo: CommitInfo,
+    filePath: string,
+    currentContent: string,
+    fileType: 'autogenerated' | 'manual',
+    analysis: string,
+    passNumber: number,
+    isFollowUpPass: boolean
+  ): Promise<Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string>> {
+    try {
+      // Create appropriate prompt based on file type and pass context
+      const updatePrompt = this.createUpdatePromptWithPassContext(
+        commitInfo,
+        filePath,
+        currentContent,
+        fileType,
+        analysis,
+        passNumber,
+        isFollowUpPass
+      );
+
+      console.log(`🤖 Generating updates for ${fileType} file using AI (pass ${passNumber})...`);
+      const updateResponse = await this.model.invoke([new HumanMessage(updatePrompt)]);
+      const responseContent = updateResponse.content as string;
+
+      // Parse the AI response to extract the updated content and instructions
+      const parseResult = this.parseUpdateResponseWithPassContext(responseContent, fileType);
+      
+      if (Result.isError(parseResult)) {
+        return Result.error(`Failed to parse AI update response: ${parseResult.message}`);
+      }
+
+      return Result.success(parseResult.value);
+
+    } catch (error) {
+      console.error('❌ Error generating file updates:', error);
+      return Result.error(`Error generating file updates: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Creates an update prompt with pass context for multi-pass editing
+   * @param commitInfo - The commit information
+   * @param filePath - The file path
+   * @param currentContent - The current file content
+   * @param fileType - The file type
+   * @param analysis - The previous analysis
+   * @param passNumber - The current pass number
+   * @param isFollowUpPass - Whether this is a follow-up pass
+   * @returns string - The update prompt
+   */
+  private createUpdatePromptWithPassContext(
+    commitInfo: CommitInfo,
+    filePath: string,
+    currentContent: string,
+    fileType: 'autogenerated' | 'manual',
+    analysis: string,
+    passNumber: number,
+    isFollowUpPass: boolean
+  ): string {
+    const basePrompt = this.createUpdatePrompt(commitInfo, filePath, currentContent, fileType, analysis, 1);
+    
+    const passContext = `
+MULTI-PASS EDITING CONTEXT:
+- This is pass ${passNumber} of the multi-pass editing process
+- ${isFollowUpPass ? 'Previous passes have already made changes to this file' : 'This is the first pass on this file'}
+- Focus on making targeted improvements based on the current state
+- If this is a follow-up pass, consider what additional changes might be needed
+- You can indicate whether more passes are needed by setting shouldContinuePass
+
+PASS-SPECIFIC INSTRUCTIONS:
+${passNumber === 1 ? '- First pass: Focus on the most critical updates needed' : ''}
+${passNumber === 2 ? '- Second pass: Refine and improve the changes made in pass 1' : ''}
+${passNumber === 3 ? '- Final pass: Polish and ensure everything is complete' : ''}
+
+RESPONSE FORMAT:
+Provide your response in this exact format:
+
+=== UPDATED_CONTENT_START ===
+[Complete updated file content here]
+=== UPDATED_CONTENT_END ===
+
+=== INSTRUCTIONS_START ===
+Brief description of what was changed and why
+=== INSTRUCTIONS_END ===
+
+=== SHOULD_CONTINUE_START ===
+true
+=== SHOULD_CONTINUE_END ===
+(Set to 'true' if you think another pass would be beneficial, 'false' if the file is complete)`;
+
+    return basePrompt + passContext;
+  }
+
+  /**
+   * Parses the AI response with pass context to extract updated content, instructions, and continuation flag
+   * @param response - The AI response
+   * @param fileType - The file type
+   * @returns Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string>
+   */
+  private parseUpdateResponseWithPassContext(
+    response: string,
+    fileType: 'autogenerated' | 'manual'
+  ): Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string> {
+    try {
+      // Extract updated content
+      const contentMatch = response.match(/=== UPDATED_CONTENT_START ===\n([\s\S]*?)\n=== UPDATED_CONTENT_END ===/);
+      if (!contentMatch) {
+        return Result.error('Could not find UPDATED_CONTENT section in AI response');
+      }
+      const updatedContent = contentMatch[1];
+
+      // Extract instructions
+      const instructionsMatch = response.match(/=== INSTRUCTIONS_START ===\n([\s\S]*?)\n=== INSTRUCTIONS_END ===/);
+      if (!instructionsMatch) {
+        return Result.error('Could not find INSTRUCTIONS section in AI response');
+      }
+      const updateInstructions = instructionsMatch[1];
+
+      // Extract should continue flag
+      const continueMatch = response.match(/=== SHOULD_CONTINUE_START ===\n([\s\S]*?)\n=== SHOULD_CONTINUE_END ===/);
+      if (!continueMatch) {
+        return Result.error('Could not find SHOULD_CONTINUE section in AI response');
+      }
+      const shouldContinuePass = continueMatch[1].trim().toLowerCase() === 'true';
+
+      // Validate the content for placeholder text patterns
+      const validationResult = this.validateContentForPlaceholders(updatedContent);
+      if (Result.isError(validationResult)) {
+        return Result.error(`Content validation failed: ${validationResult.message}`);
+      }
+
+      return Result.success({
+        updatedContent,
+        updateInstructions,
+        shouldContinuePass
       });
 
     } catch (error) {

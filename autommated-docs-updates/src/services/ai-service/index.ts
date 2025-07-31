@@ -180,13 +180,13 @@ export class RealAIService implements AIService {
       const commitInfo = commitResult.value;
       console.log(`📝 Commit: ${commitInfo.message} by ${commitInfo.author}`);
 
-      // Step 3: Use AI repository to update the doc file
-      console.log('🤖 Using AI to update the documentation file...');
-      const aiResult = await this.aiRepository.updateDocFile(services, commitInfo, filePath);
+      // Step 3: Use AI repository to update the doc file with multi-pass editing
+      console.log('🤖 Using AI to update the documentation file with multi-pass editing...');
+      const aiResult = await this.aiRepository.updateDocFileWithMultiplePasses(services, commitInfo, filePath);
       
       if (Result.isSuccess(aiResult)) {
-        const wasUpdated = aiResult.value;
-        console.log(`🤖 AI Update Result: ${wasUpdated ? 'File was updated successfully' : 'No updates were made'}`);
+        const { wasUpdated, passesUsed } = aiResult.value;
+        console.log(`🤖 AI Update Result: ${wasUpdated ? 'File was updated successfully' : 'No updates were made'} (${passesUsed} passes used)`);
         return Result.success(wasUpdated);
       } else {
         console.log(`❌ AI Update Error: ${aiResult.message}`);

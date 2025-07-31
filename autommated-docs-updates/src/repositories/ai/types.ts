@@ -30,6 +30,15 @@ export interface AIRepository {
    * @returns Promise<Result<boolean, string>> - Success with true if file was updated, or error with failure reason
    */
   updateDocFile(services: Services, commitInfo: CommitInfo, filePath: string): Promise<Result<boolean, string>>;
+
+  /**
+   * Updates a documentation file using multiple AI passes for iterative refinement
+   * @param services - The services object containing all required services
+   * @param commitInfo - The commit information that triggered this update
+   * @param filePath - The documentation file path to update (relative to docs directory)
+   * @returns Promise<Result<{wasUpdated: boolean, passesUsed: number}, string>> - Success with update result and pass count, or error with failure reason
+   */
+  updateDocFileWithMultiplePasses(services: Services, commitInfo: CommitInfo, filePath: string): Promise<Result<{wasUpdated: boolean, passesUsed: number}, string>>;
 }
 
 /**

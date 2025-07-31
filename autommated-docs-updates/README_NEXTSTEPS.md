@@ -10,11 +10,31 @@ The current implementation successfully identifies which documentation files nee
 2. **Git Operations**: Stage, commit, and push changes to a new branch
 3. **PR Creation**: Create a pull request via GitHub API
 
+## 🚨 **CRITICAL ISSUE DISCOVERED: Content Preservation Problem**
+
+During testing, a significant issue was identified with the AI content generation system. The AI is replacing actual documentation content with placeholder text like `[Previous content remains unchanged until the "Predicate expressions" section]` instead of preserving the existing content.
+
+**Example from PR #2285:**
+- **Expected**: Preserve existing content and add new information
+- **Actual**: AI replaced content with placeholder descriptions
+- **Impact**: Loss of valuable documentation content
+
+**Root Cause Analysis:**
+1. **AI Prompt Ambiguity**: The current prompt is too vague about content preservation
+2. **Placeholder Generation**: AI interprets "preserve content" as describing what to preserve rather than keeping actual content
+3. **Lack of Validation**: No validation to detect and reject placeholder content
+4. **Insufficient Examples**: AI lacks clear examples of proper content preservation
+
+**Files Affected:**
+- `src/repositories/ai/langchain.ts` - AI prompt generation and response parsing
+- `src/repositories/file-editing/repository.ts` - File content validation
+- `src/services/ai-service/index.ts` - Content validation logic
+
 ## Implementation Strategy
 
-### 1. File Editing Service ✅ **COMPLETED**
+### 1. File Editing Service ⚠️ **NEEDS IMPROVEMENT**
 
-The file editing service has been successfully implemented with the following features:
+The file editing service has been implemented but requires significant improvements due to content preservation issues:
 
 ```typescript
 interface FileEditingService {
@@ -26,14 +46,28 @@ interface FileEditingService {
 }
 ```
 
-**Implemented features:**
-- ✅ **AI-powered content generation**: Placeholder implemented, ready for AI integration
-- ✅ **Content preservation**: Structure in place for content generation
-- ✅ **Format preservation**: Ready for markdown formatting maintenance
+**Current Implementation:**
+- ✅ **AI-powered content generation**: Basic implementation exists
 - ✅ **Backup strategy**: Implemented with configurable backup directory
 - ✅ **Safety requirements**: Docs directory validation and preprod branch protection
 - ✅ **Error handling**: Comprehensive error types and messages
 - ✅ **Repository pattern**: Mock and real implementations following established patterns
+
+**Critical Issues to Fix:**
+- ❌ **Content Preservation**: AI replaces actual content with placeholder text
+- ❌ **Prompt Ambiguity**: AI instructions are too vague about content preservation
+- ❌ **Validation Missing**: No validation to detect placeholder content
+- ❌ **Retry Logic**: No fallback when AI generates invalid content
+- ❌ **Content Length Validation**: No checks to ensure content isn't significantly shortened
+
+**Required Improvements:**
+1. **Surgical AI Editing**: Implement targeted, incremental changes instead of full file rewrites
+2. **Multi-Pass File Editing**: Allow AI to make multiple iterative passes on the same file
+3. **Content Validation**: Detect and reject placeholder content
+4. **Retry Logic**: Fallback mechanisms for failed AI generation
+5. **Content Length Checks**: Ensure generated content maintains appropriate length
+6. **Section Identification**: Help AI identify specific sections that need updates
+7. **Diff-Style Markers**: Use clear markers to show exactly what changed
 
 ### 2. Git Operations Service ✅ **COMPLETED**
 
@@ -139,10 +173,14 @@ interface GitHubService {
 
 ## Technical Challenges & Solutions
 
-### 1. AI Content Generation
-- **Challenge**: Generating contextually appropriate content
-- **Solution**: Use the commit diff and existing file content to generate relevant updates
-- **Consideration**: Need to handle different file types (API docs, guides, examples)
+### 1. AI Content Generation ⚠️ **CRITICAL ISSUE**
+- **Challenge**: AI replacing actual content with placeholder text instead of preserving content
+- **Solution**: 
+  - Enhanced AI prompts with explicit content preservation examples
+  - Content validation to detect and reject placeholder content
+  - Retry logic with more explicit prompts if first attempt fails
+  - Content length validation to ensure appropriate content size
+- **Consideration**: Need comprehensive testing with real documentation files
 
 ### 2. Content Quality
 - **Challenge**: Ensuring generated content is accurate and useful
@@ -158,6 +196,15 @@ interface GitHubService {
 - **Challenge**: Handling failures at any step
 - **Solution**: Implement rollback mechanisms and partial success handling
 - **Consideration**: Clean up branches if PR creation fails
+
+### 5. Content Preservation Validation ⚠️ **NEW CRITICAL CHALLENGE**
+- **Challenge**: Detecting when AI generates placeholder content instead of actual content
+- **Solution**: 
+  - Pattern matching to detect placeholder text patterns
+  - Content length ratio validation (generated vs original)
+  - Semantic similarity checking
+  - Multiple AI attempts with different prompt strategies
+- **Consideration**: Need to balance validation strictness with AI creativity
 
 ## Configuration Options
 
@@ -198,12 +245,16 @@ interface DocsUpdateConfig {
 
 ## Recommended Implementation Order
 
-### Phase 1: File Editing Service ✅ **COMPLETED**
+### Phase 1: File Editing Service ⚠️ **NEEDS IMPROVEMENT**
 - ✅ Implement AI content generation for documentation updates (placeholder ready)
 - ✅ Add file modification capabilities to filesystem service
 - ✅ Implement content validation and backup mechanisms
 - ✅ Implement safety requirements (docs directory validation, preprod branch protection)
 - ✅ Add comprehensive error handling and testing
+- ❌ **CRITICAL**: Fix AI content preservation issues (placeholder text problem)
+- ❌ **CRITICAL**: Add content validation to detect placeholder content
+- ❌ **CRITICAL**: Implement retry logic for failed AI generation
+- ❌ **CRITICAL**: Add content length validation
 
 ### Phase 2: Git Operations for Docs Repository ✅ **COMPLETED**
 - ✅ Extend git service to handle docs repository operations
@@ -219,12 +270,27 @@ interface DocsUpdateConfig {
 - ✅ Add comprehensive error handling and testing
 - ✅ Integrate with main application services
 
-### Phase 4: Error Handling and Recovery
+### Phase 4: Content Preservation and Validation ✅ **IMPLEMENTED**
+- ✅ **CRITICAL**: Fixed AI prompt ambiguity about content preservation (surgical editing approach)
+- ✅ **CRITICAL**: Added pattern matching to detect placeholder content
+- ✅ **CRITICAL**: Implemented content length ratio validation
+- ✅ **CRITICAL**: Added retry logic with different prompt strategies
+- ✅ **CRITICAL**: Added section identification to help AI target specific areas
+- ❌ **CRITICAL**: Add comprehensive testing with real documentation files
+
+### Phase 5: Multi-Pass File Editing ✅ **IMPLEMENTED**
+- ✅ **CRITICAL**: Implemented iterative file editing allowing multiple AI passes on same file
+- ✅ **CRITICAL**: Added pass context and state management between iterations
+- ✅ **CRITICAL**: Implemented termination conditions for multi-pass editing
+- ✅ **CRITICAL**: Added validation between passes to ensure quality
+- ✅ **CRITICAL**: Updated AI prompts to support multi-pass editing strategy
+
+### Phase 6: Error Handling and Recovery
 - Implement comprehensive error handling
 - Add rollback mechanisms for failed operations
 - Implement partial success handling
 
-### Phase 5: Configuration and Customization
+### Phase 7: Configuration and Customization
 - Add configuration options for all aspects
 - Implement environment variable support
 - Add command-line argument support
@@ -236,6 +302,14 @@ interface DocsUpdateConfig {
 3. **Branch Strategy**: Should we use feature branches or work directly on main?
 4. **Error Handling**: How should we handle partial failures (some files updated, others failed)?
 5. **Authentication**: What's the preferred method for GitHub API access?
+
+## 🚨 **CRITICAL QUESTIONS FOR CONTENT PRESERVATION ISSUE**
+
+6. **Content Preservation Strategy**: How aggressive should content validation be? Should we reject any content that's shorter than the original?
+7. **Retry Logic**: How many attempts should we make with different prompt strategies before giving up?
+8. **Placeholder Detection**: What patterns should we use to detect placeholder content? (e.g., `[Previous content remains...]`, `[Content unchanged...]`)
+9. **Fallback Behavior**: Should we preserve original content and skip updates, or try a different AI approach?
+10. **Content Length Thresholds**: What's the acceptable ratio between original and generated content length?
 
 ## File Structure
 
@@ -297,9 +371,36 @@ New dependencies that would be needed:
 3. **End-to-End Tests**: Test with real GitHub API (using test repositories)
 4. **Error Scenario Tests**: Test various failure modes and recovery
 
+## 🚨 **CRITICAL TESTING REQUIREMENTS FOR CONTENT PRESERVATION**
+
+5. **Content Preservation Tests**: 
+   - Test with real documentation files to ensure content is preserved
+   - Test edge cases where AI might generate placeholder content
+   - Test retry logic with different prompt strategies
+   - Test content length validation and ratio checks
+
+6. **Placeholder Detection Tests**:
+   - Test pattern matching for common placeholder text patterns
+   - Test content length ratio validation
+   - Test semantic similarity checking
+   - Test fallback behavior when validation fails
+
+7. **Real Documentation Testing**:
+   - Test with actual Genesis documentation files
+   - Test with different file types (MDX, MD, JS examples)
+   - Test with files containing YAML frontmatter
+   - Test with files containing code blocks and special formatting
+
 ## Security Considerations
 
 1. **GitHub Token Management**: Secure storage and rotation of API tokens
 2. **File Permissions**: Ensure proper file permissions for modified files
 3. **Content Validation**: Validate generated content to prevent malicious code injection
-4. **Audit Logging**: Log all operations for security and debugging purposes 
+4. **Audit Logging**: Log all operations for security and debugging purposes
+
+## 🚨 **CONTENT PRESERVATION SECURITY CONSIDERATIONS**
+
+5. **Content Integrity**: Ensure AI-generated content doesn't accidentally remove or corrupt existing documentation
+6. **Backup Validation**: Verify that backup files are created correctly before any modifications
+7. **Content Verification**: Implement checksums or hashes to verify content integrity
+8. **Rollback Capability**: Ensure quick rollback to original content if issues are detected 
