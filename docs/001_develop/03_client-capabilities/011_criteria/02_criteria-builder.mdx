@@ -117,3 +117,40 @@ new CriteriaBuilder()
     </tbody>
 </table>
 
+## Date Operators
+
+The criteria builder includes specialized operators for date-based filtering:
+
+- `IS_CURRENT` - Matches records within the current time period (hour/day/week/month/year)
+- `IS_PREVIOUS` - Matches records within the previous time period (hour/day/week/month/year)
+
+Example using date operators:
+
+```ts
+// Filter for records in the current day
+const currentDayExpression = new ExpressionBuilder()
+  .withField('TRADE_DATE')
+  .withValue('DAY')
+  .withSerialiser(Serialisers.IS_CURRENT)
+  .build()
+
+// Filter for records from the previous month
+const previousMonthExpression = new ExpressionBuilder()
+  .withField('TRADE_DATE')
+  .withValue('MONTH')
+  .withSerialiser(Serialisers.IS_PREVIOUS)
+  .build()
+
+// Combine date filtering with other criteria
+const currentDayTradesExpression = new CriteriaBuilder()
+  .withExpression(currentDayExpression)
+  .And(tradeIdEqualsExpression)
+  .build()
+```
+
+The time period values supported are:
+- `HOUR`
+- `DAY`
+- `WEEK`
+- `MONTH`
+- `YEAR`

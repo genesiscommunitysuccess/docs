@@ -109,6 +109,42 @@ const ruleModel = {
         },
       ],
     },
+    {
+      TYPE: "METHOD_EXPRESSION",
+      METHOD: "DATE_TIME_IS_IN_RANGE",
+      PARAMETERS: [
+        {
+          TYPE: "FIELD",
+          NAME: "lastUpdated"
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "MONTH"  // Can be: HOUR, DAY, WEEK, MONTH, YEAR
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "CURRENT"  // Can be: CURRENT or PREVIOUS
+        }
+      ]
+    },
+    {
+      TYPE: "METHOD_EXPRESSION",
+      METHOD: "DATE_TIME_IS_IN_RANGE",
+      PARAMETERS: [
+        {
+          TYPE: "FIELD",
+          NAME: "dateJoined"
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "WEEK"
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "PREVIOUS"
+        }
+      ]
+    }
   ],
 };
 

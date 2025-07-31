@@ -112,3 +112,35 @@ new ExpressionBuilder().withGroup('group')
     </tr>
     </tbody>
 </table>
+
+## Date Operators
+
+The Expression Builder includes special operators for working with date fields:
+
+- `IS_CURRENT`: Checks if a date field matches the current time period (hour/day/week/month/year)
+- `IS_PREVIOUS`: Checks if a date field matches the previous time period
+
+Example usage:
+
+```ts
+// Check if a date is in the current day
+new ExpressionBuilder()
+  .withField('REPORT_DATE')
+  .withOperator('IS_CURRENT')
+  .withValue('DAY')
+  .build()
+
+// Check if a date is in the previous month
+new ExpressionBuilder()
+  .withField('TRADE_DATE')
+  .withOperator('IS_PREVIOUS') 
+  .withValue('MONTH')
+  .build()
+```
+
+The time period values supported are:
+- `HOUR`
+- `DAY`
+- `WEEK`
+- `MONTH`
+- `YEAR`
