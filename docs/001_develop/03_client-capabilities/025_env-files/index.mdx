@@ -1,16 +1,17 @@
 ---
-title: 'Env Files'
-sidebar_label: 'Env Files'
+title: 'Environment Files'
+sidebar_label: 'Environment Files'
 id: client-env-files
-keywords: [genx, env, globals]
+keywords: [genx, env, globals, environment]
 tags:
 - genx
 - env
 - globals
+- environment
 sidebar_position: 25
 ---
 
-The `genx run` and `genx build` commands read the contents of the `client/.env` file to set global variables in the client build. For the typescript compiler to work these values must also be declared in the `client/globals.d.ts` file.
+The `genx run` and `genx build` commands read the contents of the `client/.env` file to set global variables in the client build. For the typescript compiler to work these values must also be declared in the `client/globals.d.ts` file. This section covers environment file configuration and the [Environment Indicator](./environment-indicator) component for displaying environment information in your application.
 
 The `.env` file is not created by default so you must create it yourself. You can use this to set global variables at build time that you can use in the client. This can be used for many things such as
 
@@ -148,3 +149,7 @@ Running genx with the `DOT_ENV_FILE=bluebank` the accent color for buttons will 
 Running genx without the `DOT_ENV_FILE` param the component will not display.
 
 ```genx dev -e```
+
+## Related Documentation
+
+- [Environment Indicator](./environment-indicator) - Learn how to display environment indicators in your application using the `foundation-environment-indicator` component.
