@@ -1,0 +1,47 @@
+---
+title: 'How to consolidate your data'
+sidebar_label: 'Consolidate your data'
+id: ht-consolidator
+keywords: [consolidator, consolidate]
+tags:
+    - consolidator
+    - consolidate
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+Consolidators provide developers a convenient method in order to aggregate data. There are many aggregation methods to choose from which you can find in our documentation of consolidators.
+
+With consolidators you can listen to a datasource and feed the results back to a table, use them in classes by invoking on-demand consolidators and define your own custom aggregation method to use along our standard colllection.
+
+## Example
+We have created an example application that shows how to use consolidators.
+
+The application provides three demonstrations of consolidators in use, varying from complexity. Starting from a basic use case, when to use an index scan and using on commit.
+
+The application provides two pipelines, one to subscribe and one to consume. Subscriptions are generated for every instrument in the application database, and subscription updates flow into the market data table to update the UI grids in real time.
+
+:::tip Download, view and run
+The examples are within one complete example application, which includes a front end so that you can run and see the data.
+
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-consolidators/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+The README file for the application provides information for each example and what they showcase from consolidators features.
+:::
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
+:::
+
+To test the set-up of an app that uses consolidators:
+
+- *Details to follow shortly. Thank you for your patience.*
+
+## Full technical details
+You can find full technical details in our reference documentation:
+
+- [Consolidators](/develop/server-capabilities/integrations/real-time-aggregation-consolidator/)
