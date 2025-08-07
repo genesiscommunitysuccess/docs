@@ -6,6 +6,10 @@ on:
     - cron: '0 9 * * *'
   workflow_dispatch:
     # Allow manual triggering
+  push:
+    # TESTING: Trigger on any push to this branch
+    branches:
+      - sync-api-docs-2025-08-07T15-03-54
 
 jobs:
   sync-api-docs:
