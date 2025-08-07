@@ -25,7 +25,9 @@ We have created an example application that shows how to use consolidators.
 
 The application provides three demonstrations of consolidators in use, varying from complexity. Starting from a basic use case, when to use an index scan and using on commit.
 
-The application provides two pipelines, one to subscribe and one to consume. Subscriptions are generated for every instrument in the application database, and subscription updates flow into the market data table to update the UI grids in real time.
+Basic aggregation functions such as sum, count, min and max is covered.
+
+While other features such as selectively aggregating an input field based on another enum field like a switch case with pivotBy. As well as aggregating only if a conditional is met with onlyIf.
 
 :::tip Download, view and run
 The examples are within one complete example application, which includes a front end so that you can run and see the data.
