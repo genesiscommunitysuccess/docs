@@ -15,9 +15,39 @@ removeResource(resource: MonitoredResource): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resource | [MonitoredResource](./foundation-comms.monitoredresource.md) | The resource reference. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resource
+
+
+</td><td>
+
+[MonitoredResource](./foundation-comms.monitoredresource.md)
+
+
+</td><td>
+
+The resource reference.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

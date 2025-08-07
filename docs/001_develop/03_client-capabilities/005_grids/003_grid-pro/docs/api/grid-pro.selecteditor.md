@@ -20,23 +20,210 @@ export declare class SelectEditor extends FoundationElement implements ICellEdit
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [actualWidth](./grid-pro.selecteditor.actualwidth.md) |  | number |  |
-|  [combobox](./grid-pro.selecteditor.combobox.md) |  | any |  |
-|  [params](./grid-pro.selecteditor.params.md) |  | [SelectEditorParams](./grid-pro.selecteditorparams.md) |  |
-|  [value](./grid-pro.selecteditor.value.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actualWidth](./grid-pro.selecteditor.actualwidth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[combobox](./grid-pro.selecteditor.combobox.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[params](./grid-pro.selecteditor.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SelectEditorParams](./grid-pro.selecteditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./grid-pro.selecteditor.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [afterGuiAttached()](./grid-pro.selecteditor.afterguiattached.md) |  |  |
-|  [changeHandler(event)](./grid-pro.selecteditor.changehandler.md) |  |  |
-|  [getGui()](./grid-pro.selecteditor.getgui.md) |  |  |
-|  [getValue()](./grid-pro.selecteditor.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.selecteditor.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.selecteditor.iscancelbeforestart.md) |  |  |
-|  [isPopup()](./grid-pro.selecteditor.ispopup.md) |  |  |
-|  [refresh(params)](./grid-pro.selecteditor.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[afterGuiAttached()](./grid-pro.selecteditor.afterguiattached.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[changeHandler(event)](./grid-pro.selecteditor.changehandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.selecteditor.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.selecteditor.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.selecteditor.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.selecteditor.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isPopup()](./grid-pro.selecteditor.ispopup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.selecteditor.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

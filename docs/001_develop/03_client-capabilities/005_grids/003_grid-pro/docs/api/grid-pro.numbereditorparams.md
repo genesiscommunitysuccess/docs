@@ -18,11 +18,111 @@ export interface NumberEditorParams extends ICellEditorParams
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [disabled](./grid-pro.numbereditorparams.disabled.md) |  | boolean |  |
-|  [formatOptions](./grid-pro.numbereditorparams.formatoptions.md) |  | any |  |
-|  [onChange](./grid-pro.numbereditorparams.onchange.md) |  | (value: number, params: [NumberEditorParams](./grid-pro.numbereditorparams.md)) =&gt; void |  |
-|  [placeholder](./grid-pro.numbereditorparams.placeholder.md) |  | string |  |
-|  [withFormatting](./grid-pro.numbereditorparams.withformatting.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[disabled](./grid-pro.numbereditorparams.disabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[formatOptions](./grid-pro.numbereditorparams.formatoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onChange](./grid-pro.numbereditorparams.onchange.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(value: number, params: [NumberEditorParams](./grid-pro.numbereditorparams.md)<!-- -->) =&gt; void
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[placeholder](./grid-pro.numbereditorparams.placeholder.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withFormatting](./grid-pro.numbereditorparams.withformatting.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

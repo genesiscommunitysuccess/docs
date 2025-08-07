@@ -15,10 +15,55 @@ addResource(resource: MonitoredResource, metadata: MonitoredResourceMetadata): v
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resource | [MonitoredResource](./foundation-comms.monitoredresource.md) | The resource reference. |
-|  metadata | [MonitoredResourceMetadata](./foundation-comms.monitoredresourcemetadata.md) | The resource metadata. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resource
+
+
+</td><td>
+
+[MonitoredResource](./foundation-comms.monitoredresource.md)
+
+
+</td><td>
+
+The resource reference.
+
+
+</td></tr>
+<tr><td>
+
+metadata
+
+
+</td><td>
+
+[MonitoredResourceMetadata](./foundation-comms.monitoredresourcemetadata.md)
+
+
+</td><td>
+
+The resource metadata.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

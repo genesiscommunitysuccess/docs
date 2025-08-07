@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [delay](./foundation-utils.delay.md)
 
-## delay variable
+## delay() function
 
 Delay for a given number of milliseconds
 
@@ -14,6 +14,48 @@ Delay for a given number of milliseconds
 ```typescript
 delay: (ms: number) => Promise<void>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+ms
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The number of milliseconds to delay
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+Promise&lt;void&gt;
+
+A promise that resolves after the given number of milliseconds
 
 ## Example
 

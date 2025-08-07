@@ -18,23 +18,165 @@ export declare class DefaultNetworkMonitor implements NetworkMonitor
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)()](./foundation-comms.defaultnetworkmonitor._constructor_.md) |  | Constructs a new instance of the <code>DefaultNetworkMonitor</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)()](./foundation-comms.defaultnetworkmonitor._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultNetworkMonitor` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [runAllChecks](./foundation-comms.defaultnetworkmonitor.runallchecks.md) |  | (source?: unknown, force?: boolean) =&gt; Promise&lt;void&gt; |  |
-|  [status](./foundation-comms.defaultnetworkmonitor.status.md) |  | [SystemHealthStatus](./foundation-comms.systemhealthstatus.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[runAllChecks](./foundation-comms.defaultnetworkmonitor.runallchecks.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(source?: unknown, force?: boolean) =&gt; Promise&lt;void&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[status](./foundation-comms.defaultnetworkmonitor.status.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SystemHealthStatus](./foundation-comms.systemhealthstatus.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [addResource(resource, metadata)](./foundation-comms.defaultnetworkmonitor.addresource.md) |  |  |
-|  [create()](./foundation-comms.defaultnetworkmonitor.create.md) |  |  |
-|  [destroy()](./foundation-comms.defaultnetworkmonitor.destroy.md) |  |  |
-|  [removeResource(resource)](./foundation-comms.defaultnetworkmonitor.removeresource.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addResource(resource, metadata)](./foundation-comms.defaultnetworkmonitor.addresource.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[create()](./foundation-comms.defaultnetworkmonitor.create.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./foundation-comms.defaultnetworkmonitor.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[removeResource(resource)](./foundation-comms.defaultnetworkmonitor.removeresource.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

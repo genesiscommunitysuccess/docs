@@ -9,7 +9,7 @@ format: md
 
 Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.
 
-Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`, must be explicitly set by the user separately.
+Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`<!-- -->, must be explicitly set by the user separately.
 
 **Signature:**
 
@@ -22,9 +22,37 @@ export declare function mapJsonSchemaFieldToExprBuilderField([name, schema]: [
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  \[name, schema\] | \[ string, [Genesis.FieldJsonSchema](./foundation-utils.genesis.fieldjsonschema.md) \] |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+\[name, schema\]
+
+
+</td><td>
+
+\[ string, [Genesis.FieldJsonSchema](./foundation-utils.genesis.fieldjsonschema.md) \]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

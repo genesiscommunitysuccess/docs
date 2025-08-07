@@ -17,9 +17,39 @@ export declare function getAvailableIndexFields(data: Map<string, [string]>): st
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | Map&lt;string, \[string\]&gt; | the map data to have the values extracted from |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+Map&lt;string, \[string\]&gt;
+
+
+</td><td>
+
+the map data to have the values extracted from
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

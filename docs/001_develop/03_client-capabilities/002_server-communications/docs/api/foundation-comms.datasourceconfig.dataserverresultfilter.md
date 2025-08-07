@@ -15,10 +15,53 @@ dataServerResultFilter(result: RawDataServerResult, rowId?: string): FilteredDat
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  result | [RawDataServerResult](./foundation-comms.rawdataserverresult.md) |  |
-|  rowId | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+result
+
+
+</td><td>
+
+[RawDataServerResult](./foundation-comms.rawdataserverresult.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+rowId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

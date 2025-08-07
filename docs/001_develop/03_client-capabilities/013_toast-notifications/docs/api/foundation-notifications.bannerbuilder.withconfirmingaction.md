@@ -22,9 +22,39 @@ withConfirmingAction(confirmingAction: ConfirmingAction): BannerBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  confirmingAction | [ConfirmingAction](./foundation-notifications.confirmingaction.md) | [ConfirmingAction](./foundation-notifications.confirmingaction.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+confirmingAction
+
+
+</td><td>
+
+[ConfirmingAction](./foundation-notifications.confirmingaction.md)
+
+
+</td><td>
+
+[ConfirmingAction](./foundation-notifications.confirmingaction.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

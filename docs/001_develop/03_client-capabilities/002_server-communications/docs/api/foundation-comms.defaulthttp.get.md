@@ -15,10 +15,51 @@ get<T>(url: string, requestInit: HttpRequestInit): Promise<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  url | string |  |
-|  requestInit | [HttpRequestInit](./foundation-comms.httprequestinit.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+url
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+requestInit
+
+
+</td><td>
+
+[HttpRequestInit](./foundation-comms.httprequestinit.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

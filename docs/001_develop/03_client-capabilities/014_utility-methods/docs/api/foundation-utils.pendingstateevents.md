@@ -17,8 +17,49 @@ export declare enum PendingStateEvents
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  error | <code>&quot;pending-state-error&quot;</code> |  |
-|  state | <code>&quot;pending-state&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+error
+
+
+</td><td>
+
+`"pending-state-error"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+state
+
+
+</td><td>
+
+`"pending-state"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

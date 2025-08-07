@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-comms](./foundation-comms.md) &gt; [toFieldMetadata](./foundation-comms.tofieldmetadata.md)
 
-## toFieldMetadata variable
+## toFieldMetadata() function
 
 Converts the field definitions to field metadata.
 
@@ -14,3 +14,46 @@ Converts the field definitions to field metadata.
 ```typescript
 toFieldMetadata: (fieldDef: MetadataDetail[]) => FieldMetadata[]
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+fieldDef
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+The field definitions.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+
+An array of field metadata.
+

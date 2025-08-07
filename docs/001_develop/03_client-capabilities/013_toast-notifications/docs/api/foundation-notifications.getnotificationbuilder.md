@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getNotificationBuilder](./foundation-notifications.getnotificationbuilder.md)
 
-## getNotificationBuilder variable
+## getNotificationBuilder() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,7 @@ Returns a new NotificationBuilder instance
 ```typescript
 getNotificationBuilder: () => NotificationBuilder
 ```
+**Returns:**
+
+[NotificationBuilder](./foundation-notifications.notificationbuilder.md)
+

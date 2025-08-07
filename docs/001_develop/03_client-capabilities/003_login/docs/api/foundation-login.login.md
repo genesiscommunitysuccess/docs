@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> - Use '@genesislcap/pbc-auth' instead. 'https://www.npmjs.com/package/@genesislcap/pbc-auth'
+> - Use '<!-- -->@<!-- -->genesislcap/pbc-auth' instead. 'https://www.npmjs.com/package/<!-- -->@<!-- -->genesislcap/pbc-auth'
 > 
 
 Defines the login class which handles account authentication from the front-end

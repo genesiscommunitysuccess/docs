@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-tabulator](./grid-tabulator.md) &gt; [themeFontsId](./grid-tabulator.themefontsid.md)
 
-## themeFontsId variable
+## themeFontsId() function
 
 Get the Fonts ID for the theme's name
 
@@ -14,3 +14,46 @@ Get the Fonts ID for the theme's name
 ```typescript
 themeFontsId: (themeName: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+themeName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The theme name
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The theme's fonts ID
+

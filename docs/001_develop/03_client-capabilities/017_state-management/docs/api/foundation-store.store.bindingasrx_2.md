@@ -15,9 +15,39 @@ bindingAsRx<TReturn>(getter: (store: this) => TReturn): RXObservable<TReturn>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  getter | (store: this) =&gt; TReturn | A function that returns a value from the store. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+getter
+
+
+</td><td>
+
+(store: this) =&gt; TReturn
+
+
+</td><td>
+
+A function that returns a value from the store.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -15,7 +15,25 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/foundation-fdc3](./foundation-fdc3.md) |  |
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@genesislcap/foundation-fdc3](./foundation-fdc3.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

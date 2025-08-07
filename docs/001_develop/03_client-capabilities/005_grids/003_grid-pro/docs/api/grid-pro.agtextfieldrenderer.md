@@ -20,20 +20,176 @@ export declare class AgTextFieldRenderer extends FoundationElement implements IC
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.agtextfieldrenderer.params.md) |  | FuiCellRendererParams |  |
-|  [textChanged](./grid-pro.agtextfieldrenderer.textchanged.md) |  | (e: any) =&gt; void | On text change handler |
-|  [textField](./grid-pro.agtextfieldrenderer.textfield.md) |  | TextField |  |
-|  [textValue](./grid-pro.agtextfieldrenderer.textvalue.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.agtextfieldrenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+FuiCellRendererParams
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[textChanged](./grid-pro.agtextfieldrenderer.textchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(e: any) =&gt; void
+
+
+</td><td>
+
+On text change handler
+
+
+</td></tr>
+<tr><td>
+
+[textField](./grid-pro.agtextfieldrenderer.textfield.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TextField
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[textValue](./grid-pro.agtextfieldrenderer.textvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.agtextfieldrenderer.destroy.md) |  |  |
-|  [getGui()](./grid-pro.agtextfieldrenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.agtextfieldrenderer.init.md) |  |  |
-|  [isDisabled(data)](./grid-pro.agtextfieldrenderer.isdisabled.md) |  |  |
-|  [refresh(params)](./grid-pro.agtextfieldrenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.agtextfieldrenderer.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.agtextfieldrenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.agtextfieldrenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisabled(data)](./grid-pro.agtextfieldrenderer.isdisabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.agtextfieldrenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

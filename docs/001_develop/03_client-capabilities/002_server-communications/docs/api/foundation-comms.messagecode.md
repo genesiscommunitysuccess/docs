@@ -17,8 +17,49 @@ export declare enum MessageCode
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  SESSION\_NOT\_FOUND | <code>&quot;SESSION_NOT_FOUND&quot;</code> |  |
-|  UNKNOWN\_MESSAGE\_TYPE | <code>&quot;UNKNOWN_MESSAGE_TYPE&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+SESSION\_NOT\_FOUND
+
+
+</td><td>
+
+`"SESSION_NOT_FOUND"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+UNKNOWN\_MESSAGE\_TYPE
+
+
+</td><td>
+
+`"UNKNOWN_MESSAGE_TYPE"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,11 +17,41 @@ getResourceTypeFor(resourceName: string): Promise<ResourceType>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to get the type for. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to get the type for.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)&gt;
+Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)<!-- -->&gt;
 

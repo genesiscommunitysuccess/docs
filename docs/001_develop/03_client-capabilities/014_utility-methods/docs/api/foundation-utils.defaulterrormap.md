@@ -13,30 +13,228 @@ format: md
 ```typescript
 export declare class DefaultErrorMap<TErrorDetailMap extends ErrorDetailMap> implements ErrorMap<TErrorDetailMap> 
 ```
-**Implements:** [ErrorMap](./foundation-utils.errormap.md)&lt;TErrorDetailMap&gt;
+**Implements:** [ErrorMap](./foundation-utils.errormap.md)<!-- -->&lt;TErrorDetailMap&gt;
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(logger)](./foundation-utils.defaulterrormap._constructor_.md) |  | Constructs a new instance of the <code>DefaultErrorMap</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(logger)](./foundation-utils.defaulterrormap._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultErrorMap` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [lastError](./foundation-utils.defaulterrormap.lasterror.md) |  | Error | The last set error if any. |
-|  [messages](./foundation-utils.defaulterrormap.messages.md) | <code>readonly</code> | string | Error map as messages. |
-|  [size](./foundation-utils.defaulterrormap.size.md) | <code>readonly</code> | number | The size of the error map. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[lastError](./foundation-utils.defaulterrormap.lasterror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Error
+
+
+</td><td>
+
+The last set error if any.
+
+
+</td></tr>
+<tr><td>
+
+[messages](./foundation-utils.defaulterrormap.messages.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Error map as messages.
+
+
+</td></tr>
+<tr><td>
+
+[size](./foundation-utils.defaulterrormap.size.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The size of the error map.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [clear()](./foundation-utils.defaulterrormap.clear.md) |  | Clear errors. |
-|  [delete(key)](./foundation-utils.defaulterrormap.delete.md) |  | Delete an error. |
-|  [get(key)](./foundation-utils.defaulterrormap.get.md) |  | Get an error by key. |
-|  [has(key)](./foundation-utils.defaulterrormap.has.md) |  | Has an error for key. |
-|  [set(key, error)](./foundation-utils.defaulterrormap.set.md) |  | Set an error by key. |
-|  [values()](./foundation-utils.defaulterrormap.values.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[clear()](./foundation-utils.defaulterrormap.clear.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Clear errors.
+
+
+</td></tr>
+<tr><td>
+
+[delete(key)](./foundation-utils.defaulterrormap.delete.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Delete an error.
+
+
+</td></tr>
+<tr><td>
+
+[get(key)](./foundation-utils.defaulterrormap.get.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Get an error by key.
+
+
+</td></tr>
+<tr><td>
+
+[has(key)](./foundation-utils.defaulterrormap.has.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Has an error for key.
+
+
+</td></tr>
+<tr><td>
+
+[set(key, error)](./foundation-utils.defaulterrormap.set.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Set an error by key.
+
+
+</td></tr>
+<tr><td>
+
+[values()](./foundation-utils.defaulterrormap.values.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 

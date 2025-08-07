@@ -17,12 +17,79 @@ export declare enum GridProStatusBarTypes
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  labelValue | <code>&quot;labelValue&quot;</code> |  |
-|  loadMore | <code>&quot;loadMore&quot;</code> |  |
-|  pagination | <code>&quot;pagination&quot;</code> |  |
-|  reload | <code>&quot;reload&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+labelValue
+
+
+</td><td>
+
+`"labelValue"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+loadMore
+
+
+</td><td>
+
+`"loadMore"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+pagination
+
+
+</td><td>
+
+`"pagination"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+reload
+
+
+</td><td>
+
+`"reload"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Remarks
 

@@ -7,7 +7,7 @@ format: md
 
 ## Fixture.element property
 
-The first element in the [Fixture.view](./foundation-testing.fixture.view.md).
+The first element in the [Fixture.view](./foundation-testing.fixture.view.md)<!-- -->.
 
 **Signature:**
 

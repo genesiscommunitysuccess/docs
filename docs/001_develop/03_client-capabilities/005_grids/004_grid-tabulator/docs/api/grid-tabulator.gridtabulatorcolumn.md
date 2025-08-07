@@ -22,15 +22,104 @@ Used inside the GridTabulator element to specify column definitions for a given 
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [definition](./grid-tabulator.gridtabulatorcolumn.definition.md) |  | Partial&lt;ColumnDefinition&gt; |  |
-|  [slottedCell](./grid-tabulator.gridtabulatorcolumn.slottedcell.md) |  | HTMLElement\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[definition](./grid-tabulator.gridtabulatorcolumn.definition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Partial&lt;ColumnDefinition&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedCell](./grid-tabulator.gridtabulatorcolumn.slottedcell.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [deepClone()](./grid-tabulator.gridtabulatorcolumn.deepclone.md) |  |  |
-|  [slottedCellChanged()](./grid-tabulator.gridtabulatorcolumn.slottedcellchanged.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[deepClone()](./grid-tabulator.gridtabulatorcolumn.deepclone.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedCellChanged()](./grid-tabulator.gridtabulatorcolumn.slottedcellchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

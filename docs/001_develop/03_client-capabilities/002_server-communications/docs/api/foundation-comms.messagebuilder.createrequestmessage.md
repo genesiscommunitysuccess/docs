@@ -17,14 +17,59 @@ createRequestMessage<T = any>(resourceName: string, params?: RequestParams): Mes
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The resource name. |
-|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ The additional parameters. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The resource name.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+_(Optional)_ The additional parameters.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;T&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
 
 The request message.
 

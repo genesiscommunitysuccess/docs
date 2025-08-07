@@ -22,14 +22,106 @@ export declare class FoundationLayoutItem extends FoundationElement implements L
 
 This element is used to wrap html elements and configure their layout settings as part of the layout system.
 
-This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md).
+This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [closable](./foundation-layout.foundationlayoutitem.closable.md) |  | boolean | Boolean attribute controls whether the window can be closed in the GUI. Defaults to <code>false</code>. |
-|  [registration](./foundation-layout.foundationlayoutitem.registration.md) |  | string | Sets the registration name for the item, which can be used later to add the item via the JavaScript API using [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md). |
-|  [size](./foundation-layout.foundationlayoutitem.size.md) |  | string | optional string describing the size of the new item (see the written documentation for more info) |
-|  [title](./foundation-layout.foundationlayoutitem.title.md) |  | string | Sets the title of the item which is displayed on the tab. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[closable](./foundation-layout.foundationlayoutitem.closable.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute controls whether the window can be closed in the GUI. Defaults to `false`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[registration](./foundation-layout.foundationlayoutitem.registration.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Sets the registration name for the item, which can be used later to add the item via the JavaScript API using [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[size](./foundation-layout.foundationlayoutitem.size.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+optional string describing the size of the new item (see the written documentation for more info)
+
+
+</td></tr>
+<tr><td>
+
+[title](./foundation-layout.foundationlayoutitem.title.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Sets the title of the item which is displayed on the tab.
+
+
+</td></tr>
+</tbody></table>
 

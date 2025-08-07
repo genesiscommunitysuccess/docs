@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-criteria](./foundation-criteria.md) &gt; [createFormCriteriaBuilder](./foundation-criteria.createformcriteriabuilder.md)
 
-## createFormCriteriaBuilder variable
+## createFormCriteriaBuilder() function
 
 
 **Signature:**
@@ -13,3 +13,42 @@ format: md
 ```typescript
 createFormCriteriaBuilder: <T>(criteriaBuilder: CriteriaBuilder) => (config: ExpressionConfig, formValue: any, formData: T) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+criteriaBuilder
+
+
+</td><td>
+
+[CriteriaBuilder](./foundation-criteria.criteriabuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+(config: [ExpressionConfig](./foundation-criteria.expressionconfig.md)<!-- -->, formValue: any, formData: T) =&gt; void
+

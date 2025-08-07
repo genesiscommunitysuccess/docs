@@ -22,9 +22,39 @@ withBody(body: string): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  body | string | string |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+body
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+string
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

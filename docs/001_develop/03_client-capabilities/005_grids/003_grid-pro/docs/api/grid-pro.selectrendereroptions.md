@@ -17,10 +17,98 @@ export interface SelectRendererOptions
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [displayName](./grid-pro.selectrendereroptions.displayname.md) |  | string |  |
-|  [isDisabled?](./grid-pro.selectrendereroptions.isdisabled.md) |  | (rowData: any) =&gt; boolean | _(Optional)_ |
-|  [name](./grid-pro.selectrendereroptions.name.md) |  | string |  |
-|  [tooltip?](./grid-pro.selectrendereroptions.tooltip.md) |  | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[displayName](./grid-pro.selectrendereroptions.displayname.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisabled?](./grid-pro.selectrendereroptions.isdisabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(rowData: any) =&gt; boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[name](./grid-pro.selectrendereroptions.name.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[tooltip?](./grid-pro.selectrendereroptions.tooltip.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

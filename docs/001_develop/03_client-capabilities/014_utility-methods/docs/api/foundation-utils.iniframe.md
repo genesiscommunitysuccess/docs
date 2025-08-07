@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [inIFrame](./foundation-utils.iniframe.md)
 
-## inIFrame variable
+## inIFrame() function
 
 Returns a boolean value indicating whether the current window is inside an iframe.
 
@@ -14,3 +14,9 @@ Returns a boolean value indicating whether the current window is inside an ifram
 ```typescript
 inIFrame: () => boolean
 ```
+**Returns:**
+
+boolean
+
+true if the window is inside an iframe, false otherwise.
+

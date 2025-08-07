@@ -17,5 +17,5 @@ data: any[];
 
 ## Remarks
 
-For scenarios where you want to set data manually, without relying on `<chart-datasource>`.
+For scenarios where you want to set data manually, without relying on `<chart-datasource>`<!-- -->.
 

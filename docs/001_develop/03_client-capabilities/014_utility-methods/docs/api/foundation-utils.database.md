@@ -17,19 +17,121 @@ export interface Database<T extends DatabaseRecord>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isWorking](./foundation-utils.database.isworking.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isWorking](./foundation-utils.database.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [create(newValue)](./foundation-utils.database.create.md) |  |
-|  [delete(id)](./foundation-utils.database.delete.md) |  |
-|  [onAfterUpdate(listener)](./foundation-utils.database.onafterupdate.md) |  |
-|  [onBeforeUpdate(listener)](./foundation-utils.database.onbeforeupdate.md) |  |
-|  [read(id)](./foundation-utils.database.read.md) |  |
-|  [update(id, newValue)](./foundation-utils.database.update.md) |  |
-|  [visit(visitor)](./foundation-utils.database.visit.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[create(newValue)](./foundation-utils.database.create.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[delete(id)](./foundation-utils.database.delete.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onAfterUpdate(listener)](./foundation-utils.database.onafterupdate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onBeforeUpdate(listener)](./foundation-utils.database.onbeforeupdate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[read(id)](./foundation-utils.database.read.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[update(id, newValue)](./foundation-utils.database.update.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[visit(visitor)](./foundation-utils.database.visit.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

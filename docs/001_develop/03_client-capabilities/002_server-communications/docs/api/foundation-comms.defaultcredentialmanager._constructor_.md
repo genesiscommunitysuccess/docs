@@ -17,8 +17,51 @@ constructor(session: Session, config?: CredentialManagerConfig);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  session | [Session](./foundation-comms.session.md) |  |
-|  config | [CredentialManagerConfig](./foundation-comms.credentialmanagerconfig.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+session
+
+
+</td><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+[CredentialManagerConfig](./foundation-comms.credentialmanagerconfig.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

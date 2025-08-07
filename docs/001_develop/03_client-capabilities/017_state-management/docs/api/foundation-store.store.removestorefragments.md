@@ -17,9 +17,39 @@ removeStoreFragments(...storeFragments: Store[]): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  storeFragments | [Store](./foundation-store.store.md)\[\] | Store fragments to remove. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+storeFragments
+
+
+</td><td>
+
+[Store](./foundation-store.store.md)<!-- -->\[\]
+
+
+</td><td>
+
+Store fragments to remove.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

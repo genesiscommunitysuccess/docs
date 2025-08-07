@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [foundationGridProActionsMenuRenderer](./grid-pro.foundationgridproactionsmenurenderer.md)
 
-## foundationGridProActionsMenuRenderer variable
+## foundationGridProActionsMenuRenderer() function
 
 A function that returns a Foundation Actions Menu for configuring the component with a DesignSystem.
 
@@ -21,7 +21,47 @@ foundationGridProActionsMenuRenderer: (overrideDefinition?: import("@microsoft/f
 }, typeof ActionsMenuRenderer>
 ```
 
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideDefinition
+
+
+</td><td>
+
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [ActionsMenuRenderer](./grid-pro.actionsmenurenderer.md)<!-- -->&gt;
+
 ## Remarks
 
-HTML Element: &lt;foundation-grid-pro-actions-menu-renderer&gt;
+HTML Element: &lt;<!-- -->foundation-grid-pro-actions-menu-renderer<!-- -->&gt;
 

@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> Use AppIntent from the @finos/fdc3 package instead
+> Use AppIntent from the @<!-- -->finos/fdc3 package instead
 > 
 
 **Signature:**

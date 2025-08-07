@@ -18,21 +18,231 @@ export declare class Form extends Form_base
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [additionalRenderers](./foundation-forms.form.additionalrenderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide set of additional renderers used by the form. |
-|  [data](./foundation-forms.form.data.md) |  | any | Initial data for the form. |
-|  [hideSubmit](./foundation-forms.form.hidesubmit.md) |  | boolean | Controls the visibility of the submit button. |
-|  [jsonSchema](./foundation-forms.form.jsonschema.md) |  | JSONSchema7 | Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client. |
-|  [prefix](./foundation-forms.form.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
-|  [readonly](./foundation-forms.form.readonly.md) |  | boolean | Allows you to enable read-only mode, which disables all input on the form and hides the submit button. |
-|  [renderers](./foundation-forms.form.renderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default. |
-|  [resourceName](./foundation-forms.form.resourcename.md) |  | string | Name of the backend resource which will provide metadata used to generate form and later used for submitting data |
-|  [uischema](./foundation-forms.form.uischema.md) |  | [UiSchema](./foundation-forms.uischema.md) | UI schema used to define configuration of the layout and elements in the form Check [UiSchema](./foundation-forms.uischema.md) for possible options |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[additionalRenderers](./foundation-forms.form.additionalrenderers.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+
+
+</td><td>
+
+Allows to provide set of additional renderers used by the form.
+
+
+</td></tr>
+<tr><td>
+
+[data](./foundation-forms.form.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+Initial data for the form.
+
+
+</td></tr>
+<tr><td>
+
+[hideSubmit](./foundation-forms.form.hidesubmit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Controls the visibility of the submit button.
+
+
+</td></tr>
+<tr><td>
+
+[jsonSchema](./foundation-forms.form.jsonschema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+JSONSchema7
+
+
+</td><td>
+
+Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client.
+
+
+</td></tr>
+<tr><td>
+
+[prefix](./foundation-forms.form.prefix.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the design system prefix that will be used in renderers.
+
+
+</td></tr>
+<tr><td>
+
+[readonly](./foundation-forms.form.readonly.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Allows you to enable read-only mode, which disables all input on the form and hides the submit button.
+
+
+</td></tr>
+<tr><td>
+
+[renderers](./foundation-forms.form.renderers.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+
+
+</td><td>
+
+Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default.
+
+
+</td></tr>
+<tr><td>
+
+[resourceName](./foundation-forms.form.resourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the backend resource which will provide metadata used to generate form and later used for submitting data
+
+
+</td></tr>
+<tr><td>
+
+[uischema](./foundation-forms.form.uischema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[UiSchema](./foundation-forms.uischema.md)
+
+
+</td><td>
+
+UI schema used to define configuration of the layout and elements in the form Check [UiSchema](./foundation-forms.uischema.md) for possible options
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [reset(clearData)](./foundation-forms.form.reset.md) |  | Reset the form state |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[reset(clearData)](./foundation-forms.form.reset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Reset the form state
+
+
+</td></tr>
+</tbody></table>
 

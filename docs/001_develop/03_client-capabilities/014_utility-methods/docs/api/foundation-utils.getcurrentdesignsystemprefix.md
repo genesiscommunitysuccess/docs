@@ -17,10 +17,55 @@ export declare function getCurrentDesignSystemPrefix(element: HTMLElement, fallb
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  element | HTMLElement | The starting HTML element |
-|  fallbackPrefix | string | The prefix to fallback to if the provider is not available |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+element
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+The starting HTML element
+
+
+</td></tr>
+<tr><td>
+
+fallbackPrefix
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The prefix to fallback to if the provider is not available
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

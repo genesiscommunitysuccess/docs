@@ -9,24 +9,147 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [CriteriaBuilder](./foundation-criteria.criteriabuilder.md) | Builder class used to generate query criteria |
-|  [CriteriaSegmentedControl](./foundation-criteria.criteriasegmentedcontrol.md) | Main class which defines the criteria segmented control component. |
-|  [ExpressionBuilder](./foundation-criteria.expressionbuilder.md) |  |
-|  [Join](./foundation-criteria.join.md) | Used to describe how Expressions are joined |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CriteriaBuilder](./foundation-criteria.criteriabuilder.md)
+
+
+</td><td>
+
+Builder class used to generate query criteria
+
+
+</td></tr>
+<tr><td>
+
+[CriteriaSegmentedControl](./foundation-criteria.criteriasegmentedcontrol.md)
+
+
+</td><td>
+
+Main class which defines the criteria segmented control component.
+
+
+</td></tr>
+<tr><td>
+
+[ExpressionBuilder](./foundation-criteria.expressionbuilder.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[Join](./foundation-criteria.join.md)
+
+
+</td><td>
+
+Used to describe how Expressions are joined
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createFormCriteriaBuilder(criteriaBuilder)](./foundation-criteria.createformcriteriabuilder.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [createFormCriteriaBuilder](./foundation-criteria.createformcriteriabuilder.md) |  |
-|  [Serialisers](./foundation-criteria.serialisers.md) | Functions to to serialise an Expression to a string |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Serialisers](./foundation-criteria.serialisers.md)
+
+
+</td><td>
+
+Functions to to serialise an Expression to a string
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ExpressionConfig](./foundation-criteria.expressionconfig.md) | Interface for fields to implement to generate expression criteria |
-|  [ExpressionConfigMap](./foundation-criteria.expressionconfigmap.md) | Maps form fields to expression configuration |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ExpressionConfig](./foundation-criteria.expressionconfig.md)
+
+
+</td><td>
+
+Interface for fields to implement to generate expression criteria
+
+
+</td></tr>
+<tr><td>
+
+[ExpressionConfigMap](./foundation-criteria.expressionconfigmap.md)
+
+
+</td><td>
+
+Maps form fields to expression configuration
+
+
+</td></tr>
+</tbody></table>
 

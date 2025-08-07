@@ -17,10 +17,55 @@ export declare function gridProColumns<TSource = any>(itemsBinding: Binding<TSou
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  itemsBinding | Binding&lt;TSource, readonly ColDef\[\]&gt; \| readonly ColDef\[\] | The array to render |
-|  includeRenderers | boolean | _(Optional)_ Optionally tells whether to include cell renderers, if available |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+itemsBinding
+
+
+</td><td>
+
+Binding&lt;TSource, readonly ColDef\[\]&gt; \| readonly ColDef\[\]
+
+
+</td><td>
+
+The array to render
+
+
+</td></tr>
+<tr><td>
+
+includeRenderers
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Optionally tells whether to include cell renderers, if available
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -9,31 +9,249 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [InteropNotificationsListener](./foundation-fdc3.interopnotificationslistener.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Fdc3ContextListener](./foundation-fdc3.fdc3contextlistener.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-context-listener listen to app channel context
+
+
+</td></tr>
+<tr><td>
+
+[Fdc3IntentListener](./foundation-fdc3.fdc3intentlistener.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-system-channel-listener Util element to listen to the context on a fdc3 app channel
+
+
+</td></tr>
+<tr><td>
+
+[Fdc3RaiseIntent](./foundation-fdc3.fdc3raiseintent.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-raise-intent
+
+
+</td></tr>
+<tr><td>
+
+[Fdc3SystemChannelListener](./foundation-fdc3.fdc3systemchannellistener.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-system-channel-listener Util element to listen to the context on a fdc3 system channel
+
+
+</td></tr>
+<tr><td>
+
+[InteropNotificationsListener](./foundation-fdc3.interopnotificationslistener.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[interopFoundationNotificationListener(overrideDefinition)](./foundation-fdc3.interopfoundationnotificationlistener.md)
+
+
+</td><td>
+
+The Foundation Interop Notification Listener
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [FDC3](./foundation-fdc3.fdc3.md) | The FDC3 API interface. |
-|  [FDC3AppIntent](./foundation-fdc3.fdc3appintent.md) |  |
-|  [FDC3Channel](./foundation-fdc3.fdc3channel.md) |  |
-|  [FDC3Context](./foundation-fdc3.fdc3context.md) |  |
-|  [FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md) |  |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AppChannelListenerConfig](./foundation-fdc3.appchannellistenerconfig.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-context-listener listen channel config
+
+
+</td></tr>
+<tr><td>
+
+[FDC3](./foundation-fdc3.fdc3.md)
+
+
+</td><td>
+
+The FDC3 API interface.
+
+
+</td></tr>
+<tr><td>
+
+[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[FDC3Channel](./foundation-fdc3.fdc3channel.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[FDC3Context](./foundation-fdc3.fdc3context.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[IntentConfig](./foundation-fdc3.intentconfig.md)
+
+
+</td><td>
+
+**_(ALPHA)_** fdc3-intent-listener listen intent config
+
+
+</td></tr>
+<tr><td>
+
+[SystemChannelListenerConfig](./foundation-fdc3.systemchannellistenerconfig.md)
+
+
+</td><td>
+
+**_(ALPHA)_** System channel listener config. System channels are also known as color channels
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [interopFoundationNotificationListener](./foundation-fdc3.interopfoundationnotificationlistener.md) | The Foundation Interop Notification Listener |
-|  [logger](./foundation-fdc3.logger.md) | Logger for the foundation-fdc3 package |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[logger](./foundation-fdc3.logger.md)
+
+
+</td><td>
+
+Logger for the foundation-fdc3 package
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md) |  |
-|  [FDC3Intents](./foundation-fdc3.fdc3intents.md) |  |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[FDC3Intents](./foundation-fdc3.fdc3intents.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

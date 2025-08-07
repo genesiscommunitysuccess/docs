@@ -17,17 +17,133 @@ export declare class CriteriaBuilder
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [And](./foundation-criteria.criteriabuilder.and.md) |  | (expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this |  |
-|  [Not](./foundation-criteria.criteriabuilder.not.md) |  | (expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this |  |
-|  [Or](./foundation-criteria.criteriabuilder.or.md) |  | (expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[And](./foundation-criteria.criteriabuilder.and.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Not](./foundation-criteria.criteriabuilder.not.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Or](./foundation-criteria.criteriabuilder.or.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(expression: ValidExpressionType, options?: ExpressionOptions) =&gt; this
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build(outputFn)](./foundation-criteria.criteriabuilder.build.md) |  |  |
-|  [reset()](./foundation-criteria.criteriabuilder.reset.md) |  |  |
-|  [withExpression(expression, options, groupJoin)](./foundation-criteria.criteriabuilder.withexpression.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build(outputFn)](./foundation-criteria.criteriabuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reset()](./foundation-criteria.criteriabuilder.reset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withExpression(expression, options, groupJoin)](./foundation-criteria.criteriabuilder.withexpression.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

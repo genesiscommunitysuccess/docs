@@ -17,16 +17,144 @@ export declare class SocketMessageHandler
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(message, onMessage, onError, isSubscription)](./foundation-comms.socketmessagehandler._constructor_.md) |  | Constructs a new instance of the <code>SocketMessageHandler</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(message, onMessage, onError, isSubscription)](./foundation-comms.socketmessagehandler._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `SocketMessageHandler` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isSubscription](./foundation-comms.socketmessagehandler.issubscription.md) | <code>readonly</code> | boolean | Whether the message handler is a subscription. |
-|  [onReceivedError](./foundation-comms.socketmessagehandler.onreceivederror.md) | <code>readonly</code> | Function | The handler function for errors. |
-|  [onReceivedMessage](./foundation-comms.socketmessagehandler.onreceivedmessage.md) | <code>readonly</code> | Function | The handler function for incoming messages. |
-|  [sentMessage](./foundation-comms.socketmessagehandler.sentmessage.md) | <code>readonly</code> | [Message](./foundation-comms.message.md) | The message that was sent. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isSubscription](./foundation-comms.socketmessagehandler.issubscription.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Whether the message handler is a subscription.
+
+
+</td></tr>
+<tr><td>
+
+[onReceivedError](./foundation-comms.socketmessagehandler.onreceivederror.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+The handler function for errors.
+
+
+</td></tr>
+<tr><td>
+
+[onReceivedMessage](./foundation-comms.socketmessagehandler.onreceivedmessage.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+The handler function for incoming messages.
+
+
+</td></tr>
+<tr><td>
+
+[sentMessage](./foundation-comms.socketmessagehandler.sentmessage.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+The message that was sent.
+
+
+</td></tr>
+</tbody></table>
 

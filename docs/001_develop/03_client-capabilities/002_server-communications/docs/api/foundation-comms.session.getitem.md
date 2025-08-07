@@ -17,10 +17,55 @@ getItem(key: string | UserInfoKeys, storage: StorageType): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | string \| UserInfoKeys | The key to get. |
-|  storage | [StorageType](./foundation-comms.storagetype.md) | The storage type to use. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+string \| UserInfoKeys
+
+
+</td><td>
+
+The key to get.
+
+
+</td></tr>
+<tr><td>
+
+storage
+
+
+</td><td>
+
+[StorageType](./foundation-comms.storagetype.md)
+
+
+</td><td>
+
+The storage type to use.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

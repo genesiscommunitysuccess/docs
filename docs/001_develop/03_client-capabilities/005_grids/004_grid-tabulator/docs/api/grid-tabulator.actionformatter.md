@@ -17,10 +17,55 @@ export declare function actionFormatter<T = any>(cell: any, formatterParams?: Ac
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  cell | any | The cell component provided by Tabulator |
-|  formatterParams | ActionFormatterParams&lt;T&gt; | _(Optional)_ Action formatter parameters |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+cell
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The cell component provided by Tabulator
+
+
+</td></tr>
+<tr><td>
+
+formatterParams
+
+
+</td><td>
+
+[ActionFormatterParams](./grid-tabulator.actionformatterparams.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+_(Optional)_ Action formatter parameters
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
