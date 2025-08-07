@@ -5,11 +5,22 @@ on:
     # Run every day at 9 AM UTC
     - cron: '0 9 * * *'
   workflow_dispatch:
-    # Allow manual triggering
+    # Allow manual triggering with inputs
+    inputs:
+      target_branch:
+        description: 'Target branch to sync API docs to'
+        required: false
+        default: 'preprod'
+        type: choice
+        options:
+          - preprod
+          - main
+          - sync-api-docs-2025-08-07T15-03-54
   push:
-    # TESTING: Trigger on any push to this branch
+    # TESTING: Trigger on any push to these branches
     branches:
       - sync-api-docs-2025-08-07T15-03-54
+      - preprod
 
 jobs:
   sync-api-docs:
@@ -25,6 +36,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          ref: ${{ github.event.inputs.target_branch || github.ref_name }}
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -83,7 +95,7 @@ jobs:
             
             This is an automated update. Please review the changes and merge if everything looks good.
           branch: sync-api-docs-${{ github.run_id }}
-          base: preprod
+          base: ${{ github.event.inputs.target_branch || 'preprod' }}
           delete-branch: true
           labels: |
             automated
