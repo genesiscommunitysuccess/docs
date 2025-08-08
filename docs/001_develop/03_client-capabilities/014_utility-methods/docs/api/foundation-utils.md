@@ -9,146 +9,1320 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [DefaultErrorMap](./foundation-utils.defaulterrormap.md) |  |
-|  [DefaultServerRowDTOMapper](./foundation-utils.defaultserverrowdtomapper.md) | The default <code>ServerRowDTOMapper</code>. |
-|  [InMemoryDatabase](./foundation-utils.inmemorydatabase.md) | An in memory database of specific DatabaseRecord types. |
-|  [NumberParser](./foundation-utils.numberparser.md) |  |
-|  [SlottedStyles](./foundation-utils.slottedstyles.md) | A custom element that encapsulates a set of styles that can be applied to slotted elements. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DefaultErrorMap](./foundation-utils.defaulterrormap.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[DefaultServerRowDTOMapper](./foundation-utils.defaultserverrowdtomapper.md)
+
+
+</td><td>
+
+The default `ServerRowDTOMapper`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[InMemoryDatabase](./foundation-utils.inmemorydatabase.md)
+
+
+</td><td>
+
+An in memory database of specific DatabaseRecord types.
+
+
+</td></tr>
+<tr><td>
+
+[NumberParser](./foundation-utils.numberparser.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SlottedStyles](./foundation-utils.slottedstyles.md)
+
+
+</td><td>
+
+A custom element that encapsulates a set of styles that can be applied to slotted elements.
+
+
+</td></tr>
+</tbody></table>
 
 ## Enumerations
 
-|  Enumeration | Description |
-|  --- | --- |
-|  [FontStyle](./foundation-utils.fontstyle.md) | An enum of possible font styles. |
-|  [FontWeight](./foundation-utils.fontweight.md) | An enum of possible font weights. |
-|  [PendingStateEvents](./foundation-utils.pendingstateevents.md) | An enum that defines the names of the events that can be raised by the <code>PendingState</code> mixin. |
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FontStyle](./foundation-utils.fontstyle.md)
+
+
+</td><td>
+
+An enum of possible font styles.
+
+
+</td></tr>
+<tr><td>
+
+[FontWeight](./foundation-utils.fontweight.md)
+
+
+</td><td>
+
+An enum of possible font weights.
+
+
+</td></tr>
+<tr><td>
+
+[PendingStateEvents](./foundation-utils.pendingstateevents.md)
+
+
+</td><td>
+
+An enum that defines the names of the events that can be raised by the `PendingState` mixin.
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [assureDesignSystem(module)](./foundation-utils.assuredesignsystem.md) | assureDesignSystem. |
-|  [createLogger(name, options)](./foundation-utils.createlogger.md) | Creates a logger with the given name and options. |
-|  [customNumberParser(value)](./foundation-utils.customnumberparser.md) | A Default Number Parser for deserializing objects. |
-|  [formatDateTimestamp(timestamp)](./foundation-utils.formatdatetimestamp.md) | Formats \[DATE\] UNIX Timestamps (without time) to readable strings |
-|  [formatDateTimeTimestamp(timestamp)](./foundation-utils.formatdatetimetimestamp.md) | Formats \[DATETIME\] UNIX Timestamps (with time) to readable strings |
-|  [formatTimestamp(timestamp, withTime)](./foundation-utils.formattimestamp.md) | Formats \[DATE\|DATETIME\] Unix Timestamps to readable strings |
-|  [getCurrentDesignSystemPrefix(element, fallbackPrefix)](./foundation-utils.getcurrentdesignsystemprefix.md) | Get the current design system prefix by checking available providers. If no provider is found, falls back to the provided prefix. |
-|  [getDateFormatter(locale, options)](./foundation-utils.getdateformatter.md) |  |
-|  [getNumberFormatter(format, locale)](./foundation-utils.getnumberformatter.md) |  |
-|  [JSONReplacer(key, value)](./foundation-utils.jsonreplacer.md) | JSON replacer function. |
-|  [JSONReviver(key, value)](./foundation-utils.jsonreviver.md) | JSON reviver function. |
-|  [mapGenesisJsonSchema(jsonSchemResponse)](./foundation-utils.mapgenesisjsonschema.md) | Takes in a valid response from <code>connect.getJsonSchema(resourceName)</code> and maps it to a JsonSchema extended with the genesisType metadata for a field |
-|  [mapJsonSchemaFieldToExprBuilderField(\[name, schema\])](./foundation-utils.mapjsonschemafieldtoexprbuilderfield.md) | <p>Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.</p><p>Only sets the properties that are \*required\*. Optional properties, such as <code>defaultValue</code>, must be explicitly set by the user separately.</p> |
-|  [reactive(object, deep)](./foundation-utils.reactive.md) | **_(BETA)_** Converts a plain object to a reactive, observable object. |
-|  [renderOnChange(target, name)](./foundation-utils.renderonchange.md) | Defines a property changed handler that calls a render() method on the target as an internal observation enhancement. |
-|  [sync(binding, conversionType, eventName, keyAttr)](./foundation-utils.sync.md) | Creates a synchronization directive that binds a data source to an HTML element, |
-|  [toElementStyles(styles)](./foundation-utils.toelementstyles.md) | toElementStyles. |
-|  [visitObject(object, deep, visitor, data, traversed)](./foundation-utils.visitobject.md) | **_(BETA)_** Visit object utility. |
-|  [whenElse(binding, trueTemplateOrTemplateBinding, falseTemplateOrTemplateBinding)](./foundation-utils.whenelse.md) | Directive that allows supplying an "else" template to the traditional [https://www.fast.design/docs/api/fast-element.when/\#when-function](https://www.fast.design/docs/api/fast-element.when/#when-function) directive |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[assureDesignSystem(module)](./foundation-utils.assuredesignsystem.md)
+
+
+</td><td>
+
+assureDesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[createErrorMap(logger)](./foundation-utils.createerrormap.md)
+
+
+</td><td>
+
+A factory to create the error map.
+
+
+</td></tr>
+<tr><td>
+
+[createLogger(name, options)](./foundation-utils.createlogger.md)
+
+
+</td><td>
+
+Creates a logger with the given name and options.
+
+
+</td></tr>
+<tr><td>
+
+[createObserver()](./foundation-utils.createobserver.md)
+
+
+</td><td>
+
+Creates a new event observer instance.
+
+
+</td></tr>
+<tr><td>
+
+[customNumberParser(value)](./foundation-utils.customnumberparser.md)
+
+
+</td><td>
+
+A Default Number Parser for deserializing objects.
+
+
+</td></tr>
+<tr><td>
+
+[decodeFromBase64(base64Value)](./foundation-utils.decodefrombase64.md)
+
+
+</td><td>
+
+Decodes a value from base64.
+
+
+</td></tr>
+<tr><td>
+
+[decodeFromBase64WithPrefix(value)](./foundation-utils.decodefrombase64withprefix.md)
+
+
+</td><td>
+
+Decodes a value from base64 with a prefix.
+
+
+</td></tr>
+<tr><td>
+
+[delay(ms)](./foundation-utils.delay.md)
+
+
+</td><td>
+
+Delay for a given number of milliseconds
+
+
+</td></tr>
+<tr><td>
+
+[encodeToBase64(value)](./foundation-utils.encodetobase64.md)
+
+
+</td><td>
+
+Encodes the given value to base64.
+
+
+</td></tr>
+<tr><td>
+
+[encodeToBase64WithPrefix(value)](./foundation-utils.encodetobase64withprefix.md)
+
+
+</td><td>
+
+Encodes the given value with a prefix to base64.
+
+
+</td></tr>
+<tr><td>
+
+[formatDateTimestamp(timestamp)](./foundation-utils.formatdatetimestamp.md)
+
+
+</td><td>
+
+Formats \[DATE\] UNIX Timestamps (without time) to readable strings
+
+
+</td></tr>
+<tr><td>
+
+[formatDateTimeTimestamp(timestamp)](./foundation-utils.formatdatetimetimestamp.md)
+
+
+</td><td>
+
+Formats \[DATETIME\] UNIX Timestamps (with time) to readable strings
+
+
+</td></tr>
+<tr><td>
+
+[formatDateTimeTimestampWithMilliseconds(timestamp)](./foundation-utils.formatdatetimetimestampwithmilliseconds.md)
+
+
+</td><td>
+
+Formats \[DATETIME\] UNIX Timestamps (with time and milliseconds) to readable strings
+
+
+</td></tr>
+<tr><td>
+
+[formatTimestamp(timestamp, withTime)](./foundation-utils.formattimestamp.md)
+
+
+</td><td>
+
+Formats \[DATE\|DATETIME\] Unix Timestamps to readable strings
+
+
+</td></tr>
+<tr><td>
+
+[getCurrentDesignSystemPrefix(element, fallbackPrefix)](./foundation-utils.getcurrentdesignsystemprefix.md)
+
+
+</td><td>
+
+Get the current design system prefix by checking available providers. If no provider is found, falls back to the provided prefix.
+
+
+</td></tr>
+<tr><td>
+
+[getDateFormatter(locale, options)](./foundation-utils.getdateformatter.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[getFontMixin(family, style, weight)](./foundation-utils.getfontmixin.md)
+
+
+</td><td>
+
+Generates a CSS mixin for the specified font family, style, and weight.
+
+
+</td></tr>
+<tr><td>
+
+[getNumberFormatter(format, locale)](./foundation-utils.getnumberformatter.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[inIFrame()](./foundation-utils.iniframe.md)
+
+
+</td><td>
+
+Returns a boolean value indicating whether the current window is inside an iframe.
+
+
+</td></tr>
+<tr><td>
+
+[insertDocumentCSSRule(cssRule, styleElementId)](./foundation-utils.insertdocumentcssrule.md)
+
+
+</td><td>
+
+Inserts a CSS rule into the document by creating a new style element or using an existing one with the specified ID. Returns a function that can be called to remove the rule from the document.
+
+
+</td></tr>
+<tr><td>
+
+[insertDocumentLink(href)](./foundation-utils.insertdocumentlink.md)
+
+
+</td><td>
+
+Inserts a CSS link into the document if it doesn't already exist.
+
+
+</td></tr>
+<tr><td>
+
+[inSymphonyDesktop()](./foundation-utils.insymphonydesktop.md)
+
+
+</td><td>
+
+Returns a boolean value indicating whether the user is running the Symphony desktop app.
+
+
+</td></tr>
+<tr><td>
+
+[isDev()](./foundation-utils.isdev.md)
+
+
+</td><td>
+
+Determines if the current environment is a development environment.
+
+
+</td></tr>
+<tr><td>
+
+[JSONReplacer(key, value)](./foundation-utils.jsonreplacer.md)
+
+
+</td><td>
+
+JSON replacer function.
+
+
+</td></tr>
+<tr><td>
+
+[JSONReviver(key, value)](./foundation-utils.jsonreviver.md)
+
+
+</td><td>
+
+JSON reviver function.
+
+
+</td></tr>
+<tr><td>
+
+[LifecycleMixin(Base)](./foundation-utils.lifecyclemixin.md)
+
+
+</td><td>
+
+**_(BETA)_** Mixin class to expose `shouldRunConnect` and `shouldRunDisconnect`
+
+
+</td></tr>
+<tr><td>
+
+[loadFontFaces(fontFaceRules, styleElementId)](./foundation-utils.loadfontfaces.md)
+
+
+</td><td>
+
+Loads font faces by inserting a style element with the specified font face rules into the document.
+
+
+</td></tr>
+<tr><td>
+
+[mapGenesisJsonSchema(jsonSchemResponse)](./foundation-utils.mapgenesisjsonschema.md)
+
+
+</td><td>
+
+Takes in a valid response from `connect.getJsonSchema(resourceName)` and maps it to a JsonSchema extended with the genesisType metadata for a field
+
+
+</td></tr>
+<tr><td>
+
+[mapJsonSchemaFieldToExprBuilderField(\[name, schema\])](./foundation-utils.mapjsonschemafieldtoexprbuilderfield.md)
+
+
+</td><td>
+
+Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.
+
+Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`<!-- -->, must be explicitly set by the user separately.
+
+
+</td></tr>
+<tr><td>
+
+[openPopup(urlNavigate, target, popUpWidth, popUpHeight)](./foundation-utils.openpopup.md)
+
+
+</td><td>
+
+Opens a new browser window with the specified URL, target, width, and height.
+
+
+</td></tr>
+<tr><td>
+
+[PendingState(Base)](./foundation-utils.pendingstate.md)
+
+
+</td><td>
+
+The `PendingState` mixin.
+
+
+</td></tr>
+<tr><td>
+
+[reactive(object, deep)](./foundation-utils.reactive.md)
+
+
+</td><td>
+
+**_(BETA)_** Converts a plain object to a reactive, observable object.
+
+
+</td></tr>
+<tr><td>
+
+[renderOnChange(target, name)](./foundation-utils.renderonchange.md)
+
+
+</td><td>
+
+Defines a property changed handler that calls a render() method on the target as an internal observation enhancement.
+
+
+</td></tr>
+<tr><td>
+
+[resolveAfter(ms, valueCreator)](./foundation-utils.resolveafter.md)
+
+
+</td><td>
+
+Resolve a promise after a timeout.
+
+
+</td></tr>
+<tr><td>
+
+[respondToVisibility(element, callback)](./foundation-utils.respondtovisibility.md)
+
+
+</td><td>
+
+Setup an `IntersectionObserver` which will activate a callback function when an element becomes visible on screen
+
+
+</td></tr>
+<tr><td>
+
+[sync(binding, conversionType, eventName, keyAttr)](./foundation-utils.sync.md)
+
+
+</td><td>
+
+Creates a synchronization directive that binds a data source to an HTML element,
+
+
+</td></tr>
+<tr><td>
+
+[toElementStyles(styles)](./foundation-utils.toelementstyles.md)
+
+
+</td><td>
+
+toElementStyles.
+
+
+</td></tr>
+<tr><td>
+
+[visitObject(object, deep, visitor, data, traversed)](./foundation-utils.visitobject.md)
+
+
+</td><td>
+
+**_(BETA)_** Visit object utility.
+
+
+</td></tr>
+<tr><td>
+
+[whenElse(binding, trueTemplateOrTemplateBinding, falseTemplateOrTemplateBinding)](./foundation-utils.whenelse.md)
+
+
+</td><td>
+
+Directive that allows supplying an "else" template to the traditional [https://www.fast.design/docs/api/fast-element.when/\#when-function](https://www.fast.design/docs/api/fast-element.when/#when-function) directive
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [Database](./foundation-utils.database.md) | Represents a database with basic CRUD operations. |
-|  [DatabaseRecord](./foundation-utils.databaserecord.md) | Represents a database record. |
-|  [DesignSystemModule](./foundation-utils.designsystemmodule.md) | DesignSystemModule. |
-|  [DTOMapper](./foundation-utils.dtomapper.md) |  |
-|  [ErrorMap](./foundation-utils.errormap.md) |  |
-|  [JSONSerializer](./foundation-utils.jsonserializer.md) | An interface representing a JSON serializer. |
-|  [JSONSerializerConfig](./foundation-utils.jsonserializerconfig.md) | Configuration options for the JSONSerializer Config instance. |
-|  [Logger](./foundation-utils.logger.md) | A logger that extends the <code>Consola</code> logger. |
-|  [LoggerOptions](./foundation-utils.loggeroptions.md) | Options for creating a logger. |
-|  [ObjectVisitor](./foundation-utils.objectvisitor.md) | **_(BETA)_** |
-|  [Observer](./foundation-utils.observer.md) | Represents an event observer that manages the subscription and publication of events. |
-|  [ServerRowDTOMapper](./foundation-utils.serverrowdtomapper.md) | A mapper for converting between server row DTOs and entities. Provides methods to get/set a ServerRow DTO entity mapping. |
-|  [UUID](./foundation-utils.uuid.md) | An interface for generating UUIDs. |
-|  [UUIDConfig](./foundation-utils.uuidconfig.md) | A configuration object for customizing UUID generation. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Database](./foundation-utils.database.md)
+
+
+</td><td>
+
+Represents a database with basic CRUD operations.
+
+
+</td></tr>
+<tr><td>
+
+[DatabaseRecord](./foundation-utils.databaserecord.md)
+
+
+</td><td>
+
+Represents a database record.
+
+
+</td></tr>
+<tr><td>
+
+[DesignSystemModule](./foundation-utils.designsystemmodule.md)
+
+
+</td><td>
+
+DesignSystemModule.
+
+
+</td></tr>
+<tr><td>
+
+[DTOMapper](./foundation-utils.dtomapper.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ErrorMap](./foundation-utils.errormap.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[JSONSerializer](./foundation-utils.jsonserializer.md)
+
+
+</td><td>
+
+An interface representing a JSON serializer.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSerializerConfig](./foundation-utils.jsonserializerconfig.md)
+
+
+</td><td>
+
+Configuration options for the JSONSerializer Config instance.
+
+
+</td></tr>
+<tr><td>
+
+[Logger](./foundation-utils.logger.md)
+
+
+</td><td>
+
+A logger that extends the `Consola` logger.
+
+
+</td></tr>
+<tr><td>
+
+[LoggerOptions](./foundation-utils.loggeroptions.md)
+
+
+</td><td>
+
+Options for creating a logger.
+
+
+</td></tr>
+<tr><td>
+
+[ObjectVisitor](./foundation-utils.objectvisitor.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[Observer](./foundation-utils.observer.md)
+
+
+</td><td>
+
+Represents an event observer that manages the subscription and publication of events.
+
+
+</td></tr>
+<tr><td>
+
+[ServerRowDTOMapper](./foundation-utils.serverrowdtomapper.md)
+
+
+</td><td>
+
+A mapper for converting between server row DTOs and entities. Provides methods to get/set a ServerRow DTO entity mapping.
+
+
+</td></tr>
+<tr><td>
+
+[UUID](./foundation-utils.uuid.md)
+
+
+</td><td>
+
+An interface for generating UUIDs.
+
+
+</td></tr>
+<tr><td>
+
+[UUIDConfig](./foundation-utils.uuidconfig.md)
+
+
+</td><td>
+
+A configuration object for customizing UUID generation.
+
+
+</td></tr>
+</tbody></table>
 
 ## Namespaces
 
-|  Namespace | Description |
-|  --- | --- |
-|  [DatabaseAccessResult](./foundation-utils.databaseaccessresult.md) | Namespace for database access result types. |
-|  [DatabaseEvent](./foundation-utils.databaseevent.md) | Namespace for database events. |
-|  [Genesis](./foundation-utils.genesis.md) |  |
+<table><thead><tr><th>
+
+Namespace
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DatabaseAccessResult](./foundation-utils.databaseaccessresult.md)
+
+
+</td><td>
+
+Namespace for database access result types.
+
+
+</td></tr>
+<tr><td>
+
+[DatabaseEvent](./foundation-utils.databaseevent.md)
+
+
+</td><td>
+
+Namespace for database events.
+
+
+</td></tr>
+<tr><td>
+
+[Genesis](./foundation-utils.genesis.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [activeColorScheme](./foundation-utils.activecolorscheme.md) | A design token that represents the active color scheme (light or dark). |
-|  [API\_HOST](./foundation-utils.api_host.md) | The Genesis Server URL (WebSocket or HTTP). |
-|  [BUILDER](./foundation-utils.builder.md) | The builder aka file bundler. |
-|  [CHANGE\_PASSWORD\_URL](./foundation-utils.change_password_url.md) |  |
-|  [createErrorMap](./foundation-utils.createerrormap.md) | A factory to create the error map. |
-|  [createObserver](./foundation-utils.createobserver.md) | Creates a new event observer instance. |
-|  [decodeFromBase64](./foundation-utils.decodefrombase64.md) | Decodes a value from base64. |
-|  [decodeFromBase64WithPrefix](./foundation-utils.decodefrombase64withprefix.md) | Decodes a value from base64 with a prefix. |
-|  [DEFAULT\_ORGANISATION](./foundation-utils.default_organisation.md) | The default Organisation value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
-|  [DEFAULT\_PASSWORD](./foundation-utils.default_password.md) | The default Password value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
-|  [DEFAULT\_USER](./foundation-utils.default_user.md) | The default Username value, used in auth/login flow \[<code>genesislcap-foundation-login</code>\](https://link-to-docs). |
-|  [defaultEventMap](./foundation-utils.defaulteventmap.md) | A map that associates specific HTML element tags with their corresponding default event names. |
-|  [defaultJSONSerializerConfig](./foundation-utils.defaultjsonserializerconfig.md) | A Default JSONSerializer Config for serializing and deserializing functions. |
-|  [defaultLoggerOptions](./foundation-utils.defaultloggeroptions.md) | The default logger options. |
-|  [delay](./foundation-utils.delay.md) | Delay for a given number of milliseconds |
-|  [encodeToBase64](./foundation-utils.encodetobase64.md) | Encodes the given value to base64. |
-|  [encodeToBase64WithPrefix](./foundation-utils.encodetobase64withprefix.md) | Encodes the given value with a prefix to base64. |
-|  [FORCE\_HTTP](./foundation-utils.force_http.md) | The path to a JSON config file for the HTTP mode. |
-|  [FORGOT\_PASSWORD\_URL](./foundation-utils.forgot_password_url.md) |  |
-|  [GENESIS\_SOCKET\_URL](./foundation-utils.genesis_socket_url.md) | Genesis Socket URL |
-|  [getFontMixin](./foundation-utils.getfontmixin.md) | Generates a CSS mixin for the specified font family, style, and weight. |
-|  [HTTP\_CONFIG](./foundation-utils.http_config.md) | Configuration settings for HTTP, used in http connect flow \[<code>genesislcap-foundation-comms.HttpConnectConfig</code>\](https://link-to-docs). |
-|  [inIFrame](./foundation-utils.iniframe.md) | Returns a boolean value indicating whether the current window is inside an iframe. |
-|  [insertDocumentCSSRule](./foundation-utils.insertdocumentcssrule.md) | Inserts a CSS rule into the document by creating a new style element or using an existing one with the specified ID. Returns a function that can be called to remove the rule from the document. |
-|  [insertDocumentLink](./foundation-utils.insertdocumentlink.md) | Inserts a CSS link into the document if it doesn't already exist. |
-|  [inSymphonyDesktop](./foundation-utils.insymphonydesktop.md) | Returns a boolean value indicating whether the user is running the Symphony desktop app. |
-|  [isDev](./foundation-utils.isdev.md) | Determines if the current environment is a development environment. |
-|  [JSONSerializer](./foundation-utils.jsonserializer.md) | A DI token for the JSON serializer. |
-|  [layoutCacheDocument](./foundation-utils.layoutcachedocument.md) | Stored on the layout's internal cache to signify that the document is not part of the DOM |
-|  [LifecycleMixin](./foundation-utils.lifecyclemixin.md) | **_(BETA)_** Mixin class to expose <code>shouldRunConnect</code> and <code>shouldRunDisconnect</code> |
-|  [loadFontFaces](./foundation-utils.loadfontfaces.md) | Loads font faces by inserting a style element with the specified font face rules into the document. |
-|  [logger](./foundation-utils.logger.md) | Logger for the foundation-utils package |
-|  [LOGIN\_DETAILS\_URL](./foundation-utils.login_details_url.md) |  |
-|  [LOGIN\_REFRESH\_URL](./foundation-utils.login_refresh_url.md) |  |
-|  [LOGIN\_URL](./foundation-utils.login_url.md) |  |
-|  [LOGOUT\_URL](./foundation-utils.logout_url.md) |  |
-|  [openPopup](./foundation-utils.openpopup.md) | Opens a new browser window with the specified URL, target, width, and height. |
-|  [PendingState](./foundation-utils.pendingstate.md) | The <code>PendingState</code> mixin. |
-|  [POPUP\_DEFAULT\_HEIGHT](./foundation-utils.popup_default_height.md) | The default height (in pixels) for pop-up windows. |
-|  [POPUP\_DEFAULT\_WIDTH](./foundation-utils.popup_default_width.md) | The default width (in pixels) for pop-up windows. |
-|  [PUBLIC\_PATH](./foundation-utils.public_path.md) | The public path. |
-|  [RESET\_PASSWORD\_URL](./foundation-utils.reset_password_url.md) |  |
-|  [resolveAfter](./foundation-utils.resolveafter.md) | Resolve a promise after a timeout. |
-|  [ResourceType](./foundation-utils.resourcetype.md) | An object that defines two resource types: "local" and "remote". |
-|  [respondToVisibility](./foundation-utils.respondtovisibility.md) | Setup an <code>IntersectionObserver</code> which will activate a callback function when an element becomes visible on screen |
-|  [ServerRowDTOMapper](./foundation-utils.serverrowdtomapper.md) | A DI token used to obtain a <code>ServerRowDTOMapper</code> instance. |
-|  [SOCKET\_EXT](./foundation-utils.socket_ext.md) | The sub-path used for WebSocket connections when API\_HOST is not set |
-|  [SSO\_LIST\_URL](./foundation-utils.sso_list_url.md) |  |
-|  [SSO\_LOGIN\_URL](./foundation-utils.sso_login_url.md) |  |
-|  [TypeRampValues](./foundation-utils.typerampvalues.md) | An object containing type ramp values. |
-|  [UUID](./foundation-utils.uuid.md) | A dependency injection token for the UUID interface. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[activeColorScheme](./foundation-utils.activecolorscheme.md)
+
+
+</td><td>
+
+A design token that represents the active color scheme (light or dark).
+
+
+</td></tr>
+<tr><td>
+
+[API\_HOST](./foundation-utils.api_host.md)
+
+
+</td><td>
+
+The Genesis Server URL (WebSocket or HTTP).
+
+
+</td></tr>
+<tr><td>
+
+[BUILDER](./foundation-utils.builder.md)
+
+
+</td><td>
+
+The builder aka file bundler.
+
+
+</td></tr>
+<tr><td>
+
+[CHANGE\_PASSWORD\_URL](./foundation-utils.change_password_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_ORGANISATION](./foundation-utils.default_organisation.md)
+
+
+</td><td>
+
+The default Organisation value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_PASSWORD](./foundation-utils.default_password.md)
+
+
+</td><td>
+
+The default Password value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_USER](./foundation-utils.default_user.md)
+
+
+</td><td>
+
+The default Username value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+
+
+</td></tr>
+<tr><td>
+
+[defaultEventMap](./foundation-utils.defaulteventmap.md)
+
+
+</td><td>
+
+A map that associates specific HTML element tags with their corresponding default event names.
+
+
+</td></tr>
+<tr><td>
+
+[defaultJSONSerializerConfig](./foundation-utils.defaultjsonserializerconfig.md)
+
+
+</td><td>
+
+A Default JSONSerializer Config for serializing and deserializing functions.
+
+
+</td></tr>
+<tr><td>
+
+[defaultLoggerOptions](./foundation-utils.defaultloggeroptions.md)
+
+
+</td><td>
+
+The default logger options.
+
+
+</td></tr>
+<tr><td>
+
+[ENVIRONMENT\_LEVEL](./foundation-utils.environment_level.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[FORCE\_HTTP](./foundation-utils.force_http.md)
+
+
+</td><td>
+
+The path to a JSON config file for the HTTP mode.
+
+
+</td></tr>
+<tr><td>
+
+[FORGOT\_PASSWORD\_URL](./foundation-utils.forgot_password_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[GENESIS\_SOCKET\_URL](./foundation-utils.genesis_socket_url.md)
+
+
+</td><td>
+
+Genesis Socket URL
+
+
+</td></tr>
+<tr><td>
+
+[HTTP\_CONFIG](./foundation-utils.http_config.md)
+
+
+</td><td>
+
+Configuration settings for HTTP, used in http connect flow \[`genesislcap-foundation-comms.HttpConnectConfig`<!-- -->\](https://link-to-docs).
+
+
+</td></tr>
+<tr><td>
+
+[JSONSerializer](./foundation-utils.jsonserializer.md)
+
+
+</td><td>
+
+A DI token for the JSON serializer.
+
+
+</td></tr>
+<tr><td>
+
+[layoutCacheDocument](./foundation-utils.layoutcachedocument.md)
+
+
+</td><td>
+
+Stored on the layout's internal cache to signify that the document is not part of the DOM
+
+
+</td></tr>
+<tr><td>
+
+[logger](./foundation-utils.logger.md)
+
+
+</td><td>
+
+Logger for the foundation-utils package
+
+
+</td></tr>
+<tr><td>
+
+[LOGIN\_DETAILS\_URL](./foundation-utils.login_details_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[LOGIN\_REFRESH\_URL](./foundation-utils.login_refresh_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[LOGIN\_URL](./foundation-utils.login_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[LOGOUT\_URL](./foundation-utils.logout_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[POPUP\_DEFAULT\_HEIGHT](./foundation-utils.popup_default_height.md)
+
+
+</td><td>
+
+The default height (in pixels) for pop-up windows.
+
+
+</td></tr>
+<tr><td>
+
+[POPUP\_DEFAULT\_WIDTH](./foundation-utils.popup_default_width.md)
+
+
+</td><td>
+
+The default width (in pixels) for pop-up windows.
+
+
+</td></tr>
+<tr><td>
+
+[PUBLIC\_PATH](./foundation-utils.public_path.md)
+
+
+</td><td>
+
+The public path.
+
+
+</td></tr>
+<tr><td>
+
+[RESET\_PASSWORD\_URL](./foundation-utils.reset_password_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ResourceType](./foundation-utils.resourcetype.md)
+
+
+</td><td>
+
+An object that defines two resource types: "local" and "remote".
+
+
+</td></tr>
+<tr><td>
+
+[ServerRowDTOMapper](./foundation-utils.serverrowdtomapper.md)
+
+
+</td><td>
+
+A DI token used to obtain a `ServerRowDTOMapper` instance.
+
+
+</td></tr>
+<tr><td>
+
+[SOCKET\_EXT](./foundation-utils.socket_ext.md)
+
+
+</td><td>
+
+The sub-path used for WebSocket connections when API\_HOST is not set
+
+
+</td></tr>
+<tr><td>
+
+[SSO\_LIST\_URL](./foundation-utils.sso_list_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SSO\_LOGIN\_URL](./foundation-utils.sso_login_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[TypeRampValues](./foundation-utils.typerampvalues.md)
+
+
+</td><td>
+
+An object containing type ramp values.
+
+
+</td></tr>
+<tr><td>
+
+[UUID](./foundation-utils.uuid.md)
+
+
+</td><td>
+
+A dependency injection token for the UUID interface.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ConstructableLifecycleHandler](./foundation-utils.constructablelifecyclehandler.md) |  |
-|  [ConstructablePendingState](./foundation-utils.constructablependingstate.md) | A mixin that provides functionality for raising <code>pending-state</code> events. |
-|  [ConversionType](./foundation-utils.conversiontype.md) | Represents the possible types of value conversion for data synchronization. |
-|  [DesignSystemResource](./foundation-utils.designsystemresource.md) | DesignSystemResource. |
-|  [ErrorDetailMap](./foundation-utils.errordetailmap.md) |  |
-|  [ErrorMapLogger](./foundation-utils.errormaplogger.md) |  |
-|  [EventName](./foundation-utils.eventname.md) | Represents the possible event names for data synchronization. |
-|  [Listener](./foundation-utils.listener.md) | Creates an observer that facilitates the subscription and publication of events. |
-|  [PendingStateErrorEvent](./foundation-utils.pendingstateerrorevent.md) | A custom event that represents a <code>pending-state-error</code> event. |
-|  [PendingStateEvent](./foundation-utils.pendingstateevent.md) | A custom event that represents a <code>pending-state</code> event. |
-|  [Publish](./foundation-utils.publish.md) | Publishes an event of a specific type to all subscribed listeners. |
-|  [ResourceType](./foundation-utils.resourcetype.md) | A type that represents the resource types defined by the <code>ResourceType</code> object. |
-|  [ServerRowDTO](./foundation-utils.serverrowdto.md) | The data for a server row DTO. |
-|  [ServerRowEntity](./foundation-utils.serverrowentity.md) | The data for a server row entity. |
-|  [Subscribe](./foundation-utils.subscribe.md) | Subscribes a listener function to receive events of a specific type. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ConstructableLifecycleHandler](./foundation-utils.constructablelifecyclehandler.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ConstructablePendingState](./foundation-utils.constructablependingstate.md)
+
+
+</td><td>
+
+A mixin that provides functionality for raising `pending-state` events.
+
+
+</td></tr>
+<tr><td>
+
+[ConversionType](./foundation-utils.conversiontype.md)
+
+
+</td><td>
+
+Represents the possible types of value conversion for data synchronization.
+
+
+</td></tr>
+<tr><td>
+
+[DesignSystemResource](./foundation-utils.designsystemresource.md)
+
+
+</td><td>
+
+DesignSystemResource.
+
+
+</td></tr>
+<tr><td>
+
+[ErrorDetailMap](./foundation-utils.errordetailmap.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ErrorMapLogger](./foundation-utils.errormaplogger.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[EventName](./foundation-utils.eventname.md)
+
+
+</td><td>
+
+Represents the possible event names for data synchronization.
+
+
+</td></tr>
+<tr><td>
+
+[Listener](./foundation-utils.listener.md)
+
+
+</td><td>
+
+Creates an observer that facilitates the subscription and publication of events.
+
+
+</td></tr>
+<tr><td>
+
+[PendingStateErrorEvent](./foundation-utils.pendingstateerrorevent.md)
+
+
+</td><td>
+
+A custom event that represents a `pending-state-error` event.
+
+
+</td></tr>
+<tr><td>
+
+[PendingStateEvent](./foundation-utils.pendingstateevent.md)
+
+
+</td><td>
+
+A custom event that represents a `pending-state` event.
+
+
+</td></tr>
+<tr><td>
+
+[Publish](./foundation-utils.publish.md)
+
+
+</td><td>
+
+Publishes an event of a specific type to all subscribed listeners.
+
+
+</td></tr>
+<tr><td>
+
+[ResourceType](./foundation-utils.resourcetype.md)
+
+
+</td><td>
+
+A type that represents the resource types defined by the `ResourceType` object.
+
+
+</td></tr>
+<tr><td>
+
+[ServerRowDTO](./foundation-utils.serverrowdto.md)
+
+
+</td><td>
+
+The data for a server row DTO.
+
+
+</td></tr>
+<tr><td>
+
+[ServerRowEntity](./foundation-utils.serverrowentity.md)
+
+
+</td><td>
+
+The data for a server row entity.
+
+
+</td></tr>
+<tr><td>
+
+[Subscribe](./foundation-utils.subscribe.md)
+
+
+</td><td>
+
+Subscribes a listener function to receive events of a specific type.
+
+
+</td></tr>
+</tbody></table>
 

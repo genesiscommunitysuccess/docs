@@ -20,7 +20,7 @@ export type Group = {
     children: (Rule | Group)[];
 };
 ```
-**References:** [Combinator](./expression-builder.types.combinator.md), [Rule](./expression-builder.types.rule.md), [Group](./expression-builder.types.group.md)
+**References:** [Combinator](./expression-builder.types.combinator.md)<!-- -->, [Rule](./expression-builder.types.rule.md)<!-- -->, [Group](./expression-builder.types.group.md)
 
 ## Example
 

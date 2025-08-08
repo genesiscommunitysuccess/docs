@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getGridProTemplate](./grid-pro.getgridprotemplate.md)
 
-## getGridProTemplate variable
+## getGridProTemplate() function
 
 Get a Design System prefixed The Grid Pro template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed The Grid Pro template.
 ```typescript
 getGridProTemplate: (prefix?: string) => ViewTemplate<GridPro, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+prefix
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+ViewTemplate&lt;[GridPro](./grid-pro.gridpro.md)<!-- -->, any&gt;
+
+A grid Pro template prefixed with the correct design system.
+

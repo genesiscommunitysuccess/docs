@@ -17,9 +17,39 @@ export declare function criteriaFiltersToFields(filters: string): Record<string,
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  filters | string | Concatenated criteria filters. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+filters
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Concatenated criteria filters.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

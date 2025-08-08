@@ -17,9 +17,83 @@ export interface ConnectConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [connect](./foundation-comms.connectconfig.connect.md) |  | [SocketConnectOptions](./foundation-comms.socketconnectoptions.md) | Options for the initial connection. |
-|  [isWebSocketExpression](./foundation-comms.connectconfig.iswebsocketexpression.md) |  | RegExp | Check for web socket url pattern. |
-|  [reconnect](./foundation-comms.connectconfig.reconnect.md) |  | [SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md) | Options for automatic reconnection on connection loss. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connect](./foundation-comms.connectconfig.connect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SocketConnectOptions](./foundation-comms.socketconnectoptions.md)
+
+
+</td><td>
+
+Options for the initial connection.
+
+
+</td></tr>
+<tr><td>
+
+[isWebSocketExpression](./foundation-comms.connectconfig.iswebsocketexpression.md)
+
+
+</td><td>
+
+
+</td><td>
+
+RegExp
+
+
+</td><td>
+
+Check for web socket url pattern.
+
+
+</td></tr>
+<tr><td>
+
+[reconnect](./foundation-comms.connectconfig.reconnect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md)
+
+
+</td><td>
+
+Options for automatic reconnection on connection loss.
+
+
+</td></tr>
+</tbody></table>
 

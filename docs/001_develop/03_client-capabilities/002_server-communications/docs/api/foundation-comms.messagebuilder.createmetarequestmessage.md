@@ -17,14 +17,59 @@ createMetaRequestMessage(resourceName: string, messageType?: EventMessageType): 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The resource name. |
-|  messageType | [EventMessageType](./foundation-comms.eventmessagetype.md) | _(Optional)_ The event message type. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The resource name.
+
+
+</td></tr>
+<tr><td>
+
+messageType
+
+
+</td><td>
+
+[EventMessageType](./foundation-comms.eventmessagetype.md)
+
+
+</td><td>
+
+_(Optional)_ The event message type.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)<!-- -->&gt;
 
 The meta request message.
 

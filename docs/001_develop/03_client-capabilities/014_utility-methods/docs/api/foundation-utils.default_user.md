@@ -7,7 +7,7 @@ format: md
 
 ## DEFAULT\_USER variable
 
-The default Username value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
+The default Username value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
 
 **Signature:**
 

@@ -17,15 +17,93 @@ export interface MetadataCache
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cachedMetadata](./foundation-comms.metadatacache.cachedmetadata.md) |  | Map&lt;string, [Metadata](./foundation-comms.metadata.md)&gt; | A map of cached metadata, with resource names as keys and metadata as values. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cachedMetadata](./foundation-comms.metadatacache.cachedmetadata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;string, [Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+
+
+</td><td>
+
+A map of cached metadata, with resource names as keys and metadata as values.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [getMetadataFor(resourceName)](./foundation-comms.metadatacache.getmetadatafor.md) | Returns the metadata for the specified resource name. |
-|  [hasMetadataFor(resourceName)](./foundation-comms.metadatacache.hasmetadatafor.md) | Returns true if metadata exists for the specified resource name, otherwise false. |
-|  [setMetadataFor(resourceName, metadata)](./foundation-comms.metadatacache.setmetadatafor.md) | Sets the metadata for the specified resource name. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getMetadataFor(resourceName)](./foundation-comms.metadatacache.getmetadatafor.md)
+
+
+</td><td>
+
+Returns the metadata for the specified resource name.
+
+
+</td></tr>
+<tr><td>
+
+[hasMetadataFor(resourceName)](./foundation-comms.metadatacache.hasmetadatafor.md)
+
+
+</td><td>
+
+Returns true if metadata exists for the specified resource name, otherwise false.
+
+
+</td></tr>
+<tr><td>
+
+[setMetadataFor(resourceName, metadata)](./foundation-comms.metadatacache.setmetadatafor.md)
+
+
+</td><td>
+
+Sets the metadata for the specified resource name.
+
+
+</td></tr>
+</tbody></table>
 

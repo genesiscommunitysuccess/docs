@@ -7,7 +7,7 @@ format: md
 
 ## SuiteCallback type
 
-Defines the Generic type for a test Suite `T` the callback function required to assert on type `T`.
+Defines the Generic type for a test Suite `T` the callback function required to assert on type `T`<!-- -->.
 
 **Signature:**
 

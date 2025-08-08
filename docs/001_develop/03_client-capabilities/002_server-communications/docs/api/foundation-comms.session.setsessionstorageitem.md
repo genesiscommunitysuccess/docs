@@ -17,10 +17,55 @@ setSessionStorageItem(key: string | UserInfoKeys, value: string): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | string \| UserInfoKeys | The key to set. |
-|  value | string | The value to set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+string \| UserInfoKeys
+
+
+</td><td>
+
+The key to set.
+
+
+</td></tr>
+<tr><td>
+
+value
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The value to set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

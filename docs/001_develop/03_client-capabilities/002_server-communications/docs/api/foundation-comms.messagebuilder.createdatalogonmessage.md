@@ -17,14 +17,59 @@ createDataLogonMessage(resourceName: string, params?: DataserverParams): Message
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The resource name. |
-|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ The additional parameters. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The resource name.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+_(Optional)_ The additional parameters.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)<!-- -->&gt;
 
 The data logon message.
 

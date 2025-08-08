@@ -17,9 +17,39 @@ createId(withLogging?: boolean): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  withLogging | boolean | _(Optional)_ Optional. Whether to log the generated UUID to the console. Defaults to false. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+withLogging
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Optional. Whether to log the generated UUID to the console. Defaults to false.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

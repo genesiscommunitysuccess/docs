@@ -9,67 +9,525 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [BannerBuilder](./foundation-notifications.bannerbuilder.md) | BannerBuilder |
-|  [DialogBuilder](./foundation-notifications.dialogbuilder.md) | DialogBuilder class |
-|  [NotificationBuilder](./foundation-notifications.notificationbuilder.md) | NotificationBuilder to build NotificationStructure |
-|  [SnackbarBuilder](./foundation-notifications.snackbarbuilder.md) | SnackbarBuilder to build Snackbar |
-|  [ToastBuilder](./foundation-notifications.toastbuilder.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[BannerBuilder](./foundation-notifications.bannerbuilder.md)
+
+
+</td><td>
+
+BannerBuilder
+
+
+</td></tr>
+<tr><td>
+
+[DialogBuilder](./foundation-notifications.dialogbuilder.md)
+
+
+</td><td>
+
+DialogBuilder class
+
+
+</td></tr>
+<tr><td>
+
+[NotificationBuilder](./foundation-notifications.notificationbuilder.md)
+
+
+</td><td>
+
+NotificationBuilder to build NotificationStructure
+
+
+</td></tr>
+<tr><td>
+
+[SnackbarBuilder](./foundation-notifications.snackbarbuilder.md)
+
+
+</td><td>
+
+SnackbarBuilder to build Snackbar
+
+
+</td></tr>
+<tr><td>
+
+[ToastBuilder](./foundation-notifications.toastbuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Enumerations
 
-|  Enumeration | Description |
-|  --- | --- |
-|  [NotificationEvent](./foundation-notifications.notificationevent.md) | enum for different types of notification events |
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[NotificationEvent](./foundation-notifications.notificationevent.md)
+
+
+</td><td>
+
+enum for different types of notification events
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getBannerAnchor(element)](./foundation-notifications.getbanneranchor.md)
+
+
+</td><td>
+
+Get the banner anchor to attach the banner to
+
+
+</td></tr>
+<tr><td>
+
+[getBannerBuilder()](./foundation-notifications.getbannerbuilder.md)
+
+
+</td><td>
+
+Get banner builder instance
+
+
+</td></tr>
+<tr><td>
+
+[getDialogBuilder()](./foundation-notifications.getdialogbuilder.md)
+
+
+</td><td>
+
+Returns an instance of DialogBuilder
+
+
+</td></tr>
+<tr><td>
+
+[getLoglevel(details)](./foundation-notifications.getloglevel.md)
+
+
+</td><td>
+
+Retrieves the log level from an NotificationStructure object
+
+
+</td></tr>
+<tr><td>
+
+[getNotificationBuilder()](./foundation-notifications.getnotificationbuilder.md)
+
+
+</td><td>
+
+Returns a new NotificationBuilder instance
+
+
+</td></tr>
+<tr><td>
+
+[getNotificationContainer(id, tagName)](./foundation-notifications.getnotificationcontainer.md)
+
+
+</td><td>
+
+Get/Create the error container in the DOM
+
+
+</td></tr>
+<tr><td>
+
+[getNotificationDetails(details)](./foundation-notifications.getnotificationdetails.md)
+
+
+</td><td>
+
+Retrieves the notification details from an NotificationStructure object
+
+
+</td></tr>
+<tr><td>
+
+[getSnackbarBuilder()](./foundation-notifications.getsnackbarbuilder.md)
+
+
+</td><td>
+
+Get snackbar builder instance
+
+
+</td></tr>
+<tr><td>
+
+[getToastBuilder()](./foundation-notifications.gettoastbuilder.md)
+
+
+</td><td>
+
+Get notification builder instance
+
+
+</td></tr>
+<tr><td>
+
+[showBanner(notificationStructure, tagName, notificationBoundary)](./foundation-notifications.showbanner.md)
+
+
+</td><td>
+
+Shows the notificationStructure dialog
+
+
+</td></tr>
+<tr><td>
+
+[showLoggerLogLevel(notificationStructure)](./foundation-notifications.showloggerloglevel.md)
+
+
+</td><td>
+
+Shows logger with log level from NotificationStructure object
+
+
+</td></tr>
+<tr><td>
+
+[showNotification(notificationStructure, tagName, notificationBoundary)](./foundation-notifications.shownotification.md)
+
+
+</td><td>
+
+Shows the notificationStructure in the appropriate component
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationAlert(configuration)](./foundation-notifications.shownotificationalert.md)
+
+
+</td><td>
+
+Shows the notification alert
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationBanner(configuration, tagName, notificationBoundary)](./foundation-notifications.shownotificationbanner.md)
+
+
+</td><td>
+
+Shows the notification banner
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationDialog(configuration, tagName)](./foundation-notifications.shownotificationdialog.md)
+
+
+</td><td>
+
+Shows the notification dialog
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationSnackbar(configuration, tagName)](./foundation-notifications.shownotificationsnackbar.md)
+
+
+</td><td>
+
+Shows the notification snackbar
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationToast(configuration, tagName, notificationContainer)](./foundation-notifications.shownotificationtoast.md)
+
+
+</td><td>
+
+Shows the notification toast
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [AlertStructure](./foundation-notifications.alertstructure.md) | Interface for Alert Structure |
-|  [Banner](./foundation-notifications.banner.md) | Interface for Banner configuration |
-|  [BannerStructure](./foundation-notifications.bannerstructure.md) | Interface for Banner Structure |
-|  [ConfirmingAction](./foundation-notifications.confirmingaction.md) | Interface for Confirming Action configuration |
-|  [Dialog](./foundation-notifications.dialog.md) | Interface for Dialog configuration |
-|  [DialogStructure](./foundation-notifications.dialogstructure.md) | Interface for Dialog Structure |
-|  [DismissingAction](./foundation-notifications.dismissingaction.md) | Interface for Dismissing Action configuration |
-|  [NotificationDataRow](./foundation-notifications.notificationdatarow.md) | Interface for notify data |
-|  [NotificationStructure](./foundation-notifications.notificationstructure.md) | Interface for Notification Structure |
-|  [Snackbar](./foundation-notifications.snackbar.md) | Interface for Snackbar configuration |
-|  [SnackbarStructure](./foundation-notifications.snackbarstructure.md) | Interface for Snackbar Structure |
-|  [Toast](./foundation-notifications.toast.md) | Interface for Toast configuration |
-|  [ToastButton](./foundation-notifications.toastbutton.md) | Interface for ToastButton |
-|  [ToastStructure](./foundation-notifications.toaststructure.md) | Interface for Toast Structure |
+<table><thead><tr><th>
 
-## Variables
+Interface
 
-|  Variable | Description |
-|  --- | --- |
-|  [getBannerAnchor](./foundation-notifications.getbanneranchor.md) | Get the banner anchor to attach the banner to |
-|  [getBannerBuilder](./foundation-notifications.getbannerbuilder.md) | Get banner builder instance |
-|  [getDialogBuilder](./foundation-notifications.getdialogbuilder.md) | Returns an instance of DialogBuilder |
-|  [getLoglevel](./foundation-notifications.getloglevel.md) | Retrieves the log level from an NotificationStructure object |
-|  [getNotificationBuilder](./foundation-notifications.getnotificationbuilder.md) | Returns a new NotificationBuilder instance |
-|  [getNotificationContainer](./foundation-notifications.getnotificationcontainer.md) | Get/Create the error container in the DOM |
-|  [getNotificationDetails](./foundation-notifications.getnotificationdetails.md) | Retrieves the notification details from an NotificationStructure object |
-|  [getSnackbarBuilder](./foundation-notifications.getsnackbarbuilder.md) | Get snackbar builder instance |
-|  [getToastBuilder](./foundation-notifications.gettoastbuilder.md) | Get notification builder instance |
-|  [showBanner](./foundation-notifications.showbanner.md) | Shows the notificationStructure dialog |
-|  [showLoggerLogLevel](./foundation-notifications.showloggerloglevel.md) | Shows logger with log level from NotificationStructure object |
-|  [showNotification](./foundation-notifications.shownotification.md) | Shows the notificationStructure in the appropriate component |
-|  [showNotificationAlert](./foundation-notifications.shownotificationalert.md) | Shows the notification alert |
-|  [showNotificationBanner](./foundation-notifications.shownotificationbanner.md) | Shows the notification banner |
-|  [showNotificationDialog](./foundation-notifications.shownotificationdialog.md) | Shows the notification dialog |
-|  [showNotificationSnackbar](./foundation-notifications.shownotificationsnackbar.md) | Shows the notification snackbar |
-|  [showNotificationToast](./foundation-notifications.shownotificationtoast.md) | Shows the notification toast |
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AlertStructure](./foundation-notifications.alertstructure.md)
+
+
+</td><td>
+
+Interface for Alert Structure
+
+
+</td></tr>
+<tr><td>
+
+[Banner](./foundation-notifications.banner.md)
+
+
+</td><td>
+
+Interface for Banner configuration
+
+
+</td></tr>
+<tr><td>
+
+[BannerStructure](./foundation-notifications.bannerstructure.md)
+
+
+</td><td>
+
+Interface for Banner Structure
+
+
+</td></tr>
+<tr><td>
+
+[ConfirmingAction](./foundation-notifications.confirmingaction.md)
+
+
+</td><td>
+
+Interface for Confirming Action configuration
+
+
+</td></tr>
+<tr><td>
+
+[Dialog](./foundation-notifications.dialog.md)
+
+
+</td><td>
+
+Interface for Dialog configuration
+
+
+</td></tr>
+<tr><td>
+
+[DialogStructure](./foundation-notifications.dialogstructure.md)
+
+
+</td><td>
+
+Interface for Dialog Structure
+
+
+</td></tr>
+<tr><td>
+
+[DismissingAction](./foundation-notifications.dismissingaction.md)
+
+
+</td><td>
+
+Interface for Dismissing Action configuration
+
+
+</td></tr>
+<tr><td>
+
+[NotificationDataRow](./foundation-notifications.notificationdatarow.md)
+
+
+</td><td>
+
+Interface for notify data
+
+
+</td></tr>
+<tr><td>
+
+[NotificationStructure](./foundation-notifications.notificationstructure.md)
+
+
+</td><td>
+
+Interface for Notification Structure
+
+
+</td></tr>
+<tr><td>
+
+[Snackbar](./foundation-notifications.snackbar.md)
+
+
+</td><td>
+
+Interface for Snackbar configuration
+
+
+</td></tr>
+<tr><td>
+
+[SnackbarStructure](./foundation-notifications.snackbarstructure.md)
+
+
+</td><td>
+
+Interface for Snackbar Structure
+
+
+</td></tr>
+<tr><td>
+
+[Toast](./foundation-notifications.toast.md)
+
+
+</td><td>
+
+Interface for Toast configuration
+
+
+</td></tr>
+<tr><td>
+
+[ToastButton](./foundation-notifications.toastbutton.md)
+
+
+</td><td>
+
+Interface for ToastButton
+
+
+</td></tr>
+<tr><td>
+
+[ToastStructure](./foundation-notifications.toaststructure.md)
+
+
+</td><td>
+
+Interface for Toast Structure
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [NotificationSeverity](./foundation-notifications.notificationseverity.md) | type for notification severity |
-|  [NotificationType](./foundation-notifications.notificationtype.md) | type for notification |
-|  [SnackbarType](./foundation-notifications.snackbartype.md) | type for snackbar type |
-|  [ToastPosition](./foundation-notifications.toastposition.md) | type for notification position |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[NotificationSeverity](./foundation-notifications.notificationseverity.md)
+
+
+</td><td>
+
+type for notification severity
+
+
+</td></tr>
+<tr><td>
+
+[NotificationType](./foundation-notifications.notificationtype.md)
+
+
+</td><td>
+
+type for notification
+
+
+</td></tr>
+<tr><td>
+
+[SnackbarType](./foundation-notifications.snackbartype.md)
+
+
+</td><td>
+
+type for snackbar type
+
+
+</td></tr>
+<tr><td>
+
+[ToastPosition](./foundation-notifications.toastposition.md)
+
+
+</td><td>
+
+type for notification position
+
+
+</td></tr>
+</tbody></table>
 

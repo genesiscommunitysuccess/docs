@@ -14,29 +14,185 @@ An in memory database of specific DatabaseRecord types.
 ```typescript
 export declare class InMemoryDatabase<T extends DatabaseRecord> implements Database<T> 
 ```
-**Implements:** [Database](./foundation-utils.database.md)&lt;T&gt;
+**Implements:** [Database](./foundation-utils.database.md)<!-- -->&lt;T&gt;
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(uuid)](./foundation-utils.inmemorydatabase._constructor_.md) |  | Constructs a new instance of the <code>InMemoryDatabase</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(uuid)](./foundation-utils.inmemorydatabase._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `InMemoryDatabase` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isWorking](./foundation-utils.inmemorydatabase.isworking.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isWorking](./foundation-utils.inmemorydatabase.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [create(newValue)](./foundation-utils.inmemorydatabase.create.md) |  |  |
-|  [delete(id)](./foundation-utils.inmemorydatabase.delete.md) |  |  |
-|  [onAfterUpdate(listener)](./foundation-utils.inmemorydatabase.onafterupdate.md) |  |  |
-|  [onBeforeUpdate(listener)](./foundation-utils.inmemorydatabase.onbeforeupdate.md) |  |  |
-|  [read(id)](./foundation-utils.inmemorydatabase.read.md) |  |  |
-|  [update(id, newValue)](./foundation-utils.inmemorydatabase.update.md) |  |  |
-|  [visit(visitor)](./foundation-utils.inmemorydatabase.visit.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[create(newValue)](./foundation-utils.inmemorydatabase.create.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[delete(id)](./foundation-utils.inmemorydatabase.delete.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onAfterUpdate(listener)](./foundation-utils.inmemorydatabase.onafterupdate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onBeforeUpdate(listener)](./foundation-utils.inmemorydatabase.onbeforeupdate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[read(id)](./foundation-utils.inmemorydatabase.read.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[update(id, newValue)](./foundation-utils.inmemorydatabase.update.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[visit(visitor)](./foundation-utils.inmemorydatabase.visit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

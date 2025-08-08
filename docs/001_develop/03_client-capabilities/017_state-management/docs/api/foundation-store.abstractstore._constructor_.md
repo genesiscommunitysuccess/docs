@@ -17,7 +17,37 @@ constructor(...storeFragments: Store[]);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  storeFragments | [Store](./foundation-store.store.md)\[\] | The child store fragments this store fragment will manage. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+storeFragments
+
+
+</td><td>
+
+[Store](./foundation-store.store.md)<!-- -->\[\]
+
+
+</td><td>
+
+The child store fragments this store fragment will manage.
+
+
+</td></tr>
+</tbody></table>
 

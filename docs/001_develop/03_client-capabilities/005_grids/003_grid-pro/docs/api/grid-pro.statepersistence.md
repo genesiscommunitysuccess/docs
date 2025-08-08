@@ -17,10 +17,60 @@ export interface StatePersistence
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [getColumnState(persistColumnStateKey)](./grid-pro.statepersistence.getcolumnstate.md) | Returns the column state for the given key. |
-|  [getFilterModel(persistFilterModelKey)](./grid-pro.statepersistence.getfiltermodel.md) | Returns the filter model for the given key. |
-|  [saveColumnState(persistColumnStateKey, columnState)](./grid-pro.statepersistence.savecolumnstate.md) | Saves the column state for the given key. |
-|  [saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.statepersistence.savefiltermodel.md) | Saves the filter model for the given key. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getColumnState(persistColumnStateKey)](./grid-pro.statepersistence.getcolumnstate.md)
+
+
+</td><td>
+
+Returns the column state for the given key.
+
+
+</td></tr>
+<tr><td>
+
+[getFilterModel(persistFilterModelKey)](./grid-pro.statepersistence.getfiltermodel.md)
+
+
+</td><td>
+
+Returns the filter model for the given key.
+
+
+</td></tr>
+<tr><td>
+
+[saveColumnState(persistColumnStateKey, columnState)](./grid-pro.statepersistence.savecolumnstate.md)
+
+
+</td><td>
+
+Saves the column state for the given key.
+
+
+</td></tr>
+<tr><td>
+
+[saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.statepersistence.savefiltermodel.md)
+
+
+</td><td>
+
+Saves the filter model for the given key.
+
+
+</td></tr>
+</tbody></table>
 

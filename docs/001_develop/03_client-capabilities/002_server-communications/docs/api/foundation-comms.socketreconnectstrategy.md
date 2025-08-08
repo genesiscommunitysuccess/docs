@@ -17,8 +17,49 @@ export declare enum SocketReconnectStrategy
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  Exponential | <code>&quot;exponential&quot;</code> |  |
-|  Linear | <code>&quot;linear&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+Exponential
+
+
+</td><td>
+
+`"exponential"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Linear
+
+
+</td><td>
+
+`"linear"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

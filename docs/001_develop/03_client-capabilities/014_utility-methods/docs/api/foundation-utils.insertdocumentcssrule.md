@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [insertDocumentCSSRule](./foundation-utils.insertdocumentcssrule.md)
 
-## insertDocumentCSSRule variable
+## insertDocumentCSSRule() function
 
 Inserts a CSS rule into the document by creating a new style element or using an existing one with the specified ID. Returns a function that can be called to remove the rule from the document.
 
@@ -14,3 +14,62 @@ Inserts a CSS rule into the document by creating a new style element or using an
 ```typescript
 insertDocumentCSSRule: (cssRule: string, styleElementId: string) => (() => void)
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+cssRule
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The CSS rule to insert.
+
+
+</td></tr>
+<tr><td>
+
+styleElementId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the style element to use or create.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+(() =&gt; void)
+
+A function that removes the rule from the document.
+

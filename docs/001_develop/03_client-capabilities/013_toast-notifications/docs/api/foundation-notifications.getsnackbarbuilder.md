@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getSnackbarBuilder](./foundation-notifications.getsnackbarbuilder.md)
 
-## getSnackbarBuilder variable
+## getSnackbarBuilder() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,7 @@ Get snackbar builder instance
 ```typescript
 getSnackbarBuilder: () => SnackbarBuilder
 ```
+**Returns:**
+
+[SnackbarBuilder](./foundation-notifications.snackbarbuilder.md)
+

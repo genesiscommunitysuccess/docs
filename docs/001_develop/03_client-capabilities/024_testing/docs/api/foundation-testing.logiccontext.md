@@ -17,7 +17,27 @@ export interface LogicContext
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [runCases(fn, cases)?](./foundation-testing.logiccontext.runcases.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[runCases(fn, cases)?](./foundation-testing.logiccontext.runcases.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-store](./foundation-store.md) &gt; [registerStore](./foundation-store.registerstore.md)
 
-## registerStore variable
+## registerStore() function
 
 Creates a dependency injection key for the store being registered.
 
@@ -14,6 +14,64 @@ Creates a dependency injection key for the store being registered.
 ```typescript
 registerStore: <K extends Key>(Base: Constructable<Store>, name?: string) => import("@microsoft/fast-foundation").InterfaceSymbol<K>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+Base
+
+
+</td><td>
+
+Constructable&lt;[Store](./foundation-store.store.md)<!-- -->&gt;
+
+
+</td><td>
+
+The store fragment class.
+
+
+</td></tr>
+<tr><td>
+
+name
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The name of your store fragment, mostly used for internal logging.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").InterfaceSymbol&lt;K&gt;
+
+The created key.
 
 ## Example
 

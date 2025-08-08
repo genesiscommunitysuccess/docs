@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [decodeFromBase64WithPrefix](./foundation-utils.decodefrombase64withprefix.md)
 
-## decodeFromBase64WithPrefix variable
+## decodeFromBase64WithPrefix() function
 
 Decodes a value from base64 with a prefix.
 
@@ -14,6 +14,48 @@ Decodes a value from base64 with a prefix.
 ```typescript
 decodeFromBase64WithPrefix: (value: string) => string | ArrayBuffer
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+value
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The value to decode from base64.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string \| ArrayBuffer
+
+The decoded value.
 
 ## Remarks
 

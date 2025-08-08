@@ -17,10 +17,77 @@ constructor(message: Message, onMessage: Function, onError: Function, isSubscrip
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  message | [Message](./foundation-comms.message.md) |  |
-|  onMessage | Function |  |
-|  onError | Function |  |
-|  isSubscription | boolean |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onMessage
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onError
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+isSubscription
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

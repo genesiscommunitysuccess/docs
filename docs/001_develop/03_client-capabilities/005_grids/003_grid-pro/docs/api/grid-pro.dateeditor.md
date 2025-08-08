@@ -20,25 +20,244 @@ export declare class DateEditor extends FoundationElement implements ICellEditor
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [actualWidth](./grid-pro.dateeditor.actualwidth.md) |  | number |  |
-|  [dateFormat](./grid-pro.dateeditor.dateformat.md) |  | string |  |
-|  [input](./grid-pro.dateeditor.input.md) |  | any |  |
-|  [inputType](./grid-pro.dateeditor.inputtype.md) |  | 'datetime-local' \| 'date' |  |
-|  [params](./grid-pro.dateeditor.params.md) |  | [DateEditorParams](./grid-pro.dateeditorparams.md) |  |
-|  [value](./grid-pro.dateeditor.value.md) |  | number |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actualWidth](./grid-pro.dateeditor.actualwidth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[dateFormat](./grid-pro.dateeditor.dateformat.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[input](./grid-pro.dateeditor.input.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[inputType](./grid-pro.dateeditor.inputtype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'datetime-local' \| 'date'
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[params](./grid-pro.dateeditor.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DateEditorParams](./grid-pro.dateeditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./grid-pro.dateeditor.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [afterGuiAttached()](./grid-pro.dateeditor.afterguiattached.md) |  |  |
-|  [changeHandler(event)](./grid-pro.dateeditor.changehandler.md) |  |  |
-|  [getGui()](./grid-pro.dateeditor.getgui.md) |  |  |
-|  [getValue()](./grid-pro.dateeditor.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.dateeditor.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.dateeditor.iscancelbeforestart.md) |  |  |
-|  [isPopup()](./grid-pro.dateeditor.ispopup.md) |  |  |
-|  [refresh(params)](./grid-pro.dateeditor.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[afterGuiAttached()](./grid-pro.dateeditor.afterguiattached.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[changeHandler(event)](./grid-pro.dateeditor.changehandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.dateeditor.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.dateeditor.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.dateeditor.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.dateeditor.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isPopup()](./grid-pro.dateeditor.ispopup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.dateeditor.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

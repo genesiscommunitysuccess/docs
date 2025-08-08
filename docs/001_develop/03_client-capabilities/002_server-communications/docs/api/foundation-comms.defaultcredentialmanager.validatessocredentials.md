@@ -15,9 +15,37 @@ validateSSOCredentials(credentials: SsoAuthInfo): boolean;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [SsoAuthInfo](./foundation-comms.ssoauthinfo.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[SsoAuthInfo](./foundation-comms.ssoauthinfo.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -15,11 +15,39 @@ createDataLogoffMessage<T = any>(sourceRef: string): Message<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;T&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
 

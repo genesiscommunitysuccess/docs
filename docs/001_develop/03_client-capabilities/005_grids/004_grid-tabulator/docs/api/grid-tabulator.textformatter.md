@@ -17,10 +17,55 @@ export declare function textFormatter<T = any>(cell: any, formatterParams?: Text
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  cell | any | The cell component provided by Tabulator |
-|  formatterParams | TextFormatterParams&lt;T&gt; | _(Optional)_ Text formatter parameters |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+cell
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The cell component provided by Tabulator
+
+
+</td></tr>
+<tr><td>
+
+formatterParams
+
+
+</td><td>
+
+[TextFormatterParams](./grid-tabulator.textformatterparams.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+_(Optional)_ Text formatter parameters
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

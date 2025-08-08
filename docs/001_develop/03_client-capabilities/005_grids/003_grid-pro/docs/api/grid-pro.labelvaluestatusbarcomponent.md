@@ -18,9 +18,57 @@ export declare class LabelValueStatusBarComponent implements IStatusPanelComp
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.labelvaluestatusbarcomponent.destroy.md) |  |  |
-|  [getGui()](./grid-pro.labelvaluestatusbarcomponent.getgui.md) |  |  |
-|  [init(params)](./grid-pro.labelvaluestatusbarcomponent.init.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.labelvaluestatusbarcomponent.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.labelvaluestatusbarcomponent.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.labelvaluestatusbarcomponent.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

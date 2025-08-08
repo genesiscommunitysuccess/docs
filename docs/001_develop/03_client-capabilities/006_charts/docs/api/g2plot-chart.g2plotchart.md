@@ -22,9 +22,83 @@ The constructor for this class is marked as internal. Third-party code should no
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./g2plot-chart.g2plotchart.config.md) |  | [ChartConfig](./g2plot-chart.chartconfig.md) | The configuration to use for the chart. Check [ChartConfig](./g2plot-chart.chartconfig.md) for possible options |
-|  [data](./g2plot-chart.g2plotchart.data.md) |  | any\[\] | The data to display in the chart. |
-|  [type](./g2plot-chart.g2plotchart.type.md) |  | [ChartTypes](./g2plot-chart.charttypes.md) | The type to use for the chart. If not set, the default bar type will be used. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./g2plot-chart.g2plotchart.config.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ChartConfig](./g2plot-chart.chartconfig.md)
+
+
+</td><td>
+
+The configuration to use for the chart. Check [ChartConfig](./g2plot-chart.chartconfig.md) for possible options
+
+
+</td></tr>
+<tr><td>
+
+[data](./g2plot-chart.g2plotchart.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+The data to display in the chart.
+
+
+</td></tr>
+<tr><td>
+
+[type](./g2plot-chart.g2plotchart.type.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ChartTypes](./g2plot-chart.charttypes.md)
+
+
+</td><td>
+
+The type to use for the chart. If not set, the default bar type will be used.
+
+
+</td></tr>
+</tbody></table>
 

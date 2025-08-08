@@ -22,9 +22,61 @@ export declare class SnackbarBuilder
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build()](./foundation-notifications.snackbarbuilder.build.md) |  | Build snackbar |
-|  [withConfirmingAction(confirmingAction)](./foundation-notifications.snackbarbuilder.withconfirmingaction.md) |  | Add confirming action to snackbar |
-|  [withType(type)](./foundation-notifications.snackbarbuilder.withtype.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build()](./foundation-notifications.snackbarbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Build snackbar
+
+
+</td></tr>
+<tr><td>
+
+[withConfirmingAction(confirmingAction)](./foundation-notifications.snackbarbuilder.withconfirmingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add confirming action to snackbar
+
+
+</td></tr>
+<tr><td>
+
+[withType(type)](./foundation-notifications.snackbarbuilder.withtype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -16,9 +16,79 @@ export interface DTOMapper<TDTO, TEntity>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [fromArgs?](./foundation-utils.dtomapper.fromargs.md) |  | (...args: any\[\]) =&gt; TEntity | _(Optional)_ |
-|  [fromDTO](./foundation-utils.dtomapper.fromdto.md) |  | (dto: TDTO) =&gt; TEntity |  |
-|  [toDTO](./foundation-utils.dtomapper.todto.md) |  | (entity: Partial&lt;TEntity&gt;) =&gt; TDTO |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[fromArgs?](./foundation-utils.dtomapper.fromargs.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(...args: any\[\]) =&gt; TEntity
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[fromDTO](./foundation-utils.dtomapper.fromdto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(dto: TDTO) =&gt; TEntity
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[toDTO](./foundation-utils.dtomapper.todto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(entity: Partial&lt;TEntity&gt;) =&gt; TDTO
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

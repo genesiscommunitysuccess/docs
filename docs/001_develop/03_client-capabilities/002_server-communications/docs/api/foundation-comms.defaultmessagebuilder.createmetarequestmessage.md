@@ -15,12 +15,55 @@ createMetaRequestMessage(resourceName: string, messageType?: EventMessageType): 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string |  |
-|  messageType | [EventMessageType](./foundation-comms.eventmessagetype.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+messageType
+
+
+</td><td>
+
+[EventMessageType](./foundation-comms.eventmessagetype.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)<!-- -->&gt;
 

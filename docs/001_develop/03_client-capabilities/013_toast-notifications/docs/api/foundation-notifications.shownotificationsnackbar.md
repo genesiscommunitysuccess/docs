@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotificationSnackbar](./foundation-notifications.shownotificationsnackbar.md)
 
-## showNotificationSnackbar variable
+## showNotificationSnackbar() function
 
 Shows the notification snackbar
 
@@ -14,3 +14,56 @@ Shows the notification snackbar
 ```typescript
 showNotificationSnackbar: (configuration: SnackbarStructure, tagName: String) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+configuration
+
+
+</td><td>
+
+[SnackbarStructure](./foundation-notifications.snackbarstructure.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

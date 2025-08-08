@@ -22,7 +22,35 @@ An alias to RxJS Observable.
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(args)](./foundation-comms.socketobservable._constructor_.md) |  | Constructs a new instance of the <code>SocketObservable</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(args)](./foundation-comms.socketobservable._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `SocketObservable` class
+
+
+</td></tr>
+</tbody></table>
 

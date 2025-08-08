@@ -17,10 +17,55 @@ export declare function editableFormatter<T = any>(cell: any, formatterParams?: 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  cell | any | The cell component provided by Tabulator |
-|  formatterParams | EditableFormatterParams&lt;T&gt; | _(Optional)_ Editable formatter parameters |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+cell
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The cell component provided by Tabulator
+
+
+</td></tr>
+<tr><td>
+
+formatterParams
+
+
+</td><td>
+
+[EditableFormatterParams](./grid-tabulator.editableformatterparams.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+_(Optional)_ Editable formatter parameters
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

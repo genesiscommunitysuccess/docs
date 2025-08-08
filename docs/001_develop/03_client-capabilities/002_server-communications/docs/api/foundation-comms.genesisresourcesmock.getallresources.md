@@ -14,5 +14,5 @@ getAllResources(): Promise<ResourceItem[]>;
 ```
 **Returns:**
 
-Promise&lt;[ResourceItem](./foundation-comms.resourceitem.md)\[\]&gt;
+Promise&lt;[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]&gt;
 

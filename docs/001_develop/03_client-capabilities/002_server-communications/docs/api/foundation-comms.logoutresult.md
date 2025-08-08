@@ -17,8 +17,64 @@ export interface LogoutResult
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [error?](./foundation-comms.logoutresult.error.md) |  | string | _(Optional)_ Provides more details if the logout operation failed. |
-|  [success](./foundation-comms.logoutresult.success.md) |  | boolean | Indicates if the logout operation was successful. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[error?](./foundation-comms.logoutresult.error.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Provides more details if the logout operation failed.
+
+
+</td></tr>
+<tr><td>
+
+[success](./foundation-comms.logoutresult.success.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates if the logout operation was successful.
+
+
+</td></tr>
+</tbody></table>
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getTextFieldRendererTemplate](./grid-pro.gettextfieldrenderertemplate.md)
 
-## getTextFieldRendererTemplate variable
+## getTextFieldRendererTemplate() function
 
 Get a Design System prefixed Text Field template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed Text Field template.
 ```typescript
 getTextFieldRendererTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<AgTextFieldRenderer, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md)<!-- -->, any&gt;
+
+A Text Field component template prefixed with the correct design system.
+

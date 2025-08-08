@@ -17,9 +17,87 @@ export interface BannerStructure
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [banner?](./foundation-notifications.bannerstructure.banner.md) | <code>readonly</code> | [Banner](./foundation-notifications.banner.md) | _(Optional)_ |
-|  [body](./foundation-notifications.bannerstructure.body.md) | <code>readonly</code> | string |  |
-|  [logLevel?](./foundation-notifications.bannerstructure.loglevel.md) | <code>readonly</code> | LogLevel | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[banner?](./foundation-notifications.bannerstructure.banner.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[Banner](./foundation-notifications.banner.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[body](./foundation-notifications.bannerstructure.body.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-notifications.bannerstructure.loglevel.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

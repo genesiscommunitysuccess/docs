@@ -17,14 +17,59 @@ getMoreRows(sourceRef: string, viewNumber?: number): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string | An existing source reference to request more rows for. |
-|  viewNumber | number | _(Optional)_ The specific view number to request more rows for. Default: previous view number result + 1. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+An existing source reference to request more rows for.
+
+
+</td></tr>
+<tr><td>
+
+viewNumber
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The specific view number to request more rows for. Default: previous view number result + 1.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 
 A promise that resolves with the additional rows of data.
 

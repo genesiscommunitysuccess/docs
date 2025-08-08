@@ -17,12 +17,87 @@ onStreamEvent(resourceName: string, message: Message<MessageDetails.DataserverRe
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource. |
-|  message | [Message](./foundation-comms.message.md)&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)&gt; | The message. |
-|  stream | [SocketObservable](./foundation-comms.socketobservable.md)&lt;any&gt; | The actual stream itself. |
-|  functions | [StreamEventFunctions](./foundation-comms.streameventfunctions.md) | Any functions provided. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource.
+
+
+</td></tr>
+<tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)<!-- -->&gt;
+
+
+</td><td>
+
+The message.
+
+
+</td></tr>
+<tr><td>
+
+stream
+
+
+</td><td>
+
+[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;any&gt;
+
+
+</td><td>
+
+The actual stream itself.
+
+
+</td></tr>
+<tr><td>
+
+functions
+
+
+</td><td>
+
+[StreamEventFunctions](./foundation-comms.streameventfunctions.md)
+
+
+</td><td>
+
+Any functions provided.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

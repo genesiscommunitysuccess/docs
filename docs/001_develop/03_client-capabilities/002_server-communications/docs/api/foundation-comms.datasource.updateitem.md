@@ -17,10 +17,55 @@ updateItem?(itemId: string, data: any): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  itemId | string | The ID of the item to be updated. |
-|  data | any | The data to be updated for the item. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+itemId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the item to be updated.
+
+
+</td></tr>
+<tr><td>
+
+data
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The data to be updated for the item.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

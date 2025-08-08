@@ -18,28 +18,321 @@ export declare class Filters extends FoundationElement
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [allSavedFilters](./foundation-forms.filters.allsavedfilters.md) |  | any\[\] |  |
-|  [data](./foundation-forms.filters.data.md) |  | any | Initial data for the filters. |
-|  [filterName](./foundation-forms.filters.filtername.md) |  | string |  |
-|  [jsonSchema](./foundation-forms.filters.jsonschema.md) |  | JSONSchema7 | Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client. |
-|  [kvStorage](./foundation-forms.filters.kvstorage.md) |  | KVStorage |  |
-|  [prefix](./foundation-forms.filters.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
-|  [renderers](./foundation-forms.filters.renderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default. |
-|  [resourceName](./foundation-forms.filters.resourcename.md) |  | string | Name of the backend resource which will provide metadata used to generate filters. |
-|  [showFilterPersistenceControls](./foundation-forms.filters.showfilterpersistencecontrols.md) |  | boolean | Controls the visibility of the filter persistence controls UI. |
-|  [uischema](./foundation-forms.filters.uischema.md) |  | [UiSchema](./foundation-forms.uischema.md) | UI schema used to define configuration of the layout and elements in the filters Check [UiSchema](./foundation-forms.uischema.md) for possible options. |
-|  [value](./foundation-forms.filters.value.md) |  | string | Created criteria based on the given data that can be used to filter the data. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[allSavedFilters](./foundation-forms.filters.allsavedfilters.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[data](./foundation-forms.filters.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+Initial data for the filters.
+
+
+</td></tr>
+<tr><td>
+
+[filterName](./foundation-forms.filters.filtername.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[jsonSchema](./foundation-forms.filters.jsonschema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+JSONSchema7
+
+
+</td><td>
+
+Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client.
+
+
+</td></tr>
+<tr><td>
+
+[kvStorage](./foundation-forms.filters.kvstorage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+KVStorage
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[prefix](./foundation-forms.filters.prefix.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the design system prefix that will be used in renderers.
+
+
+</td></tr>
+<tr><td>
+
+[renderers](./foundation-forms.filters.renderers.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+
+
+</td><td>
+
+Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default.
+
+
+</td></tr>
+<tr><td>
+
+[resourceName](./foundation-forms.filters.resourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the backend resource which will provide metadata used to generate filters.
+
+
+</td></tr>
+<tr><td>
+
+[showFilterPersistenceControls](./foundation-forms.filters.showfilterpersistencecontrols.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Controls the visibility of the filter persistence controls UI.
+
+
+</td></tr>
+<tr><td>
+
+[uischema](./foundation-forms.filters.uischema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[UiSchema](./foundation-forms.uischema.md)
+
+
+</td><td>
+
+UI schema used to define configuration of the layout and elements in the filters Check [UiSchema](./foundation-forms.uischema.md) for possible options.
+
+
+</td></tr>
+<tr><td>
+
+[value](./foundation-forms.filters.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Created criteria based on the given data that can be used to filter the data.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connectedCallback()](./foundation-forms.filters.connectedcallback.md) |  |  |
-|  [deleteFilter()](./foundation-forms.filters.deletefilter.md) |  |  |
-|  [filterNameChanged(oldValue, newValue)](./foundation-forms.filters.filternamechanged.md) |  |  |
-|  [loadAllSavedFilters()](./foundation-forms.filters.loadallsavedfilters.md) |  |  |
-|  [loadFilterData(filterKey)](./foundation-forms.filters.loadfilterdata.md) |  |  |
-|  [saveFilter()](./foundation-forms.filters.savefilter.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connectedCallback()](./foundation-forms.filters.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[deleteFilter()](./foundation-forms.filters.deletefilter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[filterNameChanged(oldValue, newValue)](./foundation-forms.filters.filternamechanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[loadAllSavedFilters()](./foundation-forms.filters.loadallsavedfilters.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[loadFilterData(filterKey)](./foundation-forms.filters.loadfilterdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[saveFilter()](./foundation-forms.filters.savefilter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

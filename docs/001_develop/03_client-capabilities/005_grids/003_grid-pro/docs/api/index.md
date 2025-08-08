@@ -15,7 +15,25 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/grid-pro](./grid-pro.md) |  |
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@genesislcap/grid-pro](./grid-pro.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

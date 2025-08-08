@@ -15,11 +15,39 @@ read(id: string): Promise<DatabaseAccessResult.Read<T>>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  id | string |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+id
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Read](./foundation-utils.databaseaccessresult.read.md)&lt;T&gt;&gt;
+Promise&lt;[DatabaseAccessResult.Read](./foundation-utils.databaseaccessresult.read.md)<!-- -->&lt;T&gt;&gt;
 

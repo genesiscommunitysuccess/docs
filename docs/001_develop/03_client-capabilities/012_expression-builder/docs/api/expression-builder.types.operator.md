@@ -17,5 +17,5 @@ format: md
 ```typescript
 export type Operator = UniraryOperator | BinaryOperator | TernararyOperator | VariadicOperator;
 ```
-**References:** [UniraryOperator](./expression-builder.types.uniraryoperator.md), [BinaryOperator](./expression-builder.types.binaryoperator.md), [TernararyOperator](./expression-builder.types.ternararyoperator.md), [VariadicOperator](./expression-builder.types.variadicoperator.md)
+**References:** [UniraryOperator](./expression-builder.types.uniraryoperator.md)<!-- -->, [BinaryOperator](./expression-builder.types.binaryoperator.md)<!-- -->, [TernararyOperator](./expression-builder.types.ternararyoperator.md)<!-- -->, [VariadicOperator](./expression-builder.types.variadicoperator.md)
 

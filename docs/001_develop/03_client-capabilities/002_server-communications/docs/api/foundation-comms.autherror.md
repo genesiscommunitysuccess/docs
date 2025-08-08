@@ -18,25 +18,188 @@ export declare class AuthError extends Error
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(sent, received, message)](./foundation-comms.autherror._constructor_.md) |  | Constructs a new instance of the <code>AuthError</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(sent, received, message)](./foundation-comms.autherror._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `AuthError` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [received?](./foundation-comms.autherror.received.md) |  | [Message](./foundation-comms.message.md) | _(Optional)_ |
-|  [sent](./foundation-comms.autherror.sent.md) |  | [Message](./foundation-comms.message.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[received?](./foundation-comms.autherror.received.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[sent](./foundation-comms.autherror.sent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getDetailsError()](./foundation-comms.autherror.getdetailserror.md) |  |  |
-|  [getMessageError()](./foundation-comms.autherror.getmessageerror.md) |  |  |
-|  [hasErrorCode(code)](./foundation-comms.autherror.haserrorcode.md) |  |  |
-|  [hasMFAError()](./foundation-comms.autherror.hasmfaerror.md) |  |  |
-|  [hasPasswordExpiredError()](./foundation-comms.autherror.haspasswordexpirederror.md) |  |  |
-|  [isIgnorableError()](./foundation-comms.autherror.isignorableerror.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getDetailsError()](./foundation-comms.autherror.getdetailserror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMessageError()](./foundation-comms.autherror.getmessageerror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasErrorCode(code)](./foundation-comms.autherror.haserrorcode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasMFAError()](./foundation-comms.autherror.hasmfaerror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasPasswordExpiredError()](./foundation-comms.autherror.haspasswordexpirederror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isIgnorableError()](./foundation-comms.autherror.isignorableerror.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

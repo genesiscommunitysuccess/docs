@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [createObserver](./foundation-utils.createobserver.md)
 
-## createObserver variable
+## createObserver() function
 
 Creates a new event observer instance.
 
@@ -14,3 +14,7 @@ Creates a new event observer instance.
 ```typescript
 createObserver: <EventType>() => Observer<EventType>
 ```
+**Returns:**
+
+[Observer](./foundation-utils.observer.md)<!-- -->&lt;EventType&gt;
+

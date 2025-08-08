@@ -16,5 +16,5 @@ export type WithTestHarness<T extends {
     [k in keyof T]: any;
 }> = T & SinonWrapper<SpiedFunctions<T>>;
 ```
-**References:** [SinonWrapper](./foundation-testing.sinonwrapper.md), [SpiedFunctions](./foundation-testing.spiedfunctions.md)
+**References:** [SinonWrapper](./foundation-testing.sinonwrapper.md)<!-- -->, [SpiedFunctions](./foundation-testing.spiedfunctions.md)
 

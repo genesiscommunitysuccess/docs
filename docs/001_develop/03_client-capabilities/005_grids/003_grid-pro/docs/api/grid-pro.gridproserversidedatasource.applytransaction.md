@@ -18,9 +18,37 @@ applyTransaction(agTransaction: RowDataTransaction): ServerSideTransactionResult
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  agTransaction | RowDataTransaction |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+agTransaction
+
+
+</td><td>
+
+RowDataTransaction
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

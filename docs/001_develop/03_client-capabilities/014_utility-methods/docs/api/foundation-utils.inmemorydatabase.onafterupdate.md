@@ -15,9 +15,37 @@ onAfterUpdate(listener: Listener<DatabaseEvent.AfterUpdate<T>>): () => void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  listener | [Listener](./foundation-utils.listener.md)&lt;[DatabaseEvent.AfterUpdate](./foundation-utils.databaseevent.afterupdate.md)&lt;T&gt;&gt; |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+listener
+
+
+</td><td>
+
+[Listener](./foundation-utils.listener.md)<!-- -->&lt;[DatabaseEvent.AfterUpdate](./foundation-utils.databaseevent.afterupdate.md)<!-- -->&lt;T&gt;&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

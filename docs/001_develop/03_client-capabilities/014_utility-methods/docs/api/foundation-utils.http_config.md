@@ -7,7 +7,7 @@ format: md
 
 ## HTTP\_CONFIG variable
 
-Configuration settings for HTTP, used in http connect flow \[`genesislcap-foundation-comms.HttpConnectConfig`\](https://link-to-docs).
+Configuration settings for HTTP, used in http connect flow \[`genesislcap-foundation-comms.HttpConnectConfig`<!-- -->\](https://link-to-docs).
 
 **Signature:**
 

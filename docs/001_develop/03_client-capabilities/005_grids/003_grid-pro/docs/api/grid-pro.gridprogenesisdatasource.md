@@ -22,35 +22,365 @@ Only supports Client-Side Row Model.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [applyAsyncFuncName](./grid-pro.gridprogenesisdatasource.applyasyncfuncname.md) |  | string |  |
-|  [applyFuncName](./grid-pro.gridprogenesisdatasource.applyfuncname.md) |  | string |  |
-|  [keepColDefsOnClearRowData](./grid-pro.gridprogenesisdatasource.keepcoldefsonclearrowdata.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[applyAsyncFuncName](./grid-pro.gridprogenesisdatasource.applyasyncfuncname.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyFuncName](./grid-pro.gridprogenesisdatasource.applyfuncname.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[keepColDefsOnClearRowData](./grid-pro.gridprogenesisdatasource.keepcoldefsonclearrowdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [applyTransaction(agTransaction)](./grid-pro.gridprogenesisdatasource.applytransaction.md) |  |  |
-|  [applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprogenesisdatasource.applytransactionasync.md) |  |  |
-|  [connectedCallback()](./grid-pro.gridprogenesisdatasource.connectedcallback.md) |  |  |
-|  [criteriaChanged(oldCriteria, newCriteria)](./grid-pro.gridprogenesisdatasource.criteriachanged.md) |  |  |
-|  [deepClone()](./grid-pro.gridprogenesisdatasource.deepclone.md) |  |  |
-|  [deinit()](./grid-pro.gridprogenesisdatasource.deinit.md) |  | Deinitialises the datasource, resetting it to its initial state. |
-|  [destroy()](./grid-pro.gridprogenesisdatasource.destroy.md) |  | Destroys the datasource, resetting it to its initial state. |
-|  [disconnectedCallback()](./grid-pro.gridprogenesisdatasource.disconnectedcallback.md) |  |  |
-|  [handleStreamDeletes(deletes)](./grid-pro.gridprogenesisdatasource.handlestreamdeletes.md) |  | Handles stream deletes by removing records from the grid. |
-|  [handleStreamInserts(inserts)](./grid-pro.gridprogenesisdatasource.handlestreaminserts.md) |  |  |
-|  [handleStreamUpdates(updates)](./grid-pro.gridprogenesisdatasource.handlestreamupdates.md) |  |  |
-|  [init(columnDefinitions, columnStates)](./grid-pro.gridprogenesisdatasource.init.md) |  | Initializes the datasource. |
-|  [loadMore()](./grid-pro.gridprogenesisdatasource.loadmore.md) |  |  |
-|  [refreshRows()](./grid-pro.gridprogenesisdatasource.refreshrows.md) |  | Force the grid to redispatch the current rows |
-|  [reloadResourceData()](./grid-pro.gridprogenesisdatasource.reloadresourcedata.md) |  | Resets the grid data while keeping columnDefs and sends a DATA\_LOGOFF message if it's a stream. Loads resource data without full initialization (no metadata fetch). |
-|  [removeFilter(fieldName)](./grid-pro.gridprogenesisdatasource.removefilter.md) |  |  |
-|  [requestChanged(oldRequest, newRequest)](./grid-pro.gridprogenesisdatasource.requestchanged.md) |  |  |
-|  [reset()](./grid-pro.gridprogenesisdatasource.reset.md) |  | Resets the datasource to its initial state. |
-|  [resourceNameChanged(oldValue, newValue)](./grid-pro.gridprogenesisdatasource.resourcenamechanged.md) |  |  |
-|  [restart()](./grid-pro.gridprogenesisdatasource.restart.md) |  | Restarts the datasource, uses <code>destroy</code> and <code>init</code> in sequence. |
-|  [setFilter(fieldName, newFilter)](./grid-pro.gridprogenesisdatasource.setfilter.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[applyTransaction(agTransaction)](./grid-pro.gridprogenesisdatasource.applytransaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprogenesisdatasource.applytransactionasync.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connectedCallback()](./grid-pro.gridprogenesisdatasource.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[criteriaChanged(oldCriteria, newCriteria)](./grid-pro.gridprogenesisdatasource.criteriachanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[deepClone()](./grid-pro.gridprogenesisdatasource.deepclone.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[deinit()](./grid-pro.gridprogenesisdatasource.deinit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Deinitialises the datasource, resetting it to its initial state.
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./grid-pro.gridprogenesisdatasource.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Destroys the datasource, resetting it to its initial state.
+
+
+</td></tr>
+<tr><td>
+
+[disconnectedCallback()](./grid-pro.gridprogenesisdatasource.disconnectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamDeletes(deletes)](./grid-pro.gridprogenesisdatasource.handlestreamdeletes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Handles stream deletes by removing records from the grid.
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamInserts(inserts)](./grid-pro.gridprogenesisdatasource.handlestreaminserts.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamUpdates(updates)](./grid-pro.gridprogenesisdatasource.handlestreamupdates.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(columnDefinitions, columnStates)](./grid-pro.gridprogenesisdatasource.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Initializes the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[loadMore()](./grid-pro.gridprogenesisdatasource.loadmore.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refreshRows()](./grid-pro.gridprogenesisdatasource.refreshrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Force the grid to redispatch the current rows
+
+
+</td></tr>
+<tr><td>
+
+[reloadResourceData()](./grid-pro.gridprogenesisdatasource.reloadresourcedata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Resets the grid data while keeping columnDefs and sends a DATA\_LOGOFF message if it's a stream. Loads resource data without full initialization (no metadata fetch).
+
+
+</td></tr>
+<tr><td>
+
+[removeFilter(fieldName)](./grid-pro.gridprogenesisdatasource.removefilter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[requestChanged(oldRequest, newRequest)](./grid-pro.gridprogenesisdatasource.requestchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reset()](./grid-pro.gridprogenesisdatasource.reset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Resets the datasource to its initial state.
+
+
+</td></tr>
+<tr><td>
+
+[resourceNameChanged(oldValue, newValue)](./grid-pro.gridprogenesisdatasource.resourcenamechanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[restart()](./grid-pro.gridprogenesisdatasource.restart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Restarts the datasource, uses `destroy` and `init` in sequence.
+
+
+</td></tr>
+<tr><td>
+
+[setFilter(fieldName, newFilter)](./grid-pro.gridprogenesisdatasource.setfilter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

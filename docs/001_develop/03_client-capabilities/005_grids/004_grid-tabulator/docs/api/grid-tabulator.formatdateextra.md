@@ -17,9 +17,39 @@ export declare function formatDateExtra(epoch: number): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  epoch | number | The epoch number. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+epoch
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The epoch number.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

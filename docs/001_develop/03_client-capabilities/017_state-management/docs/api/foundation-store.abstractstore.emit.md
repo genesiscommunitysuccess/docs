@@ -17,9 +17,37 @@ protected emit<K extends keyof (TEventDetailMap & TInternalEventDetailMap) & str
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  args | (TEventDetailMap &amp; TInternalEventDetailMap)\[K\] extends void ? \[key: K\] : \[key: K, detail: (TEventDetailMap &amp; TInternalEventDetailMap)\[K\]\] |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+args
+
+
+</td><td>
+
+(TEventDetailMap &amp; TInternalEventDetailMap)\[K\] extends void ? \[key: K\] : \[key: K, detail: (TEventDetailMap &amp; TInternalEventDetailMap)\[K\]\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

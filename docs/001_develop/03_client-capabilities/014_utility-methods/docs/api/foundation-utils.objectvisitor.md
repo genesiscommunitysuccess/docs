@@ -44,9 +44,49 @@ const makeObserverVisitor: ObjectVisitor<undefined> = {
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [visitArray(array, data)](./foundation-utils.objectvisitor.visitarray.md) | **_(BETA)_** |
-|  [visitObject(object, data)](./foundation-utils.objectvisitor.visitobject.md) | **_(BETA)_** |
-|  [visitProperty(object, key, value, data)](./foundation-utils.objectvisitor.visitproperty.md) | **_(BETA)_** |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[visitArray(array, data)](./foundation-utils.objectvisitor.visitarray.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[visitObject(object, data)](./foundation-utils.objectvisitor.visitobject.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[visitProperty(object, key, value, data)](./foundation-utils.objectvisitor.visitproperty.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+</tbody></table>
 

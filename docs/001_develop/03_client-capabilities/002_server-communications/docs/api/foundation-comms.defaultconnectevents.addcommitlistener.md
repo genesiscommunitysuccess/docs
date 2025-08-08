@@ -17,9 +17,39 @@ addCommitListener(listener: Listener<CommitEvent>): () => void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  listener | Listener&lt;[CommitEvent](./foundation-comms.commitevent.md)&gt; | A listener callback function. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+listener
+
+
+</td><td>
+
+Listener&lt;[CommitEvent](./foundation-comms.commitevent.md)<!-- -->&gt;
+
+
+</td><td>
+
+A listener callback function.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

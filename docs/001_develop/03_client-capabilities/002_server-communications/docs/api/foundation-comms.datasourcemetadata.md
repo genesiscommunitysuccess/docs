@@ -17,13 +17,155 @@ export interface DatasourceMetadata
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [availableIndexes](./foundation-comms.datasourcemetadata.availableindexes.md) | <code>readonly</code> | [IndexDetail](./foundation-comms.indexdetail.md)\[\] |  |
-|  [customRequestFields](./foundation-comms.datasourcemetadata.customrequestfields.md) | <code>readonly</code> | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [fetchMetadataRequired](./foundation-comms.datasourcemetadata.fetchmetadatarequired.md) |  | boolean |  |
-|  [fieldMetadata](./foundation-comms.datasourcemetadata.fieldmetadata.md) | <code>readonly</code> | [FieldMetadata](./foundation-comms.fieldmetadata.md)\[\] |  |
-|  [originalFieldDef](./foundation-comms.datasourcemetadata.originalfielddef.md) | <code>readonly</code> | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [requestFields](./foundation-comms.datasourcemetadata.requestfields.md) | <code>readonly</code> | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [startStreamRequired](./foundation-comms.datasourcemetadata.startstreamrequired.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[availableIndexes](./foundation-comms.datasourcemetadata.availableindexes.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[IndexDetail](./foundation-comms.indexdetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[customRequestFields](./foundation-comms.datasourcemetadata.customrequestfields.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[fetchMetadataRequired](./foundation-comms.datasourcemetadata.fetchmetadatarequired.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[fieldMetadata](./foundation-comms.datasourcemetadata.fieldmetadata.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[originalFieldDef](./foundation-comms.datasourcemetadata.originalfielddef.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[requestFields](./foundation-comms.datasourcemetadata.requestfields.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[startStreamRequired](./foundation-comms.datasourcemetadata.startstreamrequired.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

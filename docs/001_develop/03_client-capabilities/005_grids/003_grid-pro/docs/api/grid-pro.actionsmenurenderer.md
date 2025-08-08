@@ -24,15 +24,99 @@ For multiple actions scenarios.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.actionsmenurenderer.params.md) |  | ICellRendererParams |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.actionsmenurenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ICellRendererParams
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getGui()](./grid-pro.actionsmenurenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.actionsmenurenderer.init.md) |  |  |
-|  [refresh(params)](./grid-pro.actionsmenurenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getGui()](./grid-pro.actionsmenurenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.actionsmenurenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.actionsmenurenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

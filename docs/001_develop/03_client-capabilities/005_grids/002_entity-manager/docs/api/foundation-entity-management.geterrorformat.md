@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-entity-management](./foundation-entity-management.md) &gt; [getErrorFormat](./foundation-entity-management.geterrorformat.md)
 
-## getErrorFormat variable
+## getErrorFormat() function
 
 Format the error as a string with a different format depending on whether `err` has a `FIELD` property or not
 
@@ -14,3 +14,42 @@ Format the error as a string with a different format depending on whether `err` 
 ```typescript
 getErrorFormat: (err: any) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+err
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+

@@ -15,10 +15,53 @@ parse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  text | string |  |
-|  reviver | (this: any, key: string, value: any) =&gt; any | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+text
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+reviver
+
+
+</td><td>
+
+(this: any, key: string, value: any) =&gt; any
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

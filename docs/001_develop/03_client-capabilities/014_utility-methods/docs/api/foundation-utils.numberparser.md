@@ -16,14 +16,79 @@ export declare class NumberParser
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(locale)](./foundation-utils.numberparser._constructor_.md) |  | Constructs a new instance of the <code>NumberParser</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(locale)](./foundation-utils.numberparser._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `NumberParser` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [hasSeparator(localeNumber)](./foundation-utils.numberparser.hasseparator.md) |  |  |
-|  [parse(localeNumber)](./foundation-utils.numberparser.parse.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[hasSeparator(localeNumber)](./foundation-utils.numberparser.hasseparator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[parse(localeNumber)](./foundation-utils.numberparser.parse.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

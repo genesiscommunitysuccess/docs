@@ -22,10 +22,55 @@ export declare function configure(container: Container, config: Partial<LoginCon
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  container | Container | DI container. |
-|  config | Partial&lt;[LoginConfig](./foundation-login.loginconfig.md)&gt; | A partial LoginConfig. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+container
+
+
+</td><td>
+
+Container
+
+
+</td><td>
+
+DI container.
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+Partial&lt;[LoginConfig](./foundation-login.loginconfig.md)<!-- -->&gt;
+
+
+</td><td>
+
+A partial LoginConfig.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

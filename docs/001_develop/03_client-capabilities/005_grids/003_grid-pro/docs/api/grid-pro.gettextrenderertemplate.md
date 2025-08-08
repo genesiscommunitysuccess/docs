@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getTextRendererTemplate](./grid-pro.gettextrenderertemplate.md)
 
-## getTextRendererTemplate variable
+## getTextRendererTemplate() function
 
 > Warning: This API is now obsolete.
 > 
@@ -17,3 +17,44 @@ format: md
 ```typescript
 getTextRendererTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<AgTextFieldRenderer, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md)<!-- -->, any&gt;
+

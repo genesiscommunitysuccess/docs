@@ -17,5 +17,5 @@ Union of all input types \*
 ```typescript
 export type FieldTypes = TextInput | NumberInput | CheckboxInput | SelectInput | DateInput | DateTimeInput;
 ```
-**References:** [TextInput](./expression-builder.types.textinput.md), [NumberInput](./expression-builder.types.numberinput.md), [CheckboxInput](./expression-builder.types.checkboxinput.md), [SelectInput](./expression-builder.types.selectinput.md), [DateInput](./expression-builder.types.dateinput.md), [DateTimeInput](./expression-builder.types.datetimeinput.md)
+**References:** [TextInput](./expression-builder.types.textinput.md)<!-- -->, [NumberInput](./expression-builder.types.numberinput.md)<!-- -->, [CheckboxInput](./expression-builder.types.checkboxinput.md)<!-- -->, [SelectInput](./expression-builder.types.selectinput.md)<!-- -->, [DateInput](./expression-builder.types.dateinput.md)<!-- -->, [DateTimeInput](./expression-builder.types.datetimeinput.md)
 

@@ -18,19 +18,152 @@ export declare class DefaultMetaCache implements MetaCache
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cachedJsonSchema](./foundation-comms.defaultmetacache.cachedjsonschema.md) |  | Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)&gt; |  |
-|  [cachedMetadata](./foundation-comms.defaultmetacache.cachedmetadata.md) |  | Map&lt;string, [Metadata](./foundation-comms.metadata.md)&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cachedJsonSchema](./foundation-comms.defaultmetacache.cachedjsonschema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[cachedMetadata](./foundation-comms.defaultmetacache.cachedmetadata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;string, [Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getJsonSchemaFor(resourceName)](./foundation-comms.defaultmetacache.getjsonschemafor.md) |  |  |
-|  [getMetadataFor(resourceName)](./foundation-comms.defaultmetacache.getmetadatafor.md) |  |  |
-|  [hasJsonSchemaFor(resourceName)](./foundation-comms.defaultmetacache.hasjsonschemafor.md) |  |  |
-|  [hasMetadataFor(resourceName)](./foundation-comms.defaultmetacache.hasmetadatafor.md) |  |  |
-|  [setJsonSchemaFor(resourceName, schemaResponse)](./foundation-comms.defaultmetacache.setjsonschemafor.md) |  |  |
-|  [setMetadataFor(resourceName, metadata)](./foundation-comms.defaultmetacache.setmetadatafor.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getJsonSchemaFor(resourceName)](./foundation-comms.defaultmetacache.getjsonschemafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMetadataFor(resourceName)](./foundation-comms.defaultmetacache.getmetadatafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasJsonSchemaFor(resourceName)](./foundation-comms.defaultmetacache.hasjsonschemafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasMetadataFor(resourceName)](./foundation-comms.defaultmetacache.hasmetadatafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setJsonSchemaFor(resourceName, schemaResponse)](./foundation-comms.defaultmetacache.setjsonschemafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setMetadataFor(resourceName, metadata)](./foundation-comms.defaultmetacache.setmetadatafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

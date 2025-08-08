@@ -17,9 +17,39 @@ export declare function getFilterByFieldType(type: string): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  type | string | The field type. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+type
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The field type.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

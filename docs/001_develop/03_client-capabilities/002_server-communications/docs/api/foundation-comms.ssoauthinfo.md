@@ -17,5 +17,5 @@ export type SsoAuthInfo = {
     ssoToken: string;
 };
 ```
-**References:** [AuthType](./foundation-comms.authtype.md), [AuthType.SSO](./foundation-comms.authtype.md)
+**References:** [AuthType](./foundation-comms.authtype.md)<!-- -->, [AuthType.SSO](./foundation-comms.authtype.md)
 

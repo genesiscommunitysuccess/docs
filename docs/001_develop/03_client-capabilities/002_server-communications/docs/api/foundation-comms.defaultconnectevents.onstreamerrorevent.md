@@ -17,11 +17,71 @@ onStreamErrorEvent(resourceName: string, stream: SocketObservable<any>, error: a
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource. |
-|  stream | [SocketObservable](./foundation-comms.socketobservable.md)&lt;any&gt; | The actual stream itself. |
-|  error | any | The error that occurred. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource.
+
+
+</td></tr>
+<tr><td>
+
+stream
+
+
+</td><td>
+
+[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;any&gt;
+
+
+</td><td>
+
+The actual stream itself.
+
+
+</td></tr>
+<tr><td>
+
+error
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The error that occurred.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

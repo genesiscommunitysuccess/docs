@@ -17,11 +17,71 @@ addStreamListener(listener: Listener<StreamEvent>, complete: Listener<StreamComp
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  listener | Listener&lt;[StreamEvent](./foundation-comms.streamevent.md)&gt; | A listener callback function. |
-|  complete | Listener&lt;[StreamCompleteEvent](./foundation-comms.streamcompleteevent.md)&gt; | A complete listener callback function. |
-|  error | Listener&lt;[StreamErrorEvent](./foundation-comms.streamerrorevent.md)&gt; | A error listener callback function. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+listener
+
+
+</td><td>
+
+Listener&lt;[StreamEvent](./foundation-comms.streamevent.md)<!-- -->&gt;
+
+
+</td><td>
+
+A listener callback function.
+
+
+</td></tr>
+<tr><td>
+
+complete
+
+
+</td><td>
+
+Listener&lt;[StreamCompleteEvent](./foundation-comms.streamcompleteevent.md)<!-- -->&gt;
+
+
+</td><td>
+
+A complete listener callback function.
+
+
+</td></tr>
+<tr><td>
+
+error
+
+
+</td><td>
+
+Listener&lt;[StreamErrorEvent](./foundation-comms.streamerrorevent.md)<!-- -->&gt;
+
+
+</td><td>
+
+A error listener callback function.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

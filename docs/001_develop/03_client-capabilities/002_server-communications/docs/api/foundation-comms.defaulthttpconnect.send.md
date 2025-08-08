@@ -15,10 +15,53 @@ send<T>(message: Message<any>, needsHandling?: boolean): Promise<any>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  message | [Message](./foundation-comms.message.md)&lt;any&gt; |  |
-|  needsHandling | boolean | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)<!-- -->&lt;any&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+needsHandling
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

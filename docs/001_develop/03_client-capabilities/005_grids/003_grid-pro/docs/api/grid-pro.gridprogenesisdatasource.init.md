@@ -17,10 +17,55 @@ init(columnDefinitions?: ColDef[], columnStates?: ColumnState[]): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  columnDefinitions | ColDef\[\] | _(Optional)_ Optionally set the <code>gridOptions</code> up with column definitions |
-|  columnStates | ColumnState\[\] | _(Optional)_ Optionally set the grid up with column state |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+columnDefinitions
+
+
+</td><td>
+
+ColDef\[\]
+
+
+</td><td>
+
+_(Optional)_ Optionally set the `gridOptions` up with column definitions
+
+
+</td></tr>
+<tr><td>
+
+columnStates
+
+
+</td><td>
+
+ColumnState\[\]
+
+
+</td><td>
+
+_(Optional)_ Optionally set the grid up with column state
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

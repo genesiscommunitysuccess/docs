@@ -17,14 +17,59 @@ request(resourceName: string, params?: RequestParams): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to request. |
-|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ An object containing optional parameters to include in the request. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to request.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+_(Optional)_ An object containing optional parameters to include in the request.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 
 A promise that resolves to a Message containing the server's response.
 

@@ -14,28 +14,183 @@ The default implementation for the I18next interface.
 ```typescript
 export declare class DefaultI18next implements I18next 
 ```
-**Implements:** I18next
+**Implements:** [I18next](./foundation-i18n.i18next.md)
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)()](./foundation-i18n.defaulti18next._constructor_.md) |  | Constructs a new instance of the <code>DefaultI18next</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)()](./foundation-i18n.defaulti18next._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultI18next` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./foundation-i18n.defaulti18next.config.md) |  | [I18nextConfig](./foundation-i18n.i18nextconfig.md) |  |
-|  [language](./foundation-i18n.defaulti18next.language.md) |  | string |  |
-|  [options](./foundation-i18n.defaulti18next.options.md) |  | InitOptions |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./foundation-i18n.defaulti18next.config.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[I18nextConfig](./foundation-i18n.i18nextconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[language](./foundation-i18n.defaulti18next.language.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[options](./foundation-i18n.defaulti18next.options.md)
+
+
+</td><td>
+
+
+</td><td>
+
+InitOptions
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [addResources(resources)](./foundation-i18n.defaulti18next.addresources.md) |  |  |
-|  [changeLanguageTo(language)](./foundation-i18n.defaulti18next.changelanguageto.md) |  |  |
-|  [init(options, callback)](./foundation-i18n.defaulti18next.init.md) |  |  |
-|  [t(key, options)](./foundation-i18n.defaulti18next.t.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addResources(resources)](./foundation-i18n.defaulti18next.addresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[changeLanguageTo(language)](./foundation-i18n.defaulti18next.changelanguageto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(options, callback)](./foundation-i18n.defaulti18next.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[t(key, options)](./foundation-i18n.defaulti18next.t.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

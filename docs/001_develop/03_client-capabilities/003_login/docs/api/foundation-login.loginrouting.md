@@ -33,8 +33,62 @@ this.loginRouting.navigateTo('logout');
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [getRoutePath](./foundation-login.loginrouting.getroutepath.md) |  | typeof getRoutePath |  |
-|  [navigateTo](./foundation-login.loginrouting.navigateto.md) |  | typeof navigateTo |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getRoutePath](./foundation-login.loginrouting.getroutepath.md)
+
+
+</td><td>
+
+
+</td><td>
+
+typeof getRoutePath
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[navigateTo](./foundation-login.loginrouting.navigateto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+typeof navigateTo
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 

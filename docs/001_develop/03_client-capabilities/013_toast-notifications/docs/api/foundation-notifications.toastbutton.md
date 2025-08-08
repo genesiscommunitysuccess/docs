@@ -17,15 +17,97 @@ export interface ToastButton
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [appearance?](./foundation-notifications.toastbutton.appearance.md) |  | string | _(Optional)_ |
-|  [placeholder?](./foundation-notifications.toastbutton.placeholder.md) |  | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[appearance?](./foundation-notifications.toastbutton.appearance.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[placeholder?](./foundation-notifications.toastbutton.placeholder.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [action({ details, buttonElement, toastElement, })](./foundation-notifications.toastbutton.action.md) |  |
-|  [condition({ details })](./foundation-notifications.toastbutton.condition.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[action({ details, buttonElement, toastElement, })](./foundation-notifications.toastbutton.action.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[condition({ details })](./foundation-notifications.toastbutton.condition.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

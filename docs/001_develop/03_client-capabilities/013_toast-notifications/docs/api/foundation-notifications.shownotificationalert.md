@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotificationAlert](./foundation-notifications.shownotificationalert.md)
 
-## showNotificationAlert variable
+## showNotificationAlert() function
 
 Shows the notification alert
 
@@ -14,3 +14,42 @@ Shows the notification alert
 ```typescript
 showNotificationAlert: (configuration: AlertStructure) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+configuration
+
+
+</td><td>
+
+[AlertStructure](./foundation-notifications.alertstructure.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

@@ -21,11 +21,119 @@ export interface RegisteredElementConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [closable?](./foundation-layout.registeredelementconfig.closable.md) |  | boolean | _(Optional)_ |
-|  [registration](./foundation-layout.registeredelementconfig.registration.md) |  | string |  |
-|  [showMaximiseButton?](./foundation-layout.registeredelementconfig.showmaximisebutton.md) |  | boolean | _(Optional)_ |
-|  [size?](./foundation-layout.registeredelementconfig.size.md) |  | string | _(Optional)_ |
-|  [title?](./foundation-layout.registeredelementconfig.title.md) |  | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[closable?](./foundation-layout.registeredelementconfig.closable.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[registration](./foundation-layout.registeredelementconfig.registration.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[showMaximiseButton?](./foundation-layout.registeredelementconfig.showmaximisebutton.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[size?](./foundation-layout.registeredelementconfig.size.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[title?](./foundation-layout.registeredelementconfig.title.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

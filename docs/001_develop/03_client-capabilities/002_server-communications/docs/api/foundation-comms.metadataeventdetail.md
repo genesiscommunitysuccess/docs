@@ -17,5 +17,5 @@ export type MetadataEventDetail = {
     error?: any;
 };
 ```
-**References:** [Message](./foundation-comms.message.md), [MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)
+**References:** [Message](./foundation-comms.message.md)<!-- -->, [MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)
 

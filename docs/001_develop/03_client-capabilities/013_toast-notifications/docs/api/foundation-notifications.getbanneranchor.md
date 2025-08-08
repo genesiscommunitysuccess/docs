@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getBannerAnchor](./foundation-notifications.getbanneranchor.md)
 
-## getBannerAnchor variable
+## getBannerAnchor() function
 
 Get the banner anchor to attach the banner to
 
@@ -14,3 +14,45 @@ Get the banner anchor to attach the banner to
 ```typescript
 getBannerAnchor: (element: any) => HTMLElement | null
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+element
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The element to start searching from
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+HTMLElement \| null
+
+

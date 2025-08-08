@@ -20,10 +20,55 @@ export declare function reactive<T>(object: T, deep?: boolean): T;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  object | T | The object to make reactive. |
-|  deep | boolean | _(Optional)_ Indicates whether to deeply convert the object. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+object
+
+
+</td><td>
+
+T
+
+
+</td><td>
+
+The object to make reactive.
+
+
+</td></tr>
+<tr><td>
+
+deep
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Indicates whether to deeply convert the object.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

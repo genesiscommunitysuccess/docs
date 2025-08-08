@@ -17,29 +17,271 @@ export interface FDC3
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [currentChannel$](./foundation-fdc3.fdc3.currentchannel_.md) |  | Observable&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)&gt; | Observable which emits the current channel When a new channel is joined a new value is emitted |
-|  [isInteropFdc3](./foundation-fdc3.fdc3.isinteropfdc3.md) |  | () =&gt; boolean | Check if the interop global is available. |
-|  [isReady](./foundation-fdc3.fdc3.isready.md) |  | boolean | Whether the FDC3 API is ready. |
-|  [isReady$](./foundation-fdc3.fdc3.isready_.md) |  | Observable&lt;true&gt; | Observable indicating the FDC3 API is ready. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[currentChannel$](./foundation-fdc3.fdc3.currentchannel_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Observable&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)<!-- -->&gt;
+
+
+</td><td>
+
+Observable which emits the current channel When a new channel is joined a new value is emitted
+
+
+</td></tr>
+<tr><td>
+
+[isInteropFdc3](./foundation-fdc3.fdc3.isinteropfdc3.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; boolean
+
+
+</td><td>
+
+Check if the interop global is available.
+
+
+</td></tr>
+<tr><td>
+
+[isReady](./foundation-fdc3.fdc3.isready.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Whether the FDC3 API is ready.
+
+
+</td></tr>
+<tr><td>
+
+[isReady$](./foundation-fdc3.fdc3.isready_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Observable&lt;true&gt;
+
+
+</td><td>
+
+Observable indicating the FDC3 API is ready.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [addChannelListener(channelName, channelType, callback)](./foundation-fdc3.fdc3.addchannellistener.md) | Helper function to add a context listener on a channel with a handler for channel messages |
-|  [addIntentListeners(listeners)](./foundation-fdc3.fdc3.addintentlisteners.md) | Adds intent listeners for the specified intents. |
-|  [addSystemChannelListener(channelType, callback)](./foundation-fdc3.fdc3.addsystemchannellistener.md) | Helper function to add a context listener on to the system, aka 'color', channel with a handler for channel messages |
-|  [broadcastOnChannel(channelName, type, payload)](./foundation-fdc3.fdc3.broadcastonchannel.md) | Broadcasts a message on a given channel with a given type |
-|  [broadcastOnChannelEventHandler(channelName, type)](./foundation-fdc3.fdc3.broadcastonchanneleventhandler.md) | Helper function to broadcast message on channel in response to dispatched event |
-|  [broadcastOnCurrentChannel(payload, type)](./foundation-fdc3.fdc3.broadcastoncurrentchannel.md) | Broadcasts a message on the current app channel |
-|  [findIntent(intent, context)](./foundation-fdc3.fdc3.findintent.md) | Finds an app that supports the specified intent. |
-|  [findIntentsByContext(context)](./foundation-fdc3.fdc3.findintentsbycontext.md) | Finds all the intents supported by the specified context. |
-|  [getCurrentChannel()](./foundation-fdc3.fdc3.getcurrentchannel.md) | Helper function to get the current channel of the application |
-|  [getOrCreateChannel(channelId)](./foundation-fdc3.fdc3.getorcreatechannel.md) | Gets or creates the specified channel. |
-|  [handleChannelCurrentContext(channel, contextType, listenerCallback)](./foundation-fdc3.fdc3.handlechannelcurrentcontext.md) | Helper function to add a context listener on a channel with a handler for channel messages |
-|  [joinChannel(channelId)](./foundation-fdc3.fdc3.joinchannel.md) | Joins the specified channel. |
-|  [raiseIntent(context, intent)](./foundation-fdc3.fdc3.raiseintent.md) | Raises the specified intent with the specified context. |
-|  [raiseIntentForContext(context)](./foundation-fdc3.fdc3.raiseintentforcontext.md) | Raises an intent against an application based purely on the context data. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addChannelListener(channelName, channelType, callback)](./foundation-fdc3.fdc3.addchannellistener.md)
+
+
+</td><td>
+
+Helper function to add a context listener on a channel with a handler for channel messages
+
+
+</td></tr>
+<tr><td>
+
+[addIntentListeners(listeners)](./foundation-fdc3.fdc3.addintentlisteners.md)
+
+
+</td><td>
+
+Adds intent listeners for the specified intents.
+
+
+</td></tr>
+<tr><td>
+
+[addSystemChannelListener(channelType, callback)](./foundation-fdc3.fdc3.addsystemchannellistener.md)
+
+
+</td><td>
+
+Helper function to add a context listener on to the system, aka 'color', channel with a handler for channel messages
+
+
+</td></tr>
+<tr><td>
+
+[broadcastOnChannel(channelName, type, payload)](./foundation-fdc3.fdc3.broadcastonchannel.md)
+
+
+</td><td>
+
+Broadcasts a message on a given channel with a given type
+
+
+</td></tr>
+<tr><td>
+
+[broadcastOnChannelEventHandler(channelName, type)](./foundation-fdc3.fdc3.broadcastonchanneleventhandler.md)
+
+
+</td><td>
+
+Helper function to broadcast message on channel in response to dispatched event
+
+
+</td></tr>
+<tr><td>
+
+[broadcastOnCurrentChannel(payload, type)](./foundation-fdc3.fdc3.broadcastoncurrentchannel.md)
+
+
+</td><td>
+
+Broadcasts a message on the current app channel
+
+
+</td></tr>
+<tr><td>
+
+[findIntent(intent, context)](./foundation-fdc3.fdc3.findintent.md)
+
+
+</td><td>
+
+Finds an app that supports the specified intent.
+
+
+</td></tr>
+<tr><td>
+
+[findIntentsByContext(context)](./foundation-fdc3.fdc3.findintentsbycontext.md)
+
+
+</td><td>
+
+Finds all the intents supported by the specified context.
+
+
+</td></tr>
+<tr><td>
+
+[getCurrentChannel()](./foundation-fdc3.fdc3.getcurrentchannel.md)
+
+
+</td><td>
+
+Helper function to get the current channel of the application
+
+
+</td></tr>
+<tr><td>
+
+[getOrCreateChannel(channelId)](./foundation-fdc3.fdc3.getorcreatechannel.md)
+
+
+</td><td>
+
+Gets or creates the specified channel.
+
+
+</td></tr>
+<tr><td>
+
+[handleChannelCurrentContext(channel, contextType, listenerCallback)](./foundation-fdc3.fdc3.handlechannelcurrentcontext.md)
+
+
+</td><td>
+
+Helper function to add a context listener on a channel with a handler for channel messages
+
+
+</td></tr>
+<tr><td>
+
+[joinChannel(channelId)](./foundation-fdc3.fdc3.joinchannel.md)
+
+
+</td><td>
+
+Joins the specified channel.
+
+
+</td></tr>
+<tr><td>
+
+[raiseIntent(context, intent)](./foundation-fdc3.fdc3.raiseintent.md)
+
+
+</td><td>
+
+Raises the specified intent with the specified context.
+
+
+</td></tr>
+<tr><td>
+
+[raiseIntentForContext(context)](./foundation-fdc3.fdc3.raiseintentforcontext.md)
+
+
+</td><td>
+
+Raises an intent against an application based purely on the context data.
+
+
+</td></tr>
+</tbody></table>
 

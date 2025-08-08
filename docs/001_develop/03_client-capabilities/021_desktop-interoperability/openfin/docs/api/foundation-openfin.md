@@ -9,19 +9,73 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [OpenfinNotificationListener](./foundation-openfin.openfinnotificationlistener.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[OpenfinNotificationListener](./foundation-openfin.openfinnotificationlistener.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isOpenFin()](./foundation-openfin.isopenfin.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [OpenfinToastButton](./foundation-openfin.openfintoastbutton.md) |  |
+<table><thead><tr><th>
 
-## Variables
+Interface
 
-|  Variable | Description |
-|  --- | --- |
-|  [isOpenFin](./foundation-openfin.isopenfin.md) |  |
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[OpenfinToastButton](./foundation-openfin.openfintoastbutton.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

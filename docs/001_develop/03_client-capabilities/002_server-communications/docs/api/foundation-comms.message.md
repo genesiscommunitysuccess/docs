@@ -35,5 +35,5 @@ export type Message<T = void | any> = {
     WARNING?: any[];
 };
 ```
-**References:** [MessageCode](./foundation-comms.messagecode.md), [MessageError](./foundation-comms.messageerror.md), [MessageType](./foundation-comms.messagetype.md), [EventMessageType](./foundation-comms.eventmessagetype.md)
+**References:** [MessageCode](./foundation-comms.messagecode.md)<!-- -->, [MessageError](./foundation-comms.messageerror.md)<!-- -->, [MessageType](./foundation-comms.messagetype.md)<!-- -->, [EventMessageType](./foundation-comms.eventmessagetype.md)
 

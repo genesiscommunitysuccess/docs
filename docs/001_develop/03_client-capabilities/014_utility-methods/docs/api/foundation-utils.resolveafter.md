@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [resolveAfter](./foundation-utils.resolveafter.md)
 
-## resolveAfter variable
+## resolveAfter() function
 
 Resolve a promise after a timeout.
 
@@ -14,6 +14,58 @@ Resolve a promise after a timeout.
 ```typescript
 resolveAfter: <T = any>(ms: number, valueCreator: () => T) => Promise<T>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+ms
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+valueCreator
+
+
+</td><td>
+
+() =&gt; T
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+Promise&lt;T&gt;
 
 ## Example
 

@@ -17,14 +17,133 @@ export declare enum FieldTypeEnum
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  BOOLEAN | <code>&quot;BOOLEAN&quot;</code> |  |
-|  CUSTOM | <code>&quot;CUSTOM&quot;</code> |  |
-|  DATE | <code>&quot;DATE&quot;</code> |  |
-|  DATETIME | <code>&quot;DATETIME&quot;</code> |  |
-|  ENUM | <code>&quot;ENUM&quot;</code> |  |
-|  NANO\_TIMESTAMP | <code>&quot;NANO_TIMESTAMP&quot;</code> |  |
-|  NUMBER | <code>&quot;NUMBER&quot;</code> |  |
-|  STRING | <code>&quot;STRING&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+BOOLEAN
+
+
+</td><td>
+
+`"BOOLEAN"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+CUSTOM
+
+
+</td><td>
+
+`"CUSTOM"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+DATE
+
+
+</td><td>
+
+`"DATE"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+DATETIME
+
+
+</td><td>
+
+`"DATETIME"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+ENUM
+
+
+</td><td>
+
+`"ENUM"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+NANO\_TIMESTAMP
+
+
+</td><td>
+
+`"NANO_TIMESTAMP"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+NUMBER
+
+
+</td><td>
+
+`"NUMBER"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+STRING
+
+
+</td><td>
+
+`"STRING"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

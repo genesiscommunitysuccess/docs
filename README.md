@@ -80,7 +80,33 @@ Once you have the new regenerated file, paste the contents to [docs.iife.min.js]
 
 ## Copy FE docs
 
-Front-end documentation from `foundation-ui` can be pulled into this repo. To this, follow the steps below:
+Front-end documentation from `foundation-ui` can be pulled into this repo. This process has been automated - see [scripts/README.md](scripts/README.md) for details.
+
+### Automated Process (Recommended)
+```bash
+# Basic sync (no git operations)
+npm run sync-api-docs
+
+# Full automation (with git operations)
+npm run sync-api-docs:full
+```
+
+**Basic sync** automatically:
+1. Checks for the latest version of @genesislcap packages
+2. Updates package.json with new versions
+3. Installs dependencies with `npm install`
+4. Builds the api-docs plugin
+5. Copies documentation without starting the server
+6. Updates processedMap with new versions
+
+**Full automation** does everything above plus:
+7. Creates a git branch
+8. Commits changes
+9. Pushes the branch
+10. Provides instructions for creating a pull request
+
+### Manual Process (Legacy)
+If you need to run the process manually, follow these steps:
 
 1. Add as a dependency in `./package.json`.
 2. Set up the config in `./plugins/api-docs/manifest.json`.

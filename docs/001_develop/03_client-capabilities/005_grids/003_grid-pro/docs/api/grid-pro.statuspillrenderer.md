@@ -20,16 +20,111 @@ export declare class StatusPillRenderer extends FoundationElement implements ICe
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.statuspillrenderer.params.md) |  | [StatusPillRendererParams](./grid-pro.statuspillrendererparams.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.statuspillrenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[StatusPillRendererParams](./grid-pro.statuspillrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.statuspillrenderer.destroy.md) |  |  |
-|  [getGui()](./grid-pro.statuspillrenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.statuspillrenderer.init.md) |  |  |
-|  [refresh(params)](./grid-pro.statuspillrenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.statuspillrenderer.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.statuspillrenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.statuspillrenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.statuspillrenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -18,12 +18,79 @@ visitProperty(object: any, key: PropertyKey, value: any, data: TVisitorData): vo
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  object | any |  |
-|  key | PropertyKey |  |
-|  value | any |  |
-|  data | TVisitorData |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+object
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+key
+
+
+</td><td>
+
+PropertyKey
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+value
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+data
+
+
+</td><td>
+
+TVisitorData
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

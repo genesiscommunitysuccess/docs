@@ -17,9 +17,83 @@ export interface DataUpdate
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [add?](./foundation-comms.dataupdate.add.md) |  | Array&lt;any&gt; | _(Optional)_ |
-|  [drop?](./foundation-comms.dataupdate.drop.md) |  | Array&lt;any&gt; | _(Optional)_ |
-|  [modify?](./foundation-comms.dataupdate.modify.md) |  | Array&lt;any&gt; | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[add?](./foundation-comms.dataupdate.add.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Array&lt;any&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[drop?](./foundation-comms.dataupdate.drop.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Array&lt;any&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[modify?](./foundation-comms.dataupdate.modify.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Array&lt;any&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

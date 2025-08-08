@@ -15,7 +15,43 @@ export interface StoreSubscriber<TStore extends Store, TReturn = any>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [handleChange](./foundation-store.storesubscriber.handlechange.md) |  | [SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md)&lt;TStore, TReturn&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[handleChange](./foundation-store.storesubscriber.handlechange.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md)<!-- -->&lt;TStore, TReturn&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

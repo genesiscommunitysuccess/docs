@@ -17,9 +17,39 @@ createItem?(data: any): Promise<string>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | any | The data to create the item with. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The data to create the item with.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

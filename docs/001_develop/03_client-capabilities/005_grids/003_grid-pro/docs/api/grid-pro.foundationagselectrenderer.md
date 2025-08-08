@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [foundationAgSelectRenderer](./grid-pro.foundationagselectrenderer.md)
 
-## foundationAgSelectRenderer variable
+## foundationAgSelectRenderer() function
 
 A function that returns a Foundation Select Renderer registration for configuring the component with a DesignSystem.
 
@@ -23,7 +23,47 @@ foundationAgSelectRenderer: (overrideDefinition?: import("@microsoft/fast-founda
 }, typeof SelectRenderer>
 ```
 
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideDefinition
+
+
+</td><td>
+
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [SelectRenderer](./grid-pro.selectrenderer.md)<!-- -->&gt;
+
 ## Remarks
 
-HTML Element: &lt;foundation-select-renderer&gt;
+HTML Element: &lt;<!-- -->foundation-select-renderer<!-- -->&gt;
 

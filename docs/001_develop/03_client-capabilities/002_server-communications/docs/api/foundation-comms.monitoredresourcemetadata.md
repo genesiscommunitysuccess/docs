@@ -14,5 +14,5 @@ MonitoredResourceMetadata.
 ```typescript
 export interface MonitoredResourceMetadata extends Partial<MonitoredResourceChecksResult>, Partial<StreamEventDetail> 
 ```
-**Extends:** Partial&lt;[MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md)&gt;, Partial&lt;[StreamEventDetail](./foundation-comms.streameventdetail.md)&gt;
+**Extends:** Partial&lt;[MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md)<!-- -->&gt;, Partial&lt;[StreamEventDetail](./foundation-comms.streameventdetail.md)<!-- -->&gt;
 

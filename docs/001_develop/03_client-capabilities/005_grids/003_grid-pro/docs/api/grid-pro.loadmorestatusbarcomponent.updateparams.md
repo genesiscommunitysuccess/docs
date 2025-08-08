@@ -15,9 +15,37 @@ updateParams(params: LoadMoreStatusBarParams): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [LoadMoreStatusBarParams](./grid-pro.loadmorestatusbarparams.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[LoadMoreStatusBarParams](./grid-pro.loadmorestatusbarparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

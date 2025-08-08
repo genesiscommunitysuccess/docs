@@ -17,10 +17,102 @@ export interface CellRendererParams
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cell?](./grid-tabulator.cellrendererparams.cell.md) |  | CellComponent | _(Optional)_ The cell component |
-|  [data?](./grid-tabulator.cellrendererparams.data.md) |  | any | _(Optional)_ The row data |
-|  [formatterParams?](./grid-tabulator.cellrendererparams.formatterparams.md) |  | FormatterParams | _(Optional)_ Additional formatter parameters |
-|  [value?](./grid-tabulator.cellrendererparams.value.md) |  | any | _(Optional)_ The cell value |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cell?](./grid-tabulator.cellrendererparams.cell.md)
+
+
+</td><td>
+
+
+</td><td>
+
+CellComponent
+
+
+</td><td>
+
+_(Optional)_ The cell component
+
+
+</td></tr>
+<tr><td>
+
+[data?](./grid-tabulator.cellrendererparams.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ The row data
+
+
+</td></tr>
+<tr><td>
+
+[formatterParams?](./grid-tabulator.cellrendererparams.formatterparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+FormatterParams
+
+
+</td><td>
+
+_(Optional)_ Additional formatter parameters
+
+
+</td></tr>
+<tr><td>
+
+[value?](./grid-tabulator.cellrendererparams.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ The cell value
+
+
+</td></tr>
+</tbody></table>
 

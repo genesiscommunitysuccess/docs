@@ -20,9 +20,81 @@ OpenfinToastButton interface which extends ToastButton. Adds the task property w
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cta?](./foundation-openfin.openfintoastbutton.cta.md) |  | boolean | _(Optional)_ |
-|  [message?](./foundation-openfin.openfintoastbutton.message.md) |  | string | _(Optional)_ |
-|  [task](./foundation-openfin.openfintoastbutton.task.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cta?](./foundation-openfin.openfintoastbutton.cta.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[message?](./foundation-openfin.openfintoastbutton.message.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[task](./foundation-openfin.openfintoastbutton.task.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

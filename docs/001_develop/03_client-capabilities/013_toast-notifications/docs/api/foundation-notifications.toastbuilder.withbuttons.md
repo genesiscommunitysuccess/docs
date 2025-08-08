@@ -22,9 +22,39 @@ withButtons(buttons: ToastButton[]): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  buttons | [ToastButton](./foundation-notifications.toastbutton.md)\[\] | ToastButton\[\] |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+buttons
+
+
+</td><td>
+
+[ToastButton](./foundation-notifications.toastbutton.md)<!-- -->\[\]
+
+
+</td><td>
+
+ToastButton\[\]
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,8 +17,68 @@ export interface Dialog
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [confirmingActions?](./foundation-notifications.dialog.confirmingactions.md) | <code>readonly</code> | Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)&gt; | _(Optional)_ |
-|  [dismissingAction?](./foundation-notifications.dialog.dismissingaction.md) | <code>readonly</code> | [DismissingAction](./foundation-notifications.dismissingaction.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[confirmingActions?](./foundation-notifications.dialog.confirmingactions.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)<!-- -->&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[dismissingAction?](./foundation-notifications.dialog.dismissingaction.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[DismissingAction](./foundation-notifications.dismissingaction.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

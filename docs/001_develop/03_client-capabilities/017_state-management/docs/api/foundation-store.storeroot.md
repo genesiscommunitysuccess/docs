@@ -22,16 +22,110 @@ The public interface available on the injected store fragment.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [element](./foundation-store.storeroot.element.md) | <code>readonly</code> | HTMLElement | The store root element. |
-|  [ready](./foundation-store.storeroot.ready.md) | <code>readonly</code> | boolean | The ready status of the store root. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[element](./foundation-store.storeroot.element.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+The store root element.
+
+
+</td></tr>
+<tr><td>
+
+[ready](./foundation-store.storeroot.ready.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+The ready status of the store root.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [onConnected(event)](./foundation-store.storeroot.onconnected.md) |  |
-|  [onDisconnected(event)](./foundation-store.storeroot.ondisconnected.md) |  |
-|  [onReady(event)](./foundation-store.storeroot.onready.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[onConnected(event)](./foundation-store.storeroot.onconnected.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onDisconnected(event)](./foundation-store.storeroot.ondisconnected.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onReady(event)](./foundation-store.storeroot.onready.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

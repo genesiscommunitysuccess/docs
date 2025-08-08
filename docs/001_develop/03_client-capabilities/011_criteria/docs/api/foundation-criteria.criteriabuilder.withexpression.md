@@ -15,11 +15,69 @@ withExpression(expression: ValidExpressionType, options?: ExpressionOptions, gro
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  expression | ValidExpressionType |  |
-|  options | ExpressionOptions | _(Optional)_ |
-|  groupJoin | [Join](./foundation-criteria.join.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+expression
+
+
+</td><td>
+
+ValidExpressionType
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+ExpressionOptions
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+groupJoin
+
+
+</td><td>
+
+[Join](./foundation-criteria.join.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

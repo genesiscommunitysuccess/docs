@@ -22,10 +22,55 @@ export declare function createLogger(name: string, options?: LoggerOptions): Log
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  name | string | The name to give the logger. |
-|  options | [LoggerOptions](./foundation-utils.loggeroptions.md) | _(Optional)_ The options to use when creating the logger. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+name
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name to give the logger.
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+[LoggerOptions](./foundation-utils.loggeroptions.md)
+
+
+</td><td>
+
+_(Optional)_ The options to use when creating the logger.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,10 +17,55 @@ broadcastOnCurrentChannel(payload: any, type?: string): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  payload | any | payload sent to the channel |
-|  type | string | _(Optional)_ type of the channel |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+payload
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+payload sent to the channel
+
+
+</td></tr>
+<tr><td>
+
+type
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ type of the channel
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

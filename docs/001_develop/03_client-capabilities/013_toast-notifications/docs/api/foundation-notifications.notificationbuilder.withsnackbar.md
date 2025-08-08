@@ -22,9 +22,39 @@ withSnackbar(snackbar: Snackbar): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  snackbar | [Snackbar](./foundation-notifications.snackbar.md) | [Snackbar](./foundation-notifications.snackbar.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+snackbar
+
+
+</td><td>
+
+[Snackbar](./foundation-notifications.snackbar.md)
+
+
+</td><td>
+
+[Snackbar](./foundation-notifications.snackbar.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

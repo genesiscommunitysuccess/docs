@@ -15,9 +15,39 @@ bindingAsRx<TReturn>(token?: ((store: this) => TReturn) | keyof this): RXObserva
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  token | ((store: this) =&gt; TReturn) \| keyof this | _(Optional)_ Store property key or a function that returns a value from the store. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+token
+
+
+</td><td>
+
+((store: this) =&gt; TReturn) \| keyof this
+
+
+</td><td>
+
+_(Optional)_ Store property key or a function that returns a value from the store.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

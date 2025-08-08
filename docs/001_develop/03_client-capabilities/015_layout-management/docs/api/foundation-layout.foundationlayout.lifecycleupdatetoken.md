@@ -17,5 +17,5 @@ lifecycleUpdateToken: string | undefined;
 
 ## Remarks
 
-When using the `LifecycleMixin`, the mixin can be used to gate lifecycle methods from running when other items have been added or deleted. This key is updated every time one of these actions are performed, so you can check if the key has changed and know you potentially need to gate some of your lifecycle functionality.
+When using the `LifecycleMixin`<!-- -->, the mixin can be used to gate lifecycle methods from running when other items have been added or deleted. This key is updated every time one of these actions are performed, so you can check if the key has changed and know you potentially need to gate some of your lifecycle functionality.
 

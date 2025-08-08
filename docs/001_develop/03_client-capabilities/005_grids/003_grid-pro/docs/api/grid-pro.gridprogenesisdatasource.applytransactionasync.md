@@ -15,10 +15,53 @@ applyTransactionAsync(agTransaction: RowDataTransaction, callback?: (res: RowNod
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  agTransaction | RowDataTransaction |  |
-|  callback | (res: RowNodeTransaction) =&gt; void | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+agTransaction
+
+
+</td><td>
+
+RowDataTransaction
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+callback
+
+
+</td><td>
+
+(res: RowNodeTransaction) =&gt; void
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

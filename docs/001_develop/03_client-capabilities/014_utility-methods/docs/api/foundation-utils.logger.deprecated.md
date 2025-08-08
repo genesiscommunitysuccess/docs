@@ -17,11 +17,71 @@ deprecated(symbol: string, instruction?: string, removalVersionTarget?: string):
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  symbol | string | The deprecated symbol. |
-|  instruction | string | _(Optional)_ An optional alternative instruction. Defaults to <code>Consult docs for better alternative.</code> |
-|  removalVersionTarget | string | _(Optional)_ An optional target removal version number. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+symbol
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The deprecated symbol.
+
+
+</td></tr>
+<tr><td>
+
+instruction
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ An optional alternative instruction. Defaults to `Consult docs for better alternative.`
+
+
+</td></tr>
+<tr><td>
+
+removalVersionTarget
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ An optional target removal version number.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

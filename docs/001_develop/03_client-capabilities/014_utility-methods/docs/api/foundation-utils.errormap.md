@@ -17,14 +17,94 @@ export interface ErrorMap<TErrorDetailMap extends ErrorDetailMap> extends Pick<M
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [lastError](./foundation-utils.errormap.lasterror.md) | <code>readonly</code> | Error | The last set error if any. |
-|  [messages](./foundation-utils.errormap.messages.md) | <code>readonly</code> | string | Error map as messages. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[lastError](./foundation-utils.errormap.lasterror.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Error
+
+
+</td><td>
+
+The last set error if any.
+
+
+</td></tr>
+<tr><td>
+
+[messages](./foundation-utils.errormap.messages.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Error map as messages.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [set(key, error)](./foundation-utils.errormap.set.md) | Set an error by key. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[set(key, error)](./foundation-utils.errormap.set.md)
+
+
+</td><td>
+
+Set an error by key.
+
+
+</td></tr>
+</tbody></table>
 

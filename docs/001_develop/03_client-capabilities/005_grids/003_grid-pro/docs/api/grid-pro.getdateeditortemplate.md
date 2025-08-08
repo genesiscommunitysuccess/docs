@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getDateEditorTemplate](./grid-pro.getdateeditortemplate.md)
 
-## getDateEditorTemplate variable
+## getDateEditorTemplate() function
 
 Get a Design System prefixed Select template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed Select template.
 ```typescript
 getDateEditorTemplate: (prefix?: string) => import("@microsoft/fast-element").ViewTemplate<DateEditor, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+prefix
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[DateEditor](./grid-pro.dateeditor.md)<!-- -->, any&gt;
+
+A Select component template prefixed with the correct design system.
+

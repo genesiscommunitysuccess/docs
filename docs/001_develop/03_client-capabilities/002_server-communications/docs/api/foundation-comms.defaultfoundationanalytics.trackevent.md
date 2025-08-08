@@ -17,10 +17,51 @@ trackEvent(eventName: FoundationAnalyticsEventType.controlClicked, payload: Foun
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventName | [FoundationAnalyticsEventType.controlClicked](./foundation-comms.foundationanalyticseventtype.md) |  |
-|  payload | [FoundationAnalyticsEvent.ControlClicked](./foundation-comms.foundationanalyticsevent.controlclicked.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventName
+
+
+</td><td>
+
+[FoundationAnalyticsEventType.controlClicked](./foundation-comms.foundationanalyticseventtype.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+payload
+
+
+</td><td>
+
+[FoundationAnalyticsEvent.ControlClicked](./foundation-comms.foundationanalyticsevent.controlclicked.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

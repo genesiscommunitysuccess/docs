@@ -15,11 +15,69 @@ stringify(value: any, replacer?: (this: any, key: string, value: any) => any, sp
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  value | any |  |
-|  replacer | (this: any, key: string, value: any) =&gt; any | _(Optional)_ |
-|  space | string \| number | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+value
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+replacer
+
+
+</td><td>
+
+(this: any, key: string, value: any) =&gt; any
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+space
+
+
+</td><td>
+
+string \| number
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -15,7 +15,25 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@genesislcap/foundation-openfin](./foundation-openfin.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

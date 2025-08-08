@@ -17,11 +17,91 @@ constructor(socket: Socket, messageBuilder: MessageBuilder, metaCache: MetaCache
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  socket | [Socket](./foundation-comms.socket.md) |  |
-|  messageBuilder | [MessageBuilder](./foundation-comms.messagebuilder.md) |  |
-|  metaCache | [MetaCache](./foundation-comms.metacache.md) |  |
-|  events | [ConnectEventsEmitter](./foundation-comms.connecteventsemitter.md) |  |
-|  config | [ConnectConfig](./foundation-comms.connectconfig.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+socket
+
+
+</td><td>
+
+[Socket](./foundation-comms.socket.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+messageBuilder
+
+
+</td><td>
+
+[MessageBuilder](./foundation-comms.messagebuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+metaCache
+
+
+</td><td>
+
+[MetaCache](./foundation-comms.metacache.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+events
+
+
+</td><td>
+
+[ConnectEventsEmitter](./foundation-comms.connecteventsemitter.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+[ConnectConfig](./foundation-comms.connectconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

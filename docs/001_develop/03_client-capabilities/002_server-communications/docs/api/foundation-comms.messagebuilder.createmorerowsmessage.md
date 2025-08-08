@@ -17,14 +17,59 @@ createMoreRowsMessage(sourceRef: string, viewNumber?: number): Message<MessageDe
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string | The unique source reference. |
-|  viewNumber | number | _(Optional)_ The desired view number. Default: the first view. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The unique source reference.
+
+
+</td></tr>
+<tr><td>
+
+viewNumber
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The desired view number. Default: the first view.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.MoreRows](./foundation-comms.messagedetails.morerows.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MoreRows](./foundation-comms.messagedetails.morerows.md)<!-- -->&gt;
 
 The more rows message.
 

@@ -15,12 +15,55 @@ getMoreRows(sourceRef: string, viewNumber?: number): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string |  |
-|  viewNumber | number | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+viewNumber
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 

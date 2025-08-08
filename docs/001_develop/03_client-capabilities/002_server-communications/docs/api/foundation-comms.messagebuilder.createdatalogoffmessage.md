@@ -17,13 +17,43 @@ createDataLogoffMessage<T = any>(sourceRef: string): Message<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string | The source reference. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The source reference.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;T&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
 
 The data logoff message.
 

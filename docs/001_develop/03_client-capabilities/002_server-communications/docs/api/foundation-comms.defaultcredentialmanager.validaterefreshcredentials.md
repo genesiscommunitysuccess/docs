@@ -15,9 +15,37 @@ validateRefreshCredentials(credentials: RefreshAuthInfo): boolean;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [RefreshAuthInfo](./foundation-comms.refreshauthinfo.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[RefreshAuthInfo](./foundation-comms.refreshauthinfo.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

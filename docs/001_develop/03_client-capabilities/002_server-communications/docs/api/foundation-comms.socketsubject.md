@@ -22,7 +22,35 @@ An alias to RxJS Subject.
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)()](./foundation-comms.socketsubject._constructor_.md) |  | Constructs a new instance of the <code>SocketSubject</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)()](./foundation-comms.socketsubject._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `SocketSubject` class
+
+
+</td></tr>
+</tbody></table>
 

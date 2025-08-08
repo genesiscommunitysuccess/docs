@@ -17,10 +17,102 @@ export interface Dataview
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [columnsMetadata?](./foundation-comms.dataview.columnsmetadata.md) |  | [FieldMetadata](./foundation-comms.fieldmetadata.md)\[\] | _(Optional)_ An array of objects representing the metadata of each column in the dataview. |
-|  [data](./foundation-comms.dataview.data.md) |  | any\[\] | An array of data objects representing the data in the dataview. |
-|  [hideSearch?](./foundation-comms.dataview.hidesearch.md) |  | boolean | _(Optional)_ A boolean indicating whether the search functionality should be hidden in the UI. |
-|  [update?](./foundation-comms.dataview.update.md) |  | (data: [DataUpdate](./foundation-comms.dataupdate.md)) =&gt; Promise&lt;void&gt; | _(Optional)_ Function to update the data in the dataview object with an object of optional add, drop, and modify arrays of data. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[columnsMetadata?](./foundation-comms.dataview.columnsmetadata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+
+
+</td><td>
+
+_(Optional)_ An array of objects representing the metadata of each column in the dataview.
+
+
+</td></tr>
+<tr><td>
+
+[data](./foundation-comms.dataview.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+An array of data objects representing the data in the dataview.
+
+
+</td></tr>
+<tr><td>
+
+[hideSearch?](./foundation-comms.dataview.hidesearch.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ A boolean indicating whether the search functionality should be hidden in the UI.
+
+
+</td></tr>
+<tr><td>
+
+[update?](./foundation-comms.dataview.update.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(data: [DataUpdate](./foundation-comms.dataupdate.md)<!-- -->) =&gt; Promise&lt;void&gt;
+
+
+</td><td>
+
+_(Optional)_ Function to update the data in the dataview object with an object of optional add, drop, and modify arrays of data.
+
+
+</td></tr>
+</tbody></table>
 

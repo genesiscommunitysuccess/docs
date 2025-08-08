@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [loadFontFaces](./foundation-utils.loadfontfaces.md)
 
-## loadFontFaces variable
+## loadFontFaces() function
 
 Loads font faces by inserting a style element with the specified font face rules into the document.
 
@@ -14,3 +14,60 @@ Loads font faces by inserting a style element with the specified font face rules
 ```typescript
 loadFontFaces: (fontFaceRules: string, styleElementId: string) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+fontFaceRules
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The CSS rules for the font faces.
+
+
+</td></tr>
+<tr><td>
+
+styleElementId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the style element to insert into the document.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

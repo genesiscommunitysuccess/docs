@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getNotificationDetails](./foundation-notifications.getnotificationdetails.md)
 
-## getNotificationDetails variable
+## getNotificationDetails() function
 
 Retrieves the notification details from an NotificationStructure object
 
@@ -14,3 +14,46 @@ Retrieves the notification details from an NotificationStructure object
 ```typescript
 getNotificationDetails: (details: NotificationStructure) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+details
+
+
+</td><td>
+
+[NotificationStructure](./foundation-notifications.notificationstructure.md)
+
+
+</td><td>
+
+The NotificationStructure object
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The title and body concatenated as a string, or default values ('Error: Something went wrong') if not present
+

@@ -17,9 +17,83 @@ export interface GridProStatusBarReloadConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [icon?](./grid-pro.gridprostatusbarreloadconfig.icon.md) |  | string | _(Optional)_ Custom FontAwesome icon name (without 'fa-' prefix). |
-|  [onReload?](./grid-pro.gridprostatusbarreloadconfig.onreload.md) |  | () =&gt; void | _(Optional)_ Custom callback function to execute when the action is triggered. If not provided, the component will use the default datasource behavior. |
-|  [tooltip?](./grid-pro.gridprostatusbarreloadconfig.tooltip.md) |  | string | _(Optional)_ Custom tooltip text that appears on hover. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[icon?](./grid-pro.gridprostatusbarreloadconfig.icon.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Custom FontAwesome icon name (without 'fa-' prefix).
+
+
+</td></tr>
+<tr><td>
+
+[onReload?](./grid-pro.gridprostatusbarreloadconfig.onreload.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; void
+
+
+</td><td>
+
+_(Optional)_ Custom callback function to execute when the action is triggered. If not provided, the component will use the default datasource behavior.
+
+
+</td></tr>
+<tr><td>
+
+[tooltip?](./grid-pro.gridprostatusbarreloadconfig.tooltip.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Custom tooltip text that appears on hover.
+
+
+</td></tr>
+</tbody></table>
 

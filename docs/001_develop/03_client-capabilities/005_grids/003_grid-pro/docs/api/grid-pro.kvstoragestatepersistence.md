@@ -18,17 +18,128 @@ export declare class KVStorageStatePersistence implements StatePersistence
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [kvStorage](./grid-pro.kvstoragestatepersistence.kvstorage.md) |  | KVStorage |  |
-|  [session](./grid-pro.kvstoragestatepersistence.session.md) |  | Session |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[kvStorage](./grid-pro.kvstoragestatepersistence.kvstorage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+KVStorage
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[session](./grid-pro.kvstoragestatepersistence.session.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Session
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getColumnState(persistColumnStateKey)](./grid-pro.kvstoragestatepersistence.getcolumnstate.md) |  |  |
-|  [getFilterModel(persistFilterModelKey)](./grid-pro.kvstoragestatepersistence.getfiltermodel.md) |  |  |
-|  [saveColumnState(persistColumnStateKey, columnState)](./grid-pro.kvstoragestatepersistence.savecolumnstate.md) |  |  |
-|  [saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.kvstoragestatepersistence.savefiltermodel.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getColumnState(persistColumnStateKey)](./grid-pro.kvstoragestatepersistence.getcolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getFilterModel(persistFilterModelKey)](./grid-pro.kvstoragestatepersistence.getfiltermodel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[saveColumnState(persistColumnStateKey, columnState)](./grid-pro.kvstoragestatepersistence.savecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.kvstoragestatepersistence.savefiltermodel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

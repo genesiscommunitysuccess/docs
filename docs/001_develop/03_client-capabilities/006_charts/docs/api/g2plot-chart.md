@@ -9,40 +9,270 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [ChartDatasource](./g2plot-chart.chartdatasource.md) | The Genesis Datasource for the <code>g2plot-chart</code> component. |
-|  [G2PlotChart](./g2plot-chart.g2plotchart.md) | The G2Plot Chart component |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ChartDatasource](./g2plot-chart.chartdatasource.md)
+
+
+</td><td>
+
+The Genesis Datasource for the `g2plot-chart` component.
+
+
+</td></tr>
+<tr><td>
+
+[G2PlotChart](./g2plot-chart.g2plotchart.md)
+
+
+</td><td>
+
+The G2Plot Chart component
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [ChartErrorItem](./g2plot-chart.charterroritem.md) | Chart Error Item |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ChartErrorItem](./g2plot-chart.charterroritem.md)
+
+
+</td><td>
+
+Chart Error Item
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [chartDatasourceEventNames](./g2plot-chart.chartdatasourceeventnames.md) | The Chart Datasource event names. |
-|  [chartErrorNames](./g2plot-chart.charterrornames.md) | The error names for the Chart component. |
-|  [chartsGradients](./g2plot-chart.chartsgradients.md) | G2Plot Chart gradient colors |
-|  [defaultChartConfig](./g2plot-chart.defaultchartconfig.md) | The default <code>g2plot-chart</code> configuration. |
-|  [defaultChartFields](./g2plot-chart.defaultchartfields.md) | The first and second default chart fields when it's a dual axes chart. |
-|  [defaultSeriesChartField](./g2plot-chart.defaultserieschartfield.md) | The third default chart field when it's a triple axes chart. |
-|  [foundationChartShadowOptions](./g2plot-chart.foundationchartshadowoptions.md) | The <code>g2plot-chart</code> component shadow options. |
-|  [g2plotChartsComponents](./g2plot-chart.g2plotchartscomponents.md) | All the <code>g2plot-chart</code> components |
-|  [g2plotChartTemplate](./g2plot-chart.g2plotcharttemplate.md) | The g2lot chart template. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[chartDatasourceEventNames](./g2plot-chart.chartdatasourceeventnames.md)
+
+
+</td><td>
+
+The Chart Datasource event names.
+
+
+</td></tr>
+<tr><td>
+
+[chartErrorNames](./g2plot-chart.charterrornames.md)
+
+
+</td><td>
+
+The error names for the Chart component.
+
+
+</td></tr>
+<tr><td>
+
+[chartsGradients](./g2plot-chart.chartsgradients.md)
+
+
+</td><td>
+
+G2Plot Chart gradient colors
+
+
+</td></tr>
+<tr><td>
+
+[defaultChartConfig](./g2plot-chart.defaultchartconfig.md)
+
+
+</td><td>
+
+The default `g2plot-chart` configuration.
+
+
+</td></tr>
+<tr><td>
+
+[defaultChartFields](./g2plot-chart.defaultchartfields.md)
+
+
+</td><td>
+
+The first and second default chart fields when it's a dual axes chart.
+
+
+</td></tr>
+<tr><td>
+
+[defaultSeriesChartField](./g2plot-chart.defaultserieschartfield.md)
+
+
+</td><td>
+
+The third default chart field when it's a triple axes chart.
+
+
+</td></tr>
+<tr><td>
+
+[foundationChartShadowOptions](./g2plot-chart.foundationchartshadowoptions.md)
+
+
+</td><td>
+
+The `g2plot-chart` component shadow options.
+
+
+</td></tr>
+<tr><td>
+
+[g2plotChartsComponents](./g2plot-chart.g2plotchartscomponents.md)
+
+
+</td><td>
+
+All the `g2plot-chart` components
+
+
+</td></tr>
+<tr><td>
+
+[g2plotChartTemplate](./g2plot-chart.g2plotcharttemplate.md)
+
+
+</td><td>
+
+The g2lot chart template.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ChartConfig](./g2plot-chart.chartconfig.md) | G2Plot Chart Config |
-|  [ChartDatasourceErrorEvent](./g2plot-chart.chartdatasourceerrorevent.md) | The error event Chart Datasource. |
-|  [ChartDatasourceErrorEventDetail](./g2plot-chart.chartdatasourceerroreventdetail.md) | The event detail for the Chart Datasource <code>error</code> event. |
-|  [ChartErrorEvent](./g2plot-chart.charterrorevent.md) | Chart possible error events |
-|  [ChartErrorTypes](./g2plot-chart.charterrortypes.md) | Chart Error Types |
-|  [ChartModels](./g2plot-chart.chartmodels.md) | G2Plot Chart Models |
-|  [ChartTypes](./g2plot-chart.charttypes.md) | G2Plot Chart Types |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ChartConfig](./g2plot-chart.chartconfig.md)
+
+
+</td><td>
+
+G2Plot Chart Config
+
+
+</td></tr>
+<tr><td>
+
+[ChartDatasourceErrorEvent](./g2plot-chart.chartdatasourceerrorevent.md)
+
+
+</td><td>
+
+The error event Chart Datasource.
+
+
+</td></tr>
+<tr><td>
+
+[ChartDatasourceErrorEventDetail](./g2plot-chart.chartdatasourceerroreventdetail.md)
+
+
+</td><td>
+
+The event detail for the Chart Datasource `error` event.
+
+
+</td></tr>
+<tr><td>
+
+[ChartErrorEvent](./g2plot-chart.charterrorevent.md)
+
+
+</td><td>
+
+Chart possible error events
+
+
+</td></tr>
+<tr><td>
+
+[ChartErrorTypes](./g2plot-chart.charterrortypes.md)
+
+
+</td><td>
+
+Chart Error Types
+
+
+</td></tr>
+<tr><td>
+
+[ChartModels](./g2plot-chart.chartmodels.md)
+
+
+</td><td>
+
+G2Plot Chart Models
+
+
+</td></tr>
+<tr><td>
+
+[ChartTypes](./g2plot-chart.charttypes.md)
+
+
+</td><td>
+
+G2Plot Chart Types
+
+
+</td></tr>
+</tbody></table>
 

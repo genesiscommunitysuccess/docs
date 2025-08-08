@@ -17,16 +17,91 @@ export declare function createComponentSuite<TElement = HTMLElement>(title: stri
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  title | string | Title of the test suite |
-|  elementNameOrGetter | string \| [ElementGetter](./foundation-testing.elementgetter.md) | Element tag name or getter which is used to create the element within the fixture |
-|  context | [ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt; | _(Optional)_ Optional component context [ComponentContext](./foundation-testing.componentcontext.md) |
-|  registrations | Registration&lt;any&gt;\[\] | _(Optional)_ Optional array of DI container registrations |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+title
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Title of the test suite
+
+
+</td></tr>
+<tr><td>
+
+elementNameOrGetter
+
+
+</td><td>
+
+string \| [ElementGetter](./foundation-testing.elementgetter.md)
+
+
+</td><td>
+
+Element tag name or getter which is used to create the element within the fixture
+
+
+</td></tr>
+<tr><td>
+
+context
+
+
+</td><td>
+
+[ComponentContext](./foundation-testing.componentcontext.md)<!-- -->&lt;TElement&gt;
+
+
+</td><td>
+
+_(Optional)_ Optional component context [ComponentContext](./foundation-testing.componentcontext.md)
+
+
+</td></tr>
+<tr><td>
+
+registrations
+
+
+</td><td>
+
+Registration&lt;any&gt;\[\]
+
+
+</td><td>
+
+_(Optional)_ Optional array of DI container registrations
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-uvu.Test&lt;[ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt;&gt;
+uvu.Test&lt;[ComponentContext](./foundation-testing.componentcontext.md)<!-- -->&lt;TElement&gt;&gt;
 
 The test suite
 

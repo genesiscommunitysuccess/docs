@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [decodeFromBase64](./foundation-utils.decodefrombase64.md)
 
-## decodeFromBase64 variable
+## decodeFromBase64() function
 
 Decodes a value from base64.
 
@@ -14,3 +14,44 @@ Decodes a value from base64.
 ```typescript
 decodeFromBase64: (base64Value: string) => string | ArrayBuffer
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+base64Value
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string \| ArrayBuffer
+
+The decoded value.
+

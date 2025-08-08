@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [insertDocumentLink](./foundation-utils.insertdocumentlink.md)
 
-## insertDocumentLink variable
+## insertDocumentLink() function
 
 Inserts a CSS link into the document if it doesn't already exist.
 
@@ -14,3 +14,44 @@ Inserts a CSS link into the document if it doesn't already exist.
 ```typescript
 insertDocumentLink: (href: string) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+href
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The URL of the CSS file to insert.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

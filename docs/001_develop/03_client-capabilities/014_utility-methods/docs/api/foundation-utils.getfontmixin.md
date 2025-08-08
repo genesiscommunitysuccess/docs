@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [getFontMixin](./foundation-utils.getfontmixin.md)
 
-## getFontMixin variable
+## getFontMixin() function
 
 Generates a CSS mixin for the specified font family, style, and weight.
 
@@ -14,3 +14,78 @@ Generates a CSS mixin for the specified font family, style, and weight.
 ```typescript
 getFontMixin: (family: string, style?: FontStyle, weight?: FontWeight) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+family
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The font family.
+
+
+</td></tr>
+<tr><td>
+
+style
+
+
+</td><td>
+
+[FontStyle](./foundation-utils.fontstyle.md)
+
+
+</td><td>
+
+_(Optional)_ Optional. The font style. Defaults to FontStyle.Normal.
+
+
+</td></tr>
+<tr><td>
+
+weight
+
+
+</td><td>
+
+[FontWeight](./foundation-utils.fontweight.md)
+
+
+</td><td>
+
+_(Optional)_ Optional. The font weight. Defaults to FontWeight.Regular.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The generated CSS mixin.
+

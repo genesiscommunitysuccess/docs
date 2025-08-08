@@ -16,10 +16,53 @@ export declare function getNumberFormatter(format: string, locale?: string | nul
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  format | string |  |
-|  locale | string \| null | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+format
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+locale
+
+
+</td><td>
+
+string \| null
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

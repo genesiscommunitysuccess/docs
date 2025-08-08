@@ -17,20 +17,311 @@ export interface DatasourceOptions
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [criteria?](./foundation-comms.datasourceoptions.criteria.md) |  | string | _(Optional)_ The criteria used to filter data in the datasource. |
-|  [disablePolling?](./foundation-comms.datasourceoptions.disablepolling.md) |  | boolean | _(Optional)_ Whether to disable polling when using request/reply |
-|  [fields?](./foundation-comms.datasourceoptions.fields.md) |  | string | _(Optional)_ The fields to include in the returned data. |
-|  [isSnapshot?](./foundation-comms.datasourceoptions.issnapshot.md) |  | boolean | _(Optional)_ Whether the datasource is a snapshot or not. |
-|  [maxRows?](./foundation-comms.datasourceoptions.maxrows.md) |  | number | _(Optional)_ The maximum number of rows to return from the datasource. |
-|  [maxView?](./foundation-comms.datasourceoptions.maxview.md) |  | number | _(Optional)_ The maximum number of rows to track as part of a client "view" |
-|  [movingView?](./foundation-comms.datasourceoptions.movingview.md) |  | boolean | _(Optional)_ Defines the behaviour of the client view when new rows are received in real time. |
-|  [orderBy?](./foundation-comms.datasourceoptions.orderby.md) |  | string | _(Optional)_ The field to use for sorting the data. |
-|  [pollingInterval?](./foundation-comms.datasourceoptions.pollinginterval.md) |  | number | _(Optional)_ The polling interval to use when using request/reply. |
-|  [request?](./foundation-comms.datasourceoptions.request.md) |  | any | _(Optional)_ The request to send to the server. |
-|  [requestAutoSetup?](./foundation-comms.datasourceoptions.requestautosetup.md) |  | boolean | _(Optional)_ Whether the Datasource service will setup RQUEST object based on metadata. |
-|  [resourceName?](./foundation-comms.datasourceoptions.resourcename.md) |  | string | _(Optional)_ The name of the resource to use for the datasource. |
-|  [reverse?](./foundation-comms.datasourceoptions.reverse.md) |  | boolean | _(Optional)_ Whether to return the data in reverse order or not. |
-|  [viewNumber?](./foundation-comms.datasourceoptions.viewnumber.md) |  | number | _(Optional)_ The current page/"view" number being displayed. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[criteria?](./foundation-comms.datasourceoptions.criteria.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The criteria used to filter data in the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[disablePolling?](./foundation-comms.datasourceoptions.disablepolling.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether to disable polling when using request/reply
+
+
+</td></tr>
+<tr><td>
+
+[fields?](./foundation-comms.datasourceoptions.fields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The fields to include in the returned data.
+
+
+</td></tr>
+<tr><td>
+
+[isSnapshot?](./foundation-comms.datasourceoptions.issnapshot.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether the datasource is a snapshot or not.
+
+
+</td></tr>
+<tr><td>
+
+[maxRows?](./foundation-comms.datasourceoptions.maxrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The maximum number of rows to return from the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[maxView?](./foundation-comms.datasourceoptions.maxview.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The maximum number of rows to track as part of a client "view"
+
+
+</td></tr>
+<tr><td>
+
+[movingView?](./foundation-comms.datasourceoptions.movingview.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Defines the behaviour of the client view when new rows are received in real time.
+
+
+</td></tr>
+<tr><td>
+
+[orderBy?](./foundation-comms.datasourceoptions.orderby.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The field to use for sorting the data.
+
+
+</td></tr>
+<tr><td>
+
+[pollingInterval?](./foundation-comms.datasourceoptions.pollinginterval.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The polling interval to use when using request/reply.
+
+
+</td></tr>
+<tr><td>
+
+[pollTriggerEvents?](./foundation-comms.datasourceoptions.polltriggerevents.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+_(Optional)_ Array of event names that will trigger an additional poll.
+
+
+</td></tr>
+<tr><td>
+
+[request?](./foundation-comms.datasourceoptions.request.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ The request to send to the server.
+
+
+</td></tr>
+<tr><td>
+
+[requestAutoSetup?](./foundation-comms.datasourceoptions.requestautosetup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether the Datasource service will setup RQUEST object based on metadata.
+
+
+</td></tr>
+<tr><td>
+
+[resourceName?](./foundation-comms.datasourceoptions.resourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The name of the resource to use for the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[reverse?](./foundation-comms.datasourceoptions.reverse.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether to return the data in reverse order or not.
+
+
+</td></tr>
+<tr><td>
+
+[viewNumber?](./foundation-comms.datasourceoptions.viewnumber.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The current page/"view" number being displayed.
+
+
+</td></tr>
+</tbody></table>
 

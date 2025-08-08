@@ -17,9 +17,39 @@ addView?(view: Dataview): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  view | [Dataview](./foundation-comms.dataview.md) | The dataview to add. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+view
+
+
+</td><td>
+
+[Dataview](./foundation-comms.dataview.md)
+
+
+</td><td>
+
+The dataview to add.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

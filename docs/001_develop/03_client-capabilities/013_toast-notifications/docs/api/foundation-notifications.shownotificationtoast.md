@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotificationToast](./foundation-notifications.shownotificationtoast.md)
 
-## showNotificationToast variable
+## showNotificationToast() function
 
 Shows the notification toast
 
@@ -14,3 +14,72 @@ Shows the notification toast
 ```typescript
 showNotificationToast: (configuration: ToastStructure, tagName: String, notificationContainer?: HTMLElement) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+configuration
+
+
+</td><td>
+
+[ToastStructure](./foundation-notifications.toaststructure.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+notificationContainer
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

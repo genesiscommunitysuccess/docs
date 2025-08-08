@@ -17,12 +17,85 @@ export declare function sync<TSource = any, TReturn = any>(binding: Binding<TSou
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  binding | Binding&lt;TSource, TReturn&gt; |  |
-|  conversionType | [ConversionType](./foundation-utils.conversiontype.md) | _(Optional)_ |
-|  eventName | [EventName](./foundation-utils.eventname.md) | _(Optional)_ |
-|  keyAttr | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+binding
+
+
+</td><td>
+
+Binding&lt;TSource, TReturn&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+conversionType
+
+
+</td><td>
+
+[ConversionType](./foundation-utils.conversiontype.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+eventName
+
+
+</td><td>
+
+[EventName](./foundation-utils.eventname.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+keyAttr
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,12 +17,105 @@ constructor(http: Http, messageBuilder: MessageBuilder, session: Session, metaCa
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  http | [Http](./foundation-comms.http.md) |  |
-|  messageBuilder | [MessageBuilder](./foundation-comms.messagebuilder.md) |  |
-|  session | [Session](./foundation-comms.session.md) |  |
-|  metaCache | [MetaCache](./foundation-comms.metacache.md) |  |
-|  serializer | JSONSerializer |  |
-|  config | HttpConnectConfig |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+http
+
+
+</td><td>
+
+[Http](./foundation-comms.http.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+messageBuilder
+
+
+</td><td>
+
+[MessageBuilder](./foundation-comms.messagebuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+session
+
+
+</td><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+metaCache
+
+
+</td><td>
+
+[MetaCache](./foundation-comms.metacache.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+serializer
+
+
+</td><td>
+
+JSONSerializer
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+HttpConnectConfig
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

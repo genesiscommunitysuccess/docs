@@ -18,14 +18,76 @@ export interface SocketStatus extends SerializedSocketStatus
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isConnectedSubject](./foundation-comms.socketstatus.isconnectedsubject.md) |  | BehaviorSubject&lt;boolean&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isConnectedSubject](./foundation-comms.socketstatus.isconnectedsubject.md)
+
+
+</td><td>
+
+
+</td><td>
+
+BehaviorSubject&lt;boolean&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [onClose(closeEvent)](./foundation-comms.socketstatus.onclose.md) |  |
-|  [serialize()](./foundation-comms.socketstatus.serialize.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[onClose(closeEvent)](./foundation-comms.socketstatus.onclose.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[serialize()](./foundation-comms.socketstatus.serialize.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

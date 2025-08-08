@@ -40,7 +40,33 @@ Load the micro frontend on-demand
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [selectTemplate()](./foundation-header.rapidheader.selecttemplate.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[selectTemplate()](./foundation-header.rapidheader.selecttemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

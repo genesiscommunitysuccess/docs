@@ -17,9 +17,39 @@ static layoutRequiredRegistrations(layout: SerialisedLayout): string[];
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  layout | [SerialisedLayout](./foundation-layout.serialisedlayout.md) | any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+layout
+
+
+</td><td>
+
+[SerialisedLayout](./foundation-layout.serialisedlayout.md)
+
+
+</td><td>
+
+any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

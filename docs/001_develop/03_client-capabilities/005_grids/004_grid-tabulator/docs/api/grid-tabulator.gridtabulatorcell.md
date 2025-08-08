@@ -22,20 +22,169 @@ Used inside the GridTabulator Column element to define a cell renderer from the 
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [renderer](./grid-tabulator.gridtabulatorcell.renderer.md) |  | [CellRendererFunc](./grid-tabulator.cellrendererfunc.md) |  |
-|  [rendererParams](./grid-tabulator.gridtabulatorcell.rendererparams.md) |  | [CellRendererParams](./grid-tabulator.cellrendererparams.md) |  |
-|  [slottedRenderer](./grid-tabulator.gridtabulatorcell.slottedrenderer.md) |  | HTMLElement\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[renderer](./grid-tabulator.gridtabulatorcell.renderer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[CellRendererFunc](./grid-tabulator.cellrendererfunc.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[rendererParams](./grid-tabulator.gridtabulatorcell.rendererparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[CellRendererParams](./grid-tabulator.cellrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedRenderer](./grid-tabulator.gridtabulatorcell.slottedrenderer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connectedCallback()](./grid-tabulator.gridtabulatorcell.connectedcallback.md) |  |  |
-|  [destroy()](./grid-tabulator.gridtabulatorcell.destroy.md) |  |  |
-|  [getElement()](./grid-tabulator.gridtabulatorcell.getelement.md) |  |  |
-|  [init(params)](./grid-tabulator.gridtabulatorcell.init.md) |  |  |
-|  [refresh(params)](./grid-tabulator.gridtabulatorcell.refresh.md) |  |  |
-|  [slottedRendererChanged()](./grid-tabulator.gridtabulatorcell.slottedrendererchanged.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connectedCallback()](./grid-tabulator.gridtabulatorcell.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./grid-tabulator.gridtabulatorcell.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getElement()](./grid-tabulator.gridtabulatorcell.getelement.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-tabulator.gridtabulatorcell.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-tabulator.gridtabulatorcell.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedRendererChanged()](./grid-tabulator.gridtabulatorcell.slottedrendererchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

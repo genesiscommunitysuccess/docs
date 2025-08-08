@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [respondToVisibility](./foundation-utils.respondtovisibility.md)
 
-## respondToVisibility variable
+## respondToVisibility() function
 
 Setup an `IntersectionObserver` which will activate a callback function when an element becomes visible on screen
 
@@ -14,3 +14,60 @@ Setup an `IntersectionObserver` which will activate a callback function when an 
 ```typescript
 respondToVisibility: (element: HTMLElement, callback: (arg0: boolean) => any) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+element
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+HTMLElement to observe
+
+
+</td></tr>
+<tr><td>
+
+callback
+
+
+</td><td>
+
+(arg0: boolean) =&gt; any
+
+
+</td><td>
+
+any function called when the visibility changes
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

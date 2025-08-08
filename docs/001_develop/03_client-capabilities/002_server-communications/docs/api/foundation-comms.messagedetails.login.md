@@ -14,5 +14,5 @@ Union type for different types of login information
 ```typescript
 type Login = LoginBasic | LoginSSO | LoginJWT;
 ```
-**References:** [LoginBasic](./foundation-comms.messagedetails.loginbasic.md), [LoginSSO](./foundation-comms.messagedetails.loginsso.md), [LoginJWT](./foundation-comms.messagedetails.loginjwt.md)
+**References:** [LoginBasic](./foundation-comms.messagedetails.loginbasic.md)<!-- -->, [LoginSSO](./foundation-comms.messagedetails.loginsso.md)<!-- -->, [LoginJWT](./foundation-comms.messagedetails.loginjwt.md)
 

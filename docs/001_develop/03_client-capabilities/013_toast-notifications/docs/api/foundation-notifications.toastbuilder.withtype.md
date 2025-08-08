@@ -22,9 +22,39 @@ withType(type: NotificationType): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  type | [NotificationType](./foundation-notifications.notificationtype.md) | [NotificationType](./foundation-notifications.notificationtype.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+type
+
+
+</td><td>
+
+[NotificationType](./foundation-notifications.notificationtype.md)
+
+
+</td><td>
+
+[NotificationType](./foundation-notifications.notificationtype.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

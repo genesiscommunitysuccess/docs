@@ -17,9 +17,37 @@ export declare function assureDesignSystem(module: DesignSystemModule): DesignSy
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  module | [DesignSystemModule](./foundation-utils.designsystemmodule.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+module
+
+
+</td><td>
+
+[DesignSystemModule](./foundation-utils.designsystemmodule.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

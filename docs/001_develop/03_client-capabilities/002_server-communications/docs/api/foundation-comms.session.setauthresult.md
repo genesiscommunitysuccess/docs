@@ -17,9 +17,39 @@ setAuthResult(info: Message): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  info | [Message](./foundation-comms.message.md) | The authentication result to set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+info
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+The authentication result to set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

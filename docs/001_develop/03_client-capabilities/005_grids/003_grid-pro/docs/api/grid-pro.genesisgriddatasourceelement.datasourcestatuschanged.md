@@ -15,10 +15,51 @@ datasourceStatusChanged(prev: DatasourceStatus, next: DatasourceStatus): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  prev | DatasourceStatus |  |
-|  next | DatasourceStatus |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+prev
+
+
+</td><td>
+
+DatasourceStatus
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+next
+
+
+</td><td>
+
+DatasourceStatus
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

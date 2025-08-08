@@ -12,15 +12,96 @@ Constructs a new instance of the `DefaultDatasource` class
 **Signature:**
 
 ```typescript
-constructor(connect: Connect, auth: Auth, resources: GenesisResources, config: DatasourceConfig);
+constructor(connect: Connect, auth: Auth, resources: GenesisResources, config: DatasourceConfig, connectEvents: ConnectEvents);
 ```
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  connect | [Connect](./foundation-comms.connect.md) |  |
-|  auth | [Auth](./foundation-comms.auth.md) |  |
-|  resources | [GenesisResources](./foundation-comms.genesisresources.md) |  |
-|  config | [DatasourceConfig](./foundation-comms.datasourceconfig.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+connect
+
+
+</td><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+auth
+
+
+</td><td>
+
+[Auth](./foundation-comms.auth.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+resources
+
+
+</td><td>
+
+[GenesisResources](./foundation-comms.genesisresources.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+[DatasourceConfig](./foundation-comms.datasourceconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+connectEvents
+
+
+</td><td>
+
+[ConnectEvents](./foundation-comms.connectevents.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

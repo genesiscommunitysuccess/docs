@@ -42,17 +42,133 @@ const toolbarOptions: CriteriaSegmentedControlOption[] = [
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [criteriaOptions](./foundation-criteria.criteriasegmentedcontrol.criteriaoptions.md) |  | CriteriaSegmentedControlOption\[\] |  |
-|  [selectedLabel](./foundation-criteria.criteriasegmentedcontrol.selectedlabel.md) |  | string |  |
-|  [value](./foundation-criteria.criteriasegmentedcontrol.value.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[criteriaOptions](./foundation-criteria.criteriasegmentedcontrol.criteriaoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+CriteriaSegmentedControlOption\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectedLabel](./foundation-criteria.criteriasegmentedcontrol.selectedlabel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./foundation-criteria.criteriasegmentedcontrol.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [itemClickHandler(label)](./foundation-criteria.criteriasegmentedcontrol.itemclickhandler.md) |  |  |
-|  [selectedLabelChanged()](./foundation-criteria.criteriasegmentedcontrol.selectedlabelchanged.md) |  |  |
-|  [valueChanged()](./foundation-criteria.criteriasegmentedcontrol.valuechanged.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[itemClickHandler(label)](./foundation-criteria.criteriasegmentedcontrol.itemclickhandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectedLabelChanged()](./foundation-criteria.criteriasegmentedcontrol.selectedlabelchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[valueChanged()](./foundation-criteria.criteriasegmentedcontrol.valuechanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

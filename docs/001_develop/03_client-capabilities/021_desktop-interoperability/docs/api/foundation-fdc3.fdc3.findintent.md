@@ -17,14 +17,59 @@ findIntent(intent: FDC3Intents, context?: FDC3Context): Promise<FDC3AppIntent>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  intent | [FDC3Intents](./foundation-fdc3.fdc3intents.md) | The intent to find an app for. |
-|  context | [FDC3Context](./foundation-fdc3.fdc3context.md) | _(Optional)_ The context to use. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+intent
+
+
+</td><td>
+
+[FDC3Intents](./foundation-fdc3.fdc3intents.md)
+
+
+</td><td>
+
+The intent to find an app for.
+
+
+</td></tr>
+<tr><td>
+
+context
+
+
+</td><td>
+
+[FDC3Context](./foundation-fdc3.fdc3context.md)
+
+
+</td><td>
+
+_(Optional)_ The context to use.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)&gt;
+Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)<!-- -->&gt;
 
 A promise that resolves with the app and its metadata.
 

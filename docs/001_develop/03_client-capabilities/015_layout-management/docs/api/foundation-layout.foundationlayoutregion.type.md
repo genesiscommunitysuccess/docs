@@ -7,7 +7,7 @@ format: md
 
 ## FoundationLayoutRegion.type property
 
-Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to `horizontal`.
+Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to `horizontal`<!-- -->.
 
 **Signature:**
 

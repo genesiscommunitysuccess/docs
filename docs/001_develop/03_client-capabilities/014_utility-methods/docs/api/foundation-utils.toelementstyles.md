@@ -17,9 +17,39 @@ export declare function toElementStyles(styles: ComposableStyles | ComposableSty
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  styles | ComposableStyles \| ComposableStyles\[\] | ComposableStyles or a ComposableStyles array. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+styles
+
+
+</td><td>
+
+ComposableStyles \| ComposableStyles\[\]
+
+
+</td><td>
+
+ComposableStyles or a ComposableStyles array.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

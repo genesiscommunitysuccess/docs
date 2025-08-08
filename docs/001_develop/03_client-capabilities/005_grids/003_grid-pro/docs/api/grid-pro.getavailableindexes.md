@@ -17,9 +17,39 @@ export declare function getAvailableIndexes(data: Map<string, [string]>): string
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | Map&lt;string, \[string\]&gt; | the map data to have the keys extracted from |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+Map&lt;string, \[string\]&gt;
+
+
+</td><td>
+
+the map data to have the keys extracted from
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

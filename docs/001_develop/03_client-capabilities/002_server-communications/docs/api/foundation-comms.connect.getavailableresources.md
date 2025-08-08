@@ -17,13 +17,43 @@ getAvailableResources(params?: RequestParams): Promise<ResourcesMessage>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ An object containing optional parameters to include in the request. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+_(Optional)_ An object containing optional parameters to include in the request.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)&gt;
+Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)<!-- -->&gt;
 
 A promise that resolves to a Message containing the server's response with available resources.
 

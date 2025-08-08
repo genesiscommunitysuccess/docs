@@ -17,9 +17,39 @@ connect(root: TStoreRoot): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  root | TStoreRoot | The store root fragment. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+root
+
+
+</td><td>
+
+TStoreRoot
+
+
+</td><td>
+
+The store root fragment.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

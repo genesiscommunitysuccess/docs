@@ -17,10 +17,55 @@ handleErrors(errors: string | any[], type?: BaseDatasourceErrorEventDetail['type
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  errors | string \| any\[\] | The error message or array of error messages |
-|  type | BaseDatasourceErrorEventDetail\['type'\] | _(Optional)_ The type of error that occurred |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+errors
+
+
+</td><td>
+
+string \| any\[\]
+
+
+</td><td>
+
+The error message or array of error messages
+
+
+</td></tr>
+<tr><td>
+
+type
+
+
+</td><td>
+
+BaseDatasourceErrorEventDetail\['type'\]
+
+
+</td><td>
+
+_(Optional)_ The type of error that occurred
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -25,5 +25,5 @@ export type Metadata = {
     ERROR?: string;
 };
 ```
-**References:** [MetadataDetail](./foundation-comms.metadatadetail.md), [ReplyDetail](./foundation-comms.replydetail.md), [IndexDetail](./foundation-comms.indexdetail.md)
+**References:** [MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->, [ReplyDetail](./foundation-comms.replydetail.md)<!-- -->, [IndexDetail](./foundation-comms.indexdetail.md)
 

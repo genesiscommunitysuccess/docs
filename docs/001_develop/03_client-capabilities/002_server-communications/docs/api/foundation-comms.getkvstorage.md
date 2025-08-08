@@ -16,7 +16,7 @@ export declare function getKVStorage(): KVStorage;
 ```
 **Returns:**
 
-KVStorage
+[KVStorage](./foundation-comms.kvstorage.md)
 
 ## Remarks
 

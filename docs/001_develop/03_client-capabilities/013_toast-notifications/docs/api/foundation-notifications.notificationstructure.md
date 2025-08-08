@@ -17,11 +17,129 @@ export interface NotificationStructure
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [body](./foundation-notifications.notificationstructure.body.md) | <code>readonly</code> | string |  |
-|  [config?](./foundation-notifications.notificationstructure.config.md) | <code>readonly</code> | { readonly logLevel?: LogLevel; readonly alert?: boolean; readonly toast?: [Toast](./foundation-notifications.toast.md); readonly banner?: [Banner](./foundation-notifications.banner.md); readonly snackbar?: [Snackbar](./foundation-notifications.snackbar.md); readonly dialog?: [Dialog](./foundation-notifications.dialog.md); } | _(Optional)_ |
-|  [createdAt?](./foundation-notifications.notificationstructure.createdat.md) | <code>readonly</code> | Date | _(Optional)_ |
-|  [logLevel?](./foundation-notifications.notificationstructure.loglevel.md) | <code>readonly</code> | LogLevel | _(Optional)_ |
-|  [title?](./foundation-notifications.notificationstructure.title.md) | <code>readonly</code> | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[body](./foundation-notifications.notificationstructure.body.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[config?](./foundation-notifications.notificationstructure.config.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+{ readonly logLevel?: LogLevel; readonly alert?: boolean; readonly toast?: [Toast](./foundation-notifications.toast.md)<!-- -->; readonly banner?: [Banner](./foundation-notifications.banner.md)<!-- -->; readonly snackbar?: [Snackbar](./foundation-notifications.snackbar.md)<!-- -->; readonly dialog?: [Dialog](./foundation-notifications.dialog.md)<!-- -->; }
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[createdAt?](./foundation-notifications.notificationstructure.createdat.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Date
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-notifications.notificationstructure.loglevel.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[title?](./foundation-notifications.notificationstructure.title.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

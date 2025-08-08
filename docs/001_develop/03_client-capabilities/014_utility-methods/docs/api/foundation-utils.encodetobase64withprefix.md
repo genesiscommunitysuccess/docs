@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [encodeToBase64WithPrefix](./foundation-utils.encodetobase64withprefix.md)
 
-## encodeToBase64WithPrefix variable
+## encodeToBase64WithPrefix() function
 
 Encodes the given value with a prefix to base64.
 
@@ -14,6 +14,48 @@ Encodes the given value with a prefix to base64.
 ```typescript
 encodeToBase64WithPrefix: (value: string | ArrayBuffer) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+value
+
+
+</td><td>
+
+string \| ArrayBuffer
+
+
+</td><td>
+
+The value to encode to base64.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The base64 encoded value with a prefix.
 
 ## Remarks
 

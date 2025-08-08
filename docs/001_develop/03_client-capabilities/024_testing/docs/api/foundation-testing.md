@@ -9,44 +9,312 @@ format: md
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [createComponentSuite(title, elementNameOrGetter, context, registrations)](./foundation-testing.createcomponentsuite.md) | Create component test suite. |
-|  [createLogicSuite(title, context)](./foundation-testing.createlogicsuite.md) | Create logic test suite. |
-|  [fixture(templateNameOrRegistry, options)](./foundation-testing.fixture.md) | Creates a test fixture suitable for testing custom elements, templates, and bindings. |
-|  [resetTestHarness(wrapper)](./foundation-testing.resettestharness.md) | Resets the history of the spied functions on the objects so previous running tests don't affect the current test. Must be called at the end of every test even if not asserting on the spies. |
-|  [restoreTestHarness(wrapper)](./foundation-testing.restoretestharness.md) | Restores the spied functions back to the original functions without the spies. |
-|  [runCases(fn, cases, assertion)](./foundation-testing.runcases.md) | Assert a set of test cases. |
-|  [testSpy(constructor)](./foundation-testing.testspy.md) | Decorator: Used on a test harness class based on a <code>FoundationElement</code> to give it extra functionality which can be used during testing. \*Important\* this is to be used on a parent element compared to the element under test. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createComponentSuite(title, elementNameOrGetter, context, registrations)](./foundation-testing.createcomponentsuite.md)
+
+
+</td><td>
+
+Create component test suite.
+
+
+</td></tr>
+<tr><td>
+
+[createLogicSuite(title, context)](./foundation-testing.createlogicsuite.md)
+
+
+</td><td>
+
+Create logic test suite.
+
+
+</td></tr>
+<tr><td>
+
+[delayedResolve(result, duration)](./foundation-testing.delayedresolve.md)
+
+
+</td><td>
+
+Delayed resolve utility.
+
+
+</td></tr>
+<tr><td>
+
+[fixture(templateNameOrRegistry, options)](./foundation-testing.fixture.md)
+
+
+</td><td>
+
+Creates a test fixture suitable for testing custom elements, templates, and bindings.
+
+
+</td></tr>
+<tr><td>
+
+[resetTestHarness(wrapper)](./foundation-testing.resettestharness.md)
+
+
+</td><td>
+
+Resets the history of the spied functions on the objects so previous running tests don't affect the current test. Must be called at the end of every test even if not asserting on the spies.
+
+
+</td></tr>
+<tr><td>
+
+[restoreTestHarness(wrapper)](./foundation-testing.restoretestharness.md)
+
+
+</td><td>
+
+Restores the spied functions back to the original functions without the spies.
+
+
+</td></tr>
+<tr><td>
+
+[runCases(fn, cases, assertion)](./foundation-testing.runcases.md)
+
+
+</td><td>
+
+Assert a set of test cases.
+
+
+</td></tr>
+<tr><td>
+
+[testSpy(constructor)](./foundation-testing.testspy.md)
+
+
+</td><td>
+
+Decorator: Used on a test harness class based on a `FoundationElement` to give it extra functionality which can be used during testing. \*Important\* this is to be used on a parent element compared to the element under test.
+
+
+</td></tr>
+<tr><td>
+
+[timeout(callback, duration)](./foundation-testing.timeout.md)
+
+
+</td><td>
+
+Timeout utility.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [ComponentContext](./foundation-testing.componentcontext.md) | Component suite context interface |
-|  [Fixture](./foundation-testing.fixture.md) | Unit test fixture. |
-|  [FixtureOptions](./foundation-testing.fixtureoptions.md) | Options used to customize the creation of the unit test fixture. |
-|  [LogicContext](./foundation-testing.logiccontext.md) | Logic suite context interface |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ComponentContext](./foundation-testing.componentcontext.md)
+
+
+</td><td>
+
+Component suite context interface
+
+
+</td></tr>
+<tr><td>
+
+[Fixture](./foundation-testing.fixture.md)
+
+
+</td><td>
+
+Unit test fixture.
+
+
+</td></tr>
+<tr><td>
+
+[FixtureOptions](./foundation-testing.fixtureoptions.md)
+
+
+</td><td>
+
+Options used to customize the creation of the unit test fixture.
+
+
+</td></tr>
+<tr><td>
+
+[LogicContext](./foundation-testing.logiccontext.md)
+
+
+</td><td>
+
+Logic suite context interface
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [delayedResolve](./foundation-testing.delayedresolve.md) | Delayed resolve utility. |
-|  [logger](./foundation-testing.logger.md) | Test logger |
-|  [timeout](./foundation-testing.timeout.md) | Timeout utility. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[logger](./foundation-testing.logger.md)
+
+
+</td><td>
+
+Test logger
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ElementGetter](./foundation-testing.elementgetter.md) |  |
-|  [Equal](./foundation-testing.equal.md) | Expects that the type parameter X is equal to Y, returning true or false |
-|  [Expect](./foundation-testing.expect.md) | Expects that the type parameter T resolves to true, or will be a typescript error |
-|  [FilterConditionally](./foundation-testing.filterconditionally.md) | Filters out key/value pairs from an object where they value does not match a condition |
-|  [RunCases](./foundation-testing.runcases.md) |  |
-|  [SinonWrapper](./foundation-testing.sinonwrapper.md) | Crates an object with a key value pair for each spied function where the key is the function name and the value is the sinon wrapped spy function |
-|  [SpiedFunctions](./foundation-testing.spiedfunctions.md) | Filters out all key/value pairs which are not functions, and omits the constructor |
-|  [SuiteCallback](./foundation-testing.suitecallback.md) | Defines the Generic type for a test Suite <code>T</code> the callback function required to assert on type <code>T</code>. |
-|  [WithTestHarness](./foundation-testing.withtestharness.md) | Type can be used to inform Typescript the object decorated with [testSpy()](./foundation-testing.testspy.md) has function spies which can be interacted upon their normal function reference |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ElementGetter](./foundation-testing.elementgetter.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[Equal](./foundation-testing.equal.md)
+
+
+</td><td>
+
+Expects that the type parameter X is equal to Y, returning true or false
+
+
+</td></tr>
+<tr><td>
+
+[Expect](./foundation-testing.expect.md)
+
+
+</td><td>
+
+Expects that the type parameter T resolves to true, or will be a typescript error
+
+
+</td></tr>
+<tr><td>
+
+[FilterConditionally](./foundation-testing.filterconditionally.md)
+
+
+</td><td>
+
+Filters out key/value pairs from an object where they value does not match a condition
+
+
+</td></tr>
+<tr><td>
+
+[RunCases](./foundation-testing.runcases.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SinonWrapper](./foundation-testing.sinonwrapper.md)
+
+
+</td><td>
+
+Crates an object with a key value pair for each spied function where the key is the function name and the value is the sinon wrapped spy function
+
+
+</td></tr>
+<tr><td>
+
+[SpiedFunctions](./foundation-testing.spiedfunctions.md)
+
+
+</td><td>
+
+Filters out all key/value pairs which are not functions, and omits the constructor
+
+
+</td></tr>
+<tr><td>
+
+[SuiteCallback](./foundation-testing.suitecallback.md)
+
+
+</td><td>
+
+Defines the Generic type for a test Suite `T` the callback function required to assert on type `T`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[WithTestHarness](./foundation-testing.withtestharness.md)
+
+
+</td><td>
+
+Type can be used to inform Typescript the object decorated with [testSpy()](./foundation-testing.testspy.md) has function spies which can be interacted upon their normal function reference
+
+
+</td></tr>
+</tbody></table>
 

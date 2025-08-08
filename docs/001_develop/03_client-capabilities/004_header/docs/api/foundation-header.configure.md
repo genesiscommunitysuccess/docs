@@ -17,13 +17,43 @@ export declare function configure(config: Partial<HeaderConfig>): Promise<typeof
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  config | Partial&lt;[HeaderConfig](./foundation-header.headerconfig.md)&gt; | A partial HeaderConfig. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+config
+
+
+</td><td>
+
+Partial&lt;[HeaderConfig](./foundation-header.headerconfig.md)<!-- -->&gt;
+
+
+</td><td>
+
+A partial HeaderConfig.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;typeof import("../main").[Navigation](./foundation-header.navigation.md)&gt;
+Promise&lt;typeof import("../main").[Navigation](./foundation-header.navigation.md)<!-- -->&gt;
 
 ## Remarks
 

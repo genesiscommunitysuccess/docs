@@ -17,11 +17,61 @@ export declare namespace DatabaseAccessResult
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [Access](./foundation-utils.databaseaccessresult.access.md) |  |
-|  [Create](./foundation-utils.databaseaccessresult.create.md) |  |
-|  [Delete](./foundation-utils.databaseaccessresult.delete.md) |  |
-|  [Read](./foundation-utils.databaseaccessresult.read.md) |  |
-|  [Update](./foundation-utils.databaseaccessresult.update.md) |  |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Access](./foundation-utils.databaseaccessresult.access.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Create](./foundation-utils.databaseaccessresult.create.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Delete](./foundation-utils.databaseaccessresult.delete.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Read](./foundation-utils.databaseaccessresult.read.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Update](./foundation-utils.databaseaccessresult.update.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,29 +17,294 @@ export interface Connect
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [host](./foundation-comms.connect.host.md) |  | string |  |
-|  [isConnected](./foundation-comms.connect.isconnected.md) | <code>readonly</code> | boolean | Indicates whether the connection is currently established. |
-|  [isConnected$?](./foundation-comms.connect.isconnected_.md) | <code>readonly</code> | Observable&lt;boolean&gt; | _(Optional)_ An Observable that emits a boolean value indicating whether the connection is currently established. |
-|  [isConnectedSubject?](./foundation-comms.connect.isconnectedsubject.md) | <code>readonly</code> | BehaviorSubject&lt;boolean&gt; | _(Optional)_ A behavior subject holding the current connection status. |
-|  [isWorking](./foundation-comms.connect.isworking.md) |  | boolean | Indicates whether Connect is working or is idle. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[host](./foundation-comms.connect.host.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnected](./foundation-comms.connect.isconnected.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the connection is currently established.
+
+
+</td></tr>
+<tr><td>
+
+[isConnected$?](./foundation-comms.connect.isconnected_.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Observable&lt;boolean&gt;
+
+
+</td><td>
+
+_(Optional)_ An Observable that emits a boolean value indicating whether the connection is currently established.
+
+
+</td></tr>
+<tr><td>
+
+[isConnectedSubject?](./foundation-comms.connect.isconnectedsubject.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+BehaviorSubject&lt;boolean&gt;
+
+
+</td><td>
+
+_(Optional)_ A behavior subject holding the current connection status.
+
+
+</td></tr>
+<tr><td>
+
+[isWorking](./foundation-comms.connect.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether Connect is working or is idle.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [commitEvent(eventName, params)](./foundation-comms.connect.commitevent.md) | Sends a request to the server to retrieve data or perform an action. |
-|  [connect(host)](./foundation-comms.connect.connect.md) | Connects to a server at the specified host. |
-|  [dataLogoff(sourceRef)](./foundation-comms.connect.datalogoff.md) | Logs off from the specified data source. |
-|  [disconnect()](./foundation-comms.connect.disconnect.md) | Disconnects from the server. |
-|  [getAvailableResources(params)](./foundation-comms.connect.getavailableresources.md) | Sends a request to the server to get available resources. |
-|  [getJSONSchema(resourceName)](./foundation-comms.connect.getjsonschema.md) | Retrieves the JSON schema for the specified resource. |
-|  [getMetadata(resourceName, useCache)](./foundation-comms.connect.getmetadata.md) | Retrieves the metadata for the specified resource. |
-|  [getMoreColumns(sourceRef)](./foundation-comms.connect.getmorecolumns.md) | Requests additional columns for the specified source reference. |
-|  [getMoreRows(sourceRef, viewNumber)](./foundation-comms.connect.getmorerows.md) | Requests additional rows of data for the specified source reference. |
-|  [request(resourceName, params)](./foundation-comms.connect.request.md) | Sends a request to the server to retrieve data or perform an action. |
-|  [snapshot(resourceName, params)](./foundation-comms.connect.snapshot.md) | Retrieves a snapshot of data for the specified resource. |
-|  [stream(resourceName, onMessage, onError, params)](./foundation-comms.connect.stream.md) | Starts listening for updates on the specified resource. |
-|  [streamState(resourceName, onMessage, onError, params, initialState)](./foundation-comms.connect.streamstate.md) | Starts listening for updates on the specified resource. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[commitEvent(eventName, params)](./foundation-comms.connect.commitevent.md)
+
+
+</td><td>
+
+Sends a request to the server to retrieve data or perform an action.
+
+
+</td></tr>
+<tr><td>
+
+[connect(host)](./foundation-comms.connect.connect.md)
+
+
+</td><td>
+
+Connects to a server at the specified host.
+
+
+</td></tr>
+<tr><td>
+
+[dataLogoff(sourceRef)](./foundation-comms.connect.datalogoff.md)
+
+
+</td><td>
+
+Logs off from the specified data source.
+
+
+</td></tr>
+<tr><td>
+
+[disconnect()](./foundation-comms.connect.disconnect.md)
+
+
+</td><td>
+
+Disconnects from the server.
+
+
+</td></tr>
+<tr><td>
+
+[getAvailableResources(params)](./foundation-comms.connect.getavailableresources.md)
+
+
+</td><td>
+
+Sends a request to the server to get available resources.
+
+
+</td></tr>
+<tr><td>
+
+[getJSONSchema(resourceName)](./foundation-comms.connect.getjsonschema.md)
+
+
+</td><td>
+
+Retrieves the JSON schema for the specified resource.
+
+
+</td></tr>
+<tr><td>
+
+[getMetadata(resourceName, useCache)](./foundation-comms.connect.getmetadata.md)
+
+
+</td><td>
+
+Retrieves the metadata for the specified resource.
+
+
+</td></tr>
+<tr><td>
+
+[getMoreColumns(sourceRef)](./foundation-comms.connect.getmorecolumns.md)
+
+
+</td><td>
+
+Requests additional columns for the specified source reference.
+
+
+</td></tr>
+<tr><td>
+
+[getMoreRows(sourceRef, viewNumber)](./foundation-comms.connect.getmorerows.md)
+
+
+</td><td>
+
+Requests additional rows of data for the specified source reference.
+
+
+</td></tr>
+<tr><td>
+
+[request(resourceName, params)](./foundation-comms.connect.request.md)
+
+
+</td><td>
+
+Sends a request to the server to retrieve data or perform an action.
+
+
+</td></tr>
+<tr><td>
+
+[snapshot(resourceName, params)](./foundation-comms.connect.snapshot.md)
+
+
+</td><td>
+
+Retrieves a snapshot of data for the specified resource.
+
+
+</td></tr>
+<tr><td>
+
+[stream(resourceName, onMessage, onError, params)](./foundation-comms.connect.stream.md)
+
+
+</td><td>
+
+Starts listening for updates on the specified resource.
+
+
+</td></tr>
+<tr><td>
+
+[streamState(resourceName, onMessage, onError, params, initialState)](./foundation-comms.connect.streamstate.md)
+
+
+</td><td>
+
+Starts listening for updates on the specified resource.
+
+
+</td></tr>
+<tr><td>
+
+[streamWithoutAutoTeardown(resourceName, onMessage, onError, params)](./foundation-comms.connect.streamwithoutautoteardown.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Starts listening for updates on the specified resource without auto-teardown.
+
+
+</td></tr>
+</tbody></table>
 

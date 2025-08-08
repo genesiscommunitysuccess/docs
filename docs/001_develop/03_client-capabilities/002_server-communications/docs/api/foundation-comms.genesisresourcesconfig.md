@@ -17,8 +17,64 @@ export interface GenesisResourcesConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [throwWhenUnavailable?](./foundation-comms.genesisresourcesconfig.throwwhenunavailable.md) |  | boolean | _(Optional)_ Treat unavailable/empty genesis resource sets as fatal errors. |
-|  [throwWhenUnknown?](./foundation-comms.genesisresourcesconfig.throwwhenunknown.md) |  | boolean | _(Optional)_ Treat unknown resources as fatal errors. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[throwWhenUnavailable?](./foundation-comms.genesisresourcesconfig.throwwhenunavailable.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Treat unavailable/empty genesis resource sets as fatal errors.
+
+
+</td></tr>
+<tr><td>
+
+[throwWhenUnknown?](./foundation-comms.genesisresourcesconfig.throwwhenunknown.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Treat unknown resources as fatal errors.
+
+
+</td></tr>
+</tbody></table>
 

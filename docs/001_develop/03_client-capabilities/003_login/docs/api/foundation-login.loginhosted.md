@@ -24,7 +24,35 @@ export declare class LoginHosted extends Login
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [registerCommonComponents()](./foundation-login.loginhosted.registercommoncomponents.md) |  | **_(BETA)_** |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[registerCommonComponents()](./foundation-login.loginhosted.registercommoncomponents.md)
+
+
+</td><td>
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+</tbody></table>
 

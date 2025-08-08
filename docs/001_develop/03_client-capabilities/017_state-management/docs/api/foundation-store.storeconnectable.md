@@ -17,8 +17,38 @@ export interface StoreConnectable<TStoreRoot extends StoreRoot>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [connect(root)](./foundation-store.storeconnectable.connect.md) | Connects this store fragment. |
-|  [disconnect(root)](./foundation-store.storeconnectable.disconnect.md) | Disconnects this store fragment. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connect(root)](./foundation-store.storeconnectable.connect.md)
+
+
+</td><td>
+
+Connects this store fragment.
+
+
+</td></tr>
+<tr><td>
+
+[disconnect(root)](./foundation-store.storeconnectable.disconnect.md)
+
+
+</td><td>
+
+Disconnects this store fragment.
+
+
+</td></tr>
+</tbody></table>
 

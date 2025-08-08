@@ -15,7 +15,25 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/foundation-comms](./foundation-comms.md) |  |
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@genesislcap/foundation-comms](./foundation-comms.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

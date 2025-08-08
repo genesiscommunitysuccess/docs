@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [convertToKebabCase](./grid-pro.converttokebabcase.md)
 
-## convertToKebabCase variable
+## convertToKebabCase() function
 
 Convert string values from 'camelCase' to 'kebab-case'
 
@@ -14,3 +14,46 @@ Convert string values from 'camelCase' to 'kebab-case'
 ```typescript
 convertToKebabCase: (value: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+value
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The value to convert to Kebab case.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The Kebab case result.
+

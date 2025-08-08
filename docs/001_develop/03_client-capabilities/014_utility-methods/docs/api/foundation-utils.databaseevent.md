@@ -17,9 +17,43 @@ export declare namespace DatabaseEvent
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [AfterUpdate](./foundation-utils.databaseevent.afterupdate.md) |  |
-|  [BeforeUpdate](./foundation-utils.databaseevent.beforeupdate.md) |  |
-|  [Update](./foundation-utils.databaseevent.update.md) |  |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AfterUpdate](./foundation-utils.databaseevent.afterupdate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[BeforeUpdate](./foundation-utils.databaseevent.beforeupdate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Update](./foundation-utils.databaseevent.update.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

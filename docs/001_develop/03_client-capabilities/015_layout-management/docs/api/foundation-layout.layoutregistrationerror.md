@@ -17,7 +17,35 @@ export declare class LayoutRegistrationError extends Error
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(message)](./foundation-layout.layoutregistrationerror._constructor_.md) |  | Constructs a new instance of the <code>LayoutRegistrationError</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(message)](./foundation-layout.layoutregistrationerror._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `LayoutRegistrationError` class
+
+
+</td></tr>
+</tbody></table>
 

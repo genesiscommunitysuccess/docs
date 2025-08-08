@@ -14,21 +14,120 @@ Represents a WebSocket used to establish a communication channel between client 
 ```typescript
 export interface Socket extends Omit<SocketStatus, 'serialize' | 'onClose' | 'reconnectionLimitReached' | 'closedCode' | 'closedReason' | 'closedClean'> 
 ```
-**Extends:** Omit&lt;[SocketStatus](./foundation-comms.socketstatus.md), 'serialize' \| 'onClose' \| 'reconnectionLimitReached' \| 'closedCode' \| 'closedReason' \| 'closedClean'&gt;
+**Extends:** Omit&lt;[SocketStatus](./foundation-comms.socketstatus.md)<!-- -->, 'serialize' \| 'onClose' \| 'reconnectionLimitReached' \| 'closedCode' \| 'closedReason' \| 'closedClean'&gt;
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [host](./foundation-comms.socket.host.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[host](./foundation-comms.socket.host.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [connect(host, options, reconnectOptions)](./foundation-comms.socket.connect.md) |  |
-|  [reset()](./foundation-comms.socket.reset.md) | Disconnects the socket and clears all subscriptions |
-|  [send(message, needsHandling)](./foundation-comms.socket.send.md) |  |
-|  [sendForStream(message, onMessage, onError, onComplete)](./foundation-comms.socket.sendforstream.md) |  |
-|  [socketMessages()](./foundation-comms.socket.socketmessages.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connect(host, options, reconnectOptions)](./foundation-comms.socket.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reset()](./foundation-comms.socket.reset.md)
+
+
+</td><td>
+
+Disconnects the socket and clears all subscriptions
+
+
+</td></tr>
+<tr><td>
+
+[send(message, needsHandling)](./foundation-comms.socket.send.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[sendForStream(message, onMessage, onError, onComplete)](./foundation-comms.socket.sendforstream.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[sendForStreamWithoutTeardown(message, onMessage, onError)](./foundation-comms.socket.sendforstreamwithoutteardown.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Sends a message and returns an observable that emits messages received from the server.
+
+
+</td></tr>
+<tr><td>
+
+[socketMessages()](./foundation-comms.socket.socketmessages.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

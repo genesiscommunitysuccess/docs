@@ -15,13 +15,67 @@ createChangePasswordMessage(username: string, oldPassword: string, newPassword: 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  username | string |  |
-|  oldPassword | string |  |
-|  newPassword | string |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+username
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+oldPassword
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+newPassword
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.ChangePassword](./foundation-comms.messagedetails.changepassword.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ChangePassword](./foundation-comms.messagedetails.changepassword.md)<!-- -->&gt;
 

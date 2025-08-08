@@ -24,7 +24,37 @@ constructor(opts?: Partial<{
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  opts | Partial&lt;{ field: string; value: unknown; serialiser: Serialiser; params: any; valueGetter: (value: unknown) =&gt; string; group: string; }&gt; | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+opts
+
+
+</td><td>
+
+Partial&lt;{ field: string; value: unknown; serialiser: Serialiser; params: any; valueGetter: (value: unknown) =&gt; string; group: string; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

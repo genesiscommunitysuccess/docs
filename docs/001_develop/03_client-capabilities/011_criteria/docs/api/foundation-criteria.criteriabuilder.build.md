@@ -15,9 +15,39 @@ build(outputFn?: (groups: GroupedExpressions) => string): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  outputFn | (groups: GroupedExpressions) =&gt; string | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+outputFn
+
+
+</td><td>
+
+(groups: GroupedExpressions) =&gt; string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

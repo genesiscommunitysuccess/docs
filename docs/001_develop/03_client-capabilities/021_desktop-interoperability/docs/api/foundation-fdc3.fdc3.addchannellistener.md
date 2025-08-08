@@ -17,11 +17,71 @@ addChannelListener(channelName: string, channelType: string, callback: (any: any
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  channelName | string | name of the channel |
-|  channelType | string | type of the channel |
-|  callback | (any: any) =&gt; void | handler to for the channel context listener |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+channelName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+name of the channel
+
+
+</td></tr>
+<tr><td>
+
+channelType
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+type of the channel
+
+
+</td></tr>
+<tr><td>
+
+callback
+
+
+</td><td>
+
+(any: any) =&gt; void
+
+
+</td><td>
+
+handler to for the channel context listener
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

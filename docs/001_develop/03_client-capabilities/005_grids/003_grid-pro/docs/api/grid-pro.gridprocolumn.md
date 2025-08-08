@@ -22,15 +22,104 @@ Used insde the Grid Pro element, to specify the column definitions (ColDef) for 
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [definition](./grid-pro.gridprocolumn.definition.md) |  | ColDef |  |
-|  [slottedAgCell](./grid-pro.gridprocolumn.slottedagcell.md) |  | HTMLElement\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[definition](./grid-pro.gridprocolumn.definition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ColDef
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedAgCell](./grid-pro.gridprocolumn.slottedagcell.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [deepClone()](./grid-pro.gridprocolumn.deepclone.md) |  |  |
-|  [slottedAgCellChanged()](./grid-pro.gridprocolumn.slottedagcellchanged.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[deepClone()](./grid-pro.gridprocolumn.deepclone.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedAgCellChanged()](./grid-pro.gridprocolumn.slottedagcellchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

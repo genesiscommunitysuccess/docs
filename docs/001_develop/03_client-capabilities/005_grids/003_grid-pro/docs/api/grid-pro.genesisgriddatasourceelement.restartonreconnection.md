@@ -17,5 +17,5 @@ restartOnReconnection: boolean;
 
 ## Remarks
 
-Defaults to `true`.
+Defaults to `true`<!-- -->.
 

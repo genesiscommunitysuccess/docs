@@ -9,22 +9,135 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [EntityManagement](./foundation-entity-management.entitymanagement.md) | Main class which defines the entity management functionality |
-|  [MainApplication](./foundation-entity-management.mainapplication.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[EntityManagement](./foundation-entity-management.entitymanagement.md)
+
+
+</td><td>
+
+Main class which defines the entity management functionality
+
+
+</td></tr>
+<tr><td>
+
+[MainApplication](./foundation-entity-management.mainapplication.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SmartFormModal](./foundation-entity-management.smartformmodal.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The Smart Form Modal element. Allows to open a modal with an auto-generated form based on the resource schema.
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[buttonCellRenderer(title, clickHandler, contentTemplate)](./foundation-entity-management.buttoncellrenderer.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[getErrorFormat(err)](./foundation-entity-management.geterrorformat.md)
+
+
+</td><td>
+
+Format the error as a string with a different format depending on whether `err` has a `FIELD` property or not
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [buttonCellRenderer](./foundation-entity-management.buttoncellrenderer.md) |  |
-|  [getErrorFormat](./foundation-entity-management.geterrorformat.md) | Format the error as a string with a different format depending on whether <code>err</code> has a <code>FIELD</code> property or not |
-|  [logger](./foundation-entity-management.logger.md) |  |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[logger](./foundation-entity-management.logger.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | The attribute which is set to configure the resource that the entity manager is working with |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md)
+
+
+</td><td>
+
+The attribute which is set to configure the resource that the entity manager is working with
+
+
+</td></tr>
+</tbody></table>
 

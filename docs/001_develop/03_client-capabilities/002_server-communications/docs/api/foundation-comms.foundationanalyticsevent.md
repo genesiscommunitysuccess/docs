@@ -17,8 +17,38 @@ export declare namespace FoundationAnalyticsEvent
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [ControlClicked](./foundation-comms.foundationanalyticsevent.controlclicked.md) | Represents an event that is triggered when a control is clicked. |
-|  [RouteChanged](./foundation-comms.foundationanalyticsevent.routechanged.md) | Represents an event that is triggered when a control is clicked. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ControlClicked](./foundation-comms.foundationanalyticsevent.controlclicked.md)
+
+
+</td><td>
+
+Represents an event that is triggered when a control is clicked.
+
+
+</td></tr>
+<tr><td>
+
+[RouteChanged](./foundation-comms.foundationanalyticsevent.routechanged.md)
+
+
+</td><td>
+
+Represents an event that is triggered when a control is clicked.
+
+
+</td></tr>
+</tbody></table>
 

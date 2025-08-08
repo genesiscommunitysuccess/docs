@@ -17,7 +17,7 @@ hasFirstLoaded: boolean;
 
 ## Remarks
 
-When using the declarative API this is set to true when the layout loads after the first timeout of `reload-buffer`. If using the JavaScript API this occurs after the first call to [addItem()](./foundation-layout.foundationlayout.additem.md).
+When using the declarative API this is set to true when the layout loads after the first timeout of `reload-buffer`<!-- -->. If using the JavaScript API this occurs after the first call to [addItem()](./foundation-layout.foundationlayout.additem.md)<!-- -->.
 
-When using the `LifecycleMixin`, the mixin can be used to gate lifecycle methods from running before the items are inside of the layout.
+When using the `LifecycleMixin`<!-- -->, the mixin can be used to gate lifecycle methods from running before the items are inside of the layout.
 

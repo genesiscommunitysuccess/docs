@@ -18,11 +18,81 @@ export declare class LoadMoreStatusBarComponent implements IStatusPanelComp
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.loadmorestatusbarcomponent.destroy.md) |  |  |
-|  [getGui()](./grid-pro.loadmorestatusbarcomponent.getgui.md) |  |  |
-|  [init(params)](./grid-pro.loadmorestatusbarcomponent.init.md) |  |  |
-|  [updateButtonVisibility()](./grid-pro.loadmorestatusbarcomponent.updatebuttonvisibility.md) |  |  |
-|  [updateParams(params)](./grid-pro.loadmorestatusbarcomponent.updateparams.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.loadmorestatusbarcomponent.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.loadmorestatusbarcomponent.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.loadmorestatusbarcomponent.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[updateButtonVisibility()](./grid-pro.loadmorestatusbarcomponent.updatebuttonvisibility.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[updateParams(params)](./grid-pro.loadmorestatusbarcomponent.updateparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

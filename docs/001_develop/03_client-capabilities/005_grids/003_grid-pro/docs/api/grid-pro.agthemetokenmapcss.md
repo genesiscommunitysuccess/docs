@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [agThemeTokenMapCSS](./grid-pro.agthemetokenmapcss.md)
 
-## agThemeTokenMapCSS variable
+## agThemeTokenMapCSS() function
 
 Generates the CSS for a given GridPro theme name and token map
 
@@ -14,6 +14,64 @@ Generates the CSS for a given GridPro theme name and token map
 ```typescript
 agThemeTokenMapCSS: (themeName: string, tokenMap: CSSVarTokenMap<any>) => import("@microsoft/fast-element").ElementStyles
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+themeName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+the GridPro theme name
+
+
+</td></tr>
+<tr><td>
+
+tokenMap
+
+
+</td><td>
+
+CSSVarTokenMap&lt;any&gt;
+
+
+</td><td>
+
+a map of CSS variables [AgGridCSSVars](./grid-pro.aggridcssvars.md) and custom token values
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ElementStyles
+
+the CSS for the Grid Pro token map
 
 ## Example
 

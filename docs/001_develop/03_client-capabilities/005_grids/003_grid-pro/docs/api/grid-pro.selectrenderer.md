@@ -20,19 +20,157 @@ export declare class SelectRenderer extends FoundationElement implements ICellRe
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.selectrenderer.params.md) |  | [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) |  |
-|  [selectionChanged](./grid-pro.selectrenderer.selectionchanged.md) |  | (e: any) =&gt; void |  |
-|  [value](./grid-pro.selectrenderer.value.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.selectrenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SelectCellRendererParams](./grid-pro.selectcellrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectionChanged](./grid-pro.selectrenderer.selectionchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(e: any) =&gt; void
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./grid-pro.selectrenderer.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.selectrenderer.destroy.md) |  |  |
-|  [getGui()](./grid-pro.selectrenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.selectrenderer.init.md) |  |  |
-|  [isDisabled(data)](./grid-pro.selectrenderer.isdisabled.md) |  |  |
-|  [refresh(params)](./grid-pro.selectrenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.selectrenderer.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.selectrenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.selectrenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisabled(data)](./grid-pro.selectrenderer.isdisabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.selectrenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

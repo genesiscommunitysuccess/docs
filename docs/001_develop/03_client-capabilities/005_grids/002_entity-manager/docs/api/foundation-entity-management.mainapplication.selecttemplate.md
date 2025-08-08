@@ -14,5 +14,5 @@ selectTemplate(): import("@microsoft/fast-element").ViewTemplate<MainApplication
 ```
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[MainApplication](./foundation-entity-management.mainapplication.md), any&gt;
+import("@microsoft/fast-element").ViewTemplate&lt;[MainApplication](./foundation-entity-management.mainapplication.md)<!-- -->, any&gt;
 

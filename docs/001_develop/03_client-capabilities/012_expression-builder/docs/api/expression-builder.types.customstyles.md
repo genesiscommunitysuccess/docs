@@ -12,15 +12,15 @@ format: md
 
 Optional strings for configuring css to be applied inside of each constituent element's shadow DOM. To apply styles to components which are used inside of multiple different components (such as buttons which are used in groups, rules, and values) you must ensure the styling is set in each block. If your styling isn't showing the ensure that you're using more specific css rules to override the precedence of your rule.
 
-`rule`: Additional CSS for expression rule component
+`rule`<!-- -->: Additional CSS for expression rule component
 
-`value`: Additional CSS for rule value component
+`value`<!-- -->: Additional CSS for rule value component
 
-`field`: Additional CSS for rule field component
+`field`<!-- -->: Additional CSS for rule field component
 
-`operator`: Additional CSS for rule operator component
+`operator`<!-- -->: Additional CSS for rule operator component
 
-`group`: Additional CSS for expression group component
+`group`<!-- -->: Additional CSS for expression group component
 
 **Signature:**
 

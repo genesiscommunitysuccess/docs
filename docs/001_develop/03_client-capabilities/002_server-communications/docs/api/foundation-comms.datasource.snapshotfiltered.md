@@ -17,9 +17,39 @@ snapshotFiltered(rowId?: string): Promise<any[]>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  rowId | string | _(Optional)_ Optional ID of the row to filter. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+rowId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Optional ID of the row to filter.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

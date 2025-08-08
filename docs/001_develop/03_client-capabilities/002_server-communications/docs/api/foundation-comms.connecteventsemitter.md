@@ -18,11 +18,82 @@ export interface ConnectEventsEmitter extends ConnectEvents
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [onCommitEvent(eventName, message)](./foundation-comms.connecteventsemitter.oncommitevent.md) | Called by Connect. |
-|  [onMetadataEvent(resourceName, message, error)](./foundation-comms.connecteventsemitter.onmetadataevent.md) | Called by Connect. |
-|  [onStreamCompleteEvent(resourceName, stream)](./foundation-comms.connecteventsemitter.onstreamcompleteevent.md) | Called by Connect. |
-|  [onStreamErrorEvent(resourceName, stream, error)](./foundation-comms.connecteventsemitter.onstreamerrorevent.md) | Called by Connect. |
-|  [onStreamEvent(resourceName, message, stream, functions)](./foundation-comms.connecteventsemitter.onstreamevent.md) | Called by Connect. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[onCommitEvent(eventName, message)](./foundation-comms.connecteventsemitter.oncommitevent.md)
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onCommitResponseEvent(eventName, response)](./foundation-comms.connecteventsemitter.oncommitresponseevent.md)
+
+
+</td><td>
+
+Called by Connect when a commit response (ack or nack) is received.
+
+
+</td></tr>
+<tr><td>
+
+[onMetadataEvent(resourceName, message, error)](./foundation-comms.connecteventsemitter.onmetadataevent.md)
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamCompleteEvent(resourceName, stream)](./foundation-comms.connecteventsemitter.onstreamcompleteevent.md)
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamErrorEvent(resourceName, stream, error)](./foundation-comms.connecteventsemitter.onstreamerrorevent.md)
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamEvent(resourceName, message, stream, functions)](./foundation-comms.connecteventsemitter.onstreamevent.md)
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+</tbody></table>
 

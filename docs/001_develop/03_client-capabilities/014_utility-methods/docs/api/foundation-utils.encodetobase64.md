@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [encodeToBase64](./foundation-utils.encodetobase64.md)
 
-## encodeToBase64 variable
+## encodeToBase64() function
 
 Encodes the given value to base64.
 
@@ -14,3 +14,46 @@ Encodes the given value to base64.
 ```typescript
 encodeToBase64: (value: string | ArrayBuffer) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+value
+
+
+</td><td>
+
+string \| ArrayBuffer
+
+
+</td><td>
+
+The value to encode to base64.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The base64 encoded value.
+

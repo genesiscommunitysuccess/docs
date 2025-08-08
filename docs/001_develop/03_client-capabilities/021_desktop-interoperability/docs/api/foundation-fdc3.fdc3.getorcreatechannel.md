@@ -17,13 +17,43 @@ getOrCreateChannel(channelId: string): Promise<FDC3Channel>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  channelId | string | The ID of the channel to get or create. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+channelId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the channel to get or create.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)&gt;
+Promise&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)<!-- -->&gt;
 
 A promise that resolves with the channel object.
 

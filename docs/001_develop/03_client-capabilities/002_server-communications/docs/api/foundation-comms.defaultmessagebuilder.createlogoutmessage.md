@@ -15,9 +15,39 @@ createLogoutMessage(loginResult?: LoginResult): Message;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  loginResult | [LoginResult](./foundation-comms.loginresult.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+loginResult
+
+
+</td><td>
+
+[LoginResult](./foundation-comms.loginresult.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

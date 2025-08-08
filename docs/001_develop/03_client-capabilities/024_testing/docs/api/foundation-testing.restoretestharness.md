@@ -17,9 +17,39 @@ export declare function restoreTestHarness<T>(wrapper: WithTestHarness<T>): void
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  wrapper | [WithTestHarness](./foundation-testing.withtestharness.md)&lt;T&gt; | <code>WithTestHarness&lt;T&gt;</code> object to restore |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+wrapper
+
+
+</td><td>
+
+[WithTestHarness](./foundation-testing.withtestharness.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+`WithTestHarness<T>` object to restore
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

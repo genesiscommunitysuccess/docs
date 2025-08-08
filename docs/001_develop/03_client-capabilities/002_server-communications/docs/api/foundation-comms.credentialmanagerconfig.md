@@ -17,7 +17,43 @@ export interface CredentialManagerConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cookie](./foundation-comms.credentialmanagerconfig.cookie.md) |  | [CredentialManagerCookieConfig](./foundation-comms.credentialmanagercookieconfig.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cookie](./foundation-comms.credentialmanagerconfig.cookie.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[CredentialManagerCookieConfig](./foundation-comms.credentialmanagercookieconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,11 +17,91 @@ export declare enum GridTabulatorCellEditorTypes
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  date | <code>&quot;date&quot;</code> |  |
-|  multiselect | <code>&quot;multiselect&quot;</code> |  |
-|  number | <code>&quot;number&quot;</code> |  |
-|  select | <code>&quot;select&quot;</code> |  |
-|  string | <code>&quot;string&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+date
+
+
+</td><td>
+
+`"date"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+multiselect
+
+
+</td><td>
+
+`"multiselect"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+number
+
+
+</td><td>
+
+`"number"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+select
+
+
+</td><td>
+
+`"select"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+string
+
+
+</td><td>
+
+`"string"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

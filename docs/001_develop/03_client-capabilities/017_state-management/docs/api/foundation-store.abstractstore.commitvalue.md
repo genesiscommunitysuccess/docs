@@ -20,10 +20,55 @@ protected commitValue<K extends keyof TStore>(key: K, value: TStore[K]): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | K | The property key from the store's interface. |
-|  value | TStore\[K\] | The value to set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+K
+
+
+</td><td>
+
+The property key from the store's interface.
+
+
+</td></tr>
+<tr><td>
+
+value
+
+
+</td><td>
+
+TStore\[K\]
+
+
+</td><td>
+
+The value to set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

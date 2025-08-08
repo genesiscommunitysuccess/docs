@@ -15,14 +15,83 @@ createForgotPasswordTokenMessage(username: string, resetToken: string, newPasswo
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  username | string |  |
-|  resetToken | string |  |
-|  newPassword | string |  |
-|  requester | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+username
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+resetToken
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+newPassword
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+requester
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md)<!-- -->&gt;
 

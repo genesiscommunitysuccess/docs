@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [openPopup](./foundation-utils.openpopup.md)
 
-## openPopup variable
+## openPopup() function
 
 Opens a new browser window with the specified URL, target, width, and height.
 
@@ -14,3 +14,94 @@ Opens a new browser window with the specified URL, target, width, and height.
 ```typescript
 openPopup: (urlNavigate: string, target: string, popUpWidth?: number, popUpHeight?: number) => Window
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+urlNavigate
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The URL to navigate to.
+
+
+</td></tr>
+<tr><td>
+
+target
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the new window.
+
+
+</td></tr>
+<tr><td>
+
+popUpWidth
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The width of the new window (optional).
+
+
+</td></tr>
+<tr><td>
+
+popUpHeight
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The height of the new window (optional).
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+Window
+
+A reference to the new window.
+

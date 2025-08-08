@@ -17,10 +17,98 @@ export interface MonitoredResourceChecksResult
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isConnected](./foundation-comms.monitoredresourcechecksresult.isconnected.md) |  | boolean |  |
-|  [lastMessage?](./foundation-comms.monitoredresourcechecksresult.lastmessage.md) |  | [Message](./foundation-comms.message.md) | _(Optional)_ |
-|  [lastUpdated](./foundation-comms.monitoredresourcechecksresult.lastupdated.md) |  | number |  |
-|  [timeout?](./foundation-comms.monitoredresourcechecksresult.timeout.md) |  | boolean | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isConnected](./foundation-comms.monitoredresourcechecksresult.isconnected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[lastMessage?](./foundation-comms.monitoredresourcechecksresult.lastmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[lastUpdated](./foundation-comms.monitoredresourcechecksresult.lastupdated.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[timeout?](./foundation-comms.monitoredresourcechecksresult.timeout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

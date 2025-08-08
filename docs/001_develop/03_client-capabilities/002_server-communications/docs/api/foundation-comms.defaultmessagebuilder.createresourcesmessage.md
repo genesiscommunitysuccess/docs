@@ -15,11 +15,41 @@ createResourcesMessage<T = any>(params?: RequestParams): Message<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;T&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
 

@@ -17,9 +17,39 @@ export declare function isMFRoute(pathname?: string): boolean;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  pathname | string | _(Optional)_ A pathname string to check, typically location.pathname, which is used when a value is omitted. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+pathname
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ A pathname string to check, typically location.pathname, which is used when a value is omitted.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

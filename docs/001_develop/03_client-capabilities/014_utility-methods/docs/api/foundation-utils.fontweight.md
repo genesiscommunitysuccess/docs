@@ -17,12 +17,105 @@ export declare enum FontWeight
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  Black | <code>900</code> |  |
-|  Bold | <code>700</code> |  |
-|  Light | <code>300</code> |  |
-|  Medium | <code>500</code> |  |
-|  Regular | <code>400</code> |  |
-|  Thin | <code>100</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+Black
+
+
+</td><td>
+
+`900`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Bold
+
+
+</td><td>
+
+`700`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Light
+
+
+</td><td>
+
+`300`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Medium
+
+
+</td><td>
+
+`500`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Regular
+
+
+</td><td>
+
+`400`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Thin
+
+
+</td><td>
+
+`100`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

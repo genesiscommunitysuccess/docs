@@ -21,13 +21,73 @@ export interface ErrorMap<TErrorDetailMap extends ErrorDetailMap> extends Pick<M
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [messages](./foundation-store.errormap.messages.md) | <code>readonly</code> | string | Error map as messages. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[messages](./foundation-store.errormap.messages.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Error map as messages.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [set(key, error)](./foundation-store.errormap.set.md) | Set an error by key. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[set(key, error)](./foundation-store.errormap.set.md)
+
+
+</td><td>
+
+Set an error by key.
+
+
+</td></tr>
+</tbody></table>
 

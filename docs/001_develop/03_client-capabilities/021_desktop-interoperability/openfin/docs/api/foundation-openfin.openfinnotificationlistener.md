@@ -20,17 +20,148 @@ Openfin Notifications custom element
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [mode](./foundation-openfin.openfinnotificationlistener.mode.md) |  | 'default' \| 'silent' | **_(BETA)_** |
-|  [notificationsPlatform](./foundation-openfin.openfinnotificationlistener.notificationsplatform.md) |  | NotificationsPlatform | **_(BETA)_** |
-|  [toast](./foundation-openfin.openfinnotificationlistener.toast.md) |  | 'transient' \| 'sticky' \| 'none' | **_(BETA)_** |
-|  [toastButtons](./foundation-openfin.openfinnotificationlistener.toastbuttons.md) |  | [OpenfinToastButton](./foundation-openfin.openfintoastbutton.md)\[\] | Array of button configs for openfin notification toasts |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[mode](./foundation-openfin.openfinnotificationlistener.mode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'default' \| 'silent'
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[notificationsPlatform](./foundation-openfin.openfinnotificationlistener.notificationsplatform.md)
+
+
+</td><td>
+
+
+</td><td>
+
+NotificationsPlatform
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[toast](./foundation-openfin.openfinnotificationlistener.toast.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'transient' \| 'sticky' \| 'none'
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[toastButtons](./foundation-openfin.openfinnotificationlistener.toastbuttons.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[OpenfinToastButton](./foundation-openfin.openfintoastbutton.md)<!-- -->\[\]
+
+
+</td><td>
+
+Array of button configs for openfin notification toasts
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connectedCallback()](./foundation-openfin.openfinnotificationlistener.connectedcallback.md) |  |  |
-|  [showNotificationToast(row)](./foundation-openfin.openfinnotificationlistener.shownotificationtoast.md) | <code>protected</code> |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connectedCallback()](./foundation-openfin.openfinnotificationlistener.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationToast(row)](./foundation-openfin.openfinnotificationlistener.shownotificationtoast.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

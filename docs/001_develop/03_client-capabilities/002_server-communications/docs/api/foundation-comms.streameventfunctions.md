@@ -18,5 +18,5 @@ export type StreamEventFunctions = {
     resourceDataLogon?: MonitoredResourceDataLogon;
 };
 ```
-**References:** [MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md), [MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md)
+**References:** [MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md)<!-- -->, [MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md)
 

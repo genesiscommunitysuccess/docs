@@ -18,7 +18,45 @@ export interface HeaderConfig extends PartialGenesisElementDefinition
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [templateOptions](./foundation-header.headerconfig.templateoptions.md) |  | TemplateOptions | Template options. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[templateOptions](./foundation-header.headerconfig.templateoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TemplateOptions
+
+
+</td><td>
+
+Template options.
+
+
+</td></tr>
+</tbody></table>
 

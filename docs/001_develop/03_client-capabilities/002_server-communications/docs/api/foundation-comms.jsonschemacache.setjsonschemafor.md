@@ -15,10 +15,51 @@ setJsonSchemaFor(resourceName: string, schemaResponse: SchemaResponse): any;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string |  |
-|  schemaResponse | [SchemaResponse](./foundation-comms.schemaresponse.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+schemaResponse
+
+
+</td><td>
+
+[SchemaResponse](./foundation-comms.schemaresponse.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

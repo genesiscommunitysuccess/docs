@@ -17,23 +17,368 @@ export interface LoginConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [autoAuth](./foundation-login.loginconfig.autoauth.md) |  | boolean | Login automatically or require user to click a login button after a connection is established. |
-|  [autoConnect](./foundation-login.loginconfig.autoconnect.md) |  | boolean | Connect automatically or require user to click a connect button. |
-|  [background](./foundation-login.loginconfig.background.md) |  | ElementStyles | Background styles. |
-|  [defaultRedirectUrl](./foundation-login.loginconfig.defaultredirecturl.md) |  | string | The default URL to route the user to after a successful login. |
-|  [fields](./foundation-login.loginconfig.fields.md) |  | [FieldConfigMap](./foundation-login.fieldconfigmap.md) | Map of configuration for each of the primary form fields. |
-|  [hostPath](./foundation-login.loginconfig.hostpath.md) |  | string | The <code>path</code> of the micro frontend as defined in the parent / host route. |
-|  [localizationResources?](./foundation-login.loginconfig.localizationresources.md) |  | I18nextConfig\['resources'\] | _(Optional)_ I18n resources. |
-|  [logo](./foundation-login.loginconfig.logo.md) |  | ElementStyles \| null | Logo styles. |
-|  [logoAltText](./foundation-login.loginconfig.logoalttext.md) |  | string | Logo alt text. |
-|  [messageDelays?](./foundation-login.loginconfig.messagedelays.md) |  | [MessageDelays](./foundation-login.messagedelays.md) | _(Optional)_ Delay configurations for various message-related actions. |
-|  [omitRedirectUrls](./foundation-login.loginconfig.omitredirecturls.md) |  | string\[\] | Omit certain return urls which the session service may have captured. |
-|  [omitRoutes](./foundation-login.loginconfig.omitroutes.md) |  | Exclude&lt;[Routes](./foundation-login.routes.md), 'login' \| 'not-found'&gt;\[\] | Omit any of the internal routes except 'login' and 'not-found'. |
-|  [redirectHandler?](./foundation-login.loginconfig.redirecthandler.md) |  | (url: string) =&gt; void | _(Optional)_ Handler that allows external apps own router to navigate after successful login |
-|  [showConnectionIndicator](./foundation-login.loginconfig.showconnectionindicator.md) |  | boolean | Show or hide the connection status indicator. |
-|  [sso](./foundation-login.loginconfig.sso.md) |  | [SSOConfig](./foundation-login.ssoconfig.md) \| null | SSO configuration. |
-|  [submitButtonAppearance?](./foundation-login.loginconfig.submitbuttonappearance.md) |  | ZeroButtonAppearance | _(Optional)_ Custom appearance for submit buttons in <code>foundation-login</code>. |
-|  [versionInformation?](./foundation-login.loginconfig.versioninformation.md) |  | string | _(Optional)_ Display arbitrary version information. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[autoAuth](./foundation-login.loginconfig.autoauth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Login automatically or require user to click a login button after a connection is established.
+
+
+</td></tr>
+<tr><td>
+
+[autoConnect](./foundation-login.loginconfig.autoconnect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Connect automatically or require user to click a connect button.
+
+
+</td></tr>
+<tr><td>
+
+[background](./foundation-login.loginconfig.background.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ElementStyles
+
+
+</td><td>
+
+Background styles.
+
+
+</td></tr>
+<tr><td>
+
+[defaultRedirectUrl](./foundation-login.loginconfig.defaultredirecturl.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The default URL to route the user to after a successful login.
+
+
+</td></tr>
+<tr><td>
+
+[fields](./foundation-login.loginconfig.fields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[FieldConfigMap](./foundation-login.fieldconfigmap.md)
+
+
+</td><td>
+
+Map of configuration for each of the primary form fields.
+
+
+</td></tr>
+<tr><td>
+
+[hostPath](./foundation-login.loginconfig.hostpath.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The `path` of the micro frontend as defined in the parent / host route.
+
+
+</td></tr>
+<tr><td>
+
+[localizationResources?](./foundation-login.loginconfig.localizationresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+I18nextConfig\['resources'\]
+
+
+</td><td>
+
+_(Optional)_ I18n resources.
+
+
+</td></tr>
+<tr><td>
+
+[logo](./foundation-login.loginconfig.logo.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ElementStyles \| null
+
+
+</td><td>
+
+Logo styles.
+
+
+</td></tr>
+<tr><td>
+
+[logoAltText](./foundation-login.loginconfig.logoalttext.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Logo alt text.
+
+
+</td></tr>
+<tr><td>
+
+[messageDelays?](./foundation-login.loginconfig.messagedelays.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MessageDelays](./foundation-login.messagedelays.md)
+
+
+</td><td>
+
+_(Optional)_ Delay configurations for various message-related actions.
+
+
+</td></tr>
+<tr><td>
+
+[omitRedirectUrls](./foundation-login.loginconfig.omitredirecturls.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+Omit certain return urls which the session service may have captured.
+
+
+</td></tr>
+<tr><td>
+
+[omitRoutes](./foundation-login.loginconfig.omitroutes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Exclude&lt;[Routes](./foundation-login.routes.md)<!-- -->, 'login' \| 'not-found'&gt;\[\]
+
+
+</td><td>
+
+Omit any of the internal routes except 'login' and 'not-found'.
+
+
+</td></tr>
+<tr><td>
+
+[redirectHandler?](./foundation-login.loginconfig.redirecthandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(url: string) =&gt; void
+
+
+</td><td>
+
+_(Optional)_ Handler that allows external apps own router to navigate after successful login
+
+
+</td></tr>
+<tr><td>
+
+[showConnectionIndicator](./foundation-login.loginconfig.showconnectionindicator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Show or hide the connection status indicator.
+
+
+</td></tr>
+<tr><td>
+
+[showEnvironmentIndicator?](./foundation-login.loginconfig.showenvironmentindicator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Show or hide the environment indicator.
+
+
+</td></tr>
+<tr><td>
+
+[sso](./foundation-login.loginconfig.sso.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SSOConfig](./foundation-login.ssoconfig.md) \| null
+
+
+</td><td>
+
+SSO configuration.
+
+
+</td></tr>
+<tr><td>
+
+[submitButtonAppearance?](./foundation-login.loginconfig.submitbuttonappearance.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ZeroButtonAppearance
+
+
+</td><td>
+
+_(Optional)_ Custom appearance for submit buttons in `foundation-login`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[versionInformation?](./foundation-login.loginconfig.versioninformation.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Display arbitrary version information.
+
+
+</td></tr>
+</tbody></table>
 

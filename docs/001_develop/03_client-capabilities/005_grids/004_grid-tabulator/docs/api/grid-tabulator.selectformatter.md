@@ -17,10 +17,55 @@ export declare function selectFormatter<T = any>(cell: any, formatterParams: Sel
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  cell | any | The cell component provided by Tabulator |
-|  formatterParams | SelectFormatterParams&lt;T&gt; | Select formatter parameters |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+cell
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The cell component provided by Tabulator
+
+
+</td></tr>
+<tr><td>
+
+formatterParams
+
+
+</td><td>
+
+[SelectFormatterParams](./grid-tabulator.selectformatterparams.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+Select formatter parameters
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

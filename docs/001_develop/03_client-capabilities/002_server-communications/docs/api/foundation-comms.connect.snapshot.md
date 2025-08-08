@@ -17,14 +17,59 @@ snapshot(resourceName: string, params?: DataserverParams): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to retrieve the snapshot for. |
-|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ Additional parameters to pass to the server. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to retrieve the snapshot for.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+_(Optional)_ Additional parameters to pass to the server.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 
 A promise that resolves with the snapshot data.
 

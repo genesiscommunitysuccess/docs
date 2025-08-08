@@ -17,9 +17,87 @@ export interface SnackbarStructure
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [body](./foundation-notifications.snackbarstructure.body.md) | <code>readonly</code> | string |  |
-|  [logLevel?](./foundation-notifications.snackbarstructure.loglevel.md) | <code>readonly</code> | LogLevel | _(Optional)_ |
-|  [snackbar?](./foundation-notifications.snackbarstructure.snackbar.md) | <code>readonly</code> | [Snackbar](./foundation-notifications.snackbar.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[body](./foundation-notifications.snackbarstructure.body.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-notifications.snackbarstructure.loglevel.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[snackbar?](./foundation-notifications.snackbarstructure.snackbar.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[Snackbar](./foundation-notifications.snackbar.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

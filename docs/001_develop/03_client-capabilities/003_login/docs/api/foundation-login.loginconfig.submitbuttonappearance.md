@@ -7,7 +7,7 @@ format: md
 
 ## LoginConfig.submitButtonAppearance property
 
-Custom appearance for submit buttons in `foundation-login`.
+Custom appearance for submit buttons in `foundation-login`<!-- -->.
 
 **Signature:**
 
@@ -17,7 +17,7 @@ submitButtonAppearance?: ZeroButtonAppearance;
 
 ## Remarks
 
-This property holds a string representing the desired appearance for submit buttons in `foundation-login`. The value should be a valid `appearance` attribute of a Foundation button component.
+This property holds a string representing the desired appearance for submit buttons in `foundation-login`<!-- -->. The value should be a valid `appearance` attribute of a Foundation button component.
 
 ## Example
 

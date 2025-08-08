@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-fdc3](./foundation-fdc3.md) &gt; [interopFoundationNotificationListener](./foundation-fdc3.interopfoundationnotificationlistener.md)
 
-## interopFoundationNotificationListener variable
+## interopFoundationNotificationListener() function
 
 The Foundation Interop Notification Listener
 
@@ -23,7 +23,47 @@ interopFoundationNotificationListener: (overrideDefinition?: import("@microsoft/
 }, typeof InteropNotificationsListener>
 ```
 
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideDefinition
+
+
+</td><td>
+
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;NotificationListener, any&gt;; shadowOptions: ShadowRootInit; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;NotificationListener, any&gt;; shadowOptions: ShadowRootInit; }, typeof [InteropNotificationsListener](./foundation-fdc3.interopnotificationslistener.md)<!-- -->&gt;
+
 ## Remarks
 
-HTML Element: &lt;foundation-interop-notification-listener&gt;
+HTML Element: &lt;<!-- -->foundation-interop-notification-listener<!-- -->&gt;
 

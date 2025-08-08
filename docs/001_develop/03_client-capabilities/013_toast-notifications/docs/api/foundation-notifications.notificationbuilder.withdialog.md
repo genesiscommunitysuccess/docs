@@ -22,9 +22,39 @@ withDialog(dialog: Dialog): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  dialog | [Dialog](./foundation-notifications.dialog.md) | [Dialog](./foundation-notifications.dialog.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+dialog
+
+
+</td><td>
+
+[Dialog](./foundation-notifications.dialog.md)
+
+
+</td><td>
+
+[Dialog](./foundation-notifications.dialog.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

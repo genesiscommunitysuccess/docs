@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotification](./foundation-notifications.shownotification.md)
 
-## showNotification variable
+## showNotification() function
 
 Shows the notificationStructure in the appropriate component
 
@@ -14,3 +14,77 @@ Shows the notificationStructure in the appropriate component
 ```typescript
 showNotification: (notificationStructure: NotificationStructure, tagName: String, notificationBoundary?: HTMLElement) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+notificationStructure
+
+
+</td><td>
+
+[NotificationStructure](./foundation-notifications.notificationstructure.md)
+
+
+</td><td>
+
+The NotificationStructure object
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+The tag name to create prefix for the design system provider \*
+
+
+</td></tr>
+<tr><td>
+
+notificationBoundary
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_ The notificationStructure boundary element
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+
+

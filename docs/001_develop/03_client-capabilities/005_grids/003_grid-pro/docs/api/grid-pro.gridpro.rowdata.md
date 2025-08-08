@@ -17,5 +17,5 @@ rowData: any[];
 
 ## Remarks
 
-For scenarios where you want to set data manually, without relying on `<grid-pro-client-side-datasource>`.
+For scenarios where you want to set data manually, without relying on `<grid-pro-client-side-datasource>`<!-- -->.
 

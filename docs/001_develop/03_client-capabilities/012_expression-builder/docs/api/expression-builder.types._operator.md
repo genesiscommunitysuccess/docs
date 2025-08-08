@@ -20,6 +20,7 @@ export type _Operator = {
     optgroup?: string | null;
     type: string;
     tooltip?: string;
+    valueType?: FieldTypes;
 };
 ```
 **References:** [FieldTypes](./expression-builder.types.fieldtypes.md)

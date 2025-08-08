@@ -17,9 +17,39 @@ serialize(object: any): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  object | any | The object to serialize. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+object
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The object to serialize.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

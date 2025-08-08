@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-entity-management](./foundation-entity-management.md) &gt; [buttonCellRenderer](./foundation-entity-management.buttoncellrenderer.md)
 
-## buttonCellRenderer variable
+## buttonCellRenderer() function
 
 
 **Signature:**
@@ -13,3 +13,70 @@ format: md
 ```typescript
 buttonCellRenderer: (title: any, clickHandler: any, contentTemplate: any) => ColDef
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+title
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+clickHandler
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+contentTemplate
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+ColDef
+

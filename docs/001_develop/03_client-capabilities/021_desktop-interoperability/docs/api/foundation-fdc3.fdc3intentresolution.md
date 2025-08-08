@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> Use IntentResolution from the @finos/fdc3 package instead
+> Use IntentResolution from the @<!-- -->finos/fdc3 package instead
 > 
 
 **Signature:**

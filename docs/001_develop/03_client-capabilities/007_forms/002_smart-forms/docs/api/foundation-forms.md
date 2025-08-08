@@ -9,38 +9,303 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [Filters](./foundation-forms.filters.md) | Foundation filters component for automatically generated filters based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable filters elements using UI schema and set of custom renderers |
-|  [Form](./foundation-forms.form.md) | Foundation form component for automatically generated forms based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable form elements using UI schema and set of custom renderers |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Filters](./foundation-forms.filters.md)
+
+
+</td><td>
+
+Foundation filters component for automatically generated filters based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable filters elements using UI schema and set of custom renderers
+
+
+</td></tr>
+<tr><td>
+
+[Form](./foundation-forms.form.md)
+
+
+</td><td>
+
+Foundation form component for automatically generated forms based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable form elements using UI schema and set of custom renderers
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[mustMatch(target)](./foundation-forms.mustmatch.md)
+
+
+</td><td>
+
+Ensures the value of the current field (the one the validator is on) matches the one of the target field.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [filtersRenderers](./foundation-forms.filtersrenderers.md) | Set of default renderers used by the foundation-filters. |
-|  [mustMatch](./foundation-forms.mustmatch.md) | Ensures the value of the current field (the one the validator is on) matches the one of the target field. |
-|  [renderers](./foundation-forms.renderers.md) | Set of default renderers used by the foundation-forms. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[filtersRenderers](./foundation-forms.filtersrenderers.md)
+
+
+</td><td>
+
+Set of default renderers used by the foundation-filters.
+
+
+</td></tr>
+<tr><td>
+
+[renderers](./foundation-forms.renderers.md)
+
+
+</td><td>
+
+Set of default renderers used by the foundation-forms.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md) | Configuration options available for array renderer. |
-|  [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md) | Configuration options available for categorization renderer. |
-|  [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md) | Available configuration options for connected combobox/multiselect. |
-|  [GroupRendererOptions](./foundation-forms.grouprendereroptions.md) | Configuration options available for group renderer. |
-|  [LabelPlacementOptions](./foundation-forms.labelplacementoptions.md) | Orientation options available for stepper renderer. |
-|  [LabelPlacementType](./foundation-forms.labelplacementtype.md) | Available aligment for labels. |
-|  [RendererEntry](./foundation-forms.rendererentry.md) | Defines a renderer configuration in JSON forms. Allows to specify the renderer component, a tester function to determine renderer applicability, and a mapper function to connect JSON forms state to renderer's props. |
-|  [StandardRendererOptions](./foundation-forms.standardrendereroptions.md) | Standard configuration options available for all renderers. |
-|  [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md) | Orientation options available for stepper renderer. |
-|  [StepperOrientationType](./foundation-forms.stepperorientationtype.md) | Available orientation for stepper renderer. |
-|  [StepperRendererOptions](./foundation-forms.stepperrendereroptions.md) | Configuration options available for stepper renderer. |
-|  [StringRendererOptions](./foundation-forms.stringrendereroptions.md) | Configuration options available for string renderer. |
-|  [UiSchema](./foundation-forms.uischema.md) | The UI schema, which is passed to JSON Forms, describes the general layout of a form and is just a regular JSON object. It describes the form by means of different UI schema elements, which can often be categorized into either Controls or Layouts. |
-|  [UiSchemaElement](./foundation-forms.uischemaelement.md) | A UiSchemaElement that displays property values in a user interface element. |
-|  [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md) | All configuration options that are available. |
-|  [UiSchemaElementType](./foundation-forms.uischemaelementtype.md) | The layouts and control types, which allow you to customize the arrangement of forms. |
-|  [UiSchemaOptions](./foundation-forms.uischemaoptions.md) | All configuration options that are available. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for array renderer.
+
+
+</td></tr>
+<tr><td>
+
+[CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for categorization renderer.
+
+
+</td></tr>
+<tr><td>
+
+[ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md)
+
+
+</td><td>
+
+Available configuration options for connected combobox/multiselect.
+
+
+</td></tr>
+<tr><td>
+
+[GroupRendererOptions](./foundation-forms.grouprendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for group renderer.
+
+
+</td></tr>
+<tr><td>
+
+[LabelPlacementOptions](./foundation-forms.labelplacementoptions.md)
+
+
+</td><td>
+
+Orientation options available for stepper renderer.
+
+
+</td></tr>
+<tr><td>
+
+[LabelPlacementType](./foundation-forms.labelplacementtype.md)
+
+
+</td><td>
+
+Available aligment for labels.
+
+
+</td></tr>
+<tr><td>
+
+[RendererEntry](./foundation-forms.rendererentry.md)
+
+
+</td><td>
+
+Defines a renderer configuration in JSON forms. Allows to specify the renderer component, a tester function to determine renderer applicability, and a mapper function to connect JSON forms state to renderer's props.
+
+
+</td></tr>
+<tr><td>
+
+[StandardRendererOptions](./foundation-forms.standardrendereroptions.md)
+
+
+</td><td>
+
+Standard configuration options available for all renderers.
+
+
+</td></tr>
+<tr><td>
+
+[StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md)
+
+
+</td><td>
+
+Orientation options available for stepper renderer.
+
+
+</td></tr>
+<tr><td>
+
+[StepperOrientationType](./foundation-forms.stepperorientationtype.md)
+
+
+</td><td>
+
+Available orientation for stepper renderer.
+
+
+</td></tr>
+<tr><td>
+
+[StepperRendererOptions](./foundation-forms.stepperrendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for stepper renderer.
+
+
+</td></tr>
+<tr><td>
+
+[StringRendererOptions](./foundation-forms.stringrendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for string renderer.
+
+
+</td></tr>
+<tr><td>
+
+[UiSchema](./foundation-forms.uischema.md)
+
+
+</td><td>
+
+The UI schema, which is passed to JSON Forms, describes the general layout of a form and is just a regular JSON object. It describes the form by means of different UI schema elements, which can often be categorized into either Controls or Layouts.
+
+
+</td></tr>
+<tr><td>
+
+[UiSchemaElement](./foundation-forms.uischemaelement.md)
+
+
+</td><td>
+
+A UiSchemaElement that displays property values in a user interface element.
+
+
+</td></tr>
+<tr><td>
+
+[UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md)
+
+
+</td><td>
+
+All configuration options that are available.
+
+
+</td></tr>
+<tr><td>
+
+[UiSchemaElementType](./foundation-forms.uischemaelementtype.md)
+
+
+</td><td>
+
+The layouts and control types, which allow you to customize the arrangement of forms.
+
+
+</td></tr>
+<tr><td>
+
+[UiSchemaOptions](./foundation-forms.uischemaoptions.md)
+
+
+</td><td>
+
+All configuration options that are available.
+
+
+</td></tr>
+</tbody></table>
 

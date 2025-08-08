@@ -22,9 +22,39 @@ deserialize<T = any>(event: MessageEvent): T;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  event | MessageEvent | The MessageEvent object to deserialize. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+event
+
+
+</td><td>
+
+MessageEvent
+
+
+</td><td>
+
+The MessageEvent object to deserialize.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

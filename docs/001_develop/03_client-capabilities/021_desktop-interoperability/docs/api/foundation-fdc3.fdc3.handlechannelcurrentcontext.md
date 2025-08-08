@@ -17,11 +17,71 @@ handleChannelCurrentContext(channel: Channel | FDC3Channel, contextType: string,
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  channel | Channel \| [FDC3Channel](./foundation-fdc3.fdc3channel.md) | channel instance for getting for getting current context |
-|  contextType | string | context type of the channel to listen to |
-|  listenerCallback | (FDC3Context: any) =&gt; any | handler to for the channel context listener |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+channel
+
+
+</td><td>
+
+Channel \| [FDC3Channel](./foundation-fdc3.fdc3channel.md)
+
+
+</td><td>
+
+channel instance for getting for getting current context
+
+
+</td></tr>
+<tr><td>
+
+contextType
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+context type of the channel to listen to
+
+
+</td></tr>
+<tr><td>
+
+listenerCallback
+
+
+</td><td>
+
+(FDC3Context: any) =&gt; any
+
+
+</td><td>
+
+handler to for the channel context listener
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

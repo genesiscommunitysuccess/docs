@@ -14,5 +14,5 @@ Chart possible error events
 ```typescript
 export type ChartErrorEvent = ChartDatasourceErrorEvent | CustomEvent<ChartErrorItem<any>>;
 ```
-**References:** [ChartDatasourceErrorEvent](./g2plot-chart.chartdatasourceerrorevent.md), [ChartErrorItem](./g2plot-chart.charterroritem.md)
+**References:** [ChartDatasourceErrorEvent](./g2plot-chart.chartdatasourceerrorevent.md)<!-- -->, [ChartErrorItem](./g2plot-chart.charterroritem.md)
 

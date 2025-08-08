@@ -17,9 +17,39 @@ addIntentListeners(listeners: Map<FDC3Intents, FDC3ContextHandler>): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  listeners | Map&lt;[FDC3Intents](./foundation-fdc3.fdc3intents.md), [FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md)&gt; | The intent listeners to add. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+listeners
+
+
+</td><td>
+
+Map&lt;[FDC3Intents](./foundation-fdc3.fdc3intents.md)<!-- -->, [FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md)<!-- -->&gt;
+
+
+</td><td>
+
+The intent listeners to add.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -15,10 +15,53 @@ validateUserCredentialData(data: CredentialData, ensurePassword?: boolean): bool
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | [CredentialData](./foundation-comms.credentialdata_2.md) |  |
-|  ensurePassword | boolean | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+[CredentialData](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+ensurePassword
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

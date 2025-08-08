@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getNumberEditorTemplate](./grid-pro.getnumbereditortemplate.md)
 
-## getNumberEditorTemplate variable
+## getNumberEditorTemplate() function
 
 Get a Design System prefixed Select template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed Select template.
 ```typescript
 getNumberEditorTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<NumberEditor, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[NumberEditor](./grid-pro.numbereditor.md)<!-- -->, any&gt;
+
+A Select component template prefixed with the correct design system.
+

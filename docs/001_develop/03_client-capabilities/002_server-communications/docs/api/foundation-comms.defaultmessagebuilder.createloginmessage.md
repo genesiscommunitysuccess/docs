@@ -15,11 +15,39 @@ createLoginMessage(credentials: AuthInfo): Message<MessageDetails.Login>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [AuthInfo](./foundation-comms.authinfo.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[AuthInfo](./foundation-comms.authinfo.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.Login](./foundation-comms.messagedetails.login.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.Login](./foundation-comms.messagedetails.login.md)<!-- -->&gt;
 

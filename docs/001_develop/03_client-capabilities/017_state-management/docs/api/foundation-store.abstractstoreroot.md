@@ -14,18 +14,141 @@ The abstract store root that concrete store roots must extend.
 ```typescript
 export declare abstract class AbstractStoreRoot<TStore extends StoreRoot, TEventDetailMap extends StoreRootEventDetailMap = StoreRootEventDetailMap, TInternalEventDetailMap extends EventDetailMap = TEventDetailMap> extends AbstractStore<TStore, TEventDetailMap, TInternalEventDetailMap> implements StoreRoot 
 ```
-**Extends:** [AbstractStore](./foundation-store.abstractstore.md)&lt;TStore, TEventDetailMap, TInternalEventDetailMap&gt;
+**Extends:** [AbstractStore](./foundation-store.abstractstore.md)<!-- -->&lt;TStore, TEventDetailMap, TInternalEventDetailMap&gt;
 
 **Implements:** [StoreRoot](./foundation-store.storeroot.md)
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [element](./foundation-store.abstractstoreroot.element.md) |  | HTMLElement | The store root element. |
-|  [onConnected](./foundation-store.abstractstoreroot.onconnected.md) |  | EventListener |  |
-|  [onDisconnected](./foundation-store.abstractstoreroot.ondisconnected.md) |  | EventListener |  |
-|  [onReady](./foundation-store.abstractstoreroot.onready.md) |  | EventListener |  |
-|  [ready](./foundation-store.abstractstoreroot.ready.md) |  | boolean | The ready status of the store root. |
-|  [root](./foundation-store.abstractstoreroot.root.md) | <code>protected</code> | this |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[element](./foundation-store.abstractstoreroot.element.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+The store root element.
+
+
+</td></tr>
+<tr><td>
+
+[onConnected](./foundation-store.abstractstoreroot.onconnected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+EventListener
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onDisconnected](./foundation-store.abstractstoreroot.ondisconnected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+EventListener
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onReady](./foundation-store.abstractstoreroot.onready.md)
+
+
+</td><td>
+
+
+</td><td>
+
+EventListener
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[ready](./foundation-store.abstractstoreroot.ready.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+The ready status of the store root.
+
+
+</td></tr>
+<tr><td>
+
+[root](./foundation-store.abstractstoreroot.root.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+this
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 

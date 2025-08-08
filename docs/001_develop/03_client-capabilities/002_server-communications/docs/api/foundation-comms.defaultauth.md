@@ -18,25 +18,205 @@ export declare class DefaultAuth implements Auth
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(session, connect, messageBuilder, credentialManager, currentUser)](./foundation-comms.defaultauth._constructor_.md) |  | Constructs a new instance of the <code>DefaultAuth</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(session, connect, messageBuilder, credentialManager, currentUser)](./foundation-comms.defaultauth._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultAuth` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [currentUser](./foundation-comms.defaultauth.currentuser.md) |  | User |  |
-|  [isLoggedIn](./foundation-comms.defaultauth.isloggedin.md) | <code>readonly</code> | boolean |  |
-|  [isLoggedIn$](./foundation-comms.defaultauth.isloggedin_.md) | <code>readonly</code> | Observable&lt;boolean&gt; |  |
-|  [isWorking](./foundation-comms.defaultauth.isworking.md) |  | boolean |  |
-|  [loggedUserResult](./foundation-comms.defaultauth.loggeduserresult.md) |  | [LoginResult](./foundation-comms.loginresult.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[currentUser](./foundation-comms.defaultauth.currentuser.md)
+
+
+</td><td>
+
+
+</td><td>
+
+User
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isLoggedIn](./foundation-comms.defaultauth.isloggedin.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isLoggedIn$](./foundation-comms.defaultauth.isloggedin_.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Observable&lt;boolean&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isWorking](./foundation-comms.defaultauth.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[loggedUserResult](./foundation-comms.defaultauth.loggeduserresult.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[LoginResult](./foundation-comms.loginresult.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [login(credentials)](./foundation-comms.defaultauth.login.md) |  |  |
-|  [logout()](./foundation-comms.defaultauth.logout.md) |  |  |
-|  [reAuthFromSession()](./foundation-comms.defaultauth.reauthfromsession.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[login(credentials)](./foundation-comms.defaultauth.login.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logout()](./foundation-comms.defaultauth.logout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reAuthFromSession()](./foundation-comms.defaultauth.reauthfromsession.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,8 +17,49 @@ constructor(session: Session, uuid: UUID);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  session | [Session](./foundation-comms.session.md) |  |
-|  uuid | UUID |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+session
+
+
+</td><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+uuid
+
+
+</td><td>
+
+UUID
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

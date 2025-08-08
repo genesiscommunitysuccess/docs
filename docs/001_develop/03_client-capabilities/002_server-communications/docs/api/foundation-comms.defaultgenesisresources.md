@@ -18,27 +18,240 @@ export declare class DefaultGenesisResources implements GenesisResources
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(connect, config)](./foundation-comms.defaultgenesisresources._constructor_.md) |  | Constructs a new instance of the <code>DefaultGenesisResources</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(connect, config)](./foundation-comms.defaultgenesisresources._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultGenesisResources` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./foundation-comms.defaultgenesisresources.config.md) | <code>protected</code> | [GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md) |  |
-|  [connect](./foundation-comms.defaultgenesisresources.connect.md) | <code>protected</code> | [Connect](./foundation-comms.connect.md) |  |
-|  [resources](./foundation-comms.defaultgenesisresources.resources.md) | <code>protected</code> | [ResourceItem](./foundation-comms.resourceitem.md)\[\] |  |
-|  [resourcesPromise](./foundation-comms.defaultgenesisresources.resourcespromise.md) | <code>protected</code> | Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./foundation-comms.defaultgenesisresources.config.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connect](./foundation-comms.defaultgenesisresources.connect.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[resources](./foundation-comms.defaultgenesisresources.resources.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[resourcesPromise](./foundation-comms.defaultgenesisresources.resourcespromise.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./foundation-comms.defaultgenesisresources.destroy.md) |  | Destroy and garbage collect |
-|  [fetchResources()](./foundation-comms.defaultgenesisresources.fetchresources.md) | <code>protected</code> |  |
-|  [getAllResources()](./foundation-comms.defaultgenesisresources.getallresources.md) |  | Returns all available resources. |
-|  [getResourceTypeFor(resourceName)](./foundation-comms.defaultgenesisresources.getresourcetypefor.md) |  | Gets the type of resource |
-|  [isValidResource(resourceName)](./foundation-comms.defaultgenesisresources.isvalidresource.md) |  | Checks if the resource exists |
-|  [postLoadedMessage()](./foundation-comms.defaultgenesisresources.postloadedmessage.md) | <code>protected</code> |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./foundation-comms.defaultgenesisresources.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Destroy and garbage collect
+
+
+</td></tr>
+<tr><td>
+
+[fetchResources()](./foundation-comms.defaultgenesisresources.fetchresources.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getAllResources()](./foundation-comms.defaultgenesisresources.getallresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns all available resources.
+
+
+</td></tr>
+<tr><td>
+
+[getResourceTypeFor(resourceName)](./foundation-comms.defaultgenesisresources.getresourcetypefor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets the type of resource
+
+
+</td></tr>
+<tr><td>
+
+[isValidResource(resourceName)](./foundation-comms.defaultgenesisresources.isvalidresource.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Checks if the resource exists
+
+
+</td></tr>
+<tr><td>
+
+[postLoadedMessage()](./foundation-comms.defaultgenesisresources.postloadedmessage.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

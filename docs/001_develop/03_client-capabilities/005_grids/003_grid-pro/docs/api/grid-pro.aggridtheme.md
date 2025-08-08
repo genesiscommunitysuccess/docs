@@ -17,11 +17,91 @@ export declare enum AgGridTheme
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  alpine | <code>&quot;ag-theme-alpine&quot;</code> |  |
-|  alpineDark | <code>&quot;ag-theme-alpine-dark&quot;</code> |  |
-|  balham | <code>&quot;ag-theme-balham&quot;</code> |  |
-|  balhamDark | <code>&quot;ag-theme-balham-dark&quot;</code> |  |
-|  material | <code>&quot;ag-theme-material&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+alpine
+
+
+</td><td>
+
+`"ag-theme-alpine"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+alpineDark
+
+
+</td><td>
+
+`"ag-theme-alpine-dark"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+balham
+
+
+</td><td>
+
+`"ag-theme-balham"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+balhamDark
+
+
+</td><td>
+
+`"ag-theme-balham-dark"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+material
+
+
+</td><td>
+
+`"ag-theme-material"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

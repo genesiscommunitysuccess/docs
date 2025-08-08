@@ -21,17 +21,103 @@ UIs can listen for 'system-health-changed' events and display visual overlays to
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [status](./foundation-comms.networkmonitor.status.md) |  | [SystemHealthStatus](./foundation-comms.systemhealthstatus.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[status](./foundation-comms.networkmonitor.status.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SystemHealthStatus](./foundation-comms.systemhealthstatus.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [addResource(resource, metadata)](./foundation-comms.networkmonitor.addresource.md) |  |
-|  [create()](./foundation-comms.networkmonitor.create.md) |  |
-|  [destroy()](./foundation-comms.networkmonitor.destroy.md) |  |
-|  [removeResource(resource)](./foundation-comms.networkmonitor.removeresource.md) |  |
-|  [runAllChecks(source, force)](./foundation-comms.networkmonitor.runallchecks.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addResource(resource, metadata)](./foundation-comms.networkmonitor.addresource.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[create()](./foundation-comms.networkmonitor.create.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./foundation-comms.networkmonitor.destroy.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeResource(resource)](./foundation-comms.networkmonitor.removeresource.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[runAllChecks(source, force)](./foundation-comms.networkmonitor.runallchecks.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

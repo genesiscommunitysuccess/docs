@@ -22,9 +22,39 @@ withAutoClose(autoClose: boolean): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  autoClose | boolean | boolean |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+autoClose
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+boolean
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

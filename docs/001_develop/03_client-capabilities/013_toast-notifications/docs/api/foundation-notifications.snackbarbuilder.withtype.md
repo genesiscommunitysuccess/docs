@@ -20,9 +20,39 @@ withType(type: SnackbarType): SnackbarBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  type | [SnackbarType](./foundation-notifications.snackbartype.md) | [SnackbarType](./foundation-notifications.snackbartype.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+type
+
+
+</td><td>
+
+[SnackbarType](./foundation-notifications.snackbartype.md)
+
+
+</td><td>
+
+[SnackbarType](./foundation-notifications.snackbartype.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-forms](./foundation-forms.md) &gt; [mustMatch](./foundation-forms.mustmatch.md)
 
-## mustMatch variable
+## mustMatch() function
 
 Ensures the value of the current field (the one the validator is on) matches the one of the target field.
 
@@ -20,3 +20,46 @@ mustMatch: (target: string) => (data: any, path: any, label: any) => {
     params: {};
 }[]
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+target
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+any other field
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+(data: any, path: any, label: any) =&gt; { instancePath: string; message: string; schemaPath: string; keyword: string; params: {}; }\[\]
+
+a validator function that will be run by the smart form during the client-side validation stage
+

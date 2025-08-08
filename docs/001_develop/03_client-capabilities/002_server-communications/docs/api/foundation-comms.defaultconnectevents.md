@@ -18,14 +18,161 @@ export declare class DefaultConnectEvents implements ConnectEventsEmitter
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [addCommitListener(listener)](./foundation-comms.defaultconnectevents.addcommitlistener.md) |  | Add a commit listener. |
-|  [addMetadataListener(listener)](./foundation-comms.defaultconnectevents.addmetadatalistener.md) |  | Add a metadata listener. |
-|  [addStreamListener(listener, complete, error)](./foundation-comms.defaultconnectevents.addstreamlistener.md) |  | Add a stream listener. |
-|  [onCommitEvent(eventName, message)](./foundation-comms.defaultconnectevents.oncommitevent.md) |  | Called by Connect. |
-|  [onMetadataEvent(resourceName, message, error)](./foundation-comms.defaultconnectevents.onmetadataevent.md) |  | Called by Connect. |
-|  [onStreamCompleteEvent(resourceName, stream)](./foundation-comms.defaultconnectevents.onstreamcompleteevent.md) |  | Called by Connect. |
-|  [onStreamErrorEvent(resourceName, stream, error)](./foundation-comms.defaultconnectevents.onstreamerrorevent.md) |  | Called by Connect. |
-|  [onStreamEvent(resourceName, message, stream, functions)](./foundation-comms.defaultconnectevents.onstreamevent.md) |  | Called by Connect. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addCommitListener(listener)](./foundation-comms.defaultconnectevents.addcommitlistener.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add a commit listener.
+
+
+</td></tr>
+<tr><td>
+
+[addCommitResponseListener(listener)](./foundation-comms.defaultconnectevents.addcommitresponselistener.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add a commit response listener (fires for both ack and nack).
+
+
+</td></tr>
+<tr><td>
+
+[addMetadataListener(listener)](./foundation-comms.defaultconnectevents.addmetadatalistener.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add a metadata listener.
+
+
+</td></tr>
+<tr><td>
+
+[addStreamListener(listener, complete, error)](./foundation-comms.defaultconnectevents.addstreamlistener.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add a stream listener.
+
+
+</td></tr>
+<tr><td>
+
+[onCommitEvent(eventName, message)](./foundation-comms.defaultconnectevents.oncommitevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onCommitResponseEvent(eventName, response)](./foundation-comms.defaultconnectevents.oncommitresponseevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect when a commit response (ack or nack) is received.
+
+
+</td></tr>
+<tr><td>
+
+[onMetadataEvent(resourceName, message, error)](./foundation-comms.defaultconnectevents.onmetadataevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamCompleteEvent(resourceName, stream)](./foundation-comms.defaultconnectevents.onstreamcompleteevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamErrorEvent(resourceName, stream, error)](./foundation-comms.defaultconnectevents.onstreamerrorevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+<tr><td>
+
+[onStreamEvent(resourceName, message, stream, functions)](./foundation-comms.defaultconnectevents.onstreamevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called by Connect.
+
+
+</td></tr>
+</tbody></table>
 

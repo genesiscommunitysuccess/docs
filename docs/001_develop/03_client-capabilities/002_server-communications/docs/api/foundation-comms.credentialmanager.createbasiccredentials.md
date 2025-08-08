@@ -17,9 +17,39 @@ createBasicCredentials(inputs: BasicCredentialsInput): BasicAuthInfo;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  inputs | [BasicCredentialsInput](./foundation-comms.basiccredentialsinput.md) | The input data to use when creating the credentials. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+inputs
+
+
+</td><td>
+
+[BasicCredentialsInput](./foundation-comms.basiccredentialsinput.md)
+
+
+</td><td>
+
+The input data to use when creating the credentials.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

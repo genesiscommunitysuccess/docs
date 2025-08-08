@@ -17,25 +17,203 @@ export interface Session
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [returnUrl](./foundation-comms.session.returnurl.md) |  | string | The return URL for the session. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[returnUrl](./foundation-comms.session.returnurl.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The return URL for the session.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [captureReturnUrl()](./foundation-comms.session.capturereturnurl.md) | Captures the return URL for the session. |
-|  [deleteUserFromSessionStorage()](./foundation-comms.session.deleteuserfromsessionstorage.md) | Deletes the user from the session storage. |
-|  [getItem(key, storage)](./foundation-comms.session.getitem.md) | Returns the value of the specified item in the specified storage. |
-|  [getLocalStorageItem(key)](./foundation-comms.session.getlocalstorageitem.md) | Returns the value of the item with the specified key from the local storage. |
-|  [getSessionStorageItem(key)](./foundation-comms.session.getsessionstorageitem.md) | Returns the value of the item with the specified key from the session storage. |
-|  [removeItem(key, storage)](./foundation-comms.session.removeitem.md) | Removes the item with the specified key from the specified storage. |
-|  [removeLocalStorageItem(key)](./foundation-comms.session.removelocalstorageitem.md) | Removes the item with the specified key from the local storage. |
-|  [removeSessionStorageItem(key)](./foundation-comms.session.removesessionstorageitem.md) | Removes the item with the specified key from the session storage. |
-|  [setAuthResult(info)](./foundation-comms.session.setauthresult.md) | Sets the authentication result for the session. |
-|  [setItem(key, value, storage)](./foundation-comms.session.setitem.md) | Sets an item in the specified storage with the specified key and value. |
-|  [setLocalStorageItem(key, value)](./foundation-comms.session.setlocalstorageitem.md) | Sets an item in the local storage with the specified key and value. |
-|  [setSessionStorageItem(key, value)](./foundation-comms.session.setsessionstorageitem.md) | Sets an item in the session storage with the specified key and value. |
-|  [setStorageKeyPrefix(prefix)](./foundation-comms.session.setstoragekeyprefix.md) | Sets the storage key prefix for the session. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[captureReturnUrl()](./foundation-comms.session.capturereturnurl.md)
+
+
+</td><td>
+
+Captures the return URL for the session.
+
+
+</td></tr>
+<tr><td>
+
+[deleteUserFromSessionStorage()](./foundation-comms.session.deleteuserfromsessionstorage.md)
+
+
+</td><td>
+
+Deletes the user from the session storage.
+
+
+</td></tr>
+<tr><td>
+
+[getItem(key, storage)](./foundation-comms.session.getitem.md)
+
+
+</td><td>
+
+Returns the value of the specified item in the specified storage.
+
+
+</td></tr>
+<tr><td>
+
+[getLocalStorageItem(key)](./foundation-comms.session.getlocalstorageitem.md)
+
+
+</td><td>
+
+Returns the value of the item with the specified key from the local storage.
+
+
+</td></tr>
+<tr><td>
+
+[getSessionStorageItem(key)](./foundation-comms.session.getsessionstorageitem.md)
+
+
+</td><td>
+
+Returns the value of the item with the specified key from the session storage.
+
+
+</td></tr>
+<tr><td>
+
+[removeItem(key, storage)](./foundation-comms.session.removeitem.md)
+
+
+</td><td>
+
+Removes the item with the specified key from the specified storage.
+
+
+</td></tr>
+<tr><td>
+
+[removeLocalStorageItem(key)](./foundation-comms.session.removelocalstorageitem.md)
+
+
+</td><td>
+
+Removes the item with the specified key from the local storage.
+
+
+</td></tr>
+<tr><td>
+
+[removeSessionStorageItem(key)](./foundation-comms.session.removesessionstorageitem.md)
+
+
+</td><td>
+
+Removes the item with the specified key from the session storage.
+
+
+</td></tr>
+<tr><td>
+
+[setAuthResult(info)](./foundation-comms.session.setauthresult.md)
+
+
+</td><td>
+
+Sets the authentication result for the session.
+
+
+</td></tr>
+<tr><td>
+
+[setItem(key, value, storage)](./foundation-comms.session.setitem.md)
+
+
+</td><td>
+
+Sets an item in the specified storage with the specified key and value.
+
+
+</td></tr>
+<tr><td>
+
+[setLocalStorageItem(key, value)](./foundation-comms.session.setlocalstorageitem.md)
+
+
+</td><td>
+
+Sets an item in the local storage with the specified key and value.
+
+
+</td></tr>
+<tr><td>
+
+[setSessionStorageItem(key, value)](./foundation-comms.session.setsessionstorageitem.md)
+
+
+</td><td>
+
+Sets an item in the session storage with the specified key and value.
+
+
+</td></tr>
+<tr><td>
+
+[setStorageKeyPrefix(prefix)](./foundation-comms.session.setstoragekeyprefix.md)
+
+
+</td><td>
+
+Sets the storage key prefix for the session.
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,7 +17,7 @@ GENESIS_SOCKET_URL: string
 
 ## Remarks
 
-Built from the current [https://developer.mozilla.org/en-US/docs/Web/API/Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) object and [socket extension](./foundation-utils.socket_ext.md).
+Built from the current [https://developer.mozilla.org/en-US/docs/Web/API/Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) object and [socket extension](./foundation-utils.socket_ext.md)<!-- -->.
 
 ## Example
 

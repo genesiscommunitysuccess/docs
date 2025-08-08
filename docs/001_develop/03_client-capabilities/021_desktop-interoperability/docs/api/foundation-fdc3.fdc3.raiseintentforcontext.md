@@ -17,13 +17,43 @@ raiseIntentForContext(context: FDC3Context): Promise<FDC3IntentResolution>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  context | [FDC3Context](./foundation-fdc3.fdc3context.md) | The context to use. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+context
+
+
+</td><td>
+
+[FDC3Context](./foundation-fdc3.fdc3context.md)
+
+
+</td><td>
+
+The context to use.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)&gt;
+Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)<!-- -->&gt;
 
 A promise that resolves with the result of the intent resolution.
 

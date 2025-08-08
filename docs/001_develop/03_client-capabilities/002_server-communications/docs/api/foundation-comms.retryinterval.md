@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-comms](./foundation-comms.md) &gt; [retryInterval](./foundation-comms.retryinterval.md)
 
-## retryInterval variable
+## retryInterval() function
 
 Generate reconnect interval based on scheduler
 
@@ -14,3 +14,62 @@ Generate reconnect interval based on scheduler
 ```typescript
 retryInterval: (reconnectOptions: SocketReconnectOptions, scheduler: SocketReconnectScheduler) => Observable<number>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+reconnectOptions
+
+
+</td><td>
+
+[SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md)
+
+
+</td><td>
+
+[SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md) options
+
+
+</td></tr>
+<tr><td>
+
+scheduler
+
+
+</td><td>
+
+[SocketReconnectScheduler](./foundation-comms.socketreconnectscheduler.md)
+
+
+</td><td>
+
+[SocketReconnectScheduler](./foundation-comms.socketreconnectscheduler.md) function
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+Observable&lt;number&gt;
+
+Observable<number>
+

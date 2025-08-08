@@ -5,13 +5,51 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-login](./foundation-login.md) &gt; [styles](./foundation-login.styles.md)
 
-## styles variable
+## styles() function
 
 **Signature:**
 
 ```typescript
 styles: (options: TemplateOptions) => import("@microsoft/fast-element").ElementStyles
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+options
+
+
+</td><td>
+
+[TemplateOptions](./foundation-login.templateoptions.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ElementStyles
 
 ## Example
 

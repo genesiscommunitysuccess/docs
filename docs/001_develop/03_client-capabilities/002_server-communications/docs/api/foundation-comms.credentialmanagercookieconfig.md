@@ -17,10 +17,96 @@ export interface CredentialManagerCookieConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [expires](./foundation-comms.credentialmanagercookieconfig.expires.md) |  | number \| Date |  |
-|  [name](./foundation-comms.credentialmanagercookieconfig.name.md) |  | string |  |
-|  [path](./foundation-comms.credentialmanagercookieconfig.path.md) |  | string |  |
-|  [storePasswords?](./foundation-comms.credentialmanagercookieconfig.storepasswords.md) |  | boolean | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[expires](./foundation-comms.credentialmanagercookieconfig.expires.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number \| Date
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[name](./foundation-comms.credentialmanagercookieconfig.name.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[path](./foundation-comms.credentialmanagercookieconfig.path.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[storePasswords?](./foundation-comms.credentialmanagercookieconfig.storepasswords.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

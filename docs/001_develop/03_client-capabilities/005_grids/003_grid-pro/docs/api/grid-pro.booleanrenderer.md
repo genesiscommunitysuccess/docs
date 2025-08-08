@@ -20,20 +20,164 @@ export declare class BooleanRenderer extends FoundationElement implements ICellR
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.booleanrenderer.params.md) |  | ICellRendererParams &amp; [BooleanRendererParams](./grid-pro.booleanrendererparams.md) |  |
-|  [selected](./grid-pro.booleanrenderer.selected.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.booleanrenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ICellRendererParams &amp; [BooleanRendererParams](./grid-pro.booleanrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selected](./grid-pro.booleanrenderer.selected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.booleanrenderer.destroy.md) |  |  |
-|  [getGui()](./grid-pro.booleanrenderer.getgui.md) |  |  |
-|  [getValue()](./grid-pro.booleanrenderer.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.booleanrenderer.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.booleanrenderer.iscancelbeforestart.md) |  |  |
-|  [isDisabled(data)](./grid-pro.booleanrenderer.isdisabled.md) |  |  |
-|  [refresh(params)](./grid-pro.booleanrenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.booleanrenderer.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.booleanrenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.booleanrenderer.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.booleanrenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.booleanrenderer.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisabled(data)](./grid-pro.booleanrenderer.isdisabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.booleanrenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

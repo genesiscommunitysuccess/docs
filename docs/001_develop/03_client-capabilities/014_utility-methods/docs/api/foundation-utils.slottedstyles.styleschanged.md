@@ -17,10 +17,55 @@ stylesChanged(prev: ElementStyles, next: ElementStyles): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  prev | ElementStyles | The previous value of the <code>styles</code> property. |
-|  next | ElementStyles | The new value of the <code>styles</code> property. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+prev
+
+
+</td><td>
+
+ElementStyles
+
+
+</td><td>
+
+The previous value of the `styles` property.
+
+
+</td></tr>
+<tr><td>
+
+next
+
+
+</td><td>
+
+ElementStyles
+
+
+</td><td>
+
+The new value of the `styles` property.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

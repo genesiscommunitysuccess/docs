@@ -17,21 +17,196 @@ export declare class MainApplication extends FASTElement
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./foundation-entity-management.mainapplication.config.md) |  | MainRouterConfig |  |
-|  [connect](./foundation-entity-management.mainapplication.connect.md) |  | Connect |  |
-|  [container](./foundation-entity-management.mainapplication.container.md) |  | Container |  |
-|  [provider](./foundation-entity-management.mainapplication.provider.md) |  | HTMLElement |  |
-|  [ready](./foundation-entity-management.mainapplication.ready.md) |  | boolean |  |
-|  [session](./foundation-entity-management.mainapplication.session.md) |  | Session |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./foundation-entity-management.mainapplication.config.md)
+
+
+</td><td>
+
+
+</td><td>
+
+MainRouterConfig
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connect](./foundation-entity-management.mainapplication.connect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Connect
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[container](./foundation-entity-management.mainapplication.container.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Container
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[provider](./foundation-entity-management.mainapplication.provider.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[ready](./foundation-entity-management.mainapplication.ready.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[session](./foundation-entity-management.mainapplication.session.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Session
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connectedCallback()](./foundation-entity-management.mainapplication.connectedcallback.md) |  |  |
-|  [loadRemotes()](./foundation-entity-management.mainapplication.loadremotes.md) |  |  |
-|  [onLuminanceToggle()](./foundation-entity-management.mainapplication.onluminancetoggle.md) |  |  |
-|  [selectTemplate()](./foundation-entity-management.mainapplication.selecttemplate.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connectedCallback()](./foundation-entity-management.mainapplication.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[loadRemotes()](./foundation-entity-management.mainapplication.loadremotes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[onLuminanceToggle()](./foundation-entity-management.mainapplication.onluminancetoggle.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectTemplate()](./foundation-entity-management.mainapplication.selecttemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

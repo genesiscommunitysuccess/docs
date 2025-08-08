@@ -15,10 +15,55 @@ normaliseLegacyCredentialData(data?: CredentialData, cookie?: CredentialData): [
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | [CredentialData](./foundation-comms.credentialdata_2.md) | _(Optional)_ |
-|  cookie | [CredentialData](./foundation-comms.credentialdata_2.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+[CredentialData](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+cookie
+
+
+</td><td>
+
+[CredentialData](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

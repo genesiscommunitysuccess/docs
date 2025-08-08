@@ -22,9 +22,39 @@ withCloseTimeout(closeTimeout: number): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  closeTimeout | number | number |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+closeTimeout
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+number
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getToastBuilder](./foundation-notifications.gettoastbuilder.md)
 
-## getToastBuilder variable
+## getToastBuilder() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,7 @@ Get notification builder instance
 ```typescript
 getToastBuilder: () => ToastBuilder
 ```
+**Returns:**
+
+[ToastBuilder](./foundation-notifications.toastbuilder.md)
+

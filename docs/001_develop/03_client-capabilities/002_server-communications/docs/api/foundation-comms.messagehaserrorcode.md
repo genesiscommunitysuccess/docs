@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-comms](./foundation-comms.md) &gt; [messageHasErrorCode](./foundation-comms.messagehaserrorcode.md)
 
-## messageHasErrorCode variable
+## messageHasErrorCode() function
 
 Check if the message contains an error code.
 
@@ -14,3 +14,60 @@ Check if the message contains an error code.
 ```typescript
 messageHasErrorCode: (message: Message, code: string | number) => boolean
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+The message object.
+
+
+</td></tr>
+<tr><td>
+
+code
+
+
+</td><td>
+
+string \| number
+
+
+</td><td>
+
+The error code. Either a  number or an entire status code string.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+boolean
+

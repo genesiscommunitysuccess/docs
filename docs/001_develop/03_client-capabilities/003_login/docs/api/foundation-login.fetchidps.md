@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-login](./foundation-login.md) &gt; [fetchIDPs](./foundation-login.fetchidps.md)
 
-## fetchIDPs variable
+## fetchIDPs() function
 
 Request SSO identity provider list
 
@@ -14,3 +14,60 @@ Request SSO identity provider list
 ```typescript
 fetchIDPs: (path?: string, host?: string) => Promise<IDP[]>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+path
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+host
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+Promise&lt;[IDP](./foundation-login.idp.md)<!-- -->\[\]&gt;
+

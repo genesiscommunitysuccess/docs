@@ -22,39 +22,581 @@ export declare class Navigation extends Navigation_base
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [authRouting](./foundation-header.navigation.authrouting.md) |  | AuthRouting |  |
-|  [container](./foundation-header.navigation.container.md) |  | Container |  |
-|  [headerConfig](./foundation-header.navigation.headerconfig.md) |  | [HeaderConfig](./foundation-header.headerconfig.md) |  |
-|  [hideSideBar](./foundation-header.navigation.hidesidebar.md) |  | boolean | Boolean attribute which controls whether to include the sideNav component Control via<code>hide-side-bar</code> |
-|  [i18next](./foundation-header.navigation.i18next.md) |  | I18next |  |
-|  [languageOptions](./foundation-header.navigation.languageoptions.md) |  | [LanguageOptions](./foundation-header.languageoptions.md) | Object which defines the language options to be displayed in the language selector |
-|  [loginRouting](./foundation-header.navigation.loginrouting.md) |  | LoginRouting |  |
-|  [logoAltText](./foundation-header.navigation.logoalttext.md) |  | string | Optional attribute which controls the alt text of the logo Control via <code>logo-alt-text</code> |
-|  [logoSrc](./foundation-header.navigation.logosrc.md) |  | any | Optional attribute which controls the icon to show on the navigation bar and flyout Control via <code>logo-src</code> |
-|  [logoutButtonPosition](./foundation-header.navigation.logoutbuttonposition.md) |  | 'side-nav' \| 'account-menu' \| 'none' | String attribute which controls the position of the logout button in the header Control via <code>logout-button-position</code> |
-|  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
-|  [routeNavItems](./foundation-header.navigation.routenavitems.md) |  | FoundationRouteNavItem\[\] | If present the defined  will be rendered in the header 'routes' slot |
-|  [shouldShowAccountMenu](./foundation-header.navigation.shouldshowaccountmenu.md) | <code>readonly</code> | boolean | Computed property that determines if the account menu should be shown |
-|  [showAccountMenu](./foundation-header.navigation.showaccountmenu.md) |  | boolean | Boolean attribute which controls whether to show the account menu on the navigation bar Control via <code>show-account-menu</code> |
-|  [showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md) |  | boolean | Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via <code>show-connection-indicator</code> |
-|  [showLanguageSelector](./foundation-header.navigation.showlanguageselector.md) |  | boolean | Boolean attribute which controls whether to show the language selector on the navigation bar Control via <code>show-language-selector</code> |
-|  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
-|  [showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via <code>show-luminance-toggle-button</code> |
-|  [showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md) |  | boolean | Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via <code>show-notification-button</code> |
-|  [user](./foundation-header.navigation.user.md) |  | User |  |
-|  [userName](./foundation-header.navigation.username.md) |  | string | Username of the logged in user |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[authRouting](./foundation-header.navigation.authrouting.md)
+
+
+</td><td>
+
+
+</td><td>
+
+AuthRouting
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[container](./foundation-header.navigation.container.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Container
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[headerConfig](./foundation-header.navigation.headerconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[HeaderConfig](./foundation-header.headerconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hideSideBar](./foundation-header.navigation.hidesidebar.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to include the sideNav component Control via`hide-side-bar`
+
+
+</td></tr>
+<tr><td>
+
+[i18next](./foundation-header.navigation.i18next.md)
+
+
+</td><td>
+
+
+</td><td>
+
+I18next
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[languageOptions](./foundation-header.navigation.languageoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[LanguageOptions](./foundation-header.languageoptions.md)
+
+
+</td><td>
+
+Object which defines the language options to be displayed in the language selector
+
+
+</td></tr>
+<tr><td>
+
+[loginRouting](./foundation-header.navigation.loginrouting.md)
+
+
+</td><td>
+
+
+</td><td>
+
+LoginRouting
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logoAltText](./foundation-header.navigation.logoalttext.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Optional attribute which controls the alt text of the logo Control via `logo-alt-text`
+
+
+</td></tr>
+<tr><td>
+
+[logoSrc](./foundation-header.navigation.logosrc.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+Optional attribute which controls the icon to show on the navigation bar and flyout Control via `logo-src`
+
+
+</td></tr>
+<tr><td>
+
+[logoutButtonPosition](./foundation-header.navigation.logoutbuttonposition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'side-nav' \| 'account-menu' \| 'none'
+
+
+</td><td>
+
+String attribute which controls the position of the logout button in the header Control via `logout-button-position`
+
+
+</td></tr>
+<tr><td>
+
+[luminanceToggle](./foundation-header.navigation.luminancetoggle.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[routeButtons](./foundation-header.navigation.routebuttons.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt;
+
+
+</td><td>
+
+If present the defined route buttons will be rendered in the header 'routes' slot
+
+
+</td></tr>
+<tr><td>
+
+[routeNavItems](./foundation-header.navigation.routenavitems.md)
+
+
+</td><td>
+
+
+</td><td>
+
+FoundationRouteNavItem\[\]
+
+
+</td><td>
+
+If present the defined  will be rendered in the header 'routes' slot
+
+
+</td></tr>
+<tr><td>
+
+[shouldShowAccountMenu](./foundation-header.navigation.shouldshowaccountmenu.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Computed property that determines if the account menu should be shown
+
+
+</td></tr>
+<tr><td>
+
+[showAccountMenu](./foundation-header.navigation.showaccountmenu.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the account menu on the navigation bar Control via `show-account-menu`
+
+
+</td></tr>
+<tr><td>
+
+[showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via `show-connection-indicator`
+
+
+</td></tr>
+<tr><td>
+
+[showEnvironmentIndicator](./foundation-header.navigation.showenvironmentindicator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the environment indicator on the navigation bar Control via `show-environment-indicator`
+
+
+</td></tr>
+<tr><td>
+
+[showLanguageSelector](./foundation-header.navigation.showlanguageselector.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the language selector on the navigation bar Control via `show-language-selector`
+
+
+</td></tr>
+<tr><td>
+
+[showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via`show-luminance-toggle-button`
+
+
+</td></tr>
+<tr><td>
+
+[showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via `show-luminance-toggle-button`
+
+
+</td></tr>
+<tr><td>
+
+[showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via `show-notification-button`
+
+
+</td></tr>
+<tr><td>
+
+[user](./foundation-header.navigation.user.md)
+
+
+</td><td>
+
+
+</td><td>
+
+User
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[userName](./foundation-header.navigation.username.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Username of the logged in user
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [changeLanguage(e)](./foundation-header.navigation.changelanguage.md) |  | Changes the language of the application |
-|  [connectedCallback()](./foundation-header.navigation.connectedcallback.md) |  | Called when the component is connected to the DOM |
-|  [handleNavButtonClick(routeNavItem)](./foundation-header.navigation.handlenavbuttonclick.md) |  | Handles the click event for a navigation button |
-|  [logout()](./foundation-header.navigation.logout.md) |  | Logs the user out of their session |
-|  [navigateTo(path)](./foundation-header.navigation.navigateto.md) |  | Changes the route of the current page |
-|  [selectTemplate()](./foundation-header.navigation.selecttemplate.md) |  | Selects the appropriate template based on the component's state |
-|  [toLocalisedText(text)](./foundation-header.navigation.tolocalisedtext.md) |  | To localised text |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[changeLanguage(e)](./foundation-header.navigation.changelanguage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Changes the language of the application
+
+
+</td></tr>
+<tr><td>
+
+[connectedCallback()](./foundation-header.navigation.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called when the component is connected to the DOM
+
+
+</td></tr>
+<tr><td>
+
+[handleNavButtonClick(routeNavItem)](./foundation-header.navigation.handlenavbuttonclick.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Handles the click event for a navigation button
+
+
+</td></tr>
+<tr><td>
+
+[logout()](./foundation-header.navigation.logout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Logs the user out of their session
+
+
+</td></tr>
+<tr><td>
+
+[navigateTo(path)](./foundation-header.navigation.navigateto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Changes the route of the current page
+
+
+</td></tr>
+<tr><td>
+
+[selectTemplate()](./foundation-header.navigation.selecttemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Selects the appropriate template based on the component's state
+
+
+</td></tr>
+<tr><td>
+
+[setLuminance()](./foundation-header.navigation.setluminance.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[toLocalisedText(text)](./foundation-header.navigation.tolocalisedtext.md)
+
+
+</td><td>
+
+
+</td><td>
+
+To localised text
+
+
+</td></tr>
+</tbody></table>
 

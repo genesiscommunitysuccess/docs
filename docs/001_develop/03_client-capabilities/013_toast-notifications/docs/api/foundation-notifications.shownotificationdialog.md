@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotificationDialog](./foundation-notifications.shownotificationdialog.md)
 
-## showNotificationDialog variable
+## showNotificationDialog() function
 
 Shows the notification dialog
 
@@ -14,3 +14,56 @@ Shows the notification dialog
 ```typescript
 showNotificationDialog: (configuration: DialogStructure, tagName: String) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+configuration
+
+
+</td><td>
+
+[DialogStructure](./foundation-notifications.dialogstructure.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

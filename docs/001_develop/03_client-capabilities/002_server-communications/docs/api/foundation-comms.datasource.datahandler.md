@@ -17,9 +17,39 @@ dataHandler?(data: Array<any>): Array<any>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | Array&lt;any&gt; | The data to handle. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+Array&lt;any&gt;
+
+
+</td><td>
+
+The data to handle.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

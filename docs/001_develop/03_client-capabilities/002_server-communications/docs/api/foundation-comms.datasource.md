@@ -22,32 +22,311 @@ The public interface available on the injected store fragment.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [initialized](./foundation-comms.datasource.initialized.md) |  | boolean | Indicates whether the datasource has been initialized. |
-|  [readOnly](./foundation-comms.datasource.readonly.md) |  | boolean | Indicates whether the datasource is read-only. TODO: Should have is prefix |
-|  [resourceType](./foundation-comms.datasource.resourcetype.md) |  | [ResourceType](./foundation-comms.resourcetype.md) | The type of resource the datasource represents. |
-|  [status](./foundation-comms.datasource.status.md) |  | Partial&lt;[DatasourceStatus](./foundation-comms.datasourcestatus.md)&gt; |  |
-|  [stream](./foundation-comms.datasource.stream.md) |  | [SocketObservable](./foundation-comms.socketobservable.md)&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)&gt; | A stream of data from the datasource. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[initialized](./foundation-comms.datasource.initialized.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the datasource has been initialized.
+
+
+</td></tr>
+<tr><td>
+
+[readOnly](./foundation-comms.datasource.readonly.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the datasource is read-only. TODO: Should have is prefix
+
+
+</td></tr>
+<tr><td>
+
+[resourceType](./foundation-comms.datasource.resourcetype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ResourceType](./foundation-comms.resourcetype.md)
+
+
+</td><td>
+
+The type of resource the datasource represents.
+
+
+</td></tr>
+<tr><td>
+
+[status](./foundation-comms.datasource.status.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Partial&lt;[DatasourceStatus](./foundation-comms.datasourcestatus.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[stream](./foundation-comms.datasource.stream.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)<!-- -->&gt;
+
+
+</td><td>
+
+A stream of data from the datasource.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [addView(view)?](./foundation-comms.datasource.addview.md) | _(Optional)_ Adds the specified dataview to the datasource. |
-|  [clearFilter(name)?](./foundation-comms.datasource.clearfilter.md) | _(Optional)_ Clears the filter with the specified name from the datasource. |
-|  [createItem(data)?](./foundation-comms.datasource.createitem.md) | _(Optional)_ Creates a new item in the datasource with the specified data. |
-|  [dataHandler(data)?](./foundation-comms.datasource.datahandler.md) | _(Optional)_ Handles the specified data and returns it. |
-|  [deleteItem(itemId)?](./foundation-comms.datasource.deleteitem.md) | _(Optional)_ Deletes an item with the given ID from the datasource. |
-|  [destroy()](./foundation-comms.datasource.destroy.md) | Destroys the datasource. |
-|  [dropView(view)?](./foundation-comms.datasource.dropview.md) | _(Optional)_ Removes the specified dataview from the datasource. |
-|  [getMetadata(resourceName)?](./foundation-comms.datasource.getmetadata.md) | _(Optional)_ Fetches metadata for the specified resource name. |
-|  [init(options, fetchMeta, startStream)](./foundation-comms.datasource.init.md) | Initializes the datasource with the given options and fetches metadata if specified. |
-|  [setFilter(name, value, type)?](./foundation-comms.datasource.setfilter.md) | _(Optional)_ Sets a filter on the datasource with the specified name, value, and type. |
-|  [snapshot(overrideParams)](./foundation-comms.datasource.snapshot.md) | Takes a snapshot of the data in the datasource. |
-|  [snapshotFiltered(rowId)](./foundation-comms.datasource.snapshotfiltered.md) | Takes a filtered snapshot of the data in the datasource. |
-|  [startStream()](./foundation-comms.datasource.startstream.md) | Starts the data stream for the datasource. |
-|  [updateData(data)?](./foundation-comms.datasource.updatedata.md) | _(Optional)_ Updates the data in the datasource with the specified data. |
-|  [updateItem(itemId, data)?](./foundation-comms.datasource.updateitem.md) | _(Optional)_ Updates an item in the datasource with the given ID and data. |
-|  [validResourceName(resourceName)](./foundation-comms.datasource.validresourcename.md) | Indicates whether the resourceName is valid or not. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addView(view)?](./foundation-comms.datasource.addview.md)
+
+
+</td><td>
+
+_(Optional)_ Adds the specified dataview to the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[clearFilter(name)?](./foundation-comms.datasource.clearfilter.md)
+
+
+</td><td>
+
+_(Optional)_ Clears the filter with the specified name from the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[createItem(data)?](./foundation-comms.datasource.createitem.md)
+
+
+</td><td>
+
+_(Optional)_ Creates a new item in the datasource with the specified data.
+
+
+</td></tr>
+<tr><td>
+
+[dataHandler(data)?](./foundation-comms.datasource.datahandler.md)
+
+
+</td><td>
+
+_(Optional)_ Handles the specified data and returns it.
+
+
+</td></tr>
+<tr><td>
+
+[deleteItem(itemId)?](./foundation-comms.datasource.deleteitem.md)
+
+
+</td><td>
+
+_(Optional)_ Deletes an item with the given ID from the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./foundation-comms.datasource.destroy.md)
+
+
+</td><td>
+
+Destroys the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[dropView(view)?](./foundation-comms.datasource.dropview.md)
+
+
+</td><td>
+
+_(Optional)_ Removes the specified dataview from the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[getMetadata(resourceName)?](./foundation-comms.datasource.getmetadata.md)
+
+
+</td><td>
+
+_(Optional)_ Fetches metadata for the specified resource name.
+
+
+</td></tr>
+<tr><td>
+
+[init(options, fetchMeta, startStream)](./foundation-comms.datasource.init.md)
+
+
+</td><td>
+
+Initializes the datasource with the given options and fetches metadata if specified.
+
+
+</td></tr>
+<tr><td>
+
+[setFilter(name, value, type)?](./foundation-comms.datasource.setfilter.md)
+
+
+</td><td>
+
+_(Optional)_ Sets a filter on the datasource with the specified name, value, and type.
+
+
+</td></tr>
+<tr><td>
+
+[snapshot(overrideParams)](./foundation-comms.datasource.snapshot.md)
+
+
+</td><td>
+
+Takes a snapshot of the data in the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[snapshotFiltered(rowId)](./foundation-comms.datasource.snapshotfiltered.md)
+
+
+</td><td>
+
+Takes a filtered snapshot of the data in the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[startStream()](./foundation-comms.datasource.startstream.md)
+
+
+</td><td>
+
+Starts the data stream for the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[updateData(data)?](./foundation-comms.datasource.updatedata.md)
+
+
+</td><td>
+
+_(Optional)_ Updates the data in the datasource with the specified data.
+
+
+</td></tr>
+<tr><td>
+
+[updateItem(itemId, data)?](./foundation-comms.datasource.updateitem.md)
+
+
+</td><td>
+
+_(Optional)_ Updates an item in the datasource with the given ID and data.
+
+
+</td></tr>
+<tr><td>
+
+[validResourceName(resourceName)](./foundation-comms.datasource.validresourcename.md)
+
+
+</td><td>
+
+Indicates whether the resourceName is valid or not.
+
+
+</td></tr>
+</tbody></table>
 

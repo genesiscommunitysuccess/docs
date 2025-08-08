@@ -5,13 +5,16 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-openfin](./foundation-openfin.md) &gt; [isOpenFin](./foundation-openfin.isopenfin.md)
 
-## isOpenFin variable
+## isOpenFin() function
 
 **Signature:**
 
 ```typescript
 isOpenFin: () => boolean
 ```
+**Returns:**
+
+boolean
 
 ## Remarks
 

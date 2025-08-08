@@ -17,10 +17,52 @@ export interface JSONSerializerConfig
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [parse(text, reviver)](./foundation-utils.jsonserializerconfig.parse.md) |  |
-|  [parse(text, reviver, parseNumber)](./foundation-utils.jsonserializerconfig.parse_1.md) |  |
-|  [stringify(value, replacer, space)](./foundation-utils.jsonserializerconfig.stringify.md) |  |
-|  [stringify(value, replacer, space)](./foundation-utils.jsonserializerconfig.stringify_1.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[parse(text, reviver)](./foundation-utils.jsonserializerconfig.parse.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[parse(text, reviver, parseNumber)](./foundation-utils.jsonserializerconfig.parse_1.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[stringify(value, replacer, space)](./foundation-utils.jsonserializerconfig.stringify.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[stringify(value, replacer, space)](./foundation-utils.jsonserializerconfig.stringify_1.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

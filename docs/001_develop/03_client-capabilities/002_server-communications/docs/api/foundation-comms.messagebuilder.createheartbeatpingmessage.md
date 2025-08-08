@@ -15,9 +15,39 @@ createHeartbeatPingMessage(verbose: boolean): PingMessage;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  verbose | boolean | A flag to inform the backend you require a verbose response. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+verbose
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+A flag to inform the backend you require a verbose response.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

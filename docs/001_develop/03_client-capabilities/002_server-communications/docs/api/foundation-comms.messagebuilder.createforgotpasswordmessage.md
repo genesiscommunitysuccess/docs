@@ -17,15 +17,75 @@ createForgotPasswordMessage(username: string, returnUrl: string, requester?: str
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  username | string | The username. |
-|  returnUrl | string | The return URL. |
-|  requester | string | _(Optional)_ The requester. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+username
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The username.
+
+
+</td></tr>
+<tr><td>
+
+returnUrl
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The return URL.
+
+
+</td></tr>
+<tr><td>
+
+requester
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The requester.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)<!-- -->&gt;
 
 The forgot password message.
 

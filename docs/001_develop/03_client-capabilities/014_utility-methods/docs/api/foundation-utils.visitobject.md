@@ -20,13 +20,103 @@ export declare function visitObject<TVisitorData>(object: any, deep: boolean, vi
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  object | any | The object. |
-|  deep | boolean | A flag to indicate if a recursive visit of sub objects should occur. |
-|  visitor | [ObjectVisitor](./foundation-utils.objectvisitor.md)&lt;TVisitorData&gt; | The defined [ObjectVisitor](./foundation-utils.objectvisitor.md) logic. |
-|  data | TVisitorData | Visitor data. |
-|  traversed | WeakSet&lt;any&gt; \| Set&lt;any&gt; | The traversed object set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+object
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The object.
+
+
+</td></tr>
+<tr><td>
+
+deep
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+A flag to indicate if a recursive visit of sub objects should occur.
+
+
+</td></tr>
+<tr><td>
+
+visitor
+
+
+</td><td>
+
+[ObjectVisitor](./foundation-utils.objectvisitor.md)<!-- -->&lt;TVisitorData&gt;
+
+
+</td><td>
+
+The defined [ObjectVisitor](./foundation-utils.objectvisitor.md) logic.
+
+
+</td></tr>
+<tr><td>
+
+data
+
+
+</td><td>
+
+TVisitorData
+
+
+</td><td>
+
+Visitor data.
+
+
+</td></tr>
+<tr><td>
+
+traversed
+
+
+</td><td>
+
+WeakSet&lt;any&gt; \| Set&lt;any&gt;
+
+
+</td><td>
+
+The traversed object set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

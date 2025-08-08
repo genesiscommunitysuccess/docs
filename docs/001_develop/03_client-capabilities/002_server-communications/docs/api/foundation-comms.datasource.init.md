@@ -17,11 +17,71 @@ init(options: DatasourceOptions, fetchMeta?: boolean, startStream?: boolean): Pr
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  options | [DatasourceOptions](./foundation-comms.datasourceoptions.md) | The options to initialize the datasource with. |
-|  fetchMeta | boolean | _(Optional)_ Optional flag to fetch metadata for the datasource. Defaults to true. |
-|  startStream | boolean | _(Optional)_ Optional flag to start the data stream. Defaults to true. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+options
+
+
+</td><td>
+
+[DatasourceOptions](./foundation-comms.datasourceoptions.md)
+
+
+</td><td>
+
+The options to initialize the datasource with.
+
+
+</td></tr>
+<tr><td>
+
+fetchMeta
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Optional flag to fetch metadata for the datasource. Defaults to true.
+
+
+</td></tr>
+<tr><td>
+
+startStream
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Optional flag to start the data stream. Defaults to true.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

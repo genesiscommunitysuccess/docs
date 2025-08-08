@@ -20,23 +20,210 @@ export declare class StringEditor extends FoundationElement implements ICellEdit
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [actualWidth](./grid-pro.stringeditor.actualwidth.md) |  | number |  |
-|  [input](./grid-pro.stringeditor.input.md) |  | any |  |
-|  [params](./grid-pro.stringeditor.params.md) |  | [StringEditorParams](./grid-pro.stringeditorparams.md) |  |
-|  [value](./grid-pro.stringeditor.value.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actualWidth](./grid-pro.stringeditor.actualwidth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[input](./grid-pro.stringeditor.input.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[params](./grid-pro.stringeditor.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[StringEditorParams](./grid-pro.stringeditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./grid-pro.stringeditor.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [afterGuiAttached()](./grid-pro.stringeditor.afterguiattached.md) |  |  |
-|  [changeHandler(event)](./grid-pro.stringeditor.changehandler.md) |  |  |
-|  [getGui()](./grid-pro.stringeditor.getgui.md) |  |  |
-|  [getValue()](./grid-pro.stringeditor.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.stringeditor.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.stringeditor.iscancelbeforestart.md) |  |  |
-|  [isPopup()](./grid-pro.stringeditor.ispopup.md) |  |  |
-|  [refresh(params)](./grid-pro.stringeditor.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[afterGuiAttached()](./grid-pro.stringeditor.afterguiattached.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[changeHandler(event)](./grid-pro.stringeditor.changehandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.stringeditor.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.stringeditor.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.stringeditor.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.stringeditor.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isPopup()](./grid-pro.stringeditor.ispopup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.stringeditor.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,22 +17,190 @@ export interface MessageBuilder
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [createChangePasswordMessage(username, oldPassword, newPassword)](./foundation-comms.messagebuilder.createchangepasswordmessage.md) | Creates a change password message. |
-|  [createCommitMessage(eventName, params)](./foundation-comms.messagebuilder.createcommitmessage.md) | Creates an event commit message. |
-|  [createDataLogoffMessage(sourceRef)](./foundation-comms.messagebuilder.createdatalogoffmessage.md) | Creates a message to logoff from a DATASERVER. |
-|  [createDataLogonMessage(resourceName, params)](./foundation-comms.messagebuilder.createdatalogonmessage.md) | Creates a message to logon to a DATASERVER. Used for data fetching. |
-|  [createForgotPasswordMessage(username, returnUrl, requester)](./foundation-comms.messagebuilder.createforgotpasswordmessage.md) | Creates a forgot password message. |
-|  [createForgotPasswordTokenMessage(username, resetToken, newPassword, requester)](./foundation-comms.messagebuilder.createforgotpasswordtokenmessage.md) | Creates a forgot password token message. |
-|  [createHeartbeatPingMessage(verbose)](./foundation-comms.messagebuilder.createheartbeatpingmessage.md) |  |
-|  [createHTTPHeadersFromMessage(message, contentType)](./foundation-comms.messagebuilder.createhttpheadersfrommessage.md) | Create HTTP Headers from a message. |
-|  [createLoginMessage(credentials)](./foundation-comms.messagebuilder.createloginmessage.md) | Creates a login message. |
-|  [createLogoutMessage(loginResult)](./foundation-comms.messagebuilder.createlogoutmessage.md) | Creates a logout message. |
-|  [createMetaRequestMessage(resourceName, messageType)](./foundation-comms.messagebuilder.createmetarequestmessage.md) | Creates a metadata fetch message. |
-|  [createMoreColumnsMessage(sourceRef)](./foundation-comms.messagebuilder.createmorecolumnsmessage.md) | Creates a message to request more columns. |
-|  [createMoreRowsMessage(sourceRef, viewNumber)](./foundation-comms.messagebuilder.createmorerowsmessage.md) | Creates a message to request more rows. This is only relevant when you are connected to a real-time (Data Server) datasource. |
-|  [createRefreshTokenMessage()](./foundation-comms.messagebuilder.createrefreshtokenmessage.md) | Creates an auth message specific for token refresh. |
-|  [createRequestMessage(resourceName, params)](./foundation-comms.messagebuilder.createrequestmessage.md) | Creates a request message. |
-|  [createResourcesMessage(params)](./foundation-comms.messagebuilder.createresourcesmessage.md) | Creates a message for getting list of resources. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createChangePasswordMessage(username, oldPassword, newPassword)](./foundation-comms.messagebuilder.createchangepasswordmessage.md)
+
+
+</td><td>
+
+Creates a change password message.
+
+
+</td></tr>
+<tr><td>
+
+[createCommitMessage(eventName, params)](./foundation-comms.messagebuilder.createcommitmessage.md)
+
+
+</td><td>
+
+Creates an event commit message.
+
+
+</td></tr>
+<tr><td>
+
+[createDataLogoffMessage(sourceRef)](./foundation-comms.messagebuilder.createdatalogoffmessage.md)
+
+
+</td><td>
+
+Creates a message to logoff from a DATASERVER.
+
+
+</td></tr>
+<tr><td>
+
+[createDataLogonMessage(resourceName, params)](./foundation-comms.messagebuilder.createdatalogonmessage.md)
+
+
+</td><td>
+
+Creates a message to logon to a DATASERVER. Used for data fetching.
+
+
+</td></tr>
+<tr><td>
+
+[createForgotPasswordMessage(username, returnUrl, requester)](./foundation-comms.messagebuilder.createforgotpasswordmessage.md)
+
+
+</td><td>
+
+Creates a forgot password message.
+
+
+</td></tr>
+<tr><td>
+
+[createForgotPasswordTokenMessage(username, resetToken, newPassword, requester)](./foundation-comms.messagebuilder.createforgotpasswordtokenmessage.md)
+
+
+</td><td>
+
+Creates a forgot password token message.
+
+
+</td></tr>
+<tr><td>
+
+[createHeartbeatPingMessage(verbose)](./foundation-comms.messagebuilder.createheartbeatpingmessage.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createHTTPHeadersFromMessage(message, contentType)](./foundation-comms.messagebuilder.createhttpheadersfrommessage.md)
+
+
+</td><td>
+
+Create HTTP Headers from a message.
+
+
+</td></tr>
+<tr><td>
+
+[createLoginMessage(credentials)](./foundation-comms.messagebuilder.createloginmessage.md)
+
+
+</td><td>
+
+Creates a login message.
+
+
+</td></tr>
+<tr><td>
+
+[createLogoutMessage(loginResult)](./foundation-comms.messagebuilder.createlogoutmessage.md)
+
+
+</td><td>
+
+Creates a logout message.
+
+
+</td></tr>
+<tr><td>
+
+[createMetaRequestMessage(resourceName, messageType)](./foundation-comms.messagebuilder.createmetarequestmessage.md)
+
+
+</td><td>
+
+Creates a metadata fetch message.
+
+
+</td></tr>
+<tr><td>
+
+[createMoreColumnsMessage(sourceRef)](./foundation-comms.messagebuilder.createmorecolumnsmessage.md)
+
+
+</td><td>
+
+Creates a message to request more columns.
+
+
+</td></tr>
+<tr><td>
+
+[createMoreRowsMessage(sourceRef, viewNumber)](./foundation-comms.messagebuilder.createmorerowsmessage.md)
+
+
+</td><td>
+
+Creates a message to request more rows. This is only relevant when you are connected to a real-time (Data Server) datasource.
+
+
+</td></tr>
+<tr><td>
+
+[createRefreshTokenMessage()](./foundation-comms.messagebuilder.createrefreshtokenmessage.md)
+
+
+</td><td>
+
+Creates an auth message specific for token refresh.
+
+
+</td></tr>
+<tr><td>
+
+[createRequestMessage(resourceName, params)](./foundation-comms.messagebuilder.createrequestmessage.md)
+
+
+</td><td>
+
+Creates a request message.
+
+
+</td></tr>
+<tr><td>
+
+[createResourcesMessage(params)](./foundation-comms.messagebuilder.createresourcesmessage.md)
+
+
+</td><td>
+
+Creates a message for getting list of resources.
+
+
+</td></tr>
+</tbody></table>
 

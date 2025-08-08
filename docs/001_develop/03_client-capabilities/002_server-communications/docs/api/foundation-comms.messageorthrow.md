@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-comms](./foundation-comms.md) &gt; [messageOrThrow](./foundation-comms.messageorthrow.md)
 
-## messageOrThrow variable
+## messageOrThrow() function
 
 Check if the provided message contains an error and throw an Error if it does
 
@@ -14,3 +14,46 @@ Check if the provided message contains an error and throw an Error if it does
 ```typescript
 messageOrThrow: (message: Message) => Message<any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+Message to check for errors
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+[Message](./foundation-comms.message.md)<!-- -->&lt;any&gt;
+
+The message if no errors are present, otherwise throws an Error
+

@@ -20,13 +20,77 @@ This component extends the notification listener class and overrides the logic f
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [iOConnectNotificationOptions](./foundation-fdc3.interopnotificationslistener.ioconnectnotificationoptions.md) |  | IOConnectDesktop.Notifications.IOConnectNotificationOptions |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[iOConnectNotificationOptions](./foundation-fdc3.interopnotificationslistener.ioconnectnotificationoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+IOConnectDesktop.Notifications.IOConnectNotificationOptions
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [showNotificationToast(row)](./foundation-fdc3.interopnotificationslistener.shownotificationtoast.md) | <code>protected</code> |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[showNotificationToast(row)](./foundation-fdc3.interopnotificationslistener.shownotificationtoast.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

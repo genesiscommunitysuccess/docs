@@ -17,9 +17,39 @@ createRefreshCredentials(inputs?: RefreshCredentialsInput): RefreshAuthInfo;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  inputs | [RefreshCredentialsInput](./foundation-comms.refreshcredentialsinput.md) | _(Optional)_ The custom input data to use when creating the credentials, if any. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+inputs
+
+
+</td><td>
+
+[RefreshCredentialsInput](./foundation-comms.refreshcredentialsinput.md)
+
+
+</td><td>
+
+_(Optional)_ The custom input data to use when creating the credentials, if any.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

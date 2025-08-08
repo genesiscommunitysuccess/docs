@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [inSymphonyDesktop](./foundation-utils.insymphonydesktop.md)
 
-## inSymphonyDesktop variable
+## inSymphonyDesktop() function
 
 Returns a boolean value indicating whether the user is running the Symphony desktop app.
 
@@ -14,3 +14,9 @@ Returns a boolean value indicating whether the user is running the Symphony desk
 ```typescript
 inSymphonyDesktop: () => boolean
 ```
+**Returns:**
+
+boolean
+
+true if the user is running the Symphony desktop app, false otherwise.
+
