@@ -38,6 +38,30 @@ const GENESISLCAP_PACKAGES = [
   '@genesislcap/expression-builder',
 ];
 
+function generateProcessedMapContent(packageNameToVersionMap) {
+  const header = `/**
+ * Maintains a processed map instance as a hot reload workaround to avoid re-processing and entering an infinite loop.
+ * TODO: Ideally the plugin should run just once in both dev and prod mode, or be skipped during hot reloads.
+ */`;
+
+  const preface = `  /**
+   * I've processed this package already, and tailored the readme output, so including it statically here will stop it
+   * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
+   * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
+   */`;
+
+  let body = '';
+  if (packageNameToVersionMap && Object.keys(packageNameToVersionMap).length > 0) {
+    body = Object.entries(packageNameToVersionMap)
+      .map(([name, version]) => `  "${name}": "${version}",`)
+      .join('\n');
+  } else {
+    body = '  // All packages cleared for reprocessing';
+  }
+
+  return `${header}\nmodule.exports = {\n${preface}\n${body}\n};`;
+}
+
 async function getLatestVersion() {
   try {
     const { stdout } = await execAsync(`npm view ${LATEST_VERSION_PACKAGE} version`);
@@ -126,18 +150,7 @@ async function updatePackageJson(newVersion) {
 async function clearProcessedMap() {
   console.log('Clearing processedMap to force reprocessing...');
   
-  const processedMapContent = `/**
- * Maintains a processed map instance as a hot reload workaround to avoid re-processing and entering an infinite loop.
- * TODO: Ideally the plugin should run just once in both dev and prod mode, or be skipped during hot reloads.
- */
-module.exports = {
-	/**
-	 * I've processed this package already, and tailored the readme output, so including it statically here will stop it
-	 * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
-	 * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
-	 */
-	// All packages cleared for reprocessing
-};`;
+  const processedMapContent = generateProcessedMapContent(null);
   
   await fs.writeFile(path.resolve(PROCESSED_MAP_PATH), processedMapContent);
   console.log('✓ processedMap cleared');
@@ -167,113 +180,81 @@ async function buildApiDocsPlugin() {
   }
 }
 
-async function copyDocsWithoutStarting() {
+async function copyDocsDirectly() {
   console.log('Copying docs without starting server...');
-  
+
   try {
-    // Create a temporary script that runs the copy process without starting the server
-    // This script will only copy API docs (.md files), not .mdx files or images
-    const tempScript = `
-const { execSync } = require('child_process');
-const fs = require('fs-extra');
-const path = require('path');
+    const manifest = require(path.resolve('./plugins/api-docs/dist/manifest.js')).default;
+    const processedMap = require(path.resolve(PROCESSED_MAP_PATH));
 
-// Set the environment variable to enable doc copying
-process.env.COPY_DOCS = 'true';
-
-// Import the api-docs plugin components directly
-const manifest = require(path.resolve('./plugins/api-docs/dist/manifest.js')).default;
-const processedMap = require(path.resolve('./plugins/api-docs/processedMap.js'));
-
-async function copyApiDocsOnly() {
-  try {
     const { packages } = manifest;
     const packagesToProcess = packages.filter(
       (pkg) => pkg.enabled && !(pkg.name in processedMap),
     );
-    
+
     if (!packagesToProcess.length) {
-      console.log("[api-docs-plugin] No packages awaiting processing.");
+      console.log('[api-docs-plugin] No packages awaiting processing.');
       return;
     }
-    
+
     for (const pkg of packagesToProcess) {
-      const packageRootDir = path.join(process.cwd(), "node_modules", pkg.name);
+      const packageRootDir = path.join(process.cwd(), 'node_modules', pkg.name);
       const outputRootDir = path.join(process.cwd(), pkg.output.directory);
-      
+
       if (!fs.existsSync(packageRootDir)) {
-        console.log(\`Package \${pkg.name} not found in node_modules, skipping...\`);
+        console.log(`Package ${pkg.name} not found in node_modules, skipping...`);
         continue;
       }
-      
+
       await fs.ensureDir(outputRootDir);
-      
+
       // Copy API docs (only .md files in docs/api/)
       if (pkg.src.api_docs && pkg.output.api_docs) {
         const apiDocsSrc = path.join(packageRootDir, pkg.src.api_docs);
         const apiDocsDest = path.join(outputRootDir, pkg.output.api_docs);
-        
+
         if (fs.existsSync(apiDocsSrc)) {
           await fs.ensureDir(apiDocsDest);
           const files = await fs.readdir(apiDocsSrc);
-          
+
           for (const file of files) {
             if (file.endsWith('.md')) {
               const srcFile = path.join(apiDocsSrc, file);
               const destFile = path.join(apiDocsDest, file);
               let content = await fs.readFile(srcFile, 'utf8');
-              
+
               // Add front matter for non-index.md files
               if (file !== 'index.md') {
-                content = \`---
-format: md
----
-\` + content;
+                content = `---\nformat: md\n---\n` + content;
               } else {
                 // For index.md, add the api preamble
                 const apiPreamble = await fs.readFile(
                   path.resolve('./plugins/api-docs/data/api-preamble.md'),
                   'utf8'
                 );
-                content = apiPreamble + '\\n' + content;
+                content = apiPreamble + '\n' + content;
               }
-              
+
               await fs.writeFile(destFile, content);
-              console.log(\`  Copied API doc: \${file}\`);
+              console.log(`  Copied API doc: ${file}`);
             }
           }
         }
       }
-      
-
-      
-      // Update processedMap
-      const packageJson = await fs.readJson(path.join(packageRootDir, "package.json"));
-      processedMap[pkg.name] = packageJson.version;
     }
-    
-    console.log('✓ API docs copied successfully (no .mdx files touched)');
+
+    console.log('✓ Docs copied successfully');
   } catch (error) {
-    console.error('Failed to copy docs:', error);
-    process.exit(1);
+    console.error('Failed to copy docs:', error.message);
+    throw error;
   }
 }
 
-copyApiDocsOnly();
-`;
-    
-    const tempScriptPath = './temp-copy-docs.js';
-    await fs.writeFile(tempScriptPath, tempScript);
-    
-    try {
-      execSync('node temp-copy-docs.js', { stdio: 'inherit' });
-      console.log('✓ Docs copied successfully');
-    } finally {
-      // Clean up temp file even if execution fails
-      if (await fs.pathExists(tempScriptPath)) {
-        await fs.remove(tempScriptPath);
-      }
-    }
+async function copyDocsWithoutStarting() {
+  console.log('Copying docs without starting server...');
+
+  try {
+    await copyDocsDirectly();
   } catch (error) {
     console.error('Failed to copy docs:', error.message);
     throw error;
@@ -283,18 +264,10 @@ copyApiDocsOnly();
 async function updateProcessedMapWithVersions(newVersion) {
   console.log('Updating processedMap with new versions...');
   
-  const processedMapContent = `/**
- * Maintains a processed map instance as a hot reload workaround to avoid re-processing and entering an infinite loop.
- * TODO: Ideally the plugin should run just once in both dev and prod mode, or be skipped during hot reloads.
- */
-module.exports = {
-	/**
-	 * I've processed this package already, and tailored the readme output, so including it statically here will stop it
-	 * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
-	 * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
-	 */
-${GENESISLCAP_PACKAGES.map(pkg => `	"${pkg}": "${newVersion}",`).join('\n')}
-};`;
+  const versionMap = Object.fromEntries(
+    GENESISLCAP_PACKAGES.map((pkg) => [pkg, newVersion]),
+  );
+  const processedMapContent = generateProcessedMapContent(versionMap);
   
   await fs.writeFile(path.resolve(PROCESSED_MAP_PATH), processedMapContent);
   console.log('✓ processedMap updated with new versions');
