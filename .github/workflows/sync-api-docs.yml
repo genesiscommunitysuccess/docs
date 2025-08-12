@@ -5,7 +5,26 @@ on:
     # Run every day at 9 AM UTC
     - cron: '0 9 * * *'
   workflow_dispatch:
-    # Allow manual triggering
+    # Allow manual triggering with options
+    inputs:
+      target_branch:
+        description: 'Target branch for PR (default: preprod)'
+        required: false
+        default: 'preprod'
+        type: string
+      dry_run:
+        description: 'Dry run mode (skip PR creation)'
+        required: false
+        default: false
+        type: boolean
+  push:
+    branches:
+      # Allow testing on feature branches that match this pattern
+      - 'sync-api-docs-*'
+      - 'test-sync-*'
+    paths:
+      - '.github/workflows/sync-api-docs.yml'
+      - 'scripts/sync-api-docs.js'
 
 jobs:
   sync-api-docs:
@@ -93,7 +112,7 @@ jobs:
           git status
       
       - name: Create Pull Request
-        if: steps.check_changes.outputs.has_changes == 'true'
+        if: steps.check_changes.outputs.has_changes == 'true' && !inputs.dry_run
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -102,6 +121,10 @@ jobs:
           body: |
             This PR was automatically created by the API docs sync workflow.
             
+            **Trigger**: ${{ github.event_name }}
+            **Target Branch**: ${{ inputs.target_branch || 'preprod' }}
+            **Source Branch**: ${{ github.ref_name }}
+            
             Changes:
             - Updated @genesislcap packages to version ${{ steps.sync.outputs.version }}
             - Regenerated API documentation from updated packages
@@ -109,9 +132,22 @@ jobs:
             
             This is an automated update. Please review the changes and merge if everything looks good.
           branch: sync-api-docs-${{ github.run_id }}
-          base: preprod
+          base: ${{ inputs.target_branch || 'preprod' }}
           delete-branch: true
           labels: |
             automated
             api-docs
             documentation
+      
+      - name: Dry Run Summary
+        if: steps.check_changes.outputs.has_changes == 'true' && inputs.dry_run
+        run: |
+          echo "🏃‍♂️ **DRY RUN MODE** - PR creation skipped"
+          echo ""
+          echo "📋 **Summary:**"
+          echo "- ✅ Script executed successfully"
+          echo "- ✅ Changes detected and would be committed"
+          echo "- ✅ Version: ${{ steps.sync.outputs.version }}"
+          echo "- ✅ Target branch: ${{ inputs.target_branch || 'preprod' }}"
+          echo ""
+          echo "To create the actual PR, re-run without dry_run mode."
