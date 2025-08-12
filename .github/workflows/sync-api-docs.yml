@@ -40,27 +40,57 @@ jobs:
         id: sync
         run: |
           # Run the sync script with all git operations enabled
-          OUTPUT=$(node scripts/sync-api-docs.js --all 2>&1)
-          echo "$OUTPUT"
+          # Use tee to show output in real-time and capture it
+          set -o pipefail
+          
+          echo "🚀 Starting API docs sync..."
+          node scripts/sync-api-docs.js --all 2>&1 | tee sync_output.log
+          
+          # Check if the script succeeded
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "❌ Sync script failed. Output:"
+            cat sync_output.log
+            exit 1
+          fi
           
           # Extract the version from the output
-          VERSION=$(echo "$OUTPUT" | grep "Latest version:" | sed 's/Latest version: //')
+          VERSION=$(grep "Latest version:" sync_output.log | sed 's/Latest version: //' | head -1)
           if [ -n "$VERSION" ]; then
+            echo "✅ Extracted version: $VERSION"
             echo "version=$VERSION" >> $GITHUB_OUTPUT
           else
+            echo "⚠️  Could not extract version from output"
             echo "version=unknown" >> $GITHUB_OUTPUT
+            echo "Full output for debugging:"
+            cat sync_output.log
           fi
+          
+          # Clean up
+          rm -f sync_output.log
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Check for changes
         id: check_changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          echo "🔍 Checking for changes in working directory..."
+          
+          # Use git diff and git status to check for changes
+          git_status_output=$(git status --porcelain)
+          
+          if [ -n "$git_status_output" ]; then
+            echo "✅ Changes detected:"
+            echo "$git_status_output"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
+            echo "ℹ️  No changes detected in working directory"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
+          
+          # Also show git status for debugging
+          echo ""
+          echo "Full git status:"
+          git status
       
       - name: Create Pull Request
         if: steps.check_changes.outputs.has_changes == 'true'
