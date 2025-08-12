@@ -137,24 +137,30 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          echo "🔍 Checking for changes in working directory..."
-          
-          # Use git diff and git status to check for changes
-          git_status_output=$(git status --porcelain)
-          
-          if [ -n "$git_status_output" ]; then
-            echo "✅ Changes detected:"
-            echo "$git_status_output"
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "ℹ️  No changes detected in working directory"
+          if [ "${{ env.AUTO_DRY_RUN }}" == "true" ]; then
+            echo "🏃‍♂️ DRY RUN MODE - Skipping git changes check"
+            echo "In dry run mode, no git changes are expected or made"
             echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "🔍 Checking for changes in working directory..."
+            
+            # Use git diff and git status to check for changes
+            git_status_output=$(git status --porcelain)
+            
+            if [ -n "$git_status_output" ]; then
+              echo "✅ Changes detected:"
+              echo "$git_status_output"
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "ℹ️  No changes detected in working directory"
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            fi
+            
+            # Also show git status for debugging
+            echo ""
+            echo "Full git status:"
+            git status
           fi
-          
-          # Also show git status for debugging
-          echo ""
-          echo "Full git status:"
-          git status
       
       - name: Create Pull Request
         if: steps.check_changes.outputs.has_changes == 'true' && env.AUTO_DRY_RUN == 'false'
