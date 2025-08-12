@@ -31,10 +31,10 @@ on:
 jobs:
   sync-api-docs:
     runs-on: ubuntu-latest
-    # Only run for sync-api-docs branches when in PR context, or always run for other triggers
+    # Run for all non-PR events, or for PRs from branches that contain 'sync-api-docs'
     if: |
       github.event_name != 'pull_request' || 
-      startsWith(github.head_ref, 'sync-api-docs')
+      contains(github.head_ref, 'sync-api-docs')
 
     strategy:
       matrix:

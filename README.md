@@ -1,4 +1,4 @@
-# Genesis platform documentation/TEMPCHANGE
+# Genesis platform documentation
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
