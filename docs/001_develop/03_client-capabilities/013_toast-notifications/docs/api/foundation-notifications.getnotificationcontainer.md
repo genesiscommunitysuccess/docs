@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getNotificationContainer](./foundation-notifications.getnotificationcontainer.md)
 
-## getNotificationContainer variable
+## getNotificationContainer() function
 
 Get/Create the error container in the DOM
 
@@ -14,3 +14,61 @@ Get/Create the error container in the DOM
 ```typescript
 getNotificationContainer: (id: string, tagName: String) => HTMLElement
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+id
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The id of the container
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+The tag name to create prefix for the design system provider
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+HTMLElement
+
+

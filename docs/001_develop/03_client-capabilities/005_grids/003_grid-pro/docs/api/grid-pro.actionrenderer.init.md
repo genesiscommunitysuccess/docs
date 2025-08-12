@@ -15,9 +15,37 @@ init(params: ICellRendererParams & ActionRendererParams): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | ICellRendererParams &amp; [ActionRendererParams](./grid-pro.actionrendererparams.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+ICellRendererParams &amp; [ActionRendererParams](./grid-pro.actionrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [foundationNumberEditor](./grid-pro.foundationnumbereditor.md)
 
-## foundationNumberEditor variable
+## foundationNumberEditor() function
 
 **Signature:**
 
@@ -21,7 +21,47 @@ foundationNumberEditor: (overrideDefinition?: import("@microsoft/fast-foundation
 }, typeof NumberEditor>
 ```
 
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideDefinition
+
+
+</td><td>
+
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[NumberEditor](./grid-pro.numbereditor.md)<!-- -->, any&gt;; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[NumberEditor](./grid-pro.numbereditor.md)<!-- -->, any&gt;; }, typeof [NumberEditor](./grid-pro.numbereditor.md)<!-- -->&gt;
+
 ## Remarks
 
-HTML Element: &lt;foundation-number-editor&gt;
+HTML Element: &lt;<!-- -->foundation-number-editor<!-- -->&gt;
 

@@ -16,15 +16,67 @@ export declare namespace Genesis
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [genesisFieldTypes](./foundation-utils.genesis.genesisfieldtypes.md) |  |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[genesisFieldTypes](./foundation-utils.genesis.genesisfieldtypes.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [FieldJsonSchema](./foundation-utils.genesis.fieldjsonschema.md) |  |
-|  [GenesisFieldTypes](./foundation-utils.genesis.genesisfieldtypes.md) |  |
-|  [JSONSchema7](./foundation-utils.genesis.jsonschema7.md) |  |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FieldJsonSchema](./foundation-utils.genesis.fieldjsonschema.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[GenesisFieldTypes](./foundation-utils.genesis.genesisfieldtypes.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchema7](./foundation-utils.genesis.jsonschema7.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

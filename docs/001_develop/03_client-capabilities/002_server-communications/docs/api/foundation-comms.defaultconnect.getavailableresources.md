@@ -15,11 +15,41 @@ getAvailableResources(params?: RequestParams): Promise<ResourcesMessage>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [RequestParams](./foundation-comms.requestparams.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)&gt;
+Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)<!-- -->&gt;
 

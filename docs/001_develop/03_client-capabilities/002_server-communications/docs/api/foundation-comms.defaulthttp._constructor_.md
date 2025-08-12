@@ -17,7 +17,35 @@ constructor(serializer: JSONSerializer);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  serializer | JSONSerializer |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+serializer
+
+
+</td><td>
+
+JSONSerializer
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

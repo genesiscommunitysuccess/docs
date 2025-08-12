@@ -17,8 +17,49 @@ export declare enum FoundationAnalyticsEventType
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  controlClicked | <code>&quot;controlClicked&quot;</code> |  |
-|  routeChanged | <code>&quot;routeChanged&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+controlClicked
+
+
+</td><td>
+
+`"controlClicked"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+routeChanged
+
+
+</td><td>
+
+`"routeChanged"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,9 +17,60 @@ export interface ConnectEvents
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [addCommitListener(listener)](./foundation-comms.connectevents.addcommitlistener.md) | Add a commit listener. |
-|  [addMetadataListener(listener)](./foundation-comms.connectevents.addmetadatalistener.md) | Add a metadata listener. |
-|  [addStreamListener(listener, complete, error)](./foundation-comms.connectevents.addstreamlistener.md) | Add a stream listener. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addCommitListener(listener)](./foundation-comms.connectevents.addcommitlistener.md)
+
+
+</td><td>
+
+Add a commit listener.
+
+
+</td></tr>
+<tr><td>
+
+[addCommitResponseListener(listener)](./foundation-comms.connectevents.addcommitresponselistener.md)
+
+
+</td><td>
+
+Add a commit response listener (fires for both ack and nack).
+
+
+</td></tr>
+<tr><td>
+
+[addMetadataListener(listener)](./foundation-comms.connectevents.addmetadatalistener.md)
+
+
+</td><td>
+
+Add a metadata listener.
+
+
+</td></tr>
+<tr><td>
+
+[addStreamListener(listener, complete, error)](./foundation-comms.connectevents.addstreamlistener.md)
+
+
+</td><td>
+
+Add a stream listener.
+
+
+</td></tr>
+</tbody></table>
 

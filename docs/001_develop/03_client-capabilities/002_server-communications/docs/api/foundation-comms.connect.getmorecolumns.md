@@ -17,13 +17,43 @@ getMoreColumns(sourceRef: string): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  sourceRef | string | The source reference to request more columns for. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sourceRef
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The source reference to request more columns for.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 
 A promise that resolves with the additional columns.
 

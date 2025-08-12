@@ -15,11 +15,39 @@ create(newValue: Omit<T, 'id'>): Promise<DatabaseAccessResult.Create<T>>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  newValue | Omit&lt;T, 'id'&gt; |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+newValue
+
+
+</td><td>
+
+Omit&lt;T, 'id'&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Create](./foundation-utils.databaseaccessresult.create.md)&lt;T&gt;&gt;
+Promise&lt;[DatabaseAccessResult.Create](./foundation-utils.databaseaccessresult.create.md)<!-- -->&lt;T&gt;&gt;
 

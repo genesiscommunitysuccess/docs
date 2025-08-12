@@ -18,7 +18,43 @@ export interface DateEditorParams extends ICellEditorParams
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [withTime](./grid-pro.dateeditorparams.withtime.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[withTime](./grid-pro.dateeditorparams.withtime.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -15,7 +15,25 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/g2plot-chart](./g2plot-chart.md) |  |
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@genesislcap/g2plot-chart](./g2plot-chart.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

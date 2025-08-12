@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getActionsMenuDef](./grid-pro.getactionsmenudef.md)
 
-## getActionsMenuDef variable
+## getActionsMenuDef() function
 
 Helper function to get ColDef [https://www.ag-grid.com/javascript-data-grid/column-properties/](https://www.ag-grid.com/javascript-data-grid/column-properties/) for Actions Menu Renderer. Will take the parameter values for a base ColDef and merge them with the overrideDef (if specified).
 
@@ -14,6 +14,112 @@ Helper function to get ColDef [https://www.ag-grid.com/javascript-data-grid/colu
 ```typescript
 getActionsMenuDef: (actions: ActionMenuItem[], overrideDef?: ColDef, customActionsOpenerName?: string, isVertical?: boolean, buttonAppearance?: string) => ColDef
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+actions
+
+
+</td><td>
+
+ActionMenuItem\[\]
+
+
+</td><td>
+
+Array of  to be displayed in the menu.
+
+
+</td></tr>
+<tr><td>
+
+overrideDef
+
+
+</td><td>
+
+ColDef
+
+
+</td><td>
+
+_(Optional)_ Optional override for the ColDef. Will override any of the default values. Default is an empty object.
+
+
+</td></tr>
+<tr><td>
+
+customActionsOpenerName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Optional custom name for the button that opens the menu. Default is '⋮'.
+
+
+</td></tr>
+<tr><td>
+
+isVertical
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Optional flag to display the menu vertically. Default is false (displays the menu horizontally, follow the rowHeight).
+
+
+</td></tr>
+<tr><td>
+
+buttonAppearance
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Optional appearance for the button that opens the menu. Default is 'outline'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+ColDef
+
+Merged ColDef (base ColDef created from the parameters + overrideDef) for Actions Menu Renderer.
 
 ## Example
 

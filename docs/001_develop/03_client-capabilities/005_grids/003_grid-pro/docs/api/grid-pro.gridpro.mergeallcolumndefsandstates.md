@@ -7,7 +7,7 @@ format: md
 
 ## GridPro.mergeAllColumnDefsAndStates() method
 
-Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`.
+Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`<!-- -->.
 
 **Signature:**
 
@@ -17,10 +17,55 @@ mergeAllColumnDefsAndStates(columnDefs: ColDef[], deferredColumnDefsOrState?: bo
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  columnDefs | ColDef\[\] | The column definitions to apply to the grid. |
-|  deferredColumnDefsOrState | boolean | _(Optional)_ If true, will merge the column definitions with the saved column state or the <code>deferredColumnStates</code> property on the <code>grid-pro-genesis-datasource</code> element. Defaults to false but <code>grid-pro-genesis-datasource</code> will set this to true. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+columnDefs
+
+
+</td><td>
+
+ColDef\[\]
+
+
+</td><td>
+
+The column definitions to apply to the grid.
+
+
+</td></tr>
+<tr><td>
+
+deferredColumnDefsOrState
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ If true, will merge the column definitions with the saved column state or the `deferredColumnStates` property on the `grid-pro-genesis-datasource` element. Defaults to false but `grid-pro-genesis-datasource` will set this to true.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

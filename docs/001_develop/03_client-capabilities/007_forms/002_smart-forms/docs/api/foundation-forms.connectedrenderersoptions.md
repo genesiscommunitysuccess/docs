@@ -20,5 +20,6 @@ export type ConnectedRenderersOptions = {
     labelField?: string;
     data?: any[];
     allowCustomOptions?: boolean;
+    filterMode?: FilterMode;
 };
 ```

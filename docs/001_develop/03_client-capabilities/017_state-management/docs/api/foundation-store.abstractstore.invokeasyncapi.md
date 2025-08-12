@@ -17,11 +17,71 @@ protected invokeAsyncAPI<TResult>(api: () => Promise<TResult>, error: keyof (TEv
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  api | () =&gt; Promise&lt;TResult&gt; | The async service api function. |
-|  error | keyof (TEventDetailMap &amp; TInternalEventDetailMap) | The event key from the store fragment's event detail map. |
-|  success | keyof (TEventDetailMap &amp; TInternalEventDetailMap) | _(Optional)_ The event key from the store fragment's event detail map. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+api
+
+
+</td><td>
+
+() =&gt; Promise&lt;TResult&gt;
+
+
+</td><td>
+
+The async service api function.
+
+
+</td></tr>
+<tr><td>
+
+error
+
+
+</td><td>
+
+keyof (TEventDetailMap &amp; TInternalEventDetailMap)
+
+
+</td><td>
+
+The event key from the store fragment's event detail map.
+
+
+</td></tr>
+<tr><td>
+
+success
+
+
+</td><td>
+
+keyof (TEventDetailMap &amp; TInternalEventDetailMap)
+
+
+</td><td>
+
+_(Optional)_ The event key from the store fragment's event detail map.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

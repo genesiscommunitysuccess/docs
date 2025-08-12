@@ -17,9 +17,39 @@ addMetadataListener(listener: Listener<MetadataEvent>): () => void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  listener | Listener&lt;[MetadataEvent](./foundation-comms.metadataevent.md)&gt; | A listener callback function. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+listener
+
+
+</td><td>
+
+Listener&lt;[MetadataEvent](./foundation-comms.metadataevent.md)<!-- -->&gt;
+
+
+</td><td>
+
+A listener callback function.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -10,7 +10,7 @@ format: md
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-An operator which can have any number of values where `NumVals >= 1`, defaulting to 1. Example `one_of`. \*
+An operator which can have any number of values where `NumVals >= 1`<!-- -->, defaulting to 1. Example `one_of`<!-- -->. \*
 
 **Signature:**
 

@@ -18,28 +18,247 @@ export declare class DefaultMessageBuilder implements MessageBuilder
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(session, uuid)](./foundation-comms.defaultmessagebuilder._constructor_.md) |  | UUID will be created in the DI with the App specific requirements. Keeping it encapsulated means messages will always conform. |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(session, uuid)](./foundation-comms.defaultmessagebuilder._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+UUID will be created in the DI with the App specific requirements. Keeping it encapsulated means messages will always conform.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [createChangePasswordMessage(username, oldPassword, newPassword)](./foundation-comms.defaultmessagebuilder.createchangepasswordmessage.md) |  |  |
-|  [createCommitMessage(eventName, params)](./foundation-comms.defaultmessagebuilder.createcommitmessage.md) |  |  |
-|  [createDataLogoffMessage(sourceRef)](./foundation-comms.defaultmessagebuilder.createdatalogoffmessage.md) |  |  |
-|  [createDataLogonMessage(resourceName, params)](./foundation-comms.defaultmessagebuilder.createdatalogonmessage.md) |  |  |
-|  [createForgotPasswordMessage(username, returnUrl, requester)](./foundation-comms.defaultmessagebuilder.createforgotpasswordmessage.md) |  |  |
-|  [createForgotPasswordTokenMessage(username, resetToken, newPassword, requester)](./foundation-comms.defaultmessagebuilder.createforgotpasswordtokenmessage.md) |  |  |
-|  [createHeartbeatPingMessage(verbose)](./foundation-comms.defaultmessagebuilder.createheartbeatpingmessage.md) |  |  |
-|  [createHTTPHeadersFromMessage(message, contentType)](./foundation-comms.defaultmessagebuilder.createhttpheadersfrommessage.md) |  |  |
-|  [createLoginMessage(credentials)](./foundation-comms.defaultmessagebuilder.createloginmessage.md) |  |  |
-|  [createLogoutMessage(loginResult)](./foundation-comms.defaultmessagebuilder.createlogoutmessage.md) |  |  |
-|  [createMetaRequestMessage(resourceName, messageType)](./foundation-comms.defaultmessagebuilder.createmetarequestmessage.md) |  |  |
-|  [createMoreColumnsMessage(sourceRef)](./foundation-comms.defaultmessagebuilder.createmorecolumnsmessage.md) |  |  |
-|  [createMoreRowsMessage(sourceRef, viewNumber)](./foundation-comms.defaultmessagebuilder.createmorerowsmessage.md) |  |  |
-|  [createRefreshTokenMessage()](./foundation-comms.defaultmessagebuilder.createrefreshtokenmessage.md) |  |  |
-|  [createRequestMessage(resourceName, params)](./foundation-comms.defaultmessagebuilder.createrequestmessage.md) |  |  |
-|  [createResourcesMessage(params)](./foundation-comms.defaultmessagebuilder.createresourcesmessage.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createChangePasswordMessage(username, oldPassword, newPassword)](./foundation-comms.defaultmessagebuilder.createchangepasswordmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createCommitMessage(eventName, params)](./foundation-comms.defaultmessagebuilder.createcommitmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createDataLogoffMessage(sourceRef)](./foundation-comms.defaultmessagebuilder.createdatalogoffmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createDataLogonMessage(resourceName, params)](./foundation-comms.defaultmessagebuilder.createdatalogonmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createForgotPasswordMessage(username, returnUrl, requester)](./foundation-comms.defaultmessagebuilder.createforgotpasswordmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createForgotPasswordTokenMessage(username, resetToken, newPassword, requester)](./foundation-comms.defaultmessagebuilder.createforgotpasswordtokenmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createHeartbeatPingMessage(verbose)](./foundation-comms.defaultmessagebuilder.createheartbeatpingmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createHTTPHeadersFromMessage(message, contentType)](./foundation-comms.defaultmessagebuilder.createhttpheadersfrommessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createLoginMessage(credentials)](./foundation-comms.defaultmessagebuilder.createloginmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createLogoutMessage(loginResult)](./foundation-comms.defaultmessagebuilder.createlogoutmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createMetaRequestMessage(resourceName, messageType)](./foundation-comms.defaultmessagebuilder.createmetarequestmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createMoreColumnsMessage(sourceRef)](./foundation-comms.defaultmessagebuilder.createmorecolumnsmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createMoreRowsMessage(sourceRef, viewNumber)](./foundation-comms.defaultmessagebuilder.createmorerowsmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createRefreshTokenMessage()](./foundation-comms.defaultmessagebuilder.createrefreshtokenmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createRequestMessage(resourceName, params)](./foundation-comms.defaultmessagebuilder.createrequestmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createResourcesMessage(params)](./foundation-comms.defaultmessagebuilder.createresourcesmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

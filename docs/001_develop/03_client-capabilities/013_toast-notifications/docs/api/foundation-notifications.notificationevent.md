@@ -17,7 +17,35 @@ export declare enum NotificationEvent
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  NOTIFICATION\_EVENT | <code>&quot;notification-event&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+NOTIFICATION\_EVENT
+
+
+</td><td>
+
+`"notification-event"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

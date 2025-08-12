@@ -22,9 +22,39 @@ withBanner(banner: Banner): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  banner | [Banner](./foundation-notifications.banner.md) | [Banner](./foundation-notifications.banner.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+banner
+
+
+</td><td>
+
+[Banner](./foundation-notifications.banner.md)
+
+
+</td><td>
+
+[Banner](./foundation-notifications.banner.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

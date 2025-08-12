@@ -11,9 +11,9 @@ format: md
 **Signature:**
 
 ```typescript
-values(): IterableIterator<Error>;
+values(): MapIterator<Error>;
 ```
 **Returns:**
 
-IterableIterator&lt;Error&gt;
+MapIterator&lt;Error&gt;
 

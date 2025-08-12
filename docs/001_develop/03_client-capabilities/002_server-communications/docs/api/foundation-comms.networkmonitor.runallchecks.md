@@ -15,10 +15,55 @@ runAllChecks(source?: unknown, force?: boolean): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  source | unknown | _(Optional)_ The source of the call, which may have been an event or scheduled interval. |
-|  force | boolean | _(Optional)_ A flag to bypass abort if already in progress logic. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+source
+
+
+</td><td>
+
+unknown
+
+
+</td><td>
+
+_(Optional)_ The source of the call, which may have been an event or scheduled interval.
+
+
+</td></tr>
+<tr><td>
+
+force
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ A flag to bypass abort if already in progress logic.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,11 +17,71 @@ broadcastOnChannel(channelName: string, type: string, payload: any): Promise<voi
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  channelName | string | name of the channel |
-|  type | string | type of the channel |
-|  payload | any | payload sent to the channel |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+channelName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+name of the channel
+
+
+</td></tr>
+<tr><td>
+
+type
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+type of the channel
+
+
+</td></tr>
+<tr><td>
+
+payload
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+payload sent to the channel
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

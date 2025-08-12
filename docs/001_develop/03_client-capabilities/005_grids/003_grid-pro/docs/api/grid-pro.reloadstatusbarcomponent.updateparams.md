@@ -15,9 +15,37 @@ updateParams(params: ReloadStatusBarParams): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-store](./foundation-store.md) &gt; [createErrorMap](./foundation-store.createerrormap.md)
 
-## createErrorMap variable
+## createErrorMap() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,46 @@ A factory to create the error map.
 ```typescript
 createErrorMap: <TErrorDetailMap extends ErrorDetailMap>(logger: ErrorMapLogger) => ErrorMap<TErrorDetailMap>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+logger
+
+
+</td><td>
+
+[ErrorMapLogger](./foundation-store.errormaplogger.md)
+
+
+</td><td>
+
+A logger error method reference.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+[ErrorMap](./foundation-store.errormap.md)<!-- -->&lt;TErrorDetailMap&gt;
+
+A ErrorMap instance.
+

@@ -17,27 +17,225 @@ export declare class Join
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(type)](./foundation-criteria.join._constructor_.md) |  | Constructs a new instance of the <code>Join</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(type)](./foundation-criteria.join._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `Join` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [operator](./foundation-criteria.join.operator.md) | <code>readonly</code> | Operator |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[operator](./foundation-criteria.join.operator.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Operator
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [And()](./foundation-criteria.join.and.md) | <code>static</code> |  |
-|  [Equal()](./foundation-criteria.join.equal.md) | <code>static</code> |  |
-|  [GreaterThan()](./foundation-criteria.join.greaterthan.md) | <code>static</code> |  |
-|  [GreaterThanOrEqual()](./foundation-criteria.join.greaterthanorequal.md) | <code>static</code> |  |
-|  [LessThan()](./foundation-criteria.join.lessthan.md) | <code>static</code> |  |
-|  [LessThanOrEqual()](./foundation-criteria.join.lessthanorequal.md) | <code>static</code> |  |
-|  [Not()](./foundation-criteria.join.not.md) | <code>static</code> |  |
-|  [NotEqual()](./foundation-criteria.join.notequal.md) | <code>static</code> |  |
-|  [Or()](./foundation-criteria.join.or.md) | <code>static</code> |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[And()](./foundation-criteria.join.and.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Equal()](./foundation-criteria.join.equal.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[GreaterThan()](./foundation-criteria.join.greaterthan.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[GreaterThanOrEqual()](./foundation-criteria.join.greaterthanorequal.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[LessThan()](./foundation-criteria.join.lessthan.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[LessThanOrEqual()](./foundation-criteria.join.lessthanorequal.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Not()](./foundation-criteria.join.not.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[NotEqual()](./foundation-criteria.join.notequal.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Or()](./foundation-criteria.join.or.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

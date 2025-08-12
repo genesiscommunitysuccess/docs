@@ -17,9 +17,39 @@ export declare function getColumnType(metadataType: string): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  metadataType | string | The metadata type. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+metadataType
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The metadata type.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

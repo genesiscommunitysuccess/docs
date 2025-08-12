@@ -15,9 +15,37 @@ protected setupPaginationAndStatusBar(gridOptions: GridOptions): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  gridOptions | GridOptions |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+gridOptions
+
+
+</td><td>
+
+GridOptions
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

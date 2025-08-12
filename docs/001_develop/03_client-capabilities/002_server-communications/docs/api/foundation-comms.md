@@ -9,201 +9,2099 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [AuthError](./foundation-comms.autherror.md) | Represents an error that occurs during authentication. |
-|  [CurrentUser](./foundation-comms.currentuser.md) | Represents the current user (i.e. the user that is currently logged in). |
-|  [DatasourceDefaults](./foundation-comms.datasourcedefaults.md) | Default values for a DatasourceConfig |
-|  [DefaultAuth](./foundation-comms.defaultauth.md) | The default implementation for the Auth interface. |
-|  [DefaultConnect](./foundation-comms.defaultconnect.md) | The default implementation for the Connect interface (WS-only). |
-|  [DefaultConnectEvents](./foundation-comms.defaultconnectevents.md) | Default ConnectEvents implementation. |
-|  [DefaultCredentialManager](./foundation-comms.defaultcredentialmanager.md) | The default implementation for the CredentialManager interface. |
-|  [DefaultDatasource](./foundation-comms.defaultdatasource.md) | The default implementation for the Datasource interface. |
-|  [DefaultFoundationAnalytics](./foundation-comms.defaultfoundationanalytics.md) | The default implementation for the FoundationAnalytics interface. |
-|  [DefaultGenesisResources](./foundation-comms.defaultgenesisresources.md) | Default GenesisResources implementation. |
-|  [DefaultHttp](./foundation-comms.defaulthttp.md) | The default implementation of the Http interface. |
-|  [DefaultHttpConnect](./foundation-comms.defaulthttpconnect.md) | The default implementation for the Connect interface (HTTP-only). |
-|  [DefaultMessageBuilder](./foundation-comms.defaultmessagebuilder.md) | Default MessageBuilder implementation. |
-|  [DefaultMetaCache](./foundation-comms.defaultmetacache.md) | The default implementation for the MetaCache interface. |
-|  [DefaultNetworkMonitor](./foundation-comms.defaultnetworkmonitor.md) | Default NetworkMonitor implementation. |
-|  [DefaultSession](./foundation-comms.defaultsession.md) | The default implementation for the Session interface. |
-|  [DefaultSocket](./foundation-comms.defaultsocket.md) | Default Socket implementation. |
-|  [DefaultSocketStatus](./foundation-comms.defaultsocketstatus.md) | Default SocketStatus implementation. |
-|  [GenesisResourcesMock](./foundation-comms.genesisresourcesmock.md) |  |
-|  [SocketMessageHandler](./foundation-comms.socketmessagehandler.md) | The Socket message handler definition. |
-|  [SocketObservable](./foundation-comms.socketobservable.md) | Observable that wraps a WebSocketSubject and provides an Observable interface for sending and receiving messages. |
-|  [SocketSubject](./foundation-comms.socketsubject.md) | Subject that wraps a WebSocketSubject and provides a Subject interface for sending and receiving messages. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AuthError](./foundation-comms.autherror.md)
+
+
+</td><td>
+
+Represents an error that occurs during authentication.
+
+
+</td></tr>
+<tr><td>
+
+[CurrentUser](./foundation-comms.currentuser.md)
+
+
+</td><td>
+
+Represents the current user (i.e. the user that is currently logged in).
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceDefaults](./foundation-comms.datasourcedefaults.md)
+
+
+</td><td>
+
+Default values for a DatasourceConfig
+
+
+</td></tr>
+<tr><td>
+
+[DefaultAuth](./foundation-comms.defaultauth.md)
+
+
+</td><td>
+
+The default implementation for the Auth interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultConnect](./foundation-comms.defaultconnect.md)
+
+
+</td><td>
+
+The default implementation for the Connect interface (WS-only).
+
+
+</td></tr>
+<tr><td>
+
+[DefaultConnectEvents](./foundation-comms.defaultconnectevents.md)
+
+
+</td><td>
+
+Default ConnectEvents implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCredentialManager](./foundation-comms.defaultcredentialmanager.md)
+
+
+</td><td>
+
+The default implementation for the CredentialManager interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultDatasource](./foundation-comms.defaultdatasource.md)
+
+
+</td><td>
+
+The default implementation for the Datasource interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultEntityDatasource](./foundation-comms.defaultentitydatasource.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Default EntityDatasource DI implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultFoundationAnalytics](./foundation-comms.defaultfoundationanalytics.md)
+
+
+</td><td>
+
+The default implementation for the FoundationAnalytics interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultGenesisResources](./foundation-comms.defaultgenesisresources.md)
+
+
+</td><td>
+
+Default GenesisResources implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultHttp](./foundation-comms.defaulthttp.md)
+
+
+</td><td>
+
+The default implementation of the Http interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultHttpConnect](./foundation-comms.defaulthttpconnect.md)
+
+
+</td><td>
+
+The default implementation for the Connect interface (HTTP-only).
+
+
+</td></tr>
+<tr><td>
+
+[DefaultKVStorage](./foundation-comms.defaultkvstorage.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The default implementation for the KVStorage interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultMessageBuilder](./foundation-comms.defaultmessagebuilder.md)
+
+
+</td><td>
+
+Default MessageBuilder implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultMetaCache](./foundation-comms.defaultmetacache.md)
+
+
+</td><td>
+
+The default implementation for the MetaCache interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultNetworkMonitor](./foundation-comms.defaultnetworkmonitor.md)
+
+
+</td><td>
+
+Default NetworkMonitor implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultSession](./foundation-comms.defaultsession.md)
+
+
+</td><td>
+
+The default implementation for the Session interface.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultSocket](./foundation-comms.defaultsocket.md)
+
+
+</td><td>
+
+Default Socket implementation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultSocketStatus](./foundation-comms.defaultsocketstatus.md)
+
+
+</td><td>
+
+Default SocketStatus implementation.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResourcesMock](./foundation-comms.genesisresourcesmock.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SocketMessageHandler](./foundation-comms.socketmessagehandler.md)
+
+
+</td><td>
+
+The Socket message handler definition.
+
+
+</td></tr>
+<tr><td>
+
+[SocketObservable](./foundation-comms.socketobservable.md)
+
+
+</td><td>
+
+Observable that wraps a WebSocketSubject and provides an Observable interface for sending and receiving messages.
+
+
+</td></tr>
+<tr><td>
+
+[SocketSubject](./foundation-comms.socketsubject.md)
+
+
+</td><td>
+
+Subject that wraps a WebSocketSubject and provides a Subject interface for sending and receiving messages.
+
+
+</td></tr>
+</tbody></table>
 
 ## Enumerations
 
-|  Enumeration | Description |
-|  --- | --- |
-|  [AuthType](./foundation-comms.authtype.md) | The available ypes of authentication. |
-|  [EventMessageType](./foundation-comms.eventmessagetype.md) | Event Message types |
-|  [FieldTypeEnum](./foundation-comms.fieldtypeenum.md) | Available types for a field metadata. |
-|  [FoundationAnalyticsEventType](./foundation-comms.foundationanalyticseventtype.md) | Analytics event types |
-|  [MessageCode](./foundation-comms.messagecode.md) | General Message codes |
-|  [MessageType](./foundation-comms.messagetype.md) | General Message types |
-|  [ResourceType](./foundation-comms.resourcetype.md) | Types of Genesis resources. |
-|  [SocketReconnectStrategy](./foundation-comms.socketreconnectstrategy.md) | Socket reconnection strategies |
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AuthType](./foundation-comms.authtype.md)
+
+
+</td><td>
+
+The available ypes of authentication.
+
+
+</td></tr>
+<tr><td>
+
+[EventMessageType](./foundation-comms.eventmessagetype.md)
+
+
+</td><td>
+
+Event Message types
+
+
+</td></tr>
+<tr><td>
+
+[FieldTypeEnum](./foundation-comms.fieldtypeenum.md)
+
+
+</td><td>
+
+Available types for a field metadata.
+
+
+</td></tr>
+<tr><td>
+
+[FoundationAnalyticsEventType](./foundation-comms.foundationanalyticseventtype.md)
+
+
+</td><td>
+
+Analytics event types
+
+
+</td></tr>
+<tr><td>
+
+[KVEventMessageType](./foundation-comms.kveventmessagetype.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KV Event Message types
+
+
+</td></tr>
+<tr><td>
+
+[KVMessageType](./foundation-comms.kvmessagetype.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KV Message types
+
+
+</td></tr>
+<tr><td>
+
+[MessageCode](./foundation-comms.messagecode.md)
+
+
+</td><td>
+
+General Message codes
+
+
+</td></tr>
+<tr><td>
+
+[MessageType](./foundation-comms.messagetype.md)
+
+
+</td><td>
+
+General Message types
+
+
+</td></tr>
+<tr><td>
+
+[ResourceType](./foundation-comms.resourcetype.md)
+
+
+</td><td>
+
+Types of Genesis resources.
+
+
+</td></tr>
+<tr><td>
+
+[SocketReconnectStrategy](./foundation-comms.socketreconnectstrategy.md)
+
+
+</td><td>
+
+Socket reconnection strategies
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [criteriaFiltersToFields(filters)](./foundation-comms.criteriafilterstofields.md) | Criteria filters to fields. |
-|  [dataServerResultFilter(result, rowId)](./foundation-comms.dataserverresultfilter.md) | Data server result filter. |
-|  [getConnect()](./foundation-comms.getconnect.md) | Get Connect from the DI container. |
-|  [getDatasource()](./foundation-comms.getdatasource.md) | Get Datasource from the DI container. |
-|  [getGenesisResources()](./foundation-comms.getgenesisresources.md) | Gets GenesisResources from the DI container. |
-|  [getGenesisResourcesChannel()](./foundation-comms.getgenesisresourceschannel.md) | Gets GenesisResourcesChannel from the DI container. |
-|  [getKVStorage()](./foundation-comms.getkvstorage.md) | Gets KVStorage from the DI container. |
-|  [getNetworkMonitor()](./foundation-comms.getnetworkmonitor.md) | Gets NetworkMonitor from the DI container. |
-|  [getSocket()](./foundation-comms.getsocket.md) | Gets Socket from the DI container. |
-|  [getSocketStatus()](./foundation-comms.getsocketstatus.md) | Gets SocketStatus from the DI container. |
-|  [normaliseCriteria(criteria, delimiter)](./foundation-comms.normalisecriteria.md) | Normalise criteria. |
-|  [until(conditionFunc, timeoutMs)](./foundation-comms.until.md) | Polls a condition function until it returns true or a timeout is reached. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[criteriaFiltersToFields(filters)](./foundation-comms.criteriafilterstofields.md)
+
+
+</td><td>
+
+Criteria filters to fields.
+
+
+</td></tr>
+<tr><td>
+
+[dataServerResultFilter(result, rowId)](./foundation-comms.dataserverresultfilter.md)
+
+
+</td><td>
+
+Data server result filter.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceEventHandler(Target)](./foundation-comms.datasourceeventhandler.md)
+
+
+</td><td>
+
+Datasource event handler mixin for target classes that use or are interested in datasource status changes.
+
+
+</td></tr>
+<tr><td>
+
+[extractFieldDefinitions(metadata)](./foundation-comms.extractfielddefinitions.md)
+
+
+</td><td>
+
+Extracts the field definitions from the metadata.
+
+
+</td></tr>
+<tr><td>
+
+[getConnect()](./foundation-comms.getconnect.md)
+
+
+</td><td>
+
+Get Connect from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getDatasource()](./foundation-comms.getdatasource.md)
+
+
+</td><td>
+
+Get Datasource from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getGenesisResources()](./foundation-comms.getgenesisresources.md)
+
+
+</td><td>
+
+Gets GenesisResources from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getGenesisResourcesChannel()](./foundation-comms.getgenesisresourceschannel.md)
+
+
+</td><td>
+
+Gets GenesisResourcesChannel from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getKVStorage()](./foundation-comms.getkvstorage.md)
+
+
+</td><td>
+
+Gets KVStorage from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getNetworkMonitor()](./foundation-comms.getnetworkmonitor.md)
+
+
+</td><td>
+
+Gets NetworkMonitor from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getSocket()](./foundation-comms.getsocket.md)
+
+
+</td><td>
+
+Gets Socket from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getSocketStatus()](./foundation-comms.getsocketstatus.md)
+
+
+</td><td>
+
+Gets SocketStatus from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[messageHasErrorCode(message, code)](./foundation-comms.messagehaserrorcode.md)
+
+
+</td><td>
+
+Check if the message contains an error code.
+
+
+</td></tr>
+<tr><td>
+
+[messageOrThrow(message)](./foundation-comms.messageorthrow.md)
+
+
+</td><td>
+
+Check if the provided message contains an error and throw an Error if it does
+
+
+</td></tr>
+<tr><td>
+
+[normaliseCriteria(criteria, delimiter)](./foundation-comms.normalisecriteria.md)
+
+
+</td><td>
+
+Normalise criteria.
+
+
+</td></tr>
+<tr><td>
+
+[retryInterval(reconnectOptions, scheduler)](./foundation-comms.retryinterval.md)
+
+
+</td><td>
+
+Generate reconnect interval based on scheduler
+
+
+</td></tr>
+<tr><td>
+
+[toFieldMetadata(fieldDef)](./foundation-comms.tofieldmetadata.md)
+
+
+</td><td>
+
+Converts the field definitions to field metadata.
+
+
+</td></tr>
+<tr><td>
+
+[until(conditionFunc, timeoutMs)](./foundation-comms.until.md)
+
+
+</td><td>
+
+Polls a condition function until it returns true or a timeout is reached.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [Auth](./foundation-comms.auth.md) | Auth is the main interface for authenticating with a Genesis Server endpoint. |
-|  [Connect](./foundation-comms.connect.md) | Represents a connection and its capabilities on a remote server Provides methods to send and receive messages, as well as metadata and schema information. |
-|  [ConnectConfig](./foundation-comms.connectconfig.md) | Configuration options for the Connect (WS) instance. |
-|  [ConnectEvents](./foundation-comms.connectevents.md) | <code>ConnectEvents</code> provide hooks to respond to specific connect events. |
-|  [ConnectEventsEmitter](./foundation-comms.connecteventsemitter.md) | <code>ConnectEventsEmitter</code> provide event emitting hooks to Connect. |
-|  [CredentialManager](./foundation-comms.credentialmanager.md) | Represents a system for managing user credentials and authentication tokens. |
-|  [CredentialManagerConfig](./foundation-comms.credentialmanagerconfig.md) | The configuration for the CredentialManager |
-|  [CredentialManagerCookieConfig](./foundation-comms.credentialmanagercookieconfig.md) | The configuration options for the CredentialManager cookie |
-|  [Datasource](./foundation-comms.datasource.md) | Datasource interface. |
-|  [DatasourceConfig](./foundation-comms.datasourceconfig.md) | DatasourceConfig DI interface. |
-|  [DatasourceMetadata](./foundation-comms.datasourcemetadata.md) | DatasourceMetadata interface. |
-|  [DatasourceOptions](./foundation-comms.datasourceoptions.md) | Options that can be passed when initializing a datasource. |
-|  [DataUpdate](./foundation-comms.dataupdate.md) | Data Update definition with details of what data to add, drop, and/or modify. |
-|  [Dataview](./foundation-comms.dataview.md) | Dataview object |
-|  [FoundationAnalytics](./foundation-comms.foundationanalytics.md) | Represents an analytics tracking system. |
-|  [GenesisResources](./foundation-comms.genesisresources.md) | GenesisResources DI interface. |
-|  [GenesisResourcesChannel](./foundation-comms.genesisresourceschannel.md) | GenesisResourcesChannel DI interface. |
-|  [GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md) | GenesisResourcesConfig DI interface. |
-|  [Http](./foundation-comms.http.md) | An interface representing an HTTP client that can make GET and POST requests and return a promise with the response data. |
-|  [HttpRequestInit](./foundation-comms.httprequestinit.md) | The options object used when making an HTTP request. |
-|  [JsonSchemaCache](./foundation-comms.jsonschemacache.md) | A JSON schema cache definition |
-|  [LogoutResult](./foundation-comms.logoutresult.md) | Represents the result of a user logout operation. |
-|  [MessageBuilder](./foundation-comms.messagebuilder.md) | A utility class for building different types of messages. |
-|  [MetadataCache](./foundation-comms.metadatacache.md) | A Metadata cache definition |
-|  [MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md) | MonitoredResourceChecksResult. |
-|  [MonitoredResourceMetadata](./foundation-comms.monitoredresourcemetadata.md) | MonitoredResourceMetadata. |
-|  [NetworkMonitor](./foundation-comms.networkmonitor.md) | <code>NetworkMonitor</code> monitors network and resource availability and health. |
-|  [NetworkMonitorConfig](./foundation-comms.networkmonitorconfig.md) | NetworkMonitorConfig DI interface. |
-|  [SerializedSocketStatus](./foundation-comms.serializedsocketstatus.md) | <code>SerializedSocketStatus</code> provides the serialize state of the web socket. |
-|  [Serializer](./foundation-comms.serializer.md) | A Serializer interface for serializing and deserializing objects. |
-|  [Session](./foundation-comms.session.md) | Represents a session storage and its capabilities. Provides methods to set and get items from the specified storage. |
-|  [Socket](./foundation-comms.socket.md) | Represents a WebSocket used to establish a communication channel between client and a Genesis server. Provides methods for socket connection, sending and receiving WS messages. |
-|  [SocketStatus](./foundation-comms.socketstatus.md) | <code>SocketStatus</code> provides the state of the web socket. |
-|  [User](./foundation-comms.user.md) | Represents a User object with associated permissions and profiles. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Auth](./foundation-comms.auth.md)
+
+
+</td><td>
+
+Auth is the main interface for authenticating with a Genesis Server endpoint.
+
+
+</td></tr>
+<tr><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+Represents a connection and its capabilities on a remote server Provides methods to send and receive messages, as well as metadata and schema information.
+
+
+</td></tr>
+<tr><td>
+
+[ConnectConfig](./foundation-comms.connectconfig.md)
+
+
+</td><td>
+
+Configuration options for the Connect (WS) instance.
+
+
+</td></tr>
+<tr><td>
+
+[ConnectEvents](./foundation-comms.connectevents.md)
+
+
+</td><td>
+
+`ConnectEvents` provide hooks to respond to specific connect events.
+
+
+</td></tr>
+<tr><td>
+
+[ConnectEventsEmitter](./foundation-comms.connecteventsemitter.md)
+
+
+</td><td>
+
+`ConnectEventsEmitter` provide event emitting hooks to Connect.
+
+
+</td></tr>
+<tr><td>
+
+[CredentialManager](./foundation-comms.credentialmanager.md)
+
+
+</td><td>
+
+Represents a system for managing user credentials and authentication tokens.
+
+
+</td></tr>
+<tr><td>
+
+[CredentialManagerConfig](./foundation-comms.credentialmanagerconfig.md)
+
+
+</td><td>
+
+The configuration for the CredentialManager
+
+
+</td></tr>
+<tr><td>
+
+[CredentialManagerCookieConfig](./foundation-comms.credentialmanagercookieconfig.md)
+
+
+</td><td>
+
+The configuration options for the CredentialManager cookie
+
+
+</td></tr>
+<tr><td>
+
+[Datasource](./foundation-comms.datasource.md)
+
+
+</td><td>
+
+Datasource interface.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceConfig](./foundation-comms.datasourceconfig.md)
+
+
+</td><td>
+
+DatasourceConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceMetadata](./foundation-comms.datasourcemetadata.md)
+
+
+</td><td>
+
+DatasourceMetadata interface.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceOptions](./foundation-comms.datasourceoptions.md)
+
+
+</td><td>
+
+Options that can be passed when initializing a datasource.
+
+
+</td></tr>
+<tr><td>
+
+[DataUpdate](./foundation-comms.dataupdate.md)
+
+
+</td><td>
+
+Data Update definition with details of what data to add, drop, and/or modify.
+
+
+</td></tr>
+<tr><td>
+
+[Dataview](./foundation-comms.dataview.md)
+
+
+</td><td>
+
+Dataview object
+
+
+</td></tr>
+<tr><td>
+
+[EntityDatasource](./foundation-comms.entitydatasource.md)
+
+
+</td><td>
+
+**_(ALPHA)_** EntityDatasource DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[EntityDatasourceInit](./foundation-comms.entitydatasourceinit.md)
+
+
+</td><td>
+
+**_(ALPHA)_** EntityDatasourceInit interface.
+
+
+</td></tr>
+<tr><td>
+
+[FoundationAnalytics](./foundation-comms.foundationanalytics.md)
+
+
+</td><td>
+
+Represents an analytics tracking system.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResources](./foundation-comms.genesisresources.md)
+
+
+</td><td>
+
+GenesisResources DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResourcesChannel](./foundation-comms.genesisresourceschannel.md)
+
+
+</td><td>
+
+GenesisResourcesChannel DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md)
+
+
+</td><td>
+
+GenesisResourcesConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[Http](./foundation-comms.http.md)
+
+
+</td><td>
+
+An interface representing an HTTP client that can make GET and POST requests and return a promise with the response data.
+
+
+</td></tr>
+<tr><td>
+
+[HttpRequestInit](./foundation-comms.httprequestinit.md)
+
+
+</td><td>
+
+The options object used when making an HTTP request.
+
+
+</td></tr>
+<tr><td>
+
+[JsonSchemaCache](./foundation-comms.jsonschemacache.md)
+
+
+</td><td>
+
+A JSON schema cache definition
+
+
+</td></tr>
+<tr><td>
+
+[KeyValue](./foundation-comms.keyvalue.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KeyValue interface.
+
+
+</td></tr>
+<tr><td>
+
+[KeyValueTransfer](./foundation-comms.keyvaluetransfer.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KeyValueTransfer interface.
+
+
+</td></tr>
+<tr><td>
+
+[KVStorage](./foundation-comms.kvstorage.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Represents a KV (key-value) data storage and its capabilities. Provides methods to set and get items from the KV data storage.
+
+
+</td></tr>
+<tr><td>
+
+[KVStorageConfig](./foundation-comms.kvstorageconfig.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KVStorageConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[LogoutResult](./foundation-comms.logoutresult.md)
+
+
+</td><td>
+
+Represents the result of a user logout operation.
+
+
+</td></tr>
+<tr><td>
+
+[MessageBuilder](./foundation-comms.messagebuilder.md)
+
+
+</td><td>
+
+A utility class for building different types of messages.
+
+
+</td></tr>
+<tr><td>
+
+[MetadataCache](./foundation-comms.metadatacache.md)
+
+
+</td><td>
+
+A Metadata cache definition
+
+
+</td></tr>
+<tr><td>
+
+[MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md)
+
+
+</td><td>
+
+MonitoredResourceChecksResult.
+
+
+</td></tr>
+<tr><td>
+
+[MonitoredResourceMetadata](./foundation-comms.monitoredresourcemetadata.md)
+
+
+</td><td>
+
+MonitoredResourceMetadata.
+
+
+</td></tr>
+<tr><td>
+
+[NetworkMonitor](./foundation-comms.networkmonitor.md)
+
+
+</td><td>
+
+`NetworkMonitor` monitors network and resource availability and health.
+
+
+</td></tr>
+<tr><td>
+
+[NetworkMonitorConfig](./foundation-comms.networkmonitorconfig.md)
+
+
+</td><td>
+
+NetworkMonitorConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[SerializedSocketStatus](./foundation-comms.serializedsocketstatus.md)
+
+
+</td><td>
+
+`SerializedSocketStatus` provides the serialize state of the web socket.
+
+
+</td></tr>
+<tr><td>
+
+[Serializer](./foundation-comms.serializer.md)
+
+
+</td><td>
+
+A Serializer interface for serializing and deserializing objects.
+
+
+</td></tr>
+<tr><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+Represents a session storage and its capabilities. Provides methods to set and get items from the specified storage.
+
+
+</td></tr>
+<tr><td>
+
+[Socket](./foundation-comms.socket.md)
+
+
+</td><td>
+
+Represents a WebSocket used to establish a communication channel between client and a Genesis server. Provides methods for socket connection, sending and receiving WS messages.
+
+
+</td></tr>
+<tr><td>
+
+[SocketStatus](./foundation-comms.socketstatus.md)
+
+
+</td><td>
+
+`SocketStatus` provides the state of the web socket.
+
+
+</td></tr>
+<tr><td>
+
+[User](./foundation-comms.user.md)
+
+
+</td><td>
+
+Represents a User object with associated permissions and profiles.
+
+
+</td></tr>
+</tbody></table>
 
 ## Namespaces
 
-|  Namespace | Description |
-|  --- | --- |
-|  [FoundationAnalyticsEvent](./foundation-comms.foundationanalyticsevent.md) | Namespace for all Analytics event types |
-|  [MessageDetails](./foundation-comms.messagedetails.md) | Namespace for all Message detail types |
+<table><thead><tr><th>
+
+Namespace
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FoundationAnalyticsEvent](./foundation-comms.foundationanalyticsevent.md)
+
+
+</td><td>
+
+Namespace for all Analytics event types
+
+
+</td></tr>
+<tr><td>
+
+[MessageDetails](./foundation-comms.messagedetails.md)
+
+
+</td><td>
+
+Namespace for all Message detail types
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [CommitEventType](./foundation-comms.commiteventtype.md) |  |
-|  [credentialSeparator](./foundation-comms.credentialseparator.md) | The default separator used for splitting credential parts. |
-|  [DatasourceEventHandler](./foundation-comms.datasourceeventhandler.md) | Datasource event handler mixin for target classes that use or are interested in datasource status changes. |
-|  [DatasourceStatusChanged](./foundation-comms.datasourcestatuschanged.md) | DatasourceStatusChanged. |
-|  [defaultConnectConfig](./foundation-comms.defaultconnectconfig.md) | The default configuration for connecting to a WS service. |
-|  [defaultCredentialManagerConfig](./foundation-comms.defaultcredentialmanagerconfig.md) | The default configuration for the CredentialManager service. |
-|  [defaultCredentialRequestOptions](./foundation-comms.defaultcredentialrequestoptions.md) | The default request options for the CredentialManager service. |
-|  [defaultDatasourceConfig](./foundation-comms.defaultdatasourceconfig.md) | Default DatasourceConfig DI implementation. |
-|  [defaultGenesisResourcesConfig](./foundation-comms.defaultgenesisresourcesconfig.md) | Default GenesisResourcesConfig implementation. |
-|  [defaultNetworkMonitorConfig](./foundation-comms.defaultnetworkmonitorconfig.md) | Default NetworkMonitorConfig DI implementation. |
-|  [exponentialScheduler](./foundation-comms.exponentialscheduler.md) | Expontential Interval scheduler for reconnect |
-|  [extractFieldDefinitions](./foundation-comms.extractfielddefinitions.md) | Extracts the field definitions from the metadata. |
-|  [GenesisResourcesChannelId](./foundation-comms.genesisresourceschannelid.md) |  |
-|  [isWebSocketExpression](./foundation-comms.iswebsocketexpression.md) | Regular Expression to test valid WebSocket (wss and ws) hosts |
-|  [linearScheduler](./foundation-comms.linearscheduler.md) | Linear Interval scheduler for reconnect |
-|  [logger](./foundation-comms.logger.md) | Logger for the foundation-comms package |
-|  [MAX\_RECONNECT\_ATTEMPTS](./foundation-comms.max_reconnect_attempts.md) | Default number of reconnect attempts |
-|  [messageHasErrorCode](./foundation-comms.messagehaserrorcode.md) | Check if the message contains an error code. |
-|  [messageOrThrow](./foundation-comms.messageorthrow.md) | Check if the provided message contains an error and throw an Error if it does |
-|  [MetadataEventType](./foundation-comms.metadataeventtype.md) |  |
-|  [networkLogger](./foundation-comms.networklogger.md) |  |
-|  [retryInterval](./foundation-comms.retryinterval.md) | Generate reconnect interval based on scheduler |
-|  [StreamCompleteEventType](./foundation-comms.streamcompleteeventtype.md) |  |
-|  [StreamErrorEventType](./foundation-comms.streamerroreventtype.md) |  |
-|  [StreamEventType](./foundation-comms.streameventtype.md) |  |
-|  [SystemHealthChanged](./foundation-comms.systemhealthchanged.md) | SystemHealthChanged. |
-|  [toFieldMetadata](./foundation-comms.tofieldmetadata.md) | Converts the field definitions to field metadata. |
-|  [TYPES\_MAP](./foundation-comms.types_map.md) | Types map for FieldTypeEnum. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CommitAckEventType](./foundation-comms.commitackeventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitEventType](./foundation-comms.commiteventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitResponseEventType](./foundation-comms.commitresponseeventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[credentialSeparator](./foundation-comms.credentialseparator.md)
+
+
+</td><td>
+
+The default separator used for splitting credential parts.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceStatusChanged](./foundation-comms.datasourcestatuschanged.md)
+
+
+</td><td>
+
+DatasourceStatusChanged.
+
+
+</td></tr>
+<tr><td>
+
+[defaultConnectConfig](./foundation-comms.defaultconnectconfig.md)
+
+
+</td><td>
+
+The default configuration for connecting to a WS service.
+
+
+</td></tr>
+<tr><td>
+
+[defaultCredentialManagerConfig](./foundation-comms.defaultcredentialmanagerconfig.md)
+
+
+</td><td>
+
+The default configuration for the CredentialManager service.
+
+
+</td></tr>
+<tr><td>
+
+[defaultCredentialRequestOptions](./foundation-comms.defaultcredentialrequestoptions.md)
+
+
+</td><td>
+
+The default request options for the CredentialManager service.
+
+
+</td></tr>
+<tr><td>
+
+[defaultDatasourceConfig](./foundation-comms.defaultdatasourceconfig.md)
+
+
+</td><td>
+
+Default DatasourceConfig DI implementation.
+
+
+</td></tr>
+<tr><td>
+
+[defaultGenesisResourcesConfig](./foundation-comms.defaultgenesisresourcesconfig.md)
+
+
+</td><td>
+
+Default GenesisResourcesConfig implementation.
+
+
+</td></tr>
+<tr><td>
+
+[defaultKVStorageConfig](./foundation-comms.defaultkvstorageconfig.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The default configuration for the KVStorage service.
+
+
+</td></tr>
+<tr><td>
+
+[defaultNetworkMonitorConfig](./foundation-comms.defaultnetworkmonitorconfig.md)
+
+
+</td><td>
+
+Default NetworkMonitorConfig DI implementation.
+
+
+</td></tr>
+<tr><td>
+
+[exponentialScheduler](./foundation-comms.exponentialscheduler.md)
+
+
+</td><td>
+
+Expontential Interval scheduler for reconnect
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResourcesChannelId](./foundation-comms.genesisresourceschannelid.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[isWebSocketExpression](./foundation-comms.iswebsocketexpression.md)
+
+
+</td><td>
+
+Regular Expression to test valid WebSocket (wss and ws) hosts
+
+
+</td></tr>
+<tr><td>
+
+[linearScheduler](./foundation-comms.linearscheduler.md)
+
+
+</td><td>
+
+Linear Interval scheduler for reconnect
+
+
+</td></tr>
+<tr><td>
+
+[logger](./foundation-comms.logger.md)
+
+
+</td><td>
+
+Logger for the foundation-comms package
+
+
+</td></tr>
+<tr><td>
+
+[MAX\_RECONNECT\_ATTEMPTS](./foundation-comms.max_reconnect_attempts.md)
+
+
+</td><td>
+
+Default number of reconnect attempts
+
+
+</td></tr>
+<tr><td>
+
+[MetadataEventType](./foundation-comms.metadataeventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[networkLogger](./foundation-comms.networklogger.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamCompleteEventType](./foundation-comms.streamcompleteeventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamErrorEventType](./foundation-comms.streamerroreventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamEventType](./foundation-comms.streameventtype.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SystemHealthChanged](./foundation-comms.systemhealthchanged.md)
+
+
+</td><td>
+
+SystemHealthChanged.
+
+
+</td></tr>
+<tr><td>
+
+[TYPES\_MAP](./foundation-comms.types_map.md)
+
+
+</td><td>
+
+Types map for FieldTypeEnum.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [AuthInfo](./foundation-comms.authinfo.md) | Union type of all authentication information types. |
-|  [BasicAuthInfo](./foundation-comms.basicauthinfo.md) | Represents basic authentication information. |
-|  [BasicCredentialsInput](./foundation-comms.basiccredentialsinput.md) | Represents basic credentials for a user. |
-|  [CommitEvent](./foundation-comms.commitevent.md) |  |
-|  [CommitEventDetail](./foundation-comms.commiteventdetail.md) |  |
-|  [CommitParams](./foundation-comms.commitparams.md) | Parameters for a COMMIT message |
-|  [ConnectionStatus](./foundation-comms.connectionstatus.md) | The connection status of the Genesis client. |
-|  [CredentialData\_2](./foundation-comms.credentialdata_2.md) | Represents user credentials. |
-|  [DataserverParams](./foundation-comms.dataserverparams.md) | Parameters for a DATA\_LOGON messages |
-|  [DatasourceStatus](./foundation-comms.datasourcestatus.md) | DatasourceStatus. |
-|  [DatasourceStatusChangedEvent](./foundation-comms.datasourcestatuschangedevent.md) | DatasourceStatusChangedEvent. |
-|  [FieldMetadata](./foundation-comms.fieldmetadata.md) | Field Metadata definition. |
-|  [FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) | Fitlered result after initial DATASERVER data fetch. |
-|  [GenesisConnectEvents](./foundation-comms.genesisconnectevents.md) | Genesis connect events that can be monitored to invoke resource checking. |
-|  [GenesisResourcesEvents](./foundation-comms.genesisresourcesevents.md) |  |
-|  [GetCredentialOptions](./foundation-comms.getcredentialoptions.md) | Represents options for retrieving credentials. |
-|  [IndexDetail](./foundation-comms.indexdetail.md) | Index Detail definition. |
-|  [JwtAuthInfo](./foundation-comms.jwtauthinfo.md) | Represents JWT authentication information. |
-|  [LoginResult](./foundation-comms.loginresult.md) | Represents the result of a user login operation. |
-|  [Message](./foundation-comms.message.md) | Base Message type for all DETAIL variants |
-|  [MessageError](./foundation-comms.messageerror.md) | Error definition for a message result |
-|  [MetaCache](./foundation-comms.metacache.md) | Union type of MetadataCache and JsonSchemaCache |
-|  [Metadata](./foundation-comms.metadata.md) | Metadata definition for a given resource. |
-|  [MetadataDetail](./foundation-comms.metadatadetail.md) | Metadata Detail definition. |
-|  [MetadataEvent](./foundation-comms.metadataevent.md) |  |
-|  [MetadataEventDetail](./foundation-comms.metadataeventdetail.md) |  |
-|  [MonitoredResource](./foundation-comms.monitoredresource.md) | MonitoredResource. |
-|  [MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md) | MonitoredResourceChecks. |
-|  [MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md) | MonitoredResourceDataLogon. |
-|  [PingMessage](./foundation-comms.pingmessage.md) |  |
-|  [PongMessage](./foundation-comms.pongmessage.md) |  |
-|  [RawDataServerResult](./foundation-comms.rawdataserverresult.md) | Raw result from a DATASERVER data fetch. |
-|  [RefreshAuthInfo](./foundation-comms.refreshauthinfo.md) | Represents refresh token authentication information. |
-|  [RefreshCredentialsInput](./foundation-comms.refreshcredentialsinput.md) | Represents refresh credentials for a user. |
-|  [ReplyDetail](./foundation-comms.replydetail.md) | Reply Detail definition. |
-|  [RequestDetailsParam](./foundation-comms.requestdetailsparam.md) |  |
-|  [RequestParams](./foundation-comms.requestparams.md) | Parameters for a REQ\_ messages |
-|  [RequestServerResult](./foundation-comms.requestserverresult.md) | Raw result from a REQUEST\_SERVER data fetch. |
-|  [ResourceHealth](./foundation-comms.resourcehealth.md) | ResourceHealth. |
-|  [ResourceItem](./foundation-comms.resourceitem.md) |  |
-|  [ResourcesMessage](./foundation-comms.resourcesmessage.md) |  |
-|  [RowData](./foundation-comms.rowdata.md) | Row Data definition. |
-|  [SchemaResponse](./foundation-comms.schemaresponse.md) | Schema Response definition. |
-|  [ServerRow](./foundation-comms.serverrow.md) | Server Row definition. |
-|  [SocketConnectOptions](./foundation-comms.socketconnectoptions.md) | The Socket connection options definition. |
-|  [SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md) | Socket reconnection options |
-|  [SocketReconnectScheduler](./foundation-comms.socketreconnectscheduler.md) | Socket reconnection scheduler |
-|  [SsoAuthInfo](./foundation-comms.ssoauthinfo.md) | Represents SSO authentication information. |
-|  [SSOCredentialsInput](./foundation-comms.ssocredentialsinput.md) | Represents SSO credentials for a user. |
-|  [StorageType](./foundation-comms.storagetype.md) | The available browser storage types. |
-|  [StreamCompleteEvent](./foundation-comms.streamcompleteevent.md) |  |
-|  [StreamCompleteEventDetail](./foundation-comms.streamcompleteeventdetail.md) |  |
-|  [StreamErrorEvent](./foundation-comms.streamerrorevent.md) |  |
-|  [StreamErrorEventDetail](./foundation-comms.streamerroreventdetail.md) |  |
-|  [StreamEvent](./foundation-comms.streamevent.md) |  |
-|  [StreamEventDetail](./foundation-comms.streameventdetail.md) |  |
-|  [StreamEventFunctions](./foundation-comms.streameventfunctions.md) |  |
-|  [SystemHealthChangedEvent](./foundation-comms.systemhealthchangedevent.md) | SystemHealthChangedEvent. |
-|  [SystemHealthStatus](./foundation-comms.systemhealthstatus.md) | SystemHealthStatus. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AuthInfo](./foundation-comms.authinfo.md)
+
+
+</td><td>
+
+Union type of all authentication information types.
+
+
+</td></tr>
+<tr><td>
+
+[BasicAuthInfo](./foundation-comms.basicauthinfo.md)
+
+
+</td><td>
+
+Represents basic authentication information.
+
+
+</td></tr>
+<tr><td>
+
+[BasicCredentialsInput](./foundation-comms.basiccredentialsinput.md)
+
+
+</td><td>
+
+Represents basic credentials for a user.
+
+
+</td></tr>
+<tr><td>
+
+[CommitAckEvent](./foundation-comms.commitackevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitAckEventDetail](./foundation-comms.commitackeventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitEvent](./foundation-comms.commitevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitEventDetail](./foundation-comms.commiteventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitParams](./foundation-comms.commitparams.md)
+
+
+</td><td>
+
+Parameters for a COMMIT message
+
+
+</td></tr>
+<tr><td>
+
+[CommitResponseEvent](./foundation-comms.commitresponseevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[CommitResponseEventDetail](./foundation-comms.commitresponseeventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ConnectionStatus](./foundation-comms.connectionstatus.md)
+
+
+</td><td>
+
+The connection status of the Genesis client.
+
+
+</td></tr>
+<tr><td>
+
+[CredentialData\_2](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+Represents user credentials.
+
+
+</td></tr>
+<tr><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+Parameters for a DATA\_LOGON messages
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceStatus](./foundation-comms.datasourcestatus.md)
+
+
+</td><td>
+
+DatasourceStatus.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceStatusChangedEvent](./foundation-comms.datasourcestatuschangedevent.md)
+
+
+</td><td>
+
+DatasourceStatusChangedEvent.
+
+
+</td></tr>
+<tr><td>
+
+[FieldMetadata](./foundation-comms.fieldmetadata.md)
+
+
+</td><td>
+
+Field Metadata definition.
+
+
+</td></tr>
+<tr><td>
+
+[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md)
+
+
+</td><td>
+
+Fitlered result after initial DATASERVER data fetch.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisConnectEvents](./foundation-comms.genesisconnectevents.md)
+
+
+</td><td>
+
+Genesis connect events that can be monitored to invoke resource checking.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisResourcesEvents](./foundation-comms.genesisresourcesevents.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[GetCredentialOptions](./foundation-comms.getcredentialoptions.md)
+
+
+</td><td>
+
+Represents options for retrieving credentials.
+
+
+</td></tr>
+<tr><td>
+
+[IndexDetail](./foundation-comms.indexdetail.md)
+
+
+</td><td>
+
+Index Detail definition.
+
+
+</td></tr>
+<tr><td>
+
+[JwtAuthInfo](./foundation-comms.jwtauthinfo.md)
+
+
+</td><td>
+
+Represents JWT authentication information.
+
+
+</td></tr>
+<tr><td>
+
+[KVEventFailureResponse](./foundation-comms.kveventfailureresponse.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KVStorage type.
+
+
+</td></tr>
+<tr><td>
+
+[KVValue](./foundation-comms.kvvalue.md)
+
+
+</td><td>
+
+**_(ALPHA)_** KVValue type.
+
+
+</td></tr>
+<tr><td>
+
+[LoginResult](./foundation-comms.loginresult.md)
+
+
+</td><td>
+
+Represents the result of a user login operation.
+
+
+</td></tr>
+<tr><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+Base Message type for all DETAIL variants
+
+
+</td></tr>
+<tr><td>
+
+[MessageError](./foundation-comms.messageerror.md)
+
+
+</td><td>
+
+Error definition for a message result
+
+
+</td></tr>
+<tr><td>
+
+[MetaCache](./foundation-comms.metacache.md)
+
+
+</td><td>
+
+Union type of MetadataCache and JsonSchemaCache
+
+
+</td></tr>
+<tr><td>
+
+[Metadata](./foundation-comms.metadata.md)
+
+
+</td><td>
+
+Metadata definition for a given resource.
+
+
+</td></tr>
+<tr><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)
+
+
+</td><td>
+
+Metadata Detail definition.
+
+
+</td></tr>
+<tr><td>
+
+[MetadataEvent](./foundation-comms.metadataevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[MetadataEventDetail](./foundation-comms.metadataeventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[MonitoredResource](./foundation-comms.monitoredresource.md)
+
+
+</td><td>
+
+MonitoredResource.
+
+
+</td></tr>
+<tr><td>
+
+[MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md)
+
+
+</td><td>
+
+MonitoredResourceChecks.
+
+
+</td></tr>
+<tr><td>
+
+[MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md)
+
+
+</td><td>
+
+MonitoredResourceDataLogon.
+
+
+</td></tr>
+<tr><td>
+
+[PingMessage](./foundation-comms.pingmessage.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[PongMessage](./foundation-comms.pongmessage.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[RawDataServerResult](./foundation-comms.rawdataserverresult.md)
+
+
+</td><td>
+
+Raw result from a DATASERVER data fetch.
+
+
+</td></tr>
+<tr><td>
+
+[RefreshAuthInfo](./foundation-comms.refreshauthinfo.md)
+
+
+</td><td>
+
+Represents refresh token authentication information.
+
+
+</td></tr>
+<tr><td>
+
+[RefreshCredentialsInput](./foundation-comms.refreshcredentialsinput.md)
+
+
+</td><td>
+
+Represents refresh credentials for a user.
+
+
+</td></tr>
+<tr><td>
+
+[ReplyDetail](./foundation-comms.replydetail.md)
+
+
+</td><td>
+
+Reply Detail definition.
+
+
+</td></tr>
+<tr><td>
+
+[RequestDetailsParam](./foundation-comms.requestdetailsparam.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+Parameters for a REQ\_ messages
+
+
+</td></tr>
+<tr><td>
+
+[RequestServerResult](./foundation-comms.requestserverresult.md)
+
+
+</td><td>
+
+Raw result from a REQUEST\_SERVER data fetch.
+
+
+</td></tr>
+<tr><td>
+
+[ResourceHealth](./foundation-comms.resourcehealth.md)
+
+
+</td><td>
+
+ResourceHealth.
+
+
+</td></tr>
+<tr><td>
+
+[ResourceItem](./foundation-comms.resourceitem.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[ResourcesMessage](./foundation-comms.resourcesmessage.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[RowData](./foundation-comms.rowdata.md)
+
+
+</td><td>
+
+Row Data definition.
+
+
+</td></tr>
+<tr><td>
+
+[SchemaResponse](./foundation-comms.schemaresponse.md)
+
+
+</td><td>
+
+Schema Response definition.
+
+
+</td></tr>
+<tr><td>
+
+[ServerRow](./foundation-comms.serverrow.md)
+
+
+</td><td>
+
+Server Row definition.
+
+
+</td></tr>
+<tr><td>
+
+[SocketConnectOptions](./foundation-comms.socketconnectoptions.md)
+
+
+</td><td>
+
+The Socket connection options definition.
+
+
+</td></tr>
+<tr><td>
+
+[SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md)
+
+
+</td><td>
+
+Socket reconnection options
+
+
+</td></tr>
+<tr><td>
+
+[SocketReconnectScheduler](./foundation-comms.socketreconnectscheduler.md)
+
+
+</td><td>
+
+Socket reconnection scheduler
+
+
+</td></tr>
+<tr><td>
+
+[SsoAuthInfo](./foundation-comms.ssoauthinfo.md)
+
+
+</td><td>
+
+Represents SSO authentication information.
+
+
+</td></tr>
+<tr><td>
+
+[SSOCredentialsInput](./foundation-comms.ssocredentialsinput.md)
+
+
+</td><td>
+
+Represents SSO credentials for a user.
+
+
+</td></tr>
+<tr><td>
+
+[StorageType](./foundation-comms.storagetype.md)
+
+
+</td><td>
+
+The available browser storage types.
+
+
+</td></tr>
+<tr><td>
+
+[StreamCompleteEvent](./foundation-comms.streamcompleteevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamCompleteEventDetail](./foundation-comms.streamcompleteeventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamErrorEvent](./foundation-comms.streamerrorevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamErrorEventDetail](./foundation-comms.streamerroreventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamEvent](./foundation-comms.streamevent.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamEventDetail](./foundation-comms.streameventdetail.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[StreamEventFunctions](./foundation-comms.streameventfunctions.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[SystemHealthChangedEvent](./foundation-comms.systemhealthchangedevent.md)
+
+
+</td><td>
+
+SystemHealthChangedEvent.
+
+
+</td></tr>
+<tr><td>
+
+[SystemHealthStatus](./foundation-comms.systemhealthstatus.md)
+
+
+</td><td>
+
+SystemHealthStatus.
+
+
+</td></tr>
+</tbody></table>
 

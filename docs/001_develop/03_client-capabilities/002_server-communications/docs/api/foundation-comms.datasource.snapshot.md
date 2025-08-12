@@ -17,11 +17,41 @@ snapshot(overrideParams?: any): Promise<Message>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  overrideParams | any | _(Optional)_ Optional parameters for taking the snapshot. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideParams
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ Optional parameters for taking the snapshot.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)&gt;
+Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 

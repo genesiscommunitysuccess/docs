@@ -18,13 +18,79 @@ export declare class SlottedStyles extends FASTElement
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [styles](./foundation-utils.slottedstyles.styles.md) |  | ElementStyles | The styles to apply to slotted elements. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[styles](./foundation-utils.slottedstyles.styles.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ElementStyles
+
+
+</td><td>
+
+The styles to apply to slotted elements.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [stylesChanged(prev, next)](./foundation-utils.slottedstyles.styleschanged.md) |  | Called when the <code>styles</code> property changes. Removes the previous styles from the parent element's FAST controller and adds the new styles. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[stylesChanged(prev, next)](./foundation-utils.slottedstyles.styleschanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called when the `styles` property changes. Removes the previous styles from the parent element's FAST controller and adds the new styles.
+
+
+</td></tr>
+</tbody></table>
 

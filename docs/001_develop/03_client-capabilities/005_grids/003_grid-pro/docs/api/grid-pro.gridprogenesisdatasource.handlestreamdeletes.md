@@ -17,9 +17,39 @@ handleStreamDeletes(deletes?: any[]): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  deletes | any\[\] | _(Optional)_ List of records to remove from the grid stream |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+deletes
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+_(Optional)_ List of records to remove from the grid stream
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

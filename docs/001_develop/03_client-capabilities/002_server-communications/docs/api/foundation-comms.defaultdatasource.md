@@ -18,41 +18,498 @@ export declare class DefaultDatasource implements Datasource
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(connect, auth, resources, config)](./foundation-comms.defaultdatasource._constructor_.md) |  | Constructs a new instance of the <code>DefaultDatasource</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(connect, auth, resources, config, connectEvents)](./foundation-comms.defaultdatasource._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultDatasource` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [auth](./foundation-comms.defaultdatasource.auth.md) | <code>protected</code> | [Auth](./foundation-comms.auth.md) |  |
-|  [availableIndexes](./foundation-comms.defaultdatasource.availableindexes.md) |  | [IndexDetail](./foundation-comms.indexdetail.md)\[\] |  |
-|  [config](./foundation-comms.defaultdatasource.config.md) | <code>protected</code> | [DatasourceConfig](./foundation-comms.datasourceconfig.md) |  |
-|  [connect](./foundation-comms.defaultdatasource.connect.md) | <code>protected</code> | [Connect](./foundation-comms.connect.md) |  |
-|  [customRequestFields](./foundation-comms.defaultdatasource.customrequestfields.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [fetchMetadataRequired](./foundation-comms.defaultdatasource.fetchmetadatarequired.md) |  | boolean |  |
-|  [fieldMetadata](./foundation-comms.defaultdatasource.fieldmetadata.md) |  | [FieldMetadata](./foundation-comms.fieldmetadata.md)\[\] |  |
-|  [initialized](./foundation-comms.defaultdatasource.initialized.md) | <code>readonly</code> | boolean | Indicates whether the datasource has been initialized. |
-|  [options](./foundation-comms.defaultdatasource.options.md) | <code>protected</code> | [DatasourceOptions](./foundation-comms.datasourceoptions.md) |  |
-|  [originalFieldDef](./foundation-comms.defaultdatasource.originalfielddef.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [readOnly](./foundation-comms.defaultdatasource.readonly.md) |  | boolean |  |
-|  [requestFields](./foundation-comms.defaultdatasource.requestfields.md) |  | [MetadataDetail](./foundation-comms.metadatadetail.md)\[\] |  |
-|  [resources](./foundation-comms.defaultdatasource.resources.md) | <code>protected</code> | [GenesisResources](./foundation-comms.genesisresources.md) |  |
-|  [resourceType](./foundation-comms.defaultdatasource.resourcetype.md) |  | [ResourceType](./foundation-comms.resourcetype.md) |  |
-|  [startStreamRequired](./foundation-comms.defaultdatasource.startstreamrequired.md) |  | boolean |  |
-|  [status](./foundation-comms.defaultdatasource.status.md) |  | [DatasourceStatus](./foundation-comms.datasourcestatus.md) |  |
-|  [stream](./foundation-comms.defaultdatasource.stream.md) |  | [SocketObservable](./foundation-comms.socketobservable.md)&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[auth](./foundation-comms.defaultdatasource.auth.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[Auth](./foundation-comms.auth.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[availableIndexes](./foundation-comms.defaultdatasource.availableindexes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[IndexDetail](./foundation-comms.indexdetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[config](./foundation-comms.defaultdatasource.config.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[DatasourceConfig](./foundation-comms.datasourceconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connect](./foundation-comms.defaultdatasource.connect.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connectEvents](./foundation-comms.defaultdatasource.connectevents.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[ConnectEvents](./foundation-comms.connectevents.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[customRequestFields](./foundation-comms.defaultdatasource.customrequestfields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[fetchMetadataRequired](./foundation-comms.defaultdatasource.fetchmetadatarequired.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[fieldMetadata](./foundation-comms.defaultdatasource.fieldmetadata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[initialized](./foundation-comms.defaultdatasource.initialized.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether the datasource has been initialized.
+
+
+</td></tr>
+<tr><td>
+
+[options](./foundation-comms.defaultdatasource.options.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[DatasourceOptions](./foundation-comms.datasourceoptions.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[originalFieldDef](./foundation-comms.defaultdatasource.originalfielddef.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[readOnly](./foundation-comms.defaultdatasource.readonly.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[requestFields](./foundation-comms.defaultdatasource.requestfields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[resources](./foundation-comms.defaultdatasource.resources.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[GenesisResources](./foundation-comms.genesisresources.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[resourceType](./foundation-comms.defaultdatasource.resourcetype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ResourceType](./foundation-comms.resourcetype.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[startStreamRequired](./foundation-comms.defaultdatasource.startstreamrequired.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[status](./foundation-comms.defaultdatasource.status.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DatasourceStatus](./foundation-comms.datasourcestatus.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[stream](./foundation-comms.defaultdatasource.stream.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./foundation-comms.defaultdatasource.destroy.md) |  | Destroys the datasource. |
-|  [fetchAndApplyMetadata(resourceName)](./foundation-comms.defaultdatasource.fetchandapplymetadata.md) | <code>protected</code> |  |
-|  [init(options, fetchMeta, startStream)](./foundation-comms.defaultdatasource.init.md) |  |  |
-|  [snapshot(overrideParams)](./foundation-comms.defaultdatasource.snapshot.md) |  |  |
-|  [snapshotFiltered(rowId)](./foundation-comms.defaultdatasource.snapshotfiltered.md) |  |  |
-|  [startStream()](./foundation-comms.defaultdatasource.startstream.md) |  |  |
-|  [validResourceName(resourceName)](./foundation-comms.defaultdatasource.validresourcename.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./foundation-comms.defaultdatasource.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Destroys the datasource.
+
+
+</td></tr>
+<tr><td>
+
+[fetchAndApplyMetadata(resourceName)](./foundation-comms.defaultdatasource.fetchandapplymetadata.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(options, fetchMeta, startStream)](./foundation-comms.defaultdatasource.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[snapshot(overrideParams)](./foundation-comms.defaultdatasource.snapshot.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[snapshotFiltered(rowId)](./foundation-comms.defaultdatasource.snapshotfiltered.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[startStream()](./foundation-comms.defaultdatasource.startstream.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[validResourceName(resourceName)](./foundation-comms.defaultdatasource.validresourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

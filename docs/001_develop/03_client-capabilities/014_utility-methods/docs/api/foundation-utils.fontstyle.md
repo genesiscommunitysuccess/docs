@@ -17,8 +17,49 @@ export declare enum FontStyle
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  Italic | <code>&quot;italic&quot;</code> |  |
-|  Normal | <code>&quot;normal&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+Italic
+
+
+</td><td>
+
+`"italic"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+Normal
+
+
+</td><td>
+
+`"normal"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

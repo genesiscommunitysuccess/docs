@@ -17,5 +17,5 @@ actionHeightMultiplier: import("@microsoft/fast-foundation").CSSDesignToken<stri
 
 ## Remarks
 
-Results in `--action-height-multiplier`. This is a DesignToken [https://www.fast.design/docs/design-systems/design-tokens/\#what-is-a-design-token](https://www.fast.design/docs/design-systems/design-tokens/#what-is-a-design-token) value. Defaults to `0.6px`. May have other values depending on the design system or can be set to a different value.
+Results in `--action-height-multiplier`<!-- -->. This is a DesignToken [https://www.fast.design/docs/design-systems/design-tokens/\#what-is-a-design-token](https://www.fast.design/docs/design-systems/design-tokens/#what-is-a-design-token) value. Defaults to `0.6px`<!-- -->. May have other values depending on the design system or can be set to a different value.
 

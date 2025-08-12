@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> Use ContextHandler from the @finos/fdc3 package instead
+> Use ContextHandler from the @<!-- -->finos/fdc3 package instead
 > 
 
 **Signature:**

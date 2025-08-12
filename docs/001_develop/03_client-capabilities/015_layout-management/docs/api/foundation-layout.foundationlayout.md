@@ -26,30 +26,364 @@ The constructor for this class is marked as internal. Third-party code should no
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [autoSaveKey?](./foundation-layout.foundationlayout.autosavekey.md) |  | string | _(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using <code>auto-save-key</code>. |
-|  [class](./foundation-layout.foundationlayout.class.md) |  | "FoundationLayoutMain" | Identifier constant token. |
-|  [customButtons](./foundation-layout.foundationlayout.custombuttons.md) |  | [CustomButton](./foundation-layout.custombutton.md)\[\] | Set custom button definition on this property to add them to the layout header controls |
-|  [dimensionsConfig?](./foundation-layout.foundationlayout.dimensionsconfig.md) |  | LayoutConfig.Dimensions | _(Optional)_ Apply dimensions config to the layout, such as setting the size of the drag handles. |
-|  [dragging](./foundation-layout.foundationlayout.dragging.md) |  | boolean | Set to true when the user is currently dragging the panes inside of the layout |
-|  [hasFirstLoaded](./foundation-layout.foundationlayout.hasfirstloaded.md) |  | boolean | Boolean signifies whether the layout has loaded for the first time or not. |
-|  [lifecycleUpdateToken](./foundation-layout.foundationlayout.lifecycleupdatetoken.md) |  | string \| undefined | Used to calculate whether a layout item should run its lifecycle methods or not |
-|  [missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md) |  | (missingItem: string) =&gt; string | Function which is used to generate the placeholder text when a layout is loaded with a missing item. |
-|  [popoutConfig](./foundation-layout.foundationlayout.popoutconfig.md) |  | string \| undefined | **_(BETA)_** Controls whether popout functionality is enabled on the layout. Defaults to disabled. Set this attribute to any string to enable popout functionality. If this string is of format <code>number;number</code> then this will be interpreted as the width and height of the popout window. |
-|  [reloadBuffer](./foundation-layout.foundationlayout.reloadbuffer.md) |  | number | Number describing how long to wait in ms before reloading the config when adding items declaratively by the html API. Default 500 (ms). |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[autoSaveKey?](./foundation-layout.foundationlayout.autosavekey.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using `auto-save-key`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[class](./foundation-layout.foundationlayout.class.md)
+
+
+</td><td>
+
+
+</td><td>
+
+"FoundationLayoutMain"
+
+
+</td><td>
+
+Identifier constant token.
+
+
+</td></tr>
+<tr><td>
+
+[customButtons](./foundation-layout.foundationlayout.custombuttons.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[CustomButton](./foundation-layout.custombutton.md)<!-- -->\[\]
+
+
+</td><td>
+
+Set custom button definition on this property to add them to the layout header controls
+
+
+</td></tr>
+<tr><td>
+
+[dimensionsConfig?](./foundation-layout.foundationlayout.dimensionsconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+LayoutConfig.Dimensions
+
+
+</td><td>
+
+_(Optional)_ Apply dimensions config to the layout, such as setting the size of the drag handles.
+
+
+</td></tr>
+<tr><td>
+
+[dragging](./foundation-layout.foundationlayout.dragging.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Set to true when the user is currently dragging the panes inside of the layout
+
+
+</td></tr>
+<tr><td>
+
+[hasFirstLoaded](./foundation-layout.foundationlayout.hasfirstloaded.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean signifies whether the layout has loaded for the first time or not.
+
+
+</td></tr>
+<tr><td>
+
+[lifecycleUpdateToken](./foundation-layout.foundationlayout.lifecycleupdatetoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string \| undefined
+
+
+</td><td>
+
+Used to calculate whether a layout item should run its lifecycle methods or not
+
+
+</td></tr>
+<tr><td>
+
+[missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(missingItem: string) =&gt; string
+
+
+</td><td>
+
+Function which is used to generate the placeholder text when a layout is loaded with a missing item.
+
+
+</td></tr>
+<tr><td>
+
+[popoutConfig](./foundation-layout.foundationlayout.popoutconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string \| undefined
+
+
+</td><td>
+
+**_(BETA)_** Controls whether popout functionality is enabled on the layout. Defaults to disabled. Set this attribute to any string to enable popout functionality. If this string is of format `number;number` then this will be interpreted as the width and height of the popout window.
+
+
+</td></tr>
+<tr><td>
+
+[reloadBuffer](./foundation-layout.foundationlayout.reloadbuffer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Number describing how long to wait in ms before reloading the config when adding items declaratively by the html API. Default 500 (ms).
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [addItem(config, placement)](./foundation-layout.foundationlayout.additem.md) |  | Dynamically add a new item to the layout. The user can move the new plane to whenever they want once it has been added. |
-|  [getLayout()](./foundation-layout.foundationlayout.getlayout.md) |  | Gets a minified string containing the config describing the current layout of the layout object to later restore in [function](./foundation-layout.foundationlayout.loadlayout.md) |
-|  [layoutRequiredRegistrations(layout)](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) | <code>static</code> | Gets all of the required element registry function names for a set of config |
-|  [loadLayout(layout, handleMissingItem, disableCache)](./foundation-layout.foundationlayout.loadlayout.md) |  | Restores a layout described in the config from [getLayout()](./foundation-layout.foundationlayout.getlayout.md) |
-|  [registeredItems()](./foundation-layout.foundationlayout.registereditems.md) |  | Gets all of the currently registered names |
-|  [registerItem(registration, elements)](./foundation-layout.foundationlayout.registeritem.md) |  | Register a collection of <code>Element</code> and associate them with an <code>ID</code> with the layout system for later use. |
-|  [removeItems(registration, force)](./foundation-layout.foundationlayout.removeitems.md) |  | Removes all instances of a specified registered item from the layout. |
-|  [tryActivatePopoutMode()](./foundation-layout.foundationlayout.tryactivatepopoutmode.md) |  | **_(BETA)_** If in a popout window from the dynamic layout, this function will run the flow to put the component in popout mode. This function is automatically called if using the declarative HTML API, but if only using the JavaScript API then you will need to call this function manually. |
-|  [tryLoadLayoutFromLocalStorage()](./foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) |  | Try to load a layout from local storage, or return false. Only required if manually calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md) |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addItem(config, placement)](./foundation-layout.foundationlayout.additem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Dynamically add a new item to the layout. The user can move the new plane to whenever they want once it has been added.
+
+
+</td></tr>
+<tr><td>
+
+[getLayout()](./foundation-layout.foundationlayout.getlayout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets a minified string containing the config describing the current layout of the layout object to later restore in [function](./foundation-layout.foundationlayout.loadlayout.md)
+
+
+</td></tr>
+<tr><td>
+
+[layoutRequiredRegistrations(layout)](./foundation-layout.foundationlayout.layoutrequiredregistrations.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+Gets all of the required element registry function names for a set of config
+
+
+</td></tr>
+<tr><td>
+
+[loadLayout(layout, handleMissingItem, disableCache)](./foundation-layout.foundationlayout.loadlayout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Restores a layout described in the config from [getLayout()](./foundation-layout.foundationlayout.getlayout.md)
+
+
+</td></tr>
+<tr><td>
+
+[registeredItems()](./foundation-layout.foundationlayout.registereditems.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets all of the currently registered names
+
+
+</td></tr>
+<tr><td>
+
+[registerItem(registration, elements)](./foundation-layout.foundationlayout.registeritem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Register a collection of `Element` and associate them with an `ID` with the layout system for later use.
+
+
+</td></tr>
+<tr><td>
+
+[removeItems(registration, force)](./foundation-layout.foundationlayout.removeitems.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Removes all instances of a specified registered item from the layout.
+
+
+</td></tr>
+<tr><td>
+
+[tryActivatePopoutMode()](./foundation-layout.foundationlayout.tryactivatepopoutmode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+**_(BETA)_** If in a popout window from the dynamic layout, this function will run the flow to put the component in popout mode. This function is automatically called if using the declarative HTML API, but if only using the JavaScript API then you will need to call this function manually.
+
+
+</td></tr>
+<tr><td>
+
+[tryLoadLayoutFromLocalStorage()](./foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Try to load a layout from local storage, or return false. Only required if manually calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md)
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,10 +17,53 @@ onCommitEvent(eventName: string, message: Message): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventName | string |  |
-|  message | [Message](./foundation-comms.message.md) | The message. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+The message.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,9 +17,39 @@ getLocalStorageItem(key: string | UserInfoKeys): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | string \| UserInfoKeys | The key of the item to get. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+string \| UserInfoKeys
+
+
+</td><td>
+
+The key of the item to get.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

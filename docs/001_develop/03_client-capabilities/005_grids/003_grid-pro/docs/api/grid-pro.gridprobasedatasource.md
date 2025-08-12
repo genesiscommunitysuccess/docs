@@ -17,36 +17,395 @@ export declare class GridProBaseDatasource extends GenesisGridDatasourceElement
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [agTransaction](./grid-pro.gridprobasedatasource.agtransaction.md) | <code>protected</code> | RowDataTransaction \| ServerSideTransaction |  |
-|  [applyAsyncFuncName](./grid-pro.gridprobasedatasource.applyasyncfuncname.md) | <code>protected</code> | string |  |
-|  [applyFuncName](./grid-pro.gridprobasedatasource.applyfuncname.md) | <code>protected</code> | string |  |
-|  [connectionSub](./grid-pro.gridprobasedatasource.connectionsub.md) | <code>protected</code> | Subscription \| undefined |  |
-|  [dataSubWasLoggedOff](./grid-pro.gridprobasedatasource.datasubwasloggedoff.md) | <code>protected</code> | boolean |  |
-|  [pagination](./grid-pro.gridprobasedatasource.pagination.md) | <p><code>protected</code></p><p><code>readonly</code></p> | boolean |  |
-|  [rowData](./grid-pro.gridprobasedatasource.rowdata.md) |  | Map&lt;string, any&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[agTransaction](./grid-pro.gridprobasedatasource.agtransaction.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+RowDataTransaction \| ServerSideTransaction
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyAsyncFuncName](./grid-pro.gridprobasedatasource.applyasyncfuncname.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyFuncName](./grid-pro.gridprobasedatasource.applyfuncname.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connectionSub](./grid-pro.gridprobasedatasource.connectionsub.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Subscription \| undefined
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[dataSubWasLoggedOff](./grid-pro.gridprobasedatasource.datasubwasloggedoff.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[pagination](./grid-pro.gridprobasedatasource.pagination.md)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[rowData](./grid-pro.gridprobasedatasource.rowdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;string, any&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [applyAllAgTransactions()](./grid-pro.gridprobasedatasource.applyallagtransactions.md) | <code>protected</code> |  |
-|  [applyTransaction(agTransaction)](./grid-pro.gridprobasedatasource.applytransaction.md) | <code>protected</code> |  |
-|  [applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprobasedatasource.applytransactionasync.md) | <code>protected</code> |  |
-|  [connectedCallback()](./grid-pro.gridprobasedatasource.connectedcallback.md) |  |  |
-|  [destroy()](./grid-pro.gridprobasedatasource.destroy.md) |  |  |
-|  [disconnectedCallback()](./grid-pro.gridprobasedatasource.disconnectedcallback.md) |  |  |
-|  [generateColumnDefsFromMetadata(fieldsMetadata, getFilterParamsByFieldType)](./grid-pro.gridprobasedatasource.generatecolumndefsfrommetadata.md) | <code>protected</code> |  |
-|  [getDatasourceStatusBarPanels(isServerSide)](./grid-pro.gridprobasedatasource.getdatasourcestatusbarpanels.md) |  | Gets datasource-specific status bar component configurations. This method should be called by the grid to get status bar panels specific to this datasource. |
-|  [handleStreamDeletes(deletedRows)](./grid-pro.gridprobasedatasource.handlestreamdeletes.md) | <code>protected</code> |  |
-|  [handleStreamInserts(insertedRows, addIndex)](./grid-pro.gridprobasedatasource.handlestreaminserts.md) | <code>protected</code> |  |
-|  [handleStreamUpdates(updatedRows)](./grid-pro.gridprobasedatasource.handlestreamupdates.md) | <code>protected</code> |  |
-|  [isDisconnected()](./grid-pro.gridprobasedatasource.isdisconnected.md) |  | Returns true if the grid has the ds-disconnected attribute. |
-|  [loadMore()](./grid-pro.gridprobasedatasource.loadmore.md) |  |  |
-|  [reloadResourceData()](./grid-pro.gridprobasedatasource.reloadresourcedata.md) |  |  |
-|  [restart()](./grid-pro.gridprobasedatasource.restart.md) |  |  |
-|  [setDisconnected(disconnected)](./grid-pro.gridprobasedatasource.setdisconnected.md) |  | Sets or removes the ds-disconnected attribute on the grid element. |
-|  [subscribeToConnection()](./grid-pro.gridprobasedatasource.subscribetoconnection.md) | <code>protected</code> |  |
-|  [unsubscribeFromConnection()](./grid-pro.gridprobasedatasource.unsubscribefromconnection.md) | <code>protected</code> |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[applyAllAgTransactions()](./grid-pro.gridprobasedatasource.applyallagtransactions.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyTransaction(agTransaction)](./grid-pro.gridprobasedatasource.applytransaction.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprobasedatasource.applytransactionasync.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./grid-pro.gridprobasedatasource.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[generateColumnDefsFromMetadata(fieldsMetadata, getFilterParamsByFieldType)](./grid-pro.gridprobasedatasource.generatecolumndefsfrommetadata.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getDatasourceStatusBarPanels(isServerSide)](./grid-pro.gridprobasedatasource.getdatasourcestatusbarpanels.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets datasource-specific status bar component configurations. This method should be called by the grid to get status bar panels specific to this datasource.
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamDeletes(deletedRows)](./grid-pro.gridprobasedatasource.handlestreamdeletes.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamInserts(insertedRows, addIndex)](./grid-pro.gridprobasedatasource.handlestreaminserts.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[handleStreamUpdates(updatedRows)](./grid-pro.gridprobasedatasource.handlestreamupdates.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisconnected()](./grid-pro.gridprobasedatasource.isdisconnected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns true if the grid has the ds-disconnected attribute.
+
+
+</td></tr>
+<tr><td>
+
+[loadMore()](./grid-pro.gridprobasedatasource.loadmore.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reloadResourceData()](./grid-pro.gridprobasedatasource.reloadresourcedata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[restart()](./grid-pro.gridprobasedatasource.restart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setDisconnected(disconnected)](./grid-pro.gridprobasedatasource.setdisconnected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Sets or removes the ds-disconnected attribute on the grid element.
+
+
+</td></tr>
+<tr><td>
+
+[subscribeToConnection()](./grid-pro.gridprobasedatasource.subscribetoconnection.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[unsubscribeFromConnection()](./grid-pro.gridprobasedatasource.unsubscribefromconnection.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -15,11 +15,69 @@ connect(host: string, options?: SocketConnectOptions, reconnectOptions?: SocketR
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  host | string |  |
-|  options | [SocketConnectOptions](./foundation-comms.socketconnectoptions.md) | _(Optional)_ |
-|  reconnectOptions | [SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+host
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+[SocketConnectOptions](./foundation-comms.socketconnectoptions.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+reconnectOptions
+
+
+</td><td>
+
+[SocketReconnectOptions](./foundation-comms.socketreconnectoptions.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

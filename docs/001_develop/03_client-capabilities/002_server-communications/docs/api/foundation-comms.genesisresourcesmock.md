@@ -17,18 +17,149 @@ export declare class GenesisResourcesMock implements GenesisResources
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [nextIsValidResourceResponse](./foundation-comms.genesisresourcesmock.nextisvalidresourceresponse.md) |  | boolean |  |
-|  [nextResourceTypeForResponse](./foundation-comms.genesisresourcesmock.nextresourcetypeforresponse.md) |  | [ResourceType](./foundation-comms.resourcetype.md) |  |
-|  [resources](./foundation-comms.genesisresourcesmock.resources.md) |  | [ResourceItem](./foundation-comms.resourceitem.md)\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[nextIsValidResourceResponse](./foundation-comms.genesisresourcesmock.nextisvalidresourceresponse.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[nextResourceTypeForResponse](./foundation-comms.genesisresourcesmock.nextresourcetypeforresponse.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ResourceType](./foundation-comms.resourcetype.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[resources](./foundation-comms.genesisresourcesmock.resources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./foundation-comms.genesisresourcesmock.destroy.md) |  |  |
-|  [getAllResources()](./foundation-comms.genesisresourcesmock.getallresources.md) |  |  |
-|  [getResourceTypeFor(resourceName)](./foundation-comms.genesisresourcesmock.getresourcetypefor.md) |  | Gets the type of resource |
-|  [isValidResource(resourceName)](./foundation-comms.genesisresourcesmock.isvalidresource.md) |  | Checks if the resource exists |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./foundation-comms.genesisresourcesmock.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getAllResources()](./foundation-comms.genesisresourcesmock.getallresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getResourceTypeFor(resourceName)](./foundation-comms.genesisresourcesmock.getresourcetypefor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets the type of resource
+
+
+</td></tr>
+<tr><td>
+
+[isValidResource(resourceName)](./foundation-comms.genesisresourcesmock.isvalidresource.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Checks if the resource exists
+
+
+</td></tr>
+</tbody></table>
 

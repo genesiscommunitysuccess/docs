@@ -18,25 +18,219 @@ export declare class DefaultSession implements Session
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [returnUrl](./foundation-comms.defaultsession.returnurl.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[returnUrl](./foundation-comms.defaultsession.returnurl.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [captureReturnUrl()](./foundation-comms.defaultsession.capturereturnurl.md) |  |  |
-|  [deleteUserFromSessionStorage()](./foundation-comms.defaultsession.deleteuserfromsessionstorage.md) |  |  |
-|  [getItem(key, storage)](./foundation-comms.defaultsession.getitem.md) |  |  |
-|  [getLocalStorageItem(key)](./foundation-comms.defaultsession.getlocalstorageitem.md) |  |  |
-|  [getSessionStorageItem(key)](./foundation-comms.defaultsession.getsessionstorageitem.md) |  |  |
-|  [removeItem(key, storage)](./foundation-comms.defaultsession.removeitem.md) |  |  |
-|  [removeLocalStorageItem(key)](./foundation-comms.defaultsession.removelocalstorageitem.md) |  |  |
-|  [removeSessionStorageItem(key)](./foundation-comms.defaultsession.removesessionstorageitem.md) |  |  |
-|  [setAuthResult(result)](./foundation-comms.defaultsession.setauthresult.md) |  |  |
-|  [setItem(key, value, storage)](./foundation-comms.defaultsession.setitem.md) |  |  |
-|  [setLocalStorageItem(key, value)](./foundation-comms.defaultsession.setlocalstorageitem.md) |  |  |
-|  [setSessionStorageItem(key, value)](./foundation-comms.defaultsession.setsessionstorageitem.md) |  |  |
-|  [setStorageKeyPrefix(prefix)](./foundation-comms.defaultsession.setstoragekeyprefix.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[captureReturnUrl()](./foundation-comms.defaultsession.capturereturnurl.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[deleteUserFromSessionStorage()](./foundation-comms.defaultsession.deleteuserfromsessionstorage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getItem(key, storage)](./foundation-comms.defaultsession.getitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getLocalStorageItem(key)](./foundation-comms.defaultsession.getlocalstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getSessionStorageItem(key)](./foundation-comms.defaultsession.getsessionstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeItem(key, storage)](./foundation-comms.defaultsession.removeitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeLocalStorageItem(key)](./foundation-comms.defaultsession.removelocalstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeSessionStorageItem(key)](./foundation-comms.defaultsession.removesessionstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setAuthResult(result)](./foundation-comms.defaultsession.setauthresult.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setItem(key, value, storage)](./foundation-comms.defaultsession.setitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setLocalStorageItem(key, value)](./foundation-comms.defaultsession.setlocalstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setSessionStorageItem(key, value)](./foundation-comms.defaultsession.setsessionstorageitem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setStorageKeyPrefix(prefix)](./foundation-comms.defaultsession.setstoragekeyprefix.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -15,11 +15,39 @@ delete(id: string): Promise<DatabaseAccessResult.Delete>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  id | string |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+id
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Delete](./foundation-utils.databaseaccessresult.delete.md)&gt;
+Promise&lt;[DatabaseAccessResult.Delete](./foundation-utils.databaseaccessresult.delete.md)<!-- -->&gt;
 

@@ -21,20 +21,154 @@ The public interface available on the injected store fragment.
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [errors](./foundation-store.store.errors.md) | <code>readonly</code> | ErrorMap&lt;EventDetailMap&gt; | Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md). |
-|  [name?](./foundation-store.store.name.md) | <code>readonly</code> | string | _(Optional)_ The name of the store fragment. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[errors](./foundation-store.store.errors.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+ErrorMap&lt;EventDetailMap&gt;
+
+
+</td><td>
+
+Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[name?](./foundation-store.store.name.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The name of the store fragment.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [addStoreFragments(storeFragments)](./foundation-store.store.addstorefragments.md) | Lazily add store fragments. |
-|  [binding(token, subscriberChangeCallback, isVolatileBinding, context)](./foundation-store.store.binding.md) | An api to allow the observation of values and arbitrary bindings outside the template engine. |
-|  [bindingAsRx()](./foundation-store.store.bindingasrx.md) | An api to allow the observation of values and arbitrary bindings as Rx observables. |
-|  [bindingAsRx(key)](./foundation-store.store.bindingasrx_1.md) |  |
-|  [bindingAsRx(getter)](./foundation-store.store.bindingasrx_2.md) |  |
-|  [bindingAsRx(token)](./foundation-store.store.bindingasrx_3.md) |  |
-|  [removeStoreFragments(storeFragments)](./foundation-store.store.removestorefragments.md) | Lazily remove store fragments. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addStoreFragments(storeFragments)](./foundation-store.store.addstorefragments.md)
+
+
+</td><td>
+
+Lazily add store fragments.
+
+
+</td></tr>
+<tr><td>
+
+[binding(token, subscriberChangeCallback, isVolatileBinding, context)](./foundation-store.store.binding.md)
+
+
+</td><td>
+
+An api to allow the observation of values and arbitrary bindings outside the template engine.
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx()](./foundation-store.store.bindingasrx.md)
+
+
+</td><td>
+
+An api to allow the observation of values and arbitrary bindings as Rx observables.
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx(key)](./foundation-store.store.bindingasrx_1.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx(getter)](./foundation-store.store.bindingasrx_2.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx(token)](./foundation-store.store.bindingasrx_3.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeStoreFragments(storeFragments)](./foundation-store.store.removestorefragments.md)
+
+
+</td><td>
+
+Lazily remove store fragments.
+
+
+</td></tr>
+</tbody></table>
 

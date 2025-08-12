@@ -17,10 +17,55 @@ trackEvent(eventName: FoundationAnalyticsEventType, payload: {}): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventName | [FoundationAnalyticsEventType](./foundation-comms.foundationanalyticseventtype.md) | The name of the event to track. |
-|  payload | {} | The payload data for the event. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventName
+
+
+</td><td>
+
+[FoundationAnalyticsEventType](./foundation-comms.foundationanalyticseventtype.md)
+
+
+</td><td>
+
+The name of the event to track.
+
+
+</td></tr>
+<tr><td>
+
+payload
+
+
+</td><td>
+
+{}
+
+
+</td><td>
+
+The payload data for the event.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

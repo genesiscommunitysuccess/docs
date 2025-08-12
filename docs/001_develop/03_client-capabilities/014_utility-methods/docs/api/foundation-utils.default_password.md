@@ -7,7 +7,7 @@ format: md
 
 ## DEFAULT\_PASSWORD variable
 
-The default Password value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
+The default Password value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
 
 **Signature:**
 

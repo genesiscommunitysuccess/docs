@@ -17,16 +17,161 @@ export declare enum GridProCaseType
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  camelCase | <code>&quot;camelCase&quot;</code> |  |
-|  capitalCase | <code>&quot;capitalCase&quot;</code> |  |
-|  dotCase | <code>&quot;dotCase&quot;</code> |  |
-|  headerCase | <code>&quot;headerCase&quot;</code> |  |
-|  noCase | <code>&quot;noCase&quot;</code> |  |
-|  paramCase | <code>&quot;paramCase&quot;</code> |  |
-|  pascalCase | <code>&quot;pascalCase&quot;</code> |  |
-|  pathCase | <code>&quot;pathCase&quot;</code> |  |
-|  sentenceCase | <code>&quot;sentenceCase&quot;</code> |  |
-|  snakeCase | <code>&quot;snakeCase&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+camelCase
+
+
+</td><td>
+
+`"camelCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+capitalCase
+
+
+</td><td>
+
+`"capitalCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+dotCase
+
+
+</td><td>
+
+`"dotCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+headerCase
+
+
+</td><td>
+
+`"headerCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+noCase
+
+
+</td><td>
+
+`"noCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+paramCase
+
+
+</td><td>
+
+`"paramCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+pascalCase
+
+
+</td><td>
+
+`"pascalCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+pathCase
+
+
+</td><td>
+
+`"pathCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+sentenceCase
+
+
+</td><td>
+
+`"sentenceCase"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+snakeCase
+
+
+</td><td>
+
+`"snakeCase"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

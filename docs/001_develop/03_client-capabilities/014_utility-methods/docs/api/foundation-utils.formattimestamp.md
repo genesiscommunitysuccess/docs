@@ -17,10 +17,55 @@ export declare function formatTimestamp(timestamp: number, withTime: boolean): s
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  timestamp | number | The UNIX Timestamp. |
-|  withTime | boolean | The flag to determine if formatted value should contain 'time' info. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+timestamp
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The UNIX Timestamp.
+
+
+</td></tr>
+<tr><td>
+
+withTime
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+The flag to determine if formatted value should contain 'time' info.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

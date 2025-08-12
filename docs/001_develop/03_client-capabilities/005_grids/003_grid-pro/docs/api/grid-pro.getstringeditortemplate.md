@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getStringEditorTemplate](./grid-pro.getstringeditortemplate.md)
 
-## getStringEditorTemplate variable
+## getStringEditorTemplate() function
 
 Get a Design System prefixed String template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed String template.
 ```typescript
 getStringEditorTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<StringEditor, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[StringEditor](./grid-pro.stringeditor.md)<!-- -->, any&gt;
+
+A String component template prefixed with the correct design system.
+

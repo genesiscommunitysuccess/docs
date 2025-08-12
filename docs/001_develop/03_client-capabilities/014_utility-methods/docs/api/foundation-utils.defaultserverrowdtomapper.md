@@ -7,7 +7,7 @@ format: md
 
 ## DefaultServerRowDTOMapper class
 
-The default `ServerRowDTOMapper`.
+The default `ServerRowDTOMapper`<!-- -->.
 
 **Signature:**
 
@@ -18,8 +18,64 @@ export declare class DefaultServerRowDTOMapper implements ServerRowDTOMapper
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [fromDTO](./foundation-utils.defaultserverrowdtomapper.fromdto.md) |  | (dto: [ServerRowDTO](./foundation-utils.serverrowdto.md)) =&gt; [ServerRowEntity](./foundation-utils.serverrowentity.md) | Converts a server row DTO to an entity. |
-|  [toDTO](./foundation-utils.defaultserverrowdtomapper.todto.md) |  | (entity: [ServerRowEntity](./foundation-utils.serverrowentity.md)) =&gt; [ServerRowDTO](./foundation-utils.serverrowdto.md) | Converts a server row entity to a DTO. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[fromDTO](./foundation-utils.defaultserverrowdtomapper.fromdto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(dto: [ServerRowDTO](./foundation-utils.serverrowdto.md)<!-- -->) =&gt; [ServerRowEntity](./foundation-utils.serverrowentity.md)
+
+
+</td><td>
+
+Converts a server row DTO to an entity.
+
+
+</td></tr>
+<tr><td>
+
+[toDTO](./foundation-utils.defaultserverrowdtomapper.todto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(entity: [ServerRowEntity](./foundation-utils.serverrowentity.md)<!-- -->) =&gt; [ServerRowDTO](./foundation-utils.serverrowdto.md)
+
+
+</td><td>
+
+Converts a server row entity to a DTO.
+
+
+</td></tr>
+</tbody></table>
 

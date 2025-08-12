@@ -17,15 +17,95 @@ export interface DatasourceConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [eventEmitter?](./foundation-comms.datasourceconfig.eventemitter.md) |  | HTMLElement | _(Optional)_ The element to emit events from. |
-|  [options](./foundation-comms.datasourceconfig.options.md) |  | [DatasourceOptions](./foundation-comms.datasourceoptions.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[eventEmitter?](./foundation-comms.datasourceconfig.eventemitter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_ The element to emit events from.
+
+
+</td></tr>
+<tr><td>
+
+[options](./foundation-comms.datasourceconfig.options.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DatasourceOptions](./foundation-comms.datasourceoptions.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [criteriaToFields(filters)](./foundation-comms.datasourceconfig.criteriatofields.md) |  |
-|  [dataServerResultFilter(result, rowId)](./foundation-comms.datasourceconfig.dataserverresultfilter.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[criteriaToFields(filters)](./foundation-comms.datasourceconfig.criteriatofields.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[dataServerResultFilter(result, rowId)](./foundation-comms.datasourceconfig.dataserverresultfilter.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
