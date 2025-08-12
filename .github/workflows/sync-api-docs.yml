@@ -137,30 +137,29 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [ "${{ env.AUTO_DRY_RUN }}" == "true" ]; then
-            echo "🏃‍♂️ DRY RUN MODE - Skipping git changes check"
-            echo "In dry run mode, no git changes are expected or made"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "🔍 Checking for changes in working directory..."
+          echo "🔍 Checking for changes in working directory..."
+          
+          # Use git diff and git status to check for changes
+          git_status_output=$(git status --porcelain)
+          
+          if [ -n "$git_status_output" ]; then
+            echo "✅ Changes detected:"
+            echo "$git_status_output"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
             
-            # Use git diff and git status to check for changes
-            git_status_output=$(git status --porcelain)
-            
-            if [ -n "$git_status_output" ]; then
-              echo "✅ Changes detected:"
-              echo "$git_status_output"
-              echo "has_changes=true" >> $GITHUB_OUTPUT
-            else
-              echo "ℹ️  No changes detected in working directory"
-              echo "has_changes=false" >> $GITHUB_OUTPUT
+            if [ "${{ env.AUTO_DRY_RUN }}" == "true" ]; then
+              echo ""
+              echo "🏃‍♂️ DRY RUN MODE - Changes detected but will not be committed"
             fi
-            
-            # Also show git status for debugging
-            echo ""
-            echo "Full git status:"
-            git status
+          else
+            echo "ℹ️  No changes detected in working directory"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
+          
+          # Also show git status for debugging
+          echo ""
+          echo "Full git status:"
+          git status
       
       - name: Create Pull Request
         if: steps.check_changes.outputs.has_changes == 'true' && env.AUTO_DRY_RUN == 'false'
@@ -191,14 +190,22 @@ jobs:
             documentation
       
       - name: Dry Run Summary
-        if: steps.check_changes.outputs.has_changes == 'true' && env.AUTO_DRY_RUN == 'true'
+        if: env.AUTO_DRY_RUN == 'true'
         run: |
           echo "🏃‍♂️ **DRY RUN MODE** - PR creation skipped"
           echo ""
           echo "📋 **Summary:**"
           echo "- ✅ Script executed successfully"
-          echo "- ✅ Changes detected and would be committed"
+          if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
+            echo "- ✅ Changes detected and would be committed"
+          else
+            echo "- ℹ️  No changes detected (packages already up to date)"
+          fi
           echo "- ✅ Version: ${{ steps.sync.outputs.version }}"
           echo "- ✅ Target branch: ${{ env.TARGET_BRANCH }}"
           echo ""
-          echo "To create the actual PR, re-run without dry_run mode."
+          if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
+            echo "To create the actual PR, re-run without dry_run mode."
+          else
+            echo "No PR needed - packages are already at the latest version."
+          fi
