@@ -406,7 +406,8 @@ function parseArguments() {
     createBranch: false,
     commit: false,
     push: false,
-    createPR: false
+    createPR: false,
+    dryRun: false
   };
   
   for (const arg of args) {
@@ -422,6 +423,9 @@ function parseArguments() {
         break;
       case '--create-pr':
         options.createPR = true;
+        break;
+      case '--dry-run':
+        options.dryRun = true;
         break;
       case '--all':
         options.createBranch = true;
@@ -441,6 +445,7 @@ Options:
   --commit           Commit changes to git
   --push             Push branch to remote
   --create-pr        Create pull request (local only)
+  --dry-run          Skip all git operations (testing mode)
   --all              Enable all git operations (equivalent to --create-branch --commit --push --create-pr)
   --help, -h         Show this help message
 
@@ -547,7 +552,13 @@ async function main() {
     await updateProcessedMapWithVersions(latestVersion);
     
     // Git operations (optional)
-    if (options.createBranch || options.commit || options.push || options.createPR) {
+    if (options.dryRun) {
+      console.log('\n🏃‍♂️ DRY RUN MODE - All git operations skipped');
+      console.log('  ✓ Package updates completed');
+      console.log('  ✓ API docs processing completed');
+      console.log('  ✓ ProcessedMap updated');
+      console.log('  ❌ Git operations skipped (dry run mode)');
+    } else if (options.createBranch || options.commit || options.push || options.createPR) {
       console.log('\n📝 Git operations enabled:');
       console.log(`  Create branch: ${options.createBranch}`);
       console.log(`  Commit: ${options.commit}`);

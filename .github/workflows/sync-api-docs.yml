@@ -21,20 +21,20 @@ on:
     branches:
       # Allow testing on feature branches that match this pattern
       - 'sync-api-docs-*'
-      - 'test-sync-*'
     paths:
       - '.github/workflows/sync-api-docs.yml'
       - 'scripts/sync-api-docs.js'
   pull_request:
-    branches: [ main, master, preprod ]
-    paths:
-      - '.github/workflows/sync-api-docs.yml'
-      - 'scripts/sync-api-docs.js'
+    branches: [ preprod ]
     types: [ opened, synchronize, ready_for_review ]
 
 jobs:
   sync-api-docs:
     runs-on: ubuntu-latest
+    # Only run for sync-api-docs branches when in PR context, or always run for other triggers
+    if: |
+      github.event_name != 'pull_request' || 
+      startsWith(github.head_ref, 'sync-api-docs')
 
     strategy:
       matrix:
@@ -75,10 +75,14 @@ jobs:
           echo "Auto Dry Run: ${{ env.AUTO_DRY_RUN }}"
           echo "Target Branch: ${{ env.TARGET_BRANCH }}"
           echo "Source Branch: ${{ github.ref_name }}"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Head Ref: ${{ github.head_ref }}"
+            echo "Branch Filter: Only runs for branches starting with 'sync-api-docs'"
+          fi
           echo ""
           if [ "${{ env.IS_PR_CONTEXT }}" == "true" ]; then
             echo "🛡️  **SAFE TESTING MODE ENABLED**"
-            echo "- This is a PR context"
+            echo "- This is a PR from sync-api-docs branch"
             echo "- Dry run mode is automatically enabled"
             echo "- No PR will be created to preprod"
             echo "- Testing script functionality only"
@@ -96,7 +100,15 @@ jobs:
           set -o pipefail
           
           echo "🚀 Starting API docs sync..."
-          node scripts/sync-api-docs.js --all 2>&1 | tee sync_output.log
+          
+          # Choose script arguments based on context
+          if [ "${{ env.AUTO_DRY_RUN }}" == "true" ]; then
+            echo "Running in dry-run mode..."
+            node scripts/sync-api-docs.js --dry-run 2>&1 | tee sync_output.log
+          else
+            echo "Running in full mode..."
+            node scripts/sync-api-docs.js --all 2>&1 | tee sync_output.log
+          fi
           
           # Check if the script succeeded
           if [ ${PIPESTATUS[0]} -ne 0 ]; then
