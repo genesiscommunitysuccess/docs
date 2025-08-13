@@ -160,10 +160,15 @@ async function installDependencies() {
   console.log('Installing updated dependencies...');
   
   try {
+    console.log('  Running: npm install');
     execSync('npm install', { stdio: 'inherit' });
     console.log('✓ Dependencies installed');
   } catch (error) {
-    console.error('Failed to install dependencies:', error.message);
+    console.error('❌ Failed to install dependencies:', error.message);
+    console.error('  Command: npm install');
+    console.error('  Exit code:', error.status);
+    if (error.stdout) console.error('  Stdout:', error.stdout.toString());
+    if (error.stderr) console.error('  Stderr:', error.stderr.toString());
     throw error;
   }
 }
@@ -172,10 +177,15 @@ async function buildApiDocsPlugin() {
   console.log('Building api-docs plugin...');
   
   try {
+    console.log('  Running: cd plugins/api-docs && npm run build');
     execSync('cd plugins/api-docs && npm run build', { stdio: 'inherit' });
     console.log('✓ api-docs plugin built');
   } catch (error) {
-    console.error('Failed to build api-docs plugin:', error.message);
+    console.error('❌ Failed to build api-docs plugin:', error.message);
+    console.error('  Command: cd plugins/api-docs && npm run build');
+    console.error('  Exit code:', error.status);
+    if (error.stdout) console.error('  Stdout:', error.stdout.toString());
+    if (error.stderr) console.error('  Stderr:', error.stderr.toString());
     throw error;
   }
 }
@@ -306,15 +316,24 @@ async function commitChanges(newVersion) {
     // 2. processedMap.js (for processed map)
     // 3. API docs in docs/ folder (but NOT .mdx files)
     
+    console.log('  Adding package.json...');
     execSync('git add package.json', { stdio: 'inherit' });
+    
+    console.log('  Adding processedMap.js...');
     execSync('git add plugins/api-docs/processedMap.js', { stdio: 'inherit' });
     
     // Add API docs files in docs/ folder, but exclude .mdx files
     // Only add .md files in docs/api/ subdirectories
-    execSync('git add "docs/**/api/**/*.md"', { stdio: 'inherit' });
-    execSync('git add "docs/**/api/**/*.json"', { stdio: 'inherit' });
+    console.log('  Adding docs API files...');
+    try {
+      execSync('git add "docs/**/api/**/*.md"', { stdio: 'inherit' });
+      execSync('git add "docs/**/api/**/*.json"', { stdio: 'inherit' });
+    } catch (e) {
+      console.log('  No API docs files to add (this is normal if no new docs were generated)');
+    }
     
     // Check if there are any staged changes
+    console.log('  Checking for staged changes...');
     const stagedChanges = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim();
     
     if (!stagedChanges) {
@@ -325,6 +344,7 @@ async function commitChanges(newVersion) {
     console.log('Files to be committed:');
     console.log(stagedChanges);
     
+    console.log('  Creating commit...');
     execSync(`git commit -m "chore: sync API docs to version ${newVersion}
 
 - Updated @genesislcap packages to version ${newVersion}
@@ -332,7 +352,10 @@ async function commitChanges(newVersion) {
 - Updated processedMap with new versions"`, { stdio: 'inherit' });
     console.log('✓ Changes committed');
   } catch (error) {
-    console.error('Failed to commit changes:', error.message);
+    console.error('❌ Failed to commit changes:', error.message);
+    console.error('  Exit code:', error.status);
+    if (error.stdout) console.error('  Stdout:', error.stdout.toString());
+    if (error.stderr) console.error('  Stderr:', error.stderr.toString());
     throw error;
   }
 }
@@ -383,7 +406,8 @@ function parseArguments() {
     createBranch: false,
     commit: false,
     push: false,
-    createPR: false
+    createPR: false,
+    dryRun: false
   };
   
   for (const arg of args) {
@@ -399,6 +423,9 @@ function parseArguments() {
         break;
       case '--create-pr':
         options.createPR = true;
+        break;
+      case '--dry-run':
+        options.dryRun = true;
         break;
       case '--all':
         options.createBranch = true;
@@ -418,6 +445,7 @@ Options:
   --commit           Commit changes to git
   --push             Push branch to remote
   --create-pr        Create pull request (local only)
+  --dry-run          Skip all git operations (testing mode)
   --all              Enable all git operations (equivalent to --create-branch --commit --push --create-pr)
   --help, -h         Show this help message
 
@@ -438,11 +466,53 @@ Examples:
   return options;
 }
 
+async function performPreflightChecks() {
+  console.log('🔍 Performing pre-flight checks...');
+  
+  // Check if we're in the right directory
+  if (!fs.existsSync('./package.json')) {
+    throw new Error('package.json not found. Make sure you\'re running this script from the project root.');
+  }
+  
+  // Check if required paths exist
+  const requiredPaths = [
+    './plugins/api-docs',
+    './plugins/api-docs/processedMap.js',
+    './scripts/sync-api-docs.js'
+  ];
+  
+  for (const filePath of requiredPaths) {
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Required path not found: ${filePath}`);
+    }
+  }
+  
+  // Check if we can run basic git commands
+  try {
+    execSync('git --version', { stdio: 'pipe' });
+  } catch (error) {
+    throw new Error('Git is not available or not working properly');
+  }
+  
+  // Check if npm is available
+  try {
+    execSync('npm --version', { stdio: 'pipe' });
+  } catch (error) {
+    throw new Error('npm is not available or not working properly');
+  }
+  
+  console.log('✓ Pre-flight checks passed');
+}
+
 async function main() {
   try {
     const options = parseArguments();
     
     console.log('🚀 Starting API docs sync automation...\n');
+    
+    // Step 0: Pre-flight checks
+    await performPreflightChecks();
+    console.log();
     
     // Step 1: Get latest version
     const latestVersion = await getLatestVersion();
@@ -482,7 +552,13 @@ async function main() {
     await updateProcessedMapWithVersions(latestVersion);
     
     // Git operations (optional)
-    if (options.createBranch || options.commit || options.push || options.createPR) {
+    if (options.dryRun) {
+      console.log('\n🏃‍♂️ DRY RUN MODE - All git operations skipped');
+      console.log('  ✓ Package updates completed');
+      console.log('  ✓ API docs processing completed');
+      console.log('  ✓ ProcessedMap updated');
+      console.log('  ❌ Git operations skipped (dry run mode)');
+    } else if (options.createBranch || options.commit || options.push || options.createPR) {
       console.log('\n📝 Git operations enabled:');
       console.log(`  Create branch: ${options.createBranch}`);
       console.log(`  Commit: ${options.commit}`);
@@ -519,6 +595,23 @@ async function main() {
     
   } catch (error) {
     console.error('\n❌ API docs sync failed:', error.message);
+    console.error('\nFull error details:');
+    console.error('  Stack trace:', error.stack);
+    if (error.stdout) console.error('  Stdout:', error.stdout.toString());
+    if (error.stderr) console.error('  Stderr:', error.stderr.toString());
+    if (error.status) console.error('  Exit code:', error.status);
+    if (error.signal) console.error('  Signal:', error.signal);
+    
+    // Also try to print current working directory and git status for debugging
+    try {
+      console.error('\nDebugging information:');
+      console.error('  Current working directory:', process.cwd());
+      console.error('  Git status:');
+      execSync('git status --porcelain', { stdio: 'inherit' });
+    } catch (debugError) {
+      console.error('  Could not get debugging info:', debugError.message);
+    }
+    
     process.exit(1);
   }
 }
