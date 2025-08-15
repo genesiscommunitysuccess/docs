@@ -193,6 +193,8 @@ async function buildApiDocsPlugin() {
 async function copyDocsDirectly() {
   console.log('Copying docs without starting server...');
 
+  let totalApiDocsCopied = 0;
+
   try {
     const manifest = require(path.resolve('./plugins/api-docs/dist/manifest.js')).default;
     const processedMap = require(path.resolve(PROCESSED_MAP_PATH));
@@ -204,7 +206,7 @@ async function copyDocsDirectly() {
 
     if (!packagesToProcess.length) {
       console.log('[api-docs-plugin] No packages awaiting processing.');
-      return;
+      return { apiDocsCopied: 0 };
     }
 
     for (const pkg of packagesToProcess) {
@@ -247,13 +249,15 @@ async function copyDocsDirectly() {
 
               await fs.writeFile(destFile, content);
               console.log(`  Copied API doc: ${file}`);
+              totalApiDocsCopied++;
             }
           }
         }
       }
     }
 
-    console.log('✓ Docs copied successfully');
+    console.log(`✓ Docs copied successfully (${totalApiDocsCopied} API docs copied)`);
+    return { apiDocsCopied: totalApiDocsCopied };
   } catch (error) {
     console.error('Failed to copy docs:', error.message);
     throw error;
@@ -264,7 +268,8 @@ async function copyDocsWithoutStarting() {
   console.log('Copying docs without starting server...');
 
   try {
-    await copyDocsDirectly();
+    const result = await copyDocsDirectly();
+    return result;
   } catch (error) {
     console.error('Failed to copy docs:', error.message);
     throw error;
@@ -307,7 +312,7 @@ async function createGitBranch() {
   }
 }
 
-async function commitChanges(newVersion) {
+async function commitChanges(newVersion, apiDocsCopied) {
   console.log('Committing changes...');
   
   try {
@@ -344,12 +349,12 @@ async function commitChanges(newVersion) {
     console.log('Files to be committed:');
     console.log(stagedChanges);
     
+    // Since this function is only called when API docs exist, we can simplify
+    const commitTitle = `chore: upgrade FUI packages to version ${newVersion} + sync FUI api-docs`;
+    const commitBody = `- Updated @genesislcap packages to version ${newVersion}\n- Regenerated API documentation from updated packages (${apiDocsCopied} files)\n- Updated processedMap with new versions`;
+    
     console.log('  Creating commit...');
-    execSync(`git commit -m "chore: sync API docs to version ${newVersion}
-
-- Updated @genesislcap packages to version ${newVersion}
-- Regenerated API documentation from updated packages
-- Updated processedMap with new versions"`, { stdio: 'inherit' });
+    execSync(`git commit -m "${commitTitle}\n\n${commitBody}"`, { stdio: 'inherit' });
     console.log('✓ Changes committed');
   } catch (error) {
     console.error('❌ Failed to commit changes:', error.message);
@@ -379,7 +384,7 @@ async function pushBranch(branchName) {
   }
 }
 
-async function createPullRequest(branchName, newVersion) {
+async function createPullRequest(branchName, newVersion, apiDocsCopied) {
   console.log('Creating pull request...');
   
   // In GitHub Actions, the PR creation action will handle this
@@ -388,16 +393,20 @@ async function createPullRequest(branchName, newVersion) {
     return;
   }
   
+  // Since this function is only called when API docs exist, we can simplify
+  const prTitle = `chore: upgrade FUI packages to version ${newVersion} + sync FUI api-docs`;
+  const prDescription = `Updated @genesislcap packages to version ${newVersion} and regenerated API documentation (${apiDocsCopied} files)`;
+  
   // For local runs, provide instructions
   console.log('\n=== PULL REQUEST CREATION ===');
   console.log(`Branch: ${branchName}`);
-  console.log(`Title: chore: sync API docs to version ${newVersion}`);
+  console.log(`Title: ${prTitle}`);
   console.log(`Description:`);
   console.log(`- Updated @genesislcap packages to version ${newVersion}`);
-  console.log(`- Regenerated API documentation from updated packages`);
+  console.log(`- Regenerated API documentation from updated packages (${apiDocsCopied} files)`);
   console.log(`- Updated processedMap with new versions`);
   console.log('\nTo create the PR, run:');
-  console.log(`gh pr create --title "chore: sync API docs to version ${newVersion}" --body "Updated @genesislcap packages to version ${newVersion} and regenerated API documentation" --base main`);
+  console.log(`gh pr create --title "${prTitle}" --body "${prDescription}" --base main`);
 }
 
 function parseArguments() {
@@ -546,7 +555,8 @@ async function main() {
     await buildApiDocsPlugin();
     
     // Step 7: Copy docs without starting server
-    await copyDocsWithoutStarting();
+    const copyResult = await copyDocsWithoutStarting();
+    const apiDocsCopied = copyResult?.apiDocsCopied || 0;
     
     // Step 8: Update processedMap with new versions
     await updateProcessedMapWithVersions(latestVersion);
@@ -566,6 +576,16 @@ async function main() {
       console.log(`  Create PR: ${options.createPR}`);
       console.log();
       
+      // Check if commits/PRs should be skipped due to no API docs
+      if (apiDocsCopied === 0) {
+        console.log('⚠️  Skipping git operations - no API docs were found or copied');
+        console.log('   Only package version updates were made, no meaningful changes to commit');
+        options.createBranch = false;
+        options.commit = false;
+        options.push = false;
+        options.createPR = false;
+      }
+      
       let branchName = null;
       
       if (options.createBranch) {
@@ -575,7 +595,7 @@ async function main() {
       
       if (options.commit) {
         // Step 9: Commit changes
-        await commitChanges(latestVersion);
+        await commitChanges(latestVersion, apiDocsCopied);
       }
       
       if (options.push && branchName) {
@@ -585,7 +605,7 @@ async function main() {
       
       if (options.createPR && branchName) {
         // Step 11: Create pull request
-        await createPullRequest(branchName, latestVersion);
+        await createPullRequest(branchName, latestVersion, apiDocsCopied);
       }
     } else {
       console.log('\n📝 Git operations skipped (use --all, --commit, or other flags to enable)');
@@ -629,6 +649,7 @@ module.exports = {
   installDependencies,
   buildApiDocsPlugin,
   copyDocsWithoutStarting,
+  copyDocsDirectly,
   updateProcessedMapWithVersions,
   createGitBranch,
   commitChanges,
