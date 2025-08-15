@@ -70,12 +70,12 @@ const cardData = [
     "text": "Focused overlay content",
     children: <ModalDemo />,
   },
-  {
-    "heading": "Scheduler",
-    "link": "/develop/client-capabilities/interaction/client-interaction-scheduler/",
-    "text": "component for scheduling tasks",
-    children: <CronSchedulerDemo />,
-  },
+  // {
+  //   "heading": "Scheduler",
+  //   "link": "/develop/client-capabilities/interaction/client-interaction-scheduler/",
+  //   "text": "component for scheduling tasks",
+  //   children: <CronSchedulerDemo />,
+  // },
   {
     "heading": "Tabs",
     "link": "/develop/client-capabilities/interaction/client-interaction-tabs/",
