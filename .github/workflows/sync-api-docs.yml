@@ -137,48 +137,52 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          echo "🔍 Checking for changes in working directory..."
+          echo "🔍 Checking if sync script created commits with API docs..."
           
-          # Use git diff and git status to check for changes
-          git_status_output=$(git status --porcelain)
+          # Look for commits with our specific commit message pattern
+          # This is more reliable than counting commits which can include merge commits
+          api_docs_commits=$(git log --oneline --grep="upgrade FUI packages.*sync FUI api-docs" --since="1 hour ago" | wc -l)
           
-          if [ -n "$git_status_output" ]; then
-            echo "✅ Changes detected:"
-            echo "$git_status_output"
+          if [ "$api_docs_commits" -gt 0 ]; then
+            echo "✅ Found $api_docs_commits commit(s) with API docs sync pattern"
             echo "has_changes=true" >> $GITHUB_OUTPUT
             
-            if [ "${{ env.AUTO_DRY_RUN }}" == "true" ]; then
-              echo ""
-              echo "🏃‍♂️ DRY RUN MODE - Changes detected but will not be committed"
-            fi
+            echo "API docs sync commits:"
+            git log --oneline --grep="upgrade FUI packages.*sync FUI api-docs" --since="1 hour ago"
           else
-            echo "ℹ️  No changes detected in working directory"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No API docs sync commits found - checking working directory..."
+            
+            # Check if there are uncommitted changes (script ran but didn't commit)
+            working_changes=$(git status --porcelain)
+            if [ -n "$working_changes" ]; then
+              echo "⚠️  Script ran but didn't commit (no API docs found)"
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+              echo "Uncommitted changes:"
+              echo "$working_changes"
+            else
+              echo "ℹ️  No changes at all - packages already up to date"
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            fi
           fi
-          
-          # Also show git status for debugging
-          echo ""
-          echo "Full git status:"
-          git status
       
       - name: Create Pull Request
         if: steps.check_changes.outputs.has_changes == 'true' && env.AUTO_DRY_RUN == 'false'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: sync API docs to version ${{ steps.sync.outputs.version }}'
-          title: 'chore: sync API docs to version ${{ steps.sync.outputs.version }}'
+          commit-message: 'chore: upgrade FUI packages to version ${{ steps.sync.outputs.version }} + sync FUI api-docs'
+          title: 'chore: upgrade FUI packages to version ${{ steps.sync.outputs.version }} + sync FUI api-docs'
           body: |
             This PR was automatically created by the API docs sync workflow.
             
-            **Trigger**: ${{ github.event_name }}
-            **Target Branch**: ${{ env.TARGET_BRANCH }}
-            **Source Branch**: ${{ github.ref_name }}
-            
-            Changes:
+            **Changes**:
             - Updated @genesislcap packages to version ${{ steps.sync.outputs.version }}
             - Regenerated API documentation from updated packages
             - Updated processedMap with new versions
+
+            **Trigger**: ${{ github.event_name }}
+            **Target Branch**: ${{ env.TARGET_BRANCH }}
+            **Source Branch**: ${{ github.ref_name }}
             
             This is an automated update. Please review the changes and merge if everything looks good.
           branch: sync-api-docs-${{ github.run_id }}
@@ -197,9 +201,9 @@ jobs:
           echo "📋 **Summary:**"
           echo "- ✅ Script executed successfully"
           if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
-            echo "- ✅ Changes detected and would be committed"
+            echo "- ✅ API docs generated and committed - PR would be created"
           else
-            echo "- ℹ️  No changes detected (packages already up to date)"
+            echo "- ℹ️  No API docs found - no PR would be created"
           fi
           echo "- ✅ Version: ${{ steps.sync.outputs.version }}"
           echo "- ✅ Target branch: ${{ env.TARGET_BRANCH }}"
@@ -207,5 +211,5 @@ jobs:
           if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
             echo "To create the actual PR, re-run without dry_run mode."
           else
-            echo "No PR needed - packages are already at the latest version."
+            echo "No PR needed - no API documentation changes detected."
           fi
