@@ -2,7 +2,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const { exec } = require('child_process');
 const { promisify } = require('util');
 
@@ -206,7 +206,8 @@ async function copyDocsDirectly() {
 
     if (!packagesToProcess.length) {
       console.log('[api-docs-plugin] No packages awaiting processing.');
-      return { apiDocsCopied: 0 };
+      totalApiDocsCopied = 0;
+      return { apiDocsCopied: totalApiDocsCopied };
     }
 
     for (const pkg of packagesToProcess) {
@@ -354,7 +355,7 @@ async function commitChanges(newVersion, apiDocsCopied) {
     const commitBody = `- Updated @genesislcap packages to version ${newVersion}\n- Regenerated API documentation from updated packages (${apiDocsCopied} files)\n- Updated processedMap with new versions`;
     
     console.log('  Creating commit...');
-    execSync(`git commit -m "${commitTitle}\n\n${commitBody}"`, { stdio: 'inherit' });
+    execFileSync('git', ['commit', '-m', `${commitTitle}\n\n${commitBody}`], { stdio: 'inherit' });
     console.log('✓ Changes committed');
   } catch (error) {
     console.error('❌ Failed to commit changes:', error.message);
