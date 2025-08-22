@@ -10,7 +10,7 @@ format: md
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-Gets the string representation from a `Date` which is the format a `date` input uses. `yyyy-mm-dd`. Uses UTC methods to ensure consistent output regardless of timezone.
+Gets the string representation from a `Date` which is the format a `date` input uses. `yyyy-mm-dd`<!-- -->. Uses UTC methods to ensure consistent output regardless of timezone.
 
 Used to convert a javascript date object into the required string format expected by the expression builder.
 

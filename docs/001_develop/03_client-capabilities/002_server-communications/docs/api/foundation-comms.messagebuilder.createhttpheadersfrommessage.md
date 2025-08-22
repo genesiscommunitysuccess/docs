@@ -17,10 +17,55 @@ createHTTPHeadersFromMessage(message: Message, contentType?: string): HeadersIni
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  message | [Message](./foundation-comms.message.md) | The message. |
-|  contentType | string | _(Optional)_ Optional content-type, defaults to <code>application/json; charset=UTF-8</code>. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)
+
+
+</td><td>
+
+The message.
+
+
+</td></tr>
+<tr><td>
+
+contentType
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Optional content-type, defaults to `application/json; charset=UTF-8`<!-- -->.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -37,45 +37,706 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [columns](./foundation-entity-management.entitymanagement.columns.md) |  | ColDef\[\] | Array which holds the column definitions. |
-|  [createEvent](./foundation-entity-management.entitymanagement.createevent.md) |  | string | Name of the event handler on the Genesis server which handles creating an entity |
-|  [createFormUiSchema](./foundation-entity-management.entitymanagement.createformuischema.md) |  | UiSchema | Enables you to supply a schema to configure an insert form. |
-|  [crudActionMenuName](./foundation-entity-management.entitymanagement.crudactionmenuname.md) |  | string | The label of the crud action menu |
-|  [crudMenuPosition](./foundation-entity-management.entitymanagement.crudmenuposition.md) |  | CrudMenuPosition | Determines where the buttons will appear |
-|  [crudMenuStyle](./foundation-entity-management.entitymanagement.crudmenustyle.md) |  | ActionsMenuStyle | Determines the style of the buttons |
-|  [datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md) |  | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | Get the configuration which is used when interacting with the resource on the backend |
-|  [datasourceType](./foundation-entity-management.entitymanagement.datasourcetype.md) |  | DatasourceType | If set to 'server' it will enable Server-Side Row Model and use <code>grid-pro-server-side-datasource</code> for the grid of the <code>entity-list</code> sub-component. By default <code>grid-pro-client-side-datasource</code> will be used. |
-|  [defaultEntityValues](./foundation-entity-management.entitymanagement.defaultentityvalues.md) |  | Record&lt;string, unknown&gt; | The default values to populate the form with when the user is adding an entity |
-|  [deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md) |  | string | Name of the event handler on the Genesis server which handles deleting the entity |
-|  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean | If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef |
-|  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean | Enables filter bar component |
-|  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> transactions |
-|  [enableSearchBar](./foundation-entity-management.entitymanagement.enablesearchbar.md) |  | boolean | This attribute controls whether to enable the search-bar. |
-|  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which is used in the title of the modal when editing the entity, on CRUD buttons and on toast notifications |
-|  [formRenderers](./foundation-entity-management.entitymanagement.formrenderers.md) |  | RendererEntry\[\] | Array with renderers used by foundation-forms |
-|  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
-|  [headerCaseType](./foundation-entity-management.entitymanagement.headercasetype.md) |  | GridProCaseType | The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used. |
-|  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean | Hides delete button |
-|  [hideEdit](./foundation-entity-management.entitymanagement.hideedit.md) |  | boolean | Hides edit button |
-|  [modalPosition](./foundation-entity-management.entitymanagement.modalposition.md) |  | 'centre' \| 'left' \| 'right' | Determines where the modal dialog will appear on screen |
-|  [persistColumnStateKey](./foundation-entity-management.entitymanagement.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the entity manager stores the state of the columns when the user edits them. Omit this attribute to disable the functionality, set it to a unique value to enable it. |
-|  [persistFilterModelKey](./foundation-entity-management.entitymanagement.persistfiltermodelkey.md) |  | string | The key to use for persisting the filter model in local browser or KV storage. |
-|  [prefix](./foundation-entity-management.entitymanagement.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
-|  [readEvent](./foundation-entity-management.entitymanagement.readevent.md) |  | string | Name of the request on the Genesis server which fetches data for the form, example usage could include fetching additional data that is not available in the grid but required for the selected entity |
-|  [readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md) |  | (entity: any) =&gt; any | Similar to readEvent but allows to provide function that will be executed before opening the form and yields data to the form |
-|  [resourceName](./foundation-entity-management.entitymanagement.resourcename.md) |  | string | Name of the backend resource which contain the entities to manage |
-|  [rowSelection](./foundation-entity-management.entitymanagement.rowselection.md) |  | string | This attribute allows you to change row-selection to 'single' or 'multiple' which will allow you to select single or multiple rows. |
-|  [searchBarConfig](./foundation-entity-management.entitymanagement.searchbarconfig.md) |  | AvailableOption\[\] | Allows configuration of the search bar component, if not provided it would build configuration based on columns in the grid \* |
-|  [sizeColumnsToFit](./foundation-entity-management.entitymanagement.sizecolumnstofit.md) |  | boolean | Resizes columns to take available space |
-|  [title](./foundation-entity-management.entitymanagement.title.md) |  | string | Title of the grid |
-|  [updateEvent](./foundation-entity-management.entitymanagement.updateevent.md) |  | string | Name of the event handler on the Genesis server which handles updating the entity |
-|  [updateFormUiSchema](./foundation-entity-management.entitymanagement.updateformuischema.md) |  | UiSchema | Enables you to supply a schema to configure an update form. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[columns](./foundation-entity-management.entitymanagement.columns.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ColDef\[\]
+
+
+</td><td>
+
+Array which holds the column definitions.
+
+
+</td></tr>
+<tr><td>
+
+[createEvent](./foundation-entity-management.entitymanagement.createevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the event handler on the Genesis server which handles creating an entity
+
+
+</td></tr>
+<tr><td>
+
+[createFormUiSchema](./foundation-entity-management.entitymanagement.createformuischema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+UiSchema
+
+
+</td><td>
+
+Enables you to supply a schema to configure an insert form.
+
+
+</td></tr>
+<tr><td>
+
+[crudActionMenuName](./foundation-entity-management.entitymanagement.crudactionmenuname.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The label of the crud action menu
+
+
+</td></tr>
+<tr><td>
+
+[crudMenuPosition](./foundation-entity-management.entitymanagement.crudmenuposition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+CrudMenuPosition
+
+
+</td><td>
+
+Determines where the buttons will appear
+
+
+</td></tr>
+<tr><td>
+
+[crudMenuStyle](./foundation-entity-management.entitymanagement.crudmenustyle.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ActionsMenuStyle
+
+
+</td><td>
+
+Determines the style of the buttons
+
+
+</td></tr>
+<tr><td>
+
+[datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md)
+
+
+</td><td>
+
+Get the configuration which is used when interacting with the resource on the backend
+
+
+</td></tr>
+<tr><td>
+
+[datasourceType](./foundation-entity-management.entitymanagement.datasourcetype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+DatasourceType
+
+
+</td><td>
+
+If set to 'server' it will enable Server-Side Row Model and use `grid-pro-server-side-datasource` for the grid of the `entity-list` sub-component. By default `grid-pro-client-side-datasource` will be used.
+
+
+</td></tr>
+<tr><td>
+
+[defaultEntityValues](./foundation-entity-management.entitymanagement.defaultentityvalues.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Record&lt;string, unknown&gt;
+
+
+</td><td>
+
+The default values to populate the form with when the user is adding an entity
+
+
+</td></tr>
+<tr><td>
+
+[deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the event handler on the Genesis server which handles deleting the entity
+
+
+</td></tr>
+<tr><td>
+
+[enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef
+
+
+</td></tr>
+<tr><td>
+
+[enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Enables filter bar component
+
+
+</td></tr>
+<tr><td>
+
+[enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+If true, will enable row flashing for all rows for `add` transactions
+
+
+</td></tr>
+<tr><td>
+
+[enableSearchBar](./foundation-entity-management.entitymanagement.enablesearchbar.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+This attribute controls whether to enable the search-bar.
+
+
+</td></tr>
+<tr><td>
+
+[entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Label for the entity which is used in the title of the modal when editing the entity, on CRUD buttons and on toast notifications
+
+
+</td></tr>
+<tr><td>
+
+[formRenderers](./foundation-entity-management.entitymanagement.formrenderers.md)
+
+
+</td><td>
+
+
+</td><td>
+
+RendererEntry\[\]
+
+
+</td><td>
+
+Array with renderers used by foundation-forms
+
+
+</td></tr>
+<tr><td>
+
+[gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+GridOptions
+
+
+</td><td>
+
+GridOptions to be passed down from application
+
+
+</td></tr>
+<tr><td>
+
+[headerCaseType](./foundation-entity-management.entitymanagement.headercasetype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+GridProCaseType
+
+
+</td><td>
+
+The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used.
+
+
+</td></tr>
+<tr><td>
+
+[hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Hides delete button
+
+
+</td></tr>
+<tr><td>
+
+[hideEdit](./foundation-entity-management.entitymanagement.hideedit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Hides edit button
+
+
+</td></tr>
+<tr><td>
+
+[modalPosition](./foundation-entity-management.entitymanagement.modalposition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'centre' \| 'left' \| 'right'
+
+
+</td><td>
+
+Determines where the modal dialog will appear on screen
+
+
+</td></tr>
+<tr><td>
+
+[persistColumnStateKey](./foundation-entity-management.entitymanagement.persistcolumnstatekey.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+This attribute controls whether and how the entity manager stores the state of the columns when the user edits them. Omit this attribute to disable the functionality, set it to a unique value to enable it.
+
+
+</td></tr>
+<tr><td>
+
+[persistFilterModelKey](./foundation-entity-management.entitymanagement.persistfiltermodelkey.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The key to use for persisting the filter model in local browser or KV storage.
+
+
+</td></tr>
+<tr><td>
+
+[prefix](./foundation-entity-management.entitymanagement.prefix.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the design system prefix that will be used in renderers.
+
+
+</td></tr>
+<tr><td>
+
+[readEvent](./foundation-entity-management.entitymanagement.readevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the request on the Genesis server which fetches data for the form, example usage could include fetching additional data that is not available in the grid but required for the selected entity
+
+
+</td></tr>
+<tr><td>
+
+[readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(entity: any) =&gt; any
+
+
+</td><td>
+
+Similar to readEvent but allows to provide function that will be executed before opening the form and yields data to the form
+
+
+</td></tr>
+<tr><td>
+
+[resourceName](./foundation-entity-management.entitymanagement.resourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the backend resource which contain the entities to manage
+
+
+</td></tr>
+<tr><td>
+
+[rowSelection](./foundation-entity-management.entitymanagement.rowselection.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+This attribute allows you to change row-selection to 'single' or 'multiple' which will allow you to select single or multiple rows.
+
+
+</td></tr>
+<tr><td>
+
+[searchBarConfig](./foundation-entity-management.entitymanagement.searchbarconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+AvailableOption\[\]
+
+
+</td><td>
+
+Allows configuration of the search bar component, if not provided it would build configuration based on columns in the grid \*
+
+
+</td></tr>
+<tr><td>
+
+[sizeColumnsToFit](./foundation-entity-management.entitymanagement.sizecolumnstofit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Resizes columns to take available space
+
+
+</td></tr>
+<tr><td>
+
+[statusBarConfig](./foundation-entity-management.entitymanagement.statusbarconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+GridProStatusBarConfig
+
+
+</td><td>
+
+Configuration for the grid status bar components.
+
+
+</td></tr>
+<tr><td>
+
+[title](./foundation-entity-management.entitymanagement.title.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Title of the grid
+
+
+</td></tr>
+<tr><td>
+
+[updateEvent](./foundation-entity-management.entitymanagement.updateevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the event handler on the Genesis server which handles updating the entity
+
+
+</td></tr>
+<tr><td>
+
+[updateFormUiSchema](./foundation-entity-management.entitymanagement.updateformuischema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+UiSchema
+
+
+</td><td>
+
+Enables you to supply a schema to configure an update form.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [setDSConfigWithoutUpdatingBaseCriteria(config)](./foundation-entity-management.entitymanagement.setdsconfigwithoutupdatingbasecriteria.md) |  | Usually when the datasource config is updated we need to cache the criteria so it can be combined with the searchbar, but this function allows you to set the datasource config without doing that (so we don't cache the search bar criteria) |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[setDSConfigWithoutUpdatingBaseCriteria(config)](./foundation-entity-management.entitymanagement.setdsconfigwithoutupdatingbasecriteria.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Usually when the datasource config is updated we need to cache the criteria so it can be combined with the searchbar, but this function allows you to set the datasource config without doing that (so we don't cache the search bar criteria)
+
+
+</td></tr>
+</tbody></table>
 

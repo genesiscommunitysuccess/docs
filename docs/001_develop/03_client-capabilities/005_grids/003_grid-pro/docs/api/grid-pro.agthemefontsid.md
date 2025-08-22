@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [agThemeFontsId](./grid-pro.agthemefontsid.md)
 
-## agThemeFontsId variable
+## agThemeFontsId() function
 
 Generates the id name for custom Grid Pro fonts.
 
@@ -14,6 +14,48 @@ Generates the id name for custom Grid Pro fonts.
 ```typescript
 agThemeFontsId: (themeName: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+themeName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+the Grid Pro theme name
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+the id name for the Grid Pro fonts
 
 ## Example
 

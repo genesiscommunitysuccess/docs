@@ -17,14 +17,59 @@ createCommitMessage<T = any>(eventName: string, params?: CommitParams): Message<
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventName | string | The event name. |
-|  params | [CommitParams](./foundation-comms.commitparams.md) | _(Optional)_ The additional parameters. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The event name.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[CommitParams](./foundation-comms.commitparams.md)
+
+
+</td><td>
+
+_(Optional)_ The additional parameters.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)&lt;T&gt;
+[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
 
 The commit message.
 

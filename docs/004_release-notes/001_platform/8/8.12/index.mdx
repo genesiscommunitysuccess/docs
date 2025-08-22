@@ -97,6 +97,19 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.12.3
+
+###### Fixes
+
+* `genesis-pal-datapipeline` : All pipelines should have a default `onUncaughtError` handler to avoid the process from crashing and instead sets the process state to `WARNING` 
+
+#### 8.12.2
+
+###### Features
+
+* `genesis-pal-streamerclient` : Add additional logging when moving to error state 
+* `genesis-transform` : Added support to apply a timezone to all date time format operations 
+
 #### 8.12.1
 
 ###### Features

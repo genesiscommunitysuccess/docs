@@ -156,14 +156,22 @@ const statusPillRendererColDef = {
   headerName: 'Status',
   field: 'status',
   cellRenderer: 'statusPill',
-  cellRendererParams: {
-    values: [
-      { value: 'active', label: 'Active', color: 'green' },
-      { value: 'pending', label: 'Pending', color: 'orange' },
-      { value: 'inactive', label: 'Inactive', color: 'red' },
-      { value: 'suspended', label: 'Suspended', color: 'gray' }
-    ]
-  }
+  cellRendererParams: (params) => {
+    // Checking a boolean flag
+    if (params.value) {
+      return {
+        iconName: 'check',
+        text: 'Enabled',
+        backgroundColor: 'green',
+      };
+    } else {
+      return {
+        iconName: 'xmark',
+        text: 'Disabled',
+        backgroundColor: 'red',
+      };
+    }
+  },
 }
 ```
 

@@ -9,173 +9,1667 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [ActionRenderer](./grid-pro.actionrenderer.md) | The AG Action Renderer element. |
-|  [ActionsMenuRenderer](./grid-pro.actionsmenurenderer.md) | The Actions Menu Renderer element. |
-|  [AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md) | The AG Text Field Renderer element. |
-|  [AgTextRenderer](./grid-pro.agtextrenderer.md) |  |
-|  [BooleanRenderer](./grid-pro.booleanrenderer.md) | The AG Boolean Renderer element. |
-|  [DateEditor](./grid-pro.dateeditor.md) | The AG Date Editor element. |
-|  [EditableRenderer](./grid-pro.editablerenderer.md) | The AG Editable Renderer element. |
-|  [GenesisGridDatasourceElement](./grid-pro.genesisgriddatasourceelement.md) | The base datasource element for the grid-pro element. |
-|  [GridPro](./grid-pro.gridpro.md) | The Grid Pro element. |
-|  [GridProBaseDatasource](./grid-pro.gridprobasedatasource.md) |  |
-|  [GridProCell](./grid-pro.gridprocell.md) | The Grid Pro Cell element. |
-|  [GridProClientSideDatasource](./grid-pro.gridproclientsidedatasource.md) | The Genesis Datasource element, for client-side \| CSRM-compatible data fetching and used exclusively by the GridPro element. |
-|  [GridProColumn](./grid-pro.gridprocolumn.md) | The Grid Pro Column element. |
-|  [GridProGenesisDatasource](./grid-pro.gridprogenesisdatasource.md) | The Genesis Datasource element, for CSRM-compatible data fetching and used exclusively by the GridPro element. |
-|  [GridProServerSideDatasource](./grid-pro.gridproserversidedatasource.md) | **_(BETA)_** A Genesis Datasource element, for server-side \| SSRM-compatible data fetching and used exclusively by the GridPro element. |
-|  [KVStorageStatePersistence](./grid-pro.kvstoragestatepersistence.md) | Implementation for the KV Storage State Persistence interface. |
-|  [LabelValueStatusBarComponent](./grid-pro.labelvaluestatusbarcomponent.md) | Label Value Status Bar Component |
-|  [LoadMoreStatusBarComponent](./grid-pro.loadmorestatusbarcomponent.md) | A status bar component that shows a "Load More" button when more rows are available |
-|  [LocalStorageStatePersistence](./grid-pro.localstoragestatepersistence.md) | Implementation for the Local Storage State Persistence interface. |
-|  [MultiselectEditor](./grid-pro.multiselecteditor.md) | The AG Multiselect Editor element. |
-|  [NumberEditor](./grid-pro.numbereditor.md) | The AG Number Editor element. |
-|  [PaginationStatusBarComponent](./grid-pro.paginationstatusbarcomponent.md) | Pagination Status Bar Component for AG Grid Displays pagination controls and information about current page and total rows |
-|  [ReloadStatusBarComponent](./grid-pro.reloadstatusbarcomponent.md) | A status bar component that shows a refresh icon to reload the grid data |
-|  [SelectEditor](./grid-pro.selecteditor.md) | The AG Select Editor element. |
-|  [SelectRenderer](./grid-pro.selectrenderer.md) | The AG Select Renderer element. |
-|  [StatusPillRenderer](./grid-pro.statuspillrenderer.md) | The AG Status Pill Renderer element. |
-|  [StringEditor](./grid-pro.stringeditor.md) | The AG String Editor element. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ActionRenderer](./grid-pro.actionrenderer.md)
+
+
+</td><td>
+
+The AG Action Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[ActionsMenuRenderer](./grid-pro.actionsmenurenderer.md)
+
+
+</td><td>
+
+The Actions Menu Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md)
+
+
+</td><td>
+
+The AG Text Field Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[AgTextRenderer](./grid-pro.agtextrenderer.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[BooleanRenderer](./grid-pro.booleanrenderer.md)
+
+
+</td><td>
+
+The AG Boolean Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[DateEditor](./grid-pro.dateeditor.md)
+
+
+</td><td>
+
+The AG Date Editor element.
+
+
+</td></tr>
+<tr><td>
+
+[EditableRenderer](./grid-pro.editablerenderer.md)
+
+
+</td><td>
+
+The AG Editable Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[GenesisGridDatasourceElement](./grid-pro.genesisgriddatasourceelement.md)
+
+
+</td><td>
+
+The base datasource element for the grid-pro element.
+
+
+</td></tr>
+<tr><td>
+
+[GridPro](./grid-pro.gridpro.md)
+
+
+</td><td>
+
+The Grid Pro element.
+
+
+</td></tr>
+<tr><td>
+
+[GridProBaseDatasource](./grid-pro.gridprobasedatasource.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[GridProCell](./grid-pro.gridprocell.md)
+
+
+</td><td>
+
+The Grid Pro Cell element.
+
+
+</td></tr>
+<tr><td>
+
+[GridProClientSideDatasource](./grid-pro.gridproclientsidedatasource.md)
+
+
+</td><td>
+
+The Genesis Datasource element, for client-side \| CSRM-compatible data fetching and used exclusively by the GridPro element.
+
+
+</td></tr>
+<tr><td>
+
+[GridProColumn](./grid-pro.gridprocolumn.md)
+
+
+</td><td>
+
+The Grid Pro Column element.
+
+
+</td></tr>
+<tr><td>
+
+[GridProGenesisDatasource](./grid-pro.gridprogenesisdatasource.md)
+
+
+</td><td>
+
+The Genesis Datasource element, for CSRM-compatible data fetching and used exclusively by the GridPro element.
+
+
+</td></tr>
+<tr><td>
+
+[GridProServerSideDatasource](./grid-pro.gridproserversidedatasource.md)
+
+
+</td><td>
+
+**_(BETA)_** A Genesis Datasource element, for server-side \| SSRM-compatible data fetching and used exclusively by the GridPro element.
+
+
+</td></tr>
+<tr><td>
+
+[KVStorageStatePersistence](./grid-pro.kvstoragestatepersistence.md)
+
+
+</td><td>
+
+Implementation for the KV Storage State Persistence interface.
+
+
+</td></tr>
+<tr><td>
+
+[LabelValueStatusBarComponent](./grid-pro.labelvaluestatusbarcomponent.md)
+
+
+</td><td>
+
+Label Value Status Bar Component
+
+
+</td></tr>
+<tr><td>
+
+[LoadMoreStatusBarComponent](./grid-pro.loadmorestatusbarcomponent.md)
+
+
+</td><td>
+
+A status bar component that shows a "Load More" button when more rows are available
+
+
+</td></tr>
+<tr><td>
+
+[LocalStorageStatePersistence](./grid-pro.localstoragestatepersistence.md)
+
+
+</td><td>
+
+Implementation for the Local Storage State Persistence interface.
+
+
+</td></tr>
+<tr><td>
+
+[MultiselectEditor](./grid-pro.multiselecteditor.md)
+
+
+</td><td>
+
+The AG Multiselect Editor element.
+
+
+</td></tr>
+<tr><td>
+
+[NumberEditor](./grid-pro.numbereditor.md)
+
+
+</td><td>
+
+The AG Number Editor element.
+
+
+</td></tr>
+<tr><td>
+
+[PaginationStatusBarComponent](./grid-pro.paginationstatusbarcomponent.md)
+
+
+</td><td>
+
+Pagination Status Bar Component for AG Grid Displays pagination controls and information about current page and total rows
+
+
+</td></tr>
+<tr><td>
+
+[ReloadStatusBarComponent](./grid-pro.reloadstatusbarcomponent.md)
+
+
+</td><td>
+
+A status bar component that shows a refresh icon to reload the grid data
+
+
+</td></tr>
+<tr><td>
+
+[SelectEditor](./grid-pro.selecteditor.md)
+
+
+</td><td>
+
+The AG Select Editor element.
+
+
+</td></tr>
+<tr><td>
+
+[SelectRenderer](./grid-pro.selectrenderer.md)
+
+
+</td><td>
+
+The AG Select Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[StatusPillRenderer](./grid-pro.statuspillrenderer.md)
+
+
+</td><td>
+
+The AG Status Pill Renderer element.
+
+
+</td></tr>
+<tr><td>
+
+[StringEditor](./grid-pro.stringeditor.md)
+
+
+</td><td>
+
+The AG String Editor element.
+
+
+</td></tr>
+</tbody></table>
 
 ## Enumerations
 
-|  Enumeration | Description |
-|  --- | --- |
-|  [AgGridCSSVars](./grid-pro.aggridcssvars.md) | All official AG CSS variables |
-|  [AgGridTheme](./grid-pro.aggridtheme.md) | The available Grid Pro themes. |
-|  [GridProCaseType](./grid-pro.gridprocasetype.md) | The available Grid Pro header case types |
-|  [GridProRendererTypes](./grid-pro.gridprorenderertypes.md) | The available Grid Pro Renderer Types |
-|  [GridProStatusBarTypes](./grid-pro.gridprostatusbartypes.md) | The available Grid Pro Status Bar Types |
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AgGridCSSVars](./grid-pro.aggridcssvars.md)
+
+
+</td><td>
+
+All official AG CSS variables
+
+
+</td></tr>
+<tr><td>
+
+[AgGridTheme](./grid-pro.aggridtheme.md)
+
+
+</td><td>
+
+The available Grid Pro themes.
+
+
+</td></tr>
+<tr><td>
+
+[GridProCaseType](./grid-pro.gridprocasetype.md)
+
+
+</td><td>
+
+The available Grid Pro header case types
+
+
+</td></tr>
+<tr><td>
+
+[GridProRendererTypes](./grid-pro.gridprorenderertypes.md)
+
+
+</td><td>
+
+The available Grid Pro Renderer Types
+
+
+</td></tr>
+<tr><td>
+
+[GridProStatusBarTypes](./grid-pro.gridprostatusbartypes.md)
+
+
+</td><td>
+
+The available Grid Pro Status Bar Types
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [dateTimeValueFormatter({ value })](./grid-pro.datetimevalueformatter.md) | Returns a formatted date time value from the Grid Pro cell value. |
-|  [dateValueFormatter({ value })](./grid-pro.datevalueformatter.md) | Returns a formatted date value from the Grid Pro cell value. |
-|  [getAvailableIndexes(data)](./grid-pro.getavailableindexes.md) | Get the keys of the Metadata indexes map |
-|  [getAvailableIndexFields(data)](./grid-pro.getavailableindexfields.md) | Get the values of the Metadata indexes map |
-|  [gridProColumns(itemsBinding, includeRenderers)](./grid-pro.gridprocolumns.md) | A directive that renders a set of grid-pro-column elements from a given input binding |
-|  [mergeAndDedupColDefWithColumnState(colDefs, columnStates)](./grid-pro.mergeanddedupcoldefwithcolumnstate.md) | Merges two arrays, one of <code>ColDef</code> and one of <code>ColumnState</code>, and deduplicates them. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[agThemeFontsId(themeName)](./grid-pro.agthemefontsid.md)
+
+
+</td><td>
+
+Generates the id name for custom Grid Pro fonts.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeTokenMapClassname(themeName)](./grid-pro.agthemetokenmapclassname.md)
+
+
+</td><td>
+
+Generates the class name for a given Grid Pro theme name.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeTokenMapCSS(themeName, tokenMap)](./grid-pro.agthemetokenmapcss.md)
+
+
+</td><td>
+
+Generates the CSS for a given GridPro theme name and token map
+
+
+</td></tr>
+<tr><td>
+
+[convertToKebabCase(value)](./grid-pro.converttokebabcase.md)
+
+
+</td><td>
+
+Convert string values from 'camelCase' to 'kebab-case'
+
+
+</td></tr>
+<tr><td>
+
+[dateTimeValueFormatter({ value })](./grid-pro.datetimevalueformatter.md)
+
+
+</td><td>
+
+Returns a formatted date time value from the Grid Pro cell value.
+
+
+</td></tr>
+<tr><td>
+
+[dateValueFormatter({ value })](./grid-pro.datevalueformatter.md)
+
+
+</td><td>
+
+Returns a formatted date value from the Grid Pro cell value.
+
+
+</td></tr>
+<tr><td>
+
+[formatDateExtra(epoch)](./grid-pro.formatdateextra.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Returns a formatted date value from an epoch number.
+
+
+</td></tr>
+<tr><td>
+
+[foundationAgBooleanRenderer(overrideDefinition)](./grid-pro.foundationagbooleanrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Boolean Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationAgEditableRenderer(overrideDefinition)](./grid-pro.foundationageditablerenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Editable Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationAgSelectRenderer(overrideDefinition)](./grid-pro.foundationagselectrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Select Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationAgTextFieldRenderer(overrideDefinition)](./grid-pro.foundationagtextfieldrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Text Field Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationAgTextRenderer(overrideDefinition)](./grid-pro.foundationagtextrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Text Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationDateEditor(overrideDefinition)](./grid-pro.foundationdateeditor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridPro(overrideDefinition)](./grid-pro.foundationgridpro.md)
+
+
+</td><td>
+
+A function that returns a Foundation Grid Pro registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridProActionRenderer(overrideDefinition)](./grid-pro.foundationgridproactionrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Action Renderer for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridProActionsMenuRenderer(overrideDefinition)](./grid-pro.foundationgridproactionsmenurenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Actions Menu for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationMultiselectEditor(overrideDefinition)](./grid-pro.foundationmultiselecteditor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[foundationNumberEditor(overrideDefinition)](./grid-pro.foundationnumbereditor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[foundationSelectEditor(overrideDefinition)](./grid-pro.foundationselecteditor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[foundationStatusPillRenderer(overrideDefinition)](./grid-pro.foundationstatuspillrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Status Pill Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationStringEditor(overrideDefinition)](./grid-pro.foundationstringeditor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getActionsMenuDef(actions, overrideDef, customActionsOpenerName, isVertical, buttonAppearance)](./grid-pro.getactionsmenudef.md)
+
+
+</td><td>
+
+Helper function to get ColDef [https://www.ag-grid.com/javascript-data-grid/column-properties/](https://www.ag-grid.com/javascript-data-grid/column-properties/) for Actions Menu Renderer. Will take the parameter values for a base ColDef and merge them with the overrideDef (if specified).
+
+
+</td></tr>
+<tr><td>
+
+[getAgBooleanRendererTemplate(designSystem)](./grid-pro.getagbooleanrenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Checkbox template.
+
+
+</td></tr>
+<tr><td>
+
+[getAgEditableRendererTemplate(designSystem)](./grid-pro.getageditablerenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Checkbox template.
+
+
+</td></tr>
+<tr><td>
+
+[getAvailableIndexes(data)](./grid-pro.getavailableindexes.md)
+
+
+</td><td>
+
+Get the keys of the Metadata indexes map
+
+
+</td></tr>
+<tr><td>
+
+[getAvailableIndexFields(data)](./grid-pro.getavailableindexfields.md)
+
+
+</td><td>
+
+Get the values of the Metadata indexes map
+
+
+</td></tr>
+<tr><td>
+
+[getColumnType(metadataType)](./grid-pro.getcolumntype.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Return a column type base on each field's metadata from the selected resource.
+
+
+</td></tr>
+<tr><td>
+
+[getDateEditorTemplate(prefix)](./grid-pro.getdateeditortemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Select template.
+
+
+</td></tr>
+<tr><td>
+
+[getFilterByFieldType(type)](./grid-pro.getfilterbyfieldtype.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Returns a filter type based on the Grid Pro field/column type.
+
+
+</td></tr>
+<tr><td>
+
+[getGridProTemplate(prefix)](./grid-pro.getgridprotemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed The Grid Pro template.
+
+
+</td></tr>
+<tr><td>
+
+[getMultiselectEditorTemplate(designSystem)](./grid-pro.getmultiselecteditortemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Select template.
+
+
+</td></tr>
+<tr><td>
+
+[getNumberEditorTemplate(designSystem)](./grid-pro.getnumbereditortemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Select template.
+
+
+</td></tr>
+<tr><td>
+
+[getSelectEditorTemplate(designSystem)](./grid-pro.getselecteditortemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Select template.
+
+
+</td></tr>
+<tr><td>
+
+[getSelectRendererTemplate(designSystem)](./grid-pro.getselectrenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Select template.
+
+
+</td></tr>
+<tr><td>
+
+[getStatusPillRendererTemplate(designSystem)](./grid-pro.getstatuspillrenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Status Pill template.
+
+
+</td></tr>
+<tr><td>
+
+[getStringEditorTemplate(designSystem)](./grid-pro.getstringeditortemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed String template.
+
+
+</td></tr>
+<tr><td>
+
+[getTextFieldRendererTemplate(designSystem)](./grid-pro.gettextfieldrenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Text Field template.
+
+
+</td></tr>
+<tr><td>
+
+[getTextRendererTemplate(designSystem)](./grid-pro.gettextrenderertemplate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[gridProColumns(itemsBinding, includeRenderers)](./grid-pro.gridprocolumns.md)
+
+
+</td><td>
+
+A directive that renders a set of grid-pro-column elements from a given input binding
+
+
+</td></tr>
+<tr><td>
+
+[mergeAndDedupColDefWithColumnState(colDefs, columnStates)](./grid-pro.mergeanddedupcoldefwithcolumnstate.md)
+
+
+</td><td>
+
+Merges two arrays, one of `ColDef` and one of `ColumnState`<!-- -->, and deduplicates them.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [DateEditorParams](./grid-pro.dateeditorparams.md) | Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md) |
-|  [GridOptionsConfig](./grid-pro.gridoptionsconfig.md) | Grid options config used to configure grids across the application |
-|  [GridProErrorItem](./grid-pro.gridproerroritem.md) | Grid Pro Error Item |
-|  [GridProStatusBarConfig](./grid-pro.gridprostatusbarconfig.md) | Configuration options for the grid status bar components |
-|  [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md) | Configuration options for load more status bar component |
-|  [GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md) | Configuration options for reload status bar component |
-|  [MultiselectEditorParams](./grid-pro.multiselecteditorparams.md) | Parameters used to configure [MultiselectEditor](./grid-pro.multiselecteditor.md) |
-|  [NumberEditorParams](./grid-pro.numbereditorparams.md) | Parameters used to configure [NumberEditor](./grid-pro.numbereditor.md) |
-|  [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md) | The interface for the select renderer parameters |
-|  [SelectEditorParams](./grid-pro.selecteditorparams.md) | Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md) |
-|  [SelectRendererOptions](./grid-pro.selectrendereroptions.md) | The interface for each select renderer option |
-|  [StatePersistence](./grid-pro.statepersistence.md) | Represents a state persistence and its capabilities. Provides methods to set and get columns from the storage. |
-|  [StringEditorParams](./grid-pro.stringeditorparams.md) | Parameters used to configure [StringEditor](./grid-pro.stringeditor.md) |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DateEditorParams](./grid-pro.dateeditorparams.md)
+
+
+</td><td>
+
+Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[GridOptionsConfig](./grid-pro.gridoptionsconfig.md)
+
+
+</td><td>
+
+Grid options config used to configure grids across the application
+
+
+</td></tr>
+<tr><td>
+
+[GridProErrorItem](./grid-pro.gridproerroritem.md)
+
+
+</td><td>
+
+Grid Pro Error Item
+
+
+</td></tr>
+<tr><td>
+
+[GridProStatusBarConfig](./grid-pro.gridprostatusbarconfig.md)
+
+
+</td><td>
+
+Configuration options for the grid status bar components
+
+
+</td></tr>
+<tr><td>
+
+[GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md)
+
+
+</td><td>
+
+Configuration options for load more status bar component
+
+
+</td></tr>
+<tr><td>
+
+[GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md)
+
+
+</td><td>
+
+Configuration options for reload status bar component
+
+
+</td></tr>
+<tr><td>
+
+[MultiselectEditorParams](./grid-pro.multiselecteditorparams.md)
+
+
+</td><td>
+
+Parameters used to configure [MultiselectEditor](./grid-pro.multiselecteditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[NumberEditorParams](./grid-pro.numbereditorparams.md)
+
+
+</td><td>
+
+Parameters used to configure [NumberEditor](./grid-pro.numbereditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[SelectCellRendererParams](./grid-pro.selectcellrendererparams.md)
+
+
+</td><td>
+
+The interface for the select renderer parameters
+
+
+</td></tr>
+<tr><td>
+
+[SelectEditorParams](./grid-pro.selecteditorparams.md)
+
+
+</td><td>
+
+Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[SelectRendererOptions](./grid-pro.selectrendereroptions.md)
+
+
+</td><td>
+
+The interface for each select renderer option
+
+
+</td></tr>
+<tr><td>
+
+[StatePersistence](./grid-pro.statepersistence.md)
+
+
+</td><td>
+
+Represents a state persistence and its capabilities. Provides methods to set and get columns from the storage.
+
+
+</td></tr>
+<tr><td>
+
+[StringEditorParams](./grid-pro.stringeditorparams.md)
+
+
+</td><td>
+
+Parameters used to configure [StringEditor](./grid-pro.stringeditor.md)
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [actionHeightMultiplier](./grid-pro.actionheightmultiplier.md) | The base height multiplier for the action renderer. |
-|  [agActionRendererStyles](./grid-pro.agactionrendererstyles.md) | The AG Action Renderer Styles. |
-|  [agBooleanRendererStyles](./grid-pro.agbooleanrendererstyles.md) | The AG Boolean Renderer Styles. |
-|  [agDateEditorStyles](./grid-pro.agdateeditorstyles.md) | The AG Select Renderer Styles. |
-|  [agEditableRendererStyles](./grid-pro.ageditablerendererstyles.md) | The AG Editable Renderer Styles. |
-|  [agExternalStockStyles](./grid-pro.agexternalstockstyles.md) | All External AG Grid Stock in one CSS. |
-|  [agGridAlpineFontFace](./grid-pro.aggridalpinefontface.md) | The AG Alpine font face used on ag-theme-alpine/ag-theme-alpine-dark Grid Pro themes. |
-|  [agGridBalhamFontFace](./grid-pro.aggridbalhamfontface.md) | The AG Balham font face used on ag-theme-balham/ag-theme-balham-dark Grid Pro themes. |
-|  [agGridCSS](./grid-pro.aggridcss.md) | AG Grid core CSS. |
-|  [agGridMaterialFontFace](./grid-pro.aggridmaterialfontface.md) | The AG Material font face used on ag-theme-material Grid Pro theme. |
-|  [agHeadCSS](./grid-pro.agheadcss.md) | Custom Drag n Drop CSS for Grid Pro. |
-|  [agMultiselectEditorStyles](./grid-pro.agmultiselecteditorstyles.md) | The AG Select Renderer Styles. |
-|  [agNumberEditorStyles](./grid-pro.agnumbereditorstyles.md) | The AG Number Editor Styles. |
-|  [agSelectEditorStyles](./grid-pro.agselecteditorstyles.md) | The AG Select Renderer Styles. |
-|  [agSelectRendererStyles](./grid-pro.agselectrendererstyles.md) | The AG Select Renderer Styles. |
-|  [agStatusPillRendererStyles](./grid-pro.agstatuspillrendererstyles.md) | The Status Pill Renderer Styles. |
-|  [agStringEditorStyles](./grid-pro.agstringeditorstyles.md) | The AG String Renderer Styles. |
-|  [agThemeAlpineNofontsCSS](./grid-pro.agthemealpinenofontscss.md) | AG Alpine Theme (no fonts) CSS. |
-|  [agThemeBalhamNofontsCSS](./grid-pro.agthemebalhamnofontscss.md) | AG Balham Theme (no fonts) CSS. |
-|  [agThemeFontFaceMap](./grid-pro.agthemefontfacemap.md) | Font Face map with all the font faces for each theme. |
-|  [agThemeFontsId](./grid-pro.agthemefontsid.md) | Generates the id name for custom Grid Pro fonts. |
-|  [agThemeMaterialNofontsCSS](./grid-pro.agthemematerialnofontscss.md) | AG Material Theme (no fonts) CSS. |
-|  [agThemeTokenMapClassname](./grid-pro.agthemetokenmapclassname.md) | Generates the class name for a given Grid Pro theme name. |
-|  [agThemeTokenMapCSS](./grid-pro.agthemetokenmapcss.md) | Generates the CSS for a given GridPro theme name and token map |
-|  [CellTemplate](./grid-pro.celltemplate.md) | The Grid Pro Cell Template. |
-|  [ColumnTemplate](./grid-pro.columntemplate.md) | The Grid Pro Column Template. |
-|  [convertToKebabCase](./grid-pro.converttokebabcase.md) | Convert string values from 'camelCase' to 'kebab-case' |
-|  [criteriaDelimiter](./grid-pro.criteriadelimiter.md) | The delimiter for the criteria string. |
-|  [criteriaJoin](./grid-pro.criteriajoin.md) | The join for the criteria string. |
-|  [csvExportParams](./grid-pro.csvexportparams.md) | Allows secure export of CSV https://owasp.org/www-community/attacks/CSV\_Injection |
-|  [DEFAULT\_STATUS\_BAR\_CONFIG](./grid-pro.default_status_bar_config.md) | Default status bar configuration |
-|  [defaultAgGridFontFace](./grid-pro.defaultaggridfontface.md) | The default font face for Grid Pro (agGridAlpine). |
-|  [defaultGridOptionsConfig](./grid-pro.defaultgridoptionsconfig.md) | Default grid options |
-|  [defaultGridProConfig](./grid-pro.defaultgridproconfig.md) | Grid Pro default configuration. |
-|  [EDITED\_COLUMN\_FIELD](./grid-pro.edited_column_field.md) | Key used to store currently edited column when it being synced with server side data |
-|  [ERROR\_COLUMN\_FIELD](./grid-pro.error_column_field.md) | Key used to store error details (column, message) when inline edit fails sync with server side data |
-|  [foundationAgBooleanRenderer](./grid-pro.foundationagbooleanrenderer.md) | A function that returns a Foundation Boolean Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationAgEditableRenderer](./grid-pro.foundationageditablerenderer.md) | A function that returns a Foundation Editable Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationAgSelectRenderer](./grid-pro.foundationagselectrenderer.md) | A function that returns a Foundation Select Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationAgTextFieldRenderer](./grid-pro.foundationagtextfieldrenderer.md) | A function that returns a Foundation Text Field Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationAgTextRenderer](./grid-pro.foundationagtextrenderer.md) | A function that returns a Foundation Text Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationDateEditor](./grid-pro.foundationdateeditor.md) |  |
-|  [foundationGridComponents](./grid-pro.foundationgridcomponents.md) | The Grid Pro Components. |
-|  [foundationGridPro](./grid-pro.foundationgridpro.md) | A function that returns a Foundation Grid Pro registration for configuring the component with a DesignSystem. |
-|  [foundationGridProActionRenderer](./grid-pro.foundationgridproactionrenderer.md) | A function that returns a Foundation Action Renderer for configuring the component with a DesignSystem. |
-|  [foundationGridProActionsMenuRenderer](./grid-pro.foundationgridproactionsmenurenderer.md) | A function that returns a Foundation Actions Menu for configuring the component with a DesignSystem. |
-|  [foundationGridProShadowOptions](./grid-pro.foundationgridproshadowoptions.md) | GridPro shadow root options. |
-|  [foundationGridProStyles](./grid-pro.foundationgridprostyles.md) | The Grid Pro styles. |
-|  [foundationMultiselectEditor](./grid-pro.foundationmultiselecteditor.md) |  |
-|  [foundationNumberEditor](./grid-pro.foundationnumbereditor.md) |  |
-|  [foundationSelectEditor](./grid-pro.foundationselecteditor.md) |  |
-|  [foundationStatusPillRenderer](./grid-pro.foundationstatuspillrenderer.md) | A function that returns a Foundation Status Pill Renderer registration for configuring the component with a DesignSystem. |
-|  [foundationStringEditor](./grid-pro.foundationstringeditor.md) |  |
-|  [getActionsMenuDef](./grid-pro.getactionsmenudef.md) | Helper function to get ColDef [https://www.ag-grid.com/javascript-data-grid/column-properties/](https://www.ag-grid.com/javascript-data-grid/column-properties/) for Actions Menu Renderer. Will take the parameter values for a base ColDef and merge them with the overrideDef (if specified). |
-|  [getAgBooleanRendererTemplate](./grid-pro.getagbooleanrenderertemplate.md) | Get a Design System prefixed Checkbox template. |
-|  [getAgEditableRendererTemplate](./grid-pro.getageditablerenderertemplate.md) | Get a Design System prefixed Checkbox template. |
-|  [getDateEditorTemplate](./grid-pro.getdateeditortemplate.md) | Get a Design System prefixed Select template. |
-|  [getGridProTemplate](./grid-pro.getgridprotemplate.md) | Get a Design System prefixed The Grid Pro template. |
-|  [getMultiselectEditorTemplate](./grid-pro.getmultiselecteditortemplate.md) | Get a Design System prefixed Select template. |
-|  [getNumberEditorTemplate](./grid-pro.getnumbereditortemplate.md) | Get a Design System prefixed Select template. |
-|  [getSelectEditorTemplate](./grid-pro.getselecteditortemplate.md) | Get a Design System prefixed Select template. |
-|  [getSelectRendererTemplate](./grid-pro.getselectrenderertemplate.md) | Get a Design System prefixed Select template. |
-|  [getStatusPillRendererTemplate](./grid-pro.getstatuspillrenderertemplate.md) | Get a Design System prefixed Status Pill template. |
-|  [getStringEditorTemplate](./grid-pro.getstringeditortemplate.md) | Get a Design System prefixed String template. |
-|  [getTextFieldRendererTemplate](./grid-pro.gettextfieldrenderertemplate.md) | Get a Design System prefixed Text Field template. |
-|  [getTextRendererTemplate](./grid-pro.gettextrenderertemplate.md) |  |
-|  [GRID\_READY\_EVENT](./grid-pro.grid_ready_event.md) | Event fired when grid is ready |
-|  [gridProErrorNames](./grid-pro.gridproerrornames.md) | The error names for the Grid Pro component. |
-|  [gridProEventNames](./grid-pro.gridproeventnames.md) | The event names for the Grid Pro component. |
-|  [gridProGenesisDatasourceEventNames](./grid-pro.gridprogenesisdatasourceeventnames.md) | The Genesis Datasource events names. |
-|  [gridProTemplate](./grid-pro.gridprotemplate.md) |  |
-|  [logger](./grid-pro.logger.md) | Logger for the grid-pro package |
-|  [textFieldRendererStyles](./grid-pro.textfieldrendererstyles.md) | The AG Text Field Renderer Styles. |
-|  [textRendererStyles](./grid-pro.textrendererstyles.md) |  |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actionHeightMultiplier](./grid-pro.actionheightmultiplier.md)
+
+
+</td><td>
+
+The base height multiplier for the action renderer.
+
+
+</td></tr>
+<tr><td>
+
+[agActionRendererStyles](./grid-pro.agactionrendererstyles.md)
+
+
+</td><td>
+
+The AG Action Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agBooleanRendererStyles](./grid-pro.agbooleanrendererstyles.md)
+
+
+</td><td>
+
+The AG Boolean Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agDateEditorStyles](./grid-pro.agdateeditorstyles.md)
+
+
+</td><td>
+
+The AG Select Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agEditableRendererStyles](./grid-pro.ageditablerendererstyles.md)
+
+
+</td><td>
+
+The AG Editable Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agExternalStockStyles](./grid-pro.agexternalstockstyles.md)
+
+
+</td><td>
+
+All External AG Grid Stock in one CSS.
+
+
+</td></tr>
+<tr><td>
+
+[agGridAlpineFontFace](./grid-pro.aggridalpinefontface.md)
+
+
+</td><td>
+
+The AG Alpine font face used on ag-theme-alpine/ag-theme-alpine-dark Grid Pro themes.
+
+
+</td></tr>
+<tr><td>
+
+[agGridBalhamFontFace](./grid-pro.aggridbalhamfontface.md)
+
+
+</td><td>
+
+The AG Balham font face used on ag-theme-balham/ag-theme-balham-dark Grid Pro themes.
+
+
+</td></tr>
+<tr><td>
+
+[agGridCSS](./grid-pro.aggridcss.md)
+
+
+</td><td>
+
+AG Grid core CSS.
+
+
+</td></tr>
+<tr><td>
+
+[agGridMaterialFontFace](./grid-pro.aggridmaterialfontface.md)
+
+
+</td><td>
+
+The AG Material font face used on ag-theme-material Grid Pro theme.
+
+
+</td></tr>
+<tr><td>
+
+[agHeadCSS](./grid-pro.agheadcss.md)
+
+
+</td><td>
+
+Custom Drag n Drop CSS for Grid Pro.
+
+
+</td></tr>
+<tr><td>
+
+[agMultiselectEditorStyles](./grid-pro.agmultiselecteditorstyles.md)
+
+
+</td><td>
+
+The AG Select Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agNumberEditorStyles](./grid-pro.agnumbereditorstyles.md)
+
+
+</td><td>
+
+The AG Number Editor Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agSelectEditorStyles](./grid-pro.agselecteditorstyles.md)
+
+
+</td><td>
+
+The AG Select Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agSelectRendererStyles](./grid-pro.agselectrendererstyles.md)
+
+
+</td><td>
+
+The AG Select Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agStatusPillRendererStyles](./grid-pro.agstatuspillrendererstyles.md)
+
+
+</td><td>
+
+The Status Pill Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agStringEditorStyles](./grid-pro.agstringeditorstyles.md)
+
+
+</td><td>
+
+The AG String Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeAlpineNofontsCSS](./grid-pro.agthemealpinenofontscss.md)
+
+
+</td><td>
+
+AG Alpine Theme (no fonts) CSS.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeBalhamNofontsCSS](./grid-pro.agthemebalhamnofontscss.md)
+
+
+</td><td>
+
+AG Balham Theme (no fonts) CSS.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeFontFaceMap](./grid-pro.agthemefontfacemap.md)
+
+
+</td><td>
+
+Font Face map with all the font faces for each theme.
+
+
+</td></tr>
+<tr><td>
+
+[agThemeMaterialNofontsCSS](./grid-pro.agthemematerialnofontscss.md)
+
+
+</td><td>
+
+AG Material Theme (no fonts) CSS.
+
+
+</td></tr>
+<tr><td>
+
+[CellTemplate](./grid-pro.celltemplate.md)
+
+
+</td><td>
+
+The Grid Pro Cell Template.
+
+
+</td></tr>
+<tr><td>
+
+[ColumnTemplate](./grid-pro.columntemplate.md)
+
+
+</td><td>
+
+The Grid Pro Column Template.
+
+
+</td></tr>
+<tr><td>
+
+[criteriaDelimiter](./grid-pro.criteriadelimiter.md)
+
+
+</td><td>
+
+The delimiter for the criteria string.
+
+
+</td></tr>
+<tr><td>
+
+[criteriaJoin](./grid-pro.criteriajoin.md)
+
+
+</td><td>
+
+The join for the criteria string.
+
+
+</td></tr>
+<tr><td>
+
+[csvExportParams](./grid-pro.csvexportparams.md)
+
+
+</td><td>
+
+Allows secure export of CSV https://owasp.org/www-community/attacks/CSV\_Injection
+
+
+</td></tr>
+<tr><td>
+
+[DEFAULT\_STATUS\_BAR\_CONFIG](./grid-pro.default_status_bar_config.md)
+
+
+</td><td>
+
+Default status bar configuration
+
+
+</td></tr>
+<tr><td>
+
+[defaultAgGridFontFace](./grid-pro.defaultaggridfontface.md)
+
+
+</td><td>
+
+The default font face for Grid Pro (agGridAlpine).
+
+
+</td></tr>
+<tr><td>
+
+[defaultGridOptionsConfig](./grid-pro.defaultgridoptionsconfig.md)
+
+
+</td><td>
+
+Default grid options
+
+
+</td></tr>
+<tr><td>
+
+[defaultGridProConfig](./grid-pro.defaultgridproconfig.md)
+
+
+</td><td>
+
+Grid Pro default configuration.
+
+
+</td></tr>
+<tr><td>
+
+[EDITED\_COLUMN\_FIELD](./grid-pro.edited_column_field.md)
+
+
+</td><td>
+
+Key used to store currently edited column when it being synced with server side data
+
+
+</td></tr>
+<tr><td>
+
+[ERROR\_COLUMN\_FIELD](./grid-pro.error_column_field.md)
+
+
+</td><td>
+
+Key used to store error details (column, message) when inline edit fails sync with server side data
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridComponents](./grid-pro.foundationgridcomponents.md)
+
+
+</td><td>
+
+The Grid Pro Components.
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridProShadowOptions](./grid-pro.foundationgridproshadowoptions.md)
+
+
+</td><td>
+
+GridPro shadow root options.
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridProStyles](./grid-pro.foundationgridprostyles.md)
+
+
+</td><td>
+
+The Grid Pro styles.
+
+
+</td></tr>
+<tr><td>
+
+[GRID\_READY\_EVENT](./grid-pro.grid_ready_event.md)
+
+
+</td><td>
+
+Event fired when grid is ready
+
+
+</td></tr>
+<tr><td>
+
+[gridProErrorNames](./grid-pro.gridproerrornames.md)
+
+
+</td><td>
+
+The error names for the Grid Pro component.
+
+
+</td></tr>
+<tr><td>
+
+[gridProEventNames](./grid-pro.gridproeventnames.md)
+
+
+</td><td>
+
+The event names for the Grid Pro component.
+
+
+</td></tr>
+<tr><td>
+
+[gridProGenesisDatasourceEventNames](./grid-pro.gridprogenesisdatasourceeventnames.md)
+
+
+</td><td>
+
+The Genesis Datasource events names.
+
+
+</td></tr>
+<tr><td>
+
+[gridProTemplate](./grid-pro.gridprotemplate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logger](./grid-pro.logger.md)
+
+
+</td><td>
+
+Logger for the grid-pro package
+
+
+</td></tr>
+<tr><td>
+
+[textFieldRendererStyles](./grid-pro.textfieldrendererstyles.md)
+
+
+</td><td>
+
+The AG Text Field Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
+[textRendererStyles](./grid-pro.textrendererstyles.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ActionRendererParams](./grid-pro.actionrendererparams.md) | Parameters for the [GridPro](./grid-pro.gridpro.md) action renderer. |
-|  [AgThemeFontFaceMap](./grid-pro.agthemefontfacemap.md) | Type for mapping of a [AgGridTheme](./grid-pro.aggridtheme.md) to a font face. |
-|  [BooleanRendererParams](./grid-pro.booleanrendererparams.md) | Parameters for the [GridPro](./grid-pro.gridpro.md) boolean renderer. |
-|  [DatasourceType](./grid-pro.datasourcetype.md) | Available datasource types |
-|  [GridComponents](./grid-pro.gridcomponents.md) | Grid Pro Components type, used to define the custom components that will be registered in the grid |
-|  [GridProErrorEvent](./grid-pro.gridproerrorevent.md) | Grid Pro possible error events |
-|  [GridProErrorTypes](./grid-pro.gridproerrortypes.md) | Grid Pro Error Types |
-|  [GridProEventsAndCallbacks](./grid-pro.gridproeventsandcallbacks.md) | Grid Pro Events and Callbacks |
-|  [GridProGenesisDatasourceErrorEvent](./grid-pro.gridprogenesisdatasourceerrorevent.md) | The error event grid pro genesis datasource. |
-|  [GridProGenesisDatasourceErrorEventDetail](./grid-pro.gridprogenesisdatasourceerroreventdetail.md) | The event detail for the grid pro genesis datasource <code>error</code> event. |
-|  [GrigProGenesisDatasourceSizeChangedEvent](./grid-pro.grigprogenesisdatasourcesizechangedevent.md) | The change size event grid pro genesis datasource. |
-|  [GrigProGenesisDatasourceSizeChangedEventDetail](./grid-pro.grigprogenesisdatasourcesizechangedeventdetail.md) | The event detail for the grid pro genesis datasource <code>sizeChanged</code> event. |
-|  [LabelValueStatusBarParams](./grid-pro.labelvaluestatusbarparams.md) | Label Value Status Bar Component |
-|  [LoadMoreStatusBarParams](./grid-pro.loadmorestatusbarparams.md) | The parameters for the load more status bar component. |
-|  [MoreRowsDetail](./grid-pro.morerowsdetail.md) | The Genesis Datasource event payload types. |
-|  [ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md) | The parameters for the reload status bar component. |
-|  [StatusPillRendererParams](./grid-pro.statuspillrendererparams.md) | Parameters used to configure [StatusPillRenderer](./grid-pro.statuspillrenderer.md) |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ActionRendererParams](./grid-pro.actionrendererparams.md)
+
+
+</td><td>
+
+Parameters for the [GridPro](./grid-pro.gridpro.md) action renderer.
+
+
+</td></tr>
+<tr><td>
+
+[AgThemeFontFaceMap](./grid-pro.agthemefontfacemap.md)
+
+
+</td><td>
+
+Type for mapping of a [AgGridTheme](./grid-pro.aggridtheme.md) to a font face.
+
+
+</td></tr>
+<tr><td>
+
+[BooleanRendererParams](./grid-pro.booleanrendererparams.md)
+
+
+</td><td>
+
+Parameters for the [GridPro](./grid-pro.gridpro.md) boolean renderer.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceType](./grid-pro.datasourcetype.md)
+
+
+</td><td>
+
+Available datasource types
+
+
+</td></tr>
+<tr><td>
+
+[GridComponents](./grid-pro.gridcomponents.md)
+
+
+</td><td>
+
+Grid Pro Components type, used to define the custom components that will be registered in the grid
+
+
+</td></tr>
+<tr><td>
+
+[GridProErrorEvent](./grid-pro.gridproerrorevent.md)
+
+
+</td><td>
+
+Grid Pro possible error events
+
+
+</td></tr>
+<tr><td>
+
+[GridProErrorTypes](./grid-pro.gridproerrortypes.md)
+
+
+</td><td>
+
+Grid Pro Error Types
+
+
+</td></tr>
+<tr><td>
+
+[GridProEventsAndCallbacks](./grid-pro.gridproeventsandcallbacks.md)
+
+
+</td><td>
+
+Grid Pro Events and Callbacks
+
+
+</td></tr>
+<tr><td>
+
+[GridProGenesisDatasourceErrorEvent](./grid-pro.gridprogenesisdatasourceerrorevent.md)
+
+
+</td><td>
+
+The error event grid pro genesis datasource.
+
+
+</td></tr>
+<tr><td>
+
+[GridProGenesisDatasourceErrorEventDetail](./grid-pro.gridprogenesisdatasourceerroreventdetail.md)
+
+
+</td><td>
+
+The event detail for the grid pro genesis datasource `error` event.
+
+
+</td></tr>
+<tr><td>
+
+[GrigProGenesisDatasourceSizeChangedEvent](./grid-pro.grigprogenesisdatasourcesizechangedevent.md)
+
+
+</td><td>
+
+The change size event grid pro genesis datasource.
+
+
+</td></tr>
+<tr><td>
+
+[GrigProGenesisDatasourceSizeChangedEventDetail](./grid-pro.grigprogenesisdatasourcesizechangedeventdetail.md)
+
+
+</td><td>
+
+The event detail for the grid pro genesis datasource `sizeChanged` event.
+
+
+</td></tr>
+<tr><td>
+
+[LabelValueStatusBarParams](./grid-pro.labelvaluestatusbarparams.md)
+
+
+</td><td>
+
+Label Value Status Bar Component
+
+
+</td></tr>
+<tr><td>
+
+[LoadMoreStatusBarParams](./grid-pro.loadmorestatusbarparams.md)
+
+
+</td><td>
+
+The parameters for the load more status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[MoreRowsDetail](./grid-pro.morerowsdetail.md)
+
+
+</td><td>
+
+The Genesis Datasource event payload types.
+
+
+</td></tr>
+<tr><td>
+
+[ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md)
+
+
+</td><td>
+
+The parameters for the reload status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[StatusPillRendererParams](./grid-pro.statuspillrendererparams.md)
+
+
+</td><td>
+
+Parameters used to configure [StatusPillRenderer](./grid-pro.statuspillrenderer.md)
+
+
+</td></tr>
+</tbody></table>
 

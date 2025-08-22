@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-testing](./foundation-testing.md) &gt; [timeout](./foundation-testing.timeout.md)
 
-## timeout variable
+## timeout() function
 
 Timeout utility.
 
@@ -14,6 +14,62 @@ Timeout utility.
 ```typescript
 timeout: (callback: (context: any) => Promise<any>, duration?: number) => (context: any) => Promise<any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+callback
+
+
+</td><td>
+
+(context: any) =&gt; Promise&lt;any&gt;
+
+
+</td><td>
+
+The async test function.
+
+
+</td></tr>
+<tr><td>
+
+duration
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ An optional duration in milliseconds. Defaults to 5\_000.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+(context: any) =&gt; Promise&lt;any&gt;
 
 ## Example 1
 

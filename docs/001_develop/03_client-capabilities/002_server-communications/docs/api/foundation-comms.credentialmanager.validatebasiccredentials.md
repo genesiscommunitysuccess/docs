@@ -17,9 +17,39 @@ validateBasicCredentials(credentials: BasicAuthInfo): boolean;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [BasicAuthInfo](./foundation-comms.basicauthinfo.md) | The credentials to validate. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[BasicAuthInfo](./foundation-comms.basicauthinfo.md)
+
+
+</td><td>
+
+The credentials to validate.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

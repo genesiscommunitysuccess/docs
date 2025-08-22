@@ -20,19 +20,159 @@ export declare class ActionRenderer extends FoundationElement implements ICellRe
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [dataTestId](./grid-pro.actionrenderer.datatestid.md) | <code>readonly</code> | string |  |
-|  [params](./grid-pro.actionrenderer.params.md) |  | ICellRendererParams &amp; [ActionRendererParams](./grid-pro.actionrendererparams.md) |  |
-|  [pendingAction](./grid-pro.actionrenderer.pendingaction.md) |  | boolean |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[dataTestId](./grid-pro.actionrenderer.datatestid.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[params](./grid-pro.actionrenderer.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ICellRendererParams &amp; [ActionRendererParams](./grid-pro.actionrendererparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[pendingAction](./grid-pro.actionrenderer.pendingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [clickHandler()](./grid-pro.actionrenderer.clickhandler.md) |  |  |
-|  [getGui()](./grid-pro.actionrenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.actionrenderer.init.md) |  |  |
-|  [isDisabled(data)](./grid-pro.actionrenderer.isdisabled.md) |  |  |
-|  [refresh(params)](./grid-pro.actionrenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[clickHandler()](./grid-pro.actionrenderer.clickhandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.actionrenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.actionrenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisabled(data)](./grid-pro.actionrenderer.isdisabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.actionrenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

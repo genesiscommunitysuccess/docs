@@ -18,13 +18,145 @@ export interface MultiselectEditorParams extends ICellEditorParams
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [allOptionsResourceName](./grid-pro.multiselecteditorparams.alloptionsresourcename.md) |  | string |  |
-|  [async](./grid-pro.multiselecteditorparams.async.md) |  | boolean |  |
-|  [datasourceOptions](./grid-pro.multiselecteditorparams.datasourceoptions.md) |  | DatasourceOptions\[\] |  |
-|  [labelField](./grid-pro.multiselecteditorparams.labelfield.md) |  | string |  |
-|  [selectedOptionsCallback](./grid-pro.multiselecteditorparams.selectedoptionscallback.md) |  | (data: any) =&gt; Promise&lt;\[\]&gt; |  |
-|  [valueField](./grid-pro.multiselecteditorparams.valuefield.md) |  | string |  |
-|  [values](./grid-pro.multiselecteditorparams.values.md) |  | any\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[allOptionsResourceName](./grid-pro.multiselecteditorparams.alloptionsresourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[async](./grid-pro.multiselecteditorparams.async.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[datasourceOptions](./grid-pro.multiselecteditorparams.datasourceoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+DatasourceOptions\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[labelField](./grid-pro.multiselecteditorparams.labelfield.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectedOptionsCallback](./grid-pro.multiselecteditorparams.selectedoptionscallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(data: any) =&gt; Promise&lt;\[\]&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[valueField](./grid-pro.multiselecteditorparams.valuefield.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[values](./grid-pro.multiselecteditorparams.values.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

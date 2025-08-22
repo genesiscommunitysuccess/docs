@@ -9,41 +9,287 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [FoundationLayout](./foundation-layout.foundationlayout.md) | Top level web component which is used to initialise a custom layout |
-|  [FoundationLayoutItem](./foundation-layout.foundationlayoutitem.md) | <code>FoundationLayoutItem</code> is a custom element that represents an item in the layout. |
-|  [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md) | <code>FoundationLayoutRegion</code> is a custom element that represents a region in the layout. |
-|  [LayoutRegistrationError](./foundation-layout.layoutregistrationerror.md) |  |
-|  [LayoutUsageError](./foundation-layout.layoutusageerror.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FoundationLayout](./foundation-layout.foundationlayout.md)
+
+
+</td><td>
+
+Top level web component which is used to initialise a custom layout
+
+
+</td></tr>
+<tr><td>
+
+[FoundationLayoutItem](./foundation-layout.foundationlayoutitem.md)
+
+
+</td><td>
+
+`FoundationLayoutItem` is a custom element that represents an item in the layout.
+
+
+</td></tr>
+<tr><td>
+
+[FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md)
+
+
+</td><td>
+
+`FoundationLayoutRegion` is a custom element that represents a region in the layout.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutRegistrationError](./foundation-layout.layoutregistrationerror.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[LayoutUsageError](./foundation-layout.layoutusageerror.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) | Interface to implement on an item which is a component of the layout and you wish to serialise state with. This is saved separately for each instance of the component, which allows you to restore multiple instances of the same component with different state. |
-|  [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) | The parameters that can be set on a new item when being added by the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md)
+
+
+</td><td>
+
+Interface to implement on an item which is a component of the layout and you wish to serialise state with. This is saved separately for each instance of the component, which allows you to restore multiple instances of the same component with different state.
+
+
+</td></tr>
+<tr><td>
+
+[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)
+
+
+</td><td>
+
+The parameters that can be set on a new item when being added by the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) | <p>Default time in milliseconds for the layout to buffer calls to reloading the layout while the declarative API is loading.</p><p>During the first load of the layout, a loading spinner will be shown.</p> |
-|  [foundationLayoutComponents](./foundation-layout.foundationlayoutcomponents.md) | Registration object to register the layout with your design system. |
-|  [LAYOUT\_ICONS](./foundation-layout.layout_icons.md) | A collection of SVG icons in base64 format. |
-|  [LAYOUT\_POPOUT\_CONTAINER\_CLASS](./foundation-layout.layout_popout_container_class.md) | **_(BETA)_** Put this classname on an element which is a DOM parent of the layout, and if the layout goes into popout mode then it will place itself as the only child for the popout container you set. |
-|  [LayoutEmitEvents](./foundation-layout.layoutemitevents.md) | <p>Defines events that the layout system emits</p><p>'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout' <br/> 'itemResized' - emitted when the user drags the divider to resize elements</p> |
-|  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>Defines events that the layout system listens for</p><p>'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md).</p> |
-|  [layoutStyles](./foundation-layout.layoutstyles.md) | <code>ElementStyles</code> which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md). |
-|  [layoutTemplate](./foundation-layout.layouttemplate.md) | <code>ViewTemplate</code> which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md). |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md)
+
+
+</td><td>
+
+Default time in milliseconds for the layout to buffer calls to reloading the layout while the declarative API is loading.
+
+During the first load of the layout, a loading spinner will be shown.
+
+
+</td></tr>
+<tr><td>
+
+[foundationLayoutComponents](./foundation-layout.foundationlayoutcomponents.md)
+
+
+</td><td>
+
+Registration object to register the layout with your design system.
+
+
+</td></tr>
+<tr><td>
+
+[LAYOUT\_ICONS](./foundation-layout.layout_icons.md)
+
+
+</td><td>
+
+A collection of SVG icons in base64 format.
+
+
+</td></tr>
+<tr><td>
+
+[LAYOUT\_POPOUT\_CONTAINER\_CLASS](./foundation-layout.layout_popout_container_class.md)
+
+
+</td><td>
+
+**_(BETA)_** Put this classname on an element which is a DOM parent of the layout, and if the layout goes into popout mode then it will place itself as the only child for the popout container you set.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutEmitEvents](./foundation-layout.layoutemitevents.md)
+
+
+</td><td>
+
+Defines events that the layout system emits
+
+'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout' <br/> 'itemResized' - emitted when the user drags the divider to resize elements
+
+
+</td></tr>
+<tr><td>
+
+[LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md)
+
+
+</td><td>
+
+Defines events that the layout system listens for
+
+'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[layoutStyles](./foundation-layout.layoutstyles.md)
+
+
+</td><td>
+
+`ElementStyles` which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[layoutTemplate](./foundation-layout.layouttemplate.md)
+
+
+</td><td>
+
+`ViewTemplate` which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [CustomButton](./foundation-layout.custombutton.md) | Definition of a custom button which will be added to all layout items. |
-|  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title. 'autosave' - no other parameters.</p> |
-|  [LayoutRegionType](./foundation-layout.layoutregiontype.md) | Union type describing the three different types of region splits. Set on the <code>type</code> attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md). |
-|  [Placement](./foundation-layout.placement.md) | Where to and how to add the new item(s) into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API. |
-|  [SerialisedLayout](./foundation-layout.serialisedlayout.md) | Versioned layout config objects. <code>v</code> is the version and <code>c</code> contains the layout config. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CustomButton](./foundation-layout.custombutton.md)
+
+
+</td><td>
+
+Definition of a custom button which will be added to all layout items.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md)
+
+
+</td><td>
+
+Defines the shape of the detail that the layout listens works with for events it listens on
+
+'changeTitle' - `title` is the string you want to set. For `mode`<!-- -->: `replace` will set the title to be `title`<!-- -->, `suffix` will append `title` to the end of the existing title. 'autosave' - no other parameters.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutRegionType](./foundation-layout.layoutregiontype.md)
+
+
+</td><td>
+
+Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[Placement](./foundation-layout.placement.md)
+
+
+</td><td>
+
+Where to and how to add the new item(s) into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API.
+
+
+</td></tr>
+<tr><td>
+
+[SerialisedLayout](./foundation-layout.serialisedlayout.md)
+
+
+</td><td>
+
+Versioned layout config objects. `v` is the version and `c` contains the layout config.
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,8 +17,60 @@ export interface Observer<EventType>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [publish](./foundation-utils.observer.publish.md) |  | [Publish](./foundation-utils.publish.md)&lt;EventType&gt; |  |
-|  [subscribe](./foundation-utils.observer.subscribe.md) |  | [Subscribe](./foundation-utils.subscribe.md)&lt;EventType&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[publish](./foundation-utils.observer.publish.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Publish](./foundation-utils.publish.md)<!-- -->&lt;EventType&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[subscribe](./foundation-utils.observer.subscribe.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Subscribe](./foundation-utils.subscribe.md)<!-- -->&lt;EventType&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

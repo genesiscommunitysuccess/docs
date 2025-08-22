@@ -17,8 +17,49 @@ export declare enum GridTabulatorTheme
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  default | <code>&quot;default-theme&quot;</code> |  |
-|  rapid | <code>&quot;rapid-theme&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+default
+
+
+</td><td>
+
+`"default-theme"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+rapid
+
+
+</td><td>
+
+`"rapid-theme"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

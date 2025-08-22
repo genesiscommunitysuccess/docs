@@ -17,15 +17,85 @@ export interface JsonSchemaCache
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [cachedJsonSchema](./foundation-comms.jsonschemacache.cachedjsonschema.md) |  | Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)&gt; |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[cachedJsonSchema](./foundation-comms.jsonschemacache.cachedjsonschema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [getJsonSchemaFor(resourceName)](./foundation-comms.jsonschemacache.getjsonschemafor.md) |  |
-|  [hasJsonSchemaFor(resourceName)](./foundation-comms.jsonschemacache.hasjsonschemafor.md) |  |
-|  [setJsonSchemaFor(resourceName, schemaResponse)](./foundation-comms.jsonschemacache.setjsonschemafor.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getJsonSchemaFor(resourceName)](./foundation-comms.jsonschemacache.getjsonschemafor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasJsonSchemaFor(resourceName)](./foundation-comms.jsonschemacache.hasjsonschemafor.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setJsonSchemaFor(resourceName, schemaResponse)](./foundation-comms.jsonschemacache.setjsonschemafor.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [foundationAgEditableRenderer](./grid-pro.foundationageditablerenderer.md)
 
-## foundationAgEditableRenderer variable
+## foundationAgEditableRenderer() function
 
 A function that returns a Foundation Editable Renderer registration for configuring the component with a DesignSystem.
 
@@ -23,7 +23,47 @@ foundationAgEditableRenderer: (overrideDefinition?: import("@microsoft/fast-foun
 }, typeof EditableRenderer>
 ```
 
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+overrideDefinition
+
+
+</td><td>
+
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[EditableRenderer](./grid-pro.editablerenderer.md)<!-- -->, any&gt;; }&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[EditableRenderer](./grid-pro.editablerenderer.md)<!-- -->, any&gt;; }, typeof [EditableRenderer](./grid-pro.editablerenderer.md)<!-- -->&gt;
+
 ## Remarks
 
-HTML Element: &lt;foundation-editable-renderer&gt;
+HTML Element: &lt;<!-- -->foundation-editable-renderer<!-- -->&gt;
 

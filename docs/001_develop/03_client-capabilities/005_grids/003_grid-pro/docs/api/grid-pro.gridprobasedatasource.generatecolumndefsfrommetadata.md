@@ -15,10 +15,51 @@ protected generateColumnDefsFromMetadata(fieldsMetadata: FieldMetadata[], getFil
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  fieldsMetadata | FieldMetadata\[\] |  |
-|  getFilterParamsByFieldType | Function |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+fieldsMetadata
+
+
+</td><td>
+
+FieldMetadata\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+getFilterParamsByFieldType
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

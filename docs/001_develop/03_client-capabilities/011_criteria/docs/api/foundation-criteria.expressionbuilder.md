@@ -16,24 +16,169 @@ export declare class ExpressionBuilder
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(opts)](./foundation-criteria.expressionbuilder._constructor_.md) |  | Constructs a new instance of the <code>ExpressionBuilder</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(opts)](./foundation-criteria.expressionbuilder._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `ExpressionBuilder` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [build](./foundation-criteria.expressionbuilder.build.md) |  | () =&gt; Expression |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build](./foundation-criteria.expressionbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; Expression
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [withField(field)](./foundation-criteria.expressionbuilder.withfield.md) |  |  |
-|  [withGroup(group)](./foundation-criteria.expressionbuilder.withgroup.md) |  |  |
-|  [withParams(params)](./foundation-criteria.expressionbuilder.withparams.md) |  |  |
-|  [withSerialiser(serialiser)](./foundation-criteria.expressionbuilder.withserialiser.md) |  |  |
-|  [withValue(value)](./foundation-criteria.expressionbuilder.withvalue.md) |  |  |
-|  [withValueGetter(valueGetter)](./foundation-criteria.expressionbuilder.withvaluegetter.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[withField(field)](./foundation-criteria.expressionbuilder.withfield.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withGroup(group)](./foundation-criteria.expressionbuilder.withgroup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withParams(params)](./foundation-criteria.expressionbuilder.withparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withSerialiser(serialiser)](./foundation-criteria.expressionbuilder.withserialiser.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withValue(value)](./foundation-criteria.expressionbuilder.withvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[withValueGetter(valueGetter)](./foundation-criteria.expressionbuilder.withvaluegetter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

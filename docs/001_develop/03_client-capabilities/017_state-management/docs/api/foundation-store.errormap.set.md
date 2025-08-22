@@ -17,10 +17,55 @@ set(key: keyof TErrorDetailMap, error: Error): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | keyof TErrorDetailMap | The key. |
-|  error | Error | The error. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+keyof TErrorDetailMap
+
+
+</td><td>
+
+The key.
+
+
+</td></tr>
+<tr><td>
+
+error
+
+
+</td><td>
+
+Error
+
+
+</td><td>
+
+The error.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

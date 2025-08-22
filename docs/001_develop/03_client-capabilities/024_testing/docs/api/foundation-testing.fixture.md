@@ -17,18 +17,158 @@ export interface Fixture<TElement = HTMLElement>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [document](./foundation-testing.fixture.document.md) |  | Document | The document the fixture is running in. |
-|  [element](./foundation-testing.fixture.element.md) |  | TElement | The first element in the [Fixture.view](./foundation-testing.fixture.view.md). |
-|  [parent](./foundation-testing.fixture.parent.md) |  | HTMLElement | The parent element that the view was appended to. |
-|  [template](./foundation-testing.fixture.template.md) |  | ViewTemplate | The template the fixture was created from. |
-|  [view](./foundation-testing.fixture.view.md) |  | HTMLView | The view that was created from the fixture's template. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[document](./foundation-testing.fixture.document.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Document
+
+
+</td><td>
+
+The document the fixture is running in.
+
+
+</td></tr>
+<tr><td>
+
+[element](./foundation-testing.fixture.element.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TElement
+
+
+</td><td>
+
+The first element in the [Fixture.view](./foundation-testing.fixture.view.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[parent](./foundation-testing.fixture.parent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+The parent element that the view was appended to.
+
+
+</td></tr>
+<tr><td>
+
+[template](./foundation-testing.fixture.template.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ViewTemplate
+
+
+</td><td>
+
+The template the fixture was created from.
+
+
+</td></tr>
+<tr><td>
+
+[view](./foundation-testing.fixture.view.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLView
+
+
+</td><td>
+
+The view that was created from the fixture's template.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [connect()](./foundation-testing.fixture.connect.md) | Adds the [Fixture.parent](./foundation-testing.fixture.parent.md) to the DOM, causing the connect lifecycle to begin. |
-|  [disconnect()](./foundation-testing.fixture.disconnect.md) | Removes the [Fixture.parent](./foundation-testing.fixture.parent.md) from the DOM, causing the disconnect lifecycle to begin. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connect()](./foundation-testing.fixture.connect.md)
+
+
+</td><td>
+
+Adds the [Fixture.parent](./foundation-testing.fixture.parent.md) to the DOM, causing the connect lifecycle to begin.
+
+
+</td></tr>
+<tr><td>
+
+[disconnect()](./foundation-testing.fixture.disconnect.md)
+
+
+</td><td>
+
+Removes the [Fixture.parent](./foundation-testing.fixture.parent.md) from the DOM, causing the disconnect lifecycle to begin.
+
+
+</td></tr>
+</tbody></table>
 

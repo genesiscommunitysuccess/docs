@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showNotificationBanner](./foundation-notifications.shownotificationbanner.md)
 
-## showNotificationBanner variable
+## showNotificationBanner() function
 
 Shows the notification banner
 
@@ -14,3 +14,72 @@ Shows the notification banner
 ```typescript
 showNotificationBanner: (configuration: BannerStructure, tagName: String, notificationBoundary?: HTMLElement) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+configuration
+
+
+</td><td>
+
+[BannerStructure](./foundation-notifications.bannerstructure.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+tagName
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+notificationBoundary
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

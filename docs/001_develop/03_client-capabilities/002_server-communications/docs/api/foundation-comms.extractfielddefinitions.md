@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-comms](./foundation-comms.md) &gt; [extractFieldDefinitions](./foundation-comms.extractfielddefinitions.md)
 
-## extractFieldDefinitions variable
+## extractFieldDefinitions() function
 
 Extracts the field definitions from the metadata.
 
@@ -14,3 +14,46 @@ Extracts the field definitions from the metadata.
 ```typescript
 extractFieldDefinitions: (metadata: Metadata) => MetadataDetail[]
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+metadata
+
+
+</td><td>
+
+[Metadata](./foundation-comms.metadata.md)
+
+
+</td><td>
+
+The metadata object.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+
+An array of metadata detail.
+

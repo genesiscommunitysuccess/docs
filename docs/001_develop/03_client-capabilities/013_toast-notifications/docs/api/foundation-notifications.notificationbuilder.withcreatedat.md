@@ -22,9 +22,39 @@ withCreatedAt(createdAt: Date): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  createdAt | Date | Date |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+createdAt
+
+
+</td><td>
+
+Date
+
+
+</td><td>
+
+Date
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,10 +17,55 @@ trackEvent(eventName: FoundationAnalyticsEventType.routeChanged, payload: Founda
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventName | [FoundationAnalyticsEventType.routeChanged](./foundation-comms.foundationanalyticseventtype.md) | The name of the event to track. |
-|  payload | [FoundationAnalyticsEvent.RouteChanged](./foundation-comms.foundationanalyticsevent.routechanged.md) | The payload data for the event. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventName
+
+
+</td><td>
+
+[FoundationAnalyticsEventType.routeChanged](./foundation-comms.foundationanalyticseventtype.md)
+
+
+</td><td>
+
+The name of the event to track.
+
+
+</td></tr>
+<tr><td>
+
+payload
+
+
+</td><td>
+
+[FoundationAnalyticsEvent.RouteChanged](./foundation-comms.foundationanalyticsevent.routechanged.md)
+
+
+</td><td>
+
+The payload data for the event.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

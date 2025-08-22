@@ -20,23 +20,210 @@ export declare class NumberEditor extends FoundationElement implements ICellEdit
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [actualWidth](./grid-pro.numbereditor.actualwidth.md) |  | number |  |
-|  [input](./grid-pro.numbereditor.input.md) |  | any |  |
-|  [params](./grid-pro.numbereditor.params.md) |  | [NumberEditorParams](./grid-pro.numbereditorparams.md) |  |
-|  [value](./grid-pro.numbereditor.value.md) |  | number |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actualWidth](./grid-pro.numbereditor.actualwidth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[input](./grid-pro.numbereditor.input.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[params](./grid-pro.numbereditor.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[NumberEditorParams](./grid-pro.numbereditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[value](./grid-pro.numbereditor.value.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [afterGuiAttached()](./grid-pro.numbereditor.afterguiattached.md) |  |  |
-|  [changeHandler(event)](./grid-pro.numbereditor.changehandler.md) |  |  |
-|  [getGui()](./grid-pro.numbereditor.getgui.md) |  |  |
-|  [getValue()](./grid-pro.numbereditor.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.numbereditor.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.numbereditor.iscancelbeforestart.md) |  |  |
-|  [isPopup()](./grid-pro.numbereditor.ispopup.md) |  |  |
-|  [refresh(params)](./grid-pro.numbereditor.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[afterGuiAttached()](./grid-pro.numbereditor.afterguiattached.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[changeHandler(event)](./grid-pro.numbereditor.changehandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.numbereditor.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.numbereditor.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.numbereditor.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.numbereditor.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isPopup()](./grid-pro.numbereditor.ispopup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.numbereditor.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,31 +17,291 @@ export interface CredentialManager
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [createBasicCredentials(inputs)](./foundation-comms.credentialmanager.createbasiccredentials.md) | Creates a set of basic authentication credentials using the specified input data. |
-|  [createRefreshCredentials(inputs)](./foundation-comms.credentialmanager.createrefreshcredentials.md) | Creates a set of refresh authentication credentials using the specified input data. |
-|  [createSSOCredentials(inputs)](./foundation-comms.credentialmanager.createssocredentials.md) | Creates a set of SSO authentication credentials using the specified input data. |
-|  [getCredentials(options)](./foundation-comms.credentialmanager.getcredentials.md) | Retrieves stored credentials. |
-|  [getCredentialsFromContainer(options)](./foundation-comms.credentialmanager.getcredentialsfromcontainer.md) | Retrieves credential data from the browser's credential manager. |
-|  [getCredentialsFromCookie()](./foundation-comms.credentialmanager.getcredentialsfromcookie.md) | Retrieves credential data from a browser cookie. |
-|  [getMFAToken()](./foundation-comms.credentialmanager.getmfatoken.md) | Retrieves the current MFA token, if any. |
-|  [getRefreshToken()](./foundation-comms.credentialmanager.getrefreshtoken.md) | Retrieves the current refresh token, if any. |
-|  [getSSOToken()](./foundation-comms.credentialmanager.getssotoken.md) | Retrieves the current SSO token, if any. |
-|  [getUsername()](./foundation-comms.credentialmanager.getusername.md) | Retrieves the current username, if any. |
-|  [normaliseLegacyCredentialData(data, cookie)](./foundation-comms.credentialmanager.normaliselegacycredentialdata.md) | Normalise legacy credential data. |
-|  [preventSilentAccess()](./foundation-comms.credentialmanager.preventsilentaccess.md) | Prevents silent access by requiring the user to authenticate before making API requests. |
-|  [removeAll()](./foundation-comms.credentialmanager.removeall.md) | Removes all user crendentials data. |
-|  [removeCookie()](./foundation-comms.credentialmanager.removecookie.md) | Removes the user's cookie. |
-|  [removeMFAToken()](./foundation-comms.credentialmanager.removemfatoken.md) | Removes the current MFA token, if any. |
-|  [removeRefreshToken()](./foundation-comms.credentialmanager.removerefreshtoken.md) | Removes the current refresh token, if any. |
-|  [removeSSOToken()](./foundation-comms.credentialmanager.removessotoken.md) | Removes the current SSO token, if any. |
-|  [removeUsername()](./foundation-comms.credentialmanager.removeusername.md) | Removes the current username, if any. |
-|  [storeCredentials(data)](./foundation-comms.credentialmanager.storecredentials.md) | Stores user credentials securely. |
-|  [storeCredentialsInContainer(data)](./foundation-comms.credentialmanager.storecredentialsincontainer.md) | Stores the specified credential data in the browser's credential manager. |
-|  [storeCredentialsInCookie(data)](./foundation-comms.credentialmanager.storecredentialsincookie.md) | Stores the specified credential data in a browser cookie. |
-|  [validateBasicCredentials(credentials)](./foundation-comms.credentialmanager.validatebasiccredentials.md) | Validates the specified set of basic authentication credentials. |
-|  [validateRefreshCredentials(credentials)](./foundation-comms.credentialmanager.validaterefreshcredentials.md) | Validates the specified set of refresh authentication credentials. |
-|  [validateSSOCredentials(credentials)](./foundation-comms.credentialmanager.validatessocredentials.md) | Validates the specified set of SSO authentication credentials. |
-|  [validateUserCredentialData(data, ensurePassword)](./foundation-comms.credentialmanager.validateusercredentialdata.md) | Validate user credential data returned from the container or a cookie. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createBasicCredentials(inputs)](./foundation-comms.credentialmanager.createbasiccredentials.md)
+
+
+</td><td>
+
+Creates a set of basic authentication credentials using the specified input data.
+
+
+</td></tr>
+<tr><td>
+
+[createRefreshCredentials(inputs)](./foundation-comms.credentialmanager.createrefreshcredentials.md)
+
+
+</td><td>
+
+Creates a set of refresh authentication credentials using the specified input data.
+
+
+</td></tr>
+<tr><td>
+
+[createSSOCredentials(inputs)](./foundation-comms.credentialmanager.createssocredentials.md)
+
+
+</td><td>
+
+Creates a set of SSO authentication credentials using the specified input data.
+
+
+</td></tr>
+<tr><td>
+
+[getCredentials(options)](./foundation-comms.credentialmanager.getcredentials.md)
+
+
+</td><td>
+
+Retrieves stored credentials.
+
+
+</td></tr>
+<tr><td>
+
+[getCredentialsFromContainer(options)](./foundation-comms.credentialmanager.getcredentialsfromcontainer.md)
+
+
+</td><td>
+
+Retrieves credential data from the browser's credential manager.
+
+
+</td></tr>
+<tr><td>
+
+[getCredentialsFromCookie()](./foundation-comms.credentialmanager.getcredentialsfromcookie.md)
+
+
+</td><td>
+
+Retrieves credential data from a browser cookie.
+
+
+</td></tr>
+<tr><td>
+
+[getMFAToken()](./foundation-comms.credentialmanager.getmfatoken.md)
+
+
+</td><td>
+
+Retrieves the current MFA token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[getRefreshToken()](./foundation-comms.credentialmanager.getrefreshtoken.md)
+
+
+</td><td>
+
+Retrieves the current refresh token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[getSSOToken()](./foundation-comms.credentialmanager.getssotoken.md)
+
+
+</td><td>
+
+Retrieves the current SSO token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[getUsername()](./foundation-comms.credentialmanager.getusername.md)
+
+
+</td><td>
+
+Retrieves the current username, if any.
+
+
+</td></tr>
+<tr><td>
+
+[normaliseLegacyCredentialData(data, cookie)](./foundation-comms.credentialmanager.normaliselegacycredentialdata.md)
+
+
+</td><td>
+
+Normalise legacy credential data.
+
+
+</td></tr>
+<tr><td>
+
+[preventSilentAccess()](./foundation-comms.credentialmanager.preventsilentaccess.md)
+
+
+</td><td>
+
+Prevents silent access by requiring the user to authenticate before making API requests.
+
+
+</td></tr>
+<tr><td>
+
+[removeAll()](./foundation-comms.credentialmanager.removeall.md)
+
+
+</td><td>
+
+Removes all user crendentials data.
+
+
+</td></tr>
+<tr><td>
+
+[removeCookie()](./foundation-comms.credentialmanager.removecookie.md)
+
+
+</td><td>
+
+Removes the user's cookie.
+
+
+</td></tr>
+<tr><td>
+
+[removeMFAToken()](./foundation-comms.credentialmanager.removemfatoken.md)
+
+
+</td><td>
+
+Removes the current MFA token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[removeRefreshToken()](./foundation-comms.credentialmanager.removerefreshtoken.md)
+
+
+</td><td>
+
+Removes the current refresh token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[removeSSOToken()](./foundation-comms.credentialmanager.removessotoken.md)
+
+
+</td><td>
+
+Removes the current SSO token, if any.
+
+
+</td></tr>
+<tr><td>
+
+[removeUsername()](./foundation-comms.credentialmanager.removeusername.md)
+
+
+</td><td>
+
+Removes the current username, if any.
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentials(data)](./foundation-comms.credentialmanager.storecredentials.md)
+
+
+</td><td>
+
+Stores user credentials securely.
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentialsInContainer(data)](./foundation-comms.credentialmanager.storecredentialsincontainer.md)
+
+
+</td><td>
+
+Stores the specified credential data in the browser's credential manager.
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentialsInCookie(data)](./foundation-comms.credentialmanager.storecredentialsincookie.md)
+
+
+</td><td>
+
+Stores the specified credential data in a browser cookie.
+
+
+</td></tr>
+<tr><td>
+
+[validateBasicCredentials(credentials)](./foundation-comms.credentialmanager.validatebasiccredentials.md)
+
+
+</td><td>
+
+Validates the specified set of basic authentication credentials.
+
+
+</td></tr>
+<tr><td>
+
+[validateRefreshCredentials(credentials)](./foundation-comms.credentialmanager.validaterefreshcredentials.md)
+
+
+</td><td>
+
+Validates the specified set of refresh authentication credentials.
+
+
+</td></tr>
+<tr><td>
+
+[validateSSOCredentials(credentials)](./foundation-comms.credentialmanager.validatessocredentials.md)
+
+
+</td><td>
+
+Validates the specified set of SSO authentication credentials.
+
+
+</td></tr>
+<tr><td>
+
+[validateUserCredentialData(data, ensurePassword)](./foundation-comms.credentialmanager.validateusercredentialdata.md)
+
+
+</td><td>
+
+Validate user credential data returned from the container or a cookie.
+
+
+</td></tr>
+</tbody></table>
 

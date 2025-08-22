@@ -17,7 +17,37 @@ constructor(logger: ErrorMapLogger);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  logger | [ErrorMapLogger](./foundation-utils.errormaplogger.md) | A logger error method reference. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+logger
+
+
+</td><td>
+
+[ErrorMapLogger](./foundation-utils.errormaplogger.md)
+
+
+</td><td>
+
+A logger error method reference.
+
+
+</td></tr>
+</tbody></table>
 

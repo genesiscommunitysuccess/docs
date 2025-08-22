@@ -17,10 +17,102 @@ export interface RowDataTransaction<TData = any>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [add?](./grid-tabulator.rowdatatransaction.add.md) |  | TData\[\] \| null | _(Optional)_ Rows to add |
-|  [addIndex?](./grid-tabulator.rowdatatransaction.addindex.md) |  | number \| null | _(Optional)_ Index to add rows |
-|  [remove?](./grid-tabulator.rowdatatransaction.remove.md) |  | TData\[\] \| null | _(Optional)_ Rows to remove |
-|  [update?](./grid-tabulator.rowdatatransaction.update.md) |  | TData\[\] \| null | _(Optional)_ Rows to update |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[add?](./grid-tabulator.rowdatatransaction.add.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TData\[\] \| null
+
+
+</td><td>
+
+_(Optional)_ Rows to add
+
+
+</td></tr>
+<tr><td>
+
+[addIndex?](./grid-tabulator.rowdatatransaction.addindex.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number \| null
+
+
+</td><td>
+
+_(Optional)_ Index to add rows
+
+
+</td></tr>
+<tr><td>
+
+[remove?](./grid-tabulator.rowdatatransaction.remove.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TData\[\] \| null
+
+
+</td><td>
+
+_(Optional)_ Rows to remove
+
+
+</td></tr>
+<tr><td>
+
+[update?](./grid-tabulator.rowdatatransaction.update.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TData\[\] \| null
+
+
+</td><td>
+
+_(Optional)_ Rows to update
+
+
+</td></tr>
+</tbody></table>
 

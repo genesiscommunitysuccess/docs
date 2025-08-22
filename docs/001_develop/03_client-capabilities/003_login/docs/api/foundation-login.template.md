@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-login](./foundation-login.md) &gt; [template](./foundation-login.template.md)
 
-## template variable
+## template() function
 
 
 **Signature:**
@@ -13,3 +13,42 @@ format: md
 ```typescript
 template: (options: TemplateOptions) => import("@microsoft/fast-element").ViewTemplate<Login, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+options
+
+
+</td><td>
+
+[TemplateOptions](./foundation-login.templateoptions.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[Login](./foundation-login.login.md)<!-- -->, any&gt;
+

@@ -17,13 +17,43 @@ getMetadata?(resourceName: string): Promise<Array<FieldMetadata>>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to fetch metadata for. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to fetch metadata for.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;Array&lt;[FieldMetadata](./foundation-comms.fieldmetadata.md)&gt;&gt;
+Promise&lt;Array&lt;[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->&gt;&gt;
 
 A promise that resolves with an array of FieldMetadata.
 

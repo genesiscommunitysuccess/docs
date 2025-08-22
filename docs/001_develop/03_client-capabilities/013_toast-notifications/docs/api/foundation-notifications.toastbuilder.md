@@ -20,13 +20,119 @@ export declare class ToastBuilder
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build()](./foundation-notifications.toastbuilder.build.md) |  | Build notification |
-|  [withAutoClose(autoClose)](./foundation-notifications.toastbuilder.withautoclose.md) |  | Add auto close to notification |
-|  [withButtons(buttons)](./foundation-notifications.toastbuilder.withbuttons.md) |  | Add buttons to notifications |
-|  [withCloseTimeout(closeTimeout)](./foundation-notifications.toastbuilder.withclosetimeout.md) |  | Add close timeout to notification |
-|  [withDetails(details)](./foundation-notifications.toastbuilder.withdetails.md) |  | Add details data to notifications |
-|  [withPosition(position)](./foundation-notifications.toastbuilder.withposition.md) |  | Add position to toast |
-|  [withType(type)](./foundation-notifications.toastbuilder.withtype.md) |  | Add type to notification, if the type is anything other than 'warning' or 'success' do not add it |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build()](./foundation-notifications.toastbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Build notification
+
+
+</td></tr>
+<tr><td>
+
+[withAutoClose(autoClose)](./foundation-notifications.toastbuilder.withautoclose.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add auto close to notification
+
+
+</td></tr>
+<tr><td>
+
+[withButtons(buttons)](./foundation-notifications.toastbuilder.withbuttons.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add buttons to notifications
+
+
+</td></tr>
+<tr><td>
+
+[withCloseTimeout(closeTimeout)](./foundation-notifications.toastbuilder.withclosetimeout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add close timeout to notification
+
+
+</td></tr>
+<tr><td>
+
+[withDetails(details)](./foundation-notifications.toastbuilder.withdetails.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add details data to notifications
+
+
+</td></tr>
+<tr><td>
+
+[withPosition(position)](./foundation-notifications.toastbuilder.withposition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add position to toast
+
+
+</td></tr>
+<tr><td>
+
+[withType(type)](./foundation-notifications.toastbuilder.withtype.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add type to notification, if the type is anything other than 'warning' or 'success' do not add it
+
+
+</td></tr>
+</tbody></table>
 

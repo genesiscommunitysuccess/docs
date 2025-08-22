@@ -17,14 +17,59 @@ getMetadata(resourceName: string, useCache?: boolean): Promise<Metadata>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to retrieve the metadata for. |
-|  useCache | boolean | _(Optional)_ Whether to use the cached metadata if available. Default: true. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to retrieve the metadata for.
+
+
+</td></tr>
+<tr><td>
+
+useCache
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether to use the cached metadata if available. Default: true.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Metadata](./foundation-comms.metadata.md)&gt;
+Promise&lt;[Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
 
 A promise that resolves with the metadata.
 

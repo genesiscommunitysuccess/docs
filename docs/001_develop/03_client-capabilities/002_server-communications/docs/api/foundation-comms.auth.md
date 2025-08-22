@@ -17,17 +17,135 @@ export interface Auth
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [isLoggedIn](./foundation-comms.auth.isloggedin.md) | <code>readonly</code> | boolean | A boolean value indicating whether or not the user is currently logged in. |
-|  [isLoggedIn$?](./foundation-comms.auth.isloggedin_.md) | <code>readonly</code> | Observable&lt;boolean&gt; | _(Optional)_ An Observable that emits a boolean value indicating whether or not the user is currently logged in. |
-|  [isWorking](./foundation-comms.auth.isworking.md) |  | boolean | Indicates whether Auth is working or is idle. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[isLoggedIn](./foundation-comms.auth.isloggedin.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+A boolean value indicating whether or not the user is currently logged in.
+
+
+</td></tr>
+<tr><td>
+
+[isLoggedIn$?](./foundation-comms.auth.isloggedin_.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Observable&lt;boolean&gt;
+
+
+</td><td>
+
+_(Optional)_ An Observable that emits a boolean value indicating whether or not the user is currently logged in.
+
+
+</td></tr>
+<tr><td>
+
+[isWorking](./foundation-comms.auth.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Indicates whether Auth is working or is idle.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [login(credentials)](./foundation-comms.auth.login.md) | Logs in the user with the specified credentials. |
-|  [logout()](./foundation-comms.auth.logout.md) | Logs out the current user, if any. |
-|  [reAuthFromSession()](./foundation-comms.auth.reauthfromsession.md) | Attempts to re-authenticate the user using the existing session data. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[login(credentials)](./foundation-comms.auth.login.md)
+
+
+</td><td>
+
+Logs in the user with the specified credentials.
+
+
+</td></tr>
+<tr><td>
+
+[logout()](./foundation-comms.auth.logout.md)
+
+
+</td><td>
+
+Logs out the current user, if any.
+
+
+</td></tr>
+<tr><td>
+
+[reAuthFromSession()](./foundation-comms.auth.reauthfromsession.md)
+
+
+</td><td>
+
+Attempts to re-authenticate the user using the existing session data.
+
+
+</td></tr>
+</tbody></table>
 

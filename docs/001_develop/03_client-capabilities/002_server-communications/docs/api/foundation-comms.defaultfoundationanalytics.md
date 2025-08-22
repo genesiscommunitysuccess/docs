@@ -18,14 +18,81 @@ export declare class DefaultFoundationAnalytics implements FoundationAnalytics
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(config)](./foundation-comms.defaultfoundationanalytics._constructor_.md) |  | TODO: Remove the static config. We could register a config with the container at startup and have it injected here or remove the constructor and define a method call. |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(config)](./foundation-comms.defaultfoundationanalytics._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+TODO: Remove the static config. We could register a config with the container at startup and have it injected here or remove the constructor and define a method call.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [trackEvent(eventName, payload)](./foundation-comms.defaultfoundationanalytics.trackevent.md) |  | Set typed overloads |
-|  [trackEvent(eventName, payload)](./foundation-comms.defaultfoundationanalytics.trackevent_1.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[trackEvent(eventName, payload)](./foundation-comms.defaultfoundationanalytics.trackevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Set typed overloads
+
+
+</td></tr>
+<tr><td>
+
+[trackEvent(eventName, payload)](./foundation-comms.defaultfoundationanalytics.trackevent_1.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,7 +17,35 @@ constructor(type: Operator);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  type | Operator |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+type
+
+
+</td><td>
+
+Operator
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

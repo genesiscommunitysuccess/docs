@@ -17,12 +17,105 @@ export declare enum GridTabulatorCellRendererTypes
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  action | <code>&quot;action&quot;</code> |  |
-|  actionsMenu | <code>&quot;actionsMenu&quot;</code> |  |
-|  boolean | <code>&quot;boolean&quot;</code> |  |
-|  editable | <code>&quot;editable&quot;</code> |  |
-|  select | <code>&quot;select&quot;</code> |  |
-|  text | <code>&quot;text&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+action
+
+
+</td><td>
+
+`"action"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+actionsMenu
+
+
+</td><td>
+
+`"actionsMenu"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+boolean
+
+
+</td><td>
+
+`"boolean"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+editable
+
+
+</td><td>
+
+`"editable"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+select
+
+
+</td><td>
+
+`"select"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+text
+
+
+</td><td>
+
+`"text"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

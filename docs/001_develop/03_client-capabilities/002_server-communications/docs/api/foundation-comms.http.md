@@ -17,8 +17,34 @@ export interface Http
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [get(url, requestInit)](./foundation-comms.http.get.md) |  |
-|  [post(url, requestInit)](./foundation-comms.http.post.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[get(url, requestInit)](./foundation-comms.http.get.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[post(url, requestInit)](./foundation-comms.http.post.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

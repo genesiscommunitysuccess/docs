@@ -12,9 +12,9 @@ format: md
 
 Configuration items for the expression builder styles.
 
-`customElements`: optional `Types.CustomElements` block for overriding the html tags used in the expression builder
+`customElements`<!-- -->: optional `Types.CustomElements` block for overriding the html tags used in the expression builder
 
-`customStyles`: optional `Types.CustomStyles` block to configure custom css for components.
+`customStyles`<!-- -->: optional `Types.CustomStyles` block to configure custom css for components.
 
 **Signature:**
 
@@ -24,5 +24,5 @@ export type Styles = {
     customStyles?: CustomStyles;
 };
 ```
-**References:** [CustomElements](./expression-builder.types.customelements.md), [CustomStyles](./expression-builder.types.customstyles.md)
+**References:** [CustomElements](./expression-builder.types.customelements.md)<!-- -->, [CustomStyles](./expression-builder.types.customstyles.md)
 

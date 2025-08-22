@@ -22,9 +22,63 @@ export declare class BannerBuilder
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build()](./foundation-notifications.bannerbuilder.build.md) |  | Build Banner |
-|  [withConfirmingAction(confirmingAction)](./foundation-notifications.bannerbuilder.withconfirmingaction.md) |  | Add confirming action to Banner |
-|  [withDismissingAction(dismissingAction)](./foundation-notifications.bannerbuilder.withdismissingaction.md) |  | Add dismissing action to Banner |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build()](./foundation-notifications.bannerbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Build Banner
+
+
+</td></tr>
+<tr><td>
+
+[withConfirmingAction(confirmingAction)](./foundation-notifications.bannerbuilder.withconfirmingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add confirming action to Banner
+
+
+</td></tr>
+<tr><td>
+
+[withDismissingAction(dismissingAction)](./foundation-notifications.bannerbuilder.withdismissingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add dismissing action to Banner
+
+
+</td></tr>
+</tbody></table>
 

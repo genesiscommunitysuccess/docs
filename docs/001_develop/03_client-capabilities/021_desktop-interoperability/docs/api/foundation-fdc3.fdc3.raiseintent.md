@@ -17,14 +17,59 @@ raiseIntent(context: FDC3Context, intent?: FDC3Intents): Promise<FDC3IntentResol
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  context | [FDC3Context](./foundation-fdc3.fdc3context.md) | The context to use. |
-|  intent | [FDC3Intents](./foundation-fdc3.fdc3intents.md) | _(Optional)_ The intent to raise. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+context
+
+
+</td><td>
+
+[FDC3Context](./foundation-fdc3.fdc3context.md)
+
+
+</td><td>
+
+The context to use.
+
+
+</td></tr>
+<tr><td>
+
+intent
+
+
+</td><td>
+
+[FDC3Intents](./foundation-fdc3.fdc3intents.md)
+
+
+</td><td>
+
+_(Optional)_ The intent to raise.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)&gt;
+Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)<!-- -->&gt;
 
 A promise that resolves with the result of the intent resolution.
 

@@ -17,9 +17,39 @@ get(key: keyof TErrorDetailMap): Error | undefined;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | keyof TErrorDetailMap | The key. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+keyof TErrorDetailMap
+
+
+</td><td>
+
+The key.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

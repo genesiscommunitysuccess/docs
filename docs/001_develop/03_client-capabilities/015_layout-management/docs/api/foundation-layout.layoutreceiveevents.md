@@ -9,7 +9,7 @@ format: md
 
 Defines events that the layout system listens for
 
-'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md).
+'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md)<!-- -->.
 
 **Signature:**
 

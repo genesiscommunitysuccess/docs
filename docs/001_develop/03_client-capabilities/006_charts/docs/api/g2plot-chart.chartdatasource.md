@@ -18,23 +18,355 @@ export declare class ChartDatasource extends ChartDatasource_base
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [chartFields](./g2plot-chart.chartdatasource.chartfields.md) |  | string | <p>Default value is 'groupBy value'. Can be customized but order matters.</p><p>\[Mandatory\] First is always the xField/colorField \[Mandatory\] Second is always the yField/angleField \[Optional\] Third is always the seriesField</p> |
-|  [criteria](./g2plot-chart.chartdatasource.criteria.md) |  | string | Clients can send a Groovy expression to perform filters on the query server, these remain active for the life of the subscription. |
-|  [data](./g2plot-chart.chartdatasource.data.md) |  | any\[\] | Optional attribute that can be used to pass the data that will be used in the component. |
-|  [isGroup](./g2plot-chart.chartdatasource.isgroup.md) |  | boolean | If true, will enable grouped chart plotting numeric values for levels of two categorical variables instead of one. |
-|  [isSnapshot](./g2plot-chart.chartdatasource.issnapshot.md) |  | boolean | Request a snapshot from the server. |
-|  [isStack](./g2plot-chart.chartdatasource.isstack.md) |  | boolean | If true, will enable stacked chart to effectively portray comparisons of total values across several categories. |
-|  [maxRows](./g2plot-chart.chartdatasource.maxrows.md) |  | number | Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE\_ROWS messages. This will not affect the number of rows displayed. |
-|  [maxView](./g2plot-chart.chartdatasource.maxview.md) |  | number | Maximum number of rows to track as part of a client "view". |
-|  [orderBy](./g2plot-chart.chartdatasource.orderby.md) |  | string | This option can be used to select a Data Server index (defined in the Data Server query), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest). |
-|  [reduced](./g2plot-chart.chartdatasource.reduced.md) |  | boolean | Enabled by default, will not work if a custom charts-fields is used (requires \[type, value\]). |
-|  [request](./g2plot-chart.chartdatasource.request.md) |  | any | This optional parameter enables you to specify request fields, which can include wildcards. |
-|  [resourceName](./g2plot-chart.chartdatasource.resourcename.md) |  | string | Name of the backend resource which contain the data. |
-|  [reverse](./g2plot-chart.chartdatasource.reverse.md) |  | boolean | This option changes the Data Server index iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest. |
-|  [rowId](./g2plot-chart.chartdatasource.rowid.md) |  | string | Attribute to set an unique identifier for the row. |
-|  [serverFields](./g2plot-chart.chartdatasource.serverfields.md) |  | string | <p>Can be customized but order matters.</p><p>\[Mandatory\] First will be associated to the first value in 'chartFields' (xField/colorField) \[Mandatory\] Second will be associated to the second value in 'chartFields' (yField/angleField) \[Optional\] Third will be associated to the third value in 'chartFields' (seriesField)</p> |
-|  [showFormattedTime](./g2plot-chart.chartdatasource.showformattedtime.md) |  | boolean | <p>Only works if \[withTimestampFormatting\] is true.</p><p>Disabled by default, will ignore the TIME portion in the Chart labels. Only affects \[DATETIME\] fields.</p> |
-|  [withTimestampFormatting](./g2plot-chart.chartdatasource.withtimestampformatting.md) |  | boolean | Enabled by default, will format UNIX timestamp fields to readable \[DATE\|DATETIME\] values. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[chartFields](./g2plot-chart.chartdatasource.chartfields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Default value is 'groupBy value'. Can be customized but order matters.
+
+\[Mandatory\] First is always the xField/colorField \[Mandatory\] Second is always the yField/angleField \[Optional\] Third is always the seriesField
+
+
+</td></tr>
+<tr><td>
+
+[criteria](./g2plot-chart.chartdatasource.criteria.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Clients can send a Groovy expression to perform filters on the query server, these remain active for the life of the subscription.
+
+
+</td></tr>
+<tr><td>
+
+[data](./g2plot-chart.chartdatasource.data.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+Optional attribute that can be used to pass the data that will be used in the component.
+
+
+</td></tr>
+<tr><td>
+
+[isGroup](./g2plot-chart.chartdatasource.isgroup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+If true, will enable grouped chart plotting numeric values for levels of two categorical variables instead of one.
+
+
+</td></tr>
+<tr><td>
+
+[isSnapshot](./g2plot-chart.chartdatasource.issnapshot.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Request a snapshot from the server.
+
+
+</td></tr>
+<tr><td>
+
+[isStack](./g2plot-chart.chartdatasource.isstack.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+If true, will enable stacked chart to effectively portray comparisons of total values across several categories.
+
+
+</td></tr>
+<tr><td>
+
+[maxRows](./g2plot-chart.chartdatasource.maxrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE\_ROWS messages. This will not affect the number of rows displayed.
+
+
+</td></tr>
+<tr><td>
+
+[maxView](./g2plot-chart.chartdatasource.maxview.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Maximum number of rows to track as part of a client "view".
+
+
+</td></tr>
+<tr><td>
+
+[orderBy](./g2plot-chart.chartdatasource.orderby.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+This option can be used to select a Data Server index (defined in the Data Server query), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).
+
+
+</td></tr>
+<tr><td>
+
+[reduced](./g2plot-chart.chartdatasource.reduced.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Enabled by default, will not work if a custom charts-fields is used (requires \[type, value\]).
+
+
+</td></tr>
+<tr><td>
+
+[request](./g2plot-chart.chartdatasource.request.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+This optional parameter enables you to specify request fields, which can include wildcards.
+
+
+</td></tr>
+<tr><td>
+
+[resourceName](./g2plot-chart.chartdatasource.resourcename.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Name of the backend resource which contain the data.
+
+
+</td></tr>
+<tr><td>
+
+[reverse](./g2plot-chart.chartdatasource.reverse.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+This option changes the Data Server index iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.
+
+
+</td></tr>
+<tr><td>
+
+[rowId](./g2plot-chart.chartdatasource.rowid.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Attribute to set an unique identifier for the row.
+
+
+</td></tr>
+<tr><td>
+
+[serverFields](./g2plot-chart.chartdatasource.serverfields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Can be customized but order matters.
+
+\[Mandatory\] First will be associated to the first value in 'chartFields' (xField/colorField) \[Mandatory\] Second will be associated to the second value in 'chartFields' (yField/angleField) \[Optional\] Third will be associated to the third value in 'chartFields' (seriesField)
+
+
+</td></tr>
+<tr><td>
+
+[showFormattedTime](./g2plot-chart.chartdatasource.showformattedtime.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Only works if \[withTimestampFormatting\] is true.
+
+Disabled by default, will ignore the TIME portion in the Chart labels. Only affects \[DATETIME\] fields.
+
+
+</td></tr>
+<tr><td>
+
+[withTimestampFormatting](./g2plot-chart.chartdatasource.withtimestampformatting.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Enabled by default, will format UNIX timestamp fields to readable \[DATE\|DATETIME\] values.
+
+
+</td></tr>
+</tbody></table>
 

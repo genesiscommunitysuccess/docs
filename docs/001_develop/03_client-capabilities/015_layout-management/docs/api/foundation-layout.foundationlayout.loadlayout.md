@@ -17,11 +17,71 @@ loadLayout(layout: SerialisedLayout, handleMissingItem?: 'placeholder' | 'error'
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  layout | [SerialisedLayout](./foundation-layout.serialisedlayout.md) | any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout |
-|  handleMissingItem | 'placeholder' \| 'error' | _(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md). |
-|  disableCache | boolean | _(Optional)_ if set to true then the layout will give you a new instance of every item, even if it has a currently cached item to use. Using this will not stop you from saving and loading state via the [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) interface. Defaults to false. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+layout
+
+
+</td><td>
+
+[SerialisedLayout](./foundation-layout.serialisedlayout.md)
+
+
+</td><td>
+
+any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout
+
+
+</td></tr>
+<tr><td>
+
+handleMissingItem
+
+
+</td><td>
+
+'placeholder' \| 'error'
+
+
+</td><td>
+
+_(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+disableCache
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ if set to true then the layout will give you a new instance of every item, even if it has a currently cached item to use. Using this will not stop you from saving and loading state via the [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) interface. Defaults to false.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

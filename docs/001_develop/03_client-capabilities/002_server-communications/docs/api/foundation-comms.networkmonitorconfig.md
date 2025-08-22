@@ -17,17 +17,235 @@ export interface NetworkMonitorConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [checkInterval?](./foundation-comms.networkmonitorconfig.checkinterval.md) |  | number | _(Optional)_ Periodic check internal in ms |
-|  [checkTimeout?](./foundation-comms.networkmonitorconfig.checktimeout.md) |  | number | _(Optional)_ Check timeout in ms |
-|  [documentEvents?](./foundation-comms.networkmonitorconfig.documentevents.md) |  | (keyof DocumentEventMap)\[\] | _(Optional)_ Document events that invoke checks |
-|  [eventEmitter?](./foundation-comms.networkmonitorconfig.eventemitter.md) |  | HTMLElement | _(Optional)_ The element to emit events from |
-|  [genesisConnectEvents?](./foundation-comms.networkmonitorconfig.genesisconnectevents.md) |  | [GenesisConnectEvents](./foundation-comms.genesisconnectevents.md)\[\] | _(Optional)_ Genesis connect events that invoke checks |
-|  [ignoredGenesisResources?](./foundation-comms.networkmonitorconfig.ignoredgenesisresources.md) |  | string\[\] | _(Optional)_ Ignored Genesis resources that will NOT invoke checks |
-|  [logLevel?](./foundation-comms.networkmonitorconfig.loglevel.md) |  | LogLevel | _(Optional)_ Default log level |
-|  [resourceChecks?](./foundation-comms.networkmonitorconfig.resourcechecks.md) |  | [MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md) | _(Optional)_ Default resource checks function |
-|  [resourceDataLogon?](./foundation-comms.networkmonitorconfig.resourcedatalogon.md) |  | [MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md) | _(Optional)_ Default resource data logon function |
-|  [startDelay?](./foundation-comms.networkmonitorconfig.startdelay.md) |  | number | _(Optional)_ Start delay in ms |
-|  [windowEvents?](./foundation-comms.networkmonitorconfig.windowevents.md) |  | (keyof WindowEventHandlersEventMap)\[\] | _(Optional)_ Window events that invoke checks |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[checkInterval?](./foundation-comms.networkmonitorconfig.checkinterval.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Periodic check internal in ms
+
+
+</td></tr>
+<tr><td>
+
+[checkTimeout?](./foundation-comms.networkmonitorconfig.checktimeout.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Check timeout in ms
+
+
+</td></tr>
+<tr><td>
+
+[documentEvents?](./foundation-comms.networkmonitorconfig.documentevents.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(keyof DocumentEventMap)\[\]
+
+
+</td><td>
+
+_(Optional)_ Document events that invoke checks
+
+
+</td></tr>
+<tr><td>
+
+[eventEmitter?](./foundation-comms.networkmonitorconfig.eventemitter.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_ The element to emit events from
+
+
+</td></tr>
+<tr><td>
+
+[genesisConnectEvents?](./foundation-comms.networkmonitorconfig.genesisconnectevents.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[GenesisConnectEvents](./foundation-comms.genesisconnectevents.md)<!-- -->\[\]
+
+
+</td><td>
+
+_(Optional)_ Genesis connect events that invoke checks
+
+
+</td></tr>
+<tr><td>
+
+[ignoredGenesisResources?](./foundation-comms.networkmonitorconfig.ignoredgenesisresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+_(Optional)_ Ignored Genesis resources that will NOT invoke checks
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-comms.networkmonitorconfig.loglevel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_ Default log level
+
+
+</td></tr>
+<tr><td>
+
+[resourceChecks?](./foundation-comms.networkmonitorconfig.resourcechecks.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MonitoredResourceChecks](./foundation-comms.monitoredresourcechecks.md)
+
+
+</td><td>
+
+_(Optional)_ Default resource checks function
+
+
+</td></tr>
+<tr><td>
+
+[resourceDataLogon?](./foundation-comms.networkmonitorconfig.resourcedatalogon.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MonitoredResourceDataLogon](./foundation-comms.monitoredresourcedatalogon.md)
+
+
+</td><td>
+
+_(Optional)_ Default resource data logon function
+
+
+</td></tr>
+<tr><td>
+
+[startDelay?](./foundation-comms.networkmonitorconfig.startdelay.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ Start delay in ms
+
+
+</td></tr>
+<tr><td>
+
+[windowEvents?](./foundation-comms.networkmonitorconfig.windowevents.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(keyof WindowEventHandlersEventMap)\[\]
+
+
+</td><td>
+
+_(Optional)_ Window events that invoke checks
+
+
+</td></tr>
+</tbody></table>
 

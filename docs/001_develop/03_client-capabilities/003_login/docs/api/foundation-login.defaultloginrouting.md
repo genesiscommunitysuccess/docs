@@ -18,8 +18,47 @@ export declare class DefaultLoginRouting implements LoginRouting
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getRoutePath(route)](./foundation-login.defaultloginrouting.getroutepath.md) |  |  |
-|  [navigateTo(route)](./foundation-login.defaultloginrouting.navigateto.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getRoutePath(route)](./foundation-login.defaultloginrouting.getroutepath.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[navigateTo(route)](./foundation-login.defaultloginrouting.navigateto.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 

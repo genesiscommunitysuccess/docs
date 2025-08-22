@@ -17,9 +17,39 @@ deleteItem?(itemId: string): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  itemId | string | The ID of the item to be deleted. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+itemId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the item to be deleted.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

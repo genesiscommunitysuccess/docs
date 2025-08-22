@@ -17,8 +17,60 @@ export interface ChartErrorItem<ChartErrorItemDetailType>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [detail](./g2plot-chart.charterroritem.detail.md) |  | ChartErrorItemDetailType |  |
-|  [type](./g2plot-chart.charterroritem.type.md) |  | [ChartErrorTypes](./g2plot-chart.charterrortypes.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[detail](./g2plot-chart.charterroritem.detail.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ChartErrorItemDetailType
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[type](./g2plot-chart.charterroritem.type.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ChartErrorTypes](./g2plot-chart.charterrortypes.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

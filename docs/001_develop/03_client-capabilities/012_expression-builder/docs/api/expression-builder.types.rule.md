@@ -32,7 +32,7 @@ export type Rule = {
     value: any[];
 });
 ```
-**References:** [Field](./expression-builder.types.field.md), [UniraryOperator](./expression-builder.types.uniraryoperator.md), [BinaryOperator](./expression-builder.types.binaryoperator.md), [TernararyOperator](./expression-builder.types.ternararyoperator.md), [VariadicOperator](./expression-builder.types.variadicoperator.md)
+**References:** [Field](./expression-builder.types.field.md)<!-- -->, [UniraryOperator](./expression-builder.types.uniraryoperator.md)<!-- -->, [BinaryOperator](./expression-builder.types.binaryoperator.md)<!-- -->, [TernararyOperator](./expression-builder.types.ternararyoperator.md)<!-- -->, [VariadicOperator](./expression-builder.types.variadicoperator.md)
 
 ## Example
 

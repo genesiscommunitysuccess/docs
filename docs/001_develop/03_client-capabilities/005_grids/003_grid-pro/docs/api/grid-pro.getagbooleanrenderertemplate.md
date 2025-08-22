@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getAgBooleanRendererTemplate](./grid-pro.getagbooleanrenderertemplate.md)
 
-## getAgBooleanRendererTemplate variable
+## getAgBooleanRendererTemplate() function
 
 Get a Design System prefixed Checkbox template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed Checkbox template.
 ```typescript
 getAgBooleanRendererTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<BooleanRenderer, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'foundation'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;[BooleanRenderer](./grid-pro.booleanrenderer.md)<!-- -->, any&gt;
+
+A Checkbox component template prefixed with the correct design system.
+

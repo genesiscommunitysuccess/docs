@@ -259,7 +259,9 @@ The example below shows the component in action. Clicking on the `Open Dialog` b
 
 ### Events fired
 
-This component doesn't fire any events.
+| Event | Type | Description | Example |
+|--|--|--|--|
+| close | `void` | Fired when the dialog is closed, either through the close button or programmatic close. | `<rapid-dialog @close="${(x) => x.handleDialogClose()}">` |
 
 ### Events listened to
 

@@ -17,10 +17,60 @@ export interface Serializer
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [deserialize(response)](./foundation-comms.serializer.deserialize.md) | Deserialize a Response object into the expected type T. |
-|  [deserialize(event)](./foundation-comms.serializer.deserialize_1.md) | Deserialize a MessageEvent object into the expected type T. |
-|  [deserialize(text)](./foundation-comms.serializer.deserialize_2.md) | Deserialize a string into the expected type T. |
-|  [serialize(object)](./foundation-comms.serializer.serialize.md) | Serialize the given object into a string. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[deserialize(response)](./foundation-comms.serializer.deserialize.md)
+
+
+</td><td>
+
+Deserialize a Response object into the expected type T.
+
+
+</td></tr>
+<tr><td>
+
+[deserialize(event)](./foundation-comms.serializer.deserialize_1.md)
+
+
+</td><td>
+
+Deserialize a MessageEvent object into the expected type T.
+
+
+</td></tr>
+<tr><td>
+
+[deserialize(text)](./foundation-comms.serializer.deserialize_2.md)
+
+
+</td><td>
+
+Deserialize a string into the expected type T.
+
+
+</td></tr>
+<tr><td>
+
+[serialize(object)](./foundation-comms.serializer.serialize.md)
+
+
+</td><td>
+
+Serialize the given object into a string.
+
+
+</td></tr>
+</tbody></table>
 

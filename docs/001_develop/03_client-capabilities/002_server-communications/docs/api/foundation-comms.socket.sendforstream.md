@@ -15,14 +15,83 @@ sendForStream<T>(message: Message<T | any>, onMessage: Function, onError: Functi
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  message | [Message](./foundation-comms.message.md)&lt;T \| any&gt; |  |
-|  onMessage | Function |  |
-|  onError | Function |  |
-|  onComplete | Function | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)<!-- -->&lt;T \| any&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onMessage
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onError
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onComplete
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Observable&lt;[Message](./foundation-comms.message.md)&gt;
+Observable&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
 

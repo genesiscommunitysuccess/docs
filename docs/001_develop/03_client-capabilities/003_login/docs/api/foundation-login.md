@@ -9,61 +9,444 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [DefaultLoginRouting](./foundation-login.defaultloginrouting.md) | Default LoginRouting. |
-|  [Login](./foundation-login.login.md) | Defines the login class which handles account authentication from the front-end |
-|  [LoginHosted](./foundation-login.loginhosted.md) | **_(BETA)_** |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DefaultLoginRouting](./foundation-login.defaultloginrouting.md)
+
+
+</td><td>
+
+Default LoginRouting.
+
+
+</td></tr>
+<tr><td>
+
+[Login](./foundation-login.login.md)
+
+
+</td><td>
+
+Defines the login class which handles account authentication from the front-end
+
+
+</td></tr>
+<tr><td>
+
+[LoginHosted](./foundation-login.loginhosted.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [configure(container, config)](./foundation-login.configure.md) | Configure the login micro frontend settings. |
-|  [getLoginRouting()](./foundation-login.getloginrouting.md) | Gets LoginRouting from the DI container. |
-|  [isMFRoute(pathname)](./foundation-login.ismfroute.md) | A utility to check if a pathname is a route of this micro frontend. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[configure(container, config)](./foundation-login.configure.md)
+
+
+</td><td>
+
+Configure the login micro frontend settings.
+
+
+</td></tr>
+<tr><td>
+
+[fetchIDPs(path, host)](./foundation-login.fetchidps.md)
+
+
+</td><td>
+
+Request SSO identity provider list
+
+
+</td></tr>
+<tr><td>
+
+[getLoginRouting()](./foundation-login.getloginrouting.md)
+
+
+</td><td>
+
+Gets LoginRouting from the DI container.
+
+
+</td></tr>
+<tr><td>
+
+[getSSOLoginURL(idp, path, host)](./foundation-login.getssologinurl.md)
+
+
+</td><td>
+
+Get SSO identity provider login URL
+
+
+</td></tr>
+<tr><td>
+
+[isMFRoute(pathname)](./foundation-login.ismfroute.md)
+
+
+</td><td>
+
+A utility to check if a pathname is a route of this micro frontend.
+
+
+</td></tr>
+<tr><td>
+
+[styles(options)](./foundation-login.styles.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[template(options)](./foundation-login.template.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [IDP](./foundation-login.idp.md) |  |
-|  [IDPResponse](./foundation-login.idpresponse.md) |  |
-|  [LoginConfig](./foundation-login.loginconfig.md) | LoginConfig DI interface. |
-|  [LoginRouting](./foundation-login.loginrouting.md) | LoginRouting interface. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[IDP](./foundation-login.idp.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[IDPResponse](./foundation-login.idpresponse.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[LoginConfig](./foundation-login.loginconfig.md)
+
+
+</td><td>
+
+LoginConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[LoginRouting](./foundation-login.loginrouting.md)
+
+
+</td><td>
+
+LoginRouting interface.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [defaultApiHost](./foundation-login.defaultapihost.md) |  |
-|  [defaultLoginConfig](./foundation-login.defaultloginconfig.md) | Default LoginConfig DI implementation. |
-|  [defaultOrganisation](./foundation-login.defaultorganisation.md) |  |
-|  [defaultPassword](./foundation-login.defaultpassword.md) |  |
-|  [defaultSocketExt](./foundation-login.defaultsocketext.md) |  |
-|  [defaultTemplateOptions](./foundation-login.defaulttemplateoptions.md) | **_(BETA)_** The default template options this MF has been created with. |
-|  [defaultUser](./foundation-login.defaultuser.md) |  |
-|  [define](./foundation-login.define.md) | **_(BETA)_** Re-define the login micro frontend. |
-|  [definition](./foundation-login.definition.md) | **_(BETA)_** |
-|  [fetchIDPs](./foundation-login.fetchidps.md) | Request SSO identity provider list |
-|  [getSSOLoginURL](./foundation-login.getssologinurl.md) | Get SSO identity provider login URL |
-|  [hostEnv](./foundation-login.hostenv.md) |  |
-|  [hostUrl](./foundation-login.hosturl.md) |  |
-|  [Routes](./foundation-login.routes.md) |  |
-|  [styles](./foundation-login.styles.md) |  |
-|  [template](./foundation-login.template.md) |  |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[defaultApiHost](./foundation-login.defaultapihost.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[defaultLoginConfig](./foundation-login.defaultloginconfig.md)
+
+
+</td><td>
+
+Default LoginConfig DI implementation.
+
+
+</td></tr>
+<tr><td>
+
+[defaultOrganisation](./foundation-login.defaultorganisation.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[defaultPassword](./foundation-login.defaultpassword.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[defaultSocketExt](./foundation-login.defaultsocketext.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[defaultTemplateOptions](./foundation-login.defaulttemplateoptions.md)
+
+
+</td><td>
+
+**_(BETA)_** The default template options this MF has been created with.
+
+
+</td></tr>
+<tr><td>
+
+[defaultUser](./foundation-login.defaultuser.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[define](./foundation-login.define.md)
+
+
+</td><td>
+
+**_(BETA)_** Re-define the login micro frontend.
+
+
+</td></tr>
+<tr><td>
+
+[definition](./foundation-login.definition.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[hostEnv](./foundation-login.hostenv.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[hostUrl](./foundation-login.hosturl.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[Routes](./foundation-login.routes.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [FieldConfig](./foundation-login.fieldconfig.md) | Could be expanded to allow field ViewTemplates. |
-|  [FieldConfigMap](./foundation-login.fieldconfigmap.md) |  |
-|  [MessageDelayKey](./foundation-login.messagedelaykey.md) |  |
-|  [MessageDelays](./foundation-login.messagedelays.md) |  |
-|  [Routes](./foundation-login.routes.md) |  |
-|  [Settings](./foundation-login.settings.md) | Defines the parameters you may set on the routes. |
-|  [SSOConfig](./foundation-login.ssoconfig.md) | If you don't provide SSOConfig on the login config then SSO is disabled completely. |
-|  [TemplateComponents](./foundation-login.templatecomponents.md) | **_(BETA)_** |
-|  [TemplateOptions](./foundation-login.templateoptions.md) | **_(BETA)_** |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FieldConfig](./foundation-login.fieldconfig.md)
+
+
+</td><td>
+
+Could be expanded to allow field ViewTemplates.
+
+
+</td></tr>
+<tr><td>
+
+[FieldConfigMap](./foundation-login.fieldconfigmap.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[MessageDelayKey](./foundation-login.messagedelaykey.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[MessageDelays](./foundation-login.messagedelays.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[Routes](./foundation-login.routes.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[Settings](./foundation-login.settings.md)
+
+
+</td><td>
+
+Defines the parameters you may set on the routes.
+
+
+</td></tr>
+<tr><td>
+
+[SSOConfig](./foundation-login.ssoconfig.md)
+
+
+</td><td>
+
+If you don't provide SSOConfig on the login config then SSO is disabled completely.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateComponents](./foundation-login.templatecomponents.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+<tr><td>
+
+[TemplateOptions](./foundation-login.templateoptions.md)
+
+
+</td><td>
+
+**_(BETA)_**
+
+
+</td></tr>
+</tbody></table>
 

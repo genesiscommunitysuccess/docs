@@ -7,7 +7,7 @@ format: md
 
 ## DEFAULT\_ORGANISATION variable
 
-The default Organisation value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
+The default Organisation value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
 
 **Signature:**
 

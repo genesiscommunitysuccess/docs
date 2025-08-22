@@ -17,9 +17,39 @@ deserialize<T = any>(text: string): T;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  text | string | The JSON string to deserialize. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+text
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The JSON string to deserialize.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

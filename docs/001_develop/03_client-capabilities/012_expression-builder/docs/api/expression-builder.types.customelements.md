@@ -12,23 +12,23 @@ format: md
 
 By default the expression builder uses the basic html components such as buttons and inputs. If you want to integrate your own components from a design system or otherwise you can add the tag names for your elements here. For your custom components to work they must expose the same API as the underlying HTML element they're overriding.
 
-`checkbox`: Custom element tag for checkbox inputs
+`checkbox`<!-- -->: Custom element tag for checkbox inputs
 
-`text`: Custom element tag for text inputs
+`text`<!-- -->: Custom element tag for text inputs
 
-`number`: Custom element tag for number inputs
+`number`<!-- -->: Custom element tag for number inputs
 
-`date`: Custom element tag for date inputs
+`date`<!-- -->: Custom element tag for date inputs
 
-`datetimeLocal`: Custom element tag for datetime-local inputs
+`datetimeLocal`<!-- -->: Custom element tag for datetime-local inputs
 
-`select`: Custom element tag for select inputs
+`select`<!-- -->: Custom element tag for select inputs
 
-`option`: Custom element tag for option elements
+`option`<!-- -->: Custom element tag for option elements
 
-`button`: Custom element tag for button elements
+`button`<!-- -->: Custom element tag for button elements
 
-`radio`: Custom element tag for radio and radio group elements. When using a custom element for a radio you require a parent radio group component to semantically link the radios into a group. The parent radio group must expose the `change` event and `value` attribute.
+`radio`<!-- -->: Custom element tag for radio and radio group elements. When using a custom element for a radio you require a parent radio group component to semantically link the radios into a group. The parent radio group must expose the `change` event and `value` attribute.
 
 **Signature:**
 

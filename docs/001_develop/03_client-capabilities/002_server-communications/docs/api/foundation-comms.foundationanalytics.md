@@ -17,9 +17,49 @@ export interface FoundationAnalytics
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent.md) | Tracks a "control clicked" event with the specified payload. |
-|  [trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent_1.md) | Tracks a "route changed" event with the specified payload. |
-|  [trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent_2.md) | Tracks an event with the specified name and payload. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent.md)
+
+
+</td><td>
+
+Tracks a "control clicked" event with the specified payload.
+
+
+</td></tr>
+<tr><td>
+
+[trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent_1.md)
+
+
+</td><td>
+
+Tracks a "route changed" event with the specified payload.
+
+
+</td></tr>
+<tr><td>
+
+[trackEvent(eventName, payload)](./foundation-comms.foundationanalytics.trackevent_2.md)
+
+
+</td><td>
+
+Tracks an event with the specified name and payload.
+
+
+</td></tr>
+</tbody></table>
 
