@@ -4,6 +4,10 @@ import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const uiSchema = {
   type: "Stepper",
+  options: {
+    allowForwardJumps: false, // Controls whether users can jump to future steps
+    allowBackwardJumps: false // Controls whether users can jump to previous steps
+  },
   elements: [
     {
       type: "Control",
@@ -79,6 +83,28 @@ const uiSchema = {
     },
   ],
 };
+
+// Example with forward jumping enabled
+const uiSchemaWithForwardJumps = {
+  type: "Stepper",
+  options: {
+    allowForwardJumps: true, // Enables jumping to future steps if validation passes
+    allowBackwardJumps: false // Optional: can also allow backward navigation
+  },
+  elements: [
+    // ... same elements as above ...
+  ]
+};
+
+/**
+ * Navigation Behavior:
+ * - By default, stepper only allows sequential navigation (next/previous)
+ * - With allowForwardJumps: true, users can click directly on future steps
+ * - Forward jumping validates all intermediate steps before allowing the jump
+ * - If validation fails on an intermediate step, the jump is prevented
+ * - Forward jumping emits 'validation-failure' event if validation fails
+ * - Forward jumping emits 'step-click' event on successful navigation
+ */
 
 const primitiveJSONSchema = {
   type: "object",
