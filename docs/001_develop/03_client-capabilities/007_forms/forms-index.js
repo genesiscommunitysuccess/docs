@@ -103,7 +103,7 @@ const cardData = [
   {
     "heading": "Stepper",
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-stepper/",
-    "text": "Increment/decrement control for numbers",
+    "text": "Multi-step navigation with forward and backward jumping capabilities",
     children: <StepperDemo />,
   },
   {

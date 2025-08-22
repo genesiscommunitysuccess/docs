@@ -4,6 +4,10 @@ import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const uiSchema = {
   type: "Stepper",
+  options: {
+    // By default, steps must be completed sequentially
+    allowForwardJumps: false,
+  },
   elements: [
     {
       type: "Control",
@@ -77,6 +81,20 @@ const uiSchema = {
         ],
       },
     },
+  ],
+};
+
+// Example with forward jumping enabled
+const uiSchemaWithForwardJumps = {
+  type: "Stepper",
+  options: {
+    // Enable users to jump to future steps
+    // Note: When enabled, validation will still run on intermediate steps
+    // If validation fails on any intermediate step, the jump will be prevented
+    allowForwardJumps: true,
+  },
+  elements: [
+    // ... same elements as above
   ],
 };
 
