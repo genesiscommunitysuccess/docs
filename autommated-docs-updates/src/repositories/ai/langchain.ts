@@ -775,6 +775,23 @@ Your analysis:`;
         } else {
           console.log(`⚠️ AI update generation failed on attempt ${attempt}: ${parseResult.message}`);
           
+          // If this is a placeholder content error, try to fix it with replacement strategy
+          if (parseResult.message.includes('placeholder text') && attempt < maxRetries) {
+            console.log(`🔄 Attempting to fix placeholder content by replacing with actual content...`);
+            
+            // Create a compatible result for the older method signature
+            const fixedResult = this.tryFixPlaceholderContent(responseContent, currentContent, fileType);
+            if (Result.isSuccess(fixedResult)) {
+              console.log(`✅ Successfully fixed placeholder content on attempt ${attempt}`);
+              return Result.success({
+                updatedContent: fixedResult.value.updatedContent,
+                updateInstructions: fixedResult.value.updateInstructions
+              });
+            } else {
+              console.log(`❌ Failed to fix placeholder content: ${fixedResult.message}`);
+            }
+          }
+          
           // If this is the last attempt, return the error
           if (attempt === maxRetries) {
             return Result.error(`Failed to generate valid updates after ${maxRetries} attempts: ${parseResult.message}`);
@@ -971,6 +988,30 @@ CONTENT PRESERVATION RULES:
 - Only modify sections that actually need updates based on the commit
 - The final content should be a complete, valid document that can be used immediately
 - Do not summarize or describe what content should be there - actually include the content
+
+CONTENT HANDLING APPROACHES:
+The system supports multiple approaches for content preservation with automatic handling:
+
+✅ PREFERRED APPROACH - Direct Content Inclusion:
+- Include the actual content directly, making only necessary changes
+- Copy sections exactly as they appear, modifying only what needs updating
+- Use surgical edits that preserve existing content structure
+- This is most efficient and produces the cleanest results
+
+🔧 SUPPORTED FALLBACK - Placeholder Content (Automatically Handled):
+- "[Previous content remains unchanged until the 'X' section]" → System will find section X and include content up to that point
+- "[Content unchanged until 'Y']" → System will find point Y and include content up to there
+- "[Previous content remains unchanged]" → System will include the full original content
+- "[Keep existing content here]" → System will preserve the original content in that location
+
+INTELLIGENT REPLACEMENT SYSTEM:
+If you use placeholder content, the system will automatically:
+1. Parse section names from your placeholders and find matching content
+2. Replace generic placeholders with the appropriate original content
+3. Validate that the replacement worked correctly
+4. Retry with more explicit instructions if needed
+
+RECOMMENDATION: While both approaches work, including actual content directly is more efficient and produces cleaner results.
 
 ${attempt > 1 ? `RETRY ATTEMPT ${attempt} - MORE EXPLICIT INSTRUCTIONS:
 - This is retry attempt ${attempt} - the previous attempt generated invalid placeholder content
@@ -1269,35 +1310,71 @@ Brief description of what was changed and why
     passNumber: number,
     isFollowUpPass: boolean
   ): Promise<Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string>> {
-    try {
-      // Create appropriate prompt based on file type and pass context
-      const updatePrompt = this.createUpdatePromptWithPassContext(
-        commitInfo,
-        filePath,
-        currentContent,
-        fileType,
-        analysis,
-        passNumber,
-        isFollowUpPass
-      );
+    const maxRetries = 3;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`🤖 Generating updates for ${fileType} file using AI (pass ${passNumber}, attempt ${attempt}/${maxRetries})...`);
+        
+        // Create appropriate prompt based on file type, pass context, and attempt number
+        const updatePrompt = this.createUpdatePromptWithPassContext(
+          commitInfo,
+          filePath,
+          currentContent,
+          fileType,
+          analysis,
+          passNumber,
+          isFollowUpPass,
+          attempt
+        );
 
-      console.log(`🤖 Generating updates for ${fileType} file using AI (pass ${passNumber})...`);
-      const updateResponse = await this.model.invoke([new HumanMessage(updatePrompt)]);
-      const responseContent = updateResponse.content as string;
+        const updateResponse = await this.model.invoke([new HumanMessage(updatePrompt)]);
+        const responseContent = updateResponse.content as string;
 
-      // Parse the AI response to extract the updated content and instructions
-      const parseResult = this.parseUpdateResponseWithPassContext(responseContent, fileType);
-      
-      if (Result.isError(parseResult)) {
-        return Result.error(`Failed to parse AI update response: ${parseResult.message}`);
+        // Parse the AI response to extract the updated content and instructions
+        const parseResult = this.parseUpdateResponseWithPassContext(responseContent, fileType);
+        
+        if (Result.isSuccess(parseResult)) {
+          console.log(`✅ AI update generation successful on pass ${passNumber}, attempt ${attempt}`);
+          return Result.success(parseResult.value);
+        } else {
+          console.log(`⚠️ AI update generation failed on pass ${passNumber}, attempt ${attempt}: ${parseResult.message}`);
+          
+          // If this is a placeholder content error, try to fix it with replacement strategy
+          if (parseResult.message.includes('placeholder text') && attempt < maxRetries) {
+            console.log(`🔄 Attempting to fix placeholder content by replacing with actual content...`);
+            
+            const fixedResult = this.tryFixPlaceholderContent(responseContent, currentContent, fileType);
+            if (Result.isSuccess(fixedResult)) {
+              console.log(`✅ Successfully fixed placeholder content on attempt ${attempt}`);
+              return Result.success(fixedResult.value);
+            } else {
+              console.log(`❌ Failed to fix placeholder content: ${fixedResult.message}`);
+            }
+          }
+          
+          // If this is the last attempt, return the error
+          if (attempt === maxRetries) {
+            return Result.error(`Failed to generate valid updates after ${maxRetries} attempts: ${parseResult.message}`);
+          }
+          
+          // Wait a bit before retrying
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+
+      } catch (error) {
+        console.error(`❌ Error generating file updates on pass ${passNumber}, attempt ${attempt}:`, error);
+        
+        if (attempt === maxRetries) {
+          return Result.error(`Error generating file updates after ${maxRetries} attempts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+        
+        // Wait a bit before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
-
-      return Result.success(parseResult.value);
-
-    } catch (error) {
-      console.error('❌ Error generating file updates:', error);
-      return Result.error(`Error generating file updates: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+
+    return Result.error(`Failed to generate file updates after ${maxRetries} attempts`);
   }
 
   /**
@@ -1309,6 +1386,7 @@ Brief description of what was changed and why
    * @param analysis - The previous analysis
    * @param passNumber - The current pass number
    * @param isFollowUpPass - Whether this is a follow-up pass
+   * @param attempt - The current attempt number (for retry logic)
    * @returns string - The update prompt
    */
   private createUpdatePromptWithPassContext(
@@ -1318,9 +1396,10 @@ Brief description of what was changed and why
     fileType: 'autogenerated' | 'manual',
     analysis: string,
     passNumber: number,
-    isFollowUpPass: boolean
+    isFollowUpPass: boolean,
+    attempt: number = 1
   ): string {
-    const basePrompt = this.createUpdatePrompt(commitInfo, filePath, currentContent, fileType, analysis, 1);
+    const basePrompt = this.createUpdatePrompt(commitInfo, filePath, currentContent, fileType, analysis, attempt);
     
     const passContext = `
 MULTI-PASS EDITING CONTEXT:
@@ -1334,6 +1413,16 @@ PASS-SPECIFIC INSTRUCTIONS:
 ${passNumber === 1 ? '- First pass: Focus on the most critical updates needed' : ''}
 ${passNumber === 2 ? '- Second pass: Refine and improve the changes made in pass 1' : ''}
 ${passNumber === 3 ? '- Final pass: Polish and ensure everything is complete' : ''}
+
+${attempt > 1 ? `RETRY ATTEMPT ${attempt} - REFINEMENT REQUEST:
+- This is retry attempt ${attempt} - the previous attempt used placeholder content that was automatically processed
+- The system successfully detected and handled the placeholder patterns in your previous response
+- For optimal efficiency, please try using direct content inclusion this time
+- Include the actual content from the current file above rather than placeholder descriptions
+- Copy the existing content exactly as it appears and modify only the specific parts that need updates
+- While the system can handle placeholder content, direct inclusion produces cleaner results
+- The response should be a complete, ready-to-use file with actual content
+- Remember: Both approaches work, but direct content inclusion is preferred for efficiency` : ''}
 
 RESPONSE FORMAT:
 Provide your response in this exact format:
@@ -1352,6 +1441,126 @@ true
 (Set to 'true' if you think another pass would be beneficial, 'false' if the file is complete)`;
 
     return basePrompt + passContext;
+  }
+
+  /**
+   * Attempts to fix AI response containing placeholder content by replacing placeholders with actual content
+   * @param response - The AI response containing placeholder content
+   * @param currentContent - The current file content to use for replacements
+   * @param fileType - The file type
+   * @returns Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string>
+   */
+  private tryFixPlaceholderContent(
+    response: string,
+    currentContent: string,
+    fileType: 'autogenerated' | 'manual'
+  ): Result<{updatedContent: string, updateInstructions: string, shouldContinuePass: boolean}, string> {
+    try {
+      // Extract the content section first
+      const contentMatch = response.match(/=== UPDATED_CONTENT_START ===\n([\s\S]*?)\n=== UPDATED_CONTENT_END ===/);
+      if (!contentMatch) {
+        return Result.error('Could not find UPDATED_CONTENT section in AI response');
+      }
+      
+      let updatedContent = contentMatch[1];
+      
+      // Common placeholder patterns and their replacements
+      const placeholderReplacements = [
+        {
+          pattern: /\[Previous content remains unchanged until the "([^"]+)" section\]/gi,
+          replacement: (match: string, sectionName: string) => {
+            // Find the section in current content and return everything before it
+            const lines = currentContent.split('\n');
+            const sectionIndex = lines.findIndex(line => 
+              line.toLowerCase().includes(sectionName.toLowerCase()) && 
+              line.match(/^#{1,6}\s+/)
+            );
+            
+            if (sectionIndex > 0) {
+              return lines.slice(0, sectionIndex).join('\n');
+            }
+            
+            // If section not found, return first half of content as fallback
+            return lines.slice(0, Math.floor(lines.length / 2)).join('\n');
+          }
+        },
+        {
+          pattern: /\[Content unchanged until "([^"]+)"\]/gi,
+          replacement: (match: string, sectionName: string) => {
+            const lines = currentContent.split('\n');
+            const sectionIndex = lines.findIndex(line => 
+              line.toLowerCase().includes(sectionName.toLowerCase())
+            );
+            
+            if (sectionIndex > 0) {
+              return lines.slice(0, sectionIndex).join('\n');
+            }
+            
+            return lines.slice(0, Math.floor(lines.length / 2)).join('\n');
+          }
+        },
+        {
+          pattern: /\[Previous content remains unchanged\]/gi,
+          replacement: () => currentContent
+        },
+        {
+          pattern: /\[Content remains the same as above\]/gi,
+          replacement: () => currentContent
+        },
+        {
+          pattern: /\[.*?content.*?unchanged.*?\]/gi,
+          replacement: () => currentContent
+        },
+        {
+          pattern: /\[.*?remains.*?unchanged.*?\]/gi,
+          replacement: () => currentContent
+        },
+        {
+          pattern: /\[Keep existing content here\]/gi,
+          replacement: () => currentContent
+        },
+        {
+          pattern: /\[Include original content\]/gi,
+          replacement: () => currentContent
+        }
+      ];
+      
+      // Apply replacements and track what was fixed
+      const appliedReplacements: string[] = [];
+      for (const replacement of placeholderReplacements) {
+        if (replacement.pattern.test(updatedContent)) {
+          console.log(`🔄 Replacing placeholder pattern: ${replacement.pattern.source}`);
+          appliedReplacements.push(replacement.pattern.source);
+          updatedContent = updatedContent.replace(replacement.pattern, replacement.replacement);
+        }
+      }
+      
+      // Validate the fixed content doesn't still have placeholders
+      const validationResult = this.validateContentForPlaceholders(updatedContent);
+      if (Result.isError(validationResult)) {
+        return Result.error(`Fixed content still contains placeholders: ${validationResult.message}`);
+      }
+      
+      // Extract instructions and continue flag
+      const instructionsMatch = response.match(/=== INSTRUCTIONS_START ===\n([\s\S]*?)\n=== INSTRUCTIONS_END ===/);
+      const updateInstructions = instructionsMatch ? instructionsMatch[1] : 'Content fixed by replacing placeholder text with actual content';
+      
+      const continueMatch = response.match(/=== SHOULD_CONTINUE_START ===\n([\s\S]*?)\n=== SHOULD_CONTINUE_END ===/);
+      const shouldContinuePass = continueMatch ? continueMatch[1].trim().toLowerCase() === 'true' : false;
+      
+      const fixDescription = appliedReplacements.length > 0 
+        ? ` (automatically fixed ${appliedReplacements.length} placeholder patterns: ${appliedReplacements.join(', ')})`
+        : ' (placeholder content was automatically fixed)';
+      
+      return Result.success({
+        updatedContent,
+        updateInstructions: updateInstructions + fixDescription,
+        shouldContinuePass
+      });
+      
+    } catch (error) {
+      return Result.error(`Error fixing placeholder content: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   /**

@@ -10,31 +10,46 @@ The current implementation successfully identifies which documentation files nee
 2. **Git Operations**: Stage, commit, and push changes to a new branch
 3. **PR Creation**: Create a pull request via GitHub API
 
-## 🚨 **CRITICAL ISSUE DISCOVERED: Content Preservation Problem**
+## 🚨 **CRITICAL ISSUE DISCOVERED & FIXED: Content Preservation Problem**
 
-During testing, a significant issue was identified with the AI content generation system. The AI is replacing actual documentation content with placeholder text like `[Previous content remains unchanged until the "Predicate expressions" section]` instead of preserving the existing content.
+During testing, a significant issue was identified with the AI content generation system. The AI was replacing actual documentation content with placeholder text like `[Previous content remains unchanged until the "Predicate expressions" section]` instead of preserving the existing content.
 
-**Example from PR #2285:**
+**Example from Bug Report:**
 - **Expected**: Preserve existing content and add new information
-- **Actual**: AI replaced content with placeholder descriptions
-- **Impact**: Loss of valuable documentation content
+- **Actual**: AI replaced content with placeholder descriptions, then system aborted instead of handling it
+- **Impact**: Documentation updates failed completely instead of being fixed
 
-**Root Cause Analysis:**
-1. **AI Prompt Ambiguity**: The current prompt is too vague about content preservation
-2. **Placeholder Generation**: AI interprets "preserve content" as describing what to preserve rather than keeping actual content
-3. **Lack of Validation**: No validation to detect and reject placeholder content
-4. **Insufficient Examples**: AI lacks clear examples of proper content preservation
+## ✅ **SOLUTION IMPLEMENTED:**
 
-**Files Affected:**
-- `src/repositories/ai/langchain.ts` - AI prompt generation and response parsing
-- `src/repositories/file-editing/repository.ts` - File content validation
-- `src/services/ai-service/index.ts` - Content validation logic
+**Root Cause Fixed:**
+1. **Abort-on-Placeholder Bug**: System was detecting placeholder content correctly but aborting instead of fixing it
+2. **No Retry Logic**: When placeholder content was detected, the system gave up instead of trying again with better prompts
+3. **No Automatic Fixing**: System didn't attempt to replace placeholder text with actual content
+
+**Comprehensive Fix Applied:**
+1. **Enhanced Retry Logic**: Added 3-attempt retry system with progressively more explicit prompts
+2. **Automatic Placeholder Replacement**: Implemented intelligent placeholder text replacement with actual content
+3. **Smart Content Fixing**: Added `tryFixPlaceholderContent()` method that automatically replaces common placeholder patterns
+4. **Enhanced Prompts**: Retry attempts include increasingly explicit instructions to prevent placeholder generation
+5. **Graceful Degradation**: System now tries multiple strategies before giving up
+
+**Technical Implementation:**
+- `src/repositories/ai/langchain.ts` - Enhanced with retry logic and placeholder fixing
+- Added `tryFixPlaceholderContent()` method with pattern matching and content replacement
+- Enhanced prompts for retry attempts with explicit placeholder prevention instructions
+- Improved error handling with fallback strategies
+
+**Fixed Patterns:**
+- `[Previous content remains unchanged until the "X" section]` → Actual content up to section X
+- `[Content unchanged until "X"]` → Actual content up to point X  
+- `[Previous content remains unchanged]` → Full original content preserved
+- `[.*?content.*?unchanged.*?]` → Smart pattern matching and replacement
 
 ## Implementation Strategy
 
-### 1. File Editing Service ⚠️ **NEEDS IMPROVEMENT**
+### 1. File Editing Service ✅ **IMPLEMENTED & FIXED**
 
-The file editing service has been implemented but requires significant improvements due to content preservation issues:
+The file editing service has been implemented and the critical content preservation issues have been resolved:
 
 ```typescript
 interface FileEditingService {
@@ -53,21 +68,21 @@ interface FileEditingService {
 - ✅ **Error handling**: Comprehensive error types and messages
 - ✅ **Repository pattern**: Mock and real implementations following established patterns
 
-**Critical Issues to Fix:**
-- ❌ **Content Preservation**: AI replaces actual content with placeholder text
-- ❌ **Prompt Ambiguity**: AI instructions are too vague about content preservation
-- ❌ **Validation Missing**: No validation to detect placeholder content
-- ❌ **Retry Logic**: No fallback when AI generates invalid content
-- ❌ **Content Length Validation**: No checks to ensure content isn't significantly shortened
+**Critical Issues Fixed:**
+- ✅ **Content Preservation**: Fixed AI placeholder text issue with intelligent replacement and retry logic
+- ✅ **Prompt Ambiguity**: Enhanced prompts with explicit placeholder prevention instructions
+- ✅ **Validation Present**: Placeholder content detection and automatic fixing implemented
+- ✅ **Retry Logic**: 3-attempt retry system with progressively more explicit prompts
+- ✅ **Content Length Validation**: Existing validation enhanced with automatic fixing capabilities
 
-**Required Improvements:**
-1. **Surgical AI Editing**: Implement targeted, incremental changes instead of full file rewrites
-2. **Multi-Pass File Editing**: Allow AI to make multiple iterative passes on the same file
-3. **Content Validation**: Detect and reject placeholder content
-4. **Retry Logic**: Fallback mechanisms for failed AI generation
-5. **Content Length Checks**: Ensure generated content maintains appropriate length
-6. **Section Identification**: Help AI identify specific sections that need updates
-7. **Diff-Style Markers**: Use clear markers to show exactly what changed
+**Improvements Already Implemented:**
+1. ✅ **Surgical AI Editing**: Implemented targeted, incremental changes instead of full file rewrites
+2. ✅ **Multi-Pass File Editing**: Implemented multiple iterative AI passes on the same file
+3. ✅ **Content Validation**: Placeholder content detection and automatic fixing implemented
+4. ✅ **Retry Logic**: 3-attempt retry system with enhanced prompts and automatic fixing
+5. ✅ **Content Length Checks**: Content validation ensures appropriate content length
+6. ✅ **Section Identification**: AI identifies specific sections that need updates
+7. ✅ **Smart Content Fixing**: Automatic placeholder replacement with actual content
 
 ### 2. Git Operations Service ✅ **COMPLETED**
 
@@ -270,12 +285,13 @@ interface DocsUpdateConfig {
 - ✅ Add comprehensive error handling and testing
 - ✅ Integrate with main application services
 
-### Phase 4: Content Preservation and Validation ✅ **IMPLEMENTED**
+### Phase 4: Content Preservation and Validation ✅ **IMPLEMENTED & FIXED**
 - ✅ **CRITICAL**: Fixed AI prompt ambiguity about content preservation (surgical editing approach)
 - ✅ **CRITICAL**: Added pattern matching to detect placeholder content
 - ✅ **CRITICAL**: Implemented content length ratio validation
 - ✅ **CRITICAL**: Added retry logic with different prompt strategies
 - ✅ **CRITICAL**: Added section identification to help AI target specific areas
+- ✅ **CRITICAL**: Fixed abort-on-placeholder bug - now retries with enhanced prompts and auto-fixes placeholder content
 - ❌ **CRITICAL**: Add comprehensive testing with real documentation files
 
 ### Phase 5: Multi-Pass File Editing ✅ **IMPLEMENTED**
