@@ -17,7 +17,7 @@ The Environment Indicator component provides a visual way to display the current
 
 ## Overview
 
-The `foundation-environment-indicator` component displays an environment badge with customizable styling and behavior. It supports:
+The `rapid-environment-indicator` component displays an environment badge with customizable styling and behavior. It supports:
 
 - Environment-specific colors and icons
 - Configurable labels and sizes
@@ -29,13 +29,13 @@ The `foundation-environment-indicator` component displays an environment badge w
 ### Simple Environment Indicator
 
 ```html
-<foundation-environment-indicator></foundation-environment-indicator>
+<rapid-environment-indicator></rapid-environment-indicator>
 ```
 
 ### With Custom Attributes
 
 ```html
-<foundation-environment-indicator
+<rapid-environment-indicator
   level="dev"
   label="DEVELOPMENT"
   background-color="#ff6b35"
@@ -43,7 +43,7 @@ The `foundation-environment-indicator` component displays an environment badge w
   show-icon="true"
   icon="code"
   size="lg"
-></foundation-environment-indicator>
+></rapid-environment-indicator>
 ```
 
 ## Configuration Options
@@ -185,13 +185,13 @@ export {};
 
 ```html
 <!-- Uses global configuration or defaults -->
-<foundation-environment-indicator></foundation-environment-indicator>
+<rapid-environment-indicator></rapid-environment-indicator>
 ```
 
 ### Custom Styled Indicator
 
 ```html
-<foundation-environment-indicator
+<rapid-environment-indicator
   level="staging"
   label="STAGING"
   background-color="#9c27b0"
@@ -199,26 +199,26 @@ export {};
   show-icon="true"
   icon="rocket"
   size="lg"
-></foundation-environment-indicator>
+></rapid-environment-indicator>
 ```
 
 ### Small Indicator with Icon
 
 ```html
-<foundation-environment-indicator
+<rapid-environment-indicator
   level="dev"
   label="DEV"
   background-color="#ff6b35"
   show-icon="true"
   icon="code"
   size="sm"
-></foundation-environment-indicator>
+></rapid-environment-indicator>
 ```
 
 ### Large Production Indicator
 
 ```html
-<foundation-environment-indicator
+<rapid-environment-indicator
   level="prod"
   label="PRODUCTION"
   background-color="#28a745"
@@ -226,7 +226,7 @@ export {};
   show-icon="true"
   icon="shield-alt"
   size="lg"
-></foundation-environment-indicator>
+></rapid-environment-indicator>
 ```
 
 ## Integration with Header and Login Components
@@ -315,7 +315,7 @@ The component automatically uses the design system's `--design-unit` property fo
 The environment indicator exposes a CSS part that allows you to style the component from outside:
 
 ```css
-foundation-environment-indicator::part(environment-indicator) {
+rapid-environment-indicator::part(environment-indicator) {
   /* Custom styles for the environment indicator */
   border: 2px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
