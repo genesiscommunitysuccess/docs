@@ -15,9 +15,39 @@ bindingAsRx<TKey extends keyof this>(key: TKey): RXObservable<this[TKey]>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | TKey | Store property key. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+TKey
+
+
+</td><td>
+
+Store property key.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

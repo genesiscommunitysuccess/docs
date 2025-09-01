@@ -19,9 +19,37 @@ export declare function mapGenesisJsonSchema(jsonSchemResponse: {
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  jsonSchemResponse | { OUTBOUND: JSONSchema7; } |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+jsonSchemResponse
+
+
+</td><td>
+
+{ OUTBOUND: JSONSchema7; }
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,7 +17,35 @@ constructor(uuid: UUID);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  uuid | [UUID](./foundation-utils.uuid.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+uuid
+
+
+</td><td>
+
+[UUID](./foundation-utils.uuid.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

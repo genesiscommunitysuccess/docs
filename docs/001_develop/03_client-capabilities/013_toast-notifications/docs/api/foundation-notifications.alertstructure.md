@@ -17,9 +17,85 @@ export interface AlertStructure
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [body](./foundation-notifications.alertstructure.body.md) | <code>readonly</code> | string |  |
-|  [logLevel?](./foundation-notifications.alertstructure.loglevel.md) | <code>readonly</code> | LogLevel | _(Optional)_ |
-|  [title](./foundation-notifications.alertstructure.title.md) | <code>readonly</code> | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[body](./foundation-notifications.alertstructure.body.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-notifications.alertstructure.loglevel.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[title](./foundation-notifications.alertstructure.title.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

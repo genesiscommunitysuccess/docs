@@ -17,11 +17,71 @@ export declare function whenElse<TSource = any, TReturn = any>(binding: Binding<
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  binding | Binding&lt;TSource, TReturn&gt; | The condition to test for rendering. |
-|  trueTemplateOrTemplateBinding | WhenTemplate&lt;TSource&gt; | The template or a binding that gets the template to render when the condition is true. |
-|  falseTemplateOrTemplateBinding | WhenTemplate&lt;TSource&gt; | The template or a binding that gets the template to render when the condition is false. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+binding
+
+
+</td><td>
+
+Binding&lt;TSource, TReturn&gt;
+
+
+</td><td>
+
+The condition to test for rendering.
+
+
+</td></tr>
+<tr><td>
+
+trueTemplateOrTemplateBinding
+
+
+</td><td>
+
+WhenTemplate&lt;TSource&gt;
+
+
+</td><td>
+
+The template or a binding that gets the template to render when the condition is true.
+
+
+</td></tr>
+<tr><td>
+
+falseTemplateOrTemplateBinding
+
+
+</td><td>
+
+WhenTemplate&lt;TSource&gt;
+
+
+</td><td>
+
+The template or a binding that gets the template to render when the condition is false.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

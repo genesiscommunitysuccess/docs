@@ -105,6 +105,33 @@ This release contains [impactful changes](#impactful-changes). They are not brea
 
 ### Patch releases
 
+#### 8.11.7
+
+###### Features
+
+* `core` : Can enable including the Open Telemetry java agent and its properties file through Sys Def 
+
+###### Fixes
+
+* `genesis-config` : Make GenesisScriptHost construction consistent across the platform in terms of script cache path resolution and improve script cache implementation 
+
+#### 8.11.6
+
+######## Features
+
+* `genesis-dictionary` : Add support for shared enum definitions with aliases 
+* `genesis-pal` : Add support for `auth` blocks without a map name in the `permissioning` GPAL section of custom req reps and eventhandlers 
+
+###### Fixes
+
+* `genesis-transform` : Ensure values with different types (i.e. `Short`, `Int`, `Long`) for the same column and format are formatted as expected 
+
+#### 8.11.5
+
+###### Features
+
+* `genesis-transform` : Added support to apply a timezone to all date time format operations 
+
 #### 8.11.4
 
 ###### Fixes

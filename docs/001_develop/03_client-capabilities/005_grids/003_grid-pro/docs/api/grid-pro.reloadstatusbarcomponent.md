@@ -18,10 +18,69 @@ export declare class ReloadStatusBarComponent implements IStatusPanelComp
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.reloadstatusbarcomponent.destroy.md) |  |  |
-|  [getGui()](./grid-pro.reloadstatusbarcomponent.getgui.md) |  |  |
-|  [init(params)](./grid-pro.reloadstatusbarcomponent.init.md) |  |  |
-|  [updateParams(params)](./grid-pro.reloadstatusbarcomponent.updateparams.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.reloadstatusbarcomponent.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.reloadstatusbarcomponent.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.reloadstatusbarcomponent.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[updateParams(params)](./grid-pro.reloadstatusbarcomponent.updateparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

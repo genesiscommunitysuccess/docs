@@ -9,37 +9,238 @@ format: md
 
 ## Abstract Classes
 
-|  Abstract Class | Description |
-|  --- | --- |
-|  [AbstractStore](./foundation-store.abstractstore.md) | The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md). |
-|  [AbstractStoreRoot](./foundation-store.abstractstoreroot.md) | The abstract store root that concrete store roots must extend. |
+<table><thead><tr><th>
+
+Abstract Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[AbstractStore](./foundation-store.abstractstore.md)
+
+
+</td><td>
+
+The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[AbstractStoreRoot](./foundation-store.abstractstoreroot.md)
+
+
+</td><td>
+
+The abstract store root that concrete store roots must extend.
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createErrorMap(logger)](./foundation-store.createerrormap.md)
+
+
+</td><td>
+
+A factory to create the error map.
+
+
+</td></tr>
+<tr><td>
+
+[registerStore(Base, name)](./foundation-store.registerstore.md)
+
+
+</td><td>
+
+Creates a dependency injection key for the store being registered.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [ErrorMap](./foundation-store.errormap.md) |  |
-|  [Store](./foundation-store.store.md) | Store interface. |
-|  [StoreConnectable](./foundation-store.storeconnectable.md) | Store connectable interface. |
-|  [StoreRoot](./foundation-store.storeroot.md) | Root store interface. |
-|  [StoreSubscriber](./foundation-store.storesubscriber.md) |  |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ErrorMap](./foundation-store.errormap.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Store](./foundation-store.store.md)
+
+
+</td><td>
+
+Store interface.
+
+
+</td></tr>
+<tr><td>
+
+[StoreConnectable](./foundation-store.storeconnectable.md)
+
+
+</td><td>
+
+Store connectable interface.
+
+
+</td></tr>
+<tr><td>
+
+[StoreRoot](./foundation-store.storeroot.md)
+
+
+</td><td>
+
+Root store interface.
+
+
+</td></tr>
+<tr><td>
+
+[StoreSubscriber](./foundation-store.storesubscriber.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [createErrorMap](./foundation-store.createerrormap.md) | A factory to create the error map. |
-|  [logger](./foundation-store.logger.md) | Logger for the foundation-store package |
-|  [registerStore](./foundation-store.registerstore.md) | Creates a dependency injection key for the store being registered. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[logger](./foundation-store.logger.md)
+
+
+</td><td>
+
+Logger for the foundation-store package
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ErrorDetailMap](./foundation-store.errordetailmap.md) |  |
-|  [ErrorMapLogger](./foundation-store.errormaplogger.md) |  |
-|  [StoreBinding](./foundation-store.storebinding.md) |  |
-|  [StoreRootEventDetailMap](./foundation-store.storerooteventdetailmap.md) | Store root event key to event detail map. |
-|  [SubscriberChangeCallback](./foundation-store.subscriberchangecallback.md) |  |
-|  [SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md) |  |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ErrorDetailMap](./foundation-store.errordetailmap.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[ErrorMapLogger](./foundation-store.errormaplogger.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[StoreBinding](./foundation-store.storebinding.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[StoreRootEventDetailMap](./foundation-store.storerooteventdetailmap.md)
+
+
+</td><td>
+
+Store root event key to event detail map.
+
+
+</td></tr>
+<tr><td>
+
+[SubscriberChangeCallback](./foundation-store.subscriberchangecallback.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

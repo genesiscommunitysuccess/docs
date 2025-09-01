@@ -19,5 +19,5 @@ export type BasicAuthInfo = {
     mfaToken?: string;
 };
 ```
-**References:** [AuthType](./foundation-comms.authtype.md), [AuthType.BASIC](./foundation-comms.authtype.md)
+**References:** [AuthType](./foundation-comms.authtype.md)<!-- -->, [AuthType.BASIC](./foundation-comms.authtype.md)
 

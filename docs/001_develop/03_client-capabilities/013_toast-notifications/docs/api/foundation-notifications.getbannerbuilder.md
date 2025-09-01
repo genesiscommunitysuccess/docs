@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getBannerBuilder](./foundation-notifications.getbannerbuilder.md)
 
-## getBannerBuilder variable
+## getBannerBuilder() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,7 @@ Get banner builder instance
 ```typescript
 getBannerBuilder: () => BannerBuilder
 ```
+**Returns:**
+
+[BannerBuilder](./foundation-notifications.bannerbuilder.md)
+

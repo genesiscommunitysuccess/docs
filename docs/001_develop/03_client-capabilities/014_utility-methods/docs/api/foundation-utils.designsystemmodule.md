@@ -17,7 +17,25 @@ export interface DesignSystemModule
 
 ## Methods
 
-|  Method | Description |
-|  --- | --- |
-|  [provideDesignSystem(element, prefix)](./foundation-utils.designsystemmodule.providedesignsystem.md) |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[provideDesignSystem(element, prefix)](./foundation-utils.designsystemmodule.providedesignsystem.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,11 +17,71 @@ setFilter?(name: string, value: any, type?: string): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  name | string | The name of the filter to set. |
-|  value | any | The value of the filter to set. |
-|  type | string | _(Optional)_ The type of the filter to set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+name
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the filter to set.
+
+
+</td></tr>
+<tr><td>
+
+value
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The value of the filter to set.
+
+
+</td></tr>
+<tr><td>
+
+type
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The type of the filter to set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

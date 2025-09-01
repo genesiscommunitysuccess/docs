@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getLoglevel](./foundation-notifications.getloglevel.md)
 
-## getLoglevel variable
+## getLoglevel() function
 
 Retrieves the log level from an NotificationStructure object
 
@@ -14,3 +14,46 @@ Retrieves the log level from an NotificationStructure object
 ```typescript
 getLoglevel: (details: NotificationStructure) => LogLevel
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+details
+
+
+</td><td>
+
+[NotificationStructure](./foundation-notifications.notificationstructure.md)
+
+
+</td><td>
+
+The NotificationStructure object
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+LogLevel
+
+The log level or the default value (LogLevel.Debug) if not present
+

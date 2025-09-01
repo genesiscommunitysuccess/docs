@@ -17,10 +17,55 @@ export declare function normaliseCriteria(criteria: string, delimiter?: string):
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  criteria | string | Original concat criteria. |
-|  delimiter | string | _(Optional)_ Criteria delimiter. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+criteria
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Original concat criteria.
+
+
+</td></tr>
+<tr><td>
+
+delimiter
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Criteria delimiter.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

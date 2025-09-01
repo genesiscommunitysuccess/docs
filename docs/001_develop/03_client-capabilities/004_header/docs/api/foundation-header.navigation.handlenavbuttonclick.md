@@ -17,9 +17,39 @@ handleNavButtonClick(routeNavItem: FoundationRouteNavItem): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  routeNavItem | FoundationRouteNavItem | The navigation item that was clicked |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+routeNavItem
+
+
+</td><td>
+
+FoundationRouteNavItem
+
+
+</td><td>
+
+The navigation item that was clicked
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [showLoggerLogLevel](./foundation-notifications.showloggerloglevel.md)
 
-## showLoggerLogLevel variable
+## showLoggerLogLevel() function
 
 Shows logger with log level from NotificationStructure object
 
@@ -14,3 +14,44 @@ Shows logger with log level from NotificationStructure object
 ```typescript
 showLoggerLogLevel: (notificationStructure: NotificationStructure) => void
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+notificationStructure
+
+
+</td><td>
+
+[NotificationStructure](./foundation-notifications.notificationstructure.md)
+
+
+</td><td>
+
+The NotificationStructure object
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+void
+

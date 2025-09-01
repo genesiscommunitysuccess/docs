@@ -17,8 +17,66 @@ export interface DismissingAction
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [action?](./foundation-notifications.dismissingaction.action.md) | <code>readonly</code> | Function | _(Optional)_ |
-|  [label](./foundation-notifications.dismissingaction.label.md) | <code>readonly</code> | String |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[action?](./foundation-notifications.dismissingaction.action.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[label](./foundation-notifications.dismissingaction.label.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

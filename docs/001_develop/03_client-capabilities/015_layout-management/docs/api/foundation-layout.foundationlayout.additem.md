@@ -17,10 +17,55 @@ addItem(config: RegisteredElementConfig | RegisteredElementConfig[], placement?:
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  config | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) \| [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)\[\] | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new items(s). Pass an array of [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) to add multiple items at once. |
-|  placement | [Placement](./foundation-layout.placement.md) | _(Optional)_ where and how to add the new items to the layout. For more info and defaults see [Placement](./foundation-layout.placement.md). |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+config
+
+
+</td><td>
+
+[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) \| [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)<!-- -->\[\]
+
+
+</td><td>
+
+[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new items(s). Pass an array of [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) to add multiple items at once.
+
+
+</td></tr>
+<tr><td>
+
+placement
+
+
+</td><td>
+
+[Placement](./foundation-layout.placement.md)
+
+
+</td><td>
+
+_(Optional)_ where and how to add the new items to the layout. For more info and defaults see [Placement](./foundation-layout.placement.md)<!-- -->.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

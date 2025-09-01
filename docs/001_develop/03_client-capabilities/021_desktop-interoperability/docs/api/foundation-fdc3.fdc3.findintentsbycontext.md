@@ -17,13 +17,43 @@ findIntentsByContext(context: FDC3Context): Promise<FDC3AppIntent[]>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  context | [FDC3Context](./foundation-fdc3.fdc3context.md) | The context to use. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+context
+
+
+</td><td>
+
+[FDC3Context](./foundation-fdc3.fdc3context.md)
+
+
+</td><td>
+
+The context to use.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)\[\]&gt;
+Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)<!-- -->\[\]&gt;
 
 A promise that resolves with an array of all matching intents and their metadata.
 

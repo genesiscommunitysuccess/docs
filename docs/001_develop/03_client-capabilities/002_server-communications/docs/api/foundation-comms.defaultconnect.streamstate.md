@@ -15,13 +15,101 @@ streamState(resourceName: string, onMessage?: Function, onError?: Function, para
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string |  |
-|  onMessage | Function | _(Optional)_ |
-|  onError | Function | _(Optional)_ |
-|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ |
-|  initialState | any\[\] | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+onMessage
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+onError
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+initialState
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

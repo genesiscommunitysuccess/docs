@@ -17,22 +17,192 @@ export declare namespace MessageDetails
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ChangePassword](./foundation-comms.messagedetails.changepassword.md) | Details type for a password-change message |
-|  [DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md) | Details type to request DATASERVER metadata |
-|  [Error](./foundation-comms.messagedetails.error.md) | Details type for ERROR results |
-|  [ExpirePassword](./foundation-comms.messagedetails.expirepassword.md) | Details type for a password-expiry message |
-|  [ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md) | Details type for a forgot-password message |
-|  [ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md) | Details type for a forgot-password token-based message |
-|  [LoggedInSystemInfo](./foundation-comms.messagedetails.loggedinsysteminfo.md) | System-level information when a user is logged in. |
-|  [Login](./foundation-comms.messagedetails.login.md) | Union type for different types of login information |
-|  [LoginBasic](./foundation-comms.messagedetails.loginbasic.md) | Details type for a basic auth message |
-|  [LoginJWT](./foundation-comms.messagedetails.loginjwt.md) | Details type for a JWT-based auth message |
-|  [LoginSSO](./foundation-comms.messagedetails.loginsso.md) | Details type for a SSO-based auth message |
-|  [MetaRequest](./foundation-comms.messagedetails.metarequest.md) | Details type to request FEATURE metadata |
-|  [MoreRows](./foundation-comms.messagedetails.morerows.md) | Details type to request more rows |
-|  [RefreshToken](./foundation-comms.messagedetails.refreshtoken.md) | Details type for a refresh-token message |
-|  [ResetPassword](./foundation-comms.messagedetails.resetpassword.md) | Details type for a password-reset message |
-|  [UpdateColumns](./foundation-comms.messagedetails.updatecolumns.md) | Details type to update columns |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ChangePassword](./foundation-comms.messagedetails.changepassword.md)
+
+
+</td><td>
+
+Details type for a password-change message
+
+
+</td></tr>
+<tr><td>
+
+[DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)
+
+
+</td><td>
+
+Details type to request DATASERVER metadata
+
+
+</td></tr>
+<tr><td>
+
+[Error](./foundation-comms.messagedetails.error.md)
+
+
+</td><td>
+
+Details type for ERROR results
+
+
+</td></tr>
+<tr><td>
+
+[ExpirePassword](./foundation-comms.messagedetails.expirepassword.md)
+
+
+</td><td>
+
+Details type for a password-expiry message
+
+
+</td></tr>
+<tr><td>
+
+[ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)
+
+
+</td><td>
+
+Details type for a forgot-password message
+
+
+</td></tr>
+<tr><td>
+
+[ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md)
+
+
+</td><td>
+
+Details type for a forgot-password token-based message
+
+
+</td></tr>
+<tr><td>
+
+[LoggedInSystemInfo](./foundation-comms.messagedetails.loggedinsysteminfo.md)
+
+
+</td><td>
+
+System-level information when a user is logged in.
+
+
+</td></tr>
+<tr><td>
+
+[Login](./foundation-comms.messagedetails.login.md)
+
+
+</td><td>
+
+Union type for different types of login information
+
+
+</td></tr>
+<tr><td>
+
+[LoginBasic](./foundation-comms.messagedetails.loginbasic.md)
+
+
+</td><td>
+
+Details type for a basic auth message
+
+
+</td></tr>
+<tr><td>
+
+[LoginJWT](./foundation-comms.messagedetails.loginjwt.md)
+
+
+</td><td>
+
+Details type for a JWT-based auth message
+
+
+</td></tr>
+<tr><td>
+
+[LoginSSO](./foundation-comms.messagedetails.loginsso.md)
+
+
+</td><td>
+
+Details type for a SSO-based auth message
+
+
+</td></tr>
+<tr><td>
+
+[MetaRequest](./foundation-comms.messagedetails.metarequest.md)
+
+
+</td><td>
+
+Details type to request FEATURE metadata
+
+
+</td></tr>
+<tr><td>
+
+[MoreRows](./foundation-comms.messagedetails.morerows.md)
+
+
+</td><td>
+
+Details type to request more rows
+
+
+</td></tr>
+<tr><td>
+
+[RefreshToken](./foundation-comms.messagedetails.refreshtoken.md)
+
+
+</td><td>
+
+Details type for a refresh-token message
+
+
+</td></tr>
+<tr><td>
+
+[ResetPassword](./foundation-comms.messagedetails.resetpassword.md)
+
+
+</td><td>
+
+Details type for a password-reset message
+
+
+</td></tr>
+<tr><td>
+
+[UpdateColumns](./foundation-comms.messagedetails.updatecolumns.md)
+
+
+</td><td>
+
+Details type to update columns
+
+
+</td></tr>
+</tbody></table>
 

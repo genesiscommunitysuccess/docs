@@ -22,9 +22,39 @@ withDetails(details: NotificationDataRow): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  details | [NotificationDataRow](./foundation-notifications.notificationdatarow.md) | NotificationDataRow |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+details
+
+
+</td><td>
+
+[NotificationDataRow](./foundation-notifications.notificationdatarow.md)
+
+
+</td><td>
+
+NotificationDataRow
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

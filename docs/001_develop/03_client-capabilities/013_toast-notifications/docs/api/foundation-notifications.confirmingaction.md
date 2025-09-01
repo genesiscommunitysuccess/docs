@@ -17,8 +17,64 @@ export interface ConfirmingAction
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [action](./foundation-notifications.confirmingaction.action.md) | <code>readonly</code> | Function |  |
-|  [label](./foundation-notifications.confirmingaction.label.md) | <code>readonly</code> | String |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[action](./foundation-notifications.confirmingaction.action.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[label](./foundation-notifications.confirmingaction.label.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+String
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -18,16 +18,111 @@ export declare class LocalStorageStatePersistence implements StatePersistence
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [session](./grid-pro.localstoragestatepersistence.session.md) |  | Session |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[session](./grid-pro.localstoragestatepersistence.session.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Session
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getColumnState(persistColumnStateKey)](./grid-pro.localstoragestatepersistence.getcolumnstate.md) |  |  |
-|  [getFilterModel(persistFilterModelKey)](./grid-pro.localstoragestatepersistence.getfiltermodel.md) |  |  |
-|  [saveColumnState(persistColumnStateKey, columnState)](./grid-pro.localstoragestatepersistence.savecolumnstate.md) |  |  |
-|  [saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.localstoragestatepersistence.savefiltermodel.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getColumnState(persistColumnStateKey)](./grid-pro.localstoragestatepersistence.getcolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getFilterModel(persistFilterModelKey)](./grid-pro.localstoragestatepersistence.getfiltermodel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[saveColumnState(persistColumnStateKey, columnState)](./grid-pro.localstoragestatepersistence.savecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[saveFilterModel(persistFilterModelKey, filterModel)](./grid-pro.localstoragestatepersistence.savefiltermodel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

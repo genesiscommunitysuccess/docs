@@ -17,11 +17,91 @@ constructor(session: Session, connect: Connect, messageBuilder: MessageBuilder, 
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  session | [Session](./foundation-comms.session.md) |  |
-|  connect | [Connect](./foundation-comms.connect.md) |  |
-|  messageBuilder | [MessageBuilder](./foundation-comms.messagebuilder.md) |  |
-|  credentialManager | [CredentialManager](./foundation-comms.credentialmanager.md) |  |
-|  currentUser | User |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+session
+
+
+</td><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+connect
+
+
+</td><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+messageBuilder
+
+
+</td><td>
+
+[MessageBuilder](./foundation-comms.messagebuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+credentialManager
+
+
+</td><td>
+
+[CredentialManager](./foundation-comms.credentialmanager.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+currentUser
+
+
+</td><td>
+
+User
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

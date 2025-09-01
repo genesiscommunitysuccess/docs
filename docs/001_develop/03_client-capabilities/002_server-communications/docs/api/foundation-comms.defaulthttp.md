@@ -18,14 +18,79 @@ export declare class DefaultHttp implements Http
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(serializer)](./foundation-comms.defaulthttp._constructor_.md) |  | Constructs a new instance of the <code>DefaultHttp</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(serializer)](./foundation-comms.defaulthttp._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultHttp` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [get(url, requestInit)](./foundation-comms.defaulthttp.get.md) |  |  |
-|  [post(url, requestInit)](./foundation-comms.defaulthttp.post.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[get(url, requestInit)](./foundation-comms.defaulthttp.get.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[post(url, requestInit)](./foundation-comms.defaulthttp.post.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

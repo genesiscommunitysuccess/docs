@@ -17,9 +17,39 @@ storeCredentialsInContainer(data: CredentialData): Promise<Credential | undefine
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | [CredentialData](./foundation-comms.credentialdata_2.md) | The credential data to store. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+[CredentialData](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+The credential data to store.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

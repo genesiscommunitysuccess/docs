@@ -17,5 +17,5 @@ customButtons: CustomButton[];
 
 ## Remarks
 
-To see more information see [CustomButton](./foundation-layout.custombutton.md).
+To see more information see [CustomButton](./foundation-layout.custombutton.md)<!-- -->.
 

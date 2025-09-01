@@ -17,13 +17,43 @@ login(credentials: AuthInfo): Promise<LoginResult>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [AuthInfo](./foundation-comms.authinfo.md) | The user's login credentials. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[AuthInfo](./foundation-comms.authinfo.md)
+
+
+</td><td>
+
+The user's login credentials.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[LoginResult](./foundation-comms.loginresult.md)&gt;
+Promise&lt;[LoginResult](./foundation-comms.loginresult.md)<!-- -->&gt;
 
 A Promise that resolves to the result of the login attempt.
 

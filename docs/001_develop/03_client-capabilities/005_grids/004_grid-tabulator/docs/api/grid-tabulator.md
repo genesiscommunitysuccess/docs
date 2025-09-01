@@ -9,63 +9,792 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [GridTabulatorCell](./grid-tabulator.gridtabulatorcell.md) | The GridTabulator Cell element. |
-|  [GridTabulatorColumn](./grid-tabulator.gridtabulatorcolumn.md) | The GridTabulator Column element. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[GridTabulator](./grid-tabulator.gridtabulator.md)
+
+
+</td><td>
+
+**_(ALPHA)_**
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorCell](./grid-tabulator.gridtabulatorcell.md)
+
+
+</td><td>
+
+The GridTabulator Cell element.
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorClientSideDatasource](./grid-tabulator.gridtabulatorclientsidedatasource.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The Genesis Datasource element, for client-side data fetching and used exclusively by the GridTabulator element.
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorColumn](./grid-tabulator.gridtabulatorcolumn.md)
+
+
+</td><td>
+
+The GridTabulator Column element.
+
+
+</td></tr>
+</tbody></table>
 
 ## Enumerations
 
-|  Enumeration | Description |
-|  --- | --- |
-|  [GridCSSVars](./grid-tabulator.gridcssvars.md) | All official Tabulator CSS variables |
-|  [GridTabulatorCellEditorTypes](./grid-tabulator.gridtabulatorcelleditortypes.md) | The available <code>grid-tabulator</code> Editor Types |
-|  [GridTabulatorCellRendererTypes](./grid-tabulator.gridtabulatorcellrenderertypes.md) | The available <code>grid-tabulator</code> Renderer Types |
-|  [GridTabulatorTheme](./grid-tabulator.gridtabulatortheme.md) | The available <code>grid-tabulator</code> themes |
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FormatterTypes](./grid-tabulator.formattertypes.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Enumeration of formatter types for grid-tabulator.
+
+
+</td></tr>
+<tr><td>
+
+[GridCSSVars](./grid-tabulator.gridcssvars.md)
+
+
+</td><td>
+
+All official Tabulator CSS variables
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorCellEditorTypes](./grid-tabulator.gridtabulatorcelleditortypes.md)
+
+
+</td><td>
+
+The available `grid-tabulator` Editor Types
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorCellRendererTypes](./grid-tabulator.gridtabulatorcellrenderertypes.md)
+
+
+</td><td>
+
+The available `grid-tabulator` Renderer Types
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorTheme](./grid-tabulator.gridtabulatortheme.md)
+
+
+</td><td>
+
+The available `grid-tabulator` themes
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [actionFormatter(cell, formatterParams)](./grid-tabulator.actionformatter.md) | Formatter that displays an action button in the cell. Styled to match grid-pro action renderer. |
-|  [actionsMenuFormatter(cell, formatterParams)](./grid-tabulator.actionsmenuformatter.md) | Formatter that displays a dropdown menu of actions in the cell. Styled to match grid-pro actions-menu renderer. |
-|  [booleanFormatter(cell, formatterParams)](./grid-tabulator.booleanformatter.md) | Formatter that displays boolean values using a checkbox component. Styled to match grid-pro boolean renderer. |
-|  [dateTimeValueFormatter({ value })](./grid-tabulator.datetimevalueformatter.md) | Format a date time value to a readable string. |
-|  [dateValueFormatter({ value })](./grid-tabulator.datevalueformatter.md) | Format a date value. |
-|  [editableFormatter(cell, formatterParams)](./grid-tabulator.editableformatter.md) | Formatter that displays an editable cell with validation state |
-|  [formatDateExtra(epoch)](./grid-tabulator.formatdateextra.md) | Format am epoch value to a readable ISO date string. |
-|  [getColumnType(metadataType)](./grid-tabulator.getcolumntype.md) | Get the column type based on the metadata type. |
-|  [getFilterByFieldType(type)](./grid-tabulator.getfilterbyfieldtype.md) | Get the filter type based on the field type. |
-|  [getFilterParamsByFieldType(type)](./grid-tabulator.getfilterparamsbyfieldtype.md) | Get the filter params based on the field type. |
-|  [selectFormatter(cell, formatterParams)](./grid-tabulator.selectformatter.md) | Formatter that displays a select component with options. Returns a wrapped div containing the select, similar to boolean.formatter. |
-|  [textFormatter(cell, formatterParams)](./grid-tabulator.textformatter.md) | Text formatter for customized display of values. Styled to match grid-pro text renderer. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[actionFormatter(cell, formatterParams)](./grid-tabulator.actionformatter.md)
+
+
+</td><td>
+
+Formatter that displays an action button in the cell. Styled to match grid-pro action renderer.
+
+
+</td></tr>
+<tr><td>
+
+[actionsMenuFormatter(cell, formatterParams)](./grid-tabulator.actionsmenuformatter.md)
+
+
+</td><td>
+
+Formatter that displays a dropdown menu of actions in the cell. Styled to match grid-pro actions-menu renderer.
+
+
+</td></tr>
+<tr><td>
+
+[booleanFormatter(cell, formatterParams)](./grid-tabulator.booleanformatter.md)
+
+
+</td><td>
+
+Formatter that displays boolean values using a checkbox component. Styled to match grid-pro boolean renderer.
+
+
+</td></tr>
+<tr><td>
+
+[convertToKebabCase(str)](./grid-tabulator.converttokebabcase.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Convert a string to kebab case Example: convertToKebabCase('helloWorld') // 'hello-world'
+
+
+</td></tr>
+<tr><td>
+
+[dateTimeValueFormatter({ value })](./grid-tabulator.datetimevalueformatter.md)
+
+
+</td><td>
+
+Format a date time value to a readable string.
+
+
+</td></tr>
+<tr><td>
+
+[dateValueFormatter({ value })](./grid-tabulator.datevalueformatter.md)
+
+
+</td><td>
+
+Format a date value.
+
+
+</td></tr>
+<tr><td>
+
+[editableFormatter(cell, formatterParams)](./grid-tabulator.editableformatter.md)
+
+
+</td><td>
+
+Formatter that displays an editable cell with validation state
+
+
+</td></tr>
+<tr><td>
+
+[formatDateExtra(epoch)](./grid-tabulator.formatdateextra.md)
+
+
+</td><td>
+
+Format am epoch value to a readable ISO date string.
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridTabulator(overrideDefinition)](./grid-tabulator.foundationgridtabulator.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The Foundation grid-tabulator
+
+
+</td></tr>
+<tr><td>
+
+[getColumnType(metadataType)](./grid-tabulator.getcolumntype.md)
+
+
+</td><td>
+
+Get the column type based on the metadata type.
+
+
+</td></tr>
+<tr><td>
+
+[getDataTestId(dataTestId, rowData)](./grid-tabulator.getdatatestid.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Resolves a dataTestId value that can be either a string or a function
+
+
+</td></tr>
+<tr><td>
+
+[getFilterByFieldType(type)](./grid-tabulator.getfilterbyfieldtype.md)
+
+
+</td><td>
+
+Get the filter type based on the field type.
+
+
+</td></tr>
+<tr><td>
+
+[getFilterParamsByFieldType(type)](./grid-tabulator.getfilterparamsbyfieldtype.md)
+
+
+</td><td>
+
+Get the filter params based on the field type.
+
+
+</td></tr>
+<tr><td>
+
+[mergeAndDedupColDefWithColumnState(colDefs, columnState)](./grid-tabulator.mergeanddedupcoldefwithcolumnstate.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Merges and dedupes column definitions with column state
+
+
+</td></tr>
+<tr><td>
+
+[selectFormatter(cell, formatterParams)](./grid-tabulator.selectformatter.md)
+
+
+</td><td>
+
+Formatter that displays a select component with options. Returns a wrapped div containing the select, similar to boolean.formatter.
+
+
+</td></tr>
+<tr><td>
+
+[textFormatter(cell, formatterParams)](./grid-tabulator.textformatter.md)
+
+
+</td><td>
+
+Text formatter for customized display of values. Styled to match grid-pro text renderer.
+
+
+</td></tr>
+<tr><td>
+
+[themeFontsId(themeName)](./grid-tabulator.themefontsid.md)
+
+
+</td><td>
+
+Get the Fonts ID for the theme's name
+
+
+</td></tr>
+<tr><td>
+
+[themeTokenMapClassname(themeName)](./grid-tabulator.themetokenmapclassname.md)
+
+
+</td><td>
+
+Get the token map class name for the `grid-tabulator` themes
+
+
+</td></tr>
+<tr><td>
+
+[themeTokenMapCSS(themeName, tokenMap)](./grid-tabulator.themetokenmapcss.md)
+
+
+</td><td>
+
+Get the CSS for the theme's token map
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [CellRendererParams](./grid-tabulator.cellrendererparams.md) | Parameters for custom cell renderers |
-|  [RowDataTransaction](./grid-tabulator.rowdatatransaction.md) | Transaction object to handle row data updates. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ActionFormatterParams](./grid-tabulator.actionformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the action formatter.
+
+`actionClick`<!-- -->: Callback function triggered when the action button is clicked.
+
+`actionName`<!-- -->: The name or label of the action button.
+
+`appearance`<!-- -->: The appearance style of the action button.
+
+`dataTestId`<!-- -->: The data-test-id attribute value to be used for E2E testing.
+
+`isDisabled`<!-- -->: Function to determine whether the action button should be disabled for a specific row.
+
+`uniqueFieldName`<!-- -->: A unique field name used to identify the action button for E2E testing.
+
+`prefix`<!-- -->: The prefix to use for the button element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+
+`actionButtonStyle`<!-- -->: Optional styling for the action button.
+
+`contentTemplate`<!-- -->: Used to render some arbitrary content inside the action button.
+
+
+</td></tr>
+<tr><td>
+
+[ActionsMenuFormatterParams](./grid-tabulator.actionsmenuformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the actions menu formatter
+
+`actions`<!-- -->: The array of actions to display in the menu.
+
+`prefix`<!-- -->: The prefix to use for the actions-menu element, e.g., 'foundation', 'zero', 'rapid'.
+
+`menuName`<!-- -->: Custom name for the menu button (if not set, will use foundation: '⋮' or other: '+')
+
+`isVertical`<!-- -->: Optional flag to display the menu vertically. Default is false.
+
+`buttonAppearance`<!-- -->: Optional appearance for the button that opens the menu.
+
+`dataTestId`<!-- -->: Data test ID for testing
+
+
+</td></tr>
+<tr><td>
+
+[BooleanFormatterParams](./grid-tabulator.booleanformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the boolean formatter
+
+`isDisabled`<!-- -->: Function to determine whether the checkbox should be disabled for a specific row
+
+`dataTestId`<!-- -->: Data test ID for testing
+
+`prefix`<!-- -->: The prefix to use for the checkbox element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+
+
+</td></tr>
+<tr><td>
+
+[CellRendererParams](./grid-tabulator.cellrendererparams.md)
+
+
+</td><td>
+
+Parameters for custom cell renderers
+
+
+</td></tr>
+<tr><td>
+
+[EditableFormatterParams](./grid-tabulator.editableformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the editable formatter
+
+`value`<!-- -->: The raw value to be displayed
+
+`data`<!-- -->: The row data containing the current cell
+
+`field`<!-- -->: The field name in the data object
+
+`cssClass`<!-- -->: Optional CSS class to apply to the text
+
+`nullText`<!-- -->: Text to display for null/undefined values
+
+`dataTestId`<!-- -->: Data test ID for testing
+
+`icon`<!-- -->: Icon to display for edit action
+
+`prefix`<!-- -->: The prefix to use for element classes and components, e.g., 'foundation', 'zero', 'rapid'.
+
+
+</td></tr>
+<tr><td>
+
+[RowDataTransaction](./grid-tabulator.rowdatatransaction.md)
+
+
+</td><td>
+
+Transaction object to handle row data updates.
+
+
+</td></tr>
+<tr><td>
+
+[SelectFormatterParams](./grid-tabulator.selectformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the select formatter
+
+`options`<!-- -->: Array of options for the select
+
+`nullText`<!-- -->: Text to display for null/undefined values
+
+`dataTestId`<!-- -->: Data test ID for testing
+
+`prefix`<!-- -->: The prefix to use for element classes, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+
+`onChange`<!-- -->: Optional callback when the selection changes
+
+
+</td></tr>
+<tr><td>
+
+[TextFormatterParams](./grid-tabulator.textformatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Parameters for the text formatter
+
+`specialValue`<!-- -->: Optional special value that should be highlighted (like 2012 in the Year example)
+
+`specialColor`<!-- -->: Optional color for the highlighted special value
+
+`specialFontWeight`<!-- -->: Optional font weight for the highlighted special value
+
+`prefix`<!-- -->: Optional prefix for any custom elements used in formatting
+
+`dataTestId`<!-- -->: Optional data-test-id for testing purposes
+
+`nullText`<!-- -->: Optional text to display when the value is null or undefined
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [defaultGridTabulatorConfig](./grid-tabulator.defaultgridtabulatorconfig.md) | The default grid-tabulator configuration. |
-|  [foundationGridTabulatorComponents](./grid-tabulator.foundationgridtabulatorcomponents.md) | All <code>grid-tabulator</code> components. |
-|  [gridTabulatorShadowOptions](./grid-tabulator.gridtabulatorshadowoptions.md) | The grid-tabulator component registration. |
-|  [gridTabulatorStyles](./grid-tabulator.gridtabulatorstyles.md) | The styles for the grid-tabulator component |
-|  [gridTabulatorTemplate](./grid-tabulator.gridtabulatortemplate.md) | The template for the <code>grid-tabulator</code> component. |
-|  [logger](./grid-tabulator.logger.md) | Logger for the <code>grid-tabulator</code> package |
-|  [tabulatorExternalStockStyles](./grid-tabulator.tabulatorexternalstockstyles.md) | External styles for the Tabulator grid. |
-|  [tabulatorThemeSimpleCSS](./grid-tabulator.tabulatorthemesimplecss.md) | External styles for the Tabulator grid. |
-|  [themeFontsId](./grid-tabulator.themefontsid.md) | Get the Fonts ID for the theme's name |
-|  [themeTokenMapClassname](./grid-tabulator.themetokenmapclassname.md) | Get the token map class name for the <code>grid-tabulator</code> themes |
-|  [themeTokenMapCSS](./grid-tabulator.themetokenmapcss.md) | Get the CSS for the theme's token map |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[criteriaDelimiter](./grid-tabulator.criteriadelimiter.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Delimiter for criteria in the datasource
+
+
+</td></tr>
+<tr><td>
+
+[criteriaJoin](./grid-tabulator.criteriajoin.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Join operator for criteria in the datasource
+
+
+</td></tr>
+<tr><td>
+
+[DEBOUNCED\_RESIZE\_TIME](./grid-tabulator.debounced_resize_time.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Time in milliseconds to debounce resize events
+
+
+</td></tr>
+<tr><td>
+
+[defaultGridTabulatorConfig](./grid-tabulator.defaultgridtabulatorconfig.md)
+
+
+</td><td>
+
+The default grid-tabulator configuration.
+
+
+</td></tr>
+<tr><td>
+
+[EDITED\_COLUMN\_FIELD](./grid-tabulator.edited_column_field.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The special column field name for marking a cell as edited
+
+
+</td></tr>
+<tr><td>
+
+[ERROR\_COLUMN\_FIELD](./grid-tabulator.error_column_field.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The special column field name for marking a cell as having an error
+
+
+</td></tr>
+<tr><td>
+
+[formatters](./grid-tabulator.formatters.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Zero formatters for Tabulator grid
+
+
+</td></tr>
+<tr><td>
+
+[foundationGridTabulatorComponents](./grid-tabulator.foundationgridtabulatorcomponents.md)
+
+
+</td><td>
+
+All `grid-tabulator` components.
+
+
+</td></tr>
+<tr><td>
+
+[gridTabulatorErrorNames](./grid-tabulator.gridtabulatorerrornames.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Error types for grid-tabulator
+
+
+</td></tr>
+<tr><td>
+
+[gridTabulatorEventNames](./grid-tabulator.gridtabulatoreventnames.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Event names for grid-tabulator
+
+
+</td></tr>
+<tr><td>
+
+[gridTabulatorShadowOptions](./grid-tabulator.gridtabulatorshadowoptions.md)
+
+
+</td><td>
+
+The grid-tabulator component registration.
+
+
+</td></tr>
+<tr><td>
+
+[gridTabulatorStyles](./grid-tabulator.gridtabulatorstyles.md)
+
+
+</td><td>
+
+The styles for the grid-tabulator component
+
+
+</td></tr>
+<tr><td>
+
+[gridTabulatorTemplate](./grid-tabulator.gridtabulatortemplate.md)
+
+
+</td><td>
+
+The template for the `grid-tabulator` component.
+
+
+</td></tr>
+<tr><td>
+
+[logger](./grid-tabulator.logger.md)
+
+
+</td><td>
+
+Logger for the `grid-tabulator` package
+
+
+</td></tr>
+<tr><td>
+
+[tabulatorExternalStockStyles](./grid-tabulator.tabulatorexternalstockstyles.md)
+
+
+</td><td>
+
+External styles for the Tabulator grid.
+
+
+</td></tr>
+<tr><td>
+
+[tabulatorThemeSimpleCSS](./grid-tabulator.tabulatorthemesimplecss.md)
+
+
+</td><td>
+
+External styles for the Tabulator grid.
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [CellRendererFunc](./grid-tabulator.cellrendererfunc.md) | Function type for cell renderer |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CellRendererFunc](./grid-tabulator.cellrendererfunc.md)
+
+
+</td><td>
+
+Function type for cell renderer
+
+
+</td></tr>
+<tr><td>
+
+[ColumnDefinition](./grid-tabulator.columndefinition.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Extended Tabulator Column Definition with tweaked formatter type and formatterParams
+
+
+</td></tr>
+<tr><td>
+
+[FormatterParams](./grid-tabulator.formatterparams.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Extended FormatterParams type that includes all of our custom formatter parameter interfaces
+
+
+</td></tr>
+<tr><td>
+
+[GridTabulatorCaseType](./grid-tabulator.gridtabulatorcasetype.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The case types supported for header formatting
+
+
+</td></tr>
+<tr><td>
+
+[Options](./grid-tabulator.options.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Extended Tabulator Options with custom formatters
+
+
+</td></tr>
+</tbody></table>
 

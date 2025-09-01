@@ -17,11 +17,71 @@ onMetadataEvent(resourceName: string, message: Message<MessageDetails.MetaReques
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource. |
-|  message | [Message](./foundation-comms.message.md)&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)&gt; | The message. |
-|  error | any | _(Optional)_ Optional error. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource.
+
+
+</td></tr>
+<tr><td>
+
+message
+
+
+</td><td>
+
+[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)<!-- -->&gt;
+
+
+</td><td>
+
+The message.
+
+
+</td></tr>
+<tr><td>
+
+error
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ Optional error.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

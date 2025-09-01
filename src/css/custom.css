@@ -216,6 +216,23 @@ h5 {
 .markdown table tr:nth-child(2n + 1) {
   background-color: var(--warm-gray-4);
 }
+
+/* Fix for API docs tables where <p> tags are generated inside <th> elements */
+.markdown table th p {
+  color: white !important;
+  font-family: var(--medium-font) !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+}
+
+/* Ensure table headers maintain their styling regardless of nested elements */
+.markdown table th,
+.markdown table th * {
+  color: white !important;
+  background-color: var(--darker-blue) !important;
+}
 /**********************************************/
 
 /* ultra-wide view - restrict and center the main content */

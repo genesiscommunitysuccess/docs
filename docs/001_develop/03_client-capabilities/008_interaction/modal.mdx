@@ -297,7 +297,9 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 
 ### Events fired
 
-This component doesn't fire any events.
+| Event | Type | Description | Example |
+|--|--|--|--|
+| close | `void` | Fired when the dialog is closed, either through the close button, escape key, or programmatic close. | `<rapid-dialog @close="${(x) => x.handleDialogClose()}">` |
 
 ### Events listened to
 

@@ -7,7 +7,7 @@ format: md
 
 ## layoutTemplate variable
 
-`ViewTemplate` which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md).
+`ViewTemplate` which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
 
 **Signature:**
 

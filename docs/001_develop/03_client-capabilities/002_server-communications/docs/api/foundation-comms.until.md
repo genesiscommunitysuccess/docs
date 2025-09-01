@@ -17,10 +17,55 @@ export declare function until(conditionFunc: () => boolean, timeoutMs?: number):
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  conditionFunc | () =&gt; boolean | The condition function to poll. |
-|  timeoutMs | number | _(Optional)_ The timeout in milliseconds. Defaults to 300. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+conditionFunc
+
+
+</td><td>
+
+() =&gt; boolean
+
+
+</td><td>
+
+The condition function to poll.
+
+
+</td></tr>
+<tr><td>
+
+timeoutMs
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The timeout in milliseconds. Defaults to 300.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

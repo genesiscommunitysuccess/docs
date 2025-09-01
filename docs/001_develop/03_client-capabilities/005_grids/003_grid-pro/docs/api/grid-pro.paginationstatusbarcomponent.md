@@ -18,9 +18,57 @@ export declare class PaginationStatusBarComponent implements IStatusPanelComp
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [destroy()](./grid-pro.paginationstatusbarcomponent.destroy.md) |  |  |
-|  [getGui()](./grid-pro.paginationstatusbarcomponent.getgui.md) |  |  |
-|  [init(params)](./grid-pro.paginationstatusbarcomponent.init.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[destroy()](./grid-pro.paginationstatusbarcomponent.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.paginationstatusbarcomponent.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.paginationstatusbarcomponent.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

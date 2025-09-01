@@ -20,21 +20,176 @@ export declare class MultiselectEditor extends FoundationElement implements ICel
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [params](./grid-pro.multiselecteditor.params.md) |  | [MultiselectEditorParams](./grid-pro.multiselecteditorparams.md) |  |
-|  [selectedOptions](./grid-pro.multiselecteditor.selectedoptions.md) |  | any\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[params](./grid-pro.multiselecteditor.params.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[MultiselectEditorParams](./grid-pro.multiselecteditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[selectedOptions](./grid-pro.multiselecteditor.selectedoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [changeHandler(event)](./grid-pro.multiselecteditor.changehandler.md) |  |  |
-|  [destroy()](./grid-pro.multiselecteditor.destroy.md) |  |  |
-|  [getGui()](./grid-pro.multiselecteditor.getgui.md) |  |  |
-|  [getValue()](./grid-pro.multiselecteditor.getvalue.md) |  |  |
-|  [init(params)](./grid-pro.multiselecteditor.init.md) |  |  |
-|  [isCancelBeforeStart()](./grid-pro.multiselecteditor.iscancelbeforestart.md) |  |  |
-|  [isPopup()](./grid-pro.multiselecteditor.ispopup.md) |  |  |
-|  [refresh(params)](./grid-pro.multiselecteditor.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[changeHandler(event)](./grid-pro.multiselecteditor.changehandler.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./grid-pro.multiselecteditor.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.multiselecteditor.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getValue()](./grid-pro.multiselecteditor.getvalue.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.multiselecteditor.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isCancelBeforeStart()](./grid-pro.multiselecteditor.iscancelbeforestart.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isPopup()](./grid-pro.multiselecteditor.ispopup.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.multiselecteditor.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

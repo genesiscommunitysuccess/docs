@@ -15,11 +15,39 @@ login(credentials: AuthInfo): Promise<LoginResult>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  credentials | [AuthInfo](./foundation-comms.authinfo.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+credentials
+
+
+</td><td>
+
+[AuthInfo](./foundation-comms.authinfo.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[LoginResult](./foundation-comms.loginresult.md)&gt;
+Promise&lt;[LoginResult](./foundation-comms.loginresult.md)<!-- -->&gt;
 

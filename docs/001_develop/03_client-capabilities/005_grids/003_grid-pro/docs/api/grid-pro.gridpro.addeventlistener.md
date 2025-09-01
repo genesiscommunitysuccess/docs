@@ -17,11 +17,71 @@ addEventListener(eventType: string, listener: any, options?: boolean | AddEventL
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  eventType | string | The event type to listen for. Recommened to use the <code>Events</code> from AG Grid. |
-|  listener | any | The event listener to call when the event is fired. |
-|  options | boolean \| AddEventListenerOptions | _(Optional)_ An options object that specifies characteristics about the event listener. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+eventType
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The event type to listen for. Recommened to use the `Events` from AG Grid.
+
+
+</td></tr>
+<tr><td>
+
+listener
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+The event listener to call when the event is fired.
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+boolean \| AddEventListenerOptions
+
+
+</td><td>
+
+_(Optional)_ An options object that specifies characteristics about the event listener.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

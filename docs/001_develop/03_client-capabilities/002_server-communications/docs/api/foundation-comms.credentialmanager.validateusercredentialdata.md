@@ -17,10 +17,55 @@ validateUserCredentialData(data: CredentialData, ensurePassword?: boolean): bool
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  data | [CredentialData](./foundation-comms.credentialdata_2.md) | The credential data to validate. |
-|  ensurePassword | boolean | _(Optional)_ Check for the existence of a password. PasswordCredentials will have this, but cookies are considered valid without. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+data
+
+
+</td><td>
+
+[CredentialData](./foundation-comms.credentialdata_2.md)
+
+
+</td><td>
+
+The credential data to validate.
+
+
+</td></tr>
+<tr><td>
+
+ensurePassword
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Check for the existence of a password. PasswordCredentials will have this, but cookies are considered valid without.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

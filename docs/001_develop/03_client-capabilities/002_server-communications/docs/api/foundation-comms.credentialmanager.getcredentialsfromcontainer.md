@@ -17,9 +17,39 @@ getCredentialsFromContainer(options?: GetCredentialOptions): Promise<CredentialD
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  options | [GetCredentialOptions](./foundation-comms.getcredentialoptions.md) | _(Optional)_ Options for filtering the retrieved credentials, if any. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+options
+
+
+</td><td>
+
+[GetCredentialOptions](./foundation-comms.getcredentialoptions.md)
+
+
+</td><td>
+
+_(Optional)_ Options for filtering the retrieved credentials, if any.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

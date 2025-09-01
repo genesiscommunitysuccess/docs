@@ -78,6 +78,65 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.13.9
+
+###### Features
+
+* `genesis-db` : Add deleteAll by entity index to db operations 
+
+#### 8.13.8
+
+###### Fixes
+
+* `genesis-environment` : Fix registering no-op instance of Optimistic Concurrency builder for scripts 
+
+#### 8.13.7
+
+###### Features
+
+* `genesis-environment` : Implement GetNextAutoIncrementNumbers script to work similarly to GetNextSequenceNumbers 
+
+###### Fixes
+
+* `genesis-dictionary` : Ensure shared aliased enums can be serialised/deserialised using Jackson 
+* `genesis-environment` : Disable optimistic concurrency checks for scripts 
+* `genesis-testsupport` : Ensure `GenesisDatabaseTest` annotation also initialises `GenesisPaths.genesisHome()`` internally 
+
+#### 8.13.6
+
+###### Features
+
+* `core` : Can enable including the Open Telemetry java agent and its properties file through Sys Def 
+* `genesis-gradle` : Add support for open telemetry in exec plugin to make it easier to run locally 
+
+###### Fixes
+
+* `genesis-eventhandler` : Change incorrect use of system definition item `UseNettyThreadsInEventHandler` in event handler implementation 
+* `genesis-pal-permissions` : Make auth perms GPAL `expression` block suspending so db lookups can be performed 
+* `genesis-transform` : Ensure values with different types (i.e. `Short`, `Int`, `Long`) for the same column and format are formatted as expected 
+
+#### 8.13.5
+
+###### Features
+
+* `genesis-db` : Can specify optimistic concurrency checks for specific tables 
+* `genesis-dictionary` : Add support for shared enum definitions with aliases 
+* `genesis-pal` : Add support for `auth` blocks without a map name in the `permissioning` GPAL section of custom req reps and eventhandlers 
+
+
+#### 8.13.4
+
+###### Fixes
+
+* `genesis-pal-datapipeline` : All pipelines should have a default `onUncaughtError` handler to avoid the process from crashing and instead sets the process state to `WARNING` 
+
+#### 8.13.3
+
+###### Features
+
+* `core` : Support running groovy and GPAL scripts in the same process to aid migration to GPAL 
+* `genesis-transform` : Added support to apply a timezone to all date time format operations 
+
 #### 8.13.2
 
 ###### Fixes

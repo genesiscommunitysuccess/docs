@@ -15,12 +15,55 @@ getMetadata(resourceName: string, useCache?: boolean): Promise<Metadata>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string |  |
-|  useCache | boolean | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+useCache
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[Metadata](./foundation-comms.metadata.md)&gt;
+Promise&lt;[Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
 

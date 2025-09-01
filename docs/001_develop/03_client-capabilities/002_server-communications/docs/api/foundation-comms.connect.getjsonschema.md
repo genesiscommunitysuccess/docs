@@ -17,11 +17,41 @@ getJSONSchema(resourceName: string): Promise<SchemaResponse>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to retrieve the schema for. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to retrieve the schema for.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
-Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)&gt;
+Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
 

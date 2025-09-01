@@ -17,5 +17,5 @@ requestAutoSetup?: boolean;
 
 ## Remarks
 
-Default is `true`. Only works with REQUEST\_SERVER resources.
+Default is `true`<!-- -->. Only works with REQUEST\_SERVER resources.
 

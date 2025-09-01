@@ -20,7 +20,35 @@ constructor(config: {
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  config | { app: 'foundation-app'; debug: true; } |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+config
+
+
+</td><td>
+
+{ app: 'foundation-app'; debug: true; }
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

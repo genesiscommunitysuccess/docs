@@ -14,13 +14,81 @@ Component suite context interface
 ```typescript
 export interface ComponentContext<TElement = HTMLElement> extends Pick<Fixture<TElement>, 'element' | 'disconnect'> 
 ```
-**Extends:** Pick&lt;[Fixture](./foundation-testing.fixture.md)&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
+**Extends:** Pick&lt;[Fixture](./foundation-testing.fixture.md)<!-- -->&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [container](./foundation-testing.componentcontext.container.md) |  | Container |  |
-|  [designSystem](./foundation-testing.componentcontext.designsystem.md) |  | DesignSystem |  |
-|  [runCases](./foundation-testing.componentcontext.runcases.md) |  | [RunCases](./foundation-testing.runcases.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[container](./foundation-testing.componentcontext.container.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Container
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[designSystem](./foundation-testing.componentcontext.designsystem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+DesignSystem
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[runCases](./foundation-testing.componentcontext.runcases.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[RunCases](./foundation-testing.runcases.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

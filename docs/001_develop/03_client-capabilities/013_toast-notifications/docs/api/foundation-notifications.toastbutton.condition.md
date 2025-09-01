@@ -17,9 +17,39 @@ condition({ details }?: {
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  { details } | { details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md); } | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+{ details }
+
+
+</td><td>
+
+{ details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md)<!-- -->; }
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

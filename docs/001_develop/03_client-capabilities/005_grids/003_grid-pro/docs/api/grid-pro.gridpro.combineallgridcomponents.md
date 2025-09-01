@@ -15,9 +15,37 @@ combineAllGridComponents(gridOptionsComponents: GridComponents): GridComponents;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  gridOptionsComponents | [GridComponents](./grid-pro.gridcomponents.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+gridOptionsComponents
+
+
+</td><td>
+
+[GridComponents](./grid-pro.gridcomponents.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -28,5 +28,5 @@ export type SystemHealthStatus = {
     reportStabilityToGenesis(): Promise<boolean>;
 };
 ```
-**References:** [SerializedSocketStatus](./foundation-comms.serializedsocketstatus.md), [ResourceHealth](./foundation-comms.resourcehealth.md)
+**References:** [SerializedSocketStatus](./foundation-comms.serializedsocketstatus.md)<!-- -->, [ResourceHealth](./foundation-comms.resourcehealth.md)
 

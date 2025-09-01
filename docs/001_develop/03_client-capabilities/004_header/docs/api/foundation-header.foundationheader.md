@@ -24,7 +24,33 @@ See the [configure()](./foundation-header.configure.md) hook for more informatio
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [loadRemotes()](./foundation-header.foundationheader.loadremotes.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[loadRemotes()](./foundation-header.foundationheader.loadremotes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,9 +17,39 @@ joinChannel(channelId: string): Promise<void>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  channelId | string | The ID of the channel to join. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+channelId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The ID of the channel to join.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

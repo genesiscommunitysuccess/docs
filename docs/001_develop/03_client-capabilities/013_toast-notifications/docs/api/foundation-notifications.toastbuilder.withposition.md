@@ -22,9 +22,39 @@ withPosition(position: ToastPosition): ToastBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  position | [ToastPosition](./foundation-notifications.toastposition.md) | [ToastPosition](./foundation-notifications.toastposition.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+position
+
+
+</td><td>
+
+[ToastPosition](./foundation-notifications.toastposition.md)
+
+
+</td><td>
+
+[ToastPosition](./foundation-notifications.toastposition.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
