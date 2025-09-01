@@ -17,13 +17,103 @@ streamState(resourceName: string, onMessage: Function, onError: Function, params
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  resourceName | string | The name of the resource to listen for updates on. |
-|  onMessage | Function | A callback function to handle received messages. |
-|  onError | Function | A callback function to handle errors. |
-|  params | [DataserverParams](./foundation-comms.dataserverparams.md) | _(Optional)_ Additional parameters to pass to the server. |
-|  initialState | any\[\] | _(Optional)_ State of the list to start with, defaults to empty array. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+resourceName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the resource to listen for updates on.
+
+
+</td></tr>
+<tr><td>
+
+onMessage
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+A callback function to handle received messages.
+
+
+</td></tr>
+<tr><td>
+
+onError
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+A callback function to handle errors.
+
+
+</td></tr>
+<tr><td>
+
+params
+
+
+</td><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+_(Optional)_ Additional parameters to pass to the server.
+
+
+</td></tr>
+<tr><td>
+
+initialState
+
+
+</td><td>
+
+any\[\]
+
+
+</td><td>
+
+_(Optional)_ State of the list to start with, defaults to empty array.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

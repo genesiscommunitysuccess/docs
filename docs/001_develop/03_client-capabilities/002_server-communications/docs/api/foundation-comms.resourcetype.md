@@ -17,9 +17,63 @@ export declare enum ResourceType
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  DATASERVER | <code>&quot;DATASERVER&quot;</code> |  |
-|  EVENT\_HANDLER | <code>&quot;EVENT_HANDLER&quot;</code> |  |
-|  REQUEST\_SERVER | <code>&quot;REQUEST_SERVER&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+DATASERVER
+
+
+</td><td>
+
+`"DATASERVER"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+EVENT\_HANDLER
+
+
+</td><td>
+
+`"EVENT_HANDLER"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+REQUEST\_SERVER
+
+
+</td><td>
+
+`"REQUEST_SERVER"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

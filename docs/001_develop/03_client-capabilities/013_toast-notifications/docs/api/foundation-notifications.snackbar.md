@@ -17,10 +17,110 @@ export interface Snackbar
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [autoClose?](./foundation-notifications.snackbar.autoclose.md) | <code>readonly</code> | boolean | _(Optional)_ |
-|  [closeTimeout?](./foundation-notifications.snackbar.closetimeout.md) | <code>readonly</code> | number | _(Optional)_ |
-|  [confirmingActions?](./foundation-notifications.snackbar.confirmingactions.md) | <code>readonly</code> | Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)&gt; | _(Optional)_ |
-|  [type?](./foundation-notifications.snackbar.type.md) | <code>readonly</code> | [SnackbarType](./foundation-notifications.snackbartype.md) | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[autoClose?](./foundation-notifications.snackbar.autoclose.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[closeTimeout?](./foundation-notifications.snackbar.closetimeout.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[confirmingActions?](./foundation-notifications.snackbar.confirmingactions.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)<!-- -->&gt;
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[type?](./foundation-notifications.snackbar.type.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[SnackbarType](./foundation-notifications.snackbartype.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

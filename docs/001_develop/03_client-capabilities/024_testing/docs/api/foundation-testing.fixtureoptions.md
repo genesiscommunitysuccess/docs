@@ -17,11 +17,121 @@ export interface FixtureOptions
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [context?](./foundation-testing.fixtureoptions.context.md) |  | ExecutionContext | _(Optional)_ The execution context to use during binding. |
-|  [designSystem?](./foundation-testing.fixtureoptions.designsystem.md) |  | DesignSystem | _(Optional)_ A pre-configured design system instance used in setting up the fixture. |
-|  [document?](./foundation-testing.fixtureoptions.document.md) |  | Document | _(Optional)_ The document to run the fixture in. |
-|  [parent?](./foundation-testing.fixtureoptions.parent.md) |  | HTMLElement | _(Optional)_ The parent element to append the fixture to. |
-|  [source?](./foundation-testing.fixtureoptions.source.md) |  | any | _(Optional)_ The data source to bind the HTML to. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[context?](./foundation-testing.fixtureoptions.context.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ExecutionContext
+
+
+</td><td>
+
+_(Optional)_ The execution context to use during binding.
+
+
+</td></tr>
+<tr><td>
+
+[designSystem?](./foundation-testing.fixtureoptions.designsystem.md)
+
+
+</td><td>
+
+
+</td><td>
+
+DesignSystem
+
+
+</td><td>
+
+_(Optional)_ A pre-configured design system instance used in setting up the fixture.
+
+
+</td></tr>
+<tr><td>
+
+[document?](./foundation-testing.fixtureoptions.document.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Document
+
+
+</td><td>
+
+_(Optional)_ The document to run the fixture in.
+
+
+</td></tr>
+<tr><td>
+
+[parent?](./foundation-testing.fixtureoptions.parent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_ The parent element to append the fixture to.
+
+
+</td></tr>
+<tr><td>
+
+[source?](./foundation-testing.fixtureoptions.source.md)
+
+
+</td><td>
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+_(Optional)_ The data source to bind the HTML to.
+
+
+</td></tr>
+</tbody></table>
 

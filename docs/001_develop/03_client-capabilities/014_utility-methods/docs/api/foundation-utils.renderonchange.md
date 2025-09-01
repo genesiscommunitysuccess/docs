@@ -19,10 +19,55 @@ export declare function renderOnChange(target: FASTElement & {
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  target | FASTElement &amp; { render(): void; } | The target to define the property change handler on. |
-|  name | string | The property name. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+target
+
+
+</td><td>
+
+FASTElement &amp; { render(): void; }
+
+
+</td><td>
+
+The target to define the property change handler on.
+
+
+</td></tr>
+<tr><td>
+
+name
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The property name.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

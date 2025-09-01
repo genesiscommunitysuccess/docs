@@ -22,16 +22,161 @@ export declare class NotificationBuilder
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build()](./foundation-notifications.notificationbuilder.build.md) |  | Build NotificationStructure |
-|  [withAlert(alert)](./foundation-notifications.notificationbuilder.withalert.md) |  | Add alert to notification |
-|  [withBanner(banner)](./foundation-notifications.notificationbuilder.withbanner.md) |  | Add banner to notification |
-|  [withBody(body)](./foundation-notifications.notificationbuilder.withbody.md) |  | Add body details to notification |
-|  [withCreatedAt(createdAt)](./foundation-notifications.notificationbuilder.withcreatedat.md) |  | Add the creation date to notification |
-|  [withDialog(dialog)](./foundation-notifications.notificationbuilder.withdialog.md) |  | Add dialog to notification |
-|  [withLogLevel(logLevel)](./foundation-notifications.notificationbuilder.withloglevel.md) |  | Add log level to notification |
-|  [withSnackbar(snackbar)](./foundation-notifications.notificationbuilder.withsnackbar.md) |  | Add snackbar to notification |
-|  [withTitle(title)](./foundation-notifications.notificationbuilder.withtitle.md) |  | Add title to notification |
-|  [withToast(toast)](./foundation-notifications.notificationbuilder.withtoast.md) |  | Add toast to notification |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build()](./foundation-notifications.notificationbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Build NotificationStructure
+
+
+</td></tr>
+<tr><td>
+
+[withAlert(alert)](./foundation-notifications.notificationbuilder.withalert.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add alert to notification
+
+
+</td></tr>
+<tr><td>
+
+[withBanner(banner)](./foundation-notifications.notificationbuilder.withbanner.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add banner to notification
+
+
+</td></tr>
+<tr><td>
+
+[withBody(body)](./foundation-notifications.notificationbuilder.withbody.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add body details to notification
+
+
+</td></tr>
+<tr><td>
+
+[withCreatedAt(createdAt)](./foundation-notifications.notificationbuilder.withcreatedat.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add the creation date to notification
+
+
+</td></tr>
+<tr><td>
+
+[withDialog(dialog)](./foundation-notifications.notificationbuilder.withdialog.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add dialog to notification
+
+
+</td></tr>
+<tr><td>
+
+[withLogLevel(logLevel)](./foundation-notifications.notificationbuilder.withloglevel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add log level to notification
+
+
+</td></tr>
+<tr><td>
+
+[withSnackbar(snackbar)](./foundation-notifications.notificationbuilder.withsnackbar.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add snackbar to notification
+
+
+</td></tr>
+<tr><td>
+
+[withTitle(title)](./foundation-notifications.notificationbuilder.withtitle.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add title to notification
+
+
+</td></tr>
+<tr><td>
+
+[withToast(toast)](./foundation-notifications.notificationbuilder.withtoast.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add toast to notification
+
+
+</td></tr>
+</tbody></table>
 

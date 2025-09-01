@@ -17,10 +17,55 @@ registerItem(registration: string, elements: Element[]): string;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  registration | string | string of the registration ID |
-|  elements | Element\[\] | Elements\[\] containing the reference to the elements to register for later usage |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+registration
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+string of the registration ID
+
+
+</td></tr>
+<tr><td>
+
+elements
+
+
+</td><td>
+
+Element\[\]
+
+
+</td><td>
+
+Elements\[\] containing the reference to the elements to register for later usage
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
@@ -36,7 +81,7 @@ string
 
 ## Remarks
 
-You would use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md). Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md).
+You would use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md)<!-- -->. Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md)<!-- -->.
 
-When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`.
+When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`<!-- -->.
 

@@ -22,9 +22,39 @@ deserialize<T = any>(response: Response): Promise<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  response | Response | The Response object to deserialize. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+response
+
+
+</td><td>
+
+Response
+
+
+</td><td>
+
+The Response object to deserialize.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

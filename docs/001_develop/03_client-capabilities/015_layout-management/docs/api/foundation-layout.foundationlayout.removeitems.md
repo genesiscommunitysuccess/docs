@@ -17,10 +17,55 @@ removeItems(registration: string, force?: boolean): number;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  registration | string | string of the registration ID |
-|  force | boolean | _(Optional)_ if set to true then the item will be removed even if it is not closable. Defaults to false, which is the same behaviour as the close button on the header. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+registration
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+string of the registration ID
+
+
+</td></tr>
+<tr><td>
+
+force
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ if set to true then the item will be removed even if it is not closable. Defaults to false, which is the same behaviour as the close button on the header.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

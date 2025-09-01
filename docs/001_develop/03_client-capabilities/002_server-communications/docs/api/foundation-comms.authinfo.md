@@ -14,5 +14,5 @@ Union type of all authentication information types.
 ```typescript
 export type AuthInfo = BasicAuthInfo | SsoAuthInfo | JwtAuthInfo | RefreshAuthInfo;
 ```
-**References:** [BasicAuthInfo](./foundation-comms.basicauthinfo.md), [SsoAuthInfo](./foundation-comms.ssoauthinfo.md), [JwtAuthInfo](./foundation-comms.jwtauthinfo.md), [RefreshAuthInfo](./foundation-comms.refreshauthinfo.md)
+**References:** [BasicAuthInfo](./foundation-comms.basicauthinfo.md)<!-- -->, [SsoAuthInfo](./foundation-comms.ssoauthinfo.md)<!-- -->, [JwtAuthInfo](./foundation-comms.jwtauthinfo.md)<!-- -->, [RefreshAuthInfo](./foundation-comms.refreshauthinfo.md)
 

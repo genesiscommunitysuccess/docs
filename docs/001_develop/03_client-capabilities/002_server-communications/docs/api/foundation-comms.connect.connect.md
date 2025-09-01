@@ -17,9 +17,39 @@ connect(host?: string): Promise<boolean>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  host | string | _(Optional)_ The host to connect to. Defaults to GENESIS\_SOCKET\_URL. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+host
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The host to connect to. Defaults to GENESIS\_SOCKET\_URL.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -18,35 +18,383 @@ export declare class DefaultSocket implements Socket
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(messageBuilder, session, serializer, uuid, status, user, config)](./foundation-comms.defaultsocket._constructor_.md) |  | Constructs a new instance of the <code>DefaultSocket</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(messageBuilder, session, serializer, uuid, status, user, config)](./foundation-comms.defaultsocket._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultSocket` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./foundation-comms.defaultsocket.config.md) | <code>protected</code> | [ConnectConfig](./foundation-comms.connectconfig.md) |  |
-|  [hasValidSession](./foundation-comms.defaultsocket.hasvalidsession.md) |  | boolean |  |
-|  [host](./foundation-comms.defaultsocket.host.md) | <code>readonly</code> | string |  |
-|  [http](./foundation-comms.defaultsocket.http.md) |  | [Http](./foundation-comms.http.md) |  |
-|  [isConfigured](./foundation-comms.defaultsocket.isconfigured.md) | <code>readonly</code> | boolean |  |
-|  [isConnected](./foundation-comms.defaultsocket.isconnected.md) | <code>readonly</code> | boolean |  |
-|  [isConnectedSubject](./foundation-comms.defaultsocket.isconnectedsubject.md) | <code>readonly</code> | import("rxjs").BehaviorSubject&lt;boolean&gt; |  |
-|  [isConnecting](./foundation-comms.defaultsocket.isconnecting.md) | <code>readonly</code> | boolean |  |
-|  [isDisconnected](./foundation-comms.defaultsocket.isdisconnected.md) | <code>readonly</code> | boolean |  |
-|  [isDisconnectedByServer](./foundation-comms.defaultsocket.isdisconnectedbyserver.md) | <code>readonly</code> | boolean |  |
-|  [isReconnecting](./foundation-comms.defaultsocket.isreconnecting.md) | <code>readonly</code> | boolean |  |
-|  [socketMessages](./foundation-comms.defaultsocket.socketmessages.md) |  | () =&gt; [SocketSubject](./foundation-comms.socketsubject.md)&lt;[Message](./foundation-comms.message.md)&gt; |  |
-|  [user](./foundation-comms.defaultsocket.user.md) | <code>protected</code> | User | Temp putting the user in place to bridge the hasValidSession logic. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./foundation-comms.defaultsocket.config.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+[ConnectConfig](./foundation-comms.connectconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasValidSession](./foundation-comms.defaultsocket.hasvalidsession.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[host](./foundation-comms.defaultsocket.host.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[http](./foundation-comms.defaultsocket.http.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Http](./foundation-comms.http.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConfigured](./foundation-comms.defaultsocket.isconfigured.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnected](./foundation-comms.defaultsocket.isconnected.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnectedSubject](./foundation-comms.defaultsocket.isconnectedsubject.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+import("rxjs").BehaviorSubject&lt;boolean&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnecting](./foundation-comms.defaultsocket.isconnecting.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisconnected](./foundation-comms.defaultsocket.isdisconnected.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isDisconnectedByServer](./foundation-comms.defaultsocket.isdisconnectedbyserver.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isReconnecting](./foundation-comms.defaultsocket.isreconnecting.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[socketMessages](./foundation-comms.defaultsocket.socketmessages.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; [SocketSubject](./foundation-comms.socketsubject.md)<!-- -->&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[user](./foundation-comms.defaultsocket.user.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+User
+
+
+</td><td>
+
+Temp putting the user in place to bridge the hasValidSession logic.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connect(host, connectOptions, reconnectOptions)](./foundation-comms.defaultsocket.connect.md) |  |  |
-|  [reset()](./foundation-comms.defaultsocket.reset.md) |  |  |
-|  [send(message, needsHandling)](./foundation-comms.defaultsocket.send.md) |  |  |
-|  [sendForStream(message, onMessage, onError, onComplete)](./foundation-comms.defaultsocket.sendforstream.md) |  |  |
-|  [sendForStreamWithoutTeardown(message, onMessage, onError)](./foundation-comms.defaultsocket.sendforstreamwithoutteardown.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connect(host, connectOptions, reconnectOptions)](./foundation-comms.defaultsocket.connect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[reset()](./foundation-comms.defaultsocket.reset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[send(message, needsHandling)](./foundation-comms.defaultsocket.send.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[sendForStream(message, onMessage, onError, onComplete)](./foundation-comms.defaultsocket.sendforstream.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[sendForStreamWithoutTeardown(message, onMessage, onError)](./foundation-comms.defaultsocket.sendforstreamwithoutteardown.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

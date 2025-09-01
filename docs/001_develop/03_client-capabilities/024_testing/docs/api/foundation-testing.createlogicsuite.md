@@ -17,10 +17,55 @@ export declare function createLogicSuite<TContext = LogicContext>(title: string,
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  title | string | Title of the test suite |
-|  context | TContext | _(Optional)_ Optional context which extends [LogicContext](./foundation-testing.logiccontext.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+title
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Title of the test suite
+
+
+</td></tr>
+<tr><td>
+
+context
+
+
+</td><td>
+
+TContext
+
+
+</td><td>
+
+_(Optional)_ Optional context which extends [LogicContext](./foundation-testing.logiccontext.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

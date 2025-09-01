@@ -14,7 +14,7 @@ GenesisResourcesChannel DI interface.
 ```typescript
 export interface GenesisResourcesChannel extends TypedBroadcastChannel<GenesisResourcesEvents> 
 ```
-**Extends:** TypedBroadcastChannel&lt;[GenesisResourcesEvents](./foundation-comms.genesisresourcesevents.md)&gt;
+**Extends:** TypedBroadcastChannel&lt;[GenesisResourcesEvents](./foundation-comms.genesisresourcesevents.md)<!-- -->&gt;
 
 ## Example
 

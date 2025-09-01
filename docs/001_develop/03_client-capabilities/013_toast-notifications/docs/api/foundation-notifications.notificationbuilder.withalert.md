@@ -22,9 +22,39 @@ withAlert(alert: boolean): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  alert | boolean | boolean |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+alert
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+boolean
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

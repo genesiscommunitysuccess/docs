@@ -7,7 +7,7 @@ format: md
 
 ## AbstractStore class
 
-The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md).
+The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md)<!-- -->.
 
 **Signature:**
 
@@ -18,35 +18,384 @@ export declare abstract class AbstractStore<TStore extends Store, TEventDetailMa
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(storeFragments)](./foundation-store.abstractstore._constructor_.md) |  | Constructs a new instance of the <code>AbstractStore</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(storeFragments)](./foundation-store.abstractstore._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `AbstractStore` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [commit](./foundation-store.abstractstore.commit.md) | <p><code>protected</code></p><p><code>readonly</code></p> | this | **_(BETA)_** The value commit proxy. |
-|  [createAsyncListener](./foundation-store.abstractstore.createasynclistener.md) | <code>protected</code> | &lt;TDetail = void, TReturn = void&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; Promise&lt;TReturn&gt;) =&gt; EventListener | Creates an async event listener. |
-|  [createErrorListener](./foundation-store.abstractstore.createerrorlistener.md) | <code>protected</code> | &lt;TDetail extends Error = Error&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token?: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; void) =&gt; EventListener | Creates an error event listener. |
-|  [createListener](./foundation-store.abstractstore.createlistener.md) | <code>protected</code> | &lt;TDetail = void&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; void) =&gt; EventListener | Creates an event listener. |
-|  [errors](./foundation-store.abstractstore.errors.md) |  | ErrorMap&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt; | Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md). |
-|  [name](./foundation-store.abstractstore.name.md) | <code>readonly</code> | string | The name of the store fragment. |
-|  [root](./foundation-store.abstractstore.root.md) | <code>protected</code> | TStoreRoot | The store root fragment. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[commit](./foundation-store.abstractstore.commit.md)
+
+
+</td><td>
+
+`protected`
+
+`readonly`
+
+
+</td><td>
+
+this
+
+
+</td><td>
+
+**_(BETA)_** The value commit proxy.
+
+
+</td></tr>
+<tr><td>
+
+[createAsyncListener](./foundation-store.abstractstore.createasynclistener.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+&lt;TDetail = void, TReturn = void&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; Promise&lt;TReturn&gt;) =&gt; EventListener
+
+
+</td><td>
+
+Creates an async event listener.
+
+
+</td></tr>
+<tr><td>
+
+[createErrorListener](./foundation-store.abstractstore.createerrorlistener.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+&lt;TDetail extends Error = Error&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token?: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; void) =&gt; EventListener
+
+
+</td><td>
+
+Creates an error event listener.
+
+
+</td></tr>
+<tr><td>
+
+[createListener](./foundation-store.abstractstore.createlistener.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+&lt;TDetail = void&gt;(keys: KeyOrKeys&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;, token: (detail: TDetail, event?: CustomEvent&lt;TDetail&gt;) =&gt; void) =&gt; EventListener
+
+
+</td><td>
+
+Creates an event listener.
+
+
+</td></tr>
+<tr><td>
+
+[errors](./foundation-store.abstractstore.errors.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ErrorMap&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;
+
+
+</td><td>
+
+Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[name](./foundation-store.abstractstore.name.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The name of the store fragment.
+
+
+</td></tr>
+<tr><td>
+
+[root](./foundation-store.abstractstore.root.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+TStoreRoot
+
+
+</td><td>
+
+The store root fragment.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [addStoreFragments(storeFragments)](./foundation-store.abstractstore.addstorefragments.md) |  | Lazily add store fragments. |
-|  [binding(token, subscriberChangeCallback, isVolatileBinding, context)](./foundation-store.abstractstore.binding.md) |  | An api to allow the observation of values and arbitrary bindings outside the template engine. |
-|  [bindingAsRx()](./foundation-store.abstractstore.bindingasrx.md) |  |  |
-|  [bindingAsRx(key)](./foundation-store.abstractstore.bindingasrx_1.md) |  |  |
-|  [bindingAsRx(getter)](./foundation-store.abstractstore.bindingasrx_2.md) |  |  |
-|  [commitValue(key, value)](./foundation-store.abstractstore.commitvalue.md) | <code>protected</code> | **_(BETA)_** Alternative value commit api. |
-|  [connect(root)](./foundation-store.abstractstore.connect.md) |  | Connects this store fragment. |
-|  [disconnect(root)](./foundation-store.abstractstore.disconnect.md) |  | Disconnects this store fragment. |
-|  [emit(args)](./foundation-store.abstractstore.emit.md) | <code>protected</code> | Emit events to the stores directly via the standard event flow. |
-|  [invokeAsyncAPI(api, error, success)](./foundation-store.abstractstore.invokeasyncapi.md) | <code>protected</code> | A convenience method to invoke an async api and emit success and error events. |
-|  [removeStoreFragments(storeFragments)](./foundation-store.abstractstore.removestorefragments.md) |  | Lazily remove store fragments. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[addStoreFragments(storeFragments)](./foundation-store.abstractstore.addstorefragments.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Lazily add store fragments.
+
+
+</td></tr>
+<tr><td>
+
+[binding(token, subscriberChangeCallback, isVolatileBinding, context)](./foundation-store.abstractstore.binding.md)
+
+
+</td><td>
+
+
+</td><td>
+
+An api to allow the observation of values and arbitrary bindings outside the template engine.
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx()](./foundation-store.abstractstore.bindingasrx.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx(key)](./foundation-store.abstractstore.bindingasrx_1.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[bindingAsRx(getter)](./foundation-store.abstractstore.bindingasrx_2.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[commitValue(key, value)](./foundation-store.abstractstore.commitvalue.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+**_(BETA)_** Alternative value commit api.
+
+
+</td></tr>
+<tr><td>
+
+[connect(root)](./foundation-store.abstractstore.connect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Connects this store fragment.
+
+
+</td></tr>
+<tr><td>
+
+[disconnect(root)](./foundation-store.abstractstore.disconnect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Disconnects this store fragment.
+
+
+</td></tr>
+<tr><td>
+
+[emit(args)](./foundation-store.abstractstore.emit.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Emit events to the stores directly via the standard event flow.
+
+
+</td></tr>
+<tr><td>
+
+[invokeAsyncAPI(api, error, success)](./foundation-store.abstractstore.invokeasyncapi.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+A convenience method to invoke an async api and emit success and error events.
+
+
+</td></tr>
+<tr><td>
+
+[removeStoreFragments(storeFragments)](./foundation-store.abstractstore.removestorefragments.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Lazily remove store fragments.
+
+
+</td></tr>
+</tbody></table>
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-tabulator](./grid-tabulator.md) &gt; [themeTokenMapClassname](./grid-tabulator.themetokenmapclassname.md)
 
-## themeTokenMapClassname variable
+## themeTokenMapClassname() function
 
 Get the token map class name for the `grid-tabulator` themes
 
@@ -14,3 +14,46 @@ Get the token map class name for the `grid-tabulator` themes
 ```typescript
 themeTokenMapClassname: (themeName: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+themeName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The theme name
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+The token map class name for the `grid-tabulator` themes
+

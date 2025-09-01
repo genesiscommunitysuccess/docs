@@ -22,9 +22,37 @@ withLogLevel(logLevel: LogLevel): NotificationBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  logLevel | LogLevel |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+logLevel
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

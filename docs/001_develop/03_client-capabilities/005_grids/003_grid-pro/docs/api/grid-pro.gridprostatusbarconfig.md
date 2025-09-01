@@ -21,11 +21,121 @@ This requires AG Grid Enterprise module to be enabled. Status bar components wil
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [aggregation?](./grid-pro.gridprostatusbarconfig.aggregation.md) |  | boolean | _(Optional)_ Enable aggregation status bar component. |
-|  [loadMore?](./grid-pro.gridprostatusbarconfig.loadmore.md) |  | boolean \| [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md) | _(Optional)_ Configure load more button status bar component. |
-|  [maxRows?](./grid-pro.gridprostatusbarconfig.maxrows.md) |  | boolean | _(Optional)_ Enable max rows status bar component. |
-|  [reload?](./grid-pro.gridprostatusbarconfig.reload.md) |  | boolean \| [GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md) | _(Optional)_ Configure reload button status bar component. |
-|  [rows?](./grid-pro.gridprostatusbarconfig.rows.md) |  | boolean | _(Optional)_ Enable row count status bar component. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[aggregation?](./grid-pro.gridprostatusbarconfig.aggregation.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Enable aggregation status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[loadMore?](./grid-pro.gridprostatusbarconfig.loadmore.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean \| [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md)
+
+
+</td><td>
+
+_(Optional)_ Configure load more button status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[maxRows?](./grid-pro.gridprostatusbarconfig.maxrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Enable max rows status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[reload?](./grid-pro.gridprostatusbarconfig.reload.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean \| [GridProStatusBarReloadConfig](./grid-pro.gridprostatusbarreloadconfig.md)
+
+
+</td><td>
+
+_(Optional)_ Configure reload button status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[rows?](./grid-pro.gridprostatusbarconfig.rows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Enable row count status bar component.
+
+
+</td></tr>
+</tbody></table>
 

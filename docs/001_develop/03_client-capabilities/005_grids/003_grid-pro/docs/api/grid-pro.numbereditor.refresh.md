@@ -15,9 +15,37 @@ refresh(params: NumberEditorParams): boolean;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  params | [NumberEditorParams](./grid-pro.numbereditorparams.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+params
+
+
+</td><td>
+
+[NumberEditorParams](./grid-pro.numbereditorparams.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-login](./foundation-login.md) &gt; [getSSOLoginURL](./foundation-login.getssologinurl.md)
 
-## getSSOLoginURL variable
+## getSSOLoginURL() function
 
 Get SSO identity provider login URL
 
@@ -14,3 +14,74 @@ Get SSO identity provider login URL
 ```typescript
 getSSOLoginURL: (idp: any, path?: string, host?: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+idp
+
+
+</td><td>
+
+any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+path
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+host
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+

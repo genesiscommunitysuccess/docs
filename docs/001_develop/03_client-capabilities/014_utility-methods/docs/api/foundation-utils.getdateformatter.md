@@ -16,10 +16,55 @@ export declare function getDateFormatter(locale?: string, options?: Intl.DateTim
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  locale | string | _(Optional)_ |
-|  options | Intl.DateTimeFormatOptions | _(Optional)_ |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+locale
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+Intl.DateTimeFormatOptions
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

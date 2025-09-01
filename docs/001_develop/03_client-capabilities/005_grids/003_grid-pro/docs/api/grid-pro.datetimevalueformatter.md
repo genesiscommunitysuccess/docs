@@ -17,9 +17,37 @@ export declare function dateTimeValueFormatter({ value }: ValueFormatterParams):
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  { value } | ValueFormatterParams |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+{ value }
+
+
+</td><td>
+
+ValueFormatterParams
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

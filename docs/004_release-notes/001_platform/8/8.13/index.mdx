@@ -78,6 +78,21 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.13.5
+
+###### Features
+
+* `genesis-db` : Can specify optimistic concurrency checks for specific tables 
+* `genesis-dictionary` : Add support for shared enum definitions with aliases 
+* `genesis-pal` : Add support for `auth` blocks without a map name in the `permissioning` GPAL section of custom req reps and eventhandlers 
+
+
+#### 8.13.4
+
+###### Fixes
+
+* `genesis-pal-datapipeline` : All pipelines should have a default `onUncaughtError` handler to avoid the process from crashing and instead sets the process state to `WARNING` 
+
 #### 8.13.3
 
 ###### Features

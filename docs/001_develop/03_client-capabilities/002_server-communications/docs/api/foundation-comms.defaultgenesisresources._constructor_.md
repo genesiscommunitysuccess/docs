@@ -17,8 +17,49 @@ constructor(connect: Connect, config: GenesisResourcesConfig);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  connect | [Connect](./foundation-comms.connect.md) |  |
-|  config | [GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+connect
+
+
+</td><td>
+
+[Connect](./foundation-comms.connect.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+[GenesisResourcesConfig](./foundation-comms.genesisresourcesconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

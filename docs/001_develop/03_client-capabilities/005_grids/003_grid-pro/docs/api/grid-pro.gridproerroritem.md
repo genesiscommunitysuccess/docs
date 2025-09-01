@@ -17,8 +17,60 @@ export interface GridProErrorItem<GridProErrorItemDetailType>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [detail](./grid-pro.gridproerroritem.detail.md) |  | GridProErrorItemDetailType |  |
-|  [type](./grid-pro.gridproerroritem.type.md) |  | [GridProErrorTypes](./grid-pro.gridproerrortypes.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[detail](./grid-pro.gridproerroritem.detail.md)
+
+
+</td><td>
+
+
+</td><td>
+
+GridProErrorItemDetailType
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[type](./grid-pro.gridproerroritem.type.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[GridProErrorTypes](./grid-pro.gridproerrortypes.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

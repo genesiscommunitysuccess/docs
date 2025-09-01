@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-notifications](./foundation-notifications.md) &gt; [getDialogBuilder](./foundation-notifications.getdialogbuilder.md)
 
-## getDialogBuilder variable
+## getDialogBuilder() function
 
 > Warning: This API is now obsolete.
 > 
@@ -19,3 +19,7 @@ Returns an instance of DialogBuilder
 ```typescript
 getDialogBuilder: () => DialogBuilder
 ```
+**Returns:**
+
+[DialogBuilder](./foundation-notifications.dialogbuilder.md)
+

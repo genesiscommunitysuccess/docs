@@ -17,9 +17,39 @@ setStorageKeyPrefix(prefix: string): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  prefix | string | The prefix to set. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+prefix
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The prefix to set.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

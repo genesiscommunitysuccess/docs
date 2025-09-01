@@ -17,9 +17,39 @@ createSSOCredentials(inputs?: SSOCredentialsInput): SsoAuthInfo;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  inputs | [SSOCredentialsInput](./foundation-comms.ssocredentialsinput.md) | _(Optional)_ The custom input data to use when creating the credentials, if any. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+inputs
+
+
+</td><td>
+
+[SSOCredentialsInput](./foundation-comms.ssocredentialsinput.md)
+
+
+</td><td>
+
+_(Optional)_ The custom input data to use when creating the credentials, if any.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

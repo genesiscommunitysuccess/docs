@@ -9,19 +9,90 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [DefaultI18next](./foundation-i18n.defaulti18next.md) | The default implementation for the I18next interface. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[DefaultI18next](./foundation-i18n.defaulti18next.md)
+
+
+</td><td>
+
+The default implementation for the I18next interface.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [I18nextConfig](./foundation-i18n.i18nextconfig.md) | I18nextConfig DI interface. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[I18next](./foundation-i18n.i18next.md)
+
+
+</td><td>
+
+**_(ALPHA)_** The I18next interface is used to provide i18n functionality to components.
+
+
+</td></tr>
+<tr><td>
+
+[I18nextConfig](./foundation-i18n.i18nextconfig.md)
+
+
+</td><td>
+
+I18nextConfig DI interface.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [defaultI18nextConfig](./foundation-i18n.defaulti18nextconfig.md) | Default I18nextConfig DI implementation. |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[defaultI18nextConfig](./foundation-i18n.defaulti18nextconfig.md)
+
+
+</td><td>
+
+Default I18nextConfig DI implementation.
+
+
+</td></tr>
+</tbody></table>
 

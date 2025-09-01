@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [getStatusPillRendererTemplate](./grid-pro.getstatuspillrenderertemplate.md)
 
-## getStatusPillRendererTemplate variable
+## getStatusPillRendererTemplate() function
 
 Get a Design System prefixed Status Pill template.
 
@@ -14,3 +14,46 @@ Get a Design System prefixed Status Pill template.
 ```typescript
 getStatusPillRendererTemplate: (designSystem?: string) => import("@microsoft/fast-element").ViewTemplate<any, any>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+designSystem
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ The design system prefix to use. Defaults to 'rapid'.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;
+
+A Staus Pill component template prefixed with the correct design system.
+

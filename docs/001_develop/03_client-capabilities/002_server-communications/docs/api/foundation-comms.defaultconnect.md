@@ -18,40 +18,394 @@ export declare class DefaultConnect implements Connect
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(socket, messageBuilder, metaCache, events, config)](./foundation-comms.defaultconnect._constructor_.md) |  | Constructs a new instance of the <code>DefaultConnect</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(socket, messageBuilder, metaCache, events, config)](./foundation-comms.defaultconnect._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultConnect` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [host](./foundation-comms.defaultconnect.host.md) | <code>readonly</code> | string |  |
-|  [isConnected](./foundation-comms.defaultconnect.isconnected.md) | <code>readonly</code> | boolean |  |
-|  [isConnected$](./foundation-comms.defaultconnect.isconnected_.md) | <code>readonly</code> | Observable&lt;boolean&gt; |  |
-|  [isConnectedSubject](./foundation-comms.defaultconnect.isconnectedsubject.md) | <code>readonly</code> | BehaviorSubject&lt;boolean&gt; |  |
-|  [isWorking](./foundation-comms.defaultconnect.isworking.md) |  | boolean |  |
-|  [socket](./foundation-comms.defaultconnect.socket.md) |  | [Socket](./foundation-comms.socket.md) |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[host](./foundation-comms.defaultconnect.host.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnected](./foundation-comms.defaultconnect.isconnected.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnected$](./foundation-comms.defaultconnect.isconnected_.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Observable&lt;boolean&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isConnectedSubject](./foundation-comms.defaultconnect.isconnectedsubject.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+BehaviorSubject&lt;boolean&gt;
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[isWorking](./foundation-comms.defaultconnect.isworking.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[socket](./foundation-comms.defaultconnect.socket.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Socket](./foundation-comms.socket.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [commitEvent(eventName, params)](./foundation-comms.defaultconnect.commitevent.md) |  |  |
-|  [connect(host)](./foundation-comms.defaultconnect.connect.md) |  |  |
-|  [dataLogoff(streamSourceRef)](./foundation-comms.defaultconnect.datalogoff.md) |  |  |
-|  [disconnect()](./foundation-comms.defaultconnect.disconnect.md) |  |  |
-|  [getAvailableResources(params)](./foundation-comms.defaultconnect.getavailableresources.md) |  |  |
-|  [getJSONSchema(resourceName, useCache)](./foundation-comms.defaultconnect.getjsonschema.md) |  |  |
-|  [getMetadata(resourceName, useCache)](./foundation-comms.defaultconnect.getmetadata.md) |  |  |
-|  [getMoreColumns(sourceRef)](./foundation-comms.defaultconnect.getmorecolumns.md) |  |  |
-|  [getMoreRows(sourceRef, viewNumber)](./foundation-comms.defaultconnect.getmorerows.md) |  |  |
-|  [httpMode()](./foundation-comms.defaultconnect.httpmode.md) |  |  |
-|  [request(resourceName, params)](./foundation-comms.defaultconnect.request.md) |  |  |
-|  [send(message, needsHandling)](./foundation-comms.defaultconnect.send.md) |  |  |
-|  [setValidSession(valid)](./foundation-comms.defaultconnect.setvalidsession.md) |  |  |
-|  [snapshot(resourceName, params)](./foundation-comms.defaultconnect.snapshot.md) |  |  |
-|  [stream(resourceName, onMessage, onError, params)](./foundation-comms.defaultconnect.stream.md) |  |  |
-|  [streamState(resourceName, onMessage, onError, params, initialState)](./foundation-comms.defaultconnect.streamstate.md) |  |  |
-|  [streamWithoutAutoTeardown(resourceName, onMessage, onError, params)](./foundation-comms.defaultconnect.streamwithoutautoteardown.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[commitEvent(eventName, params)](./foundation-comms.defaultconnect.commitevent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[connect(host)](./foundation-comms.defaultconnect.connect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[dataLogoff(streamSourceRef)](./foundation-comms.defaultconnect.datalogoff.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[disconnect()](./foundation-comms.defaultconnect.disconnect.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getAvailableResources(params)](./foundation-comms.defaultconnect.getavailableresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getJSONSchema(resourceName, useCache)](./foundation-comms.defaultconnect.getjsonschema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMetadata(resourceName, useCache)](./foundation-comms.defaultconnect.getmetadata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMoreColumns(sourceRef)](./foundation-comms.defaultconnect.getmorecolumns.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMoreRows(sourceRef, viewNumber)](./foundation-comms.defaultconnect.getmorerows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[httpMode()](./foundation-comms.defaultconnect.httpmode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[request(resourceName, params)](./foundation-comms.defaultconnect.request.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[send(message, needsHandling)](./foundation-comms.defaultconnect.send.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setValidSession(valid)](./foundation-comms.defaultconnect.setvalidsession.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[snapshot(resourceName, params)](./foundation-comms.defaultconnect.snapshot.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[stream(resourceName, onMessage, onError, params)](./foundation-comms.defaultconnect.stream.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[streamState(resourceName, onMessage, onError, params, initialState)](./foundation-comms.defaultconnect.streamstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[streamWithoutAutoTeardown(resourceName, onMessage, onError, params)](./foundation-comms.defaultconnect.streamwithoutautoteardown.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

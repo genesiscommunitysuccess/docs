@@ -17,10 +17,106 @@ export interface DialogStructure
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [body](./foundation-notifications.dialogstructure.body.md) | <code>readonly</code> | string |  |
-|  [dialog?](./foundation-notifications.dialogstructure.dialog.md) | <code>readonly</code> | [Dialog](./foundation-notifications.dialog.md) | _(Optional)_ |
-|  [logLevel?](./foundation-notifications.dialogstructure.loglevel.md) | <code>readonly</code> | LogLevel | _(Optional)_ |
-|  [title](./foundation-notifications.dialogstructure.title.md) | <code>readonly</code> | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[body](./foundation-notifications.dialogstructure.body.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[dialog?](./foundation-notifications.dialogstructure.dialog.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[Dialog](./foundation-notifications.dialog.md)
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[logLevel?](./foundation-notifications.dialogstructure.loglevel.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+LogLevel
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[title](./foundation-notifications.dialogstructure.title.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

@@ -22,9 +22,63 @@ export declare class DialogBuilder
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [build()](./foundation-notifications.dialogbuilder.build.md) |  | Build Dialog |
-|  [withConfirmingAction(confirmingAction)](./foundation-notifications.dialogbuilder.withconfirmingaction.md) |  | Add confirming action to Dialog |
-|  [withDismissingAction(dismissingAction)](./foundation-notifications.dialogbuilder.withdismissingaction.md) |  | Add dismissing action to Dialog |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[build()](./foundation-notifications.dialogbuilder.build.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Build Dialog
+
+
+</td></tr>
+<tr><td>
+
+[withConfirmingAction(confirmingAction)](./foundation-notifications.dialogbuilder.withconfirmingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add confirming action to Dialog
+
+
+</td></tr>
+<tr><td>
+
+[withDismissingAction(dismissingAction)](./foundation-notifications.dialogbuilder.withdismissingaction.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add dismissing action to Dialog
+
+
+</td></tr>
+</tbody></table>
 

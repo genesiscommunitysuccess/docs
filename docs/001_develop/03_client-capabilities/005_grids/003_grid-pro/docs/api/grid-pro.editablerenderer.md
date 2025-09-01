@@ -20,15 +20,99 @@ export declare class EditableRenderer extends FoundationElement implements ICell
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [valueFormatted](./grid-pro.editablerenderer.valueformatted.md) |  | string |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[valueFormatted](./grid-pro.editablerenderer.valueformatted.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [getGui()](./grid-pro.editablerenderer.getgui.md) |  |  |
-|  [init(params)](./grid-pro.editablerenderer.init.md) |  |  |
-|  [refresh(params)](./grid-pro.editablerenderer.refresh.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getGui()](./grid-pro.editablerenderer.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.editablerenderer.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.editablerenderer.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

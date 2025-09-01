@@ -17,9 +17,37 @@ export declare function testSpy(constructor: Function): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  constructor | Function |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+constructor
+
+
+</td><td>
+
+Function
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 
@@ -33,9 +61,9 @@ Reset after each test with [resetTestHarness()](./foundation-testing.resettestha
 
 ## Example
 
-// Testing the first function call async ({ element }) =&gt; {
+// Testing the first function call async (<!-- -->{ element }<!-- -->) =<!-- -->&gt; {
 
-assert.ok( element.layout.addItemFromChild.calledWith({ type: 'component', componentType: 'test', title: `Item test`, reorderEnabled: true, isClosable: false, size: undefined, }) );
+assert.ok( element.layout.addItemFromChild.calledWith(<!-- -->{ type: 'component', componentType: 'test', title: `Item test`<!-- -->, reorderEnabled: true, isClosable: false, size: undefined, }<!-- -->) );
 
 // Reset the tester at the end of every test even if you don't assert on any of it! resetTestHarness(element.layout); }
 

@@ -15,10 +15,51 @@ runCases?(fn: (value: any) => any, cases: [any, any, assert.Message?][]): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  fn | (value: any) =&gt; any |  |
-|  cases | \[any, any, assert.Message?\]\[\] |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+fn
+
+
+</td><td>
+
+(value: any) =&gt; any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+cases
+
+
+</td><td>
+
+\[any, any, assert.Message?\]\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

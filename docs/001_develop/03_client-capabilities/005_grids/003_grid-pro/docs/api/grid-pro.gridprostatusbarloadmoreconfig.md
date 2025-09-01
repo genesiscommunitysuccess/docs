@@ -17,9 +17,83 @@ export interface GridProStatusBarLoadMoreConfig
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [appearance?](./grid-pro.gridprostatusbarloadmoreconfig.appearance.md) |  | string | _(Optional)_ Custom appearance for the button. |
-|  [onLoadMore?](./grid-pro.gridprostatusbarloadmoreconfig.onloadmore.md) |  | () =&gt; void | _(Optional)_ Custom callback function to execute when the action is triggered. If not provided, the component will use the default datasource behavior. |
-|  [tooltip?](./grid-pro.gridprostatusbarloadmoreconfig.tooltip.md) |  | string | _(Optional)_ Custom tooltip text that appears on hover. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[appearance?](./grid-pro.gridprostatusbarloadmoreconfig.appearance.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Custom appearance for the button.
+
+
+</td></tr>
+<tr><td>
+
+[onLoadMore?](./grid-pro.gridprostatusbarloadmoreconfig.onloadmore.md)
+
+
+</td><td>
+
+
+</td><td>
+
+() =&gt; void
+
+
+</td><td>
+
+_(Optional)_ Custom callback function to execute when the action is triggered. If not provided, the component will use the default datasource behavior.
+
+
+</td></tr>
+<tr><td>
+
+[tooltip?](./grid-pro.gridprostatusbarloadmoreconfig.tooltip.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Custom tooltip text that appears on hover.
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,10 +17,77 @@ export declare enum AuthType
 
 ## Enumeration Members
 
-|  Member | Value | Description |
-|  --- | --- | --- |
-|  BASIC | <code>&quot;BASIC&quot;</code> |  |
-|  JWT | <code>&quot;JWT&quot;</code> |  |
-|  REFRESH | <code>&quot;REFRESH&quot;</code> |  |
-|  SSO | <code>&quot;SSO&quot;</code> |  |
+<table><thead><tr><th>
+
+Member
+
+
+</th><th>
+
+Value
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+BASIC
+
+
+</td><td>
+
+`"BASIC"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+JWT
+
+
+</td><td>
+
+`"JWT"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+REFRESH
+
+
+</td><td>
+
+`"REFRESH"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+SSO
+
+
+</td><td>
+
+`"SSO"`
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

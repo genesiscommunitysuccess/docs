@@ -18,13 +18,119 @@ constructor(messageBuilder: MessageBuilder, session: Session, serializer: JSONSe
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  messageBuilder | [MessageBuilder](./foundation-comms.messagebuilder.md) |  |
-|  session | [Session](./foundation-comms.session.md) |  |
-|  serializer | JSONSerializer |  |
-|  uuid | UUID |  |
-|  status | [SocketStatus](./foundation-comms.socketstatus.md) |  |
-|  user | User |  |
-|  config | [ConnectConfig](./foundation-comms.connectconfig.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+messageBuilder
+
+
+</td><td>
+
+[MessageBuilder](./foundation-comms.messagebuilder.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+session
+
+
+</td><td>
+
+[Session](./foundation-comms.session.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+serializer
+
+
+</td><td>
+
+JSONSerializer
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+uuid
+
+
+</td><td>
+
+UUID
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+status
+
+
+</td><td>
+
+[SocketStatus](./foundation-comms.socketstatus.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+user
+
+
+</td><td>
+
+User
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+config
+
+
+</td><td>
+
+[ConnectConfig](./foundation-comms.connectconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

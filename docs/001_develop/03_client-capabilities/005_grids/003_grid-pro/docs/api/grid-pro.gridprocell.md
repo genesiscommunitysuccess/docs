@@ -24,20 +24,169 @@ Used inside the Grid Pro Column element, to define a cell renderer from the temp
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [renderer](./grid-pro.gridprocell.renderer.md) |  | ICellRendererFunc |  |
-|  [rendererParams](./grid-pro.gridprocell.rendererparams.md) |  | ICellRendererParams |  |
-|  [slottedRenderer](./grid-pro.gridprocell.slottedrenderer.md) |  | HTMLElement\[\] |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[renderer](./grid-pro.gridprocell.renderer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ICellRendererFunc
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[rendererParams](./grid-pro.gridprocell.rendererparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ICellRendererParams
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedRenderer](./grid-pro.gridprocell.slottedrenderer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+HTMLElement\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [connectedCallback()](./grid-pro.gridprocell.connectedcallback.md) |  |  |
-|  [destroy()](./grid-pro.gridprocell.destroy.md) |  |  |
-|  [getGui()](./grid-pro.gridprocell.getgui.md) |  |  |
-|  [init(params)](./grid-pro.gridprocell.init.md) |  |  |
-|  [refresh(params)](./grid-pro.gridprocell.refresh.md) |  |  |
-|  [slottedAgRendererChanged()](./grid-pro.gridprocell.slottedagrendererchanged.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[connectedCallback()](./grid-pro.gridprocell.connectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[destroy()](./grid-pro.gridprocell.destroy.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getGui()](./grid-pro.gridprocell.getgui.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[init(params)](./grid-pro.gridprocell.init.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[refresh(params)](./grid-pro.gridprocell.refresh.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[slottedAgRendererChanged()](./grid-pro.gridprocell.slottedagrendererchanged.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

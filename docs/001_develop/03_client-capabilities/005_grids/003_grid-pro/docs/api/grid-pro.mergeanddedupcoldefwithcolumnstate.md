@@ -7,7 +7,7 @@ format: md
 
 ## mergeAndDedupColDefWithColumnState() function
 
-Merges two arrays, one of `ColDef` and one of `ColumnState`, and deduplicates them.
+Merges two arrays, one of `ColDef` and one of `ColumnState`<!-- -->, and deduplicates them.
 
 **Signature:**
 
@@ -17,10 +17,51 @@ export declare function mergeAndDedupColDefWithColumnState(colDefs: ColDef[], co
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  colDefs | ColDef\[\] |  |
-|  columnStates | ColumnState\[\] |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+colDefs
+
+
+</td><td>
+
+ColDef\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+columnStates
+
+
+</td><td>
+
+ColumnState\[\]
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,5 +17,5 @@ requestAutoSetup: boolean;
 
 ## Remarks
 
-Defaults to `true`. Only applies to REQUEST\_SERVER (REQ-REP) resources.
+Defaults to `true`<!-- -->. Only applies to REQUEST\_SERVER (REQ-REP) resources.
 

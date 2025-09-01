@@ -17,9 +17,39 @@ navigateTo(path: string): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  path | string | string representing the new route to move to |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+path
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+string representing the new route to move to
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

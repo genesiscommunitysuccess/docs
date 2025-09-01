@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/grid-pro](./grid-pro.md) &gt; [agThemeTokenMapClassname](./grid-pro.agthemetokenmapclassname.md)
 
-## agThemeTokenMapClassname variable
+## agThemeTokenMapClassname() function
 
 Generates the class name for a given Grid Pro theme name.
 
@@ -14,6 +14,48 @@ Generates the class name for a given Grid Pro theme name.
 ```typescript
 agThemeTokenMapClassname: (themeName: string) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+themeName
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+the Grid Pro theme name
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+
+the class name for the Grid Pro token map
 
 ## Example
 

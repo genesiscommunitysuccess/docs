@@ -18,37 +18,355 @@ export declare class DefaultCredentialManager implements CredentialManager
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(session, config)](./foundation-comms.defaultcredentialmanager._constructor_.md) |  | Constructs a new instance of the <code>DefaultCredentialManager</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(session, config)](./foundation-comms.defaultcredentialmanager._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `DefaultCredentialManager` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [createBasicCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createbasiccredentials.md) |  |  |
-|  [createRefreshCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createrefreshcredentials.md) |  |  |
-|  [createSSOCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createssocredentials.md) |  |  |
-|  [getCredentials(options)](./foundation-comms.defaultcredentialmanager.getcredentials.md) |  |  |
-|  [getCredentialsFromContainer(options)](./foundation-comms.defaultcredentialmanager.getcredentialsfromcontainer.md) |  |  |
-|  [getCredentialsFromCookie()](./foundation-comms.defaultcredentialmanager.getcredentialsfromcookie.md) |  |  |
-|  [getMFAToken()](./foundation-comms.defaultcredentialmanager.getmfatoken.md) |  |  |
-|  [getRefreshToken()](./foundation-comms.defaultcredentialmanager.getrefreshtoken.md) |  |  |
-|  [getSSOToken()](./foundation-comms.defaultcredentialmanager.getssotoken.md) |  |  |
-|  [getUsername()](./foundation-comms.defaultcredentialmanager.getusername.md) |  |  |
-|  [normaliseLegacyCredentialData(data, cookie)](./foundation-comms.defaultcredentialmanager.normaliselegacycredentialdata.md) |  |  |
-|  [preventSilentAccess()](./foundation-comms.defaultcredentialmanager.preventsilentaccess.md) |  |  |
-|  [removeAll()](./foundation-comms.defaultcredentialmanager.removeall.md) |  |  |
-|  [removeCookie()](./foundation-comms.defaultcredentialmanager.removecookie.md) |  |  |
-|  [removeMFAToken()](./foundation-comms.defaultcredentialmanager.removemfatoken.md) |  |  |
-|  [removeRefreshToken()](./foundation-comms.defaultcredentialmanager.removerefreshtoken.md) |  |  |
-|  [removeSSOToken()](./foundation-comms.defaultcredentialmanager.removessotoken.md) |  |  |
-|  [removeUsername()](./foundation-comms.defaultcredentialmanager.removeusername.md) |  |  |
-|  [storeCredentials(data)](./foundation-comms.defaultcredentialmanager.storecredentials.md) |  |  |
-|  [storeCredentialsInContainer(data)](./foundation-comms.defaultcredentialmanager.storecredentialsincontainer.md) |  |  |
-|  [storeCredentialsInCookie(data)](./foundation-comms.defaultcredentialmanager.storecredentialsincookie.md) |  |  |
-|  [validateBasicCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validatebasiccredentials.md) |  |  |
-|  [validateRefreshCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validaterefreshcredentials.md) |  |  |
-|  [validateSSOCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validatessocredentials.md) |  |  |
-|  [validateUserCredentialData(data, ensurePassword)](./foundation-comms.defaultcredentialmanager.validateusercredentialdata.md) |  |  |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createBasicCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createbasiccredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createRefreshCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createrefreshcredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[createSSOCredentials(inputs)](./foundation-comms.defaultcredentialmanager.createssocredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getCredentials(options)](./foundation-comms.defaultcredentialmanager.getcredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getCredentialsFromContainer(options)](./foundation-comms.defaultcredentialmanager.getcredentialsfromcontainer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getCredentialsFromCookie()](./foundation-comms.defaultcredentialmanager.getcredentialsfromcookie.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getMFAToken()](./foundation-comms.defaultcredentialmanager.getmfatoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getRefreshToken()](./foundation-comms.defaultcredentialmanager.getrefreshtoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getSSOToken()](./foundation-comms.defaultcredentialmanager.getssotoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[getUsername()](./foundation-comms.defaultcredentialmanager.getusername.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[normaliseLegacyCredentialData(data, cookie)](./foundation-comms.defaultcredentialmanager.normaliselegacycredentialdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[preventSilentAccess()](./foundation-comms.defaultcredentialmanager.preventsilentaccess.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeAll()](./foundation-comms.defaultcredentialmanager.removeall.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeCookie()](./foundation-comms.defaultcredentialmanager.removecookie.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeMFAToken()](./foundation-comms.defaultcredentialmanager.removemfatoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeRefreshToken()](./foundation-comms.defaultcredentialmanager.removerefreshtoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeSSOToken()](./foundation-comms.defaultcredentialmanager.removessotoken.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[removeUsername()](./foundation-comms.defaultcredentialmanager.removeusername.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentials(data)](./foundation-comms.defaultcredentialmanager.storecredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentialsInContainer(data)](./foundation-comms.defaultcredentialmanager.storecredentialsincontainer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[storeCredentialsInCookie(data)](./foundation-comms.defaultcredentialmanager.storecredentialsincookie.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[validateBasicCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validatebasiccredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[validateRefreshCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validaterefreshcredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[validateSSOCredentials(credentials)](./foundation-comms.defaultcredentialmanager.validatessocredentials.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[validateUserCredentialData(data, ensurePassword)](./foundation-comms.defaultcredentialmanager.validateusercredentialdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

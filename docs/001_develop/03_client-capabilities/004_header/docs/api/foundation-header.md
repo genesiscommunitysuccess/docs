@@ -9,41 +9,241 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [FoundationHeader](./foundation-header.foundationheader.md) | FoundationHeader. |
-|  [Navigation](./foundation-header.navigation.md) | Navigation micro-frontend includes navigation bar and flyout menu |
-|  [RapidHeader](./foundation-header.rapidheader.md) | RapidHeader is a rapid version of the header micro-frontend. |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[FoundationHeader](./foundation-header.foundationheader.md)
+
+
+</td><td>
+
+FoundationHeader.
+
+
+</td></tr>
+<tr><td>
+
+[Navigation](./foundation-header.navigation.md)
+
+
+</td><td>
+
+Navigation micro-frontend includes navigation bar and flyout menu
+
+
+</td></tr>
+<tr><td>
+
+[RapidHeader](./foundation-header.rapidheader.md)
+
+
+</td><td>
+
+RapidHeader is a rapid version of the header micro-frontend.
+
+
+</td></tr>
+</tbody></table>
 
 ## Functions
 
-|  Function | Description |
-|  --- | --- |
-|  [configure(config)](./foundation-header.configure.md) | A function that allows configuring the header micro-frontend with name and templateOptions. |
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[configure(config)](./foundation-header.configure.md)
+
+
+</td><td>
+
+A function that allows configuring the header micro-frontend with name and templateOptions.
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [HeaderConfig](./foundation-header.headerconfig.md) | HeaderConfig DI interface. |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[HeaderConfig](./foundation-header.headerconfig.md)
+
+
+</td><td>
+
+HeaderConfig DI interface.
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [defaultHeaderConfig](./foundation-header.defaultheaderconfig.md) | Default HeaderConfig DI implementation. |
-|  [MainStyles](./foundation-header.mainstyles.md) | Base styles for the foundation-header |
-|  [navTemplate](./foundation-header.navtemplate.md) | Template for Navigation class |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[defaultHeaderConfig](./foundation-header.defaultheaderconfig.md)
+
+
+</td><td>
+
+Default HeaderConfig DI implementation.
+
+
+</td></tr>
+<tr><td>
+
+[MainStyles](./foundation-header.mainstyles.md)
+
+
+</td><td>
+
+Base styles for the foundation-header
+
+
+</td></tr>
+<tr><td>
+
+[navTemplate](./foundation-header.navtemplate.md)
+
+
+</td><td>
+
+Template for Navigation class
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [ElementTargetId](./foundation-header.elementtargetid.md) | Package element integration targets. |
-|  [HeaderTargetId](./foundation-header.headertargetid.md) | Header integration targets. |
-|  [LanguageOptions](./foundation-header.languageoptions.md) | Options for the language selector |
-|  [NavEventDetailMap](./foundation-header.naveventdetailmap.md) | Events dispatched by the navigation control buttons |
-|  [NavTargetId](./foundation-header.navtargetid.md) | Nav integration targets. |
-|  [SideNavTargetId](./foundation-header.sidenavtargetid.md) | Side nav integration targets. |
-|  [StyleTargetId](./foundation-header.styletargetid.md) | Package style integration targets. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ElementTargetId](./foundation-header.elementtargetid.md)
+
+
+</td><td>
+
+Package element integration targets.
+
+
+</td></tr>
+<tr><td>
+
+[HeaderTargetId](./foundation-header.headertargetid.md)
+
+
+</td><td>
+
+Header integration targets.
+
+
+</td></tr>
+<tr><td>
+
+[LanguageOptions](./foundation-header.languageoptions.md)
+
+
+</td><td>
+
+Options for the language selector
+
+
+</td></tr>
+<tr><td>
+
+[NavEventDetailMap](./foundation-header.naveventdetailmap.md)
+
+
+</td><td>
+
+Events dispatched by the navigation control buttons
+
+
+</td></tr>
+<tr><td>
+
+[NavTargetId](./foundation-header.navtargetid.md)
+
+
+</td><td>
+
+Nav integration targets.
+
+
+</td></tr>
+<tr><td>
+
+[SideNavTargetId](./foundation-header.sidenavtargetid.md)
+
+
+</td><td>
+
+Side nav integration targets.
+
+
+</td></tr>
+<tr><td>
+
+[StyleTargetId](./foundation-header.styletargetid.md)
+
+
+</td><td>
+
+Package style integration targets.
+
+
+</td></tr>
+</tbody></table>
 

@@ -17,10 +17,55 @@ export declare function dataServerResultFilter(result: RawDataServerResult, rowI
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  result | [RawDataServerResult](./foundation-comms.rawdataserverresult.md) | The raw data server result. |
-|  rowId | string | _(Optional)_ Row id. Defaults to ROW\_REF. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+result
+
+
+</td><td>
+
+[RawDataServerResult](./foundation-comms.rawdataserverresult.md)
+
+
+</td><td>
+
+The raw data server result.
+
+
+</td></tr>
+<tr><td>
+
+rowId
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ Row id. Defaults to ROW\_REF.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

@@ -17,9 +17,39 @@ setDisconnected(disconnected: boolean): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  disconnected | boolean | true to set, false to remove |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+disconnected
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+true to set, false to remove
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

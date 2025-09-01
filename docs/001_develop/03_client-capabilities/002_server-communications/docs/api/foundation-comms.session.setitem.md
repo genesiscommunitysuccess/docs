@@ -17,11 +17,71 @@ setItem(key: string | UserInfoKeys, value: string, storage: StorageType): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  key | string \| UserInfoKeys | The key to set. |
-|  value | string | The value to set. |
-|  storage | [StorageType](./foundation-comms.storagetype.md) | The storage type to use. |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+key
+
+
+</td><td>
+
+string \| UserInfoKeys
+
+
+</td><td>
+
+The key to set.
+
+
+</td></tr>
+<tr><td>
+
+value
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+The value to set.
+
+
+</td></tr>
+<tr><td>
+
+storage
+
+
+</td><td>
+
+[StorageType](./foundation-comms.storagetype.md)
+
+
+</td><td>
+
+The storage type to use.
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

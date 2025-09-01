@@ -17,8 +17,62 @@ interface RouteChanged
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [path](./foundation-comms.foundationanalyticsevent.routechanged.path.md) |  | string |  |
-|  [referrer?](./foundation-comms.foundationanalyticsevent.routechanged.referrer.md) |  | string | _(Optional)_ |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[path](./foundation-comms.foundationanalyticsevent.routechanged.path.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[referrer?](./foundation-comms.foundationanalyticsevent.routechanged.referrer.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

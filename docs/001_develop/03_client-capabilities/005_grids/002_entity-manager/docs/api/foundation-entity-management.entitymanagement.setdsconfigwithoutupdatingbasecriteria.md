@@ -17,9 +17,37 @@ setDSConfigWithoutUpdatingBaseCriteria(config: DatasourceConfiguration): void;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  config | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+config
+
+
+</td><td>
+
+[DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

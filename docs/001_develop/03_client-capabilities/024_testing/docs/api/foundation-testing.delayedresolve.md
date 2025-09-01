@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-testing](./foundation-testing.md) &gt; [delayedResolve](./foundation-testing.delayedresolve.md)
 
-## delayedResolve variable
+## delayedResolve() function
 
 Delayed resolve utility.
 
@@ -14,6 +14,62 @@ Delayed resolve utility.
 ```typescript
 delayedResolve: (result: unknown, duration?: number) => () => Promise<unknown>
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+result
+
+
+</td><td>
+
+unknown
+
+
+</td><td>
+
+The result of the promise.
+
+
+</td></tr>
+<tr><td>
+
+duration
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ An optional duration in milliseconds. Defaults to 500.
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+() =&gt; Promise&lt;unknown&gt;
 
 ## Example
 

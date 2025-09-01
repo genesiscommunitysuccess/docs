@@ -22,9 +22,39 @@ withDismissingAction(dismissingAction: DismissingAction): BannerBuilder;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  dismissingAction | [DismissingAction](./foundation-notifications.dismissingaction.md) | [DismissingAction](./foundation-notifications.dismissingaction.md) |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+dismissingAction
+
+
+</td><td>
+
+[DismissingAction](./foundation-notifications.dismissingaction.md)
+
+
+</td><td>
+
+[DismissingAction](./foundation-notifications.dismissingaction.md)
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

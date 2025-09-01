@@ -17,10 +17,51 @@ saveFilterModel(persistFilterModelKey: string, filterModel: {
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  persistFilterModelKey | string |  |
-|  filterModel | { \[key: string\]: any; } |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+persistFilterModelKey
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+filterModel
+
+
+</td><td>
+
+{ \[key: string\]: any; }
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 **Returns:**
 

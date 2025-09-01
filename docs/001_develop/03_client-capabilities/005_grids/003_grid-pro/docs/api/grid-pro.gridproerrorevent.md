@@ -14,5 +14,5 @@ Grid Pro possible error events
 ```typescript
 export type GridProErrorEvent = GridProGenesisDatasourceErrorEvent | CustomEvent<GridProErrorItem<any>>;
 ```
-**References:** [GridProGenesisDatasourceErrorEvent](./grid-pro.gridprogenesisdatasourceerrorevent.md), [GridProErrorItem](./grid-pro.gridproerroritem.md)
+**References:** [GridProGenesisDatasourceErrorEvent](./grid-pro.gridprogenesisdatasourceerrorevent.md)<!-- -->, [GridProErrorItem](./grid-pro.gridproerroritem.md)
 

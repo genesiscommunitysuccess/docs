@@ -5,7 +5,7 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/foundation-utils](./foundation-utils.md) &gt; [isDev](./foundation-utils.isdev.md)
 
-## isDev variable
+## isDev() function
 
 Determines if the current environment is a development environment.
 
@@ -14,3 +14,7 @@ Determines if the current environment is a development environment.
 ```typescript
 isDev: () => boolean
 ```
+**Returns:**
+
+boolean
+

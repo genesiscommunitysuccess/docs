@@ -28,5 +28,5 @@ export type Combinator = {
     forceFieldOnly?: boolean;
 };
 ```
-**References:** [Field](./expression-builder.types.field.md), [Operator](./expression-builder.types.operator.md), [Group](./expression-builder.types.group.md)
+**References:** [Field](./expression-builder.types.field.md)<!-- -->, [Operator](./expression-builder.types.operator.md)<!-- -->, [Group](./expression-builder.types.group.md)
 
