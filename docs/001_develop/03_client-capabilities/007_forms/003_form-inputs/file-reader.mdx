@@ -39,6 +39,18 @@ Declaration
 
 Usage
 ```typescript
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
 @customElement({
   name: 'my-element',
   template: html`
@@ -48,7 +60,7 @@ Usage
         file-size-limit-bytes="10485760"
         auto-process="false"
         processing-delay-ms="1000"
-        @fileRead=${(x, ctx) => x.handleFileRead(ctx.event)}
+        @file-read=${(x, ctx) => x.handleFileRead(ctx.event)}
         @error=${(x, ctx) => x.handleError(ctx.event)}
         @clear=${(x) => x.handleClear()}
       >
@@ -56,12 +68,12 @@ Usage
   `,
 })
 export class MyElement extends GenesisElement {
-  handleFileRead(event: CustomEvent) {
+  handleFileRead(event: CustomEvent<FileReadEventDetail>) {
     const { fileName, content, file } = event.detail;
     console.log('File processed:', fileName, content);
   }
 
-  handleError(event: CustomEvent) {
+  handleError(event: CustomEvent<ErrorEventDetail>) {
     console.error('File processing error:', event.detail);
   }
 
@@ -80,13 +92,25 @@ Declaration
 ```
 Usage
 ```tsx
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
 export function MyComponent() {
-  const handleFileRead = (event: CustomEvent) => {
+  const handleFileRead = (event: CustomEvent<FileReadEventDetail>) => {
     const { fileName, content, file } = event.detail;
     console.log('File processed:', fileName, content);
   };
 
-  const handleError = (event: CustomEvent) => {
+  const handleError = (event: CustomEvent<ErrorEventDetail>) => {
     console.error('File processing error:', event.detail);
   };
 
@@ -122,6 +146,18 @@ Usage
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
 @Component({
   selector: 'my-root',
   template: `
@@ -142,12 +178,12 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class AppComponent {
-  handleFileRead(event: CustomEvent) {
+  handleFileRead(event: CustomEvent<FileReadEventDetail>) {
     const { fileName, content, file } = event.detail;
     console.log('File processed:', fileName, content);
   }
 
-  handleError(event: CustomEvent) {
+  handleError(event: CustomEvent<ErrorEventDetail>) {
     console.error('File processing error:', event.detail);
   }
 
@@ -263,6 +299,10 @@ const content = fileReader.getFileContent();
 <td>
 
 ```typescript
+// Property binding in template
+<rapid-file-reader :onFileRead=${(content) => console.log('File content:', content)}>
+
+// Property assignment in code
 fileReader.onFileRead = (content) => {
   console.log('File content:', content);
 };
@@ -296,7 +336,7 @@ This component doesn't have any slots.
 <td>
 
 ```typescript
-<rapid-file-reader @fileRead=${(x, ctx) => x.handleFileRead(ctx.event)}>
+<rapid-file-reader @file-read=${(x, ctx) => x.handleFileRead(ctx.event)}>
 ```
 
 </td>
