@@ -50,17 +50,126 @@ The `rapid-environment-indicator` component displays an environment badge with c
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `level` | string | - | The environment level to display |
-| `label` | string | - | The label to display |
-| `show-icon` | boolean | false | Whether to show an icon next to the environment text |
-| `size` | 'sm' \| 'lg' | 'sm' | The size of the indicator |
-| `background-color` | string | - | The background color of the indicator |
-| `text-color` | string | '#ffffff' | The text color of the indicator |
-| `icon` | string | 'check-circle' | The icon to display |
-| `icon-size` | 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' | 'sm' | The size of the icon |
-| `use-default-config` | boolean | false | Whether to use the default config |
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>level</td>
+      <td><code>string</code></td>
+      <td>The environment level to display</td>
+<td>
+
+```typescript
+<rapid-environment-indicator level="dev">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>label</td>
+      <td><code>string</code></td>
+      <td>The label to display</td>
+<td>
+
+```typescript
+<rapid-environment-indicator label="DEVELOPMENT">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>show-icon</td>
+      <td><code>boolean</code></td>
+      <td>Whether to show an icon next to the environment text. **Default: false**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator show-icon>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>'sm' | 'lg'</code></td>
+      <td>The size of the indicator. **Default: 'sm'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator size="lg">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>background-color</td>
+      <td><code>string</code></td>
+      <td>The background color of the indicator</td>
+<td>
+
+```typescript
+<rapid-environment-indicator background-color="#ff6b35">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>text-color</td>
+      <td><code>string</code></td>
+      <td>The text color of the indicator. **Default: '#ffffff'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator text-color="#ffffff">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td><code>string</code></td>
+      <td>The icon to display. **Default: 'check-circle'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator icon="code">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>icon-size</td>
+      <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
+      <td>The size of the icon. **Default: 'sm'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator icon-size="md">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>use-default-config</td>
+      <td><code>boolean</code></td>
+      <td>Whether to use the default config. **Default: false**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator use-default-config>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Environment Configuration Interface
 
