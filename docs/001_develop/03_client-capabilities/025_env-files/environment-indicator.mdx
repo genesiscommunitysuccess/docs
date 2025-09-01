@@ -13,9 +13,11 @@ tags:
 sidebar_position: 2
 ---
 
-The Environment Indicator component provides a visual way to display the current environment (e.g., DEV, PROD, TEST) in your application. It can be configured to show different colors, icons, and labels based on the environment level.
+import EnvironmentIndicatorDemo from './examples/environment-indicator.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-## Overview
+The Environment Indicator component provides a visual way to display the current environment (e.g., DEV, PROD, TEST) in your application. It can be configured to show different colors, icons, and labels based on the environment level.
 
 The `rapid-environment-indicator` component displays an environment badge with customizable styling and behavior. It supports:
 
@@ -24,152 +26,94 @@ The `rapid-environment-indicator` component displays an environment badge with c
 - Integration with dependency injection for global configuration
 - Automatic environment detection from build variables
 
-## Basic Usage
+## Example
+This simple example shows an environment indicator with custom styling and icon.
+<EnvironmentIndicatorDemo />
 
-### Simple Environment Indicator
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
-```html
-<rapid-environment-indicator></rapid-environment-indicator>
-```
+  <TabItem value="genesis">
 
-### With Custom Attributes
+    Declaration
+    ```html
+    <rapid-environment-indicator></rapid-environment-indicator>
+    ```
 
-```html
-<rapid-environment-indicator
-  level="dev"
-  label="DEVELOPMENT"
-  background-color="#ff6b35"
-  text-color="#ffffff"
-  show-icon="true"
-  icon="code"
-  size="lg"
-></rapid-environment-indicator>
-```
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-environment-indicator
+          level="dev"
+          label="DEVELOPMENT"
+          background-color="#ff6b35"
+          text-color="#ffffff"
+          show-icon="true"
+          icon="code"
+          size="lg"
+        ></rapid-environment-indicator>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
 
-## Configuration Options
+  </TabItem>
+  <TabItem value="react">
 
-### Attributes
+  Declaration
+  ```html
+    <rapid-environment-indicator></rapid-environment-indicator>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-environment-indicator
+        level="dev"
+        label="DEVELOPMENT"
+        background-color="#ff6b35"
+        text-color="#ffffff"
+        show-icon="true"
+        icon="code"
+        size="lg"
+      ></rapid-environment-indicator>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
 
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Type</th>
-      <th>Use</th>
-      <th>Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>level</td>
-      <td><code>string</code></td>
-      <td>The environment level to display</td>
-<td>
+  Declaration
+  ```html
+    <rapid-environment-indicator></rapid-environment-indicator>
+  ```
 
-```typescript
-<rapid-environment-indicator level="dev">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>label</td>
-      <td><code>string</code></td>
-      <td>The label to display</td>
-<td>
-
-```typescript
-<rapid-environment-indicator label="DEVELOPMENT">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>show-icon</td>
-      <td><code>boolean</code></td>
-      <td>Whether to show an icon next to the environment text. **Default: false**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator show-icon>
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>size</td>
-      <td><code>'sm' | 'lg'</code></td>
-      <td>The size of the indicator. **Default: 'sm'**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator size="lg">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>background-color</td>
-      <td><code>string</code></td>
-      <td>The background color of the indicator</td>
-<td>
-
-```typescript
-<rapid-environment-indicator background-color="#ff6b35">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>text-color</td>
-      <td><code>string</code></td>
-      <td>The text color of the indicator. **Default: '#ffffff'**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator text-color="#ffffff">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>icon</td>
-      <td><code>string</code></td>
-      <td>The icon to display. **Default: 'check-circle'**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator icon="code">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>icon-size</td>
-      <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
-      <td>The size of the icon. **Default: 'sm'**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator icon-size="md">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>use-default-config</td>
-      <td><code>boolean</code></td>
-      <td>Whether to use the default config. **Default: false**</td>
-<td>
-
-```typescript
-<rapid-environment-indicator use-default-config>
-```
-
-</td>
-    </tr>
-  </tbody>
-</table>
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-environment-indicator
+            level="dev"
+            label="DEVELOPMENT"
+            background-color="#ff6b35"
+            text-color="#ffffff"
+            show-icon="true"
+            icon="code"
+            size="lg"
+          ></rapid-environment-indicator>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
 
 ### Environment Configuration Interface
 
@@ -288,69 +232,9 @@ declare global {
 export {};
 ```
 
-## Examples
-
-### Basic Environment Indicator
-
-```html
-<!-- Uses global configuration or defaults -->
-<rapid-environment-indicator></rapid-environment-indicator>
-```
-
-### Custom Styled Indicator
-
-```html
-<rapid-environment-indicator
-  level="staging"
-  label="STAGING"
-  background-color="#9c27b0"
-  text-color="#ffffff"
-  show-icon="true"
-  icon="rocket"
-  size="lg"
-></rapid-environment-indicator>
-```
-
-### Small Indicator with Icon
-
-```html
-<rapid-environment-indicator
-  level="dev"
-  label="DEV"
-  background-color="#ff6b35"
-  show-icon="true"
-  icon="code"
-  size="sm"
-></rapid-environment-indicator>
-```
-
-### Large Production Indicator
-
-```html
-<rapid-environment-indicator
-  level="prod"
-  label="PRODUCTION"
-  background-color="#28a745"
-  text-color="#ffffff"
-  show-icon="true"
-  icon="shield-alt"
-  size="lg"
-></rapid-environment-indicator>
-```
-
-## Integration with Header and Login Components
+## Integration with Other Components
 
 The environment indicator can be integrated with the [Foundation Header](../header) and [Foundation Login](../login) components to provide consistent environment indication across your application.
-
-### Demo Screenshots
-
-The environment indicator appears as a small badge that clearly shows the current environment:
-
-**Login Screen with Environment Indicator:**
-![Login screen with DEV environment indicator](./docs/img/environment-indicator-login.png)
-
-**Header with Environment Indicator:**
-![Header with DEV environment indicator](./docs/img/environment-indicator-header.png)
 
 ### Header Integration
 
@@ -360,6 +244,10 @@ The environment indicator appears as a small badge that clearly shows the curren
 </foundation-header>
 ```
 
+Demo:
+
+![Header with DEV environment indicator](/img/environment-indicator/environment-indicator-header.png)
+
 ### Login Integration
 
 ```html
@@ -368,67 +256,149 @@ The environment indicator appears as a small badge that clearly shows the curren
 </foundation-login>
 ```
 
-## Styling
+Demo:
 
-The environment indicator uses CSS custom properties from the design system for consistent styling. The component automatically adapts to the current design system's spacing and sizing.
+![Login screen with DEV environment indicator](/img/environment-indicator/environment-indicator-login.png)
 
-### Default Styles
+## API
 
-The component uses these design system properties:
+### Attributes 
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
-```css
-.environment-indicator {
-  font-size: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: calc(var(--design-unit) * 1.4px);
-  border-radius: calc(var(--design-unit) * 1px);
-  height: calc(var(--design-unit) * 6px);
-  padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 2px);
-  line-height: 1;
-  font-weight: 600;
-  text-transform: uppercase;
-}
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>level</td>
+      <td><code>string</code></td>
+      <td>The environment level to display.</td>
+<td>
+
+```typescript
+<rapid-environment-indicator level="dev">
 ```
 
-### Large Size Variant
+</td>
+    </tr>
+    <tr>
+      <td>label</td>
+      <td><code>string</code></td>
+      <td>The label to display.</td>
+<td>
 
-For the large size variant (`size="lg"`):
-
-```css
-.environment-indicator.lg {
-  border-radius: calc(var(--design-unit) * 4px);
-  padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 3.5px);
-  font-size: calc(var(--design-unit) * 4px);
-}
+```typescript
+<rapid-environment-indicator label="DEVELOPMENT">
 ```
 
-### Icon Sizing
+</td>
+    </tr>
+    <tr>
+      <td>show-icon</td>
+      <td><code>boolean</code></td>
+      <td>Whether to show an icon next to the environment text. **Default: false**</td>
+<td>
 
-Icons automatically scale with the component size:
-
-```css
-.environment-indicator .icon {
-  font-size: calc(var(--design-unit) * 3px);
-}
-
-.environment-indicator.lg .icon {
-  font-size: calc(var(--design-unit) * 3.5px);
-}
+```typescript
+<rapid-environment-indicator show-icon>
 ```
 
-The component automatically uses the design system's `--design-unit` property for consistent spacing and sizing across your application.
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>'sm' | 'lg'</code></td>
+      <td>The size of the indicator. **Default: 'sm'**</td>
+<td>
 
-### CSS Parts
-
-The environment indicator exposes a CSS part that allows you to style the component from outside:
-
-```css
-rapid-environment-indicator::part(environment-indicator) {
-  /* Custom styles for the environment indicator */
-  border: 2px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+```typescript
+<rapid-environment-indicator size="lg">
 ```
 
-This allows you to customize the appearance of the environment indicator while maintaining the component's internal structure and functionality. 
+</td>
+    </tr>
+    <tr>
+      <td>background-color</td>
+      <td><code>string</code></td>
+      <td>The background color of the indicator.</td>
+<td>
+
+```typescript
+<rapid-environment-indicator background-color="#ff6b35">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>text-color</td>
+      <td><code>string</code></td>
+      <td>The text color of the indicator. **Default: '#ffffff'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator text-color="#ffffff">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>icon</td>
+      <td><code>string</code></td>
+      <td>The icon to display. **Default: 'check-circle'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator icon="code">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>icon-size</td>
+      <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl'</code></td>
+      <td>The size of the icon. **Default: 'sm'**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator icon-size="md">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>use-default-config</td>
+      <td><code>boolean</code></td>
+      <td>Whether to use the default config. **Default: false**</td>
+<td>
+
+```typescript
+<rapid-environment-indicator use-default-config>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+There are no properties. This component is controlled by attributes.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default |The default slot for environment indicator content. |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| environment-indicator | The element representing the environment indicator, which wraps the default slot. |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events. 
