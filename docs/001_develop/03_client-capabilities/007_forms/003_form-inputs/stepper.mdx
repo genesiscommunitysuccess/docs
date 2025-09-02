@@ -220,6 +220,54 @@ Property and attribute binding examples for Genesis Component syntax.
 
 </td>
         </tr>
+        <tr>
+            <td>hide-all-buttons</td>
+            <td><code>boolean</code></td>
+            <td>Hides all navigation buttons (Back, Next, Submit)</td>
+<td>
+
+```typescript
+<rapid-stepper hide-all-buttons>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>hide-step-number</td>
+            <td><code>boolean</code></td>
+            <td>Hides the step number display in the stepper tabs</td>
+<td>
+
+```typescript
+<rapid-stepper hide-step-number>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>allow-backward-jumps</td>
+            <td><code>boolean</code></td>
+            <td>Allows users to click on previous steps to navigate backwards</td>
+<td>
+
+```typescript
+<rapid-stepper allow-backward-jumps>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>allow-forward-jumps</td>
+            <td><code>boolean</code></td>
+            <td>Allows users to click on future steps to navigate forwards (with validation)</td>
+<td>
+
+```typescript
+<rapid-stepper allow-forward-jumps>
+```
+
+</td>
+        </tr>
     </tbody>
 </table>
 
@@ -257,6 +305,64 @@ If the predicate returns false the stepper will not move to the next step. See [
 </tbody>
 </table>
 
+### Methods
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Parameters</th>
+            <th>Return Type</th>
+            <th>Description</th>
+            <th>Examples</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>goToStep</td>
+            <td><code>stepNumber: number, bypassJumpRestrictions?: boolean</code></td>
+            <td><code>boolean</code></td>
+            <td>Go to a specific step by step number (1-based indexing). Returns true if successful, false if step number is invalid or already on that step.</td>
+<td>
+
+```typescript
+// Go to step 2
+element.goToStep(2);
+
+// Go to step 3 bypassing jump restrictions
+element.goToStep(3, true);
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>goToFirstStep</td>
+            <td>None</td>
+            <td><code>boolean</code></td>
+            <td>Go to the first step (step 1). Returns true if successful, false if already on first step.</td>
+<td>
+
+```typescript
+element.goToFirstStep();
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>goToLastStep</td>
+            <td>None</td>
+            <td><code>boolean</code></td>
+            <td>Go to the last step. Returns true if successful, false if already on last step.</td>
+<td>
+
+```typescript
+element.goToLastStep();
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Slots
 
@@ -299,6 +405,54 @@ If the predicate returns false the stepper will not move to the next step. See [
 
 ```typescript
 <rapid-stepper @submit="${(x) => x.submitHandler()}">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>@step-click</td>
+            <td><code>\{activetab: HTMLElement, activeid: string\}</code></td>
+            <td>Fired when a step is clicked and navigation occurs.</td>
+<td>
+
+```typescript
+<rapid-stepper @step-click={\`\${(x, c) => x.handleStepClick(c.event.detail)}\`}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>@validation-failure</td>
+            <td><code>\{stepIndex: number, stepId: string, message: string\}</code></td>
+            <td>Fired when validation fails during forward jumps.</td>
+<td>
+
+```typescript
+<rapid-stepper @validation-failure={\`\${(x, c) => x.handleValidationFailure(c.event.detail)}\`}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>@next-step</td>
+            <td><code>void</code></td>
+            <td>Fired when moving to the next step.</td>
+<td>
+
+```typescript
+<rapid-stepper @next-step={\`\${(x) => x.handleNextStep()}\`}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>@validation-success</td>
+            <td><code>void</code></td>
+            <td>Fired when validation passes during step navigation.</td>
+<td>
+
+```typescript
+<rapid-stepper @validation-success={\`\${(x) => x.handleValidationSuccess()}\`}>
 ```
 
 </td>
@@ -364,3 +518,86 @@ The index of each array element is related to the corresponding tab position. In
 In the example above, each tab only allows the user to proceed to the next step when the field `isValid` receives a `true` value.
 
 If you want to perform more complicated logic tests to control how the user can proceed to the next step, you can define the logic in a separate function. Use the `@submit` event to call that function.
+
+### Programmatic Navigation
+
+The stepper provides methods to programmatically navigate between steps:
+
+```typescript title="Programmatic Navigation"
+@customElement({
+  name: 'stepper-navigation-example',
+  template: html`
+    <rapid-stepper ref="stepper">
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>Content 1</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
+    </rapid-stepper>
+    
+    <rapid-button @click={\`\${(x) => x.goToFirst()}\`}>Go to First</rapid-button>
+    <rapid-button @click={\`\${(x) => x.goToLast()}\`}>Go to Last</rapid-button>
+    <rapid-button @click={\`\${(x) => x.goToSpecific()}\`}>Go to Step 2</rapid-button>
+  `,
+})
+export class StepperNavigationExample extends GenesisElement {
+  @observable stepper: any;
+
+  goToFirst() {
+    this.stepper.goToFirstStep();
+  }
+
+  goToLast() {
+    this.stepper.goToLastStep();
+  }
+
+  goToSpecific() {
+    this.stepper.goToStep(2);
+  }
+}
+```
+
+### Button Visibility Control
+
+You can control the visibility of stepper buttons using various attributes:
+
+```typescript title="Button Control"
+// Hide only the submit button
+<rapid-stepper hide-submit-button>
+  <!-- stepper content -->
+</rapid-stepper>
+
+// Hide all navigation buttons
+<rapid-stepper hide-all-buttons>
+  <!-- stepper content -->
+</rapid-stepper>
+
+// Hide step numbers in tabs
+<rapid-stepper hide-step-number>
+  <!-- stepper content -->
+</rapid-stepper>
+```
+
+### Jump Navigation
+
+Enable users to jump between steps by clicking on step tabs:
+
+```typescript title="Jump Navigation"
+// Allow backward jumps (clicking on previous steps)
+<rapid-stepper allow-backward-jumps>
+  <!-- stepper content -->
+</rapid-stepper>
+
+// Allow forward jumps (clicking on future steps with validation)
+<rapid-stepper allow-forward-jumps>
+  <!-- stepper content -->
+</rapid-stepper>
+
+// Allow both directions
+<rapid-stepper allow-backward-jumps allow-forward-jumps>
+  <!-- stepper content -->
+</rapid-stepper>
+```
+
+When `allow-forward-jumps` is enabled, the stepper will validate all intermediate steps before allowing the jump. If validation fails, a `validation-failure` event is fired.
