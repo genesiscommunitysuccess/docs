@@ -105,6 +105,18 @@ This release contains [impactful changes](#impactful-changes). They are not brea
 
 ### Patch releases
 
+#### 8.11.8
+
+###### Features
+
+* `genesis-environment` : Implement GetNextAutoIncrementNumbers script to work similarly to GetNextSequenceNumbers 
+
+###### Fixes
+
+* `genesis-dictionary` : Ensure shared aliased enums can be serialised/deserialised using Jackson 
+* `genesis-eventhandler` : Change incorrect use of system definition item `UseNettyThreadsInEventHandler` in event handler implementation 
+* `genesis-process` : Ensure `SysDef` object is initialised before reading `-process-config.kts` and handle issues with `SysDef` object usage in GPAL scripts gracefully 
+
 #### 8.11.7
 
 ###### Features
