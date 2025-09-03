@@ -50,6 +50,7 @@ operations = [
     {"type": "string", "find": "Add several enhancements in the requestData area, data response wrapping, logging capabilities and sequence decoding", "replace": "Add several enhancements in the `requestData` area : Data response wrapping, logging capabilities and sequence decoding"},
     {"type": "string", "find": "Fix wrong initialisation logic", "replace": "Fix incorrect initialisation logic"},
     {"type": "string", "find": "* Change groupId of MCP process to prevent it being compacted with core services", "replace": "* `genesis-mcp` : Change `groupId` of MCP process to prevent it being compacted with core services"}, 
+    {"type": "string", "find": "* `kafka-genesis` : KafkaSource + kafkaSink to return concrete type in GPAL ext", "replace": "* `kafka-genesis` : `kafkaSource` + `kafkaSink` to return concrete type in GPAL ext"}, 
 
     # Component tidy up
     {"type": "string", "find": "* `db`", "replace": "* `genesis-db`"},
