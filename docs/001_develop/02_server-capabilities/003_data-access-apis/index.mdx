@@ -1457,19 +1457,31 @@ To find the most recent change to table in your database:
 2. Perform `a getRangeFromEnd` for that index. This returns all the records, beginning with the most recent.
 3. Keep only the first record.
 
-### Optimistic concurrency
+## Optimistic concurrency
 
 Optimistic Concurrency helps prevent users from updating or deleting a stale version of a record. To do this, we need to know what the intended version of the record to update or delete is. Internally, we use the record's timestamp field as its version.
 
-#### Configuration
+When enabled, the checks will be performed for each modify and delete operation on the configured tables. This could be when using the programmatic Genesis database API or on execution of an Event Handler.
 
-If you want to use Optimistic Concurrency, you must configure it by setting the `DbOptimisticConcurrencyMode` property to the Event Handler definition in your  _applicationName_**-processes.xml** file.
+Optimistic Concurrency can be configured with one of the following values: `STRICT`, `LAX` and `NONE`. These modes are detailed below. Defaults to `NONE`.
 
-The `DbOptimisticConcurrencyMode` property can have one of the following values: `STRICT`, `LAX` and `NONE`. These modes are detailed below. Defaults to `NONE`.
+#### Modes
 
-There are two simple ways of setting the property.
+| Mode             | Description      |
+|------------------|------------------|
+| `STRICT`         | A check is performed on modify and delete database operations; the TIMESTAMP of the database record must be the same as the TIMESTAMP provided on the database operation. |
+| `LAX`            | A check is performed on modify and delete database operations; if the database operation has provided a TIMESTAMP, the TIMESTAMP of the database record must be the same as the TIMESTAMP provided on the database operation. If no timestamp is provided, then no check is performed. |
+| `NONE` (Default) | Checks are disabled. |
 
-In this first example, we simply specify STRICT Optimistic Concurrency as one of the `options`:
+### Configuration
+
+Optimistic concurrency can be configured using a global property that applies to all tables, or with table-specific properties that allow fine-grained control over individual tables.
+
+#### Global configuration
+
+There are two simple ways of setting the global property.
+
+In this first example, we simply specify the global STRICT Optimistic Concurrency mode as one of the process `options`:
 
 ```xml title="alpha-processes.xml"
 
@@ -1485,7 +1497,7 @@ In this first example, we simply specify STRICT Optimistic Concurrency as one of
     <language>pal</language>
 </process>
 ```
-Alternatively, you can specify the option in a separate file and use the `configOverridesFile` property. In the example below, the file is called **alpha-sysdef.properties** and we have shown its content in a separate codeblock. 
+Alternatively, you can specify the global option in a separate file and use the `configOverridesFile` property. In the example below, the file is called **alpha-sysdef.properties** and we have shown its content in a separate codeblock. 
 
 ```xml title="alpha-processes.xml"
 
@@ -1511,24 +1523,168 @@ DbOptimisticConcurrencyMode=STRICT
 Do not apply as a global system definition property, as some internal services cannot operate properly when this is enabled.
 :::
 
-#### Modes
+#### Table-specific configuration
 
-| Mode             | Description      |
-|------------------|------------------|
-| `STRICT`         | A check is performed on modify and delete database operations; the TIMESTAMP of the database record must be the same as the TIMESTAMP provided on the event. |
-| `LAX`            | A check is performed on modify and delete database operations; if the event has provided a TIMESTAMP, the TIMESTAMP of the database record must be the same as the TIMESTAMP provided on the event. If no timestamp is provided, then no check is performed. |
-| `NONE` (Default) | Checks are disabled. |
+In addition to the global configuration, you can also specify optimistic concurrency checks for specific tables. This allows you to have different concurrency modes for different tables within the same application.
 
-#### Event Handler
+To configure table-specific optimistic concurrency, use the `DbOptimisticConcurrencyTable_` prefix followed by the table name. For example:
 
-The checks are dependent on the availability of a timestamp field. 
+```properties title="alpha-sysdef.properties"
+DbOptimisticConcurrencyMode=NONE
+DbOptimisticConcurrencyTable_TRADE=STRICT
+DbOptimisticConcurrencyTable_ORDER=LAX
+DbOptimisticConcurrencyTable_SYSTEM_CONFIG=NONE
+```
+
+:::info
+Table names in the configuration must match exactly with the table names defined in your data model. Invalid table names will cause a configuration error at startup.
+:::
+
+:::info
+Unlike the global `DbOptimisticConcurrencyMode` property, it is safe to specify table-specific properties as global system definition properties. These properties can be applied globally without affecting internal services that cannot operate properly with optimistic concurrency enabled as it will only affect the specified tables.
+:::
+
+#### Configuration precedence
+
+The optimistic concurrency configuration follows this precedence order:
+
+1. **Table-specific configuration** - If a table has a specific configuration (e.g `DbOptimisticConcurrencyTable_TRADE=STRICT`), it will use that mode
+2. **Global configuration** - If no table-specific configuration exists, the table will use the global mode (e.g `DbOptimisticConcurrencyMode=LAX`)
+
+For example, with this configuration:
+
+```properties
+DbOptimisticConcurrencyMode=STRICT
+DbOptimisticConcurrencyTable_TRADE=LAX
+DbOptimisticConcurrencyTable_SYSTEM_CONFIG=NONE
+```
+
+- `TRADE` table will use `LAX` mode (table-specific override)
+- `SYSTEM_CONFIG` table will use `NONE` mode (table-specific override)
+- All other tables will use `STRICT` mode (global default)
+
+#### Startup logging
+
+When optimistic concurrency is enabled, the system will log the configuration at startup. This helps you verify that your configuration is being applied correctly. The logs will show:
+
+- The global mode being used
+- Which tables are configured for each mode (STRICT, LAX, NONE)
+
+Example log output:
+```
+Optimistic concurrency check enabled. Configuration:
+Global mode   = STRICT
+Strict tables = [TRADE, ORDER]
+Lax tables    = [INSTRUMENT, COUNTERPARTY]
+None tables   = [SYSTEM_CONFIG]
+```
+
+#### Example
+
+Here's a practical example of how you might configure optimistic concurrency for a trading application:
+
+```properties title="trading-sysdef.properties"
+# Global mode not set so default of NONE applies to all tables not specifically configured
+
+# Critical trading tables - require strict concurrency checks
+DbOptimisticConcurrencyTable_TRADE=STRICT
+DbOptimisticConcurrencyTable_ORDER=STRICT
+DbOptimisticConcurrencyTable_POSITION=STRICT
+
+# Reference data tables - can use lax mode for flexibility
+DbOptimisticConcurrencyTable_COUNTERPARTY=LAX
+DbOptimisticConcurrencyTable_INSTRUMENT=LAX
+```
+
+This configuration ensures that:
+- Critical trading data (TRADE, ORDER, POSITION) is protected with strict concurrency checks
+- Reference data can be updated more flexibly with lax mode
+- All other tables don't have unnecessary concurrency check overhead
+
+### Handling Errors
+
+When an Optimistic Concurrency check fails, the system throws a `GenesisDatabaseWriteException` with the error code `OPTIMISTIC_CONCURRENCY_ERROR`. This exception contains a descriptive message explaining why the check failed.
+
+#### Error Types
+
+There are two main types of optimistic concurrency failures:
+
+1. **Record Changed Error**: `"The database record has changed since the operation started."`
+   - This occurs when the TIMESTAMP in the database doesn't match the TIMESTAMP provided in the operation
+   - Indicates that another process has modified the record since it was last read
+
+2. **Missing Timestamp Error**: `"Missing TIMESTAMP field."`
+   - This occurs when a STRICT mode is configured but no TIMESTAMP is provided in the operation
+   - Only applies to STRICT mode; LAX mode allows operations without timestamps
+
+#### Example
+
+Here is an example of how you can check for optimistic concurrency exceptions:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+suspend fun updateTradeQuantity(tradeId: String, newQuantity: Long) {
+    val trade = entityDb.get(Trade.byId(tradeId)) ?: run {
+        LOG.error("Trade not found for $tradeId")
+        return
+    }
+
+    trade.quantity = newQuantity
+    try {
+        entityDb.modify(trade)
+    } catch (e: GenesisDatabaseWriteException) {
+        if (e.errorCode == ErrorCode.OPTIMISTIC_CONCURRENCY_ERROR) {
+            LOG.error("Optimistic concurrency check failed for trade ${trade.tradeId}")
+            // Handle appropriately, retry operation etc
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="java">
+
+```java
+public void updateTradeQuantity(String tradeId, Long newQuantity) {
+    final var trade = entityDb.get(Trade.byId(tradeId)).blockingGet();
+    if (trade == null) {
+        LOG.error("Trade not found for " + tradeId);
+        return;
+    }
+
+    trade.setQuantity(newQuantity);
+    try {
+        entityDb.modify(trade).blockingGet();
+    } catch (GenesisDatabaseWriteException e) {
+        if (e.getErrorCode() == ErrorCode.OPTIMISTIC_CONCURRENCY_ERROR) {
+            LOG.error("Optimistic concurrency check failed for trade " + trade.getTradeId());
+            // Handle appropriately, retry operation etc
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### Best Practices
+
+1. **Check the error code**: Use `e.errorCode == ErrorCode.OPTIMISTIC_CONCURRENCY_ERROR` in Kotlin or `e.getErrorCode() == ErrorCode.OPTIMISTIC_CONCURRENCY_ERROR` in Java to identify optimistic concurrency failures
+2. **Log appropriately**: Log the error details for debugging and monitoring
+3. **Handle gracefully**: Decide whether to retry, fail gracefully, or implement alternative business logic based on your application's requirements
+4. **Provide user feedback**: When using in user-facing applications, provide clear messages about what happened
+
+
+### Event Handler
+
+Optimistic Concurrency checks for Event Handlers are dependent on the availability of a timestamp field.
 
 - You must make sure that any custom classes used in your Event Handlers have a timestamp field. Add this manually, if necessary. If there is no timestamp field, the database write will fail with an error stating that a TIMESTAMP field is missing.
 - Generated entities always have a timestamp field, so the checks will work for these without any extra coding.
 
-###### Examples
+When optimistic concurrency checks fail in Event Handlers, they can be handled the same way as described in the [Handling Errors](#handling-errors) section. If not handled, an error response will be returned to the caller of the event handler. 
 
-This `eventHandler` is called TRADE_MODIFY, and it is based on a generated entity.
+In this example `eventHandler` is called TRADE_MODIFY, and it is based on a generated entity.
 
 ```kotlin title="trade-eventhandler.kts"
 eventHandler<Trade>(name = "TRADE_MODIFY") {
@@ -1565,17 +1721,17 @@ data class TradeCancel(
 )
 ```
 
-#### Linking the front end
+### Linking the front end
 
 When sending an event to the server, the front end needs to know what timestamp to send as part of the payload.
 
 The front end of Optimistic Concurrency is driven from [Entity Management](/develop/client-capabilities/grids/entity-manager/). You need to set up the relevant
 Data Server `query` or Request Server `requestReply` for entity management.
 
-##### Data Server
+### Data Server
 
-- If the 'query` has no specific fields defined, the checks work automatically.
-- If the 'query` has defined specific fields, you must add the TIMESTAMP field.
+- If the `query` has no specific fields defined, the checks work automatically.
+- If the `query` has defined specific fields, you must add the TIMESTAMP field.
 
 In this example, no specific fields have been defined:
 
@@ -1596,10 +1752,10 @@ query("ALL_TRADES", TRADE) {
 }
 ```
 
-##### Request Server
+### Request Server
 
-- If the 'requestReply` has no specific fields defined, the checks work automatically.
-- If the 'requestReply` has defined specific fields, you must add the TIMESTAMP field.
+- If the `requestReply` has no specific fields defined, the checks work automatically.
+- If the `requestReply` has defined specific fields, you must add the TIMESTAMP field.
 
 In this example, no specific fields have been defined:
 
