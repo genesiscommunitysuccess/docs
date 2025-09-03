@@ -1,0 +1,201 @@
+---
+title: 'Foundation Redux'
+sidebar_label: 'Foundation Redux'
+id: client-state-management-foundation-redux
+keywords: [genesis, foundation, redux, state management, redux state management, store, actions, reducers]
+tags:
+  - redux
+  - state management
+  - redux state management
+  - redux store
+  - redux store management
+  - actions
+  - reducers
+  - middleware
+  - devtools
+  - communication
+  - redux
+  - injection
+  - state
+  - reducers
+  - middleware
+  - devtools
+sidebar_position: 18
+---
+
+# Genesis Foundation Redux
+
+`foundation-redux` provides Redux Toolkit integration for Genesis components, offering a clean and efficient way to manage application state using the proven Redux pattern.
+
+## Background
+
+This package was created to provide an alternative to `foundation-store` by leveraging the power and ecosystem of Redux Toolkit. While `foundation-store` implements a Redux-like pattern within the Genesis context, `foundation-redux` provides direct bindings to Redux itself, allowing developers to benefit from:
+
+- Vast Redux documentation and ecosystem
+- Redux DevTools integration
+- Proven patterns and best practices
+- Extensive community support
+- Built-in immutability handling
+
+## Why Choose foundation-redux over foundation-store?
+
+### Reduced Boilerplate
+Foundation store requires manual immutability handling and custom event setup, while Redux Toolkit handles immutability automatically.
+
+**Foundation store example:**
+```typescript
+this.createListener<DeleteViewDerivedFieldPayload>(
+  StoreEvents.DeleteViewDerivedField,
+  ({ view, field }) => {
+    const { [field]: fieldToDelete, ...rest } =
+      this.commit.genesisCreateConfig.views.views[view]?.derivedFields || {};
+    if (fieldToDelete) {
+      this.commit.genesisCreateConfig = {
+        ...this.genesisCreateConfig,
+        views: {
+          views: {
+            ...this.genesisCreateConfig.views.views,
+            [view]: {
+              ...this.genesisCreateConfig.views.views[view],
+              derivedFields: {
+                ...rest,
+              },
+            },
+          },
+        },
+      };
+    }
+  },
+);
+```
+
+**Redux Toolkit example:**
+```typescript
+deleteDerivedField(state, { payload: { view, field } }) {
+  delete state[view].derivedFields[field];
+}
+```
+
+### Ecosystem Benefits
+- **Redux DevTools**: Built-in debugging and time-travel debugging
+- **Middleware**: Extensive middleware ecosystem
+- **Entity Adapters**: Auto-generated CRUD actions and selectors
+- **Serialization**: Built-in support for local storage and hydration
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-redux` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
+
+```json
+{
+  ...
+  "dependencies": {
+    ...
+    "@genesislcap/foundation-redux": "latest"
+    ...
+  },
+  ...
+}
+```
+
+## Usage
+
+### Basic Store Setup
+
+```typescript
+import { createStore } from '@genesislcap/foundation-redux';
+import { createSlice } from '@reduxjs/toolkit';
+import { customElement, GenesisElement, observable } from '@genesislcap/web-core';
+
+// Define your slices
+const userSlice = createSlice({
+  name: 'user',
+  initialState: { name: '', email: '' },
+  reducers: {
+    setUser: (state, action) => {
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+    },
+    clearUser: (state) => {
+      state.name = '';
+      state.email = '';
+    },
+  },
+  selectors: {
+    getUserName: (state) => state.name,
+    getUserEmail: (state) => state.email,
+  },
+});
+
+// Create the store
+const { store, actions, selectors } = createStore([userSlice], {});
+
+@customElement({
+  name: 'user-component',
+  template: html`<div>Hello ${(x) => x.userName}!</div>`,
+})
+export class UserComponent extends GenesisElement {
+  @observable userName = '';
+
+  connectedCallback() {
+    super.connectedCallback();
+    
+    // Subscribe to store changes
+    store.subscribeKey(
+      (state) => state.user.name,
+      (state) => {
+        this.userName = state.user.name;
+      }
+    );
+  }
+
+  handleLogin() {
+    actions.user.setUser({ name: 'John Doe', email: 'john@example.com' });
+  }
+}
+```
+
+### Advanced Features
+
+- **Thunk Actions**: Support for async operations
+- **Entity Adapters**: Auto-generated CRUD operations
+- **DevTools**: Full Redux DevTools integration
+- **Middleware**: Custom middleware support
+- **Local Storage**: Built-in persistence helpers
+
+## API Reference
+
+### `createStore(slices, preloadedState)`
+
+Creates a Redux store with Genesis component integration.
+
+**Parameters:**
+- `slices`: Array of Redux Toolkit slices
+- `preloadedState`: Initial state for the store
+
+**Returns:**
+- `store`: Proxied state object for reactive updates
+- `actions`: Bound action creators
+- `selectors`: Bound selectors
+- `dispatch`: Redux dispatch function
+- `subscribe`: Store subscription function
+- `subscribeKey`: Key-based subscription for performance
+- `notify`: Manual notification trigger
+
+### Store Integration
+
+The store automatically integrates with Genesis's Observable system, providing reactive updates when state changes. Components can subscribe to specific state changes using `subscribeKey` for optimal performance.
+
+## Migration from foundation-store
+
+If you're currently using `foundation-store`, migration to `foundation-redux` involves:
+
+1. **Replace store creation**: Use `createStore` instead of store fragments
+2. **Convert event handlers**: Replace custom events with Redux actions
+3. **Update subscriptions**: Use `subscribeKey` instead of binding observers
+4. **Simplify state updates**: Let Redux Toolkit handle immutability
+
+## API
+You can find out more details in our [API docs](./docs/api/index.md).
