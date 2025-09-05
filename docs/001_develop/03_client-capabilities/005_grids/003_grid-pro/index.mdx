@@ -278,31 +278,148 @@ The `<grid-pro>` element supports the following attributes and properties:
 
 | Attribute                        | Type          | Default     | Description           |
 | -------------------------------- | ------------- | ----------- | --------------------- |
-| `:rowData`                       | `any[]`       | -           | **Manual data**: Array of row data for scenarios where you set data manually without using datasource components. |
-| `:gridComponents`                | `{[componentName: string]: any}` | - | **Custom components**: Object containing custom AG Grid components (cell renderers, editors, filters). |
-| `:eventsAndCallbacks`            | `GridProEventsAndCallbacks` | - | **AG Grid events**: Object containing AG Grid event handlers and callbacks. |
-| `:gridFontFace`                  | `string`      | `defaultAgGridFontFace` | **Font configuration**: Font face configuration for AG Grid themes. |
-| `auto-cell-renderer-by-type`     | `boolean`     | `false`     | **Genesis-specific**: Enable automatic cell renderer selection by data type. |
-| `only-template-col-defs`         | `boolean`     | `false`     | **Genesis-specific**: Use only template-defined column definitions, ignore metadata. |
-| `grid-autosizing`                | `boolean`     | `false`     | **Important**: Controls automatic column sizing on interaction. Disables manual column widths and local storage persistence of widths. |
 | `add-index`                      | `number`      | `0`         | Index position for new rows when using `applyTransaction` or `applyTransactionAsync`. |
 | `async-add`                      | `boolean`     | `false`     | Use `applyTransactionAsync` for add transactions (better performance for large datasets). |
 | `async-remove`                   | `boolean`     | `false`     | Use `applyTransactionAsync` for remove transactions (better performance for large datasets). |
 | `async-update`                   | `boolean`     | `true`      | Use `applyTransactionAsync` for update transactions (enabled by default for performance). |
+| `auto-cell-renderer-by-type`     | `boolean`     | `false`     | **Genesis-specific**: Enable automatic cell renderer selection by data type. |
+| `column-component-name`          | `string`      | `grid-pro-column` | **Internal**: Name of the column component to use. |
 | `enable-cell-flashing`           | `boolean`     | `false`     | Enable cell flashing animations when cell values change. |
 | `enable-row-flashing`            | `boolean`     | `false`     | Enable row flashing animations for add transactions. |
 | `enabled-row-flashing`           | `boolean`     | `false`     | **@deprecated** - Use `enable-row-flashing` instead. |
-| `persist-column-state-key`       | `string`      | -           | **Key for persisting column state** in local browser or KV storage. Essential for maintaining user preferences. |
-| `persist-filter-model-key`       | `string`      | -           | **Key for persisting filter model** in local browser or KV storage. Maintains filter state across sessions. |
+| `grid-autosizing`                | `boolean`     | `false`     | **Important**: Controls automatic column sizing on interaction. Disables manual column widths and local storage persistence of widths. |
 | `header-case-type`               | `GridProCaseType` | `CONSTANT_CASE` | Transform header names: `camelCase`, `capitalCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`. |
-| `column-component-name`          | `string`      | `grid-pro-column` | **Internal**: Name of the column component to use. |
 | `header-height`                  | `number`      | -           | Custom header height in pixels. Overrides theme defaults. |
-| `row-height`                     | `number`      | -           | Custom row height in pixels. Overrides theme defaults. |
-| `theme`                          | `string`      | `alpine`    | AG Grid theme name. Available: `alpine`, `alpine-dark`, `balham`, `balham-dark`, `material`. |
+| `only-template-col-defs`         | `boolean`     | `false`     | **Genesis-specific**: Use only template-defined column definitions, ignore metadata. |
 | `pagination`                     | `boolean`     | `false`     | **Enables pagination**. Basic pagination works with AG Grid Community edition. **Enterprise features** like custom pagination components require AG Grid Enterprise. Works with both client-side and server-side datasources. |
 | `pagination-page-size`           | `number`      | `25`        | Number of rows per page when pagination is enabled. |
+| `persist-column-state-key`       | `string`      | -           | **Key for persisting column state** in local browser or KV storage. Essential for maintaining user preferences. |
+| `persist-filter-model-key`       | `string`      | -           | **Key for persisting filter model** in local browser or KV storage. Maintains filter state across sessions. |
+| `row-height`                     | `number`      | -           | Custom row height in pixels. Overrides theme defaults. |
+| `theme`                          | `string`      | `alpine`    | AG Grid theme name. Available: `alpine`, `alpine-dark`, `balham`, `balham-dark`, `material`. |
 | `with-status-bar`                | `boolean`     | `false`     | **Enterprise Feature**: Enables status bar at bottom of grid. **Requires AG Grid Enterprise module**. |
+| `:customErrorHandlerTemplate` | `(prefix: string, gridErrorItems: GridProErrorItem<any>[]) => ViewTemplate` | - | **Custom error handling**: Function that returns a custom template for displaying datasource errors. If not provided, uses the default error dialog. |
+| `:eventsAndCallbacks`            | `GridProEventsAndCallbacks` | - | **AG Grid events**: Object containing AG Grid event handlers and callbacks. |
+| `:gridComponents`                | `{[componentName: string]: any}` | - | **Custom components**: Object containing custom AG Grid components (cell renderers, editors, filters). |
+| `:gridFontFace`                  | `string`      | `defaultAgGridFontFace` | **Font configuration**: Font face configuration for AG Grid themes. |
+| `:rowData`                       | `any[]`       | -           | **Manual data**: Array of row data for scenarios where you set data manually without using datasource components. |
 | `:statusBarConfig`               | `GridProStatusBarConfig` | `DEFAULT_STATUS_BAR_CONFIG` | **Enterprise Feature**: Configuration for status bar components. Must use binding syntax with observable property. |
+
+## Custom error handling
+
+**Custom Error Handler Template**: Grid Pro allows you to provide a custom template for displaying datasource errors using the `customErrorHandlerTemplate` attribute. This gives you full control over the error display UI.
+
+### Custom error handler configuration
+
+The `customErrorHandlerTemplate` property accepts a function that receives:
+- `prefix`: Design system prefix (e.g., 'rapid', 'foundation')
+- `gridErrorItems`: Array of error items with `detail` and `type` properties
+
+```typescript
+interface GridProErrorItem<T = any> {
+  detail: T;    // Error details (message, object, etc.)
+  type: string; // Error type ('datasource', etc.)
+}
+```
+
+**Available Utility Functions:**
+
+Grid Pro exports an `extractErrorMessage` utility function that can help extract user-friendly error messages from error details:
+
+```typescript
+import { extractErrorMessage } from '@genesislcap/grid-pro';
+
+// Usage in custom error templates
+const message = extractErrorMessage(error.detail);
+```
+
+This utility handles various error detail formats and provides consistent message extraction.
+
+### Usage Examples
+
+**1. Simple Custom Error Dialog:**
+
+```html
+<grid-pro 
+  :customErrorHandlerTemplate="${() => myCustomErrorTemplate}">
+  <grid-pro-client-side-datasource
+    resource-name="ALL_TRADES">
+  </grid-pro-client-side-datasource>
+</grid-pro>
+```
+
+**Custom Error Template Implementation:**
+
+```typescript
+import { html, when } from '@microsoft/fast-element';
+import { GridProErrorItem } from '@genesislcap/grid-pro';
+
+const customErrorTemplate = (prefix: string, errors: GridProErrorItem<any>[]) => html`
+  ${when(() => errors.length > 0, html`
+    <div class="custom-error-overlay">
+      <${prefix}-card class="error-card">
+        <h3>⚠️ Connection Error</h3>
+        <p>Unable to load data. Please check your connection.</p>
+        <${prefix}-button @click=${(x) => x.querySelector('grid-pro').hideDatasourceError()}>
+          Dismiss
+        </${prefix}-button>
+      </${prefix}-card>
+    </div>
+  `)}
+`;
+```
+
+**2. Advanced Custom Error Handler with Details:**
+
+```html
+<grid-pro 
+  :customErrorHandlerTemplate="${() => advancedErrorHandlerTemplate}">
+  <grid-pro-server-side-datasource
+    resource-name="ALL_POSITIONS">
+  </grid-pro-server-side-datasource>
+</grid-pro>
+```
+
+**Advanced Error Template Implementation:**
+
+```typescript
+import { html, when, repeat } from '@microsoft/fast-element';
+import { extractErrorMessage } from '@genesislcap/grid-pro';
+
+const advancedErrorHandlerTemplate = (prefix: string, errors: GridProErrorItem<any>[]) => html`
+  ${when(() => errors.length > 0, html`
+    <div class="error-overlay">
+      <${prefix}-dialog class="custom-error-dialog" open>
+        <h2 slot="header">Data Loading Failed</h2>
+        <div class="error-content">
+          <p>Failed to load grid data:</p>
+          <ul class="error-list">
+            ${repeat(errors, html`
+              <li>${(error) => extractErrorMessage(error.detail)}</li>
+            `)}
+          </ul>
+        </div>
+        <div slot="footer">
+          <${prefix}-button 
+            appearance="accent" 
+            @click=${(x) => {
+              const grid = x.querySelector('grid-pro');
+              grid.hideDatasourceError();
+              grid.querySelector('grid-pro-server-side-datasource')?.restart();
+            }}>
+            Reload Data
+          </${prefix}-button>
+          <${prefix}-button 
+            appearance="lightweight" 
+            @click=${(x) => x.querySelector('grid-pro').hideDatasourceError()}>
+            Dismiss
+          </${prefix}-button>
+        </div>
+      </${prefix}-dialog>
+    </div>
+  `)}
+`;
+```
 
 ## Status bar configuration
 
