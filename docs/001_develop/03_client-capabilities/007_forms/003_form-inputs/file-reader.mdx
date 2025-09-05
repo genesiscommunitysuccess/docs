@@ -1,0 +1,450 @@
+---
+title: 'File Reader'
+sidebar_label: 'File Reader'
+id: client-interaction-file-reader
+keywords: [interaction, interactive, read, file, data, json]
+tags:
+- interaction
+- interactive
+- read
+- file
+- data
+- json
+sidebar_position: 5
+---
+import FileReaderDemo from '../../../../../examples/ui/client-capabilities/interaction/filereader.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# File Reader
+
+Use cases:
+* Reading and processing files client-side without uploading to server
+* Parsing JSON files for client-side data processing
+* File validation and content extraction
+
+The file-reader component can be used to select and process files from the local file system. It primarily supports JSON files and provides automatic parsing capabilities. The component processes files client-side without uploading them to a server, making it ideal for client-side data processing scenarios.
+
+## Example
+<FileReaderDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration
+```html
+  <rapid-file-reader></rapid-file-reader>
+```
+
+Usage
+```typescript
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
+@customElement({
+  name: 'my-element',
+  template: html`
+      <rapid-file-reader
+        label="Select JSON File"
+        accept=".json,application/json"
+        file-size-limit-bytes="10485760"
+        auto-process="false"
+        processing-delay-ms="1000"
+        @file-read=${(x, ctx) => x.handleFileRead(ctx.event)}
+        @error=${(x, ctx) => x.handleError(ctx.event)}
+        @clear=${(x) => x.handleClear()}
+      >
+      </rapid-file-reader>
+  `,
+})
+export class MyElement extends GenesisElement {
+  handleFileRead(event: CustomEvent<FileReadEventDetail>) {
+    const { fileName, content, file } = event.detail;
+    console.log('File processed:', fileName, content);
+  }
+
+  handleError(event: CustomEvent<ErrorEventDetail>) {
+    console.error('File processing error:', event.detail);
+  }
+
+  handleClear() {
+    console.log('File cleared');
+  }
+}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration
+```html
+  <rapid-file-reader></rapid-file-reader>
+```
+Usage
+```tsx
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
+export function MyComponent() {
+  const handleFileRead = (event: CustomEvent<FileReadEventDetail>) => {
+    const { fileName, content, file } = event.detail;
+    console.log('File processed:', fileName, content);
+  };
+
+  const handleError = (event: CustomEvent<ErrorEventDetail>) => {
+    console.error('File processing error:', event.detail);
+  };
+
+  const handleClear = () => {
+    console.log('File cleared');
+  };
+
+  return (
+    <rapid-file-reader
+      label="Select JSON File"
+      accept=".json,application/json"
+      file-size-limit-bytes="10485760"
+      auto-process="false"
+      processing-delay-ms="1000"
+      onFileRead={handleFileRead}
+      onError={handleError}
+      onClear={handleClear}
+    >
+    </rapid-file-reader>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+  <rapid-file-reader></rapid-file-reader>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+// Define the event detail types
+interface FileReadEventDetail {
+  fileName: string;
+  content: any;
+  file: File;
+}
+
+interface ErrorEventDetail {
+  message: string;
+  error?: any;
+}
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-file-reader
+      label="Select JSON File"
+      accept=".json,application/json"
+      file-size-limit-bytes="10485760"
+      auto-process="false"
+      processing-delay-ms="1000"
+      (fileRead)="handleFileRead($event)"
+      (error)="handleError($event)"
+      (clear)="handleClear()"
+    >
+    </rapid-file-reader>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  handleFileRead(event: CustomEvent<FileReadEventDetail>) {
+    const { fileName, content, file } = event.detail;
+    console.log('File processed:', fileName, content);
+  }
+
+  handleError(event: CustomEvent<ErrorEventDetail>) {
+    console.error('File processing error:', event.detail);
+  }
+
+  handleClear() {
+    console.log('File cleared');
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+The file-reader component provides a user-friendly interface for file selection and processing. It includes:
+
+- **File Selection**: Browse button to select files from the local file system
+- **File Validation**: Automatic validation of file type and size
+- **Processing State**: Visual feedback during file processing
+- **Content Parsing**: Automatic JSON parsing for supported file types
+- **Error Handling**: Comprehensive error handling with user notifications
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>label</td>
+      <td><code>string</code></td>
+      <td>This attribute specifies the caption for the file input, similar to HTML **Label** element. There is no default value specified for **label**.</td>
+<td>
+
+```typescript
+<rapid-file-reader label="Select JSON File">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>accept</td>
+      <td><code>string</code></td>
+      <td>This attribute determines the file formats that the file input should be able to select. Multiple file formats can be specified by separating them with a comma. By default, only JSON files are accepted: <code>.json,application/json</code>.</td>
+<td>
+
+```typescript
+<rapid-file-reader accept=".json,application/json">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>fileSizeLimitBytes</td>
+      <td><code>string</code></td>
+      <td>This attribute specifies the maximum file size in bytes that is supported by the file input. The default value is <code>10_485_760</code> (10MB).</td>
+<td>
+
+```typescript
+<rapid-file-reader file-size-limit-bytes="1048576">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>autoProcess</td>
+      <td><code>boolean</code></td>
+      <td>This attribute determines whether the file should be automatically processed when selected. When <code>true</code>, the file is processed immediately after selection. When <code>false</code>, a "Process file" button is shown. The default value is <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-file-reader auto-process="true">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>processingDelayMs</td>
+      <td><code>string</code></td>
+      <td>This attribute specifies the delay in milliseconds before hiding the processing state after file processing is complete. The default value is <code>1000</code> (1 second).</td>
+<td>
+
+```typescript
+<rapid-file-reader processing-delay-ms="3000">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+<tbody>
+<tr>
+  <td>fileContent</td>
+  <td><code>any</code></td>
+  <td>This property contains the parsed content of the processed file. For JSON files, this will be the parsed JavaScript object. It is <code>null</code> when no file is processed.</td>
+  <td>
+
+```typescript
+const content = fileReader.getFileContent();
+```
+
+  </td>
+</tr>
+<tr>
+  <td>onFileRead</td>
+  <td><code>(data: any) =&gt; void</code></td>
+  <td>This property is a callback function that is called when a file is successfully processed. The function receives the parsed file content as a parameter.</td>
+<td>
+
+```typescript
+// Property binding in template
+<rapid-file-reader :onFileRead=${(content) => console.log('File content:', content)}>
+
+// Property assignment in code
+fileReader.onFileRead = (content) => {
+  console.log('File content:', content);
+};
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+### Slots
+This component doesn't have any slots.
+
+### Parts
+| Part | Use |
+|---|---|
+| file-name-input | The text field showing the selected file name. |
+| select-file-button | The browse button for file selection. |
+| process-file-button | The process file button (shown when auto-process is false). |
+| processing-overlay | The overlay shown during file processing. |
+| clear-icon | The clear icon for removing file selection. |
+
+### Events fired
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+    <td>fileRead</td>
+    <td><code>Event</code></td>
+    <td>Emits when a file is successfully processed. The event detail contains <code>fileName</code>, <code>content</code>, and <code>file</code> properties.</td>
+<td>
+
+```typescript
+<rapid-file-reader @file-read=${(x, ctx) => x.handleFileRead(ctx.event)}>
+```
+
+</td>
+    </tr>
+    <tr>
+    <td>error</td>
+    <td><code>Event</code></td>
+    <td>Emits when there is an error during file processing, validation, or parsing.</td>
+<td>
+
+```typescript
+<rapid-file-reader @error=${(x, ctx) => x.handleError(ctx.event)}>
+```
+
+</td>
+    </tr>
+    <tr>
+    <td>clear</td>
+    <td><code>Event</code></td>
+    <td>Emits when the file selection is cleared.</td>
+<td>
+
+```typescript
+<rapid-file-reader @clear=${(x) => x.handleClear()}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+### Methods
+
+<table>
+  <thead><tr><th>Name</th><th>Parameters</th><th>Return Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>handleFileProcessing</td>
+      <td>None</td>
+      <td><code>Promise&lt;void&gt;</code></td>
+      <td>Manually triggers file processing. Useful when auto-process is disabled.</td>
+      <td>
+
+```typescript
+await fileReader.handleFileProcessing();
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>getFileContent</td>
+      <td>None</td>
+      <td><code>any</code></td>
+      <td>Returns the parsed content of the processed file.</td>
+      <td>
+
+```typescript
+const content = fileReader.getFileContent();
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>getSelectedFile</td>
+      <td>None</td>
+      <td><code>File | null</code></td>
+      <td>Returns the currently selected File object.</td>
+      <td>
+
+```typescript
+const file = fileReader.getSelectedFile();
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>clearSelection</td>
+      <td>None</td>
+      <td><code>void</code></td>
+      <td>Clears the current file selection and resets the component state.</td>
+      <td>
+
+```typescript
+fileReader.clearSelection();
+```
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Limitations
+
+:::note
+* Currently supports single file selection only
+* Primarily designed for JSON file processing
+* File processing is done client-side only
+* Future versions will support multiple files and additional file types
+:::
+
+## Best Practices
+
+1. **File Type Validation**: Always specify appropriate file types in the `accept` attribute
+2. **Size Limits**: Set reasonable file size limits to prevent performance issues
+3. **Error Handling**: Implement proper error handling for file processing failures
+4. **User Feedback**: Use the processing delay to provide visual feedback during file operations
+5. **Auto-processing**: Use auto-process for immediate feedback, manual processing for user control 
