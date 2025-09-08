@@ -28,7 +28,7 @@ const GENESISLCAP_PACKAGES = [
   '@genesislcap/foundation-login',
   '@genesislcap/foundation-notifications',
   '@genesislcap/foundation-openfin',
-  "@genesislcap/foundation-redux",
+  '@genesislcap/foundation-redux',
   '@genesislcap/foundation-store',
   '@genesislcap/foundation-testing',
   '@genesislcap/foundation-utils',
