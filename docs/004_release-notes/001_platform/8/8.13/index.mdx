@@ -78,6 +78,18 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.13.11
+
+###### Features
+
+* `genesis-metrics` : Register metrics for SQL coroutine dispatcher thread pool and Hikari connection pool 
+* `genesis-pal-execution` : Can use system definition properties in process config gpal script 
+
+###### Fixes
+
+* `genesis-config` : Make GenesisScriptHost construction consistent across the platform in terms of script cache path resolution and improve script cache implementation 
+* `genesis-process` : Ensure `SysDef` object is initialised before reading `-process-config.kts` and handle issues with `SysDef` object usage in GPAL scripts gracefully 
+
 #### 8.13.10
 
 ###### Fixes
