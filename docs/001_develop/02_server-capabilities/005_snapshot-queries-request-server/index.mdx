@@ -50,6 +50,12 @@ requestReplies {
 
   requestReply(INSTRUMENT)
 
+  requestReply(COMPANY) {
+      config {
+          criteriaOnlyRequest = true
+      }
+  }
+
   requestReply(COUNTERPARTY) {
     permissioning {
       permissionCodes = listOf("CounterpartyView")
@@ -94,7 +100,11 @@ requestReplies {
 ```
 
 ###### INSTRUMENT
+The request server name is defaulted as no name is specified
+
+###### COMPANY
 The request server name is defaulted as no name is specified.
+This request is criteria only, which means that criteria are evaluated on the database directly, when supported.
 
 ###### COUNTERPARTY
 [Access control](/develop/server-capabilities/access-control/) permissions are set, only users with `CounterpartyView` permission are able to access this query and see data. With the INSTRUMENT query above, any user who can authenticate with this app are able to access this query and see data.
@@ -110,6 +120,16 @@ The `auth` block in `permissioning` utilizes [access control](/develop/server-ca
 
 `filter` clause is a server side filter. Subscribing clients may specify criteria to filter data, however this filter applies on the back end and clients may not circumvent.
 
+### Criteria only mode
+
+Using `criteriaOnlyRequest` enables enhancements targeted at SQL databases:
+
+* Criteria evaluation on the database, where supported
+* Sorting at the database level
+* Native database pagination support
+
+Internally, this uses the [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria) database operation. See the linked documentation for details.
+
 ### Summary
 
 A Request Server file consists of a number of queries onto a table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
@@ -117,27 +137,30 @@ A Request Server file consists of a number of queries onto a table or view. All 
 
 ## Configuration options
 
-All `requestReply` blocks should be added under the parent block `requestReplies`
+All `requestReply` blocks should be added under the parent block `requestReplies`.
+Optionally a `config` block can be provided.
 
 ```kotlin
 requestReplies {
-
-  requestReply(...
-
+    config { ... }
+    requestReply(...)
 }
+```
 
 ### `requestReply`
 
 `requestReply` defines a new request server query. It takes a `name` (optional) and an `entity` (table or view)
 
-`name` is optional. Left unspecified, it is defaulted `REQ_\{table/view name\}`.
+`name` is optional. Left unspecified, it is defaulted `REQ_{TABLE_NAME or VIEW_NAME}`.
 
 ```kotlin
+requestReplies {
   // Name of the request server: REQ_INSTRUMENT
   requestReply(INSTRUMENT)
 
   // Name of the request server: REQ_TRADE
   requestReply("TRADE", TRADE_VIEW)
+}
 ```
 
 #### `request`
@@ -145,6 +168,8 @@ requestReplies {
 `request` lists the fields that a client can request data using.
 
 `request` is optional. Left unspecified the request fields will be those which make up the primary key of the table (primary key of the root table if the entity is a view)
+
+When using criteria only request, the `request` block is ignored.
 
 ```kotlin
   requestReply("TRADE", TRADE_VIEW) {
@@ -246,6 +271,19 @@ requestReplies {
 <CommonFieldOverrides />
 
 <CommonQueryFields />
+
+#### `config`
+
+The `config` block is supported at both the `requestReplies` or file level, as well as the `requestReply` level.
+Values specified at the file level, can be overwritten at the `requestReply` level.
+
+| Property                         | effect                                                    |
+|----------------------------------|-----------------------------------------------------------|
+| criteriaOnlyRequest              | Enables criteria only mode                                |
+| supportLazyPredicates            | Supports lazy criteria in criteria mode                   |
+| timeoutInSeconds                 | timeout in seconds                                        |
+| maxRows                          | max results in reply                                      |
+| enableTypeAwareCriteriaEvaluator | enhanced criteria evaluation when not using criteria only |
 
 #### `filterWithParameters`
 
