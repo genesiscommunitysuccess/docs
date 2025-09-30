@@ -1,0 +1,267 @@
+---
+title: 'SQL Database'
+sidebar_label: 'SQL Database'
+id: server-external-sql-database
+keywords: [server, external, sql, jdbc, api, apis, integration]
+tags:
+  - server
+  - external
+  - sql
+  - jdbc
+  - api
+  - apis
+  - integration
+sidebar_position: 6
+---
+
+## Overview
+
+The Genesis Application Platform integrates with external SQL databases using JDBC.
+
+They key features and benefits are:
+
+- **Seamless Integration**. Designed to work seamlessly with Genesis Request Servers and Event Handlers.
+- **Flexible Usage**. Supports multiple approaches, including passing in queries directly and hiding the database interactions behind an interface.
+
+
+::::note
+Ensure your Genesis installation is up to date to access the latest SQL integration features.
+::::
+
+## Basic usage
+
+To enable SQL integration, we will need to specify a JDBC URL in our system definition:
+
+```kotlin
+item("sql.my-connection.jdbcUrl", "jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1;NON_KEYWORDS=KEY,VALUE")
+```
+
+Then define an interface that describes the operations you need:
+
+```kotlin
+// in our request server definition
+@RepositoryModule("my-connection")
+interface TradeRepository {
+
+    @SqlQuery("select * from trade")
+    suspend fun selectAllTrades(): List<Trade>
+}
+
+requestReply<Unit, Trade>("HELLO_WORLD") {
+    val repo = inject<TradeRepository>()
+
+    replyList {
+        repo.selectAllTrades()
+    }
+}
+```
+
+### Simple examples
+
+This example demonstrates an insert query that takes multiple primitive type parameters.
+
+#### Example 1: select query
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlQuery("select * from trade")
+    fun selectTradeList(): List<Trade>
+}
+```
+
+This example demonstrates a simple select query that retrieves a list of `Trade` objects.
+
+#### Example 2: insert query with object parameter
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlUpdate(
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    fun insertTrade(trade: Trade): Int
+}
+```
+
+This example shows an insert query that takes a `Trade` object as a parameter.
+
+#### Example 3: insert query with primitive type parameters
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlUpdate(
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    fun insertTrade(
+        id: String,
+        quantity: Int,
+        price: BigDecimal,
+        status: String,
+        @QueryParameter("client_id") clientId: String,
+    ): Int
+}
+```
+
+## Configuration options
+
+Database connections are defined using system definitions, where properties have the following hierarchy:
+`sql.{connection-name}.{property}`.
+
+Where `{connection-name}` will be how the connection is referred in the `@RepositoryModule` annotation.
+The connection will also become a `@Named` injectable.
+
+A connection will become available as soon as a `jdbcUrl` property for it has been assigned, and this is the only required property.
+All other properties match the standard Genesis SQL database properties defined [here](/build-deploy-operate/deploy/supporting-infrastructure/?_highlight=dbquotedidentifiers#common-system-definitions),
+as per the table below.
+
+Apart from `jdbcUrl`, `username` and `password`, other properties will default to the system definition property,
+or their framework specified default.
+
+| Property                  | Required | System Definition Property        |
+|---------------------------|:--------:|:----------------------------------|
+| jdbcUrl                   |    ✔️    | n/a                               |
+| username                  |    ❌     | n/a                               |
+| password                  |    ❌     | n/a                               |
+| connectionMaximumPoolSize |    ❌     | DbSqlMaxPoolSize                  |
+| connectionTimeout         |    ❌     | DbSqlConnectionTimeoutMillis      |
+| idleTimeout               |    ❌     | DbSqlIdleTimeoutMillis            |
+| maxLifetime               |    ❌     | DbSqlMaxLifetimeMillis            |
+| minimumIdle               |    ❌     | DbSqlMinimumIdleMillis            |
+| validationTimeout         |    ❌     | DbSqlValidationTimeoutMillis      |
+| keepaliveTime             |    ❌     | DbSqlKeepaliveTimeMillis          |
+| leakDetectionThreshold    |    ❌     | DbSqlLeakDetectionThresholdMillis |
+| cachePrepStmts            |    ❌     | DbSqlCachePrepStmts               |
+| prepStmtCacheSize         |    ❌     | DbSqlPrepStmtCacheSize            |
+| prepStmtCacheSqlLimit     |    ❌     | DbSqlPrepStmtCacheSqlLimit        |
+| resultSetFetchSize        |    ❌     | DbSqlResultSetFetchSize           |
+| sqlCatalog                |    ❌     | DbSqlCatalog                      |
+| connectionInitQuery       |    ❌     | DbSqlConnectionInitSql            |
+| connectionTestQuery       |    ❌     | DbSqlConnectionTestQuery          |
+
+## Repository modules
+
+Repository modules are a powerful feature of the Genesis Application Platform that let you define interfaces for interacting with databases.
+This section shows how to use repository modules, with examples and details on their usage.
+
+Repository modules are defined using the `@RepositoryModule` annotation, which specifies the name of the database connection.
+The interface itself defines methods for interacting with the database.
+
+### Query annotations
+
+*   `@SqlQuery`: Used for select queries.
+*   `@SqlUpdate`: Used for write operations (insert, update, delete).
+*   `@QueryParameter`: Used for specifying parameter names for function parameters. Required for Java, optional for Kotlin.
+
+Queries can be executed with or without parameters.
+
+### Supported types
+
+The following types are supported natively:
+
+*   String
+*   Boolean
+*   Byte
+*   Short
+*   Int
+*   Long
+*   Float
+*   Double
+*   BigDecimal
+*   ByteArray
+*   Date (`java.util.Date`)
+*   Timestamp
+
+### Supported return types for read operations
+
+The following return types are supported for read operations:
+
+| Type                        | Description                                       | Supports suspend |
+|-----------------------------|---------------------------------------------------|:----------------:|
+| Any natively supported type | Int, String, Boolean, etc.                        |        ✔️        |
+| Kotlin data class           | A data class containing only native properties.   |        ✔️        |
+| Java record class           | A record class containing only native properties. |        ✔️        |
+| Maybe of TYPE               | RxJava 3.                                         |        ❌         |
+| Single of TYPE              | RxJava 3.                                         |        ❌         |
+| Flowable of TYPE            | RxJava 3.                                         |        ❌         |
+| Flow of TYPE                | Kotlin coroutines.                                |        ❌         |
+| List of TYPE                | standard list                                     |        ✔️        |
+
+Methods can be marked `suspend` in Kotlin if the return type is marked with 'supports suspend' in the table above.
+
+### Supported return types for write operations
+
+The following return types are supported for write operations:
+
+*   Unit (Kotlin) or void (Java)
+*   Int (Kotlin) or int (Java)
+
+These methods can be made asynchronous by adding the `suspend` keyword in Kotlin.
+
+## Connections
+
+In addition to repository modules, you can interact directly with provided connections.
+
+### Obtaining a connection
+
+To interact with a connection, you can inject a `SqlDatabaseConnection`,
+you will need to use a `@Named` annotation specifying the connection name.
+
+### Using the connection
+
+The key features of the interface are:
+
+*   **Querying**: The `query` function is used to read data from the database.
+*   **Updating**: The `update` and `execute` functions update data in the database.
+*   **Building statements**: The `buildStatement` functions generate a prepared statement for a given query, allowing for options such as returning generated keys.
+
+All of these functions optionally support metrics, and `query`, `update` and `execute` optionally support parameters.
+If no `metricId` is provided, the SQL string is used as the metric ID.
+Parameters are passed as a `Map<String, Any?>` in Kotlin or `Map<String, Object>` in Java.
+Use named parameters in query strings, e.g. `select * from trade where id = :id`.
+
+### Querying
+
+With the `query` function you can read data from a database.
+Provide at least a SQL string and a way for the connection to map the result set to a return type.
+You can pass a `ResultSetMapper` for full control.
+You can also pass a type. In Java, pass a `Class<TYPE>` to type the result. In Kotlin, provide the type argument.
+
+The connection maps types automatically if:
+1. the provided type is either a Java record class, or a Kotlin data class.
+2. the provided type only contains natively supported types.
+
+Queries return an `ExecutableQuery<TYPE>`, which provides three kinds of functions:
+
+* **Transforming functions**: Transform the query. These are evaluated lazily, either when a terminating function runs or if the query is executed asynchronously.
+    * `map` - maps the query to a new type
+    * `filter` - filters the query results
+    * `take` - takes the first `n` records
+    * `takeWhile` - reads the query until a condition is met
+    * `onEach` - evaluate each record
+* **Terminating functions**: These functions evaluate the query and return a result:
+    * `toList` - returns the results as a list
+    * `sorted` - returns a sorted list
+    * `distinct` - returns a list of distinct values
+    * `toCollection` - inserts the results into a collection
+    * `fold` - folds the results into a single value
+    * `reduce` - reduces the results to a single value
+    * `collect` - performs an action on each element of the query result
+    * `first` - returns the first result of the query
+    * `firstOrNull` - returns the first result of the query or null
+    * `last` - returns the last result of the query
+    * `count` - returns the number of records
+    * `anyMatch` - returns true if any record matches
+    * `allMatch` - returns true if all records match
+    * `noneMatch` - returns true if no records match
+    * `max` - returns the maximum value
+    * `min` - returns the minimum value
+* **Async query providers**: These provide the query as an asynchronous operation:
+    * `asFlow` (Kotlin Flow)
+    * `asFlowable` (RxJava Flowable)
+    * `asMaybe` (RxJava Maybe)
+    * `asSingle` (RxJava Single)
+
