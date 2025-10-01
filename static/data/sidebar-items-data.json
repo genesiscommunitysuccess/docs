@@ -247,8 +247,8 @@
         "description": "Enable your users to upload and download documents for use in emails and other contexts."
       },
       {
-        "href": "/develop/business-components/generated-docs/",
-        "description": "Create document templates that enable users to generate documents such as trade reports."
+        "href": "/develop/business-components/doc-generate/",
+        "description": "Create document templates that enable users to generate documents populated with application data, such as trade reports."
       },
       {
         "href": "/develop/business-components/reconciliation/",

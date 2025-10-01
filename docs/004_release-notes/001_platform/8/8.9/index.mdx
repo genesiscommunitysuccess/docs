@@ -94,7 +94,58 @@ id: '8.9'
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.9.1
+
+###### Features
+
+* `genesis-pal-dataserver` : Add `maxBytesPerCharacter` configuration item to improve handling of UTF-8 characters in indices 
+* `genesis-dbtest` : Option to generate random SQL schema name for tests 
+* `genesis-gradle` : Support site-specific in product details plugin 
+* `genesis-logging` : Support configurable log directories and system definition option to disable automatic archiving 
+* `genesis-pal-dataserver` : Improve memory profile of data server enriched fields 
+* `genesis-pal-dataserver` : Add new dataserver update processing mode 
+* `genesis-pal-dataserver` : Improve priming progress updates in log file 
+* Add support for `GENESIS_HOME` in `templt.xml` files
+* Improve coroutine exception handling 
+
+###### Fixes
+
+* `genesis-pal-dataserver` : Avoid unnecessary LMDB range read in certain scenarios 
+* `genesis-pal-dataserver` : Ensure string UTF-8 byte size is taken into account when truncating strings as part of index handling 
+* `genesis-db` : Do not use SQL thread pool for RxDb transactions to avoid deadlock 
+* `genesis-db` :  Fixed an issue with `upsertAll` in SQL layer where it was unable to handle records where the primary key was not populated but is an autoIncrement or sequenced field 
+* `distribution-gradle-plugin` : Copy `installHooks` scripts to the correct application folder as part of distribution file creation 
+* `distribution-gradle-plugin` : Fix incorrect initialisation logic 
+* `genesis-clustersupport` : Fall back to db if service discovery cache missing entry 
+* `genesis-config` : Support `String` input for sys def ProcessDependencyTimeoutSeconds 
+* `genesis-console` : Console endpoints `EVENT_START_PROCESS` and `EVENT_STOP_PROCESS` now work as expected. Previously an error was returned in recent versions of the platform. 
+* `genesis-db` : Handle sql getRange operation with continuation 
+* `genesis-db` : UpsertAll now handles insert operations with auto generated indexed sequence values correctly in batch mode 
+* `genesis-environment` : Ensure `GlobalClasspathAdditions` sysdef item is handled correctly as part of `startProcess` classpath generation 
+* `genesis-environment` : Ensure environment genesis-generated-sysdef and genesis-generated-fields take priority in classpath generation 
+* `genesis-environment` : `GENESIS_SYSDEF_` environment variable values now take precedence when the system definition item is being read in python scripts 
+* `genesis-environment` : `preCompileScripts` now takes into account the  tag and uses multiple modules for classpath generation (if defined) in the  tag in processes.xml 
+* `genesis-environment` : Fix issue preventing all script.kts file evaluations 
+* `genesis-gradle` : Also use site specific template files when checking for overridden processes 
+* `genesis-gradle` : Fixed an issue where the gradle cache was reading system definition items defined with type `LONG` as `INT` values. This lead to constant cache misses even when the values were unchanged, which contributed to longer build times. 
+* `genesis-testsupport` : Detect annotations on super classes 
+* `genesis-testsupport` : Fix handling of nested classes 
+* `genesis-logging` : Add default log paths to the log4j2-default.xml file if L and RL env variables are not found 
+* `genesis-logging` : Fixed issues where `startServer` would throw an error and stop if `runtime/logs` contained a `.gz` file which was not related to a valid Genesis process 
+* `genesis-pal-streamer` : Ensure response to client when more data is available and records in lookup all filtered out 
+* `genesis-router` : Fix package scan definition in processes.xml to only include console router extensions 
+* `genesis-router` : Handle Netty exceptions when creating a TextWebsocketFrame in a graceful manner  
+* `genesis-testsupport` : Do not register lifecycle manager JVM shutdown hook for tests 
+* `genesis-pal-consolidator` : Ensure non-nullable fields without default value can be zeroed out automatically in non-transient cold start operations 
+* `genesis-pal-dataserver` : `String` overflow handling logic is now applied correctly when priming 
+* `genesis-pal-dataserver` : Fixed an issue where priming progress was incorrectly printing 0 rather than the amount of records it has processed 
+* `genesis-pal-dataserver` : Revert `publishUpdatesWhilePriming` to previous behaviour when it was ignored, due to issue when enabled 
+* `genesis-pal-requestserver` : Range requests using FROM/TO are now evaluated correctly 
+* `settings-plugin` : Add script dependencies on script-config module if present 
+* `genesis-dataserver2` : Race condition when processing modify very soon after an insert which failed the where clause 
+* Use `GenesisInjector` for all script configurations 
+* Fixed a test-only edge case in `GenesisMessageClient` where event message type, correctly registered with EventReply, was expected to return a GenesisSet in a specific test path. This mismatch caused type errors, now resolved by transforming the reply into a GenesisSet where needed 
+* `genesis-environment` : Revert `GenesisInjector` changes for `PurgeTables` and related scripts 
 
 ## Client
 

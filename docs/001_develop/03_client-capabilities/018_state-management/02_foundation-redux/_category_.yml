@@ -1,0 +1,3 @@
+label: 'Foundation Redux'
+className: 'menu__nested-category'
+collapsible: false

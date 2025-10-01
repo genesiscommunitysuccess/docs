@@ -550,9 +550,9 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/017_state-management/",
+        directory: "./docs/001_develop/03_client-capabilities/018_state-management/01_foundation-store",
         api_docs: "docs/api",
-        readme: "17_foundation-store.mdx",
+        readme: "01_foundation-store.mdx",
         keywords: [
           "web",
           "store",
@@ -579,12 +579,53 @@ export default {
         ],
         pages: [
           {
-            title: "State management",
-            sidebar_label: "State management",
-            id: "client-state-management",
+            title: "Foundation Store",
+            sidebar_label: "Foundation Store",
+            id: "client-state-management-foundation-store",
           },
         ],
       },
+    },
+    {
+      name: "@genesislcap/foundation-redux",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/018_state-management/02_foundation-redux",
+        api_docs: "docs/api",
+        readme: "02_foundation-redux.mdx",
+        keywords: [
+          "genesis",
+          "foundation",
+          "redux",
+          "state management",
+          "redux state management",
+          "store",
+          "actions",
+          "reducers",
+        ],
+        tags: [
+          "redux",
+          "state management",
+          "redux state management",
+          "redux store",
+          "redux store management",
+          "actions",
+          "reducers",
+          "middleware",
+          "devtools",
+        ],
+      },
+      pages: [
+        {
+          title: "Foundation Redux",
+          id: "client-state-management-foundation-redux",
+          sidebar_label: "Foundation Redux",
+        },
+      ],
     },
     {
       name: "@genesislcap/foundation-testing",
