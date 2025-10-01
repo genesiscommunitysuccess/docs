@@ -1122,7 +1122,7 @@ First, use the code below to create the test class:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
@@ -1134,7 +1134,7 @@ class EventHandlerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerTest {
 
@@ -1158,7 +1158,7 @@ Use the code below to inject an Event Handler client:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
@@ -1173,7 +1173,7 @@ class EventHandlerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerTest {
 
@@ -1310,7 +1310,7 @@ You also need to inject `InMemoryTestAuthCache` into your test class.
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 class EventHandlerTest {
 
@@ -1360,7 +1360,7 @@ class EventHandlerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("hello-world-eventhandler.kts")
 public class EventHandlerJavaTest {
 

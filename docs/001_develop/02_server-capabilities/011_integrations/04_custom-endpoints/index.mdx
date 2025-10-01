@@ -1008,7 +1008,7 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import javax.inject.Inject
 
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("genesis-router.kts")
 @PackageNameScan("global.genesis.router")
 class WebEndpointTest {
@@ -1037,7 +1037,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("genesis-router.kts")
 @PackageNameScan("global.genesis.router")
 public class WebEndpointTest {
@@ -1167,7 +1167,7 @@ In the code below, there are two tests, which both check the result of the autho
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("genesis-router.kts")
 @PackageNameScan("global.genesis.router")
 @EnableInMemoryTestAuthCache
@@ -1239,7 +1239,7 @@ class WebEndpointTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("genesis-router.kts")
 @PackageNameScan("global.genesis.router")
 @EnableInMemoryTestAuthCache
