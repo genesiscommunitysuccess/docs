@@ -129,20 +129,20 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
   Declaration
   ```html
-    <rapid-stepper>
-      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-      <rapid-stepper-tab-panel>
-        Tab Panel 1
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 2
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 3
-      </rapid-stepper-tab-panel>
-    </rapid-stepper>
+  <rapid-stepper>
+    <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+    <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+    <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+    <rapid-stepper-tab-panel>
+      Tab Panel 1
+    </rapid-stepper-tab-panel>
+    <rapid-stepper-tab-panel>
+      Tab Panel 2
+    </rapid-stepper-tab-panel>
+    <rapid-stepper-tab-panel>
+      Tab Panel 3
+    </rapid-stepper-tab-panel>
+  </rapid-stepper>
   ```
 
   Usage
@@ -151,9 +151,7 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
   @Component({
     selector: 'my-root',
     template: `
-        <rapid-stepper
-            (submit)="handleSubmit($event)"
-        >
+        <rapid-stepper (submit)="handleSubmit($event)">
             <rapid-stepper-tab>Step 1</rapid-stepper-tab>
             <rapid-stepper-tab>Step 2</rapid-stepper-tab>
             <rapid-stepper-tab>Step 3</rapid-stepper-tab>
@@ -200,73 +198,61 @@ Property and attribute binding examples for Genesis Component syntax.
             <td>hide-submit-button</td>
             <td><code>boolean</code></td>
             <td>Hides or shows the submit button</td>
-<td>
-
-```typescript
-<rapid-stepper hide-submit-button>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper hide-submit-button>
+              ```
+            </td>
         </tr>
         <tr>
             <td>orientation</td>
             <td><code>string</code></td>
             <td>There are two stepper orientations to choose from: vertical and horizontal.</td>
-<td>
-
-```typescript
-<rapid-stepper orientation="horizontal">
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper orientation="horizontal">
+              ```
+            </td>
         </tr>
         <tr>
             <td>hide-all-buttons</td>
             <td><code>boolean</code></td>
             <td>Hides all navigation buttons (Back, Next, Submit)</td>
-<td>
-
-```typescript
-<rapid-stepper hide-all-buttons>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper hide-all-buttons>
+              ```
+            </td>
         </tr>
         <tr>
             <td>hide-step-number</td>
             <td><code>boolean</code></td>
             <td>Hides the step number display in the stepper tabs</td>
-<td>
-
-```typescript
-<rapid-stepper hide-step-number>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper hide-step-number>
+              ```
+            </td>
         </tr>
         <tr>
             <td>allow-backward-jumps</td>
             <td><code>boolean</code></td>
             <td>Allows users to click on previous steps to navigate backwards</td>
-<td>
-
-```typescript
-<rapid-stepper allow-backward-jumps>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper allow-backward-jumps>
+              ```
+            </td>
         </tr>
         <tr>
             <td>allow-forward-jumps</td>
             <td><code>boolean</code></td>
             <td>Allows users to click on future steps to navigate forwards (with validation)</td>
-<td>
-
-```typescript
-<rapid-stepper allow-forward-jumps>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper allow-forward-jumps>
+              ```
+            </td>
         </tr>
     </tbody>
 </table>
@@ -285,24 +271,20 @@ Property and attribute binding examples for Genesis Component syntax.
     <tbody>
         <tr>
             <td>validation</td>
-<td>
-
-```typescript
-Array<{isValid: (x: this) => boolean}>
-```
-
-</td>
-<td>If set, the predicate function defined at index `x` is executed to check whether step `x` is valid when trying to move onto the subsequent step.
-If the predicate returns false the stepper will not move to the next step. See [this example](#validation).</td>
-<td>
-
-```typescript
-<rapid-stepper :validation=${(x) => x.validationConfig}>
-```
-
-</td>
-</tr>
-</tbody>
+            <td>
+              ```typescript
+              Array<{isValid: (x: this) => boolean}>
+              ```
+            </td>
+            <td>If set, the predicate function defined at index `x` is executed to check whether step `x` is valid when trying to move onto the subsequent step.
+            If the predicate returns false the stepper will not move to the next step. See [this example](#validation).</td>
+            <td>
+              ```typescript
+              <rapid-stepper :validation=${(x) => x.validationConfig}>
+              ```
+            </td>
+        </tr>
+      </tbody>
 </table>
 
 ### Methods
@@ -323,43 +305,37 @@ If the predicate returns false the stepper will not move to the next step. See [
             <td><code>stepNumber: number, bypassJumpRestrictions?: boolean</code></td>
             <td><code>boolean</code></td>
             <td>Go to a specific step by step number (1-based indexing). Returns true if successful, false if step number is invalid or already on that step.</td>
-<td>
+            <td>
+              ```typescript
+              // Go to step 2
+              element.goToStep(2);
 
-```typescript
-// Go to step 2
-element.goToStep(2);
-
-// Go to step 3 bypassing jump restrictions
-element.goToStep(3, true);
-```
-
-</td>
+              // Go to step 3 bypassing jump restrictions
+              element.goToStep(3, true);
+              ```
+            </td>
         </tr>
         <tr>
             <td>goToFirstStep</td>
             <td>None</td>
             <td><code>boolean</code></td>
             <td>Go to the first step (step 1). Returns true if successful, false if already on first step.</td>
-<td>
-
-```typescript
-element.goToFirstStep();
-```
-
-</td>
+            <td>
+              ```typescript
+              element.goToFirstStep();
+              ```
+            </td>
         </tr>
         <tr>
             <td>goToLastStep</td>
             <td>None</td>
             <td><code>boolean</code></td>
             <td>Go to the last step. Returns true if successful, false if already on last step.</td>
-<td>
-
-```typescript
-element.goToLastStep();
-```
-
-</td>
+            <td>
+              ```typescript
+              element.goToLastStep();
+              ```
+            </td>
         </tr>
     </tbody>
 </table>
@@ -401,61 +377,51 @@ element.goToLastStep();
             <td>@submit</td>
             <td><code>void</code></td>
             <td>Enables you to pass the function to be performed in the last step after clicking submit.</td>
-<td>
-
-```typescript
-<rapid-stepper @submit="${(x) => x.submitHandler()}">
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper @submit="${(x) => x.submitHandler()}">
+              ```
+            </td>
         </tr>
         <tr>
             <td>@step-click</td>
             <td><code>\{activetab: HTMLElement, activeid: string\}</code></td>
             <td>Fired when a step is clicked and navigation occurs.</td>
-<td>
-
-```typescript
-<rapid-stepper @step-click={\`\${(x, c) => x.handleStepClick(c.event.detail)}\`}>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper @step-click={\`\${(x, c) => x.handleStepClick(c.event.detail)}\`}>
+              ```
+            </td>
         </tr>
         <tr>
             <td>@validation-failure</td>
             <td><code>\{stepIndex: number, stepId: string, message: string\}</code></td>
             <td>Fired when validation fails during forward jumps.</td>
-<td>
-
-```typescript
-<rapid-stepper @validation-failure={\`\${(x, c) => x.handleValidationFailure(c.event.detail)}\`}>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper @validation-failure={\`\${(x, c) => x.handleValidationFailure(c.event.detail)}\`}>
+              ```
+            </td>
         </tr>
         <tr>
             <td>@next-step</td>
             <td><code>void</code></td>
             <td>Fired when moving to the next step.</td>
-<td>
-
-```typescript
-<rapid-stepper @next-step={\`\${(x) => x.handleNextStep()}\`}>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper @next-step={\`\${(x) => x.handleNextStep()}\`}>
+              ```
+            </td>
         </tr>
         <tr>
             <td>@validation-success</td>
             <td><code>void</code></td>
             <td>Fired when validation passes during step navigation.</td>
-<td>
-
-```typescript
-<rapid-stepper @validation-success={\`\${(x) => x.handleValidationSuccess()}\`}>
-```
-
-</td>
+            <td>
+              ```typescript
+              <rapid-stepper @validation-success={\`\${(x) => x.handleValidationSuccess()}\`}>
+              ```
+            </td>
         </tr>
     </tbody>
 </table>
@@ -472,7 +438,11 @@ Use the validation field to set the condition for when the stepper permits the u
 
 You define the validation attribute as follows:
 
-```typescript title="Stepper"
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+```typescript title="Stepper Validation"
 const template = html`
   <rapid-stepper
     :validation=${(x) => [
@@ -513,7 +483,181 @@ const template = html`
   </rapid-stepper>
 `;
 ```
-The index of each array element is related to the corresponding tab position. Index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, and so on.
+
+</TabItem>
+
+<TabItem value="react">
+
+```tsx title="Stepper Validation"
+import React, { useState } from 'react';
+
+export function StepperValidationExample() {
+  const [valid, setValid] = useState('');
+  const [valid2, setValid2] = useState('');
+  const [valid3, setValid3] = useState('');
+  const [valid4, setValid4] = useState('');
+  const [valid5, setValid5] = useState('');
+
+  const validationConfig = [
+    {
+      isValid: () => valid === '123' && valid2 === 'abc' && valid3 === 'test',
+    },
+    { isValid: () => valid4 === 'abc' },
+    { isValid: () => valid5 === 'finish' },
+  ];
+
+  const handleSubmit = () => {
+    alert('You completed form');
+  };
+
+  return (
+    <rapid-stepper 
+      validation={validationConfig}
+      onSubmit={handleSubmit}
+    >
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>
+        <rapid-text-field 
+          style={{marginLeft: '10px'}} 
+          value={valid}
+          onChange={(e) => setValid(e.target.value)}
+        >
+          Must be equal to: 123
+        </rapid-text-field>
+        <rapid-text-field 
+          style={{marginLeft: '10px'}} 
+          value={valid2}
+          onChange={(e) => setValid2(e.target.value)}
+        >
+          Must be equal to: abc
+        </rapid-text-field>
+        <rapid-text-field 
+          style={{marginLeft: '10px'}} 
+          value={valid3}
+          onChange={(e) => setValid3(e.target.value)}
+        >
+          Must be equal to: test
+        </rapid-text-field>
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        <h5>Must be equal to: abc</h5>
+        <rapid-select 
+          style={{margin: '10px 0 0 10px'}} 
+          value={valid4}
+          onChange={(e) => setValid4(e.target.value)}
+        >
+          <rapid-option>123</rapid-option>
+          <rapid-option>abc</rapid-option>
+        </rapid-select>
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        <rapid-text-field 
+          style={{marginLeft: '10px'}} 
+          value={valid5}
+          onChange={(e) => setValid5(e.target.value)}
+        >
+          Must be equal to: finish
+        </rapid-text-field>
+      </rapid-stepper-tab-panel>
+    </rapid-stepper>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript title="Stepper Validation"
+import { Component } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'stepper-validation-example',
+  template: `
+    <rapid-stepper 
+      [validation]="validationConfig"
+      (submit)="handleSubmit($event)"
+    >
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>
+        <rapid-text-field 
+          style="margin-left: 10px;" 
+          [value]="valid"
+          (change)="valid = $event.target.value"
+        >
+          Must be equal to: 123
+        </rapid-text-field>
+        <rapid-text-field 
+          style="margin-left: 10px;" 
+          [value]="valid2"
+          (change)="valid2 = $event.target.value"
+        >
+          Must be equal to: abc
+        </rapid-text-field>
+        <rapid-text-field 
+          style="margin-left: 10px;" 
+          [value]="valid3"
+          (change)="valid3 = $event.target.value"
+        >
+          Must be equal to: test
+        </rapid-text-field>
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        <h5>Must be equal to: abc</h5>
+        <rapid-select 
+          style="margin: 10px 0 0 10px;" 
+          [value]="valid4"
+          (change)="valid4 = $event.target.value"
+        >
+          <rapid-option>123</rapid-option>
+          <rapid-option>abc</rapid-option>
+        </rapid-select>
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        <rapid-text-field 
+          style="margin-left: 10px;" 
+          [value]="valid5"
+          (change)="valid5 = $event.target.value"
+        >
+          Must be equal to: finish
+        </rapid-text-field>
+      </rapid-stepper-tab-panel>
+    </rapid-stepper>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class StepperValidationExampleComponent {
+  valid = '';
+  valid2 = '';
+  valid3 = '';
+  valid4 = '';
+  valid5 = '';
+
+  validationConfig = [
+    {
+      isValid: () => this.valid === '123' && this.valid2 === 'abc' && this.valid3 === 'test',
+    },
+    { isValid: () => this.valid4 === 'abc' },
+    { isValid: () => this.valid5 === 'finish' },
+  ];
+
+  handleSubmit(event: Event) {
+    alert('You completed form');
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+The index of each array element is related to the corresponding tab position. Index number 0 is related to the first tab of the stepper, index number 1 is related to the second tab of the stepper, and so on.
 
 In the example above, each tab only allows the user to proceed to the next step when the field `isValid` receives a `true` value.
 
@@ -522,6 +666,10 @@ If you want to perform more complicated logic tests to control how the user can 
 ### Programmatic Navigation
 
 The stepper provides methods to programmatically navigate between steps:
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
 
 ```typescript title="Programmatic Navigation"
 @customElement({
@@ -557,6 +705,93 @@ export class StepperNavigationExample extends GenesisElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="react">
+
+```tsx title="Programmatic Navigation"
+import React, { useRef } from 'react';
+
+export function StepperNavigationExample() {
+  const stepperRef = useRef(null);
+
+  const goToFirst = () => {
+    stepperRef.current?.goToFirstStep();
+  };
+
+  const goToLast = () => {
+    stepperRef.current?.goToLastStep();
+  };
+
+  const goToSpecific = () => {
+    stepperRef.current?.goToStep(2);
+  };
+
+  return (
+    <rapid-stepper ref={stepperRef}>
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>Content 1</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
+    </rapid-stepper>
+    
+    <rapid-button onClick={goToFirst}>Go to First</rapid-button>
+    <rapid-button onClick={goToLast}>Go to Last</rapid-button>
+    <rapid-button onClick={goToSpecific}>Go to Step 2</rapid-button>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript title="Programmatic Navigation"
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'stepper-navigation-example',
+  template: `
+    <rapid-stepper #stepper>
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>Content 1</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
+    </rapid-stepper>
+    
+    <rapid-button (click)="goToFirst()">Go to First</rapid-button>
+    <rapid-button (click)="goToLast()">Go to Last</rapid-button>
+    <rapid-button (click)="goToSpecific()">Go to Step 2</rapid-button>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class StepperNavigationExampleComponent {
+  @ViewChild('stepper', { static: true }) stepper!: ElementRef;
+
+  goToFirst() {
+    this.stepper.nativeElement.goToFirstStep();
+  }
+
+  goToLast() {
+    this.stepper.nativeElement.goToLastStep();
+  }
+
+  goToSpecific() {
+    this.stepper.nativeElement.goToStep(2);
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Button Visibility Control
 
