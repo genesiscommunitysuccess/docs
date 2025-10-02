@@ -771,7 +771,7 @@ Create the test class using the code provided below:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-reqrep.kts")
 class RequestServerTest {
 
@@ -783,7 +783,7 @@ class RequestServerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("hello-world-reqrep.kts")
 public class RequestServerTest {
 
@@ -813,7 +813,7 @@ Use the code below:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-reqrep.kts")
 class RequestServerTest {
 
@@ -978,7 +978,7 @@ In the code below, there are two tests, which both check the result of the autho
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("hello-world-reqrep.kts")
 @EnableInMemoryTestAuthCache
 class HelloWorldRequestServerTest {
@@ -1025,7 +1025,7 @@ class HelloWorldRequestServerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("hello-world-reqrep.kts")
 @EnableInMemoryTestAuthCache
 public class HelloWorldRequestServerJavaTest {

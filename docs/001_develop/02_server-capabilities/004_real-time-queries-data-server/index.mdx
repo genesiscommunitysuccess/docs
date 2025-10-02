@@ -1610,7 +1610,7 @@ Create the test class using the code provided below:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 class DataServerTest {
@@ -1623,7 +1623,7 @@ class DataServerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 public class DataServerTest {
@@ -1661,7 +1661,7 @@ Before we can begin writing tests for our Data Server, we need to inject referen
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 class DataServerTest {
@@ -1680,7 +1680,7 @@ class DataServerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 public class DataServerTest {
@@ -1806,7 +1806,7 @@ To test dynamic authorization, add `@EnableInMemoryTestAuthCache` to your class 
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @EnableInMemoryTestAuthCache
 @TestScriptFile("hello-world-dataserver.kts")
 @CsvData("SystemTest/simple-data-load.csv")
@@ -1863,7 +1863,7 @@ class DataServerTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @EnableInMemoryTestAuthCache
 @TestScriptFile("hello-world-dataserver.kts")
 @CsvData("SystemTest/simple-data-load.csv")

@@ -27,15 +27,20 @@ If you are testing against previous versions of the framework, see the page on
 
 :::
 
-Genesis provides a Junit 5 extension that helps developers write integration tests.
+Genesis provides a JUnit 5 extension that helps developers write integration tests.
 The extension will create a Genesis microservice for the duration of each test case.
 The GenesisJunit functionality is made available via the `genesis-testsupport` package.
-This page will deal with the GenesisJunit extension in general.
+This page describes the GenesisJunit extension in general.
+
+::::tip
+Prefer using [`@GenesisTest`](#genesistest) or [`@GenesisDatabaseTest`](#genesisdatabasetest) instead of `@ExtendWith(GenesisJunit...)`.
+These annotations implicitly register the JUnit 5 extension and are more concise.
+::::
 
 
 ### Testing specific services
 
-In addition to general test support; **GenesisJunit** also provides support for specific services.
+In addition to general test support, **GenesisJunit** also provides support for specific services.
 For more information, have a look at the links below.
 * [Testing Data Servers](/develop/server-capabilities/real-time-queries-data-server/#testing)
 * [Testing Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#testing)
@@ -51,7 +56,7 @@ We want to make sure our trade is marked as processed, once complete.
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class) // 1
+@GenesisTest // 1
 @CsvData("my-trades.csv") // 2
 class TradeProcessorTest {
 
@@ -77,9 +82,9 @@ class TradeProcessorTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit::class) // 1
+@GenesisTest // 1
 @CsvData("my-trades.csv") // 2
-public class SimpleEventHandlerTest {
+public class TradeProcessorTest {
 
     @Inject
     private SyncEntityDb db = null; // 3
@@ -100,10 +105,10 @@ public class SimpleEventHandlerTest {
 </TabItem>
 </Tabs>
 
-Let's break down what is happening here.
-1. `@ExtendWith(GenesisJunit.class)` - using this annotation will enable the Genesis Junit extension. It will manage the Genesis resources during the test.
-2. `@CsvData("my-trades.csv")` - our test relies on trade data existing in the database. Here we specify that data.
-3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime, are available in our test. Here we're getting a reference to the database.
+Let's break down what happens here.
+1. [`@GenesisTest`](#genesistest) - using this annotation will enable the Genesis JUnit extension. It will manage the Genesis resources during the test.
+2. [`@CsvData`](#csvdata)("my-trades.csv") - our test relies on trade data existing in the database. Here we specify that data.
+3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime are available in our test. Here we're getting a reference to the database.
 4. `@Inject` and `TradeProcessor` - we can also inject our own classes. `TradeProcessor` has a constructor annotated with `@Inject`, so the dependency injection mechanism knows how to instantiate it.
 5. By the time the test starts, our injected instances are available and we can start testing.
 6. We can access the database as we would normally to get the updated state of the trade.
@@ -111,147 +116,163 @@ Let's break down what is happening here.
 
 #### GenesisJunit
 
-**GenesisJunit** will take care of the Genesis side of the test and will do the following for each test:
+**GenesisJunit** will take care of the Genesis side of the test.
+There are two modes for running GenesisJunit:
+1. Full microservice
+1. Database only
 
-* instantiate the database, including applying the schema
-* start the database, apply the schema/ truncate tables
-* load csv data
-* start a Genesis microservice
-* inject properties into the test class
-* run the test
-* clean up resources
+The main benefit of using [`@GenesisTest`](#genesistest) is full microservice support.
+We can use the message client, package scan and process lifecycle.
+The main benefit of using [`@GenesisDatabaseTest`](#genesisdatabasetest) is that tests run a lot faster.
 
-The `GenesisJunit` class can be found in the `global.genesis.testsupport.jupiter` package.
+It will do the following for each test:
+
+| Function                              |     Database only      | Full Micro service |
+|---------------------------------------|:----------------------:|:------------------:|
+| Annotation to Use                     | `@GenesisDatabaseTest` |   `@GenesisTest`   |
+| Instantiate the database              |           ✔️           |         ✔️         |
+| Load csv data                         |           ✔️           |         ✔️         |
+| Package scan                          |           ❌️           |         ✔️         |
+| Start a Genesis microservice          |           ❌️           |         ✔️         |
+| Inject properties into the test class |           ✔️           |         ✔️         |
+| Run the test                          |           ✔️           |         ✔️         |
+| Clean up resources                    |           ✔️           |         ✔️         |
+
+The [`@GenesisDatabaseTest`](#genesisdatabasetest) and [`@GenesisTest`](#genesistest) can be found in the `global.genesis.testsupport.jupiter` package.
+
+### Scenario Testing
+
+You can define and share scenarios for testing.
+You can do this by creating a class with genesis test annotations only.
+You can then import those scenarios by adding multiple [`@TestScenario`](#testscenario)(MyClass::class) or [`@TestScenario`](#testscenario)(MyClass.class) to your tests.
+Finally, you will need to annotate your test functions with [`@GenesisTemplateTest`](#genesistemplatetest).
+Your test will now be run against those multiple scenarios.
+In the example below, the code is tested with both `Flag` set to `true` and `false` using system definition overrides.
+However, the use is not limited to [`@SysDefOverwrite`](#sysdefoverwrite), you will be able to use any configuration that drives the configuration of the service and or database.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@SysDefOverwrite("Flag", "true")
+class ScenarioA
+
+@SysDefOverwrite("Flag", "false")
+class ScenarioB
+
+@GenesisDatabaseTest
+@TestScenario(ScenarioA::class)
+@TestScenario(ScenarioB::class)
+class ScenarioExample {
+
+    @GenesisTemplateTest
+    fun name() {
+        // test here...
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@SysDefOverwrite(key = "Flag", keyValue = "true")
+class ScenarioA {}
+
+@SysDefOverwrite(key = "Flag", keyValue = "false")
+class ScenarioB {}
+
+@GenesisDatabaseTest
+@TestScenario(ScenarioA.class)
+@TestScenario(ScenarioB.class)
+public class ScenarioExample {
+
+    @GenesisTemplateTest
+    void name() {
+        // test here...
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+### Re-using resources between tests
+
+Often, most test time is spent provisioning and tearing down the microservice or database.
+However, this is not always strictly necessary.
+For instance, if you are testing how your trade microservice handles different trades, those tests can likely run without restarting the service in between.
+Please see the equivalent annotations for microservice and database-only tests below:
+
+| Test Type     | Context per test       | Shared Context                               |
+|---------------|------------------------|----------------------------------------------|
+| Microservice  | [`@GenesisTest`](#genesistest)         | [`@GenesisSharedContextTest`](#genesissharedcontexttest)                  |
+| Database only | [`@GenesisDatabaseTest`](#genesisdatabasetest) | [`@GenesisDatabaseTest`](#genesisdatabasetest)(reuseDatabase = true) |
+
+These tests will behave slightly differently.
+
+#### Microservice shared context
+
+When using [`@GenesisSharedContextTest`](#genesissharedcontexttest), function-level annotations are not supported and your test will fail if any are found.
+Additionally, after each test, if the service is no longer healthy or if exit was called, any subsequent test will fail.
+
+#### Database only shared context
+
+Database tests behave slightly differently.
+Function level annotations are supported.
+GenesisJunit will attempt to reuse the database on a best-effort basis.
+Tests are run in sequence; this sequence is determined by JUnit.
+Between tests, GenesisJunit will check whether the database configuration is compatible between test functions.
+If compatible, the database will be reused; otherwise, it will be disregarded and a new database will be initialised.
 
 ### Annotations
 
 **GenesisJunit** supports a range of annotations.
 
 :::important
-You must add `@ExtendWith(GenesisJunit::class)` or `@ExtendWith(GenesisJunit.class)` to your class or function. This is essential.
-:::
+You must add [`@GenesisDatabaseTest`](#genesisdatabasetest) or [`@GenesisTest`](#genesistest) to your class or function. This is essential.
+::::
 
-These `@ExtendWith(GenesisJunit.class)` and all the annotations below work on both the class and method level.
+`@GenesisDatabaseTest` or `@GenesisTest` and all the annotations below work on both the class and method level.
+Not all annotations are supported when using `@GenesisDatabaseTest`.
 
-Some of the annotations are Repeatable; this means that you can provide multiple values at the same class or method.
+| Annotation                                                  | Target             | Repeatable | Works with `@GenesisDatabaseTest` |
+|-------------------------------------------------------------|:-------------------|:----------:|:---------------------------------:|
+| [GenesisTest](#genesistest)                                 | Class/ Method      |     ❌      |                 ❌                 |
+| [GenesisDatabaseTest](#genesisdatabasetest)                 | Class/ Method      |     ❌      |                 ✔️                 |
+| [CoroutinesDumpOnFailure](#coroutinesdumponfailure)         | Class/ Method      |     ❌      |                ✔️                 |
+| [CsvData](#csvdata)                                         | Class/ Method      |     ✔️     |                ✔️                 |
+| [EnableDataDump](#enabledatadump)                           | Class/ Method      |     ❌      |                 ❌                 |
+| [EnableInMemoryTestAuthCache](#enableinmemorytestauthcache) | Class/ Method      |     ❌      |                 ❌                 |
+| [EnableLegacyXmlDictionary](#enablelegacyxmldictionary)     | Class/ Method      |     ❌      |                ✔️                 |
+| [EnableQuietMode](#enablequietmode)                         | Class/ Method      |     ❌      |                ✔️                 |
+| [EnableTestClassLoader](#enabletestclassloader)             | Class/ Method      |     ❌️     |                ❌️                 |
+| [ExpectedExitCode](#expectedexitcode)                       | Class/ Method      |     ❌️     |                ❌️                 |
+| [ExpectedProcessStatus](#expectedprocessstatus)             | Class/ Method      |     ❌️     |                 ❌                 |
+| [FullDumpOnFailure](#fulldumponfailure)                     | Class/ Method      |     ❌      |                ✔️                 |
+| [GenesisHome](#genesishome)                                 | Class/ Method      |     ❌      |                ✔️                 |
+| [GenesisSharedContextTest](#genesissharedcontexttest)       | Class              |     ❌      |                 ❌                 |
+| [GenesisTemplateTest](#genesistemplatetest)                 | Method             |     ❌      |                ✔️                 |
+| [PackageNameScan](#packagenamescan)                         | Class/ Method      |     ✔️     |                ✔️                 |
+| [PackageScan](#packagescan)                                 | Class/ Method      |     ✔️     |                ✔️                 |
+| [ProvidedInstance](#providedinstance)                       | Field/ Method      |     ❌      |                ✔️                 |
+| [ProvidedSysDef](#providedsysdef)                           | Field/ Method      |     ❌      |                ✔️                 |
+| [ResetTableAfterTest](#resettableaftertest)                 | Class/ Method      |     ✔️     |                ✔️                 |
+| [RootLogLevel](#rootloglevel)                               | Class/ Method      |     ❌      |                ✔️                 |
+| [SysDefOverwrite](#sysdefoverwrite)                         | Class/ Method      |     ✔️     |                ✔️                 |
+| [TestInject](#testinject)                                   | Method parameter   |     ✔️     |                ✔️                 |
+| [TestConfigFile](#testconfigfile)                           | Class/ Method      |     ✔️     |                 ❌                 |
+| [TestScenario](#testscenario)                               | Class/ Method      |     ✔️     |                ✔️                 |
+| [TestScriptFile](#testscriptfile)                           | Class/ Method      |     ✔️     |                 ❌                 |
+| [ThreadDumpOnFailure](#threaddumponfailure)                 | Class/ Method      |     ❌      |                ✔️                 |
+| [UserRight](#userright)                                     | Class/ Method      |     ✔️     |                ✔️                 |
+
+Some annotations are repeatable, which means you can provide multiple values at the class or method level.
 
 - If you provide these Repeatable annotations on both the class and method level, both are applied.
 - If you provide non-Repeatable annotations on both the class and method level, the method-level annotation takes precedence.
 - The enable annotations (`EnableDataDump` and `EnableInMemoryTestAuthCache`) do not support disabling at the method level once they have been enabled on the class level.
 
 All annotations can be found in the `global.genesis.testsupport.jupiter` package.
-
-#### TestScriptFile
-
-Use this annotation to load a script file as part of the test.
-This annotation is Repeatable.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-@ExtendWith(GenesisJunit::class)
-@TestScriptFile("my-eventhandler.kts")
-internal class ScriptFileExamples {
-
-    @Test
-    fun testScriptFileExamples() {
-        // just uses "my-eventhandler.kts"
-    }
-
-    @Test
-    @TestScriptFile("other-eventhandler.kts")
-    fun testMoreScriptFiles() {
-        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
-    }
-
-    @Test
-    @TestScriptFile("other-eventhandler.kts")
-    @TestScriptFile("more-eventhandler.kts")
-    fun testManyScriptFiles() {
-        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-@ExtendWith(GenesisJunit.class)
-@TestScriptFile("my-eventhandler.kts")
-public class ScriptFileJavaExample {
-
-    @Test
-    public void testScriptFileExamples() {
-        // just uses "my-eventhandler.kts"
-    }
-
-    @Test
-    @TestScriptFile("other-eventhandler.kts")
-    public void testMoreScriptFiles() {
-        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
-    }
-
-    @Test
-    @TestScriptFile("other-eventhandler.kts")
-    @TestScriptFile("more-eventhandler.kts")
-    public void testManyScriptFiles() {
-        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
-    }
-}
-```
-</TabItem>
-</Tabs>
-
-#### TestConfigFile
-Use this annotation to load a process config file as part of a test.
-This annotation is not Repeatable.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-@ExtendWith(GenesisJunit::class)
-@TestConfigFile("my-process-config.kts")
-internal class ConfigFileExamples {
-
-    @Test
-    fun myProcessConfig() {
-        // just uses "my-process-config.kts"
-    }
-
-    @Test
-    @TestConfigFile("other-process-config.kts")
-    fun otherProcessConfig() {
-        // uses "other-process-config.kts"
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-@ExtendWith(GenesisJunit.class)
-@TestConfigFile("my-process-config.kts")
-public class ConfigFileExampleJavaTest {
-
-    @Test
-    public void myProcessConfig() {
-        // just uses "my-process-config.kts"
-    }
-
-    @Test
-    @TestConfigFile("other-process-config.kts")
-    public void otherProcessConfig() {
-        // uses "other-process-config.kts"
-    }
-}
-```
-</TabItem>
-</Tabs>
-
 
 #### CsvData
 
@@ -284,7 +305,7 @@ id2,text2
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @CsvData("my-data.csv")
 internal class CsvDataExamples {
 
@@ -312,7 +333,7 @@ internal class CsvDataExamples {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @CsvData("my-data.csv")
 public class CsvDataExamplesJavaTest {
 
@@ -338,10 +359,10 @@ public class CsvDataExamplesJavaTest {
 </TabItem>
 </Tabs>
 
-#### EnableInMemoryTestAuthCache
+#### EnableDataDump
 
-This annotation enables the in-memory auth cache.
-To set or remove entity authorization, you will need to inject an `InMemoryTestAuthCache` into your class.
+This annotation will enable the DATADUMP log level in the microservice.
+This will output any messages sent and received to the logger.
 You can apply this annotation on both classes and methods.
 However, once enabled on the class level, there is no way to disable on the method level.
 
@@ -349,7 +370,49 @@ However, once enabled on the class level, there is no way to disable on the meth
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
+@EnableDataDump
+class DataDumpTest {
+
+    @Test
+    @EnableDataDump
+    fun myTest() {
+        // ...
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@EnableDataDump
+public class DataDumpTest {
+
+    @Test
+    @EnableDataDump
+    public void myTest() {
+        // ...
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### EnableInMemoryTestAuthCache
+
+This annotation enables the in-memory auth cache.
+To set or remove entity authorisation, you will need to inject an `InMemoryTestAuthCache` into your class.
+You can apply this annotation on both classes and methods.
+However, once enabled on the class level, there is no way to disable on the method level.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
 @EnableInMemoryTestAuthCache
 internal class EnableInMemoryTestAuthCacheExamples {
 
@@ -366,15 +429,15 @@ internal class EnableInMemoryTestAuthCacheExamples {
     }
 
     @Test
-    fun testAuthorizeAndRevokeAuthCache() {
-        // to authorize:
+    fun testAuthoriseAndRevokeAuthCache() {
+        // to authorise:
         authCache.authorise(
             authMap = "TRADE_VISIBILITY",
             entityCode = "00000000001TRSP0",
             userName = "JohnDoe"
         )
 
-        // and then to revoke authorisation:
+        // and then revoke authorisation:
         authCache.revoke(
             authMap = "TRADE_VISIBILITY",
             entityCode = "00000000001TRSP0",
@@ -388,7 +451,7 @@ internal class EnableInMemoryTestAuthCacheExamples {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @EnableInMemoryTestAuthCache
 public class EnableInMemoryTestAuthCacheExamplesJavaTest {
 
@@ -405,8 +468,8 @@ public class EnableInMemoryTestAuthCacheExamplesJavaTest {
     }
 
     @Test
-    public void testAuthorizeAndRevokeAuthCache() {
-        // to authorize:
+    public void testAuthoriseAndRevokeAuthCache() {
+        // to authorise:
         authCache.builder()
                 .withAuthMap("TRADE_VISIBILITY")
                 .withEntityCode("00000000001TRSP0")
@@ -425,26 +488,22 @@ public class EnableInMemoryTestAuthCacheExamplesJavaTest {
 </TabItem>
 </Tabs>
 
+#### EnableLegacyXmlDictionary
 
-#### EnableDataDump
-
-This annotation will enable the DATADUMP log level in the microservice.
-This will output any messages sent and received to the logger.
-You can apply this annotation on both classes and methods.
-However, once enabled on the class level, there is no way to disable on the method level.
+This annotation enables the legacy XML dictionary from the provided Genesis home folder for the test.
+This is only necessary when testing against test-specific dictionaries.
+By default, an application's dictionary is loaded, ensuring consistency between production and test dictionaries without needing to duplicate the dictionary files.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
-@EnableDataDump
-class DataDumpTest {
-
+@GenesisTest
+@EnableLegacyXmlDictionary
+class LegacyXmlDictionaryTest {
     @Test
-    @EnableDataDump
     fun myTest() {
-        // ...
+        // legacy XML dictionary is enabled
     }
 }
 ```
@@ -453,44 +512,35 @@ class DataDumpTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
-@EnableDataDump
-public class DataDumpTest {
-
+@GenesisTest
+@EnableLegacyXmlDictionary
+public class LegacyXmlDictionaryTest {
     @Test
-    @EnableDataDump
     public void myTest() {
-        // ...
+        // legacy XML dictionary is enabled
     }
 }
 ```
+
 </TabItem>
 </Tabs>
 
 
-#### RootLogLevel
+#### EnableQuietMode
 
-This annotation will adjust the log level for the life of the test.
-You can apply this annotation on both classes and methods.
-Providing this annotation at the method level will take precedence over the class level annotation.
+This annotation disables the update queue during the test.
+This annotation can be applied to classes or methods and is not Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
-@RootLogLevel(Level.INFO)
-class LogLevelTest {
-
+@GenesisTest
+@EnableQuietMode
+class QuietModeTest {
     @Test
     fun myTest() {
-        // root log level set to INFO
-    }
-
-    @Test
-    @RootLogLevel(Level.TRACE)
-    fun myOtherTest() {
-        // root log level set to TRACE
+        // test runs in quiet mode
     }
 }
 ```
@@ -499,25 +549,144 @@ class LogLevelTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
-@EnableDataDump
-public class LogLevelTest {
-
+@GenesisTest
+@EnableQuietMode
+public class QuietModeTest {
     @Test
     public void myTest() {
-        // root log level set to INFO
+        // test runs in quiet mode
     }
+}
+```
 
+</TabItem>
+</Tabs>
+
+#### EnableTestClassLoader
+
+This annotation enables the test class loader for the test.
+This is only needed in edge cases where a class may dynamically load classes.
+This annotation can be applied to classes or methods.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@EnableTestClassLoader
+class TestClassLoaderTest {
     @Test
-    @RootLogLevel(Level.TRACE)
-    public void myOtherTest() {
-        // root log level set to TRACE
+    fun myTest() {
+        // test class loader is enabled
     }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@EnableTestClassLoader
+public class TestClassLoaderTest {
+    @Test
+    public void myTest() {
+        // test class loader is enabled
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### ExpectedExitCode
+
+The `ExpectedExitCode` annotation provides a way to assert the expected exit code of a process after a test.
+This is useful when testing failure scenarios. By default, a test will fail if a process tries to exit.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+@ExpectedExitCode(1)
+fun `test expected exit code`() {
+    // test code that should exit with code 1
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+@ExpectedExitCode(1)
+public void testExpectedExitCode() {
+    // test code that should exit with code 1
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### ExpectedProcessStatus
+
+The `ExpectedProcessStatus` annotations provide a way to assert the end state of a process after a test. By default, GenesisJunit will assert that the process is healthy (`ProcessState.UP`).
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+@ExpectedProcessStatus(ProcessState.DOWN)
+fun `test status DOWN`() {
+    ProcessStateChangeHandler("test").setProcessDown()
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+@ExpectedProcessStatus(ProcessState.DOWN)
+public void testStatusDown() {
+    new ProcessStateChangeHandler("test").setProcessDown();
 }
 ```
 </TabItem>
 </Tabs>
 
+#### GenesisDatabaseTest
+
+Annotation used to enable a database-only context for faster tests.
+Provides DI and CSV loading but does not start a microservice.
+Non-repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisDatabaseTest
+class MyDbOnlyTest {
+    @Test
+    fun myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisDatabaseTest
+public class MyDbOnlyTest {
+    @Test
+    public void myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
 
 #### GenesisHome
 
@@ -530,7 +699,7 @@ Providing this annotation at the method level will take precedence over the clas
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @GenesisHome("/genesisHomeA")
 class GenesisHomeTest {
 
@@ -551,7 +720,7 @@ class GenesisHomeTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @GenesisHome("/genesisHomeA")
 public class GenesisHomeTest {
 
@@ -570,6 +739,436 @@ public class GenesisHomeTest {
 </TabItem>
 </Tabs>
 
+#### GenesisSharedContextTest
+
+Annotation used to enable the full microservice context that is shared between tests within a class.
+Provides DI, package scanning, message client, and lifecycle management.
+Non-repeatable.
+In the example, the microservice is started only once, and used by both `myTest` and `myOtherTest`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisSharedContextTest
+class MyGenesisTest {
+    @Test
+    fun myTest() { /* ... */ }
+    @Test
+    fun myOtherTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSharedContextTest
+public class MyGenesisTest {
+    @Test
+    public void myTest() { /* ... */ }
+    @Test
+    public void myOtherTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+#### GenesisTemplateTest
+
+Used with scenario testing to execute the same test method across one or more scenarios, and is used in combination with [`@TestScenario`](#testscenario).
+For more information see [Scenario Testing](#scenario-testing)
+Apply at method level only.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisDatabaseTest
+@TestScenario(ScenarioA::class)
+@TestScenario(ScenarioB::class)
+class MyTemplateTests {
+    @GenesisTemplateTest
+    fun runAcrossScenarios() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisDatabaseTest
+@TestScenario(ScenarioA.class)
+@TestScenario(ScenarioB.class)
+public class MyTemplateTests {
+    @GenesisTemplateTest
+    public void runAcrossScenarios() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+#### GenesisTest
+
+Annotation used to enable the full microservice context for a test.
+Provides DI, package scanning, message client, and lifecycle management.
+Non-repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+class MyGenesisTest {
+    @Test
+    fun myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class MyGenesisTest {
+    @Test
+    public void myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### PackageNameScan
+
+Annotation used to specify package names for scanning.
+Unlike `@PackageScan`, this annotation accepts `String` rather than `Class`.
+This annotation should be used to mark classes or functions that require package scanning by name.
+This annotation is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@PackageNameScan("com.example.package")
+internal class PackageNameScanTest {
+    @Test
+    fun myTest() {
+        // scans the package "com.example.package"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@PackageNameScan("com.example.package")
+public class PackageNameScanTest {
+    @Test
+    public void myTest() {
+        // scans the package "com.example.package"
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### ProvidedSysDef
+
+Annotation used to mark properties or methods as provided system definitions.
+Marked properties or methods can be used to provide system definition values during test runtime.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+internal class ProvidedSysDefTest {
+
+    @ProvidedSysDef
+    private val mySysDef: String = "test-value"
+
+    @Test
+    fun myTest() {
+        // mySysDef is provided as a system definition
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class ProvidedSysDefTest {
+
+    @ProvidedSysDef
+    private String mySysDef = "test-value";
+
+    @Test
+    public void myTest() {
+        // mySysDef is provided as a system definition
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### PackageScan
+
+Annotation used to mark classes or functions for package scanning.
+This annotation should be used to mark classes or functions that require package scanning.
+It is used to specify the marker interface or class to be used for scanning packages.
+This annotation is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@PackageScan(MyClass::class)
+internal class PackageScanTest {
+    @Test
+    fun myTest() {
+        // scans the package of MyClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass::class)
+    fun myOtherTest() {
+        // scans the package of MyClass and MyOtherClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass::class)
+    @PackageScan(MyThirdClass::class)
+    fun myThirdTest() {
+        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@PackageScan(MyClass.class)
+public class PackageScanTest {
+    @Test
+    public void myTest() {
+        // scans the package of MyClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass.class)
+    public void myOtherTest() {
+        // scans the package of MyClass and MyOtherClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass.class)
+    @PackageScan(MyThirdClass.class)
+    public void myThirdTest() {
+        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### ProvidedInstance
+
+Annotation used to mark properties or methods as provided instances.
+Marked properties or methods can be used to override predefined instances during test runtime.
+
+For example, one could define an interface in production code called `MyInterface` with a default implementation `MyInterfaceImpl`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+
+interface MyInterface
+
+@Module
+@ConditionalOnMissingClass(MyInterface::class)
+class MyInterfaceImpl: MyInterface
+
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+
+interface MyInterface {
+}
+
+@Singleton
+@ConditionalOnMissingClass(MyInterface.class)
+public class MyInterfaceImpl implements MyInterface {
+}
+
+```
+</TabItem>
+</Tabs>
+
+Then we can override the implementation at runtime using a fake/mock implementation:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+internal class ProvidedInstanceTest {
+
+    /**
+     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
+     */
+    @ProvidedInstance
+    private val myInstance: MyInterface = FakeImpl()
+
+    @Test
+    fun myTest() {
+        //
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class ProvidedInstanceTest {
+    /**
+     * Provides a MyInterface instance during the dependency injection phase.
+     */
+    @ProvidedInstance
+    private MyInterface myInstance = new FakeImpl();
+
+    @Test
+    public void myTest() {
+        //
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+
+
+#### ResetTableAfterTest
+
+Annotation used to reset specific database tables after each test when using a shared-context test.
+GenesisJunit will take a snapshot of the table before each test, and then revert it to its previous state.
+Please note that there is a limit of 1,000 rows; the test will fail if a table has more rows than this.
+The snapshot will be taken after any [`@CsvData`](#csvdata) is loaded, but before the test is run.
+This annotation can be applied to classes or methods and is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisSharedContextTest
+@ResetTableAfterTest("TRADE")
+@CsvData("trade.csv")
+internal class ResetTableAfterTestExample {
+    @Test
+    fun myTest() {
+        // TRADE table will be reset after this test
+    }
+    @Test
+    fun myTest2() {
+        // TRADE table will be reset after this test
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSharedContextTest
+@ResetTableAfterTest("TRADE")
+@CsvData("trade.csv")
+public class ResetTableAfterTestExample {
+    @Test
+    public void myTest() {
+        // TRADE table will be reset after this test
+    }
+    @Test
+    public void myTest2() {
+        // TRADE table will be reset after this test
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+#### RootLogLevel
+
+This annotation will adjust the log level for the life of the test.
+You can apply this annotation on both classes and methods.
+Providing this annotation at the method level will take precedence over the class level annotation.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@RootLogLevel(Level.INFO)
+class LogLevelTest {
+
+    @Test
+    fun myTest() {
+        // root log level set to INFO
+    }
+
+    @Test
+    @RootLogLevel(Level.TRACE)
+    fun myOtherTest() {
+        // root log level set to TRACE
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@RootLogLevel(Level.INFO)
+public class LogLevelTest {
+
+    @Test
+    public void myTest() {
+        // root log level set to INFO
+    }
+
+    @Test
+    @RootLogLevel(Level.TRACE)
+    public void myOtherTest() {
+        // root log level set to TRACE
+    }
+}
+```
+</TabItem>
+</Tabs>
+
 #### SysDefOverwrite
 
 Annotation used to indicate that a specific system definition property should be overwritten.
@@ -582,7 +1181,7 @@ unless the same property is overwritten, in which case the method-level annotati
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 @SysDefOverwrite("MY_VALUE", "ABC")
 internal class OverwriteSysDefTest {
 
@@ -613,7 +1212,7 @@ simply overriding the `PROCESS_NAME` system definition property. The property wi
 you choose to set up your system definitions.
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
+@GenesisTest
 class MyTest {
     @Test
     @SysDefOverwrite("PROCESS_NAME", "SOME_CUSTOM_PROCESS_NAME")
@@ -628,7 +1227,7 @@ class MyTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
+@GenesisTest
 @SysDefOverwrite(key = "MY_VALUE", keyValue = "ABC")
 public class OverwriteSysDefTest {
 
@@ -654,36 +1253,126 @@ public class OverwriteSysDefTest {
 </TabItem>
 </Tabs>
 
-#### PackageScan
 
-Annotation used to mark classes or functions for package scanning.
-This annotation should be used to mark classes or functions that require package scanning.
-It is used to specify the marker interface or class to be used for scanning packages.
+
+#### TestConfigFile
+Use this annotation to load a process config file as part of a test.
+This annotation is not Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@TestConfigFile("my-process-config.kts")
+internal class ConfigFileExamples {
+
+    @Test
+    fun myProcessConfig() {
+        // just uses "my-process-config.kts"
+    }
+
+    @Test
+    @TestConfigFile("other-process-config.kts")
+    fun otherProcessConfig() {
+        // uses "other-process-config.kts"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@TestConfigFile("my-process-config.kts")
+public class ConfigFileExampleJavaTest {
+
+    @Test
+    public void myProcessConfig() {
+        // just uses "my-process-config.kts"
+    }
+
+    @Test
+    @TestConfigFile("other-process-config.kts")
+    public void otherProcessConfig() {
+        // uses "other-process-config.kts"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### TestScenario
+
+Annotation used to define and share test scenarios, and is used in combination with [`@GenesisTemplateTest`](#genesistemplatetest).
+This annotation can be applied to classes or methods and is Repeatable.
+For more information see [Scenario Testing](#scenario-testing)
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@TestScenario(MyScenarioA::class)
+@TestScenario(MyScenarioB::class)
+class TestScenarioExample {
+    @GenesisTemplateTest
+    fun myTest() {
+        // test runs twice, once with MyScenarioA and once with MyScenarioB
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@TestScenario(MyScenarioA.class)
+@TestScenario(MyScenarioB.class)
+public class TestScenarioExample {
+    @GenesisTemplateTest
+    public void myTest() {
+        // test runs twice, once with MyScenarioA and once with MyScenarioB
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+#### TestScriptFile
+
+Use this annotation to load a script file as part of the test.
 This annotation is Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit::class)
-@PackageScan(MyClass::class)
-internal class PackageScanTest {
+@GenesisTest
+@TestScriptFile("my-eventhandler.kts")
+internal class ScriptFileExamples {
+
     @Test
-    fun myTest() {
-        // scans the package of MyClass
+    fun testScriptFileExamples() {
+        // just uses "my-eventhandler.kts"
     }
 
     @Test
-    @PackageScan(MyOtherClass::class)
-    fun myOtherTest() {
-        // scans the package of MyClass and MyOtherClass
+    @TestScriptFile("other-eventhandler.kts")
+    fun testMoreScriptFiles() {
+        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
     }
 
     @Test
-    @PackageScan(MyOtherClass::class)
-    @PackageScan(MyThirdClass::class)
-    fun myThirdTest() {
-        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    @TestScriptFile("other-eventhandler.kts")
+    @TestScriptFile("more-eventhandler.kts")
+    fun testManyScriptFiles() {
+        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
     }
 }
 ```
@@ -692,86 +1381,47 @@ internal class PackageScanTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
-@PackageScan(MyClass.class)
-public class PackageScanTest {
+@GenesisTest
+@TestScriptFile("my-eventhandler.kts")
+public class ScriptFileJavaExample {
+
     @Test
-    public void myTest() {
-        // scans the package of MyClass
+    public void testScriptFileExamples() {
+        // just uses "my-eventhandler.kts"
     }
 
     @Test
-    @PackageScan(MyOtherClass.class)
-    public void myOtherTest() {
-        // scans the package of MyClass and MyOtherClass
+    @TestScriptFile("other-eventhandler.kts")
+    public void testMoreScriptFiles() {
+        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
     }
 
     @Test
-    @PackageScan(MyOtherClass.class)
-    @PackageScan(MyThirdClass.class)
-    public void myThirdTest() {
-        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    @TestScriptFile("other-eventhandler.kts")
+    @TestScriptFile("more-eventhandler.kts")
+    public void testManyScriptFiles() {
+        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
     }
 }
 ```
 </TabItem>
 </Tabs>
 
-#### ProvidedInstance
 
-Annotation used to mark properties or methods as provided instances.
-Marked properties or methods can be used to override pre defined instances during test runtime.
+#### TestInject
 
-For example, one could define an interface in production code called `MyInterface` with a default implementation `MyInterfaceImpl`.
+Annotation used to inject test dependencies into test functions as parameters.
+This is useful where you might want to use and or instantiate classes for some tests but not others.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-
-interface MyInterface
-
-@Module
-@ConditionalOnMissingClass(MyInterface::class)
-class MyInterfaceImpl: MyInterface
-
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-
-interface MyInterface {
-}
-
-@Singleton
-@ConditionalOnMissingClass(MyInterface.class)
-public class MyInterfaceImpl: MyInterface {
-}
-
-```
-</TabItem>
-</Tabs>
-
-Then we can override the implementation at runtime using a fake/mock implementation:
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-@ExtendWith(GenesisJunit::class)
-internal class ProvidedInstanceTest {
-
-    /**
-     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
-     */
-    @ProvidedInstance
-    private val myInstance: MyInterface = FakeImpl()
-
+@GenesisTest
+class TestInjectExample {
     @Test
-    fun myTest() {
-        //
+    fun myTest(@TestInject myTestDependency: MyTestDependency) {
+        // MyTestDependency is injected
     }
 }
 ```
@@ -780,22 +1430,18 @@ internal class ProvidedInstanceTest {
 <TabItem value="java">
 
 ```java
-@ExtendWith(GenesisJunit.class)
-public class ProvidedInstanceTest {
-    /**
-     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
-     */
-    @ProvidedInstance
-    private MyInterface myInstance = new FakeImpl();
-
+@GenesisTest
+public class TestInjectExample {
     @Test
-    public void myTest() {
-        //
+    public void myTest(@TestInject MyTestDependency myTestDependency) {
+        // MyTestDependency is injected
     }
 }
 ```
+
 </TabItem>
 </Tabs>
+
 
 #### UserRight
 
@@ -835,19 +1481,30 @@ public void testAnnotation() {
 </TabItem>
 </Tabs>
 
+### Troubleshoot threading and coroutine issues in tests
 
-#### ExpectedProcessStatus
+To help troubleshoot threading and coroutine issues, GenesisJunit offers support for thread and coroutine dumps on test failure.
+To enable this, there are three annotations:
 
-The `ExpectedProcessStatus` annotations provide a way to assert the end state of a process after a test. By default, GenesisJunit will assert that the process is healthy (`ProcessState.UP`).
+* [`@ThreadDumpOnFailure`](#threaddumponfailure) - dumps threads on test failure
+* [`@CoroutinesDumpOnFailure`](#coroutinesdumponfailure) - dumps coroutines on test failure
+* [`@FullDumpOnFailure`](#fulldumponfailure) - dumps both threads and coroutines on test failure
+
+#### ThreadDumpOnFailure
+
+Dumps all JVM threads to the test logs on test failure.
+Useful to troubleshoot deadlocks and blocked tests.
+Non-repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@Test
-@ExpectedProcessStatus(ProcessState.DOWN)
-fun `test status DOWN`() {
-    ProcessStateChangeHandler("test").setProcessDown()
+@GenesisTest
+class DumpOnFailureTest {
+    @Test
+    @ThreadDumpOnFailure
+    fun myTest() { /* ... */ }
 }
 ```
 
@@ -855,23 +1512,81 @@ fun `test status DOWN`() {
 <TabItem value="java">
 
 ```java
-@Test
-@ExpectedProcessStatus(ProcessState.DOWN)
-public void testStatusDown() {
-    new ProcessStateChangeHandler("test").setProcessDown();
+@GenesisTest
+public class DumpOnFailureTest {
+    @Test
+    @ThreadDumpOnFailure
+    public void myTest() { /* ... */ }
 }
 ```
+
 </TabItem>
 </Tabs>
 
-### Troubleshoot threading and coroutine issues in tests
+#### CoroutinesDumpOnFailure
 
-To help troubleshoot threading and coroutine issues, genesis junit offers support for thread and coroutine dumps on test failure.
-To enable this, there are three annotations:
+Dumps Kotlin coroutines debug information to the test logs on failure.
+Useful for diagnosing coroutine leaks or stuck jobs.
+Non-repeatable.
 
-* `@ThreadDumpOnFailure` - dumps threads on test failure
-* `@CoroutinesDumpOnFailure` - dumps coroutines on test failure
-* `@FullDumpOnFailure` - dumps both tests and coroutines on test failure
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+class CoroutinesDumpTest {
+    @Test
+    @CoroutinesDumpOnFailure
+    fun myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class CoroutinesDumpTest {
+    @Test
+    @CoroutinesDumpOnFailure
+    public void myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### FullDumpOnFailure
+
+Combines thread and coroutine dumps on test failure.
+Non-repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+class FullDumpTest {
+    @Test
+    @FullDumpOnFailure
+    fun myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class FullDumpTest {
+    @Test
+    @FullDumpOnFailure
+    public void myTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
 
 ## Component testing
 
@@ -881,11 +1596,11 @@ There are two easy ways of testing components in your application:
 - using the `curl` tool from the command line
 
 ### Before you start
-Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test  one or more `requestReply` codeblocks (i.e. resources) in your Request Server, check that the _application_**_REQUEST_SERVER** process is running.
+Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test one or more `requestReply` codeblocks (i.e. resources) in your Request Server, check that the _application_**_REQUEST_SERVER** process is running.
 
 For any testing, you need to know:
-- the IP address of name of your server
-- the user name and password that will enable you to login and authenticate yourself
+- the IP address or name of your server
+- the username and password that will enable you to log in and authenticate yourself
 
 ### Using an API client
 This type of software offers an easy way of testing each of your resources.
@@ -896,17 +1611,17 @@ Two clients that Genesis uses for component testing are:
 
 Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
 
-#### Logging on
+#### Logging in
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
 - providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
 
-For example, to login using Insomnia:
+For example, to log in using Insomnia:
 1. Create a new query in Insomnia.
-2. In front of the url, set the call to **POST**.
-3. For the url, you need to supply your server instance, then **:9064** (in order to send you to the application's Router), and then **event-login-auth**. For example:
+2. In front of the URL, set the call to **POST**.
+3. For the URL, you need to supply your server instance, then **:9064** (to route to the application's router), and then **event-login-auth**. For example:
 **https://test-mynewapp:9064/event-login-auth**
-4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body.
+4. Set the body to JSON and paste the request below (substituting your correct username and password) in the main body.
 
 ```
 {
@@ -918,7 +1633,7 @@ For example, to login using Insomnia:
     }
 }
 ```
-5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that will identify you (in effect). In the example below, we have set SOURCE_REF to BAUDOIN1 (for no particular reason).
+5. Click to view the headers, then add SOURCE_REF. For this field, you can use any string that will identify you. In the example below, we set SOURCE_REF to BAUDOIN1.
 
 ![](/img/test-login-result.png)
 
@@ -943,7 +1658,7 @@ Now let's look more closely at that.
 
 - At the beginning, we use the `--request` parameter, which specifies a custom request, followed by POST to indicate that we are posting data to the resource. The data itself comes later (in the `-d` parameter).
 
-- The resource that you are accessing must be part of the URL. In this case, the resource is `event-account-validate-request`. (Remember that the events you specify are transformed when you generate the objects. for example, EVENT_NAME becomes event-name.)
+- The resource that you are accessing must be part of the URL. In this case, the resource is `event-account-validate-request`. (Remember that the events you specify are transformed when you generate the objects. For example, EVENT_NAME becomes event-name.)
 
 - Three `--header` parameters have been specified:
 
@@ -951,9 +1666,9 @@ Now let's look more closely at that.
 
     - The `SESSION_AUTH_TOKEN` is required because, as is usually the case, the resource is non-public; you need to be logged in for access.
 
-    - The `Content-Type ... ` header indicates the media type of the content you are requesting - for example JSON or a png file. This tells the server how to deal with your message. You can find more about [content type](https://www.geeksforgeeks.org/http-headers-content-type/) in html online.
+    - The `Content-Type ...` header indicates the media type of the content you are sending or requesting — for example, JSON or a PNG file. This tells the server how to handle your message. You can find more about [content type](https://www.geeksforgeeks.org/http-headers-content-type/).
 
-- The `-d` parameter specifies the input for the resource. The request itself is always JSON and should always be contained in the `DETAILS` tag. In this case, we are requesting to validate account id 9.
+- The `-d` parameter specifies the input for the resource. The request body is always JSON and should always be contained in the `DETAILS` field. In this case, we are requesting to validate account ID 9.
 
 Now here is a more complex example, which tests the ability to upsert to an `eventHandler` resource called `event-upsert-inventory`.
 
@@ -980,11 +1695,11 @@ curl --request POST 'myserver-dev-fictional/ws/event-upsert-inventory' \
 }'
 ```
 
-Note that the data to be upserted is specified using the `--data-raw` parameter. This is because the set of fields is reasonably complicated, and it includes an email address - you don't want that `@` character to trigger any unwanted processing.
+Note that the data to be upserted is specified using the `--data-raw` parameter. This is because the set of fields is reasonably complicated, and it includes an email address — you don't want that `@` character to trigger any unwanted processing.
 
 You can find more details about [curl parameters](https://curl.se/docs/manpage.html) online.
 
-The POSTMAN tool has a useful feature tucked away with the icons at the right of the screen. This enables you to translate automatically the query you have built into curl format (or a large number of others).
+The Postman tool has a useful feature tucked away with the icons at the right of the screen. This enables you to automatically translate the query you have built into curl format (or many others).
 
 ![](/img/postman-code.png)
 
