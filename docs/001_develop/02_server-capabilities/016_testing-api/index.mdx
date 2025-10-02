@@ -147,15 +147,17 @@ You can do this by creating a class with genesis test annotations only.
 You can then import those scenarios by adding multiple [`@TestScenario`](#testscenario)(MyClass::class) or [`@TestScenario`](#testscenario)(MyClass.class) to your tests.
 Finally, you will need to annotate your test functions with [`@GenesisTemplateTest`](#genesistemplatetest).
 Your test will now be run against those multiple scenarios.
+In the example below, the code is tested with both `Flag` set to `true` and `false` using system definition overrides.
+However, the use is not limited to [`@SysDefOverwrite`](#sysdefoverwrite), you will be able to use any configuration that drives the configuration of the service and or database.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@SysDefOverwrite("SysDef", "true")
+@SysDefOverwrite("Flag", "true")
 class ScenarioA
 
-@SysDefOverwrite("SysDef", "false")
+@SysDefOverwrite("Flag", "false")
 class ScenarioB
 
 @GenesisDatabaseTest
@@ -174,10 +176,10 @@ class ScenarioExample {
 <TabItem value="java">
 
 ```java
-@SysDefOverwrite(key = "SysDef", keyValue = "true")
+@SysDefOverwrite(key = "Flag", keyValue = "true")
 class ScenarioA {}
 
-@SysDefOverwrite(key = "SysDef", keyValue = "false")
+@SysDefOverwrite(key = "Flag", keyValue = "false")
 class ScenarioB {}
 
 @GenesisDatabaseTest
@@ -737,13 +739,48 @@ public class GenesisHomeTest {
 </TabItem>
 </Tabs>
 
+#### GenesisSharedContextTest
+
+Annotation used to enable the full microservice context that is shared between tests within a class.
+Provides DI, package scanning, message client, and lifecycle management.
+Non-repeatable.
+In the example, the microservice is started only once, and used by both `myTest` and `myOtherTest`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisSharedContextTest
+class MyGenesisTest {
+    @Test
+    fun myTest() { /* ... */ }
+    @Test
+    fun myOtherTest() { /* ... */ }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSharedContextTest
+public class MyGenesisTest {
+    @Test
+    public void myTest() { /* ... */ }
+    @Test
+    public void myOtherTest() { /* ... */ }
+}
+```
+
+</TabItem>
+</Tabs>
+
 
 #### GenesisTemplateTest
 
-Used with scenario testing to execute the same test method across one or more scenarios declared with `@TestScenario`.
+Used with scenario testing to execute the same test method across one or more scenarios, and is used in combination with [`@TestScenario`](#testscenario).
+For more information see [Scenario Testing](#scenario-testing)
 Apply at method level only.
-
-<!-- TODO: Review interaction with shared context and per-method annotations. -->
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -846,8 +883,6 @@ public class PackageNameScanTest {
 
 #### ProvidedSysDef
 
-<!-- TODO: Add detailed documentation for ProvidedSysDef annotation -->
-
 Annotation used to mark properties or methods as provided system definitions.
 Marked properties or methods can be used to provide system definition values during test runtime.
 
@@ -863,7 +898,6 @@ internal class ProvidedSysDefTest {
 
     @Test
     fun myTest() {
-        // TODO: Add real example usage
         // mySysDef is provided as a system definition
     }
 }
@@ -881,7 +915,6 @@ public class ProvidedSysDefTest {
 
     @Test
     public void myTest() {
-        // TODO: Add real example usage
         // mySysDef is provided as a system definition
     }
 }
@@ -1273,10 +1306,9 @@ public class ConfigFileExampleJavaTest {
 
 #### TestScenario
 
-<!-- TODO: Add detailed documentation for TestScenario annotation -->
-
-Annotation used to define and share test scenarios.
+Annotation used to define and share test scenarios, and is used in combination with [`@GenesisTemplateTest`](#genesistemplatetest).
 This annotation can be applied to classes or methods and is Repeatable.
+For more information see [Scenario Testing](#scenario-testing)
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1379,6 +1411,7 @@ public class ScriptFileJavaExample {
 #### TestInject
 
 Annotation used to inject test dependencies into test functions as parameters.
+This is useful where you might want to use and or instantiate classes for some tests but not others.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
