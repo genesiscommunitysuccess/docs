@@ -277,13 +277,13 @@ requestReplies {
 The `config` block is supported at both the `requestReplies` or file level, as well as the `requestReply` level.
 Values specified at the file level, can be overwritten at the `requestReply` level.
 
-| Property                         | effect                                                    |
-|----------------------------------|-----------------------------------------------------------|
-| criteriaOnlyRequest              | Enables criteria only mode                                |
-| supportLazyPredicates            | Supports lazy criteria in criteria mode                   |
-| timeoutInSeconds                 | timeout in seconds                                        |
-| maxRows                          | max results in reply                                      |
-| enableTypeAwareCriteriaEvaluator | enhanced criteria evaluation when not using criteria only |
+| Property                         | Effect                                                                                                                                                            |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| criteriaOnlyRequest              | Enables criteria only mode                                                                                                                                        |
+| supportLazyPredicates            | Supports lazy criteria in criteria mode, see [here](../data-access-apis/#database-vs-lazy-evaluation) for more details                                            |
+| timeoutInSeconds                 | Timeout in seconds                                                                                                                                                |
+| maxRows                          | Max results in reply                                                                                                                                              |
+| enableTypeAwareCriteriaEvaluator | Enhanced criteria evaluation when not using criteria only, see [here](../real-time-queries-data-server/#using-the-type-aware-criteria-evaluator) for more details |
 
 #### `filterWithParameters`
 

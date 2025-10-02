@@ -340,6 +340,29 @@ var results = db.getByCriteriaBuilder(Position.class)
 </TabItem>
 </Tabs>
 
+##### Database vs lazy evaluation
+
+Where possible, criteria handling and pagination will be offloaded to the database.
+However, there are a number of cases in which this is not possible, and the criteria will be evaluated lazily.
+This means that rather than transforming the criteria into an expression the database can handle efficiently,
+the platform will request all records from the database and will evaluate those criteria in memory.
+This is not an either/or situation. In cases where the platform is able to partially evaluate the criteria on the database, it will do so. This is called hybrid evaluation.
+
+###### Lazy evaluation
+
+Lazily evaluated criteria:
+* Any criteria on a derived field
+* If `SqlViewsEnabled` is not true, in views, any criteria on a field on a joined table
+* If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins), any criteria on a field on a joined table
+* On FDB, any criteria that is not a direct index match
+
+###### Hybrid evaluation
+
+The platform is able to use hybrid evaluation if and only if both database and lazy criteria are combined using `&&`.
+If we have two fields in our criteria, FIELD and DERIVED, where FIELD is a normal field and DERIVED is a derived field, then:
+* `FIELD == 'A' && DERIVED == 'B'` => hybrid evaluation: `FIELD == 'A'` is evaluated on the database and `DERIVED == 'B'` is evaluated lazily.
+* `FIELD == 'A' || DERIVED == 'B'` => lazy evaluation: both `FIELD == 'A'` and `DERIVED == 'B'` are evaluated lazily.
+
 ##### Parameters
 
 The following parameters are supported. Apart from the table or view, all are optional.
