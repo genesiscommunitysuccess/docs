@@ -14,6 +14,9 @@ tags:
 sidebar_position: 6
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 The Genesis Application Platform integrates with external SQL databases using JDBC.
@@ -43,7 +46,7 @@ Then define an interface that describes the operations you need:
 @RepositoryModule("my-connection")
 interface TradeRepository {
 
-    @SqlQuery("select * from trade")
+    @SqlQuery(namedQuery = "select * from trade")
     suspend fun selectAllTrades(): List<Trade>
 }
 
@@ -58,9 +61,12 @@ requestReply<Unit, Trade>("HELLO_WORLD") {
 
 ### Simple examples
 
-This example demonstrates an insert query that takes multiple primitive type parameters.
+This example demonstrates reading all rows from a table.
 
 #### Example 1: select query
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 @RepositoryModule("test")
@@ -70,9 +76,26 @@ interface MyInterface {
 }
 ```
 
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlQuery(namedQuery = "select * from trade")
+    List<Trade> selectTradeList();
+}
+```
+
+</TabItem>
+</Tabs>
+
 This example demonstrates a simple select query that retrieves a list of `Trade` objects.
 
 #### Example 2: insert query with object parameter
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 @RepositoryModule("test")
@@ -85,9 +108,32 @@ interface MyInterface {
 }
 ```
 
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlUpdate(namedQuery =
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    int insertTrade(Trade trade);
+}
+```
+
+</TabItem>
+</Tabs>
+
 This example shows an insert query that takes a `Trade` object as a parameter.
 
 #### Example 3: insert query with primitive type parameters
+
+In Kotlin, we only need to annotate parameters whose names are not matched in the query.
+In Java we should always annotate parameters when using primitives.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 @RepositoryModule("test")
@@ -105,6 +151,29 @@ interface MyInterface {
     ): Int
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @SqlUpdate(namedQuery = 
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    int insertTrade(
+        @QueryParameter(name = "id") String id,
+        @QueryParameter(name = "quantity") int quantity,
+        @QueryParameter(name = "price") BigDecimal price,
+        @QueryParameter(name = "status") String status,
+        @QueryParameter(name = "client_id") String clientId
+    );
+}
+```
+
+</TabItem>
+</Tabs>
 
 ## Configuration options
 
@@ -223,6 +292,55 @@ If no `metricId` is provided, the SQL string is used as the metric ID.
 Parameters are passed as a `Map<String, Any?>` in Kotlin or `Map<String, Object>` in Java.
 Use named parameters in query strings, e.g. `select * from trade where id = :id`.
 
+#### Example: Using the connection
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// Inject the connection
+@Named("my-connection")
+val connection: SqlDatabaseConnection = inject()
+
+// Query with parameters
+val trades = connection.query(
+    "select * from trade where status = :status",
+    mapOf("status" to "ACTIVE"),
+    Trade::class
+).toList()
+
+// Update with parameters
+val updatedRows = connection.update(
+    "update trade set status = :newStatus where id = :id",
+    mapOf("newStatus" to "CANCELLED", "id" to "TRADE_123")
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// Inject the connection
+@Named("my-connection")
+SqlDatabaseConnection connection = inject(SqlDatabaseConnection.class);
+
+// Query with parameters
+List<Trade> trades = connection.query(
+    "select * from trade where status = :status",
+    Map.of("status", "ACTIVE"),
+    Trade.class
+).toList();
+
+// Update with parameters
+int updatedRows = connection.update(
+    "update trade set status = :newStatus where id = :id",
+    Map.of("newStatus", "CANCELLED", "id", "TRADE_123")
+);
+```
+
+</TabItem>
+</Tabs>
+
 ### Querying
 
 With the `query` function you can read data from a database.
@@ -233,6 +351,53 @@ You can also pass a type. In Java, pass a `Class<TYPE>` to type the result. In K
 The connection maps types automatically if:
 1. the provided type is either a Java record class, or a Kotlin data class.
 2. the provided type only contains natively supported types.
+
+#### Example: Basic querying
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// Query with automatic type mapping
+val trades = connection.query("select * from trade", Trade::class)
+    .toList()
+
+// Query with parameters
+val activeTrades = connection.query(
+    "select * from trade where status = :status",
+    mapOf("status" to "ACTIVE"),
+    Trade::class
+).toList()
+
+// Query with custom mapper
+val tradeIds = connection.query("select id from trade") { resultSet ->
+    resultSet.getString("id")
+}.toList()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// Query with automatic type mapping
+List<Trade> trades = connection.query("select * from trade", Trade.class)
+    .toList();
+
+// Query with parameters
+List<Trade> activeTrades = connection.query(
+    "select * from trade where status = :status",
+    Map.of("status", "ACTIVE"),
+    Trade.class
+).toList();
+
+// Query with custom mapper
+List<String> tradeIds = connection.query("select id from trade", resultSet -> {
+    return resultSet.getString("id");
+}).toList();
+```
+
+</TabItem>
+</Tabs>
 
 Queries return an `ExecutableQuery<TYPE>`, which provides three kinds of functions:
 
@@ -264,4 +429,55 @@ Queries return an `ExecutableQuery<TYPE>`, which provides three kinds of functio
     * `asFlowable` (RxJava Flowable)
     * `asMaybe` (RxJava Maybe)
     * `asSingle` (RxJava Single)
+
+#### Example: Using ExecutableQuery functions
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// Transforming functions
+val tradeIds = connection.query("select * from trade", Trade::class)
+    .map { it.id }
+    .filter { it.startsWith("TRADE_") }
+    .take(10)
+    .toList()
+
+// Terminating functions
+val tradeCount = connection.query("select * from trade", Trade::class)
+    .count()
+
+val firstTrade = connection.query("select * from trade", Trade::class)
+    .firstOrNull()
+
+// Async operations
+val tradeFlow = connection.query("select * from trade", Trade::class)
+    .asFlow()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// Transforming functions
+List<String> tradeIds = connection.query("select * from trade", Trade.class)
+    .map(trade -> trade.getId())
+    .filter(id -> id.startsWith("TRADE_"))
+    .take(10)
+    .toList();
+
+// Terminating functions
+long tradeCount = connection.query("select * from trade", Trade.class)
+    .count();
+
+Optional<Trade> firstTrade = connection.query("select * from trade", Trade.class)
+    .firstOrNull();
+
+// Async operations
+Flowable<Trade> tradeFlowable = connection.query("select * from trade", Trade.class)
+    .asFlowable();
+```
+
+</TabItem>
+</Tabs>
 
