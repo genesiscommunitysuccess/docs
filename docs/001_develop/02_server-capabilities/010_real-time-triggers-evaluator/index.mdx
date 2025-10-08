@@ -76,7 +76,7 @@ Here, we look look more closely at the two tables and values that we can expect 
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK == 'US') && (TRIGGER == 'RULE')` | false |
 
 ::::warning
-`CRON_RULE` records with an invalid `CRON_EXPRESSION` will not cause the Evaluator service to crash. These are detected on startup and a warning is written to the Evaluator logs instead. Ensure you monitor logs and correct any misconfigured cron rules.
+Since version 8.13, `CRON_RULE` records with an invalid `CRON_EXPRESSION` will not cause the Evaluator service to crash. These are detected on startup and a warning is written to the Evaluator logs instead. Ensure you monitor logs and correct any misconfigured cron rules.
 ::::
 
 Rules are managed via the API, which exposes CRUD operations for maintaining the table.
