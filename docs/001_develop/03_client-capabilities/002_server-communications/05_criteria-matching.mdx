@@ -172,6 +172,43 @@ Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')
 Expr.dateTimeIsLessEqual(TRADE_DATETIME,'20150518-10:50:24')
 ```
 
+- `dateTimeIsInRange(datetime as DateTime|String|Long, String timeRange, String timeContext)`
+
+  This returns `true` when the datetime in the given field falls within a specified time range and context.
+
+  The `timeRange` parameter can be one of the following values:
+  - `HOUR` - Check within an hour range
+  - `DAY` - Check within a day range  
+  - `WEEK` - Check within a week range (Monday to Sunday)
+  - `MONTH` - Check within a month range
+  - `YEAR` - Check within a year range
+
+  The `timeContext` parameter can be one of the following values:
+  - `CURRENT` - Check against the current time period
+  - `PREVIOUS` - Check against the previous time period
+
+  For example:
+```groovy
+// Check if trade datetime is within the current hour
+Expr.dateTimeIsInRange(TRADE_DATETIME, 'HOUR', 'CURRENT')
+
+// Check if trade datetime is within the previous day
+Expr.dateTimeIsInRange(TRADE_DATETIME, 'DAY', 'PREVIOUS')
+
+// Check if trade datetime is within the current week
+Expr.dateTimeIsInRange(TRADE_DATETIME, 'WEEK', 'CURRENT')
+```
+
+  **Specific scenarios:**
+
+  Assuming the current time is "20240115-14:30:00.000" (Monday, 2:30 PM):
+
+  - If `TRADE_DATETIME` is "20240115-14:15:00.000", then `Expr.dateTimeIsInRange(TRADE_DATETIME, 'HOUR', 'CURRENT')` returns `true` (within current hour 14:00-15:00)
+
+  - If `TRADE_DATETIME` is "20240114-10:15:00.000", then `Expr.dateTimeIsInRange(TRADE_DATETIME, 'DAY', 'PREVIOUS')` returns `true` (within previous day 2024-01-14)
+
+  - If `TRADE_DATETIME` is "20240112-09:00:00.000" (Friday), then `Expr.dateTimeIsInRange(TRADE_DATETIME, 'WEEK', 'PREVIOUS')` returns `true` (within previous week Monday-Sunday)
+
 ## Groovy expressions
 
 Groovy expressions provide the most flexibility when you are applying filtering at the front end. They enable you to use complex boolean logic to filter your fields using Java syntax.
