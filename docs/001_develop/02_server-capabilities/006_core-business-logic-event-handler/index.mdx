@@ -291,21 +291,123 @@ An exception is when you are using [optimistic concurrency](#optimistic-concurre
 
 #### `overrideMetadataFields`
 
-`overrideMetadataFields` is used to override the metadata field properties of the eventHandler type, this isn't to change the type of a field, more to override fields being optional and default values.
+`overrideMetadataFields` enables you to customize the JSON schema metadata that is exposed by a specific event handler definition. This is particularly useful when you want to modify field properties such as making fields optional, providing default values, or changing descriptions without altering the underlying table or entity structure.
+
+**Important**: This functionality only affects the metadata exposed by the event handler - it does not modify the actual data model or entity definitions.
+
+For more information on how the Genesis Application Platform uses type-safe messages and JSON schema, see [Type-safe messages](/develop/server-capabilities/communications/#type-safe-messages).
+
+The most common use cases for `overrideMetadataFields` include:
+
+- Adding or updating field descriptions and titles
+- Setting default values for fields
+- Marking fields as read-only or constant at the event handler level
+- Making mandatory fields optional by providing default values (fully functional since version 8.13)
+- Making optional fields mandatory to enforce stricter validation at the event handler level
+
+To use this feature, you need to import the `OverrideMetaField` class:
 
 ```kotlin
-  eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
-    overrideMetadataFields = listOf(
-      OverrideMetaField(name = "QUANTITY", optional = true, default = 1)
-    )
-  }
+import global.genesis.process.metadata.pal.common.OverrideMetaField
 ```
 
-By default this is an empty set.
+The `OverrideMetaField` class has the following structure:
+
+```kotlin
+OverrideMetaField(
+    name: String,              // Required: The name of the field to override
+    title: String? = null,     // Optional: Override the field's display title
+    description: String? = null, // Optional: Override the field's description
+    type: MetaFieldType? = null, // Optional: Override the field's type metadata
+    optional: Boolean? = null,   // Optional: Override whether the field is optional
+    readOnly: Boolean? = null,   // Optional: Override whether the field is read-only
+    default: Any? = null,        // Optional: Provide a default value
+    constant: Any? = null        // Optional: Set a constant value
+)
+```
+
+When you specify an `OverrideMetaField`, any non-null properties you provide will override the corresponding properties from the original field metadata. Properties that you leave as `null` will retain their original values from the entity definition. For example, if you only specify `name` and `default`, all other properties (such as `title`, `description`, `type`, etc.) will remain unchanged from the original field definition.
+
+**Making mandatory fields optional**
+
+One capability of `overrideMetadataFields` is the ability to make mandatory fields optional. However, there is an important constraint: **you can only make a mandatory field optional if you provide a default value**. This ensures that the system always has a valid value for the field, even when the client doesn't provide one.
+
+```kotlin
+import global.genesis.process.metadata.pal.common.OverrideMetaField
+
+eventHandler<Company>(name = "OVERRIDE_META_COMPANY_INSERT") {
+    overrideMetadataFields = listOf(
+        OverrideMetaField(
+            name = "COMPANY_NAME",
+            optional = true,        // Making the field optional
+            default = "MY_COMPANY"  // Must provide a default value
+        )
+    )
+    onCommit { event ->
+        val company = event.details
+        val result = entityDb.insert(company)
+        ack(listOf(mapOf("VALUE" to result.record.companyId)))
+    }
+}
+```
+
+In this example, `COMPANY_NAME` is made optional with a default value of `"MY_COMPANY"`. If a client submits an event without providing `COMPANY_NAME`, the system will automatically use the default value.
 
 :::warning
-Where setting mandatory fields to be optional, you must have a default supplied as part of the event Type meta.
+Attempting to make a mandatory field optional without providing a default value will result in an error. The system enforces this rule to maintain data integrity.
 :::
+
+**Making optional fields mandatory**
+
+You can also use `overrideMetadataFields` to make optional fields mandatory at the event handler level. This is useful when you want to enforce stricter validation for specific event handlers without changing the underlying entity definition.
+
+```kotlin
+import global.genesis.process.metadata.pal.common.OverrideMetaField
+
+eventHandler<Trade>(name = "TRADE_INSERT_STRICT") {
+    overrideMetadataFields = listOf(
+        OverrideMetaField(
+            name = "COUNTERPARTY_ID",
+            optional = false  // Making the field mandatory
+        )
+    )
+    onCommit { event ->
+        val trade = event.details
+        val result = entityDb.insert(trade)
+        ack(listOf(mapOf("TRADE_ID" to result.record.tradeId)))
+    }
+}
+```
+
+In this example, `COUNTERPARTY_ID` (which might be optional in the `Trade` entity) is made mandatory for this specific event handler. Clients must provide a value for this field when submitting events to this handler.
+
+**Other examples**
+
+Setting a default value without changing optional status:
+
+```kotlin
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+    overrideMetadataFields = listOf(
+        OverrideMetaField(name = "QUANTITY", default = 1)
+    )
+}
+```
+
+Updating field descriptions and titles:
+
+```kotlin
+eventHandler<Order>(name = "ORDER_UPDATE") {
+    overrideMetadataFields = listOf(
+        OverrideMetaField(
+            name = "ORDER_STATUS",
+            title = "Current Status",
+            description = "The current processing status of the order"
+        )
+    )
+}
+```
+
+By default, `overrideMetadataFields` is an empty list.
 
 <CommonPermissions />
 
@@ -2052,7 +2154,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`                                                                                                                                                                                                   |
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
-| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
+| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`. For detailed information on how this works and examples, see the [`overrideMetadataFields` section](#overridemetadatafields).                                                                                        |
 | requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](#approval-workflow) in order to take effect) |
 | schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](/develop/server-capabilities/communications/#type-safe-messages) for more information.
 
