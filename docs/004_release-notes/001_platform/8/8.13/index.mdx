@@ -78,6 +78,15 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.13.13
+
+### Fixes
+
+* `genesis-cluster` : Avoid instantiating console web endpoints as part of the package scan mechanism for GENESIS_CLUSTER 
+* `genesis-codegen` : Handle sys defs with characters that would be illegal in a kotlin name e.g. `.` 
+* `genesis-console` : Revert API classes package move 
+* `genesis-db` : Correct handling repo modules with suspend methods 
+
 #### 8.13.12
 
 ###### Features
