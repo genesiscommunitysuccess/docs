@@ -94,10 +94,27 @@ There are two methods for generating documents:
 - `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `.xlsx` files.
 - `generateAndStore` generates a file based on the template provided. The resulting file is added to `FILE_STORAGE` and the corresponding `FileStorageID` is returned.
 
+#### Providing a Template
+
+In order to provide a template to the document generator, both of the configurations listed below (`DocumentContentConfiguration`/`DocumentStorageConfiguration`) will take in a `templateId`.
+
+This is a non-nullable String which cannot be blank and represents the following in order of priority:
+
+1. the `FileStorageId` of the template which has been uploaded to the document management system
+2. the file name of the template which has been uploaded to the document management system
+3. the file name of the template which exists in the cfg directory of your project
+4. the file name of the template which exists in one of the directories listed in the following system definition:
+
+```kotlin
+// comma separated list of directories for the generator to look for the template in as per the provided file name
+item("TEMPLATE_FILE_LOCATIONS", "/data/my-templates1/,/data/my-templates2/")
+```
+
+
 #### `DocumentContentConfiguration`
 
 The `generateContent` method takes in an object with the following parameters:
-- `templateId` is the `FileStorageId` of the template you want to generate the document from.
+- `templateId` - see [Providing a Template](/develop/business-components/doc-generate/developer-guide/#providing-a-template)
 - `userName` is the username of the user generating the document.
 - `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
 - `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
@@ -233,6 +250,12 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
         }
     }
 ```
+
+#### XML Templates
+
+You can provide XML templates to the document generator which will also use Thymeleaf to generate the resultant XML report.
+
+Please see [HTML example usage](/develop/business-components/doc-generate/developer-guide/#html-example-usage) above for details on how to lay out your template for the Thymeleaf engine.
 
 #### Apache Freemarker Templates
 
