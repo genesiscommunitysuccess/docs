@@ -98,12 +98,12 @@ There are two methods for generating documents:
 
 In order to provide a template to the document generator, both of the configurations listed below (`DocumentContentConfiguration`/`DocumentStorageConfiguration`) will take in a `templateId`.
 
-This is a non-nullable String which cannot be blank and represents the following in order of priority:
+This is a non-nullable String which represents either the `FileStorageId` of the uploaded template or the name of the template file.
+If a file name is provided, the document generator will attempt to resolve the template from the following locations in order of priority:
 
-1. the `FileStorageId` of the template which has been uploaded to the document management system
-2. the file name of the template which has been uploaded to the document management system
-3. the file name of the template which exists in the cfg directory of your project
-4. the file name of the template which exists in one of the directories listed in the following system definition:
+1. document management system
+2. cfg directory of your project
+3. one of the directories listed in the following system definition:
 
 ```kotlin
 // comma separated list of directories for the generator to look for the template in as per the provided file name
