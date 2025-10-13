@@ -298,13 +298,49 @@ Property and attribute binding examples for Genesis Component syntax.
   <thead><tr><th>Event</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
   <tbody>
     <tr>
-    <td>errorOut</td>
-    <td><code>Event</code></td>
-    <td>Emits when there is an error in the file upload.</td>
+    <td>success</td>
+    <td><code>CustomEvent</code></td>
+    <td>This event is triggered when the upload process completes successfully. The event detail contains the response data from the server.</td>
 <td>
 
 ```typescript
-<rapid-file-upload @errorOut=${(x, ctx) => x.handleError(ctx.event)}
+<rapid-file-upload @success=${(x, ctx) => x.handleSuccess(ctx.event)}>
+```
+
+</td>
+    </tr>
+    <tr>
+    <td>errorOut</td>
+    <td><code>CustomEvent</code></td>
+    <td>This event is triggered when an error occurs during the upload process. The event detail contains the error information.</td>
+<td>
+
+```typescript
+<rapid-file-upload @errorOut=${(x, ctx) => x.handleError(ctx.event)}>
+```
+
+</td>
+    </tr>
+    <tr>
+    <td>error</td>
+    <td><code>CustomEvent</code></td>
+    <td>This event is triggered when a file exceeds the size limit or other validation errors occur during file selection. The event detail contains the error object.</td>
+<td>
+
+```typescript
+<rapid-file-upload @error=${(x, ctx) => x.handleValidationError(ctx.event)}>
+```
+
+</td>
+    </tr>
+    <tr>
+    <td>clear</td>
+    <td><code>CustomEvent</code></td>
+    <td>This event is triggered when the file selection is cleared.</td>
+<td>
+
+```typescript
+<rapid-file-upload @clear=${(x, ctx) => x.handleClear(ctx.event)}>
 ```
 
 </td>
