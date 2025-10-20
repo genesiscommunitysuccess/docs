@@ -17,6 +17,7 @@ export default function ModalDemo({ inIndex = false }) {
     const modalRefLeft = useRef(null);
     const modalRefRight = useRef(null);
     const modalRefDraggable = useRef(null);
+    const modalRefResizable = useRef(null);
 
     const [showCallbackMessage, setShowCallbackMessage] = useState('');
     const [closeCallbackMessage, setCloseCallbackMessage] = useState('');
@@ -64,6 +65,11 @@ export default function ModalDemo({ inIndex = false }) {
             modalRefDraggable.current.onShowCallback = () => showCallback('draggable modal shown');
             modalRefDraggable.current.onCloseCallback = () => closeCallback('draggable modal closed');
         }
+
+        if (modalRefResizable.current) {
+            modalRefResizable.current.onShowCallback = () => showCallback('resizable modal shown');
+            modalRefResizable.current.onCloseCallback = () => closeCallback('resizable modal closed');
+        }
     }, []);
 
 
@@ -98,6 +104,7 @@ export default function ModalDemo({ inIndex = false }) {
                 <rapid-button onClick={() => handleClick(modalRefLeft)}>Open modal positioned left</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefRight)}>Open modal positioned right</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefDraggable)}>Open draggable modal</rapid-button>
+                <rapid-button onClick={() => handleClick(modalRefResizable)}>Open resizable modal</rapid-button>
             </div>
             <div>
                 <div>
@@ -141,6 +148,12 @@ export default function ModalDemo({ inIndex = false }) {
                 draggable="true">
                 <h3 slot="top">Draggable modal</h3>
                 <p>This modal can be dragged.</p>
+            </rapid-modal>
+            <rapid-modal
+                ref={modalRefResizable}
+                resizable="true">
+                <h3 slot="top">Resizable modal</h3>
+                <p>This modal can be resized by dragging the edges or corners.</p>
             </rapid-modal>
         </div>
     </CodeSection >)
