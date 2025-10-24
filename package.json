@@ -19,23 +19,18 @@
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
     "swizzle": "docusaurus swizzle",
-    "postinstall": "npm run generate:iife && npm run hack:iife",
-    "generate:iife": "genx build -b rollup",
-    "hack:iife": "npm run copy:iife && npm run rename:iife && npm run package:iife",
-    "copy:iife": "copyfiles -u 1 dist/docs.iife.min.js node_modules/iife",
+    "postinstall": "echo 'IIFE bundle no longer needed - interactive examples use rapidImports.ts'",
     "copy:dsc": "rimraf ./static/dsc && copyfiles -u 4 node_modules/@genesislcap/design-system-configurator/dist/* static/dsc",
-    "rename:iife": "node -e \"require('fs').rename('node_modules/iife/docs.iife.min.js', 'node_modules/iife/index.js',()=>{})\"",
-    "package:iife": "node -e \"require('fs').writeFileSync('node_modules/iife/package.json', '{\\\"name\\\":\\\"iife\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"main\\\":\\\"index.js\\\"}')\"",
     "sync-api-docs": "node scripts/sync-api-docs.js",
     "sync-api-docs:full": "node scripts/sync-api-docs.js --all"
   },
   "dependencies": {
-    "@docusaurus/core": "3.5.2",
-    "@docusaurus/plugin-client-redirects": "3.5.2",
-    "@docusaurus/preset-classic": "3.5.2",
-    "@docusaurus/theme-common": "3.5.2",
-    "@docusaurus/theme-live-codeblock": "3.5.2",
-    "@docusaurus/theme-mermaid": "3.5.2",
+    "@docusaurus/core": "3.8",
+    "@docusaurus/plugin-client-redirects": "3.8",
+    "@docusaurus/preset-classic": "3.8",
+    "@docusaurus/theme-common": "3.8",
+    "@docusaurus/theme-live-codeblock": "3.8",
+    "@docusaurus/theme-mermaid": "3.8",
     "@easyops-cn/docusaurus-search-local": "0.44.5",
     "@emotion/react": "11.13.0",
     "@emotion/styled": "11.13.0",
@@ -70,8 +65,8 @@
     "docusaurus-pushfeedback": "^1.0.1",
     "prism-react-renderer": "2.3.1",
     "raw-loader": "4.0.2",
-    "react": "^19.0.0-rc.1",
-    "react-dom": "^19.0.0-rc.1"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "browserslist": {
     "production": [
@@ -86,8 +81,8 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.5.2",
-    "@docusaurus/types": "3.5.2",
+    "@docusaurus/module-type-aliases": "3.8",
+    "@docusaurus/types": "3.8",
     "@genesislcap/genx": "14.313.1",
     "@types/mocha": "10.0.7",
     "api-docs-sync": "file:./plugins/api-docs",
@@ -100,8 +95,10 @@
   "overrides": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-typescript": "^8.3.0",
-    "react": "^19.0.0-rc.1",
-    "react-dom": "^19.0.0-rc.1"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@easyops-cn/docusaurus-search-local": "0.44.5",  
+    "@docusaurus/theme-common": "3.8"
   },
   "genx": {
     "entry": "iife.ts"
