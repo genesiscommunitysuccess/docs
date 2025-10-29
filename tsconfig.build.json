@@ -30,7 +30,7 @@
     "strictNullChecks": false,
     "target": "ES2015",
   },
-  "include": ["./iife.ts"],
+  "include": [],
   "exclude": [
     "build",
     "docs",
