@@ -36,6 +36,8 @@ item(name = "MetricsEnabled", value = "true")
 item(name = "MetricsReportType", value = "{see below for details}")
 item(name = "MetricsClassLoaderStatsEnabled", value = "true")
 item(name = "MetricsProcessorStatsEnabled", value = "true")
+item(name = "MetricsExecutorEnabled", value = "true")
+item(name = "MetricsDbCacheEnabled", value = "false")
 ```
 
 | Property                       | Default | Explanation                                 |
@@ -44,6 +46,46 @@ item(name = "MetricsProcessorStatsEnabled", value = "true")
 | MetricsReportType              | n/a     | a comma-separated list of metrics reporters |
 | MetricsProcessorStatsEnabled   | `false` | enables additional process metrics          |
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
+| MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
+| MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+
+## Framework metrics
+
+The Genesis Platform automatically collects metrics for various framework components when metrics are enabled. These metrics provide insight into the internal operations of the platform without requiring any additional configuration.
+
+### Executor service metrics
+
+When `MetricsExecutorEnabled` is set to `true` (the default), the platform automatically tracks metrics for executor services and thread pools used throughout the framework. This includes:
+
+- **SQL coroutine dispatcher thread pool**: Metrics for the thread pool used by the SQL database layer for coroutine execution, including active threads, queued tasks, and completed tasks.
+- Metrics are collected using Micrometer's `ExecutorServiceMetrics` and include standard executor metrics such as:
+  - Active threads
+  - Queued tasks
+  - Completed tasks
+  - Thread pool size
+
+### Hikari connection pool metrics
+
+When metrics are enabled, the platform automatically instruments HikariCP connection pools used for SQL database connections. These metrics are collected via Micrometer's `MicrometerMetricsTrackerFactory` and provide visibility into:
+
+- Connection pool size
+- Active connections
+- Idle connections
+- Pending threads waiting for connections
+- Connection creation and usage statistics
+- Connection timeout metrics
+
+### Database cache metrics
+
+When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for the Genesis database cache (Caffeine cache). These metrics include:
+
+- Cache size (estimated)
+- Cache hit rate
+- Cache miss rate
+- Eviction count
+- Load statistics
+
+Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
 
 ## Metric names
 
