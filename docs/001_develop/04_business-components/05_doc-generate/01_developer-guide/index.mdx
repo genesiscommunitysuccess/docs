@@ -94,22 +94,6 @@ There are two methods for generating documents:
 - `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating `.txt` and `.html` files, but not `.pdf` or `.xlsx` files.
 - `generateAndStore` generates a file based on the template provided. The resulting file is added to `FILE_STORAGE` and the corresponding `FileStorageID` is returned.
 
-#### Providing a Template
-
-In order to provide a template to the document generator, both of the configurations listed below (`DocumentContentConfiguration`/`DocumentStorageConfiguration`) will take in a `templateId`.
-
-This is a non-nullable String which represents either the `FileStorageId` of the uploaded template or the name of the template file.
-If a file name is provided, the document generator will attempt to resolve the template from the following locations in order of priority:
-
-1. document management system
-2. cfg directory of your project
-3. one of the directories listed in the following system definition:
-
-```kotlin
-// comma separated list of directories for the generator to look for the template in as per the provided file name
-item("TEMPLATE_FILE_LOCATIONS", "/data/my-templates1/,/data/my-templates2/")
-```
-
 
 #### `DocumentContentConfiguration`
 
@@ -170,6 +154,23 @@ DocumentStorageResult(
     fileStorageId = "000000000000005FFLO1"
 )
 ```
+
+#### Providing a Template
+
+In order to provide a template to the document generator, both of the configurations listed below (`DocumentContentConfiguration`/`DocumentStorageConfiguration`) will take in a `templateId`.
+
+This is a non-nullable String which represents either the `FileStorageId` of the uploaded template or the name of the template file.
+If a file name is provided, the document generator will attempt to resolve the template from the following locations in order of priority:
+
+1. document management system
+2. cfg directory of your project
+3. one of the directories listed in the following system definition:
+
+```kotlin
+// comma separated list of directories for the generator to look for the template in as per the provided file name
+item("TEMPLATE_FILE_LOCATIONS", "/data/my-templates1/,/data/my-templates2/")
+```
+
 
 ### Template types
 
