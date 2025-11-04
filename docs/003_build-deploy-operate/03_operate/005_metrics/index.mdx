@@ -18,6 +18,8 @@ The Genesis Platform provides metrics both on the framework and at the applicati
 
 Framework metrics are provided out of the box. Once these have been enabled, they provide base-line information. You can build on top of this to provide application-specific metrics.
 
+The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J) and OpenTelemetry Java Agent integration for enhanced observability and integration with modern monitoring tools like Prometheus.
+
 Metrics allow in-depth monitoring of running applications and early detection of issues.
 
 :::tip
@@ -150,6 +152,78 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
 | Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
 
+### OpenTelemetry
+
+OpenTelemetry is an open-source observability framework that provides standardized APIs, libraries, agents, and instrumentation to collect telemetry data (metrics, traces, and logs) from applications. By integrating the OpenTelemetry Java Agent into your Genesis application, you can automatically capture comprehensive telemetry data without modifying your codebase.
+
+The OpenTelemetry Java Agent offers several key benefits:
+
+- **Automatic Instrumentation**: Captures metrics, traces, and logs with minimal configuration, automatically instrumenting popular Java libraries and frameworks
+- **Vendor-Neutral**: Supports integration with multiple observability backends, including Prometheus, Grafana, Jaeger, and many others
+- **Standardized Data**: Ensures consistent telemetry data collection across services, making it easier to correlate metrics, traces, and logs
+
+Using the OpenTelemetry Java Agent complements the existing Genesis metrics reporters, allowing you to leverage both the platform's native metrics and OpenTelemetry's broader observability ecosystem.
+
+#### Enabling OpenTelemetry
+
+To enable the OpenTelemetry Java Agent for your application, add the following settings to your [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
+
+```kotlin
+item(name = "OpenTelemetryJavaAgentEnabled", value = "true")
+item(name = "OpenTelemetryServiceNameEnabled", value = "true")
+item(name = "OpenTelemetryJavaAgentPropertiesFilePath", value = "/path/to/otel-config.properties")
+```
+
+| Property                               | Default | Explanation                                                                    |
+|:---------------------------------------|:--------|:-------------------------------------------------------------------------------|
+| OpenTelemetryJavaAgentEnabled          | `false` | enables the OpenTelemetry Java Agent for your application                     |
+| OpenTelemetryServiceNameEnabled        | `true`  | automatically sets the service name to the process name (when enabled)        |
+| OpenTelemetryJavaAgentPropertiesFilePath | n/a   | path to an OpenTelemetry Java Agent configuration properties file (optional)   |
+
+When enabled, the platform automatically:
+
+- Attaches the OpenTelemetry Java Agent JAR from `$GENESIS_HOME/genesis/lib/opentelemetry-javaagent.jar`
+- Sets the service name to the process name using `-Dotel.service.name={processName}` (when `OpenTelemetryServiceNameEnabled` is `true`)
+- Configures the agent using the provided properties file path (if specified) via `-Dotel.javaagent.configuration-file={path}`
+
+#### OpenTelemetry Configuration File
+
+You can provide additional OpenTelemetry configuration through a properties file. This file allows you to configure exporters, sampling rates, resource attributes, and many other OpenTelemetry options.
+
+Example `otel-config.properties` file:
+
+```properties
+otel.metrics.exporter=otlp
+otel.logs.exporter=none
+otel.traces.exporter=none
+otel.instrumentation.micrometer.enabled=true
+otel.instrumentation.log4j-appender.enabled=true
+otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes=*
+otel.exporter.otlp.metrics.enabled=true
+otel.exporter.otlp.traces.enabled=false
+otel.exporter.otlp.logging.enabled=false
+otel.exporter.otlp.protocol=http/protobuf
+otel.exporter.otlp.endpoint=http://localhost:4318
+```
+
+For a complete list of available configuration options, refer to the [OpenTelemetry Java Instrumentation documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
+
+#### Gradle Configuration (Local Development)
+
+For local development, you can configure OpenTelemetry in your `build.gradle.kts` file using the `genesisExec` extension:
+
+```kotlin
+genesisExec {
+    openTelemetry {
+        enabled = true
+        serviceNameEnabled = true
+        extraOptions = "-Dotel.metrics.exporter=prometheus"
+        propertiesFilePath = "/path/to/otel-config.properties"
+    }
+}
+```
+
+See the [Exec Plugin documentation](/build-deploy-operate/build/plugins#open-telemetry) for more details on local development configuration.
 
 ## Adding custom metrics
 
