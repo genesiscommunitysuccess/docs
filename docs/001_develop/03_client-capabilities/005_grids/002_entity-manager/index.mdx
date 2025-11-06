@@ -306,6 +306,132 @@ And you can click on the **Add** or **Edit** button to view/edit the form.
 ![](/img/foundation-entity-management/entity-counterparty-form-add-extended.png)
 ![](/img/foundation-entity-management/entity-counterparty-form-edit-extended.png)
 
+### Example: Status bar configuration
+
+The Entity Management component supports a configurable status bar that provides real-time data insights and interactive controls. The status bar includes row count, max rows, aggregation, load more, and reload buttons.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+```typescript
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,           // Show row count
+  maxRows: true,        // Show max rows
+  aggregation: true,    // Show aggregation panel
+  loadMore: {
+    tooltip: 'Load more counterparties',
+  },
+  reload: {
+    tooltip: 'Reload counterparty data',
+  },
+};
+
+@customElement({
+  name: 'entity-management-status-bar-example',
+  template: html`
+   <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      :statusBarConfig=${() => statusBarConfig}
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+    ></entity-management>
+  `,
+})
+export class EntityManagementStatusBarExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+```tsx
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,           // Show row count
+  maxRows: true,        // Show max rows
+  aggregation: true,    // Show aggregation panel
+  loadMore: {
+    tooltip: 'Load more counterparties',
+  },
+  reload: {
+    tooltip: 'Reload counterparty data',
+  },
+};
+
+export default function EntityManagementStatusBarExample({}) {
+  return (
+   <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      statusBarConfig={statusBarConfig}
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+    ></entity-management>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,           // Show row count
+  maxRows: true,        // Show max rows
+  aggregation: true,    // Show aggregation panel
+  loadMore: {
+    tooltip: 'Load more counterparties',
+  },
+  reload: {
+    tooltip: 'Reload counterparty data',
+  },
+};
+
+@Component({
+  selector: 'my-root',
+  template: `
+   <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      [statusBarConfig]="statusBarConfig"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  statusBarConfig = statusBarConfig;
+}
+```
+
+</TabItem>
+</Tabs>
+
+In this example, the following attributes are used to configure the status bar:
+
+- **`:statusBarConfig=${() => statusBarConfig}`** provides configuration for the status bar components, including which elements to display and their tooltips.
+- **`rows: true`** displays the current row count in the status bar.
+- **`maxRows: true`** displays the maximum number of rows that can be loaded.
+- **`aggregation: true`** shows the aggregation panel for selected columns.
+- **`loadMore`** configures the load more button with a custom tooltip.
+- **`reload`** configures the reload button with a custom tooltip.
+
+:::info
+The status bar requires AG Grid Enterprise module to be enabled. If the Enterprise module is not available, the status bar will not be displayed.
+:::
+
 ### Common attributes & properties
 
 The most common attributes and properties you can configure for `entity-management` are listed below.
@@ -339,6 +465,7 @@ If you set multiple `entity-management` components in your application, **you mu
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to customise the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
+| `statusBarConfig`          | enables you to configure the status bar components, including row count, max rows, aggregation, load more, and reload buttons. | No  |
 
 :::info
 For a full list of attributes and properties with examples, see the [Entity Manager declarative HTML](./03_entity-manager-api.mdx) or [API documents](./docs/api/foundation-entity-management.md).

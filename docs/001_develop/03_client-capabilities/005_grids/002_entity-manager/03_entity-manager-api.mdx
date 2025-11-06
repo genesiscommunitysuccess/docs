@@ -341,6 +341,29 @@ const gridOptions: GridOptions = {
 </td>
     </tr>
     <tr>
+      <td>statusBarConfig</td>
+      <td><code>GridProStatusBarConfig</code></td>
+      <td>Configuration for the grid status bar components, including row count, max rows, aggregation, load more, and reload buttons. Requires AG Grid Enterprise module.</td>
+<td>
+```typescript
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,           // Show row count
+  maxRows: true,        // Show max rows
+  aggregation: true,    // Show aggregation panel
+  loadMore: {
+    tooltip: 'Load more data',
+  },
+  reload: {
+    tooltip: 'Reload data',
+  },
+};
+
+<entity-management 
+  :statusBarConfig=${() => statusBarConfig}></entity-management>
+```
+</td>
+    </tr>
+    <tr>
       <td>columns</td>
       <td><code>ColDef[]</code></td>
       <td>Defines the column configuration, including headers and field mappings.</td>
