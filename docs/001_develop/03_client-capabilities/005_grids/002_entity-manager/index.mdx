@@ -44,6 +44,11 @@ Below are some of the capabilities that streamline entity interaction and enhanc
   - Combines the grid and form seamlessly to provide quick navigation between viewing, creating, and editing entities.
   - Uses pre-built components to reduce development time.
 
+- **Custom actions**:
+  - Extend functionality beyond standard CRUD operations with custom buttons and actions.
+  - Trigger backend events or execute client-side callbacks with flexible positioning options.
+  - Support form-based actions with default value mapping from selected row data.
+
 ### Adding the Entity Management component to the template
 
 Below is a simple example of how to configure the `Entity Management` component. This example demonstrates not only the basic setup but also how the component interacts with back-end resources, showing the grid and the form for creating new records. The configuration is straightforward, allowing for quick integration into your template.
@@ -339,8 +344,9 @@ If you set multiple `entity-management` components in your application, **you mu
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to customise the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
+| `customActions`            | an array of custom actions that extend entity management functionality beyond standard CRUD operations. | No  |
 
 :::info
-For a full list of attributes and properties with examples, see the [Entity Manager declarative HTML](./03_entity-manager-api.mdx) or [API documents](./docs/api/foundation-entity-management.md).
+For a full list of attributes and properties with examples, see the [Entity Manager declarative HTML](./04_entity-manager-api.mdx) or [API documents](./docs/api/foundation-entity-management.md).
 :::
 

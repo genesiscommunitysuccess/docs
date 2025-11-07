@@ -10,7 +10,7 @@ module.exports = {
 	 */
 	"@genesislcap/foundation-comms": "14.313.1",
 	"@genesislcap/foundation-criteria": "14.313.1",
-	"@genesislcap/foundation-entity-management": "14.313.1",
+	"@genesislcap/foundation-entity-management": "14.333.0",
 	"@genesislcap/foundation-fdc3": "14.313.1",
 	"@genesislcap/foundation-filters": "14.313.1",
 	"@genesislcap/foundation-forms": "14.313.1",

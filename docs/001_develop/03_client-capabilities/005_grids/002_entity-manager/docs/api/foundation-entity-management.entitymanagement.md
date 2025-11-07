@@ -79,6 +79,25 @@ Array which holds the column definitions.
 </td></tr>
 <tr><td>
 
+[confirmationMessage](./foundation-entity-management.entitymanagement.confirmationmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Optional confirmation message to display before form submission. If set, a confirmation dialog will be shown when the user clicks submit.
+
+
+</td></tr>
+<tr><td>
+
 [createEvent](./foundation-entity-management.entitymanagement.createevent.md)
 
 
@@ -144,7 +163,7 @@ The label of the crud action menu
 
 </td><td>
 
-CrudMenuPosition
+[CrudMenuPosition](./foundation-entity-management.crudmenuposition.md)
 
 
 </td><td>
@@ -163,12 +182,31 @@ Determines where the buttons will appear
 
 </td><td>
 
-ActionsMenuStyle
+[ActionsMenuStyle](./foundation-entity-management.actionsmenustyle.md)
 
 
 </td><td>
 
 Determines the style of the buttons
+
+
+</td></tr>
+<tr><td>
+
+[customActions](./foundation-entity-management.entitymanagement.customactions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[CustomAction](./foundation-entity-management.customaction.md)\[\]
+
+
+</td><td>
+
+Array of custom actions that can be added to the entity management component
 
 
 </td></tr>
@@ -269,6 +307,25 @@ If false, will disable cell flashing for all cells by default, unless otherwise 
 </td></tr>
 <tr><td>
 
+[enableCsvExport](./foundation-entity-management.entitymanagement.enablecsvexport.md)
+
+
+</td><td>
+
+
+</td><td>
+
+{ buttonName?: string; fileName?: string; } \| null
+
+
+</td><td>
+
+Enabling this option will enable a download button in the top-right of the header which will export the data to a csv file when clicked.
+
+
+</td></tr>
+<tr><td>
+
 [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md)
 
 
@@ -359,6 +416,25 @@ RendererEntry\[\]
 </td><td>
 
 Array with renderers used by foundation-forms
+
+
+</td></tr>
+<tr><td>
+
+[gridAutosizing](./foundation-entity-management.entitymanagement.gridautosizing.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Controls automatic column sizing on interaction. Disables manual column widths and local storage persistence of widths.
 
 
 </td></tr>
@@ -611,6 +687,25 @@ Allows configuration of the search bar component, if not provided it would build
 </td></tr>
 <tr><td>
 
+[sizeColumnsToContent](./foundation-entity-management.entitymanagement.sizecolumnstocontent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Auto-sizes a column based on its contents
+
+
+</td></tr>
+<tr><td>
+
 [sizeColumnsToFit](./foundation-entity-management.entitymanagement.sizecolumnstofit.md)
 
 
@@ -725,6 +820,20 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[deleteColumnState(resetToDefault)](./foundation-entity-management.entitymanagement.deletecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Deletes the saved column state for the grid
+
+
+</td></tr>
+<tr><td>
 
 [setDSConfigWithoutUpdatingBaseCriteria(config)](./foundation-entity-management.entitymanagement.setdsconfigwithoutupdatingbasecriteria.md)
 
