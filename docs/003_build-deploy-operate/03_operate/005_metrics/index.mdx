@@ -18,6 +18,8 @@ The Genesis Platform provides metrics both on the framework and at the applicati
 
 Framework metrics are provided out of the box. Once these have been enabled, they provide base-line information. You can build on top of this to provide application-specific metrics.
 
+The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J) and OpenTelemetry Java Agent integration for enhanced observability and integration with monitoring tools like Prometheus.
+
 Metrics allow in-depth monitoring of running applications and early detection of issues.
 
 :::tip
@@ -31,17 +33,124 @@ To enable metrics on your application, add the following settings to your [syste
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
-item(name = "MetricsReportType", value = "{see below for details}")
+item(name = "MetricsReportType", value = "{see below for details}") // Not required when using OpenTelemetry
 item(name = "MetricsClassLoaderStatsEnabled", value = "true")
 item(name = "MetricsProcessorStatsEnabled", value = "true")
+item(name = "MetricsExecutorEnabled", value = "true")
+item(name = "MetricsDbCacheEnabled", value = "false")
 ```
 
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
-| MetricsReportType              | n/a     | a comma-separated list of metrics reporters |
+| MetricsReportType              | n/a     | a comma-separated list of metrics reporters (not required when using OpenTelemetry) |
 | MetricsProcessorStatsEnabled   | `false` | enables additional process metrics          |
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
+| MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
+| MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+
+## Framework metrics
+
+The Genesis Platform automatically collects metrics for various framework components when metrics are enabled. These metrics provide insight into the internal operations of the platform without requiring any additional configuration. Some of the collected metrics are detailed below.
+
+### JVM Memory Metrics
+
+When metrics are enabled, the platform automatically collects JVM memory metrics using Micrometer's `JvmMemoryMetrics`. These metrics provide comprehensive visibility into memory usage and include heap memory, non-heap memory and memory pool metrics.
+
+- **Heap memory metrics**:
+  - Used heap memory
+  - Committed heap memory
+  - Maximum heap memory
+- **Non-heap memory metrics**:
+  - Used non-heap memory
+  - Committed non-heap memory
+  - Maximum non-heap memory
+- **Memory pool metrics** (varies by JVM):
+  - Eden space (used, committed, max)
+  - Survivor space (used, committed, max)
+  - Old generation (used, committed, max)
+  - Metaspace (used, committed, max)
+  - Code cache (used, committed, max)
+  - Compressed class space (used, committed, max)
+
+These metrics help monitor memory consumption patterns, identify potential memory leaks, and optimize heap sizing.
+
+### JVM Garbage Collection Metrics
+
+When metrics are enabled, the platform automatically collects garbage collection metrics using Micrometer's `JvmGcMetrics`. These metrics provide insight into GC performance and include:
+
+- **GC pause times**: Duration of garbage collection pauses
+- **GC counts**: Number of garbage collection cycles
+- **GC memory reclaimed**: Amount of memory freed during GC cycles
+- **Per-collector metrics**: Specific metrics for each GC collector.
+  - Young generation GC metrics
+  - Old generation GC metrics
+  - Concurrent GC metrics (where applicable)
+
+These metrics are essential for understanding GC behavior, tuning GC settings, and identifying performance bottlenecks related to garbage collection.
+
+### JVM Thread Metrics
+
+When metrics are enabled, the platform automatically collects JVM thread metrics using Micrometer's `JvmThreadMetrics`. These metrics provide visibility into thread usage and include:
+
+- **Live thread count**: Current number of live threads
+- **Daemon thread count**: Number of daemon threads
+- **Peak thread count**: Maximum number of threads that have been alive since JVM startup
+- **Thread states**: Distribution of threads across different states (runnable, blocked, waiting, timed waiting)
+
+These metrics help monitor thread pool health, detect thread leaks, and optimize thread usage patterns.
+
+### ClassLoader Metrics
+
+When `MetricsClassLoaderStatsEnabled` is set to `true`, the platform collects classloader metrics using Micrometer's `ClassLoaderMetrics`. These metrics include:
+
+- **Loaded classes count**: Total number of classes currently loaded
+- **Unloaded classes count**: Total number of classes that have been unloaded since JVM startup
+
+ClassLoader metrics help monitor class loading behavior and can be useful for detecting classloader leaks or excessive class loading activity.
+
+### Processor Metrics
+
+When `MetricsProcessorStatsEnabled` is set to `true`, the platform collects processor metrics using Micrometer's `ProcessorMetrics`. These metrics include:
+
+- **CPU usage**: Current CPU utilization percentage
+- **System load average**: Average system load over different time periods (1, 5, 15 minutes)
+
+Processor metrics provide insight into CPU resource utilization and can help identify CPU-bound performance issues.
+
+### Executor service metrics
+
+When `MetricsExecutorEnabled` is set to `true` (the default), the platform automatically tracks metrics for executor services and thread pools used throughout the framework. This includes:
+
+- **SQL coroutine dispatcher thread pool**: Metrics for the thread pool used by the SQL database layer for coroutine execution, including active threads, queued tasks, and completed tasks.
+- Metrics are collected using Micrometer's `ExecutorServiceMetrics` and include standard executor metrics such as:
+  - Active threads
+  - Queued tasks
+  - Completed tasks
+  - Thread pool size
+
+### Hikari connection pool metrics
+
+When metrics are enabled, the platform automatically instruments HikariCP connection pools used for SQL database connections. These metrics are collected via Micrometer's `MicrometerMetricsTrackerFactory` and provide visibility into:
+
+- Connection pool size
+- Active connections
+- Idle connections
+- Pending threads waiting for connections
+- Connection creation and usage statistics
+- Connection timeout metrics
+
+### Database cache metrics
+
+When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for the Genesis database cache (Caffeine cache). These metrics include:
+
+- Cache size (estimated)
+- Cache hit rate
+- Cache miss rate
+- Eviction count
+- Load statistics
+
+Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
 
 ## Metric names
 
@@ -61,11 +170,13 @@ In addition to these tags, each metric can provide additional tags. How these ta
 
 ## Metric reporters
 
+The Genesis Platform provides built-in metric reporters that can be configured via the `MetricsReportType` property. These reporters are separate from OpenTelemetry (which is configured independently - see the [OpenTelemetry](#opentelemetry) section below).
+
 You can specify multiple reporters. Your list must be comma-separated, e.g. `GRAPHITE,DATADOG`.
 The reporter affects the name of metrics.
 Within the framework, metrics have a name and tags. 
 
-The available reporters are:
+The available built-in reporters are:
 
 | Reporter | Description                                                         |
 |:---------|:--------------------------------------------------------------------|
@@ -150,6 +261,93 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
 | Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
 
+## OpenTelemetry
+
+OpenTelemetry is an open-source observability framework that provides standardized APIs, libraries, agents, and instrumentation to collect telemetry data (metrics, traces, and logs) from applications. By integrating the OpenTelemetry Java Agent into your Genesis application, you can automatically capture comprehensive telemetry data without modifying your codebase.
+
+:::info
+OpenTelemetry is configured independently from the built-in metric reporters. When using OpenTelemetry, the `MetricsReportType` property is not required. OpenTelemetry handles metric reporting independently through its own configuration.
+
+OpenTelemetry also provides distributed tracing capabilities. For more information about using OpenTelemetry for tracing in Genesis applications, see the [Tracing](/build-deploy-operate/operate/tracing) documentation.
+:::
+
+The OpenTelemetry Java Agent offers several key benefits:
+
+- **Automatic Instrumentation**: Captures metrics, traces, and logs with minimal configuration, automatically instrumenting popular Java libraries and frameworks
+- **Vendor-Neutral**: Supports integration with multiple observability backends, including Prometheus, Grafana, Jaeger, and many others
+- **Standardized Data**: Ensures consistent telemetry data collection across services, making it easier to correlate metrics, traces, and logs
+
+Using the OpenTelemetry Java Agent complements the existing Genesis metrics reporters, allowing you to leverage both the platform's native metrics and OpenTelemetry's broader observability ecosystem.
+
+### Enabling OpenTelemetry
+
+To enable the OpenTelemetry Java Agent for your application, add the following settings to your [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
+
+```kotlin
+item(name = "OpenTelemetryJavaAgentEnabled", value = "true")
+item(name = "OpenTelemetryServiceNameEnabled", value = "true")
+item(name = "OpenTelemetryJavaAgentPropertiesFilePath", value = "/path/to/otel-config.properties")
+```
+
+| Property                               | Default | Explanation                                                                    |
+|:---------------------------------------|:--------|:-------------------------------------------------------------------------------|
+| OpenTelemetryJavaAgentEnabled          | `false` | enables the OpenTelemetry Java Agent for your application                     |
+| OpenTelemetryServiceNameEnabled        | `true`  | automatically sets the service name to the process name (when enabled)        |
+| OpenTelemetryJavaAgentPropertiesFilePath | n/a   | path to an OpenTelemetry Java Agent configuration properties file (optional)   |
+
+When enabled, the platform automatically:
+
+- Attaches the OpenTelemetry Java Agent JAR from `$GENESIS_HOME/genesis/lib/opentelemetry-javaagent.jar`
+- Sets the service name to the process name using `-Dotel.service.name={processName}` (when `OpenTelemetryServiceNameEnabled` is `true`)
+- Configures the agent using the provided properties file path (if specified) via `-Dotel.javaagent.configuration-file={path}`
+
+### OpenTelemetry Configuration
+
+You can provide additional OpenTelemetry configuration through a properties file. This file allows you to configure exporters, sampling rates, resource attributes, and many other OpenTelemetry options.
+
+Example `otel-config.properties` file:
+
+```properties
+otel.metrics.exporter=otlp
+otel.logs.exporter=none
+otel.traces.exporter=none
+otel.instrumentation.micrometer.enabled=true
+otel.instrumentation.log4j-appender.enabled=true
+otel.instrumentation.log4j-appender.experimental.capture-mdc-attributes=*
+otel.exporter.otlp.metrics.enabled=true
+otel.exporter.otlp.traces.enabled=false
+otel.exporter.otlp.logging.enabled=false
+otel.exporter.otlp.protocol=http/protobuf
+otel.exporter.otlp.endpoint=http://localhost:4318
+```
+
+Alternatively you can configure the OpenTelemetry agent by providing the options to the system definition `JVM_OPTIONS` property alongside your existing JVM arguments. The platform appends this value to every process defined in the environment.
+
+```kotlin
+item(
+    name = "JVM_OPTIONS",
+    value = "-Dotel.metrics.exporter=otlp -Dotel.traces.exporter=none -Dotel.exporter.otlp.metrics.enabled=true"
+)
+```
+
+For a complete list of available configuration options, refer to the [OpenTelemetry Java Instrumentation documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
+
+### Gradle Configuration (Local Development)
+
+For local development, you can configure OpenTelemetry in your `build.gradle.kts` file using the `genesisExec` extension:
+
+```kotlin
+genesisExec {
+    openTelemetry {
+        enabled = true
+        serviceNameEnabled = true
+        extraOptions = "-Dotel.metrics.exporter=prometheus"
+        propertiesFilePath = "/path/to/otel-config.properties"
+    }
+}
+```
+
+See the [Exec Plugin documentation](/build-deploy-operate/build/plugins#open-telemetry) for more details on local development configuration.
 
 ## Adding custom metrics
 
