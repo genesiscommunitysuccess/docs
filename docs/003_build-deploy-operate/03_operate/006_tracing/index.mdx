@@ -72,7 +72,7 @@ When enabled, the platform automatically:
 - Sets the service name to the process name using `-Dotel.service.name={processName}` (when `OpenTelemetryServiceNameEnabled` is `true`)
 - Configures the agent using the provided properties file path (if specified) via `-Dotel.javaagent.configuration-file={path}`
 
-### OpenTelemetry Configuration File
+### OpenTelemetry Configuration
 
 You can provide additional OpenTelemetry configuration through a properties file. This file allows you to configure exporters, sampling rates, resource attributes, and many other OpenTelemetry options.
 
@@ -98,6 +98,15 @@ otel.logs.exporter=none
 otel.exporter.otlp.traces.enabled=true
 otel.exporter.otlp.protocol=http/protobuf
 otel.exporter.otlp.endpoint=http://localhost:4318
+```
+
+Alternatively you can configure the OpenTelemetry agent by providing the options to the system definition `JVM_OPTIONS` property alongside your existing JVM arguments. The platform appends this value to every process defined in the environment.
+
+```kotlin
+item(
+    name = "JVM_OPTIONS",
+    value = "-Dotel.traces.exporter=otlp -Dotel.metrics.exporter=none -Dotel.exporter.otlp.traces.enabled=true"
+)
 ```
 
 For a complete list of available configuration options, refer to the [OpenTelemetry Java Instrumentation documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
