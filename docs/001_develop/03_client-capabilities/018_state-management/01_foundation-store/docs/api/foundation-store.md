@@ -27,7 +27,7 @@ Description
 
 </td><td>
 
-The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md)<!-- -->.
+The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md).
 
 
 </td></tr>

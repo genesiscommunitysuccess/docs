@@ -46,7 +46,7 @@ Description
 
 </td><td>
 
-[SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md)<!-- -->&lt;TStore, TReturn&gt;
+[SubscriberChangeHandler](./foundation-store.subscriberchangehandler.md)&lt;TStore, TReturn&gt;
 
 
 </td><td>
