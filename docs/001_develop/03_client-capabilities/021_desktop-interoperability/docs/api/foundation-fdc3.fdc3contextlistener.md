@@ -52,7 +52,7 @@ Description
 
 </td><td>
 
-[AppChannelListenerConfig](./foundation-fdc3.appchannellistenerconfig.md)<!-- -->\[\]
+[AppChannelListenerConfig](./foundation-fdc3.appchannellistenerconfig.md)\[\]
 
 
 </td><td>
