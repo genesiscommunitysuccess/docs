@@ -12,7 +12,7 @@ Shows the notification dialog
 **Signature:**
 
 ```typescript
-showNotificationDialog: (configuration: DialogStructure, tagName: String) => void
+showNotificationDialog: (configuration: DialogStructure, tagName: String, notificationBoundary?: HTMLElement) => void
 ```
 
 ## Parameters
@@ -58,6 +58,22 @@ String
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+notificationBoundary
+
+
+</td><td>
+
+HTMLElement
+
+
+</td><td>
+
+_(Optional)_
 
 
 </td></tr>

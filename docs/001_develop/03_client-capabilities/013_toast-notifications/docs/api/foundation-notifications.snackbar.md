@@ -92,7 +92,7 @@ _(Optional)_
 
 </td><td>
 
-Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)<!-- -->&gt;
+Array&lt;[ConfirmingAction](./foundation-notifications.confirmingaction.md)&gt;
 
 
 </td><td>
