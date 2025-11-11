@@ -7,7 +7,7 @@ format: md
 
 ## layoutStyles variable
 
-`ElementStyles` which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+`ElementStyles` which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md).
 
 **Signature:**
 
