@@ -1,0 +1,24 @@
+---
+title: '8.14 Fix'
+sidebar_label: 'Fix'
+sidebar_position: 3
+id: '8.14-fix'
+---
+
+### Breaking changes
+
+- BREAKING CHANGE: Changed default Charset to ISO-8859-1 instead of UTF-8 
+
+### Features
+
+* `fix-pipelines` : Handle SinkUnavailable exceptions to negotiate message retransmission 
+* Enhanced acknowledgement mechanism in FIX pipelines to allow sending error messages back to FIX session 
+
+### Fixes
+
+* `fix-pipelines` : Ensure FIXSource does not discard messages if pipeline is not started when message is received 
+* Resolve process initialisation order issues when using FIX pipelines integration 
+
+### Patch releases
+
+There are currently no patch releases for this version
