@@ -480,6 +480,37 @@ const searchConfig = [
 ```
 </td>
     </tr>
+    <tr>
+      <td>customActions</td>
+      <td><code>[CustomAction](./docs/api/foundation-entity-management.customaction.md)[]</code></td>
+      <td>Array of custom actions that extend the entity management functionality beyond standard CRUD operations. Custom actions can trigger events, execute callbacks, display forms, and be positioned in different areas of the interface. See <a href="./03_entity-manager-custom-actions">Custom actions</a> for detailed documentation.</td>
+<td>
+```typescript
+import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+
+const customActions: CustomAction[] = [
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+      defaultValues: {
+        NAME: { type: 'record', mapping: 'NAME' },
+        COUNTERPARTY_LEI: { type: 'record', mapping: 'COUNTERPARTY_LEI' },
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'copy',
+    tooltip: 'Create a copy of this counterparty',
+    requiresSelection: true,
+  },
+];
+
+<entity-management :customActions=${() => customActions}>
+```
+</td>
+    </tr>
   </tbody>
 </table>
 

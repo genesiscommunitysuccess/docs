@@ -1,0 +1,571 @@
+---
+title: 'Custom actions'
+sidebar_label: 'Custom actions'
+id: entity-manager-custom-actions
+keywords: [custom actions, entity management, entity manager, custom buttons, actions, event handlers, callbacks, form actions, UI customization, micro-front-ends]
+tags:
+  - entity management
+  - frontend
+  - micro-front-ends
+  - profile management
+  - ui
+  - user management
+  - web
+  - custom actions
+  - entity manager
+  - actions
+  - buttons
+  - event handlers
+  - callbacks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Custom actions allow you to extend the **Entity Management** component with additional buttons and functionality beyond the standard Create, Edit, and Delete operations. You can add custom actions that trigger events, execute callbacks, display forms, and interact with selected row data.
+
+This section explains how to configure and use custom actions to enhance your entity management interface.
+
+## Overview
+
+Custom actions provide a flexible way to add business-specific functionality to your entity management screens. Each custom action can:
+
+- Trigger backend events with or without displaying a form
+- Execute JavaScript callbacks for client-side operations
+- Be positioned in different areas of the interface (header, footer, column, or action menu)
+- Map default values from selected row data
+- Display confirmation dialogs before execution
+- Require row selection before activation
+
+## Basic configuration
+
+To add custom actions to your entity management component, use the `customActions` property and provide an array of [`CustomAction`](./docs/api/foundation-entity-management.customaction.md) objects:
+
+```typescript
+import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+
+const customActions: CustomAction[] = [
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'copy',
+    tooltip: 'Create a copy of this counterparty',
+  },
+];
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      :customActions=${() => customActions}
+    ></entity-management>
+  `,
+})
+export class EntityManagementExample extends GenesisElement {}
+```
+
+## Action types
+
+Custom actions support two main action types: **event-based** and **callback-based**.
+
+### Event-based actions
+
+Event-based actions send events to the Genesis server. They can be configured to display a form or execute immediately.
+
+#### Event action without form
+
+An event action without a form executes immediately when clicked, sending the event to the backend:
+
+```typescript
+const customActions: CustomAction[] = [
+  {
+    name: 'Delete Counterparty',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_DELETE',
+      hasForm: false,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+      },
+    },
+    position: CrudMenuPosition.Bottom,
+    icon: 'times',
+    tooltip: 'Delete selected counterparty',
+    requiresSelection: true,
+    confirmSubmit: {
+      state: 'enabled',
+      message: 'Are you sure you want to delete this counterparty? This action cannot be undone.',
+    },
+  },
+];
+```
+
+#### Event action with form
+
+An event action with a form displays a modal dialog where users can edit data before submitting:
+
+```typescript
+const customActions: CustomAction[] = [
+  {
+    name: 'Quick Edit',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_MODIFY',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+        NAME: { type: 'record', mapping: 'NAME' },
+        ENABLED: { type: 'record', mapping: 'ENABLED' },
+      },
+      uiSchema: {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/NAME',
+            label: 'Name',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/ENABLED',
+            label: 'Enabled',
+          },
+        ],
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'edit',
+    tooltip: 'Quick edit counterparty details',
+  },
+];
+```
+
+### Callback-based actions
+
+Callback-based actions execute JavaScript functions on the client side without interacting with the backend:
+
+```typescript
+const customActions: CustomAction[] = [
+  {
+    name: 'Console Log',
+    action: {
+      type: 'callback',
+      callback: (rowData: any) => {
+        console.log('Custom callback action triggered!', rowData);
+        alert(`Selected: ${JSON.stringify(rowData, null, 2)}`);
+      },
+    },
+    position: CrudMenuPosition.Top,
+    icon: 'terminal',
+    tooltip: 'Log row data to console',
+    requiresSelection: true,
+  },
+];
+```
+
+## Configuration options
+
+### Required properties
+
+- **`name`** (string): The display name of the action button
+- **`action`**: The action configuration object (see Action types above)
+
+### Optional properties
+
+- **`position`** ([`CrudMenuPosition`](./docs/api/foundation-entity-management.crudmenuposition.md)): Where the action button appears (defaults to `CrudMenuPosition.Column`)
+  - `CrudMenuPosition.Top` - Header area
+  - `CrudMenuPosition.Bottom` - Footer area
+  - `CrudMenuPosition.Column` - Per-row buttons in the grid
+  - `CrudMenuPosition.Action` - Actions menu (when using actions menu style)
+
+- **`appearance`** (string): Button appearance style (e.g., `'primary'`, `'neutral'`, `'accent'`)
+
+- **`icon`** (string): Icon name to display on the button
+
+- **`tooltip`** (string): Tooltip text shown on hover
+
+- **`requiresSelection`** (boolean): If `true`, the button is disabled until a row is selected
+
+- **`confirmSubmit`** ([`ConfirmSubmit`](./docs/api/foundation-entity-management.confirmsubmit.md)): Configuration for confirmation dialog
+  ```typescript
+  {
+    state: 'enabled' | 'disabled';
+    message: string;
+  }
+  ```
+
+- **`defaultValues`** ([`DefaultValues`](./docs/api/foundation-entity-management.defaultvalues.md)): Default values for form fields (see Default values mapping)
+
+- **`uiSchema`** (`UiSchema`): Custom UI schema for the form (only used when `hasForm: true`)
+
+## Positioning
+
+Custom actions can be positioned in different areas of the entity management interface. The position determines where the action buttons appear:
+
+### Top position
+
+Actions positioned at the top appear in the header area, alongside the standard CRUD buttons:
+
+```typescript
+const topCustomActions: CustomAction[] = [
+  {
+    name: 'Add Counterparty (Custom)',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: 'CP_1234567890',
+        NAME: 'New Counterparty',
+        ENABLED: true,
+      },
+    },
+    appearance: 'primary',
+    position: CrudMenuPosition.Top,
+    icon: 'plus',
+    tooltip: 'Custom Action with form + default values',
+    requiresSelection: false,
+  },
+];
+```
+
+### Bottom position
+
+Actions positioned at the bottom appear in the footer area:
+
+```typescript
+const bottomCustomActions: CustomAction[] = [
+  {
+    name: 'Delete Counterparty (Custom)',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_DELETE',
+      hasForm: false,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+      },
+    },
+    position: CrudMenuPosition.Bottom,
+    icon: 'times',
+    tooltip: 'Delete selected counterparty',
+    requiresSelection: true,
+  },
+];
+```
+
+### Column position
+
+Actions positioned in the column appear as buttons in each row of the grid:
+
+```typescript
+const columnCustomActions: CustomAction[] = [
+  {
+    name: 'Quick Edit',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_MODIFY',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+        NAME: { type: 'record', mapping: 'NAME' },
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'edit',
+    tooltip: 'Quick edit counterparty details',
+  },
+];
+```
+
+### Action menu position
+
+Actions positioned in the action menu appear in the actions menu dropdown (when `crud-menu-style` is set to `actions-horizontal` or `actions-vertical`):
+
+```typescript
+const actionMenuCustomActions: CustomAction[] = [
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+      defaultValues: {
+        NAME: { type: 'record', mapping: 'NAME' },
+        COUNTERPARTY_LEI: { type: 'record', mapping: 'COUNTERPARTY_LEI' },
+      },
+    },
+    position: CrudMenuPosition.Action,
+    icon: 'copy',
+    tooltip: 'Duplicate selected counterparty',
+    requiresSelection: true,
+  },
+];
+```
+
+## Default values mapping
+
+Custom actions support mapping default values from the selected row data. This is particularly useful when you want to pre-populate form fields or pass row data to events.
+
+For more details, see the [`DefaultValues`](./docs/api/foundation-entity-management.defaultvalues.md) and [`RecordTypeValue`](./docs/api/foundation-entity-management.recordtypevalue.md) API documentation.
+
+### Static values
+
+You can provide static default values:
+
+```typescript
+defaultValues: {
+  COUNTERPARTY_ID: 'CP_1234567890',
+  NAME: 'New Counterparty',
+  ENABLED: true,
+}
+```
+
+### Dynamic values from row data
+
+To map values from the selected row, use the [`RecordTypeValue`](./docs/api/foundation-entity-management.recordtypevalue.md) type:
+
+```typescript
+defaultValues: {
+  COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+  NAME: { type: 'record', mapping: 'NAME' },
+  ENABLED: { type: 'record', mapping: 'ENABLED' },
+}
+```
+
+The `mapping` property specifies which field from the row data should be used. If `mapping` is omitted, the key name is used as the field name.
+
+### Mixed static and dynamic values
+
+You can combine static and dynamic values:
+
+```typescript
+defaultValues: {
+  COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+  NAME: 'Updated Name', // Static value
+  COUNTERPARTY_LEI: { type: 'record', mapping: 'COUNTERPARTY_LEI' },
+  ENABLED: true, // Static value
+}
+```
+
+When the action is triggered, the [`mapDefaultValues`](./docs/api/foundation-entity-management.mapdefaultvalues.md) utility function automatically replaces `RecordTypeValue` objects with the corresponding values from the selected row data.
+
+## Confirmation dialogs
+
+You can configure custom actions to display a confirmation dialog before execution. This is useful for destructive operations or important actions. For more details, see the [`ConfirmSubmit`](./docs/api/foundation-entity-management.confirmsubmit.md) API documentation.
+
+```typescript
+const customActions: CustomAction[] = [
+  {
+    name: 'Delete Counterparty',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_DELETE',
+      hasForm: false,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+      },
+    },
+    confirmSubmit: {
+      state: 'enabled',
+      message: 'Are you sure you want to delete this counterparty? This action cannot be undone.',
+    },
+    requiresSelection: true,
+  },
+];
+```
+
+The confirmation dialog is only shown for event-based actions without forms. For actions with forms, you can use the form's built-in confirmation message feature.
+
+## Custom UI schemas
+
+When using event-based actions with forms (`hasForm: true`), you can provide a custom UI schema to control which fields are displayed and how they are laid out:
+
+```typescript
+const customActions: CustomAction[] = [
+  {
+    name: 'Quick Edit',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_MODIFY',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+        NAME: { type: 'record', mapping: 'NAME' },
+        COUNTERPARTY_LEI: { type: 'record', mapping: 'COUNTERPARTY_LEI' },
+        ENABLED: { type: 'record', mapping: 'ENABLED' },
+      },
+      uiSchema: {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/NAME',
+            label: 'Name',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/COUNTERPARTY_LEI',
+            label: 'LEI',
+            options: {
+              readonly: true,
+            },
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/ENABLED',
+            label: 'Enabled',
+          },
+        ],
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'edit',
+  },
+];
+```
+
+For more information about UI schemas, refer to the [Forms documentation](../../007_forms/002_smart-forms/index.mdx).
+
+## Complete example
+
+Here's a complete example that demonstrates multiple custom actions with different configurations:
+
+```typescript
+import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+
+const customActions: CustomAction[] = [
+  // Top position - action with form and static defaults
+  {
+    name: 'Add Counterparty (Custom)',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: 'CP_1234567890',
+        NAME: 'New Counterparty',
+        ENABLED: true,
+      },
+    },
+    appearance: 'primary',
+    position: CrudMenuPosition.Top,
+    icon: 'plus',
+    tooltip: 'Custom Action with form + default values',
+    requiresSelection: false,
+    confirmSubmit: {
+      state: 'enabled',
+      message: 'Are you sure you want to add this counterparty?',
+    },
+  },
+  // Top position - callback action
+  {
+    name: 'Console Log',
+    action: {
+      type: 'callback',
+      callback: (rowData: any) => {
+        console.log('Custom callback action triggered!', rowData);
+        alert(`Callback action: ${JSON.stringify(rowData, null, 2)}`);
+      },
+    },
+    position: CrudMenuPosition.Top,
+    icon: 'terminal',
+    tooltip: 'Log row data to console',
+    requiresSelection: true,
+  },
+  // Column position - quick edit with row data mapping
+  {
+    name: 'Quick Edit',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_MODIFY',
+      hasForm: true,
+      defaultValues: {
+        COUNTERPARTY_ID: { type: 'record', mapping: 'COUNTERPARTY_ID' },
+        NAME: { type: 'record', mapping: 'NAME' },
+        ENABLED: { type: 'record', mapping: 'ENABLED' },
+      },
+      uiSchema: {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/NAME',
+            label: 'Name',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/ENABLED',
+            label: 'Enabled',
+          },
+        ],
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'edit',
+    tooltip: 'Quick edit counterparty details',
+  },
+  // Column position - duplicate action
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+      defaultValues: {
+        NAME: { type: 'record', mapping: 'NAME' },
+        COUNTERPARTY_LEI: { type: 'record', mapping: 'COUNTERPARTY_LEI' },
+        ENABLED: { type: 'record', mapping: 'ENABLED' },
+      },
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'copy',
+    tooltip: 'Create a copy of this counterparty',
+    confirmSubmit: {
+      state: 'enabled',
+      message: 'Create a duplicate of this counterparty?',
+    },
+  },
+];
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      :customActions=${() => customActions}
+    ></entity-management>
+  `,
+})
+export class EntityManagementExample extends GenesisElement {}
+```
+
+## Best practices
+
+1. **Use appropriate positions**: Place actions where they make the most sense for your workflow
+   - Use `Top` or `Bottom` for actions that don't require row selection
+   - Use `Column` for row-specific actions
+   - Use `Action` menu for additional options when using the actions menu style
+
+2. **Provide clear tooltips**: Always include tooltip text to help users understand what each action does
+
+3. **Use confirmation dialogs**: Add confirmation dialogs for destructive or irreversible actions
+
+4. **Map row data efficiently**: Use [`RecordTypeValue`](./docs/api/foundation-entity-management.recordtypevalue.md) to automatically populate forms with selected row data
+
+5. **Require selection when needed**: Set `requiresSelection: true` for actions that operate on specific rows
+
+6. **Customize forms**: Use custom UI schemas to create focused forms that show only relevant fields
+
