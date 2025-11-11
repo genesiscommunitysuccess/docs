@@ -56,7 +56,7 @@ stream
 
 </td><td>
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;any&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;any&gt;
 
 
 </td><td>

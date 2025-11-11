@@ -10,5 +10,5 @@ format: md
 **Signature:**
 
 ```typescript
-startStreamRequired: boolean;
+readonly startStreamRequired: boolean;
 ```

@@ -69,7 +69,7 @@ _(Optional)_ The desired view number. Default: the first view.
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MoreRows](./foundation-comms.messagedetails.morerows.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.MoreRows](./foundation-comms.messagedetails.morerows.md)&gt;
 
 The more rows message.
 

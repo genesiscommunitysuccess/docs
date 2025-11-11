@@ -173,6 +173,25 @@ _(Optional)_ Defines the behaviour of the client view when new rows are received
 </td></tr>
 <tr><td>
 
+[offset?](./foundation-comms.datasourceoptions.offset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+_(Optional)_ The offset to use when fetching data.
+
+
+</td></tr>
+<tr><td>
+
 [orderBy?](./foundation-comms.datasourceoptions.orderby.md)
 
 

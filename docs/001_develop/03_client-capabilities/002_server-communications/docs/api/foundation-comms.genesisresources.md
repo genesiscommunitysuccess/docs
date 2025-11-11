@@ -71,7 +71,7 @@ Destroy and garbage collect
 
 </td><td>
 
-() =&gt; Promise&lt;[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]&gt;
+() =&gt; Promise&lt;[ResourceItem](./foundation-comms.resourceitem.md)\[\]&gt;
 
 
 </td><td>
@@ -90,7 +90,7 @@ Returns all available resources.
 
 </td><td>
 
-(resourceName: string) =&gt; Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)<!-- -->&gt;
+(resourceName: string) =&gt; Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)&gt;
 
 
 </td><td>

@@ -56,7 +56,7 @@ message
 
 </td><td>
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)&gt;
 
 
 </td><td>
@@ -72,7 +72,7 @@ stream
 
 </td><td>
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;any&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;any&gt;
 
 
 </td><td>

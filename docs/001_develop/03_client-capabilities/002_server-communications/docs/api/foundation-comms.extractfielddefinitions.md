@@ -53,7 +53,7 @@ The metadata object.
 
 **Returns:**
 
-[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+[MetadataDetail](./foundation-comms.metadatadetail.md)\[\]
 
 An array of metadata detail.
 

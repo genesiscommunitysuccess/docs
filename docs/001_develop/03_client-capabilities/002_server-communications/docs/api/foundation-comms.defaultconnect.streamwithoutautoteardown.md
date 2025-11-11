@@ -93,5 +93,5 @@ _(Optional)_
 
 **Returns:**
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;[Message](./foundation-comms.message.md)&gt;
 
