@@ -11,7 +11,7 @@ tags:
   - smart forms
 ---
 
-The Forms Declarative HTML API allows developers to design and manage forms directly in HTML using intuitive, structured tags. It simplifies form creation by embedding validation rules, data bindings, and interactivity within HTML elements, minimizing the need for custom JavaScript. 
+The Forms Declarative HTML API allows developers to design and manage forms directly in HTML using intuitive, structured tags. It simplifies form creation by embedding validation rules, data bindings, and interactivity within HTML elements, minimizing the need for custom JavaScript.
 
 ## DOM API
 
@@ -25,6 +25,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 |readonly|`boolean`|Allows you to enable read-only mode, which disables all input on the form and hides the **Submit** button.|`<foundation-form readonly>`|
 |hide-submit-button|`boolean`|Controls the visibility of the **Submit** button.|`<foundation-form hide-submit-button>`|
 |design-system-prefix|`string`|Name of the design system prefix that will be used in renderers.|`<foundation-form design-system-prefix="rapid">`|
+|confirmation-message|`string`|If set, this message will pop up in a confirmation dialog when the user attempts to submit the form.|`<foundation-form confirmation-message="Are you sure want to submit this form? This action cannot be undone.">`|
 
 ### Properties
 
@@ -49,7 +50,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 |userActions|Using this part enables you to change the styles for the items in the userActions slot.|
 
 
-### Events fired 
+### Events fired
 
 Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
