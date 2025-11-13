@@ -362,4 +362,75 @@ There are currently no patch releases for this version
 
 ## Breaking change guidance
 
+### Caffeine library upgrade
+
+The genesis platform now uses [Caffeine](https://github.com/ben-manes/caffeine) version 3.2. Version 3 added the following changes:
+
+Incompatible changes
+- VarExpiration time-based puts now return the old value instead of a boolean result
+- Removed jandex resource as no longer utilized by Quarkus
+- Split Policy.Expiration into fixed and refresh interfaces
+
+Deprecation removals
+- CacheWriter, SingleConsumerQueue, and UnsafeAccess
+- StatsCounter.recordEviction variations
+- CacheStats constructors
+
+If your genesis application is using Caffeine for any reason, please ensure to adapt your code to the latest changes if needed.
+
+### Netty library upgrade
+
+Netty has been upgraded to version 4.2.0+, which introduces a few breaking changes and different behaviour.
+If your application is using any Netty features directly as opposed to relying on the platform configuration and APIs, please ensure you follow the:
+- [Compatibility highlights](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#compatibility-highlights),
+- [Lesser compatibility changes](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#lesser-compatibility-changes) and
+- [New best practices](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#new-best-practices)
+
+### Cookie authentication by default
+
+The genesis-router.kts configuration now uses cookie authentication by default to follow standard security practices. Please ensure your application UI is also set up to use cookies when adopting these changes.
+For more information about the router configuration visit the [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) documentation.
+
+### Database API changes
+
+The database API has been greatly enhanced with new features in this version (e.g. criteria search translation to SQL, native SQL joins for views, etc), but there are a few breaking changes to highlight
+- Uses of `global.genesis.db.entity.ViewEntity` directly as part of the `getBulk` database operation will need to be changed for `global.genesis.db.entity.DbBulkEntity`. This new type is a more accurate definition of what types of entities can be read using `getBulk`.
+- Parameterised views now have a compile time check to ensure they cannot be used in `getBulk` and `subscribe` operations as they require an external parameter to run database operations. Before 8.14, the code would fail at runtime.
+- Parameterised views now work as expected when using the different `EntityDb` APIs.
+- Generated entities now have the `timestamp` field added to the `copy` function.
+- An internal deprecated method to initialise `RxDb` instances has been removed. `RxDb` should always be retrieved via dependency injection.
+
+### External OpenAPI client code generation
+
+The support for code generation of external OpenAPI specifications (see [external rest APIs page](/develop/server-capabilities/integrations/external-rest-apis/)) has been reworked to support more complex specifications, including generating code for multiple specs in one single gradle module.
+If you are using this platform feature, please regenerate the external OpenAPI client code using the gradle plugin and pay attention to any potential class definitions moving into separate packages.
+
+### Genesis "test" Gradle plugin
+
+If your application is not using the `global.genesis.test` Gradle plugin, please ensure you apply it in the relevant application modules.
+Without it, a series of `--add-opens` and `--add-exports` JVM configuration options need to be added, add this can add unnecessary maintenance effort when performing platform upgrades.
+
 ## Impactful change guidance
+
+### New code parsing approach for derived fields
+genesis now uses the Kotlin PSI API to parse derived field information from table and view definitions at code generation time instead of using ANTLR. This change should not have any effect on functionality, but will provide a performance and memory improvement.
+
+### Core dictionary changes
+There have been a few changes in the `genesis-tables-dictionary.kts` file.
+- The varchar field sizes for ENTITY_ID, SOURCE_ID, PROCESS, and PROCESS_NAME have been increased.
+- Added a new RIGHT_CODE index to RIGHT_SUMMARY table and a TIMESTAMP index to USER_AUDIT table
+If you have overridden this file with a `site-specific` version, please ensure you apply these updates in your custom file to guarantee compatibility with 8.14.
+
+### Improved criteria AST validation
+The criteria match validation for dataservers and request replies is now more thorough. We don't expect any issues to arise from this change, but you may see different/new rejection messages for invalid criteria.
+
+### New metadata information added to req/rep
+The request-reply JSON schema metadat ahas been enhanced to provide `criteriaFields` and `sortableFields` so the UI knows what fields can be used in criteria evaluation and what fields can be used for native SQL order by purposes.
+If your application or tests rely on the old metadata definition please make sure to accommodate these changes moving forward.
+
+### Automatic data load in local environments
+If your genesis application project contains a `/genesis/testData` folder (see [testData](/build-deploy-operate/build/project-structure/#testdata)), the data files will be loaded automatically in your dev database as part of local development (e.g. using Genesis Start or the Intellij plugin).
+
+### IOUring support for Netty
+If your operating system supports [IOUring](https://man7.org/linux/man-pages/man7/io_uring.7.html), you can enable Netty's `IOUring` support for genesis applications setting the JVM property `genesis.netty.iouring.enabled` to `true`.
+`IOUring` provides significant performance improvements over Epoll in Linux environments, but can be controversial from a security perspective, and therefore it is not enabled by default.
