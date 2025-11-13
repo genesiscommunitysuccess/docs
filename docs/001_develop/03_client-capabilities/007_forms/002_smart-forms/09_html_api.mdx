@@ -19,23 +19,155 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|resourceName|`string`|Name of the back-end resource which provides the metadata used to generate form and for submitting data|`<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">`|
-|readonly|`boolean`|Allows you to enable read-only mode, which disables all input on the form and hides the **Submit** button.|`<foundation-form readonly>`|
-|hide-submit-button|`boolean`|Controls the visibility of the **Submit** button.|`<foundation-form hide-submit-button>`|
-|design-system-prefix|`string`|Name of the design system prefix that will be used in renderers.|`<foundation-form design-system-prefix="rapid">`|
-|confirmation-message|`string`|If set, this message will pop up in a confirmation dialog when the user attempts to submit the form.|`<foundation-form confirmation-message="Are you sure want to submit this form? This action cannot be undone.">`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>resourceName</td>
+      <td><code>string</code></td>
+      <td>Name of the back-end resource which provides the metadata used to generate form and for submitting data</td>
+      <td>
+
+```typescript
+<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>Allows you to enable read-only mode, which disables all input on the form and hides the <strong>Submit</strong> button.</td>
+      <td>
+
+```typescript
+<foundation-form readonly>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>hide-submit-button</td>
+      <td><code>boolean</code></td>
+      <td>Controls the visibility of the <strong>Submit</strong> button.</td>
+      <td>
+
+```typescript
+<foundation-form hide-submit-button>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>design-system-prefix</td>
+      <td><code>string</code></td>
+      <td>Name of the design system prefix that will be used in renderers.</td>
+      <td>
+
+```typescript
+<foundation-form design-system-prefix="rapid">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>confirmation-message</td>
+      <td><code>string</code></td>
+      <td>If set, this message will pop up in a confirmation dialog when the user attempts to submit the form.</td>
+      <td>
+
+```typescript
+<foundation-form
+  confirmation-message="Are you sure want to submit this form?"
+>
+```
+
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|additionalRenderers|`RendererEntry[]`|Allows you to provide a set of additional renderers used by the form.|`<foundation-form :additionalRenderers=${(x) => x.additionalRenderers}>`|
-|data|`any`|Initial data for the form. |`<foundation-form :data=${(x) => x.data}>`|
-|jsonSchema|`JSONSchema7`|Instead of providing Form.resourceName you can hardcode the JSON schema on the client.|`<foundation-form :jsonSchema=${(x) => x.jsonSchema}>`|
-|renderers|`RendererEntry[]`|Allows you to provide the main set of renderers used by the form. If not provided, the built-in renderers are used by default.|`<foundation-form :renderers=${(x) => x.renderers}>`|
-|uischema	|`UiSchema`|UI schema used to define configuration of the layout and elements in the form. Check [UiSchema](./docs/api/foundation-forms.uischema.md) for possible options.|`<foundation-form :uischema=${(x) => x.uischema}>`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>additionalRenderers</td>
+      <td><code>RendererEntry[]</code></td>
+      <td>Allows you to provide a set of additional renderers used by the form.</td>
+      <td>
+
+```typescript
+<foundation-form :additionalRenderers=${(x) => x.additionalRenderers}>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td><code>any</code></td>
+      <td>Initial data for the form.</td>
+      <td>
+
+```typescript
+<foundation-form :data=${(x) => x.data}>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>jsonSchema</td>
+      <td><code>JSONSchema7</code></td>
+      <td>Instead of providing Form.resourceName you can hardcode the JSON schema on the client.</td>
+      <td>
+
+```typescript
+<foundation-form :jsonSchema=${(x) => x.jsonSchema}>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>renderers</td>
+      <td><code>RendererEntry[]</code></td>
+      <td>Allows you to provide the main set of renderers used by the form. If not provided, the built-in renderers are used by default.</td>
+      <td>
+
+```typescript
+<foundation-form :renderers=${(x) => x.renderers}>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>uischema</td>
+      <td><code>UiSchema</code></td>
+      <td>UI schema used to define configuration of the layout and elements in the form. Check [UiSchema](./docs/api/foundation-forms.uischema.md) for possible options.</td>
+      <td>
+
+```typescript
+<foundation-form :uischema=${(x) => x.uischema}>
+```
+
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Slots
 
@@ -54,11 +186,54 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
-| Part | Type | Use | Example |
-|---|---|---|---|
- | submit | `{ payload, errors }` | Emitted after the user clicks on the **Submit** button | `<foundation-form @submit="${() => ...}">`|
- | submit-success | `{ payload }` | Emitted when the form has no errors and the form has been submitted successfully. | `<foundation-form @submit-success="${() => ...}">`|
- | submit-failure | `{ payload, errors }` | Emitted when the form has errors after being submitted. | `<foundation-form @submit-failure="${() => ...}">`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>submit</td>
+      <td><code>\{ payload, errors \}</code></td>
+      <td>Emitted after the user clicks on the <strong>Submit</strong> button</td>
+      <td>
+
+```typescript
+<foundation-form @submit="${() => ...}">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>submit-success</td>
+      <td><code>\{ payload \}</code></td>
+      <td>Emitted when the form has no errors and the form has been submitted successfully.</td>
+      <td>
+
+```typescript
+<foundation-form @submit-success="${() => ...}">
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>submit-failure</td>
+      <td><code>\{ payload, errors \}</code></td>
+      <td>Emitted when the form has errors after being submitted.</td>
+      <td>
+
+```typescript
+<foundation-form @submit-failure="${() => ...}">
+```
+
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Events listened to
 
