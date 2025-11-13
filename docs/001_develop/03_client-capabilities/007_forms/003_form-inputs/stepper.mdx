@@ -247,7 +247,7 @@ Property and attribute binding examples for Genesis Component syntax.
         <tr>
             <td>allow-forward-jumps</td>
             <td><code>boolean</code></td>
-            <td>Allows users to click on future steps to navigate forwards (with validation)</td>
+            <td>Allows users to click on future steps to navigate forwards (with validation). If there are validation error(s) on step(s) between your current and selected step, the stepper will jump as many steps as possible until the first step with validation errors.</td>
             <td>
               ```typescript
               <rapid-stepper allow-forward-jumps>
@@ -511,7 +511,7 @@ export function StepperValidationExample() {
   };
 
   return (
-    <rapid-stepper 
+    <rapid-stepper
       validation={validationConfig}
       onSubmit={handleSubmit}
     >
@@ -519,22 +519,22 @@ export function StepperValidationExample() {
       <rapid-stepper-tab>Step 2</rapid-stepper-tab>
       <rapid-stepper-tab>Step 3</rapid-stepper-tab>
       <rapid-stepper-tab-panel>
-        <rapid-text-field 
-          style={{marginLeft: '10px'}} 
+        <rapid-text-field
+          style={{marginLeft: '10px'}}
           value={valid}
           onChange={(e) => setValid(e.target.value)}
         >
           Must be equal to: 123
         </rapid-text-field>
-        <rapid-text-field 
-          style={{marginLeft: '10px'}} 
+        <rapid-text-field
+          style={{marginLeft: '10px'}}
           value={valid2}
           onChange={(e) => setValid2(e.target.value)}
         >
           Must be equal to: abc
         </rapid-text-field>
-        <rapid-text-field 
-          style={{marginLeft: '10px'}} 
+        <rapid-text-field
+          style={{marginLeft: '10px'}}
           value={valid3}
           onChange={(e) => setValid3(e.target.value)}
         >
@@ -543,8 +543,8 @@ export function StepperValidationExample() {
       </rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>
         <h5>Must be equal to: abc</h5>
-        <rapid-select 
-          style={{margin: '10px 0 0 10px'}} 
+        <rapid-select
+          style={{margin: '10px 0 0 10px'}}
           value={valid4}
           onChange={(e) => setValid4(e.target.value)}
         >
@@ -553,8 +553,8 @@ export function StepperValidationExample() {
         </rapid-select>
       </rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>
-        <rapid-text-field 
-          style={{marginLeft: '10px'}} 
+        <rapid-text-field
+          style={{marginLeft: '10px'}}
           value={valid5}
           onChange={(e) => setValid5(e.target.value)}
         >
@@ -577,7 +577,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @Component({
   selector: 'stepper-validation-example',
   template: `
-    <rapid-stepper 
+    <rapid-stepper
       [validation]="validationConfig"
       (submit)="handleSubmit($event)"
     >
@@ -585,22 +585,22 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
       <rapid-stepper-tab>Step 2</rapid-stepper-tab>
       <rapid-stepper-tab>Step 3</rapid-stepper-tab>
       <rapid-stepper-tab-panel>
-        <rapid-text-field 
-          style="margin-left: 10px;" 
+        <rapid-text-field
+          style="margin-left: 10px;"
           [value]="valid"
           (change)="valid = $event.target.value"
         >
           Must be equal to: 123
         </rapid-text-field>
-        <rapid-text-field 
-          style="margin-left: 10px;" 
+        <rapid-text-field
+          style="margin-left: 10px;"
           [value]="valid2"
           (change)="valid2 = $event.target.value"
         >
           Must be equal to: abc
         </rapid-text-field>
-        <rapid-text-field 
-          style="margin-left: 10px;" 
+        <rapid-text-field
+          style="margin-left: 10px;"
           [value]="valid3"
           (change)="valid3 = $event.target.value"
         >
@@ -609,8 +609,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
       </rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>
         <h5>Must be equal to: abc</h5>
-        <rapid-select 
-          style="margin: 10px 0 0 10px;" 
+        <rapid-select
+          style="margin: 10px 0 0 10px;"
           [value]="valid4"
           (change)="valid4 = $event.target.value"
         >
@@ -619,8 +619,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
         </rapid-select>
       </rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>
-        <rapid-text-field 
-          style="margin-left: 10px;" 
+        <rapid-text-field
+          style="margin-left: 10px;"
           [value]="valid5"
           (change)="valid5 = $event.target.value"
         >
@@ -683,7 +683,7 @@ The stepper provides methods to programmatically navigate between steps:
       <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
     </rapid-stepper>
-    
+
     <rapid-button @click={\`\${(x) => x.goToFirst()}\`}>Go to First</rapid-button>
     <rapid-button @click={\`\${(x) => x.goToLast()}\`}>Go to Last</rapid-button>
     <rapid-button @click={\`\${(x) => x.goToSpecific()}\`}>Go to Step 2</rapid-button>
@@ -737,7 +737,7 @@ export function StepperNavigationExample() {
       <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
     </rapid-stepper>
-    
+
     <rapid-button onClick={goToFirst}>Go to First</rapid-button>
     <rapid-button onClick={goToLast}>Go to Last</rapid-button>
     <rapid-button onClick={goToSpecific}>Go to Step 2</rapid-button>
@@ -764,7 +764,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
       <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
       <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
     </rapid-stepper>
-    
+
     <rapid-button (click)="goToFirst()">Go to First</rapid-button>
     <rapid-button (click)="goToLast()">Go to Last</rapid-button>
     <rapid-button (click)="goToSpecific()">Go to Step 2</rapid-button>
