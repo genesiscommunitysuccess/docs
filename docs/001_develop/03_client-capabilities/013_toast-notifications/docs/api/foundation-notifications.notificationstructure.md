@@ -69,7 +69,7 @@ string
 
 </td><td>
 
-{ readonly logLevel?: LogLevel; readonly alert?: boolean; readonly toast?: [Toast](./foundation-notifications.toast.md)<!-- -->; readonly banner?: [Banner](./foundation-notifications.banner.md)<!-- -->; readonly snackbar?: [Snackbar](./foundation-notifications.snackbar.md)<!-- -->; readonly dialog?: [Dialog](./foundation-notifications.dialog.md)<!-- -->; }
+{ readonly logLevel?: LogLevel; readonly alert?: boolean; readonly toast?: [Toast](./foundation-notifications.toast.md); readonly banner?: [Banner](./foundation-notifications.banner.md); readonly snackbar?: [Snackbar](./foundation-notifications.snackbar.md); readonly dialog?: [Dialog](./foundation-notifications.dialog.md); }
 
 
 </td><td>
@@ -91,6 +91,27 @@ _(Optional)_
 </td><td>
 
 Date
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+[iconName?](./foundation-notifications.notificationstructure.iconname.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
 
 
 </td><td>

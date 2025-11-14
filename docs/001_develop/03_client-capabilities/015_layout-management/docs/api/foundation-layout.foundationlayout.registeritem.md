@@ -81,7 +81,7 @@ string
 
 ## Remarks
 
-You would use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md)<!-- -->. Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md)<!-- -->.
+You would use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md). Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md).
 
-When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`<!-- -->.
+When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`.
 

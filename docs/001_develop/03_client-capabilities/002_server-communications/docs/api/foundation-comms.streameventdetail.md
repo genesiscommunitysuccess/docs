@@ -18,5 +18,5 @@ export type StreamEventDetail = {
     stream: SocketObservable<any>;
 };
 ```
-**References:** [StreamEventFunctions](./foundation-comms.streameventfunctions.md)<!-- -->, [Message](./foundation-comms.message.md)<!-- -->, [MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)<!-- -->, [SocketObservable](./foundation-comms.socketobservable.md)
+**References:** [StreamEventFunctions](./foundation-comms.streameventfunctions.md), [Message](./foundation-comms.message.md), [MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md), [SocketObservable](./foundation-comms.socketobservable.md)
 

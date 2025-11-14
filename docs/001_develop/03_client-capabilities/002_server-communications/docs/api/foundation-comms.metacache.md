@@ -14,5 +14,5 @@ Union type of MetadataCache and JsonSchemaCache
 ```typescript
 export type MetaCache = MetadataCache & JsonSchemaCache;
 ```
-**References:** [MetadataCache](./foundation-comms.metadatacache.md)<!-- -->, [JsonSchemaCache](./foundation-comms.jsonschemacache.md)
+**References:** [MetadataCache](./foundation-comms.metadatacache.md), [JsonSchemaCache](./foundation-comms.jsonschemacache.md)
 

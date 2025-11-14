@@ -59,6 +59,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[getAnyOfErrorMessage(errors, schema, controlPath, uiCustomMsg)](./foundation-forms.getanyoferrormessage.md)
+
+
+</td><td>
+
+Computes a human-friendly anyOf error message for a given control path. Prefers UI schema custom message, then JSON schema errorMessage.anyOf, then a constructed fallback.
+
+
+</td></tr>
+<tr><td>
+
 [mustMatch(target)](./foundation-forms.mustmatch.md)
 
 

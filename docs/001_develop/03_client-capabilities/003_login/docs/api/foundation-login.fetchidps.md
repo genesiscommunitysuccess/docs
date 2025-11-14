@@ -69,5 +69,5 @@ _(Optional)_
 
 **Returns:**
 
-Promise&lt;[IDP](./foundation-login.idp.md)<!-- -->\[\]&gt;
+Promise&lt;[IDP](./foundation-login.idp.md)\[\]&gt;
 

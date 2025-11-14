@@ -58,7 +58,7 @@ A logger error method reference.
 
 **Returns:**
 
-[ErrorMap](./foundation-store.errormap.md)<!-- -->&lt;TErrorDetailMap&gt;
+[ErrorMap](./foundation-store.errormap.md)&lt;TErrorDetailMap&gt;
 
 A ErrorMap instance.
 

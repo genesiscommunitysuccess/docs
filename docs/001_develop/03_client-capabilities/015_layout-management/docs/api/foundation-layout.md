@@ -193,7 +193,7 @@ Defines events that the layout system emits
 
 Defines events that the layout system listens for
 
-'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md)<!-- -->.
+'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md).
 
 
 </td></tr>
@@ -204,7 +204,7 @@ Defines events that the layout system listens for
 
 </td><td>
 
-`ElementStyles` which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+`ElementStyles` which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md).
 
 
 </td></tr>
@@ -215,7 +215,7 @@ Defines events that the layout system listens for
 
 </td><td>
 
-`ViewTemplate` which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+`ViewTemplate` which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md).
 
 
 </td></tr>
@@ -254,7 +254,7 @@ Definition of a custom button which will be added to all layout items.
 
 Defines the shape of the detail that the layout listens works with for events it listens on
 
-'changeTitle' - `title` is the string you want to set. For `mode`<!-- -->: `replace` will set the title to be `title`<!-- -->, `suffix` will append `title` to the end of the existing title. 'autosave' - no other parameters.
+'changeTitle' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title. 'autosave' - no other parameters.
 
 
 </td></tr>
@@ -265,7 +265,7 @@ Defines the shape of the detail that the layout listens works with for events it
 
 </td><td>
 
-Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md)<!-- -->.
+Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md).
 
 
 </td></tr>

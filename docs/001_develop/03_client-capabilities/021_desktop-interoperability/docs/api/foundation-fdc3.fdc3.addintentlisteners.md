@@ -40,7 +40,7 @@ listeners
 
 </td><td>
 
-Map&lt;[FDC3Intents](./foundation-fdc3.fdc3intents.md)<!-- -->, [FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md)<!-- -->&gt;
+Map&lt;[FDC3Intents](./foundation-fdc3.fdc3intents.md), [FDC3ContextHandler](./foundation-fdc3.fdc3contexthandler.md)&gt;
 
 
 </td><td>

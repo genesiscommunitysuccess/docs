@@ -201,5 +201,17 @@ Description
 
 
 </td></tr>
+<tr><td>
+
+[requiresTermsAndConditions()](./foundation-comms.autherror.requirestermsandconditions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 

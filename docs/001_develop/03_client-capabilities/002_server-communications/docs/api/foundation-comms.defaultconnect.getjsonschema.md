@@ -65,5 +65,5 @@ _(Optional)_
 
 **Returns:**
 
-Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
+Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)&gt;
 

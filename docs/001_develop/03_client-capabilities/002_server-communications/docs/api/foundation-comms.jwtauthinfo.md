@@ -18,5 +18,5 @@ export type JwtAuthInfo = {
     domain: string;
 };
 ```
-**References:** [AuthType](./foundation-comms.authtype.md)<!-- -->, [AuthType.JWT](./foundation-comms.authtype.md)
+**References:** [AuthType](./foundation-comms.authtype.md), [AuthType.JWT](./foundation-comms.authtype.md)
 

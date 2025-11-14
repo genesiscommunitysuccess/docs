@@ -40,7 +40,7 @@ Description
 
 </td><td>
 
-{ details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md)<!-- -->; }
+{ details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md); }
 
 
 </td><td>

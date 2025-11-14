@@ -23,7 +23,7 @@ boolean
 
 ## Remarks
 
-If you need to call this manually then you should do it as soon as you register all of the required components with [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md)<!-- -->.
+If you need to call this manually then you should do it as soon as you register all of the required components with [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md).
 
 If you set the `LAYOUT_POPOUT_CONTAINER_CLASS` on an element which is a DOM parent of the layout, then if the layout goes into popout mode then it will place itself as the only child for the popout container you set. It is likely you'll want to attach this class to your design system provider.
 

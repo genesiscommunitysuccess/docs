@@ -82,7 +82,7 @@ boolean
 
 </td><td>
 
-[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]
+[ResourceItem](./foundation-comms.resourceitem.md)\[\]
 
 
 </td><td>

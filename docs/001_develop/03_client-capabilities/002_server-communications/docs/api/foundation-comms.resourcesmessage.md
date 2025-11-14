@@ -17,5 +17,5 @@ export type ResourcesMessage = {
     RESOURCES: ResourceItem[];
 };
 ```
-**References:** [EventMessageType.RESOURCES\_REQUEST\_ACK](./foundation-comms.eventmessagetype.md)<!-- -->, [EventMessageType.RESOURCES\_REQUEST\_NACK](./foundation-comms.eventmessagetype.md)<!-- -->, [MessageType.MSG\_NACK](./foundation-comms.messagetype.md)<!-- -->, [ResourceItem](./foundation-comms.resourceitem.md)
+**References:** [EventMessageType.RESOURCES\_REQUEST\_ACK](./foundation-comms.eventmessagetype.md), [EventMessageType.RESOURCES\_REQUEST\_NACK](./foundation-comms.eventmessagetype.md), [MessageType.MSG\_NACK](./foundation-comms.messagetype.md), [ResourceItem](./foundation-comms.resourceitem.md)
 

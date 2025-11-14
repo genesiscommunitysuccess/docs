@@ -12,8 +12,10 @@ format: md
 
 ```typescript
 export type RequestDetailsParam = {
-    MAX_ROWS?: number;
     CRITERIA_MATCH?: string;
+    MAX_ROWS?: number;
+    OFFSET?: number;
+    ORDER_BY?: string;
     VIEW_NUMBER?: number;
 };
 ```

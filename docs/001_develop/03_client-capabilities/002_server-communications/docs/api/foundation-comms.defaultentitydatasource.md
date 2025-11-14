@@ -19,7 +19,7 @@ export declare class DefaultEntityDatasource<TDTO, TEntity> extends DefaultDatas
 ```
 **Extends:** [DefaultDatasource](./foundation-comms.defaultdatasource.md)
 
-**Implements:** [EntityDatasource](./foundation-comms.entitydatasource.md)<!-- -->&lt;TDTO, TEntity&gt;
+**Implements:** [EntityDatasource](./foundation-comms.entitydatasource.md)&lt;TDTO, TEntity&gt;
 
 ## Properties
 
@@ -157,7 +157,7 @@ Map&lt;string, TEntity&gt;
 
 </td><td>
 
-(init: [EntityDatasourceInit](./foundation-comms.entitydatasourceinit.md)<!-- -->&lt;TDTO, TEntity&gt;) =&gt; Promise&lt;boolean&gt;
+(init: [EntityDatasourceInit](./foundation-comms.entitydatasourceinit.md)&lt;TDTO, TEntity&gt;) =&gt; Promise&lt;boolean&gt;
 
 
 </td><td>

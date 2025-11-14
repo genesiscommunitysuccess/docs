@@ -17,9 +17,9 @@ export interface LayoutComponentWithState<T>
 
 ## Remarks
 
-When the layout is saved either via the autosave functionality or manually calling [FoundationLayout.getLayout()](./foundation-layout.foundationlayout.getlayout.md)<!-- -->, all contained components will be requested to provide state if they wish.
+When the layout is saved either via the autosave functionality or manually calling [FoundationLayout.getLayout()](./foundation-layout.foundationlayout.getlayout.md), all contained components will be requested to provide state if they wish.
 
-Any state which is provided will be saved as part of the layout config and will be passed back to the component when the layout is loaded with [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md) (or via autoloading). The state will be applied to the component via `applyState`<!-- -->, this may be before or after the component has been placed on the DOM, so you'll need to handle either scenario. The state is `null` when the instance is first created.
+Any state which is provided will be saved as part of the layout config and will be passed back to the component when the layout is loaded with [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md) (or via autoloading). The state will be applied to the component via `applyState`, this may be before or after the component has been placed on the DOM, so you'll need to handle either scenario. The state is `null` when the instance is first created.
 
 See the written documentation for some error scenarios to consider about when implementing this interface.
 

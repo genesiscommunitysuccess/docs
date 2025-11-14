@@ -40,7 +40,7 @@ config
 
 </td><td>
 
-Partial&lt;[HeaderConfig](./foundation-header.headerconfig.md)<!-- -->&gt;
+Partial&lt;[HeaderConfig](./foundation-header.headerconfig.md)&gt;
 
 
 </td><td>
@@ -53,7 +53,7 @@ A partial HeaderConfig.
 
 **Returns:**
 
-Promise&lt;typeof import("../main").[Navigation](./foundation-header.navigation.md)<!-- -->&gt;
+Promise&lt;typeof import("../main").[Navigation](./foundation-header.navigation.md)&gt;
 
 ## Remarks
 

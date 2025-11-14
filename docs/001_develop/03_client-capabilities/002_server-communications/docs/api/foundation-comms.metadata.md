@@ -23,7 +23,8 @@ export type Metadata = {
     TYPE?: string;
     INDEXES?: IndexDetail[];
     ERROR?: string;
+    CRITERIA_ONLY_REQUEST?: boolean;
 };
 ```
-**References:** [MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->, [ReplyDetail](./foundation-comms.replydetail.md)<!-- -->, [IndexDetail](./foundation-comms.indexdetail.md)
+**References:** [MetadataDetail](./foundation-comms.metadatadetail.md), [ReplyDetail](./foundation-comms.replydetail.md), [IndexDetail](./foundation-comms.indexdetail.md)
 

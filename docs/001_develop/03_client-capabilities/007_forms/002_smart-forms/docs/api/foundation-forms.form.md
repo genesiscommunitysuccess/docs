@@ -49,12 +49,31 @@ Description
 
 </td><td>
 
-[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+[RendererEntry](./foundation-forms.rendererentry.md)\[\]
 
 
 </td><td>
 
 Allows to provide set of additional renderers used by the form.
+
+
+</td></tr>
+<tr><td>
+
+[confirmationMessage](./foundation-forms.form.confirmationmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Optional confirmation message to display before form submission. If set, a confirmation dialog will be shown when the user clicks submit.
 
 
 </td></tr>
@@ -163,7 +182,7 @@ Allows you to enable read-only mode, which disables all input on the form and hi
 
 </td><td>
 
-[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+[RendererEntry](./foundation-forms.rendererentry.md)\[\]
 
 
 </td><td>

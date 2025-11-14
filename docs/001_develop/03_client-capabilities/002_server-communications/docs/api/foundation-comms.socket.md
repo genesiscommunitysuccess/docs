@@ -14,7 +14,7 @@ Represents a WebSocket used to establish a communication channel between client 
 ```typescript
 export interface Socket extends Omit<SocketStatus, 'serialize' | 'onClose' | 'reconnectionLimitReached' | 'closedCode' | 'closedReason' | 'closedClean'> 
 ```
-**Extends:** Omit&lt;[SocketStatus](./foundation-comms.socketstatus.md)<!-- -->, 'serialize' \| 'onClose' \| 'reconnectionLimitReached' \| 'closedCode' \| 'closedReason' \| 'closedClean'&gt;
+**Extends:** Omit&lt;[SocketStatus](./foundation-comms.socketstatus.md), 'serialize' \| 'onClose' \| 'reconnectionLimitReached' \| 'closedCode' \| 'closedReason' \| 'closedClean'&gt;
 
 ## Properties
 

@@ -53,5 +53,5 @@ The name of the resource to retrieve the schema for.
 
 **Returns:**
 
-Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
+Promise&lt;[SchemaResponse](./foundation-comms.schemaresponse.md)&gt;
 

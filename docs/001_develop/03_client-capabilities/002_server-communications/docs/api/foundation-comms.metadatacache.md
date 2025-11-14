@@ -48,7 +48,7 @@ Description
 
 </td><td>
 
-Map&lt;string, [Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+Map&lt;string, [Metadata](./foundation-comms.metadata.md)&gt;
 
 
 </td><td>

@@ -65,5 +65,5 @@ _(Optional)_
 
 **Returns:**
 
-Promise&lt;[Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+Promise&lt;[Metadata](./foundation-comms.metadata.md)&gt;
 

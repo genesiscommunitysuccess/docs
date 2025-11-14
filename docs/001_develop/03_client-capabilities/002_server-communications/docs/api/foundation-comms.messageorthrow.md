@@ -53,7 +53,7 @@ Message to check for errors
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;any&gt;
+[Message](./foundation-comms.message.md)&lt;any&gt;
 
 The message if no errors are present, otherwise throws an Error
 

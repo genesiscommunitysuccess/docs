@@ -41,7 +41,7 @@ kvs
 
 </td><td>
 
-[KeyValue](./foundation-comms.keyvalue.md)<!-- -->&lt;[KVValue](./foundation-comms.kvvalue.md)<!-- -->&gt;\[\]
+[KeyValue](./foundation-comms.keyvalue.md)&lt;[KVValue](./foundation-comms.kvvalue.md)&gt;\[\]
 
 
 </td><td>
@@ -52,5 +52,5 @@ kvs
 
 **Returns:**
 
-Promise&lt;true \| [KVEventFailureResponse](./foundation-comms.kveventfailureresponse.md)<!-- -->&gt;
+Promise&lt;true \| [KVEventFailureResponse](./foundation-comms.kveventfailureresponse.md)&gt;
 

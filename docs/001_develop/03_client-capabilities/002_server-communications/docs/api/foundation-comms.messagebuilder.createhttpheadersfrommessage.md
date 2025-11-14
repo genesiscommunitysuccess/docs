@@ -61,7 +61,7 @@ string
 
 </td><td>
 
-_(Optional)_ Optional content-type, defaults to `application/json; charset=UTF-8`<!-- -->.
+_(Optional)_ Optional content-type, defaults to `application/json; charset=UTF-8`.
 
 
 </td></tr>

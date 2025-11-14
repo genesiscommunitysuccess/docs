@@ -16,7 +16,7 @@ logout(): Promise<LogoutResult>;
 ```
 **Returns:**
 
-Promise&lt;[LogoutResult](./foundation-comms.logoutresult.md)<!-- -->&gt;
+Promise&lt;[LogoutResult](./foundation-comms.logoutresult.md)&gt;
 
 A Promise that resolves to the result of the logout attempt.
 

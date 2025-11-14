@@ -53,7 +53,7 @@ The user's login credentials.
 
 **Returns:**
 
-Promise&lt;[LoginResult](./foundation-comms.loginresult.md)<!-- -->&gt;
+Promise&lt;[LoginResult](./foundation-comms.loginresult.md)&gt;
 
 A Promise that resolves to the result of the login attempt.
 

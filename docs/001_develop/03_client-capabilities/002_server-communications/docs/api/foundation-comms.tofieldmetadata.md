@@ -40,7 +40,7 @@ fieldDef
 
 </td><td>
 
-[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+[MetadataDetail](./foundation-comms.metadatadetail.md)\[\]
 
 
 </td><td>
@@ -53,7 +53,7 @@ The field definitions.
 
 **Returns:**
 
-[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+[FieldMetadata](./foundation-comms.fieldmetadata.md)\[\]
 
 An array of field metadata.
 

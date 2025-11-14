@@ -14,8 +14,3 @@ The field to use for sorting the data.
 ```typescript
 orderBy?: string;
 ```
-
-## Remarks
-
-Only works with DATASERVER.
-

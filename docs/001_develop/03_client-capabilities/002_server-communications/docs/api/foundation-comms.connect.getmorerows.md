@@ -69,7 +69,7 @@ _(Optional)_ The specific view number to request more rows for. Default: previou
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Promise&lt;[Message](./foundation-comms.message.md)&gt;
 
 A promise that resolves with the additional rows of data.
 

@@ -61,7 +61,7 @@ handleMissingItem
 
 </td><td>
 
-_(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md)<!-- -->.
+_(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md).
 
 
 </td></tr>

@@ -41,7 +41,7 @@ init
 
 </td><td>
 
-[EntityDatasourceInit](./foundation-comms.entitydatasourceinit.md)<!-- -->&lt;TDTO, TEntity&gt;
+[EntityDatasourceInit](./foundation-comms.entitydatasourceinit.md)&lt;TDTO, TEntity&gt;
 
 
 </td><td>

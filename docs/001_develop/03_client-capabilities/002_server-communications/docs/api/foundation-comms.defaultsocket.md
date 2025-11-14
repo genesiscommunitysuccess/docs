@@ -288,7 +288,7 @@ boolean
 
 </td><td>
 
-() =&gt; [SocketSubject](./foundation-comms.socketsubject.md)<!-- -->&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+() =&gt; [SocketSubject](./foundation-comms.socketsubject.md)&lt;[Message](./foundation-comms.message.md)&gt;
 
 
 </td><td>

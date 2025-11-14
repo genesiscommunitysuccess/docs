@@ -40,7 +40,7 @@ storeFragments
 
 </td><td>
 
-[Store](./foundation-store.store.md)<!-- -->\[\]
+[Store](./foundation-store.store.md)\[\]
 
 
 </td><td>

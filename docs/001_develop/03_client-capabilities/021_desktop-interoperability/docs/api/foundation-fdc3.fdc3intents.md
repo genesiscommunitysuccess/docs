@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> Use Intents from the @<!-- -->finos/fdc3 package instead
+> Use Intents from the @finos/fdc3 package instead
 > 
 
 **Signature:**

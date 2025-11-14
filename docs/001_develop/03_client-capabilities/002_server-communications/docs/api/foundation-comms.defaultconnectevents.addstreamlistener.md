@@ -40,7 +40,7 @@ listener
 
 </td><td>
 
-Listener&lt;[StreamEvent](./foundation-comms.streamevent.md)<!-- -->&gt;
+Listener&lt;[StreamEvent](./foundation-comms.streamevent.md)&gt;
 
 
 </td><td>
@@ -56,7 +56,7 @@ complete
 
 </td><td>
 
-Listener&lt;[StreamCompleteEvent](./foundation-comms.streamcompleteevent.md)<!-- -->&gt;
+Listener&lt;[StreamCompleteEvent](./foundation-comms.streamcompleteevent.md)&gt;
 
 
 </td><td>
@@ -72,7 +72,7 @@ error
 
 </td><td>
 
-Listener&lt;[StreamErrorEvent](./foundation-comms.streamerrorevent.md)<!-- -->&gt;
+Listener&lt;[StreamErrorEvent](./foundation-comms.streamerrorevent.md)&gt;
 
 
 </td><td>

@@ -61,7 +61,7 @@ config
 
 </td><td>
 
-Partial&lt;[LoginConfig](./foundation-login.loginconfig.md)<!-- -->&gt;
+Partial&lt;[LoginConfig](./foundation-login.loginconfig.md)&gt;
 
 
 </td><td>

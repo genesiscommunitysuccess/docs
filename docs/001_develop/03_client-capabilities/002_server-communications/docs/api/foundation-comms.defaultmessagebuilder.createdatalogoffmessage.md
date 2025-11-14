@@ -49,5 +49,5 @@ string
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;T&gt;
+[Message](./foundation-comms.message.md)&lt;T&gt;
 

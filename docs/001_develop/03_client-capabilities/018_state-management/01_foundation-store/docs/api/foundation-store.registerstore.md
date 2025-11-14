@@ -40,7 +40,7 @@ Base
 
 </td><td>
 
-Constructable&lt;[Store](./foundation-store.store.md)<!-- -->&gt;
+Constructable&lt;[Store](./foundation-store.store.md)&gt;
 
 
 </td><td>

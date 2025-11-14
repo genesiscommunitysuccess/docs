@@ -14,5 +14,5 @@ MonitoredResourceChecks.
 ```typescript
 export type MonitoredResourceChecks = (sourceRef: string, resource: MonitoredResource) => Promise<MonitoredResourceChecksResult>;
 ```
-**References:** [MonitoredResource](./foundation-comms.monitoredresource.md)<!-- -->, [MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md)
+**References:** [MonitoredResource](./foundation-comms.monitoredresource.md), [MonitoredResourceChecksResult](./foundation-comms.monitoredresourcechecksresult.md)
 

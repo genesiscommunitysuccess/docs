@@ -52,5 +52,5 @@ string\[\]
 
 **Returns:**
 
-Promise&lt;true \| [KVEventFailureResponse](./foundation-comms.kveventfailureresponse.md)<!-- -->&gt;
+Promise&lt;true \| [KVEventFailureResponse](./foundation-comms.kveventfailureresponse.md)&gt;
 

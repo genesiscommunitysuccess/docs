@@ -270,7 +270,7 @@ Shows the notification banner
 </td></tr>
 <tr><td>
 
-[showNotificationDialog(configuration, tagName)](./foundation-notifications.shownotificationdialog.md)
+[showNotificationDialog(configuration, tagName, notificationBoundary)](./foundation-notifications.shownotificationdialog.md)
 
 
 </td><td>

@@ -21,5 +21,5 @@ export type UiSchemaElement = {
     rule?: Rule;
 };
 ```
-**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md)<!-- -->, [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md)
+**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md)
 

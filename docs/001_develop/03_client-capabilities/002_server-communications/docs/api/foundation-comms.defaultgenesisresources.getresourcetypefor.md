@@ -53,5 +53,5 @@ The name of the resource to get the type for.
 
 **Returns:**
 
-Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)<!-- -->&gt;
+Promise&lt;[ResourceType](./foundation-comms.resourcetype.md)&gt;
 

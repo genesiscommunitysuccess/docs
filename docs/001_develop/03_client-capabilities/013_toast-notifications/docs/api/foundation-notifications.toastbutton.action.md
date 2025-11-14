@@ -42,7 +42,7 @@ Description
 
 </td><td>
 
-{ details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md)<!-- -->; buttonElement: HTMLElement; toastElement: any; }
+{ details: [NotificationDataRow](./foundation-notifications.notificationdatarow.md); buttonElement: HTMLElement; toastElement: any; }
 
 
 </td><td>

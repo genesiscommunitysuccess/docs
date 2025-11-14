@@ -51,5 +51,5 @@ _(Optional)_
 
 **Returns:**
 
-Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)<!-- -->&gt;
+Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)&gt;
 

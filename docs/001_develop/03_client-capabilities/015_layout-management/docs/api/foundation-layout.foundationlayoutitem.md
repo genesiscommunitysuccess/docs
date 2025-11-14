@@ -22,7 +22,7 @@ export declare class FoundationLayoutItem extends FoundationElement implements L
 
 This element is used to wrap html elements and configure their layout settings as part of the layout system.
 
-This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md).
 
 ## Properties
 
@@ -62,7 +62,7 @@ boolean
 
 </td><td>
 
-Boolean attribute controls whether the window can be closed in the GUI. Defaults to `false`<!-- -->.
+Boolean attribute controls whether the window can be closed in the GUI. Defaults to `false`.
 
 
 </td></tr>
@@ -81,7 +81,7 @@ string
 
 </td><td>
 
-Sets the registration name for the item, which can be used later to add the item via the JavaScript API using [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md)<!-- -->.
+Sets the registration name for the item, which can be used later to add the item via the JavaScript API using [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md).
 
 
 </td></tr>

@@ -53,7 +53,7 @@ The name of the resource to fetch metadata for.
 
 **Returns:**
 
-Promise&lt;Array&lt;[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->&gt;&gt;
+Promise&lt;Array&lt;[FieldMetadata](./foundation-comms.fieldmetadata.md)&gt;&gt;
 
 A promise that resolves with an array of FieldMetadata.
 

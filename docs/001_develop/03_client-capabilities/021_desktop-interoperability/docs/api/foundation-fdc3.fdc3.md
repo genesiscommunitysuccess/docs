@@ -48,7 +48,7 @@ Description
 
 </td><td>
 
-Observable&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)<!-- -->&gt;
+Observable&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)&gt;
 
 
 </td><td>

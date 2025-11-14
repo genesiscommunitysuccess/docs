@@ -102,7 +102,7 @@ Description
 
 </td><td>
 
-[IndexDetail](./foundation-comms.indexdetail.md)<!-- -->\[\]
+[IndexDetail](./foundation-comms.indexdetail.md)\[\]
 
 
 </td><td>
@@ -169,6 +169,24 @@ Description
 </td></tr>
 <tr><td>
 
+[criteriaOnlyRequest](./foundation-comms.defaultdatasource.criteriaonlyrequest.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
 [customRequestFields](./foundation-comms.defaultdatasource.customrequestfields.md)
 
 
@@ -177,7 +195,7 @@ Description
 
 </td><td>
 
-[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+[MetadataDetail](./foundation-comms.metadatadetail.md)\[\]
 
 
 </td><td>
@@ -213,7 +231,7 @@ boolean
 
 </td><td>
 
-[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+[FieldMetadata](./foundation-comms.fieldmetadata.md)\[\]
 
 
 </td><td>
@@ -239,6 +257,25 @@ boolean
 </td><td>
 
 Indicates whether the datasource has been initialized.
+
+
+</td></tr>
+<tr><td>
+
+[loadMoreCount](./foundation-comms.defaultdatasource.loadmorecount.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Track load more count for RequestServer temporary MAX\_ROWS calculation
 
 
 </td></tr>
@@ -271,7 +308,7 @@ Indicates whether the datasource has been initialized.
 
 </td><td>
 
-[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+[MetadataDetail](./foundation-comms.metadatadetail.md)\[\]
 
 
 </td><td>
@@ -306,7 +343,7 @@ boolean
 
 </td><td>
 
-[MetadataDetail](./foundation-comms.metadatadetail.md)<!-- -->\[\]
+[MetadataDetail](./foundation-comms.metadatadetail.md)\[\]
 
 
 </td><td>
@@ -396,7 +433,7 @@ boolean
 
 </td><td>
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)<!-- -->&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)&gt;
 
 
 </td><td>

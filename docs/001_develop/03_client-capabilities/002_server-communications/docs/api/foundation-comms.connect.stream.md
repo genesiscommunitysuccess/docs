@@ -101,7 +101,7 @@ _(Optional)_ Additional parameters to pass to the server.
 
 **Returns:**
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;[Message](./foundation-comms.message.md)&gt;
 
 An observable that emits messages received from the server.
 

@@ -14,5 +14,5 @@ Package element integration targets.
 ```typescript
 export type ElementTargetId = HeaderTargetId | NavTargetId | SideNavTargetId;
 ```
-**References:** [HeaderTargetId](./foundation-header.headertargetid.md)<!-- -->, [NavTargetId](./foundation-header.navtargetid.md)<!-- -->, [SideNavTargetId](./foundation-header.sidenavtargetid.md)
+**References:** [HeaderTargetId](./foundation-header.headertargetid.md), [NavTargetId](./foundation-header.navtargetid.md), [SideNavTargetId](./foundation-header.sidenavtargetid.md)
 

@@ -80,6 +80,27 @@ _(Optional)_
 </td></tr>
 <tr><td>
 
+[iconName?](./foundation-notifications.toaststructure.iconname.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
 [logLevel?](./foundation-notifications.toaststructure.loglevel.md)
 
 

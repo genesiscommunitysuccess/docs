@@ -53,7 +53,7 @@ The ID of the channel to get or create.
 
 **Returns:**
 
-Promise&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)<!-- -->&gt;
+Promise&lt;[FDC3Channel](./foundation-fdc3.fdc3channel.md)&gt;
 
 A promise that resolves with the channel object.
 

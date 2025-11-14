@@ -71,7 +71,7 @@ _(Optional)_
 
 </td><td>
 
-[ToastButton](./foundation-notifications.toastbutton.md)<!-- -->\[\]
+[ToastButton](./foundation-notifications.toastbutton.md)\[\]
 
 
 </td><td>

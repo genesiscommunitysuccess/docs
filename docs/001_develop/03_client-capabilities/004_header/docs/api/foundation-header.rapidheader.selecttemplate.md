@@ -14,5 +14,5 @@ selectTemplate(): ViewTemplate<Navigation>;
 ```
 **Returns:**
 
-ViewTemplate&lt;[Navigation](./foundation-header.navigation.md)<!-- -->&gt;
+ViewTemplate&lt;[Navigation](./foundation-header.navigation.md)&gt;
 

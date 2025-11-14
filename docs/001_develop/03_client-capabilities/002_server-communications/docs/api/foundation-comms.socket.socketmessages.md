@@ -14,5 +14,5 @@ socketMessages(): SocketSubject<Message>;
 ```
 **Returns:**
 
-[SocketSubject](./foundation-comms.socketsubject.md)<!-- -->&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+[SocketSubject](./foundation-comms.socketsubject.md)&lt;[Message](./foundation-comms.message.md)&gt;
 

@@ -20,5 +20,6 @@ export type StandardRendererOptions = {
         [key: string]: any;
     };
     tooltip?: string;
+    tabIndex?: number;
 };
 ```

@@ -40,7 +40,7 @@ config
 
 </td><td>
 
-[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) \| [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)<!-- -->\[\]
+[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) \| [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)\[\]
 
 
 </td><td>
@@ -61,7 +61,7 @@ placement
 
 </td><td>
 
-_(Optional)_ where and how to add the new items to the layout. For more info and defaults see [Placement](./foundation-layout.placement.md)<!-- -->.
+_(Optional)_ where and how to add the new items to the layout. For more info and defaults see [Placement](./foundation-layout.placement.md).
 
 
 </td></tr>

@@ -101,7 +101,7 @@ _(Optional)_ The requester.
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.ForgotPasswordToken](./foundation-comms.messagedetails.forgotpasswordtoken.md)&gt;
 
 The forgot password token message.
 
