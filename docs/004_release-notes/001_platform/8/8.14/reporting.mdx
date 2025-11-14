@@ -1,0 +1,30 @@
+---
+title: '8.14 Reporting'
+sidebar_label: 'Reporting'
+sidebar_position: 7
+id: '8.14-reporting'
+---
+
+:::tip
+This release contains an update to the way Business Component versions are managed. Further details found in the [Client Dependencies Update Section](/release-notes/platform/8/8.14/#dependency-updates).
+:::
+
+### Features
+
+* Added support for timestamp substitution in report file names and output directories, added file extension to generated report grid 
+* Allow configuration of a timezone for report file name and directory timestamp substitutions 
+* Made default timezone apply to report content & return generated report records most recent first 
+* Moved timezone req-rep from evaluator to reporting module 
+* Added ability to specify format for numeric fields 
+* Added clone report config functionality 
+* Bump max-rows on gen report to 500 
+
+### Fixes
+
+* Ensure substituted file names are displayed on the generated reports grid correctly
+* Set source ref on outbound requests to prevent issue where report generation would hang 
+* Handle session storage that is namespaced 
+
+### Patch releases
+
+There are currently no patch releases for this version

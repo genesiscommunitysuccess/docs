@@ -1,0 +1,27 @@
+---
+title: '8.14 Reconciliation'
+sidebar_label: 'Reconciliation'
+sidebar_position: 6
+id: '8.14-reconciliation'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-change-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+:::tip
+This release contains an update to the way Business Component versions are managed. Further details found in the [Client Dependencies Update Section](/release-notes/platform/8/8.14/#dependency-updates).
+:::
+
+### Breaking changes
+
+* Extract core recon functionality into common jar 
+- refactor!: repository migration 
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Breaking change guidance
+
+### Core library extraction
+Several classes have moved packages as a result of the extraction of the core recon functionality. The package `global.genesis.recon.data` used internally in the recon application, has now been moved to `global.genesis.recon.messages`, to more closely align with platform standards. Any projects with import statements referencing these classes will need to update the package. The implementation of these classes remain unchanged. 
