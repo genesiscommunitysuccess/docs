@@ -5,6 +5,10 @@ sidebar_position: 3
 id: '8.14-fix'
 ---
 
+:::tip
+This release contains [breaking changes](#breaking-change-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
 ### Breaking changes
 
 - BREAKING CHANGE: Changed default Charset to ISO-8859-1 instead of UTF-8 
@@ -22,3 +26,8 @@ id: '8.14-fix'
 ### Patch releases
 
 There are currently no patch releases for this version
+
+## Breaking change guidance
+
+### Default Character Encoding Change
+Previously the platform was overriding the QuickFIX engine default encoding from ISO-8859-1 to UTF-8. ISO-8859-1 is the FIX protocol standard, but projects that are connected to counterparties sending UTF-8 encoded data (this is more likely to be projects for clients in South America) will need to revert to previous behaviour by setting the system property 'QuickfixCharset' explicitly to UTF-8. This can be done in the process arguments section of the process definition in the processes.xml file.
