@@ -18,6 +18,7 @@ import DateFormExample from './examples/date_input_example.js';
 import TextAreaFormExample from './examples/textarea_input_example.js';
 import PasswordFormExample from './examples/password_input_example.js';
 import SelectFormExample from './examples/select_input_example.js';
+import DividerControlExample from './examples/divider_control_example.js';
 
 Foundation forms has a range of advanced components for entering text, numbers, floats, dates and booleans, as well as select and autocomplete input boxes. You can use these to create polished, complex forms for your application in quick time.
 
@@ -350,3 +351,32 @@ After you have looked at the basics here, you can find more details in our [API 
 
 Full source code at [Controls](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/form-controls)
 :::
+
+### Divider control
+
+The divider renderer creates a visual separator that can be placed between any form elements. It simply draws a horizontal line and doesn’t map to any form value. To enable this renderer, set the `divider` property in `options` to `true`. The example below shows a divider placed between two controls.
+
+```ts
+const dividerUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/input1",
+      label: "Input 1",
+    },
+    {
+      type: "Control",
+      options: {
+        divider: true,
+      },
+    },
+    {
+      type: "Control",
+      scope: "#/properties/input2",
+      label: "Input 2",
+    },
+  ],
+};
+```
+<DividerControlExample/>
