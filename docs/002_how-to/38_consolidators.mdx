@@ -1,0 +1,63 @@
+---
+title: 'How to consolidate your data'
+sidebar_label: 'Consolidate your data'
+id: ht-consolidator
+keywords: [consolidator, consolidate, pivotBy, indexScan, onlyIf, onCommit]
+tags:
+    - consolidator
+    - consolidate
+    - pivotBy
+    - indexScan
+    - onlyIf
+    - onCommit
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Consolidators provide developers a way to aggregate data in realtime with the use of aggregation methods in the consolidator. Often used to display information to users in the frontend.
+
+A developer first defines a consolidator with the data source, including the aggregation to take place and the consolidator will do the rest.
+
+You can also invoke consolidators in classes, known as on-demand consolidators, to be used in business logic at the backend.
+
+For any aggregation needs not covered by our methods, you are able to creat your own aggregation methods as well.
+
+## Example
+We have created an example application that shows how to use consolidators.
+
+The application provides three demonstrations of consolidators in use, varying from complexity. Starting from a basic use case, reloading data for certain functions and finalising data.
+
+Basic aggregation functions such as sum, count, min and max is covered.
+
+Other features covered such as aggregating an input field to one of multiple output fields by an enum with pivotBy. As well as aggregating only if a conditional is met with onlyIf.
+
+Other features covered such as:
+- using basic functions, such as sum, count, min and max
+- pivot data across multiple columns
+- conditional aggregration
+- finalising data
+- reloading data for functions such as min and max
+
+:::tip Download, view and run
+The examples are within one complete example application, which includes a front end so that you can run and see the data.
+
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-consolidators/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+The README file for the application provides information for each example and what they showcase from consolidators features.
+:::
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
+:::
+
+To test the set-up of an app that uses consolidators:
+
+- *Details to follow shortly. Thank you for your patience.*
+
+## Full technical details
+You can find full technical details in our reference documentation:
+
+- [Consolidators](/develop/server-capabilities/integrations/real-time-aggregation-consolidator/)
