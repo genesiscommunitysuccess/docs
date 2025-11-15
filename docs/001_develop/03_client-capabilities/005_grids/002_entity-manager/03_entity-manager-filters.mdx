@@ -1,0 +1,215 @@
+---
+title: 'Filter configuration'
+sidebar_label: 'Filter configuration'
+id: entity-manager-filters
+keywords: [entity management, frontend, micro-front-ends, profile management, ui, user management, web, filters, data filtering, search]
+tags:
+  - entity management
+  - frontend
+  - micro-front-ends
+  - profile management
+  - ui
+  - user management
+  - web
+  - entity manager
+  - filters
+  - data filtering
+  - search
+  - user interface
+  - filter customization
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Filter component in the **Entity Management** allows users to filter data displayed in the grid using a modal-based interface. Filters are displayed in a full-screen modal dialog, providing a clean and focused experience for applying complex filter criteria. This section covers how to enable and configure filters, including defining which fields to display in the filter UI and controlling filter persistence.
+
+:::tip
+For more detailed guidance on defining and customizing filters, refer to our section on [Foundation Filters](../../007_forms/002_smart-forms/10_filters.mdx) where you'll find useful tips and working examples.
+:::
+
+### Enabling filters
+
+To enable the built-in filter functionality, use the `enable-filters` attribute. When enabled, a "Filter Data" button will appear in the header of the entity management component. Clicking this button opens a modal dialog containing the filter interface.
+
+```typescript
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementFilters extends GenesisElement {}
+```
+
+### Configuring filter UI with UISchema
+
+When you need to control which fields appear in the filter interface and how they are displayed, you can use the `filtersUiSchema` property. This allows you to define a custom UI schema that specifies the filter fields, their labels, and layout.
+
+The `filtersUiSchema` follows the same structure as form UI schemas, using a `VerticalLayout` with `Control` elements for each filterable field.
+
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      :filtersUiSchema="${() => counterpartyFiltersUIschema}"
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementFilters extends GenesisElement {}
+```
+
+### Filter persistence
+
+The `show-filter-persistence-controls` attribute controls whether users can save and load filter configurations. When enabled (default: `true`), the filter modal displays controls that allow users to:
+
+- Save current filter configurations with a custom name
+- Load previously saved filter configurations
+- Delete saved filter configurations
+
+This feature is particularly useful for users who frequently apply the same filter criteria, as it allows them to quickly restore their preferred filter settings.
+
+```typescript
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementFilters extends GenesisElement {}
+```
+
+To disable filter persistence controls, set the attribute to `false`:
+
+```typescript
+<entity-management
+  enable-filters
+  show-filter-persistence-controls="false"
+  ...
+></entity-management>
+```
+
+### Filter modal position
+
+You can control where the filter modal appears on screen using the `filters-modal-position` attribute. The modal can be positioned at:
+
+- `centre` - Centers the modal on the screen (full-screen experience)
+- `left` - Positions the modal on the left side of the screen
+- `right` - Positions the modal on the right side of the screen
+
+The default position is `left`.
+
+```typescript
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementFilters extends GenesisElement {}
+```
+
+### Complete example
+
+Here's a complete example that demonstrates all filter configuration options:
+
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      :filtersUiSchema="${() => counterpartyFiltersUIschema}"
+      show-filter-persistence-controls
+      enable-search-bar
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      :columns=${(): ColDef[] => [
+        { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+        { field: 'NAME', headerName: 'Name' },
+        { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+        { field: 'ENABLED', headerName: 'Enabled' },
+      ]}
+    ></entity-management>
+  `,
+})
+export class EntityManagementFilters extends GenesisElement {}
+```
+
+### How filters work
+
+When filters are enabled:
+
+1. A "Filter Data" button appears in the header of the entity management component
+2. Clicking the button opens a modal dialog containing the filter interface
+3. Users can apply filter criteria using the fields defined in the `filtersUiSchema`
+4. Applied filters are automatically combined with any search bar criteria
+5. The grid updates in real-time as filter criteria change
+6. Users can save and load filter configurations (if persistence is enabled)
+
+The filter criteria are combined with the base criteria from the datasource configuration and any search bar criteria, allowing for complex filtering scenarios.
+
