@@ -92,8 +92,9 @@ pipelines {
     
 }
 ```
-Within this block, the pipeline function is available, which allows you to name your pipeline. 
+Within this block, the pipeline function is available, which is the starting point for creating a pipeline, and requires a name. 
 This function returns a builder object, where you can chain calls to add a source, operators, error handlers and a sink to your pipeline.
+In order to complete your pipeline, you must call the `build` function.
 ```kotlin
 pipelines {
     pipeline(name = "My Pipeline")
