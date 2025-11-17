@@ -67,8 +67,8 @@ router {
     }
 
     cookieAuthentication {
-        enabled = false
-        httpOnly = false
+        enabled = true
+        httpOnly = true
         secure = false
         wrap = false
         path = "/"
@@ -169,8 +169,8 @@ From GSF version 6.7 onwards, you can configure the HTTP authentication flow to 
 Given these expectations, login and logout operations via Websocket are not allowed. A Websocket connection to GENESIS_ROUTER is only possible after a successful HTTP login.
 
 The configuration options are:
-  * `enabled` defines whether the cookie authentication mechanism will be enabled or disabled at the Router level. Default: false
-  * `httpOnly` sets the generated cookies to be 'HttpOnly' (more information [here](https://owasp.org/www-community/HttpOnly)). Default: false
+  * `enabled` defines whether the cookie authentication mechanism will be enabled or disabled at the Router level. Default: true (since 8.14)
+  * `httpOnly` sets the generated cookies to be 'HttpOnly' (more information [here](https://owasp.org/www-community/HttpOnly)). Default: true (since 8.14)
   * `secure` sets the generated cookies to be 'Secure' (more information [here](https://owasp.org/www-community/controls/SecureCookieAttribute)). Default: false
   * `wrap` wraps the value of the cookie itself in double quotes (i.e. ") Default: false
   * `path` sets the specific path attributed to the cookie values. Default: "/"

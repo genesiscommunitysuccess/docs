@@ -54,6 +54,57 @@ Main class which defines the entity management functionality
 </td></tr>
 </tbody></table>
 
+## Enumerations
+
+<table><thead><tr><th>
+
+Enumeration
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ActionsMenuStyle](./foundation-entity-management.actionsmenustyle.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CrudAction](./foundation-entity-management.crudaction.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CrudMenuPosition](./foundation-entity-management.crudmenuposition.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[ModalFormType](./foundation-entity-management.modalformtype.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
 ## Functions
 
 <table><thead><tr><th>
@@ -69,7 +120,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[buttonCellRenderer(title, clickHandler, contentTemplate)](./foundation-entity-management.buttoncellrenderer.md)
+[buttonCellRenderer(title, clickHandler, contentTemplate, tooltip)](./foundation-entity-management.buttoncellrenderer.md)
 
 
 </td><td>
@@ -85,6 +136,88 @@ Description
 </td><td>
 
 Format the error as a string with a different format depending on whether `err` has a `FIELD` property or not
+
+
+</td></tr>
+<tr><td>
+
+[mapDefaultValues(defaultValues, rowData)](./foundation-entity-management.mapdefaultvalues.md)
+
+
+</td><td>
+
+Map default values for custom actions
+
+Transform default values object by replacing values with special type 'record' with corresponding values from the row data
+
+
+</td></tr>
+</tbody></table>
+
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ConfirmSubmit](./foundation-entity-management.confirmsubmit.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CustomAction](./foundation-entity-management.customaction.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CustomActionError](./foundation-entity-management.customactionerror.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CustomActionState](./foundation-entity-management.customactionstate.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[DefaultValues](./foundation-entity-management.defaultvalues.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[RecordTypeValue](./foundation-entity-management.recordtypevalue.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -105,11 +238,29 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ENTITY\_NAME](./foundation-entity-management.entity_name.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [logger](./foundation-entity-management.logger.md)
 
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[RESOURCE\_NAME](./foundation-entity-management.resource_name.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -130,12 +281,30 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AdditionalEntry](./foundation-entity-management.additionalentry.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md)
 
 
 </td><td>
 
 The attribute which is set to configure the resource that the entity manager is working with
+
+
+</td></tr>
+<tr><td>
+
+[DefaultValue](./foundation-entity-management.defaultvalue.md)
+
+
+</td><td>
 
 
 </td></tr>

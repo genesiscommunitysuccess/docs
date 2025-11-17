@@ -321,6 +321,8 @@ Renders a dropdown select editor within a grid cell, allowing users to edit cell
 - Integrates with data sources
 - Handles value changes and updates the grid data
 - Supports both synchronous and asynchronous options
+- Allows custom options to be entered by users (when enabled)
+- Configurable dropdown position based on row data
 
 #### Usage example
 
@@ -334,6 +336,11 @@ const selectEditorRendererColDef = {
     async: true,
     datasourceOptions: { /* datasource configuration */ },
     values: [/* static option values */],
+    allowCustomOptions: true, // Allow users to enter custom options
+    position: (rowData) => {
+      // Position dropdown above for rows near the bottom of the grid
+      return rowData.rowIndex > 10 ? 'above' : 'below';
+    },
   },
   // other column options
 }

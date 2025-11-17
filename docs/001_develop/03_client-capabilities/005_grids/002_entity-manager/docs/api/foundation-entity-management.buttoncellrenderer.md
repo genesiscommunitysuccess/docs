@@ -11,7 +11,7 @@ format: md
 **Signature:**
 
 ```typescript
-buttonCellRenderer: (title: any, clickHandler: any, contentTemplate: any) => ColDef
+buttonCellRenderer: (title: any, clickHandler: any, contentTemplate: any, tooltip?: string) => ColDef
 ```
 
 ## Parameters
@@ -71,6 +71,22 @@ any
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+tooltip
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_
 
 
 </td></tr>
