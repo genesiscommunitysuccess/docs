@@ -14,5 +14,5 @@ All configuration options that are available.
 ```typescript
 export type UiSchemaOptions = StepperOrientationOptions | LabelPlacementOptions;
 ```
-**References:** [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md)<!-- -->, [LabelPlacementOptions](./foundation-forms.labelplacementoptions.md)
+**References:** [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md), [LabelPlacementOptions](./foundation-forms.labelplacementoptions.md)
 

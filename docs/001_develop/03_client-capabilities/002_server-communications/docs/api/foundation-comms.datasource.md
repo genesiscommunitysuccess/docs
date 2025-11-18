@@ -45,6 +45,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[dataserverOnlyParams](./foundation-comms.datasource.dataserveronlyparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[DataserverParams](./foundation-comms.dataserverparams.md)
+
+
+</td><td>
+
+Returns the datasource parameters that are only relevant for the data server.
+
+
+</td></tr>
+<tr><td>
+
 [initialized](./foundation-comms.datasource.initialized.md)
 
 
@@ -83,6 +102,25 @@ Indicates whether the datasource is read-only. TODO: Should have is prefix
 </td></tr>
 <tr><td>
 
+[requestOnlyParams](./foundation-comms.datasource.requestonlyparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[RequestParams](./foundation-comms.requestparams.md)
+
+
+</td><td>
+
+Returns the request-only parameters for the datasource.
+
+
+</td></tr>
+<tr><td>
+
 [resourceType](./foundation-comms.datasource.resourcetype.md)
 
 
@@ -110,7 +148,7 @@ The type of resource the datasource represents.
 
 </td><td>
 
-Partial&lt;[DatasourceStatus](./foundation-comms.datasourcestatus.md)<!-- -->&gt;
+Partial&lt;[DatasourceStatus](./foundation-comms.datasourcestatus.md)&gt;
 
 
 </td><td>
@@ -128,7 +166,7 @@ Partial&lt;[DatasourceStatus](./foundation-comms.datasourcestatus.md)<!-- -->&gt
 
 </td><td>
 
-[SocketObservable](./foundation-comms.socketobservable.md)<!-- -->&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)<!-- -->&gt;
+[SocketObservable](./foundation-comms.socketobservable.md)&lt;[FilteredDataServerResult](./foundation-comms.filtereddataserverresult.md) \| [RequestServerResult](./foundation-comms.requestserverresult.md)&gt;
 
 
 </td><td>
@@ -314,6 +352,17 @@ _(Optional)_ Updates the data in the datasource with the specified data.
 </td><td>
 
 _(Optional)_ Updates an item in the datasource with the given ID and data.
+
+
+</td></tr>
+<tr><td>
+
+[updateLoadMoreCount(count)](./foundation-comms.datasource.updateloadmorecount.md)
+
+
+</td><td>
+
+Updates the load more (how many times user manually requested more data) count for the datasource.
 
 
 </td></tr>

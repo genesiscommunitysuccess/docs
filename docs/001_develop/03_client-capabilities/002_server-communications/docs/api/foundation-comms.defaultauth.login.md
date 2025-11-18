@@ -49,5 +49,5 @@ credentials
 
 **Returns:**
 
-Promise&lt;[LoginResult](./foundation-comms.loginresult.md)<!-- -->&gt;
+Promise&lt;[LoginResult](./foundation-comms.loginresult.md)&gt;
 

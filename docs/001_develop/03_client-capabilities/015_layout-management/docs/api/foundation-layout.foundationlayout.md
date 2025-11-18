@@ -62,7 +62,7 @@ string
 
 </td><td>
 
-_(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using `auto-save-key`<!-- -->.
+_(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using `auto-save-key`.
 
 
 </td></tr>
@@ -95,7 +95,7 @@ Identifier constant token.
 
 </td><td>
 
-[CustomButton](./foundation-layout.custombutton.md)<!-- -->\[\]
+[CustomButton](./foundation-layout.custombutton.md)\[\]
 
 
 </td><td>
@@ -268,6 +268,20 @@ Description
 </td><td>
 
 Dynamically add a new item to the layout. The user can move the new plane to whenever they want once it has been added.
+
+
+</td></tr>
+<tr><td>
+
+[clearAutosaveAndRevertToDefault()](./foundation-layout.foundationlayout.clearautosaveandreverttodefault.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Clears the autosaved layout from local storage and reverts to the default layout
 
 
 </td></tr>

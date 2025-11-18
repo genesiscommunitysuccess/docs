@@ -65,5 +65,5 @@ _(Optional)_
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.DataserverRequest](./foundation-comms.messagedetails.dataserverrequest.md)&gt;
 

@@ -69,7 +69,7 @@ _(Optional)_ The context to use.
 
 **Returns:**
 
-Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)<!-- -->&gt;
+Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)&gt;
 
 A promise that resolves with the app and its metadata.
 

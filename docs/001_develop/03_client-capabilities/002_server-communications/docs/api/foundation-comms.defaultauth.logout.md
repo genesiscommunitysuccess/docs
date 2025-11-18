@@ -14,5 +14,5 @@ logout(): Promise<LogoutResult>;
 ```
 **Returns:**
 
-Promise&lt;[LogoutResult](./foundation-comms.logoutresult.md)<!-- -->&gt;
+Promise&lt;[LogoutResult](./foundation-comms.logoutresult.md)&gt;
 

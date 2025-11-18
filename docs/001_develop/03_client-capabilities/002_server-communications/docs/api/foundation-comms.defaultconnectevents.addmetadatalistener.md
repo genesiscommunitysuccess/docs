@@ -40,7 +40,7 @@ listener
 
 </td><td>
 
-Listener&lt;[MetadataEvent](./foundation-comms.metadataevent.md)<!-- -->&gt;
+Listener&lt;[MetadataEvent](./foundation-comms.metadataevent.md)&gt;
 
 
 </td><td>

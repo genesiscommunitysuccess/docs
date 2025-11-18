@@ -56,7 +56,7 @@ subscriberChangeCallback
 
 </td><td>
 
-[SubscriberChangeCallback](./foundation-store.subscriberchangecallback.md)<!-- -->&lt;TReturn&gt; \| undefined
+[SubscriberChangeCallback](./foundation-store.subscriberchangecallback.md)&lt;TReturn&gt; \| undefined
 
 
 </td><td>

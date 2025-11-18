@@ -7,7 +7,7 @@ format: md
 
 ## LayoutRegionType type
 
-Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md)<!-- -->.
+Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md).
 
 **Signature:**
 

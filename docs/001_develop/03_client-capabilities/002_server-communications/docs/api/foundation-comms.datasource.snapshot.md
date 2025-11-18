@@ -53,5 +53,5 @@ _(Optional)_ Optional parameters for taking the snapshot.
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Promise&lt;[Message](./foundation-comms.message.md)&gt;
 

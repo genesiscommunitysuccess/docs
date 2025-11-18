@@ -50,5 +50,5 @@ options
 
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[Login](./foundation-login.login.md)<!-- -->, any&gt;
+import("@microsoft/fast-element").ViewTemplate&lt;[Login](./foundation-login.login.md), any&gt;
 

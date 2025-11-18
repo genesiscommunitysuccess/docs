@@ -69,7 +69,7 @@ _(Optional)_ Whether to use the cached metadata if available. Default: true.
 
 **Returns:**
 
-Promise&lt;[Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+Promise&lt;[Metadata](./foundation-comms.metadata.md)&gt;
 
 A promise that resolves with the metadata.
 

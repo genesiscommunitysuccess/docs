@@ -21,5 +21,6 @@ export type ConnectedRenderersOptions = {
     data?: any[];
     allowCustomOptions?: boolean;
     filterMode?: FilterMode;
+    labelRowFormatter?: (any: any) => string;
 };
 ```

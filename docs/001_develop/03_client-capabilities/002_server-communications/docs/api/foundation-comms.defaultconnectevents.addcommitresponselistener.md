@@ -40,7 +40,7 @@ listener
 
 </td><td>
 
-Listener&lt;[CommitResponseEvent](./foundation-comms.commitresponseevent.md)<!-- -->&gt;
+Listener&lt;[CommitResponseEvent](./foundation-comms.commitresponseevent.md)&gt;
 
 
 </td><td>

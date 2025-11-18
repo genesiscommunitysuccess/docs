@@ -20,5 +20,5 @@ export type CustomButton = {
 
 ## Remarks
 
-`svg` - string of the SVG to use for the button. Needs to be in the format `data:image/svg+xml;base64,<<base64 encoded definition>>`<!-- -->. `onClick` - function which will be called when the button is clicked. The clicked button and the contained element associated with the clicked button will be passed to the function.
+`svg` - string of the SVG to use for the button. Needs to be in the format `data:image/svg+xml;base64,<<base64 encoded definition>>`. `onClick` - function which will be called when the button is clicked. The clicked button and the contained element associated with the clicked button will be passed to the function.
 

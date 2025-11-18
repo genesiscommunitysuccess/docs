@@ -257,7 +257,7 @@ Omit certain return urls which the session service may have captured.
 
 </td><td>
 
-Exclude&lt;[Routes](./foundation-login.routes.md)<!-- -->, 'login' \| 'not-found'&gt;\[\]
+Exclude&lt;[Routes](./foundation-login.routes.md), 'login' \| 'not-found'&gt;\[\]
 
 
 </td><td>
@@ -357,7 +357,7 @@ ZeroButtonAppearance
 
 </td><td>
 
-_(Optional)_ Custom appearance for submit buttons in `foundation-login`<!-- -->.
+_(Optional)_ Custom appearance for submit buttons in `foundation-login`.
 
 
 </td></tr>

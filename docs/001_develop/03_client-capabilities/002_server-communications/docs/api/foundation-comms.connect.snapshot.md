@@ -69,7 +69,7 @@ _(Optional)_ Additional parameters to pass to the server.
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Promise&lt;[Message](./foundation-comms.message.md)&gt;
 
 A promise that resolves with the snapshot data.
 
