@@ -18,6 +18,7 @@ export default function ModalDemo({ inIndex = false }) {
     const modalRefRight = useRef(null);
     const modalRefDraggable = useRef(null);
     const modalRefResizable = useRef(null);
+    const modalRefResizableAndDraggable = useRef(null);
 
     const [showCallbackMessage, setShowCallbackMessage] = useState('');
     const [closeCallbackMessage, setCloseCallbackMessage] = useState('');
@@ -104,7 +105,7 @@ export default function ModalDemo({ inIndex = false }) {
                 <rapid-button onClick={() => handleClick(modalRefLeft)}>Open modal positioned left</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefRight)}>Open modal positioned right</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefDraggable)}>Open draggable modal</rapid-button>
-                <rapid-button onClick={() => handleClick(modalRefResizable)}>Open resizable modal</rapid-button>
+                <rapid-button onClick={() => handleClick(modalRefResizableAndDraggable)}>Open draggable resizable and modal</rapid-button>
             </div>
             <div>
                 <div>
@@ -153,7 +154,14 @@ export default function ModalDemo({ inIndex = false }) {
                 ref={modalRefResizable}
                 resizable="true">
                 <h3 slot="top">Resizable modal</h3>
-                <p>This modal can be resized by dragging the edges or corners.</p>
+                <p>This modal can be resized by dragging the edges or corners. Clicking the edges expands it to the edge of the window.</p>
+            </rapid-modal>
+            <rapid-modal
+              ref={modalRefResizableAndDraggable}
+              draggable="true"
+              resizable="true">
+                <h3 slot="top">Resizable modal</h3>
+                <p>This modal can be dragged and resized by dragging the edges or corners. Clicking the edges expands it to the edge of the window.</p>
             </rapid-modal>
         </div>
     </CodeSection >)
