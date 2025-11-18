@@ -309,6 +309,18 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 </td>
     </tr>
+    <tr>
+      <td>resizable</td>
+      <td><code>boolean</code></td>
+      <td>Whether the dropdown can be resized by the user. When enabled, a resize handle appears in the bottom-right corner of the dropdown. Default <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-multiselect resizable>
+```
+
+</td>
+    </tr>
   </tbody>
 </table>
 
@@ -438,9 +450,49 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 </td>
     </tr>
+    <tr>
+      <td>clear</td>
+      <td><code>&#123; clearSelectedValues: boolean, clearFilterText: boolean &#125;</code></td>
+      <td>Emitted when the <code>clear()</code> method is called. The event detail contains the options that were used for clearing.</td>
+<td>
+
+```typescript
+<rapid-multiselect @clear="${(e) => handleClear(e.detail)}">
+```
+
+</td>
+    </tr>
   </tbody>
 </table>
 
 ### Events listened to
 
 This component doesn't listen to any events.
+
+### Methods
+
+<table>
+  <thead><tr><th>Name</th><th>Parameters</th><th>Return Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>clear</td>
+      <td><code>options?: ClearOptions</code><br/><br/>Options object with:<br/>- <code>clearSelectedValues?: boolean</code> (default: <code>true</code>) - Whether to clear selected values<br/>- <code>clearFilterText?: boolean</code> (default: <code>true</code>) - Whether to clear filter text</td>
+      <td><code>void</code></td>
+      <td>Clears the selected values and/or filter text. Emits a <code>clear</code> event with the options that were used. If <code>clearSelectedValues</code> is <code>true</code>, it also emits a <code>selectionChange</code> event with an empty array.</td>
+      <td>
+
+```typescript
+// Clear both selected values and filter text (default behavior)
+multiselect.clear();
+
+// Clear only selected values
+multiselect.clear({ clearSelectedValues: true, clearFilterText: false });
+
+// Clear only filter text
+multiselect.clear({ clearSelectedValues: false, clearFilterText: true });
+```
+
+      </td>
+    </tr>
+  </tbody>
+</table>
