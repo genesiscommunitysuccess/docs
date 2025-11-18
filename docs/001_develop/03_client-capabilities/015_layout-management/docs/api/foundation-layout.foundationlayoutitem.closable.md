@@ -7,7 +7,7 @@ format: md
 
 ## FoundationLayoutItem.closable property
 
-Boolean attribute controls whether the window can be closed in the GUI. Defaults to `false`<!-- -->.
+Boolean attribute controls whether the window can be closed in the GUI. Defaults to `false`.
 
 **Signature:**
 

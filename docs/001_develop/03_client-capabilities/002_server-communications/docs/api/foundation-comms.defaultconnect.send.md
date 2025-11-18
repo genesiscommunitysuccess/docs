@@ -38,7 +38,7 @@ message
 
 </td><td>
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;any&gt;
+[Message](./foundation-comms.message.md)&lt;any&gt;
 
 
 </td><td>

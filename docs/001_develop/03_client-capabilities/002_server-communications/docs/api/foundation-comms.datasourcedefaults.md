@@ -82,6 +82,27 @@ Description
 </td></tr>
 <tr><td>
 
+[DEFAULT\_REQ\_REP\_OFFSET](./foundation-comms.datasourcedefaults.default_req_rep_offset.md)
+
+
+</td><td>
+
+`static`
+
+`readonly`
+
+
+</td><td>
+
+(not declared)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [MAX\_ROWS\_250](./foundation-comms.datasourcedefaults.max_rows_250.md)
 
 

@@ -49,5 +49,5 @@ credentials
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.Login](./foundation-comms.messagedetails.login.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.Login](./foundation-comms.messagedetails.login.md)&gt;
 

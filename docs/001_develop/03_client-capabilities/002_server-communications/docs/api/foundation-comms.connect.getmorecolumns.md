@@ -53,7 +53,7 @@ The source reference to request more columns for.
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Promise&lt;[Message](./foundation-comms.message.md)&gt;
 
 A promise that resolves with the additional columns.
 

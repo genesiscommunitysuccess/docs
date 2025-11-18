@@ -123,7 +123,7 @@ Description
 
 </td><td>
 
-[ResourceItem](./foundation-comms.resourceitem.md)<!-- -->\[\]
+[ResourceItem](./foundation-comms.resourceitem.md)\[\]
 
 
 </td><td>
@@ -142,7 +142,7 @@ Description
 
 </td><td>
 
-Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)<!-- -->&gt;
+Promise&lt;[ResourcesMessage](./foundation-comms.resourcesmessage.md)&gt;
 
 
 </td><td>

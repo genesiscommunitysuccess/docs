@@ -49,7 +49,7 @@ Description
 
 </td><td>
 
-Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt;
+Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)&gt;
 
 
 </td><td>
@@ -66,7 +66,7 @@ Map&lt;string, [SchemaResponse](./foundation-comms.schemaresponse.md)<!-- -->&gt
 
 </td><td>
 
-Map&lt;string, [Metadata](./foundation-comms.metadata.md)<!-- -->&gt;
+Map&lt;string, [Metadata](./foundation-comms.metadata.md)&gt;
 
 
 </td><td>

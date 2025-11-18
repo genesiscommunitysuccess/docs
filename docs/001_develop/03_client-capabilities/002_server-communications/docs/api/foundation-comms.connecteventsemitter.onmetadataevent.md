@@ -56,7 +56,7 @@ message
 
 </td><td>
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.MetaRequest](./foundation-comms.messagedetails.metarequest.md)&gt;
 
 
 </td><td>

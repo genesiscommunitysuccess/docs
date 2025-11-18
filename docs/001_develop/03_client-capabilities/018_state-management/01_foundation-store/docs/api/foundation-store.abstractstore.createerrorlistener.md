@@ -17,5 +17,5 @@ protected createErrorListener: <TDetail extends Error = Error>(keys: KeyOrKeys<T
 
 ## Remarks
 
-This logs and stores errors by event key in the store fragment's [ErrorMap](./foundation-store.errormap.md)<!-- -->, allowing multiple errors to co-exist, and be presentable to the user via the UI for further action or dismissal.
+This logs and stores errors by event key in the store fragment's [ErrorMap](./foundation-store.errormap.md), allowing multiple errors to co-exist, and be presentable to the user via the UI for further action or dismissal.
 

@@ -53,7 +53,7 @@ The context to use.
 
 **Returns:**
 
-Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)<!-- -->&gt;
+Promise&lt;[FDC3IntentResolution](./foundation-fdc3.fdc3intentresolution.md)&gt;
 
 A promise that resolves with the result of the intent resolution.
 

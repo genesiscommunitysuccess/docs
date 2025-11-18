@@ -59,7 +59,7 @@ ErrorMap&lt;EventDetailMap&gt;
 
 </td><td>
 
-Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md)<!-- -->.
+Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md).
 
 
 </td></tr>

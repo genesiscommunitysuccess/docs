@@ -71,7 +71,7 @@ Description
 
 </td><td>
 
-[IntentConfig](./foundation-fdc3.intentconfig.md)<!-- -->\[\]
+[IntentConfig](./foundation-fdc3.intentconfig.md)\[\]
 
 
 </td><td>

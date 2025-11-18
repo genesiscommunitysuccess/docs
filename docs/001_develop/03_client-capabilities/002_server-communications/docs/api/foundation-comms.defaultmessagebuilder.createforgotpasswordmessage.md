@@ -79,5 +79,5 @@ _(Optional)_
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)&gt;
 

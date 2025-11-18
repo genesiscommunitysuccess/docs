@@ -108,7 +108,7 @@ NotificationsPlatform
 
 </td><td>
 
-[OpenfinToastButton](./foundation-openfin.openfintoastbutton.md)<!-- -->\[\]
+[OpenfinToastButton](./foundation-openfin.openfintoastbutton.md)\[\]
 
 
 </td><td>

@@ -53,7 +53,7 @@ The context to use.
 
 **Returns:**
 
-Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)<!-- -->\[\]&gt;
+Promise&lt;[FDC3AppIntent](./foundation-fdc3.fdc3appintent.md)\[\]&gt;
 
 A promise that resolves with an array of all matching intents and their metadata.
 

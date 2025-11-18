@@ -16,7 +16,7 @@ createRefreshTokenMessage(): Message<MessageDetails.RefreshToken>;
 ```
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.RefreshToken](./foundation-comms.messagedetails.refreshtoken.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.RefreshToken](./foundation-comms.messagedetails.refreshtoken.md)&gt;
 
 The refresh token message.
 

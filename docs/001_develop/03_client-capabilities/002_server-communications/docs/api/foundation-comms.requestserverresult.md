@@ -13,12 +13,13 @@ Raw result from a REQUEST\_SERVER data fetch.
 
 ```typescript
 export type RequestServerResult = {
-    SOURCE_REF?: string;
-    REPLY: any[];
     MESSAGE_TYPE?: string;
     MORE_ROWS?: boolean;
+    NEXT_OFFSET?: number;
     NEXT_VIEW?: number;
     PARAMETRIC_TYPE?: string;
+    REPLY: any[];
+    SOURCE_REF?: string;
     ROWS_COUNT?: number;
     SEQUENCE_ID?: number;
 };

@@ -51,7 +51,7 @@ Description
 
 </td><td>
 
-[KeyValue](./foundation-comms.keyvalue.md)<!-- -->&lt;T&gt;
+[KeyValue](./foundation-comms.keyvalue.md)&lt;T&gt;
 
 
 </td><td>

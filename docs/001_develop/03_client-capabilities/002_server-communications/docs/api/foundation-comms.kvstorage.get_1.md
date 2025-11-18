@@ -52,5 +52,5 @@ string
 
 **Returns:**
 
-Promise&lt;[KeyValueTransfer](./foundation-comms.keyvaluetransfer.md)<!-- -->&lt;T&gt;&gt;
+Promise&lt;[KeyValueTransfer](./foundation-comms.keyvaluetransfer.md)&lt;T&gt;&gt;
 

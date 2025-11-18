@@ -67,7 +67,7 @@ _(Optional)_ An object containing optional parameters to include in the request.
 
 **Returns:**
 
-Promise&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Promise&lt;[Message](./foundation-comms.message.md)&gt;
 
 A promise that resolves to a Message containing the server's response.
 
