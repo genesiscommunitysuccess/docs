@@ -238,7 +238,32 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.14.2
+
+###### Fixes
+
+* `genesis-criteria` : Fix incorrect index interval generation when translating some `Expr.dateIs` operations 
+* `genesis-db` : Handle genesis table objects using sql native connection 
+* `genesis-router` : Correct collection handling in `web-handler.kts` files 
+
+#### 8.14.1
+
+###### Features
+
+* `genesis-commons` : Improve handling in `GenesisSet` and `DbRecord` of binary data in `ByteArray` 
+* `genesis-config` : Transform from `String` to `List`, `Set` and `Map` in the dependency inject module 
+* `genesis-db` : Improve criteria validation 
+* `genesis-environment` : Support views in `DumpIt` 
+* `genesis-pal` : Improve error handling in views, when circular join is detected 
+* `genesis-pal-consolidator` : Add support for minBy and maxBy functions 
+* Add support for column ordering to match inclusion list 
+
+###### Fixes
+
+* `genesis-db` : Fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
+* `genesis-dbmon` : Fix view field handling in search and distinct commands 
+* `genesis-environment` : Ensure audit records are inserted correctly when using SendIt 
+* `genesis-pal-consolidator` : Fix memory profile in cold start 
 
 ## Client
 
