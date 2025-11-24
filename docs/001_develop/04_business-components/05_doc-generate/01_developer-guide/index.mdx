@@ -24,14 +24,14 @@ The Document Generation PBC contains an API for generating documents in code, fo
 
 ### Creating a template and other assets
 
-Templates used to generate documents must be present in the Document Manager's `FILE_STORAGE` table. The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `DOCUMENT_TEMPLATE`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
+Templates used to generate documents must either be present in the Document Manager's `FILE_STORAGE` table or provided as explained in [Providing a Template/Asset](/develop/business-components/doc-generate/developer-guide/#providing-a-templateasset). The easiest way is to upload the template via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `DOCUMENT_TEMPLATE`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
 
 ![Template upload](/img/001_develop/04_business-components/doc-manager/doc-manager-template-upload.gif)
 
 Templates may reference "assets" too, for example a html template referencing images, or css files. Similarly to templates the easiest way is to upload the asset via [Document Management](/develop/business-components/doc-management/) with `File Template` set to `TEMPLATE_ASSET`, so that it creates an entry, with an ID, in the `FILE_STORAGE` table for you and stores the document in the right place on the application's chosen file system for Document Manager.
 
 
-For assets to be included in the generated document, you must also link the template to the assets. The easiest is using the UI. This GIF gives an example of uploading a template, an asset, and linking them:
+For assets to be included in the generated document, you must also either link the template to the assets or provide it as explained in [Providing a Template/Asset](/develop/business-components/doc-generate/developer-guide/#providing-a-templateasset). The easiest is using the UI. This GIF gives an example of uploading a template, an asset, and linking them:
 
 ![Link assets](/img/001_develop/04_business-components/doc-manager/doc-man-link-assets.gif)
 
@@ -98,7 +98,7 @@ There are two methods for generating documents:
 #### `DocumentContentConfiguration`
 
 The `generateContent` method takes in an object with the following parameters:
-- `templateId` - see [Providing a Template](/develop/business-components/doc-generate/developer-guide/#providing-a-template)
+- `templateId` - see [Providing a Template/Asset](/develop/business-components/doc-generate/developer-guide/#providing-a-templateasset)
 - `userName` is the username of the user generating the document.
 - `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
 - `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
@@ -131,6 +131,7 @@ DocumentContentResult(
 The `generateAndStore` method takes in an object with the following parameters:
 - everything in [`DocumentContentConfiguration`](#documentcontentconfiguration).
 - `fileName` is the file name for the document you would like to generate. This must include the file extension of the type of file that you want to generate.
+- `assetReferences` - see [Providing a Template/Asset](/develop/business-components/doc-generate/developer-guide/#providing-a-templateasset)
 
 For example:
 ```kotlin
@@ -155,21 +156,28 @@ DocumentStorageResult(
 )
 ```
 
-#### Providing a Template
+#### Providing a Template/Asset
 
 In order to provide a template to the document generator, both of the configurations listed below (`DocumentContentConfiguration`/`DocumentStorageConfiguration`) will take in a `templateId`.
-
 This is a non-nullable String which represents either the `FileStorageId` of the uploaded template or the name of the template file.
-If a file name is provided, the document generator will attempt to resolve the template from the following locations in order of priority:
+
+In order to provide an asset to the document generator which hasn't been linked to the template as mentioned [here](/develop/business-components/doc-generate/developer-guide/#creating-a-template-and-other-assets), the `DocumentStorageConfiguration`
+will optionally take in a list of `assetReferences` which can either be the storage ID of the uploaded but unlinked asset or the name of the asset file.
+
+If a file name is provided for either of the above, the document generator will attempt to resolve the file from the following locations in order of priority:
 
 1. document management system
 2. cfg directory of your project
 3. one of the directories listed in the following system definition:
 
 ```kotlin
-// comma separated list of directories for the generator to look for the template in as per the provided file name
+// comma separated list of directories for the generator to look for the file in as per the provided file name
 item("TEMPLATE_FILE_LOCATIONS", "/data/my-templates1/,/data/my-templates2/")
 ```
+
+If multiple files are found within the document manager with the same name, the latest file uploaded will be returned.
+
+If multiple files with the same name are present across the locations provided in `TEMPLATE_FILE_LOCATIONS`, the file will be returned in order of the location mentioned in the system definition.
 
 
 ### Template types
