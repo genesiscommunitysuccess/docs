@@ -525,6 +525,19 @@ const customActions: CustomAction[] = [
 ```
 </td>
     </tr>
+
+    <tr>
+      <td>enableCsvExport</td>
+      <td><code>[() => \{ buttonName?\: string; fileName?\: string \}](./docs/api/foundation-entity-management.entitymanagement.enablecsvexport.md)</code></td>
+      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the `buttonName` and/or `fileName`. Any epoch fields will have their data downloaded in the `YYYY-mm-dd` format.</td>
+<td>
+
+```typescript
+<entity-management :enableCsvExport=${() => ({})}>
+```
+
+</td>
+    </tr>
   </tbody>
 </table>
 
