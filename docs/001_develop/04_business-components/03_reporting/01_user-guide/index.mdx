@@ -20,7 +20,7 @@ This guide gives a high-level overview. Tooltips are available throughout the re
 
 ## Accessing the reporting module
 
-Click **Reporting** in the application header to open the module. It is included in the header by default. 
+Click **Reporting** in the application header to open the module. It is included in the header by default.
 
 ![Reporting header](/img/001_develop/04_business-components/reporting/reporting-header.png)
 
@@ -66,6 +66,7 @@ Each report listed has an ellipsis button offering the following actions:
 - **Run**: Execute the report with its current configuration.
 - **Edit**: Open the report in the configuration editor to make changes. See [report configuration editor](#report-configuration-editor).
 - **Delete**: Permanently delete the report configuration.
+- **Clone**: Opens a modal dialog, allowing the user to clone the reporting configuration while configuring a report and filename that don't clash with the existing configuration.
 
 ### Report configuration editor
 
@@ -104,9 +105,9 @@ Templated reports can also reference assets, such as logos or images, which must
 
 ![Link assets](/img/001_develop/04_business-components/doc-manager/doc-man-link-assets.gif)
 
-Only documents marked as Template Asset are available to select. Assets will need to be uploaded first, in the same way as templates are but with the file type in the top right instead set to **TEMPLATE_ASSET**. 
+Only documents marked as Template Asset are available to select. Assets will need to be uploaded first, in the same way as templates are but with the file type in the top right instead set to **TEMPLATE_ASSET**.
 
-The Document Generator component developer guide provides an example of how to reference data in templates. With the reporting engine you do not need to worry around the code elements in it's examples, but the templating guidance can help. An important consideration is that where used, 
+The Document Generator component developer guide provides an example of how to reference data in templates. With the reporting engine you do not need to worry around the code elements in it's examples, but the templating guidance can help. An important consideration is that where used,
 [column aliases](#column-renames--aliases) need to be referenced in the template, not the true `UPPERCASE_FORMATTED` field name - which must be used where column aliases have not been set.
 
 - [PDF (html) guidance](/develop/business-components/doc-generate/developer-guide/#html-example-usage)
@@ -167,7 +168,7 @@ Schedule automated report generation here.
 Configure the timing and timezone for report runs.
 More information on recurrence types is available [here](/develop/client-capabilities/interaction/client-interaction-scheduler/#recurrence-types).
 
-<img src={useBaseUrl('/img/001_develop/04_business-components/reporting/reporting-scheduling.png')} alt="Reporting Scheduling" class="center-image" />  
+<img src={useBaseUrl('/img/001_develop/04_business-components/reporting/reporting-scheduling.png')} alt="Reporting Scheduling" class="center-image" />
 
 You can also select delivery destinations (configured under [Report destinations](#report-destinations)).
 
