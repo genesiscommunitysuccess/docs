@@ -25,8 +25,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-The Grid is a key component of the **Entity Management**, enabling you to display and manage data from back-end resources. 
-It offers a flexible, structured layout where each row represents an entity, and each column represents an attribute of that entity. 
+The Grid is a key component of the **Entity Management**, enabling you to display and manage data from back-end resources.
+It offers a flexible, structured layout where each row represents an entity, and each column represents an attribute of that entity.
 The grid can be easily configured to retrieve data from designated back-end resources and is automatically populated and updated to reflect changes in the underlying data source.
 
 This section explains how to configure and customize the grid to suit your application's needs.
@@ -34,11 +34,11 @@ This section explains how to configure and customize the grid to suit your appli
 ### Grid columns
 If you want to control the appearance of the grid, use the `columns` attribute. This enables you to supply an array of `ColDef[]` properties to configure the columns that are displayed, their width and many other properties; these are the same properties that are used by the [Grid Pro](../003_grid-pro/index.mdx) component.
 
-The example array below creates six columns, specifying the width of each one. 
+The example array below creates six columns, specifying the width of each one.
 - The `field` is the field in the data source.
 - The `headerName` is the text displayed in the column heading.
-- Three of the fields use `cellStyle` to control the alignment of the values displayed. 
-- One field (whose column heading is "Status") also uses `cellStyle` to control the colour of the values displayed. 
+- Three of the fields use `cellStyle` to control the alignment of the values displayed.
+- One field (whose column heading is "Status") also uses `cellStyle` to control the colour of the values displayed.
 
 ```typescript
 const columnDefs: ColDef[] = [
@@ -73,7 +73,7 @@ As a result of these column definitions, the following grid is displayed:
 
 By default, the grid displays **Add**, **Edit** and **Delete** buttons to match the settings you have made for `createEvent` (insert), `updateEvent` (edit) and `deleteEvent`. These are placed above the grid to the right. **Edit** and **Delete** buttons are greyed out until the user selects a row in the grid.
 
-You can set the location of the buttons using the setting `crud-menu-position`. 
+You can set the location of the buttons using the setting `crud-menu-position`.
 
 - To position the **Edit** and **Delete** buttons in a column for every row in the grid, set `crud-menu-position = column`.
 ![](/img/column-buttons.png)
@@ -98,7 +98,7 @@ A slot is essentially a placeholder where you can define content and actions for
 
 #### Dynamic slots
 
-You can set the `crud-menu-position` attribute to one of the following values: `column`, `top`, `bottom`, `action`. 
+You can set the `crud-menu-position` attribute to one of the following values: `column`, `top`, `bottom`, `action`.
 
 Based on this value, the following slots will be available:
 
@@ -158,3 +158,24 @@ In this example, we demonstrate how to customize the position of the CRUD action
 - If `crud-menu-position` is set to `bottom` and the `footer` slot is also set in `entity-management`, the `footer` slot content will overwrite the `crud-bottom` content.
 - Similarly, if `crud-menu-position` is set to `top` and the `header` slot is also set in `entity-management`, the `header` slot content will overwrite the `crud-top` content.
 
+## Downloading data
+
+You can enable `.csv` file exports on any entity manager component via its properties. To enable this feature with the default values you configure the property with a function that returns an empty object.
+
+```typescript
+<entity-management
+  :enableCsvExport="${() => ({})}"
+>
+</entity-management>
+```
+
+The reason for returning an object is you can choose to configure that object to override the default values. For example:
+
+```typescript
+<entity-management
+  :enableCsvExport="${() => ({buttonName: 'Download', fileName: 'counterparty-export'})}"
+>
+</entity-management>
+```
+
+The default button name is `Export` and the filename is `export.csv`. Once the feature is enables a button will be shown on the entity manager which will download the `.csv` file of the data when clicked.
