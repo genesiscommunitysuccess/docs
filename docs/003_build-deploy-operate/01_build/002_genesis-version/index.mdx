@@ -11,11 +11,11 @@ sidebar_position: 2
 
 This guide shows you how to identify which version of the Genesis platform your application is running.
 
-## Server Version
+## Server version
 
 For the **server** application, you need to check up to two files:
 
-### 1. Version Properties
+### 1. Version properties
 
 **Location:** `server/gradle.properties`
 
@@ -33,7 +33,7 @@ docMan-serverVersion=8.14.4
 
 **Core Server Version** is taken from the `genesisVersion` property, is required for standard gradle builds to work, and should always be present.
 
-### 2. Actual Dependencies (Source of truth)
+### 2. Actual dependencies (source of truth)
 
 **Location:** `server/settings.gradle.kts`
 
@@ -62,7 +62,7 @@ genesis {
 The `gradle.properties` file just defines the property variables. The `settings.gradle.kts` file is the source of truth where these properties are referenced and applied to actual dependencies, and may not use variables and instead have the version explicitly set.
 :::
 
-## Client Version
+## Client version
 
 To check the Genesis version for the **client** application, look at the `@genesislcap/foundation-*` package versions in the dependencies:
 
@@ -100,7 +100,7 @@ To check the Genesis version for the **client** application, look at the `@genes
 All `@genesislcap/*` packages typically use the same version number to ensure compatibility.
 :::
 
-## Quick Reference
+## Quick reference
 
 | Component | Location |
 |-----------|----------|
