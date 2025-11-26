@@ -1,0 +1,115 @@
+---
+title: 'Genesis version'
+sidebar_label: 'Genesis version'
+id: bdo-build-genesis-version
+keywords: [build, version]
+tags:
+- build
+- version
+sidebar_position: 2
+---
+
+This guide shows you how to identify which version of the Genesis platform your application is running.
+
+## Server Version
+
+For the **server** application, you need to check up to two files:
+
+### 1. Version Properties
+
+**Location:** `server/gradle.properties`
+
+Where present, this file typically defines properties for all of the server versions used by the project, as variables:
+
+###### Example
+
+```properties
+genesisVersion=8.14.3
+authVersion=8.14.1
+genesis-notifyVersion=8.14.1
+reportingVersion=8.14.0
+docMan-serverVersion=8.14.4
+```
+
+**Core Server Version** is taken from the `genesisVersion` property, is required for standard gradle builds to work, and should always be present.
+
+### 2. Actual Dependencies (Source of truth)
+
+**Location:** `server/settings.gradle.kts`
+
+This is where the versions are **actually applied** to your dependencies. Look in the `genesis` block:
+
+###### Example
+
+```kotlin
+genesis {
+    productName = "my-app"
+
+    dependencies {
+        dependency("global.genesis:genesis-notify:${extra.properties["genesis-notifyVersion"]}")
+        dependency("global.genesis:reporting:${extra.properties["reportingVersion"]}")
+        dependency("global.genesis:file-server:${extra.properties["docMan-serverVersion"]}")
+        dependency("global.genesis:auth:${extra.properties["authVersion"]}")
+    }
+
+    plugins {
+        genesisDeploy.enabled = true
+    }
+}
+```
+
+:::caution
+The `gradle.properties` file just defines the property variables. The `settings.gradle.kts` file is the source of truth where these properties are referenced and applied to actual dependencies, and may not use variables and instead have the version explicitly set.
+:::
+
+## Client Version
+
+To check the Genesis version for the **client** application, look at the `@genesislcap/foundation-*` package versions in the dependencies:
+
+**Location:** `client/package.json`
+
+###### Example
+
+```json
+"dependencies": {
+  "@genesislcap/foundation-comms": "14.356.1",
+  "@genesislcap/foundation-criteria": "14.356.1",
+  "@genesislcap/foundation-entity-management": "14.356.1",
+  "@genesislcap/foundation-events": "14.356.1",
+  "@genesislcap/foundation-forms": "14.356.1",
+  "@genesislcap/foundation-header": "14.356.1",
+  "@genesislcap/foundation-inbox": "14.356.1",
+  "@genesislcap/foundation-layout": "14.356.1",
+  "@genesislcap/foundation-logger": "14.356.1",
+  "@genesislcap/foundation-login": "14.356.1",
+  "@genesislcap/foundation-notifications": "14.356.1",
+  "@genesislcap/foundation-shell": "14.356.1",
+  "@genesislcap/foundation-store": "14.356.1",
+  "@genesislcap/foundation-ui": "14.356.1",
+  "@genesislcap/foundation-utils": "14.356.1",
+  "@genesislcap/foundation-user": "14.356.1",
+  "@genesislcap/foundation-zero": "14.356.1",
+  "@genesislcap/g2plot-chart": "14.356.1",
+  "@genesislcap/rapid-design-system": "14.356.1",
+  "@genesislcap/rapid-grid-pro": "14.356.1",
+  "@genesislcap/web-core": "14.356.1"
+}
+```
+
+:::note
+All `@genesislcap/*` packages typically use the same version number to ensure compatibility.
+:::
+
+## Quick Reference
+
+| Component | Location |
+|-----------|----------|
+| **Client** | `client/package.json` → `dependencies` |
+| **Server (Core)** |`server/gradle.properties` → `genesisVersion` |
+
+## Tips
+
+- **Client:** All Genesis packages should match to avoid compatibility issues
+- **Server:** The core `genesisVersion` drives the main platform version
+- **Server:** Module-specific versions (auth, notify, etc.) may differ with respect to their maintenance version (after the last `.`) but the major + minor versions (e.g. 8.14) should match the core server version.
+
