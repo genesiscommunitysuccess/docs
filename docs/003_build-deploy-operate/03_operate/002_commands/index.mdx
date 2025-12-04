@@ -527,15 +527,15 @@ This gives you the next sequence number of every table in the application. The n
 In the example above, the table USER_AUDIT has 103 rows, so the next sequence number for that table is 104.
 
 ###### Syntax
-The `GetSequenceNumbers` command can take the following arguments:
-<!-- The GetSequenceNumbers command has a list of possible arguments: -f, -h, -p -->
+The `GetNextSequenceNumbers` command can take the following arguments:
+<!-- The GetNextSequenceNumbers command has a list of possible arguments: -f, -h, -p -->
 
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetSequenceNumbers -f -->     | --file (arg) <!-- GetSequenceNumbers --file (args) -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
-| -h  <!-- GetSequenceNumbers -h -->     | --help   <!-- GetSequenceNumbers --help -->          | no        | show help on how to use this command             | none     | none |
-| -p  <!-- GetSequenceNumbers -p -->     | --print  <!-- GetSequenceNumbers --print -->          | no        |                                         | none              | true (unless -f is supplied) |
+| -f  <!-- GetNextSequenceNumbers -f -->     | --file (arg) <!-- GetNextSequenceNumbers --file (args) -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
+| -h  <!-- GetNextSequenceNumbers -h -->     | --help   <!-- GetNextSequenceNumbers --help -->          | no        | show help on how to use this command             | none     | none |
+| -p  <!-- GetNextSequenceNumbers -p -->     | --print  <!-- GetNextSequenceNumbers --print -->          | no        |                                         | none              | true (unless -f is supplied) |
 
 The example below displays the next sequence number of each table, using the format described above.
 ```bash
@@ -554,6 +554,51 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant.
+4. Now you can [restart your processes](#startserver).
+
+## `GetNextAutoIncrementNumbers`
+
+This gives you the next auto increment value for every table with auto increment fields in the application. The numbers are provided in table format (csv), for example:
+
+```
+"Table","Field","Value"
+"USER_AUDIT","ID","104"
+"PROFILE_AUDIT","PROFILE_ID","804"
+"PROFILE_USER_AUDIT","AUDIT_ID","104"
+```
+In the example above, the table USER_AUDIT has 103 rows, so the next auto increment value for the ID field in that table is 104.
+
+###### Syntax
+The `GetNextAutoIncrementNumbers` command can take the following arguments:
+<!-- The GetNextAutoIncrementNumbers command has a list of possible arguments: -f, -h, -p, --verbose -->
+
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
+| -f  <!-- GetNextAutoIncrementNumbers -f -->     | --file (arg) <!-- GetNextAutoIncrementNumbers --file (args) -->    | no        | name of the file to contain the auto increment values | none     | AUTO_INCREMENT.csv |
+| -h  <!-- GetNextAutoIncrementNumbers -h -->     | --help   <!-- GetNextAutoIncrementNumbers --help -->          | no        | show help on how to use this command             | none     | none |
+| -p  <!-- GetNextAutoIncrementNumbers -p -->     | --print  <!-- GetNextAutoIncrementNumbers --print -->          | no        | outputs the auto increment values to the console                                         | none              | true (unless -f is supplied) |
+| --verbose  <!-- GetNextAutoIncrementNumbers --verbose -->     | --verbose  <!-- GetNextAutoIncrementNumbers --verbose -->          | no        | outputs the error stack trace if something goes wrong             | none     | false |
+
+The example below displays the next auto increment value for each table with auto increment fields, using the format described above.
+```bash
+GetNextAutoIncrementNumbers
+```
+
+By default, the details are sent to the screen, but you can redirect the output to a file. For this, use either the `-f` argument followed by the filename. Alternatively, you can use the `>>` annotation followed by a filename, as in the example below:
+
+```bash
+GetNextAutoIncrementNumbers >> /tmp/NextAutoIncrementNumbers.txt
+```
+
+You can also use the `-p` flag to explicitly print to the console, or the `--verbose` flag to see detailed error information if something goes wrong.
+
+### Correcting errors in tables
+The `GetNextAutoIncrementNumbers` command is often used with the `SetAutoIncrement` script [see below](#setautoincrement), for example, if you suspect that you have an error in one of your tables:
+
+1. Stop all the processes and run `GetNextAutoIncrementNumbers` to find the next auto increment values of the tables.
+2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the auto increment values in those tables.
+3. Run `SetAutoIncrement` to reset the auto increment values where relevant.
 4. Now you can [restart your processes](#startserver).
 
 ## `killProcess`
