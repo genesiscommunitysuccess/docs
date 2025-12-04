@@ -514,6 +514,99 @@ table(name = "TRADE", id = 11002) {
 }
 ```
 
+#### `sharedField`
+
+You can use `sharedField` to define field definitions that can be reused across multiple tables. This is particularly useful for enum fields that represent the same set of values in different tables, ensuring consistency and reducing duplication.
+
+Currently, the accepted shared fields are:
+- Simple enums (e.g., `ENUM("X", "Y", "Z")`)
+- Aliased enums (e.g., `ENUM("BUY" to "Buy Order", "SELL" to "Sell Order")`)
+
+When using a shared field, you can:
+- Use it as-is with its original name
+- Override the field name on a per-table basis
+
+The default value of the `ENUM` in a shared field declaration will always be the equal to the first parameter.
+
+###### Example definition
+
+In a trading application, both `TRADE` and `ORDER` tables might need a `DIRECTION` field to indicate whether the trade or order is a buy or sell. Instead of defining the enum separately in each table, you can define it once as a shared field:
+
+```kotlin
+tables {
+    // Define the shared field once
+    val directionEnum = sharedField("DIRECTION", ENUM("SELL", "SHORT_SELL", "BUY"))
+    
+    // Use the shared field in the TRADE table
+    table(name = "TRADE", id = 11_000) {
+        field("TRADE_ID", LONG).autoIncrement()
+        field("COUNTERPARTY_ID", LONG).notNull()
+        field("DATE", DATE).notNull()
+        field(directionEnum)  // Uses the field name "DIRECTION"
+        field("INSTRUMENT_ID", LONG).notNull()
+        field("QUANTITY", INT).notNull()
+        field("TRADE_PRICE", DOUBLE).notNull()
+        
+        primaryKey("TRADE_ID")
+    }
+    
+    // Use the shared field in the ORDER table with the same name
+    table(name = "ORDER", id = 11_010) {
+        field("ORDER_ID", LONG).autoIncrement()
+        field("INSTRUMENT_ID", LONG).notNull()
+        field(directionEnum)  // Also uses the field name "DIRECTION"
+        // ... other fields
+        
+        primaryKey("ORDER_ID")
+    }
+}
+```
+
+###### Using shared fields with aliased enums
+
+You can also create shared fields with aliased enums:
+
+```kotlin
+tables {
+    // Shared field with aliased enum values
+    val directionEnum = sharedField(
+        "DIRECTION", 
+        ENUM("BUY" to "Buy Order", "SELL" to "Sell Order", "SHORT_SELL" to "Short Sell")
+    )
+    
+    table(name = "TRADE", id = 11_000) {
+        field("TRADE_ID", LONG).autoIncrement()
+        field(directionEnum)
+        // ... other fields
+        primaryKey("TRADE_ID")
+    }
+}
+```
+
+###### Overriding the field name
+
+You can override the field name when using a shared field in a specific table by providing a different name as the first parameter:
+
+```kotlin
+tables {
+    val directionEnum = sharedField("DIRECTION", ENUM("SELL", "SHORT_SELL", "BUY"))
+    
+    table(name = "TRADE", id = 11_000) {
+        field("TRADE_ID", LONG).autoIncrement()
+        field(directionEnum)  // Field name is "DIRECTION"
+        // ... other fields
+        primaryKey("TRADE_ID")
+    }
+    
+    table(name = "ORDER", id = 11_010) {
+        field("ORDER_ID", LONG).autoIncrement()
+        field("ORDER_DIRECTION", directionEnum)  // Field name is "ORDER_DIRECTION" instead
+        // ... other fields
+        primaryKey("ORDER_ID")
+    }
+}
+```
+
 #### `primaryKey`
 
 Every table must have a single primary key. You must set this to be one or more fields from the table. The values for the primary key fields must uniquely identify a record in the table.
