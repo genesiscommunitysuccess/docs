@@ -445,6 +445,8 @@ Security checks can be disabled via:
 - **DSL Functions** (GPAL only): `permissionCodesDisabled()`, `authDisabled()`
 - **Gradle Properties**: `genesis.check.permission.systemwide.optout`, `genesis.check.permission.auth.optout`
 
+The opt-out mechanism will mark the endpoints as "safe" rather than ignore them. Nonetheless, the endpoints will show up in the "extrainfo" report (see next section), with opt-out information included in it.
+
 #### Reports
 
 The task generates a CSV report for each module at `build/reports/genesis-security/auth-permissions.csv` containing endpoint name, type, file name, class name, status (SUCCESS/FAILURE), and reason. When `genesis.check.permission.extrainfo=true`, additional columns include permission codes, auth maps, and security flags.
