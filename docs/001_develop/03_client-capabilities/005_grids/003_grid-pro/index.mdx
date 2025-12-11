@@ -617,6 +617,19 @@ export class ThemedGrid extends GenesisElement {
 }
 ```
 
+### 5. Overriding the label value
+
+By default when maxRows is enabled, a label is shown on the left of the status bar which shows the max rows count.
+However it is possible to utilise this label for other purposes when max rows is not enabled, or override it when it is. 
+To update the label text and/or value, call updateLabelValueStatusBar with configuraton as below: 
+
+```typescript
+    this.grid?.updateLabelValueStatusBar({
+      label: 'Custom Label',
+      value: 'Custom Value',
+    });
+```
+
 ## Supported row models
 
 We support all the AG's Row Models.  More on [JavaScript Grid: Row Models | AG Grid (ag-grid.com)](https://www.ag-grid.com/javascript-data-grid/row-models/).

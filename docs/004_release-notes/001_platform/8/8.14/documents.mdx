@@ -1,0 +1,71 @@
+---
+title: '8.14 Documents'
+sidebar_label: 'Documents'
+sidebar_position: 2
+id: '8.14-documents'
+---
+
+:::tip
+This release contains an update to the way Business Component versions are managed. Further details found in the [Client Dependencies Update Section](/release-notes/platform/8/8.14/#dependency-updates).
+:::
+
+### Breaking changes
+
+* Added additional content validation to document manager uploads 
+* Ensure file upload authentication is correctly enabled by default  
+
+### Features
+
+* `file-server-app` : Add higher default max connections setting (200) to AWS S3 provider 
+* Added content validation to file uploads for additional security 
+* Add more perms and handle on the UI 
+* Allow resolution of document templates from different locations + xml generation 
+
+### Fixes
+
+* `file-server-app` : Ensure S3Object is also closed when the underlying S3ObjectInputStream is closed 
+* Ensure S3ObjectInputStreams are lazily read 
+* Prevent errors on concurrent writes with same file name 
+* Remove the z-index override 
+
+### Patch releases
+
+#### 8.14.5
+
+###### Fixes
+
+- fix: Set region explicitly in s3 client construction to prevent errors on servers running IMDS v2 security (DOCMGMT-92) by @khouari1 in https://github.com/genesislcap/platform-documents/pull/409
+
+#### 8.14.4
+
+###### Features
+
+* LoadFiles by fileName should return in order of newest to oldest 
+
+#### 8.14.3
+
+###### Features
+
+* Allow resolution of document assets from different locations 
+
+#### 8.14.2
+
+###### Fixes
+
+* Remove repeated template resolving from remote client docgen event call 
+
+#### 8.14.1
+
+###### Fixes
+
+* Install hooks perm script file path 
+
+## Breaking change guidance
+
+### Addition of content validation to uploads
+These changes were made as part of penetration test vulnerability remediation. As part of the validation, the document manager will now scan part of the byte content to determine the files content type and ensure it matches the provided file extension. What this means practically, is that any input stream passed to the document manager API must support mark and reset functionality so the bytes can be read multiple times. For those using the low level API directly, this may mean changing the type of input stream passed to calls to save(). For example, FileInputStream does not support mark and reset, however, BufferedInputStream which can wrap a FileInputStream does.
+
+It will also only allow uploads of files that match a pre-configured list of allowed extensions. The component sets a list of common file extensions by default, but this may need to be extended based on application requirements. In addition, it is likely that the default configuration will not be picked up by integration tests using `GenesisJUnit`, and this may need to be added manually via the @SysDefOverwrite annotation.
+
+### Authentication enabled by default
+The upload and download web endpoints now mandate that a user is authenticated in order to use the functionality. For any applications that have a requirement to allow file uploads or downloads via another mechanism, for example an external API call, this will have to be manually disabled using the DISABLE_WEB_ENDPOINT_AUTH sysdef flag.

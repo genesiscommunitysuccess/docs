@@ -25,5 +25,5 @@ export type SocketConnectOptions = {
     proxyPath?: string;
 };
 ```
-**References:** [Message](./foundation-comms.message.md)<!-- -->, [PingMessage](./foundation-comms.pingmessage.md)<!-- -->, [PongMessage](./foundation-comms.pongmessage.md)
+**References:** [Message](./foundation-comms.message.md), [PingMessage](./foundation-comms.pingmessage.md), [PongMessage](./foundation-comms.pongmessage.md)
 

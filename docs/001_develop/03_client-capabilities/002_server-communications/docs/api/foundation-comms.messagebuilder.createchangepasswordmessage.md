@@ -85,7 +85,7 @@ The new password.
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ChangePassword](./foundation-comms.messagedetails.changepassword.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.ChangePassword](./foundation-comms.messagedetails.changepassword.md)&gt;
 
 The change password message.
 

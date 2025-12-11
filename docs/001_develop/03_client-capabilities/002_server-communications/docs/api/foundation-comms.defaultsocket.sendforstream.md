@@ -38,7 +38,7 @@ message
 
 </td><td>
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;T \| any&gt;
+[Message](./foundation-comms.message.md)&lt;T \| any&gt;
 
 
 </td><td>
@@ -93,5 +93,5 @@ _(Optional)_
 
 **Returns:**
 
-Observable&lt;[Message](./foundation-comms.message.md)<!-- -->&gt;
+Observable&lt;[Message](./foundation-comms.message.md)&gt;
 

@@ -85,7 +85,7 @@ _(Optional)_ The requester.
 
 **Returns:**
 
-[Message](./foundation-comms.message.md)<!-- -->&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)<!-- -->&gt;
+[Message](./foundation-comms.message.md)&lt;[MessageDetails.ForgotPassword](./foundation-comms.messagedetails.forgotpassword.md)&gt;
 
 The forgot password message.
 

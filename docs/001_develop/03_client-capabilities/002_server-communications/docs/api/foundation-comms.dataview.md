@@ -48,7 +48,7 @@ Description
 
 </td><td>
 
-[FieldMetadata](./foundation-comms.fieldmetadata.md)<!-- -->\[\]
+[FieldMetadata](./foundation-comms.fieldmetadata.md)\[\]
 
 
 </td><td>
@@ -105,7 +105,7 @@ _(Optional)_ A boolean indicating whether the search functionality should be hid
 
 </td><td>
 
-(data: [DataUpdate](./foundation-comms.dataupdate.md)<!-- -->) =&gt; Promise&lt;void&gt;
+(data: [DataUpdate](./foundation-comms.dataupdate.md)) =&gt; Promise&lt;void&gt;
 
 
 </td><td>

@@ -7,7 +7,7 @@ format: md
 
 ## AbstractStore.errors property
 
-Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md)<!-- -->.
+Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md).
 
 **Signature:**
 

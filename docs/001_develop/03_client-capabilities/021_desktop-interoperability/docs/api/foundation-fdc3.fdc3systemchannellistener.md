@@ -52,7 +52,7 @@ Description
 
 </td><td>
 
-[SystemChannelListenerConfig](./foundation-fdc3.systemchannellistenerconfig.md)<!-- -->\[\]
+[SystemChannelListenerConfig](./foundation-fdc3.systemchannellistenerconfig.md)\[\]
 
 
 </td><td>

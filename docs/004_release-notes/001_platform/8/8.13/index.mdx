@@ -78,9 +78,17 @@ This release contains [impactful changes](#impactful-change-guidance). They are 
 
 ### Patch releases
 
+#### 8.13.14
+
+###### Fixes
+
+* `genesis-eventhandler` : Split different Event Handler APIs into separate implementations to avoid potential coroutine issues when using runBlocking 
+* `genesis-pal-consolidator` : Fix memory profile in cold start 
+* `genesis-router` : Correct collection handling in `web-handler.kts` files 
+
 #### 8.13.13
 
-### Fixes
+###### Fixes
 
 * `genesis-cluster` : Avoid instantiating console web endpoints as part of the package scan mechanism for GENESIS_CLUSTER 
 * `genesis-codegen` : Handle sys defs with characters that would be illegal in a kotlin name e.g. `.` 

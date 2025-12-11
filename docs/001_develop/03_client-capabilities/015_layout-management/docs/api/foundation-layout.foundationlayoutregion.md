@@ -22,7 +22,7 @@ export declare class FoundationLayoutRegion extends FoundationElement implements
 
 This element is used to create a region in the layout. It can be used to create a horizontal or vertical split, or a tabbed region.
 
-This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md)<!-- -->.
+This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md).
 
 ## Properties
 
@@ -81,7 +81,7 @@ optional string describing the size of the new item (see the written documentati
 
 </td><td>
 
-Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to `horizontal`<!-- -->.
+Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to `horizontal`.
 
 
 </td></tr>

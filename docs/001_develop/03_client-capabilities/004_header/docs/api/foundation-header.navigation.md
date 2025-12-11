@@ -79,6 +79,25 @@ Container
 </td></tr>
 <tr><td>
 
+[enableInactivityMonitoring](./foundation-header.navigation.enableinactivitymonitoring.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to enable inactivity monitoring Control via `enable-inactivity-monitoring`
+
+
+</td></tr>
+<tr><td>
+
 [headerConfig](./foundation-header.navigation.headerconfig.md)
 
 
@@ -127,6 +146,44 @@ I18next
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+[inactivityTimeoutMinutes](./foundation-header.navigation.inactivitytimeoutminutes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Number attribute which sets the inactivity timeout in minutes Control via `inactivity-timeout-minutes`
+
+
+</td></tr>
+<tr><td>
+
+[inactivityWarningMinutes](./foundation-header.navigation.inactivitywarningminutes.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Number attribute which sets the inactivity warning time in minutes before timeout Control via `inactivity-warning-minutes`
 
 
 </td></tr>
@@ -518,6 +575,20 @@ Called when the component is connected to the DOM
 </td></tr>
 <tr><td>
 
+[disconnectedCallback()](./foundation-header.navigation.disconnectedcallback.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Called when the component is disconnected from the DOM
+
+
+</td></tr>
+<tr><td>
+
 [handleNavButtonClick(routeNavItem)](./foundation-header.navigation.handlenavbuttonclick.md)
 
 
@@ -527,6 +598,20 @@ Called when the component is connected to the DOM
 </td><td>
 
 Handles the click event for a navigation button
+
+
+</td></tr>
+<tr><td>
+
+[hasActiveChild(navItem)](./foundation-header.navigation.hasactivechild.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Check if any child nav item matches the current route
 
 
 </td></tr>

@@ -7,7 +7,7 @@ format: md
 
 ## AbstractStore class
 
-The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md)<!-- -->.
+The abstract store that concrete store fragments must extend, which differs from the [AbstractStoreRoot](./foundation-store.abstractstoreroot.md).
 
 **Signature:**
 
@@ -174,7 +174,7 @@ ErrorMap&lt;TEventDetailMap &amp; TInternalEventDetailMap&gt;
 
 </td><td>
 
-Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md)<!-- -->.
+Contains any errors the store may have, see [ErrorMap](./foundation-store.errormap.md).
 
 
 </td></tr>

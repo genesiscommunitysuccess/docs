@@ -14,7 +14,7 @@ The abstract store root that concrete store roots must extend.
 ```typescript
 export declare abstract class AbstractStoreRoot<TStore extends StoreRoot, TEventDetailMap extends StoreRootEventDetailMap = StoreRootEventDetailMap, TInternalEventDetailMap extends EventDetailMap = TEventDetailMap> extends AbstractStore<TStore, TEventDetailMap, TInternalEventDetailMap> implements StoreRoot 
 ```
-**Extends:** [AbstractStore](./foundation-store.abstractstore.md)<!-- -->&lt;TStore, TEventDetailMap, TInternalEventDetailMap&gt;
+**Extends:** [AbstractStore](./foundation-store.abstractstore.md)&lt;TStore, TEventDetailMap, TInternalEventDetailMap&gt;
 
 **Implements:** [StoreRoot](./foundation-store.storeroot.md)
 

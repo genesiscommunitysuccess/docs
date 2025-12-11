@@ -1,0 +1,40 @@
+---
+title: '8.14 Auth'
+sidebar_label: 'Auth'
+sidebar_position: 1
+id: '8.14-auth'
+---
+
+:::tip
+This release contains an update to the way Business Component versions are managed. Further details found in the [Client Dependencies Update Section](/release-notes/platform/8/8.14/#dependency-updates).
+:::
+
+### Features
+
+* `auth-config` : Add timestamp key to PROFILE_USER_AUDIT table and IS_PRIMARY field to PROFILE table in preparation of future improvements 
+* `auth-config` : Enable support for GPAL auth perms by default in auth-processes.xml 
+* `auth-manager` : Add optional auth preferences flags `hideUpdateQueueDetailsFromLoginAckMessage` and `hideComponentVersionsFromLoginAckMessage` to remove component version information and update queue details from login ack message 
+* `auth-manager` : Implemented authentication plugin to check acceptance of terms and conditions 
+* `auth-oidc` : Enhanced OIDC workflows to support PKCE and make access token available API calls in login hooks 
+
+### Fixes
+
+* `auth-manager` : Change User Password event should return generic error message when a user does not exist or old password is incorrect 
+* Ensure `SecureRandom` instantiation still works when running services locally in a Windows OS 
+* Handle multiple cases in the refresh token cookie for terms and conditions web endpoints 
+* Move PKCE code verifier store to the database 
+* Remove USER_NAME header requirement from terms and conditions endpoints as it doesn't work with external proxy devices 
+
+### Dependency changes
+
+* Bump com.github.node-gradle.node from 7.0.2 to 7.1.0
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.1 to 7.0.2
+* Bump org.gradle.test-retry from 1.6.0 to 1.6.2
+
+### Patch releases
+
+#### 8.14.1
+
+###### Fixes
+
+* `auth-manager` : Fix connection contention in user session check 

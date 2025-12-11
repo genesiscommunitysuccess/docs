@@ -50,5 +50,5 @@ criteriaBuilder
 
 **Returns:**
 
-(config: [ExpressionConfig](./foundation-criteria.expressionconfig.md)<!-- -->, formValue: any, formData: T) =&gt; void
+(config: [ExpressionConfig](./foundation-criteria.expressionconfig.md), formValue: any, formData: T) =&gt; void
 

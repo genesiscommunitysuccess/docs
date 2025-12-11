@@ -151,6 +151,18 @@ Property and attribute binding examples for Genesis Component syntax.
 </td>
     </tr>
     <tr>
+      <td>autoStepPrecision</td>
+      <td><code>boolean</code></td>
+      <td>When true, automatically calculates the step value based on the decimal precision of the current value. For example, a value of <code>100.5</code> will use a step of <code>0.1</code>, while <code>100.25</code> will use <code>0.01</code>. This ensures that step operations maintain the same decimal precision as the input value.</td>
+<td>
+
+```typescript
+<rapid-number-field autoStepPrecision>
+```
+
+</td>
+    </tr>
+    <tr>
       <td>disabled</td>
       <td><code>boolean</code></td>
       <td>Similar to <code>readonly</code>, but with a blur on the component</td>
@@ -235,6 +247,18 @@ Property and attribute binding examples for Genesis Component syntax.
 </td>
     </tr>
     <tr>
+      <td>maximumInputPrecision</td>
+      <td><code>number</code></td>
+      <td>Defines the maximum number of significant digits allowed in the input. **Default: 12**. This helps prevent precision loss when working with very large or very precise numbers.</td>
+<td>
+
+```typescript
+<rapid-number-field maximumInputPrecision="${(x) => x.maxPrecision}">
+```
+
+</td>
+    </tr>
+    <tr>
       <td>min</td>
       <td><code>number</code></td>
       <td>Defines the minimum value allowed</td>
@@ -309,7 +333,7 @@ Property and attribute binding examples for Genesis Component syntax.
     <tr>
       <td>step</td>
       <td><code>number</code></td>
-      <td>Defines the amount the field value changes each time the user clicks to increase or decrease the field value</td>
+      <td>Defines the amount the field value changes each time the user clicks to increase or decrease the field value. If <code>autoStepPrecision</code> is enabled, this value is ignored and the step is automatically calculated based on the decimal precision of the current value.</td>
 <td>
 
 ```typescript

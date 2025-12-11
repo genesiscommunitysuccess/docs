@@ -1,0 +1,533 @@
+---
+title: '8.14'
+sidebar_label: '8.14'
+sidebar_position: 7
+id: '8.14'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-change-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+:::tip
+This release contains [impactful changes](#impactful-change-guidance). They are not breaking but typical stumbling blocks for older applications upgrading. Further details are listed at the end of this page, along with instructions to resolve.
+:::
+:::tip
+This release contains an update to the way Business Component versions are managed. Further details found in the [Client Dependencies Update Section](#dependency-updates).
+:::
+
+## Server
+
+### Breaking changes
+
+* Bump com.github.ben-manes.caffeine:caffeine from 2.9.3 to 3.2.2
+* Bump nettyVersion from 4.1.119.Final to 4.2.3.Final
+* `genesis-codegen` : Add `timestamp` property to generated DAO class `copy` method 
+* `genesis-db` : Ensure parameterised view entities cannot call subscribe operations 
+* `genesis-db` : Entitydb support for parameterised views 
+* `genesis-db` : Support for criteria at the db level, including direct sql support 
+* `genesis-evaluator` : Moved timezone req-rep from evaluator to reporting module 
+* `genesis-openapi-codegen` : Revamp openapi code generation to handle more scenarios as well as support multiple spec generations in one module 
+* `genesis-pal-datapipeline` : Enhanced acknowledgement mechanism with different error types, including new SinkUnavailable error 
+* `genesis-router` : Set cookie authentication by default 
+* `genesis-console` : Disable genesis Console endpoints by default 
+- refactor(genesis-db)!: Remove deprecated `RxDb.initialise` method which has been replaced with guice injection 
+
+### Features
+
+* `core` : Can enable including the Open Telemetry java agent and its properties file through Sys Def 
+* `core` : Replace ANTLR code parse for Kotlin PSI API to reduce memory footprint and improve performance 
+* `core` : Support running groovy and GPAL scripts in the same process to aid migration to GPAL 
+* `coreproduct` : Add `--printClasspath` option to `startProcess` and `--dumpClasspath` option to `startServer` 
+* `coreproduct` : Add dynamic bash completion generation for Genesis Python scripts with improved option detection and process/group name support 
+* `coreproduct` : Enhance python scripts to allow process start flag to be overridden from sysdef or env vars 
+* `coreproduct` : Increase field sizes (ENTITY_ID, SOURCE_ID, PROCESS, PROCESS_NAME) add RIGHT_CODE index to RIGHT_SUMMARY table and timestamp index to USER_AUDIT table 
+* `deploy-gradle-plugin` : Adding a task to create a full zip of server and web with all dependencies 
+* `exec-gradle-plugin` : Improve gradle config phase timing by using better caching of classpaths 
+* `genesis-codegen` : Prevent compilation error on incorrect use of backwardsJoin flag 
+* `genesis-criteria` : Add missing Expr functions to criteria validation allowlist 
+* `genesis-criteria` : Implement `Expr.dateTimeIsInRange` functionality for time-based filtering and `DATE_TIME_IS_IN_RANGE` method call to support this feature in report generation 
+* `genesis-criteria` : Improve criteria AST validation to provide more comprehensive checks and support Expr functions in criteria index interval extraction 
+* `genesis-db` : Can enable metrics for Genesis Db Cache 
+* `genesis-db` : Can specify optimistic concurrency checks for specific tables 
+* `genesis-db` : Support for joining genesis view tables using native SQL queries 
+* `genesis-db` : Add deleteAll by entity index to db operations 
+* `genesis-db` : Add entity dictionary on entity db and enhance req/rep metadata in criteria only mode to provide criteriaFields and sortableFields information 
+* `genesis-db` : Add full support for parameterised views on `getByCriteria` operation 
+* `genesis-db` : Add support for `fields` parameter on sql views 
+* `genesis-db` : Add support for ordering and pagination 
+* `genesis-db` : Add support for sorting by index name on `getByCriteria` operation 
+* `genesis-db` : Relax criteria validation 
+* `genesis-db` : Support for range subscribe when using native sql joins 
+* `genesis-db` : Support native sql joins on parameterised repos 
+* `genesis-db` : Support native sql query getAll operation 
+* `genesis-dbmon` : Support for getByCriteria in search and updateWhere operations 
+* `genesis-dictionary` : Add support for shared enum definitions with aliases 
+* `genesis-environment` : Implement GetNextAutoIncrementNumbers script to work similarly to GetNextSequenceNumbers 
+* `genesis-environment` : Add support for criteria operation in dumpIt 
+* `genesis-environment` : Load rootProject/testData when running remap during local development 
+* `genesis-gradle` : Add support for open telemetry in exec plugin to make it easier to run locally 
+* `genesis-jackson` : Provide default Jackson XSS safe `String` deserializer named XssSanitizingDeserializer.kt 
+* `genesis-testsupport` : Support for lazily provided sys def values 
+* `genesis-metrics` : Register metrics for SQL coroutine dispatcher thread pool and Hikari connection pool 
+* `genesis-net` : Add support for IOUring within `Netty` if it is available at the kernel level and the Java property `genesis.netty.iouring.enabled` is set to `true` 
+* `genesis-pal` : Add support for `auth` blocks without a map name in the `permissioning` GPAL section of custom req reps and eventhandlers 
+* `genesis-pal-datapipeline` : Added support for asynchronous calls within operation error handlers 
+* `genesis-pal-datapipeline` : Improve data pipelines declaration syntax and allow building pipelines in code 
+* `genesis-pal-dataserver` : Remove experimental DATABASE_DRIVEN processing mode 
+* `genesis-pal-execution` : Can use system definition properties in process config gpal script 
+* `genesis-pal-requestserver` : Add criteria req rep meta data 
+* `genesis-pal-requestserver` : Add direct offset support for request server 
+* `genesis-pal-requestserver` : Add direct support for getByCriteria database operation 
+* `genesis-pal-streamerclient` : Add additional logging when moving to error state 
+* `genesis-process` : Add Array type support to PAL metadata mapping 
+* `genesis-router` : Add support for new req rep parameters on http request 
+* `genesis-transform` : Added support to apply a timezone to all date time format operations 
+
+### Performance improvements
+
+* `codegen-gradle-plugin` : Improve gradle plugin kts file caching mechanism to prevent unnecessary cache misses and add other performance improvements 
+* `deploy-gradle-plugin` : Update generated dockerfile to set the system definition setting `ScriptCacheDir` value to `/app/scriptcache` 
+* `genesis-config` : Make GenesisScriptHost construction consistent across the platform in terms of script cache path resolution and improve script cache implementation 
+
+### Fixes
+
+* `codegen-gradle-plugin` : Add system definition files to fields-dictionary kts evaluation cache to prevent false positive cache hits 
+* `codegen-gradle-plugin` : Use `runtimeClasspath` in codegen isolated task execution to ensure correct behaviour 
+* `coreproduct` : Fix issue in process starter JVM_DEFAULT_ARGS handling 
+* `distribution-gradle-plugin` : Copy `installHooks` scripts to the correct application folder as part of distribution file creation 
+* `genesis-cluster` : Avoid instantiating console web endpoints as part of the package scan mechanism for GENESIS_CLUSTER 
+* `genesis-cluster` : Fix race condition between Consul service discovery lookup and unicast relay data processing 
+* `genesis-codegen` : Always write serialised dictionary on codegen 
+* `genesis-codegen` : Generated SysDef object is missing properties 
+* `genesis-codegen` : Handle sys defs with characters that would be illegal in a kotlin name e.g. `.` 
+* `genesis-console` : Revert API classes package move 
+* `genesis-db` : Correct handling repo modules with suspend methods 
+* `genesis-db` : Correct type handling in mssql bulk insert and modify queries 
+* `genesis-db` : Fix bug in MSSQL layer insert operation, when writing binary data 
+* `genesis-db` : Fix bug on RxDb getByCriteria operation handling of fields 
+* `genesis-db` : Fix various issues in db layer: short handling and sequences in mssql 
+* `genesis-dictionary` : Ensure shared aliased enums can be serialised/deserialised using Jackson 
+* `genesis-environment` : Fix registering no-op instance of Optimistic Concurrency builder for scripts 
+* `genesis-environment` : InstallHooks functionality should detect existing hooks in `site-specific/scripts/installHooks` folder 
+* `genesis-environment` : Disable optimistic concurrency checks for scripts 
+* `genesis-environment` : Fix handling of sys def reading with overlapping product names 
+* `genesis-eventhandler` : Change incorrect use of system definition item `UseNettyThreadsInEventHandler` in event handler implementation 
+* `genesis-eventhandler` : Split different Event Handler APIs into separate implementations to avoid potential coroutine issues when using runBlocking 
+* `genesis-gradle` : Account for product sys def when processing templated process file with Exec plugin 
+* `genesis-gradle` : Demote info logs related to gradle file cache to avoid polluting the gradle code generation plugins output 
+* `genesis-gradle` : Show correct process name in `preCompileScripts` gradle task output 
+* `genesis-testsupport` : Fix regression in type binding when using the @ProvidedInstance annotation in `GenesisJUnit` tests 
+* `genesis-pal-datapipeline` : All pipelines should have a default `onUncaughtError` handler to avoid the process from crashing and instead sets the process state to `WARNING` 
+* `genesis-pal-datapipeline` : Ensure pipeline is not corrupted when SKIP_ELEMENT action is used on an intermediate pipeline operation 
+* `genesis-pal-datapipeline` : Improved Data Pipeline acknowledgement mechanism 
+* `genesis-pal-datapipeline` : Log an error when persistence index is out of sequence and no records will be read 
+* `genesis-pal-execution` : Fix potential edge case when processing updates that would miss deletes on inner joins 
+* `genesis-pal-permissions` : Make auth perms GPAL `expression` block suspending so db lookups can be performed 
+* `genesis-pal-streamerclient` : Fix issue in chronicle initialisation 
+* `genesis-process` : Ensure `SysDef` object is initialised before reading `-process-config.kts` and handle issues with `SysDef` object usage in GPAL scripts gracefully 
+* `genesis-process` : Stacktrace is now shown again when any issues arise during process startup 
+* `genesis-testsupport` : Ensure `GenesisDatabaseTest` annotation also initialises `GenesisPaths.genesisHome()`` internally 
+* `genesis-transform` : Ensure values with different types (i.e. `Short`, `Int`, `Long`) for the same column and format are formatted as expected 
+* `remap` : Ensure auto increment fields are handled correctly when migrating to new table syntax 
+* Ensure complex event handler payloads are supported by MCP schema 
+
+### Dependency changes
+
+* Bump Aeron from 1.46.8 to 1.48.4 and Agrona from 1.23.1 to 2.2.4 from 3.2.1
+* Bump aeronVersion from 1.48.4 to 1.48.5
+* Bump aeronVersion from 1.48.5 to 1.48.6
+* Bump byteBuddyVersion from 1.17.6 to 1.17.7
+* Bump com.github.oshi:oshi-core from 6.8.2 to 6.8.3
+* Bump com.github.oshi:oshi-core from 6.8.3 to 6.9.0
+* Bump com.google.errorprone:error_prone_annotations from 2.39.0 to 2.40.0
+* Bump com.google.errorprone:error_prone_annotations from 2.40.0 to 2.41.0
+* Bump com.google.guava:guava from 33.4.8-jre to 33.5.0-jre
+* Bump com.google.jimfs:jimfs from 1.3.0 to 1.3.1
+* Bump com.google.protobuf:protobuf-java from 4.31.1 to 4.32.0
+* Bump com.google.protobuf:protobuf-java from 4.32.0 to 4.32.1
+* Bump com.jfrog.artifactory from 5.2.5 to 6.0.0
+* Bump com.jfrog.artifactory from 5.2.5 to 6.0.0
+* Bump com.jfrog.artifactory from 6.0.0 to 6.0.1
+* Bump com.jfrog.artifactory from 6.0.0 to 6.0.1
+* Bump com.networknt:json-schema-validator from 1.5.8 to 1.5.9
+* Bump com.opencsv:opencsv from 5.11.2 to 5.12.0
+* Bump com.zaxxer:HikariCP from 6.3.0 to 6.3.2
+* Bump commons-cli:commons-cli from 1.9.0 to 1.10.0
+* Bump commons-codec:commons-codec from 1.18.0 to 1.19.0
+* Bump commons-io:commons-io from 2.19.0 to 2.20.0
+* Bump commons-net:commons-net from 3.11.1 to 3.12.0
+* Bump de.cronn:reflection-util from 2.17.0 to 2.18.0
+* Bump debeziumVersion from 3.1.3.Final to 3.2.0.Final
+* Bump debeziumVersion from 3.2.0.Final to 3.2.1.Final
+* Bump debeziumVersion from 3.2.1.Final to 3.2.2.Final
+* Bump io.github.classgraph:classgraph from 4.8.180 to 4.8.181
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.17.0 to 2.17.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.17.0 to 2.17.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.17.1 to 2.18.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.18.0 to 2.18.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.18.1 to 2.19.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.19.0 to 2.20.0
+* Bump io.reactivex.rxjava3:rxjava from 3.1.10 to 3.1.11
+* Bump jacksonVersion from 2.18.3 to 2.19.2
+* Bump junitVersion from 5.13.2 to 5.13.3
+* Bump junitVersion from 5.13.3 to 5.13.4
+* Bump kafkaClientVersion from 4.0.0 to 4.1.0
+* Bump ktorVersion from 2.3.12 to 3.2.1
+* Bump ktorVersion from 3.2.1 to 3.2.2
+* Bump ktorVersion from 3.2.2 to 3.2.3
+* Bump log4jVersion from 2.25.0 to 2.25.1
+* Bump maven-plugin-api.version from 3.9.8 to 3.9.11
+* Bump micrometerVersion from 1.15.1 to 1.15.2
+* Bump micrometerVersion from 1.15.2 to 1.15.3
+* Bump micrometerVersion from 1.15.3 to 1.15.4
+* Bump mockitoVersion from 5.18.0 to 5.19.0
+* Bump msgpackVersion from 0.9.8 to 0.9.10
+* Bump nettyVersion from 4.2.3.Final to 4.2.4.Final
+* Bump nettyVersion from 4.2.4.Final to 4.2.5.Final
+* Bump nettyVersion from 4.2.5.Final to 4.2.6.Final
+* Bump oracleJdbcVersion from 23.8.0.25.04 to 23.9.0.25.07
+* Bump org.apache.activemq:artemis-jakarta-client from 2.41.0 to 2.42.0
+* Bump org.apache.camel:camel-bom from 4.10.3 to 4.10.6
+* Bump org.apache.commons:commons-compress from 1.27.1 to 1.28.0
+* Bump org.apache.commons:commons-csv from 1.14.0 to 1.14.1
+* Bump org.apache.commons:commons-lang3 from 3.17.0 to 3.18.0
+* Bump org.apache.maven.archetype:archetype-packaging from 3.2.1 to 3.4.0
+* Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.13.1 to 3.15.1
+* Bump org.apache.maven.plugins:maven-archetype-plugin from 3.2.1 to 3.4.0
+* Bump org.apache.maven.plugins:maven-clean-plugin from 3.4.0 to 3.5.0
+* Bump org.apache.maven.plugins:maven-compiler-plugin from 3.13.0 to 3.14.0
+* Bump org.apache.maven.plugins:maven-dependency-plugin from 3.7.1 to 3.8.1
+* Bump org.apache.maven.plugins:maven-deploy-plugin from 3.1.2 to 3.1.4
+* Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.5.0 to 3.6.1
+* Bump org.apache.maven.plugins:maven-install-plugin from 3.1.2 to 3.1.4
+* Bump org.apache.maven.plugins:maven-plugin-plugin from 3.13.1 to 3.15.1
+* Bump org.apache.maven.plugins:maven-release-plugin from 3.1.0 to 3.1.1
+* Bump org.apache.maven.plugins:maven-site-plugin from 3.12.1 to 3.21.0
+* Bump org.apache.maven:maven-model from 3.9.8 to 3.9.11
+* Bump org.apache.shiro:shiro-core from 2.0.4 to 2.0.5
+* Bump org.assertj:assertj-core from 3.27.3 to 3.27.4
+* Bump org.assertj:assertj-core from 3.27.4 to 3.27.5
+* Bump org.checkerframework:checker-qual from 3.49.5 to 3.50.0
+* Bump org.checkerframework:checker-qual from 3.50.0 to 3.51.0
+* Bump org.codehaus.plexus:plexus-utils from 4.0.1 to 4.0.2
+* Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.6.2 to 3.7.0
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.5 to 6.0.0
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.5 to 6.0.0
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 6.0.0 to 6.0.1
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 6.0.0 to 6.0.1
+* Bump org.jline:jline from 3.30.4 to 3.30.5
+* Bump org.jline:jline from 3.30.5 to 3.30.6
+* Bump org.jlleitschuh.gradle.ktlint from 12.3.0 to 13.0.0
+* Bump org.jlleitschuh.gradle.ktlint from 13.0.0 to 13.1.0
+* Bump org.jlleitschuh.gradle:ktlint-gradle from 12.3.0 to 13.0.0
+* Bump org.jlleitschuh.gradle:ktlint-gradle from 13.0.0 to 13.1.0
+* Bump org.junit.platform:junit-platform-launcher from 1.13.2 to 1.13.3
+* Bump org.junit.platform:junit-platform-launcher from 1.13.3 to 1.13.4
+* Bump org.kiwiproject:consul-client from 1.5.1 to 1.6.0
+* Bump org.mockito.kotlin:mockito-kotlin from 5.4.0 to 6.0.0
+* Bump org.openapitools:openapi-generator from 7.14.0 to 7.15.0
+* Bump org.postgresql:postgresql from 42.7.7 to 42.7.8
+* Bump org.twdata.maven:mojo-executor from 2.4.0 to 2.4.1
+* Bump pekkoVersion from 1.1.4 to 1.1.5
+* Bump pekkoVersion from 1.1.5 to 1.2.0
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.6.0 to 2.6.1
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.6.1 to 2.6.2
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.6.2 to 2.6.3
+* Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.6.3 to 2.6.4
+* Bump sshdVersion from 2.15.0 to 2.16.0
+
+### Patch releases
+
+
+#### 8.14.8
+
+###### Features
+
+- feat(build-gradle-plugin): Add new gradle task named `checkAuthPermissions` to check permissions/auth configuration (GSF-7506) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5307
+
+###### Fixes
+
+- fix(genesis-clustersupport): Process monitors in STANDBY state should be reported as "failed" checks to Consul (GSF-7520) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5309
+- fix(genesis-net): create request log per process (GSF-7505) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/5310
+
+#### 8.14.7
+
+###### Features
+
+- feat(coreproduct): Support compiled GPal definitions (GSF-7503) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5243
+
+#### 8.14.6
+
+###### Features
+
+* `genesis-environment` : Support byte array fields in `DumpIt` and `SendIt` 
+
+#### 8.14.5
+
+###### Fixes
+
+* `genesis-db` : Native sql layer, release connection on failure to execute query 
+
+#### 8.14.4
+
+###### Features
+
+* `genesis-db` : Add support for `Expr.dateTimeIsInRange` as part of native SQL querying capabilities 
+
+#### 8.14.3
+
+###### Fixes
+
+* `genesis-pal-requestserver` : Include derivedFields for SQL-based criteria-only request reply workflow 
+
+#### 8.14.2
+
+###### Fixes
+
+* `genesis-criteria` : Fix incorrect index interval generation when translating some `Expr.dateIs` operations 
+* `genesis-db` : Handle genesis table objects using sql native connection 
+* `genesis-router` : Correct collection handling in `web-handler.kts` files 
+
+#### 8.14.1
+
+###### Features
+
+* `genesis-commons` : Improve handling in `GenesisSet` and `DbRecord` of binary data in `ByteArray` 
+* `genesis-config` : Transform from `String` to `List`, `Set` and `Map` in the dependency inject module 
+* `genesis-db` : Improve criteria validation 
+* `genesis-environment` : Support views in `DumpIt` 
+* `genesis-pal` : Improve error handling in views, when circular join is detected 
+* `genesis-pal-consolidator` : Add support for minBy and maxBy functions 
+* Add support for column ordering to match inclusion list 
+
+###### Fixes
+
+* `genesis-db` : Fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
+* `genesis-dbmon` : Fix view field handling in search and distinct commands 
+* `genesis-environment` : Ensure audit records are inserted correctly when using SendIt 
+* `genesis-pal-consolidator` : Fix memory profile in cold start 
+
+## Client
+
+#### Dependency Updates
+
+All `foundation-ui` libraries should be updated from version **14.310.2** to **14.343.0** to ensure compatibility with the latest 8.14 release.
+
+##### Example: Updating `package.json`
+
+Below is a sample diff for updating the relevant dependencies in your `package.json`:
+
+```diff
+ {
+-  "@genesislcap/pbc-auth-ui": "1.0.9",
+-  "@genesislcap/pbc-documents-ui": "0.0.12",
+-  "@genesislcap/pbc-notify-ui": "1.0.62",
+-  "@genesislcap/pbc-reconciliation-ui": "^0.0.32",
+-  "@genesislcap/pbc-reporting-ui": "1.0.378",
++  "@genesislcap/pbc-auth-ui": "14.343.0",
++  "@genesislcap/pbc-documents-ui": "14.343.0",
++  "@genesislcap/pbc-notify-ui": "14.343.0",
++  "@genesislcap/pbc-reconciliation-ui": "14.343.0",
++  "@genesislcap/pbc-reporting-ui": "14.343.0",
+ }
+```
+
+Make sure to run `npm install` or `npm run bootstrap` after updating your `package.json` to apply the changes.
+
+
+
+### Features
+
+* `foundation-ui` : Add client-side file reader component 
+* `grid-pro` : Improve sort column styling when server-side datasource + pagination fixes on SSRM 
+* `foundation-ui` : Add ability to add icon/svg in categorized-multiselect 
+* `grid-pro` : Improve datasource error handling and presentation 
+* Update styles for foundation-form group label
+* Date IS_CURRENT and IS_PREVIOUS operators for rule expression builder 
+* `grid-pro` : REVERT #1868 - improve datasource error handling and presentation 
+* `foundation-ui` : Environment indicator 
+* `grid-pro` : RESTORE #1868 - improve datasource error handling and presentation 
+* `foundation-ui` : Environment indicator 
+* Trigger polling on event handler ack
+* `foundation-utils` : Datetime formatter with milliseconds  
+* Enable substring search filtering in Connected Select renderer via filter-mode option 
+* `grid-pro` : Add position attribute to select cell editor 
+* `dialog` : Add close event to modal/dialog 
+* `foundation-ui` : Add filter mode options to combobox and connected select control 
+* Add statusBarConfig support to Entity Management component
+* Add clear method to multiselect component 
+* Upgrade TypeScript and tslib to latest versions 
+* Add resize functionality to multiselect component 
+* `foundation-ui` : Support forward jumping in stepper 
+* `foundation-forms` : Optional attribute for confirmation message 
+* Add auto step precision feature to number-field component 
+* `foundation-ui` : Move pbc-notify-ui to foundation-ui repo 
+* `foundation-entity-management` : Add extra slots for custom buttons and elements 
+* `foundation-redux` : Add Redux Toolkit integration package with showcase examples 
+* `foundation-ui` : Support \n newline escape character in notification components 
+* `foundation-utils` : Add shortcut manager and listener 
+* Add new features to stepper - go to step, hide buttons 
+* `vite-builder` : Update configuration and dependencies 
+* Migrate PBC Reporting UI to monorepo 
+* `foundation-ui` : Add client-side file reader component 
+* Stepper component – add option to hide all tabs 
+* Add divider renderer for foundation-forms 
+* `grid-pro` : Allow custom error handling template + simplified defaults 
+* Add support for terms and conditions auth handling 
+* `foundation-ui` : Add path tracking for unauthenticated users in route permission checks 
+* Add inactivity monitoring utility 
+* `foundation-ui` : Multiselect and forms updates 
+* Improve ReqRep message flows and server-side behavior 
+* `foundation-ui` : Add toast-position at Notification Listener component 
+* `grid-pro` : Add sizeColumnsToFit and sizeColumnsToContent to grid-pro and entity-management 
+* `foundation-entity-management` : Enable option to download csv data 
+* Bump to node version 22 
+* `foundation-forms` : Show error icon in categorized forms tabs
+* `foundation-notifications` : Adding optional icon config to notifiactions toast builders 
+* Emit success event from file-upload 
+* Updates to client react project to use vite 
+* `foundation-entity-management` : Support adding custom actions 
+* `foundation-entity-management` : Csv download formats date and datetime fields 
+* `pbc-auth-ui` : Migrate pbc to platform 
+* `foundation-forms` : Showing anyOf error messages in smart forms 
+* `foundation-ui` : Set additional static part name on icon tag 
+* `pbc-documents-ui` : Migrate pbc document manager to platform 
+* `pbc-reconciliation-ui` : Migrate pbc-reconciliation to platform 
+* `foundation-forms` : Adding row data mapper connected select renderer 
+* `foundation-ui` : Adding resizable behavior to modal 
+* `foundation-ui` : Add section navigator component with scroll navi…
+* `grid-pro` : Allow custom options in selectEditor 
+
+### Fixes
+
+* Enable $data References in Foundation Forms for Cross-Field UI Rules
+* `foundation-ui` : Correct scroll to option + stop changing grid scroll after interaction 
+* Clear dropdown selections when clearing filter data foundation-filters 
+* `foundation-ui` : Add part attributes to navigation template 
+* Add sample test to client app 
+* Reseting connected select control when clearing data on foundation-filters
+* Removes broken package with system health alerts 
+* Update styles for foundation-form group label 
+* Resolve light mode styling issues with ag-grid side and status bars 
+* Set time using locale and not UTC 
+* Update default user rights to access sample page
+* Change autocomplete to list as both is not compatible with contains option 
+* `eslint-config` : Bump version past version with security issue 
+* Prevent foundation-notification container creating secondary design system 
+* Cleaning now unused api-report.md files and old package-lock refs 
+* Add rimraf dependency and TypeScript 5.9.2, enhance ESLint rules 
+* `foundation-comms` : Override analytics nested dependency 
+* `foundation-comms` : Pin analytics to the last stable version 
+* Optimize eslint performance and build processes 
+* `foundation-comms` : Fix req-rep issue when snapshot is init 
+* Update visibility css conflicting with Chrome V139 
+* Update @playwright/test from 1.46.1 to 1.54.2
+* `foundation-ui` : Fix floating point error with countdown timer, add unit parameter 
+* `foundation-ui` : Address number-field util linting warnings 
+* `foundation-login` : Remove unnecessary type assertion for Connect property 
+* `foundation-entity-management` : Clear confirmation message if form closed 
+* Ensure existing notification container is used 
+* `foundation-ui` : Notifications subscription after reconnection 
+* `pbc-notify-ui` : Update clean script to match other packages 
+* `client-app` : Set preserveSymlinks to tsconfig.json 
+* `tooling` : Add rewrite function for vite compatibility 
+* `react-client-app` : Init react client showcase app 
+* `grid-pro` : Remove setDataValue for numberEditor 
+* `react-client-app` : Align deps to monorepo 
+* `foundation-ui` : Add autocomplete="off" to multiselect component 
+* Stepper enable programmatic navigation to first/last steps regardless of jump settings 
+* Address bootstrap and lint script warnings and errors + package.json cleanup 
+* `foundation-ui` : Prevent false positives from value/control-value precision differences 
+* `grid-pro` : Resolve KV storage data structure access bug and add filter persistence 
+* Move notifications below the header bar 
+* `foundation-entity-management` : Fix circular dependency 
+* `foundation-auth` : Improve handling of terms and conditions data load 
+* `grid-pro` : Add null checks to prevent errors when params are undefined 
+* Auth-logo not showing custom logos 
+* Replace hardcoded "zero-" prefix in file-upload component 
+* `foundation-header` : Remove unused styles + correct slot order 
+* `pbc-auth-ui` : Remove peer deps 
+* Update typo in error text for Terms and Conditions 
+* Allow status bar label to be updated 
+* Added date pickers page to react app 
+* Added scheduler route in client app for react 
+* Package.json for recon 
+* Doc management circular dependencies and package versions 
+* `build-kit` : Fix usage of vulnerable dependencies 
+* Update to allow blobs for pdf rendering 
+* `foundation-ui` : Preserve user input during async filtering 
+
+## Breaking change guidance
+
+### Caffeine library upgrade
+
+The genesis platform now uses [Caffeine](https://github.com/ben-manes/caffeine) version 3.2. Version 3 added the following changes:
+
+Incompatible changes
+- VarExpiration time-based puts now return the old value instead of a boolean result
+- Removed jandex resource as no longer utilized by Quarkus
+- Split Policy.Expiration into fixed and refresh interfaces
+
+Deprecation removals
+- CacheWriter, SingleConsumerQueue, and UnsafeAccess
+- StatsCounter.recordEviction variations
+- CacheStats constructors
+
+If your genesis application is using Caffeine for any reason, please ensure to adapt your code to the latest changes if needed.
+
+### Netty library upgrade
+
+Netty has been upgraded to version 4.2.0+, which introduces a few breaking changes and different behaviour.
+If your application is using any Netty features directly as opposed to relying on the platform configuration and APIs, please ensure you follow the:
+- [Compatibility highlights](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#compatibility-highlights),
+- [Lesser compatibility changes](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#lesser-compatibility-changes) and
+- [New best practices](https://github.com/netty/netty/wiki/Netty-4.2-Migration-Guide#new-best-practices)
+
+### Cookie authentication by default
+
+The genesis-router.kts configuration now uses cookie authentication by default to follow standard security practices. Please ensure your application UI is also set up to use cookies when adopting these changes.
+For more information about the router configuration visit the [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) documentation.
+
+### Database API changes
+
+The database API has been greatly enhanced with new features in this version (e.g. criteria search translation to SQL, native SQL joins for views, etc), but there are a few breaking changes to highlight
+- Uses of `global.genesis.db.entity.ViewEntity` directly as part of the `getBulk` database operation will need to be changed for `global.genesis.db.entity.DbBulkEntity`. This new type is a more accurate definition of what types of entities can be read using `getBulk`.
+- Parameterised views now have a compile time check to ensure they cannot be used in `getBulk` and `subscribe` operations as they require an external parameter to run database operations. Before 8.14, the code would fail at runtime.
+- Parameterised views now work as expected when using the different `EntityDb` APIs.
+- Generated entities now have the `timestamp` field added to the `copy` function.
+- An internal deprecated method to initialise `RxDb` instances has been removed. `RxDb` should always be retrieved via dependency injection.
+
+### External OpenAPI client code generation
+
+The support for code generation of external OpenAPI specifications (see [external rest APIs page](/develop/server-capabilities/integrations/external-rest-apis/)) has been reworked to support more complex specifications, including generating code for multiple specs in one single gradle module.
+If you are using this platform feature, please regenerate the external OpenAPI client code using the gradle plugin and pay attention to any potential class definitions moving into separate packages.
+
+### Genesis "test" Gradle plugin
+
+If your application is not using the `global.genesis.test` Gradle plugin, please ensure you apply it in the relevant application modules.
+Without it, a series of `--add-opens` and `--add-exports` JVM configuration options need to be added, add this can add unnecessary maintenance effort when performing platform upgrades.
+
+## Impactful change guidance
+
+### New code parsing approach for derived fields
+genesis now uses the Kotlin PSI API to parse derived field information from table and view definitions at code generation time instead of using ANTLR. This change should not have any effect on functionality, but will provide a performance and memory improvement.
+
+### Core dictionary changes
+There have been a few changes in the `genesis-tables-dictionary.kts` file.
+- The varchar field sizes for ENTITY_ID, SOURCE_ID, PROCESS, and PROCESS_NAME have been increased.
+- Added a new RIGHT_CODE index to RIGHT_SUMMARY table and a TIMESTAMP index to USER_AUDIT table
+If you have overridden this file with a `site-specific` version, please ensure you apply these updates in your custom file to guarantee compatibility with 8.14.
+
+### Improved criteria AST validation
+The criteria match validation for dataservers and request replies is now more thorough. We don't expect any issues to arise from this change, but you may see different/new rejection messages for invalid criteria.
+
+### New metadata information added to req/rep
+The request-reply JSON schema metadat ahas been enhanced to provide `criteriaFields` and `sortableFields` so the UI knows what fields can be used in criteria evaluation and what fields can be used for native SQL order by purposes.
+If your application or tests rely on the old metadata definition please make sure to accommodate these changes moving forward.
+
+### Automatic data load in local environments
+If your genesis application project contains a `/genesis/testData` folder (see [testData](/build-deploy-operate/build/project-structure/#testdata)), the data files will be loaded automatically in your dev database as part of local development (e.g. using Genesis Start or the Intellij plugin).
+
+### IOUring support for Netty
+If your operating system supports [IOUring](https://man7.org/linux/man-pages/man7/io_uring.7.html), you can enable Netty's `IOUring` support for genesis applications setting the JVM property `genesis.netty.iouring.enabled` to `true`.
+`IOUring` provides significant performance improvements over Epoll in Linux environments, but can be controversial from a security perspective, and therefore it is not enabled by default.

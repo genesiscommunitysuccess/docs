@@ -89,7 +89,7 @@ DTOMapper&lt;TDTO, TEntity&gt;
 
 </td><td>
 
-Omit&lt;[DatasourceOptions](./foundation-comms.datasourceoptions.md)<!-- -->, 'isSnapshot'&gt;
+Omit&lt;[DatasourceOptions](./foundation-comms.datasourceoptions.md), 'isSnapshot'&gt;
 
 
 </td><td>

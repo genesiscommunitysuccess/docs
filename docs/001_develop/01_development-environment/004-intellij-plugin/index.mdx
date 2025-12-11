@@ -86,6 +86,35 @@ If you see the message below when you start the plugin:
 ...this means that you are using a deployed [set-up](#deploy-mode). You need to run the install process before running `remap`.
 :::
 
+## System definition property overrides
+
+The plugin supports overriding Genesis system definition properties locally. This lets you adjust configuration (e.g., database, ports) without changing the project's system definition.
+
+### Where to put override files
+- **User-level (recommended for shared local settings across projects)**
+- `~/.genesis/development-system-definition.properties`
+- `~/.genesis/{service_name}-system-definition.properties`
+- **Project-level (for project-specific dev settings)**
+- `<server root>/.genesis/development-system-definition.properties`
+- `<server root>/.genesis/{service_name}-system-definition.properties`
+
+Notes:
+- The project `.genesis/` folder lives under the server project root. The plugin auto-detects the server root by scanning for `server/*/settings.gradle.kts` or `server/settings.gradle.kts` and then using the adjacent `.genesis/` directory.
+- Use `{service_name}` to target only that service’s properties.
+
+### Precedence (highest wins)
+1. Project-level `{service_name}-system-definition.properties`
+2. User-level `{service_name}-system-definition.properties`
+3. Project-level `development-system-definition.properties`
+4. User-level `development-system-definition.properties`
+
+Put differently: project properties overwrite user properties, and service-specific properties overwrite values defined in `development-system-definition.properties`.
+
+### Recommendations and version control
+- **Use `~/.genesis/` for shared dev settings**: Put environment-wide values (e.g., database host/port, common credentials) in your user home so they seamlessly apply across multiple Genesis projects on your machine.
+- **Use project `.genesis/` for project-specific dev settings**: These can be shared with your team if appropriate by committing the folder to source control. Avoid committing machine-specific or secret values.
+- If you commit the project `.genesis/` directory, consider `.gitignore` rules for sensitive or host-specific files.
+
 ### Database configuration
 
 Unless your project is configured to use H2 out of the box, you need to configure the plugin to use a supported database.

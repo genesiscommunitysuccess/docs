@@ -157,7 +157,7 @@ Name of the design system prefix that will be used in renderers.
 
 </td><td>
 
-[RendererEntry](./foundation-forms.rendererentry.md)<!-- -->\[\]
+[RendererEntry](./foundation-forms.rendererentry.md)\[\]
 
 
 </td><td>

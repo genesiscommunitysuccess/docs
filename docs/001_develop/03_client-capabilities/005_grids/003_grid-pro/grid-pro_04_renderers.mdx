@@ -237,6 +237,7 @@ Renders a dropdown select within a grid cell, allowing users to select from a li
 - Supports disabled state per option
 - Handles selection changes with callback
 - Configurable dropdown position based on row index
+- Allows configuration of position (whether the select dropdown appears above or below the input)
 
 #### Usage example
 
@@ -575,7 +576,7 @@ Register custom components using the `gridComponents` property:
 @customElement({
   name: 'my-grid',
   template: html`
-    <rapid-grid-pro 
+    <rapid-grid-pro
       :gridComponents="${(x) => x.gridComponents}"
       auto-cell-renderer-by-type>
       <grid-pro-client-side-datasource resource-name="ALL_TRADES">
@@ -588,11 +589,11 @@ export class MyGrid extends GenesisElement {
     // Custom renderers
     customRenderer: CustomRenderer,
     customStatusPill: CustomStatusPillRenderer,
-    
+
     // Custom editors
     customEditor: CustomEditor,
     advancedDateEditor: AdvancedDateEditor,
-    
+
     // Custom filters
     customFilter: CustomFilter
   };

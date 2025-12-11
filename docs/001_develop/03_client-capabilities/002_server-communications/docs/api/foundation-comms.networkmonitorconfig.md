@@ -124,7 +124,7 @@ _(Optional)_ The element to emit events from
 
 </td><td>
 
-[GenesisConnectEvents](./foundation-comms.genesisconnectevents.md)<!-- -->\[\]
+[GenesisConnectEvents](./foundation-comms.genesisconnectevents.md)\[\]
 
 
 </td><td>
