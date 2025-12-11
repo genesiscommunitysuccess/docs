@@ -288,17 +288,45 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
       </td>
     </tr>
     <tr>
+      <td>enable-filters</td>
+      <td><code>boolean</code></td>
+      <td>Enables the built-in filter functionality with a modal-based interface. When enabled, a "Filter Data" button appears in the header.</td>
+      <td>
+        ```typescript
+        <entity-management enable-filters>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-filter-persistence-controls</td>
+      <td><code>boolean</code></td>
+      <td>Controls visibility of filter save/load UI in the filter modal. Defaults to <code>true</code>.</td>
+      <td>
+        ```typescript
+        <entity-management enable-filters show-filter-persistence-controls="false">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>filters-modal-position</td>
+      <td><code>'centre' \| 'left' \| 'right'</code></td>
+      <td>Specifies where the filters modal dialog will appear on screen. Defaults to <code>'left'</code>.</td>
+      <td>
+        ```typescript
+        <entity-management enable-filters filters-modal-position="centre">
+        ```
+      </td>
+    </tr>
+    <tr>
       <td>confirmation-message</td>
       <td><code>string</code></td>
       <td>If set, this message will pop up in a confirmation dialog when the user attempts to submit CREATE or UPDATE forms.</td>
       <td>
-
-```typescript
-<entity-management
-  confirmation-message="Are you sure want to submit this form?"
->
-```
-
+      ```typescript
+      <entity-management
+        confirmation-message="Are you sure want to submit this form?"
+      >
+      ```
       </td>
     </tr>
   </tbody>
@@ -522,6 +550,28 @@ const customActions: CustomAction[] = [
 ];
 
 <entity-management :customActions=${() => customActions}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>filtersUiSchema</td>
+      <td><code>UiSchema</code></td>
+      <td>Defines the UI schema for the filter interface. Controls which fields appear in the filter modal and how they are displayed. See <a href="/develop/client-capabilities/grids/entity-manager/entity-manager-filters">Filter configuration</a> for detailed documentation.</td>
+<td>
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+<entity-management enable-filters :filtersUiSchema=${() => counterpartyFiltersUIschema}>
 ```
 </td>
     </tr>
