@@ -239,22 +239,30 @@ This release contains an update to the way Business Component versions are manag
 ### Patch releases
 
 
+#### 8.14.9
+
+###### Fixes
+
+* `genesis-clustersupport` : STANDBY health checks need to be excluded from Consul service discovery eligibility 
+* `genesis-environment` : Enable `SendIt` to handle binary data in `LEGACY` mode 
+
+
 #### 8.14.8
 
 ###### Features
 
-- feat(build-gradle-plugin): Add new gradle task named `checkAuthPermissions` to check permissions/auth configuration (GSF-7506) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5307
+* `build-gradle-plugin` : Add new gradle task named `checkAuthPermissions` to check permissions/auth configuration 
 
 ###### Fixes
 
-- fix(genesis-clustersupport): Process monitors in STANDBY state should be reported as "failed" checks to Consul (GSF-7520) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5309
-- fix(genesis-net): create request log per process (GSF-7505) by @kievitsp in https://github.com/genesislcap/genesis-server/pull/5310
+* `genesis-clustersupport` : Process monitors in STANDBY state should be reported as "failed" checks to Consul 
+* `genesis-net` : Create request log per process 
 
 #### 8.14.7
 
 ###### Features
 
-- feat(coreproduct): Support compiled GPal definitions (GSF-7503) by @khouari1 in https://github.com/genesislcap/genesis-server/pull/5243
+* `coreproduct` : Support compiled GPal definitions 
 
 #### 8.14.6
 
