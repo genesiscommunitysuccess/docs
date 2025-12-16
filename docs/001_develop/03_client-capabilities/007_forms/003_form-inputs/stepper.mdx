@@ -195,16 +195,6 @@ Property and attribute binding examples for Genesis Component syntax.
     </thead>
     <tbody>
         <tr>
-            <td>hide-submit-button</td>
-            <td><code>boolean</code></td>
-            <td>Hides or shows the submit button</td>
-            <td>
-              ```typescript
-              <rapid-stepper hide-submit-button>
-              ```
-            </td>
-        </tr>
-        <tr>
             <td>orientation</td>
             <td><code>string</code></td>
             <td>There are two stepper orientations to choose from: vertical and horizontal.</td>
@@ -215,12 +205,12 @@ Property and attribute binding examples for Genesis Component syntax.
             </td>
         </tr>
         <tr>
-            <td>hide-all-buttons</td>
+            <td>hide-tabs</td>
             <td><code>boolean</code></td>
-            <td>Hides all navigation buttons (Back, Next, Submit)</td>
+            <td>Hides the stepper tabs (navigation tabs) completely</td>
             <td>
               ```typescript
-              <rapid-stepper hide-all-buttons>
+              <rapid-stepper hide-tabs>
               ```
             </td>
         </tr>
@@ -231,6 +221,26 @@ Property and attribute binding examples for Genesis Component syntax.
             <td>
               ```typescript
               <rapid-stepper hide-step-number>
+              ```
+            </td>
+        </tr>
+        <tr>
+            <td>hide-submit-button</td>
+            <td><code>boolean</code></td>
+            <td>Hides or shows the submit button</td>
+            <td>
+              ```typescript
+              <rapid-stepper hide-submit-button>
+              ```
+            </td>
+        </tr>
+        <tr>
+            <td>hide-all-buttons</td>
+            <td><code>boolean</code></td>
+            <td>Hides all navigation buttons (Back, Next, Submit)</td>
+            <td>
+              ```typescript
+              <rapid-stepper hide-all-buttons>
               ```
             </td>
         </tr>
@@ -810,6 +820,11 @@ You can control the visibility of stepper buttons using various attributes:
 
 // Hide step numbers in tabs
 <rapid-stepper hide-step-number>
+  <!-- stepper content -->
+</rapid-stepper>
+
+// Hide tabs completely
+<rapid-stepper hide-tabs>
   <!-- stepper content -->
 </rapid-stepper>
 ```
