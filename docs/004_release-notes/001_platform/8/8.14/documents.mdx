@@ -30,6 +30,36 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.8
+
+###### Fixes
+
+* Allow CSV template generated files to be stored 
+
+#### 8.14.7
+
+###### Features
+
+* Added CSV templating support through Thymeleaf 
+
+#### 8.14.6
+
+###### Fixes
+
+* `file-server-app` : Map replace/download invalid ids to return correct 404/400 error codes 
+
+#### 8.14.5
+
+###### Fixes
+
+* Set region explicitly in s3 client construction to prevent errors on servers running IMDS v2 security 
+
+#### 8.14.4
+
+###### Features
+
+* LoadFiles by fileName should return in order of newest to oldest 
+
 #### 8.14.3
 
 ###### Features
@@ -53,7 +83,7 @@ This release contains an update to the way Business Component versions are manag
 ### Addition of content validation to uploads
 These changes were made as part of penetration test vulnerability remediation. As part of the validation, the document manager will now scan part of the byte content to determine the files content type and ensure it matches the provided file extension. What this means practically, is that any input stream passed to the document manager API must support mark and reset functionality so the bytes can be read multiple times. For those using the low level API directly, this may mean changing the type of input stream passed to calls to save(). For example, FileInputStream does not support mark and reset, however, BufferedInputStream which can wrap a FileInputStream does.
 
-It will also only allow uploads of files that match a pre-configured list of allowed extensions. The component sets a list of common file extensions by default, but this may need to be extended based on application requirements. In addition, it is likely that the default configuration will not be picked up by integration tests using GenesisJUnit, and this may need to be added manually via the @SysDefOverwrite annotation.
+It will also only allow uploads of files that match a pre-configured list of allowed extensions. The component sets a list of common file extensions by default, but this may need to be extended based on application requirements. In addition, it is likely that the default configuration will not be picked up by integration tests using `GenesisJUnit`, and this may need to be added manually via the @SysDefOverwrite annotation.
 
 ### Authentication enabled by default
 The upload and download web endpoints now mandate that a user is authenticated in order to use the functionality. For any applications that have a requirement to allow file uploads or downloads via another mechanism, for example an external API call, this will have to be manually disabled using the DISABLE_WEB_ENDPOINT_AUTH sysdef flag.

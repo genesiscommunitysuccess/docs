@@ -339,8 +339,6 @@ const selectInputUiSchemaWithRowDataMapper: UiSchema = {
 
 The connected multi select renderer connects to your back end in the same way as the connected select renderer. 
 
-To invoke the connected multi select renderer, in the `JSONSchema`, specify the `type` property to be `array`.
-
 ```ts
 const connectedMultiSelectJsonSchema: JSONSchema7 = {
   type: 'object',
@@ -368,6 +366,49 @@ const connectedMultiSelectUISchema: UiSchemaElement = {
   ],
 };
 ```
+
+On the server side, you typically need an event handler that can receive the selected values and process them. For example, to insert a trader and create `TRADER_BOOK_ACCESS` relationships for each selected book:
+
+```kotlin
+import global.genesis.message.core.annotation.*
+import com.fasterxml.jackson.annotation.JsonUnwrapped
+
+data class TraderWithBooks(
+    @Mandatory
+    var books: List<Long>,
+) {
+    @JsonUnwrapped
+    lateinit var trader: Trader
+}
+
+eventHandler<TraderWithBooks>("TRADER_INSERT", transactional = true) {
+    onCommit { event ->
+        val details = event.details
+        val insertedRow = entityDb.insert(details.trader)
+        val traderIdValue = insertedRow.record.traderId
+
+        // Insert TRADER_BOOK_ACCESS relationships
+        val traderBookAccessRecords = details.books.map { bookIdValue ->
+            TraderBookAccess {
+                this.traderId = traderIdValue
+                this.bookId = bookIdValue
+            }
+        }
+        entityDb.insertAll(traderBookAccessRecords)
+
+        // return an ack response which contains a list of record IDs
+        ack(
+            listOf(
+                mapOf(
+                    "TRADER_ID" to traderIdValue,
+                )
+            )
+        )
+    }
+}
+```
+
+This pattern can be adapted to other use cases where a connected multi select drives the creation or update of related records.
 
 ![Connected Multi Select](/img/smart-forms/multi-select-connected-input.png)
 

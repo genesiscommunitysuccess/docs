@@ -288,6 +288,8 @@ The `<grid-pro>` element supports the following attributes and properties:
 | `enable-row-flashing`            | `boolean`     | `false`     | Enable row flashing animations for add transactions. |
 | `enabled-row-flashing`           | `boolean`     | `false`     | **@deprecated** - Use `enable-row-flashing` instead. |
 | `grid-autosizing`                | `boolean`     | `false`     | **Important**: Controls automatic column sizing on interaction. Disables manual column widths and local storage persistence of widths. |
+| `size-columns-to-content`        | `boolean`     | `false`     | Auto-size columns to fit their content using `autoSizeAllColumns()`. When combined with `size-columns-to-fit`, sizing intelligently picks the best mode based on available space. |
+| `size-columns-to-fit`            | `boolean`     | `false`     | Fit columns to the available horizontal space using `sizeColumnsToFit()`. When combined with `size-columns-to-content`, sizing intelligently picks the best mode based on available space. |
 | `header-case-type`               | `GridProCaseType` | `CONSTANT_CASE` | Transform header names: `camelCase`, `capitalCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`. |
 | `header-height`                  | `number`      | -           | Custom header height in pixels. Overrides theme defaults. |
 | `only-template-col-defs`         | `boolean`     | `false`     | **Genesis-specific**: Use only template-defined column definitions, ignore metadata. |
@@ -615,6 +617,19 @@ export class ThemedGrid extends GenesisElement {
     }
   `;
 }
+```
+
+### 5. Overriding the label value
+
+By default when maxRows is enabled, a label is shown on the left of the status bar which shows the max rows count.
+However it is possible to utilise this label for other purposes when max rows is not enabled, or override it when it is. 
+To update the label text and/or value, call updateLabelValueStatusBar with configuraton as below: 
+
+```typescript
+    this.grid?.updateLabelValueStatusBar({
+      label: 'Custom Label',
+      value: 'Custom Value',
+    });
 ```
 
 ## Supported row models
