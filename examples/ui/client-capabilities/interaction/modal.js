@@ -105,7 +105,7 @@ export default function ModalDemo({ inIndex = false }) {
                 <rapid-button onClick={() => handleClick(modalRefLeft)}>Open modal positioned left</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefRight)}>Open modal positioned right</rapid-button>
                 <rapid-button onClick={() => handleClick(modalRefDraggable)}>Open draggable modal</rapid-button>
-                <rapid-button onClick={() => handleClick(modalRefResizableAndDraggable)}>Open draggable resizable and modal</rapid-button>
+                <rapid-button onClick={() => handleClick(modalRefResizableAndDraggable)}>Open draggable and resizable modal</rapid-button>
             </div>
             <div>
                 <div>
