@@ -308,7 +308,7 @@ const selectInputUiSchema: UiSchema = {
 };
 ```
 
-If you want to compose the option label from multiple fields returned by `ALL_COUNTERPARTIES`, use the `rowDataMapper` attribute. It lets you project new properties on every row before the renderer consumes the data.
+If you want to compose the option label from multiple fields returned by `ALL_COUNTERPARTIES`, use the `rowDataMapper` attribute. It lets you project new properties on every row before the renderer consumes the data. This can be done with any datasource.
 
 ```ts
 const selectInputUiSchemaWithRowDataMapper: UiSchema = {
