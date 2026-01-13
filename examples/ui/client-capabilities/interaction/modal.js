@@ -72,7 +72,10 @@ export default function ModalDemo({ inIndex = false }) {
             modalRefResizable.current.onCloseCallback = () => closeCallback('resizable modal closed');
         }
     }, []);
-
+if (modalRefResizableAndDraggable.current) {
+    modalRefResizableAndDraggable.current.onShowCallback = () => showCallback('draggable and resizable modal shown');
+    modalRefResizableAndDraggable.current.onCloseCallback = () => closeCallback('draggable and resizable modal closed');
+}
 
 		if (inIndex) {
 			return (
