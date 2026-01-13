@@ -238,6 +238,70 @@ To define a UiSchema for each array item form set the `childUiSchema` in the opt
 
 <ArrayFormUISchemaExample/>
 
+#### Controlling delete functionality with `canDelete`
+
+You can control whether individual array items can be deleted by providing a `canDelete` function in the array options. This function receives the array item data and its index, and should return a boolean indicating whether the delete button should be enabled for that item.
+
+```ts
+export const formsWithArraysUiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/swapDates',
+      options: <ArrayRendererOptions>{
+        childUiSchema: {
+          type: "HorizontalLayout",
+          elements: [
+            {
+              type: "Control",
+              scope: "#/properties/date",
+              label: "Date",
+            },
+            {
+              type: "Control",
+              scope: "#/properties/amount",
+              label: "Amount",
+            },
+            {
+              type: "Control",
+              scope: "#/properties/notes",
+              label: "Notes",
+              options: <StringRendererOptions>{
+                textarea: true,
+              },
+            },
+          ],
+        },
+        canDelete: (item: any, index: number) => {
+          // Prevent deletion of the first item
+          return index > 0;
+        },
+      },
+    }
+  ]
+}
+```
+
+In this example, the `canDelete` function prevents deletion of the first array item (index 0) while allowing deletion of all other items. You can implement any logic based on the item's data or its position in the array.
+
+**Function signature:**
+```typescript
+canDelete?: (item: any, index: number) => boolean;
+```
+
+**Parameters:**
+- `item`: The data object for the current array item
+- `index`: The zero-based index of the item in the array
+
+**Returns:**
+- `boolean`: `true` if the item can be deleted, `false` if the delete button should be disabled
+
+**Example use cases:**
+- Prevent deletion of required items (e.g., at least one item must always exist)
+- Conditionally allow deletion based on item properties (e.g., only allow deletion of draft items)
+- Prevent deletion based on business rules (e.g., items that have been processed cannot be deleted)
+
 ### Stepper
 
 Stepper layout enables you to create more complex forms that can be divided into appropriate groups. Each group is a step that the user will have to complete. This is a useful way of leading a user through complex processes.
