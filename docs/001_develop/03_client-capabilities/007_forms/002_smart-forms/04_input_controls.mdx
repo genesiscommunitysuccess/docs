@@ -30,18 +30,18 @@ This is the standard renderer. This creates a `text-field` in your form. The inp
 
 ```ts
 const textInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     textInput: {
-      type: "string",
-      description: "kotlin.String",
+      type: 'string',
+      description: 'kotlin.String',
     },
   },
 };
 
 const textInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
-  elements: [{ type: "Control", scope: "#/properties/textInput" }],
+  type: 'VerticalLayout',
+  elements: [{ type: 'Control', scope: '#/properties/textInput' }],
 };
 ```
 
@@ -53,21 +53,21 @@ The number renderer creates a `number-field` in your form. This input only accep
 
 ```ts
 const numberJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     numberInput: {
-      type: "number",
-      description: "kotlin.Double",
+      type: 'number',
+      description: 'kotlin.Double',
     },
   },
 };
 
 const numberInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/numberInput",
+      type: 'Control',
+      scope: '#/properties/numberInput',
     },
   ],
 };
@@ -90,10 +90,10 @@ For example:
 
 ```typescript
 {
- "type": "Control",
- "label": "Price",
- "scope": "#/properties/PRICE",
-  "options":  <StandardRendererOptions>{
+ type: 'Control',
+ label: 'Price',
+ scope: '#/properties/PRICE',
+  'options':  <StandardRendererOptions>{
     formatOptions: <Intl.NumberFormatOptions> {
       maximumFractionDigits: 8
     }
@@ -107,21 +107,21 @@ The boolean renderer creates a checkbox control. Set the `type` value in the `JS
 
 ```ts
 const booleanInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     booleanInput: {
-      type: "boolean",
-      description: "kotlin.Boolean",
+      type: 'boolean',
+      description: 'kotlin.Boolean',
     },
   },
 };
 
 const booleanInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/booleanInput",
+      type: 'Control',
+      scope: '#/properties/booleanInput',
     },
   ],
 };
@@ -135,21 +135,21 @@ The date control schema creates a date renderer with an input field and a date p
 
 ```ts
 const dateInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     dateInput: {
-      type: "number",
-      description: "org.joda.time.DateTime",
+      type: 'number',
+      description: 'org.joda.time.DateTime',
     },
   },
 };
 
 const dateInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/dateInput",
+      type: 'Control',
+      scope: '#/properties/dateInput',
     },
   ],
 };
@@ -163,21 +163,21 @@ The password control schema creates a password field. This is a text field with 
 
 ```ts
 const passwordInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     textInput: {
-      type: "string",
-      description: "kotlin.String",
+      type: 'string',
+      description: 'kotlin.String',
     },
   },
 };
 
 const passwordInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/password",
+      type: 'Control',
+      scope: '#/properties/password',
       options: <StringRendererOptions>{
         isPassword: true,
       },
@@ -194,21 +194,21 @@ The textarea control schema creates a textarea field. This is a multi-line entry
 
 ```ts
 const textAreaInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     textarea: {
-      type: "string",
-      description: "kotlin.String",
+      type: 'string',
+      description: 'kotlin.String',
     },
   },
 };
 
 const textAreaInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/textarea",
+      type: 'Control',
+      scope: '#/properties/textarea',
       options: <StringRendererOptions>{
         textarea: true,
       },
@@ -236,26 +236,26 @@ You can also include an optional boolean property, `allowCustomOptions`, which e
 const selectData = ['Miami', 'New York', 'London', 'Dublin', 'São Paulo', 'Bengaluru']
 
 const selectInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     selectInput: {
-      type: "string",
-      description: "kotlin.String",
+      type: 'string',
+      description: 'kotlin.String',
       enum: selectData,
     },
   },
 };
 
 const selectInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/selectInput",
+      type: 'Control',
+      scope: '#/properties/selectInput',
       options: <ConnectedRenderersOptions>{
         data: selectData.map((label) => ({ label })),
-        labelField: "label",
-        valueField: "label",
+        labelField: 'label',
+        valueField: 'label',
         // Configure filtering behavior
         filterMode: 'contains', // or 'startsWith'
       },
@@ -279,21 +279,21 @@ You can also configure the filtering behavior using the `filterMode` property. T
 
 ```ts
 const selectInputJsonSchema: JSONSchema7 = {
-  type: "object",
+  type: 'object',
   properties: {
     connectedSelectInput: {
-      type: "string",
-      description: "kotlin.String",
+      type: 'string',
+      description: 'kotlin.String',
     },
   },
 };
 
 const selectInputUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/selectInput",
+      type: 'Control',
+      scope: '#/properties/selectInput',
       options: <ConnectedRenderersOptions>{
         allOptionsResourceName: 'ALL_COUNTERPARTIES',
         valueField: 'COUNTERPARTY_ID',
@@ -307,6 +307,31 @@ const selectInputUiSchema: UiSchema = {
   ],
 };
 ```
+
+If you want to compose the option label from multiple fields returned by `ALL_COUNTERPARTIES`, use the `rowDataMapper` attribute. It lets you project new properties on every row before the renderer consumes the data. This can be done with any datasource.
+
+```ts
+const selectInputUiSchemaWithRowDataMapper: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/selectInput',
+      options: <ConnectedRenderersOptions>{
+        allOptionsResourceName: 'ALL_COUNTERPARTIES',
+        valueField: 'COUNTERPARTY_ID',
+        rowDataMapper: (rows) =>
+          rows.map((row) => ({
+            ...row,
+            displayLabel: `${row.NAME} (${row.COUNTERPARTY_ID})`,
+          })),
+        labelField: 'displayLabel',
+        filterMode: 'contains',
+      },
+    },
+  ],
+};
+```
 <SelectFormExample/>
 
 
@@ -315,17 +340,27 @@ const selectInputUiSchema: UiSchema = {
 The connected multi select renderer connects to your back end in the same way as the connected select renderer. 
 
 ```ts
+const connectedMultiSelectJsonSchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    connectedMultiSelectInput: {
+      type: 'array',
+      description: 'Kotlin.String',
+    },
+  },
+};
+
 const connectedMultiSelectUISchema: UiSchemaElement = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      label: "Connected select",
-      scope: "#/properties/connectedMultiSelectInput",
+      type: 'Control',
+      label: 'Connected select',
+      scope: '#/properties/connectedMultiSelectInput',
       options: {
-        allOptionsResourceName: "ALL_COUNTERPARTIES",
-        valueField: "COUNTERPARTY_ID",
-        labelField: "NAME",
+        allOptionsResourceName: 'ALL_COUNTERPARTIES',
+        valueField: 'COUNTERPARTY_ID',
+        labelField: 'NAME',
       },
     },
   ],
@@ -389,23 +424,23 @@ The divider renderer creates a visual separator that can be placed between any f
 
 ```ts
 const dividerUiSchema: UiSchema = {
-  type: "VerticalLayout",
+  type: 'VerticalLayout',
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/input1",
-      label: "Input 1",
+      type: 'Control',
+      scope: '#/properties/input1',
+      label: 'Input 1',
     },
     {
-      type: "Control",
+      type: 'Control',
       options: {
         divider: true,
       },
     },
     {
-      type: "Control",
-      scope: "#/properties/input2",
-      label: "Input 2",
+      type: 'Control',
+      scope: '#/properties/input2',
+      label: 'Input 2',
     },
   ],
 };
