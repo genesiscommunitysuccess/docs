@@ -238,6 +238,83 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.13
+
+###### Fixes
+
+* `genesis-db` : Add type checking in `getByCriteria` operation 
+* `genesis-db` : GetRange on a View hangs indefinitely when called within a database transaction 
+
+#### 8.14.12
+
+###### Fixes
+
+* `genesis-db` : Use `Dispatchers.IO` to handle database queries used in `getByCriteria` and `SqlViewExecutor` to avoid deadlocks derived from exhausting the `dbCoroutinesContext` thread pool 
+
+#### 8.14.11
+
+###### Features
+
+* Allow passing of arbitrary datasource properties to Hikari using `sql.genesis` syntax 
+
+###### Fixes
+
+* `genesis-environment` : Ensure field max size schema changes respect each individual table definition and preserve field nullability configuration when applying such changes in SQL Server 
+
+#### 8.14.10
+
+###### Features
+
+* `genesis-pal` : Enabled named injection in gpal kts scripts 
+
+###### Fixes
+
+* `genesis-dbmon` : FindCommand should use UniqueIndex Jackson deserialization 
+* `genesis-router` : Re-add injector function 
+
+#### 8.14.9
+
+###### Fixes
+
+* `genesis-clustersupport` : STANDBY health checks need to be excluded from Consul service discovery eligibility 
+* `genesis-environment` : Enable `SendIt` to handle binary data in `LEGACY` mode 
+
+
+#### 8.14.8
+
+###### Features
+
+* `build-gradle-plugin` : Add new gradle task named `checkAuthPermissions` to check permissions/auth configuration 
+
+###### Fixes
+
+* `genesis-clustersupport` : Process monitors in STANDBY state should be reported as "failed" checks to Consul 
+* `genesis-net` : Create request log per process 
+
+#### 8.14.7
+
+###### Features
+
+* `coreproduct` : Support compiled GPal definitions 
+
+#### 8.14.6
+
+###### Features
+
+* `genesis-environment` : Support byte array fields in `DumpIt` and `SendIt` 
+
+#### 8.14.5
+
+###### Fixes
+
+* `genesis-db` : Native sql layer, release connection on failure to execute query 
+
+#### 8.14.4
+
+###### Features
+
+* `genesis-db` : Add support for `Expr.dateTimeIsInRange` as part of native SQL querying capabilities 
+
 #### 8.14.3
 
 ###### Fixes

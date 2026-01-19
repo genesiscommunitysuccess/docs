@@ -208,3 +208,325 @@ genesisExec {
     }
 }
 ```
+
+## Genesis Build Plugin
+
+The Genesis Build plugin (`global.genesis.build`) is a core Gradle plugin that provides essential build automation and configuration for Genesis applications. It is automatically applied by the Genesis Gradle Settings plugin and handles critical build tasks including dependency management, manifest generation, code generation integration, and security checks.
+
+Some of its key features are:
+
+* Automatically configuring build tasks for all project modules
+* Managing runtime dependencies for distribution packaging
+* Generating JAR manifest files with classpath and implementation details
+* Integrating code generation for dictionary cache modules
+* Enforcing security best practices through automated permission checks
+* Providing IntelliJ IDE integration tasks for local development
+
+### Automatic Module Configuration
+
+The plugin automatically configures all subprojects in your Genesis application:
+
+* `copyDependencies` task: Creates a `copyDependencies` task for application modules to collect runtime dependencies needed for distribution packaging. This task copies all runtime classpath dependencies to a central location in the build directory.
+
+* `checkAuthPermissions` task: Creates a `checkAuthPermissions` task to analyze the genesis application code to verify the endpoints have appropriate security configurations.
+
+* **JAR Manifest Generation**: Automatically configures JAR tasks to include manifest attributes:
+  * `Class-Path`: Lists all runtime dependencies
+  * `Implementation-Vendor`: Project group ID
+  * `Implementation-Title`: Project name
+  * `Implementation-Version`: Project version
+
+* **Dictionary Cache Integration**: Automatically applies the `DictionaryCachePlugin` to modules ending with `-dictionary-cache`, enabling code generation for system definitions, fields, DAOs, and views.
+
+* **Product Details Creation**: Applies the `ProductDetailsCreatorPlugin` to the distribution project to generate product metadata.
+
+### IntelliJ Integration
+
+To enable IntelliJ integration tasks, set the following property in your `gradle.properties`:
+
+```properties
+enableGenesisIntellijHelperTasks=true
+```
+
+When the `enableGenesisIntellijHelperTasks` property is set, the plugin creates deployment tasks that integrate with the Genesis IntelliJ plugin:
+
+* **deployModuleJarsToGenesisHome**: Deploys compiled JAR files to `.genesis-home/{productName}/bin/`
+* **deployScriptsToGenesisHome**: Deploys GPAL scripts from `-script-config` modules to `.genesis-home/{productName}/scripts/`
+* **deployCfgToGenesisHome**: Deploys configuration files from `-config` modules to `.genesis-home/{productName}/cfg/`
+* **deployDaoToGenesisHome**: Deploys generated DAO artifacts from dictionary cache modules to `.genesis-home/{productName}/bin/`
+
+All IntelliJ helper tasks are grouped under the `genesis-intellij` task group for easy discovery in the IDE.
+
+### Module Filtering
+
+The following module types won't be applied to the `copyDependencies` and `checkAuthPermissions` tasks:
+* Modules ending with `-dictionary-cache`
+* Modules ending with `-distribution`
+* Modules ending with `-deploy`
+* Modules containing `-generated-` in their name
+
+
+### `checkAuthPermissions`
+
+The `checkAuthPermissions` task (available from version 8.14.8 onwards) automatically analyzes your Genesis application code to verify that endpoints have appropriate security configurations. It scans GPAL (Genesis Platform Abstraction Layer) DSL files, Kotlin classes, and Java classes to ensure that endpoints implement proper permission checks and authentication mechanisms.
+
+The task is automatically registered for all application modules (excluding platform and generated code) by the `GenesisBuildPlugin`. It runs as part of the `assemble` and `build` tasks when enabled.
+
+#### Security Model
+
+The task enforces a two-check security model:
+
+1. **Permission Check**: Verifies that endpoints have permission code validation
+   - GPAL/KTS endpoints: Requires `permissionCodes`, `customPermissions`, or `permissionCodesDisabled()`
+   - Class-based endpoints: Requires `RightSummaryCache` injection/usage
+
+2. **Auth Check**: Verifies that endpoints have authentication/authorization map configuration
+   - GPAL/KTS endpoints: Requires `auth()`, `requestAuth()`, or `responseAuth()` blocks or `authDisabled()`
+   - Class-based endpoints: Requires `AuthCacheFactory` injection/usage
+
+An endpoint is considered secure if both checks are satisfied or explicitly disabled via annotations or opt-out properties.
+
+#### Supported Endpoint Types
+
+##### GPAL/KTS Files
+
+The task analyzes the following GPAL file types:
+- `*-dataserver.kts` - Dataserver endpoints
+- `*-reqrep.kts` - Request-reply endpoints
+- `*-eventhandler.kts` - Event handler endpoints
+- `*-web-handler.kts` - Web handler endpoints
+- `.kt` files containing GPAL class definitions (e.g., `GPalDataserver`, `GPalRequestServer`, `GPalEventHandler`)
+
+**GPAL Analysis Features:**
+
+1. **Endpoint Detection**: Identifies endpoints via DSL functions:
+   - `query()` - Dataserver endpoints
+   - `requestReply()` - Request-reply endpoints
+   - `eventHandler()` - Event handler endpoints
+   - `endpoint()` / `multipartEndpoint()` - Web handler endpoints
+
+2. **Permission Code Detection**: Extracts permission codes from:
+   - `permissionCodes("CODE1", "CODE2")` - Function call syntax
+   - `permissionCodes = listOf("CODE1", "CODE2")` - Assignment syntax
+   - Global permission codes (defined at file or class level)
+   - `customPermissions { }` blocks
+   - `permissionCodesDisabled()` - Explicit opt-out
+
+3. **Auth Block Detection**: Identifies authentication blocks:
+   - `auth("MAP_NAME") { }` - Standard auth block
+   - `requestAuth("MAP_NAME") { }` - Request auth for web handlers
+   - `responseAuth("MAP_NAME", flow) { }` - Response auth for web handlers
+   - `authDisabled()` - Explicit opt-out
+
+4. **Global Permissioning**: Supports global permission configuration:
+   - File-level permission codes (for KTS files)
+   - Class-level permission codes (for `.kt` files with GPAL classes)
+   - Global `permissionCodesDisabled()` and `authDisabled()` functions
+
+5. **Annotation Support**:
+   - `@AuthDisabled` - Disables auth requirement (file or class level)
+   - `@PermissionCodesDisabled` - Disables permission code requirement (file or class level)
+
+##### Kotlin Class Files
+
+The task analyzes Kotlin classes that implement event handlers or web endpoints.
+
+**Supported Event Handler Types:**
+- `AsyncEventHandler<T>`
+- `AsyncValidatingEventHandler<T>`
+- `AsyncContextValidatingEventHandler<T>`
+- `SyncEventHandler<T, R>`
+- `SyncValidatingEventHandler<T, R>`
+- `SyncContextValidatingEventHandler<T, R>`
+- `AbstractEventHandler` (legacy)
+- `Rx3EventHandler<T, R>`
+- `Rx3ValidatingEventHandler<T, R>`
+- `Rx3ContextValidatingEventHandler<T, R>`
+
+**Supported Web Endpoint Types:**
+- `WebEndpoint`
+- `BaseWebEndpoint`
+- `BodyLessWebEndpoint`
+- `AbstractAsyncEndpoint`
+
+**Kotlin Analysis Features:**
+
+1. **Security Detection**: Checks for:
+   - `RightSummaryCache` injection (constructor, field, or parameter)
+   - `AuthCacheFactory` injection (constructor, field, or parameter)
+
+2. **Permission Code Extraction**: Extracts permission codes from method calls:
+   ```kotlin
+   rightSummaryCache.userHasRight(userName, "PERMISSION_CODE")
+   ```
+
+3. **Auth Map Extraction**: Extracts auth map names from method calls:
+   ```kotlin
+   authCacheFactory.newReader("MAP_NAME")
+   ```
+
+4. **Endpoint Name Resolution**: Derives endpoint names from:
+   - `name()` method override (for web endpoints)
+   - `messageType()` method override (for event handlers)
+   - Generic type parameters (for typed event handlers)
+   - Constructor parameters (for `AbstractEventHandler`)
+
+##### Java Class Files
+
+The task analyzes Java classes using JavaParser, with similar capabilities to Kotlin analysis.
+
+**Supported Types:**
+- Same event handler interfaces as Kotlin (except async variants)
+- Same web endpoint interfaces as Kotlin (except async variants)
+
+**Java Analysis Features:**
+
+1. **Security Detection**: Checks for `RightSummaryCache` and `AuthCacheFactory` in:
+   - Fields
+   - Constructor parameters
+   - Method parameters
+   - Method body usage
+
+2. **Permission Code Extraction**: Extracts from:
+   ```java
+   rightSummaryCache.userHasRight(userName, "PERMISSION_CODE");
+   ```
+
+3. **Auth Map Extraction**: Extracts from:
+   ```java
+   authCacheFactory.newReader("MAP_NAME");
+   ```
+
+4. **Endpoint Name Resolution**: Similar to Kotlin, with Java-specific parsing
+
+#### Configuration
+
+The task behavior can be configured using Gradle properties in your `gradle.properties` file:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `genesis.check.permission.enabled` | `true` (from 8.15 onwards, `false` otherwise) | Controls whether the task runs as part of the build process |
+| `genesis.check.permission.failbuild` | `false` | When `true`, the build will fail if any insecure endpoints are found |
+| `genesis.check.permission.systemwide.optout` | `false` | System-wide opt-out that bypasses all security checks |
+| `genesis.check.permission.auth.optout` | `false` | Opts out of the authentication/authorization map requirement |
+| `genesis.check.permission.extrainfo` | `false` | When `true`, the CSV report includes additional detailed columns |
+
+Example configuration:
+
+```properties
+genesis.check.permission.enabled=true
+genesis.check.permission.failbuild=true
+genesis.check.permission.extrainfo=false
+```
+
+#### Source Directories and Customization
+
+By default, the task scans: `src/main/kotlin`, `src/main/java`, `src/main/resources/`, `src/main/resources/scripts`, and `src/main/genesis/scripts`.
+
+You can customize the source directories in your module's `build.gradle.kts`:
+
+```kotlin
+tasks.named<global.genesis.gradle.plugin.security.CheckAuthPermissions>("checkAuthPermissions") {
+    sourceDirectories.set(
+        files(
+            "src/main/kotlin",
+            "src/main/java",
+            "src/main/genesis/scripts"
+        )
+    )
+}
+```
+
+#### Opt-Out Mechanisms
+
+Security checks can be disabled via:
+
+- **Annotations** (file or class level): `@AuthDisabled` (`import global.genesis.commons.annotation.AuthDisabled`), `@PermissionCodesDisabled` (`import global.genesis.commons.annotation.PermissionCodesDisabled`)
+- **DSL Functions** (GPAL only): `permissionCodesDisabled()`, `authDisabled()`
+- **Gradle Properties**: `genesis.check.permission.systemwide.optout`, `genesis.check.permission.auth.optout`
+
+The opt-out mechanism will mark the endpoints as "safe" rather than ignore them. Nonetheless, the endpoints will show up in the "extrainfo" report (see next section), with opt-out information included in it.
+
+#### Reports
+
+The task generates a CSV report for each module at `build/reports/genesis-security/auth-permissions.csv` containing endpoint name, type, file name, class name, status (SUCCESS/FAILURE), and reason. When `genesis.check.permission.extrainfo=true`, additional columns include permission codes, auth maps, and security flags.
+
+#### Examples
+
+**Secure GPAL Dataserver:**
+
+```kotlin
+query("ALL_TRADES", TRADE) {
+    permissioning {
+        permissionCodes("TRADE_VIEW")
+        auth("COUNTERPARTY_VISIBILITY") {
+            authKey { key(data.counterpartyId) }
+        }
+    }
+}
+```
+
+**Secure Kotlin Event Handler:**
+
+```kotlin
+@AuthDisabled
+class TradeInsertEventHandler @Inject constructor(
+    private val rightSummaryCache: RightSummaryCache,
+) : AsyncEventHandler<Trade, EventReply> {
+
+    override fun messageType() = "TRADE_INSERT"
+
+    override suspend fun process(event: Event<Trade>): EventReply {
+        if (!rightSummaryCache.userHasRight(event.userName, "TRADE_INSERT")) {
+            return nack("Insufficient permissions")
+        }
+        return ack()
+    }
+}
+```
+
+**Full Opt-Out Example:**
+
+```kotlin
+@AuthDisabled
+@PermissionCodesDisabled
+class InstrumentEndpoint : AbstractAsyncEndpoint("instrument") {
+    // No security required
+}
+```
+
+#### Execution
+
+Run the task manually:
+
+```bash
+./gradlew checkAuthPermissions
+```
+
+The task runs automatically during `assemble` and `build` when enabled. To skip it, use `./gradlew build -x checkAuthPermissions` or set `genesis.check.permission.enabled=false` in `gradle.properties`.
+
+#### Troubleshooting
+
+- **Task not running**: Verify `genesis.check.permission.enabled=true` and that your module is not excluded
+- **False positives**: Use `genesis.check.permission.extrainfo=true` for detailed information, verify annotations are correctly applied, and ensure `RightSummaryCache`/`AuthCacheFactory` are injected (not just referenced)
+- **Build failures**: Review the CSV report, fix insecure endpoints or add opt-outs, or temporarily disable with `genesis.check.permission.failbuild=false`
+
+The task is cacheable, and parallel-safe. For CI/CD, recommended configuration includes `genesis.check.permission.enabled=true`, `genesis.check.permission.failbuild=true`, and `genesis.check.permission.extrainfo=false`.
+
+### Configuration
+
+#### Automatic Application
+
+The Genesis Gradle Build plugin is automatically applied by the Genesis Gradle Settings plugin. You typically don't need to apply it manually.
+
+#### Task Dependencies
+
+The plugin automatically sets up task dependencies:
+
+* `jar` task depends on `copyDependencies` for application modules
+* `assemble` and `build` tasks depend on `checkAuthPermissions` when security checks are enabled
+* `checkAuthPermissions` depends on `compileKotlin` and `compileJava` to ensure source files are compiled before analysis
+
+#### Distribution Integration
+
+The plugin identifies the distribution project (a module ending with `-distribution` or the root project if none exists) and applies the `ProductDetailsCreatorPlugin` to generate product metadata required for distribution packaging.

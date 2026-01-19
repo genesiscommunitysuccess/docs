@@ -451,7 +451,41 @@ export class AppComponent {
 </TabItem>
 </Tabs>
 
-Additionally, you can provide the `resource-name` attribute to the `notification-listener` component. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.
+### Attributes
+
+The `notification-listener` component supports several attributes to customize its behavior:
+<table>
+    <thead>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>resource-name</td>
+        <td><code>string</code></td>
+        <td>The name of the server resource that pushes notifications to the client, normally 'ALL_NOTIFY_ALERT_RECORDS'. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.</td>
+        <td>
+            ```typescript
+            <rapid-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+            ```
+        </td>
+    </tr>
+    <tr>
+        <td>toast-position</td>
+        <td><code>ToastPosition</code></td>
+        <td>Position of toast notifications on the screen. Can be `top-left`, `top-right`, `bottom-left`, or `bottom-right`. Defaults to `top-right` if not specified.</td>
+        <td>
+            ```typescript
+            <rapid-notification-listener toast-position="top-right">
+            ```
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 ## Styling
 
