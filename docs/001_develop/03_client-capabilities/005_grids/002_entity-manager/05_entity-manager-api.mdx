@@ -573,6 +573,19 @@ const customActions: CustomAction[] = [
 ```
 </td>
     </tr>
+
+    <tr>
+      <td>enableCsvExport</td>
+      <td><code>[() => \{ buttonName?\: string; fileName?\: string \}](./docs/api/foundation-entity-management.entitymanagement.enablecsvexport.md)</code></td>
+      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the `buttonName` and/or `fileName`. Any epoch fields will have their data downloaded in the `YYYY-mm-dd` format.</td>
+<td>
+
+```typescript
+<entity-management :enableCsvExport=${() => ({})}>
+```
+
+</td>
+    </tr>
     <tr>
       <td>filtersUiSchema</td>
       <td><code>UiSchema</code></td>
@@ -609,6 +622,10 @@ const counterpartyFiltersUIschema: UiSchema = {
 | `crud-{position}-before` |  Based on value from `crud-menu-position` the content will be displayed before the specified position. |
 | `crud-{position}` |  Based on value from `crud-menu-position` will be displayed in the specified position. |
 | `crud-{position}-after` |  Based on value from `crud-menu-position` the content will be displayed after the specified position. |
+| `before-header` |  Content to be displayed inline in the header section, but before it (to the left of it). |
+| `after-header` |  Content to be displayed inline in the header section, but after it (to the right of it). |
+| `before-footer` |  Content to be displayed inline in the footer section, but before it (to the left of it). |
+| `after-footer` |  Content to be displayed inline in the footer section, but after it (to the right of it). |
 
 #### Parts
 
