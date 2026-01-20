@@ -205,6 +205,28 @@ For the parameters, refer to [ToastStructure](./docs/api/foundation-notification
 ```
 As mentioned before, toast notifications automatically close after a specified duration, using the `autoClose` and `closeTimeout` options. Like [`snackbar`](#snackbar), they can be styled using the `type` option that supports `error, success, warning and info` styles.
 
+#### Icon configuration
+
+You can optionally show an icon next to the toast content by setting the `iconName` property on the [`ToastStructure`](./docs/api/foundation-notifications.toaststructure.iconname.md). This uses the same icon naming as the `rapid-icon` component (for example, Font Awesome icon names when configured in your design system).
+
+```typescript
+showNotificationToast(
+  {
+    title: 'Trade saved',
+    body: 'Your changes have been stored',
+    iconName: 'circle-check',
+    toast: {
+      autoClose: true,
+      closeTimeout: 3000,
+      type: 'success',
+    },
+  },
+  'rapid',
+);
+```
+
+If `iconName` is omitted, the toast will use its default icon for the given `type` (such as success or error) or no icon, depending on your design system configuration.
+
 ### Banner
 Banner notifications are used for delivering key messages. They appear at the `top` of the screen. A banner usually includes `confirming` and `dismissing` actions with callbacks.
 
@@ -288,6 +310,7 @@ showNotificationDialog(
   {
     title: 'Important message',
     body: 'Lorem ipsum',
+    iconName: 'circle-check',
     dialog: {
       confirmingActions: [
         { label: 'Confirm', action: () => console.log('Lorem ipsum') },

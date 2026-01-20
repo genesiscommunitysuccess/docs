@@ -149,6 +149,7 @@ export function ToastDemo({children, color}) {
       {
         title: 'Important message',
         body: 'Lorem ipsum',
+        iconName: 'circle-check',
         toast: {
           type: 'success',
           autoClose: true,
