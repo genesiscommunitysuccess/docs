@@ -238,6 +238,20 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.14
+
+###### Features
+
+* `genesis-db` : Handle JSON aliased enum valuess in `getByCriteria` operation 
+
+###### Fixes
+
+* `genesis-db` : Ensure basic SQL statement execution consumes all results to guarantee MSQLServer errors are handled correctly in multi line DDL statements 
+* `genesis-environment` : Application and component `installHook` failures should not return a `0` exit code 
+* `genesis-environment` : DumpIt should rely on existing dictionary schema for database tables to ensure compatibility instead of deployed dao classes 
+* `genesis-environment` : Ensure table index renames are applied as part of remap 
+* `genesis-environment` : Handle autoIncrement/sequence migration correctly in SQL Server/H2 when executing remap for certain field schema migrations 
+
 #### 8.14.13
 
 ###### Fixes
