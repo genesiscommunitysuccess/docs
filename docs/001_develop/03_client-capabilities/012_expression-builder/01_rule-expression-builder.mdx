@@ -238,6 +238,179 @@ export const fields: ExpressionBuilderTypes.Fields = [
 ```
 </CollapsibleSlot>
 
+## Date filtering
+
+When working with date or date-time fields, the rule expression builder provides specialized operators to filter records based on dynamic time periods relative to the current server time: **Is current** and **Is previous**.
+
+These operators allow you to select a time unit (`HOUR`, `DAY`, `WEEK`, `MONTH`, `YEAR`) to define the range.
+
+The examples below assume the current server time is **Wednesday, 2023-10-25 14:35:00**.
+
+<table>
+  <thead>
+    <tr>
+      <th>Time unit</th>
+      <th>Operator</th>
+      <th>Common term</th>
+      <th>Description</th>
+      <th>Range calculation</th>
+      <th>Example (Start &lt;= date &lt; End)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>HOUR</strong></td>
+      <td>Is current</td>
+      <td>Current hour</td>
+      <td>Matches dates falling within the current hour.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: Beginning of the current hour.</li>
+          <li><strong>End</strong>: Beginning of the next hour.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-25 14:00:00</code><br/>to<br/><code>2023-10-25 15:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>HOUR</strong></td>
+      <td>Is previous</td>
+      <td>Previous hour</td>
+      <td>Matches dates falling within the previous hour.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: Beginning of the hour immediately preceding the current one.</li>
+          <li><strong>End</strong>: Beginning of the current hour.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-25 13:00:00</code><br/>to<br/><code>2023-10-25 14:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>DAY</strong></td>
+      <td>Is current</td>
+      <td>Today</td>
+      <td>Matches dates falling within the current day (Today).</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the current day.</li>
+          <li><strong>End</strong>: 00:00:00 on the next day.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-25 00:00:00</code><br/>to<br/><code>2023-10-26 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>DAY</strong></td>
+      <td>Is previous</td>
+      <td>Yesterday</td>
+      <td>Matches dates falling within the previous day (Yesterday).</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the day before today.</li>
+          <li><strong>End</strong>: 00:00:00 on the current day.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-24 00:00:00</code><br/>to<br/><code>2023-10-25 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>WEEK</strong></td>
+      <td>Is current</td>
+      <td>This week</td>
+      <td>Matches dates falling within the current week. Weeks are assumed to start on Monday.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the Monday of the current week.</li>
+          <li><strong>End</strong>: 00:00:00 on the Monday of the following week.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-23 00:00:00</code><br/>to<br/><code>2023-10-30 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>WEEK</strong></td>
+      <td>Is previous</td>
+      <td>Last week</td>
+      <td>Matches dates falling within the previous week.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the Monday of the previous week.</li>
+          <li><strong>End</strong>: 00:00:00 on the Monday of the current week.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-16 00:00:00</code><br/>to<br/><code>2023-10-23 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>MONTH</strong></td>
+      <td>Is current</td>
+      <td>This month</td>
+      <td>Matches dates falling within the current month.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the 1st day of the current month.</li>
+          <li><strong>End</strong>: 00:00:00 on the 1st day of the next month.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-10-01 00:00:00</code><br/>to<br/><code>2023-11-01 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>MONTH</strong></td>
+      <td>Is previous</td>
+      <td>Last month</td>
+      <td>Matches dates falling within the previous month.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on the 1st day of the previous month.</li>
+          <li><strong>End</strong>: 00:00:00 on the 1st day of the current month.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-09-01 00:00:00</code><br/>to<br/><code>2023-10-01 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>YEAR</strong></td>
+      <td>Is current</td>
+      <td>This year</td>
+      <td>Matches dates falling within the current year.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on January 1st of the current year.</li>
+          <li><strong>End</strong>: 00:00:00 on January 1st of the next year.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2023-01-01 00:00:00</code><br/>to<br/><code>2024-01-01 00:00:00</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>YEAR</strong></td>
+      <td>Is previous</td>
+      <td>Last year</td>
+      <td>Matches dates falling within the previous year.</td>
+      <td>
+        <ul>
+          <li><strong>Start</strong>: 00:00:00 on January 1st of the previous year.</li>
+          <li><strong>End</strong>: 00:00:00 on January 1st of the current year.</li>
+        </ul>
+      </td>
+      <td>
+        <code>2022-01-01 00:00:00</code><br/>to<br/><code>2023-01-01 00:00:00</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## DOM API
 
 Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
@@ -390,3 +563,4 @@ const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
     fields,
 };
 ```
+
