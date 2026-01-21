@@ -238,7 +238,7 @@ export const fields: ExpressionBuilderTypes.Fields = [
 ```
 </CollapsibleSlot>
 
-## Date filtering
+### Date filtering
 
 When working with date or date-time fields, the rule expression builder provides specialized operators to filter records based on dynamic time periods relative to the current server time: **Is current** and **Is previous**.
 
@@ -410,6 +410,15 @@ The examples below assume the current server time is **Wednesday, 2023-10-25 14:
     </tr>
   </tbody>
 </table>
+
+### Tips
+
+The expressions are evaluated on each entity sequentially; this means for long running processes the current time is changing.
+
+For example, consider you're scheduling a report to run every hour which collates the trades for that hour, and you're using this component to configure the report filters.
+If you schedule the report to run just before the hour and then filter on `Is current HOUR` then if the report takes a long time then the later filters might apply for the next hour, missing out trades.
+To solve problems like this it's recommended that you would instead schedule the report for the next hour and then you can use `Is previous Hour` to filter on the same entities.
+
 
 ## DOM API
 
