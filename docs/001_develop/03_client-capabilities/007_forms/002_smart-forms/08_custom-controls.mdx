@@ -17,6 +17,26 @@ You can create custom control renderers to work alongside the standard set of fo
 
 This page guides you through the steps. You need to create a renderer class and a control rank. You then register the custom renderer in your template.
 
+## Control Options
+
+### Filter Mode Configuration
+
+When using connected select controls or combobox components, you can configure how filtering behavior works using the filter mode options:
+
+```ts
+const uiSchema = {
+  type: 'Control',
+  scope: '#/properties/myField',
+  options: {
+    filterMode: 'startsWith' // or 'contains'
+  }
+};
+```
+
+Available filter modes:
+- `contains`: Filters options that contain the search text (default)
+- `startsWith`: Filters options that start with the search text
+
 ## Examples
 
 ### Custom renderer template
@@ -142,5 +162,3 @@ After you have looked at the basics here, you can find more details in our [API 
 
 Full source code at [Custom Controls](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-with-custom-renderers)
 :::
-
-
