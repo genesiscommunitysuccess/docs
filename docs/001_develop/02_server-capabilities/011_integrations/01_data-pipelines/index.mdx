@@ -92,12 +92,14 @@ pipelines {
     
 }
 ```
-Within this block, the pipeline function is available, which allows you to name your pipeline. This function also opens another block, which is where you can build your pipeline.
+Within this block, the pipeline function is available, which is the starting point for creating a pipeline, and requires a name. 
+This function returns a builder object, where you can chain calls to add a source, operators, error handlers and a sink to your pipeline.
+In order to complete your pipeline, you must call the `build` function.
 ```kotlin
 pipelines {
-    pipeline(name = "My Pipeline") {
-        // within this scope is the pipeline builder
-    }
+    pipeline(name = "My Pipeline")
+        // chain builder calls here
+        .build()
 }
 ```
 
@@ -117,28 +119,30 @@ val camelSource = camelFileSource {
 }
 
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source(camelSource)
-            ...
-    }
+    pipeline(name = "My Pipeline")
+        .source(camelSource)
+        ...
+        .build()
 }
 
 // Example using a custom source class
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source(inject<MyCustomSource>())
-            ...
-    }
+    pipeline(name = "My Pipeline")
+        .source(inject<MyCustomSource>())
+        ...
+        .build()
 }
 
 // Example using a source defined in-line
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source( Source {
-            (1..10).asFlow()
-        })
+    pipeline(name = "My Pipeline")
+        .source(
+            Source {
+                (1..10).asFlow()
+            }
+        )
         ...
-    }
+        .build()
 }
 ```
 
@@ -146,8 +150,8 @@ pipelines {
 A filter operator allows you to exclude certain elements from being sent to the sink. The input and output type remain the same with a filter operator.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Filtering") {
-  source(
+pipeline(name = "Simple Integer Pipeline With Filtering")
+  .source(
     BatchSource {
       (1..10).toList().asFlow()
     }
@@ -159,7 +163,7 @@ pipeline(name = "Simple Integer Pipeline With Filtering") {
     println(i)
     true
   }
-}
+  .build()
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The filter operator will only include even numbers.
 
@@ -167,8 +171,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A map operator transforms the input type to the output type.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Mapping") {
-  source(
+pipeline(name = "Simple Integer Pipeline With Mapping")
+  .source(
     BatchSource {
       (1..10).toList().asFlow()
     }
@@ -180,7 +184,7 @@ pipeline(name = "Simple Integer Pipeline With Mapping") {
     println(s)
     true
   }
-}
+  .build()
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The map operator will mutate the integer values into their string representation.
 
@@ -188,8 +192,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A split operator transforms an input element into many output elements. For example, you can split a file object into its constituent lines.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Split") {
-  source(
+pipeline(name = "Simple Integer Pipeline With Split")
+  .source(
     BatchSource {
       (1..10).toList().asFlow()
     }
@@ -205,7 +209,7 @@ pipeline(name = "Simple Integer Pipeline With Split") {
     println(i)
     true
   }
-}
+  .build()
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The split operator will emit multiple elements for each number, resulting in the multiplication table for each number being printed.
 
@@ -213,8 +217,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A transform operator allows you to apply a transformation operation to the entire input stream, rather than just an individual element. For example, if you want to sort records before sinking them to a file, or remove elements with duplicate data, these are stream level operations rather than element level operations and require a transform operator.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Transform") {
-  source(
+pipeline(name = "Simple Integer Pipeline With Transform")
+  .source(
     BatchSource {
       listOf(1, 1, 2, 2, 3, 3, 4, 4, 5, 5).asFlow()
     }
@@ -226,7 +230,7 @@ pipeline(name = "Simple Integer Pipeline With Transform") {
     println(i)
     true
   }
-}
+  .build()
 ```
 In this example, we have a simple pipeline that will emit the integer values 1 to 5 with duplicates from the source, and the sink will print them to the console. The transform operator will collect all elements in the stream to a set, removing duplicates, then send all the elements downstream to the sink.
 
@@ -243,30 +247,30 @@ Note that if your pipeline produces only single elements and not streams of elem
 ```kotlin
 // Example using a platform provided sink
 pipelines {
-  pipeline(name = "My Pipeline") {
-    source(testSource)
-      .map(testMapper)
-      .sink(dbSink())
-  }
+  pipeline(name = "My Pipeline")
+    .source(testSource)
+    .map(testMapper)
+    .sink(dbSink())
+    .build()
 }
 
 // Example using a custom source class
 pipelines {
-  pipeline(name = "My Pipeline") {
-    source(testSource)
-      .sink(inject<MyCustomSink>())
-    }
+  pipeline(name = "My Pipeline")
+    .source(testSource)
+    .sink(inject<MyCustomSink>())
+    .build()
 }
 
 // Example using a source defined in-line
 pipelines {
-  pipeline(name = "My Pipeline") {
-    source(testSource)
-      .sink { it, context ->
-        // Add your logic here 
-        true
-      }
-  }
+  pipeline(name = "My Pipeline")
+    .source(testSource)
+    .sink { it, context ->
+      // Add your logic here 
+      true
+    }
+    .build()
 }
 ```
 
@@ -281,49 +285,49 @@ You can attach an error handling callback to any individual `map` or `split` ope
 
 Note that the semantic meaning of these actions is slightly different depending on whether the pipeline is a batch or real-time pipeline. SKIP_STREAM and STOP_PIPELINE are equivalent for a batch pipeline, and result in the current batch execution being terminated. SKIP_STREAM for a real-time pipeline results in the current input element, i.e. the stream of elements derived from the input element, to be ignored. For example, if processing a real time stream of files, and the current file has been split into many lines, SKIP_STREAM will mean the entire file is discarded from processing. However, any elements from that stream which have already been sent to the sink prior to this exception, will still be processed.
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Error handling") {
-  source(IntegerSource())
-    .map { i ->
-      if (i == 7) throw Exception()
-      i
-    }
-    .onOperationError { int, context, throwable ->
-      LOG.warn("Error caught while handling value $int, error was: ", throwable)
-      OperationErrorAction.SKIP_ELEMENT
-    }
-    .sink(IntegerSink())
-}
+pipeline(name = "Simple Integer Pipeline With Error handling")
+  .source(IntegerSource())
+  .map { i ->
+    if (i == 7) throw Exception()
+    i
+  }
+  .onOperationError { int, context, throwable ->
+    LOG.warn("Error caught while handling value $int, error was: ", throwable)
+    OperationErrorAction.SKIP_ELEMENT
+  }
+  .sink(IntegerSink())
+  .build()
 ```
 
 ### `onUncaughtError`
 This error handler accepts an exception as an argument and allows you to take action when an exception that is not caught by any operation level error handlers unexpectedly terminates the pipeline. There is no action to be taken in terms of recovery at this point, as the pipeline has already terminated. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Error handling") {
-  source(IntegerSource())
-    .map { i ->
-      if (i == 7) throw Exception()
-      i
-    }
-    .sink(IntegerSink())
-    .onUncaughtError { throwable ->
-      LOG.warn("Error uncaught:", throwable)
-    }
-}
+pipeline(name = "Simple Integer Pipeline With Error handling")
+  .source(IntegerSource())
+  .map { i ->
+    if (i == 7) throw Exception()
+    i
+  }
+  .sink(IntegerSink())
+  .onUncaughtError { throwable ->
+    LOG.warn("Error uncaught:", throwable)
+  }
+  .build()
 ```
 
 ### `onCompletion`
 This handler can be attached by calling `onCompletion()` on a complete pipeline (after calling `.sink()`), and will fire when each element has completed processing in a real-time pipeline, or when a batch has completed processing in a batch pipeline. Note that these handlers are only called when the element has finished being processed by the sink, therefore if the element is filtered using a filter operator or a map operator that returns null, the completion handlers will not fire.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With OnCompletion") {
-  source(IntegerSource())
-    .map { i -> i.toString()}
-    .sink(StringSink())
-    .onCompletion { context ->
-      LOG.info("Successfully processed input ${context.data}")
-    }
-}
+pipeline(name = "Simple Integer Pipeline With OnCompletion")
+  .source(IntegerSource())
+  .map { i -> i.toString() }
+  .sink(StringSink())
+  .onCompletion { context ->
+    LOG.info("Successfully processed input ${context.data}")
+  }
+  .build()
 ```
 
 ## Core elements
@@ -373,8 +377,8 @@ If no `routeId` is provided, one will be assigned by Camel internally, and the p
 
 ###### Reading from a local directory
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-  source(
+pipeline("TEST_CAMEL_ROUTE_PIPELINE")
+  .source(
     camelFileSource {
       routeHandler {
         val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
@@ -388,11 +392,12 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
           .process(dataPipelineProcessor)
       }
     }
-  ).sink { file, context ->
+  )
+  .sink { file, context ->
     LOG.info("Received file $file")
     true
   }
-}
+  .build()
 ```
 
 ###### Reading from an SFTP server
@@ -402,8 +407,8 @@ The example below defines an [SFTP component](https://camel.apache.org/component
 This is particularly useful when integrating with external services where connection details are likely to vary between environments.
 
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-  source(
+pipeline("TEST_CAMEL_ROUTE_PIPELINE")
+  .source(
     camelFileSource {
       routeHandler {
           val sftpEndPointPath = systemDefinition.getItem("SFTP_SERVER_SFTP")
@@ -421,8 +426,9 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
               .process(dataPipelineProcessor)
       }
     }
-  ).sink(filesSink)
-}
+  )
+  .sink(filesSink)
+  .build()
 ```
 
 :::info
@@ -464,10 +470,10 @@ val batchPollMultiIndexSource = dbBatchQuery<TestMultiIndexTable> {
 }
 
 pipelines {
-  pipeline("TEST_BATCH_POLL_PIPELINE") {
-    source(batchPollSource)
-      .sink(testSink)
-  }
+  pipeline("TEST_BATCH_POLL_PIPELINE")
+    .source(batchPollSource)
+    .sink(testSink)
+    .build()
 }
 ```
 
@@ -518,11 +524,11 @@ class TradesMapper : SuspendElementOperator<Bulk<Trades>, Trades> {
 }
 
 // then in your pipelines script:
-pipeline("TEST_DB_BULK_SUBSCRIBE") {
-        source(dbBulkSubscribe<Trades>())
-            .map(TradesMapper())
-            .sink(TradesSink())
-    }
+pipeline("TEST_DB_BULK_SUBSCRIBE")
+        .source(dbBulkSubscribe<Trades>())
+        .map(TradesMapper())
+        .sink(TradesSink())
+        .build()
 ```
 
 If you want to use this source to subscribe to a view, you have the option of setting `backwardsJoin` to `true`. 
@@ -532,11 +538,11 @@ In order to receive updates from changes to any non-primary table in your view, 
 This setting is defaulted to false. Here is an example of how to set it to true:
 
 ```kotlin
-pipeline("TEST_DB_BULK_SUBSCRIBE") {
-        source(dbBulkSubscribe<Trades>() { backwardsJoin = true })
-            .map(TradesMapper())
-            .sink(TradesSink())
-    }
+pipeline("TEST_DB_BULK_SUBSCRIBE")
+        .source(dbBulkSubscribe<Trades>() { backwardsJoin = true })
+        .map(TradesMapper())
+        .sink(TradesSink())
+        .build()
 ```
 
 ### `dbBulkQuery`
@@ -544,10 +550,10 @@ pipeline("TEST_DB_BULK_SUBSCRIBE") {
 This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object that you specified when you defined the source:
 
 ```kotlin
-pipeline("TEST_DB_BULK_QUERY") {
-        source(dbBulkQuery<Trades>())
-            .sink(TradesSink())
-    }
+pipeline("TEST_DB_BULK_QUERY")
+        .source(dbBulkQuery<Trades>())
+        .sink(TradesSink())
+        .build()
 ```
 
 #### `AbstractProgrammaticSource`
@@ -577,10 +583,10 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 The resulting pipeline:
 ```kotlin
 pipelines {
-  pipeline("TEST_PIPELINE") {
-    source(ProgrammaticTradeSource)
-      .sink(testSink)
-  }
+  pipeline("TEST_PIPELINE")
+    .source(ProgrammaticTradeSource)
+    .sink(testSink)
+    .build()
 }
 ```
 
@@ -606,10 +612,10 @@ val source = httpSource<Trade> {
 }
 
 pipelines {
-  pipeline("TEST_PIPELINE") {
-    source(source)
+  pipeline("TEST_PIPELINE")
+    .source(source)
     .sink(testSink)
-  }
+    .build()
 }
 ```
 
@@ -653,10 +659,10 @@ val source = httpSource<Trade, List<Trade>> {
 }
 
 pipelines {
-  pipeline("TEST_PIPELINE") {
-    source(source)
+  pipeline("TEST_PIPELINE")
+    .source(source)
     .sink(testSink)
-  }
+    .build()
 }
 ```
 
@@ -687,8 +693,8 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 
 ```kotlin
 // Decoding CSV to a class
-pipeline("TEST_PIPELINE_DECODER") {
-  source(
+pipeline("TEST_PIPELINE_DECODER")
+  .source(
     camelSource {
       location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }
@@ -698,7 +704,7 @@ pipeline("TEST_PIPELINE_DECODER") {
     DbOperation.Insert(input.data)
   }
   .sink(txDbSink())
-}
+  .build()
 ```
 
 You also have the option of providing configuration to specify the following:
@@ -724,8 +730,8 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 
 ```kotlin
 // Decoding CSV to Map<String, String>
-pipeline("TEST_PIPELINE_RAW_DECODER") {
-  source(
+pipeline("TEST_PIPELINE_RAW_DECODER")
+  .source(
     camelSource {
       location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }
@@ -740,7 +746,7 @@ pipeline("TEST_PIPELINE_RAW_DECODER") {
     )
   }
   .sink(txDbSink())
-}
+  .build()
 ```
 
 ### Transform operators
@@ -750,12 +756,12 @@ pipeline("TEST_PIPELINE_RAW_DECODER") {
 This is a transform operator that encodes an object of a user-defined type into a stream of CSV formatted Strings, including the header. This stream can then be used to write to a file.
 
 ```kotlin
-    pipeline("TEST_CSV_ENCODER") {
-        source(dbBulkQuery<Trade>())
-            // encoder is expecting objects of type Trade as defined in source
-            .transform(csvEncoder())
-            .sink(streamSink)
-    }
+    pipeline("TEST_CSV_ENCODER")
+        .source(dbBulkQuery<Trade>())
+        // encoder is expecting objects of type Trade as defined in source
+        .transform(csvEncoder())
+        .sink(streamSink)
+        .build()
 ```
 
 You also have the option of providing configuration to specify the following:
@@ -798,8 +804,8 @@ This is a sink into the Genesis database. The sink operation for each input elem
 
 ```kotlin
 // Non-transactional db sink
-pipeline("TEST_DB_SINK") {
-  source(dbBulkSubscribe<Trade>())
+pipeline("TEST_DB_SINK")
+  .source(dbBulkSubscribe<Trade>())
   .map {
     when (it) {
       Bulk.Prime.Completed -> null
@@ -810,7 +816,7 @@ pipeline("TEST_DB_SINK") {
     }
   }
   .sink(dbSink())
-}
+  .build()
 ```
 
 ##### `txDbSink`
@@ -818,8 +824,8 @@ This is a transactional sink into the Genesis database. The sink operation for e
 
 ```kotlin
 // Transactional db sink
-pipeline("TEST_DB_SINK") {
-  source(dbBulkSubscribe<Trade>())
+pipeline("TEST_DB_SINK")
+  .source(dbBulkSubscribe<Trade>())
   .map {
     when (it) {
       Bulk.Prime.Completed -> null
@@ -830,7 +836,7 @@ pipeline("TEST_DB_SINK") {
     }
   }
   .sink(txDbSink())
-}
+  .build()
 ```
 
 #### `fileSink`
@@ -840,19 +846,21 @@ This sink implementation allows you to write data to files on the file system of
 ###### Writing to a local Directory
 
 ```kotlin
-pipeline("OUTBOUND_FILE_PIPELINE") {
-  source(
+pipeline("OUTBOUND_FILE_PIPELINE")
+  .source(
     BatchSource {
       (1..100).asFlow()
     }
-  ).map {
+  )
+  .map {
     NewPipelineFile(
       name = it.toString() + "txt", 
       path = "/path-to/output-directory",
       content = it.toString().byteInputStream(),
     )
-  }.sink(fileSink())
-}
+  }
+  .sink(fileSink())
+  .build()
 ```
 
 
@@ -875,18 +883,20 @@ camelFileSink {
 
 ###### Writing to a local directory
 ```kotlin
-pipeline("CAMEL_OUTBOUND_PIPELINE") {
-  source(
+pipeline("CAMEL_OUTBOUND_PIPELINE")
+  .source(
     camelFileSource {
       location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
     }
-  ).map {
+  )
+  .map {
     NewPipelineFile(
       name = it.name,
       path = "src/test/resources/camel-sink-temp",
       content = it.content
     )
-  }.sink(
+  }
+  .sink(
     camelFileSink {
       routeHandler {
         from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
@@ -894,7 +904,7 @@ pipeline("CAMEL_OUTBOUND_PIPELINE") {
       }
     }
   )
-}
+  .build()
 ```
 
 ###### Writing to an SFTP server
@@ -902,18 +912,20 @@ pipeline("CAMEL_OUTBOUND_PIPELINE") {
 val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
 val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
 
-pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
-  source(
+pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE")
+  .source(
     camelFileSource {
       location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
     }
-  ).map {
+  )
+  .map {
     NewPipelineFile(
       name = it.name,
       path = "src/test/resources/camel-sink-temp",
       content = it.content
     )
-  }.sink(
+  }
+  .sink(
     camelFileSink {
       routeHandler {
         from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
@@ -921,7 +933,7 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
       }
     }
   )
-}
+  .build()
 ```
 
 ### Connectors
@@ -935,18 +947,18 @@ This is an example of how to use the connector in a pipeline.
 ```kotlin
 val tradesConnector = connector<Trade>()
 
-pipeline("TEST_CSV_ENCODER") {
-        source(dbBulkQuery<Trade>())
-            .transform(csvEncoder())
-            .sink(tradesConnector)
-    }
+pipeline("TEST_CSV_ENCODER")
+        .source(dbBulkQuery<Trade>())
+        .transform(csvEncoder())
+        .sink(tradesConnector)
+        .build()
 
 
-pipeline("TEST_TRADE_TO_KAFKA") {
+pipeline("TEST_TRADE_TO_KAFKA")
     // same connector object can be used as source for another pipeline
-    source(tradesConnector)
+    .source(tradesConnector)
     .sink(kafkaSink) // see how to define a kafkaSink further down
-}
+    .build()
 ```
 
 #### ackConnector
@@ -956,18 +968,18 @@ The `ackConnector` is the same as the `connector`, except it incorporates the ac
 ```kotlin
 val tradesConnector = ackConnector<Trade>()
 
-pipeline("TEST_CSV_ENCODER") {
-        source(dbBulkQuery<Trade>())
-            .transform(csvEncoder())
-            .sink(tradesConnector)
-    }
+pipeline("TEST_CSV_ENCODER")
+        .source(dbBulkQuery<Trade>())
+        .transform(csvEncoder())
+        .sink(tradesConnector)
+        .build()
 
 
-pipeline("TEST_TRADE_TO_KAFKA") {
+pipeline("TEST_TRADE_TO_KAFKA")
     // same connector object can be used as source for another pipeline
-    source(tradesConnector)
+    .source(tradesConnector)
     .sink(kafkaSink) // see how to define a kafkaSink further down
-}
+    .build()
 ```
 
 ### Completion handlers
@@ -1003,12 +1015,12 @@ val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Trade>, TradeDet
             }
         }
 
-pipeline("TEST_TRADE_PIPELINE") {
-    source(dbBulkRealtimeSource)
-        .map(mapper)
-        .sink(logSink)
-        .onCompletion(insertTradeOnCompletionHandler)
-}
+pipeline("TEST_TRADE_PIPELINE")
+    .source(dbBulkRealtimeSource)
+    .map(mapper)
+    .sink(logSink)
+    .onCompletion(insertTradeOnCompletionHandler)
+    .build()
 ```
 
 #### `sendCustomEventOnCompletion`
@@ -1026,13 +1038,13 @@ val customTradeOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDet
             }
         }
 
-pipeline("TEST_CSV_ENCODER") {
-        source(dbBulkQuery<Trade>())
-            // encoder is expecting objects of type Trade as defined in source
-            .transform(csvEncoder())
-            .sink(streamSink)
-            .onCompletion(customTradeOnCompletionHandler)
-}
+pipeline("TEST_CSV_ENCODER")
+        .source(dbBulkQuery<Trade>())
+        // encoder is expecting objects of type Trade as defined in source
+        .transform(csvEncoder())
+        .sink(streamSink)
+        .onCompletion(customTradeOnCompletionHandler)
+        .build()
 ```
 
 ## Non-core elements
@@ -1078,10 +1090,10 @@ val source = kafkaSource<String, Int> {
 }
 
 pipelines {
-    pipeline("TEST_KAFKA_PIPELINE") {
-        source(source)
-            .sink(testSink)
-    }
+    pipeline("TEST_KAFKA_PIPELINE")
+        .source(source)
+        .sink(testSink)
+        .build()
 }
 ```
 
@@ -1127,10 +1139,10 @@ val source = jmsSource {
 }
 
 pipelines {
-  pipeline("TEST_JMS_PIPELINE") {
-    source(source)
-      .sink(testSink)
-  }
+  pipeline("TEST_JMS_PIPELINE")
+    .source(source)
+    .sink(testSink)
+    .build()
 }
 ```
 
@@ -1169,10 +1181,10 @@ val sink = kafkaSink<String, Int> {
 }
 
 pipelines {
-    pipeline("TEST_KAFKA_PIPELINE") {
-        source(testSource)
-            .sink(sink)
-    }
+    pipeline("TEST_KAFKA_PIPELINE")
+        .source(testSource)
+        .sink(sink)
+        .build()
 }
 ```
 
@@ -1223,11 +1235,11 @@ val sink = jmsSink<MessageSent> {
 }
 
 pipelines {
-    pipeline("TEST_JMS_PIPELINE") {
-        source(testSource)
-            .map { it }
-            .sink(sink)
-    }
+    pipeline("TEST_JMS_PIPELINE")
+        .source(testSource)
+        .map { it }
+        .sink(sink)
+        .build()
 }
 ```
 
