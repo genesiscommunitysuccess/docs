@@ -18,7 +18,7 @@ sidebar_position: 15
 ---
 
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase'
-import { RuleBuilderExample } from './expression_builder_examples.js'
+import { RuleBuilderExample, RuleBuilderDateExample } from './expression_builder_examples.js'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -411,7 +411,13 @@ The examples below assume the current server time is **Wednesday, 2023-10-25 14:
   </tbody>
 </table>
 
-### Tips
+#### Example
+
+Here is an example of the rule expression builder configured with a rule to filter for "Yesterday".
+
+<RuleBuilderDateExample />
+
+#### Tips
 
 The expressions are evaluated on each entity sequentially; this means for long running processes the current time is changing.
 
