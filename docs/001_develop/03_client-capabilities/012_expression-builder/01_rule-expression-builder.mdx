@@ -244,7 +244,17 @@ When working with date or date-time fields, the rule expression builder provides
 
 These operators allow you to select a time unit (`HOUR`, `DAY`, `WEEK`, `MONTH`, `YEAR`) to define the range.
 
-The examples below assume the current server time is **Wednesday, 2023-10-25 14:35:00**.
+:::warning
+Before calculating the time range for any of these operations, the current time will be converted to the UTC timezone, and that time will be used to calculate the range. Please factor this in when running or scheduling certain operations.
+
+For example, if you execute a filter or schedule a report to run at 23:00 EST on 2023-10-25, and want to filter all transactions for the **current** day, this will first be converted to 04:00 UTC on 2023-10-26, giving a time range of:
+
+2023-10-26 00:00:00 UTC to 2023-10-27 00:00:00 UTC
+
+This is in the future, and will likely return an empty data set.
+:::
+
+The examples below assume the current server time is **Wednesday, 2023-10-25 14:35:00 UTC**.
 
 <table>
   <thead>
@@ -262,7 +272,7 @@ The examples below assume the current server time is **Wednesday, 2023-10-25 14:
       <td><strong>HOUR</strong></td>
       <td>Is current</td>
       <td>Current hour</td>
-      <td>Matches dates falling within the current hour.</td>
+      <td>Matches times falling within the current hour.</td>
       <td>
         <ul>
           <li><strong>Start</strong>: Beginning of the current hour.</li>
@@ -277,7 +287,7 @@ The examples below assume the current server time is **Wednesday, 2023-10-25 14:
       <td><strong>HOUR</strong></td>
       <td>Is previous</td>
       <td>Previous hour</td>
-      <td>Matches dates falling within the previous hour.</td>
+      <td>Matches times falling within the previous hour.</td>
       <td>
         <ul>
           <li><strong>Start</strong>: Beginning of the hour immediately preceding the current one.</li>
