@@ -1,0 +1,262 @@
+---
+title: 'Overriding Genesis component styles'
+sidebar_label: 'Overriding component styles'
+id: styling-overriding-component-styles
+keywords: [extend component, styling, override styles, customise styles, customize styles, component customisation, component customization]
+tags:
+- styling
+- extend component
+- override styles
+- customise styles
+- customize styles
+- component customisation
+- component customization
+sidebar_position: 4
+---
+
+When you need to customize Genesis component styles beyond what CSS custom properties or parts allow, you can override the component styles at registration time. This approach gives you full control over the component's styling while preserving the base component functionality.
+
+## Overview
+
+Component style overrides are typically done where components are registered in your application. This method allows you to:
+
+- Extend base component styles with your customizations
+- Apply global style changes across all instances of a component
+- Maintain component functionality while customizing appearance
+- Use TypeScript/JavaScript for dynamic style generation
+
+## Basic Pattern
+
+The pattern for overriding component styles involves:
+
+1. Importing the base styles from the component
+2. Creating a custom styles function that includes the base styles
+3. Adding your additional custom styles
+4. Registering the component with your custom styles
+
+## Example: Customizing Tab Components
+
+Here's a complete example showing how to customize the `rapid-tab`, `rapid-tabs`, and `rapid-tab-panel` components:
+
+```typescript
+import { 
+  rapidTab, 
+  rapidTabs, 
+  rapidTabPanel,
+  rapidTabStyles,
+  rapidTabsStyles,
+  rapidTabPanelStyles
+} from '@genesislcap/foundation-ui';
+import { 
+  ElementDefinitionContext, 
+  FoundationElementDefinition,
+  ElementStyles,
+  css
+} from '@microsoft/fast-element';
+
+// Custom styles for rapid-tab-panel
+const customRapidTabPanelStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidTabPanelStyles(context, definition)} /* Include base styles */
+    :host {
+      background: #181a1f;
+    }
+  `;
+
+// Custom styles for rapid-tab
+const customRapidTabStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidTabStyles(context, definition)} /* Include base styles */
+    :host {
+      border-radius: 4px;
+    }
+    :host([selected]) {
+      background: #2a2d35;
+    }
+  `;
+
+// Custom styles for rapid-tabs
+const customRapidTabsStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidTabsStyles(context, definition)} /* Include base styles */
+    :host {
+      border-bottom: 2px solid #181a1f;
+    }
+  `;
+
+// Register components with custom styles
+rapidTab({
+  styles: customRapidTabStyles
+}),
+rapidTabs({
+  styles: customRapidTabsStyles
+}),
+rapidTabPanel({
+  styles: customRapidTabPanelStyles
+}),
+```
+
+## Step-by-Step Guide
+
+### 1. Import Required Dependencies
+
+First, import the component registration functions and their base styles:
+
+```typescript
+import { 
+  rapidButton,
+  rapidButtonStyles
+} from '@genesislcap/foundation-ui';
+import { 
+  ElementDefinitionContext, 
+  FoundationElementDefinition,
+  ElementStyles,
+  css
+} from '@microsoft/fast-element';
+```
+
+### 2. Create Custom Styles Function
+
+Create a function that accepts the standard parameters and returns `ElementStyles`:
+
+```typescript
+const customRapidButtonStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidButtonStyles(context, definition)} /* Always include base styles first */
+    
+    /* Your custom styles */
+    :host {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+    }
+    
+    :host(:hover) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+  `;
+```
+
+### 3. Register Component with Custom Styles
+
+Register the component, passing your custom styles function:
+
+```typescript
+rapidButton({
+  styles: customRapidButtonStyles
+});
+```
+
+## Important Considerations
+
+### Always Include Base Styles
+
+**Always include the base component styles** by calling the original styles function within your custom styles. This ensures:
+
+- Component functionality is preserved
+- Default behaviors and states work correctly
+- Your customizations layer on top of the base styles
+
+```typescript
+// ✅ Correct - includes base styles
+const customStyles = (context, definition) =>
+  css`
+    ${baseComponentStyles(context, definition)}
+    :host { /* custom styles */ }
+  `;
+
+// ❌ Incorrect - missing base styles
+const customStyles = (context, definition) =>
+  css`
+    :host { /* custom styles only */ }
+  `;
+```
+
+### Style Order Matters
+
+The order of styles in your CSS template matters. Base styles should come first, followed by your customizations:
+
+```typescript
+css`
+  ${baseStyles(context, definition)} /* Base styles first */
+  
+  :host {
+    /* Your custom styles that may override base styles */
+  }
+`
+```
+
+### Using CSS Variables
+
+You can combine style overrides with CSS custom properties for maximum flexibility:
+
+```typescript
+const customRapidCardStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidCardStyles(context, definition)}
+    :host {
+      --card-background: #1e1e1e;
+      --card-border-color: #333;
+      background: var(--card-background);
+      border: 1px solid var(--card-border-color);
+    }
+  `;
+```
+
+## Advanced Example: Conditional Styling
+
+You can use TypeScript logic to create dynamic styles based on component configuration:
+
+```typescript
+const customRapidTextFieldStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles => {
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  return css`
+    ${rapidTextFieldStyles(context, definition)}
+    :host {
+      background: ${isDarkMode ? '#1a1a1a' : '#ffffff'};
+      color: ${isDarkMode ? '#ffffff' : '#000000'};
+    }
+  `;
+};
+```
+
+## Finding Component Style Exports
+
+To find the style export for a component:
+
+1. Check the component's package documentation
+2. Look in `node_modules/@genesislcap/foundation-ui` for style exports
+3. Import styles typically follow the pattern: `{componentName}Styles` (e.g., `rapidButtonStyles`, `rapidCardStyles`)
+
+## Best Practices
+
+1. **Keep base styles**: Always include the original component styles to maintain functionality
+2. **Use CSS variables**: When possible, use CSS custom properties for values that might need to change
+3. **Document customizations**: Comment your style overrides to explain why they're needed
+4. **Test thoroughly**: Ensure your custom styles work across different states and scenarios
+5. **Consider performance**: Avoid overly complex style calculations that run on every render
+
+## Related Documentation
+
+- [CSS Custom Properties](./01_using-css-custom-properties) - Learn about using CSS variables for styling
+- [Shadow DOM and Parts](./02_shadow-dom-and-parts) - Understand component parts for styling
+- [Design System Configurator](./03_design-system-configurator) - Configure design system tokens
