@@ -34,6 +34,14 @@ The pattern for overriding component styles involves:
 3. Adding your additional custom styles
 4. Registering the component with your custom styles
 
+:::info
+Components are typically registered in the `client/src/components/components.ts` file when using the Genesis UI Framework build from Genesis Create.
+:::
+
+:::info
+Components are typically registered in the `client/src/share/genesis-components.ts` file when using the React Framework build from Genesis Create.
+:::
+
 ## Example: Customizing Tab Components
 
 Here's a complete example showing how to customize the `rapid-tab`, `rapid-tabs`, and `rapid-tab-panel` components:
@@ -45,14 +53,12 @@ import {
   rapidTabPanel,
   rapidTabStyles,
   rapidTabsStyles,
-  rapidTabPanelStyles
-} from '@genesislcap/foundation-ui';
-import { 
-  ElementDefinitionContext, 
+  rapidTabPanelStyles,
+  ElementDefinitionContext,
   FoundationElementDefinition,
   ElementStyles,
   css
-} from '@microsoft/fast-element';
+} from '@genesislcap/foundation-ui';
 
 // Custom styles for rapid-tab-panel
 const customRapidTabPanelStyles = (
@@ -114,14 +120,12 @@ First, import the component registration functions and their base styles:
 ```typescript
 import { 
   rapidButton,
-  rapidButtonStyles
-} from '@genesislcap/foundation-ui';
-import { 
-  ElementDefinitionContext, 
+  rapidButtonStyles,
+  ElementDefinitionContext,
   FoundationElementDefinition,
   ElementStyles,
   css
-} from '@microsoft/fast-element';
+} from '@genesislcap/foundation-ui';
 ```
 
 ### 2. Create Custom Styles Function
@@ -255,8 +259,3 @@ To find the style export for a component:
 4. **Test thoroughly**: Ensure your custom styles work across different states and scenarios
 5. **Consider performance**: Avoid overly complex style calculations that run on every render
 
-## Related Documentation
-
-- [CSS Custom Properties](./01_using-css-custom-properties) - Learn about using CSS variables for styling
-- [Shadow DOM and Parts](./02_shadow-dom-and-parts) - Understand component parts for styling
-- [Design System Configurator](./03_design-system-configurator) - Configure design system tokens
