@@ -238,6 +238,25 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.16
+
+###### Features
+
+* `genesis-criteria` : Add WEEK_DAY as a valid option for Expr groovy expressions 
+
+#### 8.14.15
+
+###### Features
+
+* `genesis-db` : Improve connection acquisition in native sql layer, and improve coroutine strategy 
+* `genesis-pal` : Add `criteriaTemplate` syntax in data servers and request servers 
+
+###### Fixes
+
+* `genesis-db` : Support ResultSet streaming in native SQL and getByCriteria to reduce memory pressure 
+* `genesis-environment` : Fix Oracle DDL statements for sequence value increments 
+* Added concept of scoped pools of clients, to avoid issues with router incorrectly initialising service connections 
+
 #### 8.14.14
 
 ###### Features

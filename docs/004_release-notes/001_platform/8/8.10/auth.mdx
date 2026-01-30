@@ -11,5 +11,10 @@ id: '8.10-auth'
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.10.1
 
+###### Fixes
+
+* `auth-manager` : Rework database table access sequence in authentication message flow to avoid potential deadlocks and remove unnecessary database lookups and record modifications 
+* `auth-manager` : Fix deadlock from occurring in logon process where `AUTH_MANAGER` receives too many concurrent user logins 
+* Remove auth-config runtime dependency 
