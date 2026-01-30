@@ -130,6 +130,10 @@ Using `criteriaOnlyRequest` enables enhancements targeted at SQL databases:
 
 Internally, this uses the [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria) database operation. See the linked documentation for details.
 
+When using criteria only mode, use [`criteriaTemplate`](#criteriatemplate), rather than `filter` type operations.
+Criteria templates are merged with criteria on request, and evaluated eagerly on the database, where possible.
+Filters, on the other hand, are always evaluated lazily; requests will therefore take more time and cost more memory and CPU.
+
 ### Summary
 
 A Request Server file consists of a number of queries onto a table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
@@ -307,6 +311,64 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
   }
 ```
 
+#### `criteriaTemplate`
+
+`criteriaTemplate` is a way to enhance the criteria on an incoming request.
+It has a similar effect to the `filter` functions; however, a criteria `String` is expected.
+This string will be merged with the incoming `CRITERIA_MATCH` string.
+
+`criteriaTemplate` should be preferred over `filter`-type functions when using criteria-only request mode, as it is more efficient.
+
+Within `criteriaTemplate`, you have access to `userName`, `request` and `db`.
+`userName` is of type `String`. `request` is of type `GenesisSet`.
+`db` is a read-only version of `AsyncEntityDb` for database lookups to enhance criteria.
+
+##### Static criteria
+
+To apply static criteria, use the same syntax as normal.
+
+```kotlin
+requestReply("ALT_INSTRUMENT_RIC", ALT_INSTRUMENT_ID) {
+    config {
+        criteriaOnlyRequest = true
+    }
+    criteriaTemplate {
+        "ALTERNATE_TYPE == 'RIC'"
+    }
+}
+```
+
+##### User-based criteria
+
+To filter data for specific users, use `userName`.
+
+```kotlin
+requestReply(MY_DATA_TABLE) {
+    config {
+        criteriaOnlyRequest = true
+    }
+    criteriaTemplate {
+        "USER_NAME == '$userName'"
+    }
+}
+```
+
+##### Database-based criteria
+
+To build criteria from database lookups, use `db`.
+
+```kotlin
+requestReply(MY_DATA_TABLE) {
+    config {
+        criteriaOnlyRequest = true
+    }
+    criteriaTemplate {
+        db.get(EntityUsers.byUserName(userName))
+            ?.let { "ENTITY_ID == '${it.entityId}" }
+            ?: "false"
+    }
+}
+```
 
 <CommonPermissions />
 
