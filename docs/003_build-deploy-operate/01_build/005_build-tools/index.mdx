@@ -20,14 +20,14 @@ To run a Genesis application, including on your local machine, the following sof
 | LMDB (Mac Only)                    | [Installation Guide](#lmdb-installation-guide-macos)                                                                        |
 | Genesis Server Framework (GSF)     | [Artifact Access](/build-deploy-operate/build/library-access/#server-artifacts)                                             |
 | Genesis Web Framework (Foundation) | [Artifact Access](/build-deploy-operate/build/library-access/#client-artifacts)                                             |
-| Gradle                             | Bundled with your Genesis application project (unless [downloading a new Create project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/genesis-create/#exclude-gradle-wrapper-jar))  |  
+| Gradle                             | Bundled with your Genesis application project (unless you [create a new project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/genesis-create/#exclude-gradle-wrapper-jar))  |
 
 ### LMDB installation guide (MacOS)
 
 When running a Genesis application on MacOS, you must install and configure LMDB. The following steps can be followed:
 
-1. Install lmdb for mac : [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
-1. Add `liblmdb.dylib` to your Java Extensions:
+1. Install lmdb for Mac: [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
+2. Add `liblmdb.dylib` to your Java Extensions:
 ```bash
 mkdir -p ~/Library/Java/Extensions
 cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
@@ -39,7 +39,7 @@ The Genesis Application Platform provides a Gradle plugin that makes it easy to 
 
 The plugin is designed to work on workstations running Linux, or on WSL.
 
-### Enabling the deployment plugin to your project
+### Enabling the deployment plugin in your project
 
 Simply set `genesisDeploy.enabled = true` in your application's `server/settings.gradle.kts` file.
 
@@ -49,16 +49,9 @@ Simply set `genesisDeploy.enabled = true` in your application's `server/settings
   }
 ```
 
-### Target deployments
-There are several possible configurations for your deployment. For each one, you need to set up your `gradle.properties` file in a specific way:
-
-- Windows Subsystem for Linux (WSL)
-- a local Linux host
-- a remote Linux host (via SSL)
-
 #### General set-up
 
-Make sure you have a `gradle.properties` file inside a `.gradle` folder in your user directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
+Make sure you have a `gradle.properties` file in the `.gradle` directory in your user home directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
@@ -69,105 +62,112 @@ genesisArtifactoryPassword=<your-artifactory-password>
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 :::
 
-#### WSL
+### Application Distribution
 
-If your development workstation is a Windows machine, then you
-can use WSL to have Genesis set-up
-locally.
+Applications can build zip distributions using the `appDistZip` Gradle task.
 
-To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
+This Gradle task will create a standalone zip distribution for an application that can be deployed and that is used as input for the docker image process.
 
-```properties
-genesis-home=<path-to-genesis-home-on-wsl>
-wsl-distro=<name-of-the-wsl-distro>
-wsl-user=<wsl-username>
-```
+The zip file will include the full Genesis distribution, each PBC distribution, the app's server and web distribution.
 
-| Entry          | Description                                                                                                             | 
-|----------------|-------------------------------------------------------------------------------------------------------------------------|
-| `genesis-home` | This is a mandatory property that is a path to genesis distribution on the WSL distribution. Example: `/home/alpha/run` |
-| `wsl-distro`   | This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7`                               |
-| `wsl-user`     | This is an optional property. If omitted, the default WSL user will be used. Example: `alpha`                           |
+There are two ways in which this zip can be constructed:
+* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars.
+* If dynamic deployments are enabled, an App can take control of dependency resolution, and this will result in a single set of jars in `site-specific/lib`
 
-Sample configuration:
+### Dynamic Deployments
 
-```properties
-genesis-home=/home/alpha/run
-wsl-distro=CentOS7
-wsl-user=alpha
-```
+Using dynamic deployments, Apps can take control of dependency resolution, which achieves the following:
+* Apps are able to overwrite vulnerable dependencies. It is the developer's responsibility to assess binary compatibility.
+* A smaller distribution will be created, as jars are only included if required, and then only once.
 
-#### Local Linux host
+#### Enabling Dynamic Deployments
 
-This is the easiest set-up, and applies if your development workstation is on a Linux machine.
-
-To configure this, open **gradle.properties** from the **server/jvm** folder and add the following entry:
+To enable dynamic deployments you can either add a Gradle property in your site-side project's `gradle.properties`:
 
 ```properties
-genesis-home=<path-to-local-genesis-home>
+enableDynamicDeployment=true
 ```
 
-The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
+Or set the same property in `genesisExec { ... }` in your `-app` or `-deploy` module.
 
-#### Remote Linux host (via SSH)
-
-This configuration is usable when using a remote host for the Genesis environment. Currently, only Linux hosts are
-supported.
-
-To configure this, open **gradle.properties** from the **server/jvm** folder and add the following entries:
-
-```properties
-genesis-home=<path-to-remote-host-genesis-home>
-ssh-username=<remote-host-username>
-ssh-password=<remote-host-password>
-ssh-host=<remote-host>
-ssh-port=<remote-host-ssh-port>
+```kotlin
+genesisExec {
+    enableDynamicDeployment = true
+}
 ```
 
-All the properties above are mandatory.
+#### Using `genesisRuntime` configuration
 
-Sample configuration:
-
-```properties
-genesis-home=/home/user1/genesis560
-ssh-username=user1
-ssh-password=<password-for-user1>
-ssh-host=user1-remotehost
-ssh-port=22
+To add runtime dependencies and set constraints, use the `genesisRuntime` configuration in Gradle.
+Add these in `server/build.gradle.kts`.
+For example, to add a runtime dependency on `javax.mail:mail:1.4` for all your processes, use:
+```kotlin
+dependencies {
+    genesisRuntime("javax.mail:mail:1.4")
+}
 ```
 
-## Plugin tasks
+#### Overwriting Dependency Vulnerabilities
 
-The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
+The same configuration can be used for setting dependency constraints.
+This is useful to patch the application, in case a vulnerability is detected, and waiting for the next Genesis release is not an option.
+This can be done using the [standard Gradle constraint syntax](https://docs.gradle.org/current/userguide/dependency_constraints.html).
+Care should be taken to test the application with the new dependency setup.
+With every release of the Genesis platform, the platform is compiled and tested against its declared dependencies.
+Overwriting dependencies can introduce subtle bugs and linkage errors.
+Please read the release notes of the affected jars carefully for breaking changes.
 
-### Genesis set-up tasks
+#### Setting a minimum version
 
-These tasks deploy each external distribution, as well as site-specific configuration.
+If a vulnerability exists in a dependency and a newer version without that vulnerability exists, the recommended approach is to set a minimum version.
+This can be done using the `require()` syntax and adding a reason in `because()`.
 
-| Task                                                                           | Description                                                                                                                                         | 
-|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `createGenesisHome`                                                            | This task creates the genesis home.                                                                                                                 |
-| `install-genesis-distribution.zip`                                             | This task copies and unzips the Genesis distribution specified as a dependency.                                                                     |
-| `install-auth-distribution.zip`                                                | This task copies and unzips the auth distribution specified as a dependency.                                                                        |
-| `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` | This task copies and unzips the `<project-name>-site-specific` distribution specified as a dependency.                                             |
-| `loadInitialData`                                                              | This task executes `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` and then calls all the `SendIt-<file>.csv` tasks. |
-| `setupEnvironment`                                                             | This task executes `createGenesisHome` then `install-genesis-distribution` and then configures the installed distribution.                          |
-| `SendIt-<file>.csv`                                                            | This task executes the script command `SendIt` with the parameters -t `<file-name (in Uppercase)>` and -f `<file-location>`.                        |
+For example, to set the minimum version of `netty-handler` to `4.1.100.Final` and add a reference to a CVE, use:
+```kotlin
+dependencies {
+    constraints {
+        genesisRuntime("io.netty:netty-handler") {
+            version { require("4.1.100.Final") }
+            because("CVE-2022-1471")
+        }
+    }
+}
+```
 
-### Genesis deploy tasks
+This will set the minimum version for the dependency across the application.
+However, if after upgrading Genesis uses version `5.0.0`, Gradle will use that version.
 
-These tasks enable the deployment of the full project: single jars for each project module or just configuration files.
+#### When the only option is to roll back
 
-Below, note that `<project-name>` must be replaced with the actual project name. For example, if the project you work on is called alpha, you would call it `deploy-genesisproduct-alpha.zip`
+Sometimes a vulnerability exists and the only option is to roll back until a fix is available.
+In that case, a combination of `reject`, `prefer` and `require` should be used:
+```kotlin
+constraints {
+    genesisRuntime("com.example:problem-lib") {
+        version {
+            require("1.2.3")
+            reject("1.2.4", "1.2.5")
+            prefer("1.2.6")
+        }
+        because("1.2.4–1.2.5 are broken; allow newer fixed releases")
+    }
+}
+```
 
-| Task                                       | Description                                                                                      | 
-|--------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `deploy-genesisproduct-<project-name>.zip` | This task deploys the current project to the Genesis environment specified for `genesis-home`.`  |
-| `deploy-<project-name>-eventhandler.jar`   | This task deploys the Event Handler jar to the Genesis environment specified for `genesis-home`. |
-| `deploy-<project-name>-messages.jar`       | This task deploys the messages jar to the Genesis environment specified for `genesis-home`.      |
-| `deployConfig`                             | This task deploys the config to the Genesis environment specified for `genesis-home`.            |
-| `deployDictionary`                         | This task deploys the dictionary to the Genesis environment specified for `genesis-home`.        |
-| `deployScripts`                            | This task deploys the scripts to the Genesis environment specified for `genesis-home`.           |
+#### Overwriting using a BOM
 
-Note, this will take the last built distribution; it does **not** run a project build as part of the task... **so do that
-first**.
+In exceptional cases, a whole suite of dependencies might need to be overwritten.
+In that case, if a library provides a BOM, you can use `enforcedPlatform`.
+However, care should be taken to remove this overwrite once the platform is upgraded.
+
+```kotlin
+dependencies {
+    // remove once Genesis platform version is upgraded
+    // to cover CVE-2020-1234
+    genesisRuntime(enforcedPlatform("com.fasterxml.jackson:jackson-bom:2.16.1"))
+}
+```
+
+Please note that the same dependency resolution algorithm will be used when running a Genesis Application locally,
+using the [IntelliJ plugin](/develop/development-environment/intellij-plugin) or [Genesis Start](/develop/development-environment/genesis-start).
+
