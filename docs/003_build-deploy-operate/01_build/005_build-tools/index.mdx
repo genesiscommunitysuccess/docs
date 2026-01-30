@@ -20,14 +20,14 @@ To run a Genesis application, including on your local machine, the following sof
 | LMDB (Mac Only)                    | [Installation Guide](#lmdb-installation-guide-macos)                                                                        |
 | Genesis Server Framework (GSF)     | [Artifact Access](/build-deploy-operate/build/library-access/#server-artifacts)                                             |
 | Genesis Web Framework (Foundation) | [Artifact Access](/build-deploy-operate/build/library-access/#client-artifacts)                                             |
-| Gradle                             | Bundled with your Genesis application project (unless [downloading a new Create project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/genesis-create/#exclude-gradle-wrapper-jar))  |
+| Gradle                             | Bundled with your Genesis application project (unless you [create a new project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/genesis-create/#exclude-gradle-wrapper-jar))  |
 
 ### LMDB installation guide (MacOS)
 
 When running a Genesis application on MacOS, you must install and configure LMDB. The following steps can be followed:
 
-1. Install lmdb for mac : [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
-1. Add `liblmdb.dylib` to your Java Extensions:
+1. Install lmdb for Mac: [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
+2. Add `liblmdb.dylib` to your Java Extensions:
 ```bash
 mkdir -p ~/Library/Java/Extensions
 cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
@@ -39,7 +39,7 @@ The Genesis Application Platform provides a Gradle plugin that makes it easy to 
 
 The plugin is designed to work on workstations running Linux, or on WSL.
 
-### Enabling the deployment plugin to your project
+### Enabling the deployment plugin in your project
 
 Simply set `genesisDeploy.enabled = true` in your application's `server/settings.gradle.kts` file.
 
@@ -51,7 +51,7 @@ Simply set `genesisDeploy.enabled = true` in your application's `server/settings
 
 #### General set-up
 
-Make sure you have a `gradle.properties` file inside a `.gradle` folder in your user directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
+Make sure you have a `gradle.properties` file in the `.gradle` directory in your user home directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
@@ -64,31 +64,31 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 
 ### Application Distribution
 
-Applications can build zip distributions using the `appDistZip` gradle task.
+Applications can build zip distributions using the `appDistZip` Gradle task.
 
-This gradle task will create a standalone zip distribution for an application that can be deployed and that is used as input for the docker image process.
+This Gradle task will create a standalone zip distribution for an application that can be deployed and that is used as input for the docker image process.
 
-The zip file will include the full genesis distribution, each PBC distribution, the App's server and web distribution.
+The zip file will include the full Genesis distribution, each PBC distribution, the app's server and web distribution.
 
-There are two ways in which this zip can be constructed.
-* By default, each Genesis dependency, including Genesis-Server and each PBC, will include it's full set of jars.
+There are two ways in which this zip can be constructed:
+* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars.
 * If dynamic deployments are enabled, an App can take control of dependency resolution, and this will result in a single set of jars in `site-specific/lib`
 
 ### Dynamic Deployments
 
 Using dynamic deployments, Apps can take control of dependency resolution, which achieves the following:
-* Apps are able to overwrite vulnerable dependencies. It is developer's responsibility to assess binary compatibility.
+* Apps are able to overwrite vulnerable dependencies. It is the developer's responsibility to assess binary compatibility.
 * A smaller distribution will be created, as jars are only included if required, and then only once.
 
 #### Enabling Dynamic Deployments
 
-To enable dynamic deployments you can either add a gradle property in your side-side project's `gradle.properties`:
+To enable dynamic deployments you can either add a Gradle property in your site-side project's `gradle.properties`:
 
 ```properties
 enableDynamicDeployment=true
 ```
 
-Or to set the same property in `genesisExec { ... }`, in your `-app` or `-deploy` module.
+Or set the same property in `genesisExec { ... }` in your `-app` or `-deploy` module.
 
 ```kotlin
 genesisExec {
@@ -98,8 +98,8 @@ genesisExec {
 
 #### Using `genesisRuntime` configuration
 
-For managing adding runtime dependencies and setting constraints, developers need to use the `genesisRuntime` configuration in Gradle.
-For example to add a runtime dependency on all your processes on `javax.mail:mail:1.4` use:
+To add runtime dependencies and set constraints, developers use the `genesisRuntime` configuration in Gradle.
+For example, to add a runtime dependency on `javax.mail:mail:1.4` for all your processes, use:
 ```kotlin
 dependencies {
     genesisRuntime("javax.mail:mail:1.4")
@@ -111,14 +111,21 @@ dependencies {
 The same configuration can be used for setting dependency constraints.
 This is useful to patch the application, in case a vulnerability is detected, and waiting for the next Genesis release is not an option.
 This can be done using the [standard Gradle constraint syntax](https://docs.gradle.org/current/userguide/dependency_constraints.html).
+Care should be taken to test the application with the new dependency setup.
+With every release of the Genesis platform, the platform is compiled and tested against its declared dependencies.
+Overwriting dependencies can introduce subtle bugs and linkage errors.
+Please read the release notes of the affected jars carefully for breaking changes.
 
-However, the recommendation is to use the `require()` syntax, and to add a reason in `because()`.
+#### Setting a minimum version
 
-For example, to set the minimum version of `netty-handler` to `4.1.100-Final` and add a reference to a CVE use:
+If a vulnerability exists in a dependency and a newer version without that vulnerability exists, the recommended approach is to set a minimum version.
+This can be done using the `require()` syntax and adding a reason in `because()`.
+
+For example, to set the minimum version of `netty-handler` to `4.1.100.Final` and add a reference to a CVE, use:
 ```kotlin
 dependencies {
     constraints {
-        implementation("io.netty:netty-handler") {
+        genesisRuntime("io.netty:netty-handler") {
             version { require("4.1.100.Final") }
             because("CVE-2022-1471")
         }
@@ -127,6 +134,39 @@ dependencies {
 ```
 
 This will set the minimum version for the dependency across the application.
+However, if after upgrading Genesis uses version `5.0.0`, Gradle will use that version.
+
+#### When the only option is to roll back
+
+Sometimes a vulnerability exists and the only option is to roll back until a fix is available.
+In that case, a combination of `reject`, `prefer` and `require` should be used:
+```kotlin
+constraints {
+    genesisRuntime("com.example:problem-lib") {
+        version {
+            require("1.2.3")
+            reject("1.2.4", "1.2.5")
+            prefer("1.2.6")
+        }
+        because("1.2.4–1.2.5 are broken; allow newer fixed releases")
+    }
+}
+```
+
+#### Overwriting using a BOM
+
+In exceptional cases, a whole suite of dependencies might need to be overwritten.
+In that case, if a library provides a BOM, you can use `enforcedPlatform`.
+However, care should be taken to remove this overwrite once the platform is upgraded.
+
+```kotlin
+dependencies {
+    // remove once Genesis platform version is upgraded
+    // to cover CVE-2020-1234
+    genesisRuntime(enforcedPlatform("com.fasterxml.jackson:jackson-bom:2.16.1"))
+}
+```
+
 Please note that the same dependency resolution algorithm will be used when running a Genesis Application locally,
 using the [IntelliJ plugin](/develop/development-environment/intellij-plugin) or [Genesis Start](/develop/development-environment/genesis-start).
 
