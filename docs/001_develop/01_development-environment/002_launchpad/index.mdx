@@ -8,76 +8,44 @@ tags:
 sidebar_position: 2
 ---
 
-import ScribeFrame from '@site/src/components/ScribeFrame/ScribeFrame';
+**Launchpad** is a centralized suite of tools designed to empower both developers and domain experts to rapidly 
+assemble, customize, and run Genesis Applications. Whether you are building solutions from scratch, leveraging 
+ready-made templates, or refining existing projects, the Launchpad provides an environment to produce complete 
+applications quickly.
 
-The Genesis Launchpad is your starting point for creating Genesis applications. You can:
+### What is Genesis Create?
 
-- create a new project from scratch in [Genesis Create](/develop/development-environment/launchpad/genesis-create/)
-- open an existing project to view and refine it in [Genesis Create](/develop/development-environment/launchpad/genesis-create/)
-- work on a complete working project, which you can adjust to suit your own requirements, or simply build and run as it is
+**Genesis Create** is the visual project builder at the heart of the Launchpad. It enables users to design 
+applications using intuitive, step-by-step workflows, from defining data models and user interfaces to 
+configuring business logic—all without writing extensive code. 
 
-Projects are developed in [Genesis Create](/develop/development-environment/launchpad/genesis-create/). Once created, you can build and run them in [Genesis Cloud Workspace](/develop/development-environment/launchpad/genesis-cloud-workspace/) or you can [download the generated project and work locally](/develop/development-environment/launchpad/genesis-create/#downloading-your-project-to-run-locally)
+Genesis Create offers powerful, guided interfaces that make it easy to configure every aspect of a 
+Genesis Application, whether you are an expert developer or new to the platform. Projects constructed in 
+Genesis Create can then be built, customized, and tested through a seamless UI.
 
+Genesis Create also leverages focused AI agents guided by strong guardrails by deterministic and probabilistic 
+validation to allow non-developers to implement complex custom logic.
 
-![genesis Launchpad projects](/img/genesis-launchpad/launchpad-projects.png)
+### What is Genesis Cloud Workspace?
 
-When you start the Launchpad, the main hub screen is divided into two.
- 
-- In the upper area, you can either start a new project from scratch, or else select from a list of pre-configured [templates](#genesis-templates).
-- In the lower area, your current projects are listed. You can click on the `Open in code` button on any of these and start working.
+The **Genesis Cloud Workspace** complements Genesis Create by providing a pre-configured cloud-based development 
+environment. With just a click, you can launch your Genesis project in a cloud-hosted instance 
+of Visual Studio Code, complete with all required tools and dependencies—no local setup necessary. 
+This browser-based IDE allows you to code, build, and see your application in action directly 
+from any machine, making collaboration easy and providing a fast route from concept to deployment.
 
-:::info
-You can have up to 100 projects.
-:::
+### Getting Started 
 
-### Launch and run a project
+To get started, you can either create a new project or open an existing project you have saved in your 
+Cloud Workspace. To create a new project from scratch, use the **Start from scratch** option in 
+Genesis Create. Alternatively, you can quickly begin with a ready-made solution by selecting the 
+**Start from template** option, which loads one of our pre-existing templates.
 
-<ScribeFrame 
-  src="https://scribehow.com/embed/Launch_and_run_your_application__LXVf8Ba9RPiocwLea5jeWQ?skipIntro=true&removeLogo=true" 
-  title="Launch and run a project" 
-  scroll="false"
-/>
+![Launchpad Projects](/img/genesis-launchpad/launchpad-projects.png)
 
-:::tip Migrating existing Genesis projects from the previous version of Launchpad
-If you created a project using an earlier version of Launchpad, it will not be listed in your Current Projects.
+Once you have your project open in the Launchpad, follow the instructions outlined on the [Genesis Create page](/develop/development-environment/launchpad/genesis-create/) to 
+guide you through building your application from start to finish. These steps will walk you through configuring 
+your project's data models, user interface, and business logic, ensuring your application is set up and ready 
+to run.
 
-Follow the process for [adding a project to Current Projects](#adding-a-project-to-current-projects) to add your project and start work.
-:::
-
-### Genesis Templates
-
-Genesis Templates are pre-configured Genesis Create projects. You can use them as a start point for your Genesis projects.
-
-To view the list of available templates from Launchpad, click on 'Start from a Template'.
-
-![Launchpad project templates](/img/genesis-launchpad/new-project-from-template.png)
-
-You can click to open one of the templates in Genesis Create. 
-
-:::info
-If you already have a project in Genesis Create, then you will be prompted to overwrite the current project - so make sure that you have saved any changes that you want to keep.
-
-![Template overwrite prompt](/img/genesis-launchpad/template-overwrite-prompt.png)
-:::
-
-Once the template is open, you can inspect the project, make changes to the pre-configured details, or you can build and run immediately.
-
-### Adding a project to Current Projects
-
-If you have created a project in your workspace before the new launchpad interface, it will not automatically appear in your current projects in Launchpad. To add a project:
-
-1. Press `F1` to activate the command bar at the top of VSCode.
-
-2. Search for `genesis: sync`.
-
-3. Run `Genesis: Sync projects to launchpad`.
-
-4. Click on 'View on launchpad'.
-
-    This synchronizes your Genesis projects with Launchpad. If prompted, click `Open` to confirm that you want to open on an external website. This displays your project in the Current Projects.
-
-### Deleting a project
-If you want to delete your project, go to the list of your current projects and click on the delete icon.
-
-![Deleting Project](/img/genesis-launchpad/delete-project.png)
-
+[Genesis Create documentation](/develop/development-environment/launchpad/genesis-create/)
