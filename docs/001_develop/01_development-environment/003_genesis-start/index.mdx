@@ -55,6 +55,26 @@ It is helpful when:
 Bootstrap first runs `remap`, imports the project data, then runs `ConsolidateRights`, and finally `Start All`. 
 :::
 
+### Automatic test data loading (since 8.14)
+
+If you have a `testData` folder in the `genesis` resource folder within your main module's `src/main` directory (see [project structure](/build-deploy-operate/build/project-structure/#server) for details), CSV files in this folder will automatically be loaded after `remap` is executed in a local environment.
+
+The folder structure should be:
+```
+<application_name>-app/
+└── src/
+    └── main/
+        └── genesis/
+            └── testData/
+                ├── RIGHT.csv
+                ├── PROFILE.csv
+                └── ...
+```
+
+:::important
+The `testData` folder will **not** be loaded in a production environment. It is only used for local development and testing purposes.
+:::
+
 ### Import data
 ![Import data](/img/genesis-start/genesis-start-import-data.png)
 
