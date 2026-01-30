@@ -258,6 +258,50 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 }
 ```
 
+#### `criteriaTemplate`
+
+`criteriaTemplate` is a way to enhance the criteria on an incoming data logon.
+Within `criteriaTemplate`, you have access to `userName`, `request` and `db`.
+`userName` is of type `String`. `request` is the DATA_LOGON message of type `GenesisSet`.
+`db` is a read-only version of `AsyncEntityDb` for database lookups to enhance criteria.
+
+These templates are very powerful in combination with data server indices.
+
+##### User-based criteria
+
+To filter data for specific users, use `userName`.
+
+```kotlin
+query(MY_DATA_TABLE) {
+    indices {
+        nonUnique {
+            USER_NAME
+        }
+    }
+    criteriaTemplate {
+        "USER_NAME == '$userName'"
+    }
+```
+
+##### Database-based criteria
+
+To build criteria from database lookups, use `db`.
+
+```kotlin
+query(MY_DATA_TABLE) {
+    indices {
+        nonUnique {
+            ENTITY_ID
+        }
+    }
+    criteriaTemplate {
+        db.get(EntityUsers.byUserName(userName))
+            ?.let { "ENTITY_ID == '${it.entityId}" }
+            ?: "false"
+    }
+}
+```
+
 #### `enrich`
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. This data cannot be cached, as it is derived from the subscribing client's input. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
