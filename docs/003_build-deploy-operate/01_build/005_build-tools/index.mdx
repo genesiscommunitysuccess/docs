@@ -62,7 +62,71 @@ genesisArtifactoryPassword=<your-artifactory-password>
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 :::
 
-### Distribution
+### Application Distribution
 
 Applications can build zip distributions using the `appDistZip` gradle task.
+
+This gradle task will create a standalone zip distribution for an application that can be deployed and that is used as input for the docker image process.
+
+The zip file will include the full genesis distribution, each PBC distribution, the App's server and web distribution.
+
+There are two ways in which this zip can be constructed.
+* By default, each Genesis dependency, including Genesis-Server and each PBC, will include it's full set of jars.
+* If dynamic deployments are enabled, an App can take control of dependency resolution, and this will result in a single set of jars in `site-specific/lib`
+
+### Dynamic Deployments
+
+Using dynamic deployments, Apps can take control of dependency resolution, which achieves the following:
+* Apps are able to overwrite vulnerable dependencies. It is developer's responsibility to assess binary compatibility.
+* A smaller distribution will be created, as jars are only included if required, and then only once.
+
+#### Enabling Dynamic Deployments
+
+To enable dynamic deployments you can either add a gradle property in your side-side project's `gradle.properties`:
+
+```properties
+enableDynamicDeployment=true
+```
+
+Or to set the same property in `genesisExec { ... }`, in your `-app` or `-deploy` module.
+
+```kotlin
+genesisExec {
+    enableDynamicDeployment = true
+}
+```
+
+#### Using `genesisRuntime` configuration
+
+For managing adding runtime dependencies and setting constraints, developers need to use the `genesisRuntime` configuration in Gradle.
+For example to add a runtime dependency on all your processes on `javax.mail:mail:1.4` use:
+```kotlin
+dependencies {
+    genesisRuntime("javax.mail:mail:1.4")
+}
+```
+
+#### Overwriting Dependency Vulnerabilities
+
+The same configuration can be used for setting dependency constraints.
+This is useful to patch the application, in case a vulnerability is detected, and waiting for the next Genesis release is not an option.
+This can be done using the [standard Gradle constraint syntax](https://docs.gradle.org/current/userguide/dependency_constraints.html).
+
+However, the recommendation is to use the `require()` syntax, and to add a reason in `because()`.
+
+For example, to set the minimum version of `netty-handler` to `4.1.100-Final` and add a reference to a CVE use:
+```kotlin
+dependencies {
+    constraints {
+        implementation("io.netty:netty-handler") {
+            version { require("4.1.100.Final") }
+            because("CVE-2022-1471")
+        }
+    }
+}
+```
+
+This will set the minimum version for the dependency across the application.
+Please note that the same dependency resolution algorithm will be used when running a Genesis Application locally,
+using the [IntelliJ plugin](/develop/development-environment/intellij-plugin) or [Genesis Start](/develop/development-environment/genesis-start).
 
