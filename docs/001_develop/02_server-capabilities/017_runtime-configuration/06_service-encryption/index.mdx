@@ -9,9 +9,34 @@ tags:
 - encryption
 ---
 
-Service traffic encryption is designed to enhance the security of exchanges and to protect user privacy against attacks carried out from networks. In this section, we show you how to configure it for your Genesis applications.
+Service traffic encryption is designed to enhance the security of exchanges and to protect user privacy against attacks carried out from networks.
+In this section, we show you how to configure it for your Genesis applications.
+Genesis supports four modes for traffic encryption:
 
-Genesis supports SSL / TLS for client->server and process->process communications where needed.
+* **Plain text**: services do not use encryption
+* **Selective TLS**: selected services use TLS
+* **TLS**: all services use TLS
+* **Mutual TLS/MTLS**: all services use TLS, plus services require client certificates
+
+Before version 8.15 of the Genesis Platform, only plain text and selective TLS were supported.
+To configure previous versions, see [Legacy setup](#legacy-setup).
+The legacy configuration is still supported in version 8.15 and beyond.
+
+## Configuring TLS
+
+To support TLS fine-tuning on a service, Genesis has two types of configuration files:
+* `network-config.yaml` — the global network config settings
+* `network-config-SERVICE_NAME.yaml` — process-level overrides
+
+As soon as a project detects either of these files, the new TLS configuration will be enabled.
+Environment variables can be used in the YAML directly using `${...}`.
+
+For a full overview of all available options, see the [Network configuration YAML reference](./yaml-reference).
+
+## Legacy Setup
+
+
+Genesis supports TLS for client->server and process->process communications where needed.
 
 In order to achieve this, we will create a certificate and a Java Keystore. A file with the extension **.jks** serves as a keystore. It can store keys such as public key certificates, authorization certificates or private keys.
 
@@ -69,7 +94,7 @@ In our example, this certificate can be found at: `/home/exmon/keystore.jks`
 
 Please note, however, that this certificate should be stored in another directory outside the application.
 
-The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers, or to be loaded by the processes that the application intends to communicate with.
+The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the TLS protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers, or to be loaded by the processes that the application intends to communicate with.
 
 ```bash
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
@@ -93,7 +118,7 @@ Right-click on certificate.crt and select 'Install Certificate'. On 'Place all c
 
 ## Securing Genesis processes
 
-First, you must enable processes to communicate via SSL. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
+First, you must enable processes to communicate via TLS. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
 
 All Genesis modules are defined inside the service definition files. To allow for service-to-service encryption you must make this change in the `*-service-definitions.xml` files.
 
@@ -111,7 +136,7 @@ All Genesis modules are defined inside the service definition files. To allow fo
 :::warning
 The global-service-definitions.xml file and the processes.xml file are erased and re-generated every time you run `genesisInstall`. (You should never change these files, because any changes will be lost the next time you run genesisInstall.)
 
-Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
+Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable TLS.
 :::
 
 ### Setting the TLS settings for all processes by default
@@ -121,7 +146,7 @@ Open the **genesis-system-definitions.xml** file and edit the values for `Defaul
 For example:
 
 ```xml
-<!-- Required if the processes are to communicate through SSL -->
+<!-- Required if the processes are to communicate through TLS -->
 <Item name="DefaultKeystoreLocation" value="/home/exmon/keystore.jks" />
 <Item name="DefaultKeystorePassword" value="Password123" />
 <Item name="DefaultCertificate" value="/home/exmon/certificate.crt" />

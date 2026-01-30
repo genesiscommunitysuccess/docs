@@ -1,0 +1,363 @@
+# Network configuration YAML reference
+
+This document describes the YAML configuration for the Genesis network layer. The file is deserialized into `NetworkConfigContainer` and supports messaging, Netty, and TLS settings.
+
+## Introduction and file usage
+
+### Purpose
+
+The network configuration drives:
+
+- **Messaging**: protocol version, serialization format, request-reply timeout
+- **Netty**: thread usage and socket options
+- **TLS**: encryption mode, identity/trust, client auth, peer verification, and authorization
+
+### File names and merge behaviour
+
+- **Application-level**: `network-config.yaml` (loaded first)
+- **Process-level** (optional): `network-config-{processName}.yaml` (overrides application config for that process)
+
+If both files are present, process level configuration will overwrite any global settings.
+
+### Environment placeholders
+
+Environment variable placeholders in the YAML are resolved when the config is loaded, use `${...}` to refer to environmental variables.
+
+### Validation
+
+- When `tls.mode` is not `PLAIN_TEXT`, the TLS block is validated after parsing.
+
+---
+
+## Root schema
+
+The YAML root is the network config container. Top-level keys:
+
+| Section     | Type   | Default / notes                    |
+|------------|--------|-------------------------------------|
+| `messaging` | object | [messaging section](#messaging-section) |
+| `netty`     | object | [netty section](#netty-section) |
+| `tls`       | object | [tls section](#tls-section) (default: PLAIN_TEXT) |
+
+Unknown top-level keys are ignored.
+
+---
+
+## `messaging` section
+
+| Key               | Type    | Default   | Description |
+|-------------------|---------|-----------|-------------|
+| `protocol`        | string  | `V2`      | Genesis net protocol: `V1` or `V2` |
+| `serialization`   | string  | `MSGPACK` | Message serialization: `MSGPACK` or `JSON` |
+| `requestTimeout`  | integer | `60`      | Request-reply timeout in seconds |
+
+There is no TLS-style validator for this section; values are used as configured.
+
+---
+
+## `netty` section
+
+| Key               | Type    | Default | Description |
+|-------------------|---------|---------|-------------|
+| `useNettyThreads` | boolean | `false` | Use Netty threads for message processing |
+| `socket`          | object  | —       | Socket options (below) |
+
+### `netty.socket`
+
+| Key            | Type    | Default | Description |
+|----------------|---------|---------|-------------|
+| `soKeepALive`  | boolean | `true`  | TCP keep-alive |
+| `tcpNoDelay`   | boolean | `true`  | TCP no-delay (Nagle off) |
+
+---
+
+## `tls` section
+
+When `tls.mode` is not `PLAIN_TEXT`, the TLS subtree is validated. Invalid or unknown enum values (e.g. typos) can produce validation errors.
+
+**Note:** `tls.observability` is not documented here (not yet implemented).
+
+### Top-level TLS
+
+| Key                 | Type   | Default     | Description |
+|---------------------|--------|-------------|-------------|
+| `mode`              | string | `PLAIN_TEXT`| Encryption mode: `PLAIN_TEXT`, `TLS`, `SELECTIVE_TLS`, `MUTUAL_TLS` |
+| `protocolPolicy`    | object | —           | [tls.protocolPolicy](#tlsprotocolpolicy) |
+| `identity`          | object | —           | [tls.identity](#tlsidentity) |
+| `trust`             | object | —           | [tls.trust](#tlstrust) |
+| `clientAuth`        | string | `AUTO`      | Client auth (server-side): `AUTO`, `NONE`, `OPTIONAL`, `REQUIRE`. AUTO → NONE for TLS/SELECTIVE_TLS, REQUIRE for MUTUAL_TLS |
+| `peerVerification`  | object | —           | [tls.peerVerification](#tlspeerverification) |
+| `authorization`     | object | —           | [tls.authorization](#tlsauthorization) |
+
+**Validation:** `tls.mode` and `tls.clientAuth` must be valid enum values (see error messages in [Validation summary](#validation-summary)).
+
+### `tls.protocolPolicy`
+
+| Key                | Type           | Default   | Description |
+|--------------------|----------------|-----------|-------------|
+| `minVersion`       | string         | `TLSv1.2` | Minimum TLS version: `TLSv1.2` or `TLSv1.3` |
+| `enabledProtocols` | list of string | `[]`      | e.g. `["TLSv1.2", "TLSv1.3"]` |
+| `cipherSuites`     | list of string | `[]`      | Cipher suite names |
+
+**Validation:** `minVersion` must be `TLSv1.2` or `TLSv1.3`.
+
+### `tls.identity`
+
+| Key           | Type   | Default | Description |
+|---------------|--------|---------|-------------|
+| `source`      | string | `NONE`  | `NONE`, `CERTIFICATE`, or `KEYSTORE` |
+| `certificate` | object | —       | Used when `source: CERTIFICATE` (below) |
+| `keystore`    | object | —       | Used when `source: KEYSTORE` (below) |
+| `reload`      | object | —       | Certificate/keystore reload (below) |
+
+**Validation:** When `tls.mode` is `MUTUAL_TLS`, `identity.source` must be `CERTIFICATE` or `KEYSTORE`. `identity.source` must be a valid enum.
+
+#### When `identity.source: CERTIFICATE`
+
+| Key                  | Type   | Default | Description |
+|----------------------|--------|---------|-------------|
+| `certChainPath`      | string | `""`    | Path to certificate chain (e.g. PEM) |
+| `privateKeyPath`     | string | `""`    | Path to private key |
+| `privateKeyPassword` | string | `""`    | Optional password for encrypted key |
+
+**Validation:** `certChainPath` and `privateKeyPath` must not be blank when `source` is `CERTIFICATE`.
+
+#### When `identity.source: KEYSTORE`
+
+| Key             | Type   | Default  | Description |
+|-----------------|--------|----------|-------------|
+| `type`          | string | `PKCS12` | `PKCS12` or `JKS` |
+| `path`          | string | `""`     | Path to keystore file |
+| `storePassword` | string | `""`     | Keystore password |
+| `keyAlias`      | string | `""`     | Key alias |
+| `keyPassword`   | string | `""`     | Key password |
+
+**Validation:** `path` must not be blank and `type` must be valid when `source` is `KEYSTORE`.
+
+#### `identity.reload` (certificate/keystore reload)
+
+| Key           | Type    | Default | Description |
+|---------------|---------|---------|-------------|
+| `enabled`     | boolean | `false` | Enable periodic reload |
+| `pollInterval`| string  | `"60s"` | Duration: e.g. `60s`, `5m`, `1h`, `1d` (pattern: `\d+[smhd]`) |
+
+**Validation:** When reload is enabled, `pollInterval` must not be blank and must match the duration pattern (e.g. `60s`, `5m`, `1h`, `1d`).
+
+### `tls.trust`
+
+| Key                  | Type           | Default | Description |
+|----------------------|----------------|---------|-------------|
+| `source`             | string         | `SYSTEM`| `SYSTEM`, `CERTIFICATE`, or `TRUSTSTORE` |
+| `certificate`        | object         | —       | When `source: CERTIFICATE` (below) |
+| `truststore`         | object         | —       | When `source: TRUSTSTORE` (below) |
+| `additionalCaBundles` | list of string | `[]`    | Additional CA bundle file paths |
+
+**Validation:** `trust.source` must be a valid enum.
+
+#### When `trust.source: CERTIFICATE`
+
+| Key             | Type   | Default | Description |
+|-----------------|--------|---------|-------------|
+| `caBundlePath`  | string | `""`    | Path to CA bundle (e.g. PEM) |
+
+**Validation:** `caBundlePath` must not be blank when `source` is `CERTIFICATE`.
+
+#### When `trust.source: TRUSTSTORE`
+
+| Key             | Type   | Default  | Description |
+|-----------------|--------|----------|-------------|
+| `type`          | string | `PKCS12` | `PKCS12` or `JKS` |
+| `path`          | string | `""`     | Path to truststore file |
+| `storePassword` | string | `""`     | Truststore password |
+
+**Validation:** `path` must not be blank and `type` must be valid when `source` is `TRUSTSTORE`.
+
+### `tls.peerVerification`
+
+| Key        | Type   | Default | Description |
+|------------|--------|---------|-------------|
+| `mode`     | string | `AUTO`  | `AUTO`, `HOSTNAME`, or `CERT_IDENTITY` |
+| `hostname` | object | —       | Hostname verification (below) |
+
+#### `tls.peerVerification.hostname`
+
+| Key       | Type    | Default | Description |
+|-----------|---------|---------|-------------|
+| `enabled` | boolean | `true`  | Enable hostname verification |
+
+**Validation:** `peerVerification.mode` must be a valid enum value.
+
+### `tls.authorization`
+
+| Key               | Type   | Default | Description |
+|-------------------|--------|---------|-------------|
+| `enabled`         | boolean| `false`| Enable authorization checks |
+| `defaultDecision` | string | `DENY`  | Default decision: `DENY` or `ALLOW` |
+| `identitySource`  | object | —       | Where to take identity from (below) |
+| `allow`           | object | —       | Allow list (identities + patterns) |
+| `deny`            | object | —       | Deny list (identities + patterns) |
+
+#### `tls.authorization.identitySource`
+
+| Key       | Type   | Default | Description |
+|-----------|--------|---------|-------------|
+| `sanType` | string | `URI`   | SAN type used for identity: `URI` or `DNS` |
+
+#### `tls.authorization.allow` / `tls.authorization.deny` (identity list policy)
+
+| Key               | Type           | Default | Description |
+|-------------------|----------------|---------|-------------|
+| `identities`      | list of string | `[]`    | Exact identity values |
+| `identityPatterns`| list of string | `[]`    | Regex patterns for identities |
+
+**Validation:** When authorization is enabled: `defaultDecision` and `identitySource.sanType` must be valid; at least one of `allow` or `deny` must have non-empty `identities` or `identityPatterns` (otherwise: "authorization is enabled but no allow or deny rules are configured").
+
+---
+
+## Validation summary
+
+When TLS is enabled (`tls.mode` ≠ `PLAIN_TEXT`), the following conditions are enforced. Violations produce the corresponding error message:
+
+| Condition | Error message |
+|-----------|----------------|
+| `tls.mode` invalid/unknown | `tls.mode must be a valid mode (PLAIN_TEXT, TLS, SELECTIVE_TLS or MUTUAL_TLS)` |
+| `tls.clientAuth` invalid/unknown | `tls.clientAuth must be a valid client auth mode (AUTO, NONE, OPTIONAL, or REQUIRE)` |
+| `protocolPolicy.minVersion` invalid/unknown | `protocolPolicy.minVersion must be a valid TLS version (TLSv1.2 or TLSv1.3)` |
+| `tls.mode: MUTUAL_TLS` but `identity.source` not CERTIFICATE/KEYSTORE | `tls.identity.source must be configured (CERTIFICATE or KEYSTORE) when mode is MUTUAL_TLS` |
+| `identity.source` invalid/unknown | `identity.source must be a valid source (NONE, CERTIFICATE, or KEYSTORE)` |
+| CERTIFICATE identity but blank `certChainPath` | `identity.certificate.certChainPath must not be blank when CERTIFICATE identity source is used` |
+| CERTIFICATE identity but blank `privateKeyPath` | `identity.certificate.privateKeyPath must not be blank when CERTIFICATE identity source is used` |
+| KEYSTORE identity but blank `path` | `identity.keystore.path must not be blank when KEYSTORE identity source is used` |
+| KEYSTORE identity but invalid `type` | `identity.keystore.type must be a valid store type (PKCS12 or JKS)` |
+| Reload enabled but blank `pollInterval` | `identity.reload.pollInterval must not be blank when reload is enabled` |
+| Reload enabled but invalid `pollInterval` format | `identity.reload.pollInterval must be a valid duration string (e.g., '60s', '5m', '1h', '1d')` |
+| `trust.source` invalid/unknown | `trust.source must be a valid source (SYSTEM, CERTIFICATE, or TRUSTSTORE)` |
+| CERTIFICATE trust but blank `caBundlePath` | `trust.certificate.caBundlePath must not be blank when CERTIFICATE trust source is used` |
+| TRUSTSTORE trust but blank `path` | `trust.truststore.path must not be blank when TRUSTSTORE trust source is used` |
+| TRUSTSTORE trust but invalid `type` | `trust.truststore.type must be a valid store type (PKCS12 or JKS)` |
+| `peerVerification.mode` invalid/unknown | `peerVerification.mode must be a valid mode (AUTO, HOSTNAME, or CERT_IDENTITY)` |
+| Authorization enabled but `defaultDecision` invalid/unknown | `authorization.defaultDecision must be a valid decision (DENY or ALLOW)` |
+| Authorization enabled but `identitySource.sanType` invalid/unknown | `authorization.identitySource.sanType must be a valid SAN type (URI or DNS)` |
+| Authorization enabled but both allow and deny empty | `authorization is enabled but no allow or deny rules are configured` |
+
+---
+
+## Full YAML examples
+
+### Example 1: Minimal (plain text, TLS disabled)
+
+```yaml
+tls:
+  mode: PLAIN_TEXT
+```
+
+### Example 2: Server TLS with PEM identity and system trust
+
+```yaml
+tls:
+  mode: TLS
+  identity:
+    source: CERTIFICATE
+    certificate:
+      certChainPath: /etc/certs/server.crt
+      privateKeyPath: /etc/certs/server.key
+  trust:
+    source: SYSTEM
+  protocolPolicy:
+    minVersion: TLSv1.2
+```
+
+### Example 3: MUTUAL_TLS with CERTIFICATE identity and trust, plus authorization
+
+```yaml
+tls:
+  mode: MUTUAL_TLS
+  identity:
+    source: CERTIFICATE
+    certificate:
+      certChainPath: /etc/certs/server.crt
+      privateKeyPath: /etc/certs/server.key
+  trust:
+    source: CERTIFICATE
+    certificate:
+      caBundlePath: /etc/certs/ca-bundle.crt
+  protocolPolicy:
+    minVersion: TLSv1.3
+  authorization:
+    enabled: true
+    defaultDecision: DENY
+    identitySource:
+      sanType: URI
+    allow:
+      identities:
+        - "spiffe://example.com/service/allowed"
+      identityPatterns:
+        - "spiffe://example.com/service/.*"
+```
+
+### Example 4: MUTUAL_TLS with full options (no observability)
+
+```yaml
+tls:
+  mode: MUTUAL_TLS
+  clientAuth: REQUIRE
+  protocolPolicy:
+    minVersion: TLSv1.3
+    enabledProtocols:
+      - TLSv1.3
+    cipherSuites:
+      - TLS_AES_256_GCM_SHA384
+      - TLS_AES_128_GCM_SHA256
+  identity:
+    source: CERTIFICATE
+    certificate:
+      certChainPath: /etc/certs/server.crt
+      privateKeyPath: /etc/certs/server.key
+      privateKeyPassword: secret
+    reload:
+      enabled: true
+      pollInterval: 5m
+  trust:
+    source: CERTIFICATE
+    certificate:
+      caBundlePath: /etc/certs/ca-bundle.crt
+    additionalCaBundles:
+      - /etc/certs/additional-ca.crt
+  peerVerification:
+    mode: CERT_IDENTITY
+    hostname:
+      enabled: false
+  authorization:
+    enabled: true
+    defaultDecision: DENY
+    identitySource:
+      sanType: URI
+    allow:
+      identities:
+        - "spiffe://example.com/service/api"
+      identityPatterns:
+        - "spiffe://example.com/service/.*"
+```
+
+---
+
+## Enum reference
+
+| Enum | Allowed values |
+|------|-----------------|
+| **EncryptionMode** (`tls.mode`) | `PLAIN_TEXT`, `TLS`, `SELECTIVE_TLS`, `MUTUAL_TLS` |
+| **TlsVersion** (`protocolPolicy.minVersion`) | `TLSv1.2`, `TLSv1.3` |
+| **IdentitySource** (`identity.source`) | `NONE`, `CERTIFICATE`, `KEYSTORE` |
+| **TrustSource** (`trust.source`) | `SYSTEM`, `CERTIFICATE`, `TRUSTSTORE` |
+| **StoreType** (identity/trust store `type`) | `PKCS12`, `JKS` |
+| **ClientAuthMode** (`tls.clientAuth`) | `AUTO`, `NONE`, `OPTIONAL`, `REQUIRE` |
+| **PeerVerificationMode** (`peerVerification.mode`) | `AUTO`, `HOSTNAME`, `CERT_IDENTITY` |
+| **SanType** (`authorization.identitySource.sanType`) | `URI`, `DNS` |
+| **DefaultDecision** (`authorization.defaultDecision`) | `DENY`, `ALLOW` |
+
+**Messaging (root):**
+
+| Enum | Allowed values |
+|------|-----------------|
+| **GenesisNetProtocol** (`messaging.protocol`) | `V1`, `V2` |
+| **MessageSerialization** (`messaging.serialization`) | `MSGPACK`, `JSON` |
