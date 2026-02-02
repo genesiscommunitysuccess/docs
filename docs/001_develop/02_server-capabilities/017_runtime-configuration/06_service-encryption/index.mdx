@@ -151,7 +151,7 @@ The legacy XML and JKS settings correspond to the new [network-config YAML](./ne
 
 * `secure="true"` in `*-service-definitions.xml` — same, see [Selective TLS](#selective-tls) for details.
 * `DefaultKeystoreLocation` / `DefaultKeystorePassword` / `DefaultCertificate` in system-definitions — server identity and trust in the new model (`tls.identity` with KEYSTORE, `tls.trust` with CERTIFICATE or SYSTEM).
-* Per-process `messaging` / `keyStoreLocation` / `keyStorePassword` in `<product>-processes.xml` — process-level overrides in the new model (`network-config-{processName}.yaml`).
+* Per-process `messaging` / `keyStoreLocation` / `keyStorePassword` in `<product>-process-config.kts` — process-level overrides in the new model (`network-config-{processName}.yaml`).
 
 ### Global TLS settings
 
@@ -165,23 +165,6 @@ In **genesis-system-definitions.kts** set `DefaultKeystoreLocation`, `DefaultKey
 ```
 
 These values are used by all processes to communicate with encrypted processes or to accept encrypted connections.
-
-### Overwriting TLS settings for a process
-
-To override the defaults for a specific process, open the process configuration file (as defined in `<product>-processes.xml`) and add:
-
-```xml
-<authManager>
-  <settings>
-    <messaging>
-      <keyStoreLocation>/home/poc/keystore.jks</keyStoreLocation>
-      <keyStorePassword>Password123</keyStorePassword>
-    </messaging>
-  </settings>
-</authManager>
-```
-
-After saving, run `genesisInstall`. When the processes start again, they will use TLS.
 
 ### Web GUI
 
