@@ -1,0 +1,263 @@
+---
+title: 'Repository modules'
+sidebar_label: 'Repository modules'
+id: server-external-sql-repository-modules
+keywords: [server, external, sql, jdbc, api, apis, integration]
+tags:
+  - server
+  - external
+  - sql
+  - jdbc
+  - api
+  - apis
+  - integration
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Repository modules use the [Direct connection API](../direct-connection-api/), and have the same limitations.
+
+
+## Quick example
+
+Let's first go over a quick example
+
+### First - configure a connection
+
+To use SQL integration you will need a named database connection.
+When connecting to a SQL database, Genesis will expose its connection with name `genesis`.
+To connect to another - external - database, specify the jdbc url as a system definition in the follow format: `sql.<connection name>.jdbcUrl`.
+For example:
+
+```kotlin
+item("sql.my-connection.jdbcUrl", "jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1;NON_KEYWORDS=KEY,VALUE")
+```
+
+For full details on connection configuration settings, please see [Configuration](../configuration/).
+
+### Next set up the repository class
+
+After setting up a connection, or using the genesis connection, you are able to define your SQL interface.
+This can be done in either Kotlin or Java.
+The interface will need to be annotated with `@RepositoryModule` and a connection name provided.
+To interact with the database, create an annotated method like `selectAllTrades()` below, and provide a return type and optionally input parameters.
+
+```kotlin
+@RepositoryModule("my-connection")
+interface TradeRepository {
+
+    @SqlQuery(namedQuery = "select * from trade")
+    suspend fun selectAllTrades(): List<Trade>
+}
+```
+### Finally inject the interface
+
+You will then be able to inject this interface as any other class:
+
+```kotlin
+requestReply<Unit, Trade>("HELLO_WORLD") {
+    val repo = inject<TradeRepository>()
+
+    replyList {
+        repo.selectAllTrades()
+    }
+}
+```
+
+For more examples please see [Examples](#examples)
+
+## Repository module reference
+
+Let's dive a little deeper into repository modules.
+In the section below we will show:
+
+* [Annotations](#annotations)
+* [Types](#types)
+* [Return types in read operations](#return-types-in-read-operations)
+* [Return types in write operations](#return-types-in-write-operations)
+
+### Annotations
+
+Repository modules are defined using the `@RepositoryModule` annotation, which specifies the name of the database connection. The interface defines methods for interacting with the database.
+
+#### Class/Interface level annotation
+* `@RepositoryModule` - Enables sql integration on the interface
+* `@RowMapper` - Provides custom row mapper on return types
+
+#### Method annotations
+* `@SqlQuery` - Used for select queries.
+* `@SqlUpdate` - Used for write operations (insert, update, delete).
+* `@Blocking` - Used to indicate blocking calls
+
+#### Parameter annotations
+* `@QueryParameter`: Used for specifying parameter names for function parameters. Required for Java, optional for Kotlin.
+
+Queries can be executed with or without parameters.
+
+### Return types in read operations
+
+Below, the type parameter `TYPE` refers to any type supported in [Direct connection API](../direct-connection-api/#types).
+
+#### Blocking operations
+
+Queries with the following return types are executed synchronously.
+Please note that these methods should be annotated with `@Blocking` to clarify the threading model.
+
+* `TYPE` - non-nullable return, that will throw a `NoSuchElementException` if no record is returned.
+* `TYPE?` - nullable return, that will return a `null` if no record is returned.
+* `List<TYPE>` - returns the full set of results. Please note that this can cause memory pressure. For larger data sets, prefer to use `Flow` or `Flowable`.
+
+#### Asynchronous operations
+
+Queries with the following return types are executed asynchronously.
+Please avoid making a further database call from within an asynchronous operation as these can cause deadlocks, collect first, then query.
+
+* Flow - Kotlin coroutines `Flow<TYPE>`
+* RxJava `Maybe<TYPE>`, `Single<TYPE>` and `Flowable<TYPE>` are supported.
+* `suspend` - this keyword can be added to any type in [Blocking operation](#blocking-operations) to turn the operation into a suspending call
+
+### Return types in write operations
+
+The following return types are supported for write operations:
+
+*   Unit (Kotlin) or void (Java)
+*   Int (Kotlin) or int (Java)
+
+These methods can be made asynchronous by adding the `suspend` keyword in Kotlin.
+
+### Parameter types
+
+Parameters in queries should be named e.g. `:my_parameter`.
+Functions on the interface support either
+
+* No parameters
+* 1 or more [primitives](../direct-connection-api/#primitives)
+* a single kotlin data class/ java record class.
+
+Primitive parameters are mapped using this priority.
+* `@QueryParameter("my_parameter")` - Java interfaces should use this annotation for **all** parameters.
+* Kotlin parameter name
+
+When using data and record classes, the property name should match the parameter name.
+
+## Examples
+
+### Example 1: select query
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlQuery(namedQuery = "select * from trade")
+    fun selectTradeList(): List<Trade>
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlQuery(namedQuery = "select * from trade")
+    List<Trade> selectTradeList();
+}
+```
+
+</TabItem>
+</Tabs>
+
+A simple select query that retrieves a list of `Trade` objects.
+
+### Example 2: insert query with object parameter
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlUpdate(namedQuery =
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    fun insertTrade(trade: Trade): Int
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlUpdate(namedQuery =
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    int insertTrade(Trade trade);
+}
+```
+
+</TabItem>
+</Tabs>
+
+Insert query that takes a `Trade` object as a parameter.
+
+### Example 3: insert query with primitive type parameters
+
+In Kotlin, we only need to annotate parameters whose names are not matched in the query.
+In Java we should always annotate parameters when using primitives.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlUpdate(namedQuery =
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    fun insertTrade(
+        id: String,
+        quantity: Int,
+        price: BigDecimal,
+        status: String,
+        @QueryParameter("client_id") clientId: String,
+    ): Int
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@RepositoryModule("test")
+interface MyInterface {
+    @Blocking
+    @SqlUpdate(namedQuery = 
+        "insert into trade (id, quantity, price, status, client_id) " +
+            "values( :id, :quantity, :price, :status, :client_id )"
+    )
+    int insertTrade(
+        @QueryParameter(name = "id") String id,
+        @QueryParameter(name = "quantity") int quantity,
+        @QueryParameter(name = "price") BigDecimal price,
+        @QueryParameter(name = "status") String status,
+        @QueryParameter(name = "client_id") String clientId
+    );
+}
+```
+
+</TabItem>
+</Tabs>
