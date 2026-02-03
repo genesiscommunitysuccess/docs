@@ -530,3 +530,216 @@ The plugin automatically sets up task dependencies:
 #### Distribution Integration
 
 The plugin identifies the distribution project (a module ending with `-distribution` or the root project if none exists) and applies the `ProductDetailsCreatorPlugin` to generate product metadata required for distribution packaging.
+
+## Genesis OpenAPI Gradle Plugin
+
+The Genesis OpenAPI Gradle plugin (`global.genesis.openapi`) generates type-safe Kotlin API client code from OpenAPI 3.x specifications. The generated code extends the Genesis HTTP client (`AbstractApi`) and integrates with `GenesisHttpClient` for making HTTP requests with retry support, authentication tokens, and typed request/response models.
+
+Use this plugin when you need to call external REST APIs from your Genesis application and want compile-time safety and IDE support for request and response types.
+
+### How to enable?
+
+The OpenAPI plugin is not applied by the Genesis Gradle Settings plugin. Add it to any module that should generate API client code from an OpenAPI spec.
+
+In your module's **build.gradle.kts**:
+
+```kotlin
+plugins {
+    id("global.genesis.openapi") version genesisVersion
+}
+```
+
+Ensure `genesisVersion` is defined (for example in the root project or via `gradle.properties`).
+
+### Configuration
+
+Once the plugin is applied, the `genesisOpenApi` task is available. Configure it in your module's **build.gradle.kts** using the task's extension properties and methods.
+
+#### Specs (recommended)
+
+Use `addSpec` to register one or more OpenAPI specification files, each with its own package name for generated code:
+
+```kotlin
+tasks.genesisOpenApi {
+    addSpec(
+        packageName = "global.genesis.myproduct.external",
+        spec = layout.projectDirectory.file("src/main/resources/openapi/petstore.yaml")
+    )
+    addSpec(
+        packageName = "global.genesis.myproduct.other",
+        spec = layout.projectDirectory.file("src/main/resources/openapi/other-api.yaml")
+    )
+}
+```
+
+Generated classes for each spec will be placed under the given package (and sub-packages for schemas, requests, and responses).
+
+#### Single spec (legacy)
+
+If you use only one spec per module, you can still use the deprecated single-spec configuration:
+
+```kotlin
+tasks.genesisOpenApi {
+    packageName.set("global.genesis.myproduct.api")
+    specification.set(layout.projectDirectory.file("src/main/resources/openapi/api.yaml"))
+}
+```
+
+Prefer `addSpec` for new code.
+
+#### Output directory
+
+Generated Kotlin sources are written under the build directory by default. You can override it:
+
+```kotlin
+tasks.genesisOpenApi {
+    outputDirectory.set(layout.buildDirectory.dir("generated/sources/openapi"))
+}
+```
+
+The default is `build/generated/genesis-openapi`. The plugin automatically adds this directory to the main source set so the generated code is compiled with your project.
+
+#### Pagination config (optional)
+
+For operations that support pagination (e.g. list endpoints with offset/limit or page/size), you can provide a YAML file that maps operation IDs to their index and limit parameter names. The generator will produce a dedicated request type for paginated operations and wire query parameters correctly.
+
+```kotlin
+tasks.genesisOpenApi {
+    addSpec(
+        packageName = "global.genesis.myproduct.api",
+        spec = layout.projectDirectory.file("src/main/resources/openapi/api.yaml")
+    )
+    paginationConfig.set(layout.projectDirectory.file("src/main/resources/openapi/pagination.yaml"))
+}
+```
+
+**Pagination config format** (YAML):
+
+```yaml
+paginated_requests:
+  - operation_id: listPets    # must match operationId in the OpenAPI spec
+    index_param: viewNumber   # query param for page index / offset
+    limit_param: maxRows      # query param for page size / limit
+```
+
+If `operation_id` is missing or does not match any operation, or if `index_param` / `limit_param` are missing, the plugin throws `InvalidPaginationConfigException` at build time.
+
+### Generated code structure
+
+The generator produces Kotlin files using the following package layout (under the base package you configure):
+
+| Package suffix | Description |
+| --- | --- |
+| `.shared.schema` | Types from OpenAPI `components/schemas` (request/response DTOs, enums, etc.) |
+| `.shared.requestbodies` | Shared request bodies from `components/requestBodies` |
+| `.shared.responses` | Shared responses from `components/responses` |
+| `.api.requests` | Inline request body types for specific operations |
+| `.api.responses` | Inline response types for specific operations (including sealed response wrappers) |
+| `.api` | Single API class (e.g. `PetstoreApi` or `SwaggerPetstoreApi`) that extends `AbstractApi` |
+
+The API class name is derived from the spec's `info.title` (converted to PascalCase) or, if missing, from the spec file name (e.g. `petstore.yaml` → `PetstoreApi`).
+
+### Generated API class
+
+The generated API class:
+
+- Extends `global.genesis.httpclient.api.AbstractApi`.
+- Constructor: `(baseUrl: String, maxRetry: Int = 1, client: GenesisHttpClient = GenesisHttpClient())`.
+- For each path operation in the spec, it generates:
+  - A **convenience method** (e.g. `listPets(limit: Int?)`) that returns the success response body and throws on non-success. Implemented as `listPetsResponse(...).okOrThrow()`.
+  - A **full response method** (e.g. `listPetsResponse(...)`) that returns a sealed type representing all declared HTTP status codes (200, 201, 4xx, 5xx, etc.). You can use this when you need to handle multiple statuses or inspect status/headers.
+  - A **request builder** (private) used internally to build `HttpRequest<Body>`.
+
+Response types are sealed classes with one subclass per status code (e.g. `Ok200`, `Default`) and an abstract `okOrThrow()` that returns the success body type. A companion `invoke(HttpResponse)` method parses the raw response into the appropriate subclass.
+
+### Dependencies
+
+Generated code depends on:
+
+- `global.genesis.httpclient` (Genesis HTTP client and `AbstractApi`).
+- Kotlin and, for JSON, the same Jackson/Ktor setup used by `GenesisHttpClient`.
+
+Add the OpenAPI plugin to the module that owns the spec and generates the client; that module will have the generated sources on its compile classpath. Other modules that need to use the client should depend on that module (or on a shared module that exposes the generated package).
+
+Example for a module that generates and uses the client:
+
+```kotlin
+plugins {
+    id("global.genesis.openapi") version genesisVersion
+}
+
+dependencies {
+    implementation(genesis("http-client"))
+    // other dependencies
+}
+```
+
+(Adjust `genesis("http-client")` to match your project's BOM or dependency naming.)
+
+### Task integration
+
+- `compileKotlin` depends on `genesisOpenApi`, so generated code is produced before compilation.
+- The plugin adds the task's output directory to the main Java/Kotlin source set.
+- If the `sourcesJar` task exists, it is made to depend on `genesisOpenApi` so the JAR includes the generated sources.
+- `ProcessResources` is configured with `DuplicatesStrategy.EXCLUDE` to avoid duplicate resource issues when specs live under `src/main/resources`.
+
+### Using the generated client
+
+Example: OpenAPI spec defines a server `http://petstore.swagger.io/v1`, path `GET /pets` with `operationId: listPets` and optional query parameter `limit`, and response 200 with body `Pets`.
+
+**1. Generate the client** (as above) with e.g. base package `global.genesis.myapp.petstore`.
+
+**2. Instantiate the API and call the operation:**
+
+```kotlin
+import global.genesis.httpclient.GenesisHttpClient
+import global.genesis.myapp.petstore.api.PetstoreApi
+
+val client = GenesisHttpClient()
+val api = PetstoreApi(
+    baseUrl = "http://petstore.swagger.io/v1",
+    maxRetry = 2,
+    client = client
+)
+
+// Convenience call: returns success body, throws on non-success
+val pets = api.listPets(limit = 10)
+
+// Full response: handle different status codes
+val response = api.listPetsResponse(limit = 10)
+when (response) {
+    is ListPetsResponse.Ok200 -> println(response.data)
+    is ListPetsResponse.Default -> println("Error: ${response.data}")
+}
+```
+
+**3. Optional: authentication and callbacks**
+
+The base class `AbstractApi` supports:
+
+- `registerApiToken(key, value, type)` to add headers or query parameters (e.g. Bearer token).
+- `registerCallback(httpStatusCode, callback)` and `registerRetryCallback(httpStatusCode, callback)` to handle specific status codes (e.g. refresh token and retry).
+
+Use these on the generated API instance as needed.
+
+### Paginated operations
+
+When you configure pagination for an operation (e.g. `listPets` with `index_param` and `limit_param`), the generator creates a dedicated request type (e.g. `ListPetsRequest`) with properties for the index and limit parameters. The API method then takes a single request parameter:
+
+```kotlin
+val request = ListPetsRequest(viewNumber = 0, maxRows = 20)
+val pets = api.listPets(request)
+```
+
+Query parameters from the OpenAPI spec are mapped onto this request type according to the pagination config.
+
+### Summary
+
+| Item | Description |
+| --- | --- |
+| Plugin ID | `global.genesis.openapi` |
+| Task name | `genesisOpenApi` |
+| Default output | `build/generated/genesis-openapi` |
+| Input | OpenAPI 3.x YAML/JSON specs; optional pagination YAML |
+| Output | Kotlin API class extending `AbstractApi` plus schema/request/response types |
+| Dependencies | `genesis-http-client` (and your Genesis BOM) |
