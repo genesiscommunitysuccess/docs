@@ -16,7 +16,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Genesis Create enables you to create new financial applications rapidly. Without writing a line of code, you can define a data model, configure the services that run a back end, and set up a complete front end for viewing and interacting with data. 
 
-Once you have done that, you can generate the code and then build and run, either in [Genesis Cloud Workspace](#opening-in-your-genesis-workspace) (which provides an IDE to work from), or by downloading and [working in your preferred IDE locally](#downloading-your-project-to-run-locally).
+Once you have done that, you can generate the code and then build and run, either in [Genesis Cloud Workspace](#opening-in-your-genesis-workspace) (which provides an IDE to work from), or by downloading and [working in your preferred IDE locally](/develop/development-environment/launchpad/running-locally).
 
 The code that is generated creates a working app, but you have complete freedom to dive into the code to refine and extend the scope of the app. The generated code includes `To Do` comments, which you can instantly find and address.
 
@@ -330,58 +330,15 @@ Click on the edit button for the tile. This displays the configuration details f
 When you have added all the UI components you need, click on the `Next` button at the bottom right of the window to move on.
 
 ### Summary
-When you reach the Summary page, you have completed the configuration of your project.
+When you reach the Summary page, you have completed the configuration of your project.  Genesis Create is now 
+able to generate a complete Genesis project which you will be able to build and run in any environment with the 
+required dependencies such as a JDK, Node JS and an editor of your choice.  
 
-The next step is to generate the code so that you can build and deploy.
+Genesis provides two options.  First you may generate the project and download it to run locally on your machine.  
+Genesis also provides a cloud based environment pre-configured with all the tools you would need to build the project
+as well as a Web Based Visual Studio Code IDE to allow you to make modifications and see the results.  
 
-#### Opening in your Genesis Workspace
+Please follow the instructions based on the path you will choose.
 
-You can now save your project in Genesis Launchpad so that you can build and run in your Genesis Cloud Workspace. 
-
-To do this:
-
-1. Click on `Save to Launchpad`. This loads your project in [Launchpad](/develop/development-environment/launchpad/).
-
-   ![save and view](/img/genesis-launchpad/save-view-launchpad.png)
-
-2. After a few seconds, click on the newly displayed button `View in Launchpad`. This starts Launchpad and your new project is displayed under the list of `Current Projects`. From there, you can click to open the project in your Cloud Workspace, where you can [build and run](/develop/development-environment/launchpad/#launch-and-run-a-project) without needing to download a development environment.
-
-#### Downloading your project to run locally
-
-Alternatively, you can download your project to run locally following this guide:
-
-<ScribeFrame 
-  src="https://scribehow.com/embed/Download_and_run_your_Create_project_locally__IT-lknXzTDKFn3YUFb2Ftw?skipIntro=true&removeLogo=true" 
-  title="Download and run your project" 
-  scroll="false"
-/>
-
-##### Exclude Gradle Wrapper JAR
-
-![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
-
-By default, your generated project includes a JAR file so that you don't need to have the Gradle build tool available locally. *Some institutions block these JAR files*. If this affects you, make sure that `Exclude Gradle Wrapper JAR` is set to exclude the JAR. After you have unzipped your project, you must then install gradle manually following these instructions.
-
-:::info
-For the instructions below, change `{URL}` to be either:
-- Your company's internal gradle distribution url for gradle 8.3+
-- The public URL https://services.gradle.org/distributions/gradle-8.3-all.zip
-:::
-
-If your local Gradle installation version is 8.3+ or 7.6.4+, you can simply run `gradle wrapper --gradle-distribution-url={URL}` at the project root level. If you don't have this, else if you receive errors, follow these instructions:
-
-1. Download the Gradle zip distribution manually from `{URL}` and unzip it.
-2. Run the following command in your project's root directory. The command assumes you unzipped the gradle download in `~/Downloads` and this part of the command should be changed accordingly if you are using another directory:
-
-    <Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
-    <TabItem value="windows">
-    ```shell
-    ~\Downloads\gradle-8.3\bin\gradle.bat wrapper --gradle-distribution-url={URL}
-    ```
-    </TabItem>
-    <TabItem value="mac">
-    ```bash
-    ~/Downloads/gradle-8.3/bin/gradle wrapper --gradle-distribution-url={URL}
-    ```
-    </TabItem>
-    </Tabs>
+- [Running Locally](/develop/development-environment/launchpad/running-locally)
+- [Running on Genesis Cloud Workspace](/develop/development-environment/launchpad/genesis-cloud-workspace/)
