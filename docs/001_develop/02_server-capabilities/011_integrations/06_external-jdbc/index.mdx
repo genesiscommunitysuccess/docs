@@ -1,0 +1,61 @@
+---
+title: 'SQL Database'
+sidebar_label: 'SQL Database'
+id: server-external-sql-database
+keywords: [server, external, sql, jdbc, api, apis, integration]
+tags:
+  - server
+  - external
+  - sql
+  - jdbc
+  - api
+  - apis
+  - integration
+sidebar_position: 6
+---
+
+## Overview
+
+The Genesis Application Platform integrates with external SQL databases using JDBC.
+
+The key features and benefits are:
+
+- **Seamless Integration**. Designed to work seamlessly with Genesis Request Servers and Event Handlers.
+- **Flexible Usage**. Supports multiple approaches, including passing in queries directly and hiding the database interactions behind an interface.
+
+### Sample usage
+
+There are two main ways of accessing the database integration API:
+
+**Interface-based (repository module):** define an interface with `@SqlQuery` / `@SqlUpdate`. You can then inject and use it in a request server, event handler or directly in code:
+
+```kotlin
+@RepositoryModule("my-connection")
+interface TradeRepository {
+    @SqlQuery(namedQuery = "select * from trade")
+    suspend fun selectAllTrades(): List<Trade>
+}
+
+requestReply<Unit, Trade>("HELLO_WORLD") {
+    replyList { inject<TradeRepository>().selectAllTrades() }
+}
+```
+
+**Direct connection API:** inject `SqlDatabaseConnection` and run queries or updates with parameters:
+
+```kotlin
+@Named("my-connection")
+val connection: SqlDatabaseConnection = inject()
+
+val trades = connection.query(
+    "select * from trade where status = :status",
+    mapOf("status" to "ACTIVE"),
+    Trade::class
+).toList()
+```
+
+## Ways to use SQL
+
+- **[Configuration](./01_configuration/)** — Set up `jdbcUrl` and connection properties for external SQL databases.
+- **[Repository modules](./02_repository-modules/)** — Interface-based access with `@RepositoryModule`, `@SqlQuery`, and `@SqlUpdate`.
+- **[Direct connection API](./03_direct-connection-api/)** — Low-level `SqlDatabaseConnection`, fluent query/statement API, and ExecutableQuery.
