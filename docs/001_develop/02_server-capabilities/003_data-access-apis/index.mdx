@@ -2035,8 +2035,8 @@ db.getBulk<User>() // query A
 However, there is a serious risk of a deadlock while following this pattern. 
 Query A will require a database connection, until it has consumed all data. 
 Query B will require a database connection for every record in the USER table. 
-If no connections are available for Query B, then Query A will never return or release its connection. 
-Which can eventually lead to all available connections being tied up. 
+If no connections are available for Query B, then Query A will never return or release its connection.
+This can eventually lead to all available connections being tied up. 
 
 In this case, the solution would be to use the USER_VIEW, which has data from both tables. 
 In other cases it would mean collecting the data first, and querying after:
@@ -2107,4 +2107,4 @@ item(name = "QueryReadTimeoutSeconds", value = "10")
 item(name = "QueryCancelOnReadTimeout", value = "false")
 ```
 
-For a full list of database related system defintion properties [see here](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions)
+For a full list of database related system definition properties [see here](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions)
