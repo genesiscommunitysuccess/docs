@@ -1,3 +1,3 @@
 label: 'SQL Database'
 className: 'menu__nested-category'
-collapsed: false
+collapsed: true
