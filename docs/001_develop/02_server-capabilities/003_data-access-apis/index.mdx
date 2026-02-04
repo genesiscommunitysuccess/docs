@@ -2021,3 +2021,91 @@ This type has the following fields:
 
 `ModifyDetails` does the same job as `EntityModifyDetails` and takes similar arguments for use with RxDb.
 
+## Deadlocks in the database
+
+Because of the asynchronous nature of the Genesis Database API, it can be tempting to make database calls while streaming data from the database. 
+While this might appear elegant and memory efficient, for example:
+
+```kotlin 
+db.getBulk<User>() // query A
+    .flatMap { db.get(UserAttribute.byUser(it.userName)) } // query B
+    .toList()
+```
+
+However, there is a serious risk of a deadlock while following this pattern. 
+Query A will require a database connection, until it has consumed all data. 
+Query B will require a database connection for every record in the USER table. 
+If no connections are available for Query B, then Query A will never return or release its connection.
+This can eventually lead to all available connections being tied up. 
+
+In this case, the solution would be to use the USER_VIEW, which has data from both tables. 
+In other cases it would mean collecting the data first, and querying after:
+
+```kotlin 
+db.getBulk<UserView>()
+    .toList()
+
+// or 
+val lookups = db.getBulk<User>() 
+    .map { UserAttribute.byUser(it.userName) }    
+    .toList()
+
+val userAttributes = db.getAllAsList(lookups)    
+```
+
+In addition to `getBulk`, this can also happen with `getByCriteria` and `getRange`.
+To help with this, specifically when using a SQL database, Genesis offers help detecting deadlocks.
+
+### SQL Deadlock detection
+
+The platform will monitor the available connections in the connection pool, and the time since a connection was last provided.
+If after a configurable threshold (10 seconds by default):
+* no connection is available in the connection pool
+* no connection has been provided within the threshold 
+
+The database will warn of a potential deadlock situation:
+
+```
+WARN  global.genesis.db.engine.sql.utils.RxJdbcDataSource - No database connections available, last connection provided 10.802010372s ago
+INFO  global.genesis.clustersupport.availability.ProcessState - Setting process to WARNING. Database connection pool deadlock has been detected
+```
+
+This will also set the process status to WARNING. 
+
+The issue might resolve itself over time, in which case you will see:
+
+```
+INFO  global.genesis.db.engine.sql.utils.RxJdbcDataSource - Connections once again available
+INFO  global.genesis.clustersupport.availability.ProcessState - Setting process to UP. Database connection pool is healthy
+```
+
+However, even if it resolves itself, this is very worrying and requires investigation. 
+
+### Slow consuming query detection
+
+In addition to the connection pool monitoring; the platform will also monitor query consumers. 
+This will monitor the rate at which a query's records are being read. 
+This also has a configurable timeout, which is 10 seconds by default. 
+This timeout will be triggered if the consumer has not read a record within the threshold. 
+At that point, the platform can either warn or cancel the query.
+If we warn, the query, slow as it might be, might have a chance to recover. 
+If we cancel, we should be able to return the connection to the pool. 
+
+
+The warning will look like this in the log file:
+```
+WARN  global.genesis.db.engine.sql.utils.RxJdbcDataSource - Slow Query detected, no data was consumed in 10s
+```
+
+### Deadlock related system definition items: 
+
+These are the system definition properties related to deadlock detection:
+
+
+```kotlin 
+item(name = "SqlConnectionDeadlockThresholdSeconds", value = "10")
+item(name = "QueryReadTimeoutSeconds", value = "10")
+item(name = "QueryCancelOnReadTimeout", value = "false")
+```
+
+For a full list of database related system definition properties [see here](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions)
