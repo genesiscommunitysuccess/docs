@@ -1175,11 +1175,23 @@ For example:
 
 #### `coldStart`
 
-A cold start will recalculate the all consolidations from scratch on consolidator restart to ensure all values are correct before starting the real-time event-driven consolidations. To make a cold start, you can run the command:
+A cold start will remove existing data, before recalculating to ensure these values are correct.
+Once all values have been recalculated, real-time event-driven consolidations will continue.
 
-`startProcess GENESIS_CONSOLIDATOR --coldStart`
+There are two ways a consolidator can remove existing data, depending on the configuration:
+```kotlin
+config {
+    tableTransient = true
+}
+```
 
-It is important to note that at the beginning of a cold start, all fields affected by the `select` configuration of the consolidation table are zeroed (or the records will be deleted, if transient) before initiating the re-consolidation of all the records in the database.
+* if `tableTransient` is not set or is false, then all fields affected by the `select` configuration of the output table are set to zero on all records.
+* if `tableTransient` is true, then all records in the output table are deleted.
+
+There are three ways to initiate cold start:
+* starting the process with the `--coldStart` argument: `startProcess GENESIS_CONSOLIDATOR --coldStart`.
+* adding `--coldStart` in the `<arguments>--coldStart</arguments>` as per above.
+* setting the system definition item `CONSOLIDATOR_COLDSTART` to `true`.
 
 <CommonProcesses/>
 
