@@ -2,100 +2,80 @@
 title: 'Service encryption'
 sidebar_label: 'Service encryption'
 id: server-service-encryption
-keywords: [service, traffic, encryption]
+keywords: [service, traffic, encryption, tls, ssl, http, https]
 tags:
 - service
 - traffic
 - encryption
 ---
 
-Service traffic encryption is designed to enhance the security of exchanges and to protect user privacy against attacks carried out from networks. In this section, we show you how to configure it for your Genesis applications.
+Service traffic encryption is designed to enhance the security of exchanges and to protect user privacy against attacks carried out from networks.
+In this section, we show you how to configure it for your Genesis applications.
 
-Genesis supports SSL / TLS for client->server and process->process communications where needed.
+:::info
+Genesis supports TLS only. SSL is deprecated and not supported. Legacy config and docs may still use “SSL” in names or wording; in all cases the protocol in use is TLS.
+:::
 
-In order to achieve this, we will create a certificate and a Java Keystore. A file with the extension **.jks** serves as a keystore. It can store keys such as public key certificates, authorization certificates or private keys.
+## Configuring TLS
 
-## Generating and installing certificates
+To support TLS fine-tuning by process, Genesis has two types of configuration files:
+* `network-config.yaml` — the global network config settings
+* `network-config-PROCESS_NAME.yaml` — process-level overrides
 
-You will need signed certificates to encrypt service traffic.
+As soon as a project detects either of these files, the new TLS configuration will be enabled.
+Environment variables can be used in the YAML directly using `${...}`.
 
-Here are some [instructions](https://support.globalsign.com/digital-certificates/digital-certificate-installation/java-keytool-create-keystore#:~:text=Use%20the%20chart%20below%20to%20guide%20you%20through,on%20hash%20algorithm%20and%20product%20type.%20See%20More) on how to create a Java keystore file.
+For a full overview of all available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
 
-Type the keytool command all on one line:
+## TLS Modes
+Genesis supports four modes for traffic encryption:
 
-`java-home/bin/keytool -genkey -alias server-alias -keyalg RSA -keypass changeit -storepass changeit -keystore keystore.jks`
+* **[Plain text](#plain-text)**: services do not use encryption
+* **[Selective TLS](#selective-tls)**: only selected services use TLS
+* **[TLS](#tls)**: all services use TLS
+* **[Mutual TLS](#mutual-tls)**: all services use TLS, plus services require client certificates
 
-When you press Enter, keytool prompts you to enter the server name, organizational unit, organization, locality, state, and country code.
+Before version 8.15 of the Genesis Platform, only plain text and selective TLS were supported.
+To configure previous versions, see [Legacy configuration](#legacy-configuration).
+The legacy configuration is still supported in version 8.15 and beyond.
 
-Type the server name in response to keytool’s first prompt, in which it asks for first and last names.
+### Plain text
 
-When you run the example applications, the host (server name) specified in the keystore must match the host identified in the `javaee.server.name` property specified in the file `build.properties`.
+Plain text is the default mode, and no additional configuration is required. However, to explicitly use plain text, see the following minimal example.
 
-### Generating a self-signed keystore and respective certificate (optional)
-
-This step is only required if you are using a self-signed certificate due to the absence of one issued by a proper trusted root authority.
-
-```bash
-$ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
-
-What is your first and last name?
-    [Unknown]:  Fred Bloggs
-
-What is the name of your organizational unit?
-    [Unknown]:  IT
-
-What is the name of your organization?
-    [Unknown]:  Genesis Global Technology Ltd
-
-What is the name of your City or Locality?
-    [Unknown]:  London
-
-What is the name of your State or Province?
-    [Unknown]:  Greater London
-
-What is the two-letter country code for this unit?
-    [Unknown]:  GB
-
-Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
-    [no]:  yes
-
-Enter key password for <selfsigned>
-    (RETURN if same as keystore password):
+```yaml
+tls: 
+  mode: PLAIN_TEXT
 ```
 
-Assuming no problems with privileges, you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
+### Selective TLS
 
-In our example, this certificate can be found at: `/home/exmon/keystore.jks`
+In selective TLS, TLS needs to be enabled on a process-by-process level, in contrast to TLS and MUTUAL_TLS, which will **always** be enabled across all processes.
+Those (`secure="true"`) processes will encrypt their connections.
+Client connections to any processes will verify the identity of (`secure="true"`) processes.
+All other connections will be unencrypted and unverified.
 
-Please note, however, that this certificate should be stored in another directory outside the application.
+#### Minimal configuration
 
-The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers, or to be loaded by the processes that the application intends to communicate with.
+This is a minimal configuration to enable selective TLS. For a full overview of available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
 
-```bash
-$ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
+
+```yaml
+tls:
+  mode: SELECTIVE_TLS
+  identity:
+    source: KEYSTORE
+    keystore:
+      type: "JKS"
+      path: "/path/to/server-keystore.jks"
+      storePassword: "testpass"
+      keyAlias: "server"
+      keyPassword: "testpass"
+  trust:
+    source: SYSTEM
 ```
 
-### Installing TLS certificate in different environments
-
-#### Linux
-
-This varies according to the distribution being used. In Ubuntu:
-
-```bash
-$ cp certificate.crt /usr/local/share/ca-certificates/
-
-$ sudo update-ca-certificates
-```
-
-#### Windows
-
-Right-click on certificate.crt and select 'Install Certificate'. On 'Place all certificates in the following store', select 'Trusted Root Certification Authorities'.
-
-## Securing Genesis processes
-
-First, you must enable processes to communicate via SSL. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
-
-All Genesis modules are defined inside the service definition files. To allow for service-to-service encryption you must make this change in the `*-service-definitions.xml` files.
+Additionally, for selective TLS, please adjust the relevant `*-service-definitions.xml` files and add the `secure="true"` property for the required processes.
 
 ```xml
 <configuration>
@@ -108,68 +88,154 @@ All Genesis modules are defined inside the service definition files. To allow fo
   <service host="localhost" name="POSITION_FGW_STREAMER_CLIENT" port ="11006" secure="true"/>
 </configuration>
 ```
+
+### TLS
+
+When using the TLS mode, TLS is used across **all** processes.
+All processes will encrypt their connections.
+Client connections to any processes will verify the identity of the process they are connected to.
+
+#### Minimal configuration
+
+This is a minimal configuration to enable TLS. For a full overview of available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
+
+```yaml
+tls:
+  mode: TLS
+  identity:
+    source: CERTIFICATE
+    certificate:
+      certChainPath: "/path/to/server-cert.pem"
+      privateKeyPath: "/path/to/server-key.pem"
+      privateKeyPassword: ""
+  trust:
+    source: CERTIFICATE
+    certificate:
+      caBundlePath: "/path/to/ca-cert.pem"
+```
+
+### Mutual TLS
+
+When using Mutual TLS mode, TLS is enforced across all processes.
+All processes will encrypt their connections.
+Client connections to any processes will verify the identity of the process they are connected to.
+Processes verify client identities when clients connect.
+
+#### Minimal configuration
+
+This is a minimal configuration to enable Mutual TLS. For a full overview of available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
+
+```yaml
+tls:
+  mode: MUTUAL_TLS
+  identity:
+    source: CERTIFICATE
+    certificate:
+      certChainPath: "/path/to/server-cert.pem"
+      privateKeyPath: "/path/to/server-key.pem"
+  trust:
+    source: CERTIFICATE
+    certificate:
+      caBundlePath: "/path/to/ca-cert.pem"
+```
+
+## Legacy configuration
+
+Legacy TLS is still supported for version 8.15 and beyond. It uses XML (service-definitions, system-definitions, process config) and JKS keystores.
+In legacy configuration, only plain text and selective TLS are available.
+For production, use certificates from a trusted CA (see your CA's documentation for keystore creation). For creating test certificates only, see [Generating certificates for testing only](#generating-certificates-for-testing-only) below.
+
+### How legacy settings relate to the new configuration
+
+The legacy XML and JKS settings correspond to the new [network-config YAML](./network-configuration-yaml/) model as follows:
+
+* `secure="true"` in `*-service-definitions.xml` — same, see [Selective TLS](#selective-tls) for details.
+* `DefaultKeystoreLocation` / `DefaultKeystorePassword` / `DefaultCertificate` in system-definitions — server identity and trust in the new model (`tls.identity` with KEYSTORE, `tls.trust` with CERTIFICATE or SYSTEM).
+* Per-process `messaging` / `keyStoreLocation` / `keyStorePassword` in `<product>-process-config.kts` — process-level overrides in the new model (`network-config-{processName}.yaml`).
+
+### Global TLS settings
+
+In **genesis-system-definitions.kts** set `DefaultKeystoreLocation`, `DefaultKeystorePassword`, and `DefaultCertificate`:
+
+```kotlin
+    // Required if the processes are to communicate through TLS
+    item(name="DefaultKeystoreLocation", value="/path/to/keystore.jks")
+    item(name="DefaultKeystorePassword", value="Password123")
+    item(name="DefaultCertificate", value="/path/to/certificate.crt")
+```
+
+These values are used by all processes to communicate with encrypted processes or to accept encrypted connections.
+
+### Web GUI
+
+Ensure that the server is configured to accept the certificate, .. better wording here..
+Install the server certificate (or the test CA) on the target machine's operating system as a trusted root CA so the browser trusts the connection.
+
+---
+
+## Generating test certificates
+
 :::warning
-The global-service-definitions.xml file and the processes.xml file are erased and re-generated every time you run `genesisInstall`. (You should never change these files, because any changes will be lost the next time you run genesisInstall.)
-
-Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
+The following steps are for creating **self-signed certificates** (e.g. for use in dev or test environments).
+Do not use these certificates in production. For production, use certificates from a trusted CA.
 :::
 
-### Setting the TLS settings for all processes by default
 
-Open the **genesis-system-definitions.xml** file and edit the values for `DefaultKeystoreLocation`, `DefaultKeystoreLocation` and `DefaultCertificate`.
+### Generate a CA cert
 
-For example:
+Create a self-signed CA and store it in a dedicated keystore. This CA will be used to sign server certificates so you can install a single CA cert on test machines instead of each server cert.
 
-```xml
-<!-- Required if the processes are to communicate through SSL -->
-<Item name="DefaultKeystoreLocation" value="/home/exmon/keystore.jks" />
-<Item name="DefaultKeystorePassword" value="Password123" />
-<Item name="DefaultCertificate" value="/home/exmon/certificate.crt" />
+```bash
+keytool -genkeypair -keyalg RSA -keysize 2048 -alias test-ca -keystore ca.jks -storepass changeit -validity 3650 -ext bc:ca:true
 ```
 
-These will be used by all processes to communicate with encrypted processes or to accept connections if they are encrypted themselves.
+When prompted, enter a distinguished name (e.g. CN=Test CA, OU=IT, O=MyOrg, L=City, ST=State, C=XX). The resulting `ca.jks` is your test CA keystore.
 
-### Setting the TLS settings for each individual process
+### Generate a server cert signed by the CA
 
-:::tip
-You can have different processes secured via different certificates, if required.
-:::
+1. Create a server keystore and keypair. Use the server hostname or SANs that clients will use to connect:
 
-This setting is used if the develop wants to override the defaults established above for a specific process.
-
-Open the configuration file for the process (as defined in `<product>-processes.xml`). Make sure it has the following settings:-
-
-```xml
-<authManager>
-  <settings>
-    <messaging>
-      <keyStoreLocation>/home/poc/keystore.jks</keyStoreLocation>
-      <keyStorePassword>Password123</keyStorePassword>
-    </messaging>
-  </settings>
-</authManager>
+```bash
+keytool -genkeypair -keyalg RSA -keysize 2048 -alias server -keystore keystore.jks -storepass changeit -validity 825 -ext SAN=dns:localhost,dns:myserver.example.com
 ```
 
-Once the files have been saved, run `genesisInstall`. When the processes starts again, it will be secure.
+Answer the prompts (CN should match the primary server name). Store this keystore outside the application directory (e.g. `/home/exmon/keystore.jks`).
 
-### GUI
+2. Generate a certificate signing request (CSR) from the server keystore:
 
-To enable the GUI to connect securely, edit the `%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml` setting `encrypted` to `true`.
-
-#### Example
-
-```xml
-<?xml version="1.0"?>
-<primary_service xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <encrypted>true</encrypted>
-  <hosts>
-    <host name="genesisserv4.ad.genesis.global" port="8001" />
-  </hosts>
-</primary_service>
+```bash
+keytool -certreq -alias server -keystore keystore.jks -storepass changeit -file server.csr
 ```
 
-Note: With encryption, if you are using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
+3. Sign the CSR with your test CA:
 
-### Web front-end
+```bash
+keytool -gencert -alias test-ca -keystore ca.jks -storepass changeit -infile server.csr -outfile server.cer -validity 825
+```
 
-Install the `certificate.crt` in the target machine's operating system as a trusted root CA. That is all you need to do.
+4. Import the CA cert into the server keystore (if not already present), then import the signed server cert:
+
+```bash
+keytool -export -alias test-ca -keystore ca.jks -storepass changeit -file ca.crt
+keytool -importcert -alias test-ca -file ca.crt -keystore keystore.jks -storepass changeit -noprompt
+keytool -importcert -alias server -file server.cer -keystore keystore.jks -storepass changeit -noprompt
+```
+
+The server keystore (`keystore.jks`) is now ready for use with `DefaultKeystoreLocation`. To give clients a cert to trust, export the CA cert: `keytool -export -alias test-ca -file ca.crt -keystore ca.jks -storepass changeit`. Use `ca.crt` (not the server cert) when installing on test machines so all servers signed by this CA are trusted.
+
+### Install the test CA cert on a test machine
+
+Clients (browsers, GUI, other test processes) must trust the test CA so they accept server certificates signed by it. Install the CA certificate (`ca.crt`) as a trusted root on each test machine that will connect.
+
+#### Linux
+
+Distribution-dependent. On Ubuntu:
+
+```bash
+sudo cp ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
+
+#### Windows
+
+Right-click `ca.crt` and select **Install Certificate**. Choose **Local machine**, then **Place all certificates in the following store** and select **Trusted Root Certification Authorities**.
