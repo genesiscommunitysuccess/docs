@@ -628,8 +628,8 @@ With one exception, all functions require input. The exception is `count`, which
 | checksum      | calculates a hash over the input                                              | any value  | LONG          | always        |
 | first         | gets first value from input table/view and sets in output table record        | any value  | any value     | sometimes `+` |
 | last          | gets last value from input table/view and sets in output table record         | any value  | any value     | sometimes `+` |
-| maxBy         | complex function that allows for selecting a field a row with a maximum value | any value  | any value     | sometimes `+` |
-| minBy         | complex function that allows for selecting a field a row with a maximum value | any value  | any value     | sometimes `+` |
+| maxBy         | selects a field from the row with the maximum value (for the key) | any value  | any value     | sometimes `+` |
+| minBy         | selects a field from the row with the minimum value (for the key) | any value  | any value     | sometimes `+` |
 
 `*` if previous `min` or `max` value is removed<br />
 `+` if previous any value is changed
@@ -660,7 +660,7 @@ feeSum onlyIf { feeGroup == FeeGroup.COMMISSION } into TOTAL_COMMISSION
 
 #### `maxBy` and `minBy` functions
 
-These functions will find, for a specific group, the record with the largest or smallest value, for then to select a value from that row.
+These functions will find, for a specific group, the record with the largest or smallest value, and then select a value from that row.
 For example:
 ```kotlin
 select {
@@ -681,7 +681,7 @@ In the example above, we will get the record with the largest `price`, let's say
 If we have multiple records with `price` of 100, we will select the record with the largest `quantity` of those records.
 From that record we will get the `orderId`.
 
-`tieBreaker` will select the smallest value, and `tieBreakerDesc` select the largest value.
+`tieBreaker` selects the smallest value, and `tieBreakerDesc` selects the largest value.
 
 Please note that these functions always require an index scan if a grouping is updated, and `indexScan` is required to be set for the consolidator.
 
