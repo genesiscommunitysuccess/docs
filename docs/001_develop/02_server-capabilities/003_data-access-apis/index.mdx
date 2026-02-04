@@ -2053,6 +2053,7 @@ val lookups = db.getBulk<User>()
 val userAttributes = db.getAllAsList(lookups)    
 ```
 
+In addition to `getBulk`, this can also happen with `getByCriteria` and `getRange`.
 To help with this, specifically when using a SQL database, Genesis offers help detecting deadlocks.
 
 ### SQL Deadlock detection
