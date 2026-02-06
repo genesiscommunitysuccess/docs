@@ -35,7 +35,7 @@ B <-->|2. Read/Write|C[Database]
 
 Nearly every table defined in your application's data model in an app will need events to affect the data. The standard events for most tables are **Insert**, **Modify** and **Delete** (but not every table will need all these events); depending on your application workflow, you could need many more.
 
-You have to specify the business logic to process each of these events. You do this in the `*-eventhandler.kts` files.
+You have to specify the business logic to process each of these events. You do this in the `*-eventhandler.kts` files or in compiled Kotlin classes extending `GPalEventHandler`.
 
 <CommonGpalStandards />
 
@@ -1157,14 +1157,26 @@ The Event Handler latency metrics show how long it takes for a specific `eventHa
 
 ## Runtime configuration
 
-To include your `*-eventhandler.kts` file definitions in a runtime process, you need to set the process definition:
+To include your Event Handler definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-eventhandler` is included in `module`
-1. Ensure `global.genesis.eventhandler.pal` is included in `package`
-1. Ensure your eventhandler.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process for an Event Handler, here is an example full process definition:
+- **package**: ensure `global.genesis.eventhandler.pal` is included
+- **module**: ensure `genesis-pal-eventhandler` is included
+- **script**: your `*-eventhandler.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process for an Event Handler, here is an example using script files:
 
 ```xml
   <process name="POSITION_EVENT_HANDLER">
@@ -1180,9 +1192,13 @@ If you wish to run a dedicated process for an Event Handler, here is an example 
   </process>
 ```
 
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
+
 <CommonProcesses/>
 
 ## Testing
+
+You can test using **compiled definitions** (classes extending `GPalEventHandler`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `@TestScriptFile` is required. The examples below use script-based definitions with `@TestScriptFile`.
 
 :::info
 

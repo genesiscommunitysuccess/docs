@@ -52,7 +52,7 @@ When [remap](/build-deploy-operate/operate/commands/remap/) is run with `--dataL
 
 #### `scripts`
 
-Contains Genesis DSL files used to configure most of the server capabilities. Any which do not generate DAOs (as they refer to DAOs) should live in this directory.
+Contains Genesis DSL files used to configure most of the server capabilities. Any which do not generate DAOs (as they refer to DAOs) should live in this directory. PAL definitions (Data Server, Event Handler, and so on) can also be defined in **compiled Kotlin classes** under `src/main/kotlin` (in a package that is scanned by the process), using the same DSL; see [GPAL Standards](/develop/server-capabilities/gpal-standards/#script-and-compiled-definitions).
 
 Any platform module provided `cfg` files which are placed in here will take precedence over that platform module provided file.
 

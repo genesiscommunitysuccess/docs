@@ -1,0 +1,92 @@
+---
+title: 'Migration guide: script to compiled definitions'
+sidebar_label: 'Migration guide: script to compiled'
+id: migration-guide-script-to-compiled
+keywords: [gpal, migration, script, compiled, kotlin]
+tags:
+- gpal
+- migration
+- script
+- compiled
+sidebar_position: 2
+---
+
+This guide describes how to migrate from GPAL script files (`.kts`) to compiled Kotlin classes (`.kt`) that extend the appropriate `GPal*` base class. Migration is **optional**: script-based configuration continues to work as before. Moving to compiled definitions gives you full IDE support and refactoring, compile-time safety, configuration in the same codebase and build as the rest of your application, easier testing without script files, and the ability to adopt gradually (script and compiled can coexist).
+
+## GPAL types and base classes
+
+For each GPAL type, extend the corresponding base class and use the same DSL inside a lambda. The script file extension is the traditional form; the process `<script>` tag is optional when you use only compiled definitions.
+
+| GPAL type       | Base class           | Script extension       | Documentation                                                                                                                                                                                                         |
+|-----------------|----------------------|------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data Server     | `GPalDataserver`     | `-dataserver.kts`      | [Data Server](/develop/server-capabilities/real-time-queries-data-server/) / [Runtime configuration](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)                               |
+| Event Handler   | `GPalEventHandler`   | `-eventhandler.kts`    | [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) / [Runtime configuration](/develop/server-capabilities/core-business-logic-event-handler/#runtime-configuration)                     |
+| Request/Reply   | `GPalRequestServer`  | `-reqrep.kts`          | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) / [Runtime configuration](/develop/server-capabilities/snapshot-queries-request-server/#runtime-configuration)                        |
+| Consolidator    | `GPalConsolidator`   | `-consolidator.kts`    | [Consolidator](/develop/server-capabilities/real-time-aggregation-consolidator/) / [Runtime configuration](/develop/server-capabilities/real-time-aggregation-consolidator/#runtime-configuration)                    |
+| Pipeline        | `GPalPipeline`       | `-pipelines.kts`       | [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/) / [Runtime configuration](/develop/server-capabilities/integrations/data-pipelines/#runtime-configuration)                                |
+| Streamer        | `GPalStreamer`       | `-streamer.kts`        | [Streamer](/develop/server-capabilities/integrations/streamer-apis/streamer/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer/#runtime-configuration)                      |
+| Streamer Client | `GPalStreamerClient` | `-streamer-client.kts` | [Streamer Client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer-client/#runtime-configuration) |
+
+## Step-by-step: from script to compiled
+
+1. **Create a Kotlin class** in a package that is scanned by your process (e.g. your application's main package).
+
+2. **Extend the appropriate base class** (e.g. `GPalDataserver`, `GPalEventHandler`) and move the GPAL from your `.kts` file.
+
+3. **Correct missing imports** GPAL scripts by default have default imports, you will need to ensure all classes used are imported.
+
+4. **Ensure the package is scanned** — by having it in your process's scan roots.
+
+5. **Run the application** and confirm behaviour is unchanged.
+
+6. **Remove the script file** — once all definitions have been migrated, the `<script>` entry for that GPAL type in your process definition can be removed, so only the compiled definition is used. If you keep the script file, both are merged.
+
+### Imports
+
+Script files receive a set of default imports (e.g. generated DAO, view, and `SysDef` types) so you can reference them without declaring imports. In compiled Kotlin classes you must **add the imports yourself**: the base class for your GPAL type (e.g. `global.genesis.dataserver.pal.script.GPalDataserver`), any views or tables you reference (e.g. from `global.genesis.gen.config.view.*` or your generated config package), and any other types used in the DSL. The [GPAL Standards](/develop/server-capabilities/gpal-standards/#whats-available-in-a-gpal-script) page lists the imports that are available by default in scripts; use that as a reference when writing your compiled class.
+
+### Example: Data Server
+
+**Script form:** `myprocess-dataserver.kts`
+
+```kotlin
+query("ALL_TRADES", TRADE_VIEW) {
+    config { compression = true }
+    indices { unique("BY_ID") { TRADE_ID } }
+}
+```
+
+**Compiled form:** `MyDataServer.kt`
+
+```kotlin
+package
+
+import global.genesis.dataserver.pal.script.GPalDataserver
+import global.genesis.gen.config.view.TRADE_VIEW
+
+class MyDataServer : GPalDataserver({
+    query("ALL_TRADES", TRADE_VIEW) {
+        config { compression = true }
+        indices { unique("BY_ID") { TRADE_ID } }
+    }
+})
+```
+
+The DSL inside the lambda is identical; only the surrounding container (script vs class) changes. Ensure the package `definition` (or the package that contains this class) is scanned by your process (e.g. if your process already scans `myapp`, place the class in `myapp.definition` or add that package to the process scan list).
+
+## Mixing script and compiled
+
+You can keep some definitions in script files and add others in compiled classes. Both are merged at runtime; for example, all Data Server queries from scripts and from compiled `GPalDataserver` implementations are combined. Use this to migrate gradually or to keep a few script-based definitions while moving the rest to compiled.
+
+## Runtime configuration
+
+When using **compiled definitions only**, the process definition uses your definition **package** (e.g. `my.app`) and your application's **module** (e.g. `position-app`). You do **not** set the `script` or `language` tags; dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically. For full details (including script-based and mixed setups), see [Processes](/develop/server-capabilities/runtime-configuration/processes/) and the runtime configuration section in each GPAL type's documentation (e.g. [Data Server](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)).
+
+## Testing without a script file
+
+Tests can use **compiled definitions** by ensuring the definition's package is in the scan list (e.g. by providing an instance of the definition class). In that case no script file and no `@TestScriptFile` or `scriptFileName` are required. For details, see the [Testing API](/develop/server-capabilities/testing-api/) and the testing sections in each GPAL type's documentation.
+
+## See also
+
+- [GPAL Standards](/develop/server-capabilities/gpal-standards/) — overview of script and compiled definitions
+- [Processes](/develop/server-capabilities/runtime-configuration/processes/) — how the `<script>` tag works and when it is optional
