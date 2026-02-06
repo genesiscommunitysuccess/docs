@@ -35,7 +35,7 @@ Derived fields cannot be used within a `filter` block.
 
 Where specified data is filtered by the query and this supersedes any client criteria specified.
 
-`filter` requires boolean logic and has access to all fields defined in the query. It has a `data` property which has access to all fields on the entity
+`filter` requires boolean logic and has access to all fields defined in the query. It has a `data` property which has access to all fields on the entity (e.g. on `TRADE_VIEW`: `tradeId`, `tradePrice`, `direction`, `quantity`, `date`, `counterpartyId`, `counterpartyCode`, `counterpartyName`, `instrumentName`, `notional`).
 
 ```kotlin
     filter {
@@ -56,14 +56,48 @@ Note in this example DateTime.now() will be evaluated for every row, which comes
     ...
 ```
 
+You can compare against any entity fields (numeric, string, boolean, etc.), and combine conditions with `&&` and `||`:
+
+```kotlin
+    filter {
+      data.quantity > 100 && data.tradePrice < 50.0
+    }
+```
+
+```kotlin
+    filter {
+      data.instrumentName == "AAPL" || data.counterpartyName.startsWith("Bank")
+    }
+```
+
+```kotlin
+    filter {
+      data.direction == "BUY" && (data.quantity >= 10 || data.tradePrice > 1000.0)
+    }
+```
+
 #### `filterWithUserName`
 
 This is the same as `filter` but also has a context property `userName` with the username who requested the data.
 
-In the example below, the entity has a field `ASSIGNED_TO` which is populated with the user the data is assigned to, in this scenario rows which do not have `ASSIGNED_TO` set to the user querying the data will be filtered out.
+In the example below, the entity has a field `ASSIGNED_TO` which is populated with the user the data is assigned to; rows which do not have `ASSIGNED_TO` set to the user querying the data will be filtered out.
 
 ```kotlin
     filterWithUserName {
       data.assignedTo == userName
+    }
+```
+
+Like with `filter`, you can also compare multiple fields and combine predicates with `&&` and `||`:
+
+```kotlin
+    filterWithUserName {
+      data.assignedTo == userName && data.quantity > 0
+    }
+```
+
+```kotlin
+    filterWithUserName {
+      data.assignedTo == userName && (data.counterpartyId == 1L || data.direction == "BUY") && data.quantity > 0
     }
 ```
