@@ -40,6 +40,8 @@ Usually when creating a application, you would start with a schema; you then bui
 - System processes: _application_**-processes.xml**
 - Service definitions: _application_**-service-definitions.xml
 
+These processes can also (or instead) load definitions from compiled Kotlin classes in scanned packages; see [GPAL Standards](/develop/server-capabilities/gpal-standards/#script-and-compiled-definitions). Command usage is unchanged.
+
 ###### Data Server and Request Server
 
 One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table. For Request Servers, the inbound metadata will be based on the primary key.

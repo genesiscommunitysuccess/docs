@@ -37,7 +37,7 @@ B --> |".sink()"| C( Data Sink)
 
 Data pipelines takes care of the boilerplate of creating these integrations, so developers can focus on the business specific parts of the workflow. It is also built on a set of well defined APIs, making it very easily extensible in both Kotlin (using Kotlin Flow) and Java (using RxJava3 reactive streams).
 
-Genesis Data Pipelines are defined in the `*-pipelines.kts` files.
+Genesis Data Pipelines are defined in the `*-pipelines.kts` files or in compiled Kotlin classes extending `GPalPipeline`.
 
 <CommonGpalStandards />
 
@@ -1233,14 +1233,26 @@ pipelines {
 
 ## Runtime configuration
 
-To include your `*-pipelines.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Data Pipeline definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-datapipeline` is included in `module`
-1. Ensure `global.genesis.pipeline` is included in `package`
-1. Ensure your *-pipelines.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process as a data pipeline, the following gives an example full process definition:
+- **package**: ensure `global.genesis.pipeline` is included
+- **module**: ensure `genesis-pal-datapipeline` is included
+- **script**: your `*-pipelines.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process as a data pipeline, the following gives an example using script files:
 
 ```xml
   <process name="POSITION_DATAPIPELINE">
@@ -1254,6 +1266,8 @@ If you wish to run a dedicated process as a data pipeline, the following gives a
     <language>pal</language>
   </process>
 ```
+
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
 
 <CommonProcesses/>
 

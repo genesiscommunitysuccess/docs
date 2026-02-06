@@ -295,7 +295,7 @@ The task analyzes the following GPAL file types:
 - `*-reqrep.kts` - Request-reply endpoints
 - `*-eventhandler.kts` - Event handler endpoints
 - `*-web-handler.kts` - Web handler endpoints
-- `.kt` files containing GPAL class definitions (e.g., `GPalDataserver`, `GPalRequestServer`, `GPalEventHandler`)
+- `.kt` files containing GPAL class definitions (e.g., `GPalDataserver`, `GPalRequestServer`, `GPalEventHandler`). Other compiled GPAL base classes such as `GPalConsolidator`, `GPalPipeline`, `GPalStreamer`, and `GPalStreamerClient` are used for definitions that do not expose HTTP endpoints and are not analyzed by this task.
 
 **GPAL Analysis Features:**
 

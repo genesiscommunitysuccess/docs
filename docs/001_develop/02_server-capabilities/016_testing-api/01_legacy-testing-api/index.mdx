@@ -279,6 +279,8 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 
 Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
 
+Tests can also use **compiled GPAL definitions** (classes extending `GPalDataserver`, `GPalEventHandler`, and so on) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required.
+
 To use `AbstractGenesisTestSupport`, create a new class and extend:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>

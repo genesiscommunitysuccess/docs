@@ -14,6 +14,17 @@ sidebar_position: 1
 GPAL is Genesis's Kotlin based DSL, used to configure applications easily and quickly. It can provide more than just configuration, as it allows users to define logic and code where necessary, but also allows users to inject and invoke Java code too.
 When using compatible IDEs/plugins it enables features such as autocompletion, help and error highlighting as you code.
 
+## Script and compiled definitions
+
+You can define GPAL in two ways:
+
+- **Script files** (e.g. `*-dataserver.kts`, `*-eventhandler.kts`) — the traditional form, configured via process properties.
+- **Compiled Kotlin classes** (`.kt`) — classes that extend the appropriate `GPal*` base class (e.g. `GPalDataserver`, `GPalEventHandler`). The DSL inside the class is the same as in a script.
+
+Both forms use the same builder API and runtime behaviour. When a process uses both script files and compiled definitions, the framework **merges** them (e.g. all queries from both sources are applied). For **script-based** configuration, set the process **package** and **module** to the PAL service package and module (e.g. `global.genesis.dataserver.pal`, `genesis-pal-dataserver`) and include the **script** and **language** tags. For **compiled definitions only**, set **package** to the package that contains your definition classes and **module** to your application's module; do not set **script** or **language** — dependency injection discovers and instantiates the service. See each GPAL type's documentation for full runtime configuration details.
+
+Benefits of compiled definitions include full IDE support and refactoring, build-time checks, faster process start up times, and the ability to migrate gradually (script and compiled can coexist). For a step-by-step migration from script files to compiled classes, see [Migration guide: script to compiled definitions](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/). See the documentation for each GPAL type (Data Server, Event Handler, Request Server, Consolidator, Pipelines, Streamer, Streamer Client) for the relevant base class and how to include definitions in a process.
+
 ## What's available in a GPAL Script?
 
 GPAL scripts come with default behaviour such as imports that give you access to a variety of classes including generated DAO, SysDef and Fields instances.

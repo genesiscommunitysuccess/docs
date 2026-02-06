@@ -38,6 +38,8 @@ graph TD
 
 ## Example configuration
 
+Consolidators are defined in the `*-consolidator.kts` files or in compiled Kotlin classes extending `GPalConsolidator`.
+
 ### Consolidator as a service
 Here is an example Consolidator file that defines two Consolidators used as a service:
 
@@ -1146,15 +1148,26 @@ A high latency indicates that the consolidator is struggling to keep up.
 
 ## Runtime configuration
 
-To include your `*-consolidator.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Consolidator definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-consolidator` is included in `module`
-2. Ensure `global.genesis.pal.consolidator` is included in `package`
-3. Ensure your consolidator.kts file(s) are defined in `script`
-4. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
-If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
+- **package**: ensure `global.genesis.pal.consolidator` is included
+- **module**: ensure `genesis-pal-consolidator` is included
+- **script**: your `*-consolidator.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process for a consolidator, the following gives an example using script files:
 
 ```xml{13}
 <process name="POSITION_CONSOLIDATOR">
@@ -1170,6 +1183,8 @@ If you wish to run a dedicated process for a consolidator, the following gives a
   <language>pal</language>
 </process>
 ```
+
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
 
 :::important
 
@@ -1226,13 +1241,15 @@ There are three ways to initiate cold start:
 
 ## Testing (legacy)
 
+You can test using **compiled definitions** (classes extending `GPalConsolidator`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required. The example below uses a script-based definition with `scriptFileName`.
+
 :::info
 For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 :::
 
 The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
 
-First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation).
+First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation when using script-based definitions).
 
 ```kotlin
 class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
