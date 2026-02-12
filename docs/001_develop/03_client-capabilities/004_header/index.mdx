@@ -17,6 +17,8 @@ import PrimitiveHeaderExample from './examples/primitive_header_example.js';
 
 `foundation-header` is a micro front-end consisting of a navigation bar and a flyout menu, with routing, account-logout capabilities, and the ability to change the current language.
 
+It supports nested navigation permissions and layout item active indicators for route nav items.
+
 ## Adding a header component to the template
 
 Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
@@ -331,10 +333,22 @@ export class HeaderExampleComponent {
     <tr>
       <td>routeNavItems</td>
       <td><code>FoundationRouteNavItem[]</code></td>
-      <td>Array of FoundationRouteNavItems which define the route buttons to be displayed in the navigation bar.</td>
+      <td>Array of FoundationRouteNavItems which define the route buttons to be displayed in the navigation bar, including nested submenu items. Permission checks apply to nested items as well as top-level items.</td>
       <td>
         ```typescript
         <foundation-header :routeNavItems="${(x) => x.routeNavItems}">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>layoutItemCheck</td>
+      <td><code>(registration: string) => boolean</code></td>
+      <td><strong>(BETA)</strong> Callback used to determine if a layout nav item is currently active. Works with nav items that set <code>isLayoutItem</code> and <code>layoutRegistration</code>.</td>
+      <td>
+        ```typescript
+        <foundation-header
+          :layoutItemCheck="${(x) => (registration) => x.currentLayoutItems.includes(registration)}"
+        >
         ```
       </td>
     </tr>

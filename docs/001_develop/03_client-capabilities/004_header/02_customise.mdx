@@ -264,6 +264,65 @@ In this example:
 
 <SubmenuHeaderExample />
 
+#### Nested submenu permissions
+
+You can define `permission` on nested submenu items (inside `navItems`) the same way you do for top-level items. Permission checks are applied to both levels.
+
+```typescript
+const routes = [
+  {
+    title: 'FX',
+    routePath: 'fx',
+    navItems: [
+      { title: 'FX Cash', routePath: 'grids/fx-cash', permission: 'CAN_VIEW_CASH' },
+      { title: 'FX Options', routePath: 'grids/fx-options', permission: 'CAN_VIEW_OPTIONS' },
+    ],
+  },
+];
+```
+
+If the current user does not have permission for a nested item, that submenu entry is not shown.
+
+#### Layout item indicators
+
+For nav items that represent layout tabs (instead of route navigation), you can:
+
+- Set `isLayoutItem: true`
+- Provide a unique `layoutRegistration` value
+- Bind `layoutItemCheck` on `foundation-header` to determine whether each layout item is active
+
+When active, the item is visually highlighted in the header/dropdown.
+
+```typescript
+const routeNavItems = [
+  {
+    title: 'Dashboard',
+    routePath: 'dashboard',
+  },
+  {
+    title: 'Orders Tab',
+    isLayoutItem: true,
+    layoutRegistration: 'orders',
+    onClick: () => addLayoutItem('orders'),
+  },
+];
+
+@customElement({
+  name: 'header-layout-items-example',
+  template: html`
+    <foundation-header
+      :routeNavItems=${() => routeNavItems}
+      :layoutItemCheck=${(x) => (registration) => x.currentLayoutItems.includes(registration)}
+    ></foundation-header>
+  `,
+})
+export class HeaderLayoutItemsExample extends GenesisElement {
+  currentLayoutItems = ['orders'];
+}
+```
+
+See [layout management guidance](/develop/client-capabilities/layout-management/).
+
 ### Configuration attributes
 
 The following attributes control the appearance and behavior of the header:
