@@ -1,0 +1,76 @@
+---
+title: 'Foundation Forms - approval message workflow'
+sidebar_label: 'Approval message workflow'
+id: foundation-forms-approval-message-workflow
+keywords: [genesis, foundation, ui, forms, smart forms, approval message, set-approval-message]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+  - approval workflow
+---
+
+# Foundation Forms - approval message workflow
+
+Foundation Forms supports approval-message workflows for events that require additional justification (for example, 4-eyes check flows).
+
+## How it works
+
+The workflow can run in two modes:
+
+- **Proactive mode**: the form shows the approval message field from the start.
+- **Reactive mode**: the form requests approval message only when the back end reports it is missing.
+
+## Proactive mode (`set-approval-message`)
+
+When you set the `set-approval-message` attribute on `foundation-form`, the form schema is extended with an `APPROVAL_MESSAGE` field.
+
+On submit, the payload is sent in this structure:
+
+```typescript
+{
+  DETAILS: { ...formFields },
+  APPROVAL_MESSAGE: "your message"
+}
+```
+
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_COUNTERPARTY_INSERT_WITH_APPROVAL"
+  set-approval-message
+></foundation-form>
+```
+
+If the back end still returns `APPROVAL_MESSAGE_MISSING` (for example, the value is empty), the form emits `submit-failure`.
+
+## Reactive mode (default behavior)
+
+If `set-approval-message` is not set (or set to `false`), the form is rendered without `APPROVAL_MESSAGE`.
+
+If submit returns `APPROVAL_MESSAGE_MISSING`, the form opens an approval modal, asks the user for the message, and then retries submit with `APPROVAL_MESSAGE` at the root level.
+
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_COUNTERPARTY_INSERT_WITH_APPROVAL"
+></foundation-form>
+```
+
+## Custom label (`approval-message-label`)
+
+Use `approval-message-label` to customize the label in the approval UI.
+
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_COUNTERPARTY_INSERT_WITH_APPROVAL"
+  approval-message-label="Approval justification"
+></foundation-form>
+```
+
+:::info
+If you are using `entity-management`, the same workflow is available because create/update forms are rendered through `foundation-form`.
+:::
