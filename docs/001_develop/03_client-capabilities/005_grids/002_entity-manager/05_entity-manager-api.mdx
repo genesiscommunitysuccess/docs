@@ -573,6 +573,25 @@ const customActions: CustomAction[] = [
 ```
 </td>
     </tr>
+    <tr>
+      <td>errorNotificationConfig</td>
+      <td><code>NotificationStructure['config']</code></td>
+      <td>Notification config used for submit failures. Defaults to an error snackbar, but can be overridden while keeping titles and messages unchanged.</td>
+<td>
+```typescript
+<entity-management
+  :errorNotificationConfig=${() => ({
+    toast: {
+      type: 'warning',
+      autoClose: true,
+      closeTimeout: 5000,
+      position: 'top-left',
+    },
+  })}
+>
+```
+</td>
+    </tr>
 
     <tr>
       <td>enableCsvExport</td>

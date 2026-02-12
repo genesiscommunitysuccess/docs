@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 The Form component in the **Entity Management** allows users to create new entities or edit existing ones. It is automatically generated based on the metadata of the back-end resource, making it easy to manage data without extensive configuration. This section covers how to configure the form, including defining which fields to display and linking it to the corresponding events such as **Create** and **Edit**.
 
 :::tip
-For more detailed guidance on defining and customizing forms, refer to our section on [Forms](../../007_forms/002_smart-forms/index.mdx) where you'll find useful tips and working examples. 
+For more detailed guidance on defining and customizing forms, refer to our section on [Forms](/develop/client-capabilities/forms/smart-forms/) where you'll find useful tips and working examples. 
 :::
 
 ### Adding default values to the form
@@ -108,6 +108,39 @@ const counterpartyUpdateUIschema: UiSchema = {
   `,
 })
 export class EntityManagementExample extends GenesisElement {}
+```
+
+### Configuring submit-failure notifications
+
+Entity Management exposes an `errorNotificationConfig` property to configure how submit failures are displayed.
+
+- By default, errors are shown as an error snackbar.
+- You can override the notification surface (for example, toast), while keeping titles and body messages unchanged.
+- The same config is reused for optimistic concurrency warnings and other submit errors.
+
+```typescript
+@customElement({
+  name: 'entity-management-notification-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      :errorNotificationConfig=${() => ({
+        toast: {
+          type: 'warning',
+          autoClose: true,
+          closeTimeout: 5000,
+          position: 'top-left',
+        },
+      })}
+    ></entity-management>
+  `,
+})
+export class EntityManagementNotificationExample extends GenesisElement {}
 ```
 
 
