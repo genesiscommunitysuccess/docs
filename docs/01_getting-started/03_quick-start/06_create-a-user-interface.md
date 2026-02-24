@@ -96,6 +96,12 @@ zero-ag-grid {
 ```
 
 
+### Keeping the grid data fresh
+
+When you commit changes back to the server (for example by inserting, modifying, or deleting a trade), the datasource can be configured to poll for fresh data when specific server events are acknowledged. In newer versions of the UI components, this is done via an optional `pollTriggerEvents` setting on the datasource configuration, which lists the event names that should trigger an extra poll.
+
+For higher-level components such as entity management screens, the standard create, update, and delete events are automatically added as polling triggers, so the underlying grids are refreshed after each CRUD operation even if no polling interval is configured.
+
 
 ### Form
 Here, you are going to create a form with four inputs, so a user can input details of a new trade.
