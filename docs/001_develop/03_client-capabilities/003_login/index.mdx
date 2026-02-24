@@ -548,3 +548,18 @@ sso: {
 </tr>
   </tbody>
 </table>
+
+
+### Terms and Conditions 
+The framework supports enabling a Terms and Conditions page that is presented to the user when they login.
+To enable this functionality add this block to the auth-preferences.kts 
+
+```typescript
+    mfa {
+        termsAndConditions {}
+    }
+```
+
+Then when the user logs in they will be presented with a Terms and Conditions dialog as shown here:
+
+![Terms and Conditions dialog example](./docs/img/terms-and-conditions.png)

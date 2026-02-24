@@ -189,10 +189,19 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
 This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
-This component doesn't have any slots.
+
+| Name | Description |
+|---|---|
+| Default | The default slot for icon text, this contents will appear to the right of the icon. |
 
 ### Parts
-This component doesn't have any parts,
+
+
+| Name | Description |
+|---|---|
+| i-icon | The `i` tag which is the fontawersome icon container. |
+| `icon-${x.name}-${x.size}-${x.variant}` | The same `i` tag as i-icon. This part name is dynamic based on the `rapid-icon` attributes. |
+| tooltip | The rapid tooltip, if the `tooltip` attribute is enabled. |
 
 ### Events fired
 

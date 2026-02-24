@@ -1,0 +1,584 @@
+---
+title: 'Section Navigator'
+sidebar_label: 'Section Navigator'
+id: client-interaction-section-navigator
+keywords: [interaction, interactive, section, navigator, navigation, tabs, content, state, management]
+tags:
+- interaction
+- interactive
+- section
+- navigator
+- navigation
+- tabs
+- content
+- state
+- management
+sidebar_position: 9
+---
+
+import SectionNavigatorDemo from '/examples/ui/client-capabilities/interaction/section-navigator.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Section Navigator component provides navigation between different sections with support for state management. Each section can have multiple states that are displayed as icons next to the section label, and the component supports automatic scroll detection to update the active section based on scroll position.
+
+Use cases:
+* Creating multi-section content with navigation
+* Managing section states with visual indicators
+* Building step-by-step processes or workflows
+* Organizing content into logical sections with state tracking
+
+## Example
+
+You can see the Section Navigator in action in the example below. This has four sections with different states, and clicking on a section navigates to that content.
+
+<SectionNavigatorDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-section-navigator></rapid-section-navigator>
+    ```
+
+    Usage
+    ```typescript
+    import type { SectionItem } from '@genesislcap/foundation-ui';
+
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-section-navigator
+          :sections=${(x) => x.sections}
+          scroll-behavior="top"
+          disable-auto-scroll-detection=${false}
+        >
+          <div slot="section1">
+            <h2>Section 1 Content</h2>
+            <p>This is the content for section 1.</p>
+          </div>
+          <div slot="section2">
+            <h2>Section 2 Content</h2>
+            <p>This is the content for section 2.</p>
+          </div>
+          <div slot="section3">
+            <h2>Section 3 Content</h2>
+            <p>This is the content for section 3.</p>
+          </div>
+        </rapid-section-navigator>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      sections: SectionItem[] = [
+        { name: 'section1', label: 'Section 1', states: ['active'] },
+        { name: 'section2', label: 'Section 2', states: ['pending'] },
+        { name: 'section3', label: 'Section 3', states: ['completed'] },
+      ];
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-section-navigator></rapid-section-navigator>
+    ```
+
+    Usage
+    ```tsx
+    import type { SectionItem } from '@genesislcap/foundation-ui';
+
+    export default function SectionNavigatorExample() {
+      const sections: SectionItem[] = [
+        { name: 'section1', label: 'Section 1', states: ['active'] },
+        { name: 'section2', label: 'Section 2', states: ['pending'] },
+        { name: 'section3', label: 'Section 3', states: ['completed'] },
+      ];
+
+      return (
+        <rapid-section-navigator
+          sections={sections}
+          scroll-behavior="top"
+          disable-auto-scroll-detection={false}
+        >
+          <div slot="section1">
+            <h2>Section 1 Content</h2>
+            <p>This is the content for section 1.</p>
+          </div>
+          <div slot="section2">
+            <h2>Section 2 Content</h2>
+            <p>This is the content for section 2.</p>
+          </div>
+          <div slot="section3">
+            <h2>Section 3 Content</h2>
+            <p>This is the content for section 3.</p>
+          </div>
+        </rapid-section-navigator>
+      );
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-section-navigator></rapid-section-navigator>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import type { SectionItem } from '@genesislcap/foundation-ui';
+
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-section-navigator
+          [sections]="sections"
+          scroll-behavior="top"
+          [disable-auto-scroll-detection]="false"
+        >
+          <div slot="section1">
+            <h2>Section 1 Content</h2>
+            <p>This is the content for section 1.</p>
+          </div>
+          <div slot="section2">
+            <h2>Section 2 Content</h2>
+            <p>This is the content for section 2.</p>
+          </div>
+          <div slot="section3">
+            <h2>Section 3 Content</h2>
+            <p>This is the content for section 3.</p>
+          </div>
+        </rapid-section-navigator>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+      sections: SectionItem[] = [
+        { name: 'section1', label: 'Section 1', states: ['active'] },
+        { name: 'section2', label: 'Section 2', states: ['pending'] },
+        { name: 'section3', label: 'Section 3', states: ['completed'] },
+      ];
+    }
+    ```
+
+  </TabItem>
+</Tabs>
+
+## Advanced Usage
+
+### Custom State Icons and Tooltips
+
+```typescript
+import type { SectionItemStateName, SectionItemStateIcon } from '@genesislcap/foundation-ui';
+
+const customStateIcons: Record<SectionItemStateName, SectionItemStateIcon> = {
+  active: { name: 'star', variant: 'solid' },
+  inactive: { name: 'star-o', variant: 'regular' },
+  pending: { name: 'hourglass-half', variant: 'regular' },
+  disabled: { name: 'lock', variant: 'solid' },
+  error: { name: 'exclamation-triangle', variant: 'regular' },
+  completed: { name: 'thumbs-up', variant: 'solid' },
+};
+
+const customStateTooltips: Record<SectionItemStateName, string> = {
+  active: 'This section is currently active',
+  inactive: 'This section is inactive',
+  pending: 'Processing in progress',
+  disabled: 'This section is disabled',
+  error: 'An error occurred in this section',
+  completed: 'All tasks completed successfully',
+};
+
+// Usage
+<rapid-section-navigator
+  :sections=${(x) => x.sections}
+  :stateIcons=${customStateIcons}
+  :stateTooltips=${customStateTooltips}
+>
+```
+
+### Scroll Behavior Configuration
+
+```typescript
+// Scroll to top of section (default)
+<rapid-section-navigator scroll-behavior="top">
+
+// Scroll to show section in viewport
+<rapid-section-navigator scroll-behavior="view">
+```
+
+### Disabling Auto-Scroll Detection
+
+```typescript
+// Disable automatic active section detection
+<rapid-section-navigator disable-auto-scroll-detection>
+```
+
+When auto-scroll detection is disabled, the active section will only change when the user manually clicks on a section link.
+
+### State Management
+
+The Section Navigator supports dynamic state management through custom events. You can add, remove, or clear states for sections programmatically.
+
+#### Available States
+
+- `active` - Indicates the section is currently active
+- `inactive` - Indicates the section is inactive
+- `pending` - Indicates the section has pending operations
+- `disabled` - Indicates the section is disabled
+- `error` - Indicates the section has an error
+- `completed` - Indicates the section is completed
+
+#### State Management Events
+
+You can dispatch events to manage section states in two ways:
+
+**Method 1: With explicit sectionName (dispatch on the component)**
+
+```typescript
+// Add a single state to a section
+const setStateEvent = new CustomEvent('section-navigator-set-state', {
+  detail: { sectionName: 'section1', stateName: 'active' },
+  bubbles: true
+});
+element.dispatchEvent(setStateEvent);
+
+// Add multiple states to a section
+const setStatesEvent = new CustomEvent('section-navigator-set-states', {
+  detail: { sectionName: 'section1', stateNames: ['active', 'pending'] },
+  bubbles: true
+});
+element.dispatchEvent(setStatesEvent);
+
+// Remove a specific state from a section
+const clearStateEvent = new CustomEvent('section-navigator-clear-state', {
+  detail: { sectionName: 'section1', stateName: 'active' },
+  bubbles: true
+});
+element.dispatchEvent(clearStateEvent);
+
+// Clear all states from a section
+const clearAllStatesEvent = new CustomEvent('section-navigator-clear-all-states', {
+  detail: { sectionName: 'section1' },
+  bubbles: true
+});
+element.dispatchEvent(clearAllStatesEvent);
+
+// Clear all states from all sections
+const clearAllStatesEvent = new CustomEvent('section-navigator-clear-all-states', {
+  detail: {},
+  bubbles: true
+});
+element.dispatchEvent(clearAllStatesEvent);
+```
+
+**Method 2: Without sectionName (auto-detection from slot context)**
+
+When dispatching events from within a section slot without `sectionName`, the component automatically detects the section from the slot context:
+
+```typescript
+// Dispatch from within a section slot - sectionName is auto-detected
+const setStateEvent = new CustomEvent('section-navigator-set-state', {
+  detail: { stateName: 'active' },
+  bubbles: true
+});
+buttonElement.dispatchEvent(setStateEvent);
+```
+
+The component will automatically:
+- Detect the section from the slot name or `data-section` attribute
+- Add the `sectionName` to the event detail
+- Re-dispatch the event with the complete detail
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>scroll-behavior</td>
+      <td><code>'view' | 'top'</code></td>
+      <td>Controls how sections are scrolled into view. 'view' scrolls to show the section, 'top' scrolls to the top of the section.</td>
+      <td>
+
+```typescript
+<rapid-section-navigator scroll-behavior="top">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disable-auto-scroll-detection</td>
+      <td><code>boolean</code></td>
+      <td>Disables automatic active section detection during scrolling. When enabled, automatically updates active section based on scroll position.</td>
+      <td>
+
+```typescript
+<rapid-section-navigator disable-auto-scroll-detection>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+  <thead><tr><th>Property</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>sections</td>
+      <td><code>SectionItem[]</code></td>
+      <td>Array of section items to display in the navigator.</td>
+      <td>
+
+```typescript
+<rapid-section-navigator :sections=${(x) => x.sections}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>state-tooltips</td>
+      <td><code>Record&lt;SectionItemStateName, string&gt;</code></td>
+      <td>Custom tooltips for state icons. Overrides default tooltips.</td>
+      <td>
+
+```typescript
+<rapid-section-navigator :stateTooltips=${(x) => x.customTooltips}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>state-icons</td>
+      <td><code>Record&lt;SectionItemStateName, SectionItemStateIcon&gt;</code></td>
+      <td>Custom icons for state types. Overrides default icons.</td>
+      <td>
+
+```typescript
+<rapid-section-navigator :stateIcons=${(x) => x.customIcons}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+| Slot | Use |
+|------|-----|
+| \{sectionName\} | Content for each section (slot name matches section name) |
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| section-navigator-container | The main container element |
+| section-navigator-navigation | The navigation sidebar |
+| section-navigator-section-link | Individual section links |
+| section-navigator-state-icon | State icons next to section labels |
+| section-navigator-content-wrapper | Wrapper for the content area |
+| section-navigator-content | The scrollable content area |
+| section-navigator-content-section | Individual content sections |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+The component listens for state management events. You can dispatch events in two ways:
+
+1. **With `sectionName`**: Dispatch directly on the component element with `sectionName` in the detail
+2. **Without `sectionName`**: Dispatch from within a section slot - the component automatically detects the section from the slot context
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>section-navigator-set-state</td>
+      <td><code>{'{'} sectionName?: string, stateName: string {'}'}</code></td>
+      <td>Listens for events to add a single state to a section. If `sectionName` is omitted and event is dispatched from within a slot, the component auto-detects the section from the slot context.</td>
+<td>
+
+```typescript
+// Method 1: With explicit sectionName (dispatch on component)
+const navigator = document.querySelector('rapid-section-navigator');
+const event = new CustomEvent('section-navigator-set-state', {
+  detail: { sectionName: 'section1', stateName: 'active' },
+  bubbles: true
+});
+navigator.dispatchEvent(event);
+
+// Method 2: Without sectionName (auto-detected from slot)
+// Button is inside the section slot
+<rapid-section-navigator>
+  <div slot="section1">
+    <h2>Section 1 Content</h2>
+    <rapid-button id="setActiveBtn">
+      Set Active State
+    </rapid-button>
+  </div>
+</rapid-section-navigator>
+
+<script>
+const button = document.querySelector('#setActiveBtn');
+button.addEventListener('click', (event) => {
+  const setStateEvent = new CustomEvent('section-navigator-set-state', {
+    detail: { stateName: 'active' },
+    bubbles: true
+  });
+  event.target.dispatchEvent(setStateEvent);
+  // Component auto-detects 'section1' from slot context
+});
+</script>
+```
+</td>
+    </tr>
+    <tr>
+      <td>section-navigator-set-states</td>
+      <td><code>{'{'} sectionName?: string, stateNames: string[] {'}'}</code></td>
+      <td>Listens for events to add multiple states to a section. If `sectionName` is omitted and event is dispatched from within a slot, the component auto-detects the section from the slot context.</td>
+<td>
+
+```typescript
+// Method 1: With explicit sectionName (dispatch on component)
+const navigator = document.querySelector('rapid-section-navigator');
+const event = new CustomEvent('section-navigator-set-states', {
+  detail: { sectionName: 'section1', stateNames: ['active', 'pending'] },
+  bubbles: true
+});
+navigator.dispatchEvent(event);
+
+// Method 2: Without sectionName (auto-detected from slot)
+<rapid-section-navigator>
+  <div slot="section1">
+    <h2>Section 1 Content</h2>
+    <rapid-button id="setMultipleStatesBtn">
+      Add Multiple States
+    </rapid-button>
+  </div>
+</rapid-section-navigator>
+
+<script>
+const button = document.querySelector('#setMultipleStatesBtn');
+button.addEventListener('click', (event) => {
+  const setStatesEvent = new CustomEvent('section-navigator-set-states', {
+    detail: { stateNames: ['active', 'pending'] },
+    bubbles: true
+  });
+  event.target.dispatchEvent(setStatesEvent);
+  // Component auto-detects 'section1' from slot context
+});
+</script>
+```
+</td>
+    </tr>
+    <tr>
+      <td>section-navigator-clear-state</td>
+      <td><code>{'{'} sectionName?: string, stateName: string {'}'}</code></td>
+      <td>Listens for events to remove a specific state from a section. If `sectionName` is omitted and event is dispatched from within a slot, the component auto-detects the section from the slot context.</td>
+<td>
+
+```typescript
+// Method 1: With explicit sectionName (dispatch on component)
+const navigator = document.querySelector('rapid-section-navigator');
+const event = new CustomEvent('section-navigator-clear-state', {
+  detail: { sectionName: 'section1', stateName: 'active' },
+  bubbles: true
+});
+navigator.dispatchEvent(event);
+
+// Method 2: Without sectionName (auto-detected from slot)
+<rapid-section-navigator>
+  <div slot="section1">
+    <h2>Section 1 Content</h2>
+    <rapid-button id="clearStateBtn">
+      Clear Active State
+    </rapid-button>
+  </div>
+</rapid-section-navigator>
+
+<script>
+const button = document.querySelector('#clearStateBtn');
+button.addEventListener('click', (event) => {
+  const clearStateEvent = new CustomEvent('section-navigator-clear-state', {
+    detail: { stateName: 'active' },
+    bubbles: true
+  });
+  event.target.dispatchEvent(clearStateEvent);
+  // Component auto-detects 'section1' from slot context
+});
+</script>
+```
+</td>
+    </tr>
+    <tr>
+      <td>section-navigator-clear-all-states</td>
+      <td><code>{'{'} sectionName?: string {'}'}</code></td>
+      <td>Listens for events to clear all states from a section or all sections. If `sectionName` is provided, clears states from that section only. If omitted, clears states from all sections. When dispatched from within a slot without `sectionName`, the component auto-detects the section from the slot context.</td>
+<td>
+
+```typescript
+// Method 1: Clear all states from a specific section
+const navigator = document.querySelector('rapid-section-navigator');
+const event = new CustomEvent('section-navigator-clear-all-states', {
+  detail: { sectionName: 'section1' },
+  bubbles: true
+});
+navigator.dispatchEvent(event);
+
+// Method 2: Clear all states from all sections
+const event = new CustomEvent('section-navigator-clear-all-states', {
+  detail: {},
+  bubbles: true
+});
+navigator.dispatchEvent(event);
+
+// Method 3: Auto-detect section from slot context
+<rapid-section-navigator>
+  <div slot="section1">
+    <h2>Section 1 Content</h2>
+    <rapid-button id="clearAllStatesBtn">
+      Clear All States
+    </rapid-button>
+  </div>
+</rapid-section-navigator>
+
+<script>
+const button = document.querySelector('#clearAllStatesBtn');
+button.addEventListener('click', (event) => {
+  const clearAllEvent = new CustomEvent('section-navigator-clear-all-states', {
+    detail: {},
+    bubbles: true
+  });
+  event.target.dispatchEvent(clearAllEvent);
+  // Component auto-detects 'section1' from slot context
+});
+</script>
+```
+</td>
+    </tr>
+  </tbody>
+</table>

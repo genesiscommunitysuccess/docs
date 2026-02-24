@@ -202,3 +202,31 @@ const createExpressionBuilder = (componentType, initialModel, configPropName) =>
 // Create the specific builder components using the factory
 export const RuleBuilderExample = createExpressionBuilder('rule', ruleModel, 'ruleConfig');
 export const ValueBuilderExample = createExpressionBuilder('value', valueModel, 'valueConfig');
+
+const dateModel = {
+  TYPE: "PREDICATE_EXPRESSION",
+  OPERATION: "AND",
+  EXPRESSIONS: [
+    {
+      TYPE: "METHOD_EXPRESSION",
+      METHOD: "DATE_TIME_IS_IN_RANGE",
+      PARAMETERS: [
+        {
+          TYPE: "FIELD",
+          NAME: "lastUpdated"
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "DAY"
+        },
+        {
+          TYPE: "STRING",
+          VALUE: "PREVIOUS"
+        }
+      ]
+    }
+  ]
+};
+
+export const RuleBuilderDateExample = createExpressionBuilder('rule', dateModel, 'ruleConfig');
+

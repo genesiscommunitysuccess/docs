@@ -2,7 +2,7 @@
 title: 'Communications'
 sidebar_label: 'Communications'
 id: server-communications-meta
-keywords: [communications, message, messaging, messages, meta, metadata, input, network, api]
+keywords: [communications, message, messaging, messages, meta, metadata, input, network, api, security, xss, sanitisation]
 tags:
   - communications
   - message
@@ -13,6 +13,9 @@ tags:
   - input
   - network
   - api
+  - security
+  - xss
+  - sanitisation
 sidebar_position: 15
 ---
 
@@ -535,6 +538,45 @@ A single message can contain multiple errors and warnings. Here is how the respo
   - for multiple 5xx errors, the response status code is set to 500
   - for multiple 4xx errors, the response status code is set to the status code of first error
   - for a mix of 5xx and 4xx errors, the response status code is set to 500
+
+
+## Security
+
+### XSS string sanitisation
+
+You can protect against Cross-Site Scripting (XSS) by enabling string sanitisation for incoming message data. The platform supports two approaches: system-wide sanitisation for all string properties, or per-field sanitisation on type-safe message data classes.
+
+**System-wide XSS sanitisation**
+
+Enable XSS string sanitisation for all string properties by setting the system-definition property `XssStringSanitiserEnabled` to `true`. By default this property is `false`.
+
+:::caution
+
+Enabling system-wide XSS sanitisation has a noticeable impact on performance, as every string property in every message is sanitised during deserialisation. Prefer per-field sanitisation on type-safe messages when you only need to sanitise specific fields.
+
+:::
+
+**Per-field XSS sanitisation on type-safe messages**
+
+For type-safe messages (for example in event handlers or custom request–reply definitions), you can annotate specific string fields to use the XSS sanitising deserialiser. Only annotated fields are sanitised; other string fields are left unchanged.
+
+Apply `@field:JsonDeserialize(using = XssSanitizingDeserializer::class)` to the field. You need the following imports:
+
+```kotlin
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import global.genesis.jackson.serialization.XssSanitizingDeserializer
+
+data class SanitisedDataClass(
+    @field:JsonDeserialize(using = XssSanitizingDeserializer::class)
+    val sanitised: String,
+    val unsanitised: String
+)
+```
+
+When deserialising, the `sanitised` field is sanitised (script tags are stripped and certain characters are escaped), while `unsanitised` keeps the raw value. For example:
+
+- **Before sanitisation:** `"<script>alert('XSS')</script><b>Hello</b>"}\"`
+- **After sanitisation:** `&#34;<b>Hello</b>&#34;}&#34;` (script removed, quotes escaped as `&#34;`)
 
 
 ## Metadata annotations

@@ -1,0 +1,51 @@
+---
+title: 'Configuration'
+sidebar_label: 'Configuration'
+id: server-external-sql-configuration
+keywords: [server, external, sql, jdbc, api, apis, integration]
+tags:
+  - server
+  - external
+  - sql
+  - jdbc
+  - api
+  - apis
+  - integration
+sidebar_position: 1
+---
+
+This page describes how to configure external SQL connections in the Genesis Application Platform.
+
+Database connections are defined using system definitions, where properties have the following hierarchy:
+`sql.{connection-name}.{property}`.
+
+Where `{connection-name}` will be how the connection is referred in the `@RepositoryModule` annotation.
+The connection will also become a `@Named` injectable.
+
+A connection will become available as soon as a `jdbcUrl` property for it has been assigned, and this is the only required property.
+All other properties match the standard Genesis SQL database properties defined [here](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions),
+as per the table below.
+
+Apart from `jdbcUrl`, `username` and `password`, other properties will default to the system definition property,
+or their framework specified default.
+
+| Property                  | Required | System Definition Property        |
+|---------------------------|:--------:|:----------------------------------|
+| jdbcUrl                   |    ✔️    | n/a                               |
+| username                  |    ❌     | n/a                               |
+| password                  |    ❌     | n/a                               |
+| connectionMaximumPoolSize |    ❌     | DbSqlMaxPoolSize                  |
+| connectionTimeout         |    ❌     | DbSqlConnectionTimeoutMillis      |
+| idleTimeout               |    ❌     | DbSqlIdleTimeoutMillis            |
+| maxLifetime               |    ❌     | DbSqlMaxLifetimeMillis            |
+| minimumIdle               |    ❌     | DbSqlMinimumIdleMillis            |
+| validationTimeout         |    ❌     | DbSqlValidationTimeoutMillis      |
+| keepaliveTime             |    ❌     | DbSqlKeepaliveTimeMillis          |
+| leakDetectionThreshold    |    ❌     | DbSqlLeakDetectionThresholdMillis |
+| cachePrepStmts            |    ❌     | DbSqlCachePrepStmts               |
+| prepStmtCacheSize         |    ❌     | DbSqlPrepStmtCacheSize            |
+| prepStmtCacheSqlLimit     |    ❌     | DbSqlPrepStmtCacheSqlLimit        |
+| resultSetFetchSize        |    ❌     | DbSqlResultSetFetchSize           |
+| sqlCatalog                |    ❌     | DbSqlCatalog                      |
+| connectionInitQuery       |    ❌     | DbSqlConnectionInitSql            |
+| connectionTestQuery       |    ❌     | DbSqlConnectionTestQuery          |

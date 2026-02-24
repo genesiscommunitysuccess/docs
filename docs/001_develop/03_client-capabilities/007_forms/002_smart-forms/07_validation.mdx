@@ -136,6 +136,138 @@ The form will show any errors if you try to submit or blur an element.
 
 <MinMaxValueFormExample/>
 
+### Error messages
+
+When validation fails, Foundation Forms shows a human‑readable error message under the affected field. The exact text depends on the rule that failed and can come from the JSON schema, the UI schema, or a default message.
+
+Typical default messages include:
+
+- **Required fields**: shown when a property listed in `required` is empty, for example: `This field is required`.
+- **Length limits**: for `minLength` / `maxLength`, for example: `Must be at least N characters` or `Must be at most N characters`.
+- **Value limits**: for `minimum` / `maximum`, for example: `Must be greater than or equal to N` or `Must be less than or equal to N`.
+- **Pattern validation**: for `pattern`, for example: `Value does not match the required format`.
+- **AnyOf / OneOf**: when using composition keywords like `anyOf`, Foundation Forms computes a user‑friendly message for the control using the [`getAnyOfErrorMessage`](./docs/api/foundation-forms.getanyoferrormessage.md) helper.
+
+You can override the default text using JSON schema or UI schema configuration:
+
+- **JSON schema**: use the standard `errorMessage` keyword from JSON schema. This is applied whenever that rule fails for the field.
+- **UI schema**: you can provide a custom error message for a specific control via the UI schema options. When both are present, the UI schema message takes precedence over the JSON schema `errorMessage` and the generic fallback.
+
+This lets you start with sensible defaults and then refine individual error messages to match your product wording and UX guidelines.
+
+#### JSON schema examples
+
+Below are simple JSON schema examples for each error message type:
+
+##### Required field message
+
+```ts
+const schemaWithRequiredError: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    username: {
+      type: 'string',
+    },
+  },
+  required: ['username'],
+  errorMessage: {
+    required: {
+      username: 'Username is required',
+    },
+  },
+};
+```
+
+##### Min / max length messages
+
+```ts
+const schemaWithLengthErrors: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    password: {
+      type: 'string',
+      minLength: 8,
+      maxLength: 32,
+    },
+  },
+  errorMessage: {
+    properties: {
+      password: {
+        minLength: 'Password must be at least 8 characters long',
+        maxLength: 'Password must be at most 32 characters long',
+      },
+    },
+  },
+};
+```
+
+##### Min / max value messages
+
+```ts
+const schemaWithValueErrors: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    age: {
+      type: 'number',
+      minimum: 18,
+      maximum: 65,
+    },
+  },
+  errorMessage: {
+    properties: {
+      age: {
+        minimum: 'Age must be 18 or older',
+        maximum: 'Age must be 65 or younger',
+      },
+    },
+  },
+};
+```
+
+##### Pattern message
+
+```ts
+const schemaWithPatternError: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    email: {
+      type: 'string',
+      pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$',
+    },
+  },
+  errorMessage: {
+    properties: {
+      email: 'Please enter a valid email address',
+    },
+  },
+};
+```
+
+##### AnyOf / OneOf message
+
+```ts
+const schemaWithAnyOfError: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    contact: {
+      anyOf: [
+        {
+          type: 'string',
+          format: 'email',
+        },
+        {
+          type: 'string',
+          pattern: '^\\+?[0-9]{7,15}$',
+        },
+      ],
+      errorMessage: {
+        anyOf: 'Enter a valid email address or phone number',
+      },
+    },
+  },
+};
+```
+
 ### Pattern validation
 
 You can validate the input of your field using regex to ensure the user enters a certain pattern of characters.

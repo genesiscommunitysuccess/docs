@@ -39,7 +39,7 @@ Streamers can only work as intended by using a numeric field in the underlying t
 
 Additionally, streamers may use `xlator` plugins that enhance the available streamer configuration with new configuration blocks and data transformations. See the FIX xlator documentation [here](/develop/business-components/fix/fix-xlator/) for more information.
 
-Genesis Streamers are defined in the `*-streamer.kts` files.
+Genesis Streamers are defined in the `*-streamer.kts` files or in compiled Kotlin classes extending `GPalStreamer`.
 
 <CommonGpalStandards />
 
@@ -287,14 +287,26 @@ The metrics for the Streamer measure how long it takes to replay a single messag
 
 ## Runtime configuration
 
-To include your `*-streamer.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Streamer definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-streamer` is included in `module`
-2. Ensure `global.genesis.streamer.pal` is included in `package`
-3. Ensure your streamer.kts file(s) are defined in `script`
-4. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process for a streamer, the following gives an example full process definition:
+- **package**: ensure `global.genesis.streamer.pal` is included
+- **module**: ensure `genesis-pal-streamer` is included
+- **script**: your `*-streamer.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process for a streamer, the following gives an example using script files:
 
 ```xml{13}
 <process name="POSITION_STREAMER">
@@ -310,5 +322,7 @@ If you wish to run a dedicated process for a streamer, the following gives an ex
   <language>pal</language>
 </process>
 ```
+
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
 
 <CommonProcesses/>

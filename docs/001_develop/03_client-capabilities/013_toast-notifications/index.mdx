@@ -205,6 +205,28 @@ For the parameters, refer to [ToastStructure](./docs/api/foundation-notification
 ```
 As mentioned before, toast notifications automatically close after a specified duration, using the `autoClose` and `closeTimeout` options. Like [`snackbar`](#snackbar), they can be styled using the `type` option that supports `error, success, warning and info` styles.
 
+#### Icon configuration
+
+You can optionally show an icon next to the toast content by setting the `iconName` property on the [`ToastStructure`](./docs/api/foundation-notifications.toaststructure.iconname.md). This uses the same icon naming as the `rapid-icon` component (for example, Font Awesome icon names when configured in your design system).
+
+```typescript
+showNotificationToast(
+  {
+    title: 'Trade saved',
+    body: 'Your changes have been stored',
+    iconName: 'circle-check',
+    toast: {
+      autoClose: true,
+      closeTimeout: 3000,
+      type: 'success',
+    },
+  },
+  'rapid',
+);
+```
+
+If `iconName` is omitted, the toast will use its default icon for the given `type` (such as success or error) or no icon, depending on your design system configuration.
+
 ### Banner
 Banner notifications are used for delivering key messages. They appear at the `top` of the screen. A banner usually includes `confirming` and `dismissing` actions with callbacks.
 
@@ -288,6 +310,7 @@ showNotificationDialog(
   {
     title: 'Important message',
     body: 'Lorem ipsum',
+    iconName: 'circle-check',
     dialog: {
       confirmingActions: [
         { label: 'Confirm', action: () => console.log('Lorem ipsum') },
@@ -451,7 +474,41 @@ export class AppComponent {
 </TabItem>
 </Tabs>
 
-Additionally, you can provide the `resource-name` attribute to the `notification-listener` component. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.
+### Attributes
+
+The `notification-listener` component supports several attributes to customize its behavior:
+<table>
+    <thead>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>resource-name</td>
+        <td><code>string</code></td>
+        <td>The name of the server resource that pushes notifications to the client, normally 'ALL_NOTIFY_ALERT_RECORDS'. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.</td>
+        <td>
+            ```typescript
+            <rapid-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+            ```
+        </td>
+    </tr>
+    <tr>
+        <td>toast-position</td>
+        <td><code>ToastPosition</code></td>
+        <td>Position of toast notifications on the screen. Can be `top-left`, `top-right`, `bottom-left`, or `bottom-right`. Defaults to `top-right` if not specified.</td>
+        <td>
+            ```typescript
+            <rapid-notification-listener toast-position="top-right">
+            ```
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 ## Styling
 

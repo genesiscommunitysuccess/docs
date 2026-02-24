@@ -132,69 +132,61 @@ eventHandler {
 }
 ```
 
-### Example 3: Request Server with OpenAPI client
+### Example 3: Request Server with OpenAPI-generated client
 
-This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in a Request Server to get an account by id:
+You can use a type-safe client generated from an OpenAPI spec inside a Request Server. Instantiate the generated API class (from the [Genesis OpenAPI Gradle Plugin](/build-deploy-operate/build/plugins/#genesis-openapi-gradle-plugin)), register tokens if needed, and call its methods in `replySingle` or `replyList`:
 
 ```kotlin
-
-val tradeApiService = TradeApiService("https://my-external-api")
-tradeApiService.registerApiToken("Authorization", "Basic ABC123=")
+val api = MyExternalApi("https://my-external-api")
+api.registerApiToken("Authorization", "Basic ABC123=")
 
 requestReplies {
   requestReply<Int, Account>("GET_ACCOUNT_BY_ID") {
     replySingle {
-      accountsApi.getAccountById(it.toLong())
+      api.getAccountById(it.toLong())
     }
   }
 }
-
 ```
 
-### Example 4 - Request Server with OpenAPI client inside an Event Handler
+### Example 4: Event Handler with OpenAPI-generated client
 
-This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in an Event Handler to update a trade in an external system via an external call.
+Use the same generated API in an Event Handler to call external endpoints (e.g. create or update resources) as part of your event flow:
 
 ```kotlin
-
-val tradeApiService = TradeApiService("https://my-external-api")
+val api = MyExternalApi("https://my-external-api")
 
 eventHandler {
   eventHandler<TradeUpdateEvent> {
     onCommit { event ->
-      val updatedTrade = NewTrade(
-        symbol = event.symbol,
-        quantity = event.quantity,
-        price = event.price
-      )
-
+      val body = NewTrade(symbol = event.symbol, quantity = event.quantity, price = event.price)
       try {
-        tradeApiService.updateTrade(event.tradeId, updatedTrade)
+        api.updateTrade(event.tradeId, body)
         ack()
       } catch (e: Exception) {
         logger.error("Failed to update trade in external system: ${e.message}", e)
+        nack("Update failed", e)
       }
     }
   }
 }
 ```
 
-### Example 5 - Paginated request
+### Example 5: Paginated request with OpenAPI-generated client
 
-This example demonstrates how to integrate a Request Server which  a pagination supporting OpenAPI-generated REST API in an Event Handler using a paginated `requestReply`:
+For list endpoints that support pagination, the OpenAPI plugin can generate a dedicated request type and a single-argument method. Use it in a Request Server with `replyList`:
 
 ```kotlin
-
-val accountsApi = AccountControllerApi("https://my-external-api")
-accountsApi.registerApiToken("Authorization", "Basic ABC123=")
+val api = AccountControllerApi("https://my-external-api")
+api.registerApiToken("Authorization", "Basic ABC123=")
 
 requestReplies {
   requestReply<FindAllUsingGETRequest, AccountWithRecordId>("ACCOUNTS_API") {
     maxRetries = 5
     replyList { request ->
       try {
-        val response = accountsApi.findAllUsingGET(request)
-        val accounts = response.accounts.map { account ->
+        val response = api.findAllUsingGET(request)
+        response.accounts.map { account ->
           AccountWithRecordId(
             account.accountNumber,
             account.balance,
@@ -203,7 +195,6 @@ requestReplies {
             account.owner
           )
         }
-        accounts
       } catch (e: Exception) {
         LOG.warn("Error sending request for accounts to external API", e)
         emptyList()
@@ -306,62 +297,13 @@ val client = GenesisHttpClient()
 }
 ```
 
-### OpenAPI code generation
+### OpenAPI-generated type-safe clients
 
-This approach uses code generated from an OpenAPI/Swagger specification, providing the simplest and most type-safe way to make API calls.
+For external APIs that expose an OpenAPI 3.x (or Swagger) specification, you can generate a type-safe Kotlin client at build time. The client extends the Genesis HTTP client and provides typed methods for each endpoint, request/response DTOs, and support for authentication and pagination.
 
-To use this approach, you need to generate the code from the OpenAPI specification file using the `genesis-openapi-codegen` tool. The generated code will include API interfaces and data classes that map to the API endpoints and request/response bodies.
+**Setup and usage:** Apply the [Genesis OpenAPI Gradle Plugin](/build-deploy-operate/build/plugins/#genesis-openapi-gradle-plugin) in your module, point it at your spec file(s), and add the `genesis-http-client` dependency. The plugin runs before compilation and adds the generated API class and related types to your source set. You then instantiate the generated API (e.g. `TradeServiceApi("https://my-external-api")`), optionally call `registerApiToken` or `registerRetryCallback`, and use it in Request Servers or Event Handlers as in [Example 3](#example-3-request-server-with-openapi-generated-client), [Example 4](#example-4-event-handler-with-openapi-generated-client), and [Example 5](#example-5-paginated-request-with-openapi-generated-client) above.
 
-You must also include the following set-up in your module's `build.gradle.kts` file:
-
-```kotlin
-
-plugins {
-    id("global.genesis.openapi") version "8.2.0" // Genesis Version
-}
-
-tasks {
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
-    genesisOpenApi {
-        packageName = "global.genesis.api.trades"
-        specification = project.layout.projectDirectory.file("src/main/resources/trades.json")
-    }
-}
-```
-
-In the example above, we are generating the code from the `trades.json`, which is an open-api specification file. The generated code will be placed in the `global.genesis.api.trades` package.
-
-You can generate the code either by running the `genesis-openapi-codegen` task or by building the project. You can then use the generated code to make API calls, for example:
-
-```kotlin
-val tradeApi = TradeServiceApi("https://my-external-api")
-tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
-```
-
-```kotlin
-import global.genesis.message.core.HttpStatusCode
-
-val accountsApi = AccountsControllerApi("https://my-external-api")
-accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
-    registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
-}
-```
-
-The example below can be used inside a Genesis Request Server or Event Handler, for example:
-
-```kotlin
-eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
-    onCommit {
-        val createdAccount = accountsApi.createAccount(it.details)
-        ack(listOf(mapOf("ACCOUNT_NUMBER" to createdAccount.accountNumber)))
-    }
-}
-```
+**Full documentation:** Configuration options, pagination, generated package layout, and usage examples are described in the [Genesis OpenAPI Gradle Plugin](/build-deploy-operate/build/plugins/#genesis-openapi-gradle-plugin) section of the Build & Deploy documentation.
 
 
 ## Response handling

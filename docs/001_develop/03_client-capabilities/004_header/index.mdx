@@ -262,6 +262,37 @@ export class HeaderExampleComponent {
         ```
       </td>
     </tr>
+    <tr>
+      <td>[enable-inactivity-monitoring](./docs/api/foundation-header.navigation.enableinactivitymonitoring.md)</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether client side inactivity monitoring is enabled. - Defaults to <code>true</code></td>
+      <td>
+        ```typescript
+        <foundation-header enable-inactivity-monitoring>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>[inactivity-timeout-minutes](./docs/api/foundation-header.navigation.inactivitytimeoutminutes.md)</td>
+      <td><code>string</code></td>
+      <td>Attribute which controls the duration of inactivity within the app before the inactivity warning dialog is shown to the user. Requires <code>enable-inactivity-monitoring</code> - Defaults to <code>30</code></td>
+      <td>
+        ```typescript
+        <foundation-header inactivity-timeout-minutes="20">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>[inactivity-warning-minutes](./docs/api/foundation-header.navigation.inactivitywarningminutes.md)</td>
+      <td><code>string</code></td>
+      <td>Attribute which controls the duration that the warning dialog is shown to the user, before the user is logged out. Requires <code>enable-inactivity-monitoring</code> - Defaults to <code>5</code></td>
+      <td>
+        ```typescript
+        <foundation-header inactivity-warning-minutes="2">
+        ```
+      </td>
+    </tr>
+
   </tbody>
 </table>
 
