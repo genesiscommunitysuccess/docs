@@ -579,8 +579,10 @@ const customActions: CustomAction[] = [
       <td>Notification config used for submit failures. Defaults to an error snackbar, but can be overridden while keeping titles and messages unchanged.</td>
 <td>
 ```typescript
+import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+
 <entity-management
-  :errorNotificationConfig=${() => ({
+  :errorNotificationConfig=${(): NotificationStructure['config'] => ({
     toast: {
       type: 'warning',
       autoClose: true,
@@ -596,7 +598,7 @@ const customActions: CustomAction[] = [
     <tr>
       <td>enableCsvExport</td>
       <td><code>[() => \{ buttonName?\: string; fileName?\: string \}](./docs/api/foundation-entity-management.entitymanagement.enablecsvexport.md)</code></td>
-      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the `buttonName` and/or `fileName`. Any epoch fields will have their data downloaded in the `YYYY-mm-dd` format.</td>
+      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the <code>buttonName</code> and/or <code>fileName</code>. Any epoch fields will have their data downloaded in the <code>YYYY-mm-dd</code> format.</td>
 <td>
 
 ```typescript
