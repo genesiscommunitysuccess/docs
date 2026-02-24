@@ -119,6 +119,8 @@ Entity Management exposes an `errorNotificationConfig` property to configure how
 - The same config is reused for optimistic concurrency warnings and other submit errors.
 
 ```typescript
+import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+
 @customElement({
   name: 'entity-management-notification-example',
   template: html`
@@ -129,7 +131,7 @@ Entity Management exposes an `errorNotificationConfig` property to configure how
       createEvent="EVENT_COUNTERPARTY_INSERT"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
-      :errorNotificationConfig=${() => ({
+      :errorNotificationConfig=${(): NotificationStructure['config'] => ({
         toast: {
           type: 'warning',
           autoClose: true,
