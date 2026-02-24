@@ -200,6 +200,26 @@ You cannot use the database and update it at the same time.
 If processes are running when you start `remap`, the plugin warns you and gives you the option to stop all processes before proceeding.
 :::
 
+### Automatic test data loading (since 8.14)
+
+If you have a `testData` folder in the `genesis` resource folder within your main module's `src/main` directory (see [project structure](/build-deploy-operate/build/project-structure/#server) for details), CSV files in this folder will automatically be loaded after `remap` is executed in a local environment.
+
+The folder structure should be:
+```
+<application_name>-app/
+└── src/
+    └── main/
+        └── genesis/
+            └── testData/
+                ├── RIGHT.csv
+                ├── PROFILE.csv
+                └── ...
+```
+
+:::important
+The `testData` folder will **not** be loaded in a production environment. It is only used for local development and testing purposes.
+:::
+
 ### Loading data
 
 Most projects require some data or sample data in CSV files; you can load the data directly from IntelliJ.

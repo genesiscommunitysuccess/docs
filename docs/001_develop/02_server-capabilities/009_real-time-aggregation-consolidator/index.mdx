@@ -38,6 +38,8 @@ graph TD
 
 ## Example configuration
 
+Consolidators are defined in the `*-consolidator.kts` files or in compiled Kotlin classes extending `GPalConsolidator`.
+
 ### Consolidator as a service
 Here is an example Consolidator file that defines two Consolidators used as a service:
 
@@ -608,26 +610,28 @@ Within the curly brackets of the function, you can access all the fields on a ro
 
 With one exception, all functions require input. The exception is `count`, which can either have an input or no input.
 
-| Function      | Description                                                            | Input      | Output        | Index Scan    |
-|:--------------|------------------------------------------------------------------------|------------|---------------|---------------|
-| sum           | sums values in the value field                                         | any number | same as input | never         |
-| count         | counts all records                                                     | -          | INTEGER       | never         |
-|               | counts records that have a value                                       | anything   | INTEGER       | never         |
-| countDistinct | counts distinct value values                                           | anything   | INTEGER       | always        |
-| countBig      | counts all records                                                     | -          | LONG          | never         |
-|               | counts records that have a value                                       | any value  | LONG          | never         |
-| avg           | average value                                                          | any number | DOUBLE        | always        |
-| avgBig        | average value                                                          | any number | BIG_DECIMAL   | always        |
-| min           | minimum value                                                          | any number | same as input | sometimes `*` |
-| max           | maximum value                                                          | any number | same as input | sometimes `*` |
-| stdev         | standard deviation for value                                           | any number | DOUBLE        | always        |
-| stdevp        | population standard deviation for value                                | any number | DOUBLE        | always        |
-| variance      | statistical variance for value                                         | any number | DOUBLE        | always        |
-| variancep     | population statistical variance for value                              | any number | DOUBLE        | always        |
-| stringAgg     | string concatenation                                                   | any string | STRING        | sometimes `+` |
-| checksum      | calculates a hash over the input                                       | any value  | LONG          | always        |
-| first         | gets first value from input table/view and sets in output table record | any value  | any value     | sometimes `+` |
-| last          | gets last value from input table/view and sets in output table record  | any value  | any value     | sometimes `+` |
+| Function      | Description                                                                   | Input      | Output        | Index Scan    |
+|:--------------|-------------------------------------------------------------------------------|------------|---------------|---------------|
+| sum           | sums values in the value field                                                | any number | same as input | never         |
+| count         | counts all records                                                            | -          | INTEGER       | never         |
+|               | counts records that have a value                                              | anything   | INTEGER       | never         |
+| countDistinct | counts distinct value values                                                  | anything   | INTEGER       | always        |
+| countBig      | counts all records                                                            | -          | LONG          | never         |
+|               | counts records that have a value                                              | any value  | LONG          | never         |
+| avg           | average value                                                                 | any number | DOUBLE        | always        |
+| avgBig        | average value                                                                 | any number | BIG_DECIMAL   | always        |
+| min           | minimum value                                                                 | any number | same as input | sometimes `*` |
+| max           | maximum value                                                                 | any number | same as input | sometimes `*` |
+| stdev         | standard deviation for value                                                  | any number | DOUBLE        | always        |
+| stdevp        | population standard deviation for value                                       | any number | DOUBLE        | always        |
+| variance      | statistical variance for value                                                | any number | DOUBLE        | always        |
+| variancep     | population statistical variance for value                                     | any number | DOUBLE        | always        |
+| stringAgg     | string concatenation                                                          | any string | STRING        | sometimes `+` |
+| checksum      | calculates a hash over the input                                              | any value  | LONG          | always        |
+| first         | gets first value from input table/view and sets in output table record        | any value  | any value     | sometimes `+` |
+| last          | gets last value from input table/view and sets in output table record         | any value  | any value     | sometimes `+` |
+| maxBy         | selects a field from the row with the maximum value (for the key) | any value  | any value     | sometimes `+` |
+| minBy         | selects a field from the row with the minimum value (for the key) | any value  | any value     | sometimes `+` |
 
 `*` if previous `min` or `max` value is removed<br />
 `+` if previous any value is changed
@@ -655,6 +659,33 @@ val feeSum = sum { feeAmount }
 feeSum into TOTAL_FEES
 feeSum onlyIf { feeGroup == FeeGroup.COMMISSION } into TOTAL_COMMISSION
 ```
+
+#### `maxBy` and `minBy` functions
+
+These functions will find, for a specific group, the record with the largest or smallest value, and then select a value from that row.
+For example:
+```kotlin
+select {
+    maxBy { price } value { quantity } into MAX_PRICE_QTY
+}
+```
+
+In the above example, we will find the record with the largest `price`, and insert the `quantity` of that record into `MAX_PRICE_QTY`.
+These functions are useful for retrieving information from specific records from within your aggregation.
+If multiple records with the same selected value are found, then the consolidator will pick one, but the resulting record is not guaranteed.
+To provide more control in those instances, `tieBreaker` or `tieBreakerDesc` can be used:
+
+```kotlin
+maxBy { price } tieBreakerDesc { quantity } value { orderId }
+```
+
+In the example above, we will get the record with the largest `price`, let's say 100.
+If we have multiple records with `price` of 100, we will select the record with the largest `quantity` of those records.
+From that record we will get the `orderId`.
+
+`tieBreaker` selects the smallest value, and `tieBreakerDesc` selects the largest value.
+
+Please note that these functions always require an index scan if a grouping is updated, and `indexScan` is required to be set for the consolidator.
 
 #### Custom functions
 
@@ -1117,15 +1148,26 @@ A high latency indicates that the consolidator is struggling to keep up.
 
 ## Runtime configuration
 
-To include your `*-consolidator.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Consolidator definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-consolidator` is included in `module`
-2. Ensure `global.genesis.pal.consolidator` is included in `package`
-3. Ensure your consolidator.kts file(s) are defined in `script`
-4. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
-If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
+- **package**: ensure `global.genesis.pal.consolidator` is included
+- **module**: ensure `genesis-pal-consolidator` is included
+- **script**: your `*-consolidator.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process for a consolidator, the following gives an example using script files:
 
 ```xml{13}
 <process name="POSITION_CONSOLIDATOR">
@@ -1141,6 +1183,8 @@ If you wish to run a dedicated process for a consolidator, the following gives a
   <language>pal</language>
 </process>
 ```
+
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
 
 :::important
 
@@ -1175,15 +1219,29 @@ For example:
 
 #### `coldStart`
 
-A cold start will recalculate the all consolidations from scratch on consolidator restart to ensure all values are correct before starting the real-time event-driven consolidations. To make a cold start, you can run the command:
+A cold start will remove existing data, before recalculating to ensure these values are correct.
+Once all values have been recalculated, real-time event-driven consolidations will continue.
 
-`startProcess GENESIS_CONSOLIDATOR --coldStart`
+There are two ways a consolidator can remove existing data, depending on the configuration:
+```kotlin
+config {
+    tableTransient = true
+}
+```
 
-It is important to note that at the beginning of a cold start, all fields affected by the `select` configuration of the consolidation table are zeroed (or the records will be deleted, if transient) before initiating the re-consolidation of all the records in the database.
+* if `tableTransient` is not set or is false, then all fields affected by the `select` configuration of the output table are set to zero on all records.
+* if `tableTransient` is true, then all records in the output table are deleted.
+
+There are three ways to initiate cold start:
+* starting the process with the `--coldStart` argument: `startProcess GENESIS_CONSOLIDATOR --coldStart`.
+* adding `--coldStart` in the `<arguments>--coldStart</arguments>` as per above.
+* setting the system definition item `CONSOLIDATOR_COLDSTART` to `true`.
 
 <CommonProcesses/>
 
 ## Testing (legacy)
+
+You can test using **compiled definitions** (classes extending `GPalConsolidator`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required. The example below uses a script-based definition with `scriptFileName`.
 
 :::info
 For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
@@ -1191,7 +1249,7 @@ For the latest information on testing, go to our page on [Integration testing](/
 
 The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
 
-First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation).
+First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation when using script-based definitions).
 
 ```kotlin
 class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(

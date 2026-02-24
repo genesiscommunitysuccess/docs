@@ -180,7 +180,17 @@ Given the sensitive nature of these field values, it is advisable NOT to put the
 
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](/build-deploy-operate/build/bdo-build-overview/#bundling-generated-code-with-product-distribution).
 
-If you want to enable SSL for your process communication, this is done in the [service definition](/develop/server-capabilities/runtime-configuration/service-definition/#enabling-ssl-for-processes).
+For SSL on process communication, see the [service definition](/develop/server-capabilities/runtime-configuration/service-definition/#enabling-ssl-for-processes) page.
+
+### GPal script caching settings
+
+These settings control compilation and caching of GPal scripts and system-definition files. Because these files rarely change between restarts, using cached versions speeds up process start-up and reduces memory use.
+
+
+**ScriptCacheDir**: The directory used for script caching. Defaults to `%GENESIS_HOME%/runtime/scriptcache` if not set.
+
+**ScriptCachePerService**: When `true`, the script cache is process-specific rather than shared. Defaults to `false` if not provided. Process-specific caching avoids cross-process cache conflicts and can make startup more reliable.
+
 
 ## Setting system-definition values from environment variables
 

@@ -46,7 +46,7 @@ C --> |4. Changes in table/view trigger a read|B
 
 When the client first requests to subscribe to a query in a Data Server, the initial data is returned, and the subscription between the client and the query remains active. The data server will continue to push data updates to the client, for example newer entries or modifications to data rows already sent to the client. The client can also make changes for example to request more rows.
 
-Genesis Data Servers are defined in the `*-dataserver.kts` files.
+Genesis Data Servers are defined in the `*-dataserver.kts` files or in compiled Kotlin classes extending `GPalDataserver`.
 
 <CommonGpalStandards />
 
@@ -1604,14 +1604,26 @@ The latency metrics track how well a Data Server is handling requests.
 
 ## Runtime configuration
 
-To include your `*-dataserver.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Data Server definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-dataserver` is included in `module`
-1. Ensure `global.genesis.dataserver.pal` is included in `package`
-1. Ensure your dataserver.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process as a dataserver, the following gives an example full process definition:
+- **package**: ensure `global.genesis.dataserver.pal` is included
+- **module**: ensure `genesis-pal-dataserver` is included
+- **script**: your `*-dataserver.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged (e.g. all queries from both).
+
+If you wish to run a dedicated process as a dataserver, the following gives an example using script files:
 
 ```xml
   <process name="POSITION_DATASERVER">
@@ -1626,9 +1638,24 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
   </process>
 ```
 
+For compiled definitions only, you would use your app's module and definition package and omit `script` and `language`:
+
+```xml
+  <process name="POSITION_DATASERVER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+    <module>position-app</module>
+    <package>my.app</package>
+    <description>Displays real-time details</description>
+  </process>
+```
+
 <CommonProcesses/>
 
 ## Testing
+
+You can test using **compiled definitions** (classes extending `GPalDataserver`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `@TestScriptFile` is required. The examples below use script-based definitions with `@TestScriptFile`.
 
 :::info
 

@@ -1349,6 +1349,8 @@ public class TestScenarioExample {
 Use this annotation to load a script file as part of the test.
 This annotation is Repeatable.
 
+Alternatively, you can test using **compiled GPAL definitions** (classes extending `GPalDataserver`, `GPalEventHandler`, and so on). Ensure the definition's package is in the scan list (e.g. by providing an instance of the definition class). In that case no script file and no `@TestScriptFile` are required.
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 

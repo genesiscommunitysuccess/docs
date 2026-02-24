@@ -34,7 +34,7 @@ B -->|3. Set Response| A
 B <-->|2. Read|C[Database]
 ```
 
-Genesis Request Servers are defined in the `*-reqrep.kts` files.
+Genesis Request Servers are defined in the `*-reqrep.kts` files or in compiled Kotlin classes extending `GPalRequestServer`.
 
 <CommonGpalStandards />
 
@@ -801,14 +801,26 @@ The Request Server latency metrics show how long it takes for a specific `reques
 
 ## Runtime configuration
 
-To include your `*-reqrep.kts` file definitions in a runtime process, you will need to ensure the process definition:
+To include your Request Server definitions in a runtime process, configure the process as follows depending on whether you use script files, compiled definitions, or both.
 
-1. Ensure `genesis-pal-requestserver` is included in `module`
-1. Ensure `global.genesis.requestreply.pal` is included in `package`
-1. Ensure your reqrep.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
+### Using script files
 
-If you wish to run a dedicated process for a request server, the following gives an example full process definition:
+- **package**: ensure `global.genesis.requestreply.pal` is included
+- **module**: ensure `genesis-pal-requestserver` is included
+- **script**: your `*-reqrep.kts` file(s), comma-separated if more than one
+- **language**: `pal`
+
+### Using compiled definitions only
+
+- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **module**: your application's module (e.g. `position-app`)
+- Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
+
+### Mixing script and compiled
+
+Use the same **package** and **module** as for compiled-only (your definition package and your app's module). Also set **script** and **language** as for script-based. Definitions from script files and from compiled classes are merged.
+
+If you wish to run a dedicated process for a request server, the following gives an example using script files:
 
 ```xml
   <process name="POSITION_REQUEST_SERVER">
@@ -823,9 +835,13 @@ If you wish to run a dedicated process for a request server, the following gives
   </process>
 ```
 
+For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
+
 <CommonProcesses/>
 
 ## Testing
+
+You can test using **compiled definitions** (classes extending `GPalRequestServer`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `@TestScriptFile` is required. The examples below use script-based definitions with `@TestScriptFile`.
 
 :::info
 
