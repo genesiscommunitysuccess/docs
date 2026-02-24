@@ -150,7 +150,7 @@ ModuleRegistry.registerModules([
   - Filtering uses `CRITERIA_MATCH` param.
   - Sorting uses `ORDER_BY` param.
   - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
-- For row count display in infinite scroll mode, enable `with-status-bar` and set `statusBarConfig.rows = true` on `grid-pro` without enabling `pagination`. See [row count in server-side infinite scroll](/develop/client-capabilities/grids/grid-pro/grid-pro/#row-count-in-server-side-infinite-scroll).
+- For row count display in infinite scroll mode, enable `with-status-bar` and set `statusBarConfig.rows = true` on `grid-pro` without enabling `pagination`. See [row count in server-side infinite scroll](/develop/client-capabilities/grids/grid-pro/#row-count-in-server-side-infinite-scroll).
 - **Limitations**:
   - Sorting can only be applied to index fields/columns. Also mentioned [here](https://www.notion.so/Grid-Pro-Datasource-Inventory-d11ca7570ee94847bbcb3e7362025b0a?pvs=21). More details [here](https://genesisglobal.atlassian.net/jira/polaris/projects/GPR/ideas/view/4721227?selectedIssue=GPR-171&focusedCommentId=143757) and [here](https://genesis-global-talk.slack.com/archives/C0416MFG360/p1696456988606789).
   - `ROWS_COUNT` doesn't reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
