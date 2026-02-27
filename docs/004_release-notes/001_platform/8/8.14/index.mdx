@@ -242,14 +242,14 @@ This release contains an update to the way Business Component versions are manag
 
 ###### Features
 
-* feat(genesis-cluster): Add DISABLED ClusterMode option to completely disable primary only checks and cluster health messages 
-* feat(genesis-cluster): Add ZeroMQProxyUnicastRelayExcludedTopics system definition option to avoid retransmitting specific update queue topics to other cluster nodes 
+* `genesis-cluster` : Add DISABLED ClusterMode option to completely disable primary only checks and cluster health messages 
+* `genesis-cluster` : Add ZeroMQProxyUnicastRelayExcludedTopics system definition option to avoid retransmitting specific update queue topics to other cluster nodes 
 
 ###### Fixes
 
-* fix(genesis-clustersupport): Ensure Consul TTL health check coroutines run independently to avoid contention problems
-* fix(genesis-db): correct native sql handling of (non-)nullable methods in proxy classes
-* fix(genesis-pal-eventhandler): Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined
+* `genesis-clustersupport` : Ensure Consul TTL health check coroutines run independently to avoid contention problems
+* `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes
+* `genesis-pal-eventhandler` : Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined
 
 #### 8.14.20
 
