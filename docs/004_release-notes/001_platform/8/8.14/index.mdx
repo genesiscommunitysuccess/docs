@@ -238,6 +238,14 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.22
+
+###### Fixes
+
+* `genesis-clustersupport` : Make consul health checks use elapsed time scheduling rather than fixed time scheduling and simplify primaryOnly health checks
+* `genesis-clustersupport` : Fix race condition in consul health point registration
+* `genesis-environment` : Improve GetNextSequenceNumbers/GetNextAutoIncrementNumbers handling for empty tables and UUID-style IDs
+
 #### 8.14.21
 
 ###### Features
