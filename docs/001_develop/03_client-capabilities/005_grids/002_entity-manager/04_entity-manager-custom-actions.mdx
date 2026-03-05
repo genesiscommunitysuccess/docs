@@ -206,6 +206,10 @@ const customActions: CustomAction[] = [
 
 - **`uiSchema`** (`UiSchema`): Custom UI schema for the form (only used when `hasForm: true`)
 
+- **`setApprovalMessage`** (boolean): Enables proactive approval workflow for this custom action form. When set to `true`, the form includes an `APPROVAL_MESSAGE` field from the start and submits it at root level alongside `DETAILS`.
+
+If `setApprovalMessage` is configured both on `entity-management` and in a custom action, the custom action value takes precedence while that action is active.
+
 ## Positioning
 
 Custom actions can be positioned in different areas of the entity management interface. The position determines where the action buttons appear:
@@ -281,6 +285,7 @@ const columnCustomActions: CustomAction[] = [
     position: CrudMenuPosition.Column,
     icon: 'edit',
     tooltip: 'Quick edit counterparty details',
+    setApprovalMessage: true,
   },
 ];
 ```
@@ -432,7 +437,7 @@ const customActions: CustomAction[] = [
 ];
 ```
 
-For more information about UI schemas, refer to the [Forms documentation](../../007_forms/002_smart-forms/index.mdx).
+For more information about UI schemas, refer to the [Forms documentation](/develop/client-capabilities/forms/smart-forms/).
 
 ## Complete example
 
