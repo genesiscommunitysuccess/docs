@@ -19,6 +19,7 @@ To start using Document Management, specify your `STORAGE_STRATEGY` in your **sy
 - AWS
 - SHAREPOINT
 - SHAREPOINT_ON_PREM
+- GCS
 
 ```kotlin
 item(name = "STORAGE_STRATEGY", value = "<strategy>")
@@ -111,3 +112,22 @@ item(name = "SHAREPOINT_SITE_ID", value = "<siteId>")
 item(name = "SHAREPOINT_CLIENT_ID", value = "<clientId>")
 item(name = "SHAREPOINT_CLIENT_SECRET", value = "<clientSecret>")
 ```
+
+## Google Cloud Storage (GCS)
+
+When using GCS as your storage solution, you must have a bucket already created which the manager will connect to, you must set this using the following configuration:
+```kotlin
+item(name = "GCS_BUCKET_NAME", value = "<bucketName>")
+```
+### Optional Configurations
+
+You can also provide a folder prefix if you would like the storage manager to save all files under a specific path within your bucket. This configuration is not required but can be set like so:
+```kotlin
+item(name = "GCS_FOLDER_PREFIX", value = "<folderPrefix>")
+```
+
+If you require requests to be executed for a particular project ID, this can be provided using the following system definition:
+```kotlin
+item(name = "GCS_PROJECT_ID", value = "<projectId>")
+```
+Otherwise the system will use the project id of the default instance within your Google Cloud Platform.
