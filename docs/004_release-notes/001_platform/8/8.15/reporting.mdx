@@ -5,3 +5,45 @@ sidebar_position: 7
 id: '8.15-reporting'
 ---
 
+### Breaking changes
+
+* Added alternate data grouping strategies to templated reports
+* refactor!: repository migration
+
+### Dependency changes
+
+* Bump org.gradle.test-retry from 1.5.10 to 1.6.4
+
+### Features
+
+* Add backend support for report input parameters
+* Allow configurable max row limit for request server datasources
+* Enhance CSV report data sanitisation to also sanitise column headers 
+* Updated parameterisation implementation with latest design requirements
+
+### Fixes
+
+* Ensure basic excel reports preserve correct type for date and datetime columns
+* Ensure reports can be generated using csv templates 
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+
+### Client
+
+### PBC UI
+
+#### Features
+
+* Allow the user to define the order of fields 
+* Do not set cell formats for xlsx 
+* Use combobox to filter datasource selection 
+* Add week day date filters and filter tooltips
+* Support CSV output with template and multiple datasources 
+
+#### Fixes
+
+* Clean up old fields no longer in the metadata 
+* Handle field types in filters in legacy reporting 
