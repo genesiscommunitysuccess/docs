@@ -5,19 +5,6 @@ sidebar_position: 1
 id: '8.15-auth'
 ---
 
-### Breaking changes
-
-* refactor!: repository migration
-
-### Dependency changes
-
-* Remove hardcoded constraints on commons lang, commons config and commons codec
-* Bump com.auth0:java-jwt from 4.4.0 to 4.5.0
-* Bump com.auth0:jwks-rsa from 0.22.1 to 0.23.0
-* Bump com.unboundid:unboundid-ldapsdk from 7.0.3 to 7.0.4
-* Bump jjwtVersion from 0.12.6 to 0.13.0 
-* Bump org.gradle.test-retry from 1.6.2 to 1.6.4
-
 ### Features
 
 * `auth-config` : Enable support for GPAL auth perms by default in auth-processes.xml
@@ -35,6 +22,15 @@ id: '8.15-auth'
 * Remove USER_NAME header requirement from terms and conditions endpoints as it doesn't work with external proxy devices
 * Use TLS for user connection if useTls set 
 * `pbc-auth-ui` : Increase maxRows limit for right codes
+
+### Dependency changes
+
+* Remove hardcoded constraints on commons lang, commons config and commons codec
+* Bump com.auth0:java-jwt from 4.4.0 to 4.5.0
+* Bump com.auth0:jwks-rsa from 0.22.1 to 0.23.0
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.3 to 7.0.4
+* Bump jjwtVersion from 0.12.6 to 0.13.0 
+* Bump org.gradle.test-retry from 1.6.2 to 1.6.4
 
 ### Patch releases
 
