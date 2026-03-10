@@ -81,7 +81,7 @@ id: '8.15'
 * `genesis-db` : Add type checking in `getByCriteria` operation 
 * `genesis-db` : Correct handling repo modules with suspend methods 
 * `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes 
-* `genesis-db` :  fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
+* `genesis-db` :  * fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
 * `genesis-db` : GetRange on a View hangs indefinitely when called within a database transaction 
 * `genesis-db` : Handle genesis table objects using sql native connection
 * `genesis-db` : Native sql layer, release connection on failure to execute query 
@@ -89,7 +89,7 @@ id: '8.15'
 * `genesis-db` : Remove blocking calls in CriteriaCacheManager.kt 
 * `genesis-db` : Support ResultSet streaming in native SQL and getByCriteria to reduce memory pressure 
 * `genesis-dbmon` : FindCommand should use UniqueIndex Jackson deserialization 
-* `genesis-dbmon` :  fix view field handling in search and distinct commands 
+* `genesis-dbmon` :  * fix view field handling in search and distinct commands 
 * `genesis-environment` : Application and component `installHook` failures should not return a `0` exit code 
 * `genesis-environment` : DumpIt should rely on existing dictionary schema for database tables to ensure compatibility instead of deployed dao classes 
 * `genesis-environment` : Ensure audit records are inserted correctly when using SendIt 
@@ -98,13 +98,13 @@ id: '8.15'
 * `genesis-environment`  Fix Oracle DDL statements for sequence value increments 
 * `genesis-environment` : Handle autoIncrement/sequence migration correctly in SQL Server/H2 when executing remap for certain field schema migrations 
 * `genesis-environment` : Enable `SendIt` to handle binary data in `LEGACY` mode 
-* `genesis-environment` :  fix handling of sys def reading with overlapping product names 
+* `genesis-environment` :  * fix handling of sys def reading with overlapping product names 
 * `genesis-net` : Create request log per process 
 * `genesis-openapi-gradle` : Depend on `sourcesJar` if task exists 
-* `genesis-pal-consolidator`  fix memory profile in cold start 
+* `genesis-pal-consolidator`  * fix memory profile in cold start 
 * `genesis-pal-eventhandler` : Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined 
 * `genesis-pal-eventhandler` : Remove Kotlin compiler warning in event handlers related to reified type intersections 
-* `genesis-pal-eventhandler` :  fix event handler global permission check 
+* `genesis-pal-eventhandler` :  * fix event handler global permission check 
 * `genesis-pal-requestserver` : Include derivedFields for SQL-based criteria-only request reply workflow 
 * `genesis-resource-daemon` : STANDBY processes should be shown as STANDBY instead of DOWN in "mon" when using Consul mode 
 * `genesis-resource-daemon` : Correct health endpoint handling with processes disabled 
@@ -277,150 +277,120 @@ There are currently no patch releases for this version
 
 ## Client
 
-### Dependency Updates
+### Features
 
-### Foundation UI
-
-#### Features
-
-* Added reset to default functionality 
-* Polished resizable modal behavior 
-* Added initial dimensions properties 
-* Support extended design tokens from JSON file 
-* Rapid Modal and Dialog Optimisation 
-* Support sub-one hour and multi-hour scheduling
-* Scheduler support interval and selected hours
-* Added new design tokens for form elements
-
-#### Fixes
-
-* Regression with modal styling and layout 
-* Fixed some PBC Reporting issues 
-* Fix dialog type consistency in attributes/styles 
-* Fix z-index in tabs
-* Add default design tokens values for missing JSON values
-* Change default design tokens to a TypeScript file 
-* Replace hardcoded light gray text color in multiselect 
-* Emit file-selected event from file-upload 
-
-### Foundation forms
-
-#### Features
-
-* Support default approval message configuration
-* Automatic approval message workflow support 
-* Add UI schema config to conditionally hide array list delete button 
-
-#### Fixes
-
-* Pass response in submit-success 
-* Include nested elements in validateFn 
-* Handle datetime/number filter by default + styling
-* Correct jsonSchema for filters in req-rep 
-* Set autocomplete to off for text/number renderer
-* Adding margin left to array list delete button 
-
-### Foundation header
-
-#### Features
-
-* Highlight current selected route
-* Add control panel to delete saved configs 
+* `foundation-layout` : Adding reset to default functionality 
+* `foundation-header` : Highlight current selected route 
+* Light mode optimisation 
+* `foundation-ui` : Polishing resizable modal behavior 
+* `foundation-ui` : Adding initial dimensions properties 
+* `grid-pro` : Upgrade AG Grid from v29.2.0 to v34.2.0 with compatibility layer 
+* Foundation UI Component Optimisation 
+* `foundation-ui` : Support extended design tokens from json file 
+* `foundation-entity-management` : Add foundation-filters 
+* Refactor ability to set status bar label 
+* `grid-pro` : Add row-count status bar for infinite scroll 
+* Upgrade vite to 7.2.2 
 * Foundation header styling and configuration options 
-* Add nested nav permissions and layout item indicators 
-
-#### Fixes
-
-* Circular dependency fix
-
-### Foundation layout
-
-#### Features
-
-* Add support for factories for usage in frameworks such as React
-* Adding reset to default functionality 
-
-#### Fixes
-
-* Defend against bad configuration causing runtime errors 
-
-### Grid pro
-
-#### Features
-
-* Upgrade AG Grid from v29.2.0 to v34.2.0 with compatibility layer
-* Add row-count status bar for infinite scroll
-* ReqRep polling support for SSMR 
-* Upgrade ag-grid to v35 
-* Enable multi column filter for string and enum fields
-* Separate filters generation for ssrm 
-* Consider null as blank on filter 
-* Add RowSelectionModule support 
-* Handle values and criteria for setFilter
-
-#### Fixes
-
-* Merge existing grid options and column definitions 
-* Update selected row background color 
-* Enhance datasource metadata and grid initialization 
-* Correct criteria reset in SSMR 
-* Update originalCriteriaMatch and apply filters 
-* Restore event handlers 
-* Fix race condition in datasource reconnection test
-* Hide loading overlay after rowData change 
-* Correct filters for blanks 
-* Correct filters for notBlanks 
-* Prevent memory leaks by cleaning up observers and subscriptions
-* Respect explicit filterParams values in agSetColumnFilter 
-* Export missing datasource types 
-
-### Foundation comms
-
-#### Features
-
-* Add support for `>=` and `<=` in criteriaFiltersToFields
-* Add HTTP error handling and session refresh for 401 errors
-* Add metadata caching to HTTP connect 
-* Add caching for getAvailableResources 
-
-#### Fixes
-
-* Remove unnecessary kv storage availability check 
-* Export HttpConnectConfig types for HTTP polling configuration 
-* Support REQUEST_SERVER messages in HTTP mode 
-* Support per-resource polling intervals via POLLING_INTERVAL_MAP 
-
-### Foundation Entity Management
-
-#### Features
-
-* Add foundation-filters
-* Ability to set error notification config 
-
-#### Fixes
-
-* Refresh customEvent form data after update 
-* Export list custom element 
-* Tweak lifecycle to handle layout events
-* Clear error column field after success submit 
-
-### Other/Core
-
-#### Features
-
-* Light mode optimisation
-* Refactor ability to set status bar label
-* Upgrade Vite to 7.2.2 
+* `grid-pro` : ReqRep polling support for SSMR 
+* Handle generic event_nack during login 
+* `foundation-header` : Adding control panel to delete saved configs 
+* `foundation-ui` : Rapid Modal and Dialog Optimisation 
+* `foundation-forms` : Support default approval message configuration 
+* `foundation-forms` : Automatic approval message workflow support 
+* `grid-pro` : Handle values and criteria for setFilter 
+* `foundation-entity-management` : Ability to set error notification config 
+* `rapid-grid-pro` : Grid34 unified theme 
+* `foundation-layout` : Add support for factories for usage in frameworks such as React
 * Runtime design tokens and support controlling layout tab and grid row and header heights 
+* `foundation-comms` : Add support for `>=` and `<=` in criteriaFiltersToFields 
+* `foundation-forms` : Add UI schema config to conditionally hide array list delete button 
+* `foundation-comms` : Add HTTP error handling and session refresh for 401 errors
+* `grid-pro` : Upgrade ag-grid to v35 
+* `grid-pro` : Enable multi column filter for string and enum fields 
+* `notify-pbc` : Alert center redesign 
+* `grid-pro` : Separate filters generation for ssrm 
+* `grid-pro` : Consider null as blank on filter
+* `foundation-comms` : Add metadata caching to HTTP connect 
+* `foundation-comms` : Add caching for getAvailableResources
+* `grid-pro` : Add RowSelectionModule support 
+* `datasource` : Add SORTABLE_FIELDS and CRITERIA_FIELDS metadata support 
+* `foundation-ui` : Support sub-one hour and multi-hour scheduling 
+* `foundation-ui` : Scheduler support interval and selected hours 
 * Add optgroup component and use it to categorise date filter rules 
+* `eslint-stylelint-builder` : Upgrade to eslint 9 and support concurrency
 * Improve expression builder and row filters UX 
-* Add noop utility to prevent tree-shaking of custom elements 
-* ESLint & Stylelint builder upgrade to ESLint 9 with concurrency support 
+* Add noop utility to prevent tree-shaking of custom elements
+* `foundation-header` : Add nested nav permissions and layout item indicators 
+* `foundation-ui` : Add new design tokens for form elements 
 
-#### Fixes
+### Fixes
 
+* `pbc-auth-ui` : Increase maxRows limit for right codes
+* `foundation-forms` : Pass response in submit-success
 * Handle time filter properly 
-* Magic number warnings and set to errors for consistency
+* Magic number warnings and set to errors for consistancy 
+* `foundation-forms` : Include nested elements in validateFn 
+* `build-kit` : Handling of optional seed params 
+* `foundation-ui` : Regression with modal styling and layout 
+* `grid-pro` : Merge existing grid options and column definitions
+* Vulnerability with tmp module
+* `grid-pro` : Update selected row background color 
+* Esbuild, tsm, playwright vulnerabilities
+* `foundation-ui` : Fixed some PBC Reporting issues 
+* Move ag-grid-community as a peer dependency
+* `foundation-forms` : Handle datetime/number filter by default + styling 
+* `foundation-forms` : Correct jsonSchema for filters in req-rep 
+* `foundation-comms` : Remove unnecessary kv storage availability check 
+* Add z-index and position css variables to dialog 
+* `foundation-ui` : Fixing dialog type consistency in attributes/styes
+* `grid-pro` : Enhance datasource metadata and grid initialization 
+* `grid-pro` : Correct criteria reset in SSMR 
+* `grid-pro` : Update originalCriteriaMatch and apply filters 
+* `foundation-ui` : Use CRITERIA_MATCH for reqRep for options-datasource 
+* `foundation-header` : Circular dep * fix 
+* `grid-pro` : Refactor event handlers and organize imports 
+* `foundation-ui` : Fixing z index in tabs 
+* `grid-pro` : Hide loading overlay after rowData change 
+* `foundation-entity-management` : Refresh customEvent form data after update 
+* `grid-pro` : Restore event handlers
+* `grid-pro` : * fix race condition in datasource reconnection test 
+* `vite-builder` : Conditionally define library entry and formats based on development mode 
+* `foundation-forms` : Set autocomplete to off for text/number renderer 
+* `foundation-ui` : Add default design tokens values for missing json values 
+* `foundation-forms` : Adding margin left to array list delete button 
+* `foundation-ui` : Change the default design tokens to a ts file 
+* `foundation-entity-management` : Export list custom element 
+* `foundation-layout` : Defend against bad configurtion causing runtime errors 
+* `foundation-entity-management` : Tweak lifecycle to handle layout events
+* `foundation-comms` : Export HttpConnectConfig types for HTTP polling configuration
+* `grid-pro` : Separate filters generation for ssrm
+* `foundation-comms` : Support REQUEST_SERVER messages in HTTP mode 
+* `foundation-comms` : Support per-resource polling intervals via POLLING_INTERVAL_MAP 
+* `foundation-ui` : Rule expression builder to convert to ms epoch matching server 
+* `grid-pro` : Clear row data before destroying grid to prevent memory leak 
+* `foundation-entity-management` : Clear error column field after success submit 
+* `foundation-ui` : Replace hardcoded light gray text color in multiselect
+* `grid-pro` : Correct filters for blanks 
+* `grid-pro` : Correct filters for notBlanks 
+* `eslint-config` : * fix regressions and add module-level linting 
+* `grid-pro` : Prevent memory leaks by cleaning up observers and subscriptions 
+* `foundation-ui` : Emit file-selected event from file-upload
+* `grid-pro` : Respect explicit filterParams values in agSetColumnFilter 
+* `foundation-redux` : Expose redux store for react integration 
+* `grid-pro` : Export missing datasource types 
+* Temporarily disable slack github action 
+* Disable linting check in pre-release job 
+* Update e2e.yml remove slack notifications 
+* Fix package depdendency and module resolution for base install 
+* `layout-preview-react` : Init module for testing 
+* `layout-preview-react` : Implement pr comments from previous pr 
+* `client-app` : Add custom user PBC component example 
+* `client-app` : Fix whitespace in auth routes comments 
+* Remove foundation-console and console-app packages
+* Enable slack notifications 
+* Remove test step from prerelease workflow 
+* Add gemini reviewer 
 
 ## Breaking changes guidance
 

@@ -20,30 +20,19 @@ id: '8.15-reporting'
 * Allow configurable max row limit for request server datasources
 * Enhance CSV report data sanitisation to also sanitise column headers 
 * Updated parameterisation implementation with latest design requirements
+* `pbc-reporting-ui` : Allow the user to define the order in which fields are 
+* `pbc-reporting-ui` : Do not set cell formats for xlsx 
+* `pbc-reporting-ui` : Use combobox to filter datasource selection
+* `pbc-reporting-ui` : Add week day date filters and filter tooltips
+* `pbc-reporting-ui` : Support csv output with template and multiple datasources 
 
 ### Fixes
 
 * Ensure basic excel reports preserve correct type for date and datetime columns
 * Ensure reports can be generated using csv templates 
+* `pbc-reporting-ui` : Clean up old fields which are no longer in the metadata
+* `pbc-reporting-ui` : Handle field types in filters in legacy reporting
 
 ### Patch releases
 
 There are currently no patch releases for this version
-
-
-### Client
-
-### PBC UI
-
-#### Features
-
-* Allow the user to define the order of fields 
-* Do not set cell formats for xlsx 
-* Use combobox to filter datasource selection 
-* Add week day date filters and filter tooltips
-* Support CSV output with template and multiple datasources 
-
-#### Fixes
-
-* Clean up old fields no longer in the metadata 
-* Handle field types in filters in legacy reporting 

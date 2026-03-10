@@ -21,6 +21,8 @@ id: '8.15-auth'
 ### Features
 
 * `auth-config` : Enable support for GPAL auth perms by default in auth-processes.xml
+* `pbc-auth-ui` : Support overriding design system prefix 
+* `pbc-auth-ui` : Make one-time password field required 
 
 ### Fixes
 
@@ -32,17 +34,7 @@ id: '8.15-auth'
 * Move PKCE code verifier store to the database
 * Remove USER_NAME header requirement from terms and conditions endpoints as it doesn't work with external proxy devices
 * Use TLS for user connection if useTls set 
-
-### PBC UI
-
-#### Features
-
-* Support overriding design system prefix 
-* Make one-time password field required 
-
-#### Fixes
-
-* Increase maxRows limit for right codes 
+* `pbc-auth-ui` : Increase maxRows limit for right codes
 
 ### Patch releases
 
