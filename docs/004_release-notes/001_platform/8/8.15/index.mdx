@@ -420,4 +420,23 @@ There are currently no patch releases for this version
 #### Fixes
 
 * Handle time filter properly 
-* Magic number warnings and set to errors for consistency 
+* Magic number warnings and set to errors for consistency
+
+## Breaking changes guidance
+
+### Apache Fury renamed to Fory
+
+As explained [here](https://fory.apache.org/blog/fury_renamed_to_fory/), Apache Fury has been renamed to Apache Fory. This means the packages names and class names have been migrated, as well as maven artifacts.
+If you are using Apache Fory in your codebase, you will need to upgrade to version 0.14.1 and adapt to the new changes.
+Additionally, the `SerializationType.FURY` option [dataserver configuration](/develop/server-capabilities/real-time-queries-data-server/#global-config) has been deprecated and replaced by `SerializationType.FORY` instead.
+
+### Apache Commons Configuration migration from v1 to v2
+
+The remaining use of Apache Commons Configuration v1.x instances in the genesis server implementation have been upgraded to Apache Commons Configuration v2 to solve vulnerability problems.
+This also means the genesis platform does not provide a transitive dependency on Apache Commons Lang v1 anymore, as it was only part of the platform due to being a transitive dependency of Commons Config v1.
+If your application is using Apache Commons Config v1 or Apache Commons Lang v1 imports/classes, they will need to be migrated to Commons Config v2 and Commons Lang 3 respectively. The most common scenario for migration is to replace old Commons Lang imports for new Commons Lang 3 imports. For example:
+`import org.apache.commons.lang.StringUtils` can be replaced by `import org.apache.commons.lang3.StringUtils` withouy any additional changes.
+
+### Apache Camel upgrade from 4.14.x LTS to 4.18.x LTS
+
+The Apache Camel base version used by genesis has now been upgraded to use the 4.18.x LTS version. Please review the Apache Camel [upgrade guide](https://camel.apache.org/manual/camel-4x-upgrade-guide-4_15.html) for any potential compatibility issues.
