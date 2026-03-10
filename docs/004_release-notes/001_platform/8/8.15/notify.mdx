@@ -5,15 +5,6 @@ sidebar_position: 5
 id: '8.15-notify'
 ---
 
-### Dependency changes
-
-* Remove hardcoded coroutines-test dependency in genesis-notify-dispatcher
-* Bump com.jfrog.artifactory from 5.2.0 to 5.2.5
-* Bump com.sendgrid:sendgrid-java from 4.10.2 to 4.10.3 
-* Bump io.mockk:mockk-jvm from 1.13.13 to 1.14.9
-* Bump org.gradle.test-retry from 1.5.9 to 1.6.4 
-* Bump org.jetbrains.kotlinx.kover from 0.7.6 to 0.9.1 
-
 ### Features
 
 * Update seed to correctly reflect alignment with FUI version
@@ -22,6 +13,15 @@ id: '8.15-notify'
 
 * Prevent Screen alert expiry system from exhausting db connections on startup 
 * Remove potential source of deadlocks in DISMISS_ALL_NOTIFY_ALERT and NOTIFICATION_RULE_TEMPLATE_DELETE events 
+
+### Dependency changes
+
+* Remove hardcoded coroutines-test dependency in genesis-notify-dispatcher
+* Bump com.jfrog.artifactory from 5.2.0 to 5.2.5
+* Bump com.sendgrid:sendgrid-java from 4.10.2 to 4.10.3 
+* Bump io.mockk:mockk-jvm from 1.13.13 to 1.14.9
+* Bump org.gradle.test-retry from 1.5.9 to 1.6.4 
+* Bump org.jetbrains.kotlinx.kover from 0.7.6 to 0.9.1 
 
 ### Patch releases
 
