@@ -81,7 +81,7 @@ id: '8.15'
 * `genesis-db` : Add type checking in `getByCriteria` operation 
 * `genesis-db` : Correct handling repo modules with suspend methods 
 * `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes 
-* `genesis-db` :  * fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
+* `genesis-db` : fix issue in `getRangeFromEnd` operation when `SqlViewsEnabled` is true 
 * `genesis-db` : GetRange on a View hangs indefinitely when called within a database transaction 
 * `genesis-db` : Handle genesis table objects using sql native connection
 * `genesis-db` : Native sql layer, release connection on failure to execute query 
@@ -89,7 +89,7 @@ id: '8.15'
 * `genesis-db` : Remove blocking calls in CriteriaCacheManager.kt 
 * `genesis-db` : Support ResultSet streaming in native SQL and getByCriteria to reduce memory pressure 
 * `genesis-dbmon` : FindCommand should use UniqueIndex Jackson deserialization 
-* `genesis-dbmon` :  * fix view field handling in search and distinct commands 
+* `genesis-dbmon` : fix view field handling in search and distinct commands 
 * `genesis-environment` : Application and component `installHook` failures should not return a `0` exit code 
 * `genesis-environment` : DumpIt should rely on existing dictionary schema for database tables to ensure compatibility instead of deployed dao classes 
 * `genesis-environment` : Ensure audit records are inserted correctly when using SendIt 
@@ -98,13 +98,13 @@ id: '8.15'
 * `genesis-environment`  Fix Oracle DDL statements for sequence value increments 
 * `genesis-environment` : Handle autoIncrement/sequence migration correctly in SQL Server/H2 when executing remap for certain field schema migrations 
 * `genesis-environment` : Enable `SendIt` to handle binary data in `LEGACY` mode 
-* `genesis-environment` :  * fix handling of sys def reading with overlapping product names 
+* `genesis-environment` : fix handling of sys def reading with overlapping product names 
 * `genesis-net` : Create request log per process 
 * `genesis-openapi-gradle` : Depend on `sourcesJar` if task exists 
-* `genesis-pal-consolidator`  * fix memory profile in cold start 
+* `genesis-pal-consolidator` fix memory profile in cold start 
 * `genesis-pal-eventhandler` : Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined 
 * `genesis-pal-eventhandler` : Remove Kotlin compiler warning in event handlers related to reified type intersections 
-* `genesis-pal-eventhandler` :  * fix event handler global permission check 
+* `genesis-pal-eventhandler` : fix event handler global permission check 
 * `genesis-pal-requestserver` : Include derivedFields for SQL-based criteria-only request reply workflow 
 * `genesis-resource-daemon` : STANDBY processes should be shown as STANDBY instead of DOWN in "mon" when using Consul mode 
 * `genesis-resource-daemon` : Correct health endpoint handling with processes disabled 
@@ -373,7 +373,7 @@ There are currently no patch releases for this version
 * `foundation-ui` : Replace hardcoded light gray text color in multiselect
 * `grid-pro` : Correct filters for blanks 
 * `grid-pro` : Correct filters for notBlanks 
-* `eslint-config` : * fix regressions and add module-level linting 
+* `eslint-config` : fix regressions and add module-level linting 
 * `grid-pro` : Prevent memory leaks by cleaning up observers and subscriptions 
 * `foundation-ui` : Emit file-selected event from file-upload
 * `grid-pro` : Respect explicit filterParams values in agSetColumnFilter 
