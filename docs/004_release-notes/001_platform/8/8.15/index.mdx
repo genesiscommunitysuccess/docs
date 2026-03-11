@@ -278,7 +278,27 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.15.2
+
+###### Features
+
+* `genesis-db` : Add transactional support for SqlDatabaseConnection, integration with our standard database APIs, and opt-in system definition property for automatic table/column naming convention translation 
+* Add AppDistTarGz task that mirrors AppDistZip; but create a tar.gz file 
+
+###### Fixes
+
+### 
+
+* `gradle` : Change default docker url back to genesis which is used in docker image name 
+
+#### 8.15.1
+
+###### Fixes
+
+* `genesis-cluster` : Consul TTL healcheck pings should only start after successful service registration
+* `genesis-clustersupport` : Make consul health checks use elapsed time scheduling rather than fixed time scheduling and simplify primaryOnly health checks 
+* `genesis-clustersupport` : Fix race condition in consul health point registration
+* `genesis-environment` : Improve GetNextSequenceNumbers/GetNextAutoIncrementNumbers handling for empty tables and UUID-style IDs 
 
 ## Client
 
