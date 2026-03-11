@@ -17,7 +17,8 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Upgrade commons-configuration from version 1.x to latest 2.x 
 * Bump camelVersion from 4.14.4 to 4.18.0 
 * `exec-gradle-plugin` : Create new dynamic deployment to allow apps to overwrite dependencies 
-* `genesis-pal-datapipeline` : Enhanced acknowledgement mechanism with different error types, including new SinkUnavailable error 
+* `deploy-gradle-plugin` : Remove legacy tasks; and move docker task to `exec-gradle-plugin`, see [here](#deploy-plugin-changes) for details
+* `genesis-pal-datapipeline` : Enhanced acknowledgement mechanism with different error types, including new SinkUnavailable error
 * `genesis-router` : Set cookie authentication by default 
 
 ### Features
@@ -413,3 +414,11 @@ If your application is using Apache Commons Config v1 or Apache Commons Lang v1 
 ### Apache Camel upgrade from 4.14.x LTS to 4.18.x LTS
 
 The Apache Camel base version used by genesis has now been upgraded to use the 4.18.x LTS version. Please review the Apache Camel [upgrade guide](https://camel.apache.org/manual/camel-4x-upgrade-guide-4_15.html) for any potential compatibility issues.
+
+### Deploy plugin changes
+
+The deploy plugin contained tasks that were designed to deploy genesis applications locally, to wsl and over ssh.
+With the Genesis IntelliJ plugin and Genesis Start, these have become redundant and have been removed.
+This plugin also provides install tasks, that were initially designed to install genesis locally, but that are
+currently used to generate deployable artifacts.
+For more information on how to generate deployable artifacts going forward, please see [here](/build-deploy-operate/build/build-tools/)
