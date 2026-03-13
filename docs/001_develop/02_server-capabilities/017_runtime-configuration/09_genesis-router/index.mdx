@@ -176,6 +176,7 @@ The configuration options are:
   * `path` sets the specific path attributed to the cookie values. Default: "/"
   * `domain` sets the expected domain for the generated cookie. Default: null
   * `sameSite` configures the behaviour of the cookie when used as part of cross-site requests. Cookies with undefined (i.e. null) `sameSite` configuration will default to SameSite.Lax . Available values: SameSite.None, SameSite.Lax, SameSite.Strict. Default: null (i.e. therefore SameSite.Lax)
+  * `sessionCookies` When `true`, the router sends auth cookies (session and refresh tokens) as session cookies without `Max-Age` so they expire when the browser closes; when `false` (default), cookies use their configured timeout values.
 
 For more information about all the different cookie configuration options and the impact they have in terms of security, refer to the [OWASP cookie testing guide](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes).
 
