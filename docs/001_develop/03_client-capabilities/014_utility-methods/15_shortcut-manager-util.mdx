@@ -1,0 +1,260 @@
+---
+title: 'Keyboard shortcut manager'
+sidebar_label: 'Shortcut manager'
+id: shortcut-manager-util
+keywords: [utils, utility, keyboard, shortcuts, ShortcutManager, hotkeys]
+tags:
+  - utils
+  - utility
+  - keyboard
+  - shortcuts
+  - accessibility
+---
+
+The keyboard shortcut manager utilities in `@genesislcap/foundation-utils` let you define, group, and execute keyboard shortcuts in a consistent way across your application.
+
+They provide:
+
+- A **`ShortcutDefinition`** type to describe individual shortcuts
+- A **`ShortcutManager`** interface and **`DefaultShortcutManager`** implementation
+- Helper types such as **`ShortcutExecutionStatus`** and **`ShortcutRegistrationResult`**
+
+Use these building blocks when you want a central place to register and manage keyboard shortcuts for pages, layouts, and components.
+
+## Core concepts
+
+### ShortcutDefinition
+
+A shortcut is described with a `ShortcutDefinition`:
+
+```ts
+import type { ShortcutDefinition } from '@genesislcap/foundation-utils';
+
+const saveShortcut: ShortcutDefinition = {
+  id: 'save',
+  key: 's',
+  ctrlKey: true,
+  description: 'Save current form',
+  context: 'trade-form',
+  action: () => {
+    // trigger save logic
+  },
+  // Optional
+  shiftKey: false,
+  priority: 10,
+  canExecute: () => ({ disabled: false }),
+};
+```
+
+Key fields:
+
+- **`id`**: Unique identifier for the shortcut within its context.
+- **`key`**: The key to listen for (e.g. `'s'`, `'F2'`, `'Escape'`).
+- **Modifier keys**: `ctrlKey`, `altKey`, `optionKey`, `shiftKey`, `metaKey` (all optional).
+- **`context`**: Logical group such as a page, layout, or component (`'positions-grid'`, `'trade-form'`, etc.).
+- **`description`**: Human‑readable text for help/menus.
+- **`action`**: Function executed when the shortcut fires.
+- **`priority`** (optional): Used to resolve conflicts when multiple shortcuts match.
+- **`elementRef`** (optional): An element the shortcut is associated with.
+- **`canExecute`** (optional): Returns a `ShortcutExecutionStatus` (`disabled`, `tooltip`) used to control availability.
+
+### ShortcutManager
+
+The `ShortcutManager` interface provides the operations for managing shortcuts:
+
+- **Register / unregister**
+  - `registerShortcuts(shortcuts: ShortcutDefinition[]): void`
+  - `registerShortcut(shortcut: ShortcutDefinition): ShortcutRegistrationResult`
+  - `unregisterShortcut(context: string, id: string): void`
+  - `unregisterShortcutsByContext(context: string): void`
+- **Execute**
+  - `executeShortcut(id: string): void` (in the active context)
+  - `executeShortcutByContext(context: string, id: string): void`
+- **Query**
+  - `getShortcuts(): ShortcutDefinition[]`
+  - `getShortcutsByContext(context: string): ShortcutDefinition[]`
+  - `getContexts(): string[]`
+  - `getShortcutsByContextMap(): Map<string, Map<string, ShortcutDefinition>>`
+- **Context management**
+  - `registerContext(context: string): void`
+  - `setActiveContext(context: string): void`
+  - `getActiveContext(): string | undefined`
+  - `clearActiveContext(): void`
+- **Key matching**
+  - `findShortcutByKeyCombination(key: string, ctrlKey?: boolean, altKey?: boolean, shiftKey?: boolean, metaKey?: boolean): ShortcutDefinition | undefined`
+- **Pause / resume**
+  - `pause(): void`
+  - `resume(): void`
+  - `isPaused: boolean`
+  - `isPaused$: Observable<boolean>`
+  - `isPausedSubject: BehaviorSubject<boolean>`
+
+The default implementation is provided by the **`DefaultShortcutManager`** class.
+
+## Basic usage
+
+### Creating a manager and registering shortcuts
+
+```ts
+import {
+  DefaultShortcutManager,
+  type ShortcutDefinition,
+} from '@genesislcap/foundation-utils';
+
+// In a shared place (e.g. app shell, layout, or a service)
+const shortcutManager = new DefaultShortcutManager();
+
+const shortcuts: ShortcutDefinition[] = [
+  {
+    id: 'positions-refresh',
+    key: 'r',
+    ctrlKey: true,
+    description: 'Refresh positions grid',
+    context: 'positions-grid',
+    action: () => {
+      // refresh logic here
+    },
+  },
+  {
+    id: 'positions-export',
+    key: 'e',
+    ctrlKey: true,
+    description: 'Export positions to CSV',
+    context: 'positions-grid',
+    action: () => {
+      // export logic here
+    },
+  },
+];
+
+// Register once when the screen/layout is initialised
+shortcutManager.registerShortcuts(shortcuts);
+
+// Set the active context when the screen becomes active
+shortcutManager.setActiveContext('positions-grid');
+```
+
+### Wiring into key events
+
+`ShortcutManager` does not add DOM listeners itself. A common pattern is to listen for `keydown` and delegate to the manager:
+
+```ts
+window.addEventListener('keydown', (event) => {
+  if (shortcutManager.isPaused) {
+    return;
+  }
+
+  const shortcut = shortcutManager.findShortcutByKeyCombination(
+    event.key,
+    event.ctrlKey,
+    event.altKey,
+    event.shiftKey,
+    event.metaKey,
+  );
+
+  if (!shortcut) {
+    return;
+  }
+
+  const status = shortcut.canExecute?.() ?? {};
+  if (status.disabled) {
+    if (status.tooltip) {
+      // Optionally show tooltip / toast here
+    }
+    return;
+  }
+
+  event.preventDefault();
+  shortcut.action();
+});
+```
+
+This approach lets you centralise key handling while still keeping shortcuts context‑aware.
+
+## Contexts and active context
+
+Contexts allow you to scope shortcuts to particular screens or components:
+
+```ts
+shortcutManager.registerContext('trade-form');
+shortcutManager.registerContext('positions-grid');
+
+// When user navigates to trade form
+shortcutManager.setActiveContext('trade-form');
+
+// Later, when switching to positions grid
+shortcutManager.setActiveContext('positions-grid');
+
+// To clear any active context
+shortcutManager.clearActiveContext();
+```
+
+`executeShortcut(id)` always uses the **active context**, while `executeShortcutByContext(context, id)` lets you target a specific context explicitly.
+
+You can inspect what is registered:
+
+```ts
+const allContexts = shortcutManager.getContexts();
+const tradeShortcuts = shortcutManager.getShortcutsByContext('trade-form');
+```
+
+This is useful for building help dialogs or “keyboard shortcuts” overlays.
+
+## Enabling / disabling shortcuts
+
+Use `canExecute` and the `ShortcutExecutionStatus` type to control availability:
+
+```ts
+const saveShortcut: ShortcutDefinition = {
+  id: 'save',
+  key: 's',
+  ctrlKey: true,
+  description: 'Save current form',
+  context: 'trade-form',
+  action: () => {
+    // save logic
+  },
+  canExecute: () => {
+    const hasErrors = /* validate current form */;
+    return {
+      disabled: hasErrors,
+      tooltip: hasErrors ? 'Fix validation errors before saving' : undefined,
+    };
+  },
+};
+
+shortcutManager.registerShortcut(saveShortcut);
+```
+
+In your key handler, the `canExecute` function is evaluated before running `action`. You can also expose `disabled` and `tooltip` in your UI (for example, to show the same state in a “Shortcuts” menu).
+
+## Pausing shortcuts
+
+Sometimes you want to temporarily disable global shortcuts (for example, when a modal or input field has focus).
+
+```ts
+// Pause all shortcuts
+shortcutManager.pause();
+
+// Resume again
+shortcutManager.resume();
+
+// Reactively monitor pause state
+shortcutManager.isPaused$.subscribe((isPaused) => {
+  console.log('Shortcuts paused:', isPaused);
+});
+```
+
+This is typically used in combination with focus/blur handlers on inputs or dialogs.
+
+## Summary
+
+Use the shortcut manager utilities when you need:
+
+- Central, testable definitions of keyboard shortcuts
+- Context‑aware behaviour across different screens
+- Consistent enable/disable logic and tooltips
+- A single place to wire keyboard events to application actions
+
+For the full type surface, refer to the TypeScript definitions in `@genesislcap/foundation-utils` (especially `ShortcutDefinition`, `ShortcutManager`, `DefaultShortcutManager`, and `ShortcutRegistrationResult`).
+
