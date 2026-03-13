@@ -35,3 +35,8 @@ id: '8.15-reporting'
 ### Patch releases
 
 There are currently no patch releases for this version
+
+## Breaking change guidance
+
+### Added alternate data grouping strategies to templated reports
+Any reports configs that were using the excel template multisheet functionality will need to be modified, as the data keys have been changed from  'key' and 'value', to 'groupId' and 'items', as this is for more self-explanatory and easy to explain to users.

@@ -442,3 +442,8 @@ With the Genesis IntelliJ plugin and Genesis Start, these have become redundant 
 This plugin also provides install tasks, that were initially designed to install genesis locally, but that are
 currently used to generate deployable artifacts.
 For more information on how to generate deployable artifacts going forward, please see [here](/build-deploy-operate/build/build-tools/)
+
+
+### Enhanced acknowledgement mechanism with different error types
+
+This change was made to facilitate sinks signalling to sources that errors are transient, and that the pipeline should try to reprocess the element, however some behaviour changes were made to error handling. Namely, the onUncaughtError handler is now invoked whenever an exception is thrown from a pipeline operation that does not have an operation level error handler attached, but it does not necessarily mean the pipeline has already shut down. If the onUncaughtError handler is invoked and does not throw an exception, the error is assumed to have been handled and the pipeline will continue processing elements. If the pipeline should shut down, this error handler should now either rethrow the error or throw an error of its own. Furthermore, the pipeline monitor status will be set to WARNING automatically if an error is thrown and no uncaught handler is specified, it does not need to be done manually.
