@@ -1,0 +1,37 @@
+---
+title: '8.15 Auth'
+sidebar_label: 'Auth'
+sidebar_position: 1
+id: '8.15-auth'
+---
+
+### Features
+
+* `auth-config` : Enable support for GPAL auth perms by default in auth-processes.xml
+* `pbc-auth-ui` : Support overriding design system prefix 
+* `pbc-auth-ui` : Make one-time password field required 
+
+### Fixes
+
+* `auth-manager` : Add custom pbc implementation without hardcoded counterparty AUTH-431
+* `auth-manager` : Fix connection contention in user session check
+* `auth-oidc` : Use RandomStringUtils from Apache Commons Lang3 instead of Apache Commons Lang given it is not available anymore due to the Apache Commons Configuration upgrade in GSF 
+* `auth-oidc` : Use lastIndexOf to extract idp from state parameter 
+* Handle multiple cases in the refresh token cookie for terms and conditions web endpoints 
+* Move PKCE code verifier store to the database
+* Remove USER_NAME header requirement from terms and conditions endpoints as it doesn't work with external proxy devices
+* Use TLS for user connection if useTls set 
+* `pbc-auth-ui` : Increase maxRows limit for right codes
+
+### Dependency changes
+
+* Remove hardcoded constraints on commons lang, commons config and commons codec
+* Bump com.auth0:java-jwt from 4.4.0 to 4.5.0
+* Bump com.auth0:jwks-rsa from 0.22.1 to 0.23.0
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.3 to 7.0.4
+* Bump jjwtVersion from 0.12.6 to 0.13.0 
+* Bump org.gradle.test-retry from 1.6.2 to 1.6.4
+
+### Patch releases
+
+There are currently no patch releases for this version
