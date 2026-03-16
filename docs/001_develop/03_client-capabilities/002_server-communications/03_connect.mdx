@@ -83,6 +83,30 @@ To be added.
 - **POLLING_INTERVAL_MAP** – Per-resource polling intervals
 - **POLLING_MAP** – Turbo configurations for events that should temporarily poll more frequently
 
+Example configuration:
+
+```typescript
+{
+  polling: {
+    POLLING_FREQUENCY: 5000,
+    POLLING_INTERVAL_MAP: {
+      ALL_TRADES: 5000,
+      ALL_USERS: 5000,
+      ALL_PROCESSES_STATUS: 10000,
+    },
+    POLLING_MAP: {
+      EVENT_AMEND_USER: {
+        TEMP_FREQUENCY: 500,
+        AMOUNT_OF_POLLS: 5,
+        QUERIES: ['ALL_USERS'],
+      },
+    },
+  },
+}
+```
+
+In this example, most resources poll every 5 seconds, while `ALL_PROCESSES_STATUS` polls every 10 seconds. After an `EVENT_AMEND_USER` commit, `ALL_USERS` temporarily polls every 500ms for 5 attempts.
+
 ## Best practice
 
 - **Secure Connection**: Always use secure channels (e.g., WSS for WebSocket, HTTPS for HTTP) to ensure data privacy and integrity.
@@ -95,7 +119,7 @@ To be added.
 
 - **Reconnection Strategies**: Configure reconnection settings based on the application's requirements, balancing between connection stability and resource consumption.
 
-- **HTTP Polling Configuration**: When using `DefaultHttpConnect`, tune `POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY` per resource to balance data freshness with server load.
+- **HTTP Polling Configuration**: When using `DefaultHttpConnect`, tune `POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY` per resource to balance data freshness with server load. See the [Configuration (HttpConnectConfig)](#configuration-httpconnectconfig) section for an example.
 
 ## Considerations
 
