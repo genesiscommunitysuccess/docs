@@ -72,7 +72,7 @@ TElement
 
 </td><td>
 
-The first element in the [Fixture.view](./foundation-testing.fixture.view.md)<!-- -->.
+The first element in the [Fixture.view](./foundation-testing.fixture.view.md).
 
 
 </td></tr>

@@ -57,7 +57,9 @@ Record&lt;string, string&gt;
 
 ## Remarks
 
-For filtering REQUEST\_SERVER resources. Maps concatenated criteria filters from a grid to a request fields object. Date/datetime groovy expressions will append `_FROM` and `_TO` onto field names appropriately
+For filtering REQUEST\_SERVER resources. Maps concatenated criteria filters from a grid to a request fields object. Date/datetime groovy expressions will append `_FROM` and `_TO` onto field names appropriately.
+
+Also supports direct comparison operators (&lt;=, &gt;=) with numeric timestamps, which are automatically converted to the appropriate REQUEST field format.
 
 eg: converts
 
@@ -69,7 +71,9 @@ Expr.dateIsToday(DATE) &&
 Expr.dateTimeIsGreaterEqual(DATETIME, '20231110-03:23') &&
 Expr.dateTimeIsLessEqual(DATETIME, '20231115-03:23') &&
 Expr.dateIsGreaterEqual(DATEONLY, '20231110') &&
-Expr.dateIsLessEqual(DATEONLY, '20231115')
+Expr.dateIsLessEqual(DATEONLY, '20231115') &&
+FIELD_DATETIME >= 1704067200000 &&
+FIELD_DATETIME <= 1704153600000
 ```
 into
 

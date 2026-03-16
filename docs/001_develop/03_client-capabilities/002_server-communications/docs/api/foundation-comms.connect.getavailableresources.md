@@ -12,7 +12,7 @@ Sends a request to the server to get available resources.
 **Signature:**
 
 ```typescript
-getAvailableResources(params?: RequestParams): Promise<ResourcesMessage>;
+getAvailableResources(params?: RequestParams, useCache?: boolean): Promise<ResourcesMessage>;
 ```
 
 ## Parameters
@@ -46,6 +46,22 @@ params
 </td><td>
 
 _(Optional)_ An object containing optional parameters to include in the request.
+
+
+</td></tr>
+<tr><td>
+
+useCache
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether to use the cached resources if available. Default: true.
 
 
 </td></tr>

@@ -345,7 +345,7 @@ Gets all of the currently registered names
 </td></tr>
 <tr><td>
 
-[registerItem(registration, elements)](./foundation-layout.foundationlayout.registeritem.md)
+[registerItem(registration, elementsOrFactory)](./foundation-layout.foundationlayout.registeritem.md)
 
 
 </td><td>
@@ -353,7 +353,7 @@ Gets all of the currently registered names
 
 </td><td>
 
-Register a collection of `Element` and associate them with an `ID` with the layout system for later use.
+Register a collection of `Element` or a factory function and associate them with an `ID` with the layout system for later use.
 
 
 </td></tr>

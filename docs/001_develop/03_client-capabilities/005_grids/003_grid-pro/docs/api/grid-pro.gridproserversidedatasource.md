@@ -50,44 +50,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[applyAsyncFuncName](./grid-pro.gridproserversidedatasource.applyasyncfuncname.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-**_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
-[applyFuncName](./grid-pro.gridproserversidedatasource.applyfuncname.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-**_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
 [liveUpdates](./grid-pro.gridproserversidedatasource.liveupdates.md)
 
 
@@ -107,17 +69,34 @@ boolean
 </td></tr>
 <tr><td>
 
-[params](./grid-pro.gridproserversidedatasource.params.md)
+[pagingMode](./grid-pro.gridproserversidedatasource.pagingmode.md)
 
 
 </td><td>
 
-`readonly`
+
+</td><td>
+
+[PagingMode](./grid-pro.pagingmode.md) \| undefined
 
 
 </td><td>
 
-any
+**_(BETA)_** The paging mode to use for data fetching.
+
+
+</td></tr>
+<tr><td>
+
+[pollingDatasource](./grid-pro.gridproserversidedatasource.pollingdatasource.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Datasource
 
 
 </td><td>
@@ -147,17 +126,15 @@ any
 </td></tr>
 <tr><td>
 
-[rowModel](./grid-pro.gridproserversidedatasource.rowmodel.md)
+[serializer](./grid-pro.gridproserversidedatasource.serializer.md)
 
 
 </td><td>
 
-`readonly`
-
 
 </td><td>
 
-IServerSideRowModel
+JSONSerializer
 
 
 </td><td>
@@ -207,21 +184,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[applyTransaction(agTransaction)](./grid-pro.gridproserversidedatasource.applytransaction.md)
-
-
-</td><td>
-
-
-</td><td>
-
-**_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
-[applyTransactionAsync(agTransaction, callback)](./grid-pro.gridproserversidedatasource.applytransactionasync.md)
+[applyTransaction(transaction)](./grid-pro.gridproserversidedatasource.applytransaction.md)
 
 
 </td><td>

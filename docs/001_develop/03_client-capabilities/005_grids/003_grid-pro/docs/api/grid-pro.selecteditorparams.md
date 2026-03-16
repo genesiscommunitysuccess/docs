@@ -58,6 +58,23 @@ string
 </td></tr>
 <tr><td>
 
+[allowCustomOptions](./grid-pro.selecteditorparams.allowcustomoptions.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [async](./grid-pro.selecteditorparams.async.md)
 
 

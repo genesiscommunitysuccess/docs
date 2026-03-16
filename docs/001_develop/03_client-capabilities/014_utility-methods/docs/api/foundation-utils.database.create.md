@@ -49,5 +49,5 @@ Omit&lt;T, 'id'&gt;
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Create](./foundation-utils.databaseaccessresult.create.md)<!-- -->&lt;T&gt;&gt;
+Promise&lt;[DatabaseAccessResult.Create](./foundation-utils.databaseaccessresult.create.md)&lt;T&gt;&gt;
 

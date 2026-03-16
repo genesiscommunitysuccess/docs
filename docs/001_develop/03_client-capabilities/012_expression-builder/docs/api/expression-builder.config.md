@@ -9,9 +9,62 @@ format: md
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [BASE\_LOGICAL\_COMBINATORS](./expression-builder.config.base_logical_combinators.md) | **_(BETA)_** Basic <code>AND</code> and <code>OR</code> logical combinators which can be used in the model config. |
-|  [LOGICAL\_COMBINATORS](./expression-builder.config.logical_combinators.md) | **_(BETA)_** A set of boolean logic combinators which configure the expression builder to produce boolean expressions. |
-|  [NULL\_COMBINATOR](./expression-builder.config.null_combinator.md) | <p>**_(BETA)_** A combinator which has a null action.</p><p>If configured as the only combinator then it configures the expression builder to only create a single rule.</p> |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[BASE\_LOGICAL\_COMBINATORS](./expression-builder.config.base_logical_combinators.md)
+
+
+</td><td>
+
+**_(BETA)_** Basic `AND` and `OR` logical combinators which can be used in the model config.
+
+
+</td></tr>
+<tr><td>
+
+[BASE\_OPERATORS](./expression-builder.config.base_operators.md)
+
+
+</td><td>
+
+**_(ALPHA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[LOGICAL\_COMBINATORS](./expression-builder.config.logical_combinators.md)
+
+
+</td><td>
+
+**_(BETA)_** A set of boolean logic combinators which configure the expression builder to produce boolean expressions.
+
+
+</td></tr>
+<tr><td>
+
+[NULL\_COMBINATOR](./expression-builder.config.null_combinator.md)
+
+
+</td><td>
+
+**_(BETA)_** A combinator which has a null action.
+
+If configured as the only combinator then it configures the expression builder to only create a single rule.
+
+
+</td></tr>
+</tbody></table>
 

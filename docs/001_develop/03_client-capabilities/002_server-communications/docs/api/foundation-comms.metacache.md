@@ -7,12 +7,12 @@ format: md
 
 ## MetaCache type
 
-Union type of MetadataCache and JsonSchemaCache
+Union type of MetadataCache, JsonSchemaCache and ResourcesCache
 
 **Signature:**
 
 ```typescript
-export type MetaCache = MetadataCache & JsonSchemaCache;
+export type MetaCache = MetadataCache & JsonSchemaCache & ResourcesCache;
 ```
-**References:** [MetadataCache](./foundation-comms.metadatacache.md), [JsonSchemaCache](./foundation-comms.jsonschemacache.md)
+**References:** [MetadataCache](./foundation-comms.metadatacache.md), [JsonSchemaCache](./foundation-comms.jsonschemacache.md), [ResourcesCache](./foundation-comms.resourcescache.md)
 

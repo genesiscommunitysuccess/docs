@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.disablePolling property
 
+Disables polling if set to true (data updates for the grid will not be fetched automatically).
+
 **Signature:**
 
 ```typescript
 disablePolling: boolean;
 ```
+
+## Remarks
+
+REQUEST\_SERVER only. Defaults to false.
+

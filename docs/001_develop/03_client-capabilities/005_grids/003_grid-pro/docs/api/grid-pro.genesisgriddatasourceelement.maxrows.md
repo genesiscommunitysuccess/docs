@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.maxRows property
 
+Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE\_ROWS messages.
+
 **Signature:**
 
 ```typescript
 maxRows: number;
 ```
+
+## Remarks
+
+This will not affect the number of rows displayed. Defaults to 250.
+

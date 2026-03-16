@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.reverse property
 
+Option that changes the Data Server index iteration.
+
 **Signature:**
 
 ```typescript
 reverse: boolean;
 ```
+
+## Remarks
+
+DATASERVER only. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest. Defaults to false.
+

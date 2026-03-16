@@ -53,7 +53,7 @@ _(Optional)_ The design system prefix to use. Defaults to 'foundation'.
 
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md)<!-- -->, any&gt;
+import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md), any&gt;
 
 A Text Field component template prefixed with the correct design system.
 

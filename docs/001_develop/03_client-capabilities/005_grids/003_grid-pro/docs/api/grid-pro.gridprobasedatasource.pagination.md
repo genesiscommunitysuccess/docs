@@ -10,5 +10,5 @@ format: md
 **Signature:**
 
 ```typescript
-protected get pagination(): boolean;
+protected pagination: boolean;
 ```

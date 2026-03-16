@@ -16,5 +16,5 @@ createObserver: <EventType>() => Observer<EventType>
 ```
 **Returns:**
 
-[Observer](./foundation-utils.observer.md)<!-- -->&lt;EventType&gt;
+[Observer](./foundation-utils.observer.md)&lt;EventType&gt;
 

@@ -12,7 +12,7 @@ format: md
 > use `applyTemplateDefinitions` instead.
 > 
 
-Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`<!-- -->.
+Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`.
 
 **Signature:**
 

@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-protected generateColumnDefsFromMetadata(fieldsMetadata: FieldMetadata[], getFilterParamsByFieldType: Function): ColDef[];
+protected generateColumnDefsFromMetadata(fieldsMetadata: FieldMetadata[], getFilterParamsByFieldType: (field: FieldMetadata) => ColDef['filterParams'] | any, getFilterByFieldType: (type: FieldTypeEnum) => string): ColDef[];
 ```
 
 ## Parameters
@@ -52,7 +52,21 @@ getFilterParamsByFieldType
 
 </td><td>
 
-Function
+(field: FieldMetadata) =&gt; ColDef\['filterParams'\] \| any
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+getFilterByFieldType
+
+
+</td><td>
+
+(type: FieldTypeEnum) =&gt; string
 
 
 </td><td>

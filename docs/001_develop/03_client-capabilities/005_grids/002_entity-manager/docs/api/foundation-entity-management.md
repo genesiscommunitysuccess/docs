@@ -33,6 +33,15 @@ Main class which defines the entity management functionality
 </td></tr>
 <tr><td>
 
+[List](./foundation-entity-management.list.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [MainApplication](./foundation-entity-management.mainapplication.md)
 
 

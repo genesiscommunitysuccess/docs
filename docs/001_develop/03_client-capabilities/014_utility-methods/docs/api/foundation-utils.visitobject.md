@@ -75,7 +75,7 @@ visitor
 
 </td><td>
 
-[ObjectVisitor](./foundation-utils.objectvisitor.md)<!-- -->&lt;TVisitorData&gt;
+[ObjectVisitor](./foundation-utils.objectvisitor.md)&lt;TVisitorData&gt;
 
 
 </td><td>

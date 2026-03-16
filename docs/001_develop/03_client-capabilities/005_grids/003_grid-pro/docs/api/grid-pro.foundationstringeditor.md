@@ -46,7 +46,7 @@ overrideDefinition
 
 </td><td>
 
-import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[StringEditor](./grid-pro.stringeditor.md)<!-- -->, any&gt;; }&gt;
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[StringEditor](./grid-pro.stringeditor.md), any&gt;; }&gt;
 
 
 </td><td>
@@ -59,9 +59,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[StringEditor](./grid-pro.stringeditor.md)<!-- -->, any&gt;; }, typeof [StringEditor](./grid-pro.stringeditor.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[StringEditor](./grid-pro.stringeditor.md), any&gt;; }, typeof [StringEditor](./grid-pro.stringeditor.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-string-editor<!-- -->&gt;
+HTML Element: &lt;foundation-string-editor&gt;
 

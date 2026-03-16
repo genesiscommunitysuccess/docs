@@ -56,7 +56,7 @@ formatterParams
 
 </td><td>
 
-[ActionsMenuFormatterParams](./grid-tabulator.actionsmenuformatterparams.md)<!-- -->&lt;T&gt;
+[ActionsMenuFormatterParams](./grid-tabulator.actionsmenuformatterparams.md)&lt;T&gt;
 
 
 </td><td>

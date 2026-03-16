@@ -49,5 +49,5 @@ string
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Read](./foundation-utils.databaseaccessresult.read.md)<!-- -->&lt;T&gt;&gt;
+Promise&lt;[DatabaseAccessResult.Read](./foundation-utils.databaseaccessresult.read.md)&lt;T&gt;&gt;
 

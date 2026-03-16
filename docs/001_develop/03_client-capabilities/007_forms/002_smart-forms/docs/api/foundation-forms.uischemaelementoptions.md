@@ -12,7 +12,7 @@ All configuration options that are available.
 **Signature:**
 
 ```typescript
-export type UiSchemaElementOptions = ConnectedRenderersOptions | ArrayRendererOptions | CategorizationRendererOptions | GroupRendererOptions | StepperRendererOptions | StringRendererOptions | StandardRendererOptions;
+export type UiSchemaElementOptions = ConnectedRenderersOptions | NumberRendererOptions | ArrayRendererOptions | CategorizationRendererOptions | GroupRendererOptions | StepperRendererOptions | StringRendererOptions | StandardRendererOptions;
 ```
-**References:** [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md), [ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md), [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md), [GroupRendererOptions](./foundation-forms.grouprendereroptions.md), [StepperRendererOptions](./foundation-forms.stepperrendereroptions.md), [StringRendererOptions](./foundation-forms.stringrendereroptions.md), [StandardRendererOptions](./foundation-forms.standardrendereroptions.md)
+**References:** [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md), [NumberRendererOptions](./foundation-forms.numberrendereroptions.md), [ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md), [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md), [GroupRendererOptions](./foundation-forms.grouprendereroptions.md), [StepperRendererOptions](./foundation-forms.stepperrendereroptions.md), [StringRendererOptions](./foundation-forms.stringrendereroptions.md), [StandardRendererOptions](./foundation-forms.standardrendereroptions.md)
 

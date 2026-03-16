@@ -48,7 +48,7 @@ Description
 
 </td><td>
 
-[Publish](./foundation-utils.publish.md)<!-- -->&lt;EventType&gt;
+[Publish](./foundation-utils.publish.md)&lt;EventType&gt;
 
 
 </td><td>
@@ -65,7 +65,7 @@ Description
 
 </td><td>
 
-[Subscribe](./foundation-utils.subscribe.md)<!-- -->&lt;EventType&gt;
+[Subscribe](./foundation-utils.subscribe.md)&lt;EventType&gt;
 
 
 </td><td>

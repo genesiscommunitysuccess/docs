@@ -22,6 +22,8 @@ export type Metadata = {
     NAME?: string;
     TYPE?: string;
     INDEXES?: IndexDetail[];
+    SORTABLE_FIELDS?: string[];
+    CRITERIA_FIELDS?: string[];
     ERROR?: string;
     CRITERIA_ONLY_REQUEST?: boolean;
 };

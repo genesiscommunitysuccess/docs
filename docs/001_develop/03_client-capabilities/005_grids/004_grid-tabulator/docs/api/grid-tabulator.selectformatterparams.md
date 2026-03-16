@@ -12,15 +12,15 @@ format: md
 
 Parameters for the select formatter
 
-`options`<!-- -->: Array of options for the select
+`options`: Array of options for the select
 
-`nullText`<!-- -->: Text to display for null/undefined values
+`nullText`: Text to display for null/undefined values
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`prefix`<!-- -->: The prefix to use for element classes, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for element classes, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
-`onChange`<!-- -->: Optional callback when the selection changes
+`onChange`: Optional callback when the selection changes
 
 **Signature:**
 

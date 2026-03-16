@@ -12,11 +12,11 @@ format: md
 
 Parameters for the boolean formatter
 
-`isDisabled`<!-- -->: Function to determine whether the checkbox should be disabled for a specific row
+`isDisabled`: Function to determine whether the checkbox should be disabled for a specific row
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`prefix`<!-- -->: The prefix to use for the checkbox element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for the checkbox element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
 **Signature:**
 

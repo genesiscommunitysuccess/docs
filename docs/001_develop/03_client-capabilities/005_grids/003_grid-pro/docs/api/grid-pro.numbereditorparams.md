@@ -83,7 +83,7 @@ any
 
 </td><td>
 
-(value: number, params: [NumberEditorParams](./grid-pro.numbereditorparams.md)<!-- -->) =&gt; void
+(value: number, params: [NumberEditorParams](./grid-pro.numbereditorparams.md)) =&gt; void
 
 
 </td><td>

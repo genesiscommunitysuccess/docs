@@ -7,7 +7,7 @@ format: md
 
 ## GridPro.mergeAllColumnDefsAndStates() method
 
-Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`<!-- -->.
+Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`.
 
 **Signature:**
 

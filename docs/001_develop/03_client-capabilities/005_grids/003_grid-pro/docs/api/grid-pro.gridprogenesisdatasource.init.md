@@ -12,7 +12,7 @@ Initializes the datasource.
 **Signature:**
 
 ```typescript
-init(columnDefinitions?: ColDef[], columnStates?: ColumnState[]): Promise<void>;
+init(keepColDefsOnClearRowData?: boolean): Promise<void>;
 ```
 
 ## Parameters
@@ -35,33 +35,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-columnDefinitions
+keepColDefsOnClearRowData
 
 
 </td><td>
 
-ColDef\[\]
+boolean
 
 
 </td><td>
 
-_(Optional)_ Optionally set the `gridOptions` up with column definitions
-
-
-</td></tr>
-<tr><td>
-
-columnStates
-
-
-</td><td>
-
-ColumnState\[\]
-
-
-</td><td>
-
-_(Optional)_ Optionally set the grid up with column state
+_(Optional)_
 
 
 </td></tr>

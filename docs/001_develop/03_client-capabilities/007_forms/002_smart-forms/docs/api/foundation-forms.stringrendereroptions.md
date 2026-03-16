@@ -15,5 +15,6 @@ Configuration options available for string renderer.
 export type StringRendererOptions = {
     isPassword?: boolean;
     textarea?: boolean;
+    autocomplete?: string;
 };
 ```

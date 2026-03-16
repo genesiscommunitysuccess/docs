@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.request property
 
+Similar to fields but for Request Server scenarios. This optional parameter enables you to specify request fields, which can include wildcards.
+
 **Signature:**
 
 ```typescript
 request: any;
 ```
+
+## Remarks
+
+REQUEST\_SERVER only.
+

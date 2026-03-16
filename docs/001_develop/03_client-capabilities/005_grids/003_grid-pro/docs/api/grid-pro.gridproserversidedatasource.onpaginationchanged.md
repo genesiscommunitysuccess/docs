@@ -13,7 +13,7 @@ format: md
 **Signature:**
 
 ```typescript
-onPaginationChanged(event: PaginationChangedEvent): void;
+onPaginationChanged(event: any): void;
 ```
 
 ## Parameters
@@ -41,7 +41,7 @@ event
 
 </td><td>
 
-PaginationChangedEvent
+any
 
 
 </td><td>

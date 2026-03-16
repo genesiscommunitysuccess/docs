@@ -49,5 +49,5 @@ string
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Delete](./foundation-utils.databaseaccessresult.delete.md)<!-- -->&gt;
+Promise&lt;[DatabaseAccessResult.Delete](./foundation-utils.databaseaccessresult.delete.md)&gt;
 

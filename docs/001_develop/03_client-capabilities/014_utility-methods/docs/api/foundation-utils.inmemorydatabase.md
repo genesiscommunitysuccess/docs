@@ -14,7 +14,7 @@ An in memory database of specific DatabaseRecord types.
 ```typescript
 export declare class InMemoryDatabase<T extends DatabaseRecord> implements Database<T> 
 ```
-**Implements:** [Database](./foundation-utils.database.md)<!-- -->&lt;T&gt;
+**Implements:** [Database](./foundation-utils.database.md)&lt;T&gt;
 
 ## Constructors
 

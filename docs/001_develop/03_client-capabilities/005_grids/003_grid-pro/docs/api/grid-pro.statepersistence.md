@@ -30,6 +30,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[deleteColumnState(persistColumnStateKey)](./grid-pro.statepersistence.deletecolumnstate.md)
+
+
+</td><td>
+
+Deletes the column state for the given key.
+
+
+</td></tr>
+<tr><td>
+
 [getColumnState(persistColumnStateKey)](./grid-pro.statepersistence.getcolumnstate.md)
 
 

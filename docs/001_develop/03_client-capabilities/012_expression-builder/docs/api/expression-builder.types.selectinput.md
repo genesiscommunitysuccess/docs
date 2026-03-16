@@ -18,6 +18,9 @@ Configuration for an enum-type input, which as a string or number value, and use
 export type SelectInput = {
     input: 'select';
     type: 'enum';
-    values: Record<string, string | number>;
+    values: Record<string, string | number | {
+        label: string;
+        tooltip?: string;
+    }>;
 };
 ```

@@ -199,6 +199,17 @@ Available aligment for labels.
 </td></tr>
 <tr><td>
 
+[NumberRendererOptions](./foundation-forms.numberrendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for number renderer.
+
+
+</td></tr>
+<tr><td>
+
 [RendererEntry](./foundation-forms.rendererentry.md)
 
 

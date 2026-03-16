@@ -12,17 +12,17 @@ format: md
 
 Parameters for the actions menu formatter
 
-`actions`<!-- -->: The array of actions to display in the menu.
+`actions`: The array of actions to display in the menu.
 
-`prefix`<!-- -->: The prefix to use for the actions-menu element, e.g., 'foundation', 'zero', 'rapid'.
+`prefix`: The prefix to use for the actions-menu element, e.g., 'foundation', 'zero', 'rapid'.
 
-`menuName`<!-- -->: Custom name for the menu button (if not set, will use foundation: '⋮' or other: '+')
+`menuName`: Custom name for the menu button (if not set, will use foundation: '⋮' or other: '+')
 
-`isVertical`<!-- -->: Optional flag to display the menu vertically. Default is false.
+`isVertical`: Optional flag to display the menu vertically. Default is false.
 
-`buttonAppearance`<!-- -->: Optional appearance for the button that opens the menu.
+`buttonAppearance`: Optional appearance for the button that opens the menu.
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
 **Signature:**
 

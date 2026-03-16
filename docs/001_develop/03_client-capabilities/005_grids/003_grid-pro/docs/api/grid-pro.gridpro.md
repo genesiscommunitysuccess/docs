@@ -297,6 +297,44 @@ string
 </td></tr>
 <tr><td>
 
+[customErrorHandlerTemplate?](./grid-pro.gridpro.customerrorhandlertemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(prefix: string, gridErrorItems: [GridProErrorItem](./grid-pro.gridproerroritem.md)&lt;any&gt;\[\]) =&gt; ViewTemplate
+
+
+</td><td>
+
+_(Optional)_ Custom error handler dialog template function.
+
+
+</td></tr>
+<tr><td>
+
+[defaultColumnConfig](./grid-pro.gridpro.defaultcolumnconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ColDef\[\]
+
+
+</td><td>
+
+The default column config to reset to when deleteColumnState is called.
+
+
+</td></tr>
+<tr><td>
+
 [enableCellFlashing](./grid-pro.gridpro.enablecellflashing.md)
 
 
@@ -399,7 +437,7 @@ boolean
 
 </td><td>
 
-Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`<!-- -->.
+Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`.
 
 
 </td></tr>
@@ -430,7 +468,7 @@ Boolean attribute to control whether the grid autosizes the columns upon interac
 
 </td><td>
 
-[GridProErrorItem](./grid-pro.gridproerroritem.md)<!-- -->&lt;[GridProErrorEvent](./grid-pro.gridproerrorevent.md)<!-- -->\['detail'\]&gt;\[\]
+[GridProErrorItem](./grid-pro.gridproerroritem.md)&lt;[GridProErrorEvent](./grid-pro.gridproerrorevent.md)\['detail'\]&gt;\[\]
 
 
 </td><td>
@@ -774,6 +812,44 @@ number
 </td></tr>
 <tr><td>
 
+[sizeColumnsToContent](./grid-pro.gridpro.sizecolumnstocontent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute to control whether the grid automatically sizes columns to fit their content. This will call AG Grid's autoSizeColumns() method to automatically adjust column widths based on content.
+
+
+</td></tr>
+<tr><td>
+
+[sizeColumnsToFit](./grid-pro.gridpro.sizecolumnstofit.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute to adjust the size of columns to fit the available horizontal space. This will call AG Grid's sizeColumnsToFit() method.
+
+
+</td></tr>
+<tr><td>
+
 [statePersistence](./grid-pro.gridpro.statepersistence.md)
 
 
@@ -819,6 +895,23 @@ Configuration for the grid status bar components.
 </td><td>
 
 string
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[themeMode](./grid-pro.gridpro.thememode.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'light' \| 'dark'
 
 
 </td><td>
@@ -900,7 +993,7 @@ Adds an event listener to the grid element.
 
 </td><td>
 
-Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`<!-- -->.
+Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`.
 
 
 </td></tr>
@@ -956,6 +1049,20 @@ Clears the local grid options, this is used to clear the grid options when the g
 </td></tr>
 <tr><td>
 
+[deleteColumnState(resetToDefault)](./grid-pro.gridpro.deletecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Deletes the saved column state for the current grid
+
+
+</td></tr>
+<tr><td>
+
 [disconnectedCallback()](./grid-pro.gridpro.disconnectedcallback.md)
 
 
@@ -994,6 +1101,20 @@ Gets the saved grid ColumnState\[\] from storage
 </td></tr>
 <tr><td>
 
+[getSelectedRows()](./grid-pro.gridpro.getselectedrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Gets the currently selected rows from the grid
+
+
+</td></tr>
+<tr><td>
+
 [globalEventListener(eventType, event)](./grid-pro.gridpro.globaleventlistener.md)
 
 
@@ -1001,6 +1122,20 @@ Gets the saved grid ColumnState\[\] from storage
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+[hasSelectedRows()](./grid-pro.gridpro.hasselectedrows.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Checks if any rows are currently selected
 
 
 </td></tr>
@@ -1026,7 +1161,7 @@ Gets the saved grid ColumnState\[\] from storage
 
 </td><td>
 
-Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`<!-- -->.
+Will merge templated column definitions with `columnDefs` plus localStorage's column state or `deferredColumnStates`.
 
 
 </td></tr>
@@ -1101,6 +1236,20 @@ Will merge templated column definitions with `columnDefs` plus localStorage's co
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+[updateLabelValueStatusBar(params)](./grid-pro.gridpro.updatelabelvaluestatusbar.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Updates the label-value status bar component with new label and value
 
 
 </td></tr>

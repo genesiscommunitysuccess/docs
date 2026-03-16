@@ -56,7 +56,7 @@ formatterParams
 
 </td><td>
 
-[EditableFormatterParams](./grid-tabulator.editableformatterparams.md)<!-- -->&lt;T&gt;
+[EditableFormatterParams](./grid-tabulator.editableformatterparams.md)&lt;T&gt;
 
 
 </td><td>

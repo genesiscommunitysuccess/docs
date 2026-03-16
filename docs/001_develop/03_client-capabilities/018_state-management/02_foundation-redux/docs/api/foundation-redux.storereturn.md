@@ -13,6 +13,7 @@ The return type of the createStore function.
 
 ```typescript
 export type StoreReturn<S extends SliceArray> = {
+    reduxStore: EnhancedStore<RootStateFromSlices<S>>;
     store: RootStateFromSlices<S>;
     actions: ActionsFromSlices<S>;
     selectors: SelectorsFromSlices<S>;

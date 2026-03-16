@@ -66,9 +66,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [GridTabulator](./grid-tabulator.gridtabulator.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [GridTabulator](./grid-tabulator.gridtabulator.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->grid-tabulator<!-- -->&gt;
+HTML Element: &lt;grid-tabulator&gt;
 

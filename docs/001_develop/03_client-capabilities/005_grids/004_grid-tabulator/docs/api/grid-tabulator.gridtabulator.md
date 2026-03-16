@@ -169,7 +169,7 @@ boolean
 
 </td><td>
 
-**_(ALPHA)_** Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`<!-- -->.
+**_(ALPHA)_** Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`.
 
 
 </td></tr>

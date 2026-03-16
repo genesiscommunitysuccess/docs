@@ -382,23 +382,23 @@ Description
 
 **_(ALPHA)_** Parameters for the action formatter.
 
-`actionClick`<!-- -->: Callback function triggered when the action button is clicked.
+`actionClick`: Callback function triggered when the action button is clicked.
 
-`actionName`<!-- -->: The name or label of the action button.
+`actionName`: The name or label of the action button.
 
-`appearance`<!-- -->: The appearance style of the action button.
+`appearance`: The appearance style of the action button.
 
-`dataTestId`<!-- -->: The data-test-id attribute value to be used for E2E testing.
+`dataTestId`: The data-test-id attribute value to be used for E2E testing.
 
-`isDisabled`<!-- -->: Function to determine whether the action button should be disabled for a specific row.
+`isDisabled`: Function to determine whether the action button should be disabled for a specific row.
 
-`uniqueFieldName`<!-- -->: A unique field name used to identify the action button for E2E testing.
+`uniqueFieldName`: A unique field name used to identify the action button for E2E testing.
 
-`prefix`<!-- -->: The prefix to use for the button element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for the button element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
-`actionButtonStyle`<!-- -->: Optional styling for the action button.
+`actionButtonStyle`: Optional styling for the action button.
 
-`contentTemplate`<!-- -->: Used to render some arbitrary content inside the action button.
+`contentTemplate`: Used to render some arbitrary content inside the action button.
 
 
 </td></tr>
@@ -411,17 +411,17 @@ Description
 
 **_(ALPHA)_** Parameters for the actions menu formatter
 
-`actions`<!-- -->: The array of actions to display in the menu.
+`actions`: The array of actions to display in the menu.
 
-`prefix`<!-- -->: The prefix to use for the actions-menu element, e.g., 'foundation', 'zero', 'rapid'.
+`prefix`: The prefix to use for the actions-menu element, e.g., 'foundation', 'zero', 'rapid'.
 
-`menuName`<!-- -->: Custom name for the menu button (if not set, will use foundation: '⋮' or other: '+')
+`menuName`: Custom name for the menu button (if not set, will use foundation: '⋮' or other: '+')
 
-`isVertical`<!-- -->: Optional flag to display the menu vertically. Default is false.
+`isVertical`: Optional flag to display the menu vertically. Default is false.
 
-`buttonAppearance`<!-- -->: Optional appearance for the button that opens the menu.
+`buttonAppearance`: Optional appearance for the button that opens the menu.
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
 
 </td></tr>
@@ -434,11 +434,11 @@ Description
 
 **_(ALPHA)_** Parameters for the boolean formatter
 
-`isDisabled`<!-- -->: Function to determine whether the checkbox should be disabled for a specific row
+`isDisabled`: Function to determine whether the checkbox should be disabled for a specific row
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`prefix`<!-- -->: The prefix to use for the checkbox element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for the checkbox element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
 
 </td></tr>
@@ -462,21 +462,21 @@ Parameters for custom cell renderers
 
 **_(ALPHA)_** Parameters for the editable formatter
 
-`value`<!-- -->: The raw value to be displayed
+`value`: The raw value to be displayed
 
-`data`<!-- -->: The row data containing the current cell
+`data`: The row data containing the current cell
 
-`field`<!-- -->: The field name in the data object
+`field`: The field name in the data object
 
-`cssClass`<!-- -->: Optional CSS class to apply to the text
+`cssClass`: Optional CSS class to apply to the text
 
-`nullText`<!-- -->: Text to display for null/undefined values
+`nullText`: Text to display for null/undefined values
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`icon`<!-- -->: Icon to display for edit action
+`icon`: Icon to display for edit action
 
-`prefix`<!-- -->: The prefix to use for element classes and components, e.g., 'foundation', 'zero', 'rapid'.
+`prefix`: The prefix to use for element classes and components, e.g., 'foundation', 'zero', 'rapid'.
 
 
 </td></tr>
@@ -500,15 +500,15 @@ Transaction object to handle row data updates.
 
 **_(ALPHA)_** Parameters for the select formatter
 
-`options`<!-- -->: Array of options for the select
+`options`: Array of options for the select
 
-`nullText`<!-- -->: Text to display for null/undefined values
+`nullText`: Text to display for null/undefined values
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`prefix`<!-- -->: The prefix to use for element classes, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for element classes, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
-`onChange`<!-- -->: Optional callback when the selection changes
+`onChange`: Optional callback when the selection changes
 
 
 </td></tr>
@@ -521,17 +521,17 @@ Transaction object to handle row data updates.
 
 **_(ALPHA)_** Parameters for the text formatter
 
-`specialValue`<!-- -->: Optional special value that should be highlighted (like 2012 in the Year example)
+`specialValue`: Optional special value that should be highlighted (like 2012 in the Year example)
 
-`specialColor`<!-- -->: Optional color for the highlighted special value
+`specialColor`: Optional color for the highlighted special value
 
-`specialFontWeight`<!-- -->: Optional font weight for the highlighted special value
+`specialFontWeight`: Optional font weight for the highlighted special value
 
-`prefix`<!-- -->: Optional prefix for any custom elements used in formatting
+`prefix`: Optional prefix for any custom elements used in formatting
 
-`dataTestId`<!-- -->: Optional data-test-id for testing purposes
+`dataTestId`: Optional data-test-id for testing purposes
 
-`nullText`<!-- -->: Optional text to display when the value is null or undefined
+`nullText`: Optional text to display when the value is null or undefined
 
 
 </td></tr>

@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-getAvailableResources(params?: any): Promise<ResourcesMessage>;
+getAvailableResources(params?: any, useCache?: boolean): Promise<ResourcesMessage>;
 ```
 
 ## Parameters
@@ -39,6 +39,22 @@ params
 </td><td>
 
 any
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+useCache
+
+
+</td><td>
+
+boolean
 
 
 </td><td>

@@ -7,6 +7,8 @@ format: md
 
 ## GenesisGridDatasourceElement.viewNumber property
 
+The desired view/page you want data from.
+
 **Signature:**
 
 ```typescript

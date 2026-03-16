@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.fields property
 
+Optional parameter that allows you to select a subset of fields from the query if the client is not interested in receiving all of them.
+
 **Signature:**
 
 ```typescript
 fields: string;
 ```
+
+## Remarks
+
+DATASERVER only.
+

@@ -48,7 +48,7 @@ overrideDefinition
 
 </td><td>
 
-import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[ActionRenderer](./grid-pro.actionrenderer.md)<!-- -->, any&gt;; }&gt;
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[ActionRenderer](./grid-pro.actionrenderer.md), any&gt;; }&gt;
 
 
 </td><td>
@@ -61,9 +61,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[ActionRenderer](./grid-pro.actionrenderer.md)<!-- -->, any&gt;; }, typeof [ActionRenderer](./grid-pro.actionrenderer.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[ActionRenderer](./grid-pro.actionrenderer.md), any&gt;; }, typeof [ActionRenderer](./grid-pro.actionrenderer.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-grid-pro-action-renderer<!-- -->&gt;
+HTML Element: &lt;foundation-grid-pro-action-renderer&gt;
 

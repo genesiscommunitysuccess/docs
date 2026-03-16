@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.pollingInterval property
 
+Custom polling frequency (in milliseconds) for a Request Server resource.
+
 **Signature:**
 
 ```typescript
 pollingInterval: number;
 ```
+
+## Remarks
+
+REQUEST\_SERVER only. Note that this option only works with Request Server resources; if your resource is a Data Server query, your grid is updated in real time. Defaults to 5000ms.
+
