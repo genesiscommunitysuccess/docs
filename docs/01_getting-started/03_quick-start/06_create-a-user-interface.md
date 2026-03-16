@@ -43,27 +43,27 @@ export const tutorialColumnDefs: ColDef[] = [
 ];
 ```
 
-Next, create a zero-ag-grid in `HomeTemplate const`.
+Next, create a `rapid-grid-pro` in `HomeTemplate const`.
 
 ```ts
 export const HomeTemplate = html<Home>`
-<zero-card class="trade-card">
-    <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
+<rapid-card class="trade-card">
+    <rapid-grid-pro ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
     ${when(x => x.connection.isConnected, html`
-      <ag-genesis-datasource resourceName="ALL_TRADES"></ag-genesis-datasource>
+      <grid-pro-genesis-datasource resource-name="ALL_TRADES"></grid-pro-genesis-datasource>
       ${repeat(() => tutorialColumnDefs, html`
-        <ag-grid-column :definition="${x => x}" />
+        <grid-pro-column :definition="${x => x}"></grid-pro-column>
       `)}
     `)}
-    </zero-ag-grid>
-</zero-card>
+    </rapid-grid-pro>
+</rapid-card>
 `;
 ```
 
-Now open the file **home.ts**. Define a reference to `zero-ag-grid`; in class `home`, add:
+Now open the file **home.ts**. Define a reference to `rapid-grid-pro`; in class `home`, add:
 
 ```ts
-public tradesGrid!: AgGrid;
+public tradesGrid!: GridPro;
 ```
 
 and at the end of the `connectedCallback()` function, add:
@@ -82,7 +82,7 @@ Now you need to add styles.
 Open the file **home.styles.ts**, and add the code below.
 
 ```css
-zero-ag-grid {
+rapid-grid-pro {
   width: 100%;
   height: 50%;
 }
@@ -132,8 +132,8 @@ Now go to the file **home.template.ts**. Add the following code after `zero-ag-g
 </zero-text-field>
 <span>Side</span>
 <zero-select @change=${((x, c)=> x.tradeSideChange(c.event.target as Select))}>
-  <zero-option value='BUY'>BUY</zero-option>
-  <zero-option value='SELL'>SELL</zero-option>
+  <zero-option>BUY</zero-option>
+  <zero-option>SELL</zero-option>
 </zero-select>
 ```
 
