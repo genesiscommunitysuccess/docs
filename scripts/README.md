@@ -1,164 +1,116 @@
-# API Docs Sync Automation
+# API Docs Generation
 
-This directory contains scripts to automate the synchronization of API documentation from @genesislcap packages.
+This directory contains scripts for generating and synchronising API documentation from `@genesislcap` packages into this docs site.
 
-## Overview
+## How it works
 
-The API docs sync process automatically:
-1. Checks for the latest version of @genesislcap packages
-2. Updates package.json with new versions
-3. Clears the processedMap to force reprocessing
-4. Installs updated dependencies
-5. Builds the api-docs plugin
-6. Copies documentation without starting the server
-7. Updates processedMap with new versions
-8. Creates a git branch and commits changes
-9. Pushes the branch and creates a pull request
+API documentation is derived from the TypeScript source in each package via a two-stage pipeline:
 
-## Manual Usage
+```
+Source repo build
+  TypeScript source
+      ↓  api-extractor
+  dist/*.api.json          ← structured model of the public API surface
+      ↓  published to npm
 
-### Basic Sync (No Git Operations)
-To run the sync process without git operations:
+This docs repo
+  npm install
+      ↓
+  node_modules/@genesislcap/*/dist/*.api.json
+      ↓  api-documenter  (runs here, via generate:api-docs)
+  docs/**/api/**/*.md      ← committed to this repo
+```
+
+The `*.api.json` files are produced by api-extractor as a standard part of each package's build and have always been published to npm — they are not tracked in this repo's git history. The `*.md` files are generated here and committed. Source packages do **not** need to run api-documenter or publish pre-generated markdown to npm.
+
+## Scripts
+
+### `generate:api-docs` — everyday use
+
+Generates markdown from the `.api.json` files already present in `node_modules`. No version bumping, no npm install, no git operations.
 
 ```bash
+# Generate docs for any packages not yet in processedMap
+npm run generate:api-docs
+
+# Regenerate all packages from scratch (ignores processedMap)
+npm run generate:api-docs -- --force
+```
+
+When to use this:
+- After a manual `npm install` to pick up a new package version
+- When you want to regenerate docs for a specific package (clear its entry from `plugins/api-docs/processedMap.js` first, then run without `--force`)
+- To verify the output of the generation locally before committing
+
+### `sync-api-docs` — full orchestration
+
+Checks for a newer published version of `@genesislcap` packages, updates `package.json`, runs `npm install`, generates the docs, and optionally handles git operations.
+
+```bash
+# Check for updates, generate docs — no git operations
 npm run sync-api-docs
-```
 
-Or directly:
-
-```bash
-node scripts/sync-api-docs.js
-```
-
-This will:
-1. Check for the latest version of @genesislcap packages
-2. Check if reprocessing is needed by comparing processedMap versions
-3. Update package.json if needed
-4. Clear processedMap only if reprocessing is needed
-5. Install updated dependencies with `npm install` (only if package.json was updated)
-6. Build the api-docs plugin
-7. Copy API documentation files (`.md` files in `docs/api/` folders only)
-8. **Never touch `.mdx` files** - these are preserved as-is
-9. Update processedMap with new versions
-
-### Full Automation (With Git Operations)
-To run the complete automation including git operations:
-
-```bash
+# Full automation: version bump + npm install + generate + branch + commit + push + PR
 npm run sync-api-docs:full
 ```
 
-Or directly:
+Command-line flags for `sync-api-docs.js`:
 
 ```bash
-node scripts/sync-api-docs.js --all
+node scripts/sync-api-docs.js                # sync only, no git
+node scripts/sync-api-docs.js --commit       # sync + commit
+node scripts/sync-api-docs.js --all          # branch + commit + push + PR
+node scripts/sync-api-docs.js --dry-run      # skip all git operations
+node scripts/sync-api-docs.js --help         # show all options
 ```
 
-This will do everything above plus:
-10. Create a git branch
-11. Commit changes
-12. Push the branch
-13. Provide PR creation instructions
+## Automated workflow
 
-### Command Line Options
-```bash
-# Just sync docs without git operations
-node scripts/sync-api-docs.js
+`sync-api-docs:full` runs automatically via GitHub Actions:
 
-# Sync docs and commit changes
-node scripts/sync-api-docs.js --commit
-
-# Full automation (branch, commit, push, PR)
-node scripts/sync-api-docs.js --all
-
-# Show help
-node scripts/sync-api-docs.js --help
-```
-
-## Automated Workflow
-
-The process is automated via GitHub Actions and runs:
-- **Scheduled**: Every day at 9 AM UTC
-- **Manual**: Can be triggered manually via GitHub Actions UI
-
-## What Gets Updated
-
-The script updates the following @genesislcap packages:
-- foundation-comms
-- foundation-criteria
-- foundation-entity-management
-- foundation-fdc3
-- foundation-filters
-- foundation-forms
-- foundation-header
-- foundation-i18n
-- foundation-layout
-- foundation-login
-- foundation-notifications
-- foundation-openfin
-- foundation-store
-- foundation-testing
-- foundation-utils
-- foundation-zero
-- g2plot-chart
-- grid-pro
-- grid-tabulator
-- expression-builder
-
-Plus the dev dependency:
-- @genesislcap/genx
-
-## How It Works
-
-1. **Version Check**: Uses `@genesislcap/foundation-ui` as the reference package to get the latest version
-2. **Package Update**: Updates all @genesislcap packages in package.json to the latest version
-3. **Dependency Installation**: Runs `npm install` to get the updated packages
-4. **Plugin Build**: Builds the api-docs plugin TypeScript code
-5. **Documentation Copy**: Runs the copy process without starting the Docusaurus server
-6. **ProcessedMap Update**: Updates the processedMap with new versions to prevent reprocessing
-7. **Git Operations**: Creates a branch, commits changes, and pushes to create a PR
-
-## Troubleshooting
-
-### Common Issues
-
-1. **No updates needed**: If packages are already at the latest version, the script will exit early
-2. **Build failures**: Check that the api-docs plugin builds successfully
-3. **Copy failures**: Ensure all packages have the expected documentation structure
-4. **Git issues**: Make sure you have proper git credentials configured
-
-### Manual Steps
-
-If the automation fails, you can perform the steps manually:
-
-1. Clear processedMap.js
-2. Update package.json versions
-3. Run `npm install`
-4. Run `cd plugins/api-docs && npm run build`
-5. Run `npm run start:copy-docs` (then stop the server)
-6. Update processedMap.js with new versions
-7. Commit and push changes
+- **Scheduled**: every day at 9 AM UTC
+- **Manual**: can be triggered from the GitHub Actions UI
 
 ## Configuration
 
-The script is configured via constants at the top of `sync-api-docs.js`:
+The list of packages and their output paths is defined in `plugins/api-docs/src/manifest.ts`. Each entry maps a package name to a source path (`src.api_docs`) and an output directory (`output.api_docs`).
 
-- `LATEST_VERSION_PACKAGE`: Reference package for version checking
-- `GENESISLCAP_PACKAGES`: List of packages to update
-- File paths for various configuration files
+The `plugins/api-docs/processedMap.js` file records which package versions have already been processed. Remove an entry (or use `--force`) to trigger regeneration for that package.
+
+Key constants at the top of `sync-api-docs.js`:
+
+- `LATEST_VERSION_PACKAGE` — reference package used to determine the latest version
+- `GENESISLCAP_PACKAGES` — list of packages whose versions are kept in sync
+
+## Troubleshooting
+
+### Regenerating docs manually
+
+If automation fails or you need to regenerate from scratch:
+
+1. Clear `plugins/api-docs/processedMap.js` (set the exports to `{}`)
+2. Run `npm install` to ensure packages are up to date
+3. Run `npm run generate:api-docs -- --force`
+4. Commit the resulting changes in `docs/**/api/`
+
+### Plugin build errors
+
+If `plugins/api-docs/dist/manifest.js` is missing, rebuild it:
+
+```bash
+cd plugins/api-docs && npm run build
+```
+
+`generate:api-docs` will do this automatically if the built manifest is not found.
+
+### A package has no `.api.json`
+
+The script will log a `[SKIP]` warning and move on. This means the package was built without api-extractor. The source repo needs to add an api-extractor step to its build before docs can be generated for that package.
 
 ## Dependencies
 
-The script requires:
 - Node.js 20.10.0+
 - npm
-- git
-- GitHub CLI (for PR creation)
-
-## Security
-
-The script runs with the following security considerations:
-- Uses `GITHUB_TOKEN` for authentication
-- Creates temporary files that are cleaned up
-- Validates package versions before updating
-- Creates isolated git branches for changes
+- git (for `sync-api-docs` git operations)
+- GitHub CLI `gh` (for PR creation)
+- `@microsoft/api-documenter` — installed as a devDependency in this repo
