@@ -254,6 +254,15 @@ async function generateDocsFromApiJson() {
 
         let content = await fs.readFile(path.join(tmpOutput, file), 'utf8');
 
+        // api-documenter inserts <!-- --> as a separator in generic type expressions
+        // (e.g. Promise<[T](link.md)<!-- -->>) and between union type references to
+        // prevent generic HTML parsers from treating `Promise<...>` as an unclosed
+        // HTML tag. Docusaurus's remark/rehype pipeline handles angle brackets in
+        // prose correctly without this workaround, so the comments are pure noise
+        // here. Remove this line if you switch away from Docusaurus to a renderer
+        // that needs the original api-documenter output unchanged.
+        content = content.replaceAll('<!-- -->', '');
+
         if (file === 'index.md') {
           content = apiPreamble + '\n' + content;
         } else {
