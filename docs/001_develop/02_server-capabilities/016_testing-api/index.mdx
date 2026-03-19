@@ -1590,6 +1590,21 @@ public class FullDumpTest {
 </TabItem>
 </Tabs>
 
+### SQL schema selection
+
+When tests run with `DbLayer=SQL`, Genesis test support needs a schema/namespace to use for the database.
+The following JVM system properties control how the namespace is chosen:
+
+- `DbNamespace`: if set, this is always used.
+- `uniqueTestDbNamespace=true`: if `DbNamespace` is not set, generates a **unique random SQL namespace** for the test JVM (useful for parallel CI runs and avoiding schema collisions). The generated namespace is constrained to **30 characters** to conform with Oracle limits.
+- Otherwise (default): if `DbNamespace` is not set and `uniqueTestDbNamespace` is false, the namespace defaults to `ProjectName` (or an empty string if `ProjectName` is not set, which typically uses the database's default schema).
+
+Example (Gradle):
+
+```bash
+./gradlew test -DuniqueTestDbNamespace=true
+```
+
 ## Component testing
 
 There are two easy ways of testing components in your application:
