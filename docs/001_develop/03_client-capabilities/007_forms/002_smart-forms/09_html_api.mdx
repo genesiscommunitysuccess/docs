@@ -91,6 +91,30 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
       </td>
     </tr>
+    <tr>
+      <td>set-approval-message</td>
+      <td><code>boolean</code></td>
+      <td>When enabled, adds an <code>APPROVAL_MESSAGE</code> field to the form schema and submits it at root level alongside <code>DETAILS</code>.</td>
+      <td>
+
+```typescript
+<foundation-form set-approval-message>
+```
+
+      </td>
+    </tr>
+    <tr>
+      <td>approval-message-label</td>
+      <td><code>string</code></td>
+      <td>Label used for the approval message field in the approval dialog.</td>
+      <td>
+
+```typescript
+<foundation-form approval-message-label="Approval justification">
+```
+
+      </td>
+    </tr>
   </tbody>
 </table>
 

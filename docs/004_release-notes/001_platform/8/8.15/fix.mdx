@@ -1,0 +1,29 @@
+---
+title: '8.15 Fix'
+sidebar_label: 'Fix'
+sidebar_position: 3
+id: '8.15-fix'
+---
+
+### Breaking changes
+
+* BREAKING CHANGE: Changed default Charset to ISO-8859-1 instead of UTF-8
+
+### Features
+
+* `fix-pipelines` : Handle SinkUnavailable exceptions to negotiate message retransmission 
+* `fix-webextension` : Migrate from sparkjava to Javalin to solve Jetty vulnerability issues in genesis-webmon and genesis-resource-daemon 
+
+### Fixes
+
+* Adapt codebase to work with Apache Commons Configuration v2 after GSF upgrade 
+* Resolve potential duplicates on `generateRxSequence` for `LegacyRxSequenceStrategy`
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Breaking change guidance
+
+### Changed default Charset to ISO-8859-1 instead of UTF-8
+This character set is the FIX protocol standard, however, any FIX connections that were expecting UTF-8 characters such as latin extended alphabet in the text of FIX messages will need to revert this setting via the sysdef `QuickFixDefaultCharset`.

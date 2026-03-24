@@ -711,7 +711,7 @@ dataServer {
 | Config item | Description | Default | Overridable in `query` |
 |-------------|-------------|---------|------------------------|
 |`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`)|`2.GIGA_BYTE()`|No|
-|`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FURY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
+|`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FORY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
 |`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
 |`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
 |`compression`|When `true`, this compresses the query row data before writing it to the in-memory cache|`false`|Yes|
@@ -743,11 +743,11 @@ The Data Server logs how many records are stored in LMDB for each query on start
 
 With `serializationType`, there are two options for configuring the type of serialization to be used in response to data requests:
 - `SerializationType.KRYO` uses the [Kryo library](https://github.com/EsotericSoftware/kryo).
-- `SerializationType.FURY` uses the [Fury library](https://github.com/alipay/fury).
+- `SerializationType.FORY` uses the [Fory library](https://github.com/apache/fory).
 
-In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages).
+In our current Data Server implementation, internal tests show that Fory can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages).
 
-However, the serialized byte array size of a Fury object can be between 10 and 15 percent larger than a Kryo object, so there is a small penalty to pay for using this option.
+However, the serialized byte array size of a Fory object can be between 10 and 15 percent larger than a Kryo object, so there is a small penalty to pay for using this option.
 
 With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB.
 

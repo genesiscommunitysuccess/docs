@@ -76,7 +76,8 @@ Other config values that are available are listed below:
 | `ZeroMQProxyInboundPort` (required) | The port used for ZeroMQ inbound connections | - |
 | `ZeroMQProxyOutboundPort` (required) | The port used for ZeroMQ outbound connections | - |
 | `ZeroMQProxyModeEnabled` | Enable [proxy mode](#proxy-mode) (recommended for large apps) | `false` |
-| `ZeroMQProxyUnicastRelayEnabled` | Creates a point-to-point connection between GENESIS_CLUSTER processes for all the nodes in the cluster. This connection is used to send local update queue events to the remote nodes in the cluster in order to ensure every node has access to all the updates | `false` |
+| `ZeroMQProxyUnicastRelayEnabled` | Creates a point-to-point connection between `GENESIS_CLUSTER` processes for all the nodes in the cluster. This connection is used to send local update queue events to the remote nodes in the cluster in order to ensure every node has access to all the updates | `false` |
+| `ZeroMQProxyUnicastRelayExcludedTopics` | String based comma-separated list of topics to be excluded from Unicast relay retransmission. Useful to avoid unnecessary data transfer between `GENESIS_CLUSTER` services for topics that do not need real-time processing. Example: `"TRADE_AUDIT,ORDER_AUDIT"`  | `""` |
 | `ZeroMQConnectToLocalhostViaLoopback` | Depending on the OS, routing may be subject to network flapping (quick changes in network routing) - this setting binds ZeroMQ communication to the local interface (localhost). Do not use in Production. | `false` |
 
 :::important

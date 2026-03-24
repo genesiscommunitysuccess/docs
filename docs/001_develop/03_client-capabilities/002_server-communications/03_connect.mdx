@@ -2,7 +2,7 @@
 title: 'Genesis Connect'
 sidebar_label: 'Genesis Connect'
 id: comms-connect
-keywords: [genesis, foundation, comms, connect]
+keywords: [genesis, foundation, comms, connect, http, polling, DefaultHttpConnect]
 tags:
   - comms
   - connect
@@ -10,27 +10,32 @@ tags:
 
 # Genesis Connect
 
-Genesis Connect encapsulates the functionality for establishing and managing connections between a client and a server, particularly focusing on a WebSocket connection for real-time communication in a Genesis server environment. This detailed guide aims to elucidate the various components, functionalities, and usage patterns of the `@Connect` service, including interactions with related types and services.
+Genesis Connect encapsulates the functionality for establishing and managing connections between a client and a server. It supports both **WebSocket** (real-time bi-directional) and **HTTP** (polling-based) communication modes, allowing applications to work in environments where WebSocket is not available or preferred. This guide covers the various components, functionalities, and usage patterns of the `@Connect` service.
 
 ## Overview of `@Connect`
 
-`@Connect` is designed to facilitate communication between a client application and a Genesis server, offering a robust set of functionalities for connection management, message sending and receiving, and session validation. It leverages WebSocket for real-time bi-directional communication, providing a seamless experience for real-time data exchanges.
+`@Connect` is designed to facilitate communication between a client application and a Genesis server, offering a robust set of functionalities for connection management, message sending and receiving, and session validation. The `Connect` interface is implemented by two classes:
+
+- **DefaultConnect** – WebSocket-based implementation for real-time bi-directional communication
+- **DefaultHttpConnect** – HTTP-based implementation using polling for environments where WebSocket is not feasible
 
 ### Key components and functionality
 
 - **Connect Interface**: The core interface that outlines the blueprint for connection management, including methods for sending messages, connecting and disconnecting, session management, data fetching, and event streaming.
 
-- **DefaultConnect Class**: The default implementation of the `Connect` interface, encapsulating the logic for WebSocket communication, including connection establishment, message handling, and reconnection strategies.
+- **DefaultConnect Class**: The WebSocket implementation of the `Connect` interface, encapsulating logic for real-time communication, connection establishment, message handling, and reconnection strategies.
+
+- **DefaultHttpConnect Class**: The HTTP implementation of the `Connect` interface, providing data streaming via polling. See [HTTP Connect](#http-connect-defaulthttpconnect) for details.
 
 - **defaultConnectConfig**: A configuration object providing default settings for WebSocket connection and reconnection behaviors, such as heartbeat intervals and reconnection attempts.
 
-- **Message Sending and Handling**: `connect.ts` defines methods for sending various types of messages to the server, handling responses, and managing message streams for real-time updates.
+- **Message Sending and Handling**: Both implementations define methods for sending various types of messages to the server, handling responses, and managing message streams (WebSocket via push, HTTP via polling).
 
-- **Session Validation**: It includes mechanisms to validate and manage session validity, crucial for maintaining a secure and continuous connection with the server.
+- **Session Validation**: Mechanisms to validate and manage session validity, crucial for maintaining a secure and continuous connection with the server.
 
 - **Data Fetching**: Functions are available for fetching data snapshots and subscribing to real-time updates from the server, enabling dynamic data retrieval based on resource names.
 
-- **Reconnection Strategies**: `connect.ts` implements reconnection logic to handle scenarios where the WebSocket connection is lost, ensuring the application remains connected or attempts to reconnect based on predefined configurations.
+- **Reconnection Strategies**: WebSocket implementation includes reconnection logic; HTTP implementation handles session refresh automatically.
 
 ### Usage patterns
 
@@ -48,21 +53,63 @@ Genesis Connect encapsulates the functionality for establishing and managing con
 
 ### Integrating with other modules
 
-- **Message Building**: Works in conjunction with `message.ts` for constructing and parsing messages exchanged between the client and server.
+- **Message Building**: Constructs and parses messages exchanged between the client and server.
 
-- **Session Handling**: Integrates with `session.ts` for managing session information, such as storing and retrieving session tokens.
+- **Session Handling**: Manages session information, such as storing and retrieving session tokens.
 
-- **Metadata and Schema Retrieval**: Interacts with `metadata.ts` for fetching metadata and JSON schemas associated with various server resources, facilitating data modeling and validation.
+- **Metadata and Schema Retrieval**: Fetches metadata and JSON schemas for server resources, facilitating data modeling and validation.
 
-- **HTTP Fallback**: In scenarios where WebSocket is not feasible, `connect.ts` can switch to HTTP communication, managed by `http.connect.ts`, ensuring compatibility and flexibility across different environments.
+- **HTTP Connect**: For HTTP-only environments, `DefaultHttpConnect` implements the same `Connect` interface using polling. Use the `HttpConnect` DI token to resolve the HTTP implementation.
 
 #### Example usage
 
 To be added.
 
+## HTTP Connect (DefaultHttpConnect)
+
+`DefaultHttpConnect` is the HTTP-only implementation of the `Connect` interface. It uses polling instead of WebSocket, making it suitable for environments where WebSocket is unavailable or when HTTP-only connectivity is required. It provides the same API as the WebSocket implementation, so you can switch between them without changing your application code.
+
+### Capabilities
+
+- **Connection management** – Connect and disconnect to the server; session refresh is handled automatically on auth expiry
+- **Data streaming** – Subscribe to real-time updates via polling; polling pauses when the browser tab is hidden
+- **Turbo mode** – Temporarily increase polling frequency after certain events for faster updates
+- **Per-resource polling** – Configure different polling intervals per resource
+- **Metadata and schema** – Fetch metadata and JSON schemas with optional caching
+
+### Configuration (HttpConnectConfig)
+
+- **POLLING_FREQUENCY** – Default polling interval (ms)
+- **POLLING_INTERVAL_MAP** – Per-resource polling intervals
+- **POLLING_MAP** – Turbo configurations for events that should temporarily poll more frequently
+
+Example configuration:
+
+```typescript
+{
+  polling: {
+    POLLING_FREQUENCY: 5000,
+    POLLING_INTERVAL_MAP: {
+      ALL_TRADES: 5000,
+      ALL_USERS: 5000,
+      ALL_PROCESSES_STATUS: 10000,
+    },
+    POLLING_MAP: {
+      EVENT_AMEND_USER: {
+        TEMP_FREQUENCY: 500,
+        AMOUNT_OF_POLLS: 5,
+        QUERIES: ['ALL_USERS'],
+      },
+    },
+  },
+}
+```
+
+In this example, most resources poll every 5 seconds, while `ALL_PROCESSES_STATUS` polls every 10 seconds. After an `EVENT_AMEND_USER` commit, `ALL_USERS` temporarily polls every 500ms for 5 attempts.
+
 ## Best practice
 
-- **Secure Connection**: Always establish WebSocket connections over secure channels (e.g., HTTPS) to ensure data privacy and integrity.
+- **Secure Connection**: Always use secure channels (e.g., WSS for WebSocket, HTTPS for HTTP) to ensure data privacy and integrity.
 
 - **Error Handling**: Implement robust error handling mechanisms to manage connection failures, message transmission errors, and reconnection attempts effectively.
 
@@ -72,16 +119,22 @@ To be added.
 
 - **Reconnection Strategies**: Configure reconnection settings based on the application's requirements, balancing between connection stability and resource consumption.
 
+- **HTTP Polling Configuration**: When using `DefaultHttpConnect`, tune `POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY` per resource to balance data freshness with server load. See the [Configuration (HttpConnectConfig)](#configuration-httpconnectconfig) section for an example.
+
 ## Considerations
+
+- **WebSocket vs HTTP**: Use WebSocket (`DefaultConnect`) when real-time push is required and supported. Use HTTP (`DefaultHttpConnect`) when WebSocket is unavailable or when HTTP-only connectivity is mandated.
 
 - **WebSocket Support**: Ensure that the client and server environments support WebSocket communication to leverage real-time capabilities effectively.
 
+- **HTTP Polling**: In HTTP mode, data is fetched at configurable intervals. Tune `POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY` to balance data freshness with server load.
+
 - **Resource Management**: Manage resource subscriptions and data streams judiciously to prevent unnecessary data fetching and optimize network usage.
 
-- **Connection Lifecycle**: Understand the lifecycle of a WebSocket connection, including connection establishment, message exchange, session validation, and disconnection scenarios.
+- **Connection Lifecycle**: Understand the lifecycle of the connection (WebSocket or HTTP), including connection establishment, message exchange, session validation, and disconnection scenarios.
 
 - **Performance Optimization**: Optimize message handling, data streaming, and reconnection strategies to enhance the overall performance and responsiveness of real-time applications.
 
 ## Summary
 
-The `@Connect` module is a critical component for enabling real-time communication within the Genesis ecosystem, offering a comprehensive suite of functionalities for connection management, message exchange, session validation, and data streaming. By understanding its components, functionality, and integration points, developers can use this module to build dynamic, real-time applications within the Genesis framework.
+The `@Connect` module is a critical component for enabling communication within the Genesis ecosystem, offering a comprehensive suite of functionalities for connection management, message exchange, session validation, and data streaming. It provides two implementations: **DefaultConnect** (WebSocket) for real-time push and **DefaultHttpConnect** (HTTP) for polling-based communication. By understanding its components, functionality, and integration points, developers can use this module to build dynamic applications within the Genesis framework, whether over WebSocket or HTTP.

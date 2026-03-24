@@ -1,0 +1,66 @@
+---
+title: '8.15 Documents'
+sidebar_label: 'Documents'
+sidebar_position: 2
+id: '8.15-documents'
+---
+
+### Breaking changes
+
+* Added additional content validation to document manager uploads 
+* Ensure file upload authentication is correctly enabled by default 
+
+### Features
+
+* Added CSV templating support through Thymeleaf
+* Allow resolution of document assets from different locations 
+* Allow resolution of document templates from different locations + xml generation 
+* LoadFiles by fileName should return in order of newest to oldest 
+
+### Fixes
+
+* `file-server-app` : Verify AWS_REGION sysdef is not null and not blank when setting up the AmazonS3ClientBuilder region configuration 
+* `file-server-app` : Map replace/download invalid ids to return correct 404/400 error codes
+* Allow CSV template generated files to be stored
+* Prevent errors on concurrent writes with same file name
+* Set region explicitly in s3 client construction to prevent errors on servers running IMDS v2 security
+* File upload race conditon and improve upload and replace ux
+* Install hooks perm script file path 
+* Remove repeated template resolving from remote client docgen event call 
+
+### Dependency changes
+
+* Fixing versions with vulnerabilities
+* Bump net.minidev:json-smart from 2.5.2 to 2.6.0
+* Bump org.gradle.test-retry from 1.5.8 to 1.6.0
+* Bump org.gradle.test-retry from 1.6.0 to 1.6.4
+
+### Patch releases
+
+#### 8.15.4
+
+###### Fixes
+
+* File separator issue when appending to file name 
+
+#### 8.15.3
+
+###### Fixes
+
+* Load and delete should use folder prefix 
+
+#### 8.15.2
+
+###### Features
+
+* Add ability to provide project id to gcs 
+
+#### 8.15.1
+
+###### Features
+
+* Implement google cloud file storage manager
+
+###### Fixes
+
+* Resolve version from the first @genesislcap/* dependency 

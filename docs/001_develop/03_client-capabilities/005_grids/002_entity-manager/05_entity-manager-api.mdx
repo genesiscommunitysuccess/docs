@@ -349,6 +349,32 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
       ```
       </td>
     </tr>
+    <tr>
+      <td>set-approval-message</td>
+      <td><code>boolean</code></td>
+      <td>When enabled, adds an <code>APPROVAL_MESSAGE</code> field to create/update forms. This is submitted at root level alongside <code>DETAILS</code>. For custom actions, this can be overridden per action using <code>setApprovalMessage</code>.</td>
+      <td>
+      ```typescript
+      <entity-management
+        createEvent="EVENT_COUNTERPARTY_INSERT_WITH_APPROVAL"
+        set-approval-message
+      >
+      ```
+      </td>
+    </tr>
+    <tr>
+      <td>approval-message-label</td>
+      <td><code>string</code></td>
+      <td>Label used for the approval message field in the approval dialog.</td>
+      <td>
+      ```typescript
+      <entity-management
+        createEvent="EVENT_COUNTERPARTY_INSERT_WITH_APPROVAL"
+        approval-message-label="Approval justification"
+      >
+      ```
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -573,11 +599,32 @@ const customActions: CustomAction[] = [
 ```
 </td>
     </tr>
+    <tr>
+      <td>errorNotificationConfig</td>
+      <td><code>NotificationStructure['config']</code></td>
+      <td>Notification config used for submit failures. Defaults to an error snackbar, but can be overridden while keeping titles and messages unchanged.</td>
+<td>
+```typescript
+import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+
+<entity-management
+  :errorNotificationConfig=${(): NotificationStructure['config'] => ({
+    toast: {
+      type: 'warning',
+      autoClose: true,
+      closeTimeout: 5000,
+      position: 'top-left',
+    },
+  })}
+>
+```
+</td>
+    </tr>
 
     <tr>
       <td>enableCsvExport</td>
       <td><code>[() => \{ buttonName?\: string; fileName?\: string \}](./docs/api/foundation-entity-management.entitymanagement.enablecsvexport.md)</code></td>
-      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the `buttonName` and/or `fileName`. Any epoch fields will have their data downloaded in the `YYYY-mm-dd` format.</td>
+      <td>Enables the csv export button on the entity manager with default settings, or the object returned from the callback function can be used to override the <code>buttonName</code> and/or <code>fileName</code>. Any epoch fields will have their data downloaded in the <code>YYYY-mm-dd</code> format.</td>
 <td>
 
 ```typescript

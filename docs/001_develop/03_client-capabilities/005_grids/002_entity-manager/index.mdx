@@ -36,6 +36,10 @@ Below are some of the capabilities that streamline entity interaction and enhanc
   - Forms are dynamically generated from the back-end resource metadata.
   - Simplifies the process of creating or updating entities.
 
+- **Approval workflow support**:
+  - Supports proactive and reactive approval-message flows for events that require additional justification.
+  - Allows custom labeling of the approval message prompt.
+
 - **Dynamic grid configuration**:
   - Displays entities as rows with attributes in columns for a clear and structured overview.
   - Integrates with back-end data sources, such as Data Server queries or Request Server requests to populate data dynamically.
@@ -48,6 +52,10 @@ Below are some of the capabilities that streamline entity interaction and enhanc
   - Extend functionality beyond standard CRUD operations with custom buttons and actions.
   - Trigger backend events or execute client-side callbacks with flexible positioning options.
   - Support form-based actions with default value mapping from selected row data.
+
+- **Configurable error notifications**:
+  - Lets you control the notification surface used for submit failures (for example, snackbar or toast).
+  - Uses the same config for optimistic concurrency warnings and other submit errors.
 
 ### Adding the Entity Management component to the template
 
@@ -320,6 +328,8 @@ The most common attributes and properties you can configure for `entity-manageme
 | `title`                    | customizes the title of the entity list so that the user can see what resource they are managing. | Yes |
 | `resourceName`             | specifies the name of a resource on the server: a `query` in the Data Server, a `ReqRep` in the Request Server.  | Yes |
 | `createEvent`              | specifies an event on the back end for adding a record to the table; once specified, this displays an **Add** button above the grid. | No |
+| `set-approval-message`     | enables proactive approval workflow in create/update forms by adding `APPROVAL_MESSAGE` to the form schema and sending it alongside `DETAILS`. | No |
+| `approval-message-label`   | customizes the label used for the approval message field in the approval dialog. | No |
 | `updateEvent`              | specifies an event on the back end for modifying a record in the table; once specified, this displays an **Edit** button to the right of every record in the grid. | No  |
 | `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
 | `persist-column-state-key` | the user can change columns (the width, for example); if you want the changed column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
@@ -344,6 +354,7 @@ If you set multiple `entity-management` components in your application, **you mu
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to customise the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
+| `errorNotificationConfig`  | configures how submit failures are displayed (for example, snackbar/toast) while preserving the default message content. | No  |
 | `customActions`            | an array of custom actions that extend entity management functionality beyond standard CRUD operations. | No  |
 
 :::info

@@ -62,6 +62,7 @@ Choosing the right index definition is paramount to improving view query perform
 ```
 ### GPAL example
 As well as making specific cache settings, the example below shows the GPAL **process-config** being used to override system-definition values on a per microservice basis. Any process that uses this config is given a bigger Db connection pool size (50).
+If you need to change a process-scoped system-definition value at deploy time without changing the `*-process-config.kts` file, you can override it using environment variables (see [Process-scoped system-definition overrides](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides)).
 
 ```kotlin
   import java.util.concurrent.TimeUnit

@@ -137,6 +137,19 @@ Given the sensitive nature of these field values, it is advisable NOT to put the
 
 **DbSqlMaxPoolSize**: This setting limits the maximum number of connections to the database.
 
+**DbMaxRetryBeforeExit**: This setting defines the maximum number of database connection retry attempts before the Genesis process terminates. It prevents the application from retrying forever when the database is unavailable.
+
+Default value: `-1` (infinite retries). When set to `-1`, the application will retry indefinitely.
+
+Configuration:
+
+```kotlin
+item(name = "DbMaxRetryBeforeExit", value = "5")
+```
+
+The retry mechanism uses exponential backoff with the following pattern:
+- 1s → 2s → 4s → 8s → … (capped at 64s max)
+
 **AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is recommended, because if you are running a cluster, all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
 
 **GenesisNetProtocol**: This is the Genesis network protocol. It is used by the platform only. **Do not change this value**.
@@ -206,6 +219,25 @@ GENESIS_SYSDEF_ENCRYPTED_DbUsername=ab8b6921e904a1dbf058041ae176f27323ed2f835c0a
 GENESIS_SYSDEF_ENCRYPTED_DbPassword=a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a
 GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 ```
+
+### Process-scoped system-definition overrides
+
+System-definition items can be set at **process scope** (for example inside a `*-process-config.kts` file using `process { systemDefinition { ... } }`).
+
+You can also set them as environment variables. To do this, prefix the variable name with the process name:
+
+- `GENESIS_SYSDEF_<PROCESS_NAME>_<ItemName>=...`
+
+If both a global override (`GENESIS_SYSDEF_<ItemName>`) and a process-scoped override are set, the process-scoped override takes precedence **for that process only**.
+
+For example:
+
+```bash
+GENESIS_SYSDEF_DbSqlMaxPoolSize=10
+GENESIS_SYSDEF_GENESIS_AUTH_MANAGER_DbSqlMaxPoolSize=50
+```
+
+In this example, all processes will use `DbSqlMaxPoolSize=10` by default, but the `GENESIS_AUTH_MANAGER` process will use `DbSqlMaxPoolSize=50`.
 
 ## Overriding processes.xml settings
 You can override the values defined for a process definition inside the [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes) file by using the following naming convention:

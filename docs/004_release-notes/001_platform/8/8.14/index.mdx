@@ -238,6 +238,33 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.23
+
+###### Fixes
+
+* `genesis-cluster` : Consul TTL healcheck pings should only start after successful service registration 
+
+#### 8.14.22
+
+###### Fixes
+
+* `genesis-clustersupport` : Make consul health checks use elapsed time scheduling rather than fixed time scheduling and simplify primaryOnly health checks
+* `genesis-clustersupport` : Fix race condition in consul health point registration
+* `genesis-environment` : Improve GetNextSequenceNumbers/GetNextAutoIncrementNumbers handling for empty tables and UUID-style IDs
+
+#### 8.14.21
+
+###### Features
+
+* `genesis-cluster` : Add DISABLED ClusterMode option to completely disable primary only checks and cluster health messages 
+* `genesis-cluster` : Add ZeroMQProxyUnicastRelayExcludedTopics system definition option to avoid retransmitting specific update queue topics to other cluster nodes 
+
+###### Fixes
+
+* `genesis-clustersupport` : Ensure Consul TTL health check coroutines run independently to avoid contention problems
+* `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes
+* `genesis-pal-eventhandler` : Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined
+
 #### 8.14.20
 
 ###### Fixes

@@ -1,0 +1,29 @@
+---
+title: '8.15 Integrations'
+sidebar_label: 'Integrations'
+sidebar_position: 4
+id: '8.15-integrations'
+---
+
+### Features
+
+* `kafka-genesis` : Use provided kafka serializer and deserializer objects
+* `kafka-genesis` : Kafka-genesis should use sink unavailable exception 
+* Added excel decoder library to data pipelines with example
+
+### Performance improvements
+
+* Remove blocking on each send to improve Kafka Sink throughput
+
+### Fixes
+
+* `kafka-genesis` : Stop should not cause multi thread exception on kafka consumer
+
+### Dependency changes
+
+* Fixing Kafka version with vulnerable sub dependency org.lz4
+* Bump com.jfrog.artifactory from 5.2.0 to 5.2.5
+
+### Patch releases
+
+There are currently no patch releases for this version

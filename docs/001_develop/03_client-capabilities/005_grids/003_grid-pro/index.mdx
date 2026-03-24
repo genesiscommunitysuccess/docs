@@ -430,11 +430,12 @@ const advancedErrorHandlerTemplate = (prefix: string, errors: GridProErrorItem<a
 **Important Datasource Behavior:**
 
 - **Client-side datasources**: All status bar components are available (`rows`, `maxRows`, `loadMore`, `reload`, `aggregation`)
-- **Server-side datasources**: `loadMore` component is **automatically disabled** and will not be shown, even if configured
+- **Server-side datasources (pagination enabled)**: row count is handled by the pagination status panel
+- **Server-side datasources (pagination disabled / infinite scroll)**: `rows` uses a dedicated row-count panel and can show uncertain totals using `+`
 
 ```typescript
 interface GridProStatusBarConfig {
-  rows?: boolean;                                    // Enable row count component (default: false)
+  rows?: boolean;                                    // Enable row count component (default: false). In server-side infinite scroll, this uses the row-count status panel.
   maxRows?: boolean;                                 // Enable max rows label-value component (default: false)
   loadMore?: boolean | GridProStatusBarLoadMoreConfig; // Enable/configure load more button (CLIENT-SIDE ONLY)
   reload?: boolean | GridProStatusBarReloadConfig;     // Enable/configure reload button
@@ -458,11 +459,40 @@ interface GridProStatusBarReloadConfig {
 
 | Component | Client-Side Datasource | Server-Side Datasource | Description |
 |-----------|------------------------|-------------------------|-------------|
-| `rows` | Available | Available | Shows row count information |
+| `rows` | Available | Available | Shows row count information. In server-side infinite scroll mode, this can display uncertain totals using `+`. |
 | `maxRows` | Available | Available | Shows maximum rows limit |
 | `loadMore` | Available | **Disabled** | Load more button (infinite scroll alternative) |
 | `reload` | Available | Available | Reload/refresh button |
 | `aggregation` | Available | Available | Shows aggregation values for selected columns |
+
+### Row count in server-side infinite scroll
+
+When using a server-side datasource without pagination, `statusBarConfig.rows` uses a dedicated row-count status panel.
+
+- If more rows are still available from the server, the panel shows a `+` suffix (for example, `Rows: 250+`).
+- Once the final page is reached, the panel shows the exact count (for example, `Rows: 347`).
+
+```typescript
+@customElement({
+  name: 'server-side-infinite-grid-example',
+  template: html`
+    <grid-pro
+      with-status-bar
+      :statusBarConfig="${(x) => x.serverInfiniteStatusBarConfig}">
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        max-rows="250">
+      </grid-pro-server-side-datasource>
+    </grid-pro>
+  `,
+})
+export class ServerSideInfiniteGridExample extends GenesisElement {
+  @observable serverInfiniteStatusBarConfig: GridProStatusBarConfig = {
+    rows: true,
+    reload: true,
+  };
+}
+```
 
 ## Complete usage examples
 
@@ -509,7 +539,7 @@ export class ClientSideGridExample extends GenesisElement {
 }
 ```
 
-### 2. Grid Pro with server-side datasource and status bar (`loadMore` is automatically disabled)
+### 2. Grid Pro with server-side datasource and status bar (pagination mode)
 
 ```typescript
 @customElement({
@@ -531,11 +561,10 @@ export class ClientSideGridExample extends GenesisElement {
   `
 })
 export class ServerSideGridExample extends GenesisElement {
-  // Server-side datasource: loadMore automatically disabled
+  // Server-side datasource with pagination enabled
   @observable serverStatusBarConfig: GridProStatusBarConfig = {
-    rows: true,              // Available - shows row counts
+    rows: true,              // Available - row counts are shown
     maxRows: true,           // Available - shows max rows info
-    loadMore: true,          // DISABLED - even if true, will not show (by design when it is a server-side datasource)
     reload: {                // Available - shows reload button
       tooltip: 'Refresh trade data from server'
     },

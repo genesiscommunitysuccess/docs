@@ -1,0 +1,42 @@
+---
+title: '8.15 Reporting'
+sidebar_label: 'Reporting'
+sidebar_position: 7
+id: '8.15-reporting'
+---
+
+### Breaking changes
+
+* Added alternate data grouping strategies to templated reports
+
+### Features
+
+* Add backend support for report input parameters
+* Allow configurable max row limit for request server datasources
+* Enhance CSV report data sanitisation to also sanitise column headers 
+* Updated parameterisation implementation with latest design requirements
+* `pbc-reporting-ui` : Allow the user to define the order in which fields are 
+* `pbc-reporting-ui` : Do not set cell formats for xlsx 
+* `pbc-reporting-ui` : Use combobox to filter datasource selection
+* `pbc-reporting-ui` : Add week day date filters and filter tooltips
+* `pbc-reporting-ui` : Support csv output with template and multiple datasources 
+
+### Fixes
+
+* Ensure basic excel reports preserve correct type for date and datetime columns
+* Ensure reports can be generated using csv templates 
+* `pbc-reporting-ui` : Clean up old fields which are no longer in the metadata
+* `pbc-reporting-ui` : Handle field types in filters in legacy reporting
+
+### Dependency changes
+
+* Bump org.gradle.test-retry from 1.5.10 to 1.6.4
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Breaking change guidance
+
+### Added alternate data grouping strategies to templated reports
+Any reports configs that were using the excel template multisheet functionality will need to be modified, as the data keys have been changed from  'key' and 'value', to 'groupId' and 'items', as this is for more self-explanatory and easy to explain to users.
