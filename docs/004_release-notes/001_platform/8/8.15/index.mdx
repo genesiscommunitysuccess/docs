@@ -313,6 +313,20 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
 * `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
 
+#### 8.15.3
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Reduce memory footprint of backward join cache by optimising backward joins implementation and add special case for Identity branches 
+
+###### Fixes
+
+* `exec-gradle-plugin` : Ensure AppDistZip and AppDistTarGz files are compatible with gradle config cache 
+* `exec-gradle-plugin` : Replace stock processes with site-specific processes per groupId instead of merging 
+* `genesis-db` : Correct threading in jms update queue implementation 
+* `genesis-environment` : Improve remap handling in complex situations 
+
+
 #### 8.15.2
 
 ###### Features
