@@ -313,6 +313,13 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
 * `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
 
+#### 8.15.5
+
+###### Fixes
+
+* `genesis-db` : Translate SQL select aliases correctly in SqlStatementTranslator
+* `genesis-db` : Reset oracle sequence values and continue setsequence batch on row errors 
+
 #### 8.15.4
 
 ###### Features
