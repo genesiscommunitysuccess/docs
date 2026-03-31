@@ -149,6 +149,36 @@ html`
 `
 ```
 
+### Grouping options (`rapid-optgroup`)
+
+Use `rapid-optgroup` to organise options into labelled sections, the same way as the HTML [`<optgroup>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/optgroup) element. Nest `rapid-option` elements inside each group (see attributes below).
+
+`rapid-select` detects slotted `rapid-optgroup` elements, keeps the group headings in the dropdown for users, and still treats the nested options as a flat list for `value` and selection behaviour.
+
+You can define the following attributes on `rapid-optgroup`:
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `label` | `string` | Text shown as the group heading in the dropdown. Also used for the accessible name of the nested options (`aria-label` on the inner group). |
+| `title` | `string` | Optional. Standard HTML attribute; browsers show it as a tooltip when the user hovers the group row. |
+| `disabled` | `boolean` | The component sets this when it connects so the group heading cannot become the `rapid-select` value. You normally leave it unset; nested `rapid-option` elements stay enabled unless you disable them individually. |
+
+```html
+<rapid-select>
+  <rapid-option value="all">All items</rapid-option>
+  <rapid-option value="sale">Sale</rapid-option>
+  <rapid-optgroup label="Clothing" title="Hats, scarves, and similar">
+    <rapid-option value="hat">Hat</rapid-option>
+    <rapid-option value="scarf">Scarf</rapid-option>
+  </rapid-optgroup>
+  <rapid-optgroup label="Footwear">
+    <rapid-option value="boots">Boots</rapid-option>
+    <rapid-option value="trainers">Trainers</rapid-option>
+  </rapid-optgroup>
+</rapid-select>
+```
+
+You can mix grouped and ungrouped options: place standalone `rapid-option` elements alongside `rapid-optgroup` blocks as needed (as with `All items` and `Sale` above).
 
 ## API
 
