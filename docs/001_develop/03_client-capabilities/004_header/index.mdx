@@ -19,6 +19,8 @@ import PrimitiveHeaderExample from './examples/primitive_header_example.js';
 
 It supports nested navigation permissions and layout item active indicators for route nav items.
 
+The navigation bar reflects the current route: the active top-level item (and nested child row, when applicable) receives selected styling based on pathname polling. To detect whether a nav item should appear active in custom templates, use [`hasActiveChild`](./docs/api/foundation-header.navigation.hasactivechild.md). You can change the highlight with the `--foundation-header-selected-item-background` design token: pick any colour you want, or remove the highlight by matching the normal button fill or using `transparent` where appropriate; see [Selected route highlight colour](/develop/client-capabilities/header/client-header-customise/#selected-route-highlight-colour) in [Customizing the header](/develop/client-capabilities/header/client-header-customise/).
+
 ## Adding a header component to the template
 
 Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
