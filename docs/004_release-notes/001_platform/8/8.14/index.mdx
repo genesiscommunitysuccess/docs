@@ -238,6 +238,41 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.26
+
+###### Fixes
+
+* `genesis-eventhandler` : Prevent duplicate event handler registration with ClassUtils.getAllInterfaces 
+* Avoid exposure of internal details through API and expose them in LOG instead
+
+
+
+#### 8.14.25
+
+###### Features
+
+* `genesis-db` : Add delimiter-aware ContainsWordsStartingWithIgnoreCase 
+
+###### Fixes
+
+* `genesis-config` : Script cache invalidation targets wrong file in attemptToRecover 
+* `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
+
+#### 8.14.24
+
+###### Performance improvements
+
+perf(genesis-pal-dataserver): replace runBlocking with non-blocking dispatch in ConnectionManager 
+
+###### Fixes
+
+* `genesis-commons` : DST-safe week boundary in dateTimeIsInRange tests
+* `genesis-criteria` : DateTimeIsInRange throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* `genesis-pal-dataserver` : Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites 
+* `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
+* `genesis-pal-dataserver` : Fix auth update silent data loss and batch emissions 
+* `genesis-pal-dataserver` : Fix enriched row state not cleaned up on row deletion 
+
 #### 8.14.23
 
 ###### Fixes
