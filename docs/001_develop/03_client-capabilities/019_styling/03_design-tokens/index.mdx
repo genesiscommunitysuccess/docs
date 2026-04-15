@@ -14,3 +14,78 @@ sidebar_position: 3
 This section covers how to configure tokens for the different types of styling in your application. 
 
 You can also configure base tokens, which are used in recipes to create different tokens. The compounding effect is a rich system of variables that can be tweaked to alter the look and feel of the UI. It can also be used to control how the app responds to specific actions, such as building light and dark mode themes.
+
+## Custom tokens in `design-tokens.json`
+
+Alongside the standard `design_tokens` block, you can add a top-level `customTokens` object. Use the same W3C-style shape as core tokens: each leaf entry has `$value` and may include `$type`. Nested objects become a single CSS custom property name by joining keys with hyphens (for example `spacing.padding.small` in JSON maps to `--spacing-padding-small` on the design system provider).
+
+Those variables are written onto the provider element when `configureDesignSystem` runs (from `@genesislcap/foundation-ui`), so you can reference them in your own CSS with `var(--your-token-path)`.
+
+To read a nested custom token in TypeScript after configuration, use `selectCustomToken` with one argument per level (for example `selectCustomToken('spacing', 'padding', 'small')`). It returns the leaf object (`$value`, optional `$type`) or `null` if the path is missing or `configureDesignSystem` has not run yet.
+
+### Example: define a token and read it with `selectCustomToken`
+
+Add a nested entry under `customTokens` next to your existing `design_tokens` object in `design-tokens.json`. The path `myFeature.accordion.itemGap` becomes the CSS variable `--myFeature-accordion-itemGap` on the provider.
+
+```json
+{
+  "customTokens": {
+    "myFeature": {
+      "accordion": {
+        "itemGap": {
+          "$value": "12px",
+          "$type": "dimension"
+        }
+      }
+    }
+  }
+}
+```
+
+Typical usage in TypeScript:
+
+```typescript
+import { configureDesignSystem, selectCustomToken } from '@genesislcap/foundation-ui';
+import designTokens from './design-tokens.json';
+
+// `configureDesignSystem` is usually called once from your main top-level class
+// (for example the root application or layout shell in `connectedCallback`).
+configureDesignSystem(this.provider, designTokens);
+
+// Legitimate runtime use: spacing between accordion items is applied with CSS `gap`,
+// but APIs such as `scrollTo` need a numeric offset. Read the same token the stylesheet
+// uses so scroll position stays in sync when the token changes (for example after a theme switch).
+const itemGap = selectCustomToken('myFeature', 'accordion', 'itemGap');
+const gapPx = itemGap ? parseFloat(String(itemGap.$value)) : 0;
+const headerHeightPx = 48; // e.g. measured height of each accordion header
+const targetIndex = 3;
+const scrollTop = targetIndex * (headerHeightPx + gapPx);
+this.scrollContainer.scrollTo({ top: scrollTop, behavior: 'smooth' });
+```
+
+:::tip
+Each custom token is emitted on the provider as a CSS custom property (for example `--myFeature-accordion-itemGap`). For layout spacing between accordion items, prefer `gap: var(--myFeature-accordion-itemGap)` (or equivalent margin rules) in your stylesheet or component CSS.
+
+Use `selectCustomToken` when you need the resolved value in JavaScript or TypeScript—for example scroll math, canvas layout, or a third-party API that takes a pixel number. Avoid calling the utility only to push the same value into inline styles; that duplicates what `var()` already does and is harder to maintain.
+
+Do not use the utility just to set spacing on the component—keep the token in CSS:
+
+```typescript
+// Avoid — use `gap: var(--myFeature-accordion-itemGap)` on the accordion container instead
+const gap = selectCustomToken('myFeature', 'accordion', 'itemGap');
+this.accordionHost.style.gap = gap?.$value ?? '';
+```
+
+```css
+/* Prefer */
+.my-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--myFeature-accordion-itemGap);
+}
+```
+:::
+
+## Runtime updates
+
+`configureDesignSystem` merges your JSON with the platform defaults and publishes the result through `designTokensMap()`. The returned object exposes an observable `value` that updates whenever the design system is reconfigured. Layout and `rapid-grid-pro` subscribe to this flow so that tab chrome, header metrics, and default grid row and header heights stay aligned with the active sizing tokens (see [Sizing tokens](/develop/client-capabilities/styling/styling-tokens-sizing/) and [Layout declarative HTML](/develop/client-capabilities/layout-management/client-layout-management-html/#tab-height-and-the-design-system)).
