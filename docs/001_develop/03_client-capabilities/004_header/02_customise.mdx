@@ -19,6 +19,7 @@ You can customize:
 
 - the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default)
 - navigation links at the left-hand side of the navigation bar
+- the background colour used for the currently selected route (and related submenu row), via design tokens — see [Selected route highlight colour](#selected-route-highlight-colour)
 - the control buttons on the right-hand side of the navigation bar; these can be shown or hidden, and their behaviour controlled via event listeners
 - the contents of the flyout menu
 
@@ -46,6 +47,47 @@ By default, the navigation bar and flyout menu show the Genesis logo. You can ov
 ```
 
 The `logo-src` defines the image that you want to display. Adding this attribute updates the logo on both the flyout and navigation bar. If you want to keep the Genesis logo, just omit this attribute.
+
+### Selected route highlight colour
+
+Changing `--foundation-header-selected-item-background` is how you control the route highlight: set it to any colour you choose (a hex value, a design token, and so on), or remove the highlight entirely by matching the normal button background (see below) or using `transparent` where the component uses this variable only as a border or stroke (for example the flyout accent stripe).
+
+When a top-level route or submenu row matches the current pathname, the header applies selected styling. On the main bar and submenu rows, the fill for that state uses `--foundation-header-selected-item-background`. If you do not set it, it falls back to `var(--accent-fill-rest)` (accent “rest” fill).
+
+Unselected nav buttons use `--foundation-header-rest-item-background`, which defaults to `var(--neutral-fill-rest)`.
+
+Set these on `foundation-header` (or on any ancestor that wraps the header so variables inherit):
+
+#### Custom highlight colour
+
+```css
+foundation-header {
+  --foundation-header-selected-item-background: #2b6cb0; /* example */
+}
+```
+
+Prefer design-system tokens where possible (for example `var(--accent-fill-rest)` or another palette token) so the header stays consistent with light/dark and branding.
+
+#### Match the normal button fill (no accent highlight)
+
+To use the same background as the default route buttons — so the highlight is effectively turned off while route selection logic still runs — point the selected token at the same source as the rest state:
+
+```css
+foundation-header {
+  --foundation-header-selected-item-background: var(
+    --foundation-header-rest-item-background,
+    var(--neutral-fill-rest)
+  );
+}
+```
+
+If you customise `--foundation-header-rest-item-background` elsewhere, the selected state will follow that value automatically.
+
+| Area | What happens | If you need to adjust it |
+| --- | --- | --- |
+| Text colour | Selected route rows use `var(--foreground-on-accent-rest)` for text, which assumes an accent-like background. | If you switch the selected background to a neutral fill and contrast looks wrong, add a targeted override in your app styles (for example on `.route-selected` / `.sub-selected`) so text uses an appropriate neutral foreground token. |
+| Dropdown indicator | When a parent item has an active child route, the chevron colour uses `--highlight-selected-dropdown`, falling back to `var(--accent-fill-rest)`. | Override `--highlight-selected-dropdown` so the arrow matches a neutral treatment or your palette. |
+| Flyout / side menu | In the slide-out route list, the selected row keeps a neutral background and uses a left border coloured with `--foundation-header-selected-item-background`. | Set that token to `transparent` or a neutral stroke token to remove the accent stripe on the flyout while the same variable still controls the main bar fill. |
 
 ### Navigation items
 
