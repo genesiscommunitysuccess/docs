@@ -7,7 +7,7 @@ format: md
 
 ## UiSchemaElementOptions type
 
-All configuration options that are available.
+All configuration options that are available. Standard options and renderer-specific options can be used together in the same `options` object.
 
 **Signature:**
 
