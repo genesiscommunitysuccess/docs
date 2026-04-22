@@ -47,6 +47,40 @@ const textInputUiSchema: UiSchema = {
 
 <StringFormExample/>
 
+###### Applying text transformation
+
+You can use `textTransform` in `StringRendererOptions` to normalize string input as users type and when the value is committed:
+
+- `'none'` (default): keeps the original input casing
+- `'uppercase'`: transforms the value to uppercase
+- `'lowercase'`: transforms the value to lowercase
+- custom function: apply your own transformation logic
+
+```ts
+const transformedTextUiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/symbol',
+      options: {
+        textTransform: 'uppercase',
+        // Standard options can be combined with renderer-specific options
+        validateFn: (data, path, label) => [],
+      },
+    },
+  ],
+};
+```
+
+You can also pass a function:
+
+```ts
+options: {
+  textTransform: (value) => value.trim().toUpperCase(),
+}
+```
+
 ### Number control
 
 The number renderer creates a `number-field` in your form. This input only accepts numeric data. It sets a numeric value on the underlying form model.
