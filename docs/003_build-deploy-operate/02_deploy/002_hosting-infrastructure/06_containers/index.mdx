@@ -143,6 +143,18 @@ docker run -it -p 443:443 genesis/appname:1.0.0-SNAPSHOT
 
 Note: The `-p` flag is used in this example, as nginx is bundled in with our image and presents the Genesis app on port 443.
 
+:::info
+The `-it` flags (interactive + TTY) are **required** for the Genesis startup script to work correctly. Without a pseudo-TTY, the startup script will not behave as expected. In Docker Compose, set `tty: true` on the service. In Kubernetes, the equivalent is not needed as the pod lifecycle is managed differently — use the health probes described below instead.
+:::
+
+:::info
+The Genesis router requires an `Accept: application/json` header on all HTTP requests. Requests made without this header return **406 Not Acceptable**. This applies to the health endpoints as well as any application API calls. Most HTTP clients (for example, `curl`) send an appropriate `Accept` header by default, but if you are calling the router from code, ensure you set this header explicitly.
+
+```bash
+curl -H "Accept: application/json" http://localhost:9064/my-endpoint
+```
+:::
+
 
 ## Dockerfile
 
@@ -200,8 +212,7 @@ To configure this task, add the following settings to your **gradle.properties**
 | `dockerPassword` | Password |
 | `dockerEmail` | Email address |
 
-## healthchecks
-
+## Healthchecks
 
 The Genesis Application Platform Docker image provides a health check endpoint, which reports the status of the container.
 
@@ -209,7 +220,11 @@ This endpoint can be used for your liveliness/readiness checks if you are using 
 
 | Path | Port | Response |
 | --- | --- | --- |
-| /health/status | This is set in the [System Definition](/develop/server-capabilities/runtime-configuration/system-definition/) with the item `DaemonHealthPort` and an integer value for the port chosen to serve the health status<br/><br/>Example: `item(name = "DaemonHealthPort", value = "4569")`| Either `200` for HEALTHY or `503` for UNHEALTHY if ANY of the underlying services are not in a healthy state.<br/><br/>The payload of the response is in JSON format and provides details for each underlying service configured in the container, including their individual health status |
+| /health/status | This is set in the [System Definition](/develop/server-capabilities/runtime-configuration/system-definition/) with the item `DaemonHealthPort` and an integer value for the port chosen to serve the health status<br/><br/>Example: `item(name = "DaemonHealthPort", value = "4569")`| Either `200` for HEALTHY or `503` for UNHEALTHY if ANY of the underlying services are not in a healthy state.<br/><br/>The payload of the response is a **JSON array** and provides details for each underlying service configured in the container, including their individual health status |
+
+:::info
+It is normal for `/health/status` to return `503` during startup while processes are initialising. This does not indicate a problem — it simply means the services have not yet reached a HEALTHY state. Allow sufficient startup time before treating a `503` as a failure (use `initialDelaySeconds` or a startup probe in Kubernetes).
+:::
 
 Note: You need to ensure the port is accessible with the Docker `--port` option; alternatively, check the documentation for whichever container orchestration system you use.
 
