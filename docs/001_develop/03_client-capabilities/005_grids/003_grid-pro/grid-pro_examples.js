@@ -174,6 +174,90 @@ export function GridProExampleBooleanRenderer() {
   );
 }
 
+export function GridProExampleIconRenderer() {
+  const iconSrc = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+      <path d="M7 0.5c3.6 0 6.5 2.9 6.5 6.5S10.6 13.5 7 13.5 0.5 10.6 0.5 7 3.4 0.5 7 0.5Z" fill="#3b4ecf"/>
+      <path d="M5.4 7.2 6.8 8.6 9.3 6.1" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+  )}`;
+
+  const modifyGridOptions = (gridOptions) => {
+    const modifiedRowData = gridOptions.rowData.map((row, index) => ({
+      ...row,
+      iconEnabled: index % 2 === 0,
+    }));
+
+    return {
+      ...gridOptions,
+      columnDefs: [
+        ...gridOptions.columnDefs,
+        {
+          headerName: 'Icon (name)',
+          field: 'iconEnabled',
+          cellRenderer: 'icon',
+          width: 200,
+          pinned: 'right',
+          cellRendererParams: (params) => {
+            const enabled = !!params.data.iconEnabled;
+
+            return enabled
+              ? {
+                  iconName: 'check',
+                  iconColor: 'green',
+                  secondaryIcon: 'xmark',
+                  secondaryIconColor: 'blue',
+                  showHover: true,
+                  clickHandler: (_event, rowData) => console.log('Icon (name) clicked', rowData),
+                }
+              : {
+                  iconName: 'xmark',
+                  iconColor: 'red',
+                  disabled: true,
+                  showHover: true,
+                  clickHandler: (_event, rowData) => console.log('Icon (name) disabled clicked', rowData),
+                };
+          },
+        },
+        {
+          headerName: 'Icon (image)',
+          field: 'iconEnabled',
+          cellRenderer: 'icon',
+          width: 220,
+          pinned: 'right',
+          cellRendererParams: (params) => {
+            const enabled = !!params.data.iconEnabled;
+
+            return enabled
+              ? {
+                  iconSrc,
+                  iconHeight: '14px',
+                  showHover: true,
+                  clickHandler: (_event, rowData) => console.log('Icon (image) clicked', rowData),
+                }
+              : {
+                  iconSrc,
+                  iconHeight: '14px',
+                  showHover: true,
+                  disabled: true,
+                  clickHandler: (_event, rowData) => console.log('Icon (image) disabled clicked', rowData),
+                };
+          },
+        },
+      ],
+      rowData: modifiedRowData,
+    };
+  };
+
+  return (
+    <GridProExampleBase
+      modifyGridOptions={modifyGridOptions}
+      gridHeight="300px"
+      buttonText="Load Grid Pro with Icon Renderer"
+    />
+  );
+}
+
 export function GridProExampleEditableRenderer() {
   const modifyGridOptions = (gridOptions) => ({
     ...gridOptions,
