@@ -335,12 +335,11 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 ###### Fixes
 
 * `genesis-commons` : DST-safe week boundary in dateTimeIsInRange tests
-* `genesis-criteria` : DateTimeIsInRange throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* `genesis-criteria` : `dateTimeIsInRange` throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
 * `genesis-pal-dataserver` : Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites
 * `genesis-pal-dataserver` : Fix auth update silent data loss and batch emissions 
 * `genesis-pal-dataserver` : Fix enriched row state not cleaned up on row deletion 
-* `remap` : Remap: Add FDB transaction limit checks whilst performing batch write operations to prevent blocker failures whislt executing remap 
-
+* `remap` : Add FDB transaction limit checks whilst performing batch write operations to prevent blocker failures whislt executing remap 
 
 #### 8.15.3
 
