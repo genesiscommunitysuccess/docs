@@ -294,6 +294,25 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 * `genesis-pal-dataserver` : Return defensive copy from MultiRowEntityToRowMap.recordsForEntity to prevent concurrent iteration on live LongHashSet 
 
+#### 8.15.7
+
+###### Fixes
+
+* `genesis-eventhandler` : Prevent duplicate event handler registration with ClassUtils.getAllInterfaces 
+* Avoid exposure of internal details through API and expose them in LOG instead
+
+#### 8.15.6
+
+###### Features
+
+* `genesis-db` : Add delimiter-aware ContainsWordsStartingWithIgnoreCase
+
+###### Fixes
+
+* `genesis-config` : Script cache invalidation targets wrong file in attemptToRecover
+* `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
+* `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
+
 #### 8.15.2
 
 ###### Features
