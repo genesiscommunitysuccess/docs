@@ -21,14 +21,180 @@ export type DatasourceConfiguration = Omit<DatasourceOptions, 'resourceName'>;
 ```javascript
 type DatasourceConfiguration = {
   criteria?: string;
+  disablePolling?: boolean;
   fields?: string;
   isSnapshot?: boolean;
   maxRows?: number;
   maxView?: number;
   movingView?: boolean;
+  offset?: number;
   pollingInterval?: number;
+  pollTriggerEvents?: string[];
+  request?: any;
+  requestAutoSetup?: boolean;
+  viewNumber?: number;
   orderBy?: string;
   reverse?: boolean;
 }
 ```
+
+## How to use `DatasourceConfiguration`
+
+`DatasourceConfiguration` is the object used by `entity-management` to control how data is fetched from your backend resource.
+
+Because this type is `Omit<DatasourceOptions, 'resourceName'>`, you configure query behavior (filtering, sort, limits, polling), while `resourceName` remains configured on `entity-management` itself.
+
+### Supported properties
+
+| Property | Type | Use |
+|---|---|---|
+| `criteria` | `string` | Filter expression applied to the datasource. |
+| `disablePolling` | `boolean` | Disables polling when using request/reply resources. |
+| `fields` | `string` | Comma-separated field list to return (DATASERVER resources). |
+| `isSnapshot` | `boolean` | Treat datasource as snapshot instead of streaming updates. |
+| `maxRows` | `number` | Maximum rows returned by the datasource. |
+| `maxView` | `number` | Maximum rows tracked in the client-side view. |
+| `movingView` | `boolean` | Controls how client view behaves when real-time rows arrive. |
+| `offset` | `number` | Offset to start fetching rows from. |
+| `pollingInterval` | `number` | Poll interval (ms), primarily for request/reply resources. |
+| `pollTriggerEvents` | `string[]` | Event names that trigger an additional poll. |
+| `request` | `any` | Request payload sent to request/reply resources. |
+| `requestAutoSetup` | `boolean` | Auto-generates the request object from metadata. |
+| `viewNumber` | `number` | Current page/view number for paged data access. |
+| `orderBy` | `string` | Field name used for sorting. |
+| `reverse` | `boolean` | Reverses sort order when `true`. |
+
+## Practical examples
+
+### 1) Minimal config with polling
+
+Use this when you mainly need periodic refreshes.
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    pollingInterval: 5000,
+  })}
+></entity-management>
+```
+
+### 2) Filter and sort records
+
+Use `criteria` to limit rows and `orderBy`/`reverse` to control ordering.
+
+```typescript
+<entity-management
+  resourceName="ALL_TRADES"
+  :datasourceConfig=${() => ({
+    criteria: 'STATUS == "OPEN"',
+    orderBy: 'LAST_UPDATED',
+    reverse: true,
+    maxRows: 200,
+  })}
+></entity-management>
+```
+
+### 3) Return only selected fields
+
+Use this to reduce payload size for DATASERVER resources.
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    fields: 'COUNTERPARTY_ID,NAME,ENABLED',
+    maxRows: 100,
+  })}
+></entity-management>
+```
+
+### 4) Use `CriteriaBuilder` for safe criteria composition
+
+```typescript
+import {
+  CriteriaBuilder,
+  ExpressionBuilder,
+  Serialisers,
+} from '@genesislcap/foundation-criteria';
+
+const byTicker = new ExpressionBuilder()
+  .withField('TICKER')
+  .withValue('GNYS')
+  .withSerialiser(Serialisers.EQ)
+  .build();
+
+const byNotional = new ExpressionBuilder()
+  .withField('NOTIONAL')
+  .withValue(1000)
+  .withSerialiser(Serialisers.GT)
+  .build();
+
+const filterCriteria = new CriteriaBuilder()
+  .withExpression(byTicker)
+  .withExpression(byNotional)
+  .build();
+
+<entity-management
+  resourceName="ALL_TRADES"
+  :datasourceConfig=${() => ({
+    criteria: filterCriteria,
+    maxRows: 100,
+  })}
+></entity-management>
+```
+
+### 5) Request/reply resource example
+
+Use this pattern when `resourceName` points to a request/reply resource and you need to control polling behavior explicitly.
+
+```typescript
+<entity-management
+  resourceName="PROFILE_USER"
+  :datasourceConfig=${() => ({
+    request: {
+      PROFILE_NAME: 'ADMIN',
+      RIGHT_CODE: '*',
+    },
+    requestAutoSetup: true,
+    disablePolling: true,
+  })}
+></entity-management>
+```
+
+In this example:
+
+- `request` provides the payload sent to the request/reply resource.
+- `requestAutoSetup` allows the datasource service to initialize request structure from metadata.
+- `disablePolling` prevents periodic re-polls when you only want on-demand refresh.
+
+### 6) Trigger extra polls from events with `pollTriggerEvents`
+
+Use this when data is mostly polled on an interval, but you also want an immediate refresh after specific backend events.
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    pollingInterval: 10000,
+    pollTriggerEvents: [
+      'EVENT_COUNTERPARTY_INSERT',
+      'EVENT_COUNTERPARTY_MODIFY',
+      'EVENT_COUNTERPARTY_DELETE',
+      'EVENT_REFERENCE_DATA_REFRESHED',
+    ],
+  })}
+  createEvent="EVENT_COUNTERPARTY_INSERT"
+  updateEvent="EVENT_COUNTERPARTY_MODIFY"
+  deleteEvent="EVENT_COUNTERPARTY_DELETE"
+></entity-management>
+```
+
+In this example, the grid still polls every 10 seconds, but it also performs an additional poll immediately when any of the listed events are published.  
+`EVENT_REFERENCE_DATA_REFRESHED` demonstrates that `pollTriggerEvents` is not limited to the events configured directly on the component.
+
+## Related API
+
+- To update datasource settings at runtime, see `EntityManagement.datasourceConfig`.
+- To update datasource settings without refreshing stored base criteria, see `EntityManagement.setDSConfigWithoutUpdatingBaseCriteria()`.
 
