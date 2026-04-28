@@ -262,12 +262,12 @@ This release contains an update to the way Business Component versions are manag
 
 ###### Performance improvements
 
-perf(genesis-pal-dataserver): replace runBlocking with non-blocking dispatch in ConnectionManager 
+* `genesis-pal-dataserver` : Replace runBlocking with non-blocking dispatch in ConnectionManager 
 
 ###### Fixes
 
-* `genesis-commons` : DST-safe week boundary in dateTimeIsInRange tests
-* `genesis-criteria` : DateTimeIsInRange throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* `genesis-commons` : DST-safe week boundary in `dateTimeIsInRange` tests
+* `genesis-criteria` : `dateTimeIsInRange` throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
 * `genesis-pal-dataserver` : Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites 
 * `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
 * `genesis-pal-dataserver` : Fix auth update silent data loss and batch emissions 
