@@ -40,7 +40,7 @@ wrapper
 
 </td><td>
 
-[WithTestHarness](./foundation-testing.withtestharness.md)<!-- -->&lt;T&gt;
+[WithTestHarness](./foundation-testing.withtestharness.md)&lt;T&gt;
 
 
 </td><td>

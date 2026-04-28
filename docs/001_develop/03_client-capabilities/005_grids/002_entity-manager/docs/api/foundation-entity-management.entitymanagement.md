@@ -60,6 +60,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[approvalMessageLabel](./foundation-entity-management.entitymanagement.approvalmessagelabel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Label for the approval message field in the approval dialog.
+
+
+</td></tr>
+<tr><td>
+
 [columns](./foundation-entity-management.entitymanagement.columns.md)
 
 
@@ -345,6 +364,25 @@ Enables filter bar component
 </td></tr>
 <tr><td>
 
+[enableFilters](./foundation-entity-management.entitymanagement.enablefilters.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Enables foundation-filters with flyout UI
+
+
+</td></tr>
+<tr><td>
+
 [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md)
 
 
@@ -397,6 +435,63 @@ string
 </td><td>
 
 Label for the entity which is used in the title of the modal when editing the entity, on CRUD buttons and on toast notifications
+
+
+</td></tr>
+<tr><td>
+
+[errorNotificationConfig](./foundation-entity-management.entitymanagement.errornotificationconfig.md)
+
+
+</td><td>
+
+
+</td><td>
+
+NotificationStructure\['config'\]
+
+
+</td><td>
+
+Notification config used for submit failures. Defaults to an error snackbar but can be overridden while keeping title/body unchanged.
+
+
+</td></tr>
+<tr><td>
+
+[filtersModalPosition](./foundation-entity-management.entitymanagement.filtersmodalposition.md)
+
+
+</td><td>
+
+
+</td><td>
+
+'centre' \| 'left' \| 'right'
+
+
+</td><td>
+
+Determines where the filters modal will appear on screen
+
+
+</td></tr>
+<tr><td>
+
+[filtersUiSchema](./foundation-entity-management.entitymanagement.filtersuischema.md)
+
+
+</td><td>
+
+
+</td><td>
+
+UiSchema
+
+
+</td><td>
+
+UI schema configuration for the filters component
 
 
 </td></tr>
@@ -682,6 +777,44 @@ AvailableOption\[\]
 </td><td>
 
 Allows configuration of the search bar component, if not provided it would build configuration based on columns in the grid \*
+
+
+</td></tr>
+<tr><td>
+
+[setApprovalMessage](./foundation-entity-management.entitymanagement.setapprovalmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+When enabled, adds an APPROVAL\_MESSAGE field to the form schema. This field will be sent at root level alongside DETAILS when submitting. Can be overridden per custom action via the action's setApprovalMessage property.
+
+
+</td></tr>
+<tr><td>
+
+[showFilterPersistenceControls](./foundation-entity-management.entitymanagement.showfilterpersistencecontrols.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Controls visibility of filter save/load UI in foundation-filters
 
 
 </td></tr>

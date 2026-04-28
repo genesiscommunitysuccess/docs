@@ -30,5 +30,7 @@ Serialisers: {
     dateIsEqual: (e: Expression) => string;
     dateIsGreaterEqual: (e: Expression) => string;
     dateIsLessEqual: (e: Expression) => string;
+    dateTimeIsGreaterEqual: (e: Expression) => string;
+    dateTimeIsLessEqual: (e: Expression) => string;
 }
 ```

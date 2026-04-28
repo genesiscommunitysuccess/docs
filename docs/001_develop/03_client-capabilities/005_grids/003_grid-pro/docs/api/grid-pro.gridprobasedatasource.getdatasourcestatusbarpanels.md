@@ -12,7 +12,7 @@ Gets datasource-specific status bar component configurations. This method should
 **Signature:**
 
 ```typescript
-getDatasourceStatusBarPanels(isServerSide: boolean): any[];
+getDatasourceStatusBarPanels(isServerSide: boolean, statusBarConfig: any): any[];
 ```
 
 ## Parameters
@@ -41,6 +41,20 @@ isServerSide
 </td><td>
 
 boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+statusBarConfig
+
+
+</td><td>
+
+any
 
 
 </td><td>

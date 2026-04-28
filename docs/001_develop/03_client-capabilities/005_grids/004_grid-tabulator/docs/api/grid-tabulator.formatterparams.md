@@ -17,5 +17,5 @@ Extended FormatterParams type that includes all of our custom formatter paramete
 ```typescript
 export type FormatterParams = TabulatorFormatterParams | ActionFormatterParams | ActionsMenuFormatterParams | BooleanFormatterParams | EditableFormatterParams | SelectFormatterParams | TextFormatterParams;
 ```
-**References:** [ActionFormatterParams](./grid-tabulator.actionformatterparams.md)<!-- -->, [ActionsMenuFormatterParams](./grid-tabulator.actionsmenuformatterparams.md)<!-- -->, [BooleanFormatterParams](./grid-tabulator.booleanformatterparams.md)<!-- -->, [EditableFormatterParams](./grid-tabulator.editableformatterparams.md)<!-- -->, [SelectFormatterParams](./grid-tabulator.selectformatterparams.md)<!-- -->, [TextFormatterParams](./grid-tabulator.textformatterparams.md)
+**References:** [ActionFormatterParams](./grid-tabulator.actionformatterparams.md), [ActionsMenuFormatterParams](./grid-tabulator.actionsmenuformatterparams.md), [BooleanFormatterParams](./grid-tabulator.booleanformatterparams.md), [EditableFormatterParams](./grid-tabulator.editableformatterparams.md), [SelectFormatterParams](./grid-tabulator.selectformatterparams.md), [TextFormatterParams](./grid-tabulator.textformatterparams.md)
 

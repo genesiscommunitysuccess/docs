@@ -125,6 +125,16 @@ The Grid Pro element.
 </td><td>
 
 
+</td></tr>
+<tr><td>
+
+[GridProBeta](./grid-pro.gridprobeta.md)
+
+
+</td><td>
+
+**_(BETA)_** The Grid Pro element (AG Grid v35 compatible).
+
 
 </td></tr>
 <tr><td>
@@ -267,6 +277,17 @@ Pagination Status Bar Component for AG Grid Displays pagination controls and inf
 </td><td>
 
 A status bar component that shows a refresh icon to reload the grid data
+
+
+</td></tr>
+<tr><td>
+
+[RowCountStatusBarComponent](./grid-pro.rowcountstatusbarcomponent.md)
+
+
+</td><td>
+
+Row Count Status Bar Component for Server-Side Infinite Scroll Displays current row count information for server-side grids without pagination. For pagination scenarios, use PaginationStatusBarComponent instead.
 
 
 </td></tr>
@@ -434,6 +455,28 @@ Generates the CSS for a given GridPro theme name and token map
 </td></tr>
 <tr><td>
 
+[convertColDefsToColumnStates(colDefs)](./grid-pro.convertcoldefstocolumnstates.md)
+
+
+</td><td>
+
+Converts an array of ColDef to an array of ColumnState
+
+
+</td></tr>
+<tr><td>
+
+[convertColDefToColumnState(colDef)](./grid-pro.convertcoldeftocolumnstate.md)
+
+
+</td><td>
+
+Converts a ColDef to a ColumnState
+
+
+</td></tr>
+<tr><td>
+
 [convertToKebabCase(value)](./grid-pro.converttokebabcase.md)
 
 
@@ -462,6 +505,17 @@ Returns a formatted date time value from the Grid Pro cell value.
 </td><td>
 
 Returns a formatted date value from the Grid Pro cell value.
+
+
+</td></tr>
+<tr><td>
+
+[extractErrorMessage(detail)](./grid-pro.extracterrormessage.md)
+
+
+</td><td>
+
+Extracts a user-friendly error message from a given error detail.
 
 
 </td></tr>
@@ -699,12 +753,21 @@ Get a Design System prefixed Select template.
 </td></tr>
 <tr><td>
 
-[getFilterByFieldType(type)](./grid-pro.getfilterbyfieldtype.md)
+[getEnumFilterParams(field, filterType)](./grid-pro.getenumfilterparams.md)
 
 
 </td><td>
 
-**_(ALPHA)_** Returns a filter type based on the Grid Pro field/column type.
+Returns the filter params for enum fields based on the detected filter type.
+
+
+</td></tr>
+<tr><td>
+
+[getErrorHandlerDialogTemplate(prefix, gridErrorItems)](./grid-pro.geterrorhandlerdialogtemplate.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -823,7 +886,7 @@ A directive that renders a set of grid-pro-column elements from a given input bi
 
 </td><td>
 
-Merges two arrays, one of `ColDef` and one of `ColumnState`<!-- -->, and deduplicates them.
+Merges two arrays, one of `ColDef` and one of `ColumnState`, and deduplicates them.
 
 
 </td></tr>
@@ -843,6 +906,61 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[DataChangedEventDetail](./grid-pro.datachangedeventdetail.md)
+
+
+</td><td>
+
+Event detail for data changes
+
+
+</td></tr>
+<tr><td>
+
+[DataClearedEventDetail](./grid-pro.dataclearedeventdetail.md)
+
+
+</td><td>
+
+Event detail for data clearing
+
+
+</td></tr>
+<tr><td>
+
+[DataLoadedEventDetail](./grid-pro.dataloadedeventdetail.md)
+
+
+</td><td>
+
+Event detail for data loading
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceErrorEventDetail](./grid-pro.datasourceerroreventdetail.md)
+
+
+</td><td>
+
+Event detail for error events
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceEvent](./grid-pro.datasourceevent.md)
+
+
+</td><td>
+
+Generic datasource event interface
+
+
+</td></tr>
+<tr><td>
 
 [DateEditorParams](./grid-pro.dateeditorparams.md)
 
@@ -888,6 +1006,17 @@ Configuration options for the grid status bar components
 </td></tr>
 <tr><td>
 
+[GridProStatusBarLabelConfig](./grid-pro.gridprostatusbarlabelconfig.md)
+
+
+</td><td>
+
+Configuration for the label-value status bar component
+
+
+</td></tr>
+<tr><td>
+
 [GridProStatusBarLoadMoreConfig](./grid-pro.gridprostatusbarloadmoreconfig.md)
 
 
@@ -910,6 +1039,28 @@ Configuration options for reload status bar component
 </td></tr>
 <tr><td>
 
+[InitializeEventDetail](./grid-pro.initializeeventdetail.md)
+
+
+</td><td>
+
+Event detail for datasource initialization
+
+
+</td></tr>
+<tr><td>
+
+[MoreDataAvailableEventDetail](./grid-pro.moredataavailableeventdetail.md)
+
+
+</td><td>
+
+Event detail for more data availability
+
+
+</td></tr>
+<tr><td>
+
 [MultiselectEditorParams](./grid-pro.multiselecteditorparams.md)
 
 
@@ -927,6 +1078,17 @@ Parameters used to configure [MultiselectEditor](./grid-pro.multiselecteditor.md
 </td><td>
 
 Parameters used to configure [NumberEditor](./grid-pro.numbereditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[SchemaUpdatedEventDetail](./grid-pro.schemaupdatedeventdetail.md)
+
+
+</td><td>
+
+Event detail for schema updates
 
 
 </td></tr>
@@ -960,6 +1122,17 @@ Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md)
 </td><td>
 
 The interface for each select renderer option
+
+
+</td></tr>
+<tr><td>
+
+[SizeChangedEventDetail](./grid-pro.sizechangedeventdetail.md)
+
+
+</td><td>
+
+Event detail for size changes
 
 
 </td></tr>
@@ -1233,6 +1406,17 @@ AG Material Theme (no fonts) CSS.
 </td></tr>
 <tr><td>
 
+[baseDatasourceEventNames](./grid-pro.basedatasourceeventnames.md)
+
+
+</td><td>
+
+Base datasource error event names.
+
+
+</td></tr>
+<tr><td>
+
 [CellTemplate](./grid-pro.celltemplate.md)
 
 
@@ -1283,6 +1467,17 @@ The join for the criteria string.
 </td><td>
 
 Allows secure export of CSV https://owasp.org/www-community/attacks/CSV\_Injection
+
+
+</td></tr>
+<tr><td>
+
+[datasourceEventNames](./grid-pro.datasourceeventnames.md)
+
+
+</td><td>
+
+Event names for datasource-grid communication These represent datasource operations, not grid-specific actions
 
 
 </td></tr>
@@ -1349,6 +1544,15 @@ Key used to store currently edited column when it being synced with server side 
 </td><td>
 
 Key used to store error details (column, message) when inline edit fails sync with server side data
+
+
+</td></tr>
+<tr><td>
+
+[errorHandlerDialogStyles](./grid-pro.errorhandlerdialogstyles.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -1508,12 +1712,45 @@ Type for mapping of a [AgGridTheme](./grid-pro.aggridtheme.md) to a font face.
 </td></tr>
 <tr><td>
 
+[BaseDatasourceErrorEvent](./grid-pro.basedatasourceerrorevent.md)
+
+
+</td><td>
+
+Base datasource error event.
+
+
+</td></tr>
+<tr><td>
+
+[BaseDatasourceErrorEventDetail](./grid-pro.basedatasourceerroreventdetail.md)
+
+
+</td><td>
+
+Base datasource error event detail.
+
+
+</td></tr>
+<tr><td>
+
 [BooleanRendererParams](./grid-pro.booleanrendererparams.md)
 
 
 </td><td>
 
 Parameters for the [GridPro](./grid-pro.gridpro.md) boolean renderer.
+
+
+</td></tr>
+<tr><td>
+
+[DatasourceEventDetail](./grid-pro.datasourceeventdetail.md)
+
+
+</td><td>
+
+Union type for all datasource event details
 
 
 </td></tr>
@@ -1651,12 +1888,34 @@ The Genesis Datasource event payload types.
 </td></tr>
 <tr><td>
 
+[PagingMode](./grid-pro.pagingmode.md)
+
+
+</td><td>
+
+Available paging modes for server-side datasources
+
+
+</td></tr>
+<tr><td>
+
 [ReloadStatusBarParams](./grid-pro.reloadstatusbarparams.md)
 
 
 </td><td>
 
 The parameters for the reload status bar component.
+
+
+</td></tr>
+<tr><td>
+
+[ServerSideDatasourceOptions](./grid-pro.serversidedatasourceoptions.md)
+
+
+</td><td>
+
+**_(ALPHA)_** Type definition for configuration options used for streams.
 
 
 </td></tr>

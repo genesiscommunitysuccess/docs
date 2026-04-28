@@ -9,7 +9,7 @@ format: md
 
 Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.
 
-Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`<!-- -->, must be explicitly set by the user separately.
+Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`, must be explicitly set by the user separately.
 
 **Signature:**
 

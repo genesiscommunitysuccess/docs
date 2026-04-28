@@ -75,6 +75,54 @@ Top level web component which is used to initialise a custom layout
 </td></tr>
 </tbody></table>
 
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[getFactory(key)](./foundation-layout.getfactory.md)
+
+
+</td><td>
+
+Retrieves a factory function by its key.
+
+
+</td></tr>
+<tr><td>
+
+[registerFactory(key, factory)](./foundation-layout.registerfactory.md)
+
+
+</td><td>
+
+Registers a factory function with a unique key. This allows framework components to be used in the declarative layout API without needing to pass function references through HTML attributes.
+
+
+</td></tr>
+<tr><td>
+
+[unregisterFactory(key)](./foundation-layout.unregisterfactory.md)
+
+
+</td><td>
+
+Removes a factory from the registry. This is useful for cleanup when a component is unmounted or no longer needed.
+
+
+</td></tr>
+</tbody></table>
+
 ## Interfaces
 
 <table><thead><tr><th>
@@ -235,6 +283,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[ComponentFactory](./foundation-layout.componentfactory.md)
+
+
+</td><td>
+
+Factory function for creating component instances in the layout.
+
+
+</td></tr>
+<tr><td>
 
 [CustomButton](./foundation-layout.custombutton.md)
 

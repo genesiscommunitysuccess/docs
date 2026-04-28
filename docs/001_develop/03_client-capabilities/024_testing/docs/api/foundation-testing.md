@@ -301,7 +301,7 @@ Filters out all key/value pairs which are not functions, and omits the construct
 
 </td><td>
 
-Defines the Generic type for a test Suite `T` the callback function required to assert on type `T`<!-- -->.
+Defines the Generic type for a test Suite `T` the callback function required to assert on type `T`.
 
 
 </td></tr>

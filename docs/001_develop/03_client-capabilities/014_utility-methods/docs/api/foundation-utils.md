@@ -37,7 +37,56 @@ Description
 
 </td><td>
 
-The default `ServerRowDTOMapper`<!-- -->.
+The default `ServerRowDTOMapper`.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultShortcutManager](./foundation-utils.defaultshortcutmanager.md)
+
+
+</td><td>
+
+Default implementation of the ShortcutManager interface
+
+
+</td></tr>
+<tr><td>
+
+[FoundationShortcutListener](./foundation-utils.foundationshortcutlistener.md)
+
+
+</td><td>
+
+A custom element that listens for keyboard shortcuts.
+
+
+</td></tr>
+<tr><td>
+
+[InactivityDialog](./foundation-utils.inactivitydialog.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[InactivityManager](./foundation-utils.inactivitymanager.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[InactivityService](./foundation-utils.inactivityservice.md)
+
+
+</td><td>
 
 
 </td></tr>
@@ -149,6 +198,19 @@ assureDesignSystem.
 </td></tr>
 <tr><td>
 
+[avoidTreeShaking(classes)](./foundation-utils.avoidtreeshaking.md)
+
+
+</td><td>
+
+Explicitly prevents tree-shaking of custom element classes by referencing them.
+
+Bundlers may incorrectly remove code that it thinks has no side effects, such as custom element definitions that are only referenced in templates. By passing these classes to `avoidTreeShaking`, we create a side effect that signals to the bundler to preserve the code.
+
+
+</td></tr>
+<tr><td>
+
 [createErrorMap(logger)](./foundation-utils.createerrormap.md)
 
 
@@ -210,6 +272,17 @@ Decodes a value from base64.
 </td><td>
 
 Decodes a value from base64 with a prefix.
+
+
+</td></tr>
+<tr><td>
+
+[deepMerge(target, source)](./foundation-utils.deepmerge.md)
+
+
+</td><td>
+
+Deep merges two objects, with source values taking precedence over target values. Arrays are replaced (not merged), and null/undefined values in source are preserved.
 
 
 </td></tr>
@@ -287,6 +360,28 @@ Formats \[DATETIME\] UNIX Timestamps (with time and milliseconds) to readable st
 </td><td>
 
 Formats \[DATE\|DATETIME\] Unix Timestamps to readable strings
+
+
+</td></tr>
+<tr><td>
+
+[getAllElements(root)](./foundation-utils.getallelements.md)
+
+
+</td><td>
+
+Recursively gather all elements including those in shadow DOM
+
+
+</td></tr>
+<tr><td>
+
+[getCurrentDesignSystem(element, fallbackPrefix)](./foundation-utils.getcurrentdesignsystem.md)
+
+
+</td><td>
+
+Get the current design system provider element and prefix by checking available providers. If no provider is found, falls back to the provided prefix.
 
 
 </td></tr>
@@ -389,6 +484,15 @@ Determines if the current environment is a development environment.
 </td></tr>
 <tr><td>
 
+[isFeatureActivated(feature)](./foundation-utils.isfeatureactivated.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [JSONReplacer(key, value)](./foundation-utils.jsonreplacer.md)
 
 
@@ -451,7 +555,20 @@ Takes in a valid response from `connect.getJsonSchema(resourceName)` and maps it
 
 Maps fields contained in a JSON schema block enhanced with genesisType metadata to the field shape required by the expression builder component.
 
-Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`<!-- -->, must be explicitly set by the user separately.
+Only sets the properties that are \*required\*. Optional properties, such as `defaultValue`, must be explicitly set by the user separately.
+
+
+</td></tr>
+<tr><td>
+
+[noop(fn)](./foundation-utils.noop.md)
+
+
+</td><td>
+
+A no-operation function that executes an optional callback.
+
+This is a lower-level utility function. For preventing tree-shaking of custom elements, prefer using [avoidTreeShaking()](./foundation-utils.avoidtreeshaking.md) which provides a more explicit API.
 
 
 </td></tr>
@@ -635,6 +752,42 @@ DesignSystemModule.
 </td></tr>
 <tr><td>
 
+[InactivityConfig](./foundation-utils.inactivityconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[InactivityDialogOptions](./foundation-utils.inactivitydialogoptions.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[InactivityEvents](./foundation-utils.inactivityevents.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[InactivityManagerConfig](./foundation-utils.inactivitymanagerconfig.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [JSONSerializer](./foundation-utils.jsonserializer.md)
 
 
@@ -707,6 +860,39 @@ Represents an event observer that manages the subscription and publication of ev
 </td><td>
 
 A mapper for converting between server row DTOs and entities. Provides methods to get/set a ServerRow DTO entity mapping.
+
+
+</td></tr>
+<tr><td>
+
+[ShortcutDefinition](./foundation-utils.shortcutdefinition.md)
+
+
+</td><td>
+
+A definition of a keyboard shortcut
+
+
+</td></tr>
+<tr><td>
+
+[ShortcutManager](./foundation-utils.shortcutmanager.md)
+
+
+</td><td>
+
+Interface of a manager for keyboard shortcuts
+
+
+</td></tr>
+<tr><td>
+
+[ShortcutRegistrationResult](./foundation-utils.shortcutregistrationresult.md)
+
+
+</td><td>
+
+A result of registering a keyboard shortcut
 
 
 </td></tr>
@@ -796,6 +982,16 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ACCEPT\_TERMS\_URL](./foundation-utils.accept_terms_url.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
 [activeColorScheme](./foundation-utils.activecolorscheme.md)
 
 
@@ -844,7 +1040,7 @@ The builder aka file bundler.
 
 </td><td>
 
-The default Organisation value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+The default Organisation value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
 
 
 </td></tr>
@@ -855,7 +1051,7 @@ The default Organisation value, used in auth/login flow \[`genesislcap-foundatio
 
 </td><td>
 
-The default Password value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+The default Password value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
 
 
 </td></tr>
@@ -866,7 +1062,7 @@ The default Password value, used in auth/login flow \[`genesislcap-foundation-lo
 
 </td><td>
 
-The default Username value, used in auth/login flow \[`genesislcap-foundation-login`<!-- -->\](https://link-to-docs).
+The default Username value, used in auth/login flow \[`genesislcap-foundation-login`\](https://link-to-docs).
 
 
 </td></tr>
@@ -952,7 +1148,7 @@ Genesis Socket URL
 
 </td><td>
 
-Configuration settings for HTTP, used in http connect flow \[`genesislcap-foundation-comms.HttpConnectConfig`<!-- -->\](https://link-to-docs).
+Configuration settings for HTTP, used in http connect flow \[`genesislcap-foundation-comms.HttpConnectConfig`\](https://link-to-docs).
 
 
 </td></tr>
@@ -1091,6 +1287,17 @@ An object that defines two resource types: "local" and "remote".
 </td><td>
 
 A DI token used to obtain a `ServerRowDTOMapper` instance.
+
+
+</td></tr>
+<tr><td>
+
+[ShortcutManager](./foundation-utils.shortcutmanager.md)
+
+
+</td><td>
+
+A dependency injection token for the ShortcutManager interface.
 
 
 </td></tr>
@@ -1310,6 +1517,17 @@ The data for a server row DTO.
 </td><td>
 
 The data for a server row entity.
+
+
+</td></tr>
+<tr><td>
+
+[ShortcutExecutionStatus](./foundation-utils.shortcutexecutionstatus.md)
+
+
+</td><td>
+
+A type which represents the disabled status and tooltip of an item
 
 
 </td></tr>

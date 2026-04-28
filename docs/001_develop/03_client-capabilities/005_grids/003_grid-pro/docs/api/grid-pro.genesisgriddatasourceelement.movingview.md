@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.movingView property
 
+If true, when the maximum number of rows defined in max-view is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows.
+
 **Signature:**
 
 ```typescript
 movingView: boolean;
 ```
+
+## Remarks
+
+DATASERVER only. If false, the updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database. Defaults to false.
+

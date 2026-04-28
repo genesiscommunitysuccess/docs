@@ -17,6 +17,7 @@ export type ArrayRendererOptions = {
     addLabel?: string;
     deleteLabel?: string;
     border?: boolean;
+    canDelete?: (item: any) => boolean;
 };
 ```
 **References:** [UiSchema](./foundation-forms.uischema.md)

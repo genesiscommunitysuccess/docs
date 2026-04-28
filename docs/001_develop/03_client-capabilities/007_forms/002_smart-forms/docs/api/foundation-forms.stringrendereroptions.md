@@ -16,5 +16,6 @@ export type StringRendererOptions = {
     textTransform?: "none" | "uppercase" | "lowercase" | ((value: string) => string);
     isPassword?: boolean;
     textarea?: boolean;
+    autocomplete?: string;
 };
 ```

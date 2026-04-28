@@ -7,7 +7,7 @@ format: md
 
 ## mergeAndDedupColDefWithColumnState() function
 
-Merges two arrays, one of `ColDef` and one of `ColumnState`<!-- -->, and deduplicates them.
+Merges two arrays, one of `ColDef` and one of `ColumnState`, and deduplicates them.
 
 **Signature:**
 

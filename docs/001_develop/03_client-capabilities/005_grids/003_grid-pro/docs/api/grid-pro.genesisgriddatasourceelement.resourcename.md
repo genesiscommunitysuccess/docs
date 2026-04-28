@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.resourceName property
 
+The name of the target Data Server query or Request Server requestReply.
+
 **Signature:**
 
 ```typescript
 resourceName: string;
 ```
+
+## Remarks
+
+Required attribute.
+

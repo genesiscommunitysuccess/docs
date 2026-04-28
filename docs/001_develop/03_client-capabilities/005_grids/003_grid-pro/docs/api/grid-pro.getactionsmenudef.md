@@ -45,7 +45,7 @@ ActionMenuItem\[\]
 
 </td><td>
 
-Array of  to be displayed in the menu.
+Array of `ActionMenuItem` to be displayed in the menu.
 
 
 </td></tr>

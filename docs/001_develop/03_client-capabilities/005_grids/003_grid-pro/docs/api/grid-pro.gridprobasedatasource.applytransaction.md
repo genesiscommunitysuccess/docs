@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-protected applyTransaction(agTransaction: RowDataTransaction): any;
+protected applyTransaction(transaction: any): any;
 ```
 
 ## Parameters
@@ -33,12 +33,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-agTransaction
+transaction
 
 
 </td><td>
 
-RowDataTransaction
+any
 
 
 </td><td>

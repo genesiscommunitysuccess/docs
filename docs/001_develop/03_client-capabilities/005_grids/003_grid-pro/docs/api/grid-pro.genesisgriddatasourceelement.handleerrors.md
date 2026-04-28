@@ -56,7 +56,7 @@ type
 
 </td><td>
 
-BaseDatasourceErrorEventDetail\['type'\]
+[BaseDatasourceErrorEventDetail](./grid-pro.basedatasourceerroreventdetail.md)\['type'\]
 
 
 </td><td>

@@ -13,7 +13,7 @@ format: md
 ```typescript
 export declare class DefaultErrorMap<TErrorDetailMap extends ErrorDetailMap> implements ErrorMap<TErrorDetailMap> 
 ```
-**Implements:** [ErrorMap](./foundation-utils.errormap.md)<!-- -->&lt;TErrorDetailMap&gt;
+**Implements:** [ErrorMap](./foundation-utils.errormap.md)&lt;TErrorDetailMap&gt;
 
 ## Constructors
 

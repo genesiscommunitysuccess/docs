@@ -11,9 +11,9 @@ format: md
 **Signature:**
 
 ```typescript
-export declare class MainApplication extends FASTElement 
+export declare class MainApplication extends GenesisElement 
 ```
-**Extends:** FASTElement
+**Extends:** GenesisElement
 
 ## Properties
 

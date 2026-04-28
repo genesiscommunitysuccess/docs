@@ -19,6 +19,7 @@ export type _Operator = {
     applyTo: FieldTypes['type'][];
     optgroup?: string | null;
     type: string;
+    label?: string;
     tooltip?: string;
     valueType?: FieldTypes;
 };

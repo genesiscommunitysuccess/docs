@@ -24,5 +24,6 @@ export type StatusPillRendererParams = ICellRendererParams & {
     text?: string;
     dateCountdown?: number;
     dateCountdownCompletedMessage?: string;
+    dateCountdownUnit?: CountdownUnit;
 };
 ```

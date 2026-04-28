@@ -110,7 +110,7 @@ config
 
 </td><td>
 
-HttpConnectConfig
+[HttpConnectConfig](./foundation-comms.httpconnectconfig.md)
 
 
 </td><td>

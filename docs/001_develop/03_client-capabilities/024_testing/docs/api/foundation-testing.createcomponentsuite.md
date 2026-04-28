@@ -72,7 +72,7 @@ context
 
 </td><td>
 
-[ComponentContext](./foundation-testing.componentcontext.md)<!-- -->&lt;TElement&gt;
+[ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt;
 
 
 </td><td>
@@ -101,7 +101,7 @@ _(Optional)_ Optional array of DI container registrations
 
 **Returns:**
 
-uvu.Test&lt;[ComponentContext](./foundation-testing.componentcontext.md)<!-- -->&lt;TElement&gt;&gt;
+uvu.Test&lt;[ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt;&gt;
 
 The test suite
 

@@ -56,5 +56,5 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md)<!-- -->, any&gt;
+import("@microsoft/fast-element").ViewTemplate&lt;[AgTextFieldRenderer](./grid-pro.agtextfieldrenderer.md), any&gt;
 

@@ -56,7 +56,7 @@ formatterParams
 
 </td><td>
 
-[SelectFormatterParams](./grid-tabulator.selectformatterparams.md)<!-- -->&lt;T&gt;
+[SelectFormatterParams](./grid-tabulator.selectformatterparams.md)&lt;T&gt;
 
 
 </td><td>

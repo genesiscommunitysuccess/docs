@@ -19,3 +19,21 @@ registration: string;
 
 Items added via the JavaScript API and HTML API share the same pool of registration names. Using a duplicate registration name is a runtime error. This registration name defaults to the number of the window it is. It is highly recommended if you are using the JavaScript API that you set a registration name here manually.
 
+When using the declarative API with framework components, register a factory function via [registerFactory()](./foundation-layout.registerfactory.md) using the same name as this registration attribute.
+
+## Example
+
+
+```typescript
+import { registerFactory } from '@genesislcap/foundation-layout';
+import { reactFactory } from './utils/react-layout-factory';
+
+// Register factory with the same name as the registration
+registerFactory('my-component', reactFactory(MyComponent));
+```
+Then in JSX/HTML:
+
+```tsx
+<rapid-layout-item registration="my-component" title="My Component" />
+```
+

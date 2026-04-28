@@ -12,9 +12,9 @@ Foundation filters component for automatically generated filters based on json s
 **Signature:**
 
 ```typescript
-export declare class Filters extends FoundationElement 
+export declare class Filters extends Filters_base 
 ```
-**Extends:** FoundationElement
+**Extends:** Filters\_base
 
 ## Properties
 

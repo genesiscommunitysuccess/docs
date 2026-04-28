@@ -12,23 +12,23 @@ format: md
 
 Parameters for the action formatter.
 
-`actionClick`<!-- -->: Callback function triggered when the action button is clicked.
+`actionClick`: Callback function triggered when the action button is clicked.
 
-`actionName`<!-- -->: The name or label of the action button.
+`actionName`: The name or label of the action button.
 
-`appearance`<!-- -->: The appearance style of the action button.
+`appearance`: The appearance style of the action button.
 
-`dataTestId`<!-- -->: The data-test-id attribute value to be used for E2E testing.
+`dataTestId`: The data-test-id attribute value to be used for E2E testing.
 
-`isDisabled`<!-- -->: Function to determine whether the action button should be disabled for a specific row.
+`isDisabled`: Function to determine whether the action button should be disabled for a specific row.
 
-`uniqueFieldName`<!-- -->: A unique field name used to identify the action button for E2E testing.
+`uniqueFieldName`: A unique field name used to identify the action button for E2E testing.
 
-`prefix`<!-- -->: The prefix to use for the button element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
+`prefix`: The prefix to use for the button element, e.g., 'foundation', 'zero', 'rapid'. Defaults to 'foundation' if not specified.
 
-`actionButtonStyle`<!-- -->: Optional styling for the action button.
+`actionButtonStyle`: Optional styling for the action button.
 
-`contentTemplate`<!-- -->: Used to render some arbitrary content inside the action button.
+`contentTemplate`: Used to render some arbitrary content inside the action button.
 
 **Signature:**
 

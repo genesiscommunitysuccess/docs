@@ -95,6 +95,18 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[deleteColumnState(persistColumnStateKey)](./grid-pro.kvstoragestatepersistence.deletecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [getColumnState(persistColumnStateKey)](./grid-pro.kvstoragestatepersistence.getcolumnstate.md)
 
 

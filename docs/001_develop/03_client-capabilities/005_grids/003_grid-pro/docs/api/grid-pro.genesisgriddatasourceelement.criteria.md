@@ -7,6 +7,8 @@ format: md
 
 ## GenesisGridDatasourceElement.criteria property
 
+Groovy expression to perform filters on the query server; these remain active for the life of the subscription.
+
 **Signature:**
 
 ```typescript

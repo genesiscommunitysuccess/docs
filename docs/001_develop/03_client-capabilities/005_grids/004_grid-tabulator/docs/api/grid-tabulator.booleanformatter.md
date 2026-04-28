@@ -56,7 +56,7 @@ formatterParams
 
 </td><td>
 
-[BooleanFormatterParams](./grid-tabulator.booleanformatterparams.md)<!-- -->&lt;T&gt;
+[BooleanFormatterParams](./grid-tabulator.booleanformatterparams.md)&lt;T&gt;
 
 
 </td><td>

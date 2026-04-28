@@ -14,7 +14,7 @@ Component suite context interface
 ```typescript
 export interface ComponentContext<TElement = HTMLElement> extends Pick<Fixture<TElement>, 'element' | 'disconnect'> 
 ```
-**Extends:** Pick&lt;[Fixture](./foundation-testing.fixture.md)<!-- -->&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
+**Extends:** Pick&lt;[Fixture](./foundation-testing.fixture.md)&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
 
 ## Properties
 

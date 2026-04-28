@@ -89,6 +89,20 @@ reload
 
 
 </td></tr>
+<tr><td>
+
+rowCount
+
+
+</td><td>
+
+`"rowCount"`
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 
 ## Remarks

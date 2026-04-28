@@ -61,9 +61,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [SelectRenderer](./grid-pro.selectrenderer.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [SelectRenderer](./grid-pro.selectrenderer.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-select-renderer<!-- -->&gt;
+HTML Element: &lt;foundation-select-renderer&gt;
 

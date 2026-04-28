@@ -29,15 +29,127 @@ export declare class ExpressionBuilder extends GenesisElement implements Metadat
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [config](./expression-builder.expressionbuilder.config.md) |  | Config | <p>**_(BETA)_** config - <code>Types.Config</code> the configuration which is required to be set for the expression builder. All properties are defined under this single object to enforce that they're kept in sync with one another.</p><p>If you want to set the expression of the expression builder you should do it via the <code>model</code> property on this object.</p><p>If you're using a child class of this component with a specific model implementation you likely \*don't\* want to set this property directly. See example 3.</p> |
-|  [model](./expression-builder.expressionbuilder.model.md) |  | ModelGroup \| null | <p>**_(BETA)_** model - <code>Types.Group</code> the current model which completely describes the state of the component.</p><p>\*IMPORTANT\* you should not set this yourself via this property directly, you should always set it via the model property on the [ExpressionBuilder.config](./expression-builder.expressionbuilder.config.md) block.</p><p>You may want to read from this variable to get the most up to date state, for example if you create a child component which has a model which isn't valid for every single state (e.g. requires a complete rule) you can check this underlying model to verify what field or operator is selected.</p> |
-|  [styles?](./expression-builder.expressionbuilder.styles.md) |  | [Styles](./expression-builder.types.styles.md) | **_(BETA)_** _(Optional)_ styles - <code>Types.Styles</code> optional configuration which allows you to set custom element tag names to be used, as well as custom css to be inserted into the shadow DOM. |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[config](./expression-builder.expressionbuilder.config.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Config
+
+
+</td><td>
+
+**_(BETA)_** config - `Types.Config` the configuration which is required to be set for the expression builder. All properties are defined under this single object to enforce that they're kept in sync with one another.
+
+If you want to set the expression of the expression builder you should do it via the `model` property on this object.
+
+If you're using a child class of this component with a specific model implementation you likely \*don't\* want to set this property directly. See example 3.
+
+
+</td></tr>
+<tr><td>
+
+[model](./expression-builder.expressionbuilder.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ModelGroup \| null
+
+
+</td><td>
+
+**_(BETA)_** model - `Types.Group` the current model which completely describes the state of the component.
+
+\*IMPORTANT\* you should not set this yourself via this property directly, you should always set it via the model property on the [ExpressionBuilder.config](./expression-builder.expressionbuilder.config.md) block.
+
+You may want to read from this variable to get the most up to date state, for example if you create a child component which has a model which isn't valid for every single state (e.g. requires a complete rule) you can check this underlying model to verify what field or operator is selected.
+
+
+</td></tr>
+<tr><td>
+
+[styles?](./expression-builder.expressionbuilder.styles.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[Styles](./expression-builder.types.styles.md)
+
+
+</td><td>
+
+**_(BETA)_** _(Optional)_ styles - `Types.Styles` optional configuration which allows you to set custom element tag names to be used, as well as custom css to be inserted into the shadow DOM.
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [dispatchChangeEvent(group)](./expression-builder.expressionbuilder.dispatchchangeevent.md) | <code>protected</code> | **_(BETA)_** Dispatches the provided model to the DOM. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[dispatchChangeEvent(group)](./expression-builder.expressionbuilder.dispatchchangeevent.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+**_(BETA)_** Dispatches the provided model to the DOM.
+
+
+</td></tr>
+</tbody></table>
 

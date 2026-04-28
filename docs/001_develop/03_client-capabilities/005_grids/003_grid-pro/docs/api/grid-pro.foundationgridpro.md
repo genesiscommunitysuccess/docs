@@ -16,12 +16,12 @@ foundationGridPro: (overrideDefinition?: import("@microsoft/fast-foundation").Ov
     shadowOptions: any;
     baseName: string;
     styles: import("@microsoft/fast-element").ElementStyles;
-    template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    template: ViewTemplate<any, any>;
 }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     shadowOptions: any;
     baseName: string;
     styles: import("@microsoft/fast-element").ElementStyles;
-    template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    template: ViewTemplate<any, any>;
 }, typeof GridPro>
 ```
 
@@ -50,7 +50,7 @@ overrideDefinition
 
 </td><td>
 
-import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }&gt;
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: ViewTemplate&lt;any, any&gt;; }&gt;
 
 
 </td><td>
@@ -63,9 +63,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [GridPro](./grid-pro.gridpro.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ shadowOptions: any; baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: ViewTemplate&lt;any, any&gt;; }, typeof [GridPro](./grid-pro.gridpro.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-grid-pro<!-- -->&gt;
+HTML Element: &lt;foundation-grid-pro&gt;
 

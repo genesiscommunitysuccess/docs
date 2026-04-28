@@ -167,6 +167,25 @@ _(Optional)_
 </td></tr>
 <tr><td>
 
+[setApprovalMessage?](./foundation-entity-management.customaction.setapprovalmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
 [tooltip?](./foundation-entity-management.customaction.tooltip.md)
 
 

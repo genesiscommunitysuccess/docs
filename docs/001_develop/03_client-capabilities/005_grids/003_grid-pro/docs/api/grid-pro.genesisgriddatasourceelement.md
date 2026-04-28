@@ -41,27 +41,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[agGrid](./grid-pro.genesisgriddatasourceelement.aggrid.md)
-
-
-</td><td>
-
-`protected`
-
-`readonly`
-
-
-</td><td>
-
-[GridPro](./grid-pro.gridpro.md) \| null
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
 [connect](./grid-pro.genesisgriddatasourceelement.connect.md)
 
 
@@ -91,6 +70,8 @@ string
 
 
 </td><td>
+
+Groovy expression to perform filters on the query server; these remain active for the life of the subscription.
 
 
 </td></tr>
@@ -200,6 +181,8 @@ boolean
 
 </td><td>
 
+Disables polling if set to true (data updates for the grid will not be fetched automatically).
+
 
 </td></tr>
 <tr><td>
@@ -216,6 +199,8 @@ string
 
 
 </td><td>
+
+Optional parameter that allows you to select a subset of fields from the query if the client is not interested in receiving all of them.
 
 
 </td></tr>
@@ -253,6 +238,8 @@ boolean
 
 </td><td>
 
+Request a snapshot from the server.
+
 
 </td></tr>
 <tr><td>
@@ -269,6 +256,8 @@ number
 
 
 </td><td>
+
+Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE\_ROWS messages.
 
 
 </td></tr>
@@ -287,6 +276,8 @@ number
 
 </td><td>
 
+Maximum number of rows to track as part of a client "view".
+
 
 </td></tr>
 <tr><td>
@@ -303,6 +294,27 @@ boolean
 
 
 </td><td>
+
+If true, when the maximum number of rows defined in max-view is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows.
+
+
+</td></tr>
+<tr><td>
+
+[offset](./grid-pro.genesisgriddatasourceelement.offset.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+The offset for pagination in REQUEST\_SERVER scenarios.
 
 
 </td></tr>
@@ -321,6 +333,8 @@ string
 
 </td><td>
 
+Option to select a Data Server index (defined in the Data Server query), which is especially useful if you want the data to be sorted in a specific way.
+
 
 </td></tr>
 <tr><td>
@@ -337,6 +351,8 @@ number
 
 
 </td><td>
+
+Custom polling frequency (in milliseconds) for a Request Server resource.
 
 
 </td></tr>
@@ -355,6 +371,8 @@ string\[\]
 
 </td><td>
 
+Array of event names that will trigger a poll when received as commit responses.
+
 
 </td></tr>
 <tr><td>
@@ -371,6 +389,8 @@ any
 
 
 </td><td>
+
+Similar to fields but for Request Server scenarios. This optional parameter enables you to specify request fields, which can include wildcards.
 
 
 </td></tr>
@@ -408,6 +428,8 @@ string
 
 </td><td>
 
+The name of the target Data Server query or Request Server requestReply.
+
 
 </td></tr>
 <tr><td>
@@ -443,6 +465,8 @@ boolean
 
 
 </td><td>
+
+Option that changes the Data Server index iteration.
 
 
 </td></tr>
@@ -519,6 +543,8 @@ number
 
 
 </td><td>
+
+The desired view/page you want data from.
 
 
 </td></tr>

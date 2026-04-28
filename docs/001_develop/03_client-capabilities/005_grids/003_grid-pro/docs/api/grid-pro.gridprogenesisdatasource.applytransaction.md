@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-applyTransaction(agTransaction: RowDataTransaction): RowNodeTransaction | null | undefined;
+applyTransaction(transaction: any): void;
 ```
 
 ## Parameters
@@ -33,12 +33,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-agTransaction
+transaction
 
 
 </td><td>
 
-RowDataTransaction
+any
 
 
 </td><td>
@@ -49,5 +49,5 @@ RowDataTransaction
 
 **Returns:**
 
-RowNodeTransaction \| null \| undefined
+void
 

@@ -94,6 +94,24 @@ Description
 </td></tr>
 <tr><td>
 
+[availableCriteriaFields](./foundation-comms.defaultdatasource.availablecriteriafields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
 [availableIndexes](./foundation-comms.defaultdatasource.availableindexes.md)
 
 
@@ -103,6 +121,24 @@ Description
 </td><td>
 
 [IndexDetail](./foundation-comms.indexdetail.md)\[\]
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[availableSortableFields](./foundation-comms.defaultdatasource.availablesortablefields.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string\[\]
 
 
 </td><td>

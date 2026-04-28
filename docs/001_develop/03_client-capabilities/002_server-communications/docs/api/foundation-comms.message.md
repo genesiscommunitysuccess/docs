@@ -26,6 +26,7 @@ export type Message<T = void | any> = {
     REFRESH_AUTH_TOKEN?: string;
     ROW?: any[];
     ROWS_COUNT?: number;
+    REQUEST?: Record<string, any>;
     SEQUENCE_ID?: number;
     SERVICE_NAME?: string;
     SESSION_AUTH_TOKEN?: string;

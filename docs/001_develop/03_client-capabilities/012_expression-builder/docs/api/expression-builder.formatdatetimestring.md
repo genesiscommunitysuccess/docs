@@ -5,12 +5,12 @@ format: md
 
 [Home](./index.md) &gt; [@genesislcap/expression-builder](./expression-builder.md) &gt; [formatDateTimeString](./expression-builder.formatdatetimestring.md)
 
-## formatDateTimeString variable
+## formatDateTimeString() function
 
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-Gets the string representation from a `Date` which is the format a `datetime-local` input uses. `yyyy-mm-ddThh:mm:ss`<!-- -->. Uses UTC methods to ensure consistent output regardless of timezone.
+Gets the string representation from a `Date` which is the format a `datetime-local` input uses. `yyyy-mm-ddThh:mm:ss`. Uses UTC methods to ensure consistent output regardless of timezone.
 
 Used to convert a javascript date object into the required string format expected by the expression builder.
 
@@ -19,3 +19,42 @@ Used to convert a javascript date object into the required string format expecte
 ```typescript
 formatDateTimeString: (date: Date) => string
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+date
+
+
+</td><td>
+
+Date
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
+
+string
+

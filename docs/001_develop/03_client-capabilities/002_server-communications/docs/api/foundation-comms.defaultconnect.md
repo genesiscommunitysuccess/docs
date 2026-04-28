@@ -253,7 +253,7 @@ Description
 </td></tr>
 <tr><td>
 
-[getAvailableResources(params)](./foundation-comms.defaultconnect.getavailableresources.md)
+[getAvailableResources(params, useCache)](./foundation-comms.defaultconnect.getavailableresources.md)
 
 
 </td><td>

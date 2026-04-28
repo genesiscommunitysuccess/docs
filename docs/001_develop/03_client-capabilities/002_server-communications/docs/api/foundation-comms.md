@@ -399,6 +399,17 @@ Types of Genesis resources.
 </td></tr>
 <tr><td>
 
+[SessionRefreshResult](./foundation-comms.sessionrefreshresult.md)
+
+
+</td><td>
+
+Result of a session refresh attempt.
+
+
+</td></tr>
+<tr><td>
+
 [SocketReconnectStrategy](./foundation-comms.socketreconnectstrategy.md)
 
 
@@ -590,6 +601,17 @@ Normalise criteria.
 </td></tr>
 <tr><td>
 
+[onOtherTabReauthComplete(callback)](./foundation-comms.onothertabreauthcomplete.md)
+
+
+</td><td>
+
+Subscribes to storage events to detect when another tab has finished reauthenticating.
+
+
+</td></tr>
+<tr><td>
+
 [retryInterval(reconnectOptions, scheduler)](./foundation-comms.retryinterval.md)
 
 
@@ -607,6 +629,17 @@ Generate reconnect interval based on scheduler
 </td><td>
 
 Converts the field definitions to field metadata.
+
+
+</td></tr>
+<tr><td>
+
+[tryRefreshSession(options)](./foundation-comms.tryrefreshsession.md)
+
+
+</td><td>
+
+Attempts to refresh the session when authentication has expired. Uses a localStorage-based lock mechanism to prevent multiple tabs from trying to reauthenticate simultaneously.
 
 
 </td></tr>
@@ -869,6 +902,39 @@ An interface representing an HTTP client that can make GET and POST requests and
 </td></tr>
 <tr><td>
 
+[HttpConnectConfig](./foundation-comms.httpconnectconfig.md)
+
+
+</td><td>
+
+Configuration options for the Connect (HTTP) instance.
+
+
+</td></tr>
+<tr><td>
+
+[HttpError](./foundation-comms.httperror.md)
+
+
+</td><td>
+
+An error thrown when an HTTP request fails with a non-2xx status code.
+
+
+</td></tr>
+<tr><td>
+
+[HttpPollingConfig](./foundation-comms.httppollingconfig.md)
+
+
+</td><td>
+
+Configuration options for http connection.
+
+
+</td></tr>
+<tr><td>
+
 [HttpRequestInit](./foundation-comms.httprequestinit.md)
 
 
@@ -1007,6 +1073,28 @@ MonitoredResourceMetadata.
 </td><td>
 
 NetworkMonitorConfig DI interface.
+
+
+</td></tr>
+<tr><td>
+
+[PollingConfiguration](./foundation-comms.pollingconfiguration.md)
+
+
+</td><td>
+
+Configuration options for http polling.
+
+
+</td></tr>
+<tr><td>
+
+[ResourcesCache](./foundation-comms.resourcescache.md)
+
+
+</td><td>
+
+A resources cache definition
 
 
 </td></tr>
@@ -1232,6 +1320,17 @@ Default DatasourceConfig DI implementation.
 </td><td>
 
 Default GenesisResourcesConfig implementation.
+
+
+</td></tr>
+<tr><td>
+
+[defaultHttpConnectConfig](./foundation-comms.defaulthttpconnectconfig.md)
+
+
+</td><td>
+
+The default configuration for connecting to an HTTP service.
 
 
 </td></tr>
@@ -1706,7 +1805,7 @@ Error definition for a message result
 
 </td><td>
 
-Union type of MetadataCache and JsonSchemaCache
+Union type of MetadataCache, JsonSchemaCache and ResourcesCache
 
 
 </td></tr>

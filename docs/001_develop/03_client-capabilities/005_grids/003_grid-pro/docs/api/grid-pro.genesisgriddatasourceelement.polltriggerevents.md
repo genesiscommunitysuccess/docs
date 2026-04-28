@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.pollTriggerEvents property
 
+Array of event names that will trigger a poll when received as commit responses.
+
 **Signature:**
 
 ```typescript
 pollTriggerEvents: string[];
 ```
+
+## Remarks
+
+REQUEST\_SERVER only.
+

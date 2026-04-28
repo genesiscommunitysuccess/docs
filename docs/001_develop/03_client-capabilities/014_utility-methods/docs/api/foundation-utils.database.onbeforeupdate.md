@@ -38,7 +38,7 @@ listener
 
 </td><td>
 
-[Listener](./foundation-utils.listener.md)<!-- -->&lt;[DatabaseEvent.BeforeUpdate](./foundation-utils.databaseevent.beforeupdate.md)<!-- -->&lt;T&gt;&gt;
+[Listener](./foundation-utils.listener.md)&lt;[DatabaseEvent.BeforeUpdate](./foundation-utils.databaseevent.beforeupdate.md)&lt;T&gt;&gt;
 
 
 </td><td>

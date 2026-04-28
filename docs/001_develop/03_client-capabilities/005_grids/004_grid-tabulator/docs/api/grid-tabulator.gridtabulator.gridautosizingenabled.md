@@ -10,7 +10,7 @@ format: md
 > This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`<!-- -->.
+Boolean attribute to control whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key`.
 
 **Signature:**
 
