@@ -12,7 +12,7 @@ Handles the click event for a navigation button
 **Signature:**
 
 ```typescript
-handleNavButtonClick(routeNavItem: FoundationRouteNavItem): void;
+handleNavButtonClick(routeNavItem: FoundationRouteNavItem): Promise<void>;
 ```
 
 ## Parameters
@@ -53,5 +53,5 @@ The navigation item that was clicked
 
 **Returns:**
 
-void
+Promise&lt;void&gt;
 

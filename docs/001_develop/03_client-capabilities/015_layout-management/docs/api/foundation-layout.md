@@ -221,6 +221,17 @@ A collection of SVG icons in base64 format.
 </td></tr>
 <tr><td>
 
+[LAYOUT\_POPOUT\_CONTROL\_KEY](./foundation-layout.layout_popout_control_key.md)
+
+
+</td><td>
+
+**_(BETA)_** Key to be used for controlling popout behaviour
+
+
+</td></tr>
+<tr><td>
+
 [LayoutEmitEvents](./foundation-layout.layoutemitevents.md)
 
 
@@ -301,6 +312,17 @@ Factory function for creating component instances in the layout.
 </td><td>
 
 Definition of a custom button which will be added to all layout items.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutPopoutConfig](./foundation-layout.layoutpopoutconfig.md)
+
+
+</td><td>
+
+**_(BETA)_**
 
 
 </td></tr>

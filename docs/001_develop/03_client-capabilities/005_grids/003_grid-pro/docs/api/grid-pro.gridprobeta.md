@@ -21,7 +21,7 @@ export declare class GridProBeta extends GridProBeta_base
 
 ## Remarks
 
-Grid Pro is a Web Component wrapper around the AG Grid Community library.
+Re-emits AG Grid public API events when listeners are registered via `addEventListener` (event names match AG Grid public event strings). The same AG Grid events are also dispatched as native `Event`s with lowercased `type` and payload on `agGridDetails` (for example `addEventListener('columnresized', ...)`).
 
 ## Constructors
 

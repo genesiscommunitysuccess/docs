@@ -15,6 +15,9 @@ Versioned layout config objects. `v` is the version and `c` contains the layout 
 export type SerialisedLayout = {
     v: '1';
     c: ResolvedLayoutConfig;
+    popouts?: {
+        [layoutKey: string]: PopoutState;
+    };
 };
 ```
 

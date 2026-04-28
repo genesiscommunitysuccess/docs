@@ -55,6 +55,15 @@ NotificationBuilder to build NotificationStructure
 </td></tr>
 <tr><td>
 
+[NotifyContainer](./foundation-notifications.notifycontainer.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [SnackbarBuilder](./foundation-notifications.snackbarbuilder.md)
 
 
@@ -115,6 +124,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[configureNotifications(config)](./foundation-notifications.configurenotifications.md)
+
+
+</td><td>
+
+Configures a `notify-container` component used to opt-into new behaviours for toast notifications such as stacking You can have a `notify-container` in each of the four corners of the screen. If you call this function for a `ToastPosition` and it does not yet exist then this function will create one. If it already exists then this will override its config
+
+
+</td></tr>
+<tr><td>
 
 [getBannerAnchor(element)](./foundation-notifications.getbanneranchor.md)
 
@@ -301,6 +321,17 @@ Shows the notification toast
 
 
 </td></tr>
+<tr><td>
+
+[sortNotificationBySeverity(a, b)](./foundation-notifications.sortnotificationbyseverity.md)
+
+
+</td><td>
+
+A ready-made sort comparator for use with [NotifyContainerConfig.sortFn](./foundation-notifications.notifycontainerconfig.sortfn.md) that places the most severe notifications at the top of the stack. Severity is determined by the `notify` attribute on each toast element: `error` (highest) → `warning` → `success` → unstyled (lowest).
+
+
+</td></tr>
 </tbody></table>
 
 ## Interfaces
@@ -412,6 +443,15 @@ Interface for notify data
 </td><td>
 
 Interface for Notification Structure
+
+
+</td></tr>
+<tr><td>
+
+[NotifyContainerConfig](./foundation-notifications.notifycontainerconfig.md)
+
+
+</td><td>
 
 
 </td></tr>

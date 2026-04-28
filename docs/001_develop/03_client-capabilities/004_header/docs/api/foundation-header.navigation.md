@@ -335,6 +335,46 @@ boolean
 </td></tr>
 <tr><td>
 
+[onBeforeNavButtonClick?](./foundation-header.navigation.onbeforenavbuttonclick.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(detail: [NavButtonClickDetail](./foundation-header.navbuttonclickdetail.md)) =&gt; void \| Promise&lt;void&gt;
+
+
+</td><td>
+
+_(Optional)_ Callback invoked before navigation occurs when a nav button is clicked. Awaited before the route changes, so async cleanup is supported.
+
+
+</td></tr>
+<tr><td>
+
+[pathName](./foundation-header.navigation.pathname.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Current pathname for route highlighting
+
+
+</td></tr>
+<tr><td>
+
 [routeButtons](./foundation-header.navigation.routebuttons.md)
 
 
@@ -408,6 +448,25 @@ boolean
 </td><td>
 
 Boolean attribute which controls whether to show the account menu on the navigation bar Control via `show-account-menu`
+
+
+</td></tr>
+<tr><td>
+
+[showAiIndicator](./foundation-header.navigation.showaiindicator.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the AI indicator on the navigation bar Control via `show-ai-indicator`
 
 
 </td></tr>
@@ -576,7 +635,7 @@ string
 
 </td><td>
 
-Username of the logged in user
+Username of the logged in user Control via `user-name` attribute
 
 
 </td></tr>

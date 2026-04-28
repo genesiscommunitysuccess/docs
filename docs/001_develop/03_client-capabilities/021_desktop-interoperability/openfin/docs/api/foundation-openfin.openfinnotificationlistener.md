@@ -16,7 +16,7 @@ export declare class OpenfinNotificationListener extends NotificationListener
 
 ## Remarks
 
-Openfin Notifications custom element
+OpenFin Notifications custom element. Extends `NotificationListener` from `@genesislcap/foundation-ui` and routes Genesis notification rows to OpenFin Workspace `create`. Toast button tasks are delivered via OpenFin `addEventListener('notification-action', ...)` — this host does not define additional Genesis-style `CustomEvent` names beyond the base notification listener integration.
 
 ## Properties
 

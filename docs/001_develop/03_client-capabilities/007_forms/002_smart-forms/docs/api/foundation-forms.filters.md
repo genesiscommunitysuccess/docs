@@ -9,6 +9,8 @@ format: md
 
 Foundation filters component for automatically generated filters based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable filters elements using UI schema and set of custom renderers
 
+ change - Fired when built criteria (`value`) updates  submit - Fired when filter values are submitted
+
 **Signature:**
 
 ```typescript

@@ -13,12 +13,14 @@ Configuration options available for array renderer.
 
 ```typescript
 export type ArrayRendererOptions = {
-    childUiSchema?: UiSchema;
+    childUiSchema?: UiSchema | ChildUiSchemaResolver;
     addLabel?: string;
     deleteLabel?: string;
     border?: boolean;
     canDelete?: (item: any) => boolean;
+    canAdd?: boolean | ((array: any[]) => boolean);
+    gridView?: boolean;
 };
 ```
-**References:** [UiSchema](./foundation-forms.uischema.md)
+**References:** [UiSchema](./foundation-forms.uischema.md), [ChildUiSchemaResolver](./foundation-forms.childuischemaresolver.md)
 

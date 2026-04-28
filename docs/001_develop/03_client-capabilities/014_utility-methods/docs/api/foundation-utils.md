@@ -113,6 +113,17 @@ An in memory database of specific DatabaseRecord types.
 </td></tr>
 <tr><td>
 
+[RouteUtil](./foundation-utils.routeutil.md)
+
+
+</td><td>
+
+A singleton utility to observe and notify about route changes. It uses both polling and popstate events to detect changes.
+
+
+</td></tr>
+<tr><td>
+
 [SlottedStyles](./foundation-utils.slottedstyles.md)
 
 
@@ -1329,6 +1340,17 @@ The sub-path used for WebSocket connections when API\_HOST is not set
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[stringArrayConverter](./foundation-utils.stringarrayconverter.md)
+
+
+</td><td>
+
+A  that converts between comma-separated string attributes and `string | string[]` properties.
 
 
 </td></tr>

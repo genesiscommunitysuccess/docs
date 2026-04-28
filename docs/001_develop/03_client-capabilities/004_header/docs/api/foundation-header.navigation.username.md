@@ -7,10 +7,15 @@ format: md
 
 ## Navigation.userName property
 
-Username of the logged in user
+Username of the logged in user Control via `user-name` attribute
 
 **Signature:**
 
 ```typescript
 userName: string;
 ```
+
+## Remarks
+
+If not set via attribute, it will be initialized from the User service. Once set, the value will not be automatically updated by the User service.
+

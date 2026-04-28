@@ -12,5 +12,5 @@ The layouts and control types, which allow you to customize the arrangement of f
 **Signature:**
 
 ```typescript
-export type UiSchemaElementType = 'Control' | 'VerticalLayout' | 'LayoutVertical2Columns' | 'Categorization' | 'Group' | 'Stepper' | 'HorizontalLayout';
+export type UiSchemaElementType = 'Control' | 'VerticalLayout' | 'LayoutVertical2Columns' | 'FormGridLayout' | 'Categorization' | 'Group' | 'Stepper' | 'HorizontalLayout';
 ```

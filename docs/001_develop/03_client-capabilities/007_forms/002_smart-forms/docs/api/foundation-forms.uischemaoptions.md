@@ -12,7 +12,7 @@ All configuration options that are available.
 **Signature:**
 
 ```typescript
-export type UiSchemaOptions = StepperOrientationOptions | LabelPlacementOptions;
+export type UiSchemaOptions = StepperOrientationOptions | LabelPlacementOptions | CategorizationLayoutOptions;
 ```
-**References:** [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md), [LabelPlacementOptions](./foundation-forms.labelplacementoptions.md)
+**References:** [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md), [LabelPlacementOptions](./foundation-forms.labelplacementoptions.md), [CategorizationLayoutOptions](./foundation-forms.categorizationlayoutoptions.md)
 

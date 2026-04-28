@@ -7,10 +7,15 @@ format: md
 
 ## Form.additionalRenderers property
 
-Allows to provide set of additional renderers used by the form.
+Allows to provide a set of additional renderers used by the form.
 
 **Signature:**
 
 ```typescript
 additionalRenderers: RendererEntry[];
 ```
+
+## Remarks
+
+If you are writing a React renderer, use `createReactRenderer` from `@genesislcap/foundation-react-utils` to produce a `RendererEntry` — do not write a raw FAST `ViewTemplate` directly.
+

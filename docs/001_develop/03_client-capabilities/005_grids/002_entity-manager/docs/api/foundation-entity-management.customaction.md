@@ -93,6 +93,25 @@ _(Optional)_
 </td></tr>
 <tr><td>
 
+[disabled?](./foundation-entity-management.customaction.disabled.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(rowData: any) =&gt; boolean
+
+
+</td><td>
+
+_(Optional)_ Optional callback function to determine if the button should be disabled. Receives the selected entity (rowData) as a parameter. If provided, this takes precedence over `requiresSelection`.
+
+
+</td></tr>
+<tr><td>
+
 [icon?](./foundation-entity-management.customaction.icon.md)
 
 

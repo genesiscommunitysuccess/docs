@@ -151,10 +151,14 @@ async function updatePackageJson(newVersion) {
 
 async function clearProcessedMap() {
   console.log('Clearing processedMap to force reprocessing...');
-  
+
   const processedMapContent = generateProcessedMapContent(null);
-  
-  await fs.writeFile(path.resolve(PROCESSED_MAP_PATH), processedMapContent);
+  const resolvedPath = path.resolve(PROCESSED_MAP_PATH);
+
+  await fs.writeFile(resolvedPath, processedMapContent);
+  // Bust the require cache so later `require(PROCESSED_MAP_PATH)` calls in
+  // this process see the cleared file rather than the previously-cached map.
+  delete require.cache[resolvedPath];
   console.log('✓ processedMap cleared');
 }
 

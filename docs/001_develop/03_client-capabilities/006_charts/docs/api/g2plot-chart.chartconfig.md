@@ -12,5 +12,5 @@ G2Plot Chart Config
 **Signature:**
 
 ```typescript
-export type ChartConfig = LineOptions | AreaOptions | BarOptions | ColumnOptions | PieOptions | DualAxesOptions | RoseOptions | ScatterOptions | StockOptions | MixOptions;
+export type ChartConfig = OptionalData<LineOptions> | OptionalData<AreaOptions> | OptionalData<BarOptions> | OptionalData<ColumnOptions> | OptionalData<PieOptions> | OptionalData<DualAxesOptions> | OptionalData<RoseOptions> | OptionalData<ScatterOptions> | OptionalData<StockOptions> | OptionalData<MixOptions>;
 ```

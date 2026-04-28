@@ -13,6 +13,15 @@ The Grid Pro Components.
 
 ```typescript
 foundationGridComponents: {
+    foundationIconRenderer: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-renderers").IconRenderer, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./cell-renderers").IconRenderer, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }, typeof import("./cell-renderers").IconRenderer>;
     foundationGridProActionRenderer: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         styles: import("@microsoft/fast-element").ElementStyles;
@@ -74,17 +83,6 @@ foundationGridComponents: {
         styles: import("@microsoft/fast-element").ElementStyles;
         template: import("@microsoft/fast-element").ViewTemplate<any, any>;
     }, typeof import("./cell-renderers").SelectRenderer>;
-    foundationGridPro: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-        shadowOptions: any;
-        baseName: string;
-        styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
-    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-        shadowOptions: any;
-        baseName: string;
-        styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
-    }, typeof import("./grid-pro").GridPro>;
     foundationSelectEditor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         styles: import("@microsoft/fast-element").ElementStyles;
@@ -130,6 +128,15 @@ foundationGridComponents: {
         styles: import("@microsoft/fast-element").ElementStyles;
         template: import("@microsoft/fast-element").ViewTemplate<import("./cell-editors").StringEditor, any>;
     }, typeof import("./cell-editors").StringEditor>;
+    foundationMulticolumnDropdown: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./multicolumn-dropdown").MulticolumnDropdown, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        template: import("@microsoft/fast-element").ViewTemplate<import("./multicolumn-dropdown").MulticolumnDropdown, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+    }, typeof import("./multicolumn-dropdown").MulticolumnDropdown>;
     foundationStatusPillRenderer: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         template: import("@microsoft/fast-element").ViewTemplate<any, any>;
@@ -140,6 +147,17 @@ foundationGridComponents: {
         styles: import("@microsoft/fast-element").ElementStyles;
     }, typeof StatusPillRenderer>;
     StatusPillRenderer: typeof StatusPillRenderer;
+    foundationGridPro: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        shadowOptions: any;
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        shadowOptions: any;
+        baseName: string;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    }, typeof import("./grid-pro").GridPro>;
     register(container?: Container, ...rest: any[]): void;
 }
 ```

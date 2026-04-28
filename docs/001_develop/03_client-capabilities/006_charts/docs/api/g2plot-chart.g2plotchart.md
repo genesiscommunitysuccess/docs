@@ -18,6 +18,8 @@ export declare class G2PlotChart extends G2PlotChart_base
 
 ## Remarks
 
+Forwards G2Plot chart events using each event's native `type` string (see `chart.on('*', ...)`).
+
 The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `G2PlotChart` class.
 
 ## Properties

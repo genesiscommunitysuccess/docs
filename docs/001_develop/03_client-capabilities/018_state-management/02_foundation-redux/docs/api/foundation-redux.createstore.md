@@ -12,7 +12,7 @@ Creates a Redux store with FAST component integration.
 **Signature:**
 
 ```typescript
-createStore: <S extends SliceArray>(slices: S, preloadedState: RootStateFromSlices<S>) => StoreReturn<S>
+createStore: <S extends SliceArray>(slices: S, preloadedState: RootStateFromSlices<S>, options?: CreateStoreOptions) => StoreReturn<S>
 ```
 
 ## Parameters
@@ -62,6 +62,22 @@ preloadedState
 </td><td>
 
 Initial state that matches the slice structure
+
+
+</td></tr>
+<tr><td>
+
+options
+
+
+</td><td>
+
+[CreateStoreOptions](./foundation-redux.createstoreoptions.md)
+
+
+</td><td>
+
+_(Optional)_ Optional configuration (e.g. `{ devTools: false }`)
 
 
 </td></tr>

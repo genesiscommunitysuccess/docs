@@ -12,7 +12,7 @@ Emit events to the stores directly via the standard event flow.
 **Signature:**
 
 ```typescript
-protected emit<K extends keyof (TEventDetailMap & TInternalEventDetailMap) & string>(...args: (TEventDetailMap & TInternalEventDetailMap)[K] extends void ? [key: K] : [key: K, detail: (TEventDetailMap & TInternalEventDetailMap)[K]]): void;
+protected emit<K extends keyof (TEventDetailMap & TInternalEventDetailMap) & string>(...args: (TEventDetailMap & TInternalEventDetailMap)[K] extends void ? [key: K, options?: EmitOptions] : [key: K, detail: (TEventDetailMap & TInternalEventDetailMap)[K], options?: EmitOptions]): void;
 ```
 
 ## Parameters
@@ -40,7 +40,7 @@ args
 
 </td><td>
 
-(TEventDetailMap &amp; TInternalEventDetailMap)\[K\] extends void ? \[key: K\] : \[key: K, detail: (TEventDetailMap &amp; TInternalEventDetailMap)\[K\]\]
+(TEventDetailMap &amp; TInternalEventDetailMap)\[K\] extends void ? \[key: K, options?: EmitOptions\] : \[key: K, detail: (TEventDetailMap &amp; TInternalEventDetailMap)\[K\], options?: EmitOptions\]
 
 
 </td><td>
