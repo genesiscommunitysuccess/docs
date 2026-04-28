@@ -209,12 +209,12 @@ Function which is used to generate the placeholder text when a layout is loaded 
 
 </td><td>
 
-string \| undefined
+[LayoutPopoutConfig](./foundation-layout.layoutpopoutconfig.md) \| undefined
 
 
 </td><td>
 
-**_(BETA)_** Controls whether popout functionality is enabled on the layout. Defaults to disabled. Set this attribute to any string to enable popout functionality. If this string is of format `number;number` then this will be interpreted as the width and height of the popout window.
+**_(BETA)_** Controls whether popout functionality is enabled on the layout. Defaults to disabled. Pass an empty object `{}` to use default configurations, or a [LayoutPopoutConfig](./foundation-layout.layoutpopoutconfig.md) object to further customise.
 
 
 </td></tr>

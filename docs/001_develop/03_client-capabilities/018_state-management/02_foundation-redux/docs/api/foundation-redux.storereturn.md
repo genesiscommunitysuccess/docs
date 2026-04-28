@@ -18,10 +18,10 @@ export type StoreReturn<S extends SliceArray> = {
     actions: ActionsFromSlices<S>;
     selectors: SelectorsFromSlices<S>;
     rootReducer: ReducersMapObject<RootStateFromSlices<S>>;
-    subscribeKey: (checkerFn: (s: RootStateFromSlices<S>) => string, callbackFn: (s: RootStateFromSlices<S>) => void) => void;
+    subscribeKey: (checkerFn: (s: RootStateFromSlices<S>) => string, callbackFn: (s: RootStateFromSlices<S>) => void) => () => void;
     dispatch: (action: Action | ThunkDispatch<S>) => void;
     notify: (sliceName: keyof RootStateFromSlices<S>) => void;
-    subscribe: (cb: (state: RootStateFromSlices<S>) => void) => void;
+    subscribe: (cb: (state: RootStateFromSlices<S>) => void) => () => void;
     getState: () => RootStateFromSlices<S>;
 };
 ```

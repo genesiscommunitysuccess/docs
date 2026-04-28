@@ -105,6 +105,20 @@ editable
 </td></tr>
 <tr><td>
 
+icon
+
+
+</td><td>
+
+`"icon"`
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 multiselectEditor
 
 

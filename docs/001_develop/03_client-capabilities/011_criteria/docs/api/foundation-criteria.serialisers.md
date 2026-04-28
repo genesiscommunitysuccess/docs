@@ -27,6 +27,9 @@ Serialisers: {
     contains: (e: Expression) => string;
     fieldContains: (e: Expression) => string;
     containsIgnoreCase: (e: Expression) => string;
+    startsWith: (e: Expression) => string;
+    endsWith: (e: Expression) => string;
+    dateIsToday: (e: Expression) => string;
     dateIsEqual: (e: Expression) => string;
     dateIsGreaterEqual: (e: Expression) => string;
     dateIsLessEqual: (e: Expression) => string;

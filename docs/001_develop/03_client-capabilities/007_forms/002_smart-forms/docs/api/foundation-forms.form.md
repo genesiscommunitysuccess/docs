@@ -9,6 +9,8 @@ format: md
 
 Foundation form component for automatically generated forms based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable form elements using UI schema and set of custom renderers
 
+ submit - Fired when the form is submitted (includes payload and validation errors)  submit-failure - Fired when submit fails (server or client validation)  submit-success - Fired when submit succeeds  submit-partial-success - Fired when bulk submit partially succeeds  row-status-changed - Fired when row submit status changes  bulk-submit-complete - Fired when bulk submit completes  row-submit-failure - Fired when a single row submit fails  row-submit-success - Fired when a single row submit succeeds  data-change - Fired when form data changes  csv-parse-error - Fired when CSV import parsing fails  csv-imported - Fired when CSV data is imported successfully  csv-template-error - Fired when CSV template cannot be generated  csv-template-downloaded - Fired when CSV template is downloaded
+
 **Signature:**
 
 ```typescript
@@ -54,7 +56,7 @@ Description
 
 </td><td>
 
-Allows to provide set of additional renderers used by the form.
+Allows to provide a set of additional renderers used by the form.
 
 
 </td></tr>
@@ -74,6 +76,63 @@ string
 </td><td>
 
 Label for the approval message field in the approval dialog.
+
+
+</td></tr>
+<tr><td>
+
+[bulkInsert](./foundation-forms.form.bulkinsert.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+When enabled, transforms the form into bulk insert mode where multiple records can be added. The JSON schema will be wrapped as an array, and each item will be submitted separately.
+
+
+</td></tr>
+<tr><td>
+
+[bulkInsertMaxItems](./foundation-forms.form.bulkinsertmaxitems.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number \| undefined
+
+
+</td><td>
+
+Maximum number of items allowed in bulk insert mode. If not set, no maximum is enforced.
+
+
+</td></tr>
+<tr><td>
+
+[bulkInsertMinItems](./foundation-forms.form.bulkinsertminitems.md)
+
+
+</td><td>
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Minimum number of items required in bulk insert mode.
 
 
 </td></tr>
@@ -231,6 +290,25 @@ Name of the backend resource which will provide metadata used to generate form a
 </td></tr>
 <tr><td>
 
+[rowSubmitStatuses](./foundation-forms.form.rowsubmitstatuses.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Map&lt;number, [BulkRowStatus](./foundation-forms.bulkrowstatus.md)&gt;
+
+
+</td><td>
+
+Tracks the submission status for each row in bulk insert mode. Key is the row index, value is the status object.
+
+
+</td></tr>
+<tr><td>
+
 [setApprovalMessage](./foundation-forms.form.setapprovalmessage.md)
 
 
@@ -289,6 +367,48 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[clearRowSubmitStatuses()](./foundation-forms.form.clearrowsubmitstatuses.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Clears all row submit statuses, typically called when resetting the form.
+
+
+</td></tr>
+<tr><td>
+
+[downloadCsvTemplate()](./foundation-forms.form.downloadcsvtemplate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Downloads a CSV template file with headers and sample data based on the schema. If a UI schema is provided, it will be used to determine which fields to include and in what order. Hidden fields will be excluded from the template.
+
+
+</td></tr>
+<tr><td>
+
+[handleCsvFileSelected(event)](./foundation-forms.form.handlecsvfileselected.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Handles CSV file selection for bulk import. Parses the CSV content and appends it to existing form items.
+
+
+</td></tr>
+<tr><td>
+
 [reset(clearData)](./foundation-forms.form.reset.md)
 
 
@@ -298,6 +418,20 @@ Description
 </td><td>
 
 Reset the form state
+
+
+</td></tr>
+<tr><td>
+
+[submitSingleRow(index)](./foundation-forms.form.submitsinglerow.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Submits a single row in bulk insert mode.
 
 
 </td></tr>

@@ -22,7 +22,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[createStore(slices, preloadedState)](./foundation-redux.createstore.md)
+[createStore(slices, preloadedState, options)](./foundation-redux.createstore.md)
 
 
 </td><td>
@@ -47,6 +47,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[CreateStoreOptions](./foundation-redux.createstoreoptions.md)
+
+
+</td><td>
+
+Options for [createStore()](./foundation-redux.createstore.md).
+
+
+</td></tr>
+<tr><td>
 
 [Slice](./foundation-redux.slice.md)
 

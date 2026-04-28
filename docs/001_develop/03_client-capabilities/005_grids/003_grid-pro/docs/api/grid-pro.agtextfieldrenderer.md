@@ -51,7 +51,7 @@ Description
 
 </td><td>
 
-FuiCellRendererParams
+[FuiCellRendererParams](./grid-pro.fuicellrendererparams.md)
 
 
 </td><td>

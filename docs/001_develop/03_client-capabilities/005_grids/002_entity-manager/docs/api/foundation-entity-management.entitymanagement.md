@@ -60,6 +60,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[additionalFormRenderers](./foundation-entity-management.entitymanagement.additionalformrenderers.md)
+
+
+</td><td>
+
+
+</td><td>
+
+RendererEntry\[\]
+
+
+</td><td>
+
+Additional renderer entries to append to the form renderer registry. Use this to supply custom UI schema renderers without replacing defaults.
+
+
+</td></tr>
+<tr><td>
+
 [approvalMessageLabel](./foundation-entity-management.entitymanagement.approvalmessagelabel.md)
 
 
@@ -302,6 +321,25 @@ string
 </td><td>
 
 Name of the event handler on the Genesis server which handles deleting the entity
+
+
+</td></tr>
+<tr><td>
+
+[enableAiCriteriaSearch](./foundation-entity-management.entitymanagement.enableaicriteriasearch.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Enables AI criteria search component. When true, fetches field metadata from resourceName and renders the AI search bar.
 
 
 </td></tr>

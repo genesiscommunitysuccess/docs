@@ -194,6 +194,17 @@ The Genesis Datasource element, for CSRM-compatible data fetching and used exclu
 </td></tr>
 <tr><td>
 
+[IconRenderer](./grid-pro.iconrenderer.md)
+
+
+</td><td>
+
+Plain ag-Grid cell renderer for icons. This renderer creates the FAST custom element using document.createElement.
+
+
+</td></tr>
+<tr><td>
+
 [KVStorageStatePersistence](./grid-pro.kvstoragestatepersistence.md)
 
 
@@ -233,6 +244,17 @@ A status bar component that shows a "Load More" button when more rows are availa
 </td><td>
 
 Implementation for the Local Storage State Persistence interface.
+
+
+</td></tr>
+<tr><td>
+
+[MulticolumnDropdown](./grid-pro.multicolumndropdown.md)
+
+
+</td><td>
+
+A dropdown component that displays its options in a multi-column AG Grid. Search triggers a reqrep and displays the results in the grid dropdown.
 
 
 </td></tr>
@@ -629,6 +651,28 @@ A function that returns a Foundation Actions Menu for configuring the component 
 </td></tr>
 <tr><td>
 
+[foundationIconRenderer(overrideDefinition)](./grid-pro.foundationiconrenderer.md)
+
+
+</td><td>
+
+A function that returns a Foundation Icon Renderer registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
+[foundationMulticolumnDropdown(overrideDefinition)](./grid-pro.foundationmulticolumndropdown.md)
+
+
+</td><td>
+
+A function that returns a Multicolumn Dropdown registration for configuring the component with a DesignSystem.
+
+
+</td></tr>
+<tr><td>
+
 [foundationMultiselectEditor(overrideDefinition)](./grid-pro.foundationmultiselecteditor.md)
 
 
@@ -784,6 +828,28 @@ Get a Design System prefixed The Grid Pro template.
 </td></tr>
 <tr><td>
 
+[getIconRendererTemplate(designSystem)](./grid-pro.geticonrenderertemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Icon template.
+
+
+</td></tr>
+<tr><td>
+
+[getMulticolumnDropdownTemplate(designSystem)](./grid-pro.getmulticolumndropdowntemplate.md)
+
+
+</td><td>
+
+Get a Design System prefixed Multicolumn Dropdown template.
+
+
+</td></tr>
+<tr><td>
+
 [getMultiselectEditorTemplate(designSystem)](./grid-pro.getmultiselecteditortemplate.md)
 
 
@@ -890,6 +956,17 @@ Merges two arrays, one of `ColDef` and one of `ColumnState`, and deduplicates th
 
 
 </td></tr>
+<tr><td>
+
+[wasClickOutsideElement(event, target)](./grid-pro.wasclickoutsideelement.md)
+
+
+</td><td>
+
+Checks if the given mouse event occurred outside the target element.
+
+
+</td></tr>
 </tbody></table>
 
 ## Interfaces
@@ -968,6 +1045,17 @@ Generic datasource event interface
 </td><td>
 
 Parameters used to configure [SelectEditor](./grid-pro.selecteditor.md)
+
+
+</td></tr>
+<tr><td>
+
+[FuiCellRendererParams](./grid-pro.fuicellrendererparams.md)
+
+
+</td><td>
+
+Extended params for the grid text field cell renderer (affixes, accessor, etc.).
 
 
 </td></tr>
@@ -1296,6 +1384,17 @@ Custom Drag n Drop CSS for Grid Pro.
 </td></tr>
 <tr><td>
 
+[agIconRendererStyles](./grid-pro.agiconrendererstyles.md)
+
+
+</td><td>
+
+The AG Icon Renderer Styles.
+
+
+</td></tr>
+<tr><td>
+
 [agMultiselectEditorStyles](./grid-pro.agmultiselecteditorstyles.md)
 
 
@@ -1527,6 +1626,28 @@ Grid Pro default configuration.
 </td></tr>
 <tr><td>
 
+[DISPLAY\_NONE\_CLASS](./grid-pro.display_none_class.md)
+
+
+</td><td>
+
+Class name used to hide elements with display:none
+
+
+</td></tr>
+<tr><td>
+
+[dropdownWidthVar](./grid-pro.dropdownwidthvar.md)
+
+
+</td><td>
+
+The CSS variable to use for specifying the dropdown's width
+
+
+</td></tr>
+<tr><td>
+
 [EDITED\_COLUMN\_FIELD](./grid-pro.edited_column_field.md)
 
 
@@ -1650,6 +1771,39 @@ The Genesis Datasource events names.
 </td><td>
 
 Logger for the grid-pro package
+
+
+</td></tr>
+<tr><td>
+
+[multicolumnDropdownStyles](./grid-pro.multicolumndropdownstyles.md)
+
+
+</td><td>
+
+Multicolumn Dropdown styles.
+
+
+</td></tr>
+<tr><td>
+
+[multicolumnDropdownTemplate](./grid-pro.multicolumndropdowntemplate.md)
+
+
+</td><td>
+
+The default Multicolumn Dropdown template using the 'foundation' design system prefix.
+
+
+</td></tr>
+<tr><td>
+
+[optionsClass](./grid-pro.optionsclass.md)
+
+
+</td><td>
+
+The CSS class to use for the options element's class in the dropdown
 
 
 </td></tr>
@@ -1850,6 +2004,17 @@ The change size event grid pro genesis datasource.
 </td><td>
 
 The event detail for the grid pro genesis datasource `sizeChanged` event.
+
+
+</td></tr>
+<tr><td>
+
+[IconRendererParams](./grid-pro.iconrendererparams.md)
+
+
+</td><td>
+
+Parameters for the [GridPro](./grid-pro.gridpro.md) icon renderer.
 
 
 </td></tr>

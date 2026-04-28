@@ -18,8 +18,9 @@ export type UiSchemaElement = {
     label?: string;
     placeholder?: string;
     options?: UiSchemaElementOptions;
+    elements?: UiSchemaElement[];
     rule?: Rule;
 };
 ```
-**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md)
+**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md), [UiSchemaElement](./foundation-forms.uischemaelement.md)
 

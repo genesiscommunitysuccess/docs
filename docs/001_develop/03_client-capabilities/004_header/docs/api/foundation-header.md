@@ -203,6 +203,17 @@ Options for the language selector
 </td></tr>
 <tr><td>
 
+[NavButtonClickDetail](./foundation-header.navbuttonclickdetail.md)
+
+
+</td><td>
+
+Detail payload for nav button click events and callbacks
+
+
+</td></tr>
+<tr><td>
+
 [NavEventDetailMap](./foundation-header.naveventdetailmap.md)
 
 

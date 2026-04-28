@@ -38,6 +38,8 @@ Main class which defines the entity management functionality
 
 </td><td>
 
+Entity list grid with CRUD and selection events.
+
 
 </td></tr>
 <tr><td>

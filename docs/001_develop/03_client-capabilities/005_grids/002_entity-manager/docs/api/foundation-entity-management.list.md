@@ -7,6 +7,8 @@ format: md
 
 ## List class
 
+Entity list grid with CRUD and selection events.
+
 **Signature:**
 
 ```typescript

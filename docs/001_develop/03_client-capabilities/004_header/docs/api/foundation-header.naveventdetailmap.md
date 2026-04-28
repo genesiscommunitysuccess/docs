@@ -18,9 +18,8 @@ export type NavEventDetailMap = {
     'misc-icon-clicked': void;
     'notification-icon-clicked': void;
     'language-changed': void;
-    'nav-button-clicked': {
-        item: FoundationRouteNavItem;
-        context: any;
-    };
+    'nav-button-clicked': NavButtonClickDetail;
 };
 ```
+**References:** [NavButtonClickDetail](./foundation-header.navbuttonclickdetail.md)
+

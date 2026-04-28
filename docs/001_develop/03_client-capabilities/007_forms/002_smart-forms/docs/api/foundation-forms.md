@@ -29,6 +29,8 @@ Description
 
 Foundation filters component for automatically generated filters based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable filters elements using UI schema and set of custom renderers
 
+ change - Fired when built criteria (`value`) updates  submit - Fired when filter values are submitted
+
 
 </td></tr>
 <tr><td>
@@ -39,6 +41,8 @@ Foundation filters component for automatically generated filters based on json s
 </td><td>
 
 Foundation form component for automatically generated forms based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable form elements using UI schema and set of custom renderers
+
+ submit - Fired when the form is submitted (includes payload and validation errors)  submit-failure - Fired when submit fails (server or client validation)  submit-success - Fired when submit succeeds  submit-partial-success - Fired when bulk submit partially succeeds  row-status-changed - Fired when row submit status changes  bulk-submit-complete - Fired when bulk submit completes  row-submit-failure - Fired when a single row submit fails  row-submit-success - Fired when a single row submit succeeds  data-change - Fired when form data changes  csv-parse-error - Fired when CSV import parsing fails  csv-imported - Fired when CSV data is imported successfully  csv-template-error - Fired when CSV template cannot be generated  csv-template-downloaded - Fired when CSV template is downloaded
 
 
 </td></tr>
@@ -59,6 +63,28 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[downloadCsvTemplate(csvContent, fileName)](./foundation-forms.downloadcsvtemplate.md)
+
+
+</td><td>
+
+Triggers a download of the CSV template file in the browser.
+
+
+</td></tr>
+<tr><td>
+
+[generateCsvTemplate(schema, uiSchema, includeOptionalFields, includeBom)](./foundation-forms.generatecsvtemplate.md)
+
+
+</td><td>
+
+Generates a CSV template string with headers and sample data based on JSON schema. If a UI schema is provided, it will be used to determine which fields to include and in what order. Hidden fields in the UI schema will be excluded.
+
+
+</td></tr>
+<tr><td>
+
 [getAnyOfErrorMessage(errors, schema, controlPath, uiCustomMsg)](./foundation-forms.getanyoferrormessage.md)
 
 
@@ -70,12 +96,119 @@ Computes a human-friendly anyOf error message for a given control path. Prefers 
 </td></tr>
 <tr><td>
 
+[getVerticalCategorizationHeight(layout)](./foundation-forms.getverticalcategorizationheight.md)
+
+
+</td><td>
+
+Fixed height (CSS value) for vertical categorization when `layout` is `{ type: 'vertical'; height?: string }`.
+
+
+</td></tr>
+<tr><td>
+
+[isVerticalCategorizationLayout(layout)](./foundation-forms.isverticalcategorizationlayout.md)
+
+
+</td><td>
+
+Whether categorization `layout` selects the vertical renderer (string `'vertical'` or object `{ type: 'vertical' }`).
+
+
+</td></tr>
+<tr><td>
+
+[mapCsvToSchema(csvRows, schema, uiSchema)](./foundation-forms.mapcsvtoschema.md)
+
+
+</td><td>
+
+Maps CSV rows to schema fields with case-insensitive matching. When uiSchema is provided, CSV headers can also match UI schema labels. Converts values to appropriate types based on schema definition.
+
+
+</td></tr>
+<tr><td>
+
+[MulticolumnDropdownControlRendererTemplate(prefix)](./foundation-forms.multicolumndropdowncontrolrenderertemplate.md)
+
+
+</td><td>
+
+**_(BETA)_** A JSON Forms renderer that uses the multicolumn-dropdown component.
+
+Activated when the uischema element has `columnDefinitions` set. Takes precedence over `ConnectedSelectControlRendererEntry` due to its higher rank.
+
+Options are typed via [MulticolumnDropdownRendererOptions](./foundation-forms.multicolumndropdownrendereroptions.md).
+
+
+</td></tr>
+<tr><td>
+
 [mustMatch(target)](./foundation-forms.mustmatch.md)
 
 
 </td><td>
 
 Ensures the value of the current field (the one the validator is on) matches the one of the target field.
+
+
+</td></tr>
+<tr><td>
+
+[parseCsv(content)](./foundation-forms.parsecsv.md)
+
+
+</td><td>
+
+Parses a CSV string into headers and rows using PapaParse. Handles quoted fields, escaped quotes, empty values, and mixed line endings.
+
+
+</td></tr>
+</tbody></table>
+
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[CsvMappingResult](./foundation-forms.csvmappingresult.md)
+
+
+</td><td>
+
+Result of mapping CSV data to schema fields.
+
+
+</td></tr>
+<tr><td>
+
+[CsvParseResult](./foundation-forms.csvparseresult.md)
+
+
+</td><td>
+
+Result of parsing a CSV file.
+
+
+</td></tr>
+<tr><td>
+
+[RendererControlProps](./foundation-forms.renderercontrolprops.md)
+
+
+</td><td>
+
+Props received by a React component used as a custom JSON Forms renderer. Pass this as the props type when writing a React renderer for use with `createReactRenderer` from `@genesislcap/foundation-react-utils`.
 
 
 </td></tr>
@@ -102,6 +235,26 @@ Description
 </td><td>
 
 Set of default renderers used by the foundation-filters.
+
+
+</td></tr>
+<tr><td>
+
+[LayoutVerticalCategorizationRendererEntry](./foundation-forms.layoutverticalcategorizationrendererentry.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[MulticolumnDropdownControlRendererEntry](./foundation-forms.multicolumndropdowncontrolrendererentry.md)
+
+
+</td><td>
+
+**_(BETA)_**
 
 
 </td></tr>
@@ -144,12 +297,100 @@ Configuration options available for array renderer.
 </td></tr>
 <tr><td>
 
+[BulkRowStatus](./foundation-forms.bulkrowstatus.md)
+
+
+</td><td>
+
+Tracks the submission status and result for a single row in bulk insert mode.
+
+
+</td></tr>
+<tr><td>
+
+[BulkRowSubmitStatus](./foundation-forms.bulkrowsubmitstatus.md)
+
+
+</td><td>
+
+Possible submission status values for a row in bulk insert mode.
+
+
+</td></tr>
+<tr><td>
+
+[BulkSubmitFailedItem](./foundation-forms.bulksubmitfaileditem.md)
+
+
+</td><td>
+
+Represents a failed bulk insert item result.
+
+
+</td></tr>
+<tr><td>
+
+[BulkSubmitResult](./foundation-forms.bulksubmitresult.md)
+
+
+</td><td>
+
+Result of a bulk insert submission containing successful and failed items.
+
+
+</td></tr>
+<tr><td>
+
+[BulkSubmitSuccessItem](./foundation-forms.bulksubmitsuccessitem.md)
+
+
+</td><td>
+
+Represents a successful bulk insert item result.
+
+
+</td></tr>
+<tr><td>
+
+[CategorizationLayoutOptions](./foundation-forms.categorizationlayoutoptions.md)
+
+
+</td><td>
+
+Configuration options available for the top-level UiSchema when using categorization.
+
+
+</td></tr>
+<tr><td>
+
+[CategorizationLayoutType](./foundation-forms.categorizationlayouttype.md)
+
+
+</td><td>
+
+Layout variants available for the categorization renderer. Vertical with height accepts any valid css value and sets a fixed height on the vertical categorization container. Content will scroll within it.
+
+
+</td></tr>
+<tr><td>
+
 [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md)
 
 
 </td><td>
 
 Configuration options available for categorization renderer.
+
+
+</td></tr>
+<tr><td>
+
+[ChildUiSchemaResolver](./foundation-forms.childuischemaresolver.md)
+
+
+</td><td>
+
+Resolver for dynamic per-row UI schema in array/bulk-insert mode. Receives the row index, that row's data, and the full form data.
 
 
 </td></tr>
@@ -199,6 +440,19 @@ Available aligment for labels.
 </td></tr>
 <tr><td>
 
+[MulticolumnDropdownRendererOptions](./foundation-forms.multicolumndropdownrendereroptions.md)
+
+
+</td><td>
+
+Configuration options for the multicolumn-dropdown renderer.
+
+Shares `allOptionsResourceName` with [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md) so the same reqrep/dataserver resource name field is reused. The renderer is activated when `columnDefinitions` is present (higher rank than the combobox renderer).
+
+
+</td></tr>
+<tr><td>
+
 [NumberRendererOptions](./foundation-forms.numberrendereroptions.md)
 
 
@@ -210,12 +464,45 @@ Configuration options available for number renderer.
 </td></tr>
 <tr><td>
 
+[RadioGroupRendererOptions](./foundation-forms.radiogrouprendereroptions.md)
+
+
+</td><td>
+
+Configuration options available for the enum radio-group renderer. Activated when `options.radio` is `true` on a Control element.
+
+
+</td></tr>
+<tr><td>
+
+[RadioOption](./foundation-forms.radiooption.md)
+
+
+</td><td>
+
+A single option item supplied to the radio group renderer.
+
+
+</td></tr>
+<tr><td>
+
 [RendererEntry](./foundation-forms.rendererentry.md)
 
 
 </td><td>
 
 Defines a renderer configuration in JSON forms. Allows to specify the renderer component, a tester function to determine renderer applicability, and a mapper function to connect JSON forms state to renderer's props.
+
+
+</td></tr>
+<tr><td>
+
+[SegmentedRendererOptions](./foundation-forms.segmentedrendereroptions.md)
+
+
+</td><td>
+
+Configuration options for the segmented control renderer. Activated when `segmented: true` is set on a UI schema element's options.
 
 
 </td></tr>

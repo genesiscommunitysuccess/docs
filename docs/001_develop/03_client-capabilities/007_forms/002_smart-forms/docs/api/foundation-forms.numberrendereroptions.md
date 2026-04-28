@@ -16,5 +16,8 @@ export type NumberRendererOptions = {
     withoutFormatting?: boolean;
     formatOptions?: Intl.NumberFormatOptions;
     autocomplete?: string;
+    prefix?: string;
+    suffix?: string;
+    hideAffixFromScreenReader?: boolean;
 };
 ```

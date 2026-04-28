@@ -75,6 +75,27 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[broadcastChannelName](./foundation-store.abstractstore.broadcastchannelname.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+string \| null
+
+
+</td><td>
+
+The broadcast channel name to enable cross-window synchronization. If set, events emitted with { broadcast: true } will be sent to this channel.
+
+
+</td></tr>
+<tr><td>
+
 [commit](./foundation-store.abstractstore.commit.md)
 
 

@@ -19,9 +19,13 @@ export type RendererEntry = {
 };
 ```
 
+## Remarks
+
+If you are writing a React renderer, use `createReactRenderer` from `@genesislcap/foundation-react-utils` instead of constructing this type directly. It handles the FAST template boilerplate and shadow DOM event wiring for you.
+
 ## Example
 
-Here's a simple example:
+Here's a simple example (FAST/web-component renderer):
 
 ```
 const stringEntry: RendererEntry = {

@@ -28,7 +28,7 @@ In these examples you could 1. View a trade, this is done by routing to the corr
         condition: ({details}) => details.HEADER === 'Trade added',
         action: ({details, buttonElement }) => {
           Route.path.push('/some-route') // redirect to a route
-          buttonElement.$emit('some-store-event', details.TABLE_ENTITY_ID); //emit the entity id to the store
+          // Forward the entity id to your store (e.g. custom event or app-specific API)
         }
       },
       placeholder: 'View Trade',
