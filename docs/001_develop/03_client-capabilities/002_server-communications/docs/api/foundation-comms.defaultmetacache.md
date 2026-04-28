@@ -73,6 +73,23 @@ Map&lt;string, [Metadata](./foundation-comms.metadata.md)&gt;
 
 
 </td></tr>
+<tr><td>
+
+[cachedResources](./foundation-comms.defaultmetacache.cachedresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[ResourcesMessage](./foundation-comms.resourcesmessage.md) \| null
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 
 ## Methods
@@ -119,6 +136,18 @@ Description
 </td></tr>
 <tr><td>
 
+[getResources()](./foundation-comms.defaultmetacache.getresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [hasJsonSchemaFor(resourceName)](./foundation-comms.defaultmetacache.hasjsonschemafor.md)
 
 
@@ -143,6 +172,18 @@ Description
 </td></tr>
 <tr><td>
 
+[hasResources()](./foundation-comms.defaultmetacache.hasresources.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [setJsonSchemaFor(resourceName, schemaResponse)](./foundation-comms.defaultmetacache.setjsonschemafor.md)
 
 
@@ -156,6 +197,18 @@ Description
 <tr><td>
 
 [setMetadataFor(resourceName, metadata)](./foundation-comms.defaultmetacache.setmetadatafor.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[setResources(resources)](./foundation-comms.defaultmetacache.setresources.md)
 
 
 </td><td>

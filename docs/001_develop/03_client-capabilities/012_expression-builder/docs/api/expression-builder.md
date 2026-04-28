@@ -9,21 +9,144 @@ format: md
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [ExpressionBuilder](./expression-builder.expressionbuilder.md) | <p>**_(BETA)_** Top level component to allow the user to build expressions. It produces a generic payload which doesn't have any system by itself to evaluate or execute the built expression.</p><p>The basics required to work with this component:</p><p>[ExpressionBuilder.config](./expression-builder.expressionbuilder.config.md) property to configure and input data and models into the component.</p><p>\_Event\_ change - <code>Types.Group</code> emits the model configuration on change. If you create a child component of the expression builder where you want to use a different (e.g. domain specific) model then it will likely override then emit event and instead emit it's own model. To check the underlying <code>Types.Group</code> model check the [ExpressionBuilder.model](./expression-builder.expressionbuilder.model.md) property.</p> |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ExpressionBuilder](./expression-builder.expressionbuilder.md)
+
+
+</td><td>
+
+**_(BETA)_** Top level component to allow the user to build expressions. It produces a generic payload which doesn't have any system by itself to evaluate or execute the built expression.
+
+The basics required to work with this component:
+
+[ExpressionBuilder.config](./expression-builder.expressionbuilder.config.md) property to configure and input data and models into the component.
+
+\_Event\_ change - `Types.Group` emits the model configuration on change. If you create a child component of the expression builder where you want to use a different (e.g. domain specific) model then it will likely override then emit event and instead emit it's own model. To check the underlying `Types.Group` model check the [ExpressionBuilder.model](./expression-builder.expressionbuilder.model.md) property.
+
+
+</td></tr>
+</tbody></table>
+
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[formatDateString(date)](./expression-builder.formatdatestring.md)
+
+
+</td><td>
+
+**_(BETA)_** Gets the string representation from a `Date` which is the format a `date` input uses. `yyyy-mm-dd`. Uses UTC methods to ensure consistent output regardless of timezone.
+
+Used to convert a javascript date object into the required string format expected by the expression builder.
+
+
+</td></tr>
+<tr><td>
+
+[formatDateTimeString(date)](./expression-builder.formatdatetimestring.md)
+
+
+</td><td>
+
+**_(BETA)_** Gets the string representation from a `Date` which is the format a `datetime-local` input uses. `yyyy-mm-ddThh:mm:ss`. Uses UTC methods to ensure consistent output regardless of timezone.
+
+Used to convert a javascript date object into the required string format expected by the expression builder.
+
+
+</td></tr>
+</tbody></table>
 
 ## Namespaces
 
-|  Namespace | Description |
-|  --- | --- |
-|  [Config](./expression-builder.config.md) |  |
-|  [Types](./expression-builder.types.md) |  |
+<table><thead><tr><th>
+
+Namespace
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Config](./expression-builder.config.md)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[Types](./expression-builder.types.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 
 ## Variables
 
-|  Variable | Description |
-|  --- | --- |
-|  [formatDateString](./expression-builder.formatdatestring.md) | <p>**_(BETA)_** Gets the string representation from a <code>Date</code> which is the format a <code>date</code> input uses. <code>yyyy-mm-dd</code>. Uses UTC methods to ensure consistent output regardless of timezone.</p><p>Used to convert a javascript date object into the required string format expected by the expression builder.</p> |
-|  [formatDateTimeString](./expression-builder.formatdatetimestring.md) | <p>**_(BETA)_** Gets the string representation from a <code>Date</code> which is the format a <code>datetime-local</code> input uses. <code>yyyy-mm-ddThh:mm:ss</code>. Uses UTC methods to ensure consistent output regardless of timezone.</p><p>Used to convert a javascript date object into the required string format expected by the expression builder.</p> |
+<table><thead><tr><th>
+
+Variable
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[styles](./expression-builder.styles.md)
+
+
+</td><td>
+
+**_(ALPHA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[template](./expression-builder.template.md)
+
+
+</td><td>
+
+**_(ALPHA)_** \*
+
+
+</td></tr>
+</tbody></table>
 

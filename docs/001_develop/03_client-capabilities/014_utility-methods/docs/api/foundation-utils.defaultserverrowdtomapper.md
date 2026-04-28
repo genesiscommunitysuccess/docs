@@ -7,7 +7,7 @@ format: md
 
 ## DefaultServerRowDTOMapper class
 
-The default `ServerRowDTOMapper`<!-- -->.
+The default `ServerRowDTOMapper`.
 
 **Signature:**
 
@@ -49,7 +49,7 @@ Description
 
 </td><td>
 
-(dto: [ServerRowDTO](./foundation-utils.serverrowdto.md)<!-- -->) =&gt; [ServerRowEntity](./foundation-utils.serverrowentity.md)
+(dto: [ServerRowDTO](./foundation-utils.serverrowdto.md)) =&gt; [ServerRowEntity](./foundation-utils.serverrowentity.md)
 
 
 </td><td>
@@ -68,7 +68,7 @@ Converts a server row DTO to an entity.
 
 </td><td>
 
-(entity: [ServerRowEntity](./foundation-utils.serverrowentity.md)<!-- -->) =&gt; [ServerRowDTO](./foundation-utils.serverrowdto.md)
+(entity: [ServerRowEntity](./foundation-utils.serverrowentity.md)) =&gt; [ServerRowDTO](./foundation-utils.serverrowdto.md)
 
 
 </td><td>

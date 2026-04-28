@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.maxView property
 
+Maximum number of rows to track as part of a client "view".
+
 **Signature:**
 
 ```typescript
 maxView: number;
 ```
+
+## Remarks
+
+DATASERVER only. Defaults to 1000.
+

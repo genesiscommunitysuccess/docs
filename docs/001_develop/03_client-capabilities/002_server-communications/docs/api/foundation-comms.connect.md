@@ -198,7 +198,7 @@ Disconnects from the server.
 </td></tr>
 <tr><td>
 
-[getAvailableResources(params)](./foundation-comms.connect.getavailableresources.md)
+[getAvailableResources(params, useCache)](./foundation-comms.connect.getavailableresources.md)
 
 
 </td><td>

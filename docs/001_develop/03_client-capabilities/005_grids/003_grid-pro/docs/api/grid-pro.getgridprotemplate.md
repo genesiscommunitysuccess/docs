@@ -53,7 +53,7 @@ _(Optional)_ The design system prefix to use. Defaults to 'foundation'.
 
 **Returns:**
 
-ViewTemplate&lt;[GridPro](./grid-pro.gridpro.md)<!-- -->, any&gt;
+ViewTemplate&lt;[GridPro](./grid-pro.gridpro.md), any&gt;
 
 A grid Pro template prefixed with the correct design system.
 

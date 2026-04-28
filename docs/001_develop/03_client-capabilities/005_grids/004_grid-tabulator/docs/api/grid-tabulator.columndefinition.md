@@ -20,5 +20,5 @@ export type ColumnDefinition = {
     formatterParams?: FormatterParams;
 } & Omit<TabulatorColumnDefinition, 'formatter' | 'formatterParams'>;
 ```
-**References:** [FormatterTypes](./grid-tabulator.formattertypes.md)<!-- -->, [FormatterParams](./grid-tabulator.formatterparams.md)
+**References:** [FormatterTypes](./grid-tabulator.formattertypes.md), [FormatterParams](./grid-tabulator.formatterparams.md)
 

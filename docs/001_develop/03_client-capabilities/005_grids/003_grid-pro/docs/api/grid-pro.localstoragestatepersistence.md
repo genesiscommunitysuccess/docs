@@ -78,6 +78,18 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[deleteColumnState(persistColumnStateKey)](./grid-pro.localstoragestatepersistence.deletecolumnstate.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [getColumnState(persistColumnStateKey)](./grid-pro.localstoragestatepersistence.getcolumnstate.md)
 
 

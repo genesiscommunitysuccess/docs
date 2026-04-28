@@ -45,40 +45,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[applyAsyncFuncName](./grid-pro.gridprogenesisdatasource.applyasyncfuncname.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[applyFuncName](./grid-pro.gridprogenesisdatasource.applyfuncname.md)
-
-
-</td><td>
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
 [keepColDefsOnClearRowData](./grid-pro.gridprogenesisdatasource.keepcoldefsonclearrowdata.md)
 
 
@@ -88,6 +54,25 @@ string
 </td><td>
 
 boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[transactionData](./grid-pro.gridprogenesisdatasource.transactiondata.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+TransactionData
 
 
 </td><td>
@@ -116,19 +101,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[applyTransaction(agTransaction)](./grid-pro.gridprogenesisdatasource.applytransaction.md)
-
-
-</td><td>
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprogenesisdatasource.applytransactionasync.md)
+[applyTransaction(transaction)](./grid-pro.gridprogenesisdatasource.applytransaction.md)
 
 
 </td><td>
@@ -254,7 +227,7 @@ Handles stream deletes by removing records from the grid.
 </td></tr>
 <tr><td>
 
-[init(columnDefinitions, columnStates)](./grid-pro.gridprogenesisdatasource.init.md)
+[init(keepColDefsOnClearRowData)](./grid-pro.gridprogenesisdatasource.init.md)
 
 
 </td><td>

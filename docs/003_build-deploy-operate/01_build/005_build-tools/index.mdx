@@ -140,16 +140,12 @@ However, if after upgrading Genesis uses version `5.0.0`, Gradle will use that v
 #### When the only option is to roll back
 
 Sometimes a vulnerability exists and the only option is to roll back until a fix is available.
-In that case, a combination of `reject`, `prefer` and `require` should be used:
+In that case, you can use the same syntax:
 ```kotlin
 constraints {
     genesisRuntime("com.example:problem-lib") {
-        version {
-            require("1.2.3")
-            reject("1.2.4", "1.2.5")
-            prefer("1.2.6")
-        }
-        because("1.2.4–1.2.5 are broken; allow newer fixed releases")
+        version { require("1.2.3") }
+        because("CVE-2022-xxxx - rolling back 1.2.4–1.2.5 are broken; allow newer fixed releases")
     }
 }
 ```

@@ -7,7 +7,6 @@ format: md
 
 ## GridProBaseDatasource class
 
-
 **Signature:**
 
 ```typescript
@@ -39,63 +38,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[agTransaction](./grid-pro.gridprobasedatasource.agtransaction.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-RowDataTransaction \| ServerSideTransaction
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[applyAsyncFuncName](./grid-pro.gridprobasedatasource.applyasyncfuncname.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[applyFuncName](./grid-pro.gridprobasedatasource.applyfuncname.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-string
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
 
 [connectionSub](./grid-pro.gridprobasedatasource.connectionsub.md)
 
@@ -135,14 +77,29 @@ boolean
 </td></tr>
 <tr><td>
 
+[keepColDefsOnClearRowData](./grid-pro.gridprobasedatasource.keepcoldefsonclearrowdata.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [pagination](./grid-pro.gridprobasedatasource.pagination.md)
 
 
 </td><td>
 
 `protected`
-
-`readonly`
 
 
 </td><td>
@@ -171,6 +128,25 @@ Map&lt;string, any&gt;
 
 
 </td></tr>
+<tr><td>
+
+[transactionData](./grid-pro.gridprobasedatasource.transactiondata.md)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+TransactionData
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 
 ## Methods
@@ -193,7 +169,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[applyAllAgTransactions()](./grid-pro.gridprobasedatasource.applyallagtransactions.md)
+[applyAllTransactions()](./grid-pro.gridprobasedatasource.applyalltransactions.md)
 
 
 </td><td>
@@ -207,21 +183,7 @@ Description
 </td></tr>
 <tr><td>
 
-[applyTransaction(agTransaction)](./grid-pro.gridprobasedatasource.applytransaction.md)
-
-
-</td><td>
-
-`protected`
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-[applyTransactionAsync(agTransaction, callback)](./grid-pro.gridprobasedatasource.applytransactionasync.md)
+[applyTransaction(transaction)](./grid-pro.gridprobasedatasource.applytransaction.md)
 
 
 </td><td>
@@ -247,7 +209,7 @@ Description
 </td></tr>
 <tr><td>
 
-[generateColumnDefsFromMetadata(fieldsMetadata, getFilterParamsByFieldType)](./grid-pro.gridprobasedatasource.generatecolumndefsfrommetadata.md)
+[generateColumnDefsFromMetadata(fieldsMetadata, getFilterParamsByFieldType, getFilterByFieldType)](./grid-pro.gridprobasedatasource.generatecolumndefsfrommetadata.md)
 
 
 </td><td>
@@ -261,7 +223,7 @@ Description
 </td></tr>
 <tr><td>
 
-[getDatasourceStatusBarPanels(isServerSide)](./grid-pro.gridprobasedatasource.getdatasourcestatusbarpanels.md)
+[getDatasourceStatusBarPanels(isServerSide, statusBarConfig)](./grid-pro.gridprobasedatasource.getdatasourcestatusbarpanels.md)
 
 
 </td><td>
@@ -325,7 +287,7 @@ Gets datasource-specific status bar component configurations. This method should
 
 </td><td>
 
-Returns true if the grid has the ds-disconnected attribute.
+Returns true if the datasource is disconnected.
 
 
 </td></tr>
@@ -375,7 +337,7 @@ Returns true if the grid has the ds-disconnected attribute.
 
 </td><td>
 
-Sets or removes the ds-disconnected attribute on the grid element.
+Sets the disconnected state and emits appropriate events.
 
 
 </td></tr>

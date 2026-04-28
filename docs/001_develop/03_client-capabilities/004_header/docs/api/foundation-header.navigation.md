@@ -79,6 +79,23 @@ Container
 </td></tr>
 <tr><td>
 
+[controlPanel](./foundation-header.navigation.controlpanel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+ControlPanel
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [enableInactivityMonitoring](./foundation-header.navigation.enableinactivitymonitoring.md)
 
 
@@ -203,6 +220,25 @@ Number attribute which sets the inactivity warning time in minutes before timeou
 </td><td>
 
 Object which defines the language options to be displayed in the language selector
+
+
+</td></tr>
+<tr><td>
+
+[layoutItemCheck?](./foundation-header.navigation.layoutitemcheck.md)
+
+
+</td><td>
+
+
+</td><td>
+
+(registration: string) =&gt; boolean
+
+
+</td><td>
+
+**_(BETA)_** _(Optional)_ Callback function to check if a layout item is currently active in the layout. Used with nav items that have `isLayoutItem: true` and `layoutRegistration` set.
 
 
 </td></tr>
@@ -391,6 +427,25 @@ boolean
 </td><td>
 
 Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via `show-connection-indicator`
+
+
+</td></tr>
+<tr><td>
+
+[showControlPanel](./foundation-header.navigation.showcontrolpanel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Boolean attribute which controls whether to show the control panel toggle on the navigation bar Control via `show-control-panel`
 
 
 </td></tr>
@@ -612,6 +667,20 @@ Handles the click event for a navigation button
 </td><td>
 
 Check if any child nav item matches the current route
+
+
+</td></tr>
+<tr><td>
+
+[isLayoutItemActive(item)](./foundation-header.navigation.islayoutitemactive.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Check if a layout item is currently active in the layout
 
 
 </td></tr>

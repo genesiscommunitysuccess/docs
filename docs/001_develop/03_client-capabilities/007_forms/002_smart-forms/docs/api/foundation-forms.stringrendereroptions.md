@@ -13,7 +13,9 @@ Configuration options available for string renderer.
 
 ```typescript
 export type StringRendererOptions = {
+    textTransform?: "none" | "uppercase" | "lowercase" | ((value: string) => string);
     isPassword?: boolean;
     textarea?: boolean;
+    autocomplete?: string;
 };
 ```

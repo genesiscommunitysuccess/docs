@@ -7,7 +7,7 @@ format: md
 
 ## GridProBaseDatasource.setDisconnected() method
 
-Sets or removes the ds-disconnected attribute on the grid element.
+Sets the disconnected state and emits appropriate events.
 
 **Signature:**
 

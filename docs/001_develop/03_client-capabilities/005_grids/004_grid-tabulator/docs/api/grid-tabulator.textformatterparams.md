@@ -12,17 +12,17 @@ format: md
 
 Parameters for the text formatter
 
-`specialValue`<!-- -->: Optional special value that should be highlighted (like 2012 in the Year example)
+`specialValue`: Optional special value that should be highlighted (like 2012 in the Year example)
 
-`specialColor`<!-- -->: Optional color for the highlighted special value
+`specialColor`: Optional color for the highlighted special value
 
-`specialFontWeight`<!-- -->: Optional font weight for the highlighted special value
+`specialFontWeight`: Optional font weight for the highlighted special value
 
-`prefix`<!-- -->: Optional prefix for any custom elements used in formatting
+`prefix`: Optional prefix for any custom elements used in formatting
 
-`dataTestId`<!-- -->: Optional data-test-id for testing purposes
+`dataTestId`: Optional data-test-id for testing purposes
 
-`nullText`<!-- -->: Optional text to display when the value is null or undefined
+`nullText`: Optional text to display when the value is null or undefined
 
 **Signature:**
 

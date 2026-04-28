@@ -46,7 +46,7 @@ overrideDefinition
 
 </td><td>
 
-import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[SelectEditor](./grid-pro.selecteditor.md)<!-- -->, any&gt;; }&gt;
+import("@microsoft/fast-foundation").OverrideFoundationElementDefinition&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[SelectEditor](./grid-pro.selecteditor.md), any&gt;; }&gt;
 
 
 </td><td>
@@ -59,9 +59,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[SelectEditor](./grid-pro.selecteditor.md)<!-- -->, any&gt;; }, typeof [SelectEditor](./grid-pro.selecteditor.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; styles: import("@microsoft/fast-element").ElementStyles; template: import("@microsoft/fast-element").ViewTemplate&lt;[SelectEditor](./grid-pro.selecteditor.md), any&gt;; }, typeof [SelectEditor](./grid-pro.selecteditor.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-select-editor<!-- -->&gt;
+HTML Element: &lt;foundation-select-editor&gt;
 

@@ -61,9 +61,9 @@ Reset after each test with [resetTestHarness()](./foundation-testing.resettestha
 
 ## Example
 
-// Testing the first function call async (<!-- -->{ element }<!-- -->) =<!-- -->&gt; {
+// Testing the first function call async ({ element }) =&gt; {
 
-assert.ok( element.layout.addItemFromChild.calledWith(<!-- -->{ type: 'component', componentType: 'test', title: `Item test`<!-- -->, reorderEnabled: true, isClosable: false, size: undefined, }<!-- -->) );
+assert.ok( element.layout.addItemFromChild.calledWith({ type: 'component', componentType: 'test', title: `Item test`, reorderEnabled: true, isClosable: false, size: undefined, }) );
 
 // Reset the tester at the end of every test even if you don't assert on any of it! resetTestHarness(element.layout); }
 

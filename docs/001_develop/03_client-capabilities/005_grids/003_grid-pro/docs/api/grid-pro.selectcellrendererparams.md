@@ -104,7 +104,7 @@ _(Optional)_
 
 </td><td>
 
-(value: string, params: [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md)<!-- -->) =&gt; void
+(value: string, params: [SelectCellRendererParams](./grid-pro.selectcellrendererparams.md)) =&gt; void
 
 
 </td><td>
@@ -121,7 +121,7 @@ _(Optional)_
 
 </td><td>
 
-(rowData: any) =&gt; [SelectRendererOptions](./grid-pro.selectrendereroptions.md)<!-- -->\[\]
+(rowData: any) =&gt; [SelectRendererOptions](./grid-pro.selectrendereroptions.md)\[\]
 
 
 </td><td>

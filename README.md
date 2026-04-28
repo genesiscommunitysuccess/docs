@@ -63,38 +63,32 @@ npm run clear
 This command clears the Docusaurus generated assets, caches, build artefacts etc. This is useful if you're not seeing your changes in the browser.
 
 
-## Copy FE docs
+## API docs for front-end packages
 
-Front-end documentation from `foundation-ui` can be pulled into this repo. This process has been automated - see [scripts/README.md](scripts/README.md) for details.
+API documentation for `@genesislcap` packages is generated directly in this repo from the `.api.json` files published inside each package. See [scripts/README.md](scripts/README.md) for full details.
 
-### Automated Process (Recommended)
+The pipeline is: `TypeScript source → api-extractor → .api.json (published to npm) → api-documenter (runs here) → .md files (committed to this repo)`.
+
+### Generate docs after an `npm install`
+
 ```bash
-# Basic sync (no git operations)
+npm run generate:api-docs
+```
+
+Regenerate everything from scratch:
+
+```bash
+npm run generate:api-docs -- --force
+```
+
+### Sync to the latest package versions (full automation)
+
+```bash
+# Check for newer versions, generate docs — no git operations
 npm run sync-api-docs
 
-# Full automation (with git operations)
+# Version bump + npm install + generate + branch + commit + push + PR
 npm run sync-api-docs:full
 ```
 
-**Basic sync** automatically:
-1. Checks for the latest version of @genesislcap packages
-2. Updates package.json with new versions
-3. Installs dependencies with `npm install`
-4. Builds the api-docs plugin
-5. Copies documentation without starting the server
-6. Updates processedMap with new versions
-
-**Full automation** does everything above plus:
-7. Creates a git branch
-8. Commits changes
-9. Pushes the branch
-10. Provides instructions for creating a pull request
-
-### Manual Process (Legacy)
-If you need to run the process manually, follow these steps:
-
-1. Add as a dependency in `./package.json`.
-2. Set up the config in `./plugins/api-docs/manifest.json`.
-3. Set up the sidebar.
-4. Run with `$ npm run start:copy-docs`.
-5. Once you have got feedback on the docs, you can lock it in via `./plugins/api-docs/processedMap.js`.
+The full automation runs on a daily schedule via GitHub Actions.

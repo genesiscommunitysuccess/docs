@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.isSnapshot property
 
+Request a snapshot from the server.
+
 **Signature:**
 
 ```typescript
 isSnapshot: boolean;
 ```
+
+## Remarks
+
+Defaults to false.
+

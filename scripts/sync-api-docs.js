@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs-extra');
+const os = require('os');
 const path = require('path');
 const { execSync, execFileSync } = require('child_process');
 const { exec } = require('child_process');
@@ -191,91 +192,95 @@ async function buildApiDocsPlugin() {
   }
 }
 
-async function copyDocsDirectly() {
-  console.log('Copying docs without starting server...');
+async function generateDocsFromApiJson() {
+  console.log('Generating API docs from .api.json files...');
+
+  const manifest = require(path.resolve('./plugins/api-docs/dist/manifest.js')).default;
+  const processedMap = require(path.resolve(PROCESSED_MAP_PATH));
+
+  const packagesToProcess = manifest.packages.filter(
+    (pkg) => pkg.enabled && pkg.src.api_docs && pkg.output.api_docs && !(pkg.name in processedMap),
+  );
+
+  if (!packagesToProcess.length) {
+    console.log('[api-docs] No packages awaiting processing.');
+    return { apiDocsCopied: 0 };
+  }
+
+  const apiPreamble = await fs.readFile(
+    path.resolve('./plugins/api-docs/data/api-preamble.md'),
+    'utf8'
+  );
 
   let totalApiDocsCopied = 0;
 
-  try {
-    const manifest = require(path.resolve('./plugins/api-docs/dist/manifest.js')).default;
-    const processedMap = require(path.resolve(PROCESSED_MAP_PATH));
+  for (const pkg of packagesToProcess) {
+    const packageRootDir = path.join(process.cwd(), 'node_modules', pkg.name);
 
-    const { packages } = manifest;
-    const packagesToProcess = packages.filter(
-      (pkg) => pkg.enabled && !(pkg.name in processedMap),
-    );
-
-    if (!packagesToProcess.length) {
-      console.log('[api-docs-plugin] No packages awaiting processing.');
-      totalApiDocsCopied = 0;
-      return { apiDocsCopied: totalApiDocsCopied };
+    if (!fs.existsSync(packageRootDir)) {
+      console.log(`  Package ${pkg.name} not found in node_modules, skipping...`);
+      continue;
     }
 
-    for (const pkg of packagesToProcess) {
-      const packageRootDir = path.join(process.cwd(), 'node_modules', pkg.name);
+    const distDir = path.join(packageRootDir, 'dist');
+    const apiJsonFiles = fs.existsSync(distDir)
+      ? fs.readdirSync(distDir).filter((f) => f.endsWith('.api.json'))
+      : [];
+
+    if (!apiJsonFiles.length) {
+      console.log(`  No .api.json found for ${pkg.name}, skipping...`);
+      continue;
+    }
+
+    const tmpInput = fs.mkdtempSync(path.join(os.tmpdir(), 'api-docs-in-'));
+    const tmpOutput = fs.mkdtempSync(path.join(os.tmpdir(), 'api-docs-out-'));
+
+    try {
+      for (const jsonFile of apiJsonFiles) {
+        fs.copyFileSync(path.join(distDir, jsonFile), path.join(tmpInput, jsonFile));
+      }
+
+      execSync(`node_modules/.bin/api-documenter markdown -i "${tmpInput}" -o "${tmpOutput}"`, {
+        stdio: 'pipe',
+      });
+
       const outputRootDir = path.join(process.cwd(), pkg.output.directory);
+      const apiDocsDest = path.join(outputRootDir, pkg.output.api_docs);
+      await fs.ensureDir(apiDocsDest);
 
-      if (!fs.existsSync(packageRootDir)) {
-        console.log(`Package ${pkg.name} not found in node_modules, skipping...`);
-        continue;
-      }
+      const generatedFiles = fs.readdirSync(tmpOutput);
+      for (const file of generatedFiles) {
+        if (!file.endsWith('.md')) continue;
 
-      await fs.ensureDir(outputRootDir);
+        let content = await fs.readFile(path.join(tmpOutput, file), 'utf8');
 
-      // Copy API docs (only .md files in docs/api/)
-      if (pkg.src.api_docs && pkg.output.api_docs) {
-        const apiDocsSrc = path.join(packageRootDir, pkg.src.api_docs);
-        const apiDocsDest = path.join(outputRootDir, pkg.output.api_docs);
+        // api-documenter inserts <!-- --> as a separator in generic type expressions
+        // (e.g. Promise<[T](link.md)<!-- -->>) and between union type references to
+        // prevent generic HTML parsers from treating `Promise<...>` as an unclosed
+        // HTML tag. Docusaurus's remark/rehype pipeline handles angle brackets in
+        // prose correctly without this workaround, so the comments are pure noise
+        // here. Remove this line if you switch away from Docusaurus to a renderer
+        // that needs the original api-documenter output unchanged.
+        content = content.replaceAll('<!-- -->', '');
 
-        if (fs.existsSync(apiDocsSrc)) {
-          await fs.ensureDir(apiDocsDest);
-          const files = await fs.readdir(apiDocsSrc);
-
-          for (const file of files) {
-            if (file.endsWith('.md')) {
-              const srcFile = path.join(apiDocsSrc, file);
-              const destFile = path.join(apiDocsDest, file);
-              let content = await fs.readFile(srcFile, 'utf8');
-
-              // Add front matter for non-index.md files
-              if (file !== 'index.md') {
-                content = `---\nformat: md\n---\n` + content;
-              } else {
-                // For index.md, add the api preamble
-                const apiPreamble = await fs.readFile(
-                  path.resolve('./plugins/api-docs/data/api-preamble.md'),
-                  'utf8'
-                );
-                content = apiPreamble + '\n' + content;
-              }
-
-              await fs.writeFile(destFile, content);
-              console.log(`  Copied API doc: ${file}`);
-              totalApiDocsCopied++;
-            }
-          }
+        if (file === 'index.md') {
+          content = apiPreamble + '\n' + content;
+        } else {
+          content = `---\nformat: md\n---\n` + content;
         }
+
+        await fs.writeFile(path.join(apiDocsDest, file), content);
+        console.log(`  Generated: ${pkg.name} → ${file}`);
+        totalApiDocsCopied++;
       }
+    } finally {
+      fs.removeSync(tmpInput);
+      fs.removeSync(tmpOutput);
     }
-
-    console.log(`✓ Docs copied successfully (${totalApiDocsCopied} API docs copied)`);
-    return { apiDocsCopied: totalApiDocsCopied };
-  } catch (error) {
-    console.error('Failed to copy docs:', error.message);
-    throw error;
   }
-}
 
-async function copyDocsWithoutStarting() {
-  console.log('Copying docs without starting server...');
-
-  try {
-    const result = await copyDocsDirectly();
-    return result;
-  } catch (error) {
-    console.error('Failed to copy docs:', error.message);
-    throw error;
-  }
+  console.log(`✓ API docs generated (${totalApiDocsCopied} files)`);
+  return { apiDocsCopied: totalApiDocsCopied };
 }
 
 async function updateProcessedMapWithVersions(newVersion) {
@@ -556,8 +561,8 @@ async function main() {
     // Step 6: Build api-docs plugin
     await buildApiDocsPlugin();
     
-    // Step 7: Copy docs without starting server
-    const copyResult = await copyDocsWithoutStarting();
+    // Step 7: Generate API docs from .api.json files in node_modules
+    const copyResult = await generateDocsFromApiJson();
     const apiDocsCopied = copyResult?.apiDocsCopied || 0;
     
     // Step 8: Update processedMap with new versions
@@ -650,8 +655,7 @@ module.exports = {
   clearProcessedMap,
   installDependencies,
   buildApiDocsPlugin,
-  copyDocsWithoutStarting,
-  copyDocsDirectly,
+  generateDocsFromApiJson,
   updateProcessedMapWithVersions,
   createGitBranch,
   commitChanges,

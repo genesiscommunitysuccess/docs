@@ -12,7 +12,7 @@ Setup an `IntersectionObserver` which will activate a callback function when an 
 **Signature:**
 
 ```typescript
-respondToVisibility: (element: HTMLElement, callback: (arg0: boolean) => any) => void
+respondToVisibility: (element: HTMLElement, callback: (arg0: boolean) => any) => (() => void)
 ```
 
 ## Parameters
@@ -69,5 +69,7 @@ any function called when the visibility changes
 
 **Returns:**
 
-void
+(() =&gt; void)
+
+A cleanup function to disconnect the observer
 

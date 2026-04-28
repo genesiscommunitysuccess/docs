@@ -63,5 +63,5 @@ Omit&lt;Partial&lt;T&gt;, 'id'&gt;
 
 **Returns:**
 
-Promise&lt;[DatabaseAccessResult.Update](./foundation-utils.databaseaccessresult.update.md)<!-- -->&lt;T&gt;&gt;
+Promise&lt;[DatabaseAccessResult.Update](./foundation-utils.databaseaccessresult.update.md)&lt;T&gt;&gt;
 

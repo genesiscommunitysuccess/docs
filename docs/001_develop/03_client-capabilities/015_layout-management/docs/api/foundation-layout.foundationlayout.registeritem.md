@@ -7,12 +7,12 @@ format: md
 
 ## FoundationLayout.registerItem() method
 
-Register a collection of `Element` and associate them with an `ID` with the layout system for later use.
+Register a collection of `Element` or a factory function and associate them with an `ID` with the layout system for later use.
 
 **Signature:**
 
 ```typescript
-registerItem(registration: string, elements: Element[]): string;
+registerItem(registration: string, elementsOrFactory: Element[] | ComponentFactory): string;
 ```
 
 ## Parameters
@@ -51,17 +51,17 @@ string of the registration ID
 </td></tr>
 <tr><td>
 
-elements
+elementsOrFactory
 
 
 </td><td>
 
-Element\[\]
+Element\[\] \| [ComponentFactory](./foundation-layout.componentfactory.md)
 
 
 </td><td>
 
-Elements\[\] containing the reference to the elements to register for later usage
+Either Elements\[\] containing the reference to the elements to register, or a ComponentFactory function
 
 
 </td></tr>
@@ -81,7 +81,31 @@ string
 
 ## Remarks
 
-You would use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md). Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md).
+You can register either an array of elements or a factory function.
 
-When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`.
+\*\*Element registration\*\*: Use this to register elements that you later want to load when using [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md). Use [FoundationLayout.layoutRequiredRegistrations()](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) to see what components need to be registered for a certain config and then register them using this function before calling [FoundationLayout.loadLayout()](./foundation-layout.foundationlayout.loadlayout.md). When registering an element it is moved by reference into the internals of the layout, so if you pass elements already in the DOM then they will disappear. If you want to avoid this you can pass copies using `element.cloneNode(true)`.
+
+\*\*Factory registration\*\*: This is the recommended approach for framework-rendered components (React, Angular, Vue, etc.) because it allows each layout instance to create a fresh component rather than cloning existing DOM elements (which loses event listeners and framework bindings). The factory function will be called each time a new instance of the component is needed. It receives a container element and should render the component into it. Optionally, it can return a cleanup function that will be called when the component is removed from the layout.
+
+## Example 1
+
+Element registration:
+
+```typescript
+const div = document.createElement('div');
+div.innerHTML = '<h1>Hello</h1>';
+layout.registerItem('my-element', [div]);
+```
+
+## Example 2
+
+Factory registration (React):
+
+```typescript
+layout.registerItem('text-field', (container) => {
+  const root = createRoot(container);
+  root.render(<TextFieldComponent />);
+  return () => root.unmount();
+});
+```
 

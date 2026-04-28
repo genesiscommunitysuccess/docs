@@ -47,6 +47,12 @@ Top level web component, which is used to initialize a custom layout.
 <rapid-layout></rapid-layout>
 ```
 
+### Tab height and the design system
+
+`rapid-layout` derives tab strip height and related layout header metrics from the same sizing tokens as the rest of Rapid: `baseHeightMultiplier`, `density`, and `designUnit` in `design-tokens.json`, applied through `configureDesignSystem`, so the default tab strip height matches `rapid-tabs`. The layout exposes `--foundation-tab-height` in its styles using the CSS custom properties emitted for those sizing tokens. If the layout finishes its first load before `configureDesignSystem` runs, it reapplies its configuration when the merged token map becomes available so header and tab chrome match the configured density.
+
+For the exact token fields and how they affect other components (such as `rapid-grid-pro` row height), see [Sizing tokens](/develop/client-capabilities/styling/design-tokens/styling-tokens-sizing/) and the overview of [custom and runtime tokens](/develop/client-capabilities/styling/design-tokens/).
+
 ### DOM API
 
 Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.

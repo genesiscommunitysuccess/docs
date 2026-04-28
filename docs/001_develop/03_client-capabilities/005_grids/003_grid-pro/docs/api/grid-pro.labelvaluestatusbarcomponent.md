@@ -70,5 +70,17 @@ Description
 
 
 </td></tr>
+<tr><td>
+
+[updateParams(params)](./grid-pro.labelvaluestatusbarcomponent.updateparams.md)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
 </tbody></table>
 

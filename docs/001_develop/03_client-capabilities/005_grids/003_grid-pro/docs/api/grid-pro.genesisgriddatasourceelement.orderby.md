@@ -7,8 +7,15 @@ format: md
 
 ## GenesisGridDatasourceElement.orderBy property
 
+Option to select a Data Server index (defined in the Data Server query), which is especially useful if you want the data to be sorted in a specific way.
+
 **Signature:**
 
 ```typescript
 orderBy: string;
 ```
+
+## Remarks
+
+By default, rows are returned in order of creation (from oldest database record to newest).
+

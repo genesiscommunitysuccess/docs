@@ -12,21 +12,21 @@ format: md
 
 Parameters for the editable formatter
 
-`value`<!-- -->: The raw value to be displayed
+`value`: The raw value to be displayed
 
-`data`<!-- -->: The row data containing the current cell
+`data`: The row data containing the current cell
 
-`field`<!-- -->: The field name in the data object
+`field`: The field name in the data object
 
-`cssClass`<!-- -->: Optional CSS class to apply to the text
+`cssClass`: Optional CSS class to apply to the text
 
-`nullText`<!-- -->: Text to display for null/undefined values
+`nullText`: Text to display for null/undefined values
 
-`dataTestId`<!-- -->: Data test ID for testing
+`dataTestId`: Data test ID for testing
 
-`icon`<!-- -->: Icon to display for edit action
+`icon`: Icon to display for edit action
 
-`prefix`<!-- -->: The prefix to use for element classes and components, e.g., 'foundation', 'zero', 'rapid'.
+`prefix`: The prefix to use for element classes and components, e.g., 'foundation', 'zero', 'rapid'.
 
 **Signature:**
 

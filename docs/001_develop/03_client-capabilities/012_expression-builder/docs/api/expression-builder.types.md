@@ -9,27 +9,281 @@ format: md
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [\_Operator](./expression-builder.types._operator.md) | **_(BETA)_** \* |
-|  [BinaryOperator](./expression-builder.types.binaryoperator.md) | **_(BETA)_** An operator which has one value. Example <code>greater_than</code> \* |
-|  [CheckboxInput](./expression-builder.types.checkboxinput.md) | **_(BETA)_** Configuration for a boolean-type input, which has a boolean value and a checkbox. \* |
-|  [Combinator](./expression-builder.types.combinator.md) | **_(BETA)_** \* |
-|  [Config](./expression-builder.types.config.md) | **_(BETA)_** \* |
-|  [CustomElements](./expression-builder.types.customelements.md) | <p>**_(BETA)_** By default the expression builder uses the basic html components such as buttons and inputs. If you want to integrate your own components from a design system or otherwise you can add the tag names for your elements here. For your custom components to work they must expose the same API as the underlying HTML element they're overriding.</p><p><code>checkbox</code>: Custom element tag for checkbox inputs</p><p><code>text</code>: Custom element tag for text inputs</p><p><code>number</code>: Custom element tag for number inputs</p><p><code>date</code>: Custom element tag for date inputs</p><p><code>datetimeLocal</code>: Custom element tag for datetime-local inputs</p><p><code>select</code>: Custom element tag for select inputs</p><p><code>option</code>: Custom element tag for option elements</p><p><code>button</code>: Custom element tag for button elements</p><p><code>radio</code>: Custom element tag for radio and radio group elements. When using a custom element for a radio you require a parent radio group component to semantically link the radios into a group. The parent radio group must expose the <code>change</code> event and <code>value</code> attribute.</p> |
-|  [CustomStyles](./expression-builder.types.customstyles.md) | <p>**_(BETA)_** Optional strings for configuring css to be applied inside of each constituent element's shadow DOM. To apply styles to components which are used inside of multiple different components (such as buttons which are used in groups, rules, and values) you must ensure the styling is set in each block. If your styling isn't showing the ensure that you're using more specific css rules to override the precedence of your rule.</p><p><code>rule</code>: Additional CSS for expression rule component</p><p><code>value</code>: Additional CSS for rule value component</p><p><code>field</code>: Additional CSS for rule field component</p><p><code>operator</code>: Additional CSS for rule operator component</p><p><code>group</code>: Additional CSS for expression group component</p> |
-|  [DateInput](./expression-builder.types.dateinput.md) | **_(BETA)_** Configuration for a date input, which has s string value and a date field input \* |
-|  [DateTimeInput](./expression-builder.types.datetimeinput.md) | **_(BETA)_** Configuration for a datetime input, which has s string value and a datetime field input \* |
-|  [Field](./expression-builder.types.field.md) | **_(BETA)_** \* |
-|  [FieldTypes](./expression-builder.types.fieldtypes.md) | **_(BETA)_** Union of all input types \* |
-|  [Group](./expression-builder.types.group.md) | **_(BETA)_** A group forms the overall model of the expression builder, and is recursive to itself allowing for a nested tree. |
-|  [NumberInput](./expression-builder.types.numberinput.md) | **_(BETA)_** Configuration for a number-type input, which has a number value and a number input. \* |
-|  [Operator](./expression-builder.types.operator.md) | **_(BETA)_** \* |
-|  [Rule](./expression-builder.types.rule.md) | **_(BETA)_** A rule is a single constituent element of a larger expression, and is the smallest whole part of an expression. |
-|  [SelectInput](./expression-builder.types.selectinput.md) | **_(BETA)_** Configuration for an enum-type input, which as a string or number value, and uses a select input. \* |
-|  [Styles](./expression-builder.types.styles.md) | <p>**_(BETA)_** Configuration items for the expression builder styles.</p><p><code>customElements</code>: optional <code>Types.CustomElements</code> block for overriding the html tags used in the expression builder</p><p><code>customStyles</code>: optional <code>Types.CustomStyles</code> block to configure custom css for components.</p> |
-|  [TernararyOperator](./expression-builder.types.ternararyoperator.md) | **_(BETA)_** An operator which has two values. Example <code>between_inclusive</code> \* |
-|  [TextInput](./expression-builder.types.textinput.md) | **_(BETA)_** Configuration for a text-type input, which has a string value and a text input. \* |
-|  [UniraryOperator](./expression-builder.types.uniraryoperator.md) | <p>**_(BETA)_** An operator which doesn't have any value. Example <code>is_null</code></p><p>\*</p> |
-|  [VariadicOperator](./expression-builder.types.variadicoperator.md) | **_(BETA)_** An operator which can have any number of values where <code>NumVals &gt;= 1</code>, defaulting to 1. Example <code>one_of</code>. \* |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[\_Operator](./expression-builder.types._operator.md)
+
+
+</td><td>
+
+**_(BETA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[BinaryOperator](./expression-builder.types.binaryoperator.md)
+
+
+</td><td>
+
+**_(BETA)_** An operator which has one value. Example `greater_than` \*
+
+
+</td></tr>
+<tr><td>
+
+[CheckboxInput](./expression-builder.types.checkboxinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for a boolean-type input, which has a boolean value and a checkbox. \*
+
+
+</td></tr>
+<tr><td>
+
+[Combinator](./expression-builder.types.combinator.md)
+
+
+</td><td>
+
+**_(BETA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[Config](./expression-builder.types.config.md)
+
+
+</td><td>
+
+**_(BETA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[CustomElements](./expression-builder.types.customelements.md)
+
+
+</td><td>
+
+**_(BETA)_** By default the expression builder uses the basic html components such as buttons and inputs. If you want to integrate your own components from a design system or otherwise you can add the tag names for your elements here. For your custom components to work they must expose the same API as the underlying HTML element they're overriding.
+
+`checkbox`: Custom element tag for checkbox inputs
+
+`text`: Custom element tag for text inputs
+
+`number`: Custom element tag for number inputs
+
+`date`: Custom element tag for date inputs
+
+`datetimeLocal`: Custom element tag for datetime-local inputs
+
+`select`: Custom element tag for select inputs
+
+`option`: Custom element tag for option elements
+
+`button`: Custom element tag for button elements
+
+`radio`: Custom element tag for radio and radio group elements. When using a custom element for a radio you require a parent radio group component to semantically link the radios into a group. The parent radio group must expose the `change` event and `value` attribute.
+
+
+</td></tr>
+<tr><td>
+
+[CustomStyles](./expression-builder.types.customstyles.md)
+
+
+</td><td>
+
+**_(BETA)_** Optional strings for configuring css to be applied inside of each constituent element's shadow DOM. To apply styles to components which are used inside of multiple different components (such as buttons which are used in groups, rules, and values) you must ensure the styling is set in each block. If your styling isn't showing the ensure that you're using more specific css rules to override the precedence of your rule.
+
+`rule`: Additional CSS for expression rule component
+
+`value`: Additional CSS for rule value component
+
+`field`: Additional CSS for rule field component
+
+`operator`: Additional CSS for rule operator component
+
+`group`: Additional CSS for expression group component
+
+
+</td></tr>
+<tr><td>
+
+[DateInput](./expression-builder.types.dateinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for a date input, which has s string value and a date field input \*
+
+
+</td></tr>
+<tr><td>
+
+[DateTimeInput](./expression-builder.types.datetimeinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for a datetime input, which has s string value and a datetime field input \*
+
+
+</td></tr>
+<tr><td>
+
+[Field](./expression-builder.types.field.md)
+
+
+</td><td>
+
+**_(BETA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[FieldTypes](./expression-builder.types.fieldtypes.md)
+
+
+</td><td>
+
+**_(BETA)_** Union of all input types \*
+
+
+</td></tr>
+<tr><td>
+
+[Group](./expression-builder.types.group.md)
+
+
+</td><td>
+
+**_(BETA)_** A group forms the overall model of the expression builder, and is recursive to itself allowing for a nested tree.
+
+
+</td></tr>
+<tr><td>
+
+[NumberInput](./expression-builder.types.numberinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for a number-type input, which has a number value and a number input. \*
+
+
+</td></tr>
+<tr><td>
+
+[Operator](./expression-builder.types.operator.md)
+
+
+</td><td>
+
+**_(BETA)_** \*
+
+
+</td></tr>
+<tr><td>
+
+[Rule](./expression-builder.types.rule.md)
+
+
+</td><td>
+
+**_(BETA)_** A rule is a single constituent element of a larger expression, and is the smallest whole part of an expression.
+
+
+</td></tr>
+<tr><td>
+
+[SelectInput](./expression-builder.types.selectinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for an enum-type input, which as a string or number value, and uses a select input. \*
+
+
+</td></tr>
+<tr><td>
+
+[Styles](./expression-builder.types.styles.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration items for the expression builder styles.
+
+`customElements`: optional `Types.CustomElements` block for overriding the html tags used in the expression builder
+
+`customStyles`: optional `Types.CustomStyles` block to configure custom css for components.
+
+
+</td></tr>
+<tr><td>
+
+[TernararyOperator](./expression-builder.types.ternararyoperator.md)
+
+
+</td><td>
+
+**_(BETA)_** An operator which has two values. Example `between_inclusive` \*
+
+
+</td></tr>
+<tr><td>
+
+[TextInput](./expression-builder.types.textinput.md)
+
+
+</td><td>
+
+**_(BETA)_** Configuration for a text-type input, which has a string value and a text input. \*
+
+
+</td></tr>
+<tr><td>
+
+[UniraryOperator](./expression-builder.types.uniraryoperator.md)
+
+
+</td><td>
+
+**_(BETA)_** An operator which doesn't have any value. Example `is_null`
+
+\*
+
+
+</td></tr>
+<tr><td>
+
+[VariadicOperator](./expression-builder.types.variadicoperator.md)
+
+
+</td><td>
+
+**_(BETA)_** An operator which can have any number of values where `NumVals >= 1`, defaulting to 1. Example `one_of`. \*
+
+
+</td></tr>
+</tbody></table>
 

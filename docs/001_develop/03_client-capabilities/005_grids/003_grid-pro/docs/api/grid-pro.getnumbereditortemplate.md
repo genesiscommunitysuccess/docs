@@ -53,7 +53,7 @@ _(Optional)_ The design system prefix to use. Defaults to 'foundation'.
 
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[NumberEditor](./grid-pro.numbereditor.md)<!-- -->, any&gt;
+import("@microsoft/fast-element").ViewTemplate&lt;[NumberEditor](./grid-pro.numbereditor.md), any&gt;
 
 A Select component template prefixed with the correct design system.
 

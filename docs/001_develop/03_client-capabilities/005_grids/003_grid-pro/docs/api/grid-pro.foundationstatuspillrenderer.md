@@ -61,9 +61,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; styles: import("@microsoft/fast-element").ElementStyles; }, typeof [StatusPillRenderer](./grid-pro.statuspillrenderer.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; styles: import("@microsoft/fast-element").ElementStyles; }, typeof [StatusPillRenderer](./grid-pro.statuspillrenderer.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-status-pill-renderer<!-- -->&gt;
+HTML Element: &lt;foundation-status-pill-renderer&gt;
 

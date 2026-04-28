@@ -7,7 +7,7 @@ format: md
 
 ## GridProBaseDatasource.isDisconnected() method
 
-Returns true if the grid has the ds-disconnected attribute.
+Returns true if the datasource is disconnected.
 
 **Signature:**
 

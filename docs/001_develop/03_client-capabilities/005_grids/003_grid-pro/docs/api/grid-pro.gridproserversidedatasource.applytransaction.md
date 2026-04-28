@@ -13,7 +13,7 @@ format: md
 **Signature:**
 
 ```typescript
-applyTransaction(agTransaction: RowDataTransaction): ServerSideTransactionResult;
+applyTransaction(transaction: any): any;
 ```
 
 ## Parameters
@@ -36,12 +36,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-agTransaction
+transaction
 
 
 </td><td>
 
-RowDataTransaction
+any
 
 
 </td><td>
@@ -52,5 +52,5 @@ RowDataTransaction
 
 **Returns:**
 
-ServerSideTransactionResult
+any
 

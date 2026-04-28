@@ -59,9 +59,9 @@ _(Optional)_
 
 **Returns:**
 
-import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [ActionsMenuRenderer](./grid-pro.actionsmenurenderer.md)<!-- -->&gt;
+import("@microsoft/fast-foundation").FoundationElementRegistry&lt;{ baseName: string; template: import("@microsoft/fast-element").ViewTemplate&lt;any, any&gt;; }, typeof [ActionsMenuRenderer](./grid-pro.actionsmenurenderer.md)&gt;
 
 ## Remarks
 
-HTML Element: &lt;<!-- -->foundation-grid-pro-actions-menu-renderer<!-- -->&gt;
+HTML Element: &lt;foundation-grid-pro-actions-menu-renderer&gt;
 

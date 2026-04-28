@@ -278,6 +278,22 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.9
+
+###### Fixes
+
+* `genesis-db` : Optimistic concurrency strict upsertAll with new record throws exception when timestamp not provided 
+
+#### 8.15.8
+
+###### Breaking changes
+
+* `coreproduct` : Remove MigrateDictionaryToGenesis scripts broken by dta dependencies removal in 8.15.0 
+
+###### Fixes
+
+* `genesis-pal-dataserver` : Return defensive copy from MultiRowEntityToRowMap.recordsForEntity to prevent concurrent iteration on live LongHashSet 
+
 #### 8.15.7
 
 ###### Fixes

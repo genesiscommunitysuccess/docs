@@ -40,6 +40,25 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[availableCriteriaFields](./foundation-comms.datasourcemetadata.availablecriteriafields.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [availableIndexes](./foundation-comms.datasourcemetadata.availableindexes.md)
 
 
@@ -51,6 +70,25 @@ Description
 </td><td>
 
 [IndexDetail](./foundation-comms.indexdetail.md)\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[availableSortableFields](./foundation-comms.datasourcemetadata.availablesortablefields.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string\[\]
 
 
 </td><td>

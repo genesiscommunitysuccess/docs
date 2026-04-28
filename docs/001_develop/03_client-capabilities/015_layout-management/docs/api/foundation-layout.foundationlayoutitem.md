@@ -24,6 +24,8 @@ This element is used to wrap html elements and configure their layout settings a
 
 This is a simple component which is only used to define the layout splits; any JavaScript API interactions or custom styling is used via [FoundationLayout](./foundation-layout.foundationlayout.md).
 
+The item can either use slotted content or a factory function registered via [registerFactory()](./foundation-layout.registerfactory.md). When a factory is registered with the same name as the registration attribute, it takes precedence over slotted content.
+
 ## Properties
 
 <table><thead><tr><th>

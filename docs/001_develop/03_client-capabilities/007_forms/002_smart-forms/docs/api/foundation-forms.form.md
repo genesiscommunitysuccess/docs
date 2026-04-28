@@ -60,6 +60,25 @@ Allows to provide set of additional renderers used by the form.
 </td></tr>
 <tr><td>
 
+[approvalMessageLabel](./foundation-forms.form.approvalmessagelabel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Label for the approval message field in the approval dialog.
+
+
+</td></tr>
+<tr><td>
+
 [confirmationMessage](./foundation-forms.form.confirmationmessage.md)
 
 
@@ -207,6 +226,25 @@ string
 </td><td>
 
 Name of the backend resource which will provide metadata used to generate form and later used for submitting data
+
+
+</td></tr>
+<tr><td>
+
+[setApprovalMessage](./foundation-forms.form.setapprovalmessage.md)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+When enabled, adds an APPROVAL\_MESSAGE field to the form schema. This field will be sent at root level alongside DETAILS when submitting.
 
 
 </td></tr>
