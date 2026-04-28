@@ -313,6 +313,48 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
 * `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
 
+#### 8.15.5
+
+###### Fixes
+
+* `genesis-db` : Translate SQL select aliases correctly in SqlStatementTranslator
+* `genesis-db` : Reset oracle sequence values and continue setsequence batch on row errors 
+
+#### 8.15.4
+
+###### Features
+
+* `docker` : Optimise generated Dockerfile build 
+
+###### Performance improvements
+
+* `genesis-pal-dataserver` : Batch enrichment DB lookups to reduce N round-trips to 1
+* `genesis-pal-dataserver` : Parallelize client fan-out in DataserverUpdateProcessor 
+* `genesis-pal-dataserver` : Replace runBlocking with non-blocking dispatch in ConnectionManager 
+
+###### Fixes
+
+* `genesis-commons` : DST-safe week boundary in dateTimeIsInRange tests
+* `genesis-criteria` : `dateTimeIsInRange` throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* `genesis-pal-dataserver` : Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites
+* `genesis-pal-dataserver` : Fix auth update silent data loss and batch emissions 
+* `genesis-pal-dataserver` : Fix enriched row state not cleaned up on row deletion 
+* `remap` : Add FDB transaction limit checks whilst performing batch write operations to prevent blocker failures whislt executing remap 
+
+#### 8.15.3
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Reduce memory footprint of backward join cache by optimising backward joins implementation and add special case for Identity branches 
+
+###### Fixes
+
+* `exec-gradle-plugin` : Ensure AppDistZip and AppDistTarGz files are compatible with gradle config cache 
+* `exec-gradle-plugin` : Replace stock processes with site-specific processes per groupId instead of merging 
+* `genesis-db` : Correct threading in jms update queue implementation 
+* `genesis-environment` : Improve remap handling in complex situations 
+
+
 #### 8.15.2
 
 ###### Features
