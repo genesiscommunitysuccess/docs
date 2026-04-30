@@ -319,6 +319,86 @@ And you can click on the **Add** or **Edit** button to view/edit the form.
 ![](/img/foundation-entity-management/entity-counterparty-form-add-extended.png)
 ![](/img/foundation-entity-management/entity-counterparty-form-edit-extended.png)
 
+### Configuring the datasourceConfig
+
+The `datasourceConfig` property controls how `entity-management` interacts with the configured backend resource.
+This lets you tune filtering, sorting, paging, polling, and request payload behavior without changing the component structure.
+
+#### 1) Minimal config with polling
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    pollingInterval: 5000,
+  })}
+></entity-management>
+```
+
+#### 2) Filter and sort records
+
+```typescript
+<entity-management
+  resourceName="ALL_TRADES"
+  :datasourceConfig=${() => ({
+    criteria: 'STATUS == "OPEN"',
+    orderBy: 'LAST_UPDATED',
+    reverse: true,
+    maxRows: 200,
+  })}
+></entity-management>
+```
+
+#### 3) Return only selected fields
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    fields: 'COUNTERPARTY_ID,NAME,ENABLED',
+    maxRows: 100,
+  })}
+></entity-management>
+```
+
+#### 4) Request/reply resource example
+
+```typescript
+<entity-management
+  resourceName="PROFILE_USER"
+  :datasourceConfig=${() => ({
+    request: {
+      PROFILE_NAME: 'ADMIN',
+      RIGHT_CODE: '*',
+    },
+    requestAutoSetup: true,
+    disablePolling: true,
+  })}
+></entity-management>
+```
+
+#### 5) Trigger extra polls from events with `pollTriggerEvents`
+
+```typescript
+<entity-management
+  resourceName="ALL_COUNTERPARTYS"
+  :datasourceConfig=${() => ({
+    pollingInterval: 10000,
+    pollTriggerEvents: [
+      'EVENT_COUNTERPARTY_INSERT',
+      'EVENT_COUNTERPARTY_MODIFY',
+      'EVENT_COUNTERPARTY_DELETE',
+      'EVENT_REFERENCE_DATA_REFRESHED',
+    ],
+  })}
+  createEvent="EVENT_COUNTERPARTY_INSERT"
+  updateEvent="EVENT_COUNTERPARTY_MODIFY"
+  deleteEvent="EVENT_COUNTERPARTY_DELETE"
+></entity-management>
+```
+
+For the full `DatasourceConfiguration` reference, see the [API docs](./docs/api/foundation-entity-management.datasourceconfiguration.md).
+
 ### Common attributes & properties
 
 The most common attributes and properties you can configure for `entity-management` are listed below.
@@ -349,7 +429,7 @@ If you set multiple `entity-management` components in your application, **you mu
 
 | Property                  | Description                                          |   Mandatory |
 | -------------------------- | -----------------------------------------------------| ------------|
-| `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration.md). | No  |
+| `datasourceConfig`         | configures the interaction with the back-end resource. | No  |
 | `defaultEntityValues`      | an object that contains default values to populate the form when the user is adding an entity. | No  |
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to customise the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
