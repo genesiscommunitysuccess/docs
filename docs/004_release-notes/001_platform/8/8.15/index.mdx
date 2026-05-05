@@ -278,6 +278,50 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.14
+
+###### Dependency changes
+
+* Bump jackson 2.21.3, log4j 2.25.4, aws-jdbc 3.3.0, debezium 3.5.0, bcprov 1.84, plexus-utils 3.6.1, camel 4.18.2
+
+#### 8.15.13
+
+###### Features
+
+* `coreproduct` : Make MANIFEST_SKIP_PREFIXES configurable via env var 
+* `genesis-db` : Configurable IO dispatcher for SyncEntityDb
+
+#### 8.15.12
+
+###### Fixes
+
+* `coreproduct` : Skip maven-artifact and plexus-utils MANIFEST refs in getDependenciesForJar
+
+#### 8.15.11
+
+###### Breaking changes
+
+* `genesis-router` : Sanitise output strings for XSS attacks 
+
+###### Dependency changes
+
+* Make opentelemetry-javaagent compileOnly in genesis-tracing
+* Bump Javalin from 6.7.0 to 7.2.0, Jetty from 11.0.25 to 12.1.8 and MCP SDK from 0.10.0 to 1.1.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.25.0 to 2.27.0(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.25.0 to 2.27.0
+* Bump kafkaClientVersion from 4.1.1 to 4.1.2
+
+###### Features
+
+* `gradle` : Add packagingStrategy property to ExecExtension for app distribution folder structure
+
+###### Fixes
+
+* Exclude plexus-utils from distribution zip
+
+#### 8.15.10
+
+* This release was unintentionally published during our deployment process. It contains no new features, bug fixes, or changes from the previous version. Please use the latest patch release for this minor version.
+
 #### 8.15.9
 
 ###### Fixes
