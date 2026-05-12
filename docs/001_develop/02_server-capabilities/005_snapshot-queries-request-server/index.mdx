@@ -474,7 +474,8 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
   // all three have these fields available:
   // 1. db          - readonly entity database
   // 2. userName    - the name of the user who made the request
-  // 3. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
+  // 3. details     - Request.Details from the inbound request: orderBy, offset, viewNumber, maxRows, criteriaMatch
+  // 4. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
 
   // either:
   reply { request ->
@@ -523,6 +524,26 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
             hello.name -> World("Hello ${hello.name}")
             else -> World("You're not ${hello.name}!")
         }
+    }
+}
+```
+
+The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. This is useful when your handler needs to drive ordering or pagination itself rather than relying on the platform defaults.
+
+```kotlin
+data class TradeQuery(val counterpartyId: String)
+data class TradeSummary(val tradeId: String, val price: Double)
+
+requestReply<TradeQuery, TradeSummary>("TRADES_SORTED") {
+    replyList { query ->
+        val trades = db.getBulk(TRADE).toList()
+        val sorted = when (details.orderBy) {
+            "PRICE DESC" -> trades.sortedByDescending { it.tradePrice }
+            "PRICE ASC"  -> trades.sortedBy { it.tradePrice }
+            else         -> trades
+        }
+        val offset = details.offset?.toInt() ?: 0
+        sorted.drop(offset).map { TradeSummary(it.tradeId, it.tradePrice) }
     }
 }
 ```
