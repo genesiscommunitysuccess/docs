@@ -92,7 +92,7 @@ We're going to link two components using a variable in the store. The first comp
     ```
 </CollapsibleSlot>
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -177,7 +177,7 @@ Pasting the above example into your codebase and adding it to the HTML should en
 
 Next, we are going to use a simple component to allow you to filter out certain rows of data.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -313,7 +313,7 @@ The final steps are to interact with the store from the two components. Configur
 
 In Genesis syntax you can dispatch an event from a standard component, but it's good practice to use the `EventEmitter` mixin to strongly type the component.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -397,7 +397,7 @@ At this stage you should be able to activate the `console.log` statement in the 
 
 The very last step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable`, it could be used directly in a template binding (in a Genesis syntax component); as the store updates, the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>`, the filtering cannot be done via a template binding directly. Instead, the `binding` property on a reference to the store is used.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -574,7 +574,7 @@ As well as reacting to the `@observable` directly on the html, there are additio
 
 <CollapsibleSlot title="components.ts" description="Full example code for the two components">
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
