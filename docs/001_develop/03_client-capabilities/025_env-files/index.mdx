@@ -11,6 +11,9 @@ tags:
 sidebar_position: 25
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The `genx run` and `genx build` commands read the contents of the `client/.env` file to set global variables in the client build. For the typescript compiler to work these values must also be declared in the `client/globals.d.ts` file. This section covers environment file configuration and the [Environment Indicator](./environment-indicator) component for displaying environment information in your application.
 
 The `.env` file is not created by default so you must create it yourself. You can use this to set global variables at build time that you can use in the client. This can be used for many things such as
@@ -65,6 +68,27 @@ Running genx without the `DOT_ENV_FILE=analytics` the component will not display
 
 ```genx dev -e```
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function ExampleComponent() {
+  return (
+    <div className="container">
+      <div className="main-section">{/* ... */}</div>
+      {GENX_ANALYTICS_ENABLED === 'true' && (
+        <div className="analytics-section">{/* ... */}</div>
+      )}
+    </div>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```ts
 import { customElement, html, when } from '@genesislcap/web-core';
 
@@ -86,6 +110,32 @@ import { customElement, html, when } from '@genesislcap/web-core';
 })
 export class ExampleComponent {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'example-component',
+  template: `
+    <div class="container">
+      <div class="main-section"><!-- ... --></div>
+      <div *ngIf="analyticsEnabled" class="analytics-section"><!-- ... --></div>
+    </div>
+  `,
+  standalone: true,
+})
+export class ExampleComponent {
+  analyticsEnabled = GENX_ANALYTICS_ENABLED === 'true';
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Example 2 - Setting a css var in the design system
 

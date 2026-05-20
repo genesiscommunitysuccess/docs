@@ -38,6 +38,9 @@ tags:
 sidebar_position: 15
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This file contains some extra configuration option explanations, as well as some examples.
 
 ## Autosaving layout
@@ -295,6 +298,38 @@ For an example where the `Commodities` object has three positions, you will see 
 
 Using the `when` directive:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function Analytics() {
+  const showIndexFunds = true; // fixed at init — do not toggle after layout loads
+
+  return (
+    <>
+      <button className="toggle">Toggle Index</button>
+      <rapid-layout>
+        <rapid-layout-region>
+          <rapid-layout-item>
+            <chart type="stocks"></chart>
+          </rapid-layout-item>
+          {showIndexFunds && (
+            <rapid-layout-item>
+              <chart type="index-funds"></chart>
+            </rapid-layout-item>
+          )}
+        </rapid-layout-region>
+      </rapid-layout>
+    </>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```javascript
 @customElement({
 	name: 'my-element',
@@ -322,6 +357,18 @@ const template = html<Analytics>`
 	</rapid-layout>
 `;
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+// Use *ngIf for the index-funds pane at layout init only — same constraint as Genesis when
+```
+
+</TabItem>
+
+</Tabs>
 
 You would see both items rendered like this:
 ```
@@ -380,6 +427,64 @@ Items registered using the declarative API use the same pool of registration nam
 #### Contained example
 
 This is a complete example of the above, omitting imports.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useEffect, useRef } from 'react';
+
+export function ContainedExample() {
+  const layoutRef = useRef<any>(null);
+  let addedPaneCount = 0;
+
+  useEffect(() => {
+    const layout = layoutRef.current;
+    if (!layout) return;
+
+    const h1 = document.createElement('h1');
+    h1.innerHTML = 'Example 1';
+    const p1 = document.createElement('p');
+    p1.innerHTML = 'Ex 1';
+    // ...register items '2' and '3' similarly
+
+    layout.registerItem('1', [h1, p1]);
+    layout.tryLoadLayoutFromLocalStorage();
+  }, []);
+
+  const addItem = (registration: string) => {
+    layoutRef.current?.addItem({
+      registration,
+      title: `${registration} (${(addedPaneCount += 1)})`,
+      closable: true,
+    });
+  };
+
+  const missingItemOverride = (missingItem: string) => `Missing Item: ${missingItem}`;
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gridAutoRows: 'minmax(7vh, auto)' }}>
+      <div>
+        <rapid-button onClick={() => addItem('1')}>Test 1</rapid-button>
+        <rapid-button onClick={() => addItem('2')}>Test 2</rapid-button>
+        <rapid-button onClick={() => addItem('3')}>Test 3</rapid-button>
+      </div>
+      <div style={{ gridRowStart: 2, gridRowEnd: 12 }}>
+        <rapid-layout
+          ref={layoutRef}
+          auto-save-key="layout-preview-contained-example"
+          missingItemPlaceholder={missingItemOverride}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 // template
@@ -444,6 +549,18 @@ export class ContainedExample extends GenesisElement {
   missingItemOverride = () => (missingItem: string) => `Missing Item: ${missingItem}`;
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+// Use @ViewChild on rapid-layout and the same registerItem / addItem API in ngAfterViewInit
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Loading serialized layouts
 

@@ -34,6 +34,32 @@ For more detailed guidance on defining and customizing forms, refer to our secti
 
 To set default values when the form is displayed, use the `defaultEntityValues` property and provide an object containing the desired default values. This enables you to pre-fill the form with specific data, making it more convenient for users and ensuring consistency across form submissions. Here's an example:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+const defaultData = {
+  COUNTERPARTY_ID: 'DEFAULT_ID',
+  ENABLED: true,
+};
+
+export function EntityManagementForm() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      defaultEntityValues={defaultData}
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 const defaultData = {
   COUNTERPARTY_ID: 'DEFAULT_ID',
@@ -54,6 +80,40 @@ const defaultData = {
 export class EntityManagementForm extends GenesisElement {}
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const defaultData = {
+  COUNTERPARTY_ID: 'DEFAULT_ID',
+  ENABLED: true,
+};
+
+@Component({
+  selector: 'entity-management-form',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      [defaultEntityValues]="defaultData"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFormComponent {
+  defaultData = defaultData;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 And here we can see that default value in the form:
 
 ![](/img/default-value-form.png)
@@ -67,6 +127,56 @@ When you need to control the content and behavior of a form, especially if you w
 - **`updateFormUiSchema`** - Similarly, the `updateFormUiSchema` attribute is used when modifying an existing record. This allows you to define a schema specifically for editing an entity, which may differ from the creation form in terms of field visibility, default values, or validation rules. For example, you may want to disable certain fields or pre-populate them with existing data when updating an entity.
 
 If you're building a system where users can either add new entries or edit existing ones, using these attributes ensures that the forms are displayed and behave as required for each scenario. For instance, a "Create" form may have all fields enabled for user input, while an "Update" form may pre-fill certain fields and only allow modifications to specific attributes.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import type { UiSchema } from '@genesislcap/foundation-forms';
+
+const counterpartyCreateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
+    {
+      type: 'Control',
+      label: 'Counterparty Lei',
+      scope: '#/properties/COUNTERPARTY_LEI',
+    },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+const counterpartyUpdateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+export function EntityManagementExample() {
+  return (
+    <entity-management
+      enable-search-bar
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createFormUiSchema={counterpartyCreateUIschema}
+      updateFormUiSchema={counterpartyUpdateUIschema}
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 const counterpartyCreateUIschema: UiSchema = {
@@ -110,6 +220,64 @@ const counterpartyUpdateUIschema: UiSchema = {
 export class EntityManagementExample extends GenesisElement {}
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const counterpartyCreateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
+    {
+      type: 'Control',
+      label: 'Counterparty Lei',
+      scope: '#/properties/COUNTERPARTY_LEI',
+    },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+const counterpartyUpdateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+@Component({
+  selector: 'entity-management-example',
+  template: `
+    <entity-management
+      enable-search-bar
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      [createFormUiSchema]="counterpartyCreateUIschema"
+      [updateFormUiSchema]="counterpartyUpdateUIschema"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementExampleComponent {
+  counterpartyCreateUIschema = counterpartyCreateUIschema;
+  counterpartyUpdateUIschema = counterpartyUpdateUIschema;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Configuring submit-failure notifications
 
 Entity Management exposes an `errorNotificationConfig` property to configure how submit failures are displayed.
@@ -117,6 +285,41 @@ Entity Management exposes an `errorNotificationConfig` property to configure how
 - By default, errors are shown as an error snackbar.
 - You can override the notification surface (for example, toast), while keeping titles and body messages unchanged.
 - The same config is reused for optimistic concurrency warnings and other submit errors.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+
+const errorNotificationConfig: NotificationStructure['config'] = {
+  toast: {
+    type: 'warning',
+    autoClose: true,
+    closeTimeout: 5000,
+    position: 'top-left',
+  },
+};
+
+export function EntityManagementNotificationExample() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      errorNotificationConfig={errorNotificationConfig}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 import type { NotificationStructure } from '@genesislcap/foundation-notifications';
@@ -144,5 +347,47 @@ import type { NotificationStructure } from '@genesislcap/foundation-notification
 })
 export class EntityManagementNotificationExample extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const errorNotificationConfig: NotificationStructure['config'] = {
+  toast: {
+    type: 'warning',
+    autoClose: true,
+    closeTimeout: 5000,
+    position: 'top-left',
+  },
+};
+
+@Component({
+  selector: 'entity-management-notification-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      [errorNotificationConfig]="errorNotificationConfig"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementNotificationExampleComponent {
+  errorNotificationConfig = errorNotificationConfig;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 

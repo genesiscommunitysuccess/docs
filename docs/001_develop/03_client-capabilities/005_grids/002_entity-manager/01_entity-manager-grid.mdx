@@ -40,6 +40,39 @@ The example array below creates six columns, specifying the width of each one.
 - Three of the fields use `cellStyle` to control the alignment of the values displayed.
 - One field (whose column heading is "Status") also uses `cellStyle` to control the colour of the values displayed.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { ColDef } from '@ag-grid-community/core';
+
+const columnDefs: ColDef[] = [
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name', cellStyle: { 'text-align': 'right', color: 'red' } },
+  { field: 'ENABLED', headerName: 'Enabled', width: 100 },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+];
+
+export function EntityManagementColumns() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      columns={columnDefs}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 const columnDefs: ColDef[] = [
   { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
@@ -64,6 +97,46 @@ const columnDefs: ColDef[] = [
 })
 export class EntityManagementColumns extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { ColDef } from '@ag-grid-community/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const columnDefs: ColDef[] = [
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name', cellStyle: { 'text-align': 'right', color: 'red' } },
+  { field: 'ENABLED', headerName: 'Enabled', width: 100 },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+];
+
+@Component({
+  selector: 'entity-management-columns',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      [columns]="columnDefs"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementColumnsComponent {
+  columnDefs = columnDefs;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 As a result of these column definitions, the following grid is displayed:
 

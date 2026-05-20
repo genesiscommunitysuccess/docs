@@ -32,6 +32,30 @@ For more detailed guidance on defining and customizing filters, refer to our sec
 
 To enable the built-in filter functionality, use the `enable-filters` attribute. When enabled, a "Filter Data" button will appear in the header of the entity management component. Clicking this button opens a modal dialog containing the filter interface.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function EntityManagementFilters() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'entity-management-example',
@@ -50,11 +74,79 @@ To enable the built-in filter functionality, use the `enable-filters` attribute.
 export class EntityManagementFilters extends GenesisElement {}
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-filters',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFiltersComponent {}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Configuring filter UI with UISchema
 
 When you need to control which fields appear in the filter interface and how they are displayed, you can use the `filtersUiSchema` property. This allows you to define a custom UI schema that specifies the filter fields, their labels, and layout.
 
 The `filtersUiSchema` follows the same structure as form UI schemas, using a `VerticalLayout` with `Control` elements for each filterable field.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import type { UiSchema } from '@genesislcap/foundation-forms';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+export function EntityManagementFilters() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filtersUiSchema={counterpartyFiltersUIschema}
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 import type { UiSchema } from '@genesislcap/foundation-forms';
@@ -88,6 +180,51 @@ const counterpartyFiltersUIschema: UiSchema = {
 export class EntityManagementFilters extends GenesisElement {}
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+@Component({
+  selector: 'entity-management-filters',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      [filtersUiSchema]="counterpartyFiltersUIschema"
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFiltersComponent {
+  counterpartyFiltersUIschema = counterpartyFiltersUIschema;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Filter persistence
 
 The `show-filter-persistence-controls` attribute controls whether users can save and load filter configurations. When enabled (default: `true`), the filter modal displays controls that allow users to:
@@ -97,6 +234,31 @@ The `show-filter-persistence-controls` attribute controls whether users can save
 - Delete saved filter configurations
 
 This feature is particularly useful for users who frequently apply the same filter criteria, as it allows them to quickly restore their preferred filter settings.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function EntityManagementFilters() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 @customElement({
@@ -116,6 +278,37 @@ This feature is particularly useful for users who frequently apply the same filt
 })
 export class EntityManagementFilters extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-filters',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      show-filter-persistence-controls
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFiltersComponent {}
+```
+
+</TabItem>
+
+</Tabs>
 
 To disable filter persistence controls, set the attribute to `false`:
 
@@ -137,6 +330,31 @@ You can control where the filter modal appears on screen using the `filters-moda
 
 The default position is `left`.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function EntityManagementFilters() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'entity-management-example',
@@ -156,9 +374,89 @@ The default position is `left`.
 export class EntityManagementFilters extends GenesisElement {}
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-filters',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFiltersComponent {}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### Complete example
 
 Here's a complete example that demonstrates all filter configuration options:
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import type { UiSchema } from '@genesislcap/foundation-forms';
+import { ColDef } from '@ag-grid-community/core';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+const columnDefs: ColDef[] = [
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name' },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+  { field: 'ENABLED', headerName: 'Enabled' },
+];
+
+export function EntityManagementFilters() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      filtersUiSchema={counterpartyFiltersUIschema}
+      show-filter-persistence-controls
+      enable-search-bar
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      columns={columnDefs}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 import type { UiSchema } from '@genesislcap/foundation-forms';
@@ -188,7 +486,7 @@ const counterpartyFiltersUIschema: UiSchema = {
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
       createEvent="EVENT_COUNTERPARTY_INSERT"
-      :columns=${(): ColDef[] => [
+      :columns=${() => [
         { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
         { field: 'NAME', headerName: 'Name' },
         { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
@@ -199,6 +497,62 @@ const counterpartyFiltersUIschema: UiSchema = {
 })
 export class EntityManagementFilters extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import type { UiSchema } from '@genesislcap/foundation-forms';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const counterpartyFiltersUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Counterparty ID' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Name' },
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_LEI', label: 'LEI' },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+  ],
+};
+
+const columnDefs = [
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name' },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
+  { field: 'ENABLED', headerName: 'Enabled' },
+];
+
+@Component({
+  selector: 'entity-management-filters',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      enable-filters
+      filters-modal-position="centre"
+      [filtersUiSchema]="counterpartyFiltersUIschema"
+      show-filter-persistence-controls
+      enable-search-bar
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      [columns]="columnDefs"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementFiltersComponent {
+  counterpartyFiltersUIschema = counterpartyFiltersUIschema;
+  columnDefs = columnDefs;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ### How filters work
 
@@ -212,4 +566,3 @@ When filters are enabled:
 6. Users can save and load filter configurations (if persistence is enabled)
 
 The filter criteria are combined with the base criteria from the datasource configuration and any search bar criteria, allowing for complex filtering scenarios.
-

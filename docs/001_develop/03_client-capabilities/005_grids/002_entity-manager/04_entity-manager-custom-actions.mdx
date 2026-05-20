@@ -41,6 +41,43 @@ Custom actions provide a flexible way to add business-specific functionality to 
 
 To add custom actions to your entity management component, use the `customActions` property and provide an array of [`CustomAction`](./docs/api/foundation-entity-management.customaction.md) objects:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+
+const customActions: CustomAction[] = [
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'copy',
+    tooltip: 'Create a copy of this counterparty',
+  },
+];
+
+export function EntityManagementExample() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      customActions={customActions}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
 
@@ -71,6 +108,50 @@ const customActions: CustomAction[] = [
 })
 export class EntityManagementExample extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const customActions: CustomAction[] = [
+  {
+    name: 'Duplicate',
+    action: {
+      type: 'event',
+      event: 'EVENT_COUNTERPARTY_INSERT',
+      hasForm: false,
+    },
+    position: CrudMenuPosition.Column,
+    icon: 'copy',
+    tooltip: 'Create a copy of this counterparty',
+  },
+];
+
+@Component({
+  selector: 'entity-management-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      [customActions]="customActions"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementExampleComponent {
+  customActions = customActions;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Action types
 
@@ -539,7 +620,33 @@ const customActions: CustomAction[] = [
     },
   },
 ];
+```
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function EntityManagementExample() {
+  return (
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      customActions={customActions}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
 @customElement({
   name: 'entity-management-example',
   template: html`
@@ -556,6 +663,38 @@ const customActions: CustomAction[] = [
 })
 export class EntityManagementExample extends GenesisElement {}
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      [customActions]="customActions"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementExampleComponent {
+  customActions = customActions;
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Best practices
 

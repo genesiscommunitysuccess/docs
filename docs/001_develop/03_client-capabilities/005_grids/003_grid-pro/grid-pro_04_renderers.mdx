@@ -25,6 +25,9 @@ import {
   GridProExampleStringEditor,
 } from './grid-pro_examples.js'
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Renderers and editors
 
 ## Overview
@@ -572,6 +575,32 @@ export class CustomRenderer extends GenesisElement implements ICellRendererComp 
 
 Register custom components using the `gridComponents` property:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+const gridComponents = {
+  customRenderer: CustomRenderer,
+  customStatusPill: CustomStatusPillRenderer,
+  customEditor: CustomEditor,
+  advancedDateEditor: AdvancedDateEditor,
+  customFilter: CustomFilter,
+};
+
+export function MyGrid() {
+  return (
+    <rapid-grid-pro gridComponents={gridComponents} auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES"></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'my-grid',
@@ -599,6 +628,38 @@ export class MyGrid extends GenesisElement {
   };
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-grid',
+  template: `
+    <rapid-grid-pro [gridComponents]="gridComponents" auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES"></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyGridComponent {
+  gridComponents = {
+    customRenderer: CustomRenderer,
+    customStatusPill: CustomStatusPillRenderer,
+    customEditor: CustomEditor,
+    advancedDateEditor: AdvancedDateEditor,
+    customFilter: CustomFilter,
+  };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Key considerations
 
