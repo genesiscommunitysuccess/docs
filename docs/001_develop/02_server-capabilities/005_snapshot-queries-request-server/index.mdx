@@ -474,7 +474,8 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
   // all three have these fields available:
   // 1. db          - readonly entity database
   // 2. userName    - the name of the user who made the request
-  // 3. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
+  // 3. details     - Request.Details from the inbound request: orderBy, offset, viewNumber, maxRows, criteriaMatch
+  // 4. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
 
   // either:
   reply { request ->
@@ -523,6 +524,27 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
             hello.name -> World("Hello ${hello.name}")
             else -> World("You're not ${hello.name}!")
         }
+    }
+}
+```
+
+The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. Combined with [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria), the platform can do the sorting and paging at the database layer.
+
+```kotlin
+data class TradeQuery(val counterpartyId: String)
+
+requestReply<TradeQuery, Trade>("TRADES_BY_COUNTERPARTY") {
+    replyList { query ->
+        val orderBy = details.orderBy
+        val maxRows = details.maxRows ?: 100
+        val viewNumber = details.viewNumber
+
+        db.getByCriteria(
+            criteria = "COUNTERPARTY_ID == '${query.counterpartyId}'",
+            ordering = OrderSpecProvider.fromString(orderBy),
+            paging = PagingSpec(maxRows, viewNumber),
+            table = Trade::class,
+        ).toList()
     }
 }
 ```
