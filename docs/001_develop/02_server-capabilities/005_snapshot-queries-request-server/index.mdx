@@ -528,22 +528,23 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. This is useful when your handler needs to drive ordering or pagination itself rather than relying on the platform defaults.
+The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. Combined with [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria), the platform can do the sorting and paging at the database layer.
 
 ```kotlin
 data class TradeQuery(val counterpartyId: String)
-data class TradeSummary(val tradeId: String, val price: Double)
 
-requestReply<TradeQuery, TradeSummary>("TRADES_SORTED") {
+requestReply<TradeQuery, Trade>("TRADES_BY_COUNTERPARTY") {
     replyList { query ->
-        val trades = db.getBulk(TRADE).toList()
-        val sorted = when (details.orderBy) {
-            "PRICE DESC" -> trades.sortedByDescending { it.tradePrice }
-            "PRICE ASC"  -> trades.sortedBy { it.tradePrice }
-            else         -> trades
-        }
-        val offset = details.offset?.toInt() ?: 0
-        sorted.drop(offset).map { TradeSummary(it.tradeId, it.tradePrice) }
+        val orderBy = details.orderBy
+        val maxRows = details.maxRows ?: 100
+        val viewNumber = details.viewNumber
+
+        db.getByCriteria(
+            criteria = "COUNTERPARTY_ID == '${query.counterpartyId}'",
+            ordering = OrderSpecProvider.fromString(orderBy),
+            paging = PagingSpec(maxRows, viewNumber),
+            table = Trade::class,
+        ).toList()
     }
 }
 ```
