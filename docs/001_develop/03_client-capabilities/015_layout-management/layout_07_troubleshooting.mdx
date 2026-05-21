@@ -38,9 +38,6 @@ tags:
 sidebar_position: 15
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Incorrect examples
 
 The following section contains examples of incorrect usage, which are useful for troubleshooting.
@@ -180,22 +177,6 @@ This is because you cannot have `<rapid-layout-item>` inside other `<rapid-layou
 
 The following is invalid:
 
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-// Invalid: toggling panes with state after layout init duplicates panels
-export function Analytics() {
-  const [showIndexFunds, setShowIndexFunds] = useState(true);
-  // Do not toggle layout items this way — use wrapper components instead
-}
-```
-
-</TabItem>
-
-<TabItem value="genesis">
-
 ```javascript
 @customElement({
 	name: 'my-element',
@@ -230,18 +211,6 @@ const template = html<Analytics>`
 	</rapid-layout>
 `;
 ```
-
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-// Invalid for the same reason — avoid *ngIf toggling layout panes after init
-```
-
-</TabItem>
-
-</Tabs>
 
 Initially, you will see both items correctly rendered like this:
 ```
@@ -296,27 +265,6 @@ new item. To fix this, you must [invalidate the cache](/develop/client-capabilit
 ### Resource-intensive component resetting in layout
 
 Say you have a component which has to initialize a resource-heavy or long-awaited asynchronous task, such as the following:
-
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-export function MockConnected() {
-  useEffect(() => {
-    // init external service
-    return () => {
-      // cleanup
-    };
-  }, []);
-  return null;
-}
-```
-
-</TabItem>
-
-<TabItem value="genesis">
-
 ```typescript
 @customElement({
   name: 'mock-connected',
@@ -336,37 +284,9 @@ export class MockConnected extends GenesisElement {
 }
 ```
 
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-@Component({ selector: 'mock-connected', template: '' })
-export class MockConnected implements OnInit, OnDestroy {
-  ngOnInit() { /* init */ }
-  ngOnDestroy() { /* cleanup */ }
-}
-```
-
-</TabItem>
-
-</Tabs>
-
 As explained in the section on [resource-intensive components](../client-layout-management-items/#resource-intensive-components), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initializing a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
-
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-// Gate init/cleanup with layout visibility flags from a parent, or use LifecycleMixin on a web component wrapper
-```
-
-</TabItem>
-
-<TabItem value="genesis">
 
 ```typescript
 @customElement({
@@ -401,18 +321,6 @@ export class MockConnected extends LifecycleMixin(GenesisElement) {
 }
 ```
 
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-// Wrap content in a Genesis web component that uses LifecycleMixin, or gate ngOnInit/ngOnDestroy similarly
-```
-
-</TabItem>
-
-</Tabs>
-
 The above is quite a comprehensive example, but it doesn't necessarily have to be so complicated. You might just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, it is useful for handling the `async` setup process properly.
 
 :::warning
@@ -422,19 +330,6 @@ It is important to capture the parameter in the example above (e.g. `const shoul
 ### Consuming lifecycle value multiple times
 
 Consider the following example, where multiple bits of functionality are being gated with `shouldRunConnect`:
-
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-// Cache layout gating flags once per effect run — same idea as capturing shouldRunConnect before DOM.queueUpdate
-```
-
-</TabItem>
-
-<TabItem value="genesis">
-
 ```typescript
 @customElement({
   name: 'mock-connected',
@@ -457,18 +352,6 @@ export class MockConnected extends LifecycleMixin(GenesisElement) {
   // Similar setup in disconnectedCallback...
 }
 ```
-
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-// Cache shouldRunConnect once per lifecycle cycle before calling otherSetup
-```
-
-</TabItem>
-
-</Tabs>
 
 In this example, when you have this item inside the layout, the functionality will not correctly be gated when you add or remove other items as intended.
 

@@ -298,38 +298,6 @@ For an example where the `Commodities` object has three positions, you will see 
 
 Using the `when` directive:
 
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-export function Analytics() {
-  const showIndexFunds = true; // fixed at init — do not toggle after layout loads
-
-  return (
-    <>
-      <button className="toggle">Toggle Index</button>
-      <rapid-layout>
-        <rapid-layout-region>
-          <rapid-layout-item>
-            <chart type="stocks"></chart>
-          </rapid-layout-item>
-          {showIndexFunds && (
-            <rapid-layout-item>
-              <chart type="index-funds"></chart>
-            </rapid-layout-item>
-          )}
-        </rapid-layout-region>
-      </rapid-layout>
-    </>
-  );
-}
-```
-
-</TabItem>
-
-<TabItem value="genesis">
-
 ```javascript
 @customElement({
 	name: 'my-element',
@@ -357,18 +325,6 @@ const template = html<Analytics>`
 	</rapid-layout>
 `;
 ```
-
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-// Use *ngIf for the index-funds pane at layout init only — same constraint as Genesis when
-```
-
-</TabItem>
-
-</Tabs>
 
 You would see both items rendered like this:
 ```
