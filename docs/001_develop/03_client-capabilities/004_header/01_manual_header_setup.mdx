@@ -10,6 +10,9 @@ tags:
 sidebar_position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 If the foundation-header component has not been implemented in your project, follow the steps below to add this micro front-end to your application.
 
 1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
@@ -32,6 +35,24 @@ It is possible for you to set up routing manually, but that won't be covered in 
 
 2. In the top-level class of your application, import the Navigation class and inject it as a dependency.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+For React applications, use the [Framework integration - React](/develop/client-capabilities/framework-integration/client-framework-integration-react) guide. Register `@genesislcap/foundation-header` with your design system:
+
+```tsx
+import { configure as configureHeader } from '@genesislcap/foundation-header/config';
+
+configureHeader({
+  // navigation items, logo, etc.
+});
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```javascript {1,6}
 import { GenesisElement, customElement, inject } from '@genesislcap/web-core';
 import { Navigation } from '@genesislcap/foundation-header';
@@ -46,11 +67,50 @@ export class MainApplication extends GenesisElement {
 }
 ```
 
-:::tip
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Navigation } from '@genesislcap/foundation-header';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <div class="container">
+      <foundation-header show-luminance-toggle-button></foundation-header>
+      <!-- router outlet -->
+    </div>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [Navigation],
+})
+export class AppComponent {
+  constructor(public navigation: Navigation) {}
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip Genesis projects
 If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@genesislcap/web-core` package.
 :::
 
 3. Set a reference to the `navigation` object on the foundation-router when you instantiate it. This enables you to set up navigation functionality from the navigation bar in the [navigation items step](/develop/client-capabilities/header/client-header-customise/#navigation-items).
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+Wire navigation through your React router and header configuration (see [Framework integration - React](/develop/client-capabilities/framework-integration/client-framework-integration-react)).
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```javascript
 const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -58,7 +118,36 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+Pass the injected `Navigation` service into your Angular router setup and header configuration as required by your app.
+
+</TabItem>
+
+</Tabs>
+
 4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function AppLayout() {
+  return (
+    <div className="container">
+      <foundation-header show-luminance-toggle-button />
+      {/* Other markup */}
+    </div>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript {3}
 export const defaultLayout = new GenesisElementLayout(html`
@@ -78,3 +167,24 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+@Component({
+  template: `
+    <div class="container">
+      <foundation-header show-luminance-toggle-button></foundation-header>
+      <!-- Other markup -->
+    </div>
+  `,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppLayoutComponent {}
+```
+
+</TabItem>
+
+</Tabs>

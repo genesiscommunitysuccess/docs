@@ -11,6 +11,9 @@ tags:
   - smart forms
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Foundation Forms - custom control renderers
 
 You can create custom control renderers to work alongside the standard set of foundation form controls.
@@ -118,11 +121,33 @@ export const formsWithCustomRenderersUISchema: UiSchema = {
 
 Then in your template, pass your `uischema` configured with a segmented control and set the `renderers` attribute to include your custom renderer in addition to the standard set of foundation forms renderers.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
-```ts
+<TabItem value="react">
+
+```tsx
 import { SegmentedControlRenderer } from './segmented-control-renderer';
 import { renderers } from '@genesislcap/foundation-forms';
-...
+
+export function FormWithCustomRenderers() {
+  return (
+    <foundation-form
+      renderers={[...renderers, SegmentedControlRenderer]}
+      design-system-prefix="rapid"
+      uischema={formsWithCustomRenderersUISchema}
+      jsonSchema={formsWithCustomRenderersJsonSchema}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
+import { SegmentedControlRenderer } from './segmented-control-renderer';
+import { renderers } from '@genesislcap/foundation-forms';
 
 <foundation-form
     :renderers="${() => [...renderers, SegmentedControlRenderer]}"
@@ -132,6 +157,37 @@ import { renderers } from '@genesislcap/foundation-forms';
 >
 </foundation-form>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SegmentedControlRenderer } from './segmented-control-renderer';
+import { renderers } from '@genesislcap/foundation-forms';
+
+@Component({
+  selector: 'form-with-custom-renderers',
+  template: `
+    <foundation-form
+      [renderers]="formRenderers"
+      design-system-prefix="rapid"
+      [uischema]="formsWithCustomRenderersUISchema"
+      [jsonSchema]="formsWithCustomRenderersJsonSchema"
+    ></foundation-form>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class FormWithCustomRenderersComponent {
+  formRenderers = [...renderers, SegmentedControlRenderer];
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 If everything is working, you should see your new Segmented Control custom renderer.
 

@@ -38,74 +38,163 @@ Each filter is provided in two flavours:
 
 Both flavours are shown in the example below. This also uses `timeWindow`, but in this case, the start and end for the period are both set to a specific date and time.
 
-<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
-  <TabItem value="function">
-      ```typescript
-      import { timeWindowFilter } from '@genesislcap/foundation-filters';
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
-      @customElement({
-        name: 'my-element',
-        template: html`
-          <div class="container">
-            <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
-              Start Period
-            </rapid-text-field>
-            <rapid-text-field type="datetime-local" value=${sync((x) => x.endDate)}>
-              End Period
-            </rapid-text-field>
-            <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
-            <span>${(x) => x.resultString}</span>
-          </div>
-        `,
-      })
-      export class MyElement extends GenesisElement {
-        @observable startDate: string = "2024-11-21T09:00";
-        @observable endDate: string = "2024-11-21T18:00";
-        @observable resultString: string;
-        checkWindow() {
-          this.resultString = timeWindowFilter(this.startDate, this.endDate)
-            ? 'Exists within the start and end period'
-            : 'Doesnot fall between start and end period';
-        }
-      }
+<TabItem value="react">
 
-      ```
-  </TabItem>
+```tsx
+import { useState } from 'react';
+import { timeWindowFilter } from '@genesislcap/foundation-filters';
 
-  <TabItem value="DI">
+export function TimeWindowFilterExample() {
+  const [startDate, setStartDate] = useState('2024-11-21T09:00');
+  const [endDate, setEndDate] = useState('2024-11-21T18:00');
+  const [resultString, setResultString] = useState('');
 
-    ```typescript
-    import { TimeWindow } from '@genesislcap/foundation-filters';
+  const checkWindow = () => {
+    setResultString(
+      timeWindowFilter(startDate, endDate)
+        ? 'Exists within the start and end period'
+        : 'Doesnot fall between start and end period',
+    );
+  };
 
-    @customElement({
-      name: 'my-element',
-      template: html`
-        <div class="container">
-          <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
-            Start Period
-          </rapid-text-field>
-          <rapid-text-field type="datetime-local" value=${sync((x) => x.endDate)}>
-            End Period
-          </rapid-text-field>
-          <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
-          <span>${(x) => x.resultString}</span>
-        </div>
-      `,
-    })
-    export class MyElement extends GenesisElement {
-      @observable startDate: string = "2024-11-21T09:00";
-      @observable endDate: string = "2024-11-21T18:00";
-      @observable resultString: string;
-      @TimeWindow timeWindow: TimeWindow;
-      checkWindow() {
-        this.resultString = this.timeWindow.filter({start: this.startDate, end: this.endDate})
-          ? 'Exists within the start and end period'
-          : 'Doesnot fall between start and end period';
-      }
-    }
+  return (
+    <div className="container">
+      <rapid-text-field
+        type="datetime-local"
+        value={startDate}
+        onInput={(e: any) => setStartDate(e.target?.value ?? startDate)}
+      >
+        Start Period
+      </rapid-text-field>
+      <rapid-text-field
+        type="datetime-local"
+        value={endDate}
+        onInput={(e: any) => setEndDate(e.target?.value ?? endDate)}
+      >
+        End Period
+      </rapid-text-field>
+      <rapid-button onClick={checkWindow}>Check</rapid-button>
+      <span>{resultString}</span>
+    </div>
+  );
+}
+```
 
-    ```
-  </TabItem>
+</TabItem>
+
+<TabItem value="genesis">
+
+<Tabs defaultValue="function" values={[ { label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+
+<TabItem value="function">
+
+```typescript
+import { timeWindowFilter } from '@genesislcap/foundation-filters';
+
+@customElement({
+  name: 'my-element',
+  template: html`
+    <div class="container">
+      <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
+        Start Period
+      </rapid-text-field>
+      <rapid-text-field type="datetime-local" value=${sync((x) => x.endDate)}>
+        End Period
+      </rapid-text-field>
+      <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
+      <span>${(x) => x.resultString}</span>
+    </div>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable startDate: string = "2024-11-21T09:00";
+  @observable endDate: string = "2024-11-21T18:00";
+  @observable resultString: string;
+  checkWindow() {
+    this.resultString = timeWindowFilter(this.startDate, this.endDate)
+      ? 'Exists within the start and end period'
+      : 'Doesnot fall between start and end period';
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="DI">
+
+```typescript
+import { TimeWindow } from '@genesislcap/foundation-filters';
+
+@customElement({
+  name: 'my-element',
+  template: html`
+    <div class="container">
+      <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
+        Start Period
+      </rapid-text-field>
+      <rapid-text-field type="datetime-local" value=${sync((x) => x.endDate)}>
+        End Period
+      </rapid-text-field>
+      <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
+      <span>${(x) => x.resultString}</span>
+    </div>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable startDate: string = "2024-11-21T09:00";
+  @observable endDate: string = "2024-11-21T18:00";
+  @observable resultString: string;
+  @TimeWindow timeWindow: TimeWindow;
+  checkWindow() {
+    this.resultString = this.timeWindow.filter({start: this.startDate, end: this.endDate})
+      ? 'Exists within the start and end period'
+      : 'Doesnot fall between start and end period';
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { timeWindowFilter } from '@genesislcap/foundation-filters';
+
+@Component({
+  selector: 'time-window-filter-example',
+  template: `
+    <div class="container">
+      <rapid-text-field type="datetime-local" [(value)]="startDate">Start Period</rapid-text-field>
+      <rapid-text-field type="datetime-local" [(value)]="endDate">End Period</rapid-text-field>
+      <rapid-button (click)="checkWindow()">Check</rapid-button>
+      <span>{{ resultString }}</span>
+    </div>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class TimeWindowFilterExampleComponent {
+  startDate = '2024-11-21T09:00';
+  endDate = '2024-11-21T18:00';
+  resultString = '';
+
+  checkWindow() {
+    this.resultString = timeWindowFilter(this.startDate, this.endDate)
+      ? 'Exists within the start and end period'
+      : 'Doesnot fall between start and end period';
+  }
+}
+```
+
+</TabItem>
+
 </Tabs>
 
 :::tip Function or dependency injection?
