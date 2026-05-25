@@ -51,14 +51,16 @@ The example below displays a rectangular image based on a `.SVG` file. The `shim
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-skeleton></rapid-skeleton>
-  ```
+```html
+<Skeleton></Skeleton>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Skeleton } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer></rapid-skeleton>
+      <Skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer />
     );
   }
   ```

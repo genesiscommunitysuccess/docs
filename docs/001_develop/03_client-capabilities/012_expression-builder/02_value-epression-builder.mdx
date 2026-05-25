@@ -92,7 +92,7 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-value-expression-builder></rapid-value-expression-builder>
+<ValueExpressionBuilder></ValueExpressionBuilder>
 ```
 
     Usage
@@ -100,6 +100,7 @@ Declaration
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
 // See further down for code snippet containing fields
 import { fields } from './fields';
+import { ValueExpressionBuilder } from '@genesislcap/rapid-design-system/react';
 export function MyComponent() {
   const expressionBuilderRef = useRef(null);
 
@@ -119,10 +120,10 @@ export function MyComponent() {
   }, []);
 
   return (
-    <rapid-value-expression-builder
+    <ValueExpressionBuilder
       ref={expressionBuilderRef}
       onChange={change}
-    ></rapid-value-expression-builder>
+    ></ValueExpressionBuilder>
   )
 }
 ```

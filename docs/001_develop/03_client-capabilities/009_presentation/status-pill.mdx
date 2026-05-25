@@ -84,41 +84,43 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-status-pill></rapid-status-pill>
-    ```
+```html
+<StatusPill></StatusPill>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { StatusPill } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
 
     return (
-    <rapid-status-pill
-      icon-name="check"
+    <StatusPill
+      iconName="check"
       text="Success"
-      background-color="green"
+      backgroundColor="green"
       >
-      </rapid-status-pill>
-      <rapid-status-pill
-      icon-name="xmark"
+      </StatusPill>
+      <StatusPill
+      iconName="xmark"
       text="Failure"
-      background-color="red"
+      backgroundColor="red"
       >
-      </rapid-status-pill>
-      <rapid-status-pill
-      icon-initial="S"
+      </StatusPill>
+      <StatusPill
+      iconInitial="S"
       text="Live"
-      icon-initial-background-color="#0c52b9"
-      background-color="#547cb6"
+      iconInitialBackgroundColor="#0c52b9"
+      backgroundColor="#547cb6"
       >
-      </rapid-status-pill>
-      <rapid-status-pill
+      </StatusPill>
+      <StatusPill
       icon="clock"
       text="Market expires in"
-      background-color="#9c851b"
-      date-countdown={fiveMinutesTimeInMiliseconds}
+      backgroundColor="#9c851b"
+      dateCountdown={fiveMinutesTimeInMiliseconds}
     >
-    </rapid-status-pill>
+    </StatusPill>
     );
   }
     ```

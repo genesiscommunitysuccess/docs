@@ -487,12 +487,58 @@ const stringEditorRendererColDef = {
 
 Grid Pro supports automatic cell renderer selection based on data types when using the `auto-cell-renderer-by-type` attribute:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function AutoCellRendererGrid() {
+  return (
+    <GridPro autoCellRendererByType>
+      <GridProClientSideDatasource resourceName="ALL_TRADES" />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
 <rapid-grid-pro auto-cell-renderer-by-type>
   <grid-pro-client-side-datasource resource-name="ALL_TRADES">
   </grid-pro-client-side-datasource>
 </rapid-grid-pro>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'auto-cell-renderer-grid',
+  template: `
+    <rapid-grid-pro auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES">
+      </grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AutoCellRendererGridComponent {}
+```
+
+</TabItem>
+
+</Tabs>
 
 This feature automatically selects appropriate renderers based on:
 - Boolean values → Boolean renderer
@@ -580,6 +626,9 @@ Register custom components using the `gridComponents` property:
 <TabItem value="react">
 
 ```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const gridComponents = {
   customRenderer: CustomRenderer,
   customStatusPill: CustomStatusPillRenderer,
@@ -590,9 +639,9 @@ const gridComponents = {
 
 export function MyGrid() {
   return (
-    <rapid-grid-pro gridComponents={gridComponents} auto-cell-renderer-by-type>
-      <grid-pro-client-side-datasource resource-name="ALL_TRADES"></grid-pro-client-side-datasource>
-    </rapid-grid-pro>
+    <GridPro gridComponents={gridComponents} autoCellRendererByType>
+      <GridProClientSideDatasource resourceName="ALL_TRADES"></GridProClientSideDatasource>
+    </GridPro>
   );
 }
 ```

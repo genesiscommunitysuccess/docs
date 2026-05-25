@@ -50,6 +50,7 @@ The JavaScript API is accessed through the methods on the root layout object and
 
 ```tsx
 import { useRef } from 'react';
+import { Layout } from '@genesislcap/rapid-design-system/react';
 
 export function MyLayout() {
   const layoutRef = useRef<HTMLElement & { addItem: (...args: unknown[]) => void }>(null);
@@ -58,7 +59,7 @@ export function MyLayout() {
     layoutRef.current?.addItem(/* ... */);
   };
 
-  return <rapid-layout ref={layoutRef}></rapid-layout>;
+  return <Layout ref={layoutRef}></Layout>;
 }
 ```
 

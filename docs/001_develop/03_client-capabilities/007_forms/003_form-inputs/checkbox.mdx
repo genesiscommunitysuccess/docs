@@ -72,10 +72,12 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-checkbox></rapid-checkbox>
+<Checkbox></Checkbox>
 ```
 Usage
 ```tsx
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
   const [checkboxValue, setCheckboxState] = useState(false);
   const handleCheckboxChange = (event) => {
@@ -86,7 +88,7 @@ export function MyComponent() {
   const [disabled, setDisabled] = useState(false);
 
   return (
-    <rapid-checkbox disabled={disabled} onChange={handleCheckboxChange}>Checkbox</rapid-checkbox>
+    <Checkbox disabled={disabled} onChange={handleCheckboxChange}>Checkbox</Checkbox>
   );
 }
 ```

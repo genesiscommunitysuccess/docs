@@ -58,13 +58,15 @@ Use cases:
     </TabItem>
     <TabItem value="react">
         Declaration
-        ```html
-        <rapid-date-picker></rapid-date-picker>
-        ```
+```html
+<DatePicker></DatePicker>
+```
 
         Usage
         ```tsx
-        export function MyComponent() {
+import { DatePicker } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
           const datePickerRef = useRef(null);
           const [value, setValue] = useState('Not changed');
@@ -79,8 +81,8 @@ Use cases:
           }, []);
 
           return (
-            <rapid-date-picker ref={datePickerRef}>
-            </rapid-date-picker>
+            <DatePicker ref={datePickerRef}>
+            </DatePicker>
           );
         }
         ```

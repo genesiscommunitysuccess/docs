@@ -60,11 +60,13 @@ export class MyElement extends GenesisElement {}
 <TabItem value="react">
 Declaration
 ```html
-<rapid-interop-notification-listener></rapid-interop-notification-listener>
+<InteropNotificationListener></InteropNotificationListener>
 ```
 
 Usage
 ```tsx
+import { InteropNotificationListener } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
 
     const interopNotificationListenerRef = useRef(null);
@@ -84,11 +86,11 @@ export function MyComponent() {
     }
 
     return (
-        <rapid-interop-notification-listener
+        <InteropNotificationListener
             ref={interopNotificationListenerRef}
-            resource-name="ALL_NOTIFY_ALERT_RECORDS"
+            resourceName="ALL_NOTIFY_ALERT_RECORDS"
         >
-        </rapid-interop-notification-listener>
+        </InteropNotificationListener>
     );
 }
 ```

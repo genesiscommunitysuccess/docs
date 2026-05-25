@@ -390,6 +390,7 @@ This is a complete example of the above, omitting imports.
 
 ```tsx
 import { useEffect, useRef } from 'react';
+import { Button, Layout } from '@genesislcap/rapid-design-system/react';
 
 export function ContainedExample() {
   const layoutRef = useRef<any>(null);
@@ -422,14 +423,14 @@ export function ContainedExample() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gridAutoRows: 'minmax(7vh, auto)' }}>
       <div>
-        <rapid-button onClick={() => addItem('1')}>Test 1</rapid-button>
-        <rapid-button onClick={() => addItem('2')}>Test 2</rapid-button>
-        <rapid-button onClick={() => addItem('3')}>Test 3</rapid-button>
+        <Button onClick={() => addItem('1')}>Test 1</Button>
+        <Button onClick={() => addItem('2')}>Test 2</Button>
+        <Button onClick={() => addItem('3')}>Test 3</Button>
       </div>
       <div style={{ gridRowStart: 2, gridRowEnd: 12 }}>
-        <rapid-layout
+        <Layout
           ref={layoutRef}
-          auto-save-key="layout-preview-contained-example"
+          autoSaveKey="layout-preview-contained-example"
           missingItemPlaceholder={missingItemOverride}
         />
       </div>

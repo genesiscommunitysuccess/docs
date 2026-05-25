@@ -57,22 +57,24 @@ This example shows three items in the hierarchy, with the current page highlight
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-breadcrumb>
-      <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
-      <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
-      <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
-    </rapid-breadcrumb>
-  ```
+```html
+<Breadcrumb>
+  <BreadcrumbItem href="#">Breadcrumb item 1</BreadcrumbItem>
+  <BreadcrumbItem href="#">Breadcrumb item 2</BreadcrumbItem>
+  <BreadcrumbItem>Breadcrumb item 3</BreadcrumbItem>
+</Breadcrumb>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Breadcrumb, BreadcrumbItem } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-breadcrumb>
-        <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
-        <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
-        <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
-      </rapid-breadcrumb>
+      <Breadcrumb>
+        <BreadcrumbItem href="#">Breadcrumb item 1</BreadcrumbItem>
+        <BreadcrumbItem href="#">Breadcrumb item 2</BreadcrumbItem>
+        <BreadcrumbItem>Breadcrumb item 3</BreadcrumbItem>
+      </Breadcrumb>
     );
   }
   ```

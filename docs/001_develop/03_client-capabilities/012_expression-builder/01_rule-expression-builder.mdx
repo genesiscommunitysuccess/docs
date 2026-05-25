@@ -88,7 +88,7 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-rule-expression-builder></rapid-rule-expression-builder>
+<RuleExpressionBuilder></RuleExpressionBuilder>
 ```
 
     Usage
@@ -96,6 +96,7 @@ Declaration
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
 // See further down for code snippet containing fields
 import { fields } from './fields';
+import { RuleExpressionBuilder } from '@genesislcap/rapid-design-system/react';
 export function MyComponent() {
   const expressionBuilderRef = useRef(null);
 
@@ -115,10 +116,10 @@ export function MyComponent() {
   }, []);
 
   return (
-    <rapid-rule-expression-builder
+    <RuleExpressionBuilder
       ref={expressionBuilderRef}
       onChange={change}
-    ></rapid-rule-expression-builder>
+    ></RuleExpressionBuilder>
   )
 }
 ```

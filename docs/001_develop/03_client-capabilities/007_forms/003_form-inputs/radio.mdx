@@ -60,20 +60,22 @@ Use cases:
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-radio>Radio</rapid-radio>
-  ```
+```html
+<Radio>Radio</Radio>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Radio } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const handleRadioFieldChanged = (event) => {
       const target = event.target as HTMLInputElement;
       console.log(target.value);
     };
     return (
-      <rapid-radio onChange={handleRadioFieldChanged}>
+      <Radio onChange={handleRadioFieldChanged}>
         Radio
-      </rapid-radio>
+      </Radio>
     );
   }
   ```

@@ -56,15 +56,17 @@ The example below has two progress rings. The first has a `value` of 75 against 
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-progress-ring></rapid-progress-ring>
-  ```
+```html
+<ProgressRing></ProgressRing>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { ProgressRing } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-progress-ring min="0" max="100" value="75"></rapid-progress-ring>
-      <rapid-progress-ring min="0" max="100"></rapid-progress-ring>
+      <ProgressRing min="0" max="100" value="75"></ProgressRing>
+      <ProgressRing min="0" max="100"></ProgressRing>
     );
   }
   ```

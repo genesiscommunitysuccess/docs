@@ -39,6 +39,8 @@ To set default values when the form is displayed, use the `defaultEntityValues` 
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 const defaultData = {
   COUNTERPARTY_ID: 'DEFAULT_ID',
   ENABLED: true,
@@ -46,8 +48,8 @@ const defaultData = {
 
 export function EntityManagementForm() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       defaultEntityValues={defaultData}
       createEvent="EVENT_COUNTERPARTY_INSERT"
@@ -134,6 +136,7 @@ If you're building a system where users can either add new entries or edit exist
 
 ```tsx
 import type { UiSchema } from '@genesislcap/foundation-forms';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const counterpartyCreateUIschema: UiSchema = {
   type: 'VerticalLayout',
@@ -159,9 +162,9 @@ const counterpartyUpdateUIschema: UiSchema = {
 
 export function EntityManagementExample() {
   return (
-    <entity-management
-      enable-search-bar
-      design-system-prefix="rapid"
+    <EntityManagement
+      enableSearchBar
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       createFormUiSchema={counterpartyCreateUIschema}
@@ -292,6 +295,7 @@ Entity Management exposes an `errorNotificationConfig` property to configure how
 
 ```tsx
 import type { NotificationStructure } from '@genesislcap/foundation-notifications';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const errorNotificationConfig: NotificationStructure['config'] = {
   toast: {
@@ -304,8 +308,8 @@ const errorNotificationConfig: NotificationStructure['config'] = {
 
 export function EntityManagementNotificationExample() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       createEvent="EVENT_COUNTERPARTY_INSERT"

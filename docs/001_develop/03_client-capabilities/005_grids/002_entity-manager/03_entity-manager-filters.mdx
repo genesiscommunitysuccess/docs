@@ -37,12 +37,14 @@ To enable the built-in filter functionality, use the `enable-filters` attribute.
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export function EntityManagementFilters() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
-      enable-filters
+      enableFilters
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
@@ -116,6 +118,7 @@ The `filtersUiSchema` follows the same structure as form UI schemas, using a `Ve
 
 ```tsx
 import type { UiSchema } from '@genesislcap/foundation-forms';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const counterpartyFiltersUIschema: UiSchema = {
   type: 'VerticalLayout',
@@ -129,12 +132,12 @@ const counterpartyFiltersUIschema: UiSchema = {
 
 export function EntityManagementFilters() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
-      enable-filters
+      enableFilters
       filtersUiSchema={counterpartyFiltersUIschema}
-      show-filter-persistence-controls
+      showFilterPersistenceControls
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
@@ -240,13 +243,15 @@ This feature is particularly useful for users who frequently apply the same filt
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export function EntityManagementFilters() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
-      enable-filters
-      show-filter-persistence-controls
+      enableFilters
+      showFilterPersistenceControls
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
@@ -335,13 +340,15 @@ The default position is `left`.
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export function EntityManagementFilters() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
-      enable-filters
-      filters-modal-position="centre"
+      enableFilters
+      filtersModalPosition="centre"
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"
@@ -416,6 +423,7 @@ Here's a complete example that demonstrates all filter configuration options:
 ```tsx
 import type { UiSchema } from '@genesislcap/foundation-forms';
 import { ColDef } from '@ag-grid-community/core';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const counterpartyFiltersUIschema: UiSchema = {
   type: 'VerticalLayout',
@@ -436,14 +444,14 @@ const columnDefs: ColDef[] = [
 
 export function EntityManagementFilters() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
-      enable-filters
-      filters-modal-position="centre"
+      enableFilters
+      filtersModalPosition="centre"
       filtersUiSchema={counterpartyFiltersUIschema}
-      show-filter-persistence-controls
-      enable-search-bar
+      showFilterPersistenceControls
+      enableSearchBar
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
       deleteEvent="EVENT_COUNTERPARTY_DELETE"

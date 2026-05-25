@@ -65,19 +65,21 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-flipper></rapid-flipper>
-    ```
+```html
+<Flipper></Flipper>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { CodeSection, Flipper } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const dialogRef = useRef(null);
 
       return (
         <CodeSection>
-          <rapid-flipper onClick={() => console.log('previous')} direction="previous"></rapid-flipper>
-          <rapid-flipper onClick={() => console.log('next')} direction="next"></rapid-flipper>
+          <Flipper onClick={() => console.log('previous')} direction="previous"></Flipper>
+          <Flipper onClick={() => console.log('next')} direction="next"></Flipper>
         </CodeSection >
       )
     }

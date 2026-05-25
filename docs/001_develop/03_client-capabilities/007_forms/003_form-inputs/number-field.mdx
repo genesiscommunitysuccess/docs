@@ -57,12 +57,14 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-number-field></rapid-number-field>
-    ```
+```html
+<NumberField></NumberField>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { NumberField } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
       const [outputValue, setOutputValue] = useState('');
 
@@ -72,7 +74,7 @@ Use cases:
       }
 
       return (
-        <rapid-number-field onChange={onChange}></rapid-number-field>
+        <NumberField onChange={onChange}></NumberField>
       );
     }
     ```

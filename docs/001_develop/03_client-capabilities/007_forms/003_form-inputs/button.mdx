@@ -88,49 +88,51 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-button>Button</rapid-button>
-    ```
+```html
+<Button>Button</Button>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { Button, Icon } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const handleButtonClicked = (event) => {
         console.log('Button clicked')
       };
 
       return (
-        <rapid-button
+        <Button
             onClick={handleButtonClicked}>
             Default Button
-        </rapid-button>
-        <rapid-button
+        </Button>
+        <Button
             onClick={handleButtonClicked}
             appearance="primary">
             Primary Color Button
-        </rapid-button>
-        <rapid-button
+        </Button>
+        <Button
             onClick={handleButtonClicked}
             appearance="secondary">
             Secondary Color Button
-        </rapid-button>
-        <rapid-button>
-            <rapid-icon
+        </Button>
+        <Button>
+            <Icon
                 onClick={handleButtonClicked}
                 name="plus"
                 slot="start">
-            </rapid-icon>
+            </Icon>
             Button with start slot
-        </rapid-button>
-        <rapid-button>
+        </Button>
+        <Button>
             Button with end slot
-            <rapid-icon
+            <Icon
                 name="warning"
                 slot="end">
-            </rapid-icon>
-        </rapid-button>
-        <rapid-button disabled>
+            </Icon>
+        </Button>
+        <Button disabled>
             Disabled Button
-        </rapid-button>
+        </Button>
       );
     }
     ```

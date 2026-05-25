@@ -113,15 +113,18 @@ export class FormExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-form
-  design-system-prefix="rapid"
-  jsonSchema={() => sampleJsonSchema}
-  uischema=${() => simpleTradeUiSchema}
-></foundation-form>
+<FoundationForm
+  prefix="rapid"
+  jsonSchema={sampleJsonSchema}
+  uischema={simpleTradeUiSchema}
+></FoundationForm>
 ```
 
 Usage:
 ```tsx
+import { ConnectedRenderersOptions } from '@genesislcap/rapid-design-system/react';
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 const sampleJsonSchema = {
   type: 'object',
   properties: {
@@ -168,11 +171,11 @@ export const simpleTradeUiSchema: UiSchema = {
 
 export default function FormExample({}) {
   return (
-    <foundation-form
-      design-system-prefix="rapid"
+    <FoundationForm
+      prefix="rapid"
       jsonSchema={sampleJsonSchema}
-      uischema=${simpleTradeUiSchema}
-    ></foundation-form>
+      uischema={simpleTradeUiSchema}
+    ></FoundationForm>
   );
 }
 ```
@@ -429,15 +432,18 @@ export class FormExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-form
-  design-system-prefix="rapid"
+<FoundationForm
+  prefix="rapid"
   jsonSchema={sampleJsonSchema}
-  uischema=${simpleTradeUiSchema}
-></foundation-form>
+  uischema={simpleTradeUiSchema}
+></FoundationForm>
 ```
 
 Usage:
 ```tsx
+import { ConnectedRenderersOptions } from '@genesislcap/rapid-design-system/react';
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 const sampleJsonSchema = {
   type: 'object',
   properties: {
@@ -523,11 +529,11 @@ export const tradeUISchema: UiSchema = {
 
 export default function FormExample({}) {
   return (
-    <foundation-form
-      design-system-prefix="rapid"
+    <FoundationForm
+      prefix="rapid"
       jsonSchema={sampleJsonSchema}
-      uischema=${simpleTradeUiSchema}
-    ></foundation-form>
+      uischema={simpleTradeUiSchema}
+    ></FoundationForm>
   );
 }
 ```

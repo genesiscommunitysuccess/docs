@@ -70,16 +70,18 @@ Use cases:
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-combobox>
-    <rapid-option value="s">Small</rapid-option>
-    <rapid-option value="m">Medium</rapid-option>
-    <rapid-option value="l">Large</rapid-option>
-  </rapid-combobox>
-  ```
+```html
+<Combobox>
+  <Option value="s">Small</Option>
+  <Option value="m">Medium</Option>
+  <Option value="l">Large</Option>
+</Combobox>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Combobox, Option } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
     const [outputValue, setOutputValue] = useState('');
 
@@ -89,11 +91,11 @@ Use cases:
     }
 
     return (
-      <rapid-combobox onChange={onChange}>
-        <rapid-option value="s">Small</rapid-option>
-        <rapid-option value="m">Medium</rapid-option>
-        <rapid-option value="l">Large</rapid-option>
-      </rapid-combobox>
+      <Combobox onChange={onChange}>
+        <Option value="s">Small</Option>
+        <Option value="m">Medium</Option>
+        <Option value="l">Large</Option>
+      </Combobox>
     );
   }
   ```

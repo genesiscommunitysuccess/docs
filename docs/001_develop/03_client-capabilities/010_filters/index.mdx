@@ -45,6 +45,7 @@ Both flavours are shown in the example below. This also uses `timeWindow`, but i
 ```tsx
 import { useState } from 'react';
 import { timeWindowFilter } from '@genesislcap/foundation-filters';
+import { Button, TextField } from '@genesislcap/rapid-design-system/react';
 
 export function TimeWindowFilterExample() {
   const [startDate, setStartDate] = useState('2024-11-21T09:00');
@@ -61,21 +62,21 @@ export function TimeWindowFilterExample() {
 
   return (
     <div className="container">
-      <rapid-text-field
+      <TextField
         type="datetime-local"
         value={startDate}
         onInput={(e: any) => setStartDate(e.target?.value ?? startDate)}
       >
         Start Period
-      </rapid-text-field>
-      <rapid-text-field
+      </TextField>
+      <TextField
         type="datetime-local"
         value={endDate}
         onInput={(e: any) => setEndDate(e.target?.value ?? endDate)}
       >
         End Period
-      </rapid-text-field>
-      <rapid-button onClick={checkWindow}>Check</rapid-button>
+      </TextField>
+      <Button onClick={checkWindow}>Check</Button>
       <span>{resultString}</span>
     </div>
   );

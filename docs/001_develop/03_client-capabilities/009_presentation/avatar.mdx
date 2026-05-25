@@ -53,14 +53,16 @@ This simple example displays a green circular avatar with text (initials).
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-avatar></rapid-avatar>
-  ```
+```html
+<Avatar></Avatar>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Avatar } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
+      <Avatar shape="circle" fill="green" color="black">JD</Avatar>
     );
   }
   ```

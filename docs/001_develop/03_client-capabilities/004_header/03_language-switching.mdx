@@ -43,16 +43,18 @@ export class HeaderExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-header show-language-selector></foundation-header>
+<FoundationHeader showLanguageSelector></FoundationHeader>
 ```
 
 Usage:
 ```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+
 export default function HeaderExample() {
   return (
-    <foundation-header
-       show-language-selector
-    ></foundation-header>
+    <FoundationHeader
+       showLanguageSelector
+    ></FoundationHeader>
   );
 }
 ```
@@ -120,19 +122,21 @@ export class HeaderExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-header show-language-selector></foundation-header>
+<FoundationHeader showLanguageSelector></FoundationHeader>
 ```
 
 Usage:
 ```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+
 export default function HeaderExample() {
   const languageOptions = { availableLanguages: ['en', 'es'], selectedLanguage: 'es' };
 
   return (
-    <foundation-header
-       show-language-selector
+    <FoundationHeader
+       showLanguageSelector
        languageOptions={languageOptions}
-    ></foundation-header>
+    ></FoundationHeader>
   );
 }
 ```

@@ -83,13 +83,15 @@ You can see the Section Navigator in action in the example below. This has four 
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-section-navigator></rapid-section-navigator>
-    ```
+```html
+<SectionNavigator></SectionNavigator>
+```
 
     Usage
     ```tsx
-    import type { SectionItem } from '@genesislcap/foundation-ui';
+import { SectionNavigator } from '@genesislcap/rapid-design-system/react';
+
+import type { SectionItem } from '@genesislcap/foundation-ui';
 
     export default function SectionNavigatorExample() {
       const sections: SectionItem[] = [
@@ -99,10 +101,10 @@ You can see the Section Navigator in action in the example below. This has four 
       ];
 
       return (
-        <rapid-section-navigator
+        <SectionNavigator
           sections={sections}
-          scroll-behavior="top"
-          disable-auto-scroll-detection={false}
+          scrollBehavior="top"
+          disableAutoScrollDetection={false}
         >
           <div slot="section1">
             <h2>Section 1 Content</h2>
@@ -116,7 +118,7 @@ You can see the Section Navigator in action in the example below. This has four 
             <h2>Section 3 Content</h2>
             <p>This is the content for section 3.</p>
           </div>
-        </rapid-section-navigator>
+        </SectionNavigator>
       );
     }
     ```

@@ -101,6 +101,7 @@ In this example, you'll see how to pass your data directly to the grid. The only
 ```tsx
 import { useEffect, useRef } from 'react';
 import { ColDef, GridOptions } from '@ag-grid-community/core';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
 
 export function SimpleGridExample() {
   const gridRef = useRef<any>(null);
@@ -128,7 +129,7 @@ export function SimpleGridExample() {
     }
   }, [gridOptions]);
 
-  return <rapid-grid-pro ref={gridRef}></rapid-grid-pro>;
+  return <GridPro ref={gridRef}></GridPro>;
 }
 ```
 
@@ -383,14 +384,60 @@ This utility handles various error detail formats and provides consistent messag
 
 **1. Simple Custom Error Dialog:**
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function CustomErrorGridExample() {
+  return (
+    <GridPro customErrorHandlerTemplate={customErrorTemplate}>
+      <GridProClientSideDatasource resourceName="ALL_TRADES" />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
-<grid-pro 
-  :customErrorHandlerTemplate="${() => myCustomErrorTemplate}">
+<grid-pro
+  :customErrorHandlerTemplate="${() => customErrorTemplate}">
   <grid-pro-client-side-datasource
     resource-name="ALL_TRADES">
   </grid-pro-client-side-datasource>
 </grid-pro>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'custom-error-grid-example',
+  template: `
+    <rapid-grid-pro [customErrorHandlerTemplate]="customErrorTemplate">
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES">
+      </grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class CustomErrorGridExampleComponent {}
+```
+
+</TabItem>
+
+</Tabs>
 
 **Custom Error Template Implementation:**
 
@@ -415,14 +462,60 @@ const customErrorTemplate = (prefix: string, errors: GridProErrorItem<any>[]) =>
 
 **2. Advanced Custom Error Handler with Details:**
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function AdvancedCustomErrorGridExample() {
+  return (
+    <GridPro customErrorHandlerTemplate={advancedErrorHandlerTemplate}>
+      <GridProServerSideDatasource resourceName="ALL_POSITIONS" />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
-<grid-pro 
+<grid-pro
   :customErrorHandlerTemplate="${() => advancedErrorHandlerTemplate}">
   <grid-pro-server-side-datasource
     resource-name="ALL_POSITIONS">
   </grid-pro-server-side-datasource>
 </grid-pro>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'advanced-custom-error-grid-example',
+  template: `
+    <rapid-grid-pro [customErrorHandlerTemplate]="advancedErrorHandlerTemplate">
+      <grid-pro-server-side-datasource resource-name="ALL_POSITIONS">
+      </grid-pro-server-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AdvancedCustomErrorGridExampleComponent {}
+```
+
+</TabItem>
+
+</Tabs>
 
 **Advanced Error Template Implementation:**
 
@@ -519,16 +612,19 @@ When using a server-side datasource without pagination, `statusBarConfig.rows` u
 <TabItem value="react">
 
 ```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const serverInfiniteStatusBarConfig = { rows: true, reload: true };
 
 export function ServerSideInfiniteGridExample() {
   return (
-    <grid-pro with-status-bar statusBarConfig={serverInfiniteStatusBarConfig}>
-      <grid-pro-server-side-datasource
-        resource-name="ALL_TRADES"
-        max-rows="250"
+    <GridPro withStatusBar statusBarConfig={serverInfiniteStatusBarConfig}>
+      <GridProServerSideDatasource
+        resourceName="ALL_TRADES"
+        maxRows="250"
       />
-    </grid-pro>
+    </GridPro>
   );
 }
 ```
@@ -597,6 +693,9 @@ export class ServerSideInfiniteGridExample {
 <TabItem value="react">
 
 ```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const clientStatusBarConfig = {
   rows: true,
   maxRows: true,
@@ -607,25 +706,25 @@ const clientStatusBarConfig = {
 
 export function ClientSideGridExample() {
   return (
-    <grid-pro
+    <GridPro
       pagination
-      pagination-page-size="50"
-      with-status-bar
+      paginationPageSize="50"
+      withStatusBar
       statusBarConfig={clientStatusBarConfig}
-      persist-column-state-key="client-grid-columns"
-      persist-filter-model-key="client-grid-filters"
-      enable-row-flashing
-      enable-cell-flashing
-      header-case-type="headerCase"
+      persistColumnStateKey="client-grid-columns"
+      persistFilterModelKey="client-grid-filters"
+      enableRowFlashing
+      enableCellFlashing
+      headerCaseType="headerCase"
       theme="alpine-dark"
-      async-update
-      auto-cell-renderer-by-type
+      asyncUpdate
+      autoCellRendererByType
     >
-      <grid-pro-client-side-datasource
-        resource-name="ALL_TRADES"
-        max-rows="1000"
+      <GridProClientSideDatasource
+        resourceName="ALL_TRADES"
+        maxRows="1000"
       />
-    </grid-pro>
+    </GridPro>
   );
 }
 ```
@@ -729,6 +828,9 @@ export class ClientSideGridExample {
 <TabItem value="react">
 
 ```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const serverStatusBarConfig = {
   rows: true,
   maxRows: true,
@@ -738,20 +840,20 @@ const serverStatusBarConfig = {
 
 export function ServerSideGridExample() {
   return (
-    <grid-pro
+    <GridPro
       pagination
-      pagination-page-size="100"
-      with-status-bar
+      paginationPageSize="100"
+      withStatusBar
       statusBarConfig={serverStatusBarConfig}
-      persist-column-state-key="server-grid-columns"
-      enable-row-flashing
+      persistColumnStateKey="server-grid-columns"
+      enableRowFlashing
       theme="balham"
     >
-      <grid-pro-server-side-datasource
-        resource-name="ALL_TRADES"
-        max-rows="500"
+      <GridProServerSideDatasource
+        resourceName="ALL_TRADES"
+        maxRows="500"
       />
-    </grid-pro>
+    </GridPro>
   );
 }
 ```
@@ -840,6 +942,8 @@ export class ServerSideGridExample {
 <TabItem value="react">
 
 ```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const rowData = [
   { id: 1, name: 'John Doe', age: 30, department: 'Engineering' },
   { id: 2, name: 'Jane Smith', age: 25, department: 'Marketing' },
@@ -859,14 +963,14 @@ const eventsAndCallbacks = {
 
 export function ManualDataGrid() {
   return (
-    <grid-pro
+    <GridPro
       rowData={rowData}
       gridComponents={gridComponents}
       eventsAndCallbacks={eventsAndCallbacks}
       theme="balham"
-      header-height="50"
-      persist-column-state-key="manual-grid-state"
-      enable-cell-flashing
+      headerHeight="50"
+      persistColumnStateKey="manual-grid-state"
+      enableCellFlashing
     />
   );
 }
@@ -973,6 +1077,9 @@ export class ManualDataGrid {
 <TabItem value="react">
 
 ```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 const customFontFace = `
   @font-face {
     font-family: 'CustomGridFont';
@@ -982,15 +1089,15 @@ const customFontFace = `
 
 export function ThemedGrid() {
   return (
-    <grid-pro
+    <GridPro
       theme="material"
       gridFontFace={customFontFace}
-      header-height="48"
-      row-height="42"
-      header-case-type="sentenceCase"
+      headerHeight="48"
+      rowHeight="42"
+      headerCaseType="sentenceCase"
     >
-      <grid-pro-server-side-datasource resource-name="ALL_POSITIONS" />
-    </grid-pro>
+      <GridProServerSideDatasource resourceName="ALL_POSITIONS" />
+    </GridPro>
   );
 }
 ```

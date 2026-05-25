@@ -137,6 +137,7 @@ export class MyExampleClass {
 
 ```tsx
 import { i18nService } from './i18nService';
+import { Button } from '@genesislcap/rapid-design-system/react';
 
 export function MyExampleComponent() {
   const translateWords = () => {
@@ -149,15 +150,15 @@ export function MyExampleComponent() {
 
   return (
     <>
-      <rapid-button onClick={() => i18nService.addResources?.()}>
+      <Button onClick={() => i18nService.addResources?.()}>
         Add Translation Resources
-      </rapid-button>
-      <rapid-button onClick={() => i18nService.switchLanguage()}>
+      </Button>
+      <Button onClick={() => i18nService.switchLanguage()}>
         Switch between PT and EN
-      </rapid-button>
-      <rapid-button onClick={translateWords}>
+      </Button>
+      <Button onClick={translateWords}>
         Translate i18n Resource Words
-      </rapid-button>
+      </Button>
     </>
   );
 }

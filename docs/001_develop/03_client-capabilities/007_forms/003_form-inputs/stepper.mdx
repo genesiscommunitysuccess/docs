@@ -83,44 +83,45 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-stepper>
-      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-      <rapid-stepper-tab-panel>
-        Tab Panel 1
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 2
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 3
-      </rapid-stepper-tab-panel>
-    </rapid-stepper>
-
-    ```
+```html
+<Stepper>
+  <StepperTab>Step 1</StepperTab>
+  <StepperTab>Step 2</StepperTab>
+  <StepperTab>Step 3</StepperTab>
+  <StepperTabPanel>
+      Tab Panel 1
+  </StepperTabPanel>
+  <StepperTabPanel>
+      Tab Panel 2
+  </StepperTabPanel>
+  <StepperTabPanel>
+      Tab Panel 3
+  </StepperTabPanel>
+</Stepper>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { Stepper, StepperTab, StepperTabPanel } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const handleSubmit = (event) => {
         console.log('Form submitted');
       };
       return (
-        <rapid-stepper onSubmit={handleSubmit}>
-            <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-            <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-            <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-            <rapid-stepper-tab-panel>
+        <Stepper onSubmit={handleSubmit}>
+            <StepperTab>Step 1</StepperTab>
+            <StepperTab>Step 2</StepperTab>
+            <StepperTab>Step 3</StepperTab>
+            <StepperTabPanel>
                 Tab Panel 1
-            </rapid-stepper-tab-panel>
-            <rapid-stepper-tab-panel>
+            </StepperTabPanel>
+            <StepperTabPanel>
                 Tab Panel 2
-            </rapid-stepper-tab-panel>
-            <rapid-stepper-tab-panel>
+            </StepperTabPanel>
+            <StepperTabPanel>
                 Tab Panel 3
-            </rapid-stepper-tab-panel>
-        </rapid-stepper>
+            </StepperTabPanel>
+        </Stepper>
       );
     }
   ```

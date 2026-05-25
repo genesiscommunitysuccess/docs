@@ -74,13 +74,15 @@ Use cases:
     </TabItem>
     <TabItem value="react">
         Declaration
-        ```html
-        <rapid-modal></rapid-modal>
-        ```
+```html
+<Modal></Modal>
+```
 
         Usage
         ```tsx
-        export function MyComponent() {
+import { Button, Modal } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
             const modalRef = useRef(null);
 
             useEffect(() => {
@@ -97,8 +99,8 @@ Use cases:
             };
 
             return (
-                <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
-                <rapid-modal
+                <Button onClick={() => handleClick()}>Open Modal</Button>
+                <Modal
                     ref={modalRef}
                 >
                     <h3 slot="top">Top slot</h3>
@@ -106,7 +108,7 @@ Use cases:
                     <div slot="bottom">
                         <i>Slotted content in the bottom</i>
                     </div>
-                </rapid-modal>
+                </Modal>
             );
         }
         ```

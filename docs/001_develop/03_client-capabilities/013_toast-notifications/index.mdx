@@ -79,6 +79,7 @@ Here is an example that shows a `dialog` notification component. You can click o
 <TabItem value="react">
 ```tsx
 import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+import { Button } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
   const showDialog = (event) => {
@@ -99,7 +100,7 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-button onClick={showDialog}>Show Dialog</rapid-button>
+    <Button onClick={showDialog}>Show Dialog</Button>
   );
 }
 ```
@@ -410,6 +411,7 @@ export class MyElement extends GenesisElement {
 ```tsx
 import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
 import { useRef } from 'react';
+import { Button } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
   const ref = useRef();
@@ -429,7 +431,7 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-button onClick={triggerNotification} ref={ref}>Show Notification</rapid-button>
+    <Button onClick={triggerNotification} ref={ref}>Show Notification</Button>
   );
 }
 ```

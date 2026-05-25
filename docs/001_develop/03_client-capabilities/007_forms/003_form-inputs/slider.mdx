@@ -86,17 +86,19 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-slider>
-      <rapid-slider-label position="0"> Low </rapid-slider-label>
-      <rapid-slider-label position="50"> Mid </rapid-slider-label>
-      <rapid-slider-label position="100"> High </rapid-slider-label>
-    </rapid-slider>
-    ```
+```html
+<Slider>
+  <SliderLabel position="0"> Low </SliderLabel>
+  <SliderLabel position="50"> Mid </SliderLabel>
+  <SliderLabel position="100"> High </SliderLabel>
+</Slider>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { Slider, SliderLabel } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const [labelSliderValue, setLabelSliderValue] = useState(false);
       const handleSliderChanged = (event) => {
         const target = event.target as HTMLInputElement;
@@ -106,21 +108,21 @@ Use cases:
       return (
         <div>
             <label>Simple slider</label>
-            <rapid-slider onChange={handleSliderChanged}></rapid-slider>
+            <Slider onChange={handleSliderChanged}></Slider>
         </div>
         <div>
             <label>Slider with labels and step value of 1</label>
-            <rapid-slider
+            <Slider
                 onChange={handleLabelSliderChanged}
                 min="0"
                 max="100"
                 step="1"
                 value="50"
             >
-                <rapid-slider-label position="0"> Low </rapid-slider-label>
-                <rapid-slider-label position="50"> Mid </rapid-slider-label>
-                <rapid-slider-label position="100"> High </rapid-slider-label>
-            </rapid-slider>
+                <SliderLabel position="0"> Low </SliderLabel>
+                <SliderLabel position="50"> Mid </SliderLabel>
+                <SliderLabel position="100"> High </SliderLabel>
+            </Slider>
         </div>
       );
     }

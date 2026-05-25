@@ -89,11 +89,13 @@ export class G2PlotChartExample extends GenesisElement {}
 
 Declaration:
 ```html
-<rapid-g2plot-chart></rapid-g2plot-chart>
+<G2PlotChart></G2PlotChart>
 ```
 
 Usage:
 ```tsx
+import { G2PlotChart } from '@genesislcap/g2plot-chart/react';
+
 const chartConfiguration = {
     width: 700,
     xField: "value",
@@ -119,11 +121,11 @@ const chartConfiguration = {
 
 export default function G2PlotChartExample({}) {
   return (
-    <rapid-g2plot-chart
+    <G2PlotChart
       type="bar"
       config={chartConfiguration}
       data={chartData}
-    ></rapid-g2plot-chart>
+    ></G2PlotChart>
   );
 }
 ```

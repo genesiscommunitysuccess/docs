@@ -67,20 +67,22 @@ export class FormExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-form
-  design-system-prefix="rapid"
+<FoundationForm
+  prefix="rapid"
   resourceName="EVENT_TRADE_INSERT"
-></foundation-form>
+></FoundationForm>
 ```
 
 Usage:
 ```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 export default function FormExample({}) {
   return (
-    <foundation-form
-      design-system-prefix="rapid"
+    <FoundationForm
+      prefix="rapid"
       resourceName="EVENT_TRADE_INSERT"
-    ></foundation-form>
+    ></FoundationForm>
   );
 }
 ```
@@ -176,14 +178,16 @@ export class FormExample extends GenesisElement {}
 
 Declaration:
 ```html
-<foundation-form
-  design-system-prefix="rapid"
+<FoundationForm
+  prefix="rapid"
   jsonSchema={sampleJsonSchema}
-></foundation-form>
+></FoundationForm>
 ```
 
 Usage:
 ```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 const sampleJsonSchema = {
   type: 'object',
   properties: {
@@ -200,10 +204,10 @@ const sampleJsonSchema = {
 
 export default function FormExample({}) {
   return (
-    <foundation-form
-      design-system-prefix="rapid"
+    <FoundationForm
+      prefix="rapid"
       jsonSchema={sampleJsonSchema}
-    ></foundation-form>
+    ></FoundationForm>
   );
 }
 ```

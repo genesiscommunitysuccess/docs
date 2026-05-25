@@ -16,6 +16,8 @@ pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-co
 ---
 
 import GroovyFilterExpressions from '../../../../_includes/_groovy-filter-expressions.mdx'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Datasources
 
@@ -96,6 +98,30 @@ ModuleRegistry.registerModules([
 
 ### Usage example
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function ClientSideDatasourceExample() {
+  return (
+    <GridPro enableRowFlashing enableCellFlashing>
+      <GridProClientSideDatasource
+        resourceName="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
   <grid-pro-client-side-datasource
@@ -104,6 +130,33 @@ ModuleRegistry.registerModules([
   ></grid-pro-client-side-datasource>
 </rapid-grid-pro>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'client-side-datasource-example',
+  template: `
+    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
+      <grid-pro-client-side-datasource
+        resource-name="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      ></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class ClientSideDatasourceExample {}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## `<grid-pro-server-side-datasource>`
 
@@ -158,6 +211,30 @@ ModuleRegistry.registerModules([
 
 ### Usage example
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function ServerSideDatasourceExample() {
+  return (
+    <GridPro enableRowFlashing enableCellFlashing>
+      <GridProServerSideDatasource
+        resourceName="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
   <grid-pro-server-side-datasource
@@ -166,6 +243,33 @@ ModuleRegistry.registerModules([
   ></grid-pro-server-side-datasource>
 </rapid-grid-pro>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'server-side-datasource-example',
+  template: `
+    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      ></grid-pro-server-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class ServerSideDatasourceExample {}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Datasource attributes
 

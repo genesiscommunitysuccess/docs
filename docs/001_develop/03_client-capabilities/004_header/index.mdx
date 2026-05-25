@@ -75,11 +75,13 @@ export class HeaderExample extends GenesisElement {
 
 Declaration:
 ```html
-  <foundation-header></foundation-header>
+<FoundationHeader></FoundationHeader>
 ```
 
 Usage:
 ```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+
 export default function HeaderExample({}) {
   const navItems = [{
     title: "Home",
@@ -105,9 +107,9 @@ export default function HeaderExample({}) {
   }];
 
   return (
-    <foundation-header
+    <FoundationHeader
       routeNavItems={navItems}
-    ></foundation-header>
+    ></FoundationHeader>
   );
 }
 ```

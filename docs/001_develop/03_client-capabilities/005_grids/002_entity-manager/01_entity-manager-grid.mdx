@@ -46,6 +46,7 @@ The example array below creates six columns, specifying the width of each one.
 
 ```tsx
 import { ColDef } from '@ag-grid-community/core';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const columnDefs: ColDef[] = [
   { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
@@ -56,8 +57,8 @@ const columnDefs: ColDef[] = [
 
 export function EntityManagementColumns() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"
@@ -184,6 +185,36 @@ Based on this value, the following slots will be available:
 
 In this example, we demonstrate how to customize the position of the CRUD action menu within the Entity Manager by setting the crud-menu-position attribute to top.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+import { Button } from '@genesislcap/rapid-design-system/react';
+
+export function EntityManagementCrudTopExample() {
+  return (
+    <EntityManagement
+      prefix="rapid"
+      crudMenuPosition="top"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Custom buttons"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    >
+      <Button slot="crud-top-before">Custom before</Button>
+      <Button slot="crud-top-after">Custom after</Button>
+    </EntityManagement>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```html
 <entity-management
   design-system-prefix="rapid"
@@ -199,9 +230,72 @@ In this example, we demonstrate how to customize the position of the CRUD action
 </entity-management>
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-crud-top-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      crud-menu-position="top"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Custom buttons"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    >
+      <rapid-button slot="crud-top-before">Custom before</rapid-button>
+      <rapid-button slot="crud-top-after">Custom after</rapid-button>
+    </entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementCrudTopExampleComponent {}
+```
+
+</TabItem>
+
+</Tabs>
+
 ![](/img/foundation-entity-management/crud-top-example.png)
 
-In this example, we demonstrate how to customize the position of the CRUD action menu within the Entity Manager by setting the crud-menu-position attribute to bottom.
+In this example, we demonstrate how to customize the position of the CRUD action menu within the Entity Manager by setting the `crud-menu-position` attribute to `bottom`.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+import { Button } from '@genesislcap/rapid-design-system/react';
+
+export function EntityManagementCrudBottomExample() {
+  return (
+    <EntityManagement
+      prefix="rapid"
+      crudMenuPosition="bottom"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Custom buttons"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    >
+      <Button slot="crud-bottom-before">Custom before</Button>
+      <Button slot="crud-bottom-after">Custom after</Button>
+    </EntityManagement>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```html
 <entity-management
@@ -217,6 +311,40 @@ In this example, we demonstrate how to customize the position of the CRUD action
   <rapid-button slot="crud-bottom-after">Custom after</rapid-button>
 </entity-management>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-crud-bottom-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      crud-menu-position="bottom"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Custom buttons"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    >
+      <rapid-button slot="crud-bottom-before">Custom before</rapid-button>
+      <rapid-button slot="crud-bottom-after">Custom after</rapid-button>
+    </entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementCrudBottomExampleComponent {}
+```
+
+</TabItem>
+
+</Tabs>
+
 ![](/img/foundation-entity-management/crud-bottom-example.png)
 
 :::tip
@@ -235,6 +363,30 @@ In this example, we demonstrate how to customize the position of the CRUD action
 
 You can enable `.csv` file exports on any entity manager component via its properties. To enable this feature with the default values you configure the property with a function that returns an empty object.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
+export function EntityManagementCsvExportExample() {
+  return (
+    <EntityManagement
+      prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      enableCsvExport={() => ({})}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 <entity-management
   :enableCsvExport="${() => ({})}"
@@ -242,7 +394,64 @@ You can enable `.csv` file exports on any entity manager component via its prope
 </entity-management>
 ```
 
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-csv-export-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      [enableCsvExport]="csvExportConfig"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementCsvExportExampleComponent {
+  csvExportConfig = () => ({});
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 The reason for returning an object is you can choose to configure that object to override the default values. For example:
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
+export function EntityManagementCsvExportCustomExample() {
+  return (
+    <EntityManagement
+      prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      enableCsvExport={() => ({
+        buttonName: 'Download',
+        fileName: 'counterparty-export',
+      })}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 <entity-management
@@ -250,5 +459,38 @@ The reason for returning an object is you can choose to configure that object to
 >
 </entity-management>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'entity-management-csv-export-custom-example',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+      [enableCsvExport]="csvExportConfig"
+    />
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EntityManagementCsvExportCustomExampleComponent {
+  csvExportConfig = () => ({
+    buttonName: 'Download',
+    fileName: 'counterparty-export',
+  });
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 The default button name is `Export` and the filename is `export.csv`. Once the feature is enables a button will be shown on the entity manager which will download the `.csv` file of the data when clicked.

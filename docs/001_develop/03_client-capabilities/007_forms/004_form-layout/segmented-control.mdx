@@ -62,12 +62,14 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-      <rapid-segmented-control></rapid-segmented-control>
-    ```
+```html
+<SegmentedControl></SegmentedControl>
+```
     Usage
     ```tsx
-      export function MyComponent() {
+import { SegmentedControl, SegmentedItem } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
         const [outputValue, setOutputValue] = useState('');
 
@@ -77,11 +79,11 @@ Use cases:
         }
 
         return (
-          <rapid-segmented-control onChange={onChange}>
-            <rapid-segmented-item>Item 1</rapid-segmented-item>
-            <rapid-segmented-item>Item 2</rapid-segmented-item>
-            <rapid-segmented-item>Item 3</rapid-segmented-item>
-          </rapid-segmented-control>
+          <SegmentedControl onChange={onChange}>
+            <SegmentedItem>Item 1</SegmentedItem>
+            <SegmentedItem>Item 2</SegmentedItem>
+            <SegmentedItem>Item 3</SegmentedItem>
+          </SegmentedControl>
         );
       }
     ```

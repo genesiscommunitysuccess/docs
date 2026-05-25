@@ -135,10 +135,12 @@ Pass the injected `Navigation` service into your Angular router setup and header
 <TabItem value="react">
 
 ```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+
 export function AppLayout() {
   return (
     <div className="container">
-      <foundation-header show-luminance-toggle-button />
+      <FoundationHeader showLuminanceToggleButton />
       {/* Other markup */}
     </div>
   );

@@ -81,11 +81,13 @@ export class MyElement extends GenesisElement {
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-multiselect></rapid-multiselect>
-  ```
+```html
+<Multiselect></Multiselect>
+```
   Usage
 ```tsx
+import { Multiselect } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
   const [selectedOptions, setSelectedOptions] = useState([])
 
@@ -111,8 +113,8 @@ export function MyComponent() {
   }
 
   return (
-    <rapid-multiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
-    </rapid-multiselect>
+    <Multiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
+    </Multiselect>
   )
 }
 ```

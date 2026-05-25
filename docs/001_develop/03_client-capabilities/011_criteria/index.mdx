@@ -100,6 +100,8 @@ const filterCriteria = new CriteriaBuilder()
 <TabItem value="react">
 
 ```tsx
+import { ChartDatasource, G2PlotChart } from '@genesislcap/g2plot-chart/react';
+
 const lineChartConfiguration = {
   xField: 'date',
   yField: 'value',
@@ -108,14 +110,14 @@ const lineChartConfiguration = {
 
 export function MyComponent() {
   return (
-    <rapid-g2plot-chart type="line" config={lineChartConfiguration}>
-      <chart-datasource
+    <G2PlotChart type="line" config={lineChartConfiguration}>
+      <ChartDatasource
         resourceName="ALL_PRICE_HISTORY"
-        server-fields="DATE VALUE TICKER"
-        chart-fields="date value ticker"
+        serverFields="DATE VALUE TICKER"
+        chartFields="date value ticker"
         criteria={filterCriteria}
       />
-    </rapid-g2plot-chart>
+    </G2PlotChart>
   );
 }
 ```
@@ -251,14 +253,17 @@ const filterCriteria = new CriteriaBuilder()
 <TabItem value="react">
 
 ```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+
 export function MyComponent() {
   return (
-    <rapid-grid-pro>
-      <grid-pro-genesis-datasource
-        resource-name="ALL_TRADES"
+    <GridPro>
+      <GridProGenesisDatasource
+        resourceName="ALL_TRADES"
         criteria={filterCriteria}
       />
-    </rapid-grid-pro>
+    </GridPro>
   );
 }
 ```
@@ -347,10 +352,12 @@ const filterCriteria = new CriteriaBuilder()
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export function MyComponent() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       datasourceConfig={{
         resourceName: 'ALL_TRADES',
         criteria: filterCriteria,

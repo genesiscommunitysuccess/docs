@@ -47,6 +47,7 @@ To add custom actions to your entity management component, use the `customAction
 
 ```tsx
 import { CustomAction, CrudMenuPosition } from '@genesislcap/foundation-entity-management';
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
 
 const customActions: CustomAction[] = [
   {
@@ -64,8 +65,8 @@ const customActions: CustomAction[] = [
 
 export function EntityManagementExample() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       customActions={customActions}
@@ -627,10 +628,12 @@ const customActions: CustomAction[] = [
 <TabItem value="react">
 
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export function EntityManagementExample() {
   return (
-    <entity-management
-      design-system-prefix="rapid"
+    <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       updateEvent="EVENT_COUNTERPARTY_MODIFY"

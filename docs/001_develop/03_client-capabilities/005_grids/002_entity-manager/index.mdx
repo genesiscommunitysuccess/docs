@@ -91,19 +91,21 @@ export class EntityManagementExample extends GenesisElement {}
 
 Declaration:
 ```html
-<entity-management></entity-management>
+<EntityManagement></EntityManagement>
 ```
 
 Usage:
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export default function EntityManagementExample({}) {
   return (
-   <entity-management
-      design-system-prefix="rapid"
+   <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       createEvent="EVENT_COUNTERPARTY_INSERT"
-    ></entity-management>
+    ></EntityManagement>
   );
 }
 ```
@@ -212,11 +214,13 @@ export class EntityManagementExample extends GenesisElement {}
 
 Declaration:
 ```html
-<entity-management></entity-management>
+<EntityManagement></EntityManagement>
 ```
 
 Usage:
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 const counterpartyUIschema = {
   type: 'VerticalLayout',
   elements: [
@@ -233,16 +237,16 @@ const counterpartyUIschema = {
 
 export default function EntityManagementExample({}) {
   return (
-   <entity-management
-        enable-search-bar
-        design-system-prefix="rapid"
+   <EntityManagement
+        enableSearchBar
+        prefix="rapid"
         resourceName="ALL_COUNTERPARTYS"
         title="Counterparty Management"
         createFormUiSchema={{counterpartyUIschema}}
         updateEvent="EVENT_COUNTERPARTY_MODIFY"
         deleteEvent="EVENT_COUNTERPARTY_DELETE"
         createEvent="EVENT_COUNTERPARTY_INSERT"
-    ></entity-management>
+    ></EntityManagement>
   );
 }
 ```

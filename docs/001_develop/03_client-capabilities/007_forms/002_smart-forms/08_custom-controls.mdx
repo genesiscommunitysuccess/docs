@@ -128,12 +128,13 @@ Then in your template, pass your `uischema` configured with a segmented control 
 ```tsx
 import { SegmentedControlRenderer } from './segmented-control-renderer';
 import { renderers } from '@genesislcap/foundation-forms';
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
 
 export function FormWithCustomRenderers() {
   return (
-    <foundation-form
+    <FoundationForm
       renderers={[...renderers, SegmentedControlRenderer]}
-      design-system-prefix="rapid"
+      prefix="rapid"
       uischema={formsWithCustomRenderersUISchema}
       jsonSchema={formsWithCustomRenderersJsonSchema}
     />

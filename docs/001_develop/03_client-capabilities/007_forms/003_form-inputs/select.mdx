@@ -68,25 +68,27 @@ and [categorized multiselect](/develop/client-capabilities/forms/form-inputs/cli
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-select>
-    <rapid-option value="s">Small</rapid-option>
-    <rapid-option value="l">Large</rapid-option>
-  </rapid-select>
-  ```
+```html
+<Select>
+  <Option value="s">Small</Option>
+  <Option value="l">Large</Option>
+</Select>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Option, Select } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const handleSelectChanged = (event) => {
       const target = event.target as HTMLInputElement;
       console.log(target.value);
     };
 
     return (
-      <rapid-select onChange={handleSelectChanged}>
-        <rapid-option value="s">Small</rapid-option>
-        <rapid-option value="l">Large</rapid-option>
-      </rapid-select>
+      <Select onChange={handleSelectChanged}>
+        <Option value="s">Small</Option>
+        <Option value="l">Large</Option>
+      </Select>
     );
   }
   ```

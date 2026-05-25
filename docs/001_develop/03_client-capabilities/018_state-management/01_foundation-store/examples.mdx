@@ -122,7 +122,9 @@ We're going to link two components using a variable in the store. The first comp
 
 
     ```tsx
-    const ExampleGrid = () => {
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+const ExampleGrid = () => {
       const baseGridOptions = {
         defaultColDef: {
           resizable: true,
@@ -133,9 +135,9 @@ We're going to link two components using a variable in the store. The first comp
       };
 
       return (
-        <rapid-grid-pro
+        <GridPro
           gridOptions={baseGridOptions}
-        ></rapid-grid-pro>
+        ></GridPro>
       );
     };
     ```
@@ -206,7 +208,9 @@ Next, we are going to use a simple component to allow you to filter out certain 
   <TabItem value="react">
 
     ```tsx
-    const SetFilter = () => {
+import { Radio, RadioGroup } from '@genesislcap/rapid-design-system/react';
+
+const SetFilter = () => {
       const [radioValue, setRadioValue] = useState('both');
 
       const handleRadioChange = (e: Event) => {
@@ -214,11 +218,11 @@ Next, we are going to use a simple component to allow you to filter out certain 
       }
 
       return (
-        <rapid-radio-group onChange={handleRadioChange}>
-          <rapid-radio value="both">Both</rapid-radio>
-          <rapid-radio value="income">Income</rapid-radio>
-          <rapid-radio value="expense">Expense</rapid-radio>
-        </rapid-radio-group>
+        <RadioGroup onChange={handleRadioChange}>
+          <Radio value="both">Both</Radio>
+          <Radio value="income">Income</Radio>
+          <Radio value="expense">Expense</Radio>
+        </RadioGroup>
       )
     }
     ```
@@ -342,7 +346,9 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
   <TabItem value="react">
 
   ```tsx {2,6,9}
-  const SetFilter = () => {
+import { Radio, RadioGroup } from '@genesislcap/rapid-design-system/react';
+
+const SetFilter = () => {
     const ref = useRef();
     const [radioValue, setRadioValue] = useState('both');
     const handleRadioChange = (e: Event) => {
@@ -350,11 +356,11 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
       ref.current.dispatchEvent(customEventFactory(StoreEvents.SetFilter, e.target.value));
     }
     return (
-      <rapid-radio-group ref={ref} onChange={handleRadioChange}>
-        <rapid-radio value="both">Both</rapid-radio>
-        <rapid-radio value="income">Income</rapid-radio>
-        <rapid-radio value="expense">Expense</rapid-radio>
-      </rapid-radio-group>
+      <RadioGroup ref={ref} onChange={handleRadioChange}>
+        <Radio value="both">Both</Radio>
+        <Radio value="income">Income</Radio>
+        <Radio value="expense">Expense</Radio>
+      </RadioGroup>
     )
   }
   ```
@@ -431,7 +437,9 @@ The very last step is to use the configured value to filter the grid rows. There
   <TabItem value="react">
 
   ```tsx {2,13-22,26}
-  const ExampleGrid = () => {
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+const ExampleGrid = () => {
     const gridRef = useRef();
 
     const baseGridOptions = {
@@ -455,10 +463,10 @@ The very last step is to use the configured value to filter the grid rows. There
     }, []);
 
     return (
-      <rapid-grid-pro
+      <GridPro
         ref={gridRef}
         gridOptions={gridOptions}
-      ></rapid-grid-pro>
+      ></GridPro>
     );
   };
   ```
@@ -685,7 +693,10 @@ As well as reacting to the `@observable` directly on the html, there are additio
   <TabItem value="react">
 
   ```tsx
-  import { ColDef } from '@ag-grid-community/core';
+import { Radio, RadioGroup } from '@genesislcap/rapid-design-system/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+import { ColDef } from '@ag-grid-community/core';
   import { useRef, useState, useEffect } from 'react';
   import { customEventFactory } from '@/pbc/utils';
   import { StoreEvents, storeService } from '../../services/store.service.ts'
@@ -759,10 +770,10 @@ As well as reacting to the `@observable` directly on the html, there are additio
     }, []);
 
     return (
-      <rapid-grid-pro
+      <GridPro
         ref={gridRef}
         gridOptions={gridOptions}
-      ></rapid-grid-pro>
+      ></GridPro>
     );
   };
 
@@ -775,11 +786,11 @@ As well as reacting to the `@observable` directly on the html, there are additio
       ref.current.dispatchEvent(customEventFactory(StoreEvents.SetFilter, e.target.value));
     }
     return (
-      <rapid-radio-group ref={ref} onChange={handleRadioChange}>
-        <rapid-radio value="both">Both</rapid-radio>
-        <rapid-radio value="income">Income</rapid-radio>
-        <rapid-radio value="expense">Expense</rapid-radio>
-      </rapid-radio-group>
+      <RadioGroup ref={ref} onChange={handleRadioChange}>
+        <Radio value="both">Both</Radio>
+        <Radio value="income">Income</Radio>
+        <Radio value="expense">Expense</Radio>
+      </RadioGroup>
     )
   }
   ```

@@ -117,19 +117,20 @@ Here is a very simple example of two elements inline in a component which are in
 
 ```tsx
 import { useState } from 'react';
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
 
 export function MyElement() {
   const [isSelected, setIsSelected] = useState(true);
 
   return (
     <>
-      <rapid-checkbox
+      <Checkbox
         checked={isSelected}
         onChange={(e) => setIsSelected(e.target.checked)}
       >
         Checkbox
-      </rapid-checkbox>
-      <rapid-checkbox checked={isSelected} />
+      </Checkbox>
+      <Checkbox checked={isSelected} />
     </>
   );
 }
@@ -221,29 +222,31 @@ As discussed before, now we're going to add wrapper components to hold the bindi
 <TabItem value="react">
 
 ```tsx
+import { Checkbox, Layout, LayoutItem } from '@genesislcap/rapid-design-system/react';
+
 function WrapperOne({ isSelected, onChange }: { isSelected: boolean; onChange: (v: boolean) => void }) {
   return (
-    <rapid-checkbox checked={isSelected} onChange={(e) => onChange(e.target.checked)}>
+    <Checkbox checked={isSelected} onChange={(e) => onChange(e.target.checked)}>
       Checkbox
-    </rapid-checkbox>
+    </Checkbox>
   );
 }
 
 function WrapperTwo({ isSelected }: { isSelected: boolean }) {
-  return <rapid-checkbox checked={isSelected}>Checkbox</rapid-checkbox>;
+  return <Checkbox checked={isSelected}>Checkbox</Checkbox>;
 }
 
 export function MyElement() {
   const [isSelected, setIsSelected] = useState(true);
   return (
-    <rapid-layout>
-      <rapid-layout-item>
+    <Layout>
+      <LayoutItem>
         <WrapperOne isSelected={isSelected} onChange={setIsSelected} />
-      </rapid-layout-item>
-      <rapid-layout-item>
+      </LayoutItem>
+      <LayoutItem>
         <WrapperTwo isSelected={isSelected} />
-      </rapid-layout-item>
-    </rapid-layout>
+      </LayoutItem>
+    </Layout>
   );
 }
 ```
@@ -347,17 +350,18 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 
 ```tsx
 import { useState } from 'react';
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
 
 export function WrapperOne({ onToggle }: { onToggle: (val: boolean) => void }) {
   return (
-    <rapid-checkbox onChange={(e) => onToggle(e.target.checked)}>
+    <Checkbox onChange={(e) => onToggle(e.target.checked)}>
       Checkbox
-    </rapid-checkbox>
+    </Checkbox>
   );
 }
 
 export function WrapperTwo({ checked }: { checked: boolean }) {
-  return <rapid-checkbox checked={checked}>Checkbox</rapid-checkbox>;
+  return <Checkbox checked={checked}>Checkbox</Checkbox>;
 }
 
 export function MyElement() {

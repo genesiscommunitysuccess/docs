@@ -93,13 +93,15 @@ The example below shows the component in action. Click on `Dropdown Menu` to dis
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-dropdown-menu></rapid-dropdown-menu>
-    ```
+```html
+<DropdownMenu></DropdownMenu>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { CodeSection, DropdownMenu } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const setOfItems = [
         {
           name: 'Menu item 1',
@@ -131,7 +133,7 @@ The example below shows the component in action. Click on `Dropdown Menu` to dis
 
       return (
         <CodeSection>
-          <rapid-dropdown-menu items={setOfItems}></rapid-dropdown-menu>
+          <DropdownMenu items={setOfItems}></DropdownMenu>
         </CodeSection>
       )
     }

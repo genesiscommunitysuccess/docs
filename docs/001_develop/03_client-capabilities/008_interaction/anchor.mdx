@@ -59,17 +59,19 @@ There are three working links in the example below.
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-anchor></rapid-anchor>
-    ```
+```html
+<Anchor></Anchor>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { Anchor } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       return (
-        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
-        <rapid-anchor href="#api">Internal link</rapid-anchor>
-        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+        <Anchor href="https://genesis.global/">External link</Anchor>
+        <Anchor href="#api">Internal link</Anchor>
+        <Anchor href="mailto:info@genesis.global">Mail link</Anchor>
       );
     }
     ```

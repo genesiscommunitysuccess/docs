@@ -63,22 +63,24 @@ This simple example shows an environment indicator with custom styling and icon.
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-environment-indicator></rapid-environment-indicator>
-  ```
+```html
+<EnvironmentIndicator></EnvironmentIndicator>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { EnvironmentIndicator } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-environment-indicator
+      <EnvironmentIndicator
         level="dev"
         label="DEVELOPMENT"
-        background-color="#ff6b35"
-        text-color="#ffffff"
-        show-icon="true"
+        backgroundColor="#ff6b35"
+        textColor="#ffffff"
+        showIcon="true"
         icon="code"
         size="lg"
-      ></rapid-environment-indicator>
+      ></EnvironmentIndicator>
     );
   }
   ```
