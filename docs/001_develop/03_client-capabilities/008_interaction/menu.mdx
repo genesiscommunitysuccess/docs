@@ -102,7 +102,7 @@ export function MyComponent() {
         // alternatively, just add event listeners to perform actions on click
       }
       return (
-        <Menu onChange={(e) => handleMenuChange(<Event & {target: MenuItem}>e)}>
+        <Menu onChange={(e) => handleMenuChange(e as Event & {target: MenuItem})}>
           <MenuItem onClick={itemOneAction}>Menu item 1</MenuItem>
           <MenuItem>Menu item 2</MenuItem>
           <MenuItem>Menu item 3</MenuItem>
