@@ -60,37 +60,37 @@ export class MyElement extends GenesisElement {}
 <TabItem value="react">
 Declaration
 ```html
-<InteropNotificationListener></InteropNotificationListener>
+<rapid-interop-notification-listener></rapid-interop-notification-listener>
 ```
 
 Usage
 ```tsx
-import { InteropNotificationListener } from '@genesislcap/rapid-design-system/react';
+import { useEffect, useRef } from 'react';
 
 export function MyComponent() {
-
     const interopNotificationListenerRef = useRef(null);
 
-    if (interopNotificationListenerRef.current) {
-        interopNotificationListenerRef.current.toastButtons = [
-            {
-                condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
-                action: ({details, buttonElement, toastElement}) => {
-                    console.log({details, buttonElement, toastElement});
-                    toastElement.close();
+    useEffect(() => {
+        if (interopNotificationListenerRef.current) {
+            interopNotificationListenerRef.current.toastButtons = [
+                {
+                    condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                    action: ({details, buttonElement, toastElement}) => {
+                        console.log({details, buttonElement, toastElement});
+                        toastElement.close();
+                    },
+                    appearance: 'secondary-orange',
+                    placeholder: 'Dismiss',
                 },
-                appearance: 'secondary-orange',
-                placeholder: 'Dismiss',
-            },
-        ]
-    }
+            ];
+        }
+    }, []);
 
     return (
-        <InteropNotificationListener
+        <rapid-interop-notification-listener
             ref={interopNotificationListenerRef}
-            resourceName="ALL_NOTIFY_ALERT_RECORDS"
-        >
-        </InteropNotificationListener>
+            resource-name="ALL_NOTIFY_ALERT_RECORDS"
+        />
     );
 }
 ```

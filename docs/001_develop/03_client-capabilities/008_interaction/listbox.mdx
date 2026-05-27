@@ -80,15 +80,16 @@ Use cases:
     Declaration
 ```html
 <Listbox>
-  <Option></Option>
-  <Option></Option>
-  <Option></Option>
+  <ListboxOption></ListboxOption>
+  <ListboxOption></ListboxOption>
+  <ListboxOption></ListboxOption>
 </Listbox>
 ```
 
     Usage
     ```tsx
-import { Listbox, Option } from '@genesislcap/rapid-design-system/react';
+import { useState } from "react";
+import { Listbox, ListboxOption } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
     const [selected, setSelected] = useState('');
@@ -96,9 +97,9 @@ export function MyComponent() {
     return (
       <div>
         <Listbox onClick={(e) => setSelected(e.target.value)}>
-          <Option value="apple">Apple</Option>
-          <Option value="banana">Banana</Option>
-          <Option value="strawberry">Strawberry</Option>
+          <ListboxOption value="apple">Apple</ListboxOption>
+          <ListboxOption value="banana">Banana</ListboxOption>
+          <ListboxOption value="strawberry">Strawberry</ListboxOption>
         </Listbox>
         <p>Selected: {selected}</p>
       </div>)

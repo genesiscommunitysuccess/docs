@@ -101,17 +101,17 @@ export class LayoutExample extends GenesisElement { }
 
 Declaration:
 ```html
-<Layout>
-  <LayoutRegion>
-    <LayoutItem>
-    </LayoutItem>
-  </LayoutRegion>
-</Layout>
+<rapid-layout>
+  <rapid-layout-region>
+    <rapid-layout-item>
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
 ```
 
 Usage, with nested React component:
 ```tsx
-import { Button, Checkbox, Layout, LayoutItem, LayoutRegion } from '@genesislcap/rapid-design-system/react';
+import { Button, Checkbox } from '@genesislcap/rapid-design-system/react';
 
 function ReactComponent({ }) {
   return (
@@ -121,21 +121,21 @@ function ReactComponent({ }) {
 
 export default function LayoutExample({ }) {
   return (
-    <Layout>
-      <LayoutRegion>
-        <LayoutRegion type="vertical">
-          <LayoutItem title="Button">
+    <rapid-layout>
+      <rapid-layout-region>
+        <rapid-layout-region type="vertical">
+          <rapid-layout-item title="Button">
             <Button>Rapid Button</Button>
-          </LayoutItem>
-          <LayoutItem title="Checkbox">
+          </rapid-layout-item>
+          <rapid-layout-item title="Checkbox">
             <Checkbox>Rapid Checkbox</Checkbox>
-          </LayoutItem>
-        </LayoutRegion>
-        <LayoutItem title="Text">
+          </rapid-layout-item>
+        </rapid-layout-region>
+        <rapid-layout-item title="Text">
           <ReactComponent />
-        </LayoutItem>
-      </LayoutRegion>
-    </Layout>
+        </rapid-layout-item>
+      </rapid-layout-region>
+    </rapid-layout>
   );
 }
 ```

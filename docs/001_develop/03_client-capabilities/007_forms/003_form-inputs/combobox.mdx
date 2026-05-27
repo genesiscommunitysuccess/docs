@@ -72,14 +72,14 @@ Use cases:
   Declaration
 ```html
 <Combobox>
-  <Option value="s">Small</Option>
-  <Option value="m">Medium</Option>
-  <Option value="l">Large</Option>
+  <ListboxOption value="s">Small</ListboxOption>
+  <ListboxOption value="m">Medium</ListboxOption>
+  <ListboxOption value="l">Large</ListboxOption>
 </Combobox>
 ```
   Usage
   ```tsx
-import { Combobox, Option } from '@genesislcap/rapid-design-system/react';
+import { Combobox, ListboxOption } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
 
@@ -92,9 +92,9 @@ export function MyComponent() {
 
     return (
       <Combobox onChange={onChange}>
-        <Option value="s">Small</Option>
-        <Option value="m">Medium</Option>
-        <Option value="l">Large</Option>
+        <ListboxOption value="s">Small</ListboxOption>
+        <ListboxOption value="m">Medium</ListboxOption>
+        <ListboxOption value="l">Large</ListboxOption>
       </Combobox>
     );
   }

@@ -70,13 +70,13 @@ and [categorized multiselect](/develop/client-capabilities/forms/form-inputs/cli
   Declaration
 ```html
 <Select>
-  <Option value="s">Small</Option>
-  <Option value="l">Large</Option>
+  <ListboxOption value="s">Small</ListboxOption>
+  <ListboxOption value="l">Large</ListboxOption>
 </Select>
 ```
   Usage
   ```tsx
-import { Option, Select } from '@genesislcap/rapid-design-system/react';
+import { ListboxOption, Select } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
     const handleSelectChanged = (event) => {
@@ -86,8 +86,8 @@ export function MyComponent() {
 
     return (
       <Select onChange={handleSelectChanged}>
-        <Option value="s">Small</Option>
-        <Option value="l">Large</Option>
+        <ListboxOption value="s">Small</ListboxOption>
+        <ListboxOption value="l">Large</ListboxOption>
       </Select>
     );
   }

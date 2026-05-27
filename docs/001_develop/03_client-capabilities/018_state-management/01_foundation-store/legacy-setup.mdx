@@ -193,12 +193,13 @@ element with the id `'root'`. Here is a code snippet you can use to get the refe
 as a prop.
 
 ```tsx
-import { App, React } from '@genesislcap/rapid-design-system/react';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
 function bootstrapApp() {
   const rootEelement = document.getElementById('root');
   if (rootEelement) {
-    ReactDOM.createRoot(rootEelement!).render(
+    createRoot(rootEelement).render(
       <React.StrictMode>
         <App rootElement={rootEelement} />
       </React.StrictMode>,

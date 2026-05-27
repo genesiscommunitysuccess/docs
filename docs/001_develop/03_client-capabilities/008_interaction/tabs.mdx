@@ -117,46 +117,48 @@ import { Tab, TabPanel, Tabs } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
       return (
-        <Tabs activeid="entrees">
-          <Tab id="apps">Appetizers</Tab>
-          <Tab id="entrees">Entrees</Tab>
-          <Tab id="desserts">Desserts</Tab>
-          <TabPanel id="appsPanel">
-            <ol>
-              <li>Stuffed artichokes</li>
-              <li>Bruschetta</li>
-            </ol>
-          </TabPanel>
-          <TabPanel id="entreesPanel">
-            <ol>
-              <li>Tomato Bread Soup with Steamed Mussels</li>
-              <li>Grilled Fish with Artichoke Caponata</li>
-            </ol>
-          </TabPanel>
-          <TabPanel id="dessertsPanel">
-            <ol>
-              <li>Tiramisu</li>
-              <li>limoncello and Ice Cream with Biscotti</li>
-            </ol>
-          </TabPanel>
-        </Tabs>
-        <Tabs appearance="secondary">
-          <Tab>Counterparties</Tab>
-          <Tab>Accounts</Tab>
-          <TabPanel>
-            <ol>
-              <li>Counterparty 1</li>
-              <li>Counterparty 2</li>
-            </ol>
-          </TabPanel>
-          <TabPanel>
-            <ol>
-              <li>First Bank Account</li>
-              <li>Second Bank Account</li>
-            </ol>
-          </TabPanel>
-        </Tabs>
-        )
+        <>
+          <Tabs activeid="entrees">
+            <Tab id="apps">Appetizers</Tab>
+            <Tab id="entrees">Entrees</Tab>
+            <Tab id="desserts">Desserts</Tab>
+            <TabPanel id="appsPanel">
+              <ol>
+                <li>Stuffed artichokes</li>
+                <li>Bruschetta</li>
+              </ol>
+            </TabPanel>
+            <TabPanel id="entreesPanel">
+              <ol>
+                <li>Tomato Bread Soup with Steamed Mussels</li>
+                <li>Grilled Fish with Artichoke Caponata</li>
+              </ol>
+            </TabPanel>
+            <TabPanel id="dessertsPanel">
+              <ol>
+                <li>Tiramisu</li>
+                <li>limoncello and Ice Cream with Biscotti</li>
+              </ol>
+            </TabPanel>
+          </Tabs>
+          <Tabs appearance="secondary">
+            <Tab>Counterparties</Tab>
+            <Tab>Accounts</Tab>
+            <TabPanel>
+              <ol>
+                <li>Counterparty 1</li>
+                <li>Counterparty 2</li>
+              </ol>
+            </TabPanel>
+            <TabPanel>
+              <ol>
+                <li>First Bank Account</li>
+                <li>Second Bank Account</li>
+              </ol>
+            </TabPanel>
+          </Tabs>
+        </>
+      )
     }
     ```
   </TabItem>

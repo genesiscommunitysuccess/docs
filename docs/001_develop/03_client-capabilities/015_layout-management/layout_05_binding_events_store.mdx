@@ -222,7 +222,7 @@ As discussed before, now we're going to add wrapper components to hold the bindi
 <TabItem value="react">
 
 ```tsx
-import { Checkbox, Layout, LayoutItem } from '@genesislcap/rapid-design-system/react';
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
 
 function WrapperOne({ isSelected, onChange }: { isSelected: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -239,14 +239,14 @@ function WrapperTwo({ isSelected }: { isSelected: boolean }) {
 export function MyElement() {
   const [isSelected, setIsSelected] = useState(true);
   return (
-    <Layout>
-      <LayoutItem>
+    <rapid-layout>
+      <rapid-layout-item>
         <WrapperOne isSelected={isSelected} onChange={setIsSelected} />
-      </LayoutItem>
-      <LayoutItem>
+      </rapid-layout-item>
+      <rapid-layout-item>
         <WrapperTwo isSelected={isSelected} />
-      </LayoutItem>
-    </Layout>
+      </rapid-layout-item>
+    </rapid-layout>
   );
 }
 ```

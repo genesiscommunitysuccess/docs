@@ -71,16 +71,14 @@ Use cases:
 
     Usage
     ```tsx
-import { CodeSection, Flipper } from '@genesislcap/rapid-design-system/react';
+import { Flipper } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
-      const dialogRef = useRef(null);
-
       return (
-        <CodeSection>
+        <>
           <Flipper onClick={() => console.log('previous')} direction="previous"></Flipper>
           <Flipper onClick={() => console.log('next')} direction="next"></Flipper>
-        </CodeSection >
+        </>
       )
     }
     ```

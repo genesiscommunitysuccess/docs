@@ -95,32 +95,30 @@ export function MyComponent() {
     const fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
 
     return (
-    <StatusPill
-      iconName="check"
-      text="Success"
-      backgroundColor="green"
-      >
-      </StatusPill>
-      <StatusPill
-      iconName="xmark"
-      text="Failure"
-      backgroundColor="red"
-      >
-      </StatusPill>
-      <StatusPill
-      iconInitial="S"
-      text="Live"
-      iconInitialBackgroundColor="#0c52b9"
-      backgroundColor="#547cb6"
-      >
-      </StatusPill>
-      <StatusPill
-      icon="clock"
-      text="Market expires in"
-      backgroundColor="#9c851b"
-      dateCountdown={fiveMinutesTimeInMiliseconds}
-    >
-    </StatusPill>
+      <>
+        <StatusPill
+          iconName="check"
+          text="Success"
+          backgroundColor="green"
+        ></StatusPill>
+        <StatusPill
+        iconName="xmark"
+        text="Failure"
+        backgroundColor="red"
+        ></StatusPill>
+        <StatusPill
+        iconInitial="S"
+        text="Live"
+        iconInitialBackgroundColor="#0c52b9"
+        backgroundColor="#547cb6"
+        ></StatusPill>
+        <StatusPill
+        icon="clock"
+        text="Market expires in"
+        backgroundColor="#9c851b"
+        dateCountdown={fiveMinutesTimeInMiliseconds}
+        ></StatusPill>
+      </>
     );
   }
     ```

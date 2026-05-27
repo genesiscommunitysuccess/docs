@@ -92,15 +92,16 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<ValueExpressionBuilder></ValueExpressionBuilder>
+<rapid-value-expression-builder></rapid-value-expression-builder>
 ```
 
     Usage
 ```tsx
+import { useEffect, useRef } from 'react';
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
 // See further down for code snippet containing fields
 import { fields } from './fields';
-import { ValueExpressionBuilder } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
   const expressionBuilderRef = useRef(null);
 
@@ -113,17 +114,17 @@ export function MyComponent() {
     // you can also set the model and other configuration options here
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (expressionBuilderRef.current) {
       expressionBuilderRef.current.valueConfig = valueConfig;
     }
   }, []);
 
   return (
-    <ValueExpressionBuilder
+    <rapid-value-expression-builder
       ref={expressionBuilderRef}
       onChange={change}
-    ></ValueExpressionBuilder>
+    />
   )
 }
 ```
