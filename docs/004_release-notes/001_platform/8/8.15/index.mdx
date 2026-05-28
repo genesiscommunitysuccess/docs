@@ -278,6 +278,25 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.22
+
+###### Fixes
+
+* `genesis-pal-streamerclient` : Revert "Resource-based service discovery for streamer clients with compact process support" due to resource name clashing issues
+
+###### Dependency Changes 
+
+* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* build(deps): point Maven wrapper distributionUrl to Apache archive to mitigate Maven Central throttling 
+* build(deps): use JFrog dev-repo first for Maven submodules to mitigate Maven Central throttling
+
+#### 8.15.21
+
+###### Fixes
+
+* `genesis-environment` : SendIt BigDecimal Precision and Rounding Issues for FDB Migrations
+* `genesis-router` : preserve MORE_ROWS flag in HTTP dataserver polling response
+
 #### 8.15.20
 
 ###### Fixes
