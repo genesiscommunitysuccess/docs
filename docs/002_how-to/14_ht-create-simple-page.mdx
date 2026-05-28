@@ -49,9 +49,11 @@ npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -
 
 ## Adding a form
 
-Add a `foundation-form` to your page component. Define the UI schema and JSON schema in the component (or import them from separate files).
+Add a `FoundatonForm` to your page component. Define the UI schema and JSON schema in the component (or import them from separate files).
 
 ```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 export function NewPage() {
   const formUiSchema = {
     type: 'VerticalLayout',
@@ -89,8 +91,8 @@ export function NewPage() {
   };
 
   return (
-    <foundation-form
-      design-system-prefix="rapid"
+    <FoundationForm
+      prefix="rapid"
       jsonSchema={formJsonSchema}
       uischema={formUiSchema}
       onSubmit={handleFormSubmit}
@@ -105,16 +107,17 @@ Use a ref to control the modal from your component:
 
 ```tsx
 import { useRef } from 'react';
+import { Button, Modal } from '@genesislcap/rapid-design-system/react';
 
 export function NewPage() {
   const modalRef = useRef<HTMLElement & { show(): void }>(null);
 
   return (
     <>
-      <rapid-button onClick={() => modalRef.current?.show()}>Open modal</rapid-button>
-      <rapid-modal ref={modalRef}>
+      <Button onClick={() => modalRef.current?.show()}>Open modal</Button>
+      <Modal ref={modalRef}>
         <p>This paragraph will appear in the modal</p>
-      </rapid-modal>
+      </Modal>
     </>
   );
 }
@@ -126,19 +129,20 @@ Control the flyout with React state:
 
 ```tsx
 import { useState } from 'react';
+import { Button, F } from '@genesislcap/rapid-design-system/react';
 
 export function NewPage() {
   const [rightFlyoutOpen, setRightFlyoutOpen] = useState(false);
 
   return (
     <>
-      <rapid-button onClick={() => setRightFlyoutOpen(true)}>Open flyout</rapid-button>
-      <rapid-flyout
+      <Button onClick={() => setRightFlyoutOpen(true)}>Open flyout</Button>
+      <Flyout
         closed={!rightFlyoutOpen}
         onClosed={() => setRightFlyoutOpen(false)}
       >
         <p>This paragraph will appear in the flyout</p>
-      </rapid-flyout>
+      </Flyout>
     </>
   );
 }
