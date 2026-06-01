@@ -1961,7 +1961,7 @@ Each `identityProvider` configuration has the following properties:
 | [scopes](https://auth0.com/docs/get-started/apis/scopes/openid-connect-scopes) | Requested scopes on authorisation | No | `openid profile email` | Set |
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
-| tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
+| tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | No | 50 minutes | Int |
 | redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
@@ -1986,7 +1986,8 @@ Each `client` configuration has the following properties:
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
 | id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
-| secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
+| secret | The client secret provided by the OIDC Provider when application was registered | Yes, when using client-secret for client authentication | No default value | String |
+| privateKeyJwt | Contains the details of authenticating client using [Private Key JWT](#private-key-jwt) | Yes, when using certificates for SSO login | No default value | Data class |
 
 Each `onFirstLogin` has the following properties:
 
@@ -2015,6 +2016,184 @@ Each `verification` configuration has the following properties:
 :::note
 If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be defined.
 :::
+
+##### Private Key JWT
+
+`PRIVATE_KEY_JWT` is an OIDC client authentication method defined in [RFC 7523](https://www.rfc-editor.org/rfc/rfc7523). Instead of sending a client secret, Genesis proves its identity to the IDP by presenting a short-lived JWT signed with a private key. The IDP verifies the signature using the matching public key, which it fetches from Genesis's [JWKS endpoint](#jwks-endpoint).
+
+This is stronger than `client_secret` authentication because:
+- The private key never leaves Genesis — nothing sensitive is transmitted
+- Each assertion is single-use (unique `jti`) with a short TTL
+- Compromise of the IDP's side does not expose the client credential
+
+---
+
+At the token exchange step, Genesis constructs and signs a **client assertion JWT** instead of sending a `client_secret`.
+The JWT is signed with the configured private key. The `kid` header is included only when `useJwksUrl = true` (which requires `publicKey` to be set), allowing the IDP to look up the correct key in the JWKS when multiple keys are present (e.g. during rotation). If `useJwksUrl = false`, `kid` is omitted from the assertion header regardless of whether `publicKey` is configured.
+
+Each `privateKeyJwt` configuration has the following properties:
+
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `privateKey` | Yes | — | PEM-encoded PKCS#8 private key used to sign client assertions |
+| `publicKey` | No | `null` | PEM-encoded public key. Enables JWKS publication and embeds the RFC 7638 thumbprint as `kid` in assertions |
+| `incomingPublicKey` | No | `null` | It holds a second PEM-encoded public key. When set, this key is published alongside `publicKey` in the JWKS endpoint (`/oidc/jwks`) so the IDP has both keys available in its cache during a key rotation. |
+| `keyAlgorithm` | No | `RSA` | Signing algorithm family — see table below |
+| `clientAssertionTtlSeconds` | No | `300` | How long each assertion JWT is valid. Should be short (≤ 300 s) |
+| `useJwksUrl` | No | `true` when `publicKey` is set | Controls both JWKS publication and `kid` inclusion. When `false`, neither the JWKS endpoint nor the `kid` header is used even if `publicKey` is set |
+
+Set `useJwksUrl` to `false` when you want to use public key configured on IDP instead of using JWKs endpoint
+
+###### Signing algorithms
+
+| `keyAlgorithm` | JWT `alg` | Key type |
+|----------------|-----------|----------|
+| `RSA` | RS256 | RSA 2048-bit minimum |
+| `PS` | PS256 | RSA 2048-bit minimum (PSS padding) |
+| `EC` | ES256 / ES384 / ES512 | EC P-256, P-384, P-521 |
+| `EdDSA` | EdDSA | Ed25519 or Ed448 |
+
+---
+
+###### JWKS Endpoint
+
+When `PRIVATE_KEY_JWT` is the configured grant type for an OIDC identity provider, Genesis exposes a JSON Web Key Set (JWKS) endpoint so the IDP can verify client assertions signed by Genesis.
+
+**URL:** `GET /oidc/jwks`
+
+Authentication is not required. The response is a standard RFC 7517 JWKS document:
+
+```json
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "alg": "RS256",
+      "use": "sig",
+      "kid": "<RFC 7638 thumbprint>",
+      "n":   "<base64url modulus>",
+      "e":   "<base64url exponent>"
+    }
+  ]
+}
+```
+
+Each entry in `keys` corresponds to one active public key. During key rotation there will be two entries — the current key and the previous key.
+
+---
+
+###### Configuration
+
+JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key, when setting the `publicKey` configuration property, the `useJwksUrl` flag will default to true.
+
+```kotlin
+identityProvider("my-idp") {
+    grantType = PRIVATE_KEY_JWT
+    client {
+        id = "my-client-id"
+        privateKeyJwt {
+            privateKey       = systemDefinition.getItem("PRIVATE_KEY")
+            publicKey        = systemDefinition.getItem("PUBLIC_KEY")   // enables JWKS
+            keyAlgorithm     = RSA                                       // RSA | EC | PS | EdDSA
+            clientAssertionTtlSeconds = 300
+            useJwksUrl       = true                                      // `true` by default if publicKey has been set
+        }
+    }
+    // ...
+}
+```
+
+###### Key Rotation Procedure
+
+###### Overview
+
+When rotating the key pair used for `PRIVATE_KEY_JWT` client authentication, Genesis must ensure the IDP can verify client assertions throughout the transition.
+
+Genesis sets `Cache-Control: public, max-age=3600` on the `/oidc/jwks` response, so the worst-case IDP cache TTL is **1 hour**.
+
+---
+
+###### How `incomingPublicKey` works
+
+`PrivateKeyJwtClient` has two public key fields:
+
+| Field | Role |
+|---|---|
+| `publicKey` | The key currently in use for signing assertions. Its RFC 7638 thumbprint becomes the `kid` in every assertion |
+| `incomingPublicKey` | A second public key served in JWKS alongside `publicKey`. Used to pre-load an upcoming key into the IDP's cache before switching the private key |
+
+Both keys appear in the JWKS response. The `kid` in every assertion always matches `publicKey` — `incomingPublicKey` does not affect signing.
+
+---
+
+###### Two-step rotation (recommended)
+
+This procedure pre-loads the new public key into the IDP's JWKS cache **before** switching the private key, eliminating any failure window.
+
+###### Step 1 — Add the new public key to JWKS while still signing with the old private key
+
+Generate a new key pair:
+
+```bash
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out new_private.pem
+openssl pkey -in new_private.pem -pubout -out new_public.pem
+```
+
+Deploy with the new public key as `incomingPublicKey`:
+
+```kotlin
+privateKeyJwt {
+    privateKey       = "CURRENT_PRIVATE_KEY"   // old key — still signing
+    publicKey        = "CURRENT_PUBLIC_KEY"   // kid = thumbprint-A
+    incomingPublicKey = "NEW_PUBLIC_KEY"      // thumbprint-B pre-loaded into JWKS
+}
+```
+
+JWKS now serves two entries — thumbprint-A (current) and thumbprint-B (incoming). All assertions still use `kid = thumbprint-A`. The IDP picks up thumbprint-B on its next natural JWKS refresh.
+
+**Wait at least 1 hour** for the IDP's JWKS cache to expire and refresh.
+
+###### Step 2 — Switch to the new private key
+
+```kotlin
+privateKeyJwt {
+    privateKey = "NEW_PRIVATE_KEY"    // new key — now signing
+    publicKey  = "NEW_PUBLIC_KEY"     // kid = thumbprint-B
+    // incomingPublicKey removed
+}
+```
+
+The IDP already has thumbprint-B in its cache from step 1. Assertions now carry `kid = thumbprint-B`, which the IDP can verify immediately with no failure window.
+
+---
+
+###### One-step rotation (IDP re-fetches on unknown `kid`)
+
+If the IDP re-fetches its JWKS cache when it encounters an unknown `kid` (Okta, Azure AD, Auth0 typically do this), you can rotate in a single deployment:
+
+```kotlin
+privateKeyJwt {
+    privateKey = "NEW_PRIVATE_KEY"
+    publicKey  = "NEW_PUBLIC_KEY"
+    // no incomingPublicKey needed
+}
+```
+
+The IDP encounters `kid = thumbprint-B` for the first time, re-fetches `/oidc/jwks`, and finds it. No failure window for compliant IDPs.
+
+If you are unsure whether your IDP re-fetches on unknown `kid`, use the two-step procedure — it is safe for all IDPs.
+
+---
+
+###### Difference from `AUTHORIZATION_CODE`
+
+| | `AUTHORIZATION_CODE` | `PRIVATE_KEY_JWT` |
+|---|---|---|
+| Client credential | `client_secret` (shared secret) | Signed JWT (asymmetric) |
+| Credential transmitted | Yes — secret sent to IDP | No — only a signature |
+| Rotation | Coordinate new secret with IDP | Independent key rotation via JWKS |
+| IDP config | Secret registered directly | JWKS URI registered |
+| Replay protection | None beyond TLS | `jti` claim + short TTL |
 
 ###### Sample configurations
 
@@ -2111,6 +2290,36 @@ oidc{
 
     }
   }
+}
+```
+
+###### Configuration for private_key_JWT
+
+```kotlin
+identityProvider("my-idp") {
+    grantType = PRIVATE_KEY_JWT
+
+    client {
+        id = "my-client-id"
+
+        privateKeyJwt {
+            privateKey                = systemDefinition.getItem("OIDC_PRIVATE_KEY")
+            publicKey                 = systemDefinition.getItem("OIDC_PUBLIC_KEY")  // optional, enables JWKS + kid
+            keyAlgorithm              = RSA    // RSA | PS | EC | EdDSA
+            clientAssertionTtlSeconds = 300
+        }
+    }
+
+    config {
+        endpoints {
+            token         = "https://idp.example.com/oauth2/token"
+            authorization = "https://idp.example.com/oauth2/authorize"
+        }
+    }
+
+    scopes("openid", "profile", "email")
+    usernameClaim = "email"
+    redirectUri   = "https://app.example.com/callback"
 }
 ```
 
@@ -2291,6 +2500,25 @@ oidc {
         }
         ...
     }
+}
+```
+
+#### Enabling users for OIDC
+
+To enable users to be able to sign in using OIDC, you must add them to the `USER`, `USER_ATTRIBUTES` and `SSO_USER` tables within your Genesis application.
+
+In the `SSO_USER` table:
+
+* `SSO_METHOD` must be set to OIDC
+* `SSO_SOURCE` must be set to the identity provider name defined in the **oidc-config.kts** file
+
+#### Enable SSO on auth-preferences
+
+Finally, you need to ensure [`ssoToken()`](#ssotoken) is in your `auth-preferences.kts` file:
+
+```kotlin
+authentication {
+  ssoToken()
 }
 ```
 
