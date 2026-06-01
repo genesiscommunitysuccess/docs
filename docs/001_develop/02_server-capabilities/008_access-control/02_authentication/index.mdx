@@ -2042,6 +2042,8 @@ Each `privateKeyJwt` configuration has the following properties:
 | `clientAssertionTtlSeconds` | No | `300` | How long each assertion JWT is valid. Should be short (≤ 300 s) |
 | `useJwksUrl` | No | `true` when `publicKey` is set | Controls both JWKS publication and `kid` inclusion. When `false`, neither the JWKS endpoint nor the `kid` header is used even if `publicKey` is set |
 
+Set `useJwksUrl` to `false` when you want to use public key configured on IDP instead of using JWKs endpoint
+
 ###### Signing algorithms
 
 | `keyAlgorithm` | JWT `alg` | Key type |
@@ -2082,7 +2084,7 @@ Each entry in `keys` corresponds to one active public key. During key rotation t
 
 ###### Configuration
 
-JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key and set `useJwksUrl` flag to true
+JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key and `useJwksUrl` flag to set to true by default
 
 ```kotlin
 identityProvider("my-idp") {
@@ -2094,7 +2096,7 @@ identityProvider("my-idp") {
             publicKey        = systemDefinition.getItem("PUBLIC_KEY")   // enables JWKS
             keyAlgorithm     = RSA                                       // RSA | EC | PS | EdDSA
             clientAssertionTtlSeconds = 300
-            useJwksUrl       = true
+            useJwksUrl       = true                                      // Set by default
         }
     }
     // ...
@@ -2503,7 +2505,7 @@ oidc {
 
 #### Enabling users for OIDC
 
-To enable users to be able to sign in using SAML, you must add them to the `USER`, `USER_ATTRIBUTES` and `SSO_USER` tables within your Genesis application.
+To enable users to be able to sign in using OIDC, you must add them to the `USER`, `USER_ATTRIBUTES` and `SSO_USER` tables within your Genesis application.
 
 In the `SSO_USER` table:
 
@@ -2516,7 +2518,7 @@ Finally, you need to ensure [`ssoToken()`](#ssotoken) is in your `auth-preferenc
 
 ```kotlin
 authentication {
-  ssoToken ()
+  ssoToken()
 }
 ```
 
