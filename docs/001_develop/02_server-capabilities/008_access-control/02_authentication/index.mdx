@@ -2084,7 +2084,7 @@ Each entry in `keys` corresponds to one active public key. During key rotation t
 
 ###### Configuration
 
-JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key and `useJwksUrl` flag to set to true by default
+JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key, when setting the `publicKey` configuration property, the `useJwksUrl` flag will default to true.
 
 ```kotlin
 identityProvider("my-idp") {
@@ -2096,7 +2096,7 @@ identityProvider("my-idp") {
             publicKey        = systemDefinition.getItem("PUBLIC_KEY")   // enables JWKS
             keyAlgorithm     = RSA                                       // RSA | EC | PS | EdDSA
             clientAssertionTtlSeconds = 300
-            useJwksUrl       = true                                      // Set by default
+            useJwksUrl       = true                                      // `true` by default if publicKey has been set
         }
     }
     // ...
