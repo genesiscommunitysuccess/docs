@@ -1987,9 +1987,7 @@ Each `client` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
 | secret | The client secret provided by the OIDC Provider when application was registered | Yes, when using client-secret for client authentication | No default value | String |
-| privateKeyJwt | Contains the details of authenticating client using privet key JWT | Yes, when using certificates for SSO login | No default value | Data class |
-
-Follow the link for more details on [Private Key JWT](#private-key-jwt)
+| privateKeyJwt | Contains the details of authenticating client using [Private Key JWT](#private-key-jwt) | Yes, when using certificates for SSO login | No default value | Data class |
 
 Each `onFirstLogin` has the following properties:
 
@@ -2039,7 +2037,7 @@ Each `privateKeyJwt` configuration has the following properties:
 |-------|----------|---------|-------------|
 | `privateKey` | Yes | — | PEM-encoded PKCS#8 private key used to sign client assertions |
 | `publicKey` | No | `null` | PEM-encoded public key. Enables JWKS publication and embeds the RFC 7638 thumbprint as `kid` in assertions |
-| `previousPublicKey` | No | `null` | PEM-encoded previous public key. Set during key rotation to keep the old key available in JWKS |
+| `incomingPublicKey` | No | `null` | It holds a second PEM-encoded public key. When set, this key is published alongside `publicKey` in the JWKS endpoint (`/oidc/jwks`) so the IDP has both keys available in its cache during a key rotation. |
 | `keyAlgorithm` | No | `RSA` | Signing algorithm family — see table below |
 | `clientAssertionTtlSeconds` | No | `300` | How long each assertion JWT is valid. Should be short (≤ 300 s) |
 | `useJwksUrl` | No | `true` when `publicKey` is set | Controls both JWKS publication and `kid` inclusion. When `false`, neither the JWKS endpoint nor the `kid` header is used even if `publicKey` is set |
@@ -2084,7 +2082,7 @@ Each entry in `keys` corresponds to one active public key. During key rotation t
 
 ###### Configuration
 
-JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition.
+JWKS publication is controlled inside the `privateKeyJwt` block of an OIDC identity provider definition. You need to set public key and set `useJwksUrl` flag to true
 
 ```kotlin
 identityProvider("my-idp") {
@@ -2103,59 +2101,87 @@ identityProvider("my-idp") {
 }
 ```
 
-###### Zero-Downtime Key Rotation
+###### Key Rotation Procedure
 
-IDPs cache JWKS responses and may continue issuing tokens signed with an old key for some time after a key change. Setting `previousPublicKey` keeps the old public key in the JWKS response during the transition so those tokens remain verifiable.
+###### Overview
 
-###### Rotation procedure
+When rotating the key pair used for `PRIVATE_KEY_JWT` client authentication, Genesis must ensure the IDP can verify client assertions throughout the transition.
 
-**Step 1 — generate a new key pair**
+Genesis sets `Cache-Control: public, max-age=3600` on the `/oidc/jwks` response, so the worst-case IDP cache TTL is **1 hour**.
+
+---
+
+###### How `incomingPublicKey` works
+
+`PrivateKeyJwtClient` has two public key fields:
+
+| Field | Role |
+|---|---|
+| `publicKey` | The key currently in use for signing assertions. Its RFC 7638 thumbprint becomes the `kid` in every assertion |
+| `incomingPublicKey` | A second public key served in JWKS alongside `publicKey`. Used to pre-load an upcoming key into the IDP's cache before switching the private key |
+
+Both keys appear in the JWKS response. The `kid` in every assertion always matches `publicKey` — `incomingPublicKey` does not affect signing.
+
+---
+
+###### Two-step rotation (recommended)
+
+This procedure pre-loads the new public key into the IDP's JWKS cache **before** switching the private key, eliminating any failure window.
+
+###### Step 1 — Add the new public key to JWKS while still signing with the old private key
+
+Generate a new key pair:
 
 ```bash
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out new_private.pem
 openssl pkey -in new_private.pem -pubout -out new_public.pem
 ```
 
-**Step 2 — deploy with both keys**
+Deploy with the new public key as `incomingPublicKey`:
 
 ```kotlin
 privateKeyJwt {
-    privateKey      = "<new private key>"
-    publicKey       = "<new public key>"
-    previousPublicKey = "<old public key>"   // keeps old key in JWKS
+    privateKey       = "CURRENT_PRIVATE_KEY"   // old key — still signing
+    publicKey        = "CURRENT_PUBLIC_KEY"   // kid = thumbprint-A
+    incomingPublicKey = "NEW_PUBLIC_KEY"      // thumbprint-B pre-loaded into JWKS
 }
 ```
 
-The JWKS endpoint now serves two entries — one for each thumbprint. The IDP can pick up the new key while still accepting tokens signed with the old one.
+JWKS now serves two entries — thumbprint-A (current) and thumbprint-B (incoming). All assertions still use `kid = thumbprint-A`. The IDP picks up thumbprint-B on its next natural JWKS refresh.
 
-**Step 3 — wait for the transition window to close**
+**Wait at least 1 hour** for the IDP's JWKS cache to expire and refresh.
 
-Remove `previousPublicKey` once all tokens signed with the old key have expired:
-
-```
-wait = IDP JWKS cache TTL + IDP token max lifetime
-```
-
-Both values come from the **IDP's configuration** (Okta, Azure AD, Keycloak, etc.), not from Genesis:
-
-- **JWKS cache TTL** — how long the IDP caches Genesis's `/oidc/jwks` response before re-fetching it (commonly 1–24 h; check the IDP admin console)
-- **Token max lifetime** — the maximum lifetime of access or refresh tokens the IDP issued while the old key was active
-
-A conservative default is **24 hours**. Most IDP admin consoles provide a "force JWKS refresh" option to shorten this.
-
-> **Note:** `tokenLifeInSeconds` in the Genesis OIDC script is unrelated — it controls how long Genesis keeps its internal `SsoToken` row alive after a successful IDP callback, not the lifetime of IDP-issued tokens.
-
-**Step 4 — deploy the clean config**
+###### Step 2 — Switch to the new private key
 
 ```kotlin
 privateKeyJwt {
-    privateKey = "<new private key>"
-    publicKey  = "<new public key>"
-    // previousPublicKey removed
+    privateKey = "NEW_PRIVATE_KEY"    // new key — now signing
+    publicKey  = "NEW_PUBLIC_KEY"     // kid = thumbprint-B
+    // incomingPublicKey removed
 }
 ```
 
-The JWKS response shrinks back to one entry.
+The IDP already has thumbprint-B in its cache from step 1. Assertions now carry `kid = thumbprint-B`, which the IDP can verify immediately with no failure window.
+
+---
+
+###### One-step rotation (IDP re-fetches on unknown `kid`)
+
+If the IDP re-fetches its JWKS cache when it encounters an unknown `kid` (Okta, Azure AD, Auth0 typically do this), you can rotate in a single deployment:
+
+```kotlin
+privateKeyJwt {
+    privateKey = "NEW_PRIVATE_KEY"
+    publicKey  = "NEW_PUBLIC_KEY"
+    // no incomingPublicKey needed
+}
+```
+
+The IDP encounters `kid = thumbprint-B` for the first time, re-fetches `/oidc/jwks`, and finds it. No failure window for compliant IDPs.
+
+If you are unsure whether your IDP re-fetches on unknown `kid`, use the two-step procedure — it is safe for all IDPs.
+
+---
 
 ###### Difference from `AUTHORIZATION_CODE`
 
