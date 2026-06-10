@@ -108,7 +108,19 @@ For more on event handler validation, see [`onValidate`](/develop/server-capabil
 
 Point `foundation-form` at the event with `resourceName`. Optionally pass `uischema` to control layout (recommended for demos that use plain text fields instead of connected selects).
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis' }, { label: 'React', value: 'react' }, { label: 'Angular', value: 'angular' }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react' }, { label: 'Genesis', value: 'genesis' }, { label: 'Angular', value: 'angular' }]}>
+
+<TabItem value="react">
+
+```tsx
+<FoundationForm
+  prefix="rapid"
+  resourceName="EVENT_CURRENCY_HOLIDAY_INSERT"
+  uischema={holidayUiSchema}
+/>
+```
+
+</TabItem>
 
 <TabItem value="genesis">
 
@@ -118,18 +130,6 @@ Point `foundation-form` at the event with `resourceName`. Optionally pass `uisch
   resourceName="EVENT_TRADE_INSERT"
   :uischema=${(x) => x.tradeUiSchema}
 ></foundation-form>
-```
-
-</TabItem>
-
-<TabItem value="react">
-
-```tsx
-<foundation-form
-  prefix="rapid"
-  resourceName="EVENT_CURRENCY_HOLIDAY_INSERT"
-  uischema={holidayUiSchema}
-/>
 ```
 
 </TabItem>
