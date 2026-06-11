@@ -278,6 +278,31 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.24
+
+###### Fixes
+
+* `genesis-clustersupport` : Backport Consul failover fixes to 8.15.x
+
+#### 8.15.23
+
+###### Features
+
+* `coreproduct` : Increase maxSize to 256 for SYSTEM_KEY field
+* `genesis-process` : Add system definition flag to explicitly disable tracing 
+
+###### Performance improvements
+
+* `genesis-db` : Optimize DataTypeConverter resolution
+
+###### Fixes
+
+* `genesis-pal-datapipeline` : Ensure buildIndex filter is applied from the first poll when no persistence entry exists
+
+###### Dependency changes
+
+* Mirror Maven Central through JFrog and drop unauthenticated spring-plugins repo 
+
 #### 8.15.22
 
 ###### Fixes
@@ -286,9 +311,9 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ###### Dependency Changes 
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): point Maven wrapper distributionUrl to Apache archive to mitigate Maven Central throttling 
-* build(deps): use JFrog dev-repo first for Maven submodules to mitigate Maven Central throttling
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Point Maven wrapper distributionUrl to Apache archive to mitigate Maven Central throttling 
+* Use JFrog dev-repo first for Maven submodules to mitigate Maven Central throttling
 
 #### 8.15.21
 
