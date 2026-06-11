@@ -278,6 +278,66 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.22
+
+###### Fixes
+
+* `genesis-pal-streamerclient` : Revert "Resource-based service discovery for streamer clients with compact process support" due to resource name clashing issues
+
+###### Dependency Changes 
+
+* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* build(deps): point Maven wrapper distributionUrl to Apache archive to mitigate Maven Central throttling 
+* build(deps): use JFrog dev-repo first for Maven submodules to mitigate Maven Central throttling
+
+#### 8.15.21
+
+###### Fixes
+
+* `genesis-environment` : SendIt BigDecimal Precision and Rounding Issues for FDB Migrations
+* `genesis-router` : preserve MORE_ROWS flag in HTTP dataserver polling response
+
+#### 8.15.20
+
+###### Fixes
+
+* `genesis-dbmon` : support -l flag in search/qsearch when criteriaMode is enabled
+* `genesis-environment` : update DumpTable to use commons-collections4
+
+#### 8.15.19
+
+###### Fixes
+
+* `genesis-dataserver2` : Add back kryo-serializers dataserver2 dependency for backwards compatibility
+
+#### 8.15.18
+
+###### Fixes
+
+* `genesis-dataserver2` : add Joda-Time Kryo serializers to remove kryo-serializers dependency
+
+#### 8.15.17
+
+###### Features
+
+* `genesis-pal-requestserver` : expose Request.Details to custom reqrep handlers
+
+###### Fixes
+
+* `genesis-config` : Replace shiro with javax.crypto and add tests for backwards compatibility
+
+#### 8.15.16
+
+###### Fixes
+
+* `gradle` : Allow skipping jars by prefix in classpath file for dynamic deploy
+
+#### 8.15.15
+
+###### Fixes
+
+* `genesis-clustersupport` : replay current snapshot on addServiceListener to avoid waitForDependencies hang
+
 #### 8.15.14
 
 ###### Dependency changes
