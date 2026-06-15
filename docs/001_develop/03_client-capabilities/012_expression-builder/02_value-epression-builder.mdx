@@ -92,42 +92,52 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-value-expression-builder></rapid-value-expression-builder>
+<RapidValueExpressionBuilder></RapidValueExpressionBuilder>
 ```
 
-    Usage
+Usage
 ```tsx
-import { useEffect, useRef } from 'react';
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
+import {
+  RapidValueExpressionBuilder,
+  type RapidValueExpressionBuilderRef,
+} from '@genesislcap/rapid-design-system/react';
+import { useCallback, useRef } from 'react';
 // See further down for code snippet containing fields
 import { fields } from './fields';
 
 export function MyComponent() {
-  const expressionBuilderRef = useRef(null);
-
-  const change = (e) => {
-    console.log(e.nativeEvent.detail);
-  };
-
   const valueConfig: ExpressionBuilderTypes.ValueConfig = {
     fields, // from import
     // you can also set the model and other configuration options here
   };
 
-  useEffect(() => {
-    if (expressionBuilderRef.current) {
-      expressionBuilderRef.current.valueConfig = valueConfig;
+  const configRef = useRef(valueConfig);
+  configRef.current = valueConfig;
+
+  const setBuilderRef = useCallback((el: RapidValueExpressionBuilderRef | null) => {
+    if (el) {
+      el.valueConfig = configRef.current;
     }
   }, []);
 
+  const handleChangedValueExpression = useCallback((e: Event) => {
+    const event = (e as { nativeEvent?: Event }).nativeEvent ?? e;
+    const newModel = (event as CustomEvent<
+      RuleExpression.Expression['MethodExpression'] | RuleExpression.Expression['BinaryExpression']
+    >).detail;
+    console.log({ newModel });
+  }, []);
+
   return (
-    <rapid-value-expression-builder
-      ref={expressionBuilderRef}
-      onChange={change}
+    <RapidValueExpressionBuilder
+      ref={setBuilderRef}
+      onChange={handleChangedValueExpression}
     />
-  )
+  );
 }
 ```
+
   </TabItem>
   <TabItem value="angular">
 
