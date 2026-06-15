@@ -238,6 +238,41 @@ This release contains an update to the way Business Component versions are manag
 
 ### Patch releases
 
+#### 8.14.30
+
+###### Performance improvements
+
+* `genesis-db` : Optimize DataTypeConverter resolution 
+
+###### Fixes
+
+* `genesis-clustersupport` : Backport Consul failover fixes to 8.14.x 
+* `genesis-pal-streamerclient` : Revert "Resource-based service discovery for streamer clients with compact process support" due to resource name clashing issues
+
+###### Dependency changes
+
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling 
+* Mirror Maven Central through JFrog and drop unauthenticated spring-plugins repo
+* Point Maven wrapper distributionUrl to Apache archive to mitigate Maven Central throttling
+* Use JFrog dev-repo first for Maven submodules to mitigate Maven Central throttling
+
+#### 8.14.29
+
+###### Features
+
+* `genesis-pal-requestserver` : expose Request.Details to custom reqrep handlers
+
+###### Fixes
+
+* `genesis-environment` : SendIt BigDecimal Precision and Rounding Issues for FDB Migrations
+* `genesis-router` : preserve MORE_ROWS flag in HTTP dataserver polling response
+
+#### 8.14.28
+
+###### Fixes
+
+* `genesis-dbmon` : support -l flag in search/qsearch when criteriaMode is enabled
+
 #### 8.14.27
 
 ###### Breaking changes
