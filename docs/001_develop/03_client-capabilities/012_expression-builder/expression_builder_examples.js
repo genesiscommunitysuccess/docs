@@ -124,17 +124,19 @@ const valueModel = {
 };
 
 /**
- * Generic expression builder component factory
- * @param {string} componentType - The type of expression builder component ('rule' or 'value')
- * @param {Object} initialModel - The initial model for the builder
- * @param {string} configPropName - The property name for configuration ('ruleConfig' or 'valueConfig')
- * @returns {Function} - A React component
+ * Interactive demo uses the native custom element (same pattern as other Docusaurus examples).
+ * The React tab in the docs shows the RapidRuleExpressionBuilder / RapidValueExpressionBuilder wrapper.
  */
 const createExpressionBuilder = (componentType, initialModel, configPropName) => {
+  const tagName = `rapid-${componentType}-expression-builder`;
+  const config = {
+    fields,
+    model: initialModel,
+    partialRuleValidationWarning: true,
+  };
+
   return function ExpressionBuilder() {
     const isBrowser = useIsBrowser();
-    const expressionBuilderRef = React.useRef(null);
-
     const [modelString, setModelString] = useState(initialModel);
     const [showModel, setShowModel] = useState(true);
 
@@ -144,26 +146,15 @@ const createExpressionBuilder = (componentType, initialModel, configPropName) =>
     }
 
     const change = (e) => {
-      setModelString(e.nativeEvent.detail);
+      const event = e.nativeEvent ?? e;
+      setModelString(event.detail);
     };
 
-    const config = {
-      fields,
-      model: initialModel,
-      partialRuleValidationWarning: true,
-    };
-
-    // Use useEffect to set the property imperatively after the component is mounted
-    // but before the connected callback runs
-    React.useEffect(() => {
-      if (expressionBuilderRef.current) {
-        // Set the property directly on the element
-        expressionBuilderRef.current[configPropName] = config;
+    const setBuilderRef = React.useCallback((el) => {
+      if (el) {
+        el[configPropName] = config;
       }
-    }, []);
-
-    // Create the component element dynamically
-    const ExpressionBuilderElement = `rapid-${componentType}-expression-builder`;
+    }, [configPropName]);
 
     return (
       <CodeSection style={{ flexDirection: 'column' }}>
@@ -180,10 +171,12 @@ const createExpressionBuilder = (componentType, initialModel, configPropName) =>
           display: 'grid',
           gridTemplateColumns: showModel ? '2fr 1fr' : '1fr'
         }}>
-          {React.createElement(ExpressionBuilderElement, {
-            ref: expressionBuilderRef,
-            onChange: change
-          })}
+          {isBrowser
+            ? React.createElement(tagName, {
+                ref: setBuilderRef,
+                onChange: change,
+              })
+            : null}
           {showModel ? (
             <pre style={{
               backgroundColor: '#292d3e',
@@ -229,4 +222,3 @@ const dateModel = {
 };
 
 export const RuleBuilderDateExample = createExpressionBuilder('rule', dateModel, 'ruleConfig');
-

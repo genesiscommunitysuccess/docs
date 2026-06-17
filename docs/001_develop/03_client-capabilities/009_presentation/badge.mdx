@@ -28,7 +28,7 @@ Use cases:
 This simple example shows a rectangular badge with text in light against a primary (green) background.
 <BadgeDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -53,14 +53,16 @@ This simple example shows a rectangular badge with text in light against a prima
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-badge></rapid-badge>
-  ```
+```html
+<Badge></Badge>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Badge } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-badge fill="primary" color="light">JD</rapid-badge>
+      <Badge fill="primary" color="light">JD</Badge>
     );
   }
   ```

@@ -33,7 +33,7 @@ Use cases:
 
 <CategorizedMultiselectDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -93,11 +93,13 @@ export class MyElement extends GenesisElement {
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-categorized-multiselect></rapid-categorized-multiselect>
-  ```
+```html
+<CategorizedMultiselect></CategorizedMultiselect>
+```
   Usage
 ```tsx
+import { CategorizedMultiselect } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
   const [selectedOptions, setSelectedOptions] = useState([])
 
@@ -133,8 +135,8 @@ export function MyComponent() {
   }
 
   return (
-    <rapid-categorized-multiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
-    </rapid-categorized-multiselect>
+    <CategorizedMultiselect options={options} onselectionChange={selectionChange} selectedOptions={selectedOptions}>
+    </CategorizedMultiselect>
   )
 }
 ```

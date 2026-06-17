@@ -91,31 +91,104 @@ If you customise `--foundation-header-rest-item-background` elsewhere, the selec
 
 ### Navigation items
 
-You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding 'Home' and 'Profiles' buttons:
+You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a click handler. The following is a really basic example for adding 'Home' and 'Profiles' buttons:
 
-```html
-<foundation-header>
-  <rapid-button
-    slot="routes"
-    value="1"
-    @click=${(x, c) => c.parent.navigation.navigateTo("home")}
-  >Home</rapid-button>
-  <rapid-button
-    slot="routes"
-    value="1"
-    @click=${(x, c) => c.parent.navigation.navigateTo("profiles")}
-  >Profiles</rapid-button>
-</foundation-header>`;
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useRef } from 'react';
+import { Button } from '@genesislcap/rapid-design-system/react';
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+
+const HeaderBasicRoutesExample = () => {
+  const headerRef = useRef(null);
+
+  const navigateTo = (path: string) => {
+    headerRef.current?.navigation?.navigateTo(path);
+  };
+
+  return (
+    <FoundationHeader ref={headerRef}>
+      <Button slot="routes" value={1} onClick={() => navigateTo('home')}>
+        Home
+      </Button>
+      <Button slot="routes" value={2} onClick={() => navigateTo('profiles')}>
+        Profiles
+      </Button>
+    </FoundationHeader>
+  );
+};
 ```
 
-The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `router` in the [setup step](#header-set-up). From it, the [navigateTo](./docs/api/foundation-header.navigation.navigateto.md) method can be called, which allows the user to navigate around the finished application from the navigation buttons.
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
+@customElement({
+  name: 'header-basic-routes-example',
+  template: html`
+    <foundation-header>
+      <rapid-button
+        slot="routes"
+        value="1"
+        @click=${(x, c) => c.parent.navigation.navigateTo('home')}
+      >Home</rapid-button>
+      <rapid-button
+        slot="routes"
+        value="2"
+        @click=${(x, c) => c.parent.navigation.navigateTo('profiles')}
+      >Profiles</rapid-button>
+    </foundation-header>
+  `,
+})
+export class HeaderBasicRoutesExample extends GenesisElement {}
+```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+
+@Component({
+  selector: 'header-basic-routes-example',
+  template: `
+    <foundation-header #foundationHeader>
+      <rapid-button slot="routes" value="1" (click)="navigateTo('home')">
+        Home
+      </rapid-button>
+      <rapid-button slot="routes" value="2" (click)="navigateTo('profiles')">
+        Profiles
+      </rapid-button>
+    </foundation-header>
+  `,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class HeaderBasicRoutesExampleComponent {
+  @ViewChild('foundationHeader') foundationHeader!: ElementRef;
+
+  navigateTo(path: string) {
+    this.foundationHeader.nativeElement.navigation?.navigateTo(path);
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+The `navigation` object referenced via the `parent` object (Genesis) or the header `ref` (React) is why the `navigation` object is added as an attribute to the `router` in the [setup step](#header-set-up). From it, the [navigateTo](./docs/api/foundation-header.navigation.navigateto.md) method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from `@genesislcap/web-core`.
 
 
 Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -161,12 +234,14 @@ export class HeaderExample extends GenesisElement {
 
 Declaration:
 ```html
-<foundation-header></foundation-header>
+<FoundationHeader></FoundationHeader>
 ```
 
 Usage:
 ```tsx
 import React, { useRef, useEffect } from 'react';
+import { Button, Icon } from '@genesislcap/rapid-design-system/react';
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
 
 const allRoutes = [
   { index: 0, path: '/home', variant: 'home', icon: 'home', title: 'Home' },
@@ -174,7 +249,7 @@ const allRoutes = [
   // Add more routes as needed
 ];
 
-const FoundationHeader = () => {
+const FoundationHeaderExample = () => {
   const foundationHeaderRef = useRef(null);
 
   const navigateTo = (path) => {
@@ -185,24 +260,24 @@ const FoundationHeader = () => {
   };
 
   return (
-    <foundation-header ref={foundationHeaderRef}>
+    <FoundationHeader ref={foundationHeaderRef}>
       {allRoutes.map((route) => (
-        <rapid-button
+        <Button
           slot="routes"
           key={route.index}
           appearance="neutral-grey"
           value={route.index}
           onClick={() => navigateTo(route.path)}
         >
-          <rapid-icon variant={route.variant} name={route.icon}></rapid-icon>
+          <Icon variant={route.variant} name={route.icon}></Icon>
           {route.title}
-        </rapid-button>
+        </Button>
       ))}
-    </foundation-header>
+    </FoundationHeader>
   );
 };
 
-export default FoundationHeader;
+export default FoundationHeaderExample;
 ```
 
 </TabItem>

@@ -36,7 +36,7 @@ Use cases:
 ## Example
 <ListboxDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -78,26 +78,29 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-listbox>
-      <rapid-option></rapid-option>
-      <rapid-option></rapid-option>
-      <rapid-option></rapid-option>
-    </rapid-listbox>
-    ```
+```html
+<Listbox>
+  <ListboxOption></ListboxOption>
+  <ListboxOption></ListboxOption>
+  <ListboxOption></ListboxOption>
+</Listbox>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { useState } from "react";
+import { Listbox, ListboxOption } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const [selected, setSelected] = useState('');
 
     return (
       <div>
-        <rapid-listbox onClick={(e) => setSelected(e.target.value)}>
-          <rapid-option value="apple">Apple</rapid-option>
-          <rapid-option value="banana">Banana</rapid-option>
-          <rapid-option value="strawberry">Strawberry</rapid-option>
-        </rapid-listbox>
+        <Listbox onClick={(e) => setSelected(e.target.value)}>
+          <ListboxOption value="apple">Apple</ListboxOption>
+          <ListboxOption value="banana">Banana</ListboxOption>
+          <ListboxOption value="strawberry">Strawberry</ListboxOption>
+        </Listbox>
         <p>Selected: {selected}</p>
       </div>)
     }

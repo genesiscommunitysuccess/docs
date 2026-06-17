@@ -23,7 +23,7 @@ Use cases:
 
 <ToolbarDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -60,12 +60,14 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-toolbar></rapid-toolbar>
-    ```
+```html
+<Toolbar></Toolbar>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { Button, ListboxOption, Radio, RadioGroup, Select, Toolbar } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
       const handleRadioFieldChanged = (event) => {
         const target = event.target as HTMLInputElement;
@@ -73,19 +75,19 @@ Use cases:
       };
 
       return (
-        <rapid-toolbar>
-          <rapid-button>Button</rapid-button>
-          <rapid-select>
-            <rapid-option>Option 1</rapid-option>
-            <rapid-option>Second option</rapid-option>
-            <rapid-option>Option 3</rapid-option>
-          </rapid-select>
-          <rapid-radio-group>
-            <rapid-radio checked="">One</rapid-radio>
-            <rapid-radio>Two</rapid-radio>
-            <rapid-radio>Three</rapid-radio>
-          </rapid-radio-group>
-        </rapid-toolbar>
+        <Toolbar>
+          <Button>Button</Button>
+          <Select>
+            <ListboxOption>Option 1</ListboxOption>
+            <ListboxOption>Second option</ListboxOption>
+            <ListboxOption>Option 3</ListboxOption>
+          </Select>
+          <RadioGroup>
+            <Radio checked="">One</Radio>
+            <Radio>Two</Radio>
+            <Radio>Three</Radio>
+          </RadioGroup>
+        </Toolbar>
       );
     }
     ```

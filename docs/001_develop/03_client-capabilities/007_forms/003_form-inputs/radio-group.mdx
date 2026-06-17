@@ -27,7 +27,7 @@ Use cases:
 
 <RadioGroupDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -69,14 +69,16 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-radio-group>
-  <rapid-radio value="one">One</rapid-radio>
-  <rapid-radio value="two">Two</rapid-radio>
-  <rapid-radio value="three">Three</rapid-radio>
-</rapid-radio-group>
+<RadioGroup>
+  <Radio value="one">One</Radio>
+  <Radio value="two">Two</Radio>
+  <Radio value="three">Three</Radio>
+</RadioGroup>
 ```
 Usage
 ```tsx
+import { Radio, RadioGroup } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
   const handleRadioGroupChanged = (event) => {
     const target = event.target as HTMLInputElement;
@@ -84,11 +86,11 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-radio-group onChange={handleRadioGroupChanged}>
-      <rapid-radio value="one">One</rapid-radio>
-      <rapid-radio value="two">Two</rapid-radio>
-      <rapid-radio value="three">Three</rapid-radio>
-    </rapid-radio-group>
+    <RadioGroup onChange={handleRadioGroupChanged}>
+      <Radio value="one">One</Radio>
+      <Radio value="two">Two</Radio>
+      <Radio value="three">Three</Radio>
+    </RadioGroup>
   );
 }
 ```

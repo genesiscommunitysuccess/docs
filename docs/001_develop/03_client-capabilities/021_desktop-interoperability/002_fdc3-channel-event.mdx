@@ -46,7 +46,7 @@ It will broadcast with the context type `fdc3.position`.
 
 The context payload will contain the `event.detail.data` payload in the `id` property of the Context object.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 Declaration
@@ -80,15 +80,16 @@ Declaration
 
 Usage
 ```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+
 export function MyComponent() {
     return (
-        <rapid-grid-pro>
-            <grid-pro-genesis-datasource
-                resource-name="ALL_INSTRUMENT_REF">
-            </grid-pro-genesis-datasource>
+        <GridPro>
+            <GridProGenesisDatasource resourceName="ALL_INSTRUMENT_REF" />
             <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
             </fdc3-channel-event>
-        </rapid-grid-pro>
+        </GridPro>
     );
 }
 ```
@@ -130,7 +131,7 @@ This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro`
 
 It will broadcast on the specified app channel, in this case `appChannel`.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 Declaration
@@ -166,18 +167,19 @@ Declaration
 
 Usage
 ```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+
 export function MyComponent() {
     return (
-        <rapid-grid-pro>
-            <grid-pro-genesis-datasource
-                resource-name="ALL_INSTRUMENT_REF">
-            </grid-pro-genesis-datasource>
+        <GridPro>
+            <GridProGenesisDatasource resourceName="ALL_INSTRUMENT_REF" />
             <fdc3-channel-event
                 event-name="rowClicked"
                 channel-type="fdc3.position"
                 channel-name="appChannel">
             </fdc3-channel-event>
-        </rapid-grid-pro>
+        </GridPro>
     );
 }
 ```
@@ -226,7 +228,7 @@ It will broadcast with the context type `fdc3.position`.
 
 The mapping function will map the `event.detail.data` payload and create a new object.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 Declaration
@@ -261,20 +263,21 @@ Declaration
 ```
 Usage
 ```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+
 export function MyComponent() {
     const mappingFunction = (params: any) => ({ id: { ticker: params.TICKER, cusip: params.CUSIP } })
 
     return (
-        <rapid-grid-pro>
-            <grid-pro-genesis-datasource
-                resource-name="ALL_INSTRUMENT_REF">
-            </grid-pro-genesis-datasource>
+        <GridPro>
+            <GridProGenesisDatasource resourceName="ALL_INSTRUMENT_REF" />
             <fdc3-channel-event
                 mappingFunction={mappingFunction}
                 event-name="rowClicked"
                 channel-type="fdc3.position">
             </fdc3-channel-event>
-        </rapid-grid-pro>
+        </GridPro>
     );
 }
 ```

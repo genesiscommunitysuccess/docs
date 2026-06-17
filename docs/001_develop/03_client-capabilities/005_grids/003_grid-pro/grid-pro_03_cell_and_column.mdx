@@ -219,11 +219,38 @@ You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
 
 You can register custom cell renderers, editors, and filters using the `gridComponents` property:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+const gridComponents = {
+  customRenderer: CustomCellRenderer,
+  customEditor: CustomCellEditor,
+  customFilter: CustomFilter,
+};
+
+export function MyGrid() {
+  return (
+    <GridPro gridComponents={gridComponents} autoCellRendererByType>
+      <GridProClientSideDatasource resourceName="ALL_TRADES" />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'my-grid',
   template: html`
-    <rapid-grid-pro 
+    <rapid-grid-pro
       :gridComponents="${(x) => x.gridComponents}"
       auto-cell-renderer-by-type>
       <grid-pro-client-side-datasource
@@ -240,6 +267,40 @@ export class MyGrid extends GenesisElement {
   };
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-grid',
+  template: `
+    <rapid-grid-pro
+      [gridComponents]="gridComponents"
+      auto-cell-renderer-by-type>
+      <grid-pro-client-side-datasource
+        resource-name="ALL_TRADES">
+      </grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyGridComponent {
+  gridComponents = {
+    customRenderer: CustomCellRenderer,
+    customEditor: CustomCellEditor,
+    customFilter: CustomFilter,
+  };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Usage example
 
@@ -282,7 +343,7 @@ const customColDefs: ColDef[] = [
 ];
 ```
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -341,40 +402,48 @@ export class MyElement extends GenesisElement {
 
 Simple example
 ```tsx
+import type { ColDef } from '@ag-grid-community/core';
+import { GridProCell, GridProColumn } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 export function MyElement() {
   const colDefs: ColDef[] = customColDefs; // refer to above example
   return (
-    <rapid-grid-pro>
-      <grid-pro-column definition={colDefs[0]}>
-        <grid-pro-cell
+    <GridPro>
+      <GridProColumn definition={colDefs[0]}>
+        <GridProCell
           renderer={colDefs[0].cellRenderer}
           rendererParams={colDefs[0].cellRendererParams}
         />
-      </grid-pro-column>
-    </rapid-grid-pro>
+      </GridProColumn>
+    </GridPro>
   );
-};
+}
 ```
 
 Loop example
 ```tsx
+import type { ColDef } from '@ag-grid-community/core';
+import { GridProCell, GridProColumn } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
 export function MyElement() {
   const colDefs: ColDef[] = customColDefs; // refer to above example
   return (
-    <rapid-grid-pro>
+    <GridPro>
       {colDefs.map((colDef, index) => (
-        <grid-pro-column definition={colDef} key={index}>
+        <GridProColumn definition={colDef} key={index}>
           {colDef.cellRenderer ? (
-            <grid-pro-cell
+            <GridProCell
               renderer={colDef.cellRenderer}
               rendererParams={colDef.cellRendererParams}
             />
           ) : null}
-        </grid-pro-column>
+        </GridProColumn>
       ))}
-    </rapid-grid-pro>
+    </GridPro>
   );
-};
+}
 ```
 
   </TabItem>

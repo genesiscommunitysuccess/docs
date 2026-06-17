@@ -25,7 +25,7 @@ Use cases:
 
 <SwitchDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -59,10 +59,12 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-switch></rapid-switch>
+<Switch></Switch>
 ```
 Usage
 ```tsx
+import { Switch } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
 
   const [switchValue, setSwitchValue] = useState(false);
@@ -74,10 +76,10 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-switch onChange={handleSwitchChange}>
+    <Switch onChange={handleSwitchChange}>
       <span slot="checked-message">Dark</span>
       <span slot="unchecked-message">Light</span>
-    </rapid-switch>
+    </Switch>
   );
 }
 ```

@@ -42,7 +42,7 @@ Here is an example that shows a `dialog` notification component. You can click o
 
 <ToastNotificationDemo />
 <br/>
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
  ```typescript
@@ -79,6 +79,7 @@ Here is an example that shows a `dialog` notification component. You can click o
 <TabItem value="react">
 ```tsx
 import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+import { Button } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
   const showDialog = (event) => {
@@ -99,7 +100,7 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-button onClick={showDialog}>Show Dialog</rapid-button>
+    <Button onClick={showDialog}>Show Dialog</Button>
   );
 }
 ```
@@ -342,6 +343,28 @@ The easiest way to see how to set up and use the Notification listener is to fol
 
 You must place the `notification-listener` component at the top of the component tree to ensure it can capture events from any child component. You can find the `rapid-design-system-provider` tag in your application and place the `notification-listener` tag inside it, whether you're using React, Angular, or Genesis framework.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { DesignSystemProvider, NotificationListener } from '@genesislcap/rapid-design-system/react';
+
+export function App() {
+  return (
+    <DesignSystemProvider>
+      <NotificationListener>
+        {/* other application components go here */}
+      </NotificationListener>
+    </DesignSystemProvider>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 <rapid-design-system-provider>
   <rapid-notification-listener>
@@ -349,6 +372,22 @@ You must place the `notification-listener` component at the top of the component
   </rapid-notification-listener>
 </rapid-design-system-provider>
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```html
+<rapid-design-system-provider>
+  <rapid-notification-listener>
+    <!-- other application components go here -->
+  </rapid-notification-listener>
+</rapid-design-system-provider>
+```
+
+</TabItem>
+
+</Tabs>
 
 **2. Dispatch the notification using NOTIFICATION_EVENT**
 
@@ -373,7 +412,7 @@ this.$emit( NotificationEvent.NOTIFICATION_EVENT,
 
 Now you need to provide a UI element that can trigger a notification. The code below creates a button that can trigger the notification event from a child component.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 ```typescript
@@ -410,6 +449,7 @@ export class MyElement extends GenesisElement {
 ```tsx
 import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
 import { useRef } from 'react';
+import { Button } from '@genesislcap/rapid-design-system/react';
 
 export function MyComponent() {
   const ref = useRef();
@@ -429,7 +469,7 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-button onClick={triggerNotification} ref={ref}>Show Notification</rapid-button>
+    <Button onClick={triggerNotification} ref={ref}>Show Notification</Button>
   );
 }
 ```

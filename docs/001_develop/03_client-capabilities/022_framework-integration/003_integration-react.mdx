@@ -111,20 +111,23 @@ Attributes can be either hard coded or set using React's property event bindings
 
 To set a text attribute on a component, you can either hard code it in the template or set using the `{}` React bindings. React converts them when rendering in the DOM.
 
-```ts
+```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 export default function Example({}) {
 
   const resourceName = 'EVENT_INSERT_USER';
   return (
-    <foundation-form
-      design-system-prefix="rapid"
-      resourceName={resourceName}
-    ></foundation-form>
-    <!-- or hard code it -->
-    <foundation-form
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-    ></foundation-form>
+    <>
+      <FoundationForm
+        prefix="rapid"
+        resourceName={resourceName}
+      ></FoundationForm>
+      <FoundationForm
+        prefix="rapid"
+        resourceName="EVENT_INSERT_USER"
+      ></FoundationForm>
+    </>
   );
 }
 ```
@@ -133,17 +136,16 @@ export default function Example({}) {
 
 To set a boolean attribute on a component you can either hard code it in the template or use React template bindings `{}`.
 
-```ts
-export default function Example({}) {
+```tsx
+import { Button } from '@genesislcap/rapid-design-system/react';
+
+export default function Example() {
   const isDisabled = true;
   return (
-    <rapid-button disabled={isDisabled}>
-      Disabled button
-    </rapid-button>
-    <!-- or hard code it -->
-    <rapid-button disabled>
-      Disabled button
-    </rapid-button>
+    <>
+      <Button disabled={isDisabled}>Disabled button</Button>
+      <Button disabled>Disabled button</Button>
+    </>
   );
 }
 ```
@@ -152,24 +154,21 @@ export default function Example({}) {
 
 To set a text attribute on a component, you can either hard code it in the template or use React template bindings `{}`.
 
-```ts
-export default function Example({}) {
+```tsx
+import { GridProServerSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
 
+export default function Example() {
   const maxRows = 100;
   return (
-    <rapid-grid-pro>
-      <grid-pro-server-side-datasource
-        resource-name="ALL_TRADES"
-        max-rows={maxRows}
-      ></grid-pro-server-side-datasource>
-    </rapid-grid-pro>
-    <!-- or hard code it -->
-     <rapid-grid-pro>
-      <grid-pro-server-side-datasource
-        resource-name="ALL_TRADES"
-        max-rows="100"
-      ></grid-pro-server-side-datasource>
-    </rapid-grid-pro>
+    <>
+      <GridPro>
+        <GridProServerSideDatasource resourceName="ALL_TRADES" maxRows={maxRows} />
+      </GridPro>
+      <GridPro>
+        <GridProServerSideDatasource resourceName="ALL_TRADES" maxRows={100} />
+      </GridPro>
+    </>
   );
 }
 ```
@@ -180,7 +179,9 @@ Properties are part of the Javascript object representation of the DOM element. 
 
 You can set these using React template bindings `{}`.
 
-```ts
+```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 export default function Example({}) {
 
   const jsonSchema = {
@@ -197,10 +198,10 @@ export default function Example({}) {
       },
   };
   return (
-    <foundation-form
-      design-system-prefix="rapid"
-      jsonSchema="{jsonSchema}"
-    ></foundation-form>
+    <FoundationForm
+      prefix="rapid"
+      jsonSchema={jsonSchema}
+    ></FoundationForm>
   );
 }
 ```
@@ -209,18 +210,20 @@ export default function Example({}) {
 
 You can handle events from Foundation UI components using React's event binding `()`. Note, React prefixes events with `on`
 
-```ts
+```tsx
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
 export default function Example() {
   const handleSubmit = (event) => {
     console.log(event.target);
-  }
-}
-return (
-  <foundation-form
-      design-system-prefix="rapid"
+  };
+  return (
+    <FoundationForm
+      prefix="rapid"
       onSubmit={handleSubmit}
-  ></foundation-form>
-)
+    ></FoundationForm>
+  );
+}
 ```
 
 ## Styling the application
@@ -260,20 +263,21 @@ foundation-form::part(userActions) {
 
 **example.tsx**
 
-```ts
+```tsx
 import './style.css';
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
 
 export default function Example() {
   const handleSubmit = (event) => {
     console.log(event.target);
-  }
-}
-return (
-  <foundation-form
-      design-system-prefix="rapid"
+  };
+  return (
+    <FoundationForm
+      prefix="rapid"
       onSubmit={handleSubmit}
-  ></foundation-form>
-)
+    ></FoundationForm>
+  );
+}
 ```
 ---
 
@@ -290,28 +294,29 @@ Many components in FoundationUI have slots which act as placeholders to allow yo
 
 This example shows how you can use the slots in the Modal component.
 
-```typescript
+```tsx
+import { useRef } from 'react';
+import { Button, Modal, type ModalRef } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
-    const modalRef = useRef(null);
+  const modalRef = useRef<ModalRef>(null);
 
-    const handleClick = (ref) => {
-        if (modalRef.current) {
-            modalRef.current.show();
-        }
-    };
+  const handleClick = () => {
+    modalRef.current?.show();
+  };
 
-    return (
-        <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
-        <rapid-modal
-            ref={modalRef}
-        >
-            <h3 slot="top">Top slot</h3>
-            Main content in the modal
-            <div slot="bottom">
-                <i>Slotted content in the bottom</i>
-            </div>
-        </rapid-modal>
-    );
+  return (
+    <>
+      <Button onClick={handleClick}>Open Modal</Button>
+      <Modal ref={modalRef}>
+        <h3 slot="top">Top slot</h3>
+        Main content in the modal
+        <div slot="bottom">
+          <i>Slotted content in the bottom</i>
+        </div>
+      </Modal>
+    </>
+  );
 }
 ```
 

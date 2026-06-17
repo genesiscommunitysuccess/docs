@@ -10,6 +10,9 @@ sidebar_position: 20
 pagination_next: develop/client-capabilities/desktop-interoperability/foundation-fdc3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The `@genesislcap/foundation-i18n` package provides a collection of services and utilities based on the [i18next](https://www.i18next.com/) framework to enable your application to handle more than one language. 
 
 ## Key features
@@ -128,6 +131,45 @@ export class MyExampleClass {
 
 `foundation-i18n` enables your application to change languages dynamically, without needing to reload:
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { i18nService } from './i18nService';
+import { Button } from '@genesislcap/rapid-design-system/react';
+
+export function MyExampleComponent() {
+  const translateWords = () => {
+    console.log(i18nService.translate('Home'));
+    console.log(i18nService.translate('Admin'));
+    console.log(i18nService.translate('Reporting'));
+    console.log(i18nService.translate('Notifications'));
+    console.log(i18nService.translate('Features Lab'));
+  };
+
+  return (
+    <>
+      <Button onClick={() => i18nService.addResources?.()}>
+        Add Translation Resources
+      </Button>
+      <Button onClick={() => i18nService.switchLanguage()}>
+        Switch between PT and EN
+      </Button>
+      <Button onClick={translateWords}>
+        Translate i18n Resource Words
+      </Button>
+    </>
+  );
+}
+```
+
+See the [React example](#react-example) below for a full `i18nService` setup.
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 import { I18next } from '@genesislcap/foundation-i18n';
 import { customElement, FASTElement, html } from '@microsoft/fast-element';
@@ -165,6 +207,50 @@ export class MyExampleComponent extends FASTElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component } from '@angular/core';
+import { I18nService } from './i18n.service';
+
+@Component({
+  selector: 'my-example-component',
+  template: `
+    <rapid-button (click)="addResources()">Add Translation Resources</rapid-button>
+    <rapid-button (click)="switchLanguage()">Switch between PT and EN</rapid-button>
+    <rapid-button (click)="translateWords()">Translate i18n Resource Words</rapid-button>
+  `,
+  standalone: true,
+})
+export class MyExampleComponent {
+  constructor(private i18n: I18nService) {}
+
+  addResources() {
+    this.i18n.addResources();
+  }
+
+  switchLanguage() {
+    this.i18n.switchLanguage();
+  }
+
+  translateWords() {
+    console.log(this.i18n.translate('Home'));
+    console.log(this.i18n.translate('Admin'));
+    console.log(this.i18n.translate('Reporting'));
+    console.log(this.i18n.translate('Notifications'));
+    console.log(this.i18n.translate('Features Lab'));
+  }
+}
+```
+
+See the [Angular example](#angular-example) below for a full `I18nService` setup.
+
+</TabItem>
+
+</Tabs>
 
 ### Integrating with other libraries
 

@@ -28,7 +28,7 @@ This example shows a simple banner. You can click to remove it. (Reload the page
 
 <BannerDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -63,22 +63,24 @@ This example shows a simple banner. You can click to remove it. (Reload the page
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-banner></rapid-banner>
-  ```
+```html
+<Banner></Banner>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Banner } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const bannerRef = useRef(null);
     const handleClick = (e) => {
       bannerRef.current?.dismiss();
     }
     return (
-      <rapid-banner onClick={handleClick}>
+      <Banner onClick={handleClick}>
         <div slot="content">
           A banner for displaying information... Click to dismiss!
         </div>
-      </rapid-banner>
+      </Banner>
     );
   }
   ```

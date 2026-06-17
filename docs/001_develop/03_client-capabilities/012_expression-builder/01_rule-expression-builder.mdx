@@ -45,7 +45,7 @@ Notice that if a rule is highlighted in red when it's partially defined (e.g. yo
 
 <RuleBuilderExample />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -88,40 +88,52 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-<rapid-rule-expression-builder></rapid-rule-expression-builder>
+<RapidRuleExpressionBuilder></RapidRuleExpressionBuilder>
 ```
 
-    Usage
+Usage
 ```tsx
 import { ExpressionBuilderTypes, RuleExpression } from '@genesislcap/rapid-design-system';
+import {
+  RapidRuleExpressionBuilder,
+  type RapidRuleExpressionBuilderRef,
+} from '@genesislcap/rapid-design-system/react';
+import { useCallback, useRef } from 'react';
 // See further down for code snippet containing fields
 import { fields } from './fields';
+
 export function MyComponent() {
-  const expressionBuilderRef = useRef(null);
-
-  const change = (e) => {
-    console.log(e.nativeEvent.detail);
-  };
-
   const ruleConfig: ExpressionBuilderTypes.RuleConfig = {
     fields, // from import
     // you can also set the model and other configuration options here
   };
 
-  React.useEffect(() => {
-    if (expressionBuilderRef.current) {
-      expressionBuilderRef.current.ruleConfig = ruleConfig;
+  const configRef = useRef(ruleConfig);
+  configRef.current = ruleConfig;
+
+  const setBuilderRef = useCallback((el: RapidRuleExpressionBuilderRef | null) => {
+    if (el) {
+      el.ruleConfig = configRef.current;
     }
   }, []);
 
+  const handleChangedRuleExpression = useCallback((e: Event) => {
+    const event = (e as { nativeEvent?: Event }).nativeEvent ?? e;
+    const newModel = (event as CustomEvent<
+      RuleExpression.Expression['PredicateExpression']
+    >).detail;
+    console.log({ newModel });
+  }, []);
+
   return (
-    <rapid-rule-expression-builder
-      ref={expressionBuilderRef}
-      onChange={change}
-    ></rapid-rule-expression-builder>
-  )
+    <RapidRuleExpressionBuilder
+      ref={setBuilderRef}
+      onChange={handleChangedRuleExpression}
+    />
+  );
 }
 ```
+
   </TabItem>
   <TabItem value="angular">
 

@@ -26,7 +26,7 @@ Use cases:
 The example below displays a rectangular image based on a `.SVG` file. The `shimmer` attribute has been used to animate the image.
 <SkeletonDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -51,14 +51,16 @@ The example below displays a rectangular image based on a `.SVG` file. The `shim
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-skeleton></rapid-skeleton>
-  ```
+```html
+<Skeleton></Skeleton>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Skeleton } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer></rapid-skeleton>
+      <Skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer />
     );
   }
   ```

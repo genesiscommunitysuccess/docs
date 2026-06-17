@@ -18,6 +18,8 @@ tags:
 ---
 
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 The FoundationUI framework has several components that communicate directly with the back end. 
 
@@ -91,7 +93,40 @@ const filterCriteria = new CriteriaBuilder()
   .withExpression(tradeIdEqualsExpression)
   .build();
 // filterCriteria is equal to '((TICKER == "GNYS"))'
+```
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { ChartDatasource, G2PlotChart } from '@genesislcap/g2plot-chart/react';
+
+const lineChartConfiguration = {
+  xField: 'date',
+  yField: 'value',
+  seriesField: 'ticker',
+};
+
+export function MyComponent() {
+  return (
+    <G2PlotChart type="line" config={lineChartConfiguration}>
+      <ChartDatasource
+        resourceName="ALL_PRICE_HISTORY"
+        serverFields="DATE VALUE TICKER"
+        chartFields="date value ticker"
+        criteria={filterCriteria}
+      />
+    </G2PlotChart>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
 @customElement({
   name: 'my-component',
   template: html`
@@ -117,6 +152,41 @@ export class MyComponent extends FoundationElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-g2plot-chart type="line" [config]="lineChartConfiguration">
+      <chart-datasource
+        resourceName="ALL_PRICE_HISTORY"
+        server-fields="DATE VALUE TICKER"
+        chart-fields="date value ticker"
+        [criteria]="filterCriteria"
+      ></chart-datasource>
+    </rapid-g2plot-chart>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent {
+  lineChartConfiguration = {
+    xField: 'date',
+    yField: 'value',
+    seriesField: 'ticker',
+  };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 The next two examples are based on the same back-end resources. 
 
@@ -176,7 +246,33 @@ const filterCriteria = new CriteriaBuilder()
   .build();
 
 // filterCriteria is equal to '(TICKER == "GNYS" && STATUS ! "Cancelled")'
+```
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+
+export function MyComponent() {
+  return (
+    <GridPro>
+      <GridProGenesisDatasource
+        resourceName="ALL_TRADES"
+        criteria={filterCriteria}
+      />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
 @customElement({
   name: 'my-component',
   template: html`
@@ -191,6 +287,33 @@ const filterCriteria = new CriteriaBuilder()
 export class MyComponent extends FoundationElement {
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-component',
+  template: `
+    <rapid-grid-pro>
+      <grid-pro-genesis-datasource
+        resource-name="ALL_TRADES"
+        [criteria]="filterCriteria"
+      ></grid-pro-genesis-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent {}
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Entity management
 
@@ -222,7 +345,33 @@ const filterCriteria = new CriteriaBuilder()
   .build();
 
 // filterCriteria is equal to '((TICKER == "GNYS" && NOTIONAL > 1000))'
+```
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
+export function MyComponent() {
+  return (
+    <EntityManagement
+      prefix="rapid"
+      datasourceConfig={{
+        resourceName: 'ALL_TRADES',
+        criteria: filterCriteria,
+      }}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
 @customElement({
   name: 'my-component',
   template: html`
@@ -239,5 +388,35 @@ const filterCriteria = new CriteriaBuilder()
 export class MyComponent extends FoundationElement {
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-component',
+  template: `
+    <entity-management
+      design-system-prefix="rapid"
+      [datasourceConfig]="datasourceConfig"
+    ></entity-management>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyComponent {
+  datasourceConfig = {
+    resourceName: 'ALL_TRADES',
+    criteria: filterCriteria,
+  };
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 These examples are just scratching the surface of the `foundation-criteria` module. The following pages in this section go into more depth on the different Serialisers, Expressions and Criteria you can construct.

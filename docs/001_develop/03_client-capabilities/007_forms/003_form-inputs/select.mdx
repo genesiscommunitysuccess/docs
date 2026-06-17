@@ -34,7 +34,7 @@ and [categorized multiselect](/develop/client-capabilities/forms/form-inputs/cli
 
 <SelectDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -68,25 +68,27 @@ and [categorized multiselect](/develop/client-capabilities/forms/form-inputs/cli
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-select>
-    <rapid-option value="s">Small</rapid-option>
-    <rapid-option value="l">Large</rapid-option>
-  </rapid-select>
-  ```
+```html
+<Select>
+  <ListboxOption value="s">Small</ListboxOption>
+  <ListboxOption value="l">Large</ListboxOption>
+</Select>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { ListboxOption, Select } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const handleSelectChanged = (event) => {
       const target = event.target as HTMLInputElement;
       console.log(target.value);
     };
 
     return (
-      <rapid-select onChange={handleSelectChanged}>
-        <rapid-option value="s">Small</rapid-option>
-        <rapid-option value="l">Large</rapid-option>
-      </rapid-select>
+      <Select onChange={handleSelectChanged}>
+        <ListboxOption value="s">Small</ListboxOption>
+        <ListboxOption value="l">Large</ListboxOption>
+      </Select>
     );
   }
   ```

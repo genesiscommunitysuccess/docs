@@ -32,7 +32,7 @@ Use cases:
 ## Example
 <FlipperDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -65,20 +65,20 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-flipper></rapid-flipper>
-    ```
+```html
+<Flipper></Flipper>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
-      const dialogRef = useRef(null);
+import { Flipper } from '@genesislcap/rapid-design-system/react';
 
+export function MyComponent() {
       return (
-        <CodeSection>
-          <rapid-flipper onClick={() => console.log('previous')} direction="previous"></rapid-flipper>
-          <rapid-flipper onClick={() => console.log('next')} direction="next"></rapid-flipper>
-        </CodeSection >
+        <>
+          <Flipper onClick={() => console.log('previous')} direction="previous"></Flipper>
+          <Flipper onClick={() => console.log('next')} direction="next"></Flipper>
+        </>
       )
     }
     ```

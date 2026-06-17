@@ -27,7 +27,7 @@ Use cases:
 
 <NumberFieldDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -57,12 +57,14 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-number-field></rapid-number-field>
-    ```
+```html
+<NumberField></NumberField>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { NumberField } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
       const [outputValue, setOutputValue] = useState('');
 
@@ -72,7 +74,7 @@ Use cases:
       }
 
       return (
-        <rapid-number-field onChange={onChange}></rapid-number-field>
+        <NumberField onChange={onChange}></NumberField>
       );
     }
     ```

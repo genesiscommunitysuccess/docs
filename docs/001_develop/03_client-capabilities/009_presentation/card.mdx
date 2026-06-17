@@ -24,7 +24,7 @@ Use cases:
 This simple example shows a card with a title at the top, some nonsense Latin text in the main area, and a (non-responsive) button at the bottom.
 <CardDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -56,21 +56,23 @@ This simple example shows a card with a title at the top, some nonsense Latin te
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-card></rapid-card>
-  ```
+```html
+<Card></Card>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Button, Card } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-card>
+      <Card>
         <h4>Card title</h4>
         <p>
           At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
           ultricies augue aliquet.
         </p>
-        <rapid-button>Test button</rapid-button>
-      </rapid-card>
+        <Button>Test button</Button>
+      </Card>
     );
   }
   ```

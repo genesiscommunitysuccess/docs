@@ -26,7 +26,7 @@ The file-upload component can be used to select single or multiple files from th
 <FileUploadDemo />
 
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -61,24 +61,25 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-  <rapid-file-upload></rapid-file-upload>
+<FileUpload></FileUpload>
 ```
 Usage
 ```tsx
+import { FileUpload } from '@genesislcap/rapid-design-system/react';
+
 export function MyComponent() {
 
-
   return (
-    <rapid-file-upload
+    <FileUpload
       label="File Upload (JSON files only)"
       accept="application/json"
-      file-size-limit-bytes="104857600"
-      uploaded-files-resource-name="ALL_FILE_ATTACHMENTS"
-      entity-id="Demo"
-      field-name="ENTITY_ID"
-      upload-key="series"
+      fileSizeLimitBytes="104857600"
+      uploadedFilesResourceName="ALL_FILE_ATTACHMENTS"
+      entityId="Demo"
+      fieldName="ENTITY_ID"
+      uploadKey="series"
       >
-    </rapid-file-upload>
+    </FileUpload>
   );
 }
 ```

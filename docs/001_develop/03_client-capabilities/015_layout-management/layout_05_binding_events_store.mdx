@@ -14,6 +14,9 @@ tags:
 sidebar_position: 15
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 There are some limitations for using bindings and other syntaxes inline in the html.
 
 ```html
@@ -37,6 +40,22 @@ To use `addItem()` to add the same item multiple times on the layout, you must c
 
 There is a very simple pattern to work around this - just wrap the bindings up in an element.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+export function ContainerElement() {
+  return (
+    <my-element onChange={/* handler */} property={/* value */} />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'container-element',
@@ -48,6 +67,26 @@ There is a very simple pattern to work around this - just wrap the bindings up i
 })
 export class ContainerElement extends GenesisElement { }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'container-element',
+  template: `<my-element (change)="onChange($event)" [property]="propertyValue"></my-element>`,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class ContainerElement {}
+```
+
+</TabItem>
+
+</Tabs>
 
 Then you can replace that in the original html:
 ```html
@@ -64,13 +103,42 @@ This works because the bindings and events run _after_ the cloneNode() call, so 
 
 ## State management
 
-The question you may ask with the above answer is how you access to the properties that are represented in `${ ... }`. If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
+The question you may ask with the above answer is how you access to the properties that are represented in binding expressions (for example, event handlers and property bindings). If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
 
 This is where you need to use some formal state management. For more details, see the section on [`foundation-store`](../../state-management/). For applications created from Genesis Create or the Genesis CLI `genx`, the store is set up for you automatically.
 
 ### Pre-layout example
 
 Here is a very simple example of two elements inline in a component which are interacting with state.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
+
+export function MyElement() {
+  const [isSelected, setIsSelected] = useState(true);
+
+  return (
+    <>
+      <Checkbox
+        checked={isSelected}
+        onChange={(e) => setIsSelected(e.target.checked)}
+      >
+        Checkbox
+      </Checkbox>
+      <Checkbox checked={isSelected} />
+    </>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 @customElement({
@@ -90,6 +158,32 @@ export class MyElement extends GenesisElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'my-element',
+  template: `
+    <rapid-checkbox [(checked)]="isSelected">Checkbox</rapid-checkbox>
+    <rapid-checkbox [checked]="isSelected"></rapid-checkbox>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class MyElement {
+  isSelected = true;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 As you toggle the first checkbox, the second one will change to match. This is an overly simple example - but instead imagine that the first component is configuring a string that contains a filter, and the second component is a grid that binds the filter to change what rows are displayed.
 
 :::info
@@ -122,6 +216,44 @@ Now you see that the interaction of the `isSelected` is no longer working betwee
 ### Wrapper components
 
 As discussed before, now we're going to add wrapper components to hold the bindings.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
+
+function WrapperOne({ isSelected, onChange }: { isSelected: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <Checkbox checked={isSelected} onChange={(e) => onChange(e.target.checked)}>
+      Checkbox
+    </Checkbox>
+  );
+}
+
+function WrapperTwo({ isSelected }: { isSelected: boolean }) {
+  return <Checkbox checked={isSelected}>Checkbox</Checkbox>;
+}
+
+export function MyElement() {
+  const [isSelected, setIsSelected] = useState(true);
+  return (
+    <rapid-layout>
+      <rapid-layout-item>
+        <WrapperOne isSelected={isSelected} onChange={setIsSelected} />
+      </rapid-layout-item>
+      <rapid-layout-item>
+        <WrapperTwo isSelected={isSelected} />
+      </rapid-layout-item>
+    </rapid-layout>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
 
 ```typescript
 @customElement({
@@ -160,6 +292,18 @@ WrapperTwo;
 })
 export class MyElement extends GenesisElement { }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+// Define wrapper-one and wrapper-two components with CUSTOM_ELEMENTS_SCHEMA, then use them inside rapid-layout
+```
+
+</TabItem>
+
+</Tabs>
 
 There's still a big issue here though - the `isSelected` variable isn't linked between the two components anymore. To handle this, you need to use a state management library, such as the `foundation-store` module that is included in the platform.
 
@@ -200,6 +344,41 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 
 4. Finally, the two wrapper classes are updated to emit and read from the store.
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useState } from 'react';
+import { Checkbox } from '@genesislcap/rapid-design-system/react';
+
+export function WrapperOne({ onToggle }: { onToggle: (val: boolean) => void }) {
+  return (
+    <Checkbox onChange={(e) => onToggle(e.target.checked)}>
+      Checkbox
+    </Checkbox>
+  );
+}
+
+export function WrapperTwo({ checked }: { checked: boolean }) {
+  return <Checkbox checked={checked}>Checkbox</Checkbox>;
+}
+
+export function MyElement() {
+  const [checkboxToggle, setCheckboxToggle] = useState(false);
+  return (
+    <>
+      <WrapperOne onToggle={setCheckboxToggle} />
+      <WrapperTwo checked={checkboxToggle} />
+    </>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'wrapper-one',
@@ -236,5 +415,18 @@ WrapperTwo;
 })
 export class MyElement extends GenesisElement { }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+// Use a shared store/service for checkboxToggle; wrapper components bind to it
+// via (change) and [checked], mirroring the Genesis store pattern above.
+```
+
+</TabItem>
+
+</Tabs>
 
 We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the [`foundation-store`](../../state-management/).

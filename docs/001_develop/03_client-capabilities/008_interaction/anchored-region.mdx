@@ -40,7 +40,7 @@ Use cases:
 The live example includes css styling to ensure the components fit into the example container.
 :::
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -74,24 +74,26 @@ The live example includes css styling to ensure the components fit into the exam
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-anchored-region></rapid-anchored-region>
-    ```
+```html
+<AnchoredRegion></AnchoredRegion>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { AnchoredRegion } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       return (
         <div id="viewport">
           <button id="anchor">
             Button is an anchor, defined first in the DOM
           </button>
-          <rapid-anchored-region
+          <AnchoredRegion
             anchor="anchor"
-            vertical-positioning-mode="locktodefault"
-            vertical-default-position="top">
+            verticalPositioningMode="locktodefault"
+            verticalDefaultPosition="top">
             This shows up above the button, even though it's after it in the DOM
-          </rapid-anchored-region>
+          </AnchoredRegion>
         </div>
       );
     }

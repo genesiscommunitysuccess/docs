@@ -117,7 +117,7 @@ disconnectedCallback() {
 
 The following snippets are examples of your main application class dispatching the required events.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -193,10 +193,13 @@ element with the id `'root'`. Here is a code snippet you can use to get the refe
 as a prop.
 
 ```tsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
 function bootstrapApp() {
   const rootEelement = document.getElementById('root');
   if (rootEelement) {
-    ReactDOM.createRoot(rootEelement!).render(
+    createRoot(rootEelement).render(
       <React.StrictMode>
         <App rootElement={rootEelement} />
       </React.StrictMode>,

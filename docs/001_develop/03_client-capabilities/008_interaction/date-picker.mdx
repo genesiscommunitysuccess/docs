@@ -33,7 +33,7 @@ Use cases:
 
 <DatePickerDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
     <TabItem value="genesis">
         Declaration
         ```html
@@ -58,13 +58,15 @@ Use cases:
     </TabItem>
     <TabItem value="react">
         Declaration
-        ```html
-        <rapid-date-picker></rapid-date-picker>
-        ```
+```html
+<DatePicker></DatePicker>
+```
 
         Usage
         ```tsx
-        export function MyComponent() {
+import { DatePicker } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
           const datePickerRef = useRef(null);
           const [value, setValue] = useState('Not changed');
@@ -79,8 +81,8 @@ Use cases:
           }, []);
 
           return (
-            <rapid-date-picker ref={datePickerRef}>
-            </rapid-date-picker>
+            <DatePicker ref={datePickerRef}>
+            </DatePicker>
           );
         }
         ```

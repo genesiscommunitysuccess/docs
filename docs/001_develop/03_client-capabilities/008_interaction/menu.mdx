@@ -38,7 +38,7 @@ In the example below, the first three menu items behave like buttons that you ca
 
 <MenuDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -82,16 +82,18 @@ In the example below, the first three menu items behave like buttons that you ca
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-menu>
-      <rapid-menu-item></rapid-menu-item>
-      <rapid-menu-item></rapid-menu-item>
-    </rapid-menu>
-    ```
+```html
+<Menu>
+  <MenuItem></MenuItem>
+  <MenuItem></MenuItem>
+</Menu>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { Divider, Menu, MenuItem } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const handleMenuChange = (e: Event & {target: MenuItem}) => {
         // do something with the selected menu item, e.g.
         console.log(e.target.getAttribute('role'))
@@ -100,14 +102,14 @@ In the example below, the first three menu items behave like buttons that you ca
         // alternatively, just add event listeners to perform actions on click
       }
       return (
-        <rapid-menu onChange={(e) => handleMenuChange(<Event & {target: MenuItem}>e)}>
-          <rapid-menu-item onClick={itemOneAction}>Menu item 1</rapid-menu-item>
-          <rapid-menu-item>Menu item 2</rapid-menu-item>
-          <rapid-menu-item>Menu item 3</rapid-menu-item>
-          <rapid-divider></rapid-divider>
-          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
-          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
-        </rapid-menu>
+        <Menu onChange={(e) => handleMenuChange(e as Event & {target: MenuItem})}>
+          <MenuItem onClick={itemOneAction}>Menu item 1</MenuItem>
+          <MenuItem>Menu item 2</MenuItem>
+          <MenuItem>Menu item 3</MenuItem>
+          <Divider></Divider>
+          <MenuItem role="menuitemradio">Menu item 4</MenuItem>
+          <MenuItem role="menuitemradio">Menu item 5</MenuItem>
+        </Menu>
       )
     }
     ```

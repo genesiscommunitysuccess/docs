@@ -28,7 +28,7 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
 <StepperDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -83,44 +83,45 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-stepper>
-      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-      <rapid-stepper-tab-panel>
-        Tab Panel 1
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 2
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        Tab Panel 3
-      </rapid-stepper-tab-panel>
-    </rapid-stepper>
-
-    ```
+```html
+<Stepper>
+  <StepperTab>Step 1</StepperTab>
+  <StepperTab>Step 2</StepperTab>
+  <StepperTab>Step 3</StepperTab>
+  <StepperTabPanel>
+      Tab Panel 1
+  </StepperTabPanel>
+  <StepperTabPanel>
+      Tab Panel 2
+  </StepperTabPanel>
+  <StepperTabPanel>
+      Tab Panel 3
+  </StepperTabPanel>
+</Stepper>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { Stepper, StepperTab, StepperTabPanel } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       const handleSubmit = (event) => {
         console.log('Form submitted');
       };
       return (
-        <rapid-stepper onSubmit={handleSubmit}>
-            <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-            <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-            <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-            <rapid-stepper-tab-panel>
+        <Stepper onSubmit={handleSubmit}>
+            <StepperTab>Step 1</StepperTab>
+            <StepperTab>Step 2</StepperTab>
+            <StepperTab>Step 3</StepperTab>
+            <StepperTabPanel>
                 Tab Panel 1
-            </rapid-stepper-tab-panel>
-            <rapid-stepper-tab-panel>
+            </StepperTabPanel>
+            <StepperTabPanel>
                 Tab Panel 2
-            </rapid-stepper-tab-panel>
-            <rapid-stepper-tab-panel>
+            </StepperTabPanel>
+            <StepperTabPanel>
                 Tab Panel 3
-            </rapid-stepper-tab-panel>
-        </rapid-stepper>
+            </StepperTabPanel>
+        </Stepper>
       );
     }
   ```
@@ -448,7 +449,7 @@ Use the validation field to set the condition for when the stepper permits the u
 
 You define the validation attribute as follows:
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -500,6 +501,14 @@ const template = html`
 
 ```tsx title="Stepper Validation"
 import React, { useState } from 'react';
+import {
+  ListboxOption,
+  Select,
+  Stepper,
+  StepperTab,
+  StepperTabPanel,
+  TextField,
+} from '@genesislcap/rapid-design-system/react';
 
 export function StepperValidationExample() {
   const [valid, setValid] = useState('');
@@ -521,57 +530,57 @@ export function StepperValidationExample() {
   };
 
   return (
-    <rapid-stepper
-      validation={validationConfig}
+    <Stepper 
+      validation={validationConfig} 
       onSubmit={handleSubmit}
     >
-      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-      <rapid-stepper-tab-panel>
-        <rapid-text-field
-          style={{marginLeft: '10px'}}
+      <StepperTab>Step 1</StepperTab>
+      <StepperTab>Step 2</StepperTab>
+      <StepperTab>Step 3</StepperTab>
+      <StepperTabPanel>
+        <TextField
+          style={{ marginLeft: '10px' }}
           value={valid}
           onChange={(e) => setValid(e.target.value)}
         >
           Must be equal to: 123
-        </rapid-text-field>
-        <rapid-text-field
-          style={{marginLeft: '10px'}}
+        </TextField>
+        <TextField
+          style={{ marginLeft: '10px' }}
           value={valid2}
           onChange={(e) => setValid2(e.target.value)}
         >
           Must be equal to: abc
-        </rapid-text-field>
-        <rapid-text-field
-          style={{marginLeft: '10px'}}
+        </TextField>
+        <TextField
+          style={{ marginLeft: '10px' }}
           value={valid3}
           onChange={(e) => setValid3(e.target.value)}
         >
           Must be equal to: test
-        </rapid-text-field>
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
+        </TextField>
+      </StepperTabPanel>
+      <StepperTabPanel>
         <h5>Must be equal to: abc</h5>
-        <rapid-select
-          style={{margin: '10px 0 0 10px'}}
+        <Select
+          style={{ margin: '10px 0 0 10px' }}
           value={valid4}
           onChange={(e) => setValid4(e.target.value)}
         >
-          <rapid-option>123</rapid-option>
-          <rapid-option>abc</rapid-option>
-        </rapid-select>
-      </rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>
-        <rapid-text-field
-          style={{marginLeft: '10px'}}
+          <ListboxOption>123</ListboxOption>
+          <ListboxOption>abc</ListboxOption>
+        </Select>
+      </StepperTabPanel>
+      <StepperTabPanel>
+        <TextField
+          style={{ marginLeft: '10px' }}
           value={valid5}
           onChange={(e) => setValid5(e.target.value)}
         >
           Must be equal to: finish
-        </rapid-text-field>
-      </rapid-stepper-tab-panel>
-    </rapid-stepper>
+        </TextField>
+      </StepperTabPanel>
+    </Stepper>
   );
 }
 ```
@@ -677,7 +686,7 @@ If you want to perform more complicated logic tests to control how the user can 
 
 The stepper provides methods to programmatically navigate between steps:
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -722,9 +731,16 @@ export class StepperNavigationExample extends GenesisElement {
 
 ```tsx title="Programmatic Navigation"
 import React, { useRef } from 'react';
+import {
+  Button,
+  Stepper,
+  StepperTab,
+  StepperTabPanel,
+} from '@genesislcap/rapid-design-system/react';
+import type { StepperRef } from '@genesislcap/rapid-design-system/react';
 
 export function StepperNavigationExample() {
-  const stepperRef = useRef(null);
+  const stepperRef = useRef<StepperRef>(null);
 
   const goToFirst = () => {
     stepperRef.current?.goToFirstStep();
@@ -739,18 +755,20 @@ export function StepperNavigationExample() {
   };
 
   return (
-    <rapid-stepper ref={stepperRef}>
-      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-      <rapid-stepper-tab-panel>Content 1</rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>Content 2</rapid-stepper-tab-panel>
-      <rapid-stepper-tab-panel>Content 3</rapid-stepper-tab-panel>
-    </rapid-stepper>
+    <>
+      <Stepper ref={stepperRef}>
+        <StepperTab>Step 1</StepperTab>
+        <StepperTab>Step 2</StepperTab>
+        <StepperTab>Step 3</StepperTab>
+        <StepperTabPanel>Content 1</StepperTabPanel>
+        <StepperTabPanel>Content 2</StepperTabPanel>
+        <StepperTabPanel>Content 3</StepperTabPanel>
+      </Stepper>
 
-    <rapid-button onClick={goToFirst}>Go to First</rapid-button>
-    <rapid-button onClick={goToLast}>Go to Last</rapid-button>
-    <rapid-button onClick={goToSpecific}>Go to Step 2</rapid-button>
+      <Button onClick={goToFirst}>Go to First</Button>
+      <Button onClick={goToLast}>Go to Last</Button>
+      <Button onClick={goToSpecific}>Go to Step 2</Button>
+    </>
   );
 }
 ```

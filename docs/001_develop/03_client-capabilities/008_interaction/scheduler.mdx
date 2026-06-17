@@ -52,7 +52,7 @@ You can play around with different recurrence types, each offering its own set o
 
 <CronSchedulerDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -86,13 +86,15 @@ You can play around with different recurrence types, each offering its own set o
   <TabItem value="react">
 
     Declaration
-    ```html
-      <rapid-scheduler-cron-builder></rapid-scheduler-cron-builder>
-    ```
+```html
+<SchedulerCronBuilder></SchedulerCronBuilder>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { SchedulerCronBuilder } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       
       const schedulerRef = useRef(null);
       const [cron, setCron] = useState('0 30 10 ? * 2,4');
@@ -104,10 +106,10 @@ You can play around with different recurrence types, each offering its own set o
       }, [cron]);
 
       return (
-        <rapid-scheduler-cron-builder
+        <SchedulerCronBuilder
           ref={schedulerRef} 
           onChange={(e) => setCron(e.target.value)}
-        ></rapid-scheduler-cron-builder>
+        ></SchedulerCronBuilder>
         <p>Cron: {cron}</p>
       )
     }

@@ -13,6 +13,8 @@ tags:
 ---
 
 import ConditionalFilteringExample from './examples/conditional_filtering_example.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Foundation Forms - Conditional Filtering
 
@@ -78,6 +80,58 @@ const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema =
 
 ### Component Implementation
 
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useEffect, useState } from 'react';
+import type { UiSchema } from '@genesislcap/foundation-forms';
+import { FoundationForm } from '@genesislcap/foundation-forms/react';
+
+export function LocationForm() {
+  const [uiSchema, setUiSchema] = useState<UiSchema>();
+  const [existingData, setExistingData] = useState({
+    COUNTRY_ID: undefined,
+    CITY_ID: undefined,
+  });
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      await loadCountries();
+      await loadCities();
+      setUiSchema(locationUISchema(countries, []));
+    })();
+  }, []);
+
+  const filterCities = (countryId: number) =>
+    cities.filter((city) => city.COUNTRY_ID === countryId);
+
+  const handleDataChange = (evt: CustomEvent) => {
+    const { data } = evt.detail;
+    if (existingData.COUNTRY_ID !== data.COUNTRY_ID) {
+      setExistingData({ ...data, CITY_ID: undefined });
+      setUiSchema(locationUISchema(countries, filterCities(data.COUNTRY_ID)));
+    }
+  };
+
+  return (
+    <FoundationForm
+      data={existingData}
+      jsonSchema={locationJsonSchema}
+      uischema={uiSchema}
+      onDataChange={handleDataChange}
+    />
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
 ```typescript
 @customElement({
   name: 'location-form',
@@ -133,6 +187,57 @@ export class LocationForm extends GenesisElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'location-form',
+  template: `
+    <foundation-form
+      [data]="existingData"
+      [jsonSchema]="locationJsonSchema"
+      [uischema]="uiSchema"
+      (data-change)="handleDataChange($event)"
+    ></foundation-form>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class LocationFormComponent {
+  uiSchema: UiSchema;
+  existingData = { COUNTRY_ID: undefined, CITY_ID: undefined };
+  countries = [];
+  cities = [];
+
+  async ngOnInit() {
+    await this.loadCountries();
+    await this.loadCities();
+    this.uiSchema = locationUISchema(this.countries, []);
+  }
+
+  // loadCountries, loadCities, filterCities — same as Genesis tab
+
+  handleDataChange(evt: CustomEvent) {
+    const { data } = evt.detail;
+    if (this.existingData.COUNTRY_ID !== data.COUNTRY_ID) {
+      this.existingData = { ...data, CITY_ID: undefined };
+      this.uiSchema = locationUISchema(
+        this.countries,
+        this.filterCities(data.COUNTRY_ID),
+      );
+    }
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 Here's a live example of conditional filtering in action:
 

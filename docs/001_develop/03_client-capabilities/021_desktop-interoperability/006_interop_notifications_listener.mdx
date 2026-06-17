@@ -24,7 +24,7 @@ Use cases:
 
 ## Examples
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 Declaration
@@ -65,30 +65,32 @@ Declaration
 
 Usage
 ```tsx
-export function MyComponent() {
+import { useEffect, useRef } from 'react';
 
+export function MyComponent() {
     const interopNotificationListenerRef = useRef(null);
 
-    if (interopNotificationListenerRef.current) {
-        interopNotificationListenerRef.current.toastButtons = [
-            {
-                condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
-                action: ({details, buttonElement, toastElement}) => {
-                    console.log({details, buttonElement, toastElement});
-                    toastElement.close();
+    useEffect(() => {
+        if (interopNotificationListenerRef.current) {
+            interopNotificationListenerRef.current.toastButtons = [
+                {
+                    condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                    action: ({details, buttonElement, toastElement}) => {
+                        console.log({details, buttonElement, toastElement});
+                        toastElement.close();
+                    },
+                    appearance: 'secondary-orange',
+                    placeholder: 'Dismiss',
                 },
-                appearance: 'secondary-orange',
-                placeholder: 'Dismiss',
-            },
-        ]
-    }
+            ];
+        }
+    }, []);
 
     return (
         <rapid-interop-notification-listener
             ref={interopNotificationListenerRef}
             resource-name="ALL_NOTIFY_ALERT_RECORDS"
-        >
-        </rapid-interop-notification-listener>
+        />
     );
 }
 ```

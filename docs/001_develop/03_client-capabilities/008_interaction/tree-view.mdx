@@ -31,7 +31,7 @@ The example shows the component in action. Item 1 and Item 2 both have two child
 
 <TreeViewDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -70,30 +70,32 @@ The example shows the component in action. Item 1 and Item 2 both have two child
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-tree-view>
-      <rapid-tree-item></rapid-tree-item>
-    </rapid-tree-view>
-    ```
+```html
+<TreeView>
+  <TreeItem></TreeItem>
+</TreeView>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { TreeItem, TreeView } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       return (
-        <rapid-tree-view>
+        <TreeView>
           Root
-          <rapid-tree-item>
+          <TreeItem>
             Item 1
-            <rapid-tree-item>Sub-item 1-1</rapid-tree-item>
-            <rapid-tree-item>Sub-item 1-2</rapid-tree-item>
-            <rapid-tree-item>
+            <TreeItem>Sub-item 1-1</TreeItem>
+            <TreeItem>Sub-item 1-2</TreeItem>
+            <TreeItem>
               Item 2
-              <rapid-tree-item>Sub-item 2-1</rapid-tree-item>
-              <rapid-tree-item>Sub-item 2-2</rapid-tree-item>
-            </rapid-tree-item>
-          </rapid-tree-item>
-          <rapid-tree-item>Item 3</rapid-tree-item>
-        </rapid-tree-view>)
+              <TreeItem>Sub-item 2-1</TreeItem>
+              <TreeItem>Sub-item 2-2</TreeItem>
+            </TreeItem>
+          </TreeItem>
+          <TreeItem>Item 3</TreeItem>
+        </TreeView>)
     }
     ```
   </TabItem>

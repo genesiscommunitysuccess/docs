@@ -32,7 +32,7 @@ Use cases:
 ## Example
 <StatusPillDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -84,41 +84,41 @@ Use cases:
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-status-pill></rapid-status-pill>
-    ```
+```html
+<StatusPill></StatusPill>
+```
     Usage
     ```tsx
-    export function MyComponent() {
+import { StatusPill } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const fiveMinutesTimeInMiliseconds = Math.round(new Date().getTime() + 60000);
 
     return (
-    <rapid-status-pill
-      icon-name="check"
-      text="Success"
-      background-color="green"
-      >
-      </rapid-status-pill>
-      <rapid-status-pill
-      icon-name="xmark"
-      text="Failure"
-      background-color="red"
-      >
-      </rapid-status-pill>
-      <rapid-status-pill
-      icon-initial="S"
-      text="Live"
-      icon-initial-background-color="#0c52b9"
-      background-color="#547cb6"
-      >
-      </rapid-status-pill>
-      <rapid-status-pill
-      icon="clock"
-      text="Market expires in"
-      background-color="#9c851b"
-      date-countdown={fiveMinutesTimeInMiliseconds}
-    >
-    </rapid-status-pill>
+      <>
+        <StatusPill
+          iconName="check"
+          text="Success"
+          backgroundColor="green"
+        ></StatusPill>
+        <StatusPill
+        iconName="xmark"
+        text="Failure"
+        backgroundColor="red"
+        ></StatusPill>
+        <StatusPill
+        iconInitial="S"
+        text="Live"
+        iconInitialBackgroundColor="#0c52b9"
+        backgroundColor="#547cb6"
+        ></StatusPill>
+        <StatusPill
+        icon="clock"
+        text="Market expires in"
+        backgroundColor="#9c851b"
+        dateCountdown={fiveMinutesTimeInMiliseconds}
+        ></StatusPill>
+      </>
     );
   }
     ```

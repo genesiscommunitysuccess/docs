@@ -61,7 +61,7 @@ Below are some of the capabilities that streamline entity interaction and enhanc
 
 Below is a simple example of how to configure the `Entity Management` component. This example demonstrates not only the basic setup but also how the component interacts with back-end resources, showing the grid and the form for creating new records. The configuration is straightforward, allowing for quick integration into your template.
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -91,19 +91,21 @@ export class EntityManagementExample extends GenesisElement {}
 
 Declaration:
 ```html
-<entity-management></entity-management>
+<EntityManagement></EntityManagement>
 ```
 
 Usage:
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 export default function EntityManagementExample({}) {
   return (
-   <entity-management
-      design-system-prefix="rapid"
+   <EntityManagement
+      prefix="rapid"
       resourceName="ALL_COUNTERPARTYS"
       title="Counterparty Management"
       createEvent="EVENT_COUNTERPARTY_INSERT"
-    ></entity-management>
+    ></EntityManagement>
   );
 }
 ```
@@ -164,7 +166,7 @@ Below is a simple example of how to configure the `Entity Management` component 
 
 The example uses a separate schema to design the form for creating a new counterparty. However, the default (automatically generated) form is used for modifying existing counterparties. 
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -212,11 +214,13 @@ export class EntityManagementExample extends GenesisElement {}
 
 Declaration:
 ```html
-<entity-management></entity-management>
+<EntityManagement></EntityManagement>
 ```
 
 Usage:
 ```tsx
+import { EntityManagement } from '@genesislcap/foundation-entity-management/react';
+
 const counterpartyUIschema = {
   type: 'VerticalLayout',
   elements: [
@@ -233,16 +237,16 @@ const counterpartyUIschema = {
 
 export default function EntityManagementExample({}) {
   return (
-   <entity-management
-        enable-search-bar
-        design-system-prefix="rapid"
+   <EntityManagement
+        enableSearchBar
+        prefix="rapid"
         resourceName="ALL_COUNTERPARTYS"
         title="Counterparty Management"
         createFormUiSchema={{counterpartyUIschema}}
         updateEvent="EVENT_COUNTERPARTY_MODIFY"
         deleteEvent="EVENT_COUNTERPARTY_DELETE"
         createEvent="EVENT_COUNTERPARTY_INSERT"
-    ></entity-management>
+    ></EntityManagement>
   );
 }
 ```

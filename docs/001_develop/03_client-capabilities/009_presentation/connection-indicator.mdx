@@ -23,7 +23,7 @@ Use cases:
 The example below shows a communication indicator, in this case showing `disconnected`.
 <ConnectionIndicatorDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -49,13 +49,15 @@ The example below shows a communication indicator, in this case showing `disconn
 
   Declaration
   ```html
-    <rapid-connection-indicator></rapid-connection-indicator>
+  <ConnectionIndicator></ConnectionIndicator>
   ```
   Usage
   ```tsx
+import { ConnectionIndicator } from '@genesislcap/rapid-design-system/react';
+
   export function MyComponent() {
     return (
-      <rapid-connection-indicator show-label></rapid-connection-indicator>
+      <ConnectionIndicator showLabel />
     );
   }
   ```

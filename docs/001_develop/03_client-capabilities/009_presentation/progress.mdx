@@ -30,7 +30,7 @@ The example below shows two simple indicators. The first has a `value` of 50 aga
 
 <ProgressDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -56,15 +56,17 @@ The example below shows two simple indicators. The first has a `value` of 50 aga
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-progress></rapid-progress>
-  ```
+```html
+<Progress></Progress>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Progress } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-progress min="0" max="100" value="50"></rapid-progress>
-      <rapid-progress min="0" max="100" ></rapid-progress>
+      <Progress min="0" max="100" value="50"></Progress>
+      <Progress min="0" max="100" ></Progress>
     );
   }
   ```

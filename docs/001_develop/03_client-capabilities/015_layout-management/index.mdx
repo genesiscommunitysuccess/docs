@@ -57,7 +57,7 @@ Click and drag each title to re-order the items, and to create tabs. Drag the ha
 
 <LayoutExample />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -99,41 +99,77 @@ export class LayoutExample extends GenesisElement { }
 </TabItem>
 <TabItem value="react">
 
-Declaration:
-```html
-<rapid-layout>
-  <rapid-layout-region>
-    <rapid-layout-item>
-    </rapid-layout-item>
-  </rapid-layout-region>
-</rapid-layout>
+For React projects, use [FlexLayout](https://www.npmjs.com/package/flexlayout-react) (`flexlayout-react`) instead of `rapid-layout`. The React blank-app-seed uses FlexLayout for dockable, tabbed layouts.
+
+The interactive example above uses `rapid-layout` (Genesis tab). The snippet below is the equivalent React setup with `flexlayout-react` and Rapid wrapper components.
+
+Install:
+
+```bash
+npm install flexlayout-react
 ```
 
-Usage, with nested React component:
+Usage:
 ```tsx
-function ReactComponent({ }) {
-  return (
-    <p style={{ color: '#FFFFFF' }}>Hello World</p>
-  );
-}
+import { useRef, type ReactNode } from 'react';
+import { Layout, Model, type TabNode } from 'flexlayout-react';
+import { Button, Checkbox } from '@genesislcap/rapid-design-system/react';
+import 'flexlayout-react/style/light.css';
 
-export default function LayoutExample({ }) {
+const defaultLayout = {
+  global: { tabEnableRenderOnDemand: false },
+  layout: {
+    type: 'row',
+    children: [
+      {
+        type: 'column',
+        weight: 40,
+        children: [
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              { type: 'tab', id: 'button', name: 'Button', component: 'button' },
+            ],
+          },
+          {
+            type: 'tabset',
+            weight: 50,
+            children: [
+              { type: 'tab', id: 'checkbox', name: 'Checkbox', component: 'checkbox' },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'tabset',
+        weight: 60,
+        children: [
+          { type: 'tab', id: 'text', name: 'Text', component: 'text' },
+        ],
+      },
+    ],
+  },
+};
+
+const componentMap: Record<string, () => ReactNode> = {
+  button: () => <Button>Rapid Button</Button>,
+  checkbox: () => <Checkbox>Rapid Checkbox</Checkbox>,
+  text: () => <p style={{ color: '#FFFFFF' }}>Hello World</p>,
+};
+
+export default function LayoutExample() {
+  const modelRef = useRef(Model.fromJson(defaultLayout));
+
+  const factory = (node: TabNode) => {
+    const render = componentMap[node.getComponent() ?? ''];
+    return render ? render() : null;
+  };
+
   return (
-    <rapid-layout>
-      <rapid-layout-region>
-        <rapid-layout-region type="vertical">
-          <rapid-layout-item title="Button">
-            <rapid-button>Rapid Button</rapid-button>
-          </rapid-layout-item>
-          <rapid-layout-item title="Checkbox">
-            <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
-          </rapid-layout-item>
-        </rapid-layout-region>
-        <rapid-layout-item title="Text">
-          <ReactComponent />
-        </rapid-layout-item>
-      </rapid-layout-region>
-    </rapid-layout>
+    <div style={{ width: '600px', height: '500px', position: 'relative' }}>
+      <Layout model={modelRef.current} factory={factory} />
+    </div>
   );
 }
 ```

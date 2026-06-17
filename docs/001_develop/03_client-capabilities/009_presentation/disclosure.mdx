@@ -32,7 +32,7 @@ The example below displays a hyperlink to further content.
 
 <DisclosureDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -63,20 +63,22 @@ The example below displays a hyperlink to further content.
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-disclosure></rapid-disclosure>
-  ```
+```html
+<Disclosure></Disclosure>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Disclosure } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-disclosure appearance="lightweight">
+      <Disclosure appearance="lightweight">
         <strong slot="title">Read about Foundation UI</strong>
         <div>
           Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
           efficiently tackle some of the most common challenges in website and application design and development.
         </div>
-      </rapid-disclosure>
+      </Disclosure>
     );
   }
   ```

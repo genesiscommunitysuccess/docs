@@ -23,6 +23,9 @@ tags:
 sidebar_position: 18
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Genesis Foundation Redux
 
 `foundation-redux` provides Redux Toolkit integration for Genesis components, offering a clean and efficient way to manage application state using the proven Redux pattern.
@@ -131,6 +134,41 @@ const userSlice = createSlice({
 
 // Create the store
 const { store, actions, selectors } = createStore([userSlice], {});
+```
+
+Subscribe to the store from your UI:
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="react">
+
+```tsx
+import { useEffect, useState } from 'react';
+
+export function UserComponent() {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    return store.subscribeKey(
+      (state) => state.user.name,
+      (state) => setUserName(state.user.name),
+    );
+  }, []);
+
+  const handleLogin = () => {
+    actions.user.setUser({ name: 'John Doe', email: 'john@example.com' });
+  };
+
+  return <div>Hello {userName}!</div>;
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
+import { html } from '@genesislcap/web-core';
 
 @customElement({
   name: 'user-component',
@@ -156,6 +194,45 @@ export class UserComponent extends GenesisElement {
   }
 }
 ```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'user-component',
+  template: `<div>Hello {{ userName }}!</div>`,
+  standalone: true,
+})
+export class UserComponent implements OnInit, OnDestroy {
+  userName = '';
+  private unsubscribe?: () => void;
+
+  ngOnInit() {
+    this.unsubscribe = store.subscribeKey(
+      (state) => state.user.name,
+      (state) => {
+        this.userName = state.user.name;
+      },
+    );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe?.();
+  }
+
+  handleLogin() {
+    actions.user.setUser({ name: 'John Doe', email: 'john@example.com' });
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 ### Advanced Features
 

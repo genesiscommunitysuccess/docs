@@ -31,7 +31,7 @@ Use cases:
 
 <ComboboxDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -70,16 +70,18 @@ Use cases:
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-combobox>
-    <rapid-option value="s">Small</rapid-option>
-    <rapid-option value="m">Medium</rapid-option>
-    <rapid-option value="l">Large</rapid-option>
-  </rapid-combobox>
-  ```
+```html
+<Combobox>
+  <ListboxOption value="s">Small</ListboxOption>
+  <ListboxOption value="m">Medium</ListboxOption>
+  <ListboxOption value="l">Large</ListboxOption>
+</Combobox>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Combobox, ListboxOption } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
 
     const [outputValue, setOutputValue] = useState('');
 
@@ -89,11 +91,11 @@ Use cases:
     }
 
     return (
-      <rapid-combobox onChange={onChange}>
-        <rapid-option value="s">Small</rapid-option>
-        <rapid-option value="m">Medium</rapid-option>
-        <rapid-option value="l">Large</rapid-option>
-      </rapid-combobox>
+      <Combobox onChange={onChange}>
+        <ListboxOption value="s">Small</ListboxOption>
+        <ListboxOption value="m">Medium</ListboxOption>
+        <ListboxOption value="l">Large</ListboxOption>
+      </Combobox>
     );
   }
   ```

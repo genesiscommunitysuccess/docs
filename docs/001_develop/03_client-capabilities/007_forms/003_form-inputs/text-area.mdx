@@ -29,7 +29,7 @@ Use cases:
 
 <TextAreaDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -60,18 +60,20 @@ Use cases:
   <TabItem value="react">
 
   Declaration
-  ```html
-  <rapid-text-area></rapid-text-area>
-  ```
+```html
+<TextArea></TextArea>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { TextArea } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     const handleTextAreaChanged = (event) => {
       const target = event.target as HTMLInputElement;
       console.log(target.value);
     };
     return (
-      <rapid-text-area onChange={handleTextAreaChanged}></rapid-text-area>
+      <TextArea onChange={handleTextAreaChanged}></TextArea>
     );
   }
   ```

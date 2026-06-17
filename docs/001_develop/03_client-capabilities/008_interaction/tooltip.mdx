@@ -29,7 +29,7 @@ Use cases:
 In the example below, if you place your cursor over the `Hover me` button, a tooltip is displayed.
 <TooltipDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -57,20 +57,22 @@ In the example below, if you place your cursor over the `Hover me` button, a too
   <TabItem value="react">
 
     Declaration
-    ```html
-    <rapid-tooltip></rapid-tooltip>
-    ```
+```html
+<Tooltip></Tooltip>
+```
 
     Usage
     ```tsx
-    export function MyComponent() {
+import { Avatar, Button, Tooltip } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
       return (
         <div>
-          <rapid-button id="anchor">Hover me</rapid-button>
-          <rapid-tooltip anchor="anchor">
-            <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
+          <Button id="anchor">Hover me</Button>
+          <Tooltip anchor="anchor">
+            <Avatar shape="circle" fill="green" color="black">JD</Avatar>
             <p>Tooltip text</p>
-          </rapid-tooltip>
+          </Tooltip>
         </div>
       )
     }

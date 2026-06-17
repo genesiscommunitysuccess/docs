@@ -28,7 +28,7 @@ The file-reader component can be used to select and process files from the local
 ## Example
 <FileReaderDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
@@ -88,10 +88,12 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-  <rapid-file-reader></rapid-file-reader>
+<FileReader></FileReader>
 ```
 Usage
 ```tsx
+import { FileReader } from '@genesislcap/foundation-ui/react';
+
 // Define the event detail types
 interface FileReadEventDetail {
   fileName: string;
@@ -119,17 +121,16 @@ export function MyComponent() {
   };
 
   return (
-    <rapid-file-reader
+    <FileReader
       label="Select JSON File"
       accept=".json,application/json"
-      file-size-limit-bytes="10485760"
-      auto-process="false"
-      processing-delay-ms="1000"
+      fileSizeLimitBytes={10485760}
+      autoProcess={false}
+      processingDelayMs={1000}
       onFileRead={handleFileRead}
       onError={handleError}
       onClear={handleClear}
-    >
-    </rapid-file-reader>
+    />
   );
 }
 ```

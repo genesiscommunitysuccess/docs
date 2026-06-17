@@ -34,7 +34,7 @@ The example below displays three different icons.
 
 <IconDemo />
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
 
@@ -61,16 +61,18 @@ The example below displays three different icons.
   <TabItem value="react">
 
   Declaration
-  ```html
-    <rapid-icon></rapid-icon>
-  ```
+```html
+<Icon></Icon>
+```
   Usage
   ```tsx
-  export function MyComponent() {
+import { Icon } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
     return (
-      <rapid-icon name="house"></rapid-icon>
-      <rapid-icon name="user" variant="regular"></rapid-icon>
-      <rapid-icon name="github" variant="brand"></rapid-icon>
+      <Icon name="house"></Icon>
+      <Icon name="user" variant="regular"></Icon>
+      <Icon name="github" variant="brand"></Icon>
     );
   }
   ```
