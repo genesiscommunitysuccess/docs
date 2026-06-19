@@ -80,6 +80,14 @@ Using dynamic deployments, Apps can take control of dependency resolution, which
 * Apps are able to overwrite vulnerable dependencies. It is the developer's responsibility to assess binary compatibility.
 * A smaller distribution will be created, as jars are only included if required, and then only once.
 
+#### Note on dynamic deployments and `-processes.templt.xml` files
+
+When using dynamic deployments, process template files (`-processes.templt.xml`) are rendered at build time in order to construct the process classpaths.
+
+At build time, the target environment is not yet known. As a result, environment-specific system definitions cannot be applied, and the resulting classpath is shared across all environments.
+
+For this reason, the `module` and `classpath` tags should not be templated when using dynamic deployments.
+
 #### Enabling Dynamic Deployments
 
 To enable dynamic deployments you can either add a Gradle property in your site-side project's `gradle.properties`:
