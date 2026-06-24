@@ -255,11 +255,11 @@ item(name = "Slf4jReporterLoggingLevel", value = "DEBUG")
 item(name = "Slf4jReporterLogInactive", value = "true")
 ```
 
-| Property                  | Default | Explanation                                                      |
-|:--------------------------|:--------|:-----------------------------------------------------------------|
-| MetricsReportIntervalSecs | `60`    | interval between metrics log messages                            |
-| Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
-| Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
+| Property | Default | Explanation |
+|:---|:---|:---|
+| `MetricsReportIntervalSecs` | `60` | The interval in seconds at which metrics are reported to the log |
+| `Slf4jReporterLoggingLevel` | `INFO` | The logging level used by the reporter |
+| `Slf4jReporterLogInactive` | `false` | When `true`, inactive or zero-value meters are logged |
 
 ## OpenTelemetry
 
@@ -619,4 +619,3 @@ myGaugeCounter.decrement();
 
 </TabItem>
 </Tabs>
-
