@@ -1513,3 +1513,16 @@ public class WebEndpointTest extends AbstractGenesisTestSupport<GenesisSet> {
 ```
 </TabItem>
 </Tabs>
+
+Wait, is `### webHandlers` an h3?
+Yes, `[index.mdx] ### webHandlers`
+And `[index.mdx] ### grouping`
+Wait, what about `#### endpoint`? It's h4.
+Let's check the headings list:
+`[index.mdx] ## Configuration options`
+`[index.mdx] ### webHandlers`
+`[index.mdx] ### grouping`
+Wait, `#### endpoint` is not in the headings list because the headings list only lists up to h3.
+So we can update `## Configuration options` and include everything down to the end of the table.
+
+Let's check if there are any other occurrences of `max
