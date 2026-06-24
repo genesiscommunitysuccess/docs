@@ -1597,3 +1597,18 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 `startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
 If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
 
+
+<!-- Auto-generated from genesislcap/genesis-server#0 -->
+<!-- INSERT AFTER: ## ReconcileDatabaseSync -->
+
+## `readSysDef`
+
+This command displays the system definition values that are currently active for your host or environment. It is useful for verifying which system definition values a process is picking up, especially when values are overridden by environment variables.
+
+###### Syntax
+
+The `readSysDef` command has no parameters.
+
+```bash
+readSysDef
+```
