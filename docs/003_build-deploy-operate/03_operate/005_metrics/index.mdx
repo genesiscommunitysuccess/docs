@@ -250,16 +250,16 @@ This is an easy way to test metrics during development and testing; however, it 
 There are three optional properties for the logger reporter:
 
 ```kotlin
-item(name = "MetricsReportIntervalSecs", value = "60")
+item(name = "MetricsReportIntervalSecs", value = "10")
 item(name = "Slf4jReporterLoggingLevel", value = "DEBUG")
 item(name = "Slf4jReporterLogInactive", value = "true")
 ```
 
-| Property                  | Default | Explanation                                                      |
-|:--------------------------|:--------|:-----------------------------------------------------------------|
-| MetricsReportIntervalSecs | `60`    | interval between metrics log messages                            |
-| Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
-| Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
+| Property | Default | Explanation |
+|:---|:---|:---|
+| `MetricsReportIntervalSecs` | `10` | The interval (in seconds) at which metrics are reported. This property is shared with the Graphite reporter, where it drives the Graphite step interval. |
+| `Slf4jReporterLoggingLevel` | `INFO` | The logging level used by the SLF4J reporter. |
+| `Slf4jReporterLogInactive` | `true` | When `true`, inactive metrics are also logged. |
 
 ## OpenTelemetry
 
@@ -619,4 +619,3 @@ myGaugeCounter.decrement();
 
 </TabItem>
 </Tabs>
-
