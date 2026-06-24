@@ -1597,3 +1597,27 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 `startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
 If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
 
+
+## `readSysDef`
+
+This command lets you inspect the system definition values that a given host or environment is picking up. This allows you to confirm what value a process will use at runtime, which is useful for diagnosing unexpected behaviour in environments where configuration can vary by host.
+
+###### Syntax
+
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| `PROPERTY_NAME` | yes | The name of the system definition property to inspect | none | none |
+
+###### Examples
+
+To inspect the value of the `DbHost` property:
+
+```bash
+readSysDef DbHost
+```
+
+To inspect the value of the `MqHost` property:
+
+```bash
+readSysDef MqHost
+```
