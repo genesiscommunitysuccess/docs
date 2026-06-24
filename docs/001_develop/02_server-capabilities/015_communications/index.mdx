@@ -544,35 +544,31 @@ A single message can contain multiple errors and warnings. Here is how the respo
 
 ### XSS string sanitisation
 
-You can protect against Cross-Site Scripting (XSS) by enabling string sanitisation for outgoing message data. The platform supports two approaches: system-wide sanitisation for all outgoing string properties, or per-field sanitisation on type-safe message data classes.
+To protect your application from Cross-Site Scripting (XSS) attacks, you can sanitise string inputs and outputs.
 
-**System-wide XSS sanitisation**
+#### System-wide sanitisation
 
-Enable XSS string sanitisation for all outgoing string properties by setting the router-config property `xssStringSanitizer` to `true` on `genesis-router.kts` file. By default this property is set to `false`.
+System-wide XSS sanitisation is gated by `GenesisJacksonConfig`, which has two independent boolean properties (both default to `false`):
 
-**Per-field XSS sanitisation on type-safe messages**
+- `inputStringXssSanitiser`: Enables XSS sanitisation during deserialisation of incoming messages.
+- `outputStringXssSanitiser`: Enables XSS sanitisation during serialisation of outgoing messages.
 
-For type-safe messages, you can annotate specific string fields to use the XSS sanitising serialiser. Only annotated fields are sanitised; other string fields are left unchanged.
+#### Per-field sanitisation
 
-Apply `@field:JsonSerialize(using = XssSanitizingSerializer::class)` to the field. You need the following imports:
+To apply sanitisation to specific fields rather than system-wide, annotate your message data class fields with `@field:JsonDeserialize` using `XssSanitizingDeserializer::class`.
+
+###### Examples
 
 ```kotlin
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import global.genesis.jackson.serialization.XssSanitizingSerializer
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import global.genesis.commons.jackson.XssSanitizingDeserializer
 
-
-data class SanitisedDataClass(
-    @field:JsonSerialize(using = XssSanitizingSerializer::class)
-    val sanitised: String,
-    val unsanitised: String
+data class UserInput(
+    val id: String,
+    @field:JsonDeserialize(using = XssSanitizingDeserializer::class)
+    val comment: String
 )
 ```
-
-When serialising, the `sanitised` field is sanitised (script tags are stripped and certain characters are escaped), while `unsanitised` keeps the raw value. For example:
-
-- **Before sanitisation:** `"<script>alert('XSS')</script><b>Hello</b>"}\"`
-- **After sanitisation:** `&#34;<b>Hello</b>&#34;}&#34;` (script removed, quotes escaped as `&#34;`)
-
 
 ## Metadata annotations
 
