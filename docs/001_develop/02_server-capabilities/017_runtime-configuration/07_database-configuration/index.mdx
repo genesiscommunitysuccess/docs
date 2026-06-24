@@ -49,9 +49,7 @@ systemDefinition {
         item(name = "MqLayer", value = "ZeroMQ")
         item(name = "DbLayer", value = "SQL")
         item(name = "DictionarySource", value = "DB")
-
 ```
-
 
 Then, insert a line in the `hosts` block to identify the JDBC connection string for the database. This points the system to the local Postgres, Oracle or MSSQL server. For example:
 
@@ -82,6 +80,19 @@ If you are using Postgres and you want to use a reserved keyword as a column nam
 
 ```kotlin
 item(name = "DbQuotedIdentifiers", value = "true")
+```
+
+#### SQL database mode configuration
+
+You can configure the SQL database mode using the `DbMode` property. The platform supports two internal SQL modes:
+
+* `ADVANCED` (Default): This is the default mode. If you do not set `DbMode`, or if you set it to any value other than `LEGACY` (such as `POSTGRESQL` or `VANILLA`), the platform resolves it to `ADVANCED`. Note that `POSTGRESQL` is a string alias for `ADVANCED`, not a distinct mode.
+* `LEGACY`: Use this mode if you need to maintain compatibility with older legacy database schemas.
+
+To set the database mode, add the following line to your system definition file:
+
+```kotlin
+item(name = "DbMode", value = "ADVANCED")
 ```
 
 ### 2. Activate the new configuration
