@@ -19,6 +19,12 @@ import CommonProcesses from '/snippet/_common-see-processes.md'
 
 A Consolidator aggregates data in real time or on demand, based on a database table/view input.
 
+:::important
+The Genesis Platform contains two consolidator modules:
+- **GPAL Consolidator** (`genesis-pal-consolidator`): This is the current standard module (package `global.genesis.pal.consolidator`) using GPAL `.kts` files and the `GPalConsolidator` base class. You must use this for all new development.
+- **Consolidator 2** (`genesis-consolidator2`): Despite the name, this is the older, legacy module (package `global.genesis.consolidator2`) using XML configuration. It is deprecated and you must not use it for new work.
+:::
+
 Use cases include:
 
 - Calculating and persisting real-time positions based on intra-day price changes.
@@ -34,7 +40,6 @@ graph TD
     B -->|Stores Consolidated data| C[OUTPUT - Table]
 ```
 - On demand (as a Consolidator object): Used in code for on-demand consolidations and what-if analysis; outputs are not saved in the application’s database.
-
 
 ## Example configuration
 
