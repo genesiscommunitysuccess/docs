@@ -1323,3 +1323,19 @@ fun `can get hello world`() = runBlocking {
     assert(reply.message == "HELLO PETER")
 }
 ```
+
+IT) {
+    request(TRADE_AUDIT.BY_UNDERLYING_ID)
+  }
+```
+
+##### `withTransformation`
+
+Request Server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
+* the request parameter’s value (which is nullable)
+* the full request message
+
+In the example below, `withTransformation` is used twice.
+
+* If the `ALTERNATE_TYPE` parameter value is null, then the Request Server will use `"UNKNOWN"` by default.
+* If the `ALTERNATE_TYPE` parameter has the value "RIC", then the transformation block will use the value of `INSTRUMENT_CODE` from the request. Otherwise, it will assign it the value "
