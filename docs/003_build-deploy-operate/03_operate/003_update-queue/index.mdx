@@ -26,11 +26,14 @@ When the `event_handler` receives a trade insert event, it writes this to the `d
 
 As the `data_server` is automatically subscribed to those updates from the update queue, it gets the updates without having to re-query the database.
 
-There are three different update queue technologies to choose from, depending on your requirements:
+The `MqLayer` configuration item supports the following values:
 
-- [ZeroMQ](#zeromq) (Default) - a decentralized peer-to-peer set-up, which relies on a fixed cluster size
-- [MQTT](#mqtt) - use an independent MQTT broker if you want to allow dynamic scaling
-- [JMS](#jms) - use an independent Jakarta Messaging broker (former JMS)
+- `ZeroMQ` (Default) - a decentralized peer-to-peer set-up, which relies on a fixed cluster size.
+- `MQTT` - use an independent MQTT broker if you want to allow dynamic scaling.
+- `JMS` - use an independent Jakarta Messaging broker (former JMS).
+- `AERON` - a high-performance messaging system.
+- `GenerationalNano` - a FoundationDB-only queue and the fallback when `MqLayer` is unset in the legacy database manager path.
+- `Disabled` - a no-op queue used by scripts and `DbMon`.
 
 ## ZeroMQ
 
