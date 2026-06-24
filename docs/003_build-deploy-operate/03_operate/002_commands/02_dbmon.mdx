@@ -603,24 +603,16 @@ The `insert` command always inserts a new record with the values you have set. I
 
 ### Deleting rows
 
-To delete a row from a table, use the `delete` command.
+To delete a record, use the `delete` command. This command deletes only the currently selected record (`Context.currentRecord`).
 
-1. Find the record you need to delete.
-2. Run `writeMode` to enable write mode.
-3. Run `delete`.
+If you run `delete` when you have only selected a table (and no specific record has been loaded or searched), the command fails with the error `Record does not exist in the database`.
 
-:::warning
-If you do not select a record, the command deletes the last record in the table.
-:::
+If you have performed a search, the current record is set to the last record matched and printed. Running `delete` immediately after a search deletes that last search result.
 
-The example below deletes the last record in the **TRADE** table:
+###### Examples
 
-```javascript
-DbMon:TRADE>writeMode
-DbMon:TRADE>delete
-Are you sure you wish to execute the command? Y/N
-y
-Record deleted
+```bash
+delete
 ```
 
 ### deleteWhere
@@ -793,4 +785,3 @@ Here is a full list of DbMon commands and their arguments.
 | [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | update all records that matches a given condition                      |
 | [view](#selecting-a-view)                        | `<view_name>`                               | select a specified view                                               |
 | writeMode                            |                                             | enable write mode                                                      |
-
