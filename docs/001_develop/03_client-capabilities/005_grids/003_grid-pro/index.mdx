@@ -1294,3 +1294,12 @@ provideDesignSystem().register(baseComponents, rapidGridComponents);
 :::tip
 If you're unsure where to register the component, search for the `provideDesignSystem` method in your project.
 :::
+
+<!-- Auto-generated from genesislcap/foundation-ui#0 -->
+### Default row and header heights
+
+With a Rapid Genesis grid theme, `rapid-grid-pro` sets default `row-height` and `header-height` from your design-system sizing tokens (`baseHeightMultiplier`, `density`, and `designUnit`) when you do not pass explicit values. Those defaults track updates when `configureDesignSystem` runs or changes.
+
+You can set the `row-height` attribute (property `rowHeight`) to define a fixed pixel height for every row in the grid. It accepts a `number` and defaults to `40`. When you set this, all rows render at that specified pixel height.
+
+See [Sizing tokens](/develop/client-capabilities/styling/design-tokens/styling-tokens-sizing/) for how those tokens are defined in `design-tokens.json`.
