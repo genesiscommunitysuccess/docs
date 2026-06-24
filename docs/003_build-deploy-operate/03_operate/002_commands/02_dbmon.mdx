@@ -794,3 +794,30 @@ Here is a full list of DbMon commands and their arguments.
 | [view](#selecting-a-view)                        | `<view_name>`                               | select a specified view                                               |
 | writeMode                            |                                             | enable write mode                                                      |
 
+
+<!-- Auto-generated from genesislcap/genesis-server#0 -->
+<!-- INSERT AFTER: ## KillServer -->
+
+## `readSysDef`
+
+This command displays the resolved system definition (sysdef) values that the current host or environment uses for its processes. It is useful for verifying active configuration values when overrides, such as environment variables, are in use.
+
+###### Syntax
+
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| [PROPERTY_NAME] | no | The specific system definition property to retrieve. | none | displays all properties |
+
+###### Examples
+
+To display all resolved system definition properties:
+
+```bash
+readSysDef
+```
+
+To display the value of a specific system definition property:
+
+```bash
+readSysDef DbHost
+```
