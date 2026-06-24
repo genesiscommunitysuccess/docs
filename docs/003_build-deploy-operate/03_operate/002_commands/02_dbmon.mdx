@@ -794,3 +794,21 @@ Here is a full list of DbMon commands and their arguments.
 | [view](#selecting-a-view)                        | `<view_name>`                               | select a specified view                                               |
 | writeMode                            |                                             | enable write mode                                                      |
 
+
+<!-- Auto-generated from genesislcap/genesis-server#0 -->
+<!-- INSERT AFTER: ## `KillProcess` -->
+
+## `readSysDef`
+
+This command reads one or more system definition property names and prints their resolved values.
+
+###### Syntax
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| PROPERTIES | yes | Space-separated list of system definition property names to read | none | none |
+
+###### Examples
+
+```bash
+readSysDef DbHost DbPort
+```
