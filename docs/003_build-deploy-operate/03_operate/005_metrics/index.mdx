@@ -620,3 +620,23 @@ myGaugeCounter.decrement();
 </TabItem>
 </Tabs>
 
+
+### SLF4J
+
+Metrics can be reported straight to the log file.
+
+This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
+
+The following properties can be configured for the SLF4J reporter:
+
+```kotlin
+item(name = "MetricsReportIntervalSecs", value = "10")
+item(name = "Slf4jReporterLoggingLevel", value = "DEBUG")
+item(name = "Slf4jReporterLogInactive", value = "true")
+```
+
+| Property | Default | Explanation |
+|:---|:---|:---|
+| `MetricsReportIntervalSecs` | `10` | The interval in seconds at which metrics are reported. This is shared with the Graphite reporter, where it drives the Graphite step interval. |
+| `Slf4jReporterLoggingLevel` | `INFO` | The logging level used by the SLF4J reporter. |
+| `Slf4jReporterLogInactive` | `true` | When `true`, inactive metrics are also logged. |
