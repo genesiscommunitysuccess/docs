@@ -15,24 +15,44 @@ Site specific is an area of the run directory, on a deployed application instanc
 
 Any *platform-provided files* placed in your application's `cfg` or `script` will supersede those provided by the platform. *Platform-provided files* can be any files provided by Genesis, auth, or any business component or module that is not your application. 
 
+Site-specific configuration allows you to override standard definitions and files in your application. This override mechanism operates at two distinct layers:
+
+- **Build-time overrides**: Your application's own `cfg/` and `scripts/` directories. Any files placed here are bundled into the distribution at build time and supersede the default files provided by the Genesis platform or other modules.
+- **Deployment-time overrides (`site-specific`)**: A dedicated `site-specific/` directory within `GENESIS_HOME` on a deployed instance. This directory has its own `cfg/`, `scripts/`, `bin/`, and `lib/` subdirectories. The platform explicitly reads this directory when generating configuration and assembling the classpath, prioritising its contents over all other sources. This is the operations-controlled deployment-time site-specific area.
+
 ## Overriding platform-provided files
+
+You can override platform-provided files at build time or at deployment time depending on your requirements.
+
+### Build-time overrides
 
 Once you have built a project for the first time locally, you can find all the platform-provided module artifacts, including those in `cfg` and `scripts`, to copy into your application's respective `cfg` and `scripts` directories, as required.
 
-As shown in the image below they are found in your project's `server/<app_name>/build/genesis-home/` directory.  
+As shown in the image below, they are found in your project's `server/<app_name>/build/genesis-home/` directory.  
 
 ![](/img/001_develop/genesis-platform-provided-files-overview.png)
 
-A common requirement is to turn on processes that are disabled by default or to turn off those that are enabled by default. If it is not already available in your project's `cfg` directory you can find `genesis-processes.xml` (per screenshot below) and copy it there.
+A common requirement is to turn on processes that are disabled by default or to turn off those that are enabled by default. If it is not already available in your project's `cfg` directory, you can find `genesis-processes.xml` (per screenshot below) and copy it there.
 
 ![](/img/001_develop/genesis-process-example.png)
 
-You can then edit the file. The changes you make will take effect after your next build, whether the project is being built and run locally or pushed to CICD for build and deployment. 
+You can then edit the file. The changes you make take effect after your next build, whether the project is being built and run locally or pushed to CI/CD for build and deployment. 
 
 :::tip
 These files can change over time with new platform releases. Any Genesis platform-provided files placed in this location might need to be updated with any new platform features that your application needs to take advantage of.
 :::
 
+### Deployment-time overrides
+
+For operations and deployment-time changes on a live instance, you use the `site-specific/` directory located in `GENESIS_HOME` (for example, `/home/genesis/site-specific/`). 
+
+This directory contains the following subdirectories:
+- `cfg/` for overriding configuration files (such as system definitions or process files)
+- `scripts/` for overriding scripts
+- `bin/` for custom binaries or scripts
+- `lib/` for custom Java or Kotlin libraries and dependencies
+
+When the platform starts up, generates configuration, or assembles the classpath, it explicitly prioritises files found in `site-specific/` over any other sources in the installation. This allows you to make environment-specific adjustments without rebuilding the application distribution.
 
 ## Changing system definitions
 The [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/) is always found in the `cfg` directory of your application.
