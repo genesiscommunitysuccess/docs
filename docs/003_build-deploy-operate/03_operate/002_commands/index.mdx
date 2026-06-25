@@ -209,28 +209,21 @@ There is no concept of foreign keys in Genesis, so these are ignored.
 
 ## `DropTable`
 
-The `DropTable` command removes all rows from the specified tables.
+The `DropTable` command removes all rows from the specified tables. You must specify at least one table; the command does not support dropping all tables without explicit names. The command prompts you for confirmation before dropping each specified table.
 
-:::warning
-If you do not specify any tables, then **all** rows will be removed from **all** tables in the database.
+###### Syntax
 
-Use with care!
-:::
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| `-t` | yes | Space-separated list of table names to have their rows removed | none | none |
 
-<!-- The DropTable command has one possible argument: -t -->
+###### Examples
 
-###### Syntax 
-| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
-|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -t <!-- DropTable -t [TABLES] -->      | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
-
-The example below removes all the rows from three separate tables:
+The following example removes all rows from three separate tables:
 
 ```bash
 DropTable -t EQUITY_ORDERS_GB EQUITY_ORDERS_DE EQUITY_ORDERS_IT
 ```
-
-The command will ask you to confirm the removal of the content from each table.
 
 ## `DumpIt`
 To copy data from a Genesis database, use the `DumpIt` command.
