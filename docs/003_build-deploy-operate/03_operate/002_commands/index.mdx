@@ -1621,3 +1621,22 @@ To resolve multiple properties, such as `DbHost`, `DbMode`, and `MqLayer`:
 ```bash
 readSysDef DbHost DbMode MqLayer
 ```
+
+### Preventing execution with BlockGenesisInstall
+
+You can prevent the execution of `genesisInstall` by setting the system definition property `BlockGenesisInstall` to `true`. This is useful in containerised environments (such as Docker) where running `genesisInstall` directly is discouraged.
+
+When `BlockGenesisInstall` is enabled:
+- Running `genesisInstall` prints a warning and exits cleanly without performing any installation steps.
+- The Genesis Gradle plugin automatically sets the environment variable `GENESIS_SYSDEF_BlockGenesisInstall=true` in generated Docker runtime images to prevent accidental execution.
+
+If you need to override this block in a containerised environment, you can set the environment variable `GENESIS_SYSDEF_BlockGenesisInstall` to `false`.
+
+###### Examples
+
+To temporarily allow `genesisInstall` to run in an environment where it is blocked, set the environment variable before running the command:
+
+```bash
+export GENESIS_SYSDEF_BlockGenesisInstall=false
+genesisInstall
+```
