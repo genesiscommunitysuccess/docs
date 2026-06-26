@@ -185,42 +185,47 @@ The available built-in reporters are:
 | SLF4J    | Publishes metrics to the services' log file                         |
 
 ### Graphite
+
 Graphite is an open-source sink that you can use for metrics in Genesis applications.
 
 Graphite is often paired with [Grafana](https://grafana.com/), which can source data from Graphite and provides the means to set up and display alerts.
 
-Graphite reports metrics in a hierarchical - tree - structure.
+Graphite reports metrics in a hierarchical (tree) structure.
 
-There are two ways for Genesis to generate the metric id for graphite: either hierarchical or dimensional.
+There are two ways for Genesis to generate the metric ID for Graphite: either hierarchical or dimensional.
 
 #### Hierarchical metric structure
 
-When the hierarchical structure is used, the metric id will be built of the following components separated by dots `.`.
-1. genesis
+When the hierarchical structure is used, the metric ID is built of the following components separated by dots `.`:
+1. `genesis`
 2. the value of the group name tag
 3. the value of the process name tag
 4. the value of the host name tag
 5. additional tags, including the key and value
 6. the metric name
 
-e.g. `genesis.genesis.genesis_router.tam_prod1.active_connections`
+For example: `genesis.genesis.genesis_router.tam_prod1.active_connections`
 
 #### Dimensional metric structure
 
-When the dimensional metric structure is used, the metric id will begin with the metric name and
-all tag keys and values are joined.
+When the dimensional metric structure is used, the metric ID begins with the metric name and all tag keys and values are joined.
 
-e.g. `active_connections{hostName=tam_prod1.processName=genesis_router.groupName=genesis}`.
+For example: `active_connections{hostName=tam_prod1.processName=genesis_router.groupName=genesis}`
 
 #### Settings
 
-Genesis supports [Pickle protocol](https://graphite.readthedocs.io/en/stable/feeding-carbon.html#the-pickle-protocol), defaulting to port 2004. If your Graphite instance exposes a different port for the Pickle protocol, update your system definition as shown below:
+Genesis supports the [Pickle protocol](https://graphite.readthedocs.io/en/stable/feeding-carbon.html#the-pickle-protocol).
+
+You must define both `MetricsGraphiteURL` and `MetricsGraphitePort` in your system definition file. There are no default values for these properties; if either is missing, the application throws a `MetricsConfigurationException`.
+
+The `MetricsStructureType` property is optional and defaults to `hierarchical`.
 
 ```kotlin
 item(name = "MetricsGraphiteURL", value = "localhost")
 item(name = "MetricsGraphitePort", value = "2004")
 item(name = "MetricsStructureType", value = "hierarchical")
 ```
+
 :::info
 Currently, the Genesis Application Platform does not support UDP and PLAINTEXT.
 :::
@@ -619,4 +624,3 @@ myGaugeCounter.decrement();
 
 </TabItem>
 </Tabs>
-
