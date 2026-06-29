@@ -267,5 +267,14 @@
         "description": "Create a gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
     ]
+  },
+  "/develop/best-practices": {
+    "description": "Cross-cutting guidance for building responsive, maintainable Genesis applications—patterns and recommendations that apply across server, client, and operations.",
+    "items": [
+      {
+        "href": "/develop/best-practices/performance/",
+        "description": "Improve responsiveness when loading, displaying, and subscribing to large datasets on the web UI and Data Server. Includes guidance on browser memory leaks."
+      }
+    ]
   }
 }
