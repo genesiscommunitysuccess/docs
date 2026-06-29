@@ -164,10 +164,12 @@ export class ClientSideDatasourceExample {}
 
 ### Server-side features
 
-- **Sorting**: Order by any INDEX column/field, ASC or DESC.
-  - This is a server limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it. 
-  - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that column (field) will have sorting enabled.
-  - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
+- **Sorting**:
+  - **`DATASERVER` resources**: Order by any INDEX column/field, ASC or DESC.
+    - This is a `DATASERVER` limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it.
+    - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that column (field) will have sorting enabled.
+    - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
+  - **`REQUEST_SERVER` resources**: Order by any column/field, ASC or DESC. The index-only sorting limitation does **not** apply when using a `REQUEST_SERVER` (`requestReply`) resource, so any column can be sorted. This requires the `requestReply` to have [criteria only mode](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode) enabled (`criteriaOnlyRequest = true`).
   - **Custom Sort Indicators**: Server-side datasources automatically display always-visible sort indicators on sortable columns, providing better visual feedback about which columns can be sorted even when not currently sorted.
 - **Filtering**:
   - Filtering options are automatically generated, based on the resource's metadata.
@@ -205,7 +207,7 @@ export class ClientSideDatasourceExample {}
   - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
 - For row count display in infinite scroll mode, enable `with-status-bar` and set `statusBarConfig.rows = true` on `grid-pro` without enabling `pagination`. See [row count in server-side infinite scroll](/develop/client-capabilities/grids/grid-pro/#row-count-in-server-side-infinite-scroll).
 - **Limitations**:
-  - Sorting can only be applied to index fields/columns. Also mentioned [here](https://www.notion.so/Grid-Pro-Datasource-Inventory-d11ca7570ee94847bbcb3e7362025b0a?pvs=21). More details [here](https://genesisglobal.atlassian.net/jira/polaris/projects/GPR/ideas/view/4721227?selectedIssue=GPR-171&focusedCommentId=143757) and [here](https://genesis-global-talk.slack.com/archives/C0416MFG360/p1696456988606789).
+  - **`DATASERVER` resources only**: Sorting can only be applied to index fields/columns. This limitation does **not** apply to `REQUEST_SERVER` (`requestReply`) resources with [criteria only mode](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode) enabled, where any column can be sorted.
   - `ROWS_COUNT` doesn't reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
