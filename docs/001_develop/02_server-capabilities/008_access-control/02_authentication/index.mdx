@@ -2548,3 +2548,12 @@ To explain the attributes being set:
     - `toggled: true` - This ensures that the `Enable SSO` checkbox displayed on the application's login page is **checked** by default. Where this is set to `false`, the checkbox is **not** checked by default.
     - `identityProvidersPath: 'sso/list'` - This is the endpoint that the UI will call to get a list of identity providers from the server. `sso/list` is the default value for `ssoListEndpoint` configured on the server. Where this value has been changed, it must also match in this configuration.
 
+
+##### `passwordStrength` 
+
+Including this block you can set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password.
+
+* `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
+* `minDigits` specifies the minimum number of numeric digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `maxRepeatCharacters` specifies the maximum number of the

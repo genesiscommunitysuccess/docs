@@ -159,3 +159,17 @@ public RequestReplyDefinitionReader(RxDb db,
     this(db.getDictionary(), configFileName);
 }
 ```
+
+#### Conditional on property and missing class
+
+Lastly, you can use a combination of both "conditional on property" and "conditional on missing class" annotations. Referring to the previous example, you can use both features at once like this:
+
+```kotlin
+@Module
+@ConditionalOnPropertyAndMissingClass("MessageTracer", conditionalValue = "DEFAULT", MessageTracer::class)
+class DefaultMessageTracer : MessageTracer{
+    override fun onMessageReceived(msg: Message) = println("This is a message $msg")
+}
+```
+
+If the condition fails (for example, if the system definition value for `MessageTracer` is set to anything other than `DEFAULT`), the module is not registered. Note that this annotation does not directly cause a start-up failure. Instead, a start-up failure only occurs if another component attempts to `@Inject` the now-unbound type, resulting in a standard Guice missing-binding error.

@@ -209,28 +209,21 @@ There is no concept of foreign keys in Genesis, so these are ignored.
 
 ## `DropTable`
 
-The `DropTable` command removes all rows from the specified tables.
+The `DropTable` command removes all rows from the specified tables. You must specify at least one table; the command does not support dropping all tables without explicit names. The command prompts you for confirmation before dropping each specified table.
 
-:::warning
-If you do not specify any tables, then **all** rows will be removed from **all** tables in the database.
+###### Syntax
 
-Use with care!
-:::
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| `-t` | yes | Space-separated list of table names to have their rows removed | none | none |
 
-<!-- The DropTable command has one possible argument: -t -->
+###### Examples
 
-###### Syntax 
-| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
-|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -t <!-- DropTable -t [TABLES] -->      | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
-
-The example below removes all the rows from three separate tables:
+The following example removes all rows from three separate tables:
 
 ```bash
 DropTable -t EQUITY_ORDERS_GB EQUITY_ORDERS_DE EQUITY_ORDERS_IT
 ```
-
-The command will ask you to confirm the removal of the content from each table.
 
 ## `DumpIt`
 To copy data from a Genesis database, use the `DumpIt` command.
@@ -1597,3 +1590,27 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 `startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
 If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
 
+
+## `readSysDef`
+
+The `readSysDef` command displays the system definition property values that your host or environment is currently using. This is useful for verifying the active configuration, as it prints each property name and its resolved value, including any environment-variable overrides.
+
+###### Syntax
+
+| Argument | Mandatory | Description | Restricted values | Default |
+|---|---|---|---|---|
+| `[PROPERTIES]` | yes | One or more space-separated system definition property names to resolve | none | none |
+
+###### Examples
+
+To resolve a single property, such as `DbHost`:
+
+```bash
+readSysDef DbHost
+```
+
+To resolve multiple properties, such as `DbHost`, `DbMode`, and `MqLayer`:
+
+```bash
+readSysDef DbHost DbMode MqLayer
+```

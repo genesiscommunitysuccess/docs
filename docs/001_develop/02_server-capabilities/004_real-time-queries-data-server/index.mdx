@@ -2180,3 +2180,27 @@ private fun ackDataAndUpdateReceived(): Callable<Boolean> {
 
 
 ```
+
+#### config
+The following settings can be applied at query-level, and they override any [global settings](#global-config) that you make for the file.
+
+Example:
+```kotlin
+dataServer {
+  query("ALL_TRADES", TRADE_VIEW) {
+    config {
+      defaultCriteria = "TRADE_PRICE > 0"
+      backwardsJoin = false
+      disableAuthUpdates = false
+    }
+  }
+}
+```
+
+| Config item | Description | Default |
+|-------------|-------------|---------|
+|`defaultCriteria`|This represents the default criteria for the query||
+|`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
+|`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
+|`backwardsJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||
+|`backJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||
