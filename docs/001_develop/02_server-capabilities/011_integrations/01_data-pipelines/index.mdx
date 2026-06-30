@@ -447,6 +447,11 @@ When configuring the db batch poller to use as part of your pipeline, you must p
 - index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if a single field index is provided, ensure this value is either the generated `TIMESTAMP` field in the table or of type Long. Else, see below.
 - buildIndex (required for multi-field index only): if you would like to use an index that contains multiple fields, you need to provide a lambda that converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
 - dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - the default is 200ms, and is not required as part of the provided config
+- pollFromLatest (optional): when set to `true` and no persisted index exists for this source, polling starts from the current latest record in the table rather than from the beginning, skipping all existing records. This is useful when you only want to process new data from the point the pipeline first starts. Defaults to `false`.
+
+:::note
+`pollFromLatest` only takes effect when there is no previously persisted index for the given `source`. Once an index has been persisted, polling always resumes from that index regardless of this flag.
+:::
 
 Here is a GPAL example of a Batch Poll source definition:
 ```kotlin
@@ -454,6 +459,7 @@ Here is a GPAL example of a Batch Poll source definition:
 val batchPollSource = dbBatchQuery<TestIndexTable> {
   source = "SINGLE_INDEX_SOURCE"
   index = TestIndexTable.ByIndex
+  pollFromLatest = true
 }
 
 // Multiple Field Index Example
