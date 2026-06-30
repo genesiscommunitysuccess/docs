@@ -278,6 +278,32 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.29
+
+###### Features
+
+* `genesis-pal-datapipeline` : add ability for dbBatchQuery source to start polling from latest
+
+#### 8.15.28
+
+###### Fixes
+
+* `clustersupport` : route pipeline event sink through MessageService with UNAVAILABLE retry and auto-failover
+* `genesis-session` : pre-generate Chronicle value flyweight to avoid startup OOM 
+
+#### 8.15.27
+
+###### Fixes
+
+* `daemon` : Fix minor resource leak in daemon script if an exception occurs
+
+#### 8.15.26
+
+###### Fixes 
+
+* `consul` : sessionJob starts unconditionally and monitor checks always register as critical
+* `consul` : shut down replaced client to stop Netty reconnect loop retrying dead node
+
 #### 8.15.25
 
 ###### Features
@@ -418,8 +444,17 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 ###### Fixes
 
 * `genesis-db` : Optimistic concurrency strict upsertAll with new record throws exception when timestamp not provided 
+* Save Document API should allow file type to be provided
+
+###### Dependency Changes
+
+* `deps` : add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling 
 
 #### 8.15.8
+
+###### Features
+
+* Allow asset references to be passed to email notify api
 
 ###### Breaking changes
 
@@ -435,6 +470,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 * `genesis-eventhandler` : Prevent duplicate event handler registration with ClassUtils.getAllInterfaces 
 * Avoid exposure of internal details through API and expose them in LOG instead
+* Remove unused context parameter from register function
 
 #### 8.15.6
 
