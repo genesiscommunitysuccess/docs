@@ -473,23 +473,13 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-config` : Script cache invalidation targets wrong file in attemptToRecover
 * `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures 
 * `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records 
-* Email API should allow optional template reference parameter
-
-###### Dependency Changes
-
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
 
 #### 8.15.5
 
 ###### Fixes
 
-* `fix-shared` : Replace per-record deletion with batched deleteAll in fix session reset with 10000 batch size
 * `genesis-db` : Translate SQL select aliases correctly in SqlStatementTranslator
 * `genesis-db` : Reset oracle sequence values and continue setsequence batch on row errors 
-
-###### Dependency changes
-
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
 
 #### 8.15.4
 
