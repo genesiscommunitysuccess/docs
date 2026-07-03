@@ -30,7 +30,10 @@ Avoid loading an entire large query into the browser when server-side row model 
 ### Grid datasources
 
 - **Client-side** — sorting and filtering run in the browser. Suitable when the full result set is small enough to download and keep in memory. See [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/).
-- **Server-side** — sort and filter are sent to the backend (`ORDER_BY`, `CRITERIA_MATCH`); only the current window of rows is loaded. Sorting is limited to **indexed** columns. See [server-side notes](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-server-side-datasource) and [Data Server indices](/develop/server-capabilities/real-time-queries-data-server/#indices).
+- **Server-side** — sort and filter are sent to the backend (`ORDER_BY`, `CRITERIA_MATCH`); only the current window of rows is loaded. Behaviour depends on the resource type:
+  - **[Data Server](/develop/server-capabilities/real-time-queries-data-server/) `query`** — sorting is limited to columns backed by a [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices). Grid Pro enables sort on columns where metadata exposes a valid index.
+  - **[Request Server](/develop/server-capabilities/snapshot-queries-request-server/) `requestReply`** — with [`criteriaOnlyRequest`](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode), criteria and sorting are evaluated on the database where supported, so sortable columns are not restricted to Data Server-style indices (see `sortableFields` in resource metadata). Without criteria-only mode, the same index constraints as Data Server apply when streaming through the server-side datasource.
+  - See [server-side datasource notes](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-server-side-datasource).
 
 ### Entity Manager
 
