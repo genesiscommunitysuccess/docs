@@ -278,6 +278,38 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.29
+
+###### Features
+
+* `genesis-pal-datapipeline` : add ability for dbBatchQuery source to start polling from latest
+
+#### 8.15.28
+
+###### Fixes
+
+* `clustersupport` : route pipeline event sink through MessageService with UNAVAILABLE retry and auto-failover
+* `genesis-session` : pre-generate Chronicle value flyweight to avoid startup OOM 
+
+#### 8.15.27
+
+###### Fixes
+
+* `daemon` : Fix minor resource leak in daemon script if an exception occurs
+
+#### 8.15.26
+
+###### Fixes 
+
+* `consul` : sessionJob starts unconditionally and monitor checks always register as critical
+* `consul` : shut down replaced client to stop Netty reconnect loop retrying dead node
+
+#### 8.15.25
+
+###### Features
+
+* `genesis-router` : Add httpCompression option to router definition
+
 #### 8.15.24
 
 ###### Fixes
