@@ -101,9 +101,9 @@ Each grid or datasource subscription is governed by Data Server **DATA_LOGON** p
 
 Typical patterns:
 
-- **Pagination** — `MAX_ROWS` = page size, `VIEW_NUMBER` ≥ 1, `MOVING_VIEW` = false; align with grid pagination or Entity Manager grid options.
 - **Fixed live window** — `MAX_ROWS` = `MAX_VIEW`, `MOVING_VIEW` = false so updates apply only to visible rows.
 - **Infinite scroll** — server-side datasource with pagination disabled; consider `MAX_VIEW` = `0` for scroll growth; use grid [row count in server-side infinite scroll](/develop/client-capabilities/grids/grid-pro/#row-count-in-server-side-infinite-scroll).
+- **Pagination** — `MAX_ROWS` = page size, `VIEW_NUMBER` ≥ 1, `MOVING_VIEW` = false; align with grid pagination or Entity Manager grid options. On large trading and operations grids, **server-side search and filter on indexed fields** usually delivers a better experience than paging through an unfiltered history; treat pagination as a secondary option when users truly need to walk fixed pages of a already-narrowed result set.
 
 Full behaviour is documented under [rows and view concepts](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts).
 
@@ -111,9 +111,10 @@ Full behaviour is documented under [rows and view concepts](/develop/server-capa
 
 Even with bounded data, rendering cost matters.
 
+- **Search and filter UX** — let users narrow large datasets on the server before scrolling; see [Foundation Filters](/develop/client-capabilities/forms/smart-forms/foundation-forms-filters), Entity Manager [filters](/develop/client-capabilities/grids/entity-manager/entity-manager-filters), and [criteria matching](/develop/client-capabilities/server-communications/criteria-matching/).
 - **DOM virtualisation** — only visible rows and columns are in the DOM. Enabled by default on Grid Pro; see [Performance](/develop/client-capabilities/grids/grid-pro/#performance).
-- **Pagination** — load one page at a time; combine with virtualisation for very wide or tall pages.
 - **Lightweight renderers** — prefer built-in renderers; keep custom cell renderers small. See [performance considerations](/develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-column/#performance-considerations).
+- **Pagination** — load one page at a time when a paged UX is required; combine with virtualisation for very wide or tall pages. Prefer indexed filter fields over pagination alone for financial workloads with deep history.
 
 ## 4. Write queries that scale on the server
 
@@ -122,17 +123,18 @@ Even with bounded data, rendering cost matters.
 - Express filters so they **hit indices**—especially date/time comparisons. See [criteria matching](/develop/client-capabilities/server-communications/criteria-matching/).
 - Enable the **type-aware criteria evaluator** and avoid criteria that force full linear scans when indexes exist. See [Data Server configuration](/develop/server-capabilities/real-time-queries-data-server/).
 - For heavy read paths, review **LMDB allocation**, **compression**, **serialization** (Kryo vs Fory), and **`batchingPeriod`** on the Data Server—especially when latency spikes on `DATA_LOGON` or `MORE_ROWS`.
+- When users **edit shared records**, enable [optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/#optimistic-concurrency) on the server ([configuration](/develop/server-capabilities/data-access-apis/#optimistic-concurrency)) and ensure edit events carry the record timestamp. Entity Manager and generated forms surface concurrency failures via [submit-failure notifications](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
 
 For static or slowly changing lookup tables, consider [process cache](/develop/server-capabilities/runtime-configuration/process-cache/) with indices that match your joins.
 
 ## 5. Manage real-time communication
 
-- Prefer **WebSocket** ([Connect](/develop/client-capabilities/server-communications/comms-connect/)) when push updates are required.
-- Subscribe only to resources the screen needs; unsubscribe when leaving a route.
-- For **HTTP** mode, tune `POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY` so polling does not overwhelm the server.
+- Prefer **WebSocket** when push updates are required: [Connect overview](/develop/client-capabilities/server-communications/comms-connect/), [`DefaultConnect`](/develop/client-capabilities/server-communications/comms-connect/#overview-of-connect) (WebSocket), and [WebSocket vs HTTP](/develop/client-capabilities/server-communications/comms-connect/#considerations).
+- Subscribe only to resources the screen needs; tear down streams in component cleanup (see [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/)).
+- For **HTTP** mode, use [HTTP Connect (`DefaultHttpConnect`)](/develop/client-capabilities/server-communications/comms-connect/#http-connect-defaulthttpconnect) and tune [`POLLING_INTERVAL_MAP` and `POLLING_FREQUENCY`](/develop/client-capabilities/server-communications/comms-connect/#configuration-httpconnectconfig) so polling does not overwhelm the server. Router defaults are documented under [Genesis router](/develop/server-capabilities/runtime-configuration/genesis-router/).
 - Metadata is cached client-side; see [metadata](/develop/client-capabilities/server-communications/comms-metadata/).
 
-Router settings such as subscription timeouts and client channel capacity affect how many concurrent subscriptions a user can hold—see [Genesis router](/develop/server-capabilities/runtime-configuration/genesis-router/).
+Subscription timeouts and client channel capacity also affect how many concurrent subscriptions a user can hold—see [Genesis router](/develop/server-capabilities/runtime-configuration/genesis-router/).
 
 ## 6. Application structure
 
@@ -145,7 +147,7 @@ Scattering large observable state across many components can degrade UI responsi
 For day-to-day performance work on large grids and subscriptions, browser tooling tends to be more actionable than generic page-speed scores:
 
 - **Network requests** — Run the client with [HTTP Connect](/develop/client-capabilities/server-communications/comms-connect/#http-connect-defaulthttpconnect) (`DefaultHttpConnect`) when you need to inspect traffic. Polling and request/response calls show up as normal HTTP requests in the browser **Network** panel, which makes it easier to see how often resources are polled, how large responses are, and whether screens subscribe to more queries than they need. Tune intervals using `POLLING_FREQUENCY` and `POLLING_INTERVAL_MAP` (see [Connect configuration](/develop/client-capabilities/server-communications/comms-connect/#configuration-httpconnectconfig)). Use WebSocket in production when push is required; switch to HTTP temporarily while diagnosing load.
-- **Memory allocation** — Use the browser **Memory** (or **Performance**) tools to take heap snapshots and compare allocation before and after opening a grid, scrolling, or changing routes. Spikes often point to client-side datasource caches, metadata, or grid data that is not released when leaving a page. See [Browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for a structured DevTools workflow and common UI patterns (FAST and React).
+- **Memory allocation** — Use the browser **Memory** (or **Performance**) tools to take heap snapshots and compare allocation before and after opening a grid, scrolling, or changing routes. Spikes often point to client-side datasource caches, metadata, or grid data that is not released when leaving a page. See [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for a structured DevTools workflow and common UI patterns (FAST and React).
 
 On the server, use Data Server start-up logs and [LMDB allocation](/develop/server-capabilities/real-time-queries-data-server/#lmdb-allocation-and-warning-state) when investigating memory pressure from large queries.
 
@@ -165,4 +167,4 @@ On the server, use Data Server start-up logs and [LMDB allocation](/develop/serv
 3. [Data Server — rows and view](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts)
 4. [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/)
 5. [Entity Manager](/develop/client-capabilities/grids/entity-manager/) if you use CRUD micro front-ends
-6. [Browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for client-side retention and cleanup
+6. [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for client-side retention and cleanup
