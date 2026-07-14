@@ -414,9 +414,9 @@ security {
 
 #### `notify`
 
-This method of MFA generates a one-time login link that is sent via the Genesis Notify module.
+This method of MFA sends a temporary code via the Genesis Notify module. By default this is delivered as a one-time login link, but it can be configured as a short numeric code that the user types into the login screen instead (see `tempCodeNumeric`).
 
-Each time a login is unsuccessful, a new one-time link is generated, using a temporary code with a short-timed expiry.
+Each time a login is unsuccessful, a new temporary code with a short-timed expiry is generated and sent.
 
 When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired.
 
@@ -424,10 +424,12 @@ This block exposes the following configuration items:
 
 * `loginUrl` specifies the base URL to open in the one-time login link.
 * `tempCodeExpiryDuration` specifies a duration for temporary generated codes. Default is 15 minutes.
+* `tempCodeNumeric` when set to `true`, the temporary code is a numeric-only code the user types in, rather than the default 32-character alphanumeric token delivered as a login link. This applies to the temporary code only; the active code remains a strong 32-character token. Default is `false`.
+* `tempCodeLength` specifies the number of digits in the temporary code when `tempCodeNumeric` is enabled (leading zeros are preserved). Must be a positive integer, otherwise the application fails to start. Default is 6.
 * `activeCodeExpiryDuration` specifies a duration for active generated codes. Default is 30 days.
 * `notifyTopic` is the topic to publish to the notify module on. Default is 'MFA'.
 * `messageHeader` is the header of the resulting message.
-* `messageBody` is the body of the resulting message. This has 2 templated variables you must include, `{{MFA_CODE}}` is the code the user has to type in and `{{LOGIN_URL}}` which is a link to the application's login page where the user will be prompted.
+* `messageBody` is the body of the resulting message. It supports two templated variables: `{{MFA_CODE}}`, the code the user has to type in, and `{{LOGIN_URL}}`, a link to the application's login page. Include `{{MFA_CODE}}` in all cases; `{{LOGIN_URL}}` is only needed for the login-link flow (not when `tempCodeNumeric` is enabled).
 
 Example configuration: 
 
@@ -442,6 +444,25 @@ security {
           Your MFA Code is {{MFA_CODE}} 
   
           {{LOGIN_URL}}
+        """.trimIndent()
+    }
+  }
+  ...
+}
+```
+
+To send a short numeric code that the user types in instead of a login link, enable `tempCodeNumeric` and omit `{{LOGIN_URL}}` from the message:
+
+```kotlin
+security {
+  ...
+  mfa {
+    notify {
+      tempCodeNumeric = true
+      tempCodeLength = 6
+      messageHeader = "My App MFA"
+      messageBody = """
+          Your MFA code is {{MFA_CODE}}
         """.trimIndent()
     }
   }
