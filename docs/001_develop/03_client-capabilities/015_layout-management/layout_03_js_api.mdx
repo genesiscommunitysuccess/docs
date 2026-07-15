@@ -39,32 +39,13 @@ tags:
 sidebar_position: 15
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+:::warning
+`rapid-layout` is supported for **Genesis FAST Element apps** only.
+
+For **React apps**, use [`flexlayout-react`](https://www.npmjs.com/package/flexlayout-react) for dockable/tabbed layouts. React apps still use Genesis web components (via React wrappers) for UI — only the layout manager differs.
+:::
 
 The JavaScript API is accessed through the methods on the root layout object and allows for saving/loading the layout state, and dynamically adding items to the layout at runtime.
-
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="react">
-
-```tsx
-import { useRef } from 'react';
-
-export function MyLayout() {
-  const layoutRef = useRef<HTMLElement & { addItem: (...args: unknown[]) => void }>(null);
-
-  const doSomething = () => {
-    layoutRef.current?.addItem(/* ... */);
-  };
-
-  return <rapid-layout ref={layoutRef}></rapid-layout>;
-}
-```
-
-</TabItem>
-
-<TabItem value="genesis">
 
 ```typescript
 @customElement({
@@ -78,32 +59,6 @@ export class MyLayout extends GenesisElement {
   }
 }
 ```
-
-</TabItem>
-
-<TabItem value="angular">
-
-```typescript
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
-
-@Component({
-  selector: 'my-layout',
-  template: `<rapid-layout #layout></rapid-layout>`,
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class MyLayoutComponent {
-  @ViewChild('layout') layoutRef!: ElementRef;
-
-  doSomething() {
-    (this.layoutRef.nativeElement as any).addItem(/* ... */);
-  }
-}
-```
-
-</TabItem>
-
-</Tabs>
 
 Before discussing this API, it's useful to understand a number of concepts.
 

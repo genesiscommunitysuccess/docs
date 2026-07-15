@@ -35,8 +35,12 @@ sidebar_position: 15
 ---
 
 import LayoutExample from './layout_example.js'
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
+:::warning
+`rapid-layout` is supported for **Genesis FAST Element apps** only.
+
+For **React apps**, use [`flexlayout-react`](https://www.npmjs.com/package/flexlayout-react) for dockable/tabbed layouts. React apps still use Genesis web components (via React wrappers) for UI — only the layout manager differs.
+:::
 
 Rapid layout is a module that enables users to perform actions such as dragging, resizing, and re-ordering windows. You can implement this with little effort, or you can build on it to create powerful interactions - such as dynamically adding and removing items, and saving and loading layouts.
 
@@ -56,10 +60,6 @@ You can find more details in the [API documentation](./docs/api/)
 Click and drag each title to re-order the items, and to create tabs. Drag the handles between items to resize the items.
 
 <LayoutExample />
-
-<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="genesis">
 
 Declaration:
 ```html
@@ -95,92 +95,6 @@ Usage:
 })
 export class LayoutExample extends GenesisElement { }
 ```
-
-</TabItem>
-<TabItem value="react">
-
-For React projects, use [FlexLayout](https://www.npmjs.com/package/flexlayout-react) (`flexlayout-react`) instead of `rapid-layout`. The React blank-app-seed uses FlexLayout for dockable, tabbed layouts.
-
-The interactive example above uses `rapid-layout` (Genesis tab). The snippet below is the equivalent React setup with `flexlayout-react` and Rapid wrapper components.
-
-Install:
-
-```bash
-npm install flexlayout-react
-```
-
-Usage:
-```tsx
-import { useRef, type ReactNode } from 'react';
-import { Layout, Model, type TabNode } from 'flexlayout-react';
-import { Button, Checkbox } from '@genesislcap/rapid-design-system/react';
-import 'flexlayout-react/style/light.css';
-
-const defaultLayout = {
-  global: { tabEnableRenderOnDemand: false },
-  layout: {
-    type: 'row',
-    children: [
-      {
-        type: 'column',
-        weight: 40,
-        children: [
-          {
-            type: 'tabset',
-            weight: 50,
-            children: [
-              { type: 'tab', id: 'button', name: 'Button', component: 'button' },
-            ],
-          },
-          {
-            type: 'tabset',
-            weight: 50,
-            children: [
-              { type: 'tab', id: 'checkbox', name: 'Checkbox', component: 'checkbox' },
-            ],
-          },
-        ],
-      },
-      {
-        type: 'tabset',
-        weight: 60,
-        children: [
-          { type: 'tab', id: 'text', name: 'Text', component: 'text' },
-        ],
-      },
-    ],
-  },
-};
-
-const componentMap: Record<string, () => ReactNode> = {
-  button: () => <Button>Rapid Button</Button>,
-  checkbox: () => <Checkbox>Rapid Checkbox</Checkbox>,
-  text: () => <p style={{ color: '#FFFFFF' }}>Hello World</p>,
-};
-
-export default function LayoutExample() {
-  const modelRef = useRef(Model.fromJson(defaultLayout));
-
-  const factory = (node: TabNode) => {
-    const render = componentMap[node.getComponent() ?? ''];
-    return render ? render() : null;
-  };
-
-  return (
-    <div style={{ width: '600px', height: '500px', position: 'relative' }}>
-      <Layout model={modelRef.current} factory={factory} />
-    </div>
-  );
-}
-```
-
-</TabItem>
-<TabItem value="angular">
-
-Rapid layout is currently not supported in Angular. You can use the layout if you're only using Genesis components within it, but Angular components inside the layout does not currently work.
-
-</TabItem>
-</Tabs>
 
 :::warning
 Important! Bindings such as events and data don't work directly in the layout. [See this page](./layout_05_binding_events_store.mdx).
