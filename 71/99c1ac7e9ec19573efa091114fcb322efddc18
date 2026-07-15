@@ -1,0 +1,40 @@
+docs/001_develop/03_client-capabilities/015_layout-management/layout_05_binding_events_store.mdx
+  s_331c1c912c3b1d::t_77bb9756628391 18-19
+  s_331c1c912c3b1d::t_b1844e2eb6656f 20
+docs/001_develop/03_client-capabilities/015_layout-management/layout_06_examples_configs.mdx
+  s_331c1c912c3b1d::t_e52b616044810a 44
+  s_331c1c912c3b1d::t_48de3143fd49f5 42-43
+docs/001_develop/03_client-capabilities/015_layout-management/layout_02_html_api.mdx
+  s_331c1c912c3b1d::t_cbee47a2c051ec 44
+  s_331c1c912c3b1d::t_27a1a6e9ac62b6 42-43
+docs/001_develop/03_client-capabilities/015_layout-management/index.mdx
+  s_331c1c912c3b1d::t_7cfe538a21d748 40-41
+  s_331c1c912c3b1d::t_d07cc7c7dcb862 42
+docs/001_develop/03_client-capabilities/015_layout-management/layout_04_items_in_layout.mdx
+  s_331c1c912c3b1d::t_ac82c58292c321 39-40
+  s_331c1c912c3b1d::t_bda901fc1f8c55 41
+docs/001_develop/03_client-capabilities/015_layout-management/layout_03_js_api.mdx
+  s_331c1c912c3b1d::t_05409598541b7d 43-44
+  s_331c1c912c3b1d::t_5a02fe235b1a2b 45
+docs/001_develop/03_client-capabilities/015_layout-management/layout_07_troubleshooting.mdx
+  s_331c1c912c3b1d::t_627db35da21a8a 42-43
+  s_331c1c912c3b1d::t_ce37863f9a7c9e 44
+package-lock.json
+  s_331c1c912c3b1d::t_0f7723b77f7d28 17242-17244,17262-17264,17282-17284,17302-17304,17322-17324,17342-17344,17362-17364,17382-17384,17589-17591,17609-17611,17629-17631,17649-17651,17669-17671,17689-17691,17709-17711,17729-17731,18887-18889,18904-18906,18921-18923,18938-18940,18955-18957,18972-18974,18989-18991,19006-19008,19023-19025,19040-19042,19057-19059,19087-19089,38818-38820,38837,40369-40371,48321-48323,48885-48887,50032-50034
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "7199c1ac7e9ec19573efa091114fcb322efddc18",
+  "prompts": {},
+  "sessions": {
+    "s_331c1c912c3b1d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "914daf7e-00ac-4368-8ae1-0880e72de63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Matt Walker <matt.walker@genesis.global>"
+    }
+  }
+}
