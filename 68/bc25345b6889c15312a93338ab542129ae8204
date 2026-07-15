@@ -1,0 +1,39 @@
+docs/001_develop/03_client-capabilities/015_layout-management/layout_05_binding_events_store.mdx
+  s_331c1c912c3b1d::t_99c13fae2b293d 18-19
+  s_331c1c912c3b1d::t_28154d0072d969 17
+docs/001_develop/03_client-capabilities/015_layout-management/layout_04_items_in_layout.mdx
+  s_331c1c912c3b1d::t_c2048882de3b50 38
+  s_331c1c912c3b1d::t_4926ae849301b6 39-41
+docs/001_develop/03_client-capabilities/015_layout-management/layout_03_js_api.mdx
+  s_331c1c912c3b1d::t_2b06621f7dc443 43-44
+  s_331c1c912c3b1d::t_79556f88a7a5c0 42
+docs/001_develop/03_client-capabilities/015_layout-management/layout_06_examples_configs.mdx
+  s_331c1c912c3b1d::t_60c7c1ff2eec02 41
+  s_331c1c912c3b1d::t_aa5b6d60a32029 42-43
+docs/001_develop/03_client-capabilities/015_layout-management/layout_07_troubleshooting.mdx
+  s_331c1c912c3b1d::t_1c9b5032046584 42-44
+  s_331c1c912c3b1d::t_7e5a290cf2f5c6 41
+docs/001_develop/03_client-capabilities/015_layout-management/layout_02_html_api.mdx
+  s_331c1c912c3b1d::t_ba9ae6dcfc35d5 41
+  s_331c1c912c3b1d::t_087040d77da613 42-44
+docs/001_develop/03_client-capabilities/015_layout-management/index.mdx
+  s_331c1c912c3b1d::t_66fee59617c363 40-41
+  s_331c1c912c3b1d::t_21b4bb07e8fd7b 39
+  s_331c1c912c3b1d::t_5f5790b1903ec3 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "68bc25345b6889c15312a93338ab542129ae8204",
+  "prompts": {},
+  "sessions": {
+    "s_331c1c912c3b1d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "914daf7e-00ac-4368-8ae1-0880e72de63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Matt Walker <matt.walker@genesis.global>"
+    }
+  }
+}
