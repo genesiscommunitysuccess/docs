@@ -48,7 +48,8 @@ Use these in workshops or sign-off sessions. Capture answers in the requirement,
 ### Volume and shape
 
 - Roughly **how many rows** can exist in the system over time (today and in 12 months)?
-- How many **columns** must appear at once versus in export, drill-down, or detail panel?
+- How many **columns** must appear at once versus in export, drill-down, or detail panel? Hiding columns in the UI does not automatically reduce server payload unless engineering enables **visible-columns-only** fetching on Data Server grids (see [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#request-visible-columns-only)).
+
 - Are values **large** (long text, JSON blobs, many decimals)? Wide rows cost more than narrow ones at the same row count.
 
 ### What “on screen” means
@@ -56,6 +57,7 @@ Use these in workshops or sign-off sessions. Capture answers in the requirement,
 - Does the user need the **latest** activity (new items appear, older ones drop off), or a **stable list** they can scroll and select from?
 - What is the **maximum number of rows** that should be visible or held on screen at once? (There is no universal “1000 rows” rule—a 10-column grid and a 200-column grid are not comparable.)
 - Is the user **searching across** a large history, or **working with** a filtered subset? Searching across millions of rows still requires **filters and criteria**, not “load everything.”
+- For **dropdowns** (counterparty, account, instrument pickers), how many options exist in total? Users rarely need every row in memory at once—agree **type-to-search** or **scroll to load more** rather than “load the full list on open.”
 
 ### Freshness
 
@@ -115,5 +117,6 @@ Use these in workshops or sign-off sessions. Capture answers in the requirement,
 ## Related reading
 
 - [UI Performance](/develop/best-practices/performance/) — technical tuning for delivery teams
+- [Options datasource](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) — infinite scroll for large dropdowns
 - [When to use a Request Server vs a Data Server](https://app.notion.com/p/genesisglobal/When-to-use-a-Request-Server-vs-a-Data-Server-314e1d51b891802a84fae991e9294aeb) — default technology choice (Notion)
 - [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) — when investigating client slowness after go-live (technical)

@@ -332,7 +332,8 @@ const selectInputUiSchema: UiSchema = {
         allOptionsResourceName: 'ALL_COUNTERPARTIES',
         valueField: 'COUNTERPARTY_ID',
         labelField: 'NAME',
-        //  Use async: true to allow searching instead of loading all options at once
+        // Use async: true for server-side search on large lists. For select/combobox markup,
+        // prefer options-datasource infinite-scroll — see Options datasource docs.
         async: false,
         // Configure filtering behavior
         filterMode: 'contains', // or 'startsWith'
@@ -368,6 +369,7 @@ const selectInputUiSchemaWithRowDataMapper: UiSchema = {
 ```
 <SelectFormExample/>
 
+For very large **`allOptionsResourceName`** lists, keep each fetch bounded (`async: true`, `datasourceConfig.maxRows`, stable `orderBy`). When you control the HTML, use [`options-datasource` infinite scroll](/develop/client-capabilities/forms/form-inputs/client-options-datasource/#infinite-scroll-large-lists) on Select/Combobox instead of loading the full resource on open.
 
 ### Connected multi select
 

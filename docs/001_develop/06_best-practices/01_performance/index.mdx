@@ -27,6 +27,8 @@ For a **non-technical guide** to help clients and business analysts agree data v
 | Infrequent updates or seconds-scale refresh via HTTP polling | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) with [criteria-only mode](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode) where appropriate |
 | CRUD screens from metadata | [Entity Manager](/develop/client-capabilities/grids/entity-manager/) with tuned [`datasourceConfig`](/develop/client-capabilities/grids/entity-manager/#configuring-the-datasourceconfig) |
 | Read-only or custom grid UX | [Grid Pro](/develop/client-capabilities/grids/grid-pro/) directly |
+| Large dropdowns (select / combobox on reference data) | [`options-datasource`](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) with **`infinite-scroll`** and tuned **`page-size`** |
+| Very wide Data Server grids (many columns, users hide columns) | [`grid-pro-genesis-datasource`](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource) with **`request-visible-columns-only`** |
 
 Avoid loading an entire large query into the browser when server-side row model or pagination can keep each page bounded.
 
@@ -76,6 +78,11 @@ This guidance is about **preventing** unbounded client subscriptions on new proj
   - **[Data Server](/develop/server-capabilities/real-time-queries-data-server/) `query`** — sorting is limited to columns backed by a [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices). Grid Pro enables sort on columns where metadata exposes a valid index.
   - **[Request Server](/develop/server-capabilities/snapshot-queries-request-server/) `requestReply`** — with [`criteriaOnlyRequest`](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode), criteria and sorting are evaluated on the database where supported, so sortable columns are not restricted to Data Server-style indices (see `sortableFields` in resource metadata). Without criteria-only mode, the same index constraints as Data Server apply when streaming through the server-side datasource.
   - See [server-side datasource notes](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-server-side-datasource).
+- **`grid-pro-genesis-datasource`** — on [Data Server](/develop/server-capabilities/real-time-queries-data-server/) resources, enable **`request-visible-columns-only`** when the grid defines many columns but users typically show a subset. The datasource sends only the **`FIELDS`** for **currently visible** columns (plus the row id field for tracking), and reloads when column visibility changes. See [Grid Pro genesis datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource). Has no effect on Request Server resources; use static **`fields`** where you need a fixed subset.
+
+:::info Platform version
+**`request-visible-columns-only`** requires **`@genesislcap/grid-pro` 14.489** or later.
+:::
 
 ### Entity Manager
 
@@ -87,6 +94,23 @@ Set `datasource-type="server"` to use `grid-pro-server-side-datasource` for the 
 - `pollingInterval` / `pollTriggerEvents` only when HTTP polling is required—prefer WebSocket subscriptions when possible
 
 See [Entity Manager](/develop/client-capabilities/grids/entity-manager/) and the [declarative API](/develop/client-capabilities/grids/entity-manager/entity-manager-api/).
+
+### Large dropdowns (select and combobox)
+
+Grids are not the only control that can pull thousands of rows into the browser. A [Select](/develop/client-capabilities/forms/form-inputs/client-interaction-select/) or [Combobox](/develop/client-capabilities/forms/form-inputs/client-interaction-combobox/) with a slotted [`options-datasource`](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) loads from the same Data Server and Request Server resources as grids. Without paging, it typically fetches up to the default datasource window (on the order of hundreds of rows per request and up to the **`max-view`** cap on streams).
+
+For long reference lists (counterparties, accounts, instruments):
+
+1. Enable **`infinite-scroll`** on `options-datasource` so only **`page-size`** options (default **20**) load initially; further pages load when the user scrolls the listbox.
+2. Set a stable **`order-by`** when the resource is Request Server–backed, so offset paging stays consistent while the user scrolls.
+3. For comboboxes, expect **server-side** search: infinite scroll turns on async filtering so typed input sends **`CRITERIA_MATCH`** instead of filtering a single page in the browser.
+4. Keep **`max-view`** realistic on Data Server–backed dropdowns; paging uses **`MORE_ROWS`** on the live subscription and cannot exceed the tracked view.
+
+:::info Platform version
+**`infinite-scroll`** on `options-datasource` requires **`@genesislcap/foundation-ui` 14.489** or later.
+:::
+
+This is often a quick win on forms that feel slow even when the main grid is already tuned.
 
 ## 2. Tune Data Server subscriptions
 
@@ -113,6 +137,7 @@ Even with bounded data, rendering cost matters.
 
 - **Search and filter UX** — let users narrow large datasets on the server before scrolling; see [Foundation Filters](/develop/client-capabilities/forms/smart-forms/foundation-forms-filters), Entity Manager [filters](/develop/client-capabilities/grids/entity-manager/entity-manager-filters), and [criteria matching](/develop/client-capabilities/server-communications/criteria-matching/).
 - **DOM virtualisation** — only visible rows and columns are in the DOM. Enabled by default on Grid Pro; see [Performance](/develop/client-capabilities/grids/grid-pro/#performance).
+- **Request visible columns only** — on Data Server–backed [`grid-pro-genesis-datasource`](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource), set **`request-visible-columns-only`** so wire traffic matches displayed columns, not every field on the query.
 - **Lightweight renderers** — prefer built-in renderers; keep custom cell renderers small. See [performance considerations](/develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-column/#performance-considerations).
 - **Pagination** — load one page at a time when a paged UX is required; combine with virtualisation for very wide or tall pages. Prefer indexed filter fields over pagination alone for financial workloads with deep history.
 
@@ -168,3 +193,4 @@ On the server, use Data Server start-up logs and [LMDB allocation](/develop/serv
 4. [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/)
 5. [Entity Manager](/develop/client-capabilities/grids/entity-manager/) if you use CRUD micro front-ends
 6. [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for client-side retention and cleanup
+7. [Options datasource](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) for large select and combobox lists
