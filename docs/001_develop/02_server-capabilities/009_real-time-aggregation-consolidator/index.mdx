@@ -1132,14 +1132,14 @@ select {
 
 ### Consistency modes
 
-By default, Consolidators use incremental consistency. Under highly concurrent inputs, you can opt in to eventual consistency to prevent stored counts from diverging from the source.
+By default, Consolidators use incremental consistency. Under highly concurrent inputs, you can opt in to eventual consistency to prevent stored counts diverging from the source.
 
 To configure the consistency mode, set the `consistencyMode` property inside the `config` block.
 
 | Property value | Description |
 |---|---|
 | `ConsistencyMode.INCREMENTAL` | Default. Applies updates as ordered deltas. |
-| `ConsistencyMode.EVENTUAL` | Marks groups as dirty on update and rebuilds them in paced batches. |
+| `ConsistencyMode.EVENTUAL` | Marks consolidation groups as dirty on update and rebuilds them in paced batches. |
 
 When you enable `ConsistencyMode.EVENTUAL`, you must define an `indexScan` in the `groupBy` block. The Consolidator fails to start if `indexScan` is missing, because eventual consistency requires re-reading source records by group key.
 
@@ -1166,7 +1166,7 @@ consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
                 orderDate = groupId.tradeDate
             }
         }
-        indexScan { ConsolidatorTrade.byOrderId(groupId.orderId) }
+        indexScan { ConsolidatorTrade.byOrderIdTradeDate(groupId.orderId, groupId.tradeDate) }
     }
 }
 ```
