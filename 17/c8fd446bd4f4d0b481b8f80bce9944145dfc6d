@@ -1,0 +1,19 @@
+docs/001_develop/02_server-capabilities/011_integrations/01_data-pipelines/index.mdx
+  s_9fa7a55d6145a0::t_60109dc7fe826b 933-971
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "17c8fd446bd4f4d0b481b8f80bce9944145dfc6d",
+  "prompts": {},
+  "sessions": {
+    "s_9fa7a55d6145a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a8b5ed39-4d43-4287-86df-3e1f4c1bb060",
+        "model": "claude-fable-5"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
