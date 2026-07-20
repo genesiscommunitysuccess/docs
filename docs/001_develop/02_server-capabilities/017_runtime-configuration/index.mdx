@@ -22,3 +22,51 @@ This section gives an overview of server configuration items applications may ne
 - [Site specific](./site-specific/)
 - [Genesis router](./genesis-router/)
 
+
+## Consul CAS store
+
+The `ConsulCasStore` is a thin, generic wrapper around Consul's compare-and-set (CAS) key-value operations. It provides atomic write capabilities to prevent race conditions and ensure data consistency across multi-node clusters without requiring a central coordinator.
+
+Consul stamps every key with a monotonically increasing `ModifyIndex`. A CAS write only succeeds if the expected index matches the current index in Consul. If another process updates the key in the meantime, the write fails, returning `false` instead of throwing an exception. This allows you to safely manage distributed state, such as allocating unique node IDs.
+
+Unlike session-held locks, `ConsulCasStore` uses persistent keys. This ensures that if a node's health check briefly flaps, it does not lose its identity or claims.
+
+### Key operations
+
+The `ConsulCasStore` provides the following methods:
+
+- `read(key)`: Reads the key and returns a `CasEntry` containing the string value and its `ModifyIndex`, or `null` if the key does not exist.
+- `tryCreate(key, value)`: Atomically creates the key with the specified value only if it does not already exist. Returns `false` if the key is already present.
+- `tryUpdate(key, expectedModifyIndex, value)`: Atomically updates the key only if its current `ModifyIndex` matches `expectedModifyIndex`.
+- `delete(key)`: Removes the key. This is a non-CAS operation.
+- `mutateWithRetry(key, maxAttempts, transform)`: Performs a read-modify-write operation with bounded retries and jittered exponential backoff.
+
+### Exceptions
+
+- `ConsulUnavailableException`: Thrown when Consul cannot be reached or returns an error.
+- `CasRetriesExhaustedException`: Thrown when a `mutateWithRetry` operation fails to succeed after the maximum number of attempts due to concurrent modifications.
+
+###### Examples
+
+The following example demonstrates how to inject `ConsulCasStore` and use `mutateWithRetry` to safely update a shared counter:
+
+```kotlin
+import global.genesis.clustersupport.service.consul.ConsulCasStore
+import javax.inject.Inject
+
+class SharedCounter @Inject constructor(
+    private val casStore: ConsulCasStore
+) {
+    fun incrementCounter(key: String): Int {
+        val finalValue = casStore.mutateWithRetry(key) { currentEntry ->
+            if (currentEntry == null) {
+                "1"
+            } else {
+                val currentValue = currentEntry.value.toInt()
+                (currentValue + 1).toString()
+            }
+        }
+        return finalValue?.toInt() ?: 0
+    }
+}
+```
