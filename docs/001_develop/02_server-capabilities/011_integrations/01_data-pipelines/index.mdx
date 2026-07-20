@@ -930,6 +930,45 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
 }
 ```
 
+#### `eventSink`
+
+This sink uses the Genesis messaging API to send an event to an event handler for every element that flows through the pipeline. This is different from the `sendEventOnCompletion` handler (see [Completion handlers](#completion-handlers)), which fires once after the pipeline finishes. Use an `eventSink` when a pipeline's primary job is to forward each record as an event (for example, streaming to a FIX gateway).
+
+The `eventSink` separates three concerns:
+
+- **What** — the event payload, built per element via `buildEvent`.
+- **Where** — the destination. By default, the platform resolves the target service from the event name. You can explicitly pin a service using `to = service("serviceName")`. Pin the service explicitly when one event name is served by several processes (otherwise, name resolution is ambiguous).
+- **How** — the delivery policy, configured in the `delivery` block.
+
+The delivery policy controls how the platform handles timeouts, retries and negative acknowledgements (NACKs):
+
+| Option | Description | Default |
+|---|---|---|
+| `timeout` | The timeout in seconds for each event delivery request. | Platform default |
+| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(seconds)` to give up and throw an exception after the specified deadline. | `holdUntilDelivered()` |
+| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception and propagate the failure to `onOperationError`. Use `logOnNack()` to log the failure and continue. | `logOnNack()` |
+
+To prevent data loss, any failure that occurs before the event is successfully sent (such as an unresolvable service or no reachable instances) is automatically held and retried according to your configured `retry` policy. This prevents the pipeline checkpoint from advancing and dropping the event.
+
+Other exceptions that occur during or after transmission are propagated to `onOperationError` as normal.
+
+###### Streaming each element to a FIX gateway
+
+The following example configures an `eventSink` that targets an explicit FIX gateway service, holds events until delivered, and throws an exception on any NACK:
+
+```kotlin
+.sink(eventSink<FIXOutData, RawFixEvent> {
+    event = "EVENT_SEND_RAW_FIX_MESSAGE"
+    to    = service("REVERSE_AUDIT_FIX_GATEWAY")
+    delivery {
+        timeout = 10
+        retry   = holdUntilDelivered()
+        onNack  = throwOnNack()
+    }
+    buildEvent { RawFixEvent(element.message.toString()) }
+})
+```
+
 ### Connectors
 
 A connector is a pipeline element that acts as both a source and a sink, consuming elements from one pipeline and emitting to another. This is particularly useful when you want to blend multiple inbound streaming feeds together.
@@ -2088,46 +2127,3 @@ Example:
         ```
     </TabItem>
 </Tabs>
-
-## Event sinks
-
-An `eventSink` delivers each pipeline element to an event handler as it flows through the pipeline (per-element sink position). This is different from `sendEventOnCompletion`, which fires once after the pipeline finishes. Use an `eventSink` when a pipeline's primary job is to forward each record as an event (for example, streaming to a FIX gateway).
-
-The `eventSink` separates three concerns:
-
-- **WHAT** — the event payload, built per element via `buildEvent`.
-- **WHERE** — the destination. By default, the platform resolves the target service from the event name. You can explicitly pin a service using `to = service("serviceName")`. Pin the service explicitly when one event name is served by several processes (otherwise, name resolution is ambiguous).
-- **HOW** — the delivery policy, configured in the `delivery` block.
-
-### Delivery policy
-
-The delivery policy controls how the platform handles timeouts, retries, and negative acknowledgements (NACKs):
-
-| Option | Description | Default |
-|---|---|---|
-| `timeout` | The timeout in seconds for each event delivery request. | Platform default |
-| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(seconds)` to give up and throw an exception after the specified deadline. | `holdUntilDelivered()` |
-| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception and propagate the failure to `onOperationError`. Use `logOnNack()` to log the failure and continue. | `logOnNack()` |
-
-### Resilience and error handling
-
-To prevent data loss, any failure that occurs before the event is successfully sent (such as an unresolvable service or no reachable instances) is automatically held and retried according to your configured `retry` policy. This prevents the pipeline checkpoint from advancing and dropping the event. 
-
-Other exceptions that occur during or after transmission are propagated to `onOperationError` as normal.
-
-###### Examples
-
-The following example shows how to configure an `eventSink` that targets an explicit FIX gateway service, holds events until delivered, and throws an exception on any NACK:
-
-```kotlin
-.sink(eventSink<FIXOutData, RawFixEvent> {
-    event = "EVENT_SEND_RAW_FIX_MESSAGE"
-    to    = service("REVERSE_AUDIT_FIX_GATEWAY")
-    delivery {
-        timeout = 10
-        retry   = holdUntilDelivered()
-        onNack  = throwOnNack()
-    }
-    buildEvent { RawFixEvent(element.message.toString()) }
-})
-```
