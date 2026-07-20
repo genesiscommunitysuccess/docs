@@ -1041,6 +1041,39 @@ pipeline("TEST_CSV_ENCODER") {
 }
 ```
 
+
+### `eventSink`
+
+The `eventSink` is a specialized sink that routes the output of your pipeline to a Genesis Event Handler rather than writing directly to the database.
+
+#### How it differs from standard database sinks
+
+While standard database sinks (such as `dbSink`) write records directly to database tables, `eventSink` sends the data as an event payload to a specified Event Handler. This provides several key advantages:
+
+- **Business logic and validation**: All validation rules, permission checks, and custom business logic defined within your Event Handler are executed. Direct database sinks bypass these checks.
+- **Auditing**: Events processed via `eventSink` are recorded in the system audit logs in the same way as events triggered by UI users or external API clients.
+- **Decoupling**: Your pipeline does not need to know the underlying database structure; it only needs to conform to the input contract (the request block) of the target Event Handler.
+
+###### Examples
+
+The following example shows a pipeline that reads from a source, maps the data to a specific type, and then routes it to the `EVENT_TRADE_INSERT` Event Handler using `eventSink`.
+
+```kotlin
+pipelines {
+    pipeline(name = "Trade Ingress Pipeline") {
+        source(csvSource)
+            .map { row ->
+                TradeDetails(
+                    tradeId = row["TRADE_ID"],
+                    price = row["PRICE"].toDouble(),
+                    quantity = row["QUANTITY"].toInt()
+                )
+            }
+            .eventSink(event = "EVENT_TRADE_INSERT")
+    }
+}
+```
+
 ## Non-core elements
 The following elements are made available when adding additional libraries available in the integrations marketplace.
 
