@@ -470,6 +470,26 @@ security {
 }
 ```
 
+##### Enabling notify-based MFA per user
+
+Notify-based MFA is applied per user. A user is only prompted for it once their `NOTIFY_BASED_MFA_STATUS` record has `MFA_ENABLED` set to `true`.
+
+Use these events to toggle it, in the same way `EVENT_ENABLE_MFA_FOR_USER` / `EVENT_DISABLE_MFA_FOR_USER` toggle `qrcode` MFA:
+
+* `EVENT_ENABLE_NOTIFY_BASED_MFA_FOR_USER` — enables notify-based MFA for the user (requires the `MFA_ENABLE` right).
+* `EVENT_DISABLE_NOTIFY_BASED_MFA_FOR_USER` — disables it (requires the `MFA_DISABLE` right).
+
+Both take the target user in `DETAILS.USER_NAME`:
+
+```json
+{
+  "MESSAGE_TYPE": "EVENT_ENABLE_NOTIFY_BASED_MFA_FOR_USER",
+  "DETAILS": {
+    "USER_NAME": "exampleUser"
+  }
+}
+```
+
 ### `loginAck`
 
 The `loginAck` block enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message sent upon successful authentication. When you configure the `loginAck` function, you have to supply a table or view as a parameter.
