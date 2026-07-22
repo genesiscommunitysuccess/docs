@@ -32,13 +32,14 @@ Most Genesis screens use one of these patterns (or a deliberate mix). Clarify wh
 
 | Pattern | What the user experiences | When it fits |
 | -------- | ------------------------- | ------------ |
-| **Refresh on a schedule** | Data updates every few seconds (or when the user clicks search). Slight delay is acceptable. | Reports, admin lists, reference data, dashboards where “about now” is enough |
 | **Live stream** | Rows update as soon as backend data changes. Users notice if data feels stale. | Trade blotters, live positions, operational dashboards |
+| **Snapshot refresh** | Each load is a **one-time snapshot** of the database at that moment (engineering typically uses **Request Reply**, not a live Data Server feed). **Preferred:** users click **Reload** or **Search** when they want up-to-date rows. **Optional:** the screen refetches on a timer (polling). Staleness between refreshes is acceptable. | Reports, admin lists, reference data, dashboards where “about now” is enough |
 
-**Rule of thumb:** If stakeholders accept “refreshed every N seconds,” describe **refresh on a schedule**. If they need “as soon as it happens,” describe **live stream**—and also agree **how many rows** stay visible while the stream runs.
+**Rule of thumb:** If users can rely on **Reload**, **Search**, or an agreed **refresh interval**, describe **snapshot refresh** and say which triggers apply (avoid automatic polling unless stakeholders need it). If they need **as soon as it happens**, describe **live stream**—and also agree **how many rows** stay visible while the stream runs.
 
-**Live stream cost:** Live stream keeps an **active subscription** and pushes **ongoing** updates to the browser. That usually means **more sustained** load on the **server** (tracked views, deltas to every subscriber) as well as more load on the **client** (continuous message handling, grid and UI updates, memory for the subscribed window)—especially for **large** grids, **wide** rows, or **many** live screens open at once. 
- A **small bounded** live window (for example “latest N rows” on a blotter) can still be the right choice; reserve live stream for where stale data is genuinely unacceptable.
+**Live stream cost:** Live stream keeps an **active subscription** and pushes **ongoing** updates to the browser. That usually means **more sustained** load on the **server** (tracked views, deltas to every subscriber) as well as more load on the **client** (continuous message handling, grid and UI updates, memory for the subscribed window)—especially for **large** grids, **wide** rows, or **many** live screens open at once.
+
+A **small bounded** live window (for example “latest N rows” on a blotter) can still be the right choice; reserve live stream for where stale data is genuinely unacceptable.
 
 **Concurrent edits:** When two people can change the same record, stakeholders often ask how the system avoids one person silently overwriting the other’s work. Genesis supports **optimistic concurrency**: if someone else saved first, the second user is warned and can refresh before saving again. Call this out in requirements for shared edit screens so delivery teams enable it on the server and wire edit flows correctly. Technical setup is described under [Optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/#optimistic-concurrency) and [Entity Manager submit errors](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
 
@@ -83,7 +84,7 @@ Use these in workshops or sign-off sessions. Capture answers in the requirement,
 | --------- | -------------------------------- |
 | Large history, small working set | “Users search/filter by [fields] on the server; the grid shows at most [N] rows at a time.” |
 | Live activity feed | “Show the latest [N] rows; new events appear within [latency]; older rows fall out of the visible window.” |
-| Periodic dashboard | “Figures refresh every [N] seconds; instant push is not required.” |
+| Periodic dashboard | “Figures update when the user clicks **Reload** or **Search**; optional automatic refresh every [N] seconds if required.” |
 | Deep dive | “Summary grid with key columns; full detail on row click or side panel.” |
 | Bulk operations | “User selects from a **stable** result set; list does not reshuffle during selection unless the user refreshes.” |
 
@@ -95,11 +96,11 @@ Use these in workshops or sign-off sessions. Capture answers in the requirement,
 | “Every column from the trade ticket on the main grid” | Row size grows with column count | Default columns + optional column sets or detail view |
 | “Filter on this calculated field” | Search may not scale unless the value is stored | Persist or expose on the record users filter on |
 | “Same grid for monitoring and for booking” | Monitoring wants a moving feed; booking wants stable selection | Two modes or two screens with clear rules |
-| “Instant updates everywhere” | Live subscriptions cost more than scheduled refresh | Live only where stakeholders feel stale data; refresh elsewhere |
+| “Instant updates everywhere” | Live subscriptions cost more than snapshot refresh | Live only where stakeholders feel stale data; snapshot refresh (Reload/Search) elsewhere |
 
 ## Checklist before sign-off
 
-- [ ] Each grid requirement states **live stream** or **refresh on a schedule** (or both, on different screens).
+- [ ] Each grid requirement states **live stream** or **snapshot refresh** (or both, on different screens), including **how** snapshot screens refresh (Reload, Search, optional timer).
 - [ ] **Filter fields** and **sort** expectations are listed and marked as must-have for go-live.
 - [ ] **Maximum visible rows** (or “latest N”) is agreed, not left open-ended.
 - [ ] **Column scope** for the main grid is bounded; extra detail has a defined home.
