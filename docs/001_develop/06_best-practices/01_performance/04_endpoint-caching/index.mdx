@@ -3,17 +3,16 @@ title: 'Caching and compressing HTTP responses'
 sidebar_label: 'HTTP response caching'
 id: best-practices-performance-endpoint-caching
 sidebar_position: 4
-keywords: [performance, caching, etag, conditional requests, compression, gzip, server-timing, custom endpoints, request server]
+keywords: [performance, caching, etag, conditional requests, compression, gzip, server-timing, custom endpoints]
 tags:
   - performance
   - caching
   - etag
   - compression
   - custom endpoints
-  - request server
 ---
 
-When a screen loads reference or snapshot data over HTTP — from a [custom endpoint](/develop/server-capabilities/integrations/custom-endpoints/) or the [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) — two levers cut cost independently:
+When a [custom endpoint](/develop/server-capabilities/integrations/custom-endpoints/) serves data over HTTP, two levers cut cost independently:
 
 - **Don't re-send data that hasn't changed.** Use HTTP conditional requests so an unchanged resource returns `304 Not Modified` with no body.
 - **Shrink what you do send.** Compress the response.
