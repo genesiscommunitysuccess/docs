@@ -1,0 +1,133 @@
+---
+title: 'Caching and compressing HTTP responses'
+sidebar_label: 'HTTP response caching'
+id: best-practices-performance-endpoint-caching
+sidebar_position: 4
+keywords: [performance, caching, etag, conditional requests, compression, gzip, server-timing, custom endpoints, request server]
+tags:
+  - performance
+  - caching
+  - etag
+  - compression
+  - custom endpoints
+  - request server
+---
+
+When a screen loads reference or snapshot data over HTTP — from a [custom endpoint](/develop/server-capabilities/integrations/custom-endpoints/) or the [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) — two levers cut cost independently:
+
+- **Don't re-send data that hasn't changed.** Use HTTP conditional requests so an unchanged resource returns `304 Not Modified` with no body.
+- **Shrink what you do send.** Compress the response.
+
+Both are handled at the HTTP layer, so any browser client (including the [`Http` client in `foundation-comms`](/develop/client-capabilities/server-communications/comms-connect/)) benefits without bespoke client code. Use [`Server-Timing`](#measure-with-server-timing) to confirm where the time actually goes before and after tuning.
+
+:::tip
+This is complementary to [grid and Data Server tuning](/develop/best-practices/performance/): that bounds how many rows the browser holds; this bounds how often, and how many bytes, you send them.
+:::
+
+## Don't re-send unchanged data: conditional requests
+
+Give the response a strong [`ETag`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) and a `Cache-Control` that forces revalidation. The browser then replays the tag as `If-None-Match` on the next request; if nothing changed, answer `304 Not Modified` with **no body**, and the browser serves its cached copy.
+
+```kotlin
+// *-web-handler.kts — a cache-aware custom endpoint
+endpoint<Unit, HttpResponse>(GET, "counterparty") {
+    handleRequest {
+        val ifNoneMatch = request.headers.firstValueIgnoreCase("If-None-Match")
+        val etag = "\"counterparty-${tableVersion()}\""   // see "Make change detection cheap"
+
+        if (ifNoneMatch == etag) {
+            // Unchanged: return 304 WITHOUT reading or serialising any rows.
+            buildResponse {
+                status(HttpStatusCode.NotModified)
+                header("ETag", etag)
+                header("Cache-Control", "private, no-cache")
+            }
+        } else {
+            buildResponse {
+                status(HttpStatusCode.Ok)
+                header("ETag", etag)
+                header("Cache-Control", "private, no-cache")
+                body(loadRows())
+            }
+        }
+    }
+}
+```
+
+`Cache-Control: private, no-cache` means *store the response but always revalidate* — so the client stays correct while still skipping the payload whenever the data is unchanged. Use `private` for per-user/authenticated responses so shared caches don't store them.
+
+## Make change detection cheap
+
+The `304` path only pays off if computing the ETag is **much cheaper than sending the data**. The common mistake is to read the whole table to build a fingerprint (row count + newest timestamp, or a content hash) on *every* request — that scans the table even when you then return `304`, so a large dataset gets no benefit.
+
+Derive the ETag from a value that changes on any write but costs **O(1)** to read:
+
+- **Audit trail (recommended).** An [audited table](/how-to/audit/) appends a monotonic record on every insert, modify and delete. The newest audit record id is a ready-made table version — a single indexed read, no table scan:
+
+  ```kotlin
+  val version = db.getBulkFromEnd(CounterpartyAudit.ById).firstOrNull()?.counterpartyAuditId ?: "empty"
+  ```
+
+- **A maintained version counter** — a metadata record bumped by a consolidator or event handler, or an in-memory counter kept current by a table listener. Reading it is a single lookup (or a field read).
+
+Only read and serialise the rows on a real change (the `200` branch). On an unchanged table the request becomes one indexed read plus an empty `304`, regardless of table size.
+
+:::caution
+Avoid hashing the full result set to build the ETag: it re-reads every row on every request — the opposite of the goal — and forces a full read even for a `304`.
+:::
+
+## Let the browser's HTTP cache do the work
+
+You rarely need an application-level cache in the client. With an `ETag` and a storable `Cache-Control`, the browser's HTTP cache stores the response, revalidates with `If-None-Match`, and transparently serves the cached body on a `304` — bounded, persistent, and RFC-compliant. The [`Http` client](/develop/client-capabilities/server-communications/comms-connect/) issues requests with the default `fetch` cache mode, so this works out of the box.
+
+- Don't set `cache: 'no-store'` on the client — that disables the HTTP cache entirely.
+- Treat `304` as success, not an error, if you inspect the raw response.
+- A client-side `Map`/dictionary cache keyed by URL duplicates the browser cache, is unbounded unless you cap it, and is lost on reload — prefer the HTTP cache.
+
+## Compress the response
+
+Conditional requests remove the body when data is unchanged; compression shrinks it when it *does* change. Enable HTTP compression on the router so responses are gzip/deflate-encoded for clients that send `Accept-Encoding`:
+
+```kotlin
+// genesis-router.kts
+router {
+    httpCompression = true
+}
+```
+
+JSON compresses well (often 3–10×), so a large snapshot response shrinks substantially on the wire. In deployments that terminate at a gateway (for example nginx), compression is frequently applied there instead — confirm it is enabled at exactly one layer and check for `Content-Encoding: gzip` on the response.
+
+## Read conditional (and other) request headers case-insensitively
+
+HTTP header **names** are case-insensitive, and proxies and HTTP/2 routinely normalise them to lowercase (`if-none-match`). Match them case-insensitively on the server; a case-sensitive lookup for `"If-None-Match"` silently misses the lowercase form, so every request falls through to a full `200` and the cache never engages.
+
+```kotlin
+fun HttpRequest<*>.firstValueIgnoreCase(name: String): String? =
+    headers.entries.firstOrNull { it.key.equals(name, ignoreCase = true) }?.value?.firstOrNull()
+```
+
+## Measure with Server-Timing
+
+Add a [`Server-Timing`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) response header so the server-side breakdown shows up in the browser (DevTools › Network › the request › Timing › Server Timing) and in `PerformanceResourceTiming.serverTiming` — without a profiler or extra tooling.
+
+```kotlin
+header(
+    "Server-Timing",
+    "version;dur=$versionMs;desc=\"ETag lookup\", " +
+        "read;dur=$readMs;desc=\"Load rows\", " +
+        "total;dur=$totalMs",
+)
+```
+
+Measure first: it quickly shows whether time is going to change detection, the query, or serialisation, so you tune the part that matters.
+
+## Summary
+
+| Goal | Lever |
+| ---- | ----- |
+| Skip re-sending unchanged data | `ETag` + `Cache-Control: private, no-cache`, answer `304` on match |
+| Keep change detection cheap at scale | O(1) table version (audit trail / maintained counter), **not** a full-table fingerprint |
+| Avoid bespoke client caching | Rely on the browser HTTP cache via the `Http` client; don't use `no-store` |
+| Reduce payload size | `httpCompression = true` (or gateway gzip) |
+| Handle proxy/HTTP2 headers | Match request header names case-insensitively |
+| Know where time goes | Emit a `Server-Timing` header |
