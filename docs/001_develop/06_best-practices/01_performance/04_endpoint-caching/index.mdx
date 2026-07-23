@@ -76,14 +76,6 @@ Only read and serialise the rows on a real change (the `200` branch). On an unch
 Avoid hashing the full result set to build the ETag: it re-reads every row on every request — the opposite of the goal — and forces a full read even for a `304`.
 :::
 
-## Let the browser's HTTP cache do the work
-
-You rarely need an application-level cache in the client. With an `ETag` and a storable `Cache-Control`, the browser's HTTP cache stores the response, revalidates with `If-None-Match`, and transparently serves the cached body on a `304` — bounded, persistent, and RFC-compliant. The [`Http` client](/develop/client-capabilities/server-communications/comms-connect/) issues requests with the default `fetch` cache mode, so this works out of the box.
-
-- Don't set `cache: 'no-store'` on the client — that disables the HTTP cache entirely.
-- Treat `304` as success, not an error, if you inspect the raw response.
-- A client-side `Map`/dictionary cache keyed by URL duplicates the browser cache, is unbounded unless you cap it, and is lost on reload — prefer the HTTP cache.
-
 ## Compress the response
 
 Conditional requests remove the body when data is unchanged; compression shrinks it when it *does* change. Enable HTTP compression on the router so responses are gzip/deflate-encoded for clients that send `Accept-Encoding`:
@@ -127,7 +119,6 @@ Measure first: it quickly shows whether time is going to change detection, the q
 | ---- | ----- |
 | Skip re-sending unchanged data | `ETag` + `Cache-Control: private, no-cache`, answer `304` on match |
 | Keep change detection cheap at scale | O(1) table version (audit trail / maintained counter), **not** a full-table fingerprint |
-| Avoid bespoke client caching | Rely on the browser HTTP cache via the `Http` client; don't use `no-store` |
 | Reduce payload size | `httpCompression = true` (or gateway gzip) |
 | Handle proxy/HTTP2 headers | Match request header names case-insensitively |
 | Know where time goes | Emit a `Server-Timing` header |
