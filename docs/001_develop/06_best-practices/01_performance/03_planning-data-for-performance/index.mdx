@@ -1,0 +1,124 @@
+---
+title: 'Planning data and screens for performance'
+sidebar_label: 'For business analysts'
+id: best-practices-performance-planning
+sidebar_position: 0
+keywords: [performance, business analysis, requirements, grids, data volume, real-time]
+tags:
+  - performance
+  - requirements
+  - business analysis
+  - grids
+---
+
+Use this page when you are shaping **client requirements**, workshops, or user stories for screens that show **large amounts of data** or **live updates**. The goal is to agree upfront what users need to see and how fresh the data must be—so delivery teams can design a fast, supportable solution.
+
+Delivery and engineering detail lives on [UI Performance](/develop/best-practices/performance/). Share that page with developers when requirements are stable.
+
+## What you are trying to prevent
+
+Users often ask for “everything, all the time, updating instantly.” In practice, the application can only hold and refresh a **bounded amount** of information per screen. Performance problems usually come from requirements that imply:
+
+- Showing **very wide** grids (many columns) with **many rows** at once
+- **Live updates** across the full history of a dataset (tens of thousands of rows always shifting)
+- **Search and filter** on fields that were never designed to be searchable at scale
+- Treating a **monitoring** screen (watch the latest activity) the same as a **working** screen (select rows and act on them)
+
+Good requirements separate **how much history exists in the system** from **how much a user needs on screen at one moment**.
+
+## Two ways users interact with data
+
+Most Genesis screens use one of these patterns (or a deliberate mix). Clarify which pattern each requirement needs.
+
+| Pattern | What the user experiences | When it fits |
+| -------- | ------------------------- | ------------ |
+| **Live stream** | Rows update as soon as backend data changes. Users notice if data feels stale. | Trade blotters, live positions, operational dashboards |
+| **Snapshot refresh** | Each load is a **one-time snapshot** of the database at that moment (engineering typically uses **Request Reply**, not a live Data Server feed). **Preferred:** users click **Reload** or **Search** when they want up-to-date rows. **Optional:** the screen refetches on a timer (polling). Staleness between refreshes is acceptable. | Reports, admin lists, reference data, dashboards where “about now” is enough |
+
+**Rule of thumb:** If users can rely on **Reload**, **Search**, or an agreed **refresh interval**, describe **snapshot refresh** and say which triggers apply (avoid automatic polling unless stakeholders need it). If they need **as soon as it happens**, describe **live stream**—and also agree **how many rows** stay visible while the stream runs.
+
+**Live stream cost:** Live stream keeps an **active subscription** and pushes **ongoing** updates to the browser. That usually means **more sustained** load on the **server** (tracked views, deltas to every subscriber) as well as more load on the **client** (continuous message handling, grid and UI updates, memory for the subscribed window)—especially for **large** grids, **wide** rows, or **many** live screens open at once.
+
+A **small bounded** live window (for example “latest N rows” on a blotter) can still be the right choice; reserve live stream for where stale data is genuinely unacceptable.
+
+**Concurrent edits:** When two people can change the same record, stakeholders often ask how the system avoids one person silently overwriting the other’s work. Genesis supports **optimistic concurrency**: if someone else saved first, the second user is warned and can refresh before saving again. Call this out in requirements for shared edit screens so delivery teams enable it on the server and wire edit flows correctly. Technical setup is described under [Optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/#optimistic-concurrency) and [Entity Manager submit errors](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
+
+## Questions to ask clients in discovery
+
+Use these in workshops or sign-off sessions. Capture answers in the requirement, not only in technical design notes.
+
+### Volume and shape
+
+- Roughly **how many rows** can exist in the system over time (today and in 12 months)?
+- How many **columns** must appear at once versus in export, drill-down, or detail panel? Hiding columns in the UI does not automatically reduce server payload unless engineering enables **visible-columns-only** fetching on Data Server grids (see [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#request-visible-columns-only)).
+
+- Are values **large** (long text, JSON blobs, many decimals)? Wide rows cost more than narrow ones at the same row count.
+
+### What “on screen” means
+
+- Does the user need the **latest** activity (new items appear, older ones drop off), or a **stable list** they can scroll and select from?
+- What is the **maximum number of rows** that should be visible or held on screen at once? (There is no universal “1000 rows” rule—a 10-column grid and a 200-column grid are not comparable.)
+- Is the user **searching across** a large history, or **working with** a filtered subset? Searching across millions of rows still requires **filters and criteria**, not “load everything.”
+- For **dropdowns** (counterparty, account, instrument pickers), how many options exist in total? Users rarely need every row in memory at once—agree **type-to-search** or **scroll to load more** rather than “load the full list on open.”
+
+### Freshness
+
+- How long must data stay **readable in the GUI**? Reference data usually stays available for lookup (often via refresh, not live stream). Lifecycle data such as trades may remain in the database for years but only needs a **live** grid while it is active; after settlement or a defined cut-off, users typically access history through **reports, exports, or on-demand search** rather than an always-on live subscription.
+- If data is **live**, what happens when a new row arrives while the user is reading or selecting rows—should the list move under them?
+- If **selection and bulk actions** matter, agree whether the grid should **stop auto-shifting** or use a fixed window for that workflow.
+
+### Filters and sort
+
+- Which **filter fields** are mandatory on day one (counterparty, date range, status, desk, etc.)?
+- Which **sort orders** must work on large data (newest first, by amount, by name)?
+- Are any displayed values **calculated** (derived) rather than stored? Filtering and sorting on calculated values is a common source of slowness unless those values are stored or available on the underlying record.
+
+### Scope of the screen
+
+- Does this screen need **every** field from the domain model, or a **role-based subset**?
+- Will users open **many** such screens at once (multiple tabs, workspaces)? Each live screen adds ongoing update load.
+
+## Requirement patterns that scale well
+
+| User need | Write the requirement like this |
+| --------- | -------------------------------- |
+| Large history, small working set | “Users search/filter by [fields] on the server; the grid shows at most [N] rows at a time.” |
+| Live activity feed | “Show the latest [N] rows; new events appear within [latency]; older rows fall out of the visible window.” |
+| Periodic dashboard | “Figures update when the user clicks **Reload** or **Search**; optional automatic refresh every [N] seconds if required.” |
+| Deep dive | “Summary grid with key columns; full detail on row click or side panel.” |
+| Bulk operations | “User selects from a **stable** result set; list does not reshuffle during selection unless the user refreshes.” |
+
+## Anti-patterns to challenge early
+
+| Client ask | Why it hurts | Better direction |
+| ---------- | ------------ | ---------------- |
+| “Show all trades for all time, live” | Unbounded live data overwhelms browser and update channels | Latest window + filters; export or report for full history |
+| “Every column from the trade ticket on the main grid” | Row size grows with column count | Default columns + optional column sets or detail view |
+| “Filter on this calculated field” | Search may not scale unless the value is stored | Persist or expose on the record users filter on |
+| “Same grid for monitoring and for booking” | Monitoring wants a moving feed; booking wants stable selection | Two modes or two screens with clear rules |
+| “Instant updates everywhere” | Live subscriptions cost more than snapshot refresh | Live only where stakeholders feel stale data; snapshot refresh (Reload/Search) elsewhere |
+
+## Checklist before sign-off
+
+- [ ] Each grid requirement states **live stream** or **snapshot refresh** (or both, on different screens), including **how** snapshot screens refresh (Reload, Search, optional timer).
+- [ ] **Filter fields** and **sort** expectations are listed and marked as must-have for go-live.
+- [ ] **Maximum visible rows** (or “latest N”) is agreed, not left open-ended.
+- [ ] **Column scope** for the main grid is bounded; extra detail has a defined home.
+- [ ] Calculated or derived values used for **filter/sort** are flagged for solution design.
+- [ ] Non-functional note: performance targets assume users **apply filters** for large datasets.
+- [ ] Shared **edit** screens note how concurrent changes are handled (see **Concurrent edits** under [Two ways users interact with data](/develop/best-practices/performance/planning-data-for-performance/#two-ways-users-interact-with-data)).
+
+## Who does what next
+
+| Role | Next step |
+| ---- | --------- |
+| **Business analyst / product** | Keep this checklist in epics and client-facing specs. |
+| **Solution / engineering** | Map patterns to Data Server vs Request Reply, grid behaviour, and server indexing—see [UI Performance](/develop/best-practices/performance/). |
+| **Client stakeholders** | Validate trade-offs (freshness vs stability, breadth vs speed) in writing before build. |
+
+## Related reading
+
+- [UI Performance](/develop/best-practices/performance/) — technical tuning for delivery teams
+- [Options datasource](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) — infinite scroll for large dropdowns
+- [When to use a Request Server vs a Data Server](https://app.notion.com/p/genesisglobal/When-to-use-a-Request-Server-vs-a-Data-Server-314e1d51b891802a84fae991e9294aeb) — default technology choice (Notion)
+- [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) — when investigating client slowness after go-live (technical)

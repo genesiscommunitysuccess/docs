@@ -662,6 +662,66 @@ There are additional attributes that can affect the behaviour of a datasource co
   </tbody>
 </table>
 
+## `<grid-pro-genesis-datasource>`
+
+`<grid-pro-genesis-datasource>` is the unified datasource that connects Grid Pro to Genesis resources (client- or server-side row model depending on configuration). In addition to the shared attributes above, it supports the following performance-related option.
+
+### Request visible columns only
+
+:::info Platform version
+**`request-visible-columns-only`** requires **`@genesislcap/grid-pro` 14.489** or later.
+:::
+
+Opt in with **`request-visible-columns-only`** (default **`false`**) when a grid has a **column configuration** and is backed by a **Data Server** query with many fields. Instead of requesting every field on the resource, the datasource sets the Data Server **`FIELDS`** parameter to match **currently visible** grid columns (columns not marked `hide` in column defs). The row id field (`ROW_REF`) is always included so row tracking continues to work.
+
+When the user shows or hides columns (including via the AG Grid columns tool panel), the grid notifies the datasource; the visible field set is recalculated and the resource is **reloaded** with the updated **`FIELDS`**. Bursts of visibility changes are debounced so one reload covers multiple toggles.
+
+| | |
+| --- | --- |
+| **Applies to** | Data Server resources only |
+| **Request Server** | No-op — use static **`fields`** / **`request-fields`** if you need a subset |
+| **Requires** | Column definitions on the grid (so visible columns can be resolved) |
+| **Trade-off** | Each visibility change triggers a full data reload for that subscription |
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis' }, { label: 'React', value: 'react' }]}>
+
+<TabItem value="genesis">
+
+```html
+<rapid-grid-pro>
+  <grid-pro-genesis-datasource
+    resource-name="ALL_TRADES"
+    request-visible-columns-only
+  ></grid-pro-genesis-datasource>
+</rapid-grid-pro>
+```
+
+</TabItem>
+
+<TabItem value="react">
+
+```tsx
+import { GridProGenesisDatasource } from '@genesislcap/grid-pro/react';
+import { GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function TradesGrid() {
+  return (
+    <GridPro>
+      <GridProGenesisDatasource
+        resourceName="ALL_TRADES"
+        requestVisibleColumnsOnly
+      />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+For a fixed field list that does not follow column visibility, set **`fields`** explicitly instead. See [UI Performance](/develop/best-practices/performance/) for when to narrow columns versus rows.
+
 ## Events emitted by `<grid-pro-genesis-datasource>`
 
 The `<grid-pro-genesis-datasource>` component emits several custom events to notify consumers about important changes or errors. You can listen for these events on the component to react to data loading, errors, and other state changes.

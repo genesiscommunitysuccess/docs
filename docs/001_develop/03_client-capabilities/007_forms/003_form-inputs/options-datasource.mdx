@@ -1,0 +1,138 @@
+---
+title: 'Options datasource'
+sidebar_label: 'Options datasource'
+id: client-options-datasource
+keywords: [options-datasource, select, combobox, performance, infinite scroll, datasource]
+tags:
+  - form inputs
+  - select
+  - combobox
+  - performance
+  - datasource
+sidebar_position: 12
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Options datasource
+
+The `options-datasource` element loads dropdown options for [Select](/develop/client-capabilities/forms/form-inputs/client-interaction-select/) and [Combobox](/develop/client-capabilities/forms/form-inputs/client-interaction-combobox/) from a [Data Server](/develop/server-capabilities/real-time-queries-data-server/) query or [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) resource.
+
+By default, a connected dropdown loads options up to the usual datasource limits (for example **250** rows per fetch and a **1000**-row view cap on Data Server). That is fine for short lists, but reference data with thousands of counterparties, instruments, or accounts can slow the screen and waste memory.
+
+## Infinite scroll (large lists)
+
+:::info Platform version
+**Infinite scroll** on `options-datasource` requires **`@genesislcap/foundation-ui` 14.489** or later.
+:::
+
+Set **`infinite-scroll`** to opt in to paged loading (default **`false`**). When enabled, only the first page is fetched when the dropdown opens; the next page loads when the user scrolls near the bottom of the listbox (default **20** options per page via **`page-size`**).
+
+The fetch mode is chosen automatically from the resource type:
+
+| Resource type | Paging mechanism |
+| ------------- | ---------------- |
+| **Request Server** | Snapshot requests with **`OFFSET`** / **`NEXT_OFFSET`** — each page fetches only new rows |
+| **Data Server** | Live stream with **`MORE_ROWS`** on the subscription's `SOURCE_REF` (total rows still capped by **`max-view`**) |
+
+When **`infinite-scroll`** is used inside a **combobox**, the combobox switches to **server-side filtering** (`async` behaviour): typed input sends **`CRITERIA_MATCH`** to the server, because client-side filtering cannot work when only one page is loaded. Further scroll pages honour the active criteria; clearing the input restores the unfiltered first page.
+
+:::tip Performance guidance
+For large dropdowns, prefer **`infinite-scroll`** over loading the full resource. See [UI Performance — large dropdowns](/develop/best-practices/performance/#large-dropdowns-select-and-combobox).
+:::
+
+### Example
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis' }, { label: 'React', value: 'react' }]}>
+
+<TabItem value="genesis">
+
+```html
+<rapid-select>
+  <options-datasource
+    infinite-scroll
+    page-size="20"
+    resourceName="ALL_COUNTERPARTYS"
+    value-field="COUNTERPARTY_ID"
+    label-field="NAME"
+    order-by="NAME"
+    option-element="rapid-option"
+  ></options-datasource>
+</rapid-select>
+
+<rapid-combobox>
+  <options-datasource
+    infinite-scroll
+    page-size="20"
+    resourceName="COUNTERPARTY"
+    value-field="COUNTERPARTY_ID"
+    label-field="NAME"
+    order-by="NAME"
+    option-element="rapid-option"
+  ></options-datasource>
+</rapid-combobox>
+```
+
+</TabItem>
+
+<TabItem value="react">
+
+```tsx
+import { OptionsDatasource } from '@genesislcap/foundation-ui/react';
+import { Combobox, Select } from '@genesislcap/rapid-design-system/react';
+
+export function CounterpartySelect() {
+  return (
+    <Select>
+      <OptionsDatasource
+        infiniteScroll
+        pageSize={20}
+        resourceName="ALL_COUNTERPARTYS"
+        valueField="COUNTERPARTY_ID"
+        labelField="NAME"
+        orderBy="NAME"
+      />
+    </Select>
+  );
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Configuration notes
+
+- **`order-by`** — For Request Server offset paging, set a **stable** sort order. If rows are inserted or reordered while the user pages, offset-based paging can occasionally show duplicates or gaps (the same trade-off as offset-based server-side grid paging). A fixed `order-by` minimises that risk.
+- **`max-view`** — On Data Server streams, paging stops when the tracked view reaches **`max-view`** (same as other datasources).
+- **`criteria`** — Optional initial filter; combobox typing updates criteria automatically when infinite scroll is enabled.
+- **Selection** — Options are rendered incrementally so selection and scroll position are preserved as more pages load.
+
+Without **`infinite-scroll`**, behaviour is unchanged: the datasource loads the full snapshot or stream window as before.
+
+## Common attributes
+
+| Attribute | Description |
+| --------- | ----------- |
+| `resourceName` | Data Server query or Request Server resource name |
+| `value-field` | Field used as the option value |
+| `label-field` | Field shown in the dropdown |
+| `option-element` | Tag name for each option (for example `rapid-option`) |
+| `order-by` | Server sort expression |
+| `criteria` | Initial `CRITERIA_MATCH` filter |
+| `max-view` | Maximum rows tracked on a Data Server subscription |
+| `infinite-scroll` | Enable paged loading (boolean; default **`false`**) |
+| `page-size` | Rows per page when infinite scroll is enabled (default **20**) |
+| `allow-custom-options` | Allow values not in the list (combobox scenarios) |
+| `empty-data-label` | Text when no rows match (default `No matching records`) |
+
+## Foundation Forms
+
+Connected select and combobox renderers in [Foundation Forms](/develop/client-capabilities/forms/smart-forms/) use the same underlying datasource. For very large **`allOptionsResourceName`** lists, use **`async: true`** so typing filters on the server, and prefer composing **`datasourceConfig`** (for example **`maxRows`**, **`orderBy`**, **`criteria`**) to keep each fetch bounded. When you own the markup, **`infinite-scroll`** on `options-datasource` is the recommended pattern for long reference-data lists.
+
+## Related reading
+
+- [UI Performance](/develop/best-practices/performance/)
+- [Criteria matching](/develop/client-capabilities/server-communications/criteria-matching/)
+- [Data Server — rows and view](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts)

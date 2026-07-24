@@ -1242,6 +1242,14 @@ DOM Virtualisation is a powerful technique that enhances the performance of grid
 
 For more details, visit the [AG Grid DOM Virtualisation documentation](https://www.ag-grid.com/javascript-data-grid/dom-virtualisation/) (also available in [Tabulator Virtual DOM](https://tabulator.info/docs/6.2/virtual-dom))
 
+### Request only visible columns (Data Server)
+
+:::info Platform version
+Requires **`@genesislcap/grid-pro` 14.489** or later.
+:::
+
+DOM virtualisation limits **rendering** cost; it does not reduce how many column values travel over the wire on a Data Server subscription. On [`grid-pro-genesis-datasource`](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource), enable **`request-visible-columns-only`** so the datasource **`FIELDS`** list tracks visible grid columns and reloads when users show or hide columns. See [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#request-visible-columns-only).
+
 ### Pagination
 
 Pagination is another effective technique to improve performance in AG Grid by breaking down large datasets into smaller, manageable chunks or pages. This allows the grid to load and render only a subset of data at a time, significantly reducing the load on the client.
