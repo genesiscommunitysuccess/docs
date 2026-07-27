@@ -336,6 +336,36 @@ webHandlers {
 }
 ```
 
+###### Setting the response status and headers
+
+The `status` parameter above is fixed at configuration time. When you need to choose the status code **at runtime** or set response **headers** — for example to return a conditional `304 Not Modified`, an `ETag`, or a `Cache-Control` header — return the result of `buildResponse` from `handleRequest`, and type the endpoint response as `HttpResponse`:
+
+```kotlin
+import global.genesis.router.server.web.http.extensions.HttpResponse
+
+endpoint<Unit, HttpResponse>(GET, "trades") {
+    handleRequest {
+        buildResponse {
+            status(HttpStatusCode.Ok)                 // or status(code, "reason")
+            header("ETag", "\"v1\"")
+            header("Cache-Control", "private, no-cache")
+            body(tradeClient.getAllTrades())          // omit body() for an empty response, e.g. a 304
+        }
+    }
+}
+```
+
+Inside `buildResponse` you can set:
+
+| Call | Purpose |
+| ---- | ------- |
+| `status(HttpStatusCode)` / `status(code, reason)` | The response status code |
+| `header(name, value)` | A response header (call repeatedly to set several) |
+| `body(value)` | The response body, serialised the same way as a returned value |
+| `contentType(contentType)` | Override the response content type |
+
+For a status code that does **not** depend on the request, prefer the [`status` parameter](#override-status-code) on `endpoint` or the [`HttpResponseCode` annotation](#httpresponsecode-annotation) instead.
+
 #### `multipartEndpoint`
 
 To support file uploads, use the multipartEndpoint function. This function parses the request body as a multipart request and makes the files available in the fileUploads property of the handleRequest block.

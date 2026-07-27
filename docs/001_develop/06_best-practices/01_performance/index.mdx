@@ -29,6 +29,7 @@ For a **non-technical guide** to help clients and business analysts agree data v
 | Read-only or custom grid UX | [Grid Pro](/develop/client-capabilities/grids/grid-pro/) directly |
 | Large dropdowns (select / combobox on reference data) | [`options-datasource`](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) with **`infinite-scroll`** and tuned **`page-size`** |
 | Very wide Data Server grids (many columns, users hide columns) | [`grid-pro-genesis-datasource`](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource) with **`request-visible-columns-only`** |
+| Serving reference or snapshot data over HTTP from a [custom endpoint](/develop/server-capabilities/integrations/custom-endpoints/) | [Cache and compress the response](/develop/best-practices/performance/endpoint-caching/) — `ETag`/`304` plus `httpCompression` |
 
 Avoid loading an entire large query into the browser when server-side row model or pagination can keep each page bounded.
 
@@ -194,3 +195,4 @@ On the server, use Data Server start-up logs and [LMDB allocation](/develop/serv
 5. [Entity Manager](/develop/client-capabilities/grids/entity-manager/) if you use CRUD micro front-ends
 6. [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for client-side retention and cleanup
 7. [Options datasource](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) for large select and combobox lists
+8. [Caching and compressing HTTP responses](/develop/best-practices/performance/endpoint-caching/) for data served from custom endpoints
