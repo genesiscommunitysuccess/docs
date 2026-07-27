@@ -94,7 +94,9 @@ JSON compresses well (often 3–10×), so a large snapshot response shrinks subs
 
 ## Read conditional (and other) request headers case-insensitively
 
-HTTP header **names** are case-insensitive, and proxies and HTTP/2 routinely normalise them to lowercase (`if-none-match`). Match them case-insensitively on the server; a case-sensitive lookup for `"If-None-Match"` silently misses the lowercase form, so every request falls through to a full `200` and the cache never engages.
+Endpoints normally read request headers with the [`by header("X")` / `by optionalHeader("X")`](/develop/server-capabilities/integrations/custom-endpoints/#header-parameters) syntax, which also lists the header in the endpoint's generated OpenAPI documentation. Those declarations match the name you declare **exactly**, though — and HTTP header names are case-insensitive, with proxies and HTTP/2 routinely sending them lowercased (`if-none-match`). So `optionalHeader("If-None-Match")` silently misses the lowercase form, every request falls through to a full `200`, and the cache never engages.
+
+For conditional-request headers, read them case-insensitively from the request instead. You forgo the automatic OpenAPI entry, but the match is correct regardless of how the client or proxy cases the name:
 
 ```kotlin
 fun HttpRequest<*>.firstValueIgnoreCase(name: String): String? =
