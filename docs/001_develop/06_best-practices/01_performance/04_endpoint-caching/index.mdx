@@ -88,7 +88,7 @@ router {
 }
 ```
 
-[`httpCompression`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) is a Genesis router option available in recent **8.15.x** platform releases.
+[`httpCompression`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) is a Genesis router option available since **8.14.31**.
 
 JSON compresses well (often 3–10×), so a large snapshot response shrinks substantially on the wire. In deployments that terminate at a gateway (for example nginx), compression is frequently applied there instead — confirm it is enabled at exactly one layer and check for `Content-Encoding: gzip` on the response.
 
