@@ -102,6 +102,8 @@ Let's have a look at the different options for configuring this file. You have s
 
 `nettyLoggingEnabled` If set to true, this setting enables internal netty logging. Default value false.
 
+`httpCompression` If set to true, adds an [`HttpContentCompressor`](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpContentCompressor.html) to the Netty pipeline, so HTTP responses are gzip/deflate-compressed for clients that send an `Accept-Encoding` request header. Useful for large JSON responses from custom endpoints. Default value: false. (Available since 8.15.)
+
 ### Netty configuration
 
 #### `httpServerCodecDefinition`

@@ -53,6 +53,8 @@ endpoint<Unit, HttpResponse>(GET, "counterparty") {
 }
 ```
 
+The handler sets the status code and response headers with `buildResponse` — see [Setting the response status and headers](/develop/server-capabilities/integrations/custom-endpoints/#setting-the-response-status-and-headers) on the custom endpoints page.
+
 `Cache-Control: private, no-cache` means *store the response but always revalidate* — so the client stays correct while still skipping the payload whenever the data is unchanged. Use `private` for per-user/authenticated responses so shared caches don't store them.
 
 ## Make change detection cheap
@@ -61,7 +63,7 @@ The `304` path only pays off if computing the ETag is **much cheaper than sendin
 
 Derive the ETag from a value that changes on any write but costs **O(1)** to read:
 
-- **Audit trail (recommended).** An [audited table](/how-to/audit/) appends a monotonic record on every insert, modify and delete. The newest audit record id is a ready-made table version — a single indexed read, no table scan:
+- **Audit trail (recommended).** An [audited table](/how-to/ht-audit/) appends a monotonic record on every insert, modify and delete. The newest audit record id is a ready-made table version — a single indexed read, no table scan:
 
   ```kotlin
   val version = db.getBulkFromEnd(CounterpartyAudit.ById).firstOrNull()?.counterpartyAuditId ?: "empty"
@@ -85,6 +87,8 @@ router {
     httpCompression = true
 }
 ```
+
+[`httpCompression`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) is a Genesis router option available in recent **8.15.x** platform releases.
 
 JSON compresses well (often 3–10×), so a large snapshot response shrinks substantially on the wire. In deployments that terminate at a gateway (for example nginx), compression is frequently applied there instead — confirm it is enabled at exactly one layer and check for `Content-Encoding: gzip` on the response.
 
