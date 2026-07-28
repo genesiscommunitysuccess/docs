@@ -1,0 +1,352 @@
+---
+title: 'Foundation Forms - Responding to Form Changes'
+sidebar_label: 'Responding to Form Changes'
+id: foundation-forms-conditional-filtering
+keywords: [genesis, foundation, ui, forms, smart forms, conditional filtering, cascading dropdowns, dependent fields, dynamic form updates]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+  - data change events
+  - change events
+  - conditional filtering
+---
+
+import ConditionalFilteringExample from './examples/conditional_filtering_example.js';
+import CalculationExample from './examples/calculation_example.js';
+
+# Foundation Forms - Responding to Form Changes
+
+Foundation Forms fires a `data-change` event whenever the user modifies a field. You can listen to this event to update either the **form data** (derived or calculated values) or the **UI schema** (available options in a dropdown) in response. Common use cases include:
+
+- Cascading dropdowns — filter city options when a country is selected
+- Counterparty → trader scoping — limit traders to those belonging to the selected counterparty
+- Derived calculations — recalculate a premium amount when notional or BPS changes
+
+The examples below cover both patterns: filtering dropdown options by regenerating the UI schema, and calculating derived field values by updating the form data directly.
+
+## Example: country and city
+
+The following example demonstrates a location selection form where cities are filtered based on the selected country. When the country changes, the city selection is cleared and only cities belonging to that country are shown:
+
+### JSON Schema
+
+```typescript
+const locationJsonSchema = {
+  properties: {
+    COUNTRY_ID: {
+      type: 'number',
+      title: 'Country'
+    },
+    CITY_ID: {
+      type: 'number',
+      title: 'City'
+    }
+  }
+};
+```
+
+### UI Schema
+
+```typescript
+const locationUISchema = (countries: any[] = [], cities: any[] = []): UiSchema => ({
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Country',
+      scope: '#/properties/COUNTRY_ID',
+      options: {
+        valueField: 'COUNTRY_ID',
+        labelField: 'COUNTRY_NAME',
+        data: countries
+      }
+    },
+    {
+      type: 'Control',
+      label: 'City',
+      scope: '#/properties/CITY_ID',
+      options: {
+        valueField: 'CITY_ID',
+        labelField: 'CITY_NAME',
+        data: cities
+      }
+    }
+  ]
+});
+```
+
+### Component Implementation
+
+```typescript
+@customElement({
+  name: 'location-form',
+  template: html<LocationForm>`
+    <foundation-form
+      :data="${(x) => x.existingData}"
+      :jsonSchema="${() => locationJsonSchema}"
+      :uischema="${(x) => x.uiSchema}"
+      @data-change=${(x, c) => x.handleDataChange(c.event as CustomEvent)}
+    ></foundation-form>
+  `
+})
+export class LocationForm extends GenesisElement {
+  @observable uiSchema: UiSchema;
+  @observable existingData = { COUNTRY_ID: undefined, CITY_ID: undefined };
+  @observable countries = [];
+  @observable cities = [];
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.loadCountries();
+    await this.loadCities();
+    this.uiSchema = locationUISchema(this.countries, []);
+  }
+
+  async loadCountries() {
+    this.countries = [
+      { COUNTRY_ID: 1, COUNTRY_NAME: 'United States' },
+      { COUNTRY_ID: 2, COUNTRY_NAME: 'United Kingdom' }
+    ];
+  }
+
+  async loadCities() {
+    this.cities = [
+      { CITY_ID: 1, COUNTRY_ID: 1, CITY_NAME: 'New York' },
+      { CITY_ID: 2, COUNTRY_ID: 1, CITY_NAME: 'Los Angeles' },
+      { CITY_ID: 3, COUNTRY_ID: 2, CITY_NAME: 'London' },
+      { CITY_ID: 4, COUNTRY_ID: 2, CITY_NAME: 'Manchester' }
+    ];
+  }
+
+  filterCities(countryId: number) {
+    return this.cities.filter(city => city.COUNTRY_ID === countryId);
+  }
+
+  handleDataChange(evt: CustomEvent) {
+    const { data } = evt.detail;
+    if (this.existingData.COUNTRY_ID !== data.COUNTRY_ID) {
+      this.existingData = { ...data, CITY_ID: undefined };
+      const filteredCities = this.filterCities(data.COUNTRY_ID);
+      this.uiSchema = locationUISchema(this.countries, filteredCities);
+    }
+  }
+}
+```
+
+Here's a live example of cascading dropdowns in action:
+
+<ConditionalFilteringExample/>
+
+## Example: counterparty and trader
+
+A common financial use case is scoping the available traders to those belonging to the selected counterparty. The structure is identical to the country-city example — swap the entities and their key/label fields.
+
+### JSON Schema
+
+```typescript
+const tradeJsonSchema = {
+  properties: {
+    COUNTERPARTY_ID: {
+      type: 'number',
+      title: 'Counterparty'
+    },
+    TRADER_ID: {
+      type: 'number',
+      title: 'Trader'
+    }
+  }
+};
+```
+
+### UI Schema
+
+```typescript
+const tradeUISchema = (counterparties: any[] = [], traders: any[] = []): UiSchema => ({
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Counterparty',
+      scope: '#/properties/COUNTERPARTY_ID',
+      options: {
+        valueField: 'COUNTERPARTY_ID',
+        labelField: 'COUNTERPARTY_NAME',
+        data: counterparties
+      }
+    },
+    {
+      type: 'Control',
+      label: 'Trader',
+      scope: '#/properties/TRADER_ID',
+      options: {
+        valueField: 'TRADER_ID',
+        labelField: 'TRADER_NAME',
+        data: traders
+      }
+    }
+  ]
+});
+```
+
+### Component Implementation
+
+```typescript
+@customElement({
+  name: 'trade-entry-form',
+  template: html<TradeEntryForm>`
+    <foundation-form
+      :data="${(x) => x.existingData}"
+      :jsonSchema="${() => tradeJsonSchema}"
+      :uischema="${(x) => x.uiSchema}"
+      @data-change=${(x, c) => x.handleDataChange(c.event as CustomEvent)}
+    ></foundation-form>
+  `
+})
+export class TradeEntryForm extends GenesisElement {
+  @observable uiSchema: UiSchema;
+  @observable existingData = { COUNTERPARTY_ID: undefined, TRADER_ID: undefined };
+  @observable counterparties = [];
+  @observable traders = [];
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.loadCounterparties();
+    await this.loadTraders();
+    this.uiSchema = tradeUISchema(this.counterparties, []);
+  }
+
+  async loadCounterparties() {
+    // Replace with your datasource / resource call
+    this.counterparties = [
+      { COUNTERPARTY_ID: 1, COUNTERPARTY_NAME: 'Acme Capital' },
+      { COUNTERPARTY_ID: 2, COUNTERPARTY_NAME: 'Blue River Partners' }
+    ];
+  }
+
+  async loadTraders() {
+    // Replace with your datasource / resource call
+    this.traders = [
+      { TRADER_ID: 1, COUNTERPARTY_ID: 1, TRADER_NAME: 'Alice Johnson' },
+      { TRADER_ID: 2, COUNTERPARTY_ID: 1, TRADER_NAME: 'Bob Smith' },
+      { TRADER_ID: 3, COUNTERPARTY_ID: 2, TRADER_NAME: 'Carol White' },
+      { TRADER_ID: 4, COUNTERPARTY_ID: 2, TRADER_NAME: 'David Brown' }
+    ];
+  }
+
+  filterTraders(counterpartyId: number) {
+    return this.traders.filter(trader => trader.COUNTERPARTY_ID === counterpartyId);
+  }
+
+  handleDataChange(evt: CustomEvent) {
+    const { data } = evt.detail;
+    if (this.existingData.COUNTERPARTY_ID !== data.COUNTERPARTY_ID) {
+      this.existingData = { ...data, TRADER_ID: undefined };
+      const filteredTraders = this.filterTraders(data.COUNTERPARTY_ID);
+      this.uiSchema = tradeUISchema(this.counterparties, filteredTraders);
+    }
+  }
+}
+```
+
+## Example: calculated fields
+
+This example shows how to update **form data** rather than the UI schema. The form has three fields — Notional, Premium Amount, and Premium BPS — with the following relationship:
+
+- `PREMIUM_AMOUNT = (NOTIONAL × PREMIUM_BPS) / 10000`
+- `PREMIUM_BPS = (PREMIUM_AMOUNT × 10000) / NOTIONAL`
+
+When the user edits Notional or Premium BPS, Premium Amount is recalculated. When the user edits Premium Amount directly, Premium BPS is recalculated instead. The handler checks which field changed to decide which derived value to update, avoiding a circular update loop.
+
+### JSON Schema
+
+```typescript
+const premiumJsonSchema = {
+  properties: {
+    NOTIONAL: {
+      type: 'number',
+      title: 'Notional'
+    },
+    PREMIUM_AMOUNT: {
+      type: 'number',
+      title: 'Premium Amount'
+    },
+    PREMIUM_BPS: {
+      type: 'number',
+      title: 'Premium (BPS)'
+    }
+  }
+};
+```
+
+### UI Schema
+
+```typescript
+const premiumUISchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Notional',
+      scope: '#/properties/NOTIONAL'
+    },
+    {
+      type: 'Control',
+      label: 'Premium Amount',
+      scope: '#/properties/PREMIUM_AMOUNT'
+    },
+    {
+      type: 'Control',
+      label: 'Premium (BPS)',
+      scope: '#/properties/PREMIUM_BPS'
+    }
+  ]
+};
+```
+
+### Component Implementation
+
+```typescript
+@customElement({
+  name: 'premium-form',
+  template: html<PremiumForm>`
+    <foundation-form
+      :data="${(x) => x.existingData}"
+      :jsonSchema="${() => premiumJsonSchema}"
+      :uischema="${() => premiumUISchema}"
+      @data-change=${(x, c) => x.handleDataChange(c.event as CustomEvent)}
+    ></foundation-form>
+  `
+})
+export class PremiumForm extends GenesisElement {
+  @observable existingData = { NOTIONAL: undefined, PREMIUM_AMOUNT: undefined, PREMIUM_BPS: undefined };
+
+  handleDataChange(evt: CustomEvent) {
+    const { data } = evt.detail;
+
+    const notionalChanged = this.existingData.NOTIONAL !== data.NOTIONAL;
+    const premiumBpsChanged = this.existingData.PREMIUM_BPS !== data.PREMIUM_BPS;
+    const premiumAmountChanged = this.existingData.PREMIUM_AMOUNT !== data.PREMIUM_AMOUNT;
+
+    if ((notionalChanged || premiumBpsChanged) && data.NOTIONAL != null && data.PREMIUM_BPS != null) {
+      this.existingData = {
+        ...data,
+        PREMIUM_AMOUNT: (data.NOTIONAL * data.PREMIUM_BPS) / 10000
+      };
+    } else if (premiumAmountChanged && data.NOTIONAL != null && data.PREMIUM_AMOUNT != null) {
+      this.existingData = {
+        ...data,
+        PREMIUM_BPS: (data.PREMIUM_AMOUNT * 10000) / data.NOTIONAL
+      };
+    } else {
+      this.existingData = { ...data };
+    }
+  }
+}
+```
+
+Here's a live example of calculated fields in action:
+
+<CalculationExample/>
