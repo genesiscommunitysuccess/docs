@@ -828,6 +828,47 @@ This tries to modify a record in the database. If the record does not exist, the
 * `upsertAll(List<EntityModifyDetails<E>>): List<UpsertResult<E>>`
 * `upsertAll(Flow<EntityModifyDetails<E>>): List<UpsertResult<E>>`
 
+###### `upsertAll` reconciliation semantics
+
+`upsertAll` (`ModifyAllOperation`, `engine/sql/ops/ModifyAllOperation.kt`) takes a list of
+`ModifyDetails` — a record, the unique index (`keyName`) to match it by, and an optional explicit
+`modifiedFields` list — and for each one either updates the matching row or inserts a new one.
+
+###### SQL `Bulk` vs `Lazy`
+
+Like `GetAllOperation` and `InsertAllOperation`, `ModifyAllOperation` has two implementations, chosen
+once per connection pool from `SqlType`:
+
+* **`Bulk`** (Postgres, MSSQL) — the two dialects with a multi-row `VALUES`-join primitive. Per
+  `BatchOperationKey` group, matching happens via a *single upfront batched read*
+  (`GetAllOperation.Bulk.getAllAsMapBlocking`) covering every record in the group, then the resulting
+  inserts and updates are each written with set-based, chunked multi-row statements:
+  `INSERT ... SELECT ... FROM (VALUES ...)` for the new records (delegated to
+  `InsertAllOperation.Bulk`) and `UPDATE ... FROM (VALUES ...)` for the matched ones
+  (`ModifyAllOperation.Bulk.writeChunksBlocking`), chunked to `maxParameterCount`.
+* **`Lazy`** (H2, Oracle) — no batch
+  machinery at all. It loops over the records and calls the single-record
+  `ModifyOperation.upsertBlocking` (or its suspend equivalent) one at a time, `takeWhile { !it.isError }`
+  short-circuiting on the first failure the same way `Bulk`'s chunked calls do.
+
+###### Duplicate keys within one batch
+
+SQL `Bulk`, SQL `Lazy`, and FoundationDB each process two same-key requests in one `upsertAll` batch
+differently:
+
+* **`Bulk`** (Postgres, MSSQL) matches the whole batch against the table in one upfront read, so two
+  requests for the same key get the same classification, and the second write collides with the
+  first — surfacing as a duplicate-key violation.
+* **`Lazy`** (H2, Oracle) checks and writes one record at a time, so a later request for the
+  same key reconciles cleanly against the one before it, as if the caller had looped and called
+  `upsert` individually.
+* **FoundationDB** is a separate implementation, not a variant of `Lazy`, and doesn't strictly
+  serialise same-batch writes — so two requests for the same key can both succeed as inserts,
+  silently, rather than reconciling or erroring.
+
+These are three genuinely different behaviours today. Callers with a possible duplicate key inside
+one `upsertAll` batch should de-duplicate before calling it rather than rely on any of them.
+
 #### `delete`
 
 This tries to delete a record.
