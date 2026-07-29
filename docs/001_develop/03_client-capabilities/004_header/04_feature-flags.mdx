@@ -1,0 +1,207 @@
+---
+title: 'Feature flags in the header'
+sidebar_label: 'Feature flags'
+id: client-header-feature-flags
+keywords: [header, feature flags, featureFlagOptions, URL flags]
+tags:
+- header
+- feature flags
+- featureFlagOptions
+sidebar_position: 4
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import FeatureFlagsHeaderExample from './examples/feature_flags_header_example.js';
+
+`foundation-header` can show a **Feature Flags** control on the right-hand side of the navigation bar. Users open a panel with a multiselect of flags you define; changing the selection updates URL `feature.*` query parameters and **reloads the page** so boot-time consumers re-evaluate the flags.
+
+The button appears automatically when [`featureFlagOptions.availableFlags`](#featureflagoptions) is non-empty. You do not need `show-feature-flags-selector` in normal use.
+
+:::info Platform version 14.498.0**
+:::
+
+## Enable the Feature Flags control
+
+Pass a `featureFlagOptions` object whose `availableFlags` list names each flag and its display label. Each `name` maps to a URL parameter of the form `feature.<name>`.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+```typescript
+import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
+
+const featureFlagOptions: FeatureFlagOptions = {
+  availableFlags: [
+    { name: 'ai', label: 'AI' },
+    { name: 'forceHttp', label: 'Force HTTP' },
+  ],
+};
+
+@customElement({
+  name: 'header-feature-flags-example',
+  template: html`
+    <foundation-header
+      :featureFlagOptions=${() => featureFlagOptions}
+    ></foundation-header>
+  `,
+})
+export class HeaderFeatureFlagsExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
+
+const featureFlagOptions: FeatureFlagOptions = {
+  availableFlags: [
+    { name: 'ai', label: 'AI' },
+    { name: 'forceHttp', label: 'Force HTTP' },
+  ],
+};
+
+export default function HeaderFeatureFlagsExample() {
+  return <FoundationHeader featureFlagOptions={featureFlagOptions} />;
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
+
+@Component({
+  selector: 'header-feature-flags-example',
+  template: `
+    <foundation-header [featureFlagOptions]="featureFlagOptions"></foundation-header>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class HeaderFeatureFlagsExampleComponent {
+  featureFlagOptions: FeatureFlagOptions = {
+    availableFlags: [
+      { name: 'ai', label: 'AI' },
+      { name: 'forceHttp', label: 'Force HTTP' },
+    ],
+  };
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Example
+
+<FeatureFlagsHeaderExample />
+
+## `featureFlagOptions`
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `availableFlags` | `{ name: string; label: string }[]` | Flags offered in the multiselect. `name` is written to the URL as `feature.<name>`; `label` is the UI text. |
+
+When `availableFlags` is empty or omitted, the Feature Flags control stays hidden (unless you force it with [`show-feature-flags-selector`](#show-feature-flags-selector)).
+
+## URL behaviour
+
+Selected flags are written as presence-style query parameters via [`setActivatedFeatures`](/develop/client-capabilities/utility-methods/feature-flags-utils/) from `@genesislcap/foundation-utils`:
+
+```text
+https://your-app.com/home?feature.ai=true&feature.forceHttp=true
+```
+
+- Selecting flags rewrites all `feature.*` params to match the selection and **reloads** by default.
+- Deselecting every flag clears the `feature.*` params and reloads.
+- Elsewhere in the app, use `isFeatureActivated('ai')` (or `getActivatedFeatures()`) to branch behaviour.
+
+URL feature flags are visible to users — do not use them for security-sensitive controls.
+
+## Events
+
+When the multiselect selection changes, the header emits `feature-flags-changed` **before** updating the URL and reloading. The event detail is the array of selected flag names (`string[]`).
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+```typescript
+html`
+  <foundation-header
+    :featureFlagOptions=${() => featureFlagOptions}
+    @feature-flags-changed=${(x, c) => x.onFeatureFlagsChanged(c.event)}
+  ></foundation-header>
+`
+```
+
+</TabItem>
+<TabItem value="react">
+
+```tsx
+import { useEffect, useRef } from 'react';
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
+
+const featureFlagOptions: FeatureFlagOptions = {
+  availableFlags: [
+    { name: 'ai', label: 'AI' },
+    { name: 'forceHttp', label: 'Force HTTP' },
+  ],
+};
+
+export default function HeaderFeatureFlagsEventsExample() {
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const handler = (e: CustomEvent<string[]>) => console.log(e.detail);
+    el.addEventListener('feature-flags-changed', handler);
+    return () => el.removeEventListener('feature-flags-changed', handler);
+  }, []);
+
+  return <FoundationHeader ref={headerRef} featureFlagOptions={featureFlagOptions} />;
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+```html
+<foundation-header
+  [featureFlagOptions]="featureFlagOptions"
+  (feature-flags-changed)="onFeatureFlagsChanged($event)"
+></foundation-header>
+```
+
+</TabItem>
+</Tabs>
+
+## `show-feature-flags-selector`
+
+Optional boolean attribute that **force-shows** the Feature Flags button even when `availableFlags` is empty. Usual apps can omit it — supplying a non-empty `availableFlags` list is enough.
+
+```html
+<foundation-header show-feature-flags-selector></foundation-header>
+```
+
+In React the prop is `showFeatureFlagsSelector`.
+
+## Parts
+
+| Part | Description |
+| ---- | ----------- |
+| `feature-flags-wrapper` | Wrapper around the Feature Flags control |
+| `feature-flags-button` | The **Feature Flags** button |
+| `feature-flags-panel` | The panel that hosts the multiselect |
+
+## Related reading
+
+- [Feature flag utilities](/develop/client-capabilities/utility-methods/feature-flags-utils/) — `isFeatureActivated`, `getActivatedFeatures`, `setActivatedFeatures`
+- [Header](/develop/client-capabilities/header/) — attributes, properties, and events reference

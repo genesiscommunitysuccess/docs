@@ -2,9 +2,10 @@
 title: 'Header'
 sidebar_label: 'Header'
 id: client-header
-keywords: [header]
+keywords: [header, feature flags]
 tags:
 - header
+- feature flags
 sidebar_position: 4
 pagination_prev: develop/client-capabilities/login/client-login
 ---
@@ -15,7 +16,7 @@ import PrimitiveHeaderExample from './examples/primitive_header_example.js';
 
 # Foundation Header
 
-`foundation-header` is a micro front-end consisting of a navigation bar and a flyout menu, with routing, account-logout capabilities, and the ability to change the current language.
+`foundation-header` is a micro front-end consisting of a navigation bar and a flyout menu, with routing, account-logout capabilities, language switching, and an optional [Feature Flags](/develop/client-capabilities/header/client-header-feature-flags/) selector for URL `feature.*` toggles.
 
 It supports nested navigation permissions and layout item active indicators for route nav items.
 
@@ -259,6 +260,16 @@ export class HeaderExampleComponent {
       </td>
     </tr>
     <tr>
+      <td><a href="/develop/client-capabilities/header/client-header-feature-flags/#show-feature-flags-selector"><code>show-feature-flags-selector</code></a></td>
+      <td><code>boolean</code></td>
+      <td>Optional. Force-shows the Feature Flags button. Usually unnecessary: the button appears automatically when <code>featureFlagOptions.availableFlags</code> is non-empty. See <a href="/develop/client-capabilities/header/client-header-feature-flags/">Feature flags</a>.</td>
+      <td>
+        ```typescript
+        <foundation-header show-feature-flags-selector>
+        ```
+      </td>
+    </tr>
+    <tr>
       <td>[hide-side-bar](./docs/api/foundation-header.navigation.hidesidebar.md)</td>
       <td><code>boolean</code></td>
       <td>Boolean attribute which controls whether the navigation bar will display the side bar.</td>
@@ -335,6 +346,16 @@ export class HeaderExampleComponent {
       </td>
     </tr>
     <tr>
+      <td><a href="/develop/client-capabilities/header/client-header-feature-flags/#featureflagoptions"><code>featureFlagOptions</code></a></td>
+      <td><code>FeatureFlagOptions</code></td>
+      <td>Object which defines the feature flags offered in the header selector. When <code>availableFlags</code> is non-empty, the Feature Flags button is shown automatically. Selected flags sync to URL <code>feature.*</code> query params and reload the page. See <a href="/develop/client-capabilities/header/client-header-feature-flags/">Feature flags</a>.</td>
+      <td>
+        ```typescript
+        <foundation-header :featureFlagOptions="${(x) => x.featureFlagOptions}">
+        ```
+      </td>
+    </tr>
+    <tr>
       <td>routeNavItems</td>
       <td><code>FoundationRouteNavItem[]</code></td>
       <td>Array of FoundationRouteNavItems which define the route buttons to be displayed in the navigation bar, including nested submenu items. Permission checks apply to nested items as well as top-level items.</td>
@@ -397,6 +418,18 @@ export class HeaderExampleComponent {
     <tr>
       <td>dynamic-template</td>
       <td>The element representing the dynamic template content.</td>
+    </tr>
+    <tr>
+      <td>feature-flags-wrapper</td>
+      <td>Wrapper around the Feature Flags control. See <a href="/develop/client-capabilities/header/client-header-feature-flags/#parts">Feature flags</a>.</td>
+    </tr>
+    <tr>
+      <td>feature-flags-button</td>
+      <td>The Feature Flags button.</td>
+    </tr>
+    <tr>
+      <td>feature-flags-panel</td>
+      <td>The Feature Flags panel that hosts the multiselect.</td>
     </tr>
   </tbody>
 </table>
@@ -471,6 +504,16 @@ export class HeaderExampleComponent {
       <td>
         ```typescript
         <foundation-header @language-changed="${(x) => x.handleLanguageChange}">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td><a href="/develop/client-capabilities/header/client-header-feature-flags/#events"><code>feature-flags-changed</code></a></td>
+      <td><code>string[]</code></td>
+      <td>Dispatched when the user changes the selected feature flags. Detail is the array of selected flag names. The header then updates URL <code>feature.*</code> params and reloads.</td>
+      <td>
+        ```typescript
+        <foundation-header @feature-flags-changed="${(x, c) => x.handleFeatureFlagsChange(c.event)}">
         ```
       </td>
     </tr>
