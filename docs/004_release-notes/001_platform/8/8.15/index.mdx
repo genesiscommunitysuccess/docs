@@ -278,6 +278,46 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.34
+
+###### Features
+
+* `genesis-resource-daemon` : Authenticated management API and browser console 
+
+###### Fixes
+
+* `genesis-environment` : Make LogLevel work over WebSocket and from the console
+* `genesis-process` : Nullable Any-typed fields lose their null option in generated JSON schema 
+
+#### 8.15.33
+
+###### Breaking changes
+
+* `genesis-db` : Hide vararg overload from entity-DB getAllAsList 
+
+###### Fixes
+
+* `genesis-criteria` : Allow nested binary expressions in evaluator result/rule expressions
+* `genesis-db` : Backport Bulk upsertAll order/count fix to 8.15.x 
+* `genesis-db` : Expose no-arg getBulk()/count() to GPAL scripts
+
+#### 8.15.32
+
+###### Dependency changes
+
+* Bump org.jline:jline from 3.30.6 to 4.0.7 
+
+#### 8.15.31
+
+###### Features
+
+* `genesis-columnar` : SCDB columnar wire encoding for dataserver & request-server
+* `genesis-pal-consolidator` : Add opt-in eventual-consistency mode (recompute-on-trigger) to fix out-of-order updates under high throughput
+
+###### Fixes
+
+* Install custom Nginx version via dnf
+
 #### 8.15.30
 
 ###### Fixes
