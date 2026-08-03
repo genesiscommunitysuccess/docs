@@ -376,6 +376,10 @@ The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](
 
 You can set up mfa regardless of the authentication type, however with SSO it is recommended to utilize the SSO provider's mfa setup which will live outside of genesis.
 
+:::info
+Applications using Foundation Auth can use the [Verify page](/develop/client-capabilities/login/#multi-factor-authentication-mfa) and the [Verification Code Input](/develop/client-capabilities/forms/form-inputs/client-interaction-verification-code-input/) component for MFA code entry on the client.
+:::
+
 #### `qrcode`
 
 This method of MFA generates a qrCode that can be imported into apps such as Google and Microsoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuration items:

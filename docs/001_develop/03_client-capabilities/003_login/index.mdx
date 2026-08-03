@@ -2,7 +2,7 @@
 title: 'Login'
 sidebar_label: 'Login'
 id: client-login
-keywords: [web, login, foundation login, frontend, ui, micro-front-ends]
+keywords: [web, login, foundation login, frontend, ui, micro-front-ends, mfa, verify]
 tags:
   - web
   - login
@@ -10,13 +10,14 @@ tags:
   - frontend
   - ui
   - micro-front-ends
+  - mfa
 pagination_next: develop/client-capabilities/header/client-header
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The **Foundation Login** provides a comprehensive set of identity-management functions, including authentication (with support for Single Sign-On) and password reset capabilities. Its features are highly customizable, allowing you to enable or disable specific functionalities as needed. Additionally, various elements of the login screen, such as the logo, can be tailored to align with your branding.
+The **Foundation Login** provides a comprehensive set of identity-management functions, including authentication (with support for Single Sign-On), multi-factor authentication (MFA), and password reset capabilities. Its features are highly customizable, allowing you to enable or disable specific functionalities as needed. Additionally, various elements of the login screen, such as the logo, can be tailored to align with your branding.
 
 The login mechanism uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API) for secure credential handling. When the API is unavailable, it seamlessly falls back to using cookies to ensure broad compatibility.
 
@@ -51,6 +52,21 @@ While setting up SSO is primarily a back-end task, some front-end [SSO configura
 :::info
 The standard SSO process involves redirecting users to the authentication provider's flow from the current page. However, many authentication providers block their system when running inside an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). To mitigate this, if the `Login` micro front-end detects it's running within an iframe, it opens the authentication flow in a separate popup window instead.
 :::
+
+### Multi-factor Authentication (MFA)
+
+When the back end requires a second factor after the initial credentials are accepted, Foundation Auth navigates to the **Verify** route (`verify`). The authentication machine enters the `awaitingMfa` state and the user must enter the one-time code before authentication can complete.
+
+High-level flow:
+
+1. User submits username/password on the Login screen.
+2. The server responds that MFA is required (`MFA_REQUIRED`).
+3. The auth machine transitions to `awaitingMfa` and redirects to Verify.
+4. The user enters the code; on success, authentication completes. The back button cancels MFA (`cancel-mfa`) and returns to Login.
+
+MFA itself is configured on the server. See [authentication — `mfa`](/develop/server-capabilities/access-control/authentication/#mfa). This page does not cover enabling MFA, user enrolment, or admin MFA management.
+
+The Verify page uses the [Verification Code Input](/develop/client-capabilities/forms/form-inputs/client-interaction-verification-code-input/) component for digit entry. You can omit the Verify route via [`omitRoutes`](./docs/api/foundation-login.loginconfig.omitroutes.md) if you provide an alternative MFA UI.
 
 ## Integration
 

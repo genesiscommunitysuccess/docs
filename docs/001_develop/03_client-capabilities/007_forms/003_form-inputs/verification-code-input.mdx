@@ -1,0 +1,364 @@
+---
+title: 'Verification Code Input'
+sidebar_label: 'Verification Code Input'
+id: client-interaction-verification-code-input
+keywords: [interaction, interactive, input, verification, code, otp, mfa, 2fa, form, data]
+tags:
+- interaction
+- interactive
+- input
+- verification
+- otp
+- mfa
+- form
+- data
+sidebar_position: 17
+---
+
+import VerificationCodeInputDemo from '../../../../../examples/ui/client-capabilities/interaction/verification-code-input.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Verification Code Input
+
+Multi-digit numeric input for one-time passwords (OTP), MFA, and other verification codes.
+
+Use cases:
+* Multi-factor authentication (MFA) / 2FA
+* Email or SMS one-time codes
+* Any short numeric verification code
+
+The component is form-associated: `name`, `required`, and `value` participate in native HTML form validation and submission.
+
+Foundation Auth uses this control on the [Verify](/develop/client-capabilities/login/#multi-factor-authentication-mfa) page.
+
+## Example
+
+<VerificationCodeInputDemo />
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-verification-code-input></rapid-verification-code-input>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <form @submit=${(x, c) => x.onSubmit(c.event)}>
+          <rapid-verification-code-input
+            name="code"
+            digits="6"
+            autofocus
+            required
+            :value=${sync((x) => x.code)}
+            @change="${(x, c) => x.onChange(c.event)}"
+            @complete="${(x, c) => x.onComplete(c.event)}"
+          >
+            Enter code
+          </rapid-verification-code-input>
+          <rapid-button type="submit">Verify</rapid-button>
+        </form>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable code = '';
+
+      onChange(event: CustomEvent<{ value: string }>) {
+        console.log('change', event.detail.value);
+      }
+
+      onComplete(event: CustomEvent<{ value: string }>) {
+        console.log('complete', event.detail.value);
+      }
+
+      onSubmit(event: Event) {
+        event.preventDefault();
+        const form = event.target as HTMLFormElement;
+        if (!form.reportValidity()) {
+          return;
+        }
+        console.log('submit', this.code);
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+```html
+<VerificationCodeInput></VerificationCodeInput>
+```
+    Usage
+    ```tsx
+import { VerificationCodeInput } from '@genesislcap/rapid-design-system/react';
+
+export function MyComponent() {
+  const [code, setCode] = useState('');
+
+  const onChange = (event) => {
+    setCode(event.detail.value);
+  };
+
+  const onComplete = (event) => {
+    console.log('complete', event.detail.value);
+  };
+
+  return (
+    <VerificationCodeInput
+      name="code"
+      digits={6}
+      autofocus
+      required
+      value={code}
+      onChange={onChange}
+      onComplete={onComplete}
+    >
+      Enter code
+    </VerificationCodeInput>
+  );
+}
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-verification-code-input></rapid-verification-code-input>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-verification-code-input
+          name="code"
+          digits="6"
+          autofocus
+          required
+          (change)="onChange($event)"
+          (complete)="onComplete($event)"
+        >Enter code</rapid-verification-code-input>
+      `,
+      styleUrls: ['./my.component.css'],
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent {
+      onChange(event: CustomEvent) {
+        console.log(event.detail.value);
+      }
+      onComplete(event: CustomEvent) {
+        console.log(event.detail.value);
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Features
+
+* Numeric-only input
+* Automatic focus progression between digits
+* Arrow Left / Arrow Right navigation
+* Backspace and Delete handling
+* Paste support with automatic digit distribution
+* Form-associated (`FormAssociated`) validation and submission
+* First digit uses `autocomplete="one-time-code"` for WebOTP / SMS autofill support
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>appearance</td>
+      <td><code>string</code></td>
+      <td>Visual treatment for each digit field. Can be <code>outline</code> or <code>filled</code>. Default: <code>outline</code></td>
+<td>
+
+```typescript
+<rapid-verification-code-input appearance="outline">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>When true, focuses the first digit on connect</td>
+<td>
+
+```typescript
+<rapid-verification-code-input autofocus>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>digits</td>
+      <td><code>number</code></td>
+      <td>Number of digit fields to render. Default: <code>6</code></td>
+<td>
+
+```typescript
+<rapid-verification-code-input digits="4">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>When true, digit fields are non-interactive and visually disabled</td>
+<td>
+
+```typescript
+<rapid-verification-code-input disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>error</td>
+      <td><code>boolean</code></td>
+      <td>When true, applies the error visual state to each digit field</td>
+<td>
+
+```typescript
+<rapid-verification-code-input error>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Name used when participating in form submission</td>
+<td>
+
+```typescript
+<rapid-verification-code-input name="code">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>When true, digit fields are non-interactive</td>
+<td>
+
+```typescript
+<rapid-verification-code-input readonly>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>required</td>
+      <td><code>boolean</code></td>
+      <td>When true, native form validation requires a complete code</td>
+<td>
+
+```typescript
+<rapid-verification-code-input required>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Current concatenated numeric code. Non-digits are stripped</td>
+<td>
+
+```typescript
+<rapid-verification-code-input :value=${sync((x) => x.code)}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Methods
+
+| Method | Description |
+|---|---|
+| `focus()` | Focuses the first digit field |
+| `clear()` | Clears the code, emits `change`, and focuses the first digit when connected |
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| Default | Label content. When empty, the label is visually hidden |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| label | The label element |
+| root | The root wrapper of each digit field |
+| control | Each digit `<input>` |
+
+### Fired events
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>CustomEvent&lt;&#123; value: string &#125;&gt;</code></td>
+      <td>Fired when any digit changes. Detail contains the current concatenated <code>value</code></td>
+<td>
+
+```typescript
+<rapid-verification-code-input @change="${(x, c) => x.onChange(c.event)}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>complete</td>
+      <td><code>CustomEvent&lt;&#123; value: string &#125;&gt;</code></td>
+      <td>Fired when all digit fields are filled</td>
+<td>
+
+```typescript
+<rapid-verification-code-input @complete="${(x, c) => x.onComplete(c.event)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
