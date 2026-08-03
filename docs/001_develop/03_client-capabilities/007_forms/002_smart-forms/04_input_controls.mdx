@@ -343,10 +343,10 @@ const selectInputUiSchema: UiSchema = {
 };
 ```
 
-If you want to compose the option label from multiple fields returned by `ALL_COUNTERPARTIES`, use the `rowDataMapper` attribute. It lets you project new properties on every row before the renderer consumes the data. This can be done with any datasource.
+If you want to compose the option label from multiple fields returned by `ALL_COUNTERPARTIES`, use the `labelRowFormatter` property. It receives each row and returns the string to display, overriding the default `labelField`-based label.
 
 ```ts
-const selectInputUiSchemaWithRowDataMapper: UiSchema = {
+const selectInputUiSchemaWithLabelRowFormatter: UiSchema = {
   type: 'VerticalLayout',
   elements: [
     {
@@ -355,12 +355,8 @@ const selectInputUiSchemaWithRowDataMapper: UiSchema = {
       options: <ConnectedRenderersOptions>{
         allOptionsResourceName: 'ALL_COUNTERPARTIES',
         valueField: 'COUNTERPARTY_ID',
-        rowDataMapper: (rows) =>
-          rows.map((row) => ({
-            ...row,
-            displayLabel: `${row.NAME} (${row.COUNTERPARTY_ID})`,
-          })),
-        labelField: 'displayLabel',
+        labelField: 'NAME',
+        labelRowFormatter: (row) => `${row.NAME} (${row.COUNTERPARTY_ID})`,
         filterMode: 'contains',
       },
     },
@@ -370,6 +366,98 @@ const selectInputUiSchemaWithRowDataMapper: UiSchema = {
 <SelectFormExample/>
 
 For very large **`allOptionsResourceName`** lists, keep each fetch bounded (`async: true`, `datasourceConfig.maxRows`, stable `orderBy`). When you control the HTML, use [`options-datasource` infinite scroll](/develop/client-capabilities/forms/form-inputs/client-options-datasource/#infinite-scroll-large-lists) on Select/Combobox instead of loading the full resource on open.
+
+#### Configuring the datasource (`datasourceConfig`)
+
+`allOptionsResourceName` tells the renderer *which* resource to query. The `datasourceConfig` option controls *how* that resource is queried — it's passed straight through to the underlying [`Datasource`](/develop/client-capabilities/server-communications/comms-datasource/), so it accepts the same [`DatasourceOptions`](/develop/client-capabilities/server-communications/docs/api/foundation-comms.datasourceoptions/) fields you'd use when initializing a datasource directly:
+
+- **`criteria`** — filter criteria applied to the resource. Works with `DATASERVER` and `REQUEST_SERVER` resources.
+- **`maxRows`** — caps how many rows are fetched. Works with `DATASERVER` and `REQUEST_SERVER` resources.
+- **`orderBy`** — the field used to sort the returned rows.
+- **`viewNumber`** — the current page/view being displayed. Works with `DATASERVER` and `REQUEST_SERVER` resources.
+- **`fields`** — restricts the columns returned. `DATASERVER` only.
+- **`isSnapshot`** — fetch a one-off snapshot instead of a live stream.
+- **`disablePolling`**, **`pollingInterval`**, **`pollTriggerEvents`**, **`request`**, **`requestAutoSetup`** — control request/reply polling. `REQUEST_SERVER` only.
+
+```ts
+const selectInputUiSchemaWithDatasourceConfig: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/selectInput',
+      options: <ConnectedRenderersOptions>{
+        allOptionsResourceName: 'ALL_COUNTERPARTIES',
+        valueField: 'COUNTERPARTY_ID',
+        labelField: 'NAME',
+        async: true,
+        datasourceConfig: {
+          criteria: "STATUS = 'ACTIVE'",
+          maxRows: 200,
+          orderBy: 'NAME',
+        },
+      },
+    },
+  ],
+};
+```
+
+`datasourceConfig` applies equally to the connected multi select renderer below. See the [`DatasourceOptions` API documentation](/develop/client-capabilities/server-communications/docs/api/foundation-comms.datasourceoptions/) for the full list of fields.
+
+#### Complete example
+
+The example below combines every `ConnectedRenderersOptions` field described above into a single example. It narrows `ALL_COUNTERPARTIES` down using `criteria` that filters across several fields at once (`STATUS`, `COUNTRY` and `TYPE`), sorts the results with `orderBy`, and layers `async`, `filterMode`, `allowCustomOptions` and `labelRowFormatter` on top:
+
+```ts
+const selectInputUiSchemaComplete: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/selectInput',
+      options: <ConnectedRenderersOptions>{
+        // Which resource to query.
+        allOptionsResourceName: 'ALL_COUNTERPARTIES',
+        // Underlying value stored on the form, and the field read to build the label.
+        valueField: 'COUNTERPARTY_ID',
+        labelField: 'NAME',
+        // Compose the label from more than one returned field.
+        labelRowFormatter: (row) => `${row.NAME} (${row.COUNTRY})`,
+        // Re-query the server as the user types, instead of filtering a single client-side fetch.
+        async: true,
+        // Match anywhere in the option text; use 'startsWith' to only match from the beginning.
+        filterMode: 'contains',
+        // Don't let users submit a value that isn't in the resolved option list.
+        allowCustomOptions: false,
+        // Controls how the datasource itself queries ALL_COUNTERPARTIES.
+        datasourceConfig: {
+          // Filter across multiple fields on the counterparty row.
+          criteria: 'STATUS == "ACTIVE" && COUNTRY == "GB" && TYPE == "CLIENT"',
+          // Sort the results returned by the resource.
+          orderBy: 'NAME',
+          // Cap how many rows are fetched per request.
+          maxRows: 200,
+          // Which page/view of results to fetch.
+          viewNumber: 0,
+        },
+      },
+    },
+  ],
+};
+```
+
+If you'd rather supply the options yourself instead of querying a resource — for a short, static list, or as a fallback while a resource is unavailable — use `data` in place of `allOptionsResourceName`; `valueField`/`labelField` and `labelRowFormatter` still apply to rows you provide this way:
+
+```ts
+options: <ConnectedRenderersOptions>{
+  data: [
+    { COUNTERPARTY_ID: 1, NAME: 'Acme Corp', COUNTRY: 'GB' },
+    { COUNTERPARTY_ID: 2, NAME: 'Globex Ltd', COUNTRY: 'US' },
+  ],
+  valueField: 'COUNTERPARTY_ID',
+  labelField: 'NAME',
+},
+```
 
 ### Connected multi select
 
