@@ -59,6 +59,7 @@
     "@genesislcap/grid-pro": "14.461.0",
     "@genesislcap/grid-tabulator": "14.461.0",
     "@genesislcap/rapid-design-system": "14.461.0",
+    "@genesislcap/rapid-grid-pro": "14.461.0",
     "@genesislcap/pbc-reporting-ui": "14.393.4",
     "@mdx-js/react": "3.0.1",
     "@mui/icons-material": "5.16.7",
