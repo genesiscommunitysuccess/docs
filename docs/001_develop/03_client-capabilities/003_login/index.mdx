@@ -18,10 +18,6 @@ pagination_next: develop/client-capabilities/header/client-header
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::info
-The `@genesislcap/foundation-login` package has been retired and replaced by **`@genesislcap/foundation-auth`**. If you still reference `foundation-login` in your application, see [Migrating from foundation-login](#migrating-from-foundation-login) below.
-:::
-
 The **Foundation Auth** micro front-end (`@genesislcap/foundation-auth`) provides a comprehensive set of identity-management functions, including authentication (with support for Single Sign-On) and password reset capabilities. Its features are highly customizable, allowing you to enable or disable specific functionalities as needed. Additionally, various elements of the login screen, such as the logo, can be tailored to align with your branding.
 
 The login mechanism uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API) for secure credential handling. When the API is unavailable, it seamlessly falls back to using cookies to ensure broad compatibility.
@@ -62,7 +58,7 @@ The standard SSO process involves redirecting users to the authentication provid
 
 **Foundation Auth** is designed to integrate seamlessly into various application environments, offering flexibility in both basic and advanced use cases. Depending on your platform (Genesis, React, Angular), the integration process may vary slightly. Below, you will find guidance for both basic and advanced usage scenarios, helping you set up the login functionality in your application with ease.
 
-Unlike the retired `foundation-login` package (which required a separate `configure()` + `define()` call), `@genesislcap/foundation-auth` exposes a single, asynchronous [`configure()`](./docs/api/foundation-auth.configure.md) function. It registers the required dependency-injection config **and** defines the custom element in one step, then resolves with the defined `FoundationAuth` element class — which makes it a natural fit for a lazily-loaded route `element`.
+`@genesislcap/foundation-auth` exposes a single, asynchronous [`configure()`](./docs/api/foundation-auth.configure.md) function. It registers the required dependency-injection config **and** defines the custom element in one step, then resolves with the defined `FoundationAuth` element class — which makes it a natural fit for a lazily-loaded route `element`.
 
 ### Basic usage
 
@@ -533,7 +529,7 @@ templateOptions: {
 </table>
 
 :::info
-`AuthConfig` also accepts `name`, `attributes`, `shadowOptions` and `elementOptions` (inherited from FAST's `PartialFASTElementDefinition`), letting you control the tag name and element definition used when `configure()` defines the custom element — this replaces the standalone `define()` call from `foundation-login`.
+`AuthConfig` also accepts `name`, `attributes`, `shadowOptions` and `elementOptions` (inherited from FAST's `PartialFASTElementDefinition`), letting you control the tag name and element definition used when `configure()` defines the custom element.
 :::
 
 
@@ -550,19 +546,3 @@ To enable this functionality add this block to the auth-preferences.kts
 Then when the user logs in they will be presented with a Terms and Conditions dialog as shown here:
 
 ![Terms and Conditions dialog example](./docs/img/terms-and-conditions.png)
-
-## Migrating from foundation-login
-
-`@genesislcap/foundation-login` has been retired; all applications should move to `@genesislcap/foundation-auth`. The package is not a drop-in rename — its configuration API was restructured. Key changes to be aware of:
-
-- **`configure()` is now async and self-contained.** `configure(container, config)` + a separate `define({ name })` call are replaced by a single `await configure(config)`, imported from the `@genesislcap/foundation-auth/config` subpath. It both registers the DI config and defines the custom element, resolving with the element class — see [`configure()`](./docs/api/foundation-auth.configure.md).
-- **Removed config options:** `autoConnect`, `autoAuth`, `showConnectionIndicator`, `defaultRedirectUrl`, `redirectHandler` and `submitButtonAppearance` no longer exist on `AuthConfig`.
-  - `defaultRedirectUrl` / `redirectHandler` are replaced by the [`postLoginRedirect`](./docs/api/foundation-auth.authconfig.postloginredirect.md) and [`postLogoutRedirect`](./docs/api/foundation-auth.authconfig.postlogoutredirect.md) callbacks.
-  - `submitButtonAppearance` is superseded by the more general [`templateOptions`](./docs/api/foundation-auth.authconfig.templateoptions.md) mechanism.
-- **`messageDelays` (a per-message-type map) is replaced by a single [`feedbackDelay`](./docs/api/foundation-auth.authconfig.feedbackdelay.md) number** (milliseconds).
-- **`sso.identityProvidersPath` has been removed** — the identity providers list endpoint is now resolved internally rather than being configured per app.
-- **SSO helper functions changed shape.** `fetchIdps`/`getSsoLoginUrl`/`Idp`/`IdpResponse` are replaced by an injectable `IDPService` (`getList`/`getLoginUrl`) and new `IdentityProvider`/`IDENTITY_PROVIDER` types.
-- **Routes gained `logout` and `terms-and-conditions`**, and lost `mfa-mail-sent` — see [`AuthRoutes`](./docs/api/foundation-auth.authroutes.md).
-- **`defaultLoginConfig` is now `defaultAuthConfig`**, and `LoginConfig`/`LoginRouting`/`getLoginRouting` are now `AuthConfig`/`AuthRouting`/`getAuthRouting` respectively.
-
-See the full API reference [here](./docs/api/index.md) for the complete, current shape of `AuthConfig` and related types.
