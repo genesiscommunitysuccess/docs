@@ -2,11 +2,13 @@
 title: 'Login'
 sidebar_label: 'Login'
 id: client-login
-keywords: [web, login, foundation login, frontend, ui, micro-front-ends]
+keywords: [web, login, auth, authentication, foundation auth, frontend, ui, micro-front-ends]
 tags:
   - web
   - login
-  - foundation login
+  - auth
+  - authentication
+  - foundation auth
   - frontend
   - ui
   - micro-front-ends
@@ -16,11 +18,15 @@ pagination_next: develop/client-capabilities/header/client-header
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The **Foundation Login** provides a comprehensive set of identity-management functions, including authentication (with support for Single Sign-On) and password reset capabilities. Its features are highly customizable, allowing you to enable or disable specific functionalities as needed. Additionally, various elements of the login screen, such as the logo, can be tailored to align with your branding.
+:::info
+The `@genesislcap/foundation-login` package has been retired and replaced by **`@genesislcap/foundation-auth`**. If you still reference `foundation-login` in your application, see [Migrating from foundation-login](#migrating-from-foundation-login) below.
+:::
+
+The **Foundation Auth** micro front-end (`@genesislcap/foundation-auth`) provides a comprehensive set of identity-management functions, including authentication (with support for Single Sign-On) and password reset capabilities. Its features are highly customizable, allowing you to enable or disable specific functionalities as needed. Additionally, various elements of the login screen, such as the logo, can be tailored to align with your branding.
 
 The login mechanism uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API) for secure credential handling. When the API is unavailable, it seamlessly falls back to using cookies to ensure broad compatibility.
 
-Below are examples showcasing the key screens and functionalities of the **Foundation Login**. These include the main login interface, authentication via Single Sign-On (SSO), and essential user management features such as password recovery, account creation requests, and password changes.
+Below are examples showcasing the key screens and functionalities of **Foundation Auth**. These include the main login interface, authentication via Single Sign-On (SSO), and essential user management features such as password recovery, account creation requests, and password changes.
 
 |Main login screen|Authentication via SSO|Forgotten password|Change password|Request account|
 |-------------------|------------------|-------------------|------------------|------------------|
@@ -44,33 +50,33 @@ To streamline development, setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` env
 
 ### Single Sign-On (SSO)
 
-The **Foundation Login** supports Single Sign-On (SSO) integration, allowing users to authenticate using a unified set of credentials, which may also include credentials from the Genesis Application Platform. Genesis supports SSO with both JWT and SAML.
+**Foundation Auth** supports Single Sign-On (SSO) integration, allowing users to authenticate using a unified set of credentials, which may also include credentials from the Genesis Application Platform. Genesis supports SSO with both JWT and SAML.
 
-While setting up SSO is primarily a back-end task, some front-end [SSO configuration](docs/api/foundation-login.loginconfig.sso.md) is required.
+While setting up SSO is primarily a back-end task, some front-end [SSO configuration](docs/api/foundation-auth.authconfig.sso.md) is required.
 
 :::info
-The standard SSO process involves redirecting users to the authentication provider's flow from the current page. However, many authentication providers block their system when running inside an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). To mitigate this, if the `Login` micro front-end detects it's running within an iframe, it opens the authentication flow in a separate popup window instead.
+The standard SSO process involves redirecting users to the authentication provider's flow from the current page. However, many authentication providers block their system when running inside an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). To mitigate this, if the auth micro front-end detects it's running within an iframe, it opens the authentication flow in a separate popup window instead.
 :::
 
 ## Integration
 
-The **Foundation Login** is designed to integrate seamlessly into various application environments, offering flexibility in both basic and advanced use cases. Depending on your platform (Genesis, React, Angular), the integration process may vary slightly. Below, you will find guidance for both basic and advanced usage scenarios, helping you set up the login functionality in your application with ease.
+**Foundation Auth** is designed to integrate seamlessly into various application environments, offering flexibility in both basic and advanced use cases. Depending on your platform (Genesis, React, Angular), the integration process may vary slightly. Below, you will find guidance for both basic and advanced usage scenarios, helping you set up the login functionality in your application with ease.
+
+Unlike the retired `foundation-login` package (which required a separate `configure()` + `define()` call), `@genesislcap/foundation-auth` exposes a single, asynchronous [`configure()`](./docs/api/foundation-auth.configure.md) function. It registers the required dependency-injection config **and** defines the custom element in one step, then resolves with the defined `FoundationAuth` element class — which makes it a natural fit for a lazily-loaded route `element`.
 
 ### Basic usage
 
-This section outlines the steps required to quickly integrate the **Foundation Login** into your application. The basic setup guide covers the essential configuration for setting up the login form, as well as establishing necessary routes and authentication options.
+This section outlines the steps required to quickly integrate **Foundation Auth** into your application. The basic setup guide covers the essential configuration for setting up the login form, as well as establishing necessary routes and authentication options.
 
 <Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
 <TabItem value="genesis">
 
-This example focuses on the setup necessary for enabling Login functionality in your `Genesis` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
+This example focuses on the setup necessary for enabling authentication functionality in your `Genesis` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
 
 Place the following code in the `routes/config.ts` file of your application:
 
 ```typescript
-// Import required dependencies from the foundation-login package
-import { Login } from '@genesislcap/foundation-login';
 // Import required dependencies from the foundation-comms package
 // You could also import analytics events and set them up in the NavigationContributor
 import { Auth, Session } from '@genesislcap/foundation-comms';
@@ -97,7 +103,18 @@ export class MainRouterConfig extends RouterConfiguration<RouterSettings> {
       { path: '', redirect: 'login' },
       {
         path: 'login',
-        element: Login,
+        // Lazily import and configure foundation-auth; `configure()` both
+        // registers the DI config and defines the custom element, resolving
+        // with the element class to use for this route.
+        element: async () => {
+          const { configure } = await import('@genesislcap/foundation-auth/config');
+          return configure({
+            hostPath: 'login',
+            postLoginRedirect: () => {
+              Route.name.replace(this.router, 'dashboard');
+            },
+          });
+        },
         title: 'Login',
         name: 'login',
         layout: loginLayout,
@@ -152,9 +169,9 @@ export class MainRouterConfig extends RouterConfiguration<RouterSettings> {
 </TabItem>
 <TabItem value="react">
 
-This example focuses on the setup necessary for enabling Login functionality in your `React` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
+This example focuses on the setup necessary for enabling authentication functionality in your `React` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
 
-Place the following code in the file where you want to define login component, so it can later be imported into your main application file:
+Place the following code in the file where you want to define the auth component, so it can later be imported into your main application file:
 
 :::info
 To see the full login configuration for React, visit the [howto-ui-integrations-react](https://github.com/genesiscommunitysuccess/howto-ui-integrations-react).
@@ -162,69 +179,61 @@ To see the full login configuration for React, visit the [howto-ui-integrations-
 
 
 ```typescript
-import {configure, define} from '@genesislcap/foundation-login';
 import { AUTH_PATH } from '../config';
-import { DI } from '@microsoft/fast-foundation';
 import { history } from '../utils/history';
 
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = () => {
-  configure(DI.getOrCreateDOMContainer(), {
-    autoConnect: true,
-    autoAuth: true,
+export const configureFoundationAuth = async () => {
+  const { configure } = await import('@genesislcap/foundation-auth/config');
+
+  return configure({
+    name: `client-app-login`,
     hostPath: AUTH_PATH,
-    redirectHandler: () => {
+    postLoginRedirect: () => {
       history.push('/order-mgmt');
     },
-  });
-
-  return define({
-    name: `client-app-login`,
   });
 };
 ```
 </TabItem>
 <TabItem value="angular">
 
-This example focuses on the setup necessary for enabling Login functionality in your `Angular` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
+This example focuses on the setup necessary for enabling authentication functionality in your `Angular` application. While it's not a complete routes configuration, it includes all the required elements related to the login setup.
 
-Place the following code in the file where you want to define login component, so it can later be imported into your main application file:
+Place the following code in the file where you want to define the auth component, so it can later be imported into your main application file:
 
 :::info
 To see the full login configuration for Angular, visit the [howto-ui-integrations-angular](https://github.com/genesiscommunitysuccess/howto-ui-integrations-angular).
 :::
 
 ```typescript
-import {configure, define} from '@genesislcap/foundation-login';
 import type { Router } from '@angular/router';
 import { getUser } from '@genesislcap/foundation-user';
-import { css, DI } from '@genesislcap/web-core';
+import { css } from '@genesislcap/web-core';
 import { AUTH_PATH } from '../app.config';
 import logo from '../../assets/logo.svg';
 
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = ({
+export const configureFoundationAuth = async ({
   router,
 }: {
   router: Router;
 }) => {
-  configure(DI.getOrCreateDOMContainer(), {
-    autoAuth: true,
-    autoConnect: true,
-    redirectHandler: () => {
+  const { configure } = await import('@genesislcap/foundation-auth/config');
+
+  return configure({
+    name: `client-app-login`,
+    hostPath: AUTH_PATH,
+    postLoginRedirect: () => {
       router.navigate([getUser().lastPath() ?? 'order-mgmt'])
     },
     logo: css `
       content: url("${logo}");
     `,
-  });
-
-  return define({
-    name: `client-app-login`,
   });
 }
 ```
@@ -233,37 +242,34 @@ export const configureFoundationLogin = ({
 
 ### Advanced usage
 
-For more complex scenarios, the advanced usage section explores how to customize the **Foundation Login** to meet specific needs. This includes advanced configuration options and extending its functionality for more intricate workflows, such as integrating Single Sign-On (SSO) or adding custom form fields.
+For more complex scenarios, the advanced usage section explores how to customize **Foundation Auth** to meet specific needs. This includes advanced configuration options and extending its functionality for more intricate workflows, such as integrating Single Sign-On (SSO) or adding custom form fields.
 
-The following example using the `Genesis` framework. The most important aspect of this example is the [`configure`](./docs/api/foundation-login.configure.md#example) function, which enables the application of advanced configurations. Notably, this function works the same way for React and Angular frameworks, ensuring consistency across implementations.
+The following example uses the `Genesis` framework. The most important aspect of this example is the [`configure`](./docs/api/foundation-auth.configure.md#example-1) function, which enables the application of advanced configurations. Notably, this function works the same way for React and Angular frameworks, ensuring consistency across implementations.
 
 ```typescript
 name: 'login',
 path: 'login',
 title: 'Login',
 element: async () => {
-  const { configure, define, defaultLoginConfig } = await import('@genesislcap/foundation-login');
-  configure(this.container, {
-    autoConnect: true,
-    autoAuth: true,
+  const { configure, defaultAuthConfig } = await import('@genesislcap/foundation-auth/config');
+  return configure({
     sso: {
       toggled: true,
-      identityProvidersPath: 'sso/list',
     },
     omitRoutes: ['request-account'],
     fields: {
-      ...defaultLoginConfig.fields,
+      ...defaultAuthConfig.fields,
       organisation: {
         label: 'CompID',
       },
     },
     hostPath: 'login',
-    defaultRedirectUrl: 'dashboard',
+    postLoginRedirect: () => {
+      Route.path.push('dashboard');
+    },
     logo: loginLogo,
     background: loginBG,
-  });
-  // You can import and return `Login` directly here or re-define it completely via `define`.
-  return define({
+    // Optionally provide a fully custom tag name for the defined element.
     name: `nexus-login`,
   });
 },
@@ -274,7 +280,7 @@ childRouters: true,
 
 ## Configuration
 
-The configuration section provides detailed information on how to configure and customize the **Foundation Login**. This section covers the management of public and private routes, as well as the available settings to tailor the authentication process and adjust the login interface to meet the specific requirements of your application.
+The configuration section provides detailed information on how to configure and customize **Foundation Auth**. This section covers the management of public and private routes, as well as the available settings to tailor the authentication process and adjust the login interface to meet the specific requirements of your application.
 
 ### Public and private routes
 
@@ -301,12 +307,12 @@ You may need to configure a **NavigationContributor** in your application's rout
 ```
 
 :::warning
-By default, a route that isn’t explicitly marked as `public` is considered non-public. However, non-public routes do not automatically block non-authenticated users from accessing them. This behavior must be implemented in a `NavigationContributor`. For more details, see the [example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn’t explicitly marked as `public` is considered non-public. However, non-public routes do not automatically block non-authenticated users from accessing them. This behavior must be implemented in a `NavigationContributor`. For more details, see the [example](./docs/api/foundation-auth.foundationauth.md) above.
 :::
 
 ### Customization options
 
-The **Foundation Login** offers extensive customization options to tailor its behavior and appearance to specific application requirements. This can be achieved by using the exported [`configure`](docs/api/foundation-login.configure.md) function. Through this function, you can modify default settings, such as enabling automatic connection, omitting certain routes, or customizing form fields.
+**Foundation Auth** offers extensive customization options to tailor its behavior and appearance to specific application requirements. This can be achieved by using the exported [`configure`](docs/api/foundation-auth.configure.md) function. Through this function, you can modify default settings, such as omitting certain routes, customizing form fields, or providing post-login/post-logout redirect behavior.
 
 Below is a table with the available configuration properties:
 
@@ -321,30 +327,8 @@ Below is a table with the available configuration properties:
   </thead>
   <tbody>
   <tr>
-  <td>[autoAuth](./docs/api/foundation-login.loginconfig.autoauth.md)</td>
-  <td><code>boolean</code></td>
-  <td>Determines whether login occurs automatically or requires the user to click a login button after a connection is established.</td>
-  <td>
-    ```typescript
-    autoAuth: true
-    ```
-  </td>
-</tr>
-
-<tr>
-  <td>[autoConnect](./docs/api/foundation-login.loginconfig.autoconnect.md)</td>
-  <td><code>boolean</code></td>
-  <td>Configures automatic connection or requires the user to click a connect button.</td>
-  <td>
-    ```typescript
-    autoConnect: true
-    ```
-  </td>
-</tr>
-
-<tr>
-  <td>[background](./docs/api/foundation-login.loginconfig.background.md)</td>
-  <td><code>ElementStyles</code></td>
+  <td>[background](./docs/api/foundation-auth.authconfig.background.md)</td>
+  <td><code>ComposableStyles | ComposableStyles[] | null</code></td>
   <td>Styles for the background of the login screen.</td>
   <td>
 ```typescript
@@ -358,24 +342,35 @@ background: css`
 </tr>
 
 <tr>
-  <td>[defaultRedirectUrl](./docs/api/foundation-login.loginconfig.defaultredirecturl.md)</td>
-  <td><code>string</code></td>
-  <td>Specifies the default URL to redirect the user to after a successful login.</td>
+  <td>[backgroundVideo](./docs/api/foundation-auth.authconfig.backgroundvideo.md)</td>
+  <td><code>{ src: string; type: 'video/ogg' | 'video/mp4' | 'video/webm'; } | null</code></td>
+  <td>Plays a background video behind the login form instead of a static background.</td>
   <td>
     ```typescript
-    defaultRedirectUrl: 'dashboard'
+    backgroundVideo: { src: '/assets/login-bg.mp4', type: 'video/mp4' }
     ```
   </td>
 </tr>
 
 <tr>
-  <td>[fields](./docs/api/foundation-login.loginconfig.fields.md)</td>
+  <td>[feedbackDelay](./docs/api/foundation-auth.authconfig.feedbackdelay.md)</td>
+  <td><code>number</code></td>
+  <td>_(Optional)_ Delay, in milliseconds, before transient feedback messages (e.g. forgot/reset password confirmations) are cleared. Defaults to <code>3000</code>.</td>
+  <td>
+    ```typescript
+    feedbackDelay: 5000
+    ```
+  </td>
+</tr>
+
+<tr>
+  <td>[fields](./docs/api/foundation-auth.authconfig.fields.md)</td>
   <td><code>FieldConfigMap</code></td>
   <td>Configuration map for each of the primary form fields.</td>
   <td>
     ```typescript
     fields: { 
-      ...defaultLoginConfig.fields, 
+      ...defaultAuthConfig.fields, 
       organisation: { 
         label: 'CompID' 
       } 
@@ -385,7 +380,7 @@ background: css`
 </tr>
 
 <tr>
-  <td>[hostPath](./docs/api/foundation-login.loginconfig.hostpath.md)</td>
+  <td>[hostPath](./docs/api/foundation-auth.authconfig.hostpath.md)</td>
   <td><code>string</code></td>
   <td>The `path` of the microfrontend as defined in the parent/host route.</td>
   <td>
@@ -396,7 +391,7 @@ background: css`
 </tr>
 
 <tr>
-  <td>[localizationResources](./docs/api/foundation-login.loginconfig.localizationresources.md)</td>
+  <td>[localizationResources](./docs/api/foundation-auth.authconfig.localizationresources.md)</td>
   <td><code>I18nextConfig['resources']</code></td>
   <td>_(Optional)_ [Internationalization](../020_internationalization/index.mdx) (i18n) resources for localization.</td>
   <td>
@@ -418,8 +413,8 @@ localizationResources: {
 </tr>
 
 <tr>
-  <td>[logo](./docs/api/foundation-login.loginconfig.logo.md)</td>
-  <td><code>ElementStyles | null</code></td>
+  <td>[logo](./docs/api/foundation-auth.authconfig.logo.md)</td>
+  <td><code>ComposableStyles | ComposableStyles[] | null</code></td>
   <td>Customizable styles for the logo. Providing `null` will hide the logo.</td>
   <td>
 ```typescript
@@ -431,7 +426,7 @@ logo: css`
 </tr>
 
 <tr>
-  <td>[logoAltText](./docs/api/foundation-login.loginconfig.logoalttext.md)</td>
+  <td>[logoAltText](./docs/api/foundation-auth.authconfig.logoalttext.md)</td>
   <td><code>string</code></td>
   <td>Alt text for the logo, used for accessibility.</td>
   <td>
@@ -442,22 +437,7 @@ logo: css`
 </tr>
 
 <tr>
-  <td>[messageDelays](./docs/api/foundation-login.loginconfig.messagedelays.md)</td>
-  <td><code>MessageDelays</code></td>
-  <td>_(Optional)_ Configures delays for various message-related actions.</td>
-  <td>
-```typescript
-messageDelays: {
-  forgotPassword: 1000,
-  resetPassword: 2000,
-  base: 500
-}
-```
-  </td>
-</tr>
-
-<tr>
-  <td>[omitRedirectUrls](./docs/api/foundation-login.loginconfig.omitredirecturls.md)</td>
+  <td>[omitRedirectUrls](./docs/api/foundation-auth.authconfig.omitredirecturls.md)</td>
   <td><code>string[]</code></td>
   <td>Specifies return URLs to omit, which may have been captured by the session service.</td>
   <td>
@@ -468,8 +448,8 @@ omitRedirectUrls: ['/not-found'],
 </tr>
 
 <tr>
-  <td>[omitRoutes](./docs/api/foundation-login.loginconfig.omitroutes.md)</td>
-  <td><code>`Exclude<Routes, 'login' | 'not-found'>[]`</code></td>
+  <td>[omitRoutes](./docs/api/foundation-auth.authconfig.omitroutes.md)</td>
+  <td><code>`Exclude<AuthRoutes, 'login' | 'not-found'>[]`</code></td>
   <td>Omits specific internal routes, except for `login` and `not-found`.</td>
   <td>
 ```typescript
@@ -479,31 +459,31 @@ omitRoutes: ['request-account'],
 </tr>
 
 <tr>
-  <td>[redirectHandler](./docs/api/foundation-login.loginconfig.redirecthandler.md)</td>
-  <td><code>(url: string) => void</code></td>
-  <td>_(Optional)_ Allows an external app's router to navigate after successful login.</td>
+  <td>[postLoginRedirect](./docs/api/foundation-auth.authconfig.postloginredirect.md)</td>
+  <td><code>() => void</code></td>
+  <td>Callback invoked after a successful login, used to hand control back to the host app's router. Defaults to navigating to the user's last path (or `protected`).</td>
   <td>
 ```typescript
-redirectHandler: (url) => navigateToFn('/order-mgmt')
+postLoginRedirect: () => navigateToFn('/order-mgmt')
 ```
   </td>
 </tr>
 
 <tr>
-  <td>[showConnectionIndicator](./docs/api/foundation-login.loginconfig.showconnectionindicator.md)</td>
-  <td><code>boolean</code></td>
-  <td>Toggles the display of the connection status indicator.</td>
+  <td>[postLogoutRedirect](./docs/api/foundation-auth.authconfig.postlogoutredirect.md)</td>
+  <td><code>() => void</code></td>
+  <td>Callback invoked after logout, used to hand control back to the host app's router.</td>
   <td>
-    ```typescript
-    showConnectionIndicator: true
-    ```
+```typescript
+postLogoutRedirect: () => navigateToFn('/login')
+```
   </td>
 </tr>
 
 <tr>
-  <td>[showEnvironmentIndicator](./docs/api/foundation-login.loginconfig.showenvironmentindicator.md)</td>
+  <td>[showEnvironmentIndicator](./docs/api/foundation-auth.authconfig.showenvironmentindicator.md)</td>
   <td><code>boolean</code></td>
-  <td>Toggles the display of the environment indicator. See [Environment Indicator](../env-files/environment-indicator) for configuration details.</td>
+  <td>_(Optional)_ Toggles the display of the environment indicator. See [Environment Indicator](../env-files/environment-indicator) for configuration details.</td>
   <td>
     ```typescript
     showEnvironmentIndicator: true
@@ -512,32 +492,35 @@ redirectHandler: (url) => navigateToFn('/order-mgmt')
 </tr>
 
 <tr>
-  <td>[sso](./docs/api/foundation-login.loginconfig.sso.md)</td>
+  <td>[sso](./docs/api/foundation-auth.authconfig.sso.md)</td>
   <td><code>SSOConfig | null</code></td>
   <td>Configures Single Sign-On (SSO) settings.</td>
   <td>
 ```typescript
 sso: {
   toggled: true,
-  identityProvidersPath: 'sso/list',
 },
  ```
   </td>
 </tr>
 
 <tr>
-  <td>[submitButtonAppearance](./docs/api/foundation-login.loginconfig.submitbuttonappearance.md)</td>
-  <td><code>string</code></td>
-  <td>_(Optional)_ Customizes the appearance of submit buttons in the login form.</td>
+  <td>[templateOptions](./docs/api/foundation-auth.authconfig.templateoptions.md)</td>
+  <td><code>TemplateOptions</code></td>
+  <td>Maps internal subcomponent tags (button, checkbox, provider, etc.) to your host application's design-system elements. Merged with the package's <code>defaultTemplateOptions</code>.</td>
   <td>
-    ```typescript
-    submitButtonAppearance: 'primary'
-    ```
+```typescript
+templateOptions: {
+  button: 'nexus-button',
+  checkbox: 'nexus-checkbox-next',
+  provider: 'template',
+}
+```
   </td>
 </tr>
 
 <tr>
-  <td>[versionInformation](./docs/api/foundation-login.loginconfig.versioninformation.md)</td>
+  <td>[versionInformation](./docs/api/foundation-auth.authconfig.versioninformation.md)</td>
   <td><code>string</code></td>
   <td>_(Optional)_ Displays version information for the login microfrontend.</td>
   <td>
@@ -548,6 +531,10 @@ sso: {
 </tr>
   </tbody>
 </table>
+
+:::info
+`AuthConfig` also accepts `name`, `attributes`, `shadowOptions` and `elementOptions` (inherited from FAST's `PartialFASTElementDefinition`), letting you control the tag name and element definition used when `configure()` defines the custom element — this replaces the standalone `define()` call from `foundation-login`.
+:::
 
 
 ### Terms and Conditions 
@@ -563,3 +550,19 @@ To enable this functionality add this block to the auth-preferences.kts
 Then when the user logs in they will be presented with a Terms and Conditions dialog as shown here:
 
 ![Terms and Conditions dialog example](./docs/img/terms-and-conditions.png)
+
+## Migrating from foundation-login
+
+`@genesislcap/foundation-login` has been retired; all applications should move to `@genesislcap/foundation-auth`. The package is not a drop-in rename — its configuration API was restructured. Key changes to be aware of:
+
+- **`configure()` is now async and self-contained.** `configure(container, config)` + a separate `define({ name })` call are replaced by a single `await configure(config)`, imported from the `@genesislcap/foundation-auth/config` subpath. It both registers the DI config and defines the custom element, resolving with the element class — see [`configure()`](./docs/api/foundation-auth.configure.md).
+- **Removed config options:** `autoConnect`, `autoAuth`, `showConnectionIndicator`, `defaultRedirectUrl`, `redirectHandler` and `submitButtonAppearance` no longer exist on `AuthConfig`.
+  - `defaultRedirectUrl` / `redirectHandler` are replaced by the [`postLoginRedirect`](./docs/api/foundation-auth.authconfig.postloginredirect.md) and [`postLogoutRedirect`](./docs/api/foundation-auth.authconfig.postlogoutredirect.md) callbacks.
+  - `submitButtonAppearance` is superseded by the more general [`templateOptions`](./docs/api/foundation-auth.authconfig.templateoptions.md) mechanism.
+- **`messageDelays` (a per-message-type map) is replaced by a single [`feedbackDelay`](./docs/api/foundation-auth.authconfig.feedbackdelay.md) number** (milliseconds).
+- **`sso.identityProvidersPath` has been removed** — the identity providers list endpoint is now resolved internally rather than being configured per app.
+- **SSO helper functions changed shape.** `fetchIdps`/`getSsoLoginUrl`/`Idp`/`IdpResponse` are replaced by an injectable `IDPService` (`getList`/`getLoginUrl`) and new `IdentityProvider`/`IDENTITY_PROVIDER` types.
+- **Routes gained `logout` and `terms-and-conditions`**, and lost `mfa-mail-sent` — see [`AuthRoutes`](./docs/api/foundation-auth.authroutes.md).
+- **`defaultLoginConfig` is now `defaultAuthConfig`**, and `LoginConfig`/`LoginRouting`/`getLoginRouting` are now `AuthConfig`/`AuthRouting`/`getAuthRouting` respectively.
+
+See the full API reference [here](./docs/api/index.md) for the complete, current shape of `AuthConfig` and related types.

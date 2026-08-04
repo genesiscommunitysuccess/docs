@@ -3,7 +3,6 @@
  * Remove a package entry (or run with --force) to trigger regeneration.
  */
 module.exports = {
-  "@genesislcap/foundation-login": "14.425.0",
   "@genesislcap/foundation-comms": "14.425.0",
   "@genesislcap/foundation-entity-management": "14.425.0",
   "@genesislcap/grid-pro": "14.425.0",
@@ -22,4 +21,5 @@ module.exports = {
   "@genesislcap/foundation-criteria": "14.425.0",
   "@genesislcap/foundation-header": "14.425.0",
   "@genesislcap/expression-builder": "14.425.0",
+  "@genesislcap/foundation-auth": "14.461.0",
 };
