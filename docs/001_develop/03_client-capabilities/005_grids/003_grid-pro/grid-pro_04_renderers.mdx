@@ -16,6 +16,7 @@ import {
   GridProExampleActionRenderer,
   GridProExampleActionsMenuRenderer,
   GridProExampleBooleanRenderer,
+  GridProExampleIconRenderer,
   GridProExampleEditableRenderer,
   GridProExampleSelectRenderer,
   GridProExampleSelectEditorRenderer,
@@ -176,6 +177,49 @@ const statusPillRendererColDef = {
     }
   },
 }
+```
+
+### Icon renderer (`icon`)
+
+Renders either a design-system icon (`iconName`) or an image icon (`iconSrc`) inside a grid cell.
+
+<GridProExampleIconRenderer />
+
+#### Key features
+
+- Render icon by name using `iconName` (optionally `iconSize`)
+- Render icon by image using `iconSrc` (optionally `iconHeight`)
+- Supports custom coloring via `iconColor`
+- Supports optional secondary icon overlay via `secondaryIcon`
+- Supports disabled state via `disabled` (disables hover/click behavior)
+
+#### Usage example
+
+```typescript
+const iconRendererColDef = {
+  headerName: 'Indicator',
+  field: 'iconEnabled',
+  cellRenderer: 'icon',
+  cellRendererParams: (params) => {
+    const enabled = !!params.data.iconEnabled;
+
+    return enabled
+      ? {
+          iconName: 'check',
+          iconColor: 'green',
+          secondaryIcon: 'xmark',
+          secondaryIconColor: 'blue',
+          showHover: true,
+          clickHandler: (event, rowData) => handleIconClick(rowData),
+        }
+      : {
+          iconName: 'xmark',
+          iconColor: 'red',
+          disabled: true,
+          showHover: true,
+        };
+  },
+};
 ```
 
 ### Text renderer (`text`)
