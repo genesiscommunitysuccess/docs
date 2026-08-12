@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
-            name: "@genesislcap/foundation-login",
+            name: "@genesislcap/foundation-auth",
             enabled: true,
             src: {
                 api_docs: "./docs/api",
@@ -18,7 +18,9 @@ exports.default = {
                 keywords: [
                     "web",
                     "login",
-                    "foundation login",
+                    "auth",
+                    "authentication",
+                    "foundation auth",
                     "frontend",
                     "ui",
                     "micro-front-ends",
@@ -26,7 +28,9 @@ exports.default = {
                 tags: [
                     "web",
                     "login",
-                    "foundation login",
+                    "auth",
+                    "authentication",
+                    "foundation auth",
                     "frontend",
                     "ui",
                     "micro-front-ends",

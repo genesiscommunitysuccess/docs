@@ -17,6 +17,7 @@ const MANIFEST_PATH = './plugins/api-docs/src/manifest.ts';
 
 // @genesislcap packages that should be updated (excluding non-foundation packages)
 const GENESISLCAP_PACKAGES = [
+  '@genesislcap/foundation-auth',
   '@genesislcap/foundation-comms',
   '@genesislcap/foundation-criteria',
   '@genesislcap/foundation-entity-management',
@@ -26,7 +27,6 @@ const GENESISLCAP_PACKAGES = [
   '@genesislcap/foundation-header',
   '@genesislcap/foundation-i18n',
   '@genesislcap/foundation-layout',
-  '@genesislcap/foundation-login',
   '@genesislcap/foundation-notifications',
   '@genesislcap/foundation-openfin',
   '@genesislcap/foundation-redux',
