@@ -260,16 +260,6 @@ export class HeaderExampleComponent {
       </td>
     </tr>
     <tr>
-      <td><a href="/develop/client-capabilities/header/client-header-feature-flags/#show-feature-flags-selector"><code>show-feature-flags-selector</code></a></td>
-      <td><code>boolean</code></td>
-      <td>Optional. Force-shows the Feature Flags button. Usually unnecessary: the button appears automatically when <code>featureFlagOptions.availableFlags</code> is non-empty. See <a href="/develop/client-capabilities/header/client-header-feature-flags/">Feature flags</a>.</td>
-      <td>
-        ```typescript
-        <foundation-header show-feature-flags-selector>
-        ```
-      </td>
-    </tr>
-    <tr>
       <td>[hide-side-bar](./docs/api/foundation-header.navigation.hidesidebar.md)</td>
       <td><code>boolean</code></td>
       <td>Boolean attribute which controls whether the navigation bar will display the side bar.</td>
@@ -348,7 +338,7 @@ export class HeaderExampleComponent {
     <tr>
       <td><a href="/develop/client-capabilities/header/client-header-feature-flags/#featureflagoptions"><code>featureFlagOptions</code></a></td>
       <td><code>FeatureFlagOptions</code></td>
-      <td>Object which defines the feature flags offered in the header selector. When <code>availableFlags</code> is non-empty, the Feature Flags button is shown automatically. Selected flags sync to URL <code>feature.*</code> query params and reload the page. See <a href="/develop/client-capabilities/header/client-header-feature-flags/">Feature flags</a>.</td>
+      <td>Object which defines the feature flags offered in the header selector. Populate <code>availableFlags</code> to show the Feature Flags button; an empty list keeps it hidden. Selected flags sync to URL <code>feature.*</code> query params and reload the page. See <a href="/develop/client-capabilities/header/client-header-feature-flags/">Feature flags</a>.</td>
       <td>
         ```typescript
         <foundation-header :featureFlagOptions="${(x) => x.featureFlagOptions}">

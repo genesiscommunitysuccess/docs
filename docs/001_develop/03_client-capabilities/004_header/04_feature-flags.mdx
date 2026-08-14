@@ -16,7 +16,7 @@ import FeatureFlagsHeaderExample from './examples/feature_flags_header_example.j
 
 `foundation-header` can show a **Feature Flags** control on the right-hand side of the navigation bar. Users open a panel with a multiselect of flags you define; changing the selection updates URL `feature.*` query parameters and **reloads the page** so boot-time consumers re-evaluate the flags.
 
-The button appears automatically when [`featureFlagOptions.availableFlags`](#featureflagoptions) is non-empty. You do not need `show-feature-flags-selector` in normal use.
+The button appears when [`featureFlagOptions.availableFlags`](#featureflagoptions) is non-empty.
 
 :::info Platform version 14.498.0**
 :::
@@ -27,6 +27,25 @@ Pass a `featureFlagOptions` object whose `availableFlags` list names each flag a
 
 <Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
+<TabItem value="react">
+
+```tsx
+import { FoundationHeader } from '@genesislcap/foundation-header/react';
+import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
+
+const featureFlagOptions: FeatureFlagOptions = {
+  availableFlags: [
+    { name: 'ai', label: 'AI' },
+    { name: 'forceHttp', label: 'Force HTTP' },
+  ],
+};
+
+export default function HeaderFeatureFlagsExample() {
+  return <FoundationHeader featureFlagOptions={featureFlagOptions} />;
+}
+```
+
+</TabItem>
 <TabItem value="genesis">
 
 ```typescript
@@ -48,25 +67,6 @@ const featureFlagOptions: FeatureFlagOptions = {
   `,
 })
 export class HeaderFeatureFlagsExample extends GenesisElement {}
-```
-
-</TabItem>
-<TabItem value="react">
-
-```tsx
-import { FoundationHeader } from '@genesislcap/foundation-header/react';
-import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
-
-const featureFlagOptions: FeatureFlagOptions = {
-  availableFlags: [
-    { name: 'ai', label: 'AI' },
-    { name: 'forceHttp', label: 'Force HTTP' },
-  ],
-};
-
-export default function HeaderFeatureFlagsExample() {
-  return <FoundationHeader featureFlagOptions={featureFlagOptions} />;
-}
 ```
 
 </TabItem>
@@ -107,7 +107,7 @@ export class HeaderFeatureFlagsExampleComponent {
 | ----- | ---- | ----------- |
 | `availableFlags` | `{ name: string; label: string }[]` | Flags offered in the multiselect. `name` is written to the URL as `feature.<name>`; `label` is the UI text. |
 
-When `availableFlags` is empty or omitted, the Feature Flags control stays hidden (unless you force it with [`show-feature-flags-selector`](#show-feature-flags-selector)).
+When `availableFlags` is empty or omitted, the Feature Flags control stays hidden.
 
 ## URL behaviour
 
@@ -129,22 +129,9 @@ When the multiselect selection changes, the header emits `feature-flags-changed`
 
 <Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
-<TabItem value="genesis">
-
-```typescript
-html`
-  <foundation-header
-    :featureFlagOptions=${() => featureFlagOptions}
-    @feature-flags-changed=${(x, c) => x.onFeatureFlagsChanged(c.event)}
-  ></foundation-header>
-`
-```
-
-</TabItem>
 <TabItem value="react">
 
 ```tsx
-import { useEffect, useRef } from 'react';
 import { FoundationHeader } from '@genesislcap/foundation-header/react';
 import type { FeatureFlagOptions } from '@genesislcap/foundation-header';
 
@@ -156,18 +143,25 @@ const featureFlagOptions: FeatureFlagOptions = {
 };
 
 export default function HeaderFeatureFlagsEventsExample() {
-  const headerRef = useRef(null);
-
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-    const handler = (e: CustomEvent<string[]>) => console.log(e.detail);
-    el.addEventListener('feature-flags-changed', handler);
-    return () => el.removeEventListener('feature-flags-changed', handler);
-  }, []);
-
-  return <FoundationHeader ref={headerRef} featureFlagOptions={featureFlagOptions} />;
+  return (
+    <FoundationHeader
+      featureFlagOptions={featureFlagOptions}
+      onfeature-flags-changed={(e: CustomEvent<string[]>) => console.log(e.detail)}
+    />
+  );
 }
+```
+
+</TabItem>
+<TabItem value="genesis">
+
+```typescript
+html`
+  <foundation-header
+    :featureFlagOptions=${() => featureFlagOptions}
+    @feature-flags-changed=${(x, c) => x.onFeatureFlagsChanged(c.event)}
+  ></foundation-header>
+`
 ```
 
 </TabItem>
@@ -182,16 +176,6 @@ export default function HeaderFeatureFlagsEventsExample() {
 
 </TabItem>
 </Tabs>
-
-## `show-feature-flags-selector`
-
-Optional boolean attribute that **force-shows** the Feature Flags button even when `availableFlags` is empty. Usual apps can omit it — supplying a non-empty `availableFlags` list is enough.
-
-```html
-<foundation-header show-feature-flags-selector></foundation-header>
-```
-
-In React the prop is `showFeatureFlagsSelector`.
 
 ## Parts
 
