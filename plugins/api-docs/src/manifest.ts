@@ -210,7 +210,7 @@ export default {
     //   },
     // },
     {
-      name: "@genesislcap/foundation-login",
+      name: "@genesislcap/foundation-auth",
       enabled: true,
       src: {
         api_docs: "./docs/api",
@@ -225,7 +225,9 @@ export default {
         keywords: [
           "web",
           "login",
-          "foundation login",
+          "auth",
+          "authentication",
+          "foundation auth",
           "frontend",
           "ui",
           "micro-front-ends",
@@ -233,7 +235,9 @@ export default {
         tags: [
           "web",
           "login",
-          "foundation login",
+          "auth",
+          "authentication",
+          "foundation auth",
           "frontend",
           "ui",
           "micro-front-ends",

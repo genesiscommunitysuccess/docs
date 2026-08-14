@@ -28,7 +28,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[@genesislcap/foundation-login](./foundation-login.md)
+[@genesislcap/foundation-auth](./foundation-auth.md)
 
 
 </td><td>

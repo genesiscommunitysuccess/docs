@@ -31,7 +31,7 @@ Add the Foundation UI npm packages that you require. Then update your `package.j
   ...
   "depependencies": {
     "@genesislcap/foundation-comms": "latest",
-    "@genesislcap/foundation-login": "latest",
+    "@genesislcap/foundation-auth": "latest",
     "@genesislcap/foundation-entity-management": "latest",
     "@genesislcap/foundation-header": "latest",
     "@genesislcap/foundation-ui": "latest",
@@ -56,7 +56,7 @@ import { EntityManagement } from '@genesislcap/foundation-entity-management';
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
-import { configureFoundationLogin } from './foundation-login';
+import { configureFoundationAuth } from './foundation-auth';
 
 EntityManagement;
 
@@ -72,7 +72,7 @@ configureHeader({
  },
 });
 
-configureFoundationLogin();
+configureFoundationAuth();
 
 rapidDesignSystem
  .provideDesignSystem()
@@ -88,25 +88,20 @@ rapidDesignSystem
 To use the auth login component create a file to configure the auth micro frontend.
 
 ```
-import {configure, define} from '@genesislcap/foundation-login';
+import { configure } from '@genesislcap/foundation-auth/config';
 import { AUTH_PATH } from '../config';
-import { DI } from '@microsoft/fast-foundation';
 import { history } from '../utils/history';
 
 /**
  * Configure the micro frontend
  */
-export const configureFoundationLogin = () => {
-  configure(DI.getOrCreateDOMContainer(), {
-    showConnectionIndicator: true,
+export const configureFoundationAuth = () => {
+  return configure({
+    name: `client-app-login`,
     hostPath: AUTH_PATH,
-    redirectHandler: () => {
+    postLoginRedirect: () => {
       history.push('/home');
     },
-  });
-
-  return define({
-    name: `client-app-login`,
   });
 };
 ```
