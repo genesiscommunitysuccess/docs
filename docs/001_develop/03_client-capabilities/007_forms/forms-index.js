@@ -16,6 +16,7 @@ import SwitchDemo from '/examples/ui/client-capabilities/interaction/switch.js';
 import TextAreaDemo from '/examples/ui/client-capabilities/interaction/text-area.js';
 import TextFieldDemo from '/examples/ui/client-capabilities/interaction/text-field.js';
 import ToolbarDemo from '/examples/ui/client-capabilities/interaction/toolbar.js';
+import VerificationCodeInputDemo from '/examples/ui/client-capabilities/interaction/verification-code-input.js';
 
 import CriteriaSegmentedControlDemo from '/examples/ui/client-capabilities/interaction/criteria-segmented-control.js';
 import SegmentedControlDemo from '/examples/ui/client-capabilities/interaction/segmented-control.js';
@@ -136,6 +137,12 @@ const cardData = [
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-toolbar/",
     "text": "Container for grouping related controls",
     children: <ToolbarDemo />,
+  },
+  {
+    "heading": "Verification Code Input",
+    "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-verification-code-input/",
+    "text": "Multi-digit numeric input for OTP and MFA codes",
+    children: <VerificationCodeInputDemo />,
   },
 ];
 
