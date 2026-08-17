@@ -1,0 +1,21 @@
+package.json
+  s_205ee09b88d364::t_34bd9f9e828dad 106-110
+package-lock.json
+  s_205ee09b88d364::t_dcf43fbfad3229 18391-18393,18397-18399,18403-18405,18408,18430-18432,40402-40404,40410-40412,40416,40418,43939-43941,45662-45664,49328-49330,50915,50920-50922,50926
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "b21152d3ed5ea35052acf57a0ded8638254b8f5b",
+  "prompts": {},
+  "sessions": {
+    "s_205ee09b88d364": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8cd8b724-8256-45b0-abb4-73c497de94c3",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Jay Taylerson <jay.taylerson@genesis.global>"
+    }
+  }
+}
