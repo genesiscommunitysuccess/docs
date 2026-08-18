@@ -47,3 +47,8 @@ ENTITY_ID_TYPE is an enumeration with the following possible values.
 | PROFILE_NAME | If the type is PROFILE_NAME, ENTITY_ID will be the name of a PROFILE. All users that have that profile assignment will receive the notification.  |
 
 An additional value is available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. This is used primarily in multi-tenant systems. If using this value, notifications can be sent to everyone with visibility on a particular entity.
+
+When you configure a route with the `SELF` entity type, its behaviour depends on whether you specify an `ENTITY_ID`:
+
+* **Without an `ENTITY_ID`**: The route resolves to the sender of the notification (the user who triggered the event).
+* **With an `ENTITY_ID`**: The route is scoped to that specific user. The notification is delivered only if the sender of the notification matches the specified `ENTITY_ID`. This prevents duplicate alerts and cross-delivery when multiple users subscribe to shared topics.
