@@ -47,3 +47,32 @@ ENTITY_ID_TYPE is an enumeration with the following possible values.
 | PROFILE_NAME | If the type is PROFILE_NAME, ENTITY_ID will be the name of a PROFILE. All users that have that profile assignment will receive the notification.  |
 
 An additional value is available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. This is used primarily in multi-tenant systems. If using this value, notifications can be sent to everyone with visibility on a particular entity.
+
+#### `SELF` entity type
+
+The `SELF` entity type routes notifications back to the user who triggered the event (the sender). It operates in two distinct modes:
+
+* **Entity-blank (legacy)**: If the `ENTITY_ID` is empty, the route resolves to whoever is self-notifying. The notification is delivered to the sender of the message.
+* **Entity-scoped**: If the `ENTITY_ID` is populated with a username, the route is explicitly owned by that user. The notification is delivered to this user only when they are also the sender of the notification. This prevents duplicate notifications and channel leaks on shared topics where multiple users have active subscriptions.
+
+To use entity-scoped `SELF` routing, you must use `@genesislcap/pbc-notify-ui` version `15.3.1` or higher, and `genesis-notify` version `8.15.4` or higher.
+
+:::note
+Existing legacy `USER_NAME` subscription routes do not auto-migrate. You must delete and recreate them to use the new `SELF` routing and avoid duplicate notifications.
+:::
+
+###### Examples
+
+An entity-blank `SELF` route (resolves to any active sender):
+
+```csv
+NOTIFY_ROUTE_ID,ENTITY_ID,ENTITY_ID_TYPE,EXCLUDE_SENDER
+1,,SELF,false
+```
+
+An entity-scoped `SELF` route (resolves only when `JohnDoe` is the sender):
+
+```csv
+NOTIFY_ROUTE_ID,ENTITY_ID,ENTITY_ID_TYPE,EXCLUDE_SENDER
+2,JohnDoe,SELF,false
+```
