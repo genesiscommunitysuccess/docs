@@ -2,10 +2,11 @@
 title: 'Notify - components'
 sidebar_label: 'Components'
 id: notify-ui-components
-keywords: [notify, ui-components]
+keywords: [notify, ui-components, sounds, alert-sounds]
 tags:
   - notify
   - ui-components
+  - sounds
 ---
 
 ## Notification Dashboard
@@ -24,6 +25,8 @@ For example, a user creates a rule for the table `TRADE` that has only the condi
 
 The available destinations are the ones registered in [Routes](#routes).
 
+When you create or edit a rule, you can attach an **Alert sound** (MP3 or WAV, 2 MB or smaller). Use **Attach** or **Replace** to choose a file, **Test** to preview it, and **Clear** to remove it. The sound is stored with the rule and plays when that rule fires, unless a [Sounds](#sounds) tab rule matches first.
+
 ### Templates
 
 ![Templates](/img/pbc-notify-ui/02_templates.png)
@@ -37,6 +40,8 @@ A template is the blueprint for a rule. The template must have at least one cond
 Different users can use this to create their own values. For example, user John can subscribe to this template and set the condition `PRICE > 450`; user Thomas can subscribe to the template and set the condition `PRICE > 10`; etc. 
 
 The available destinations will be the ones registered in [Routes](#routes).
+
+Templates also support an **Alert sound**, using the same Attach / Replace / Test / Clear controls as [Rules](#rules). Subscribing to a template creates a rule for that user, so the template sound plays for those subscribed alerts.
 
 ### Routes
 
@@ -62,7 +67,7 @@ This shows a grid that contains all the notifications and alerts for all system 
 
 ## Inbox
 
-This is a sidebar component that shows a alert log as well the templates and rules that the user is subscribed to. Check the [permissions](../notify-permissions#inbox) for Inbox too.
+This is a sidebar component (Alerts Center) that shows the alert log, the templates a user can subscribe to, and the Sounds tab for configurable alert audio. Check the [permissions](../notify-permissions#inbox) for Inbox too.
 
 ### Alert Log
 
@@ -81,3 +86,65 @@ This shows all the rules created in the [Rules](#rules) section. The user can pa
 ![Subscribe](/img/pbc-notify-ui/09_inbox_subscribe.png)
 
 This shows all the templates that were created previously in the [Templates](#templates) section. A user can subscribe to any template. If the template has additional parameters, then the user must specify a value for each parameter to be able to subscribe to the template.
+
+### Sounds
+
+![Sounds](/img/pbc-notify-ui/10_inbox_sounds.png)
+
+The **Sounds** tab in Alerts Center lets each user configure up to 10 local sound rules. These rules are stored in the browser (IndexedDB) and restored on reload. There is no bundled default sound.
+
+Open **Sound Alerts Information** on the tab for a short reminder of the match options.
+
+Each rule can match in one of three ways:
+
+- **MESSAGE text** — the alert `MESSAGE` contains the word or phrase (case-insensitive, whole-phrase edges). For example, `limit breached`.
+- **HEADER text** — the alert `HEADER` contains the word or phrase (case-insensitive, whole-phrase edges). For example, `Price alert`. Patterns such as `$100` and `50%` are valid.
+- **Notification rule** — the new alert’s `DYNAMIC_RULE_ID` equals the selected rule. Subscribing to a template creates a rule for you, so those appear in this list too.
+
+For each rule you can choose an MP3 or WAV file (2 MB or smaller), test-play it, clear it, or mute that rule. The tab also has a volume slider and **Mute all**. Click **Add rule** to add another slot (up to 10).
+
+When a new alert arrives, playback uses this order:
+
+1. The first matching Sounds-tab rule that has a playable file.
+2. Otherwise, the sound attached to the notification rule or template (if the alert includes `DYNAMIC_RULE_ID`).
+
+**Notification rule** matching and rule/template-attached sounds require the Notify server to populate `DYNAMIC_RULE_ID` on alert rows (Notify `8.15.10` or later). MESSAGE and HEADER matching work from the alert text alone.
+
+:::note
+Browsers may block audio until the user has interacted with the page. Choosing a sound file counts as a gesture.
+:::
+
+#### Enabling playback
+
+The Sounds tab only configures rules. Sounds play only if the layout listener is mounted once in the application, so audio still works when Alerts Center is closed.
+
+Register `FoundationSounds` from `@genesislcap/pbc-notify-ui` and place `<foundation-sounds>` on the layout (the same target as the inbox flyout and `rapid-notification-listener`). Do not mount a second listener; the config UI is `<foundation-sounds-panel>` inside the Sounds tab.
+
+```typescript
+import { FoundationSounds } from '@genesislcap/pbc-notify-ui';
+import { html } from '@genesislcap/web-core';
+import type { AppElement } from '@genesislcap/foundation-shell/app';
+
+FoundationSounds;
+
+export const notifySounds: AppElement = {
+  targetId: 'layout',
+  elements: html`
+    <foundation-sounds data-pbc-asset-id="notify-sounds"></foundation-sounds>
+  `,
+};
+```
+
+If you are not using foundation-shell PBC assets, register the element and mount it once in the application layout:
+
+```html
+<foundation-sounds></foundation-sounds>
+```
+
+Applications installed with [GenX](/develop/business-components/notifications/notifications-installation/) pick this up from the Notify seed. Existing apps that already include Notify need the layout listener added as above.
+
+Disable playback with `sound-enabled="false"` on `<foundation-sounds>`, or by not mounting the listener.
+
+:::warning
+`<foundation-sounds>` and the Sounds tab must load the **same** `@genesislcap/pbc-notify-ui` module instance. They share `AlertSoundPlayer.shared`. If the layout listener and inbox come from separate bundles (for example a host static import plus a federated Notify remote without singleton sharing), the tab configures one player while the listener plays from another — which looks like silence with no error.
+:::
