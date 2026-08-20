@@ -1,0 +1,19 @@
+docs/001_develop/04_business-components/02_notifications/concepts.mdx
+  s_2cf1c16595dda9::t_99b1c994d3bd4a 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "fb5999ea6b4d6ed1091fb4593282f02316f9af6f",
+  "prompts": {},
+  "sessions": {
+    "s_2cf1c16595dda9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e6b428c8-e6ed-449e-a537-cdf398e6eeb3",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "aniketkumarsingh <aniket.singh@genesis.global>"
+    }
+  }
+}
