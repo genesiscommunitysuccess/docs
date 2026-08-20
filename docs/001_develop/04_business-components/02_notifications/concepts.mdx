@@ -52,3 +52,14 @@ When you configure a route with the `SELF` entity type, its behaviour depends on
 
 * **Without an `ENTITY_ID`**: The route resolves to the sender of the notification (the user who triggered the event).
 * **With an `ENTITY_ID`**: The route is scoped to that specific user. The notification is delivered only if the sender of the notification matches the specified `ENTITY_ID`. This prevents duplicate alerts and cross-delivery when multiple users subscribe to shared topics.
+
+For example, for a route with `ENTITY_ID_TYPE = SELF` and `ENTITY_ID = "trader1"`:
+
+| Notification sender | Delivered? |
+| --- | --- |
+| `trader1` | Yes — sender matches `ENTITY_ID` |
+| `fdSF` (or any other value) | No |
+
+:::caution
+This is a behaviour change from versions prior to `genesis-notify` 8.15.13. Before that version, `ENTITY_ID` was ignored for `SELF` routes, and every matching notification was delivered to the sender regardless of what `ENTITY_ID` contained. If you have existing `SELF` routes with a populated `ENTITY_ID`, check that it matches how `sender` is actually set on your notifications before upgrading — otherwise that route will silently stop delivering notifications. Routes with `ENTITY_ID` left blank are not affected by this change.
+:::
