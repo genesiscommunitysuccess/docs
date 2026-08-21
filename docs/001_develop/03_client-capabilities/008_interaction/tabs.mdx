@@ -2,7 +2,7 @@
 title: 'Tabs'
 sidebar_label: 'Tabs'
 id: client-interaction-tabs
-keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action, alert, flash ]
 tags:
 - interaction
 - interactive
@@ -16,6 +16,8 @@ tags:
 - associated
 - activated
 - title
+- alert
+- flash
 sidebar_position: 8
 ---
 
@@ -28,6 +30,7 @@ Tabs are layered sections of content that display one panel of content at a time
 Use cases:
 * creating blocks of contents that can be shown one at a time
 * Associating a "tab" item with a title; when clicked, this shows the associated content
+* Flashing a tab while a related grid still holds rows that need attention (see [Alerting tabs](#alerting-tabs))
 
 You can use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 
@@ -226,6 +229,60 @@ You can see tabs in action in the example below. This has three tabs; clicking o
 </Tabs>
 
 
+## Alerting tabs
+
+Set the boolean `alert` attribute on a `rapid-tab` when that desk still has work outstanding — for example while a blotter behind it holds pending orders. The tab flashes until you clear `alert`.
+
+This is a **sustained** alert only. There is no separate “pulse” API; keep `alert` true while matches exist, and false when none remain.
+
+Tabs and matching grid rows sample the same document-level flash clock (`--alert-flash-t`), so they stay in phase even when the rows render inside the grid’s shadow DOM. Drive both from the same [row match criteria](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts) via `DatasourceRowMatchTracker` and `createRowAlert`.
+
+### React example
+
+```tsx
+import { Tab, Tabs, TabPanel } from '@genesislcap/rapid-design-system/react';
+
+function OrdersTabs({ equityAlerting, equityCount }: {
+  equityAlerting: boolean;
+  equityCount: number;
+}) {
+  return (
+    <Tabs>
+      <Tab slot="tab" alert={equityAlerting}>
+        {equityCount > 0 ? `Equity (${equityCount})` : 'Equity'}
+      </Tab>
+      <TabPanel slot="tabpanel">{/* blotter */}</TabPanel>
+    </Tabs>
+  );
+}
+```
+
+### Genesis example
+
+```html
+<rapid-tabs>
+  <rapid-tab id="equity" ?alert=${(x) => x.equityAlerting}>
+    ${x => x.equityCount > 0 ? `Equity (${x.equityCount})` : 'Equity'}
+  </rapid-tab>
+  <rapid-tab-panel id="equityPanel">
+    <!-- blotter -->
+  </rapid-tab-panel>
+</rapid-tabs>
+```
+
+### Theming
+
+| CSS custom property | Description |
+| --- | --- |
+| `--tab-alert-color` | Flash colour for alerting tabs (defaults to the design-system error fill) |
+| `--alert-flash-duration` | Length of one flash cycle for **every** alerting surface on the page (tabs and rows); default `1s` |
+
+Set these on `:root` (or another shared ancestor). When you use `createRowAlert` with `mirrorColorTo: ['--tab-alert-color']`, a colour chosen from the grid’s Alert flash context menu also retints tab headers.
+
+`prefers-reduced-motion: reduce` shows a static alert colour instead of flashing.
+
+For matching rows, the presets menu, and numeric/boolean criteria, see [Row alerts](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts).
+
 ## Tabs API
 
 API examples shown with Genesis component syntax, and closing tag omitted.
@@ -405,6 +462,18 @@ API examples shown with Genesis component syntax; the closing tag is omitted.
 
 ```typescript
 <rapid-tab disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>alert</td>
+            <td><code>boolean</code></td>
+            <td>When true, the tab flashes to draw attention (sustained alert). See <a href="#alerting-tabs">Alerting tabs</a>.</td>
+<td>
+
+```typescript
+<rapid-tab alert>
 ```
 
 </td>
