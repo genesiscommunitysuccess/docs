@@ -276,6 +276,7 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | authCacheOverride | no | overrides auth-perms map to test |
+| secure | no | advertises the process as secure, as a service definition's `secure="true"` does |
 
 Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
 
@@ -495,6 +496,32 @@ assertEquals("1", reply.first().companyId)
 #### Overriding the system definition
 
 You can override system definition properties in your test class by overriding the `systemDefinition()` function.
+
+#### Running the process with TLS
+
+A test process reads a `network-config.yaml` or `network-config-PROCESS_NAME.yaml` from its
+GENESIS_HOME, exactly as a deployed process does. See [Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/)
+for what those files contain, and [Running a process with TLS](/develop/server-capabilities/testing-api/#running-a-process-with-tls)
+for how they behave in a test.
+
+Under the `SELECTIVE_TLS` mode, TLS is decided per service, and a deployment turns it on with
+`secure="true"` in its service definition. A test says the same thing with the `secure` property on
+its `GenesisTestConfig`.
+
+```kotlin
+class SecureTradeAppTest : AbstractGenesisTestSupport<EventResponse>(
+    GenesisTestConfig {
+        packageName = "global.genesis.trade"
+        genesisHome = "/genesisHome"
+        parser = EventResponse
+        secure = true
+    }
+) {
+    override fun systemDefinition(): Map<String, Any> = mapOf("PROCESS_NAME" to "TRADE_APP")
+}
+```
+
+A test extending `GenesisTestSupport` directly overrides `secure()` instead.
 
 #### assertedCast
 

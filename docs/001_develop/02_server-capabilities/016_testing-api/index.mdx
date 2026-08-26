@@ -224,6 +224,52 @@ Tests are run in sequence; this sequence is determined by JUnit.
 Between tests, GenesisJunit will check whether the database configuration is compatible between test functions.
 If compatible, the database will be reused; otherwise, it will be disregarded and a new database will be initialised.
 
+### Running a process with TLS
+
+A test process reads a `network-config.yaml` or `network-config-PROCESS_NAME.yaml` from its
+GENESIS_HOME, exactly as a deployed process does. See [Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/)
+for what those files contain.
+
+```yaml
+messaging:
+  channel: WEBSOCKET
+tls:
+  mode: TLS
+  identity:
+    source: KEYSTORE
+    keystore:
+      type: "JKS"
+      path: "${GENESIS_HOME}/site-specific/cfg/tls/server-keystore.jks"
+      storePassword: "changeit"
+      keyAlias: "server"
+  trust:
+    source: CERTIFICATE
+    certificate:
+      caBundlePath: "${GENESIS_HOME}/site-specific/cfg/tls/ca-cert.pem"
+```
+
+The `${...}` placeholders a deployment writes are resolved in a test too. `GENESIS_HOME` resolves to
+the home the test declares with [`@GenesisHome`](#genesishome); anything else is read from the
+environment.
+
+Two things are worth knowing before you add one.
+
+The whole file applies, not just its `tls` block. A file supplies `messaging`, `netty` and
+`zeroMqEncryption` as well, so a file that leaves `messaging` out moves the test off the framework's
+WebSocket and JSON defaults onto the file's own.
+
+Under `SELECTIVE_TLS`, TLS is per service, and a deployment turns it on with `secure="true"` in its
+service definition. A test has no service-definitions file, so it says the same thing with
+[`@SecureProcess`](#secureprocess). Without it a `SELECTIVE_TLS` process runs plain text, which is
+what keeps a legacy `KeyStoreLocation` system definition booting as it always did.
+
+:::warning
+A network-config file under a test GENESIS_HOME was previously ignored and now takes effect. A file
+setting a `tls` mode of `TLS` or `MUTUAL_TLS` gives that test a real TLS listener. The TLS context is
+built while the process starts, so a path in the `tls` block that no longer resolves stops the test
+rather than being skipped silently. The failure names the mode and the path.
+:::
+
 ### Annotations
 
 **GenesisJunit** supports a range of annotations.
@@ -1163,6 +1209,57 @@ public class LogLevelTest {
     @RootLogLevel(Level.TRACE)
     public void myOtherTest() {
         // root log level set to TRACE
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### SecureProcess
+
+Advertises the process as secure, which is what a service definition's `secure="true"` attribute does
+in a deployment. You can apply this annotation on both classes and methods.
+
+This is only needed under the `SELECTIVE_TLS` mode, where TLS is decided per service. Under `TLS` and
+`MUTUAL_TLS` every process is secure already, and under `PLAIN_TEXT` none is. See
+[Running a process with TLS](#running-a-process-with-tls).
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@GenesisHome("/GenesisHome")
+@SysDefOverwrite("PROCESS_NAME", "TRADE_APP")
+@SecureProcess
+class SecureTradeAppTest {
+
+    @Inject
+    private lateinit var serviceDetailProvider: ServiceDetailProvider
+
+    @Test
+    fun `the process is advertised as secure`() {
+        assert(serviceDetailProvider.startedServices.single().isSecure)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@GenesisHome("/GenesisHome")
+@SysDefOverwrite(key = "PROCESS_NAME", keyValue = "TRADE_APP")
+@SecureProcess
+public class SecureTradeAppTest {
+
+    @Inject
+    private ServiceDetailProvider serviceDetailProvider;
+
+    @Test
+    public void theProcessIsAdvertisedAsSecure() {
+        assertTrue(serviceDetailProvider.getStartedServices().get(0).isSecure());
     }
 }
 ```
