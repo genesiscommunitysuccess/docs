@@ -345,6 +345,10 @@ Otherwise, criteria on joined tables are evaluated lazily and sorting by joined 
 In this example, we query for a specific instrument.
 For easier use in Java, we provide a fluent interface, `getByCriteriaBuilder` (see more details below).
 
+:::note
+The example below assumes `SyncEntityDb` (return type `List<Position>`). Like `getBulk` and `getRange`, `getByCriteria`'s return type depends on which entity DB API you use — see [Return Types](#return-types) for details.
+:::
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -500,13 +504,17 @@ var page2 = db.getByCriteriaBuilder(Position.class)
 
 #### `getBulk`
 
-This operation creates a `Flowable` of the whole table.
+This operation streams the whole table.
 
 The records will be sorted in ascending order by the index provided. If no index is provided, they will be sorted by the primary key.
 
 There is also the `getBulkFromEnd` function, which returns records in descending order.
 
 There are also a number of continuation operations, which return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
+
+:::note
+The overloads below show the `AsyncEntityDb` (Kotlin) signatures, which return `Flow<E>`. The same operations exist on `SyncEntityDb` (returning `List<E>`) and `RxEntityDb` (returning `Flowable<E>`) — see [Return Types](#return-types) for the full breakdown.
+:::
 
 ###### Overloads
 
@@ -558,6 +566,10 @@ There are two types of `getRange` operation:
 * interval range, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
 
 Unlike the `get` operation, the `getRange` operation can always return multiple records.
+
+:::note
+Like `getBulk`, the return type of `getRange` depends on which entity DB API you use: `List<E>` on `SyncEntityDb`, `Flow<E>` on `AsyncEntityDb`, and `Flowable<E>` on `RxEntityDb`. See [Return Types](#return-types) for details.
+:::
 
 We pass index entities into `getRange`. When using an interval range, both index entities should be of the same type. in the example below, this is `Trade.byDate`.
 
@@ -1436,7 +1448,7 @@ val insert: InsertResult<Trade> = db.insert(trade)
 val inserts: List<InsertResult<Trade>> = db.insertAll(myTrades)
 ```
 
-`getByCriteria`, `getRange` and `getBulk` operations return a `List<X>`:
+In the `SyncEntityDb` API, `getByCriteria`, `getRange` and `getBulk` operations return a `List<X>`:
 
 ```kotlin
 val trades: List<Trade> = db.getBulk(TRADE)
@@ -1482,6 +1494,7 @@ In Kotlin, a function modified with the `suspend` keyword becomes a suspending
 - Suspend. This can only return a single value.
 - Flow. This can emit multiple values sequentially. A flow is conceptually a stream of data that can be computed asynchronously. The emitted values must be of the same type. For example, a `Flow<Int>` is a flow that emits integer values.
 
+In the `AsyncEntityDb` API, `getByCriteria`, `getRange` and `getBulk` operations return a `Flow<E>`.
 
 #### RxEntityDb
 
@@ -1532,6 +1545,8 @@ For example, on the database, `get` returns a `Maybe`, with the following pos
 ###### Flowable
 
 In the RxJava API, a `Flowable` represents an asynchronous operation that has an undefined number of outputs.
+
+In the `RxEntityDb` API, `getByCriteria`, `getRange` and `getBulk` operations return a `Flowable<E>`.
 
 
 ### Frequently asked questions
