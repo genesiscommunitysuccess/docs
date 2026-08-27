@@ -78,6 +78,39 @@ The DSL inside the lambda is identical; only the surrounding container (script v
 
 You can keep some definitions in script files and add others in compiled classes. Both are merged at runtime; for example, all Data Server queries from scripts and from compiled `GPalDataserver` implementations are combined. Use this to migrate gradually or to keep a few script-based definitions while moving the rest to compiled.
 
+### Migrating one type at a time in a multi-type process
+
+A `GENESIS_COMPACT_PROCESS` commonly bundles several GPAL types together — for example a Data Server and an Event Handler in one process, sharing one `<module>`/`<package>`/`<script>` set. Migrating gradually means one type in that process becomes compiled while the others stay script-based, which is a different situation from the single-type "mixing" above: it's not one type with both forms, it's one process with different types each fully in one form or the other.
+
+The `<module>` and `<package>` tags are each a comma-separated **union** — list whatever every type in the process still needs, not a fixed one-to-one pairing between the two lists. `<script>` narrows down to just the `.kts` files still backing a script-based type. `<language>pal</language>` stays as long as *anything* in the process is still script-based (it enables script compilation for the whole process), and is only dropped once every type in that process is compiled.
+
+Migrating a compact process's Data Server first, with its Event Handler still scripted, goes through three stages:
+
+**Before — both script-based:**
+
+```xml
+<module>genesis-pal-dataserver,genesis-pal-eventhandler</module>
+<package>global.genesis.dataserver.pal,global.genesis.eventhandler.pal</package>
+<script>myapp-dataserver.kts,myapp-eventhandler.kts</script>
+<language>pal</language>
+```
+
+**Intermediate — Data Server compiled, Event Handler still script-based:** the Data Server's PAL module and package are replaced with your app's own; the Event Handler's PAL module, package, and script file are untouched; `<language>` stays, because the Event Handler still needs it.
+
+```xml
+<module>myapp,genesis-pal-eventhandler</module>
+<package>myapp.dataserver,global.genesis.eventhandler.pal</package>
+<script>myapp-eventhandler.kts</script>
+<language>pal</language>
+```
+
+**After — both compiled:** your app's module now covers every definition, so it's listed once; `<package>` unions both definition packages; `<script>` and `<language>` are dropped entirely, since nothing in the process is script-based any more.
+
+```xml
+<module>myapp</module>
+<package>myapp.dataserver,myapp.eventhandler</package>
+```
+
 ## Runtime configuration
 
 When using **compiled definitions only**, the process definition uses your definition **package** (e.g. `my.app`) and your application's **module** (e.g. `position-app`). You do **not** set the `script` or `language` tags; dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically. For full details (including script-based and mixed setups), see [Processes](/develop/server-capabilities/runtime-configuration/processes/) and the runtime configuration section in each GPAL type's documentation (e.g. [Data Server](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)).
