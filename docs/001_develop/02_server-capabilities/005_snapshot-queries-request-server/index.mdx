@@ -836,6 +836,7 @@ To include your Request Server definitions in a runtime process, configure the p
 
 - **package**: the package containing your compiled definition class, or any package above it — scanning covers subpackages too. For example, a process configured with `<package>com.company.app</package>` will still find a class at `com.company.app.event.MyEventHandler`
 - **module**: your application's module (e.g. `position-app`)
+- **Gradle dependency**: add `implementation(genesis("pal-requestserver"))` to your application module's `build.gradle.kts` so `GPalRequestServer` is on the compile classpath
 - Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
 
 ### Mixing script and compiled

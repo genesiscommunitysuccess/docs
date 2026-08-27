@@ -17,29 +17,31 @@ This guide describes how to migrate from GPAL script files (`.kts`) to compiled 
 
 For each GPAL type, extend the corresponding base class and use the same DSL inside a lambda. The script file extension is the traditional form; the process `<script>` tag is optional when you use only compiled definitions.
 
-| GPAL type       | Base class           | Script extension       | Documentation                                                                                                                                                                                                         |
-|-----------------|----------------------|------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data Server     | `GPalDataserver`     | `-dataserver.kts`      | [Data Server](/develop/server-capabilities/real-time-queries-data-server/) / [Runtime configuration](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)                               |
-| Event Handler   | `GPalEventHandler`   | `-eventhandler.kts`    | [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) / [Runtime configuration](/develop/server-capabilities/core-business-logic-event-handler/#runtime-configuration)                     |
-| Request/Reply   | `GPalRequestServer`  | `-reqrep.kts`          | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) / [Runtime configuration](/develop/server-capabilities/snapshot-queries-request-server/#runtime-configuration)                        |
-| Consolidator    | `GPalConsolidator`   | `-consolidator.kts`    | [Consolidator](/develop/server-capabilities/real-time-aggregation-consolidator/) / [Runtime configuration](/develop/server-capabilities/real-time-aggregation-consolidator/#runtime-configuration)                    |
-| Pipeline        | `GPalPipeline`       | `-pipelines.kts`       | [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/) / [Runtime configuration](/develop/server-capabilities/integrations/data-pipelines/#runtime-configuration)                                |
-| Streamer        | `GPalStreamer`       | `-streamer.kts`        | [Streamer](/develop/server-capabilities/integrations/streamer-apis/streamer/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer/#runtime-configuration)                      |
-| Streamer Client | `GPalStreamerClient` | `-streamer-client.kts` | [Streamer Client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer-client/#runtime-configuration) |
+| GPAL type       | Base class           | Gradle dependency                            | Script extension       | Documentation                                                                                                                                                                                                         |
+|-----------------|-----------------------|----------------------------------------------|------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Data Server     | `GPalDataserver`     | `implementation(genesis("pal-dataserver"))`     | `-dataserver.kts`      | [Data Server](/develop/server-capabilities/real-time-queries-data-server/) / [Runtime configuration](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)                               |
+| Event Handler   | `GPalEventHandler`   | `implementation(genesis("pal-eventhandler"))`   | `-eventhandler.kts`    | [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) / [Runtime configuration](/develop/server-capabilities/core-business-logic-event-handler/#runtime-configuration)                     |
+| Request/Reply   | `GPalRequestServer`  | `implementation(genesis("pal-requestserver"))`  | `-reqrep.kts`          | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) / [Runtime configuration](/develop/server-capabilities/snapshot-queries-request-server/#runtime-configuration)                        |
+| Consolidator    | `GPalConsolidator`   | `implementation(genesis("pal-consolidator"))`   | `-consolidator.kts`    | [Consolidator](/develop/server-capabilities/real-time-aggregation-consolidator/) / [Runtime configuration](/develop/server-capabilities/real-time-aggregation-consolidator/#runtime-configuration)                    |
+| Pipeline        | `GPalPipeline`       | `implementation(genesis("pal-datapipeline"))`   | `-pipelines.kts`       | [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/) / [Runtime configuration](/develop/server-capabilities/integrations/data-pipelines/#runtime-configuration)                                |
+| Streamer        | `GPalStreamer`       | `implementation(genesis("pal-streamer"))`       | `-streamer.kts`        | [Streamer](/develop/server-capabilities/integrations/streamer-apis/streamer/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer/#runtime-configuration)                      |
+| Streamer Client | `GPalStreamerClient` | `implementation(genesis("pal-streamerclient"))` | `-streamer-client.kts` | [Streamer Client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer-client/#runtime-configuration) |
 
 ## Step-by-step: from script to compiled
 
-1. **Create a Kotlin class** in a package that is scanned by your process (e.g. your application's main package).
+1. **Add the module's Gradle dependency** — the base class lives in the same PAL module you'd otherwise reference in `<module>`, so your application module needs it on its compile classpath. See the dependency for each GPAL type in the table above.
 
-2. **Extend the appropriate base class** (e.g. `GPalDataserver`, `GPalEventHandler`) and move the GPAL from your `.kts` file.
+2. **Create a Kotlin class** in a package that is scanned by your process (e.g. your application's main package).
 
-3. **Correct missing imports** GPAL scripts by default have default imports, you will need to ensure all classes used are imported.
+3. **Extend the appropriate base class** (e.g. `GPalDataserver`, `GPalEventHandler`) and move the GPAL from your `.kts` file.
 
-4. **Ensure the package is scanned** — set your process's `<package>` in `processes.xml` to the definition's package, or any package above it. Scanning covers subpackages, so `<package>com.company.app</package>` will still pick up a definition at `com.company.app.event.MyEventHandler` — it doesn't need to sit directly in `com.company.app`.
+4. **Correct missing imports** GPAL scripts by default have default imports, you will need to ensure all classes used are imported.
 
-5. **Run the application** and confirm behaviour is unchanged.
+5. **Ensure the package is scanned** — set your process's `<package>` in `processes.xml` to the definition's package, or any package above it. Scanning covers subpackages, so `<package>com.company.app</package>` will still pick up a definition at `com.company.app.event.MyEventHandler` — it doesn't need to sit directly in `com.company.app`.
 
-6. **Remove the script file** — once all definitions have been migrated, the `<script>` entry for that GPAL type in your process definition can be removed, so only the compiled definition is used. If you keep the script file, both are merged.
+6. **Run the application** and confirm behaviour is unchanged.
+
+7. **Remove the script file** — once all definitions have been migrated, the `<script>` entry for that GPAL type in your process definition can be removed, so only the compiled definition is used. If you keep the script file, both are merged.
 
 ### Imports
 
