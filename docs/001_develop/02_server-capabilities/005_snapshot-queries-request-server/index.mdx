@@ -1248,6 +1248,7 @@ data class World(
 )
 
 class HelloWorldRequestServer : GPalRequestServer({
+    // full request server dsl support from here, for example
     requestReply<Hello, World>("HELLO_WORLD") {
         replySingle { hello: Hello ->
             World("Hello, ${hello.name}!")

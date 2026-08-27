@@ -65,6 +65,7 @@ import global.genesis.dataserver.pal.script.GPalDataserver
 import global.genesis.gen.config.view.TRADE_VIEW
 
 class MyDataServer : GPalDataserver({
+    // full data server dsl support from here, for example
     query("ALL_TRADES", TRADE_VIEW) {
         config { compression = true }
         indices { unique("BY_ID") { TRADE_ID } }

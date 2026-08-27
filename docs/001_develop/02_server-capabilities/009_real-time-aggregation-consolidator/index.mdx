@@ -1417,6 +1417,7 @@ import global.genesis.pal.consolidator.script.GPalConsolidator
 import org.joda.time.DateTime
 
 class OrderFromTradesConsolidator : GPalConsolidator({
+    // full consolidator dsl support from here, for example
     consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
         config {
             tableTransient = true

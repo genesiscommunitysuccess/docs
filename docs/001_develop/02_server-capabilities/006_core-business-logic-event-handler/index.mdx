@@ -1558,6 +1558,7 @@ data class Hello(
 )
 
 class HelloWorldEventHandler : GPalEventHandler({
+    // full event handler dsl support from here, for example
     eventHandler<Hello>("HELLO_WORLD") {
         onCommit {
             ack()
