@@ -602,7 +602,7 @@ Or a less concise syntax using `output` table references:
 
 :::important
 
-For the concise syntax, the block inside `select` must be opened with the ALL-CAPS table or view reference (e.g. `global.genesis.gen.config.tables.TRADE`, or `global.genesis.gen.config.view.TRADE_VIEW`), not the generated entity class (e.g. `Trade`). The entity class also compiles here, but resolves to a different overload, so the `into` targets inside the block fail to resolve — and the resulting error points at the field name rather than the receiver, which is the actual cause.
+For the concise syntax, the block inside `select` must be opened with the ALL-CAPS table or view reference, e.g. `global.genesis.gen.config.tables.TRADE`, or `global.genesis.gen.config.view.TRADE_VIEW`.
 
 :::
 
