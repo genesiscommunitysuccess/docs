@@ -240,24 +240,35 @@ tls:
     source: KEYSTORE
     keystore:
       type: "JKS"
-      path: "${GENESIS_HOME}/site-specific/cfg/tls/server-keystore.jks"
-      storePassword: "changeit"
+      path: "certs/server-keystore.jks"
+      storePassword: "testpass"
       keyAlias: "server"
   trust:
     source: CERTIFICATE
     certificate:
-      caBundlePath: "${GENESIS_HOME}/site-specific/cfg/tls/ca-cert.pem"
+      caBundlePath: "certs/ca-cert.pem"
 ```
 
-The `${...}` placeholders a deployment writes are resolved in a test too. `GENESIS_HOME` resolves to
-the home the test declares with [`@GenesisHome`](#genesishome); anything else is read from the
-environment.
+Relative `identity` and `trust` paths resolve against the test GENESIS_HOME. The material itself is
+generated at run time by `TestCertificates.install(home)`, which writes a CA, a localhost server
+identity and a client identity under `certs/` in the home you give it - so no key material is
+committed to your repository. Its keystores use the alias and password shown above. Generate it
+before the test context starts, for example from an `@BeforeAll` method.
 
-Two things are worth knowing before you add one.
+A `${...}` placeholder is resolved from the environment, as in a deployment, and a test has no way
+to set an environment variable - so a test config names its paths outright.
+
+To test a file that does not live under the test GENESIS_HOME - your real application config, or a
+variant of it - point [`@NetworkConfig`](#networkconfig) at it. The annotated file is then the
+network config, and a file under the test GENESIS_HOME is ignored.
+
+Two things are worth knowing before you add a file.
 
 The whole file applies, not just its `tls` block. A file supplies `messaging`, `netty` and
 `zeroMqEncryption` as well, so a file that leaves `messaging` out moves the test off the framework's
-WebSocket and JSON defaults onto the file's own.
+WebSocket and JSON defaults onto the file's own. A file also beats the `ChannelType` and
+`MessageSerialization` system definitions, exactly as it does for a deployed process; those two
+apply only when no file is in play.
 
 Under `SELECTIVE_TLS`, TLS is per service, and a deployment turns it on with `secure="true"` in its
 service definition. A test has no service-definitions file, so it says the same thing with
@@ -272,9 +283,10 @@ are unchanged and cannot run a process with TLS.
 
 :::warning
 A network-config file under a test GENESIS_HOME was previously ignored and now takes effect. A file
-setting a `tls` mode of `TLS` or `MUTUAL_TLS` gives that test a real TLS listener. The TLS context is
-built while the process starts, so a path in the `tls` block that no longer resolves stops the test
-rather than being skipped silently. The failure names the mode and the path.
+setting a `tls` mode of `TLS` or `MUTUAL_TLS` gives that test a real TLS listener, and a file beats
+the `ChannelType` and `MessageSerialization` system definitions, so a test carrying both follows the
+file. The TLS context is built while the process starts, so a path in the `tls` block that no longer
+resolves stops the test rather than being skipped silently. The failure names the mode and the path.
 :::
 
 ### Annotations
@@ -1267,6 +1279,54 @@ public class SecureTradeAppTest {
     @Test
     public void theProcessIsAdvertisedAsSecure() {
         assertTrue(serviceDetailProvider.getStartedServices().get(0).isSecure());
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### NetworkConfig
+
+Points the test process at a network config file anywhere on the classpath, read exactly as a
+`network-config.yaml` under GENESIS_HOME is. The annotated file wins outright: a file under the test
+GENESIS_HOME and the `ChannelType` and `MessageSerialization` system definitions are both ignored.
+You can apply this annotation on both classes and methods. See
+[Running a process with TLS](#running-a-process-with-tls).
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@GenesisHome("/GenesisHome")
+@NetworkConfig("/network-configs/tls.yaml")
+class TlsTradeAppTest {
+
+    @Inject
+    private lateinit var networkConfig: NetworkConfigContainer
+
+    @Test
+    fun `the annotated file supplies the network config`() {
+        assert(networkConfig.tls.mode == EncryptionMode.TLS)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@GenesisHome("/GenesisHome")
+@NetworkConfig("/network-configs/tls.yaml")
+public class TlsTradeAppTest {
+
+    @Inject
+    private NetworkConfigContainer networkConfig;
+
+    @Test
+    public void theAnnotatedFileSuppliesTheNetworkConfig() {
+        assertEquals(EncryptionMode.TLS, networkConfig.getTls().getMode());
     }
 }
 ```
