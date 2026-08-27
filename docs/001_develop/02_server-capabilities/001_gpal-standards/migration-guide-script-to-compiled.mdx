@@ -35,7 +35,7 @@ For each GPAL type, extend the corresponding base class and use the same DSL ins
 
 3. **Correct missing imports** GPAL scripts by default have default imports, you will need to ensure all classes used are imported.
 
-4. **Ensure the package is scanned** — by having it in your process's scan roots.
+4. **Ensure the package is scanned** — set your process's `<package>` in `processes.xml` to the definition's package, or any package above it. Scanning covers subpackages, so `<package>com.company.app</package>` will still pick up a definition at `com.company.app.event.MyEventHandler` — it doesn't need to sit directly in `com.company.app`.
 
 5. **Run the application** and confirm behaviour is unchanged.
 
@@ -59,7 +59,7 @@ query("ALL_TRADES", TRADE_VIEW) {
 **Compiled form:** `MyDataServer.kt`
 
 ```kotlin
-package
+package myapp.definition
 
 import global.genesis.dataserver.pal.script.GPalDataserver
 import global.genesis.gen.config.view.TRADE_VIEW
@@ -84,7 +84,44 @@ When using **compiled definitions only**, the process definition uses your defin
 
 ## Testing without a script file
 
-Tests can use **compiled definitions** by ensuring the definition's package is in the scan list (e.g. by providing an instance of the definition class). In that case no script file and no `@TestScriptFile` or `scriptFileName` are required. For details, see the [Testing API](/develop/server-capabilities/testing-api/) and the testing sections in each GPAL type's documentation.
+With [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), a compiled definition can be brought into a test in either of two ways — no script file, `@TestScriptFile`, or `scriptFileName` is required for either:
+
+- **`@PackageScan`** adds the definition class's whole package to the scan list; GenesisJunit discovers and constructs every scanned definition in it, exactly as a running process would.
+- **`@ProvidedInstance`** registers one exact class (or a pre-built instance) without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains.
+
+```kotlin
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.PackageScan
+import myapp.definition.MyDataServer
+import org.junit.jupiter.api.Test
+
+@GenesisTest
+@PackageScan(MyDataServer::class)
+class MyDataServerTest {
+
+    // inject a client and write tests as usual
+}
+```
+
+```kotlin
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.ProvidedInstance
+import myapp.definition.MyDataServer
+import org.junit.jupiter.api.Test
+
+@GenesisTest
+class MyDataServerTest {
+
+    @ProvidedInstance
+    private val myDataServer = MyDataServer::class
+
+    // inject a client and write tests as usual
+}
+```
+
+`@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedInstance` accepts a `KClass` too (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type) or a pre-built instance if you'd rather construct it yourself. Either annotation is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedInstance` with `@TestScriptFile` to bring everything into the same test.
+
+For full worked examples, including injecting a client and asserting behaviour, see the testing sections in each GPAL type's documentation (e.g. [Data Server testing](/develop/server-capabilities/real-time-queries-data-server/#testing-compiled-definitions), [Event Handler testing](/develop/server-capabilities/core-business-logic-event-handler/#testing-compiled-definitions)) and the [Testing API](/develop/server-capabilities/testing-api/).
 
 ## See also
 

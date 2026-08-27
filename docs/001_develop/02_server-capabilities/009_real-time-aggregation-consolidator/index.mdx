@@ -1159,7 +1159,7 @@ To include your Consolidator definitions in a runtime process, configure the pro
 
 ### Using compiled definitions only
 
-- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **package**: the package containing your compiled definition class, or any package above it — scanning covers subpackages too. For example, a process configured with `<package>com.company.app</package>` will still find a class at `com.company.app.event.MyEventHandler`
 - **module**: your application's module (e.g. `position-app`)
 - Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
 
@@ -1241,7 +1241,7 @@ There are three ways to initiate cold start:
 
 ## Testing (legacy)
 
-You can test using **compiled definitions** (classes extending `GPalConsolidator`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required. The example below uses a script-based definition with `scriptFileName`.
+You can test using **compiled definitions** (classes extending `GPalConsolidator`) by scanning the definition's package instead of loading a script file. In that case no script file or `scriptFileName` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses a script-based definition with `scriptFileName`.
 
 :::info
 For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
@@ -1400,3 +1400,107 @@ fun `test nested consolidation`() = runBlocking {
         }
     }
 ```
+
+### Testing compiled definitions
+
+The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedInstance`.
+
+Given this compiled Consolidator (the same configuration as the script example above):
+
+```kotlin
+package myapp.definition
+
+import global.genesis.gen.config.tables.CONSOLIDATOR_TRADE
+import global.genesis.gen.config.tables.ORDER
+import global.genesis.gen.dao.Order
+import global.genesis.pal.consolidator.script.GPalConsolidator
+import org.joda.time.DateTime
+
+class OrderFromTradesConsolidator : GPalConsolidator({
+    consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+        config {
+            tableTransient = true
+        }
+
+        select {
+            ORDER {
+                max { price } into MAX_PRICE
+                min { price } into MIN_PRICE
+                sum { price * quantity } into TOTAL_NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+                count() into TRADE_COUNT
+            }
+        }
+
+        groupBy { Order.ById(orderId) } into {
+            val start = DateTime(2022, 1, 1, 0, 0)
+            build {
+                val id = groupId.orderId.toInt()
+                Order {
+                    orderId = groupId.orderId
+                    orderDate = start.plusMonths(id % 12)
+                    filledQuantity = 0
+                    counterpartyId = "1"
+                }
+            }
+        }
+
+        onCommit {
+            output.counterpartyId = "ON_COMMIT_TEST"
+        }
+    }
+})
+```
+
+The test class brings it in with `@ProvidedInstance`, using a `KClass` reference so Guice constructs and injects it — no script file, and no `addPackageName`/`scriptFileName` builder config:
+
+```kotlin
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import global.genesis.gen.dao.ConsolidatorTrade
+import global.genesis.gen.dao.Order
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.PackageNameScan
+import global.genesis.testsupport.jupiter.ProvidedInstance
+import jakarta.inject.Inject
+import kotlinx.coroutines.runBlocking
+import myapp.definition.OrderFromTradesConsolidator
+import org.awaitility.kotlin.await
+import org.awaitility.kotlin.untilAsserted
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+
+@GenesisTest
+@PackageNameScan("global.genesis.pal.consolidator")
+class ConsolidatorTest {
+
+    @Inject
+    private lateinit var entityDb: AsyncEntityDb
+
+    companion object {
+        @ProvidedInstance
+        @JvmStatic
+        val orderFromTradesConsolidator = OrderFromTradesConsolidator::class
+    }
+
+    @Test
+    fun `fields modified in onCommit block are written to database`() = runBlocking {
+        entityDb.insert(
+            ConsolidatorTrade {
+                tradeId = "TR_1"
+                orderId = "1"
+                price = 10.0
+                quantity = 100
+            }
+        )
+
+        await untilAsserted {
+            runBlocking {
+                val record = entityDb.get(Order.ById("1"))
+                assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
+            }
+        }
+    }
+}
+```
+
+`@PackageNameScan("global.genesis.pal.consolidator")` scans the Consolidator PAL module's own package alongside your definition — unlike Data Server, Event Handler, and Request Server, a compiled Consolidator needs this in addition to `@ProvidedInstance`/`@PackageScan`. This example mirrors `genesis-pal-consolidator/src/test/kotlin/global/genesis/pal/consolidator/service/CompiledConsolidator.kt` in the genesis-server framework's own test suite, which uses this exact combination.

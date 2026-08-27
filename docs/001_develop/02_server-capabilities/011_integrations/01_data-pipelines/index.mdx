@@ -1289,7 +1289,7 @@ To include your Data Pipeline definitions in a runtime process, configure the pr
 
 ### Using compiled definitions only
 
-- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **package**: the package containing your compiled definition class, or any package above it — scanning covers subpackages too. For example, a process configured with `<package>com.company.app</package>` will still find a class at `com.company.app.event.MyEventHandler`
 - **module**: your application's module (e.g. `position-app`)
 - Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
 
