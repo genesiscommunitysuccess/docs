@@ -600,6 +600,18 @@ Or a less concise syntax using `output` table references:
   }
 ```
 
+For the concise syntax, the block inside `select` must be opened with the ALL-CAPS table or view reference, e.g. `global.genesis.gen.config.tables.TRADE`, or `global.genesis.gen.config.view.TRADE_VIEW`:
+
+```kotlin
+  consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
+    select {
+        POSITION {
+            sum { quantity } into QUANTITY
+        }
+    }
+  }
+```
+
 #### Functions
 
 Functions are the building blocks of the `select` block.
