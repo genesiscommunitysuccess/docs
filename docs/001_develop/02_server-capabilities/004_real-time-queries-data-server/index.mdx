@@ -2068,7 +2068,7 @@ The majority of these methods enable you to send messages to control the message
 
 ### Testing compiled definitions
 
-If your Data Server is a **compiled definition** (a class extending `GPalDataserver`) rather than a `.kts` script, use `@PackageScan` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, connecting a `QueryView`, making assertions — works exactly as shown above. You don't need a separate test dependency for the Data Server's client — `DataServerQueryViewClient` and `@GenesisTest`/`@PackageScan`/`@ProvidedInstance` all come from `testImplementation(genesis("testsupport"))` (see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file)).
+If your Data Server is a **compiled definition** (a class extending `GPalDataserver`) rather than a `.kts` script, use `@PackageScan` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, connecting a `QueryView`, making assertions — works exactly as shown above. `DataServerQueryViewClient` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Data Server:
 

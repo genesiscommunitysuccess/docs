@@ -45,7 +45,7 @@ For each GPAL type, extend the corresponding base class and use the same DSL ins
 
 ### Imports
 
-Script files receive a set of default imports (e.g. generated DAO, view, and `SysDef` types) so you can reference them without declaring imports. In compiled Kotlin classes you must **add the imports yourself**: the base class for your GPAL type (e.g. `global.genesis.dataserver.pal.script.GPalDataserver`), any **tables** you reference (from `global.genesis.gen.config.tables.*` — e.g. `CLIENT`, `DEBTOR`, `INVOICE`), any **views** you reference (from `global.genesis.gen.config.view.*`), and any other types used in the DSL. Tables and views are two separate generated packages — a class extending `GPalConsolidator` or `GPalDataserver` typically needs imports from both, not just one. The [GPAL Standards](/develop/server-capabilities/gpal-standards/#whats-available-in-a-gpal-script) page lists the imports that are available by default in scripts; use that as a reference when writing your compiled class.
+Script files receive a set of default imports (e.g. generated DAO, view, and `SysDef` types) so you can reference them without declaring imports. In compiled Kotlin classes you must **add the imports yourself**: the base class for your GPAL type (e.g. `global.genesis.dataserver.pal.script.GPalDataserver`), any tables (from `global.genesis.gen.config.tables.*` — e.g. `CLIENT`, `DEBTOR`, `INVOICE`), any views (from `global.genesis.gen.config.view.*`), and any other types used in the DSL. Tables and views are separate packages, and most definitions need both. The [GPAL Standards](/develop/server-capabilities/gpal-standards/#whats-available-in-a-gpal-script) page lists the imports that are available by default in scripts; use that as a reference when writing your compiled class.
 
 ### Example: Data Server
 
@@ -120,7 +120,7 @@ When using **compiled definitions only**, the process definition uses your defin
 
 ## Testing without a script file
 
-Add `testImplementation(genesis("testsupport"))` to your app module's `build.gradle.kts` — `@GenesisTest`, `@PackageScan`, `@ProvidedInstance`, and every GPAL type's test client (e.g. `DataServerQueryViewClient`, `EventClientSync`, `RequestClientSync`) all live in `genesis-testsupport`, regardless of which GPAL type you're testing. You don't need a separate `genesis("pal-<type>")`-style test dependency per type — the pattern that works for the main compile dependency doesn't carry over to testing.
+Add `testImplementation(genesis("testsupport"))` to your app module's `build.gradle.kts`. `@GenesisTest`, `@PackageScan`, `@ProvidedInstance`, and every GPAL type's test client (`DataServerQueryViewClient`, `EventClientSync`, `RequestClientSync`, etc.) all live in `genesis-testsupport` — one dependency, not one per type. There's no `genesis("pal-<type>")`-style test artifact; that naming only applies to the main compile dependency.
 
 With [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), a compiled definition can be brought into a test in either of two ways — no script file, `@TestScriptFile`, or `scriptFileName` is required for either:
 
