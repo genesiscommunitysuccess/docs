@@ -45,7 +45,7 @@ For each GPAL type, extend the corresponding base class and use the same DSL ins
 
 ### Imports
 
-Script files receive a set of default imports (e.g. generated DAO, view, and `SysDef` types) so you can reference them without declaring imports. In compiled Kotlin classes you must **add the imports yourself**: the base class for your GPAL type (e.g. `global.genesis.dataserver.pal.script.GPalDataserver`), any views or tables you reference (e.g. from `global.genesis.gen.config.view.*` or your generated config package), and any other types used in the DSL. The [GPAL Standards](/develop/server-capabilities/gpal-standards/#whats-available-in-a-gpal-script) page lists the imports that are available by default in scripts; use that as a reference when writing your compiled class.
+Script files receive a set of default imports (e.g. generated DAO, view, and `SysDef` types) so you can reference them without declaring imports. In compiled Kotlin classes you must **add the imports yourself**: the base class for your GPAL type (e.g. `global.genesis.dataserver.pal.script.GPalDataserver`), any **tables** you reference (from `global.genesis.gen.config.tables.*` — e.g. `CLIENT`, `DEBTOR`, `INVOICE`), any **views** you reference (from `global.genesis.gen.config.view.*`), and any other types used in the DSL. Tables and views are two separate generated packages — a class extending `GPalConsolidator` or `GPalDataserver` typically needs imports from both, not just one. The [GPAL Standards](/develop/server-capabilities/gpal-standards/#whats-available-in-a-gpal-script) page lists the imports that are available by default in scripts; use that as a reference when writing your compiled class.
 
 ### Example: Data Server
 
@@ -119,6 +119,8 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 When using **compiled definitions only**, the process definition uses your definition **package** (e.g. `my.app`) and your application's **module** (e.g. `position-app`). You do **not** set the `script` or `language` tags; dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically. For full details (including script-based and mixed setups), see [Processes](/develop/server-capabilities/runtime-configuration/processes/) and the runtime configuration section in each GPAL type's documentation (e.g. [Data Server](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)).
 
 ## Testing without a script file
+
+Add `testImplementation(genesis("testsupport"))` to your app module's `build.gradle.kts` — `@GenesisTest`, `@PackageScan`, `@ProvidedInstance`, and every GPAL type's test client (e.g. `DataServerQueryViewClient`, `EventClientSync`, `RequestClientSync`) all live in `genesis-testsupport`, regardless of which GPAL type you're testing. You don't need a separate `genesis("pal-<type>")`-style test dependency per type — the pattern that works for the main compile dependency doesn't carry over to testing.
 
 With [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), a compiled definition can be brought into a test in either of two ways — no script file, `@TestScriptFile`, or `scriptFileName` is required for either:
 

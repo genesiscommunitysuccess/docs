@@ -1231,7 +1231,7 @@ We have covered:
 
 ### Testing compiled definitions
 
-If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedInstance` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above.
+If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedInstance` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. You don't need a separate test dependency for the Request Server's client — `RequestClientSync` and `@GenesisTest`/`@PackageScan`/`@ProvidedInstance` all come from `testImplementation(genesis("testsupport"))` (see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file)).
 
 Given this compiled Request Server:
 

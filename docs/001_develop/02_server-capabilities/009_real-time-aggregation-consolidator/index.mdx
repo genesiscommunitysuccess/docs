@@ -1404,7 +1404,7 @@ fun `test nested consolidation`() = runBlocking {
 
 ### Testing compiled definitions
 
-The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedInstance`.
+The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedInstance`. `@GenesisTest`/`@PackageScan`/`@ProvidedInstance` all come from `testImplementation(genesis("testsupport"))` (see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file)).
 
 Given this compiled Consolidator (the same configuration as the script example above):
 
