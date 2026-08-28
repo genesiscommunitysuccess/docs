@@ -120,9 +120,7 @@ When using **compiled definitions only**, the process definition uses your defin
 
 ## Testing without a script file
 
-Add `testImplementation(genesis("testsupport"))` to your app module's `build.gradle.kts`. `@GenesisTest`, `@PackageScan`, `@ProvidedInstance`, and every GPAL type's test client (`DataServerQueryViewClient`, `EventClientSync`, `RequestClientSync`, etc.) all live in `genesis-testsupport` — one dependency, not one per type. There's no `genesis("pal-<type>")`-style test artifact; that naming only applies to the main compile dependency.
-
-With [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), a compiled definition can be brought into a test in either of two ways — no script file, `@TestScriptFile`, or `scriptFileName` is required for either:
+`testImplementation(genesis("testsupport"))` should already be in your app module's `build.gradle.kts` by default — it's the only test dependency you need, covering [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) and every GPAL type's test client. There's no separate one per type. A compiled definition can be brought into a GenesisJunit test in either of two ways:
 
 - **`@PackageScan`** adds the definition class's whole package to the scan list; GenesisJunit discovers and constructs every scanned definition in it, exactly as a running process would.
 - **`@ProvidedInstance`** registers one exact class (or a pre-built instance) without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains.
