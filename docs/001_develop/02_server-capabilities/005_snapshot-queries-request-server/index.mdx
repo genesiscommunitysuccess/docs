@@ -834,8 +834,9 @@ To include your Request Server definitions in a runtime process, configure the p
 
 ### Using compiled definitions only
 
-- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **package**: the package containing your compiled definition class, or any package above it — scanning covers subpackages too. For example, a process configured with `<package>com.company.app</package>` will still find a class at `com.company.app.event.MyEventHandler`
 - **module**: your application's module (e.g. `position-app`)
+- **Gradle dependency**: add `implementation(genesis("pal-requestserver"))` to your application module's `build.gradle.kts` so `GPalRequestServer` is on the compile classpath
 - Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
 
 ### Mixing script and compiled
@@ -863,7 +864,7 @@ For compiled definitions only, use your app's module and definition package and 
 
 ## Testing
 
-You can test using **compiled definitions** (classes extending `GPalRequestServer`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `@TestScriptFile` is required. The examples below use script-based definitions with `@TestScriptFile`.
+You can test using **compiled definitions** (classes extending `GPalRequestServer`) with `@PackageScan` or `@ProvidedInstance` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
 
 :::info
 
@@ -1227,6 +1228,87 @@ We have covered:
 * sending our request and receiving the response
 * setting the username on the request
 * handling dynamic authorization
+
+### Testing compiled definitions
+
+If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedInstance` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. `RequestClientSync` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+
+Given this compiled Request Server:
+
+```kotlin
+package myapp.definition
+
+import global.genesis.requestreply.pal.script.GPalRequestServer
+
+data class Hello(
+    val name: String,
+)
+
+data class World(
+    val message: String,
+)
+
+class HelloWorldRequestServer : GPalRequestServer({
+    // full request server dsl support from here, for example
+    requestReply<Hello, World>("HELLO_WORLD") {
+        replySingle { hello: Hello ->
+            World("Hello, ${hello.name}!")
+        }
+    }
+})
+```
+
+The test class scans `HelloWorldRequestServer`'s package instead of loading a script file:
+
+```kotlin
+import global.genesis.message.core.workflow.message.requestReplyWorkflowBuilder
+import global.genesis.testsupport.client.requestserver.RequestClientSync
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.PackageScan
+import jakarta.inject.Inject
+import myapp.definition.Hello
+import myapp.definition.HelloWorldRequestServer
+import myapp.definition.World
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+
+@GenesisTest
+@PackageScan(HelloWorldRequestServer::class)
+class HelloWorldRequestServerTest {
+
+    @Inject
+    private lateinit var client: RequestClientSync
+
+    private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
+
+    @Test
+    fun testHelloWorldRequestServer() {
+        val hello = Hello("John")
+        val result = client.sendRequest(helloWorldFlow, hello)
+        assertEquals(1, result.size)
+        assertEquals("Hello, John!", result[0].message)
+    }
+}
+```
+
+Or, to register just this one class without scanning its whole package, use `@ProvidedInstance` with a `KClass` reference instead — this is the form the framework's own test suite uses for compiled Request Servers:
+
+```kotlin
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.ProvidedInstance
+import myapp.definition.HelloWorldRequestServer
+
+@GenesisTest
+class HelloWorldRequestServerTest {
+
+    @ProvidedInstance
+    private val helloWorldRequestServer = HelloWorldRequestServer::class
+
+    // ... same client, workflow and test as above
+}
+```
+
+`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
 
 ## Integration testing (legacy)
 

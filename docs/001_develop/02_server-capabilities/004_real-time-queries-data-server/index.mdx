@@ -1615,8 +1615,9 @@ To include your Data Server definitions in a runtime process, configure the proc
 
 ### Using compiled definitions only
 
-- **package**: the package that contains your compiled definition class (e.g. `my.app`)
+- **package**: the package containing your compiled definition class, or any package above it — scanning covers subpackages too. For example, a process configured with `<package>com.company.app</package>` will still find a class at `com.company.app.event.MyEventHandler`
 - **module**: your application's module (e.g. `position-app`)
+- **Gradle dependency**: add `implementation(genesis("pal-dataserver"))` to your application module's `build.gradle.kts` so `GPalDataserver` is on the compile classpath
 - Do **not** set `script` or `language`. Dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically.
 
 ### Mixing script and compiled
@@ -1655,7 +1656,7 @@ For compiled definitions only, you would use your app's module and definition pa
 
 ## Testing
 
-You can test using **compiled definitions** (classes extending `GPalDataserver`) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `@TestScriptFile` is required. The examples below use script-based definitions with `@TestScriptFile`.
+You can test using **compiled definitions** (classes extending `GPalDataserver`) by scanning the definition's package with `@PackageScan` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
 
 :::info
 
@@ -2064,6 +2065,74 @@ The majority of these methods enable you to send messages to control the message
 | `fun dropColumns(dropColumns: List<String>): Boolean` | `boolean dropColumns(List<String> dropColumns)` | Sends a MORE_COLUMNS message requesting columns to be removed. It automatically includes a default timeout (10 seconds). |
 | `fun retrieveRawQueryUpdateRowsFrom(fromQueryUpdateNumber: Int): List<GenesisSet>` | `List<GenesisSet> retrieveRawQueryUpdateRowsFrom(int fromQueryUpdateNumber)` | Returns all ROW GenesisSet values received since a specific QUERY_UPDATE message number, starting inclusively from the given number. |
 | `fun checkExpectedRowsNumberFrom(fromQueryUpdateNumber: Int, expectedRows: Int): Boolean` | `boolean checkExpectedRowsNumberFrom(int fromQueryUpdateNumber, int expectedRows)` | Checks if the total number of ROW updates received since a specified QUERY_UPDATE message number matches the expected number of rows, starting inclusively from the specified number. |
+
+### Testing compiled definitions
+
+If your Data Server is a **compiled definition** (a class extending `GPalDataserver`) rather than a `.kts` script, use `@PackageScan` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, connecting a `QueryView`, making assertions — works exactly as shown above. `DataServerQueryViewClient` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+
+Given this compiled Data Server:
+
+```kotlin
+package myapp.definition
+
+import global.genesis.dataserver.pal.script.GPalDataserver
+import global.genesis.gen.config.view.TRADE_VIEW
+
+class MyDataServer : GPalDataserver({
+    // full data server dsl support from here, for example
+    query("ALL_TRADES", TRADE_VIEW)
+})
+```
+
+The test class scans `MyDataServer`'s package instead of loading a script file:
+
+```kotlin
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.PackageScan
+import jakarta.inject.Inject
+import myapp.definition.MyDataServer
+import org.junit.jupiter.api.Test
+
+@GenesisTest
+@PackageScan(MyDataServer::class)
+class MyDataServerTest {
+
+    @Inject
+    private lateinit var dataServerClient: DataServerQueryViewClient
+
+    @Test
+    fun testAllTradesSubscribes() {
+        val view = dataServerClient.queryView(datasourceName = "ALL_TRADES")
+
+        assert(view.subscribed)
+    }
+}
+```
+
+Alternatively, use `@ProvidedInstance` to hand the test an already-constructed instance instead of having GenesisJunit discover it via package scanning — useful when the definition needs a dependency you want to stub out yourself:
+
+```kotlin
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.ProvidedInstance
+import jakarta.inject.Inject
+import myapp.definition.MyDataServer
+
+@GenesisTest
+class MyDataServerTest {
+
+    @ProvidedInstance
+    private val myDataServer = MyDataServer::class
+
+    @Inject
+    private lateinit var dataServerClient: DataServerQueryViewClient
+
+    // ...
+}
+```
+
+`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedInstance` registers only the exact class (or instance) you give it. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.
 
 ### Integration testing (legacy)
 
