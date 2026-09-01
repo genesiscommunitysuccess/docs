@@ -247,7 +247,7 @@ Events can be received by the emitting `<rapid-layout>`, or any parent element.
     <tr>
       <td>submit-failure</td>
       <td><code>\{ payload, errors \}</code></td>
-      <td>Emitted when the form has errors after being submitted.</td>
+      <td>Emitted when submit fails (client validation or server NACK). Generic server errors appear here and may also be shown in a toast. Field-level server errors from <code>FieldError</code> are mapped inline automatically — see <a href="/develop/client-capabilities/forms/smart-forms/foundation-forms-server-field-validation/">Server field validation</a>.</td>
       <td>
 
 ```typescript
