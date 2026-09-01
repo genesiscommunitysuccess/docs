@@ -1,0 +1,14 @@
+package-lock.json
+  h_f71204e5a998e0 2533-2603,10999-11189,11216-11404,11461-11505,11520-11697,11763-11777,14816-14824,23743-23758,23786-23797,29572-29586,29809-29817,30508-30520,41419-41442,48240-48254
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "390fa3c85a7db46e0c35edf572f8913d9c3e272b",
+  "prompts": {},
+  "humans": {
+    "h_f71204e5a998e0": {
+      "author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
