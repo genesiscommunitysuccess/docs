@@ -2,7 +2,7 @@
 title: 'Tabs'
 sidebar_label: 'Tabs'
 id: client-interaction-tabs
-keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action, alert, flash ]
 tags:
 - interaction
 - interactive
@@ -16,6 +16,8 @@ tags:
 - associated
 - activated
 - title
+- alert
+- flash
 sidebar_position: 8
 ---
 
@@ -28,6 +30,7 @@ Tabs are layered sections of content that display one panel of content at a time
 Use cases:
 * creating blocks of contents that can be shown one at a time
 * Associating a "tab" item with a title; when clicked, this shows the associated content
+* Flashing a tab while a related grid still holds rows that need attention (see [Alerting tabs](#alerting-tabs))
 
 You can use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 
@@ -229,6 +232,177 @@ export function MyComponent() {
 </Tabs>
 
 
+## Alerting tabs
+
+Set the boolean `alert` attribute on a `rapid-tab` when that desk still has work outstanding — for example while a blotter behind it holds pending orders. The tab flashes until you clear `alert`.
+
+Keep `alert` true while matches exist, and false when none remain.
+
+When you pair a tab with a grid, they flash together — same timing, same colour. Use the same [row match criteria](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts) for both (`DatasourceRowMatchTracker` for the tab, `createRowAlert` for the rows).
+
+:::tip Match count on the label
+`alert` only controls the flash. There is no count attribute on `rapid-tab`.
+
+To show how many matches there are, read `tracker.matchCount` after every datasource update and put that number in the tab’s text (as below).
+
+`onActiveChanged` only tells you whether *any* matches exist. It will not run again when the count goes from 3 to 5, so a label that updates only there can get stuck on the old number.
+:::
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Usage
+    ```typescript
+    import { DatasourceRowMatchTracker } from '@genesislcap/rapid-grid-pro';
+    import { GenesisElement, customElement, html, observable } from '@genesislcap/web-core';
+
+    const criteria = { /* module-scope RowMatchCriteria — see Row alerts */ };
+
+    @customElement({
+      name: 'orders-tabs',
+      template: html`
+        <rapid-tabs>
+          <rapid-tab id="equity" ?alert=${(x) => x.alerting}>
+            ${(x) => (x.matchCount > 0 ? `Equity (${x.matchCount})` : 'Equity')}
+          </rapid-tab>
+          <rapid-tab-panel id="equityPanel">
+            <grid-pro-genesis-datasource
+              resource-name="ALL_ORDERS"
+              @datasource-data-changed=${(x, c) => x.onDataChanged(c.event)}
+              @datasource-data-cleared=${(x) => x.onDataCleared()}
+            ></grid-pro-genesis-datasource>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+    })
+    export class OrdersTabs extends GenesisElement {
+      @observable alerting = false;
+      @observable matchCount = 0;
+
+      private readonly tracker = new DatasourceRowMatchTracker(criteria, (active) => {
+        this.alerting = active;
+      });
+
+      onDataChanged(event: CustomEvent) {
+        this.tracker.handleDataChanged(event.detail);
+        this.matchCount = this.tracker.matchCount;
+      }
+
+      onDataCleared() {
+        this.tracker.handleDataCleared();
+        this.matchCount = this.tracker.matchCount;
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Usage
+    ```tsx
+    import { DatasourceRowMatchTracker } from '@genesislcap/rapid-grid-pro';
+    import { useMemo, useState } from 'react';
+
+    const criteria = { /* module-scope RowMatchCriteria — see Row alerts */ };
+
+    export function OrdersTabs() {
+      const [alerting, setAlerting] = useState(false);
+      const [matchCount, setMatchCount] = useState(0);
+
+      const tracker = useMemo(
+        () => new DatasourceRowMatchTracker(criteria, setAlerting),
+        [],
+      );
+
+      return (
+        <rapid-tabs>
+          <rapid-tab id="equity" alert={alerting}>
+            {matchCount > 0 ? `Equity (${matchCount})` : 'Equity'}
+          </rapid-tab>
+          <rapid-tab-panel id="equityPanel">
+            <grid-pro-genesis-datasource
+              resourceName="ALL_ORDERS"
+              onDatasourceDataChanged={(event) => {
+                tracker.handleDataChanged(event.detail);
+                setMatchCount(tracker.matchCount);
+              }}
+              onDatasourceDataCleared={() => {
+                tracker.handleDataCleared();
+                setMatchCount(tracker.matchCount);
+              }}
+            />
+          </rapid-tab-panel>
+        </rapid-tabs>
+      );
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    import { DatasourceRowMatchTracker } from '@genesislcap/rapid-grid-pro';
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+    const criteria = { /* module-scope RowMatchCriteria — see Row alerts */ };
+
+    @Component({
+      selector: 'orders-tabs',
+      template: `
+        <rapid-tabs>
+          <rapid-tab id="equity" [attr.alert]="alerting ? '' : null">
+            {{ matchCount > 0 ? 'Equity (' + matchCount + ')' : 'Equity' }}
+          </rapid-tab>
+          <rapid-tab-panel id="equityPanel">
+            <grid-pro-genesis-datasource
+              resource-name="ALL_ORDERS"
+              (datasource-data-changed)="onDataChanged($event)"
+              (datasource-data-cleared)="onDataCleared()"
+            ></grid-pro-genesis-datasource>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class OrdersTabs {
+      alerting = false;
+      matchCount = 0;
+
+      private readonly tracker = new DatasourceRowMatchTracker(criteria, (active) => {
+        this.alerting = active;
+      });
+
+      onDataChanged(event: CustomEvent) {
+        this.tracker.handleDataChanged(event.detail);
+        this.matchCount = this.tracker.matchCount;
+      }
+
+      onDataCleared() {
+        this.tracker.handleDataCleared();
+        this.matchCount = this.tracker.matchCount;
+      }
+    }
+    ```
+
+  </TabItem>
+</Tabs>
+
+### Theming
+
+| CSS custom property | Description |
+| --- | --- |
+| `--tab-alert-color` | Flash colour for alerting tabs (defaults to the design-system error fill) |
+| `--alert-flash-duration` | Length of one flash cycle for **every** alerting surface on the page (tabs and rows); default `1s` |
+
+Set these on `:root` (or another shared ancestor). When you use `createRowAlert` with `mirrorColorTo: ['--tab-alert-color']`, a colour chosen from the grid’s Alert flash context menu also retints tab headers.
+
+`prefers-reduced-motion: reduce` shows a static alert colour instead of flashing.
+
+For matching rows, the presets menu, and numeric/boolean criteria, see [Row alerts](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts).
+
 ## Tabs API
 
 API examples shown with Genesis component syntax, and closing tag omitted.
@@ -408,6 +582,18 @@ API examples shown with Genesis component syntax; the closing tag is omitted.
 
 ```typescript
 <rapid-tab disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>alert</td>
+            <td><code>boolean</code></td>
+            <td>When true, the tab flashes to draw attention (sustained alert). See <a href="#alerting-tabs">Alerting tabs</a>.</td>
+<td>
+
+```typescript
+<rapid-tab alert>
 ```
 
 </td>
