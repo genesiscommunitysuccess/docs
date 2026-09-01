@@ -50,7 +50,7 @@ const cardData = [
   {
     "heading": "Combobox",
     "link": "/develop/client-capabilities/forms/form-inputs/client-interaction-combobox/",
-    "text": "Combination of text input and dropdown list",
+    "text": "Combination of text input and dropdown list with customizable filtering options",
     children: <ComboboxDemo />,
   },
   {
