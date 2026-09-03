@@ -319,6 +319,7 @@ Not all annotations are supported when using `@GenesisDatabaseTest`.
 | [GenesisTemplateTest](#genesistemplatetest)                 | Method             |     ❌      |                ✔️                 |
 | [PackageNameScan](#packagenamescan)                         | Class/ Method      |     ✔️     |                ✔️                 |
 | [PackageScan](#packagescan)                                 | Class/ Method      |     ✔️     |                ✔️                 |
+| [ProcessArg](#processarg)                                   | Class/ Method      |     ❌      |                 ❌                 |
 | [ProvidedInstance](#providedinstance)                       | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedSysDef](#providedsysdef)                           | Field/ Method      |     ❌      |                ✔️                 |
 | [ResetTableAfterTest](#resettableaftertest)                 | Class/ Method      |     ✔️     |                ✔️                 |
@@ -1045,6 +1046,75 @@ public class PackageScanTest {
     @PackageScan(MyThirdClass.class)
     public void myThirdTest() {
         // scans the package of MyClass, MyOtherClass and MyThirdClass
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### ProcessArg
+
+Annotation used to provide process arguments, as would be passed on the command line to a real Genesis process.
+The arguments are made available to the test process via `ProcessArguments`.
+This annotation can be applied to classes or functions and is not Repeatable.
+Providing this annotation at the method level will take precedence over the class level annotation -
+this is true even if the method level annotation provides no arguments, which clears any arguments
+provided at the class level for that test.
+This annotation is not supported when using [`@GenesisDatabaseTest`](#genesisdatabasetest), as no process is
+bootstrapped in that mode.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+@ProcessArg("--coldStart")
+internal class ProcessArgTest {
+
+    @Test
+    fun myTest() {
+        // the unit test service is started with process argument "--coldStart"
+    }
+
+    @Test
+    @ProcessArg("--coldStart", "TABLE_NAME")
+    fun myOtherTest() {
+        // the unit test service is started with process arguments "--coldStart" and "TABLE_NAME",
+        // replacing the class-level arguments for this test
+    }
+
+    @Test
+    @ProcessArg
+    fun myThirdTest() {
+        // the unit test service is started with no process arguments for this test
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+@ProcessArg("--coldStart")
+public class ProcessArgTest {
+
+    @Test
+    public void myTest() {
+        // the unit test service is started with process argument "--coldStart"
+    }
+
+    @Test
+    @ProcessArg({"--coldStart", "TABLE_NAME"})
+    public void myOtherTest() {
+        // the unit test service is started with process arguments "--coldStart" and "TABLE_NAME",
+        // replacing the class-level arguments for this test
+    }
+
+    @Test
+    @ProcessArg
+    public void myThirdTest() {
+        // the unit test service is started with no process arguments for this test
     }
 }
 ```
