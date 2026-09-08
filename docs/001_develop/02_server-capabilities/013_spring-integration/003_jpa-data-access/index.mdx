@@ -26,7 +26,7 @@ This is not a generic JPA set-up pointed at some database — every bean is deli
 - A Hibernate write is converted into the same `DbRecord`/`WriteResult` shape as any other write and published through the `UpdateQueue`, so it is visible to data servers, consolidators and other subscribers exactly like a classic write. See [Writing back to the UpdateQueue](#writing-back-to-the-updatequeue).
 - An entity can opt into the same audit trail the rest of the platform uses. See [Auditing](#auditing).
 
-Use this starter when ORM-style entity/repository code — Spring Data query derivation, JPQL, transactional service methods — is a better fit for a piece of code than the generated DAO API, while still participating fully in the platform's write-propagation and audit machinery. It is not a way to bypass the dictionary or manage schema independently of it.
+Use this starter where ORM-style entity/repository code — Spring Data query derivation, JPQL, transactional service methods — fits better than the generated DAO API, while still participating fully in the platform's write-propagation and audit machinery. It is not a way to bypass the dictionary or manage schema independently of it.
 
 ### Compared with the data access APIs
 
@@ -50,7 +50,7 @@ Before writing any code against this starter, two things must already be true:
 
 With those in place, add `genesis-data-spring-boot-starter` and `spring-boot-starter-data-jpa` to the module's dependencies. There is nothing further to `@Import` — `GenesisDataConfig` is a Spring Boot autoconfiguration, active as soon as both are on the classpath.
 
-Two constraints are worth calling out before going further, because they differ from a typical Spring Data JPA project:
+Two things about this set-up differ from a typical Spring Data JPA project, and are worth calling out before going further:
 
 :::info SQL engines only
 This starter requires a SQL `DbLayer` (H2, PostgreSQL, Oracle or SQL Server). A process running on the FoundationDB `DbLayer` has no `SQLEngine` bean to satisfy this configuration, so the starter simply does not apply — there is no FoundationDB equivalent.
@@ -101,7 +101,7 @@ alongside a generated repository extending one of the `GenesisJpaRepository` bas
 interface PositionRepository : GenesisJpaRepository.Nullable<Position, String>
 ```
 
-Calling it — nothing beyond `@Autowired` (or constructor injection) is required; `GenesisDataConfig`'s beans and Spring Data JPA's own repository factory do the rest. Calling `save` on a new entity inserts; calling it on a loaded entity updates:
+Using it needs nothing beyond `@Autowired` (or constructor injection); `GenesisDataConfig`'s beans and Spring Data JPA's own repository factory do the rest. Calling `save` on a new entity inserts; calling it on a loaded entity updates:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -207,7 +207,7 @@ A unique-index lookup returns a single nullable result — there is no `Optional
 
 Genesis's platform — data servers, consolidators, request servers, any reactive subscriber — learns about data changes through the `UpdateQueue`. A JPA write, left alone, would be invisible to all of that: Hibernate would happily persist rows that the rest of the platform never hears about.
 
-This starter closes that gap with a Hibernate integrator registered on the `POST_INSERT`/`POST_UPDATE`/`POST_DELETE` events. For an entity that is both a `GenesisJpaEntity` and a `DbRecordProvider` (every generated entity is both), it builds the same kind of update the classic `RxDb` API publishes, and sends it through the same [update queue](/build-deploy-operate/operate/update-queue) `RxDb` uses — publication is deferred until the transaction has committed, and only fires on success, so a rolled-back transaction publishes nothing even though Hibernate's post-event already fired at flush time.
+This starter closes that gap with a Hibernate integrator registered on the `POST_INSERT`/`POST_UPDATE`/`POST_DELETE` events. For an entity that is both a `GenesisJpaEntity` and a `DbRecordProvider` (every generated entity is both), it builds the same kind of update the classic `RxDb` API publishes, and sends it through the same [update queue](/build-deploy-operate/operate/update-queue) `RxDb` uses. Publication is deferred until the transaction has committed, and only fires on success — so a rolled-back transaction publishes nothing, even though Hibernate's post-event already fired at flush time.
 
 Publication also depends on the process actually running against a real update-queue transport (a genuine multi-process deployment on ZeroMQ, MQTT or JMS) rather than the in-memory queue a standalone or test process falls back to — the same distinction classic `RxDb` writes already respect. On a process where that isn't the case, JPA writes still land in the database; they simply aren't published anywhere. There's no error or warning-level log for this — a write that "doesn't show up" downstream, with no other symptom, is usually this.
 
@@ -274,7 +274,7 @@ public void createTypedRecord(String groupId, int itemId, String userName) {
 </TabItem>
 </Tabs>
 
-With no context set, the write is still persisted; no audit row appears, with no error or log. Whether the audit row itself reaches the `UpdateQueue` follows the same publication rules described above.
+With no context set, the write is still persisted, but no audit row appears — silently, with no error or log. Whether the audit row itself reaches the `UpdateQueue` follows the same publication rules described above.
 
 ### Transactions
 
