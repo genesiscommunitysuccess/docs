@@ -45,10 +45,9 @@ independently useful:
 3. **Puts the app's HTTP surface on the network safely.** The starter publishes the app's servlet
    context path and embedded server port, so `GENESIS_ROUTER` can reverse-proxy requests straight
    to the embedded Tomcat under that path prefix, gateway-style — no separate load balancer or port
-   to manage. Because a router-proxied request reaches a Spring controller *before* the router's
-   own authentication logic runs, this starter also installs its own, independent authentication
-   layer that resolves the same `SESSION_AUTH_TOKEN` header the rest of Genesis uses, against the
-   same session store.
+   to manage. A router-proxied request reaches a Spring controller *before* the router's own
+   authentication logic runs, so this starter also installs its own authentication layer — see
+   [Session-token authentication](#session-token-authentication) below.
 
 This starter does not give you JPA entities, repositories, or database access — see
 [JPA data access](../jpa-data-access) — and it does not give you annotation-driven Genesis event
@@ -188,7 +187,7 @@ Genesis system definitions are exposed as a Spring `PropertySource` named `"gene
 - Any Genesis system-definition value is readable via `@Value("${my.system.def.key}")` or
   `@ConfigurationProperties`, without copying it into `application.yaml`.
 - Because it's low priority, an explicit Spring config source (`application.yaml`, environment
-  variable, system property) for the same key always wins over the Genesis-sourced value — treat it
+  variable, system property) for the same key always wins over the Genesis-sourced value. Treat it
   as a fallback layer, not a way to override normal Spring config.
 
 For example, with a Genesis system-definition key `APP_GREETING` defined somewhere in the process's
