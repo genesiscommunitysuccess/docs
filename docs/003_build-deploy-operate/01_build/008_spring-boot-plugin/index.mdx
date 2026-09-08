@@ -9,33 +9,177 @@ tags:
 sidebar_position: 8
 ---
 
-:::note
-Placeholder scaffold — content pending. Covers the opt-in Gradle plugin chain (`genesis-spring-boot-gradle-plugin`, `-internal`, `genesis-spring-boot-ksp`) wiring KSP and entity codegen into a build, and the version-pinning BOM (`genesis-spring-dependencies`).
+See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis Gradle plugins, and [Spring Integration](/develop/server-capabilities/spring-integration) for the server-side modules this build tooling supports — everything in that section depends on a module having applied the plugin described here.
+
+## Genesis Spring Boot plugin
+
+The Genesis Spring Boot plugin (`global.genesis.spring`) is the build-time entry point for Genesis's Spring Boot/JPA application style. Applying it to a module provides:
+
+- **Legacy process and service manifest generation** for classes annotated `@GenesisApplication`, so a Spring Boot process shows up in Genesis tooling (process manager, launcher) exactly like a `.kts`-defined one.
+- **JPA entity, repository and enum code generation** from your project's existing Genesis dictionary and view definitions, so a Spring Data JPA layer can be built directly on top of tables and views you've already defined.
+- **Automatic KSP wiring** to scan your compiled classes for the `@GenesisApplication` annotation — no separate KSP setup is required in the consuming module.
+
+Unlike the core [Genesis Build plugin](/build-deploy-operate/build/plugins#genesis-build-plugin), which the Genesis Gradle Settings plugin applies to every module automatically, the Spring Boot plugin is **opt-in**: a module must explicitly add `id("global.genesis.spring")` to use it. Modules that don't write Spring/JPA code don't need it and won't have it applied for them.
+
+### How to enable?
+
+Applying the plugin requires the module's `settings.gradle.kts` to already have one of Genesis's settings plugins applied — the same one that manages `global.genesis.build` — because `global.genesis.spring` is a version-managed plugin id that resolves without an explicit version string only through that mechanism. Given that, add the plugin to the module's own `build.gradle.kts`:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    kotlin("jvm")
+    id("global.genesis.spring")
+}
+```
+
+The JPA source-set wiring described below requires the Kotlin JVM plugin (`kotlin("jvm")`) to be applied in the same module — the generated entities and repositories are always Kotlin, regardless of what language the rest of the module is written in. The process/service manifest generation has no such requirement: it works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
+
+Applying the plugin creates a `genesisSpring { ... }` extension with two nested extensions, `processes {}` and `entities {}`:
+
+```kotlin
+genesisSpring {
+    processes {
+        defaultOptions = "-Xmx1024m -DXSD_VALIDATE=false"
+        portOffset = 11050
+    }
+    entities {
+        packageName = "com.example.myapp.jpa"
+        sourceSetName = "main"
+        dictionaryModuleSuffix = "-dictionary-cache"
+        generateConfigurationClass = true
+    }
+}
+```
+
+Neither nested extension needs to be configured to get useful defaults — see below.
+
+### Processes and service manifest generation
+
+If a module declares any `@GenesisApplication`-annotated classes, the plugin's KSP processor scans for them during compilation and the `generateGenesisSpringProcessesXml` task writes `<product>-<module>-processes.xml` and `<product>-<module>-service-definitions.xml` — the same legacy configuration format the GPAL/dictionary world uses. No extra DSL configuration is required for this to happen; it runs automatically whenever matching classes are found, and writes nothing if none are.
+
+The `processes {}` extension only needs touching when a module wants different defaults from the ones Genesis normally uses:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `defaultOptions` | `"-Xmx1024m -DXSD_VALIDATE=false"` | JVM options written into the generated `<process>` entry, unless the `@GenesisApplication` annotation supplies its own. |
+| `portOffset` | `11050` | Base port for generated `<service>` entries. Each process's port is `portOffset` plus either the port the annotation specifies, or the process's position in declaration order. |
+
+A module that only needs this half of the plugin — no JPA entities at all — can configure `processes {}` alone and leave `entities {}` untouched:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    kotlin("jvm")
+    id("global.genesis.spring")
+}
+
+genesisSpring {
+    processes {
+        defaultOptions = "-Xmx2048m -DXSD_VALIDATE=false"
+        portOffset = 12000
+    }
+}
+```
+
+### JPA entity generation
+
+The `entities {}` extension controls the `generateJpaEntities` task, which reads the merged Genesis dictionary and view definitions out of sibling modules and generates `@Entity`, repository and enum Kotlin sources from them. A companion `generateAutoConfig` task emits the Spring Boot `AutoConfiguration.imports` file that lets a consuming application auto-discover the generated JPA configuration.
+
+A minimal configuration only needs `packageName`; every other property is derived from it:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    kotlin("jvm")
+    id("global.genesis.spring")
+}
+
+genesisSpring {
+    entities {
+        packageName = "com.example.myapp.jpa"
+    }
+}
+```
+
+Running `./gradlew generateJpaEntities` against a sibling dictionary module (by default, any subproject whose name ends `-dictionary-cache`) writes generated sources under `build/generated/genesis-jpa/`, and both the generated entities and the auto-configuration output are attached to the module's `main` Kotlin source set — so they compile as part of the module and end up on its classpath without any further wiring.
+
+#### Common configuration
+
+Every property below keys off `packageName` by default:
+
+| Property | Convention default | Description |
+| --- | --- | --- |
+| `packageName` | `global.genesis.jpa` | Base package for all generated code. |
+| `entityPackageName` | `$packageName.dao` | Package for generated `@Entity` classes. |
+| `repoPackageName` | `$packageName.repo` | Package for generated repository interfaces. |
+| `enumPackageName` | `$entityPackageName.enums` | Package for generated enums. |
+| `configClassPackageName` | `$packageName.config` | Package for the generated `JpaConfiguration` class. |
+| `dictionaryModuleSuffix` | `-dictionary-cache` | Name suffix used to find sibling subprojects to generate entities from. Matching is by suffix against direct subprojects of the root project only — there's no way to point at a dictionary module by path. |
+| `sourceSetName` | `main` | Which Kotlin source set the generated sources and auto-configuration resources are attached to. |
+| `generateConfigurationClass` | `true` | Whether a `JpaConfiguration` class (and the matching auto-configuration import) is generated at all. |
+| `useNullableRepo` | `true` | Whether generated repository methods return nullable types. |
+
+Two of these are worth calling out:
+
+- **`sourceSetName`**, set to `"test"`, keeps generated entities out of the module's published jar entirely — the intended setting for a module whose dictionary is only a test fixture rather than something it ships. A name that doesn't match any real source set in the module silently generates into nothing, with no build error.
+- **`generateConfigurationClass`**, set to `false`, stops the `JpaConfiguration` class and its auto-configuration entry from being generated. Both `generateJpaEntities` and `generateAutoConfig` read the same underlying property, so they can't drift out of sync as long as nothing bypasses the `entities {}` DSL to set either task's input directly.
+
+A dictionary that only exists to back a module's own tests combines both of these:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("global.genesis.spring")
+    kotlin("plugin.jpa")
+}
+
+genesisSpring {
+    entities {
+        dictionaryModuleSuffix = "paltest-dictionary-cache"
+        // This module has no main sources of its own — without this, its jar would be nothing
+        // but fixture entities plus an auto-configuration trigger that activates them in any consumer.
+        sourceSetName = "test"
+    }
+}
+```
+
+:::tip
+`entities {}` always registers its generation tasks, even if no matching `-dictionary-cache` module exists — but `generateJpaEntities` will then have no dictionary to read and fail. If a module only needs the process/service manifest generation described above, leave `entities {}` unconfigured rather than pointing it at a dictionary that doesn't exist.
 :::
-
-See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis Gradle plugins, and [Spring Integration](/develop/server-capabilities/spring-integration) for the server-side modules this build tooling supports.
-
-## Entity generation plugin
-
-<!-- TODO: benefits bullet-list intro, mirroring the existing Plugins page style -->
-
-### How to enable?
-
-<!-- TODO -->
-
-### Common configuration
-
-<!-- TODO -->
-
-## KSP plugin
-
-<!-- TODO: wiring KSP into the build -->
-
-### How to enable?
-
-<!-- TODO -->
 
 ## Version-pinning BOM
 
-<!-- TODO: genesis-spring-dependencies -->
+`genesis-spring-dependencies` is a `java-platform` module (a BOM) applied automatically as a platform dependency to Spring-based modules. It imports `org.springframework.boot:spring-boot-dependencies` to pin a single, consistent Spring Boot version across a project, and adds one constraint of its own: `com.h2database:h2`, pinned `strictly` to the project's `h2Version` property, to work around a check-constraint regression in H2 2.4.x. It deliberately doesn't re-declare other version constraints — for example, Jackson versions are already pinned by `genesis-dependencies`, and duplicating them here would create two competing sources of truth.
 
+No Spring Boot dependency needs to be present to apply the `global.genesis.spring` plugin itself — the BOM and the various Spring Boot starter modules are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
+
+### Overriding a version it pins
+
+Because the H2 constraint uses `strictly()`, a consuming module can't simply declare a different `com.h2database:h2` version and expect it to win — a `strictly()` constraint only loses to another `strictly()` declared at higher precedence, not to a plain version request or `prefer()`. To override it, declare your own `strictly()` constraint directly in the consuming module:
+
+```kotlin
+// build.gradle.kts
+plugins {
+    kotlin("jvm")
+    id("global.genesis.spring")
+}
+
+genesisSpring {
+    entities {
+        packageName = "com.example.myapp.jpa"
+    }
+}
+
+dependencies {
+    constraints {
+        // Overrides genesis-spring-dependencies' strictly(h2Version) pin — a plain version
+        // request or prefer() here would not beat that platform's strictly().
+        api("com.h2database:h2") {
+            version { strictly("2.5.0") }
+        }
+    }
+}
+```
+
+This is standard Gradle rich-version-constraint behaviour — a project's own declared constraint takes precedence over one contributed by an applied platform — rather than a feature this plugin or the BOM implements itself. The same technique applies to any other Spring Boot-managed dependency you need to move off the version the BOM pins.
