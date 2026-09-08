@@ -20,11 +20,13 @@ A class-based, annotation-driven way to write event handlers, as an alternative 
 
 ## Overview
 
-`genesis-eventhandler-spring-boot-starter` lets a Spring Boot application define Genesis event handlers as plain annotated Kotlin or Java classes, instead of writing `.kts` GPAL event-handler scripts. A class annotated `@GenesisEventHandler("EVENT_NAME")` (or `@GenesisEventController` for a group of related events), with `@EventValidate`/`@EventCommit`-annotated methods, is scanned at Spring context start-up and registered into the same `TypedEventManager` registry that GPAL's compiled and scripted event handlers register into. From the router's or a connecting client's point of view, an event served by one of these Spring beans looks identical to one served by a GPAL handler — both mechanisms can coexist in the same process.
+`genesis-eventhandler-spring-boot-starter` lets a Spring Boot application define Genesis event handlers as plain annotated Kotlin or Java classes, instead of writing `.kts` GPAL event-handler scripts. A class annotated `@GenesisEventHandler("EVENT_NAME")` (or `@GenesisEventController` for a group of related events), with `@EventValidate`/`@EventCommit`-annotated methods, is scanned at Spring context start-up and registered into the same `TypedEventManager` registry as GPAL's compiled and scripted event handlers.
+
+From the router's or a connecting client's point of view, an event served by one of these Spring beans looks identical to one served by a GPAL handler, and both mechanisms can coexist in the same process.
 
 This module builds on the [Spring application core](../core) and depends on `genesis-eventhandler` and `genesis-jpa-base`. Handler payloads and validate/commit logic will often touch JPA entities from [JPA data access](../jpa-data-access).
 
-Choose this module when the surrounding process is already a Spring Boot / JPA application, and staying in that programming model outweighs the greater maturity of GPAL. It is a second, parallel authoring style for the same event-handler concept, not a replacement — GPAL (`genesis-pal-eventhandler`, `.kts` scripts, `GPalEventHandler`) remains the default for core business logic today.
+Choose this module when the surrounding process is already a Spring Boot / JPA application and staying in that programming model outweighs GPAL's greater maturity. It's a second, parallel authoring style for the same event-handler concept, not a replacement — GPAL (`genesis-pal-eventhandler`, `.kts` scripts, `GPalEventHandler`) remains the default for core business logic today.
 
 Exposing an HTTP surface (`@RestController`) through the Genesis router is **not** part of this module — that lives in the [Spring application core](../core).
 
@@ -32,7 +34,7 @@ Exposing an HTTP surface (`@RestController`) through the Genesis router is **not
 
 Add a dependency on `genesis-eventhandler-spring-boot-starter`; `genesis-spring-boot-starter`, `genesis-eventhandler` and `genesis-jpa-base` come transitively. There is no separate annotation-processing or KSP step for this module — annotations are read via runtime reflection when a bean is post-processed, not at compile time.
 
-The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context; the [Spring application core](../core)'s own auto-configuration supplies all of these, so as long as that's set up first there's nothing extra to wire in.
+The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context — the [Spring application core](../core)'s own auto-configuration supplies all of these, so set that up first and there's nothing extra to wire in.
 
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
 
@@ -216,7 +218,7 @@ public class AnyRightThingHandler {
 
 ### Validation
 
-`@EventValidate` runs on every incoming request for its event, including ones sent with `validate=true` (a pre-flight check), and its return value becomes the commit-phase context. When a request has `validate=true`, the framework itself never invokes `@EventCommit` — it returns whatever `@EventValidate` produced, converted to an ack or nack, without running the commit method. You don't need to check `event.validate` yourself for this to happen; it's handled for both validating and commit-only handlers (a commit-only handler just acks empty instead of running any validation logic first).
+`@EventValidate` runs on every incoming request for its event, including ones sent with `validate=true` (a pre-flight check), and its return value becomes the commit-phase context. When a request has `validate=true`, the framework itself never invokes `@EventCommit` — it returns whatever `@EventValidate` produced, converted to an ack or nack, without running the commit method. You don't need to check `event.validate` yourself — this is handled for both validating and commit-only handlers (a commit-only handler just acks empty instead of running validation logic first).
 
 Bean Validation is partially wired: a parameter can be annotated `@jakarta.validation.Valid` or `@org.springframework.validation.annotation.Validated`, and the scanner records that on the parameter definition — but nothing downstream currently runs Bean Validation against it. Putting `@Valid` on a payload parameter today does not actually validate anything through this module; write your own checks in `@EventValidate` instead.
 
