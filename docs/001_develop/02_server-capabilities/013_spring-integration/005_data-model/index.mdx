@@ -17,19 +17,23 @@ Base entity classes, the dictionary-to-JPA code generation pipeline that produce
 
 ## Overview
 
-This area answers one question: how does an existing Genesis table [dictionary](/develop/server-capabilities/data-model) become a JPA entity? The dictionary (`*-tables-dictionary.kts` / `*-fields-dictionary.kts`) has always been the single source of truth for a table's shape. Classic code generation turns it into the generated DAO classes used by the [data access APIs](/develop/server-capabilities/data-access-apis). This area is the JPA-world sibling of that same generation step: it reads the identical dictionary and produces `@Entity`, Spring Data repository, and enum classes instead, so a Spring Boot process can read and write the same physical tables through Hibernate/Spring Data JPA.
+This area answers one question: how does an existing Genesis table [dictionary](/develop/server-capabilities/data-model) become a JPA entity? The dictionary (`*-tables-dictionary.kts` / `*-fields-dictionary.kts`) is the single source of truth for a table's shape. Classic code generation turns it into the generated DAO classes used by the [data access APIs](/develop/server-capabilities/data-access-apis). This area is the JPA-world sibling of that same generation step: it reads the identical dictionary and produces `@Entity`, Spring Data repository, and enum classes instead, so a Spring Boot process can read and write the same physical tables through Hibernate/Spring Data JPA.
 
 Three modules make this up:
 
-- **`genesis-jpa-base`** is the runtime library every generated entity depends on: base `@MappedSuperclass` hierarchies, Hibernate ID generators that reuse Genesis's own ID sources, an audit-context mechanism, and date converters that keep JPA-mapped columns compatible with the rest of the platform. It has no generated code of its own — it is pure runtime scaffolding, with no dependency on Spring Boot.
+- **`genesis-jpa-base`** is the runtime library every generated entity depends on: base `@MappedSuperclass` hierarchies, Hibernate ID generators that reuse Genesis's own ID sources, an audit-context mechanism, and date converters that keep JPA-mapped columns compatible with the rest of the platform. It has no generated code of its own — pure runtime scaffolding, with no dependency on Spring Boot.
 - **`genesis-spring-boot-entity-generation`** is a build-time code generator that reads a Genesis dictionary and emits the actual `@Entity`, repository, enum, and configuration source files, all built on `genesis-jpa-base`'s classes.
 - **`genesis-spring-boot-annotations`** ships alongside these modules as a tiny shared vocabulary (`@GenesisApplication`, `@GenesisAnonymous`) used by other Spring/JPA areas.
 
-**Generation itself is Kotlin-only** — the generator emits KotlinPoet source, and there is no generator mode that produces `.java` output. You never hand-write a generated entity: you configure the generator's target package and a class matching the dictionary appears under `build/generated/` on every build. That said, nothing in the base classes is Kotlin-only surface: a hand-written Java class can extend `GenesisJpaEntity.Base`, `.WithRecordIdPrimaryKey`, or `.WithRecordIdCompositeKey` directly and behave the same way a generated entity would, minus the automatic dictionary sync and the write-propagation bridge described in [JPA data access](../jpa-data-access).
+**Generation itself is Kotlin-only** — the generator emits KotlinPoet source, and there is no generator mode that produces `.java` output. You never hand-write a generated entity: you configure the generator's target package, and a class matching the dictionary appears under `build/generated/` on every build. The base classes themselves are not Kotlin-only, though: a hand-written Java class can extend `GenesisJpaEntity.Base`, `.WithRecordIdPrimaryKey`, or `.WithRecordIdCompositeKey` directly and behave the same way a generated entity would, minus the automatic dictionary sync and the write-propagation bridge described in [JPA data access](../jpa-data-access).
 
 The generated entity behaves like a native Genesis row: it carries the same `RECORD_ID`/`TIMESTAMP` system columns, the same composite-key semantics, and the same epoch-millis date encoding as the rest of the platform — it is not a second, disconnected copy of the data.
 
-This area does not run the code generation task itself or decide which dictionary module feeds the generator (that is the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin)); it does not provide the `EntityManagerFactory`, `DataSource`, or write-propagation that make a JPA write visible to the rest of the platform (that is [JPA data access](../jpa-data-access)); and it does not build queries over the generated entities (that is the [cube query engine](../data-cube)).
+This area stops short of three things:
+
+- Running the code generation task itself, or deciding which dictionary module feeds the generator — that's the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin).
+- Providing the `EntityManagerFactory`, `DataSource`, or write-propagation that make a JPA write visible to the rest of the platform — that's [JPA data access](../jpa-data-access).
+- Building queries over the generated entities — that's the [cube query engine](../data-cube).
 
 ## Example configuration
 
@@ -166,7 +170,7 @@ Every generated entity extends one of three `@MappedSuperclass` shapes nested un
 | `GenesisJpaEntity.WithRecordIdPrimaryKey` | The dictionary's sole primary-key field is literally named `RECORD_ID` | `pk: Long` *is* the framework `recordId` itself; `recordId` is exposed only as a `@Transient` convenience getter |
 | `GenesisJpaEntity.WithRecordIdCompositeKey<PK>` | The primary key is composite and includes `RECORD_ID` | The `@EmbeddedId` class extends `RecordIdCompositeKey`, folding `recordId` into the embedded key |
 
-All shapes implement Spring Data's `Persistable<PK>`: `isNew()` is `recordId == 0L`, and `getId()` returns `null` while `recordId == 0L` — this is needed because Hibernate cannot infer new-vs-existing from primary-key nullness once Genesis's own ID generators have already filled in the key before Hibernate's own callback runs.
+All shapes implement Spring Data's `Persistable<PK>`: `isNew()` is `recordId == 0L`, and `getId()` returns `null` while `recordId == 0L`. This is needed because Hibernate cannot infer new-vs-existing from primary-key nullness once Genesis's own ID generators have already filled in the key before Hibernate's own callback runs.
 
 For example, a table whose primary key *is* the framework `recordId` (no declared primary-key field of its own) generates the second shape:
 
@@ -347,7 +351,7 @@ public class ApprovalJava extends GenesisJpaEntity.Base<String>
 </TabItem>
 </Tabs>
 
-`toAuditEntity` is generator-emitted boilerplate that forwards to a generated mapper companion; only implementing the interface matters when hand-writing an entity, since `toAuditEntity` is an ordinary interface method with no Kotlin-specific calling convention.
+`toAuditEntity` is generator-emitted boilerplate that forwards to a generated mapper companion. When hand-writing an entity, only implementing the interface matters — `toAuditEntity` is an ordinary interface method with no Kotlin-specific calling convention.
 
 ### Date/time handling
 
