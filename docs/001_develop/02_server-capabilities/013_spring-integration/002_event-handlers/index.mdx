@@ -9,39 +9,437 @@ tags:
 sidebar_position: 2
 ---
 
-:::note
-Placeholder scaffold — content pending. Covers `genesis-eventhandler-spring-boot-starter` (still WIP upstream).
-:::
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 A class-based, annotation-driven way to write event handlers, as an alternative to [GPAL `.kts` event handlers](/develop/server-capabilities/core-business-logic-event-handler).
 
 :::caution
-`genesis-eventhandler-spring-boot-starter` is still work-in-progress upstream — expect its API to change before this page is filled in.
+`genesis-eventhandler-spring-boot-starter` is still work-in-progress upstream — expect its API and the set of supported annotations to change as the module matures. The gaps below are accurate as of this writing, but check back before relying on any of them being fixed.
 :::
 
 ## Overview
 
-<!-- TODO: prose relating annotation-driven handlers to .kts handlers -->
+`genesis-eventhandler-spring-boot-starter` lets a Spring Boot application define Genesis event handlers as plain annotated Kotlin or Java classes, instead of writing `.kts` GPAL event-handler scripts. A class annotated `@GenesisEventHandler("EVENT_NAME")` (or `@GenesisEventController` for a group of related events), with `@EventValidate`/`@EventCommit`-annotated methods, is scanned at Spring context start-up and registered into the same `TypedEventManager` registry that GPAL's compiled and scripted event handlers register into. From the router's or a connecting client's point of view, an event served by one of these Spring beans looks identical to one served by a GPAL handler — both mechanisms can coexist in the same process.
+
+This module builds on the [Spring application core](../core) and depends on `genesis-eventhandler` and `genesis-jpa-base`. Handler payloads and validate/commit logic will often touch JPA entities from [JPA data access](../jpa-data-access).
+
+Choose this module when the surrounding process is already a Spring Boot / JPA application, and staying in that programming model outweighs the greater maturity of GPAL. It is a second, parallel authoring style for the same event-handler concept, not a replacement — GPAL (`genesis-pal-eventhandler`, `.kts` scripts, `GPalEventHandler`) remains the default for core business logic today.
+
+Exposing an HTTP surface (`@RestController`) through the Genesis router is **not** part of this module — that lives in the [Spring application core](../core).
+
+## Getting set up
+
+Add a dependency on `genesis-eventhandler-spring-boot-starter`; `genesis-spring-boot-starter`, `genesis-eventhandler` and `genesis-jpa-base` come transitively. There is no separate annotation-processing or KSP step for this module — annotations are read via runtime reflection when a bean is post-processed, not at compile time.
+
+The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context; the [Spring application core](../core)'s own auto-configuration supplies all of these, so as long as that's set up first there's nothing extra to wire in.
+
+A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
+
+One hard constraint to plan around from the start: **never model an event payload or handler class as a Java `record`.** Doing so crashes bean creation with `Can't compute ClassId for primitive type: int`, thrown from Kotlin reflection while the module inspects the record's constructor. Use a Kotlin `data class`, or an ordinary Java class with a no-arg constructor and getters/setters, instead.
 
 ## Example configuration
 
-<!-- TODO: minimal annotated event handler class -->
+The smallest realistic handler is a single event with a commit phase only — no validation, no rights. A payload parameter with no annotation is bound automatically to the incoming event details:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+data class UpdateThing(
+    val name: String = "",
+    val qty: Int = 0,
+)
+
+@GenesisEventHandler("TOUCH_THING")
+class CommitOnlyThingHandler {
+
+    @EventCommit
+    fun commit(details: UpdateThing) {
+        // ... do the work
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class UpdateThing {
+    private String name = "";
+    private int qty = 0;
+
+    public UpdateThing() {
+    }
+
+    public UpdateThing(String name, int qty) {
+        this.name = name;
+        this.qty = qty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+}
+
+@GenesisEventHandler("TOUCH_THING")
+public class CommitOnlyThingHandler {
+
+    @EventCommit
+    public void commit(UpdateThing details) {
+        // ... do the work
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`@GenesisEventHandler("TOUCH_THING")` registers the event with `TypedEventManager` under that name, the same registry a GPAL handler uses. The event name must match `[A-Z][A-Z0-9_]+`, or registration fails at start-up. A `commit` method returning `Unit`/`void` (as above) maps to an empty `EventReply.EventAck`; returning a domain object instead wraps it as `EventAck(generated = listOf(thatObject))`, and returning a `List<*>` uses the list directly as `generated`.
+
+Most handlers need both a validation phase and a commit phase — the equivalent of GPAL's `onValidate`/`onCommit` split. The value returned by `@EventValidate` becomes the "context" available to `@EventCommit`, injected via a parameter annotated `@EventContext` (or implicitly, if the parameter's type already matches):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+data class CreateThing(val name: String = "", val qty: Int = 0)
+data class ThingCreated(val thingId: String)
+data class ValidatedThing(val normalisedName: String)
+
+@GenesisEventHandler("CREATE_THING")
+class ValidatingThingHandler {
+
+    @EventValidate
+    fun validate(details: CreateThing): ValidatedThing {
+        check(details.qty > 0) { "qty must be positive" }
+        return ValidatedThing(details.name.uppercase())
+    }
+
+    @EventCommit
+    fun commit(details: CreateThing, @EventContext ctx: ValidatedThing): ThingCreated {
+        return ThingCreated(thingId = "THING-${ctx.normalisedName}-${details.qty}")
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisEventHandler("CREATE_THING")
+public class ValidatingThingHandler {
+
+    @EventValidate
+    public ValidatedThing validate(CreateThing details) {
+        if (details.getQty() <= 0) {
+            throw new IllegalStateException("qty must be positive");
+        }
+        return new ValidatedThing(details.getName().toUpperCase());
+    }
+
+    @EventCommit
+    public ThingCreated commit(CreateThing details, @EventContext ValidatedThing ctx) {
+        return new ThingCreated("THING-" + ctx.getNormalisedName() + "-" + details.getQty());
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`@EventContext` is optional here, since the `commit` parameter type (`ValidatedThing`) already exactly matches what `@EventValidate` returns — the framework injects it either way.
 
 ## Configuration options
 
 ### Handler annotation(s)
 
-<!-- TODO: fill in once the annotation vocabulary for this module is finalised -->
+- `@GenesisEventHandler("EVENT_NAME")` on a class marks it as a single-event handler. It may declare one `@EventValidate` method and must declare exactly one `@EventCommit` method.
+- `@GenesisEventController("PREFIX")` on a class groups several related events together. Each method annotated `@EventMapping("SUFFIX")` becomes its own event, registered as `PREFIX_SUFFIX` (or just `SUFFIX` if the prefix is empty). A controller class must **not** declare `@EventValidate`/`@EventCommit` methods — there is no automatic validate/commit split per method inside a controller; a mapped method either handles the request outright or inspects `@IsValidateOnly` itself (see below).
+- A class cannot carry both `@GenesisEventHandler` and `@GenesisEventController` — that combination is rejected at start-up, as is a controller with no matching methods, a single handler with no commit method, or more than one commit method.
+- `EventHandlerType` (`STANDARD` / `INTERNAL` / `APPROVABLE` / `DEFAULT`, which resolves to `STANDARD`) is settable on the class or per-method, to influence routing and visibility. `STANDARD` is the default, UI-exposed case. `INTERNAL` marks an event not meant for the external router or UI, though whether that's respected everywhere the router makes that decision isn't fully verified yet. `APPROVABLE` exists only as a value today — there's no supporting machinery for a multi-party approval flow, so setting it doesn't currently change a handler's behaviour (see [Limitations](#limitations)).
+
+Parameter-level injection available on a validate/commit/mapping method:
+
+| Annotation | Effect |
+|---|---|
+| *(none)* | The event payload, unless the parameter type is `Event<T>`, in which case it's the full envelope instead. |
+| `@UserName` | Injects the triggering user's username, as a `String`. |
+| `@EventContext` | Injects the value returned by the paired `@EventValidate` method. Optional if the parameter type already matches. |
+| `@IsValidateOnly` | Injects a `Boolean` reflecting whether the request is a `validate=true` pre-flight — see below for where this actually takes effect. |
+
+A single class can also carry static rights checks:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisEventHandler("SECURE_THING")
+@RequiresAnyRight(["THING_WRITE"])
+class AnyRightThingHandler {
+    @EventCommit
+    fun commit(details: UpdateThing) = Unit
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisEventHandler("SECURE_THING")
+@RequiresAnyRight({"THING_WRITE"})
+public class AnyRightThingHandler {
+    @EventCommit
+    public void commit(UpdateThing details) {
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`@RequiresAnyRight`/`@RequiresAllRights` are checked against `RightSummaryCache` before the handler method runs; an unauthorised user gets a not-authorised nack and the method body never executes. They can sit on the class, on an individual `@EventMapping` method, or both (both checks then apply — logical AND). This path is genuinely wired and tested.
+
+`@RequiresAuth(mapName, fields)` is also available, intended for row-level/dynamic authorisation against a Genesis authorization map, but it is **not enforced today** — it's parsed into a model attached to the handler definition and nothing consults it. Don't rely on it for row-level authorisation yet; use `@RequiresAnyRight`/`@RequiresAllRights` for anything that must actually be checked.
 
 ### Validation
 
-<!-- TODO -->
+`@EventValidate` runs on every incoming request for its event, including ones sent with `validate=true` (a pre-flight check), and its return value becomes the commit-phase context. When a request has `validate=true`, the framework itself never invokes `@EventCommit` — it returns whatever `@EventValidate` produced, converted to an ack or nack, without running the commit method. You don't need to check `event.validate` yourself for this to happen; it's handled for both validating and commit-only handlers (a commit-only handler just acks empty instead of running any validation logic first).
+
+Bean Validation is partially wired: a parameter can be annotated `@jakarta.validation.Valid` or `@org.springframework.validation.annotation.Validated`, and the scanner records that on the parameter definition — but nothing downstream currently runs Bean Validation against it. Putting `@Valid` on a payload parameter today does not actually validate anything through this module; write your own checks in `@EventValidate` instead.
+
+#### Manual validate/commit control
+
+Occasionally one method needs to see both phases itself rather than have the framework split them — for example, to make a "dry run" flag explicit rather than implicit. `@IsValidateOnly` supports this, but **only on a `@GenesisEventController`/`@EventMapping` method**:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisEventController("THING_ADMIN")
+class ThingAdminController {
+
+    @EventMapping("PURGE")
+    fun purge(details: UpdateThing, @IsValidateOnly validateOnly: Boolean): PurgeResult =
+        PurgeResult(name = details.name, dryRun = validateOnly)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisEventController("THING_ADMIN")
+public class ThingAdminController {
+
+    @EventMapping("PURGE")
+    public PurgeResult purge(UpdateThing details, @IsValidateOnly boolean validateOnly) {
+        return new PurgeResult(details.getName(), validateOnly);
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+On a single `@GenesisEventHandler`'s `@EventCommit` method, adding an `@IsValidateOnly` parameter compiles and injects a value, but has no effect on behaviour — the framework always auto-skips that method on a `validate=true` request before your code runs. If you need manual validate/commit control in one method, it has to be a controller method.
 
 ### Acknowledgement / rejection
 
-<!-- TODO -->
+A handler method's return value is converted to an `EventReply` automatically:
+
+- Returning `EventReply.EventAck`/`EventReply.EventNack` directly is passed through unchanged.
+- `null`, `Unit`, or a `void` method becomes an empty `EventAck`.
+- Any other value becomes `EventAck(generated = listOf(thatValue))`, or `EventAck(generated = thatList)` if it's a `List<*>`.
+
+For full manual control, inject an `EventProvider` (see below) and use its `ack(generated)`, `nack(errorCode, message)` and `warningNack(message)` helpers to build the reply by hand.
+
+Exceptions are mapped to nacks through three mechanisms:
+
+- A per-handler `@EventExceptionHandler([SomeException::class])` method, which takes priority for exceptions thrown by that handler's own methods.
+- A separate class annotated `@EventControllerAdvice`, with its own `@EventExceptionHandler` methods, registers globally and is consulted for any handler with no matching handler of its own. An advice class with no `@EventExceptionHandler` methods fails registration.
+- A custom exception class annotated `@EventWarning(status = ...)` is treated as a business warning — the resulting `EventNack` carries it as a `warning` rather than an `error`.
+
+An `@EventExceptionHandler` method must return `EventReply` and take exactly one `Throwable`-subtype parameter, checked at start-up:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@EventWarning(status = HttpStatusCode.Conflict)
+class ThingWarningException(message: String) : RuntimeException(message)
+
+class ThingCustomException(message: String) : RuntimeException(message)
+
+@GenesisEventHandler("EXPLODE_THING")
+class ExplodingThingHandler {
+
+    @EventCommit
+    fun commit(details: UpdateThing) {
+        when (details.name) {
+            "warn" -> throw ThingWarningException("thing already exists")
+            "custom" -> throw ThingCustomException("custom failure")
+            else -> throw IllegalStateException("boom")
+        }
+    }
+
+    // Handled locally: takes priority over any global advice for this handler's own exceptions.
+    @EventExceptionHandler([ThingCustomException::class])
+    fun onCustom(ex: ThingCustomException): EventReply =
+        StandardError("THING_CUSTOM", "handled locally: ${ex.message}", HttpStatusCode.BadRequest)
+            .toEventNackError()
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@EventWarning(status = HttpStatusCode.Conflict)
+public class ThingWarningException extends RuntimeException {
+    public ThingWarningException(String message) {
+        super(message);
+    }
+}
+
+public class ThingCustomException extends RuntimeException {
+    public ThingCustomException(String message) {
+        super(message);
+    }
+}
+
+@GenesisEventHandler("EXPLODE_THING")
+public class ExplodingThingHandler {
+
+    @EventCommit
+    public void commit(UpdateThing details) {
+        switch (details.getName()) {
+            case "warn":
+                throw new ThingWarningException("thing already exists");
+            case "custom":
+                throw new ThingCustomException("custom failure");
+            default:
+                throw new IllegalStateException("boom");
+        }
+    }
+
+    // Handled locally: takes priority over any global advice for this handler's own exceptions.
+    @EventExceptionHandler({ThingCustomException.class})
+    public EventReply onCustom(ThingCustomException ex) {
+        StandardError error = new StandardError(
+                "THING_CUSTOM", "handled locally: " + ex.getMessage(), HttpStatusCode.BadRequest);
+        return new EventReply.EventNack(error); // vararg error constructor — unambiguous
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`EventReply.EventNack`'s primary constructor takes `warning` before `error` (`EventNack(warning: List<GenesisError> = ..., error: List<GenesisError> = ...)`), which is easy to get backwards positionally from Java — the vararg secondary constructor (`EventNack(vararg error: GenesisError)`) shown above maps unambiguously onto `error` instead.
+
+`@ExposeClientError` also exists, documented as marking an exception's message safe to surface to the client instead of being masked — but it is not read anywhere in the current implementation. In practice, today, an exception's message reaches the client nack regardless of whether `@ExposeClientError` is present, so don't design a "mask by default, opt in to expose" flow around it yet.
+
+### Triggering other events
+
+A handler can call another event from within its own commit logic by injecting an `EventProvider` — a suspending variant (`global.genesis.eventhandler.spring.service.EventProvider`) for `suspend` call sites, and a blocking one (`global.genesis.eventhandler.spring.service.blocking.EventProvider`) for everything else, including Java:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin (suspending)', value: 'kotlin', }, { label: 'Java (blocking)', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisEventHandler("CREATE_AND_TOUCH_THING")
+class CreateAndTouchThingHandler(
+    private val events: EventProvider,
+) {
+    @EventCommit
+    suspend fun commit(details: CreateThing): EventReply {
+        // in-process only; throws if TOUCH_THING isn't registered in this same process
+        events.trigger("TOUCH_THING", UpdateThing(details.name, details.qty))
+        return events.ack()
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisEventHandler("CREATE_AND_TOUCH_THING")
+public class CreateAndTouchThingHandler {
+
+    private final EventProvider events;
+
+    public CreateAndTouchThingHandler(EventProvider events) {
+        this.events = events;
+    }
+
+    @EventCommit
+    public EventReply commit(CreateThing details) {
+        UpdateThing touch = new UpdateThing(details.getName(), details.getQty());
+        // in-process only; throws if TOUCH_THING isn't registered in this same process
+        events.trigger("TOUCH_THING", touch);
+        return events.ack();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`trigger(eventName, payload)` is in-process only — it looks the target event up directly in the local registry, and throws if nothing is registered under that name in the *same* process; it does not fall back to a remote call. For a handler registered in a different process, use `triggerRemote(eventName, payload)` (suspends or blocks for the reply) or `triggerAsync(eventName, payload)` (fire-and-forget), both resolved via `ServiceDiscovery`.
+
+### Suspend handlers — Kotlin only
+
+Any `@EventValidate`/`@EventCommit`/`@EventMapping` method may be a Kotlin `suspend fun`; the scanner detects the compiler-injected `Continuation` parameter and the handler is registered as an asynchronous handler automatically, with no extra annotation needed:
+
+```kotlin
+@GenesisEventHandler("TOUCH_THING_ASYNC")
+class SuspendCommitOnlyThingHandler {
+
+    @EventCommit
+    suspend fun commit(details: UpdateThing) {
+        // ... suspending work, e.g. a coroutine-based repository call
+    }
+}
+```
+
+There is no Java equivalent for this one. The scanner detects a suspend function purely from a JVM-level signal that only the Kotlin compiler produces — a trailing `kotlin.coroutines.Continuation` parameter — and a Java method can't reproduce that signature. If you need non-blocking handling from a Java class, look at making the surrounding call non-blocking some other way outside this module; there's no `@Async`-style alternative offered here.
+
+## Limitations
+
+This module is real, working code with test coverage for everything described above, but it is genuinely incomplete. Worth knowing before you plan around it:
+
+- **There is no transaction control.** Earlier versions of the annotations carried a `transactional` flag; it has since been removed entirely, and there is no replacement. A handler method that needs a database transaction has to manage it itself.
+- **Approvable workflows are not supported.** `EventHandlerType.APPROVABLE` exists as a value, but the return types needed to drive a multi-party approval flow aren't consumed anywhere in the handler-invocation path. Don't build an approval-based feature on this module today — use GPAL's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler#approval-workflow) instead.
+- **`@RequiresAuth` (row-level/dynamic authorisation) is parsed but not enforced.** Only the static `@RequiresAnyRight`/`@RequiresAllRights` checks actually run.
+- **`@IsValidateOnly` only takes effect on a `@GenesisEventController`/`@EventMapping` method**, not on a single `@GenesisEventHandler`'s `@EventCommit` method — see [Manual validate/commit control](#manual-validatecommit-control) above.
+- **Bean Validation (`@Valid`/`@Validated`) on a payload parameter has no effect.** The annotation is recorded but nothing runs validation against it.
+- **`@ExposeClientError` has no observable effect.** An exception's message reaches the client nack either way.
+- **`EventHandlerType.INTERNAL` isn't fully verified** as respected everywhere the router decides what to expose externally — treat it as mostly, rather than guaranteed, wired.
+- **Java `record` classes crash bean creation** for a handler or payload type — always use a Kotlin `data class` or an ordinary Java class instead.
 
 ## Testing
 
-<!-- TODO: short section, cross-link to Test tooling rather than duplicate -->
+The recommended pattern is a real Spring context and a real message client, sending events through the full path — `EventClientSync` (or its async/Rx equivalents) → `TypedEventManager` → your handler bean — rather than mocking the framework. This exercises rights checks, the validate/commit split, and exception handling for real, and lets you assert both the reply shape (`EventAck`/`EventNack`) and any side effects (a counter, or a row via an injected repository).
 
+See [Test tooling](../test-tooling) for the annotations and base classes (`@GenesisSpringTest`, `EventClientSync`, `@UserRight`, `@ResetTableAfterTest`) that support this.
+
+## See also
+
+- [Spring Integration](../index) — section overview.
+- [Application core](../core) — the Spring/Guice bridge this module builds on.
+- [Test tooling](../test-tooling) — testing a handler written this way.
+- [Core business logic (Event Handler)](/develop/server-capabilities/core-business-logic-event-handler) — the GPAL `.kts` alternative this module sits alongside.
