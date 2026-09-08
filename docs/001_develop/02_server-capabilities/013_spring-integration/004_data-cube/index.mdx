@@ -9,43 +9,653 @@ tags:
 sidebar_position: 4
 ---
 
-:::note
-Placeholder scaffold — content pending. Covers `genesis-data-cube-spring-boot-starter`.
-:::
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 Pivot, grouped, and flat queries over JPA entities, built for grid UIs such as [AG Grid's Server-Side Row Model](/develop/client-capabilities/grids/grid-pro), with no-probing security.
 
 ## Overview
 
-<!-- TODO: prose explaining the cube query engine and where it sits relative to JPA data access -->
+A Genesis Spring/JPA application normally reads its data through hand-written repository queries
+or the JPA entities generated from the dictionary (see [JPA data access](../jpa-data-access) and
+[Data model foundation](../data-model)). The `genesis-data-cube-spring-boot-starter` module adds a
+second, declarative layer on top of those same entities, purpose-built for grid UIs: flat, grouped
+and pivoted queries, with paging, filtering and an HTTP wire protocol tuned for AG Grid's
+Server-Side Row Model (SSRM).
+
+Concretely, it gives you:
+
+- A single query API, `Cube<ROW, FILTER>`, covering flat rows, DTO-projected rows, and
+  aggregated/pivoted `Tuple` rows, all built from one consistent overload pattern (data →
+  projection → window → scope).
+- A factory, `CubeFactory`, that turns a JPA entity or a hand-written JPQL string into a cube, with
+  the expensive state (query plan, pivot discovery, group counts) cached and shared across every
+  caller of the same source.
+- A declarative **exposure layer** (`CubeResource`, built via `CubeResourceBuilder` or the
+  `cubeResource { }` Kotlin DSL) that turns a cube into a named HTTP resource: which operations
+  exist, which columns callers may group/pivot/filter on, and what per-user row scoping applies.
+- An HTTP wire layer (`CubeQueryController`) exposing each resource at
+  `/api/v1/cubes/{resource}/...`, with ETag caching and RFC 9457 `problem+json` errors.
+
+Reach for it when you're building a grid-backed view — a positions blotter, a P&L breakdown, a
+trade summary grouped and pivoted by currency — over data that already exists as a JPA entity,
+without wanting to hand-write JPQL, pagination, filtering and caching for every such view. If the
+view is a single named report shape, declare it as an **operation**; if the caller needs to choose
+its own grouping/pivoting (an AG Grid SSRM datasource), expose the whole cube instead.
+
+**What it is not:**
+
+- Not a replacement for the classic Genesis Data Server / Request Server query path — it is a
+  parallel, JPA/Hibernate-backed, HTTP-first surface that sits alongside it.
+- Not a general-purpose reporting engine: filtering on an aggregated measure after grouping
+  (`HAVING`) is not supported, and pivot discovery is capped at 25 discovered columns (see
+  [Query types](#query-types)).
+- Not a write path. A cube is read-only; writes still go through the normal JPA repository/entity
+  layer.
+
+The cube engine queries JPA entities — it does not generate or map entities itself. Your entities
+must already exist (from the dictionary-driven codegen described in
+[Data model foundation](../data-model)) before you can build a cube over them, whether you use the
+entity API directly or write JPQL against it.
 
 ## Set-up
 
-<!-- TODO: enabling genesis-data-cube-spring-boot-starter -->
+Add the starter alongside [`genesis-spring-boot-starter`](../core):
+
+```kotlin
+dependencies {
+    implementation("global.genesis:genesis-data-cube-spring-boot-starter")
+}
+```
+
+Cube HTTP endpoints run through the same Spring Security filter chain as the rest of a Genesis
+Spring application — see [Application core](../core) for how that chain is configured and how a
+resource's `permission(...)` authority maps onto it.
+
+| Property | Default | Purpose |
+|---|---|---|
+| `genesis.cube.pivot-ttl-millis` | `600000` (10 min) | Default time-to-live for a discovered pivot's column set, overridable per call |
+| `genesis.cube.remembered-max-entries` | `1000` | Bound on how many distinct query plans/runners `CubeFactory` caches |
+| `genesis.cube.web.max-page-size` | `1000` | Ceiling on the wire `size` parameter |
+| `genesis.cube.web.max-filter-length` | `8192` | Character budget for the wire `filter` parameter before you should switch from GET to POST |
+| `genesis.cube.web.max-sort-orders` | `64` | Ceiling on the number of comma-separated `sort` entries |
+
+## Declaring a cube resource
+
+A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResourceBuilder` or the
+Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
+bean is resolved and validated fail-fast: referenced columns must exist on the entity, an operation
+must declare at least one `groupBy`/aggregation, output column names must not collide, and none may
+be named `ROW_REF` (reserved for row addressing). A misconfigured resource fails application
+startup rather than the first request.
+
+The smallest realistic exposure — one entity, one named operation, queried over HTTP — uses a
+generated entity such as `Trade` (fields including `currencyId`, `tradeType`, `tradeDate`,
+`quantity` and `price`):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Configuration
+class TradeCubeConfig {
+
+    @Bean
+    fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
+        // No exposeQuery(): only the named operation below is reachable over the wire.
+        operation("byCurrency") {
+            groupBy("currencyId")
+            sum("quantity")
+        }
+        // FilterPolicy.GroupKeys (the default): callers may only filter on currencyId.
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Configuration
+public class TradeCubeConfig {
+
+    @Bean
+    public CubeResource tradesByCurrency() {
+        return CubeResource.forEntity(Trade.class)
+            .operation("byCurrency", op -> op
+                .groupBy("currencyId")
+                .sum("quantity"))
+            .build();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+The bean name (`tradesByCurrency`) becomes the resource's wire name unless you pin one explicitly
+with `.name("...")`. Query it at `/api/v1/cubes/{resource}/{operation}`:
+
+```
+GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'&sort=quantity&page=0&size=50
+```
+
+`filter` is a `criteriaMatch` expression (see [Filtering](#filtering)), gated to the operation's
+filterable columns — here just `currencyId`, its own group key. Filtering on `quantity` would be
+rejected with the same "not queryable" error as filtering on a made-up column, because this
+operation declared no wider `FilterPolicy` (see [Security](#security)). `sort`, `page` and `size`
+default to unsorted, `0` and `100` respectively. A `POST` with a JSON body is equivalent and
+preferred for longer filters.
+
+The response is a `CubeEnvelope`: a `rows` array, `hasMore`, `rowKind`, an echoed `page`, and the
+resolved `columns` — plus a `ROW_REF` per row when the operation's group key doubles as its
+addressable identity.
 
 ## Query types
 
-### Pivot
-
-<!-- TODO -->
-
-### Grouped
-
-<!-- TODO -->
+`Cube<ROW, FILTER>` answers three query shapes, in the same parameter order throughout (data →
+projection → window → scope):
 
 ### Flat
 
-<!-- TODO -->
+Plain rows, no aggregation — `query(filter, pageable)`. A cube can be built over a mapped JPA
+**entity** or over hand-written **JPQL** text; both share the same query surface once built. The
+difference is only in how the source is declared and how the raw row is shaped (`ROW` is the entity
+type for an entity cube, always `Tuple` for a JPQL cube, since it's a column projection):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Autowired
+lateinit var cubeFactory: CubeFactory
+
+fun example(pageable: Pageable) {
+    val trades: EntityCube<Trade> = cubeFactory.forEntity(Trade::class.java)
+    val page = trades.query(filter = null, pageable = pageable) // CubeResult<Trade>
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Autowired
+CubeFactory cubeFactory;
+
+void example(Pageable pageable) {
+    EntityCube<Trade> trades = cubeFactory.forEntity(Trade.class);
+    CubeResult<Trade> page = trades.query(null, pageable);
+}
+```
+
+</TabItem>
+</Tabs>
+
+`forJpql` parses and validates the query **eagerly**, at cube-creation time rather than on first
+query — a bad source, or a join without `allowJoins = true` acknowledged explicitly (a join can
+multiply rows and inflate `SUM`/`COUNT`), fails fast here rather than on a caller's request.
+
+A read that selects rows by position (a page, or a limited list) comes back in a **total order** —
+the caller's sort, then the row's own identity as a tiebreaker — so paging never repeats or drops
+rows, provided the source has an identity to tiebreak on. An unpaged, unsorted read is explicitly
+arbitrary order, not a stable one to rely on.
+
+### Grouped
+
+Group keys plus aggregates (`SUM`/`AVG`/`MIN`/`MAX`/`COUNT`), returned as `Tuple`s or a projection
+DTO. A resource exposes this dynamically with `.exposeQuery { }`, bounding which columns a caller
+may group by:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+val trades = cubeResource<Trade> {
+    exposeQuery {
+        projection<TradeFlat>()            // the caller's flat shape when it groups by nothing
+        groupBy("currencyId", "tradeDate") // grouping is narrowed to these two columns
+        pivotOn("currencyId")              // pivoting is narrowed to this one column
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+CubeResource trades = CubeResource.forEntity(Trade.class)
+    .exposeQuery(q -> q
+        .projection(TradeFlat.class)
+        .groupBy("currencyId", "tradeDate")
+        .pivotOn("currencyId"))
+    .build();
+```
+
+</TabItem>
+</Tabs>
+
+Every shape goes through `POST /api/v1/cubes/{resource}/query` (there's no `GET` here — the query
+shape doesn't fit comfortably in query parameters). A grouped request populates `groupKeys` and
+`aggregates`:
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [
+    { "expr": { "type": "field", "attribute": "currencyId" } }
+  ],
+  "aggregates": [
+    {
+      "function": "SUM",
+      "input": { "type": "field", "attribute": "quantity" },
+      "alias": "totalQuantity"
+    }
+  ]
+}
+```
+
+Every column named in the request must lie within the resource's visible set, or the request is
+rejected with the same no-probing error as any other disallowed column (see
+[Security](#security)). Note that a dynamic request naming a non-empty `having` (post-aggregation
+filtering) is always rejected — grouped filtering is not currently supported.
+
+### Pivoted
+
+A grouped query whose `pivot` is set: one or more pivot dimensions are *discovered* — their
+distinct values found by a live query against current data — and become dynamic output columns.
+`noPivot()` on the same `exposeQuery` spec disables pivoting entirely for a resource that should
+never allow it.
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [
+    { "expr": { "type": "field", "attribute": "tradeDate" } }
+  ],
+  "pivot": {
+    "dimensions": [
+      { "expr": { "type": "field", "attribute": "currencyId" } }
+    ],
+    "measures": [
+      {
+        "type": "aggregate",
+        "aggregate": {
+          "function": "SUM",
+          "input": { "type": "field", "attribute": "quantity" }
+        }
+      }
+    ]
+  }
+}
+```
+
+`currencyId` must additionally be in the resource's `pivotOn` allowlist to be used as a pivot
+dimension.
+
+:::caution Pivot discovery is capped
+Discovered pivot-column count is hard-capped at 25, and this is not configurable. A pivot whose
+discovered set (or an `OverflowPolicy.TopN` bound) would exceed 25 fails the request rather than
+silently truncating — use an `OverflowPolicy` (`TopN` or `Within`) to keep a high-cardinality pivot
+dimension under the cap.
+:::
+
+A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP today — that shape is
+only exercised in-process, by the test-only dev-server harness described in
+[Grid integration](#grid-integration).
+
+## Filtering
+
+Filtering reuses the Genesis Data Server's own `criteriaMatch` grammar: a Groovy expression over
+column names, parsed into a backend-neutral form and compiled independently by whichever backend
+the cube uses (JPA `Criteria`, or JPQL text). The same grammar is used whether you call a cube
+directly with a `criteriaMatch`-flavoured cube (`forEntityCriteria`/`forJpqlCriteria`) or supply a
+resource's HTTP `filter` parameter/body field.
+
+| Expression | Meaning |
+|---|---|
+| `currencyId == 'USD'` | equality |
+| `currencyId == 'USD' \|\| currencyId == 'EUR'` | logical OR |
+| `currencyId == 'USD' && price >= 5` | logical AND + comparison |
+| `!(instrumentId == null)` | unary NOT + null check |
+| `quantity % 2 == 0` | arithmetic (modulo) |
+| `currencyId.toUpperCase() == 'USD'` | string method call |
+| `currencyId.substring(0, 1) == 'U'` | substring |
+
+A malformed expression, an unknown column, or an unsupported method call is rejected, not thrown as
+a raw parser exception:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+val trades = cubeFactory.forEntityCriteria(Trade::class.java)
+val usdHighPrice = trades.query(
+    filter = "currencyId == 'USD' && price >= 5",
+    pageable = Pageable.ofSize(200),
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+EntityCriteriaCube<Trade> trades = cubeFactory.forEntityCriteria(Trade.class);
+CubeResult<Trade> usdHighPrice = trades.query(
+    "currencyId == 'USD' && price >= 5",
+    Pageable.ofSize(200)
+);
+```
+
+</TabItem>
+</Tabs>
+
+Over HTTP, the same expression is a query parameter or a body field:
+
+```
+GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'&&price>=5
+```
+
+An empty or blank `filter` is treated as "no filter" and is accepted without error — worth knowing
+if your own frontend adapter can produce a blank criteria string (for example, all filter
+conditions cleared) and needs to distinguish that from "no filter supplied" at all.
+
+Which columns a caller may reference beyond an operation's own group-by columns is bounded by its
+`FilterPolicy` — see [Security](#security).
 
 ## Grid integration
 
-<!-- TODO: wiring to AG Grid's Server-Side Row Model, cross-link to Grid Pro -->
+The wire protocol and response shapes (`CubeEnvelope`, `RowRef`) are generic JSON — nothing in the
+HTTP layer imports or depends on AG Grid directly. The assumption that does exist is architectural:
+the whole-cube `exposeQuery()` path's shape (group keys, aggregates, pivot dimensions, flat vs.
+grouped vs. pivoted results) maps onto what an [AG Grid Server-Side Row Model](/develop/client-capabilities/grids/grid-pro)
+datasource needs to drive `rowGroupCols`, `groupKeys`, `pivotMode` and `filterModel`.
+
+The module's own test suite includes an in-IDE dev-server harness that translates AG Grid's
+`rowGroupCols`/`groupKeys`/`pivotMode`/`filterModel` into cube query requests and switches to a
+flat, equality-filtered query once a request reaches leaf rows. It's a genuinely useful worked
+reference for building a real frontend adapter, but it's a testing/exploration aid, not a shipped
+adapter or a production code path — a production frontend still has to translate AG Grid's request
+shape into the `/query` body shown in [Query types](#query-types) itself.
+
+## Caching
+
+Every `GET` response is validated with a three-part ETag covering: the request's identity (minted
+from the effective, already-gated filter and shape — never the raw caller filter, since that could
+leak a hidden base criterion), the source's freshness generation, and an era covering
+discovered-pivot-column/memoized-count staleness.
+
+- `GET` honours `If-None-Match` and answers `304 Not Modified`; `POST` never does, since a dynamic
+  query has no cacheable identity to key on ahead of execution.
+- A resource is only cacheable if the engine can prove its full source-table set and every source
+  is trackable — an uncacheable cube simply always re-executes; nothing fails at startup because of
+  it.
+
+`GET /api/v1/cubes/{resource}` describes a resource itself, before you issue any query against it —
+whether rows are addressable, the identity columns, pagination/caching guarantees, and the
+request-size limits:
+
+```json
+{
+  "addressable": true,
+  "identity": ["tradeId"],
+  "paginationStable": true,
+  "maxFilterLength": 8192,
+  "maxPageSize": 1000,
+  "defaultPageSize": 100,
+  "cacheable": true
+}
+```
+
+This document is itself boot-time ETagged, and returns a `404` if the resource name is unknown *or*
+if it exists but declares neither an operation nor `exposeQuery` — deliberately indistinguishable
+from "unknown", so the no-probing rule holds even for a resource's own existence (see
+[Security](#security)).
 
 ## Security
 
-<!-- TODO: the no-probing security model -->
+### No-probing and column visibility
+
+The engine's central design invariant is that **a caller can never tell a hidden column from a
+nonexistent one.** Every rejection — an unpermitted filter column, an unsortable one, a column
+outside the visible set — surfaces as the same RFC 9457 `problem+json` error
+(`.../problems/cube/query-rejected`). Splitting that error per reason would reintroduce, in a
+machine-readable field, exactly the column-existence discrimination the rule exists to prevent.
+
+A `FilterPolicy` governs which columns a caller may reference in an operation's filter, beyond the
+columns it already groups by (implicitly filterable, since their values are already enumerated in
+the output):
+
+| Policy | Filterable columns |
+|---|---|
+| `GroupKeys` (default) | Group-by columns only |
+| `GroupKeysAndAggregated` | Plus the columns the operation aggregates — chosen deliberately, since a measured column's per-row values become interval-recoverable through the filter bound even though the output never shows the column itself |
+| `GroupKeysPlus(columns)` | Plus an explicit whitelist |
+| `AllExcept(columns)` | Every column except a blacklist |
+| `AnyColumn` | Every source column |
+
+At most one policy may be declared per resource. A whitelist or blacklist is validated against the
+entity's real columns at startup, so a typo fails application startup rather than silently letting
+a column through (or blocking one you meant to allow).
+
+### Per-user row scoping
+
+A resource can declare `.baseCriteria("currencyId == :username")` — a `criteriaMatch` template
+(v1 supports only the `:username` placeholder) that's ANDed server-side underneath every caller's
+own filter, so two users querying the same resource only ever see their own rows. The reified
+filter is itself part of the cache key, so per-user isolation of cached results falls out of
+caching for free, and a caller cannot widen past their own scope by supplying a conflicting filter
+value.
+
+This mechanism is implemented and tested at the resource-resolution level, where you supply the
+caller's identity yourself as a `PrincipalValues` binding:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Bean
+fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
+    baseCriteria("currencyId == :username") // reified per caller; scopes every request
+    operation("byCurrency") {
+        groupBy("currencyId")
+        count()
+    }
+}
+
+@Autowired
+lateinit var registry: CubeResourceRegistry
+
+fun tradesFor(username: String): CubeResult<*> {
+    val trades = registry.require("tradesByCurrency")
+    val principal = PrincipalValues { name -> if (name == "username") username else null }
+    return trades.queryOperation("byCurrency", callerCriteria = null, PageRequest.of(0, 100), principal)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Bean
+public CubeResource tradesByCurrency() {
+    return CubeResource.forEntity(Trade.class)
+        .baseCriteria("currencyId == :username")
+        .operation("byCurrency", op -> op.groupBy("currencyId").count())
+        .build();
+}
+
+@Autowired
+CubeResourceRegistry registry;
+
+CubeResult<?> tradesFor(String username) {
+    ResolvedCubeResource trades = registry.require("tradesByCurrency");
+    PrincipalValues principal = name -> "username".equals(name) ? username : null;
+    return trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
+}
+```
+
+</TabItem>
+</Tabs>
+
+The built-in HTTP controller does not yet populate this binding from the authenticated caller, so a
+resource declaring `baseCriteria` should not be exposed over the built-in `/api/v1/cubes/...`
+endpoints today — every request that reaches the base criteria will fail. If your application
+needs per-user row scoping now, call `CubeResourceRegistry`/`ResolvedCubeResource` yourself (as
+above) from your own controller, supplying `PrincipalValues` sourced from the authenticated
+principal, rather than relying on `CubeQueryController`. Wiring this through the built-in HTTP layer
+automatically is expected in a future release.
 
 ## Complete usage examples
 
-<!-- TODO: 1-2 full end-to-end walkthroughs, following the Grid Pro "Complete usage examples" pattern -->
+### 1. A grouped and pivoted trade blotter
 
+Declaring a resource that supports flat, grouped and pivoted access to the same entity, all through
+one `exposeQuery()` block:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Configuration
+class TradesCubeConfig {
+
+    @Bean
+    fun trades(): CubeResource = cubeResource<Trade> {
+        exposeQuery {
+            projection<TradeFlat>()
+            groupBy("currencyId", "tradeDate")
+            pivotOn("currencyId")
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Configuration
+public class TradesCubeConfig {
+
+    @Bean
+    public CubeResource trades() {
+        return CubeResource.forEntity(Trade.class)
+            .exposeQuery(q -> q
+                .projection(TradeFlat.class)
+                .groupBy("currencyId", "tradeDate")
+                .pivotOn("currencyId"))
+            .build();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+A flat query, filtered but ungrouped:
+
+```json
+POST /api/v1/cubes/trades/query
+{ "filter": "currencyId == 'USD'" }
+```
+
+The same resource, grouped by currency with a summed quantity:
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [{ "expr": { "type": "field", "attribute": "currencyId" } }],
+  "aggregates": [
+    { "function": "SUM", "input": { "type": "field", "attribute": "quantity" }, "alias": "totalQuantity" }
+  ]
+}
+```
+
+And pivoted, with currency discovered as dynamic columns per trade date:
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [{ "expr": { "type": "field", "attribute": "tradeDate" } }],
+  "pivot": {
+    "dimensions": [{ "expr": { "type": "field", "attribute": "currencyId" } }],
+    "measures": [
+      { "type": "aggregate", "aggregate": { "function": "SUM", "input": { "type": "field", "attribute": "quantity" } } }
+    ]
+  }
+}
+```
+
+Before wiring up a frontend, `GET /api/v1/cubes/trades` tells you up front whether the resource is
+addressable, cacheable, and what its page-size/filter-length limits are (see
+[Caching](#caching)).
+
+### 2. A JPQL report with a column whitelist
+
+A resource can be built from hand-written JPQL rather than a mapped entity — useful for a report
+shape that doesn't map cleanly onto one entity's own columns — with an explicit `FilterPolicy`
+widening beyond its group keys:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Configuration
+class TradeReportCubeConfig {
+
+    private val tradeColumns =
+        "select t.currencyId as ccy, t.price as px, t.quantity as qty, t.tradeType as tt from Trade t"
+
+    @Bean
+    fun tradeReport(): CubeResource = cubeResource(tradeColumns) {
+        filterOn("tt") // whitelist beyond the group key
+        operation("byCurrency") {
+            groupBy("ccy")
+            sum("qty")
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Configuration
+public class TradeReportCubeConfig {
+
+    private static final String TRADE_COLUMNS =
+        "select t.currencyId as ccy, t.price as px, t.quantity as qty, t.tradeType as tt from Trade t";
+
+    @Bean
+    public CubeResource tradeReport() {
+        return CubeResource.forJpql(TRADE_COLUMNS)
+            .filterOn("tt")
+            .operation("byCurrency", op -> op.groupBy("ccy").sum("qty"))
+            .build();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+```
+GET /api/v1/cubes/tradeReport/byCurrency?filter=ccy=='USD'&&tt=='BUY'
+```
+
+`ccy` (the group key) and `tt` (the whitelisted column) are both filterable; `px` is not, and a
+request naming it is rejected with the same error as a nonexistent column, per the no-probing rule
+described in [Security](#security).
+
+## See also
+
+- [Spring Integration](../index) — the overview of this whole section.
+- [JPA data access](../jpa-data-access) — repositories and entities the cube engine reads from.
+- [Data model foundation](../data-model) — the dictionary-to-JPA codegen that produces the
+  entities a cube is built over; a hard prerequisite for this module.
+- [Application core](../core) — the security filter chain a cube resource's HTTP endpoints run
+  through.
+- [Grid Pro](/develop/client-capabilities/grids/grid-pro) — the AG Grid-based grid component this
+  module's wire shape is designed to drive via its Server-Side Row Model datasource.
