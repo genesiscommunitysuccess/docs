@@ -16,7 +16,9 @@ JUnit 5 support for Spring-based Genesis applications, parallel to [GenesisJunit
 
 ## Overview
 
-`genesis-spring-testsupport` is the JUnit 5 equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — wiring it into the Spring test context in place of the production bootstrap. Genesis's test clients (`EventClientSync`/`Async`/`Rx`/`Blocking`, `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx`, `InMemoryTestAuthCache`) are exposed as Spring beans, so a test can `@Autowired` them directly; anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
+`genesis-spring-testsupport` is the JUnit 5 equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
+
+Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: `EventClientSync`/`Async`/`Rx`/`Blocking`, `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx`, and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
 
 `@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure — no further wiring is required.
 
@@ -24,7 +26,7 @@ If you're testing a classic GPAL script app instead, use `GenesisJunit`/`Genesis
 
 ## Annotations
 
-`@GenesisSpringTest` honours the same class-level Genesis test annotations as GenesisJunit, all from `global.genesis.testsupport.jupiter`, walking the enclosing-class chain so a `@Nested` class inside an annotated outer class still picks up its configuration. Because every test method — and every test class whose Spring configuration matches — shares *one* Genesis runtime (see [Context caching](#context-caching)), most of these only work at class level; `@ResetTableAfterTest` is the one exception implemented at method level.
+`@GenesisSpringTest` honours the same class-level Genesis test annotations as GenesisJunit, all from `global.genesis.testsupport.jupiter`. It walks the enclosing-class chain, so a `@Nested` class inside an annotated outer class still picks up its configuration. Because every test method — and every test class whose Spring configuration matches — shares *one* Genesis runtime (see [Context caching](#context-caching)), most of these only work at class level. `@ResetTableAfterTest` is the one exception, implemented at method level.
 
 - **`@GenesisSpringTest`** — the single entry point described above. Class level only. Composes `@SpringBootTest(classes = [GenesisTestApplication::class])` together with `@Tag("DatabaseTest")` and the `DbLayer=SQL` gate.
 - **[`@TestScriptFile`](/develop/server-capabilities/testing-api#testscriptfile)** — loads a GPAL script file for the test. Class level only under `@GenesisSpringTest`.
@@ -38,7 +40,7 @@ If you write your own annotation that composes `@GenesisSpringTest` (for example
 
 ## Context caching
 
-This is the main behavioural difference from GenesisJunit worth calling out. Spring's `TestContext` framework caches one Spring context — and so one Genesis runtime, one in-memory database — per distinct class-level Genesis configuration. Two `@GenesisSpringTest` classes with identical configuration share the same cached runtime; classes with different configuration each get their own. Every runtime in the same JVM addresses the same underlying database, so booting a new one truncates whatever a previous one had loaded — sharing is opt-out, not opt-in. The framework automatically reseeds a class's `@CsvData` fixtures if another cached context has truncated the shared database since that class last ran, but it's still worth choosing your sharing model deliberately:
+This is the main behavioural difference from GenesisJunit. Spring's `TestContext` framework caches one Spring context — and so one Genesis runtime, one in-memory database — per distinct class-level Genesis configuration. Two `@GenesisSpringTest` classes with identical configuration share the same cached runtime; classes with different configuration each get their own. Every runtime in the same JVM addresses the same underlying database, so booting a new one truncates whatever a previous one had loaded — sharing is opt-out, not opt-in. The framework automatically reseeds a class's `@CsvData` fixtures if another cached context has truncated the shared database since that class last ran, but it's still worth choosing your sharing model deliberately:
 
 - give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` for a fresh runtime per class, or
 - factor shared `@GenesisSpringTest` configuration into a common abstract base class so related test classes intentionally share one runtime, optionally bounding `spring.test.context.cache.maxSize` to cap how many live runtimes accumulate.
@@ -134,7 +136,7 @@ public class BaseGenesisSpringTestJava {
 
 `@GenesisSpringTest` is the only annotation needed to get a live Genesis runtime behind the Spring context. `TradeRepository` is a generated JPA repository, autowirable because its underlying `EntityManagerFactory`/repository beans come from the JPA auto-configuration running against the same in-memory database the test context set up. `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` is a choice to get a fresh Genesis runtime per test class rather than share Spring's context cache — see [Context caching](#context-caching) above for when to share instead.
 
-Remember the prerequisite from the [overview](#overview): this class runs only when `-DDbLayer=SQL` is set — with no `DbLayer` set locally, `@EnabledIfSystemProperty` silently skips it rather than failing it.
+This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
 
 ## See also
 
