@@ -141,20 +141,113 @@ GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'&sort=quan
 ```
 
 `filter` is a `criteriaMatch` expression (see [Filtering](#filtering)), gated to the operation's
-filterable columns — here just `currencyId`, its own group key. Filtering on `quantity` would be
-rejected with the same "not queryable" error as filtering on a made-up column, because this
-operation declared no wider `FilterPolicy` (see [Security](#security)). `sort`, `page` and `size`
-default to unsorted, `0` and `100` respectively. A `POST` with a JSON body is equivalent and
-preferred for longer filters.
+filterable columns — here just `currencyId`, its own group key. Filtering on `quantity` is
+rejected the same way a made-up column would be (see [no-probing](#security)), because this
+operation declared no wider `FilterPolicy`. `sort`, `page` and `size` default to unsorted, `0` and
+`100` respectively. A `POST` with a JSON body is equivalent and preferred for longer filters.
 
 The response is a `CubeEnvelope`: a `rows` array, `hasMore`, `rowKind`, an echoed `page`, and the
 resolved `columns` — plus a `ROW_REF` per row when the operation's group key doubles as its
 addressable identity.
 
+## Security
+
+### No-probing and column visibility
+
+The engine's central design invariant is that **a caller can never tell a hidden column from a
+nonexistent one.** Every rejection — an unpermitted filter column, an unsortable one, a column
+outside the visible set — surfaces as the same RFC 9457 `problem+json` error
+(`.../problems/cube/query-rejected`). Splitting that error per reason would reintroduce, in a
+machine-readable field, exactly the column-existence discrimination the rule exists to prevent.
+
+A `FilterPolicy` governs which columns a caller may reference in an operation's filter, beyond the
+columns it already groups by (implicitly filterable, since their values are already enumerated in
+the output):
+
+| Policy | Filterable columns |
+|---|---|
+| `GroupKeys` (default) | Group-by columns only |
+| `GroupKeysAndAggregated` | Plus the columns the operation aggregates — chosen deliberately, since a measured column's per-row values become interval-recoverable through the filter bound even though the output never shows the column itself |
+| `GroupKeysPlus(columns)` | Plus an explicit whitelist |
+| `AllExcept(columns)` | Every column except a blacklist |
+| `AnyColumn` | Every source column |
+
+At most one policy may be declared per resource. A whitelist or blacklist is validated against the
+entity's real columns at startup, so a typo fails application startup rather than silently letting
+a column through (or blocking one you meant to allow).
+
+### Per-user row scoping
+
+A resource can declare `.baseCriteria("currencyId == :username")` — a `criteriaMatch` template
+(v1 supports only the `:username` placeholder) that's ANDed server-side underneath every caller's
+own filter, so two users querying the same resource only ever see their own rows. The reified
+filter is itself part of the cache key, so per-user isolation of cached results falls out of
+caching for free, and a caller cannot widen past their own scope by supplying a conflicting filter
+value.
+
+This mechanism is implemented and tested at the resource-resolution level, where you supply the
+caller's identity yourself as a `PrincipalValues` binding:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Bean
+fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
+    baseCriteria("currencyId == :username") // reified per caller; scopes every request
+    operation("byCurrency") {
+        groupBy("currencyId")
+        count()
+    }
+}
+
+@Autowired
+lateinit var registry: CubeResourceRegistry
+
+fun tradesFor(username: String): CubeResult<*> {
+    val trades = registry.require("tradesByCurrency")
+    val principal = PrincipalValues { name -> if (name == "username") username else null }
+    return trades.queryOperation("byCurrency", callerCriteria = null, PageRequest.of(0, 100), principal)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Bean
+public CubeResource tradesByCurrency() {
+    return CubeResource.forEntity(Trade.class)
+        .baseCriteria("currencyId == :username")
+        .operation("byCurrency", op -> op.groupBy("currencyId").count())
+        .build();
+}
+
+@Autowired
+CubeResourceRegistry registry;
+
+CubeResult<?> tradesFor(String username) {
+    ResolvedCubeResource trades = registry.require("tradesByCurrency");
+    PrincipalValues principal = name -> "username".equals(name) ? username : null;
+    return trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
+}
+```
+
+</TabItem>
+</Tabs>
+
+The built-in HTTP controller does not yet populate this binding from the authenticated caller, so a
+resource declaring `baseCriteria` should not be exposed over the built-in `/api/v1/cubes/...`
+endpoints today — every request that reaches the base criteria will fail. If your application
+needs per-user row scoping now, call `CubeResourceRegistry`/`ResolvedCubeResource` yourself (as
+above) from your own controller, supplying `PrincipalValues` sourced from the authenticated
+principal, rather than relying on `CubeQueryController`. Wiring this through the built-in HTTP layer
+automatically is expected in a future release.
+
 ## Query types
 
-`Cube<ROW, FILTER>` answers three query shapes, in the same parameter order throughout (data →
-projection → window → scope):
+`Cube<ROW, FILTER>` answers three query shapes — flat, grouped, and pivoted — each following the
+data → projection → window → scope order introduced above.
 
 ### Flat
 
@@ -255,10 +348,10 @@ POST /api/v1/cubes/trades/query
 }
 ```
 
-Every column named in the request must lie within the resource's visible set, or the request is
-rejected with the same no-probing error as any other disallowed column (see
-[Security](#security)). Note that a dynamic request naming a non-empty `having` (post-aggregation
-filtering) is always rejected — grouped filtering is not currently supported.
+Every column named in the request must lie within the resource's visible set — the same
+[no-probing rule](#security) that governs every other rejection. A dynamic request naming a
+non-empty `having` (post-aggregation filtering) is always rejected: grouped filtering is not
+currently supported.
 
 ### Pivoted
 
@@ -409,102 +502,7 @@ request-size limits:
 
 This document is itself boot-time ETagged, and returns a `404` if the resource name is unknown *or*
 if it exists but declares neither an operation nor `exposeQuery` — deliberately indistinguishable
-from "unknown", so the no-probing rule holds even for a resource's own existence (see
-[Security](#security)).
-
-## Security
-
-### No-probing and column visibility
-
-The engine's central design invariant is that **a caller can never tell a hidden column from a
-nonexistent one.** Every rejection — an unpermitted filter column, an unsortable one, a column
-outside the visible set — surfaces as the same RFC 9457 `problem+json` error
-(`.../problems/cube/query-rejected`). Splitting that error per reason would reintroduce, in a
-machine-readable field, exactly the column-existence discrimination the rule exists to prevent.
-
-A `FilterPolicy` governs which columns a caller may reference in an operation's filter, beyond the
-columns it already groups by (implicitly filterable, since their values are already enumerated in
-the output):
-
-| Policy | Filterable columns |
-|---|---|
-| `GroupKeys` (default) | Group-by columns only |
-| `GroupKeysAndAggregated` | Plus the columns the operation aggregates — chosen deliberately, since a measured column's per-row values become interval-recoverable through the filter bound even though the output never shows the column itself |
-| `GroupKeysPlus(columns)` | Plus an explicit whitelist |
-| `AllExcept(columns)` | Every column except a blacklist |
-| `AnyColumn` | Every source column |
-
-At most one policy may be declared per resource. A whitelist or blacklist is validated against the
-entity's real columns at startup, so a typo fails application startup rather than silently letting
-a column through (or blocking one you meant to allow).
-
-### Per-user row scoping
-
-A resource can declare `.baseCriteria("currencyId == :username")` — a `criteriaMatch` template
-(v1 supports only the `:username` placeholder) that's ANDed server-side underneath every caller's
-own filter, so two users querying the same resource only ever see their own rows. The reified
-filter is itself part of the cache key, so per-user isolation of cached results falls out of
-caching for free, and a caller cannot widen past their own scope by supplying a conflicting filter
-value.
-
-This mechanism is implemented and tested at the resource-resolution level, where you supply the
-caller's identity yourself as a `PrincipalValues` binding:
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-@Bean
-fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
-    baseCriteria("currencyId == :username") // reified per caller; scopes every request
-    operation("byCurrency") {
-        groupBy("currencyId")
-        count()
-    }
-}
-
-@Autowired
-lateinit var registry: CubeResourceRegistry
-
-fun tradesFor(username: String): CubeResult<*> {
-    val trades = registry.require("tradesByCurrency")
-    val principal = PrincipalValues { name -> if (name == "username") username else null }
-    return trades.queryOperation("byCurrency", callerCriteria = null, PageRequest.of(0, 100), principal)
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-@Bean
-public CubeResource tradesByCurrency() {
-    return CubeResource.forEntity(Trade.class)
-        .baseCriteria("currencyId == :username")
-        .operation("byCurrency", op -> op.groupBy("currencyId").count())
-        .build();
-}
-
-@Autowired
-CubeResourceRegistry registry;
-
-CubeResult<?> tradesFor(String username) {
-    ResolvedCubeResource trades = registry.require("tradesByCurrency");
-    PrincipalValues principal = name -> "username".equals(name) ? username : null;
-    return trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
-}
-```
-
-</TabItem>
-</Tabs>
-
-The built-in HTTP controller does not yet populate this binding from the authenticated caller, so a
-resource declaring `baseCriteria` should not be exposed over the built-in `/api/v1/cubes/...`
-endpoints today — every request that reaches the base criteria will fail. If your application
-needs per-user row scoping now, call `CubeResourceRegistry`/`ResolvedCubeResource` yourself (as
-above) from your own controller, supplying `PrincipalValues` sourced from the authenticated
-principal, rather than relying on `CubeQueryController`. Wiring this through the built-in HTTP layer
-automatically is expected in a future release.
+from "unknown", extending the [no-probing rule](#security) to a resource's own existence.
 
 ## Complete usage examples
 
@@ -646,8 +644,8 @@ GET /api/v1/cubes/tradeReport/byCurrency?filter=ccy=='USD'&&tt=='BUY'
 ```
 
 `ccy` (the group key) and `tt` (the whitelisted column) are both filterable; `px` is not, and a
-request naming it is rejected with the same error as a nonexistent column, per the no-probing rule
-described in [Security](#security).
+request naming it is rejected with the same error as a nonexistent column, per the
+[no-probing rule](#security).
 
 ## See also
 
