@@ -111,14 +111,14 @@ table("WIDGET", 12345) {
 }
 ```
 
-`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
+`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. `<product>` is the product name configured in `server/settings.gradle.kts` (`genesis { productName = ... }`) — for a project created with `genx init <project-name>`, this is `<project-name>` verbatim; see [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
 
 ### Step 5: Implement the Spring application
 
 Both classes in this step and the next live in the `-spring` module created in Step 2, under the source root `server/<project-name>-spring/src/main/java`.
 
 ```java
-package your.package_name;
+package <packageName>;
 
 import global.genesis.springboot.annotation.GenesisApplication;
 import org.springframework.boot.SpringApplication;
@@ -138,10 +138,10 @@ Use the `@GenesisApplication` annotation and pass `args` to `SpringApplication`.
 ### Step 6: Add a widget event handler
 
 ```java
-package your.package_name;
+package <packageName>;
 
-import your.package_name.dao.Widget;
-import your.package_name.repo.WidgetRepository;
+import <packageName>.dao.Widget;
+import <packageName>.repo.WidgetRepository;
 import global.genesis.eventhandler.spring.annotation.EventMapping;
 import global.genesis.eventhandler.spring.annotation.GenesisEventController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,10 +210,10 @@ dependencies {
 A `CubeResource` is just a `@Bean` — the bean name becomes the `/api/v1/cubes/{resource}` path segment. It's worth declaring more than one resource over the same table to see the two source styles side by side:
 
 ```java
-package your.package_name;
+package <packageName>;
 
-import your.package_name.dao.Widget;
-import your.package_name.dao.enums.<product>.widget.Quality.Quality;
+import <packageName>.dao.Widget;
+import <packageName>.dao.enums.<product>.widget.Quality.Quality;
 import global.genesis.spring.data.cube.resource.CubeResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -280,11 +280,11 @@ Cube endpoints are only registered if at least one `CubeResource` bean exists in
 The `WIDGET` table starts empty, and an empty cube just returns `rowCount: 0` on every route. A Spring Boot `ApplicationRunner` is the simplest way to seed it once, on first boot:
 
 ```java
-package your.package_name;
+package <packageName>;
 
-import your.package_name.dao.Widget;
-import your.package_name.dao.enums.<product>.widget.Quality.Quality;
-import your.package_name.repo.WidgetRepository;
+import <packageName>.dao.Widget;
+import <packageName>.dao.enums.<product>.widget.Quality.Quality;
+import <packageName>.repo.WidgetRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
