@@ -95,7 +95,7 @@ systemDefinition {
 
 `LogFramework` stays `LOG4J2` — that setting covers Genesis's own internal processes, which keep using Log4j2; `LogFrameworkConfig` is what points the Spring side at your `logback.xml`. Leave both exactly as shown.
 
-`DbGenerateViewObjects` isn't logging configuration at all — it's a required feature flag that makes the platform generate views as database objects. It's included in this step only because it lives in the same file; don't skip it.
+`DbGenerateViewObjects` isn't logging configuration at all — it's a required feature flag that makes the platform generate views as database objects. It's included in this step only because it lives in the same file; don't skip it. It generates the database views that Hibernate/JPQL needs to query over dictionary tables, which is why the Spring/JPA path requires it.
 
 ### Step 4: Define the widget table
 
