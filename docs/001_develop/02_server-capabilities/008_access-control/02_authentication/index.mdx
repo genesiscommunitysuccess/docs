@@ -490,6 +490,18 @@ Both take the target user in `DETAILS.USER_NAME`:
 }
 ```
 
+##### Reading a user's notify-based MFA status
+
+The `ALL_USERS` data server query carries the status as an `MFA_ENABLED` field, alongside the rest of the user record. A user management screen can show a column for it and drive the events above from the selected row, without querying `NOTIFY_BASED_MFA_STATUS` itself.
+
+A user with no `NOTIFY_BASED_MFA_STATUS` record reads as `false`. The field updates on an existing subscription as the record is written or changed, so a grid reflects a toggle without resubscribing.
+
+The field also supports `CRITERIA_MATCH`, so a grid can be filtered down to the users who have it enabled:
+
+```
+MFA_ENABLED == true
+```
+
 ### `loginAck`
 
 The `loginAck` block enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message sent upon successful authentication. When you configure the `loginAck` function, you have to supply a table or view as a parameter.
