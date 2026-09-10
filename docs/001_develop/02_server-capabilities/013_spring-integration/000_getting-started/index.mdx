@@ -111,7 +111,7 @@ table("WIDGET", 12345) {
 }
 ```
 
-`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
+`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. `<product>` is the product name configured in `server/settings.gradle.kts` (`genesis { productName = ... }`) — for a project created with `genx init <project-name>`, this is `<project-name>` verbatim; see [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
 
 ### Step 5: Implement the Spring application
 
