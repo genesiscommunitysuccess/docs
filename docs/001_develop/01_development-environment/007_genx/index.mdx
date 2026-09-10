@@ -114,6 +114,7 @@ This command can be used with the following parameters:
 |`--insecure` | omit SSL certificate verification |
 |`--remote` | | remote seed only; any local seed is ignored |
 |`-l` or `--log-level` |**info** or **verbose** | info (default) or verbose |
+|`--no-shell` | | skip the interactive sub-shell `genx` opens inside the new project once scaffolding finishes |
 |`-h` or `--help` | | display help information |
 
 <h3>--seed</h3>
@@ -205,6 +206,40 @@ Here is an example of creating a new project named **myApp** changing the log le
 ```terminal
 npx -y @genesislcap/genx@latest init myApp --log-level verbose
 ```
+
+<h3> --no-shell </h3>
+
+Use the `--no-shell` parameter to stop `genx` from opening an interactive sub-shell inside the new project directory once scaffolding finishes. This is useful for non-interactive use, such as scripts or CI.
+
+Here is an example of creating a new project named **myApp** without opening the interactive sub-shell:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp --no-shell
+```
+
+## Server project scaffolding
+
+For a Genesis application, `init` scaffolds more than the frontend workspace described above — it also creates a Gradle/Kotlin multi-module server project under a `server/` directory:
+
+```
+myApp/
+├── server/
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── myApp-app/
+│   └── myApp-spring/
+├── settings.gradle.kts
+└── ...
+```
+
+- The top-level `settings.gradle.kts` includes the `server` directory as a composite build.
+- `server/settings.gradle.kts` declares the project name in a `genesis { }` extension block and `include`s each server module.
+- `<project-name>-app` is the main Genesis application module.
+- `<project-name>-spring` holds the Spring Boot application code, for projects that use Genesis's Spring integration.
+
+This is the module layout that the [Spring integration getting-started tutorial](/develop/server-capabilities/spring-integration/getting-started) assumes exists from Step 2 onward.
+
+When you build the project, Gradle also generates a `<project-name>-dictionary-cache` module alongside the ones above (under `server/build/internal-modules/`). This module holds the generated DAOs, which the Spring Boot plugin's entity generator reads from by default — see [DAOs](/build-deploy-operate/build/bdo-build-overview/#dao) for more detail.
 
 ## Add
 
