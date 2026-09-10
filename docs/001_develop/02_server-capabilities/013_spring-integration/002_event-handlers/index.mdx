@@ -34,6 +34,16 @@ Exposing an HTTP surface (`@RestController`) through the Genesis router is **not
 
 Add a dependency on `genesis-eventhandler-spring-boot-starter`; `genesis-spring-boot-starter`, `genesis-eventhandler` and `genesis-jpa-base` come transitively. There is no separate annotation-processing or KSP step for this module — annotations are read via runtime reflection when a bean is post-processed, not at compile time.
 
+```kotlin
+plugins {
+    id("global.genesis.spring")
+}
+
+dependencies {
+    api("global.genesis:genesis-eventhandler-spring-boot-starter")
+}
+```
+
 The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context — the [Spring application core](../core)'s own auto-configuration supplies all of these, so set that up first and there's nothing extra to wire in.
 
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
