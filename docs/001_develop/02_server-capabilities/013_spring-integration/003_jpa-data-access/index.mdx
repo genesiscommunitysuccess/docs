@@ -1,0 +1,298 @@
+---
+title: 'JPA data access'
+sidebar_label: 'JPA data access'
+id: server-spring-jpa-data-access
+keywords: [spring, jpa, data access, dblayer, updatequeue]
+tags:
+- spring
+- jpa
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Wiring Spring Data JPA onto the existing SQL [`DbLayer`](/develop/server-capabilities/data-access-apis), including how writes are fed back into the `UpdateQueue`.
+
+## Overview
+
+`genesis-data-spring-boot-starter` lets a Spring Boot Genesis process read and write its data through Spring Data JPA / Hibernate, instead of (or alongside) the classic generated-DAO / `DbLayer` API. It is a Spring Boot autoconfiguration module (`GenesisDataConfig`): adding it, together with `spring-boot-starter-data-jpa`, to a module's dependencies is enough to get a working `EntityManagerFactory`, `DataSource`, `PlatformTransactionManager` and Spring Data repository support, all pre-wired to Genesis's own storage.
+
+This is not a generic JPA set-up pointed at some database — every bean is deliberately wired back into the same storage stack the classic [data access APIs](/develop/server-capabilities/data-access-apis) already use:
+
+- The `DataSource` is the JDBC connection pool the SQL engine already owns, not an independently configured pool.
+- Table, column, schema and sequence names are mapped onto the exact physical names the Genesis dictionary and SQL engine use, so a JPA entity reads and writes the identical tables the generated DAO/view code targets.
+- Record IDs and sequence values come from the same allocator the rest of the platform uses, not a JPA/Hibernate-native identity or sequence strategy.
+- A Hibernate write is converted into the same `DbRecord`/`WriteResult` shape as any other write and published through the `UpdateQueue`, so it is visible to data servers, consolidators and other subscribers exactly like a classic write. See [Writing back to the UpdateQueue](#writing-back-to-the-updatequeue).
+- An entity can opt into the same audit trail the rest of the platform uses. See [Auditing](#auditing).
+
+Use this starter where ORM-style entity/repository code — Spring Data query derivation, JPQL, transactional service methods — fits better than the generated DAO API, while still participating fully in the platform's write-propagation and audit machinery. It is not a way to bypass the dictionary or manage schema independently of it.
+
+### Compared with the data access APIs
+
+| | [Data access APIs](/develop/server-capabilities/data-access-apis) (`SyncEntityDb` / `AsyncEntityDb` / `RxEntityDb` / `RxDb`) | JPA data access (`genesis-data-spring-boot-starter`) |
+|---|---|---|
+| Programming model | Generated type-safe DAOs, called directly (`db.insert(trade)`) | Spring Data repositories over `@Entity` classes (`repository.save(trade)`); derived and `@Query` finder methods |
+| Supported `DbLayer` | Any (FoundationDB, MS SQL, Oracle, PostgreSQL) | SQL engines only — no FoundationDB equivalent |
+| Entities | Generated table/view entities implementing `DbEntity` | Generated `@Entity` classes extending `GenesisJpaEntity` — driven by the same dictionary |
+| Schema management | Schema created via the classic dictionary/table-definition process | Same schema, but this starter never creates or migrates it — it only validates against it at start-up |
+| Transactions | `readTransaction` / `writeTransaction` blocks | Standard Spring `@Transactional`, via a plain `JpaTransactionManager` |
+| Write propagation to `UpdateQueue` | Built into every write call | Via a Hibernate integrator, registered on the same insert/update/delete events |
+| Auditing | Explicit `entity.toAuditEntity(...)` call made by the caller | Automatic, in the same transaction as the write, for entities implementing `JpaAuditableEntity` |
+| Concurrency control | System-definition `DbOptimisticConcurrencyMode` check, enforced by the API on modify/delete | See [Optimistic concurrency](#optimistic-concurrency) below — the two mechanisms don't overlap |
+
+## Getting set up
+
+Before writing any code against this starter, two things must already be true:
+
+1. **JPA entities have been generated from the dictionary.** This starter supplies plumbing only — the `DataSource`, `EntityManagerFactory`, naming strategy, ID allocation, write-propagation and auditing. It has no entities of its own to persist. The `@Entity` classes and their Spring Data `Repository` interfaces are produced by a separate, dictionary-driven generator — see [Data model foundation](../data-model), a hard prerequisite for this module.
+2. **The Gradle plugin that drives generation is applied to the module.** Entity and repository generation runs as a KSP-based Gradle plugin step during the build, not as something invoked by hand. See [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin).
+
+With those in place, add `genesis-data-spring-boot-starter` and `spring-boot-starter-data-jpa` to the module's dependencies. There is nothing further to `@Import` — `GenesisDataConfig` is a Spring Boot autoconfiguration, active as soon as both are on the classpath.
+
+Two things about this set-up differ from a typical Spring Data JPA project, and are worth calling out before going further:
+
+:::info SQL engines only
+This starter requires a SQL `DbLayer` (H2, PostgreSQL, Oracle or SQL Server). A process running on the FoundationDB `DbLayer` has no `SQLEngine` bean to satisfy this configuration, so the starter simply does not apply — there is no FoundationDB equivalent.
+:::
+
+:::info Schema must already exist
+`genesis.jpa.ddl-auto` defaults to `validate`. This starter does not create, update or migrate schema — it only checks, at start-up, that the existing schema matches the mapped entities. The physical tables and columns must already exist via the classic dictionary/table-definition process. Standing up a brand-new environment and expecting JPA entities to create their own tables — the default in many standalone Spring Boot JPA projects — will fail Hibernate's validation at start-up.
+:::
+
+| Property | Default | Meaning |
+|---|---|---|
+| `genesis.jpa.enabled` | `true` | Gates `GenesisDataConfig`. Even when `true`, the configuration only activates if `EntityManagerFactory` is on the classpath — i.e. `spring-boot-starter-data-jpa` must be a dependency. If it isn't, the whole autoconfiguration is inert, with no error. |
+| `genesis.jpa.ddl-auto` | `validate` | Fed to Hibernate's schema-management setting. See above. |
+
+## Example configuration
+
+The smallest realistic path is a generated entity, a generated Spring Data repository, and a CRUD call. For a dictionary table `POSITION` with a `PositionId` primary key and fields `instrumentId`, `quantity`, `notional`, `value`, `pnl`, generation produces an entity extending `GenesisJpaEntity.Base` (which supplies the framework-managed `recordId`/`timestamp` columns) and implementing `DbRecordProvider` (which is what lets a write reach the `UpdateQueue`):
+
+```kotlin
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+class Position @JvmOverloads constructor(
+    positionId: String = "",
+    instrumentId: String? = null,
+    @field:NotNull
+    @field:Column(nullable = false)
+    var quantity: Int = 0,
+    var notional: Double? = null,
+    var value: Double? = null,
+    var pnl: Double? = null,
+) : GenesisJpaEntity.Base<String>(), DbRecordProvider {
+
+    @field:Id
+    @field:Column(unique = true, nullable = false, name = "POSITION_ID", updatable = false, length = 64)
+    override var pk: String = positionId
+
+    @field:NotNull
+    @field:Column(unique = true, nullable = false, length = 64)
+    lateinit var instrumentId: String
+
+    override fun toDbRecord(): DbRecord = PositionDbMapper.toDbRecord(this)
+}
+```
+
+alongside a generated repository extending one of the `GenesisJpaRepository` base interfaces (`save`, `saveAll`, `delete`, `deleteByPk`, `findAll`, `findByPk`):
+
+```kotlin
+interface PositionRepository : GenesisJpaRepository.Nullable<Position, String>
+```
+
+Using it needs nothing beyond `@Autowired` (or constructor injection); `GenesisDataConfig`'s beans and Spring Data JPA's own repository factory do the rest. Calling `save` on a new entity inserts; calling it on a loaded entity updates:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Autowired
+lateinit var positionRepository: PositionRepository
+
+fun createPosition() {
+    val saved = positionRepository.save(
+        Position(positionId = "POS1", instrumentId = "INSTR1", quantity = 100),
+    )
+    // saved.recordId / saved.timestamp are now populated by the framework generators
+}
+
+fun readPosition(): Position? = positionRepository.findByPk("POS1")
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+private final PositionRepository positionRepository;
+
+public PositionService(PositionRepository positionRepository) {
+    this.positionRepository = positionRepository;
+}
+
+public Position createPosition() {
+    Position position = new Position("POS1", "INSTR1", 100, null, null, null);
+    Position saved = positionRepository.save(position);
+    // saved.getRecordId() / saved.getTimestamp() are now populated by the framework generators
+    return saved;
+}
+
+public Position readPosition() {
+    return positionRepository.findByPk("POS1");
+}
+```
+
+</TabItem>
+</Tabs>
+
+The entity and repository classes themselves are only ever generated as Kotlin source — there is no Java-generation mode — but everything above this line is genuinely usable from either language; a Java-only process consumes the generated Kotlin classes exactly as shown.
+
+## Configuration options
+
+### Repository wiring
+
+Every generated repository extends `GenesisJpaRepository` (or its read-only counterpart, for view-backed entities), in one of a `Nullable` or `Optional` variant depending on how a missing record should be represented. Read methods run read-only; the mutating ones each run in their own read-write transaction.
+
+For each dictionary index, the generator emits a `findBy*` method — plus, for non-unique indices, `Sort`/`Pageable` overloads, `existsBy*` and `countBy*` — backed by an explicit `@Query`. These are generated JPQL, not Spring Data's method-name query derivation:
+
+```kotlin
+interface TypedRecordRepository : GenesisJpaRepository.Nullable<TypedRecord, TypedRecord.ByGroupIdItemId> {
+    @Query("select e from TypedRecord e where e.pk.groupId = :groupId")
+    fun findByGroupId(groupId: String): List<TypedRecord>
+
+    @Query("select e from TypedRecord e where e.pk.groupId = :groupId")
+    fun findByGroupId(groupId: String, pageable: Pageable): Page<TypedRecord>
+
+    @Query("select count(e) > 0 from TypedRecord e where e.pk.groupId = :groupId")
+    fun existsByGroupId(groupId: String): Boolean
+
+    @Query("""
+        select e from TypedRecord e
+        where e.pk.groupId = :groupId and e.pk.itemId = :itemId
+    """)
+    fun findByGroupIdAndItemId(groupId: String, itemId: Int): TypedRecord?
+}
+```
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+fun recordsInGroup(groupId: String): List<TypedRecord> =
+    typedRecordRepository.findByGroupId(groupId, Sort.by("itemId"))
+
+fun oneRecord(groupId: String, itemId: Int): TypedRecord? =
+    typedRecordRepository.findByGroupIdAndItemId(groupId, itemId)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public List<TypedRecord> recordsInGroup(String groupId) {
+    return typedRecordRepository.findByGroupId(groupId, Sort.by("itemId"));
+}
+
+public TypedRecord oneRecord(String groupId, int itemId) {
+    return typedRecordRepository.findByGroupIdAndItemId(groupId, itemId);
+}
+```
+
+</TabItem>
+</Tabs>
+
+A unique-index lookup returns a single nullable result — there is no `Optional`-returning variant generated by default for a `Nullable` repository. Projections are not generated either; declare an interface extending the generated repository with a projection return type if one is needed.
+
+### Writing back to the UpdateQueue
+
+Genesis's platform — data servers, consolidators, request servers, any reactive subscriber — learns about data changes through the `UpdateQueue`. A JPA write, left alone, would be invisible to all of that: Hibernate would happily persist rows that the rest of the platform never hears about.
+
+This starter closes that gap with a Hibernate integrator registered on the `POST_INSERT`/`POST_UPDATE`/`POST_DELETE` events. For an entity that is both a `GenesisJpaEntity` and a `DbRecordProvider` (every generated entity is both), it builds the same kind of update the classic `RxDb` API publishes, and sends it through the same [update queue](/build-deploy-operate/operate/update-queue) `RxDb` uses. Publication is deferred until the transaction has committed, and only fires on success — so a rolled-back transaction publishes nothing, even though Hibernate's post-event already fired at flush time.
+
+Publication also depends on the process actually running against a real update-queue transport (a genuine multi-process deployment on ZeroMQ, MQTT or JMS) rather than the in-memory queue a standalone or test process falls back to — the same distinction classic `RxDb` writes already respect. On a process where that isn't the case, JPA writes still land in the database; they simply aren't published anywhere. There's no error or warning-level log for this — a write that "doesn't show up" downstream, with no other symptom, is usually this.
+
+Practical implication: a service method that calls `repository.save(entity)` inside a `@Transactional` boundary gets platform-wide visibility of that write for free on a real deployment — no manual event publication needed, and no manual rollback handling needed either.
+
+### Auditing
+
+Independently of `UpdateQueue` publication, an entity can implement `JpaAuditableEntity<A>` to get an automatic audit trail. Where a dictionary table has an audit sibling table, the generator makes the source entity implement it in addition to the usual base classes:
+
+```kotlin
+class TypedRecord @JvmOverloads constructor(
+    groupId: String,
+    itemId: Int,
+    var name: String? = null,
+    // ...
+) : GenesisJpaEntity.Base<TypedRecord.ByGroupIdItemId>(),
+    DbRecordProvider,
+    JpaAuditableEntity<TypedRecordAudit> {
+
+    override fun toAuditEntity(
+        auditEventType: String?,
+        auditEventDatetime: OffsetDateTime?,
+        auditEventText: String?,
+        auditEventUser: String?,
+    ): TypedRecordAudit = TypedRecordDbMapper.toAuditEntity(
+        this, auditEventType, auditEventDatetime, auditEventText, auditEventUser,
+    )
+}
+```
+
+A second Hibernate integrator persists the audit row, in the same transaction as the source write, whenever an audit context is active around the call. The context — event type, audit text, username — is set by the caller, and is guaranteed to be cleared afterwards even on an exception:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Transactional
+fun createTypedRecord(groupId: String, itemId: Int, userName: String) {
+    AuditContextHolder.withAuditContext(
+        AuditContext(userName = userName, eventType = "TYPED_RECORD_INSERT", auditText = "manual booking"),
+    ) {
+        typedRecordRepository.save(TypedRecord(groupId = groupId, itemId = itemId))
+    }
+    // A TypedRecordAudit row is persisted in the same transaction.
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Transactional
+public void createTypedRecord(String groupId, int itemId, String userName) {
+    AuditContext context = new AuditContext(userName, "TYPED_RECORD_INSERT", "manual booking");
+    AuditContextHolder.set(context);
+    try {
+        typedRecordRepository.save(new TypedRecord(groupId, itemId));
+    } finally {
+        AuditContextHolder.clear();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+With no context set, the write is still persisted, but no audit row appears — silently, with no error or log. Whether the audit row itself reaches the `UpdateQueue` follows the same publication rules described above.
+
+### Transactions
+
+`GenesisDataConfig` registers a plain `JpaTransactionManager` over the `EntityManagerFactory` — ordinary Spring `@Transactional` semantics apply, with no Genesis-specific behaviour layered on top. A repository's own `save`/`delete` methods are themselves transactional, so calling more than one from within an outer `@Transactional` service method joins the same transaction, by Spring's default `REQUIRED` propagation, rather than opening a nested one. If any step throws, every write made in that transaction rolls back together, and (per the previous two sections) nothing partial is published to the `UpdateQueue` or audited.
+
+## Optimistic concurrency
+
+The [data access APIs'](/develop/server-capabilities/data-access-apis#optimistic-concurrency) `DbOptimisticConcurrencyMode` check (`STRICT` / `LAX` / `NONE`, keyed off a record's `TIMESTAMP`) is enforced inside the classic DbLayer write path itself — the code that builds and issues a modify/delete for `SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb` and `RxDb`. Writes made through this starter don't go through that path: Hibernate builds and issues its own SQL directly against the JDBC connection, so `DbOptimisticConcurrencyMode` has no effect on a JPA write, in either direction — it neither blocks a stale write nor gets bypassed as a workaround, it simply doesn't apply.
+
+Generated entities also don't currently carry a JPA `@Version` column — the `timestamp` field inherited from `GenesisJpaEntity` is a plain, framework-managed column, not one Hibernate treats as a version for optimistic-locking purposes. Out of the box, then, a generated JPA entity has no optimistic-locking check at all against a concurrent update.
+
+Standard Hibernate/JPA optimistic locking is still available as the general-purpose mechanism, for an entity that needs it: annotate a numeric or timestamp column `@Version`, and Hibernate checks it automatically on every `UPDATE`/`DELETE` it issues for that entity, throwing `OptimisticLockException` when the row has moved on since it was read. That's a standard JPA feature, not something this starter adds or wires up — applying it to a generated entity would mean extending it (or otherwise adding a version-mapped column) rather than relying on anything built in.
+
+## See also
+
+- [Spring Integration](../index) — section overview.
+- [Application core](../core) — the base Spring Boot starter this module builds on.
+- [Data model foundation](../data-model) — the entity/repository generator this starter's beans require; generate entities before writing any code here.
+- [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin and KSP setup that drives that generation.
+- [Data access APIs](/develop/server-capabilities/data-access-apis) — the classic generated-DAO API this module sits alongside.
+- [Update Queue](/build-deploy-operate/operate/update-queue) — the mechanism JPA writes are published through.

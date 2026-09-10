@@ -1,0 +1,42 @@
+---
+title: 'Spring Integration'
+sidebar_label: 'Spring Integration'
+id: server-spring-integration
+keywords: [spring, spring boot, guice, jpa, data cube]
+tags:
+- spring
+- spring boot
+sidebar_position: 13
+---
+
+Genesis Application Platform is adding support for building application server modules using Spring Boot, alongside the existing Genesis/GPAL approach. This lets developers use familiar Spring idioms — dependency injection, annotation-driven components, and Spring Data JPA — within a Genesis application.
+
+## [Getting started](./getting-started)
+
+A hands-on, step-by-step tutorial: add a Spring module to a `genx`-scaffolded project, wire up an event handler, and expose the data through a data cube. Start here if you're new to Spring integration.
+
+## [Application core](./core)
+
+How Spring is bridged into a Genesis application: wiring Guice into Spring's `BeanFactory`, exposing Genesis system definitions as a Spring `PropertySource`, and the Spring HTTP surface's session-token authentication.
+
+## [Annotation-driven event handling](./event-handlers)
+
+A class-based, annotation-driven way to write event handlers as an alternative to GPAL `.kts` scripts.
+
+## [JPA data access](./jpa-data-access)
+
+Using Spring Data JPA on top of the existing SQL `DbLayer`, including how writes are fed back into the `UpdateQueue`.
+
+## [Cube query engine](./data-cube)
+
+Pivot, grouped, and flat queries over JPA entities, built for grid UIs such as AG Grid's Server-Side Row Model.
+
+## [Data model foundation](./data-model)
+
+Base entity classes, the dictionary-to-JPA code generation pipeline, and the shared Spring annotation vocabulary.
+
+## [Test tooling](./test-tooling)
+
+JUnit 5 support for Spring-based Genesis applications, parallel to GenesisJunit.
+
+See also [Build tooling](/build-deploy-operate/build/plugins) for the Gradle plugin chain and dependency BOM used to build Spring-enabled modules.

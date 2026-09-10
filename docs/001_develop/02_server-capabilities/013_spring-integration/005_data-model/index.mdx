@@ -1,0 +1,377 @@
+---
+title: 'Data model foundation'
+sidebar_label: 'Data model foundation'
+id: server-spring-data-model
+keywords: [spring, jpa, entity, codegen, annotations]
+tags:
+- spring
+- jpa
+- codegen
+sidebar_position: 5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Base entity classes, the dictionary-to-JPA code generation pipeline that produces concrete entities, and the shared annotation vocabulary used across the Spring integration modules. Compare with the existing dictionary-driven [data model](/develop/server-capabilities/data-model).
+
+## Overview
+
+This area answers one question: how does an existing Genesis table [dictionary](/develop/server-capabilities/data-model) become a JPA entity? The dictionary (`*-tables-dictionary.kts` / `*-fields-dictionary.kts`) is the single source of truth for a table's shape. Classic code generation turns it into the generated DAO classes used by the [data access APIs](/develop/server-capabilities/data-access-apis). This area is the JPA-world sibling of that same generation step: it reads the identical dictionary and produces `@Entity`, Spring Data repository, and enum classes instead, so a Spring Boot process can read and write the same physical tables through Hibernate/Spring Data JPA.
+
+Three modules make this up:
+
+- **`genesis-jpa-base`** is the runtime library every generated entity depends on: base `@MappedSuperclass` hierarchies, Hibernate ID generators that reuse Genesis's own ID sources, an audit-context mechanism, and date converters that keep JPA-mapped columns compatible with the rest of the platform. It has no generated code of its own — pure runtime scaffolding, with no dependency on Spring Boot.
+- **`genesis-spring-boot-entity-generation`** is a build-time code generator that reads a Genesis dictionary and emits the actual `@Entity`, repository, enum, and configuration source files, all built on `genesis-jpa-base`'s classes.
+- **`genesis-spring-boot-annotations`** ships alongside these modules as a tiny shared vocabulary (`@GenesisApplication`, `@GenesisAnonymous`) used by other Spring/JPA areas.
+
+**Generation itself is Kotlin-only** — the generator emits KotlinPoet source, and there is no generator mode that produces `.java` output. You never hand-write a generated entity: you configure the generator's target package, and a class matching the dictionary appears under `build/generated/` on every build. The base classes themselves are not Kotlin-only, though: a hand-written Java class can extend `GenesisJpaEntity.Base`, `.WithRecordIdPrimaryKey`, or `.WithRecordIdCompositeKey` directly and behave the same way a generated entity would, minus the automatic dictionary sync and the write-propagation bridge described in [JPA data access](../jpa-data-access).
+
+The generated entity behaves like a native Genesis row: it carries the same `RECORD_ID`/`TIMESTAMP` system columns, the same composite-key semantics, and the same epoch-millis date encoding as the rest of the platform — it is not a second, disconnected copy of the data.
+
+This area stops short of three things:
+
+- Running the code generation task itself, or deciding which dictionary module feeds the generator — that's the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin).
+- Providing the `EntityManagerFactory`, `DataSource`, or write-propagation that make a JPA write visible to the rest of the platform — that's [JPA data access](../jpa-data-access).
+- Building queries over the generated entities — that's the [cube query engine](../data-cube).
+
+## Example configuration
+
+Given a single-column primary key defined in the dictionary:
+
+```kotlin
+// tables-dictionary.kts
+table("SIMPLE_TABLE", 100) {
+    SIMPLE_ID
+    TIMESTAMP
+
+    primaryKey("SIMPLE_TABLE_BY_ID", 1) {
+        SIMPLE_ID
+    }
+}
+```
+
+```kotlin
+// fields-dictionary.kts
+field(name = "SIMPLE_ID", type = INT)
+```
+
+the generator produces the following entity. The Java tab is not a second generator output — it illustrates what a hand-written Java class extending the same `genesis-jpa-base` superclass looks like, to show that the base library is not Kotlin-only, even though generation is.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin (generated)', value: 'kotlin' }, { label: 'Java (hand-written equivalent)', value: 'java' }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package global.genesis.jpa.dao
+
+import global.genesis.jpa.base.GenesisJpaEntity
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import jakarta.validation.constraints.NotNull
+
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+public class SimpleTable @JvmOverloads constructor(
+  simpleId: Int,
+) : GenesisJpaEntity.Base<Int>() {
+  @field:Id
+  @field:NotNull
+  @field:Column(unique = true, nullable = false, name = "SIMPLE_ID")
+  override var pk: Int = simpleId
+
+  /** Convenience accessor for [pk]. Use `e.pk` in JPQL queries. */
+  @get:Transient
+  public val simpleId: Int
+    get() = pk
+
+  override fun hashCode(): Int = javaClass.hashCode()
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is SimpleTable) return false
+    return this.pk == other.pk
+  }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package global.genesis.jpa.dao;
+
+import global.genesis.jpa.base.GenesisJpaEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
+
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+public class SimpleTableJava extends GenesisJpaEntity.Base<Integer> {
+
+    @Id
+    @NotNull
+    @Column(unique = true, nullable = false, name = "SIMPLE_ID")
+    private Integer pk;
+
+    // JPA needs a no-arg constructor for proxying/reflection.
+    protected SimpleTableJava() {
+    }
+
+    public SimpleTableJava(Integer simpleId) {
+        this.pk = simpleId;
+    }
+
+    @Override
+    public Integer getPk() {
+        return pk;
+    }
+
+    public Integer getSimpleId() {
+        return pk;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof SimpleTableJava)) {
+            return false;
+        }
+        return Objects.equals(this.pk, ((SimpleTableJava) other).pk);
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+The `recordId`/`timestamp` fields are inherited from `GenesisJpaEntity.Base` and are never set directly by application code — they are populated by Hibernate generators on insert, described under [ID and value generators](#id-and-value-generators) below.
+
+## Configuration options
+
+### Base entity classes
+
+Every generated entity extends one of three `@MappedSuperclass` shapes nested under `GenesisJpaEntity` (`genesis-jpa-base`), chosen by the generator based on the table's declared primary key. A fourth, `GenesisReadOnlyJpaEntity`, is the root shape used only by generated *view* entities, which are read-only.
+
+| Shape | Chosen when | Primary key |
+|---|---|---|
+| `GenesisJpaEntity.Base<PK>` | The primary key is an ordinary dictionary field (single or composite) that isn't named `RECORD_ID` | Surrogate `recordId`/`timestamp` plus a separate `@Id`-annotated `pk` of the table's own type |
+| `GenesisJpaEntity.WithRecordIdPrimaryKey` | The dictionary's sole primary-key field is literally named `RECORD_ID` | `pk: Long` *is* the framework `recordId` itself; `recordId` is exposed only as a `@Transient` convenience getter |
+| `GenesisJpaEntity.WithRecordIdCompositeKey<PK>` | The primary key is composite and includes `RECORD_ID` | The `@EmbeddedId` class extends `RecordIdCompositeKey`, folding `recordId` into the embedded key |
+
+All shapes implement Spring Data's `Persistable<PK>`: `isNew()` is `recordId == 0L`, and `getId()` returns `null` while `recordId == 0L`. This is needed because Hibernate cannot infer new-vs-existing from primary-key nullness once Genesis's own ID generators have already filled in the key before Hibernate's own callback runs.
+
+For example, a table whose primary key *is* the framework `recordId` (no declared primary-key field of its own) generates the second shape:
+
+```kotlin
+public class WithRecIdPk @JvmOverloads constructor(
+  recordId: Long = 0,
+  @field:Column(length = 64) public var other: String? = null,
+  public var qty: Int? = null,
+) : GenesisJpaEntity.WithRecordIdPrimaryKey(recordId) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is WithRecIdPk) return false
+    if (this.pk == 0L) return false
+    return this.pk == other.pk
+  }
+}
+```
+
+Note the `if (this.pk == 0L) return false` guard in `equals()` — an unsaved (`recordId == 0`) instance is never equal to anything, including another unsaved instance, mirroring `isNew()`/`getId()`.
+
+`recordId`, `timestamp`, and the primary key on `WithRecordIdPrimaryKey` are never set directly by application code; they are populated by the ID generators described below. Test fixtures or migration code that legitimately needs to set them directly can use `GenesisJpaHelper`, a small utility with one overload per key shape.
+
+:::note No entity member may be `final`
+Hibernate generates lazy-loading proxy subclasses of every entity, overriding getters and the identifier accessor. If you hand-write an entity or subclass a generated one, do not mark properties or functions `final` — every base class in `genesis-jpa-base` is written with this in mind.
+:::
+
+### Shared annotations
+
+#### `@GenesisApplication`
+
+`global.genesis.springboot.annotation.GenesisApplication`, source-retained (stripped from bytecode, read only at compile time). Declares a Spring process's bootstrap definition — name, port, description, package scan, script/config files, and related fields — mirroring a legacy Genesis process definition. It is consumed by the Spring Boot plugin's KSP processor and code-generation task described under [Codegen](#codegen) below, not by reflection at runtime.
+
+#### `@GenesisAnonymous`
+
+`global.genesis.springboot.annotation.GenesisAnonymous`, runtime-retained. Marks a Spring MVC handler (or an entire controller) as reachable without an authenticated Genesis session. It is deliberately not `jakarta.annotation.security.PermitAll`: JSR-250 annotations are only evaluated once the handler method runs, which is too late once Genesis's security filter chain has already rejected an unauthenticated request. Runtime retention lets the filter check for `@GenesisAnonymous` reflectively before dispatch.
+
+#### `@CubeDefaultIdentity`
+
+`global.genesis.jpa.base.CubeDefaultIdentity`, from `genesis-jpa-base`. Emitted by the generator on **every** generated entity, not just composite-key ones:
+
+```kotlin
+annotation class CubeDefaultIdentity(vararg val fields: String)
+```
+
+`fields` lists the entity's primary-key JPA property names (for example `instrumentId`, not `INSTRUMENT_ID`) in the dictionary-declared primary-key order.
+
+:::caution Composite-key field order only survives via `CubeDefaultIdentity`
+Both the JPA and Hibernate metamodels report a composite key's (`@EmbeddedId`) attributes in **alphabetical order**, regardless of the order the dictionary declared them or the table is actually indexed on. `CubeDefaultIdentity` is the only place the declared order survives into runtime — never infer composite-key ordering from `@EmbeddedId` reflection or the Hibernate metamodel.
+:::
+
+This matters because the [cube query engine](../data-cube) uses this annotation as an entity's default row identity and sort tiebreaker for paging — it is the one place a consumer can recover the primary key's real order and get the database to satisfy a page read from the primary-key index rather than an incidental sort. For a composite key on `(NAME, RECORD_ID)`, a generated entity carries:
+
+```kotlin
+@CubeDefaultIdentity("name", "recordId")
+public class WithRecIdPkComposite(/* ... */) :
+    GenesisJpaEntity.WithRecordIdCompositeKey<WithRecIdPkComposite.ByRecordIdName>() {
+  // ...
+}
+```
+
+### ID and value generators
+
+`genesis-jpa-base` provides Hibernate generators (`global.genesis.jpa.base.generator`) that compute a value in-process before the insert/update statement executes, rather than reading it back from the database:
+
+| Annotation | Behaviour |
+|---|---|
+| `@GenesisRecordId` | On insert only: reuses a nonzero current value if present, otherwise generates one from the platform's flake/timer ID source. |
+| `@GenesisTimestamp` | On insert, reuses the entity's `recordId` as the timestamp; on update, generates a fresh value. Requires `recordId` to be declared before `timestamp` on the entity, since Hibernate must generate `recordId` first — true of every base-class shape, but a hazard if you hand-write an entity. |
+| `@GenesisUUID` | On insert: reuses a non-empty current value, otherwise generates a random UUID string. |
+| `@GenesisFrameworkSequence(sequence, id)` | On insert, delegates to a pluggable sequence generator, matching the platform's `sequence`/`uuid` field modifiers in the [data model](/develop/server-capabilities/data-model/#sequence). |
+| `@DbSequenceValue(sequence, incrementSize)` | Wraps Hibernate's native sequence generator for an ordinary (non-primary-key) auto-incrementing value. |
+
+### Audit support
+
+An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>`, which the generator wires in automatically. Producing the audit row requires an `AuditContext` (`userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder`:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin' }, { label: 'Java', value: 'java' }]}>
+<TabItem value="kotlin">
+
+```kotlin
+AuditContextHolder.withAuditContext(
+    AuditContext(userName = "alice", eventType = "UPDATE", auditText = "reprice"),
+) {
+    approvalRepository.save(approval)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+
+AuditContext context = new AuditContext("alice", "UPDATE", "reprice");
+AuditContextHolder.withAuditContext(context, (Function0<Unit>) () -> {
+    approvalRepository.save(approval);
+    return Unit.INSTANCE;
+});
+```
+
+</TabItem>
+</Tabs>
+
+`withAuditContext` restores whatever context was active before the block runs, and is safe to nest. **The context block must enclose the transaction that actually commits the write** — setting the context before calling a service method that opens its own transaction elsewhere, or clearing it before the transaction commits, silently produces no audit row. For coroutine-based code, `AuditContextHolder.asContextElement(context)` returns a `CoroutineContext.Element` that restores the context on every thread the coroutine resumes on, since a plain `ThreadLocal` does not survive a dispatcher switch.
+
+An audited entity looks like this (abridged to the load-bearing members):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin (generated)', value: 'kotlin' }, { label: 'Java (hand-written equivalent)', value: 'java' }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+public class Approval @JvmOverloads constructor(
+  approvalId: String = "",
+  public var userName: String? = null,
+  // ...more columns elided...
+) : GenesisJpaEntity.Base<String>(),
+    JpaAuditableEntity<ApprovalAudit> {
+
+  @field:Id
+  @field:Column(name = "APPROVAL_ID", updatable = false, length = 64)
+  @field:GenesisFrameworkSequence(sequence = "AP", id = 16)
+  override var pk: String = approvalId
+
+  override fun toAuditEntity(
+    auditEventType: String?,
+    auditEventDatetime: OffsetDateTime?,
+    auditEventText: String?,
+    auditEventUser: String?,
+  ): ApprovalAudit =
+    ApprovalDbMapper.toAuditEntity(this, auditEventType, auditEventDatetime, auditEventText, auditEventUser)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+public class ApprovalJava extends GenesisJpaEntity.Base<String>
+        implements JpaAuditableEntity<ApprovalAuditJava> {
+
+    @Id
+    @Column(name = "APPROVAL_ID", updatable = false, length = 64)
+    private String pk;
+
+    private String userName;
+
+    protected ApprovalJava() {
+    }
+
+    @Override
+    public String getPk() {
+        return pk;
+    }
+
+    @Override
+    public ApprovalAuditJava toAuditEntity(
+            String auditEventType,
+            OffsetDateTime auditEventDatetime,
+            String auditEventText,
+            String auditEventUser) {
+        ApprovalAuditJava audit = new ApprovalAuditJava();
+        audit.setApprovalId(pk);
+        audit.setUserName(userName);
+        audit.setAuditEventType(auditEventType);
+        audit.setAuditEventDatetime(auditEventDatetime);
+        audit.setAuditEventText(auditEventText);
+        audit.setAuditEventUser(auditEventUser);
+        return audit;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`toAuditEntity` is generator-emitted boilerplate that forwards to a generated mapper companion. When hand-writing an entity, only implementing the interface matters — `toAuditEntity` is an ordinary interface method with no Kotlin-specific calling convention.
+
+### Date/time handling
+
+`LocalDateToLongConverter` and `OffsetDateTimeToLongConverter` (`global.genesis.jpa.converter`, both `@Converter(autoApply = true)`) map JPA `LocalDate`/`OffsetDateTime` properties to the same epoch-millis storage the rest of the platform uses for `DATE`/`DATETIME` fields, so a JPA-mapped table stays binary-compatible with the rest of the platform's date handling without any extra configuration on the entity. `LocalDate` anchors the calendar date at midnight UTC; `OffsetDateTime` loses its original offset on the round trip — both are read back at UTC, since the underlying column is a bare epoch value with no stored offset.
+
+## Codegen
+
+Nothing in `genesis-spring-boot-entity-generation` runs on its own — it is invoked by a Gradle task wired by the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) (`global.genesis.spring`) and its `genesisSpring { entities { packageName = ... } }` configuration block. **This is a hard prerequisite**: without the plugin applied and an `entities` block configured, the generator is never invoked and no code is produced. No Spring Boot runtime dependency is required just to generate entities — only to actually run an `EntityManagerFactory`/`DataSource` against them, which is what [JPA data access](../jpa-data-access) provides.
+
+The generator consumes a dictionary's merged table/view definitions the same way classic code generation does, with a few shapes handled specially:
+
+- A table whose primary key is mutable (`TIMESTAMP`-typed) is skipped, with a build warning, not an entity — JPA does not support a primary key that can change value after insert.
+- A view that cannot resolve any primary-key field from its root table is skipped, with a warning, since a view entity's primary key comes from the join's root table.
+- Duplicate view names across modules fail the build outright, because views (unlike the merged table dictionary) are collected per module, and a silent overwrite of one module's generated view file by another would be far worse than a hard failure.
+
+Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate either a shared enum (reused across every referencing field) or a table-scoped enum nested under a per-table package, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim.
+
+## See also
+
+- [Spring Integration overview](../index)
+- [JPA data access](../jpa-data-access) — the runtime wiring (`EntityManagerFactory`, `DataSource`, write-propagation) that runs against these generated entities
+- [Cube query engine](../data-cube) — pivot/grouped/flat queries built on the generated entities and their `@CubeDefaultIdentity`
+- [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin that actually runs code generation; applying it is a hard prerequisite for everything on this page

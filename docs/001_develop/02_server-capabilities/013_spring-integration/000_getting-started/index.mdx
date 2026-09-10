@@ -1,0 +1,368 @@
+---
+title: 'Getting started'
+sidebar_label: 'Getting started'
+id: server-spring-getting-started
+keywords: [spring, quickstart, tutorial, data cube]
+tags:
+- spring
+- quickstart
+sidebar_position: 0
+---
+
+This tutorial builds a small Spring Boot integration on top of a Genesis project created with [`genx`](/develop/development-environment/genx), then exposes the data it manages through a [data cube](../data-cube).
+
+- **Part 1** takes you through the Spring integration itself: project set-up, a `WIDGET` table, a Spring application with an event handler, and running it all under Genesis.
+- **Part 2** builds a data cube on top of Part 1: HTTP query and aggregation endpoints over the `WIDGET` table. It's optional — stop after Part 1 if you only need the Spring integration.
+
+:::note
+Spring integration is a new addition to the Genesis Application Platform. Check the [release notes](/release-notes) for the Genesis Server Framework version that introduced it, and make sure your project is on that version (or later) before starting.
+:::
+
+## Part 1: Spring integration
+
+### Step 1: Create the project
+
+```shell
+npx -y @genesislcap/genx@latest init mySpringDemo
+```
+
+For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the default answer for every prompt, and `--no-shell` stops `genx` dropping into an interactive sub-shell inside the new project when it finishes.
+
+### Step 2: Create the Spring module
+
+Include the new module in `server/settings.gradle.kts`:
+
+```kotlin
+// server/settings.gradle.kts
+include("<project-name>-spring")
+```
+
+Create the module directory with its build file at `server/<project-name>-spring/build.gradle.kts`:
+
+```kotlin
+// server/<project-name>-spring/build.gradle.kts
+plugins {
+    id("global.genesis.spring")
+    kotlin("plugin.jpa")
+}
+
+dependencies {
+    api("global.genesis:genesis-spring-boot-starter")
+    api("global.genesis:genesis-eventhandler-spring-boot-starter")
+    api("global.genesis:genesis-data-spring-boot-starter")
+    api("global.genesis:genesis-jpa-base")
+    implementation(kotlin("stdlib"))
+}
+
+genesisSpring {
+    entities {
+        packageName = "global.genesis.spring.demo"
+    }
+}
+```
+
+Module dependency versions are pinned by the [Spring dependencies BOM](/build-deploy-operate/build/spring-boot-plugin) — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies once the BOM is applied.
+
+### Step 3: Switch logging to Logback
+
+The Genesis Spring integration only works with Logback. That means changes in three places, all in the app module.
+
+**1. The app module build file** — `server/<project-name>-app/build.gradle.kts`:
+
+```kotlin
+genesisExec {
+    logging {
+        backend = LOGBACK
+    }
+}
+```
+
+**2. A Logback config** at `server/<project-name>-app/src/main/genesis/cfg/logback.xml`. There's nothing Spring-specific about it — any valid Logback config works, for example a config that rolls a per-process log file under `GENESIS_HOME/runtime/logs` into `logs/archive`.
+
+**3. The system definition** — `server/<project-name>-app/src/main/genesis/cfg/genesis-system-definition.kts`:
+
+```kotlin
+systemDefinition {
+    global {
+        // ...
+        item(name = "LogFramework", value = "LOG4J2")
+        item(name = "LogFrameworkConfig", value = "logback.xml")
+        item(name = "DbGenerateViewObjects", value = "true")
+        // ...
+    }
+}
+```
+
+`LogFramework` stays `LOG4J2` — that setting covers Genesis's own internal processes, which keep using Log4j2; `LogFrameworkConfig` is what points the Spring side at your `logback.xml`. Leave both exactly as shown.
+
+`DbGenerateViewObjects` isn't logging configuration at all — it's a required feature flag that makes the platform generate views as database objects. It's included in this step only because it lives in the same file; don't skip it. It generates the database views that Hibernate/JPQL needs to query over dictionary tables, which is why the Spring/JPA path requires it.
+
+### Step 4: Define the widget table
+
+Add a `WIDGET` table to the tables dictionary, `server/<project-name>-app/src/main/genesis/cfg/<project-name>-tables-dictionary.kts`:
+
+```kotlin
+table("WIDGET", 12345) {
+    field("ID", LONG).autoIncrement().primaryKey()
+    field("NAME").uniqueIndex()
+    field("PRICE", DOUBLE)
+    field("QUALITY", ENUM("GOOD", "OK", "BAD"))
+    field("COST", DOUBLE)
+}
+```
+
+`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. `<product>` is the product name configured in `server/settings.gradle.kts` (`genesis { productName = ... }`) — for a project created with `genx init <project-name>`, this is `<project-name>` verbatim; see [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
+
+### Step 5: Implement the Spring application
+
+Both classes in this step and the next live in the `-spring` module created in Step 2, under the source root `server/<project-name>-spring/src/main/java`.
+
+```java
+package <packageName>;
+
+import global.genesis.springboot.annotation.GenesisApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@GenesisApplication
+@SpringBootApplication
+public class MySpringApp {
+    public static void main(String[] args) {
+        SpringApplication.run(MySpringApp.class, args);
+    }
+}
+```
+
+Use the `@GenesisApplication` annotation and pass `args` to `SpringApplication`. Genesis derives the process name from the class name, converted from camel case to snake case (`MySpringApp` ⇒ `MY_SPRING_APP`); the name can be overridden in the `@GenesisApplication` annotation. See [Application core](../core) for what this annotation wires up.
+
+### Step 6: Add a widget event handler
+
+```java
+package <packageName>;
+
+import <packageName>.dao.Widget;
+import <packageName>.repo.WidgetRepository;
+import global.genesis.eventhandler.spring.annotation.EventMapping;
+import global.genesis.eventhandler.spring.annotation.GenesisEventController;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@GenesisEventController("WIDGET")
+public class MyEventHandler {
+
+    private final WidgetRepository widgetRepository;
+
+    public MyEventHandler(@Autowired WidgetRepository widgetRepository) {
+        this.widgetRepository = widgetRepository;
+    }
+
+    @EventMapping("INSERT")
+    public void insertWidget(Widget widget) {
+        widgetRepository.save(widget);
+    }
+
+    @EventMapping("MODIFY")
+    public void modifyWidget(Widget newWidget) {
+        var dbWidget = widgetRepository.findById(newWidget.getId());
+        if (dbWidget == null) {
+            throw new IllegalStateException("Unable to find widget with id " + newWidget.getId());
+        }
+        widgetRepository.save(newWidget);
+    }
+
+    @EventMapping("DELETE")
+    public void deleteWidget(Widget widget) {
+        widgetRepository.delete(widget);
+    }
+}
+```
+
+`Widget` and `WidgetRepository` are JPA entities/repositories generated by the build from the table definition in Step 4 — expect unresolved-symbol errors in your IDE until the first build in Step 7. See [Annotation-driven event handling](../event-handlers) for the full annotation reference, and [JPA data access](../jpa-data-access) for how a repository like `WidgetRepository` is generated and how its writes reach the database.
+
+### Step 7: Build, refresh, and run
+
+1. **Build** the server (`./gradlew assemble` from `server/`, or your IDE's build). Besides compiling, this generates the JPA entities the event handler uses.
+2. **Refresh the Genesis process list** so the new application is picked up — in the Genesis IntelliJ plugin, click the **G** icon then **Refresh Task List**; in Genesis Start, click the refresh button on the left of the window. The new application appears under its snake-case process name (`MY_SPRING_APP`).
+3. **Start the project** in Genesis Start.
+
+Once the processes are up, the Spring integration is complete. Part 2 builds on this running app.
+
+## Part 2: Data cube
+
+:::caution
+The data cube's HTTP endpoints don't have authentication yet. Don't point any of this at sensitive data.
+:::
+
+The `Widget` entity generated in Step 7 is already dictionary-generated with a `@CubeDefaultIdentity`, which is all a cube needs from its source entity.
+
+### Step 8: Add the cube dependency
+
+Alongside the other Genesis Spring dependencies from Step 2, in `server/<project-name>-spring/build.gradle.kts`:
+
+```kotlin
+dependencies {
+    // ...existing dependencies from Step 2...
+    api("global.genesis:genesis-data-cube-spring-boot-starter")
+}
+```
+
+### Step 9: Declare the cube resources
+
+A `CubeResource` is just a `@Bean` — the bean name becomes the `/api/v1/cubes/{resource}` path segment. It's worth declaring more than one resource over the same table to see the two source styles side by side:
+
+```java
+package <packageName>;
+
+import <packageName>.dao.Widget;
+import <packageName>.dao.enums.<product>.widget.Quality.Quality;
+import global.genesis.spring.data.cube.resource.CubeResource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class CubeResources {
+
+    // entity source — bean name "widgets" -> /api/v1/cubes/widgets/...
+    @Bean
+    public CubeResource widgets() {
+        return CubeResource.forEntity(Widget.class)
+            .exposeQuery()                          // no projection: every entity column is visible
+            .operation("byQuality", op -> op
+                .groupBy("quality")
+                .sum("cost", "totalCost")
+                .sum("price", "totalPrice")
+                .count("widgetCount")
+                .projection(WidgetsByQuality.class))
+            .build();
+    }
+
+    // JPQL source over the same WIDGET table, deriving a "margin" column an entity source can't express.
+    // bean name "widgetMargins" -> /api/v1/cubes/widgetMargins/...
+    @Bean
+    public CubeResource widgetMargins() {
+        return CubeResource.forJpql(
+                "select w.id as id, w.name as name, w.quality as quality, "
+                    + "w.price as price, w.cost as cost, (w.price - w.cost) as margin "
+                    + "from Widget w")
+            .exposeQuery(q -> q.projection(WidgetMargin.class))
+            .operation("byQuality", op -> op
+                .groupBy("quality")
+                .avg("margin", "avgMargin")
+                .count("widgetCount")
+                .projection(MarginByQuality.class))
+            .build();
+    }
+}
+
+// named-operation output ("/widgets/byQuality") — group key + aggregation aliases only
+record WidgetsByQuality(Quality quality, Double totalCost, Double totalPrice, Long widgetCount) {}
+
+// full column set available to exposeQuery ("/widgetMargins/query") — no join needed, so row identity
+// (the "id" column) survives and the resource stays cacheable
+record WidgetMargin(Long id, String name, Quality quality, Double price, Double cost, Double margin) {}
+
+// named-operation output ("/widgetMargins/byQuality")
+record MarginByQuality(Quality quality, Double avgMargin, Long widgetCount) {}
+```
+
+`widgets` deliberately calls `exposeQuery()` with no customizer — fully permissive, every entity column visible on the dynamic `/widgets/query` path, no projection DTO needed. `widgetMargins` bounds its `exposeQuery` to the `WidgetMargin` projection instead, since the JPQL source's computed `margin` column only exists inside that projection's column set.
+
+A few rules specific to the JPQL path — see [Cube query engine](../data-cube) for the full reference (query syntax, response envelope, caching):
+
+- Every selection needs an alias, and that alias is the column name callers use — including a computed expression like `margin`, which JPQL cannot name automatically.
+- Joining another table requires calling `.allowJoins()` explicitly, since a join can multiply rows and inflate `SUM`/`COUNT`.
+- The query is parsed and column-typed at **startup**, so a typo in a column name fails the boot, not the first request.
+- Because the query selects `w.id` from a single, unmultiplied root, row identity survives — the resource still gets a `rowId` and stays `ETag`-cacheable, same as the entity source.
+
+Cube endpoints are only registered if at least one `CubeResource` bean exists in the context — no bean, no `/api/v1/cubes/**` endpoints and no error.
+
+### Step 10: Seed some data
+
+The `WIDGET` table starts empty, and an empty cube just returns `rowCount: 0` on every route. A Spring Boot `ApplicationRunner` is the simplest way to seed it once, on first boot:
+
+```java
+package <packageName>;
+
+import <packageName>.dao.Widget;
+import <packageName>.dao.enums.<product>.widget.Quality.Quality;
+import <packageName>.repo.WidgetRepository;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class WidgetSeeder implements ApplicationRunner {
+
+    private static final Quality[] QUALITIES = Quality.values();
+
+    private final WidgetRepository widgetRepository;
+
+    public WidgetSeeder(WidgetRepository widgetRepository) {
+        this.widgetRepository = widgetRepository;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        if (!widgetRepository.findAll().isEmpty()) {
+            return;
+        }
+        for (int i = 1; i <= 10; i++) {
+            double price = 10.0 * i;
+            double cost = price * 0.6;
+            Quality quality = QUALITIES[i % QUALITIES.length];
+            widgetRepository.save(new Widget(0L, "Widget " + i, price, quality, cost));
+        }
+    }
+}
+```
+
+Like the CSV seed data under `server/<project-name>-app/src/main/genesis/data`, this only runs at startup — rebuild and restart the app (Step 7) to pick up changes from this part; nothing here hot-reloads.
+
+### Step 11: Query it
+
+With the app rebuilt, restarted, and seeded:
+
+```shell
+# canned aggregate on the entity source: total cost/price and widget count per quality grade
+curl -s 'http://localhost:8080/api/v1/cubes/widgets/byQuality?sort=-totalCost'
+
+# dynamic path on the entity source: flat, unfiltered page of raw widgets
+curl -s -X POST 'http://localhost:8080/api/v1/cubes/widgets/query' \
+     -H 'Content-Type: application/json' -d '{}'
+
+# canned aggregate on the JPQL source: average margin per quality grade
+curl -s 'http://localhost:8080/api/v1/cubes/widgetMargins/byQuality'
+
+# dynamic path on the JPQL source: flat rows including the computed "margin" column
+curl -s -X POST 'http://localhost:8080/api/v1/cubes/widgetMargins/query' \
+     -H 'Content-Type: application/json' -d '{}'
+```
+
+With the seed data above, `widgets/byQuality` comes back like this — three groups (`GOOD`/`OK`/`BAD`), each with its summed cost/price and a count:
+
+```json
+{
+  "rows": [
+    { "quality": "OK", "totalCost": 132.0, "totalPrice": 220.0, "widgetCount": 4 },
+    { "quality": "GOOD", "totalCost": 108.0, "totalPrice": 180.0, "widgetCount": 3 },
+    { "quality": "BAD", "totalCost": 90.0, "totalPrice": 150.0, "widgetCount": 3 }
+  ],
+  "rowCount": 3,
+  "rowKind": "GROUPED",
+  "rowId": ["quality"],
+  "columns": [
+    { "name": "quality", "role": "KEY", "type": "ENUM" },
+    { "name": "totalCost", "role": "MEASURE", "type": "DOUBLE" },
+    { "name": "totalPrice", "role": "MEASURE", "type": "DOUBLE" },
+    { "name": "widgetCount", "role": "MEASURE", "type": "LONG" }
+  ]
+}
+```
+
+## Further reading
+
+- [Application core](../core) — the Guice/Spring bridge underlying `@GenesisApplication`
+- [Annotation-driven event handling](../event-handlers) — the full annotation reference
+- [JPA data access](../jpa-data-access) — how generated repositories read and write through to the database
+- [Cube query engine](../data-cube) — query syntax, response envelope, caching, and security
+- [Data model foundation](../data-model) — how dictionary tables become generated JPA entities
+- [Build tooling](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin chain and dependency BOM used above
