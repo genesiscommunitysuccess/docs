@@ -251,6 +251,9 @@ is also accepted, since some proxies drop headers containing underscores), check
 `UserSessionCache`-backed session store. An endpoint opts out of authentication explicitly with
 `@GenesisAnonymous`.
 
+For how a caller obtains a `SESSION_AUTH_TOKEN` in the first place, see
+[`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth).
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
