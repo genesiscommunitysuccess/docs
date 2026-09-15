@@ -99,6 +99,14 @@ still runs and serves requests directly on its embedded port, but is never regis
 `GENESIS_ROUTER` — a startup log line calls this out, but it's easy to miss.
 :::
 
+Set this in `src/main/resources/application.yaml`, following the standard Spring Boot convention:
+
+```yaml
+spring:
+  application:
+    name: my-spring-app
+```
+
 ## Configuration options
 
 ### BeanFactory bridging
