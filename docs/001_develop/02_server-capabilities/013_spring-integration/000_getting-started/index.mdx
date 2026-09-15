@@ -117,6 +117,8 @@ table("WIDGET", 12345) {
 
 Both classes in this step and the next live in the `-spring` module created in Step 2, under the source root `server/<project-name>-spring/src/main/java`.
 
+Use the same `<packageName>` value here as the `entities.packageName` you set in Step 2 — the generated `Widget`/`WidgetRepository` classes Step 6 imports live under that package, and the hand-written classes need to share it for those imports to resolve.
+
 ```java
 package <packageName>;
 
