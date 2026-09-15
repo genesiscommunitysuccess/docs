@@ -265,6 +265,65 @@ above) from your own controller, supplying `PrincipalValues` sourced from the au
 principal, rather than relying on `CubeQueryController`. Wiring this through the built-in HTTP layer
 automatically is expected in a future release.
 
+The same resolution-level call is what you exercise in a test — autowire `CubeResourceRegistry`
+inside a `@GenesisSpringTest` the same way you would in application code, and assert on the
+`CubeResult` for each simulated caller:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisSpringTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+class TradesByCurrencyBaseCriteriaTest {
+
+    @Autowired
+    lateinit var registry: CubeResourceRegistry
+
+    @Test
+    fun `base criteria scopes the caller to their own currency`() {
+        val trades = registry.require("tradesByCurrency")
+        val principal = PrincipalValues { name -> if (name == "username") "USD" else null }
+
+        val result = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal)
+
+        assertEquals(1, result.totalElements)
+        assertEquals("USD", (result.content.single() as Tuple).get("currencyId"))
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSpringTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+public class TradesByCurrencyBaseCriteriaTest {
+
+    @Autowired
+    CubeResourceRegistry registry;
+
+    @Test
+    @DisplayName("base criteria scopes the caller to their own currency")
+    void baseCriteriaScopesCallerToOwnCurrency() {
+        ResolvedCubeResource trades = registry.require("tradesByCurrency");
+        PrincipalValues principal = name -> "username".equals(name) ? "USD" : null;
+
+        CubeResult<?> result = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("USD", ((Tuple) result.getContent().get(0)).get("currencyId"));
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+See [Test tooling](../test-tooling) for `@GenesisSpringTest` itself — the live in-memory database,
+fixture loading, and the `@DirtiesContext` sharing model this example relies on.
+
 ## Query types
 
 `Cube<ROW, FILTER>` answers three query shapes — flat, grouped, and pivoted — each following the
