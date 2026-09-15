@@ -16,7 +16,7 @@ Wiring Spring Data JPA onto the existing SQL [`DbLayer`](/develop/server-capabil
 
 ## Overview
 
-`genesis-data-spring-boot-starter` lets a Spring Boot Genesis process read and write its data through Spring Data JPA / Hibernate, instead of (or alongside) the classic generated-DAO / `DbLayer` API. It is a Spring Boot autoconfiguration module (`GenesisDataConfig`): adding it, together with `spring-boot-starter-data-jpa`, to a module's dependencies is enough to get a working `EntityManagerFactory`, `DataSource`, `PlatformTransactionManager` and Spring Data repository support, all pre-wired to Genesis's own storage.
+`genesis-data-spring-boot-starter` lets a Spring Boot Genesis process read and write its data through Spring Data JPA / Hibernate, instead of (or alongside) the classic generated-DAO / `DbLayer` API. It is a Spring Boot autoconfiguration module (`GenesisDataConfig`): adding it to a module's dependencies is enough to get a working `EntityManagerFactory`, `DataSource`, `PlatformTransactionManager` and Spring Data repository support, all pre-wired to Genesis's own storage — `spring-boot-starter-data-jpa` itself comes along transitively, and only needs to be declared explicitly if a consuming module excludes transitive dependencies.
 
 This is not a generic JPA set-up pointed at some database — every bean is deliberately wired back into the same storage stack the classic [data access APIs](/develop/server-capabilities/data-access-apis) already use:
 
@@ -48,7 +48,7 @@ Before writing any code against this starter, two things must already be true:
 1. **JPA entities have been generated from the dictionary.** This starter supplies plumbing only — the `DataSource`, `EntityManagerFactory`, naming strategy, ID allocation, write-propagation and auditing. It has no entities of its own to persist. The `@Entity` classes and their Spring Data `Repository` interfaces are produced by a separate, dictionary-driven generator — see [Data model foundation](../data-model), a hard prerequisite for this module.
 2. **The Gradle plugin that drives generation is applied to the module.** Entity and repository generation runs as a KSP-based Gradle plugin step during the build, not as something invoked by hand. See [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin).
 
-With those in place, add `genesis-data-spring-boot-starter` and `spring-boot-starter-data-jpa` to the module's dependencies. There is nothing further to `@Import` — `GenesisDataConfig` is a Spring Boot autoconfiguration, active as soon as both are on the classpath.
+With those in place, add `genesis-data-spring-boot-starter` to the module's dependencies. There is nothing further to `@Import` — `GenesisDataConfig` is a Spring Boot autoconfiguration, active as soon as both it and `spring-boot-starter-data-jpa` are on the classpath. `spring-boot-starter-data-jpa` is typically already present transitively via `genesis-data-spring-boot-starter`; it only needs to be declared explicitly if a consuming module excludes transitive dependencies.
 
 Two things about this set-up differ from a typical Spring Data JPA project, and are worth calling out before going further:
 
