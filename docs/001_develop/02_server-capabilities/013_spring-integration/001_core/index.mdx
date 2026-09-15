@@ -407,6 +407,139 @@ onto this starter incrementally:
 - A mixed deployment is fully supported: GPAL-scripted and Spring Boot processes can run side by
   side in the same cluster, so a migration can proceed module by module rather than all at once.
 
+### Worked example: migrating a Guice-bound service
+
+Take a Guice-bound service that depends on a Genesis platform singleton and a Genesis
+system-definition value — the same two things the
+[BeanFactory bridging](#beanfactory-bridging) and
+[System definitions as a Spring PropertySource](#system-definitions-as-a-spring-propertysource)
+sections above cover individually. Migrating it to Spring only touches the DI annotations; the
+method body is unchanged.
+
+**Before — Guice-wired, using `@Module`/`@Inject`/`@Named`:**
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.commons.annotation.Module
+import global.genesis.session.UserSessionCache
+import javax.inject.Inject
+import javax.inject.Named
+
+@Module
+class GreetingService @Inject constructor(
+    private val userSessionCache: UserSessionCache,
+    @Named("APP_GREETING") private val greeting: String,
+) {
+    fun greet(token: String): String {
+        val isLive = userSessionCache.userLoggedIn(token) != null
+        return if (isLive) greeting else "unauthenticated"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.commons.annotation.Module;
+import global.genesis.session.UserSessionCache;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Module
+public class GreetingService {
+    private final UserSessionCache userSessionCache;
+    private final String greeting;
+
+    @Inject
+    public GreetingService(
+        UserSessionCache userSessionCache,
+        @Named("APP_GREETING") String greeting
+    ) {
+        this.userSessionCache = userSessionCache;
+        this.greeting = greeting;
+    }
+
+    public String greet(String token) {
+        boolean isLive = userSessionCache.userLoggedIn(token) != null;
+        return isLive ? greeting : "unauthenticated";
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+**After — Spring-wired, using `@Service`/`@Value`:**
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.session.UserSessionCache
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
+
+@Service
+class GreetingService(
+    private val userSessionCache: UserSessionCache,
+    @Value("\${APP_GREETING:hello}") private val greeting: String,
+) {
+    fun greet(token: String): String {
+        val isLive = userSessionCache.userLoggedIn(token) != null
+        return if (isLive) greeting else "unauthenticated"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.session.UserSessionCache;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class GreetingService {
+    private final UserSessionCache userSessionCache;
+    private final String greeting;
+
+    public GreetingService(
+        UserSessionCache userSessionCache,
+        @Value("${APP_GREETING:hello}") String greeting
+    ) {
+        this.userSessionCache = userSessionCache;
+        this.greeting = greeting;
+    }
+
+    public String greet(String token) {
+        boolean isLive = userSessionCache.userLoggedIn(token) != null;
+        return isLive ? greeting : "unauthenticated";
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+The `@Module`/`@Inject` constructor becomes a plain Spring-managed constructor:
+`UserSessionCache` resolves through the type-based Guice fallback described above with no
+bridging configuration needed, and the `@Named("APP_GREETING")` system-definition value becomes
+`@Value("\${APP_GREETING:hello}")`, sourced from the same `"genesis"` PropertySource described
+above.
+
 ## Testing
 
 Dedicated test tooling for Spring/Guice-bridged Genesis apps lives in
