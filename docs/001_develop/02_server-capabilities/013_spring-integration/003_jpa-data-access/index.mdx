@@ -153,6 +153,8 @@ The entity and repository classes themselves are only ever generated as Kotlin s
 
 Every generated repository extends `GenesisJpaRepository` (or its read-only counterpart, for view-backed entities), in one of a `Nullable` or `Optional` variant depending on how a missing record should be represented. Read methods run read-only; the mutating ones each run in their own read-write transaction.
 
+`GenesisJpaRepository` itself extends Spring Data's minimal marker interface, `org.springframework.data.repository.Repository`, not `CrudRepository` or `JpaRepository` as you might expect from stock Spring Data JPA. `Repository` declares no methods of its own — every CRUD method (`save`, `saveAll`, `delete`, `deleteByPk`, and the `findAll` overloads) is declared directly on `GenesisJpaRepository`, rather than inherited from a richer Spring Data ancestor.
+
 For each dictionary index, the generator emits a `findBy*` method — plus, for non-unique indices, `Sort`/`Pageable` overloads, `existsBy*` and `countBy*` — backed by an explicit `@Query`. These are generated JPQL, not Spring Data's method-name query derivation:
 
 ```kotlin
