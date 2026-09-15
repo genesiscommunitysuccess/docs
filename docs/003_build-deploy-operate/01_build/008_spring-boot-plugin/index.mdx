@@ -13,6 +13,10 @@ See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis
 
 ## Genesis Spring Boot plugin
 
+:::note
+Spring integration ships with Genesis Application Platform v10 (currently the pre-GA `10.0.0-beta2`). Make sure your project is on that version (or later) before applying the plugin.
+:::
+
 The Genesis Spring Boot plugin (`global.genesis.spring`) is the build-time entry point for Genesis's Spring Boot/JPA application style. Applying it to a module provides:
 
 - **Legacy process and service manifest generation** for classes annotated `@GenesisApplication`, so a Spring Boot process shows up in Genesis tooling (process manager, launcher) exactly like a `.kts`-defined one.
