@@ -32,12 +32,11 @@ Applying the plugin requires the module's `settings.gradle.kts` to already have 
 ```kotlin
 // build.gradle.kts
 plugins {
-    kotlin("jvm")
     id("global.genesis.spring")
 }
 ```
 
-The JPA source-set wiring described below requires the Kotlin JVM plugin (`kotlin("jvm")`) to be applied in the same module — the generated entities and repositories are always Kotlin, regardless of what language the rest of the module is written in. The process/service manifest generation has no such requirement: it works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
+The generated JPA entities and repositories are always Kotlin, regardless of what language the rest of the module is written in — `global.genesis.spring` applies the Kotlin JVM plugin (`kotlin("jvm")`) automatically, so a consuming module's own plugin block doesn't need to declare it. The process/service manifest generation works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
 
 Applying the plugin creates a `genesisSpring { ... }` extension with two nested extensions, `processes {}` and `entities {}`:
 
@@ -74,7 +73,6 @@ A module that only needs this half of the plugin — no JPA entities at all — 
 ```kotlin
 // build.gradle.kts
 plugins {
-    kotlin("jvm")
     id("global.genesis.spring")
 }
 
