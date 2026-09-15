@@ -84,6 +84,19 @@ dependencies, so they're visible to a consumer without redeclaration. **Spring S
 dependency, not opt-in** — every Genesis Spring web app is authenticated by default (see
 [Session-token authentication](#session-token-authentication)).
 
+Your Spring Boot application's entry-point class must also carry `@GenesisApplication` alongside
+`@SpringBootApplication` — this is what actually boots the class as a Genesis process and wires in
+the Guice `Injector` bridge described above. See
+[Getting started: Step 5](../getting-started#step-5-implement-the-spring-application) for a
+complete example.
+
+:::note
+Genesis Spring integration only supports **Logback** for logging, not the Log4j2 backend used by
+GPAL-scripted processes. Switching requires three changes — `backend = LOGBACK`, a `logback.xml`
+config, and the `LogFramework`/`LogFrameworkConfig` system-definition keys — see
+[Getting started: Step 3](../getting-started#step-3-switch-logging-to-logback) for the details.
+:::
+
 Your application still needs a normal Genesis process environment — system definitions,
 `GENESIS_HOME`, dictionary, and cluster configuration all need to be in place, because this is a
 real Genesis process under the hood, not a standalone Spring app. Nothing extra is required for the

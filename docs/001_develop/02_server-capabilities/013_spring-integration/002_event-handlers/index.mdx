@@ -46,6 +46,13 @@ dependencies {
 
 The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context — the [Spring application core](../core)'s own auto-configuration supplies all of these, so set that up first and there's nothing extra to wire in.
 
+:::note
+This includes logging: Genesis Spring integration only supports **Logback**, not the Log4j2 backend
+used elsewhere in Genesis. See [Application core: Set-up](../core#set-up) for what this requires, or
+[Getting started: Step 3](../getting-started#step-3-switch-logging-to-logback) for the three-file
+change.
+:::
+
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
 
 One hard constraint to plan around from the start: **never model an event payload or handler class as a Java `record`.** Doing so crashes bean creation with `Can't compute ClassId for primitive type: int`, thrown from Kotlin reflection while the module inspects the record's constructor. Use a Kotlin `data class`, or an ordinary Java class with a no-arg constructor and getters/setters, instead.
