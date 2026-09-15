@@ -1,0 +1,133 @@
+---
+title: 'Column Selection'
+sidebar_label: 'Column Selection'
+id: grid-pro-column-selection
+keywords: [genesis, foundation, ui, grid, grid-pro, column selection, column picker]
+tags:
+  - grid
+  - grid-pro
+  - column-selection
+pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-renderers
+pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+---
+
+# Column Selection
+
+Column Selection is a reusable Grid Pro component that lets users show, hide, search, and reorder columns. You can use it in two ways:
+
+- **Built-in toolbar** — enable it on Grid Pro or Entity Management
+- **Standalone** — place `rapid-column-selection` anywhere in your UI and link it to a Grid Pro instance
+
+The standalone Column Selection component is the same component Grid Pro embeds when `enable-column-selection` is set. Prefer the standalone mode when the button must live outside the grid layout (toolbars, filter rows, headers).
+
+## Registration
+
+`rapid-column-selection` is included in `rapidGridComponents`:
+
+```typescript
+import { provideDesignSystem } from '@genesislcap/rapid-design-system';
+import { rapidGridComponents, rapidGridProBeta } from '@genesislcap/rapid-grid-pro';
+
+provideDesignSystem().register(rapidGridProBeta(), rapidGridComponents);
+```
+
+## Built-in mode
+
+Show the button above the grid by setting `enable-column-selection` on Grid Pro:
+
+```html
+<rapid-grid-pro enable-column-selection>
+  <!-- datasource / columns -->
+</rapid-grid-pro>
+```
+
+Entity Management places the same control in its header:
+
+```html
+<entity-management enable-column-selection resourceName="ALL_TRADES"></entity-management>
+```
+
+See [Entity Manager API](/develop/client-capabilities/grids/entity-manager/entity-manager-api/).
+
+## Standalone mode
+
+Place the Column Selection component wherever you want and bind it to a Grid Pro host. Do **not** also set `enable-column-selection` on that grid, or users will see two buttons.
+
+### Link with `gridHost` (recommended)
+
+```html
+<rapid-column-selection :gridHost=${(x) => x.grid}></rapid-column-selection>
+<rapid-grid-pro ${ref('grid')}>
+  <!-- datasource / columns -->
+</rapid-grid-pro>
+```
+
+```typescript
+import { FASTElement, observable, customElement } from '@genesislcap/web-core';
+import type { GridProBeta } from '@genesislcap/grid-pro';
+
+@customElement({ name: 'my-grid-page', template })
+export class MyGridPage extends FASTElement {
+  // Required when binding :gridHost from a template so the link updates after ref() assigns the element
+  @observable grid: GridProBeta;
+}
+```
+
+### Link with `gridApi`
+
+Pass the AG Grid API directly when you already hold it:
+
+```html
+<rapid-column-selection :gridApi=${(x) => x.grid?.gridApi}></rapid-column-selection>
+```
+
+### Multiple grids
+
+Use one Column Selection instance per Grid Pro instance:
+
+```html
+<rapid-column-selection :gridHost=${(x) => x.tradesGrid}></rapid-column-selection>
+<rapid-grid-pro ${ref('tradesGrid')}></rapid-grid-pro>
+
+<rapid-column-selection :gridHost=${(x) => x.allocationsGrid}></rapid-column-selection>
+<rapid-grid-pro ${ref('allocationsGrid')}></rapid-grid-pro>
+```
+
+## API
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Column Selection` | Button label |
+| `sort` | `'selected-first' \| 'ag-grid'` | `selected-first` | List ordering. `selected-first`: visible columns first (display order), then hidden A–Z. `ag-grid`: AG column-state order |
+| `open` | `boolean` | `false` | Whether the popover is open |
+| `:gridHost` | `ColumnSelectionHost \| null` | `null` | Grid Pro element (`gridApi` / `columnApi`, optional `getColumnDragBridge`) |
+| `:gridApi` | `GridApi \| null` | `null` | Explicit AG Grid API (v36+) |
+| `toggle()` | `void` | — | Opens or closes the popover |
+| `close()` | `void` | — | Closes the popover |
+| `refresh()` | `void` | — | Rebuilds picker lists from current grid column state |
+
+### CSS parts
+
+| Part | Description |
+| --- | --- |
+| `column-selection` | Root wrapper |
+| `column-selection-button` | Trigger button |
+| `column-selection-button-control` | Exported button control |
+| `column-selection-button-content` | Exported button content |
+| `column-selection-panel` | Popover panel |
+
+Example — match toolbar button height from outside the shadow tree:
+
+```css
+my-toolbar rapid-column-selection::part(column-selection-button),
+my-toolbar rapid-column-selection::part(column-selection-button-control) {
+  height: var(--search-button-height);
+}
+```
+
+## Behaviour notes
+
+- Source of truth is the AG Grid column state on the linked grid.
+- While the popover is open, the picker listens for column visibility/move events and refreshes.
+- Hidden columns can be dragged onto the grid header (AG ToolPanel drag). Visible-column reorder inside the picker is disabled while a search filter is active; drag-to-grid for hidden columns still works during search.
+- For classic Grid Pro (AG v29), `gridHost` bridges `columnApi` when needed.
