@@ -27,7 +27,7 @@ Unlike the core [Genesis Build plugin](/build-deploy-operate/build/plugins#genes
 
 ### How to enable?
 
-Applying the plugin requires the module's `settings.gradle.kts` to already have one of Genesis's settings plugins applied — the same one that manages `global.genesis.build`. That's because `global.genesis.spring` is a version-managed plugin id, and it only resolves without an explicit version string through that mechanism. With that in place, add the plugin to the module's own `build.gradle.kts`:
+Applying the plugin requires the module's `settings.gradle.kts` to already have Genesis's `global.genesis.settings` plugin applied — the same one that manages `global.genesis.build`. That's because `global.genesis.spring` is a version-managed plugin id, and it only resolves without an explicit version string through that mechanism. A genx-generated project already has `global.genesis.settings` applied, so this is only a concern for a manually-created or restructured build. With that in place, add the plugin to the module's own `build.gradle.kts`:
 
 ```kotlin
 // build.gradle.kts
