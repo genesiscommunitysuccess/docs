@@ -20,7 +20,21 @@ JUnit 5 support for Spring-based Genesis applications, parallel to [GenesisJunit
 
 Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: `EventClientSync`/`Async`/`Rx`/`Blocking`, `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx`, and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
 
-`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure — no further wiring is required.
+`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, which scaffolds an `allprojects { test { systemProperty("DbLayer", "SQL") } }` block — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
+
+```kotlin
+test {
+    systemProperty("DbLayer", "SQL")
+}
+```
+
+Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure — no further wiring is required:
+
+```kotlin
+dependencies {
+    testImplementation("global.genesis:genesis-spring-testsupport")
+}
+```
 
 If you're testing a classic GPAL script app instead, use `GenesisJunit`/`GenesisSharedContextJunit` from `genesis-testsupport` directly. This module is the Spring-shaped equivalent, not a replacement.
 
