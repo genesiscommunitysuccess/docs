@@ -164,12 +164,26 @@ addressable identity.
 The engine's central design invariant is that **a caller can never tell a hidden column from a
 nonexistent one.** Every rejection — an unpermitted filter column, an unsortable one, a column
 outside the visible set — surfaces as the same RFC 9457 `problem+json` error
-(`.../problems/cube/query-rejected`). Splitting that error per reason would reintroduce, in a
-machine-readable field, exactly the column-existence discrimination the rule exists to prevent.
+(`.../problems/cube/query-rejected`), as HTTP 400 Bad Request with a standard `ProblemDetail` body:
 
-A `FilterPolicy` governs which columns a caller may reference in an operation's filter, beyond the
-columns it already groups by (implicitly filterable, since their values are already enumerated in
-the output):
+```json
+{
+  "type": "https://docs.genesis.global/problems/cube/query-rejected",
+  "title": "Query rejected",
+  "status": 400,
+  "detail": "<rejection detail message>"
+}
+```
+
+Splitting that error per reason would reintroduce, in a machine-readable field, exactly the
+column-existence discrimination the rule exists to prevent.
+
+A `FilterPolicy` governs which columns a caller may reference in a **named operation's** filter,
+beyond the columns it already groups by (implicitly filterable, since their values are already
+enumerated in the output). It does not apply to the dynamic `.exposeQuery { }` path (see
+[Complete usage examples](#complete-usage-examples)): that path is bounded purely by
+`visibleColumns` — all source columns by default, or narrowed to exactly the fields named in an
+explicit `projection<...>()` if the `exposeQuery` block declares one.
 
 | Policy | Filterable columns |
 |---|---|
