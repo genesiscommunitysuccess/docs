@@ -138,6 +138,159 @@ public class BaseGenesisSpringTestJava {
 
 This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
 
+## Testing an HTTP endpoint
+
+The example above tests JPA/database access through a live Genesis runtime. Testing a Spring Boot
+app's **HTTP surface** — including the [session-token authentication](../core#session-token-authentication)
+layer every Genesis Spring web app installs by default — is a narrower concern and doesn't need
+`@GenesisSpringTest` at all. It builds on the same exclusion trick [Application core's "Testing"
+section](../core#testing) introduces: exclude `GenesisSpringBootConfiguration` and
+`GenesisSpringWebConfig` so no Genesis process boots, then add `@AutoConfigureMockMvc` and stub
+`UserSessionCache` directly instead of logging a session in for real.
+
+`UserSessionCache` (`global.genesis.session.UserSessionCache`) has two lookup methods, and which one
+the security layer calls matters for what to stub:
+
+- `userLoggedIn(token: String): UserSessionRef?` is a cache-only read — a `ConcurrentHashMap` hit or
+  nothing.
+- `userLoggedInCheckDb(token: String): UserSessionRef?` is a **suspend** function: the same cache-first
+  read, falling back to a single database read on a miss.
+
+The Spring Boot starter's authenticator (`GenesisSessionAuthenticator`) calls the suspend
+`userLoggedInCheckDb`, not `userLoggedIn` — deliberately: a Spring Boot process only *observes*
+sessions the router creates, so a token written just before this process's own session cache caught
+up would otherwise be refused. Stub `userLoggedInCheckDb`, not `userLoggedIn` — for example with
+[mockito-kotlin](https://github.com/mockito/mockito-kotlin)'s `onBlocking`, which handles the
+`suspend` keyword's extra `Continuation` parameter for you.
+
+Add the test-only dependencies this needs alongside `genesis-spring-boot-starter`:
+
+```kotlin
+dependencies {
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
+}
+```
+
+`spring-boot-starter-security-test` matters even though this example never calls `springSecurity()`
+explicitly: when it's on the test classpath, `@AutoConfigureMockMvc` detects it and applies Spring
+Security's test support to the built `MockMvc` automatically, so the real filter chain — the one
+`GenesisSessionAuthenticator` installs — runs on every `perform(...)` call.
+
+This test exercises the same `/secure` endpoint [Application core's session-token authentication
+example](../core#session-token-authentication) declares; the same shape works against any
+`@RestController` endpoint, including a [cube resource](../data-cube)'s wire endpoints:
+
+```kotlin
+package global.genesis.springboot.jpa.test
+
+import global.genesis.session.UserSessionCache
+import global.genesis.springboot.annotation.GenesisAnonymous
+import global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER
+import org.joda.time.DateTime
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+
+@SpringBootTest(
+    classes = [SecureControllerTest.TestApp::class],
+    properties = [
+        "spring.autoconfigure.exclude=" +
+            "global.genesis.springboot.config.GenesisSpringBootConfiguration," +
+            "global.genesis.springboot.web.GenesisSpringWebConfig",
+    ],
+)
+@AutoConfigureMockMvc
+class SecureControllerTest {
+
+    @Autowired
+    lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var userSessionCache: UserSessionCache
+
+    @BeforeEach
+    fun stubValidSession() {
+        userSessionCache.stub {
+            onBlocking { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
+                userName = "JaneDoe",
+                sessionId = "session-1",
+                token = VALID_TOKEN,
+                expiryDateTime = DateTime.now().plusHours(1),
+            )
+        }
+    }
+
+    @Test
+    fun `rejects a request with no session token`() {
+        mockMvc.perform(get("/secure")).andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    fun `serves a request carrying a valid session token`() {
+        mockMvc.perform(get("/secure").header(SESSION_AUTH_TOKEN_HEADER, VALID_TOKEN))
+            .andExpect(status().isOk)
+            .andExpect(content().string("secure"))
+    }
+
+    @Test
+    fun `serves a GenesisAnonymous endpoint without a token`() {
+        mockMvc.perform(get("/public/ping")).andExpect(status().isOk)
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @EnableAutoConfiguration
+    open class TestApp {
+        // Stands in for the real UserSessionCache a booted process would bridge from Guice.
+        @Bean
+        open fun userSessionCache(): UserSessionCache = mock()
+
+        @Bean
+        open fun secureController(): SecureController = SecureController()
+
+        @Bean
+        open fun publicController(): PublicController = PublicController()
+    }
+
+    @RestController
+    open class SecureController {
+        @GetMapping("/secure")
+        open fun secure(): String = "secure"
+    }
+
+    @RestController
+    open class PublicController {
+        @GenesisAnonymous
+        @GetMapping("/public/ping")
+        open fun ping(): String = "pong"
+    }
+
+    private companion object {
+        const val VALID_TOKEN = "valid-session-token"
+    }
+}
+```
+
+`SESSION_AUTH_TOKEN_HEADER` (`global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER`)
+resolves to `SESSION_AUTH_TOKEN`, the same header the rest of Genesis uses — see [Session-token
+authentication](../core#session-token-authentication) for the hyphenated alias and the full
+request/response table this test's two cases are drawn from.
+
 ## See also
 
 - [Spring Integration](../index) for the section overview.

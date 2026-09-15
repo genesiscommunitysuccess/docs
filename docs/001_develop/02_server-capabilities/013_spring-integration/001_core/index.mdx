@@ -417,6 +417,10 @@ a token resolving to no live session is `401`; a valid token is served and its u
 available via `Principal`; a `@GenesisAnonymous`-marked endpoint is served with no token; actuator
 health is reachable with no token while the rest of the actuator tree is not.
 
+For a complete, runnable version of this test — `@AutoConfigureMockMvc`, the exact
+`UserSessionCache` method to stub, and the dependencies it needs — see [Testing an HTTP
+endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling guide.
+
 ## See also
 
 - [Annotation-driven event handling](../event-handlers) — builds directly on this starter and adds

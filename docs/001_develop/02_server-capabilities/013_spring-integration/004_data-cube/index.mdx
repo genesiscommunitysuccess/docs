@@ -146,6 +146,13 @@ rejected the same way a made-up column would be (see [no-probing](#security)), b
 operation declared no wider `FilterPolicy`. `sort`, `page` and `size` default to unsorted, `0` and
 `100` respectively. A `POST` with a JSON body is equivalent and preferred for longer filters.
 
+Like any endpoint behind a Genesis Spring Boot app's [session-token
+authentication](../core#session-token-authentication), a cube endpoint needs a valid
+`SESSION_AUTH_TOKEN` to answer anything but `401` — see [Testing an HTTP
+endpoint](../test-tooling#testing-an-http-endpoint) for a complete `MockMvc` test against a
+`@RestController` endpoint that stubs the session lookup instead of logging in for real; the same
+shape works against a cube resource's endpoints.
+
 The response is a `CubeEnvelope`: a `rows` array, `hasMore`, `rowKind`, an echoed `page`, and the
 resolved `columns` — plus a `ROW_REF` per row when the operation's group key doubles as its
 addressable identity.
