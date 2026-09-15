@@ -245,7 +245,7 @@ public class WithRecIdPkComposite(/* ... */) :
 
 ### Audit support
 
-An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>`, which the generator wires in automatically. Producing the audit row requires an `AuditContext` (`userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder`:
+An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>`, which the generator wires in automatically. The `_AUDIT` table itself gets the same generated entity and Spring Data repository as any other dictionary table, so audit rows can be queried back through a repository — for example `ApprovalAuditRepository` — the same way as any other generated repository. Producing the audit row requires an `AuditContext` (`userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder`:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin' }, { label: 'Java', value: 'java' }]}>
 <TabItem value="kotlin">

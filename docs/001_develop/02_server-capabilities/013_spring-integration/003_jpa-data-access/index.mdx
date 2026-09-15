@@ -255,6 +255,9 @@ fun createTypedRecord(groupId: String, itemId: Int, userName: String) {
     }
     // A TypedRecordAudit row is persisted in the same transaction.
 }
+
+fun readTypedRecordAudit(typedRecordAuditId: String): TypedRecordAudit? =
+    typedRecordAuditRepository.findByPk(typedRecordAuditId)
 ```
 
 </TabItem>
@@ -270,6 +273,10 @@ public void createTypedRecord(String groupId, int itemId, String userName) {
     } finally {
         AuditContextHolder.clear();
     }
+}
+
+public TypedRecordAudit readTypedRecordAudit(String typedRecordAuditId) {
+    return typedRecordAuditRepository.findByPk(typedRecordAuditId);
 }
 ```
 
