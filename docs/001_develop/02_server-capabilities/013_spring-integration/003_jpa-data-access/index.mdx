@@ -282,6 +282,71 @@ With no context set, the write is still persisted, but no audit row appears — 
 
 `GenesisDataConfig` registers a plain `JpaTransactionManager` over the `EntityManagerFactory` — ordinary Spring `@Transactional` semantics apply, with no Genesis-specific behaviour layered on top. A repository's own `save`/`delete` methods are themselves transactional, so calling more than one from within an outer `@Transactional` service method joins the same transaction, by Spring's default `REQUIRED` propagation, rather than opening a nested one. If any step throws, every write made in that transaction rolls back together, and (per the previous two sections) nothing partial is published to the `UpdateQueue` or audited.
 
+Without an outer `@Transactional` boundary, each repository call is its own, independent transaction, so a failure part-way through a multi-step operation leaves earlier writes in place:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// One transaction: if the second save() throws, the first is rolled back too.
+@Transactional
+fun transferPosition(fromId: String, toId: String, quantity: Int) {
+    val from = positionRepository.findByPk(fromId)!!
+    from.quantity -= quantity
+    positionRepository.save(from)
+
+    val to = positionRepository.findByPk(toId)!!
+    to.quantity += quantity
+    positionRepository.save(to)
+}
+
+// No outer boundary: each save() opens (and commits) its own transaction.
+// A failure on the second save leaves the first one committed.
+fun transferPositionUnsafe(fromId: String, toId: String, quantity: Int) {
+    val from = positionRepository.findByPk(fromId)!!
+    from.quantity -= quantity
+    positionRepository.save(from)
+
+    val to = positionRepository.findByPk(toId)!!
+    to.quantity += quantity
+    positionRepository.save(to)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// One transaction: if the second save() throws, the first is rolled back too.
+@Transactional
+public void transferPosition(String fromId, String toId, int quantity) {
+    Position from = positionRepository.findByPk(fromId);
+    from.setQuantity(from.getQuantity() - quantity);
+    positionRepository.save(from);
+
+    Position to = positionRepository.findByPk(toId);
+    to.setQuantity(to.getQuantity() + quantity);
+    positionRepository.save(to);
+}
+
+// No outer boundary: each save() opens (and commits) its own transaction.
+// A failure on the second save leaves the first one committed.
+public void transferPositionUnsafe(String fromId, String toId, int quantity) {
+    Position from = positionRepository.findByPk(fromId);
+    from.setQuantity(from.getQuantity() - quantity);
+    positionRepository.save(from);
+
+    Position to = positionRepository.findByPk(toId);
+    to.setQuantity(to.getQuantity() + quantity);
+    positionRepository.save(to);
+}
+```
+
+</TabItem>
+</Tabs>
+
+To check transaction state programmatically — for example, to assert a method is only ever called within an existing transaction — use Spring's standard `TransactionSynchronizationManager.isActualTransactionActive()`; this starter adds nothing Genesis-specific on top of it.
+
 ## Optimistic concurrency
 
 The [data access APIs'](/develop/server-capabilities/data-access-apis#optimistic-concurrency) `DbOptimisticConcurrencyMode` check (`STRICT` / `LAX` / `NONE`, keyed off a record's `TIMESTAMP`) is enforced inside the classic DbLayer write path itself — the code that builds and issues a modify/delete for `SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb` and `RxDb`. Writes made through this starter don't go through that path: Hibernate builds and issues its own SQL directly against the JDBC connection, so `DbOptimisticConcurrencyMode` has no effect on a JPA write, in either direction — it neither blocks a stale write nor gets bypassed as a workaround, it simply doesn't apply.
