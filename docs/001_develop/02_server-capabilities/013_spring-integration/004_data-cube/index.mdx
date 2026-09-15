@@ -600,6 +600,26 @@ discovered-pivot-column/memoized-count staleness.
   is trackable — an uncacheable cube simply always re-executes; nothing fails at startup because of
   it.
 
+An initial request returns the ETag alongside the rows:
+
+```
+GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'
+
+200 OK
+ETag: "a1b2c3d4-42-7"
+```
+
+Replaying that value as `If-None-Match` on a later, identical request skips re-execution — and the
+body — as long as none of the three parts (request identity, source freshness generation, pivot/count
+era) have moved on:
+
+```
+GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'
+If-None-Match: "a1b2c3d4-42-7"
+
+304 Not Modified
+```
+
 `GET /api/v1/cubes/{resource}` describes a resource itself, before you issue any query against it —
 whether rows are addressable, the identity columns, pagination/caching guarantees, and the
 request-size limits:
