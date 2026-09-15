@@ -450,10 +450,46 @@ CubeResult<Trade> usdHighPrice = trades.query(
 </TabItem>
 </Tabs>
 
-Over HTTP, the same expression is a query parameter or a body field:
+Over HTTP, the same expression is a query parameter or a body field. This assumes an operation
+whose resource has widened its `FilterPolicy` to cover the filtered column — `tradesByCurrency`
+itself only permits filtering on `currencyId`, its group key, under the default
+`FilterPolicy.GroupKeys` (see [Declaring a cube resource](#declaring-a-cube-resource)). Adding
+`filterOn("price")` at the resource level (see [Security](#security)) permits it:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Bean
+fun tradesByCurrencyWide(): CubeResource = cubeResource<Trade> {
+    filterOn("price") // FilterPolicy.GroupKeysPlus("price"), widened beyond the group key
+    operation("byCurrency") {
+        groupBy("currencyId")
+        sum("quantity")
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Bean
+public CubeResource tradesByCurrencyWide() {
+    return CubeResource.forEntity(Trade.class)
+        .filterOn("price")
+        .operation("byCurrency", op -> op
+            .groupBy("currencyId")
+            .sum("quantity"))
+        .build();
+}
+```
+
+</TabItem>
+</Tabs>
 
 ```
-GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'&&price>=5
+GET /api/v1/cubes/tradesByCurrencyWide/byCurrency?filter=currencyId=='USD'&&price>=5
 ```
 
 An empty or blank `filter` is treated as "no filter" and is accepted without error — worth knowing
