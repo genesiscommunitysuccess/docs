@@ -39,7 +39,7 @@ independently useful:
    can inject `ServiceRegistry`, `UserSessionCache`, or any other Genesis platform singleton
    straight into a `@Service` or `@RestController` with no extra configuration.
 2. **Makes Genesis system-definition values visible to Spring configuration.** Any value already
-   defined in Genesis system-definition (`SystemDefinitions.kts`, `.env`, etc.) becomes readable
+   defined in Genesis system-definition (`genesis-system-definition.kts`, `.env`, etc.) becomes readable
    through `application.yaml`, `@Value`, or `@ConfigurationProperties` without duplicating it into
    Spring's own config files.
 3. **Puts the app's HTTP surface on the network safely.** The starter publishes the app's servlet
