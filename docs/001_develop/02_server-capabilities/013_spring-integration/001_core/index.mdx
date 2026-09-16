@@ -564,11 +564,14 @@ otherwise do so:
 )
 class MySecurityTest {
     @Autowired lateinit var context: WebApplicationContext
-    @Autowired lateinit var userSessionCache: UserSessionCache // stood up as an ordinary @Bean mock
+    @Autowired lateinit var userSessionCache: UserSessionCache
 
     // ...set up MockMvc with Spring Security applied, and stub UserSessionCache as needed
 }
 ```
+
+This snippet is illustrative only — it does not run as-is. For a complete, runnable version, see
+[Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling guide.
 
 The security autoconfiguration only needs a `UserSessionCache` to resolve tokens against — it does
 not need a booted Genesis process, so the process-bootstrapping autoconfiguration classes can be
