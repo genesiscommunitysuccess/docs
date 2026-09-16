@@ -457,6 +457,79 @@ The recommended pattern is a real Spring context and a real message client, send
 
 See [Test tooling](../test-tooling) for the annotations and base classes (`@GenesisSpringTest`, `EventClientSync`, `@UserRight`, `@ResetTableAfterTest`) that support this.
 
+### A worked example
+
+`EventClientSync.sendEvent(...)` returns an `EventReply` — the same sealed `EventReply.EventAck`/`EventReply.EventNack` type the handler itself returns (see [Acknowledgement / rejection](#acknowledgement--rejection)). Branch on it to assert the reply shape, and check any side effect (a counter, or a row via an injected repository) inside the ack branch. Reusing `CreateThing`/`ValidatingThingHandler` from [above](#example-configuration):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisSpringTest
+class CreateThingHandlerTest {
+
+    @Autowired
+    lateinit var client: EventClientSync
+
+    @Test
+    fun `acks and creates the thing`() {
+        when (val reply = client.sendEvent(details = CreateThing(name = "widget", qty = 3), messageType = "CREATE_THING")) {
+            is EventReply.EventAck -> {
+                // assert side effects here, e.g. a row via an injected repository
+            }
+            is EventReply.EventNack -> error("expected an ack, got a nack: ${reply.error}")
+        }
+    }
+
+    @Test
+    fun `nacks a non-positive quantity`() {
+        when (val reply = client.sendEvent(details = CreateThing(name = "widget", qty = 0), messageType = "CREATE_THING")) {
+            is EventReply.EventNack -> assert(reply.error.isNotEmpty())
+            is EventReply.EventAck -> error("expected a nack, got an ack")
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSpringTest
+class CreateThingHandlerTest {
+
+    @Autowired
+    private EventClientSync client;
+
+    @Test
+    void acksAndCreatesTheThing() {
+        var reply = client.builder()
+                .withDetails(new CreateThing("widget", 3))
+                .withMessageType("CREATE_THING")
+                .send();
+
+        assertInstanceOf(EventReply.EventAck.class, reply);
+        // assert side effects here, e.g. a row via an injected repository
+    }
+
+    @Test
+    void nacksANonPositiveQuantity() {
+        var reply = client.builder()
+                .withDetails(new CreateThing("widget", 0))
+                .withMessageType("CREATE_THING")
+                .send();
+
+        assertInstanceOf(EventReply.EventNack.class, reply);
+        assertFalse(((EventReply.EventNack) reply).getError().isEmpty());
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`EventReply.EventNack.error` (and `.warning`) is a `List<GenesisError>`, each entry exposing `code` and `text` — assert on those rather than a `message` property.
+
 ## See also
 
 - [Spring Integration](../index) — section overview.
