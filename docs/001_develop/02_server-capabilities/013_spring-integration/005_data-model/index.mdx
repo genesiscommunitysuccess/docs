@@ -42,18 +42,13 @@ Given a single-column primary key defined in the dictionary:
 ```kotlin
 // tables-dictionary.kts
 table("SIMPLE_TABLE", 100) {
-    SIMPLE_ID
+    field("SIMPLE_ID", INT)
     TIMESTAMP
 
     primaryKey("SIMPLE_TABLE_BY_ID", 1) {
         SIMPLE_ID
     }
 }
-```
-
-```kotlin
-// fields-dictionary.kts
-field(name = "SIMPLE_ID", type = INT)
 ```
 
 the generator produces the following entity. The Java tab is not a second generator output — it illustrates what a hand-written Java class extending the same `genesis-jpa-base` superclass looks like, to show that the base library is not Kotlin-only, even though generation is.
@@ -196,6 +191,18 @@ Note the `if (this.pk == 0L) return false` guard in `equals()` — an unsaved (`
 :::note No entity member may be `final`
 Hibernate generates lazy-loading proxy subclasses of every entity, overriding getters and the identifier accessor. If you hand-write an entity or subclass a generated one, do not mark properties or functions `final` — every base class in `genesis-jpa-base` is written with this in mind.
 :::
+
+### Generated repositories
+
+Every generated entity also gets a generated Spring Data repository interface, named `<EntityClassName>Repository`, in `repoPackageName` (`$packageName.repo` by default — see the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin#common-configuration) for the full property reference). The rule holds for audit and view entities too: `ApprovalAudit` gets `ApprovalAuditRepository`, `ApprovalAuditView` gets `ApprovalAuditViewRepository`.
+
+```kotlin
+package global.genesis.jpa.repo
+
+interface SimpleTableRepository : GenesisJpaRepository.Nullable<SimpleTable, Int>
+```
+
+See [JPA data access](../jpa-data-access) for what `GenesisJpaRepository` provides and how a repository's writes reach the database.
 
 ### Shared annotations
 
@@ -389,7 +396,10 @@ The generator consumes a dictionary's merged table/view definitions the same way
 - A view that cannot resolve any primary-key field from its root table is skipped, with a warning, since a view entity's primary key comes from the join's root table.
 - Duplicate view names across modules fail the build outright, because views (unlike the merged table dictionary) are collected per module, and a silent overwrite of one module's generated view file by another would be far worse than a hard failure.
 
-Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate either a shared enum (reused across every referencing field) or a table-scoped enum nested under a per-table package, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim.
+Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate one of two ways, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim:
+
+- A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default).
+- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example, including why the enum segment is doubled.
 
 ## See also
 
