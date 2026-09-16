@@ -279,13 +279,13 @@ A few rules specific to the JPQL path — see [Cube query engine](../data-cube) 
 - Every selection needs an alias, and that alias is the column name callers use — including a computed expression like `margin`, which JPQL cannot name automatically.
 - Joining another table requires calling `.allowJoins()` explicitly, since a join can multiply rows and inflate `SUM`/`COUNT`.
 - The query is parsed and column-typed at **startup**, so a typo in a column name fails the boot, not the first request.
-- Because the query selects `w.id` from a single, unmultiplied root, row identity survives — the resource still gets a `rowId` and stays `ETag`-cacheable, same as the entity source.
+- Because the query selects `w.id` from a single, unmultiplied root, row identity survives — the resource stays addressable (each row carries a `ROW_REF`) and `ETag`-cacheable, same as the entity source.
 
 Cube endpoints are only registered if at least one `CubeResource` bean exists in the context — no bean, no `/api/v1/cubes/**` endpoints and no error.
 
 ### Step 10: Seed some data
 
-The `WIDGET` table starts empty, and an empty cube just returns `rowCount: 0` on every route. A Spring Boot `ApplicationRunner` is the simplest way to seed it once, on first boot:
+The `WIDGET` table starts empty, and an empty cube just returns an empty `rows` array on every route. A Spring Boot `ApplicationRunner` is the simplest way to seed it once, on first boot:
 
 ```java
 package <packageName>;
@@ -345,23 +345,24 @@ curl -s -X POST 'http://localhost:8080/api/v1/cubes/widgetMargins/query' \
      -H 'Content-Type: application/json' -d '{}'
 ```
 
-With the seed data above, `widgets/byQuality` comes back like this — three groups (`GOOD`/`OK`/`BAD`), each with its summed cost/price and a count:
+With the seed data above, `widgets/byQuality` comes back like this — three groups (`GOOD`/`OK`/`BAD`), each with its summed cost/price and a count. The group key (`quality`) is also the operation's projection, so it doubles as each row's identity and the response carries a `ROW_REF` per row:
 
 ```json
 {
   "rows": [
-    { "quality": "OK", "totalCost": 132.0, "totalPrice": 220.0, "widgetCount": 4 },
-    { "quality": "GOOD", "totalCost": 108.0, "totalPrice": 180.0, "widgetCount": 3 },
-    { "quality": "BAD", "totalCost": 90.0, "totalPrice": 150.0, "widgetCount": 3 }
+    { "quality": "OK", "totalCost": 132.0, "totalPrice": 220.0, "widgetCount": 4, "ROW_REF": "1|OK" },
+    { "quality": "GOOD", "totalCost": 108.0, "totalPrice": 180.0, "widgetCount": 3, "ROW_REF": "1|GOOD" },
+    { "quality": "BAD", "totalCost": 90.0, "totalPrice": 150.0, "widgetCount": 3, "ROW_REF": "1|BAD" }
   ],
-  "rowCount": 3,
+  "hasMore": false,
   "rowKind": "GROUPED",
-  "rowId": ["quality"],
+  "page": { "number": 0, "size": 100 },
   "columns": [
     { "name": "quality", "role": "KEY", "type": "ENUM" },
     { "name": "totalCost", "role": "MEASURE", "type": "DOUBLE" },
     { "name": "totalPrice", "role": "MEASURE", "type": "DOUBLE" },
-    { "name": "widgetCount", "role": "MEASURE", "type": "LONG" }
+    { "name": "widgetCount", "role": "MEASURE", "type": "LONG" },
+    { "name": "ROW_REF", "role": "ROW_REF", "type": "STRING" }
   ]
 }
 ```
