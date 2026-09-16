@@ -285,11 +285,12 @@ A handler method's return value is converted to an `EventReply` automatically:
 
 For full manual control, inject an `EventProvider` (see below) and use its `ack(generated)`, `nack(errorCode, message)` and `warningNack(message)` helpers to build the reply by hand.
 
-Exceptions are mapped to nacks through three mechanisms:
+Exceptions are mapped to nacks through the following mechanisms:
 
 - A per-handler `@EventExceptionHandler([SomeException::class])` method, which takes priority for exceptions thrown by that handler's own methods.
 - A separate class annotated `@EventControllerAdvice`, with its own `@EventExceptionHandler` methods, registers globally and is consulted for any handler with no matching handler of its own. An advice class with no `@EventExceptionHandler` methods fails registration.
 - A custom exception class annotated `@EventWarning(status = ...)` is treated as a business warning — the resulting `EventNack` carries it as a `warning` rather than an `error`.
+- Any exception that doesn't match one of the above falls back to a default mapping: an `IllegalArgumentException` produces a nack carrying its message as the error, while any other exception (including the `IllegalStateException` thrown by `commit` above when `details.name` is neither `"warn"` nor `"custom"`) is treated as an internal error and produces a generic internal-error nack, with the exception's own message not exposed to the client.
 
 An `@EventExceptionHandler` method must return `EventReply` and take exactly one `Throwable`-subtype parameter, checked at start-up:
 
