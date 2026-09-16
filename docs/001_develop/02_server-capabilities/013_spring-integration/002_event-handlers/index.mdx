@@ -200,7 +200,7 @@ public class ValidatingEventHandler {
 - `@GenesisEventHandler("EVENT_NAME")` on a class marks it as a single-event handler. It may declare one `@EventValidate` method and must declare exactly one `@EventCommit` method.
 - `@GenesisEventController("PREFIX")` on a class groups several related events together. Each method annotated `@EventMapping("SUFFIX")` becomes its own event, registered as `PREFIX_SUFFIX` (or just `SUFFIX` if the prefix is empty). A controller class must **not** declare `@EventValidate`/`@EventCommit` methods — there is no automatic validate/commit split per method inside a controller; a mapped method either handles the request outright or inspects `@IsValidateOnly` itself (see below).
 - A class cannot carry both `@GenesisEventHandler` and `@GenesisEventController` — that combination is rejected at start-up, as is a controller with no matching methods, a single handler with no commit method, or more than one commit method.
-- `EventHandlerType` (`STANDARD` / `INTERNAL` / `APPROVABLE` / `DEFAULT`, which resolves to `STANDARD`) is settable on the class or per-method, to influence routing and visibility. `STANDARD` is the default, UI-exposed case. `INTERNAL` marks an event not meant for the external router or UI, though whether that's respected everywhere the router makes that decision isn't fully verified yet. `APPROVABLE` exists only as a value today — there's no supporting machinery for a multi-party approval flow, so setting it doesn't currently change a handler's behaviour (see [Limitations](#limitations)).
+- `EventHandlerType` (`STANDARD` / `INTERNAL` / `APPROVABLE` / `DEFAULT`, which resolves to `STANDARD`) is settable on the class or per-method, to influence routing and visibility. `STANDARD` is the default, UI-exposed case. `INTERNAL` is enforced at the router level: once an event is marked `INTERNAL`, the router will not expose it externally. `APPROVABLE` exists only as a value today — there's no supporting machinery for a multi-party approval flow, so setting it doesn't currently change a handler's behaviour (see [Limitations](#limitations)).
 
 Parameter-level injection available on a validate/commit/mapping method:
 
@@ -495,20 +495,90 @@ There is no Java equivalent for this one. The scanner detects a suspend function
 
 This module is real, working code with test coverage for everything described above, but it is genuinely incomplete. Worth knowing before you plan around it:
 
-- **There is no transaction control.** Earlier versions of the annotations carried a `transactional` flag; it has since been removed entirely, and there is no replacement. A handler method that needs a database transaction has to manage it itself.
+- **There is no transaction control.** Earlier versions of the annotations carried a `transactional` flag; it has since been removed entirely, and there is no replacement. A handler method that needs a database transaction has to manage it itself — see [JPA data access: Transactions](../jpa-data-access#transactions) for how transaction boundaries and rollback work when a handler uses Spring Data JPA.
 - **Approvable workflows are not supported.** `EventHandlerType.APPROVABLE` exists as a value, but the return types needed to drive a multi-party approval flow aren't consumed anywhere in the handler-invocation path. Don't build an approval-based feature on this module today — use GPAL's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler#approval-workflow) instead.
 - **`@RequiresAuth` (row-level/dynamic authorisation) is parsed but not enforced.** Only the static `@RequiresAnyRight`/`@RequiresAllRights` checks actually run.
 - **`@IsValidateOnly` only takes effect on a `@GenesisEventController`/`@EventMapping` method**, not on a single `@GenesisEventHandler`'s `@EventCommit` method — see [Manual validate/commit control](#manual-validatecommit-control) above.
 - **Bean Validation (`@Valid`/`@Validated`) on a payload parameter has no effect.** The annotation is recorded but nothing runs validation against it.
 - **`@ExposeClientError` has no observable effect.** An exception's message reaches the client nack either way.
-- **`EventHandlerType.INTERNAL` isn't fully verified** as respected everywhere the router decides what to expose externally — treat it as mostly, rather than guaranteed, wired.
 - **Java `record` classes crash bean creation** for a handler or payload type — always use a Kotlin `data class` or an ordinary Java class instead.
 
+Two of these are easy to trip over in practice. Both reuse classes already defined earlier on this page.
+
+`@IsValidateOnly` still compiles and injects a value on a single handler's `@EventCommit` method — it's just meaningless, because that method never runs for a `validate=true` request in the first place:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisEventHandler("TOUCH")
+class CommitOnlyEventHandler {
+
+    @EventCommit
+    fun commit(details: Update, @IsValidateOnly validateOnly: Boolean) {
+        // `validateOnly` is always false here — a validate=true request is auto-acked
+        // by the framework before this method ever runs, on a single handler.
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisEventHandler("TOUCH")
+public class CommitOnlyEventHandler {
+
+    @EventCommit
+    public void commit(Update details, @IsValidateOnly boolean validateOnly) {
+        // `validateOnly` is always false here — a validate=true request is auto-acked
+        // by the framework before this method ever runs, on a single handler.
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+A Java `record` payload or handler crashes bean creation at start-up:
+
+```java
+// Don't do this — crashes with:
+// Can't compute ClassId for primitive type: int
+public record Update(String name, int qty) {
+}
+
+@GenesisEventHandler("TOUCH")
+public class CommitOnlyEventHandler {
+
+    @EventCommit
+    public void commit(Update details) {
+        // never reached — bean creation fails at start-up
+    }
+}
+```
+
+Use the ordinary Java class shown in [Example configuration](#example-configuration) instead.
+
 ## Testing
+
+The dependency and plugin requirements in [Getting set up](#getting-set-up) apply to a test the same as to a full process. What differs is the rest: `@GenesisSpringTest` (see [Test tooling](../test-tooling)) supplies the five platform beans `GenesisSpringEventHandlerConfig` expects — `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry`, `ServiceDiscovery` — along with everything else a normal Genesis process environment would otherwise provide, so a test doesn't need a real Genesis process running. What it does **not** supply is your own handler bean, covered below.
 
 The recommended pattern is a real Spring context and a real message client, sending events through the full path — `EventClientSync` (or its async/Rx equivalents) → `TypedEventManager` → your handler bean — rather than mocking the framework. This exercises rights checks, the validate/commit split, and exception handling for real, and lets you assert both the reply shape (`EventAck`/`EventNack`) and any side effects (a counter, or a row via an injected repository).
 
 See [Test tooling](../test-tooling) for the annotations and base classes (`@GenesisSpringTest`, `EventClientSync`, `@UserRight`, `@ResetTableAfterTest`) that support this.
+
+`@GenesisSpringTest` composes `@SpringBootTest(classes = [GenesisTestApplication::class])`, and `GenesisTestApplication` itself carries only `@Configuration` and `@EnableAutoConfiguration` — no `@ComponentScan`. The test context therefore performs no component scanning at all: a hand-written `@GenesisEventHandler`, `@GenesisEventController` or `@EventControllerAdvice` class is never discovered by package position, wherever it lives. It has to be contributed to the context explicitly, for example by listing it alongside `GenesisTestApplication`:
+
+```kotlin
+@GenesisSpringTest
+@SpringBootTest(classes = [GenesisTestApplication::class, ValidatingEventHandler::class])
+class CreateEventHandlerTest {
+    // ...
+}
+```
+
+or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. This is different from a generated Spring Data repository such as [Test tooling: A simple example](../test-tooling#a-simple-example)'s `TradeRepository`, which arrives through autoconfiguration and needs no such step — don't generalise from that example to your own handler classes.
 
 ### A worked example
 
