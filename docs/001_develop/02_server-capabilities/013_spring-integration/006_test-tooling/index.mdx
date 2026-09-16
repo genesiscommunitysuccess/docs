@@ -65,33 +65,27 @@ This is the main behavioural difference from GenesisJunit. Spring's `TestContext
 <TabItem value="kotlin">
 
 ```kotlin
-package global.genesis.springboot.jpa.test
+package com.example.myapp.jpa
 
-import global.genesis.jpa.dao.Trade
-import global.genesis.jpa.repo.TradeRepository
+import com.example.myapp.jpa.dao.Position
+import com.example.myapp.jpa.repo.PositionRepository
 import global.genesis.springboot.test.GenesisSpringTest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
-import java.time.LocalDate
 
 @GenesisSpringTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class BaseGenesisSpringTest {
 
     @Autowired
-    lateinit var tradeRepository: TradeRepository
+    lateinit var positionRepository: PositionRepository
 
     @Test
-    fun `test trade`() {
-        val entry = Trade("A")
-        entry.currencyId = "EUR"
-        entry.price = 10.0
-        entry.quantity = 1
-        entry.tradeType = "NICE"
-        entry.tradeDate = LocalDate.now()
+    fun `test position`() {
+        val entry = Position(positionId = "POS1", instrumentId = "INSTR1", quantity = 100)
 
-        val saved = tradeRepository.save(entry)
+        val saved = positionRepository.save(entry)
 
         assert(entry.recordId != 0L)
         assert(saved.recordId == entry.recordId)
@@ -104,17 +98,15 @@ class BaseGenesisSpringTest {
 <TabItem value="java">
 
 ```java
-package global.genesis.springboot.jpa.test;
+package com.example.myapp.jpa;
 
-import global.genesis.jpa.dao.Trade;
-import global.genesis.jpa.repo.TradeRepository;
+import com.example.myapp.jpa.dao.Position;
+import com.example.myapp.jpa.repo.PositionRepository;
 import global.genesis.springboot.test.GenesisSpringTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -124,19 +116,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class BaseGenesisSpringTestJava {
 
     @Autowired
-    private TradeRepository tradeRepository;
+    private PositionRepository positionRepository;
 
     @Test
-    @DisplayName("test trade")
-    void testTrade() {
-        Trade entry = new Trade("A");
-        entry.setCurrencyId("EUR");
-        entry.setPrice(10.0);
-        entry.setQuantity(1);
-        entry.setTradeType("NICE");
-        entry.setTradeDate(LocalDate.now());
+    @DisplayName("test position")
+    void testPosition() {
+        Position entry = new Position("POS1", "INSTR1", 100, null, null, null);
 
-        Trade saved = tradeRepository.save(entry);
+        Position saved = positionRepository.save(entry);
 
         assertNotEquals(0L, entry.getRecordId());
         assertEquals(entry.getRecordId(), saved.getRecordId());
@@ -148,7 +135,7 @@ public class BaseGenesisSpringTestJava {
 </TabItem>
 </Tabs>
 
-`@GenesisSpringTest` is the only annotation needed to get a live Genesis runtime behind the Spring context. `TradeRepository` is a generated JPA repository, autowirable because its underlying `EntityManagerFactory`/repository beans come from the JPA auto-configuration running against the same in-memory database the test context set up. `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` is a choice to get a fresh Genesis runtime per test class rather than share Spring's context cache — see [Context caching](#context-caching) above for when to share instead.
+`@GenesisSpringTest` is the only annotation needed to get a live Genesis runtime behind the Spring context. `PositionRepository` is a generated JPA repository, autowirable because its underlying `EntityManagerFactory`/repository beans come from the JPA auto-configuration running against the same in-memory database the test context set up. `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` is a choice to get a fresh Genesis runtime per test class rather than share Spring's context cache — see [Context caching](#context-caching) above for when to share instead.
 
 This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
 
@@ -197,7 +184,7 @@ example](../core#session-token-authentication) declares; the same shape works ag
 `@RestController` endpoint, including a [cube resource](../data-cube)'s wire endpoints:
 
 ```kotlin
-package global.genesis.springboot.jpa.test
+package com.example.myapp.jpa
 
 import global.genesis.session.UserSessionCache
 import global.genesis.springboot.annotation.GenesisAnonymous
