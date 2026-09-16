@@ -228,8 +228,7 @@ myApp/
 ├── server/
 │   ├── settings.gradle.kts
 │   ├── build.gradle.kts
-│   ├── myApp-app/
-│   └── myApp-spring/
+│   └── myApp-app/
 ├── settings.gradle.kts
 └── ...
 ```
@@ -237,9 +236,8 @@ myApp/
 - The top-level `settings.gradle.kts` includes the `server` directory as a composite build.
 - `server/settings.gradle.kts` declares the project name in a `genesis { }` extension block and `include`s each server module.
 - `<project-name>-app` is the main Genesis application module.
-- `<project-name>-spring` holds the Spring Boot application code, for projects that use Genesis's Spring integration.
 
-This is the module layout that the [Spring integration getting-started tutorial](/develop/server-capabilities/spring-integration/getting-started) assumes exists from Step 2 onward.
+If you want to use Genesis's Spring integration, the [Spring integration getting-started tutorial](/develop/server-capabilities/spring-integration/getting-started) walks through adding a `<project-name>-spring` module to this layout from Step 2 onward.
 
 When you build the project, Gradle also generates a `<project-name>-dictionary-cache` module alongside the ones above (under `server/build/internal-modules/`). This module holds the generated DAOs, which the Spring Boot plugin's entity generator reads from by default — see [DAOs](/build-deploy-operate/build/bdo-build-overview/#dao) for more detail.
 
