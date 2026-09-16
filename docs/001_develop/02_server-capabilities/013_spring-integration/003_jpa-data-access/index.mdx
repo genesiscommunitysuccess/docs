@@ -211,7 +211,7 @@ This starter closes that gap with a Hibernate integrator registered on the `POST
 
 Publication also depends on the process actually running against a real update-queue transport (a genuine multi-process deployment on ZeroMQ, MQTT or JMS) rather than the in-memory queue a standalone or test process falls back to — the same distinction classic `RxDb` writes already respect. On a process where that isn't the case, JPA writes still land in the database; they simply aren't published anywhere. There's no error or warning-level log for this — a write that "doesn't show up" downstream, with no other symptom, is usually this.
 
-A GenesisJunit-based test (`@GenesisTest`, `@GenesisDatabaseTest`, or the Spring-flavoured `@GenesisSpringTest`) is not automatically in the fallback case above: its test-context configuration defaults `MqLayer` to `ZeroMQ`, wiring a genuine `UpdateQueue`, unless `@EnableQuietMode` is present or a `-DMqLayer` system property overrides it. So an ordinary such test does get `UpdateQueue` publication by default. See [Test tooling](../test-tooling) for more on this test-context machinery.
+A GenesisJunit-based test (`@GenesisTest`, `@GenesisDatabaseTest`, or the Spring-flavoured `@GenesisSpringTest`) replicates this for test purposes. It will by default provide a local `ZeroMQ` update queue to the application. See [Test tooling](../test-tooling) for more details.
 
 Practical implication: a service method that calls `repository.save(entity)` inside a `@Transactional` boundary gets platform-wide visibility of that write for free on a real deployment — no manual event publication needed, and no manual rollback handling needed either.
 
