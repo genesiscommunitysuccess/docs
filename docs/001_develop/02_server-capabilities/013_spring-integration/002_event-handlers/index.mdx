@@ -206,10 +206,51 @@ Parameter-level injection available on a validate/commit/mapping method:
 
 | Annotation | Effect |
 |---|---|
-| *(none)* | The event payload, unless the parameter type is `Event<T>`, in which case it's the full envelope instead. |
+| *(none)* | The event payload, unless the parameter type is `Event<T>` (`global.genesis.message.core.event.Event`), in which case it's the full envelope instead. |
 | `@UserName` | Injects the triggering user's username, as a `String`. |
 | `@EventContext` | Injects the value returned by the paired `@EventValidate` method. Optional if the parameter type already matches. |
 | `@IsValidateOnly` | Injects a `Boolean` reflecting whether the request is a `validate=true` pre-flight — see below for where this actually takes effect. |
+
+A parameter typed as the full envelope has access to more than just the payload — for example, the triggering user's name, off `Event.userName`:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.message.core.event.Event
+
+@GenesisEventHandler("TOUCH_THING")
+class EnvelopeAwareThingHandler {
+
+    @EventCommit
+    fun commit(details: Event<UpdateThing>) {
+        val triggeredBy = details.userName
+        val payload = details.details
+        // ... do the work, e.g. audit `triggeredBy` alongside `payload`
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.message.core.event.Event;
+
+@GenesisEventHandler("TOUCH_THING")
+public class EnvelopeAwareThingHandler {
+
+    @EventCommit
+    public void commit(Event<UpdateThing> details) {
+        String triggeredBy = details.getUserName();
+        UpdateThing payload = details.getDetails();
+        // ... do the work, e.g. audit `triggeredBy` alongside `payload`
+    }
+}
+```
+
+</TabItem>
+</Tabs>
 
 A single class can also carry static rights checks:
 
