@@ -219,7 +219,7 @@ A parameter typed as the full envelope has access to more than just the payload 
 ```kotlin
 import global.genesis.message.core.event.Event
 
-@GenesisEventHandler("TOUCH_THING")
+@GenesisEventHandler("UPDATE_THING")
 class EnvelopeAwareThingHandler {
 
     @EventCommit
@@ -237,7 +237,7 @@ class EnvelopeAwareThingHandler {
 ```java
 import global.genesis.message.core.event.Event;
 
-@GenesisEventHandler("TOUCH_THING")
+@GenesisEventHandler("UPDATE_THING")
 public class EnvelopeAwareThingHandler {
 
     @EventCommit
