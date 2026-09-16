@@ -128,7 +128,7 @@ public class CommitOnlyThingHandler {
 
 `@GenesisEventHandler("TOUCH_THING")` registers the event with `TypedEventManager` under that name, the same registry a GPAL handler uses. The event name must match `[A-Z][A-Z0-9_]+`, or registration fails at start-up. A `commit` method returning `Unit`/`void` (as above) maps to an empty `EventReply.EventAck`; returning a domain object instead wraps it as `EventAck(generated = listOf(thatObject))`, and returning a `List<*>` uses the list directly as `generated`.
 
-Most handlers need both a validation phase and a commit phase — the equivalent of GPAL's `onValidate`/`onCommit` split. The value returned by `@EventValidate` becomes the "context" available to `@EventCommit`, injected via a parameter annotated `@EventContext` (or implicitly, if the parameter's type already matches):
+Most handlers need both a validation phase and a commit phase — the equivalent of GPAL's `onValidate`/`onCommit` split. The value returned by `@EventValidate` becomes the "context" available to `@EventCommit`, injected via a parameter annotated `@EventContext` (or implicitly, if the parameter's type already matches). The two mechanisms aren't exclusive: a validating handler can also constructor-inject collaborators like `EventProvider` (see [Triggering other events](#triggering-other-events) below) and use them from `@EventCommit` alongside the injected context:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -139,7 +139,9 @@ data class ThingCreated(val thingId: String)
 data class ValidatedThing(val normalisedName: String)
 
 @GenesisEventHandler("CREATE_THING")
-class ValidatingThingHandler {
+class ValidatingThingHandler(
+    private val events: EventProvider,
+) {
 
     @EventValidate
     fun validate(details: CreateThing): ValidatedThing {
@@ -149,6 +151,8 @@ class ValidatingThingHandler {
 
     @EventCommit
     fun commit(details: CreateThing, @EventContext ctx: ValidatedThing): ThingCreated {
+        // in-process only; throws if TOUCH_THING isn't registered in this same process
+        events.trigger("TOUCH_THING", UpdateThing(details.name, details.qty))
         return ThingCreated(thingId = "THING-${ctx.normalisedName}-${details.qty}")
     }
 }
@@ -161,6 +165,12 @@ class ValidatingThingHandler {
 @GenesisEventHandler("CREATE_THING")
 public class ValidatingThingHandler {
 
+    private final EventProvider events;
+
+    public ValidatingThingHandler(EventProvider events) {
+        this.events = events;
+    }
+
     @EventValidate
     public ValidatedThing validate(CreateThing details) {
         if (details.getQty() <= 0) {
@@ -171,6 +181,8 @@ public class ValidatingThingHandler {
 
     @EventCommit
     public ThingCreated commit(CreateThing details, @EventContext ValidatedThing ctx) {
+        // in-process only; throws if TOUCH_THING isn't registered in this same process
+        events.trigger("TOUCH_THING", new UpdateThing(details.getName(), details.getQty()));
         return new ThingCreated("THING-" + ctx.getNormalisedName() + "-" + details.getQty());
     }
 }
@@ -179,7 +191,7 @@ public class ValidatingThingHandler {
 </TabItem>
 </Tabs>
 
-`@EventContext` is optional here, since the `commit` parameter type (`ValidatedThing`) already exactly matches what `@EventValidate` returns — the framework injects it either way.
+`@EventContext` is optional here, since the `commit` parameter type (`ValidatedThing`) already exactly matches what `@EventValidate` returns — the framework injects it either way. The constructor-injected `EventProvider` is unrelated to that context injection and works the same way on a validating handler as it does on a commit-only one.
 
 ## Configuration options
 
