@@ -1,0 +1,377 @@
+---
+title: 'Row alerts'
+sidebar_label: 'Row alerts'
+id: grid-pro-row-alerts
+keywords:
+  [
+    genesis,
+    foundation,
+    ui,
+    grid,
+    grid-pro,
+    alert,
+    flash,
+    row-match,
+    DatasourceRowMatchTracker,
+    createRowAlert,
+    tab,
+  ]
+tags:
+  - grid
+  - grid-pro
+  - alert
+  - flash
+  - row-match
+pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-renderers
+pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Row alerts
+
+Use row alerts when a grid holds rows that still need attention — for example pending orders — and you want those rows (and often a related tab) to flash until the condition clears.
+
+This is **not** the same as Grid Pro’s [`enable-row-flashing`](/develop/client-capabilities/grids/grid-pro/#grid-attributes) / [`enable-cell-flashing`](/develop/client-capabilities/grids/grid-pro/#grid-attributes) attributes. Those briefly highlight a row or cell when a datasource **add** transaction arrives. Row alerts are a **sustained** flash driven by declarative match criteria, kept in phase with tab alerts via a shared document-level clock.
+
+## When to use
+
+* Flag rows that match a business state (for example `ORDER_STATE == 'PENDING'`).
+* Drive a [`rapid-tab` `alert`](/develop/client-capabilities/interaction/client-interaction-tabs#alerting-tabs) from the same criteria so a hidden desk’s tab flashes while work arrives.
+* Let users recolour, retime, or narrow the flash to a single cell from the grid context menu.
+
+## Building blocks
+
+| API | Package | Role |
+| --- | --- | --- |
+| `RowMatchCriteria` / `matchesRowCriteria` | `@genesislcap/grid-pro` (also re-exported from `@genesislcap/rapid-grid-pro`) | Declarative rules for whether a row is of interest |
+| `DatasourceRowMatchTracker` | same | Incremental matching from datasource `add` / `update` / `remove` deltas; exposes `active` and `matchCount` |
+| `createRowMatchClassRules` / `createRowMatchCellClassRules` | same | AG Grid class rules for whole-row or single-cell flash |
+| `createRowAlert` | same | Rules + preferences + Alert flash context menu in one object |
+| Shared flash clock (`--alert-flash-t`) | `@genesislcap/foundation-ui` | One animated phase on the document so tabs and rows stay in sync |
+
+## Match criteria
+
+:::tip Reuse the same criteria object
+Define your criteria **once** (for example at the top of the file) and reuse that same object. If you create a new criteria object on every render, the tracker forgets the rows it already saw and the match count can drop to zero until new data arrives.
+:::
+
+### String equality (typical status field)
+
+```typescript
+import type { RowMatchCriteria } from '@genesislcap/rapid-grid-pro';
+
+const AWAITING_CONFIRMATION: RowMatchCriteria = {
+  rowIdField: 'TRADE_ID',
+  stateField: 'TRADE_STATUS',
+  stateValue: 'PENDING',
+};
+```
+
+Use `stateValue: null` (or `{ field, value: null }`) to match empty values (`null`, `undefined`, or `''`).
+
+### Numeric and boolean operators
+
+`RowFieldMatch` (and the `stateField` shorthand) accept `string | number | boolean | null` and an optional `op`:
+
+`==` (default) · `!=` · `>` · `>=` · `<` · `<=`
+
+Relational operators compare numerically (string wire values such as `"150"` are coerced). Equality also bridges string criteria against numeric or boolean row values.
+
+```typescript
+const LARGE_PENDING_SELLS: RowMatchCriteria = {
+  rowIdField: 'TRADE_ID',
+  stateField: 'TRADE_STATUS',
+  stateValue: 'PENDING',
+  and: [{ field: 'QUANTITY', op: '>=', value: 150 }],
+};
+
+const FLAGGED: RowMatchCriteria = {
+  rowIdField: 'ORDER_ID',
+  stateField: 'IS_EXCEPTION',
+  stateValue: true,
+};
+```
+
+### Grouping
+
+Use `anyOf` when a row can qualify in more than one way. Each inner array is an AND group (every field must match); the outer array is OR’d (any one group is enough).
+
+If `anyOf` is set, it is used **instead of** `stateField` / `stateValue` / `and` — those shorthand fields are ignored.
+
+```typescript
+const criteria: RowMatchCriteria = {
+  rowIdField: 'ORDER_ID',
+  anyOf: [
+    [
+      { field: 'ORDER_STATE', value: 'PENDING' },
+      { field: 'ASSIGNED_TO', value: null },
+    ],
+    [{ field: 'ORDER_STATE', value: 'LIVE' }],
+  ],
+};
+```
+
+## Tracking matches from a datasource
+
+Wire the tracker to the Genesis datasource events your grid already receives. Reuse a single criteria object (see [Match criteria](#match-criteria)).
+
+`onActiveChanged` only tells you whether *any* matches exist (for driving `alert`). If you also show a number, read `matchCount` after every update — the count can change while you are still alerting.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Usage
+    ```typescript
+    import {
+      createRowAlert,
+      DatasourceRowMatchTracker,
+    } from '@genesislcap/rapid-grid-pro';
+    import { GenesisElement, customElement, html, observable } from '@genesislcap/web-core';
+
+    const criteria = { /* module-scope RowMatchCriteria */ };
+    const rowAlert = createRowAlert(criteria, {
+      persistPreferencesKey: 'orders.row-alert',
+      mirrorColorTo: ['--tab-alert-color'],
+    });
+
+    @customElement({
+      name: 'desk-blotter',
+      template: html`
+        <rapid-tabs>
+          <rapid-tab ?alert=${(x) => x.alerting}>
+            ${(x) => (x.matchCount > 0 ? `Orders (${x.matchCount})` : 'Orders')}
+          </rapid-tab>
+          <rapid-tab-panel>
+            <rapid-grid-pro :gridOptions=${(x) => x.gridOptions}>
+              <grid-pro-genesis-datasource
+                resource-name="ALL_ORDERS"
+                @datasource-data-changed=${(x, c) => x.onDataChanged(c.event)}
+                @datasource-data-cleared=${(x) => x.onDataCleared()}
+              ></grid-pro-genesis-datasource>
+            </rapid-grid-pro>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+    })
+    export class DeskBlotter extends GenesisElement {
+      @observable alerting = false;
+      @observable matchCount = 0;
+
+      private readonly tracker = new DatasourceRowMatchTracker(criteria, (active) => {
+        this.alerting = active;
+      });
+
+      readonly gridOptions = {
+        rowClassRules: rowAlert.rowClassRules,
+        defaultColDef: rowAlert.defaultColDef,
+        getContextMenuItems: rowAlert.getContextMenuItems,
+      };
+
+      onDataChanged(event: CustomEvent) {
+        this.tracker.handleDataChanged(event.detail);
+        this.matchCount = this.tracker.matchCount;
+      }
+
+      onDataCleared() {
+        this.tracker.handleDataCleared();
+        this.matchCount = this.tracker.matchCount;
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Usage
+    ```tsx
+    import {
+      createRowAlert,
+      DatasourceRowMatchTracker,
+    } from '@genesislcap/rapid-grid-pro';
+    import { useMemo, useState } from 'react';
+
+    const criteria = { /* module-scope RowMatchCriteria */ };
+    const rowAlert = createRowAlert(criteria, {
+      persistPreferencesKey: 'orders.row-alert',
+      mirrorColorTo: ['--tab-alert-color'],
+    });
+
+    function DeskBlotter() {
+      const [alerting, setAlerting] = useState(false);
+      const [matchCount, setMatchCount] = useState(0);
+
+      const tracker = useMemo(
+        () => new DatasourceRowMatchTracker(criteria, setAlerting),
+        [],
+      );
+
+      const gridOptions = useMemo(
+        () => ({
+          rowClassRules: rowAlert.rowClassRules,
+          defaultColDef: rowAlert.defaultColDef,
+          getContextMenuItems: rowAlert.getContextMenuItems,
+        }),
+        [],
+      );
+
+      return (
+        <rapid-tabs>
+          <rapid-tab alert={alerting}>
+            {matchCount > 0 ? `Orders (${matchCount})` : 'Orders'}
+          </rapid-tab>
+          <rapid-tab-panel>
+            <rapid-grid-pro gridOptions={gridOptions}>
+              <grid-pro-genesis-datasource
+                resourceName="ALL_ORDERS"
+                onDatasourceDataChanged={(event) => {
+                  tracker.handleDataChanged(event.detail);
+                  setMatchCount(tracker.matchCount);
+                }}
+                onDatasourceDataCleared={() => {
+                  tracker.handleDataCleared();
+                  setMatchCount(tracker.matchCount);
+                }}
+              />
+            </rapid-grid-pro>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      );
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    import {
+      createRowAlert,
+      DatasourceRowMatchTracker,
+    } from '@genesislcap/rapid-grid-pro';
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+    const criteria = { /* module-scope RowMatchCriteria */ };
+    const rowAlert = createRowAlert(criteria, {
+      persistPreferencesKey: 'orders.row-alert',
+      mirrorColorTo: ['--tab-alert-color'],
+    });
+
+    @Component({
+      selector: 'desk-blotter',
+      template: `
+        <rapid-tabs>
+          <rapid-tab [attr.alert]="alerting ? '' : null">
+            {{ matchCount > 0 ? 'Orders (' + matchCount + ')' : 'Orders' }}
+          </rapid-tab>
+          <rapid-tab-panel>
+            <rapid-grid-pro [gridOptions]="gridOptions">
+              <grid-pro-genesis-datasource
+                resource-name="ALL_ORDERS"
+                (datasource-data-changed)="onDataChanged($event)"
+                (datasource-data-cleared)="onDataCleared()"
+              ></grid-pro-genesis-datasource>
+            </rapid-grid-pro>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class DeskBlotter {
+      alerting = false;
+      matchCount = 0;
+
+      private readonly tracker = new DatasourceRowMatchTracker(criteria, (active) => {
+        this.alerting = active;
+      });
+
+      readonly gridOptions = {
+        rowClassRules: rowAlert.rowClassRules,
+        defaultColDef: rowAlert.defaultColDef,
+        getContextMenuItems: rowAlert.getContextMenuItems,
+      };
+
+      onDataChanged(event: CustomEvent) {
+        this.tracker.handleDataChanged(event.detail);
+        this.matchCount = this.tracker.matchCount;
+      }
+
+      onDataCleared() {
+        this.tracker.handleDataCleared();
+        this.matchCount = this.tracker.matchCount;
+      }
+    }
+    ```
+
+  </TabItem>
+</Tabs>
+
+## Flashing the matching rows
+
+### createRowAlert (recommended)
+
+`createRowAlert` returns the class rules, optional cell scope, CSS variables, and the **Alert flash** context menu (colour, flash rate, flash target, reset). Preferences can persist through Grid Pro’s injectable `StatePersistence` (same path as column state).
+
+The examples above already wire `createRowAlert` into `gridOptions`. Standalone setup:
+
+```typescript
+import { createRowAlert } from '@genesislcap/rapid-grid-pro';
+
+const rowAlert = createRowAlert(criteria, {
+  persistPreferencesKey: 'orders.row-alert',
+  // Optional: also tint tab alerts when the user picks a colour
+  mirrorColorTo: ['--tab-alert-color'],
+});
+
+const gridOptions = {
+  rowClassRules: rowAlert.rowClassRules,
+  defaultColDef: rowAlert.defaultColDef,
+  getContextMenuItems: rowAlert.getContextMenuItems,
+};
+```
+
+Notes:
+
+* Both row and cell class rules are installed up front. Scope is evaluated when rows render, because a grid backed by a Genesis datasource keeps the `gridOptions` it was created with — swapping rules later would do nothing. Changing flash target redraws via the grid API handed to the menu action.
+* Alerts that share a `persistPreferencesKey` share one preference store, so several blotters on one page answer to a single setting.
+* Context menus need AG Grid Enterprise `MenuModule` registered on the same `ModuleRegistry` as the grid in use (classic v29 and beta v36 keep separate registries).
+
+### Class rules only
+
+If you do not need the presets menu:
+
+```typescript
+import { createRowMatchClassRules } from '@genesislcap/rapid-grid-pro';
+
+gridOptions = {
+  rowClassRules: createRowMatchClassRules(criteria),
+};
+```
+
+For cell-only flash, set `flashField` on the criteria (or rely on `createRowAlert`, which defaults the flash field to `stateField`) and use `createRowMatchCellClassRules` on `defaultColDef.cellClassRules`.
+
+## Theming
+
+| CSS custom property | Applies to | Default behaviour |
+| --- | --- | --- |
+| `--row-alert-color` | Matching rows / alert cells | Falls back to `--error-fill-rest` (or a fixed red) |
+| `--tab-alert-color` | Tabs with `alert` | Falls back to the design-system error fill |
+| `--alert-flash-duration` | Shared clock (tabs and rows) | `1s` |
+
+Set them on `:root` (or another ancestor) so every alerting surface inherits the same colour and timing. `createRowAlert` sets `--row-alert-color` and `--alert-flash-duration` for you when preferences change; use `mirrorColorTo` if tab headers should follow.
+
+`prefers-reduced-motion: reduce` stops the clock animation and shows a static alert colour.
+
+## Accessibility
+
+* Do not rely on flashing alone to convey meaning — pair it with a count, label, or other non-motion cue where possible.
+* Respect `prefers-reduced-motion`; the platform already switches to a static colour.
+
+## Related
+
+* [Tabs — alerting](/develop/client-capabilities/interaction/client-interaction-tabs#alerting-tabs)
+* [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources)
+* Showcase (React client): **Row Alerts** (`/row-alerts`) — grid only, no tabs; **Tab Alerts** (`/tab-alerts`) — tabs paired with the same criteria
