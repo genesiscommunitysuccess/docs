@@ -247,7 +247,7 @@ public class WithRecIdPkComposite(/* ... */) :
 
 ### Audit support
 
-An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>`, which the generator wires in automatically. The `_AUDIT` table itself gets the same generated entity and Spring Data repository as any other dictionary table, so audit rows can be queried back through a repository — for example `ApprovalAuditRepository` — the same way as any other generated repository. Producing the audit row requires an `AuditContext` (`userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder`:
+An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>` (`global.genesis.jpa.base.JpaAuditableEntity`), which the generator wires in automatically. The `_AUDIT` table itself gets the same generated entity and Spring Data repository as any other dictionary table, so audit rows can be queried back through a repository — for example `ApprovalAuditRepository` — the same way as any other generated repository. Producing the audit row requires an `AuditContext` (`global.genesis.jpa.base.audit.AuditContext`, with `userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder` (`global.genesis.jpa.base.audit.AuditContextHolder`):
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin' }, { label: 'Java', value: 'java' }]}>
 <TabItem value="kotlin">
@@ -354,6 +354,26 @@ public class ApprovalJava extends GenesisJpaEntity.Base<String>
 </Tabs>
 
 `toAuditEntity` is generator-emitted boilerplate that forwards to a generated mapper companion. When hand-writing an entity, only implementing the interface matters — `toAuditEntity` is an ordinary interface method with no Kotlin-specific calling convention.
+
+The generated audit entity itself (`ApprovalAudit` above) is an ordinary entity — it does not implement `JpaAuditableEntity`; only the source entity does. It carries every column from the source table plus four appended audit-specific columns (`auditEventType`, `auditEventDatetime`, `auditEventText`, `auditEventUser`), and it gets its own independently-generated primary key — a separate sequence, not a copy of the source entity's key (abridged to the load-bearing members):
+
+```kotlin
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+public class ApprovalAudit @JvmOverloads constructor(
+  approvalAuditId: String = "",
+  // ...source table's columns elided...
+  public var auditEventType: String? = null,
+  public var auditEventDatetime: OffsetDateTime? = null,
+  public var auditEventText: String? = null,
+  public var auditEventUser: String? = null,
+) : GenesisJpaEntity.Base<String>() {
+  @field:Id
+  @field:Column(name = "APPROVAL_AUDIT_ID", updatable = false, length = 64)
+  @field:GenesisFrameworkSequence(sequence = "AA", id = 17)
+  override var pk: String = approvalAuditId
+}
+```
 
 ### Date/time handling
 
