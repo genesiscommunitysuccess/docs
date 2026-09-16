@@ -272,6 +272,12 @@ is also accepted, since some proxies drop headers containing underscores), check
 `UserSessionCache`-backed session store. An endpoint opts out of authentication explicitly with
 `@GenesisAnonymous`.
 
+This layer is an authorisation filter: when it sees a `SESSION_AUTH_TOKEN` (or `SESSION-AUTH-TOKEN`)
+header on the incoming request, it resolves the token against the session store and populates the
+request `Principal` with the caller's Genesis username, which is what the `whoami` example below
+reads back via `principal.name`. If neither header is present, or the header doesn't resolve to a
+live session, the request is rejected before it reaches a controller.
+
 For how a caller obtains a `SESSION_AUTH_TOKEN` in the first place, see
 [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth).
 
