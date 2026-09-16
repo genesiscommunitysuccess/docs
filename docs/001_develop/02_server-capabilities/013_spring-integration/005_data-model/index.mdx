@@ -357,7 +357,7 @@ public class ApprovalJava extends GenesisJpaEntity.Base<String>
 
 ### Date/time handling
 
-`LocalDateToLongConverter` and `OffsetDateTimeToLongConverter` (`global.genesis.jpa.converter`, both `@Converter(autoApply = true)`) map JPA `LocalDate`/`OffsetDateTime` properties to the same epoch-millis storage the rest of the platform uses for `DATE`/`DATETIME` fields, so a JPA-mapped table stays binary-compatible with the rest of the platform's date handling without any extra configuration on the entity. `LocalDate` anchors the calendar date at midnight UTC; `OffsetDateTime` loses its original offset on the round trip — both are read back at UTC, since the underlying column is a bare epoch value with no stored offset.
+`LocalDateToLongConverter` and `OffsetDateTimeToLongConverter` (`global.genesis.jpa.converter`, both `@Converter(autoApply = true)`) map JPA `LocalDate`/`OffsetDateTime` properties to the same epoch-millis storage the rest of the platform uses for `DATE`/`DATETIME` fields, so a JPA-mapped table stays binary-compatible with the rest of the platform's date handling without any extra configuration on the entity. `DATE` fields map to `LocalDate` via `LocalDateToLongConverter`; `DATETIME` fields map to `OffsetDateTime` via `OffsetDateTimeToLongConverter`; `NANO_TIMESTAMP` fields map to `Long`. `LocalDate` anchors the calendar date at midnight UTC; `OffsetDateTime` loses its original offset on the round trip — both are read back at UTC, since the underlying column is a bare epoch value with no stored offset.
 
 ## Codegen
 
