@@ -240,8 +240,10 @@ public class WithRecIdPkComposite(/* ... */) :
 | `@GenesisRecordId` | On insert only: reuses a nonzero current value if present, otherwise generates one from the platform's flake/timer ID source. |
 | `@GenesisTimestamp` | On insert, reuses the entity's `recordId` as the timestamp; on update, generates a fresh value. Requires `recordId` to be declared before `timestamp` on the entity, since Hibernate must generate `recordId` first — true of every base-class shape, but a hazard if you hand-write an entity. |
 | `@GenesisUUID` | On insert: reuses a non-empty current value, otherwise generates a random UUID string. |
-| `@GenesisFrameworkSequence(sequence, id)` | On insert, delegates to a pluggable sequence generator, matching the platform's `sequence`/`uuid` field modifiers in the [data model](/develop/server-capabilities/data-model/#sequence). |
+| `@GenesisFrameworkSequence(sequence, id)` | On insert, delegates to a pluggable sequence generator, matching the platform's `sequence` field modifier in the [data model](/develop/server-capabilities/data-model/#sequence). |
 | `@DbSequenceValue(sequence, incrementSize)` | Wraps Hibernate's native sequence generator for an ordinary (non-primary-key) auto-incrementing value. |
+
+`id` is not a value a developer sets or chooses on the annotation — it mirrors the table's own dictionary `id` (declared in the `.kts` dictionary source, e.g. `table(name = "APPROVAL", id = 16, ...)`), or for an `_AUDIT` sibling, the `id` declared inside `audit = details(id = ..., sequence = ...)`. The generator emits it onto the annotation from that declared value.
 
 ### Audit support
 
