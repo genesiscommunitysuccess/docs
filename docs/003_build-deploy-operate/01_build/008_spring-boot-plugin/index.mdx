@@ -59,6 +59,10 @@ genesisSpring {
 
 Neither nested extension needs to be configured to get useful defaults — see below.
 
+### Dependency versions
+
+You don't set a version on any `global.genesis:*` Spring artifact yourself. A Genesis project applies the Genesis Gradle Settings plugin, which contributes the Genesis BOM as a platform dependency — see [Plugins](/build-deploy-operate/build/plugins) for that mechanism — and the BOM is what pins the version every `global.genesis:*` Spring dependency resolves to.
+
 ### Processes and service manifest generation
 
 If a module declares any `@GenesisApplication`-annotated classes, the plugin's KSP processor scans for them during compilation and the `generateGenesisSpringProcessesXml` task writes `<product>-<module>-processes.xml` and `<product>-<module>-service-definitions.xml` — the same legacy configuration format the GPAL/dictionary world uses. No extra DSL configuration is required: it runs automatically whenever matching classes are found, and writes nothing if none are.
@@ -107,6 +111,8 @@ genesisSpring {
 ```
 
 Running `./gradlew generateJpaEntities` against a sibling dictionary module (by default, any subproject whose name ends `-dictionary-cache`) writes generated sources under `build/generated/genesis-jpa/`. Both the generated entities and the auto-configuration output are attached to the module's `main` Kotlin source set, so they compile as part of the module and land on its classpath with no further wiring.
+
+Generation runs as part of an ordinary build; invoking `generateJpaEntities` directly is only needed to regenerate the sources on demand.
 
 #### Common configuration
 
