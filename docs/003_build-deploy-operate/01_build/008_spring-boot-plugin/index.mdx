@@ -38,6 +38,8 @@ plugins {
 
 The generated JPA entities and repositories are always Kotlin, regardless of what language the rest of the module is written in — `global.genesis.spring` applies the Kotlin JVM plugin (`kotlin("jvm")`) automatically, so a consuming module's own plugin block doesn't need to declare it. The process/service manifest generation works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
 
+Applying the plugin doesn't pull Spring Boot in for you: no Spring Boot dependency needs to be present to apply `global.genesis.spring` itself, and the Spring Boot starter modules a module needs are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
+
 Applying the plugin creates a `genesisSpring { ... }` extension with two nested extensions, `processes {}` and `entities {}`:
 
 ```kotlin
@@ -150,15 +152,13 @@ genesisSpring {
 `entities {}` always registers its generation tasks, even if no matching `-dictionary-cache` module exists — but `generateJpaEntities` will then have no dictionary to read and fail. If a module only needs the process/service manifest generation described above, leave `entities {}` unconfigured rather than pointing it at a dictionary that doesn't exist.
 :::
 
-## Version-pinning BOM
+## H2 version pinning
 
-`genesis-spring-dependencies` is a `java-platform` module (a BOM) applied automatically as a platform dependency to Spring-based modules. It imports `org.springframework.boot:spring-boot-dependencies` to pin a single, consistent Spring Boot version across a project, and adds one constraint of its own: `com.h2database:h2`, pinned `strictly` to the project's `h2Version` property, to work around a check-constraint regression in H2 2.4.x. It deliberately doesn't re-declare other version constraints — for example, Jackson versions are already pinned by `genesis-dependencies`, and duplicating them here would create two competing sources of truth.
+`com.h2database:h2` is pinned `strictly` to a single version, to work around a check-constraint regression in H2 2.4.x. A module that needs a different H2 version has to override that pin explicitly — a plain version request won't displace it.
 
-No Spring Boot dependency needs to be present to apply the `global.genesis.spring` plugin itself — the BOM and the various Spring Boot starter modules are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
+### Overriding the pinned H2 version
 
-### Overriding a version it pins
-
-Because the H2 constraint uses `strictly()`, a consuming module can't simply declare a different `com.h2database:h2` version and expect it to win — a `strictly()` constraint only loses to another `strictly()` declared at higher precedence, not to a plain version request or `prefer()`. To override it, declare your own `strictly()` constraint directly in the consuming module:
+Because the pin uses `strictly()`, a consuming module can't simply declare a different `com.h2database:h2` version and expect it to win — a `strictly()` constraint only loses to another `strictly()` declared at higher precedence, not to a plain version request or `prefer()`. To override it, declare your own `strictly()` constraint directly in the consuming module:
 
 ```kotlin
 // build.gradle.kts
@@ -175,8 +175,8 @@ genesisSpring {
 
 dependencies {
     constraints {
-        // Overrides genesis-spring-dependencies' strictly(h2Version) pin — a plain version
-        // request or prefer() here would not beat that platform's strictly().
+        // Overrides the strictly() pin on com.h2database:h2 — a plain version
+        // request or prefer() here would not beat a strictly() constraint.
         api("com.h2database:h2") {
             version { strictly("2.5.0") }
         }
@@ -184,4 +184,4 @@ dependencies {
 }
 ```
 
-This is standard Gradle rich-version-constraint behaviour — a project's own declared constraint takes precedence over one contributed by an applied platform — rather than a feature this plugin or the BOM implements itself. The same technique applies to any other Spring Boot-managed dependency you need to move off the version the BOM pins.
+This is standard Gradle rich-version-constraint behaviour, not something this plugin implements: a `strictly()` constraint a project declares for itself takes precedence over one it resolves from elsewhere. The same technique applies to any other dependency you need to move off the version it resolves to by default.
