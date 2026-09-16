@@ -34,6 +34,10 @@ For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the defa
 npx -y @genesislcap/genx@latest init mySpringDemo -x --no-shell
 ```
 
+:::note
+Check `server/gradle.properties` and make sure `genesisVersion` and `authVersion` are set to `10.0.0-beta2` (or later) — bump them if the generated project seeded an older version.
+:::
+
 ### Step 2: Create the Spring module
 
 Include the new module in `server/settings.gradle.kts`:
@@ -67,7 +71,7 @@ genesisSpring {
 }
 ```
 
-Module dependency versions are pinned by the [Spring dependencies BOM](/build-deploy-operate/build/spring-boot-plugin) — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies once the BOM is applied.
+Module dependency versions are pinned by the [Genesis BOM](/build-deploy-operate/build/plugins), which the Settings plugin contributes as a platform dependency — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies.
 
 ### Step 3: Switch logging to Logback
 
@@ -93,7 +97,7 @@ systemDefinition {
         // ...
         item(name = "LogFramework", value = "LOG4J2")
         item(name = "LogFrameworkConfig", value = "logback.xml")
-        item(name = "DbGenerateViewObjects", value = "true")
+        item(name = "DbGenerateViewObjects", value = "true") // required for JPA view generation — see below
         // ...
     }
 }
@@ -190,6 +194,18 @@ public class MyEventHandler {
 
 1. **Build** the server (`./gradlew assemble` from `server/`, or your IDE's build). Besides compiling, this generates the JPA entities the event handler uses.
 2. **Refresh the Genesis process list** so the new application is picked up — in the Genesis IntelliJ plugin, click the **G** icon then **Refresh Task List**; in Genesis Start, click the refresh button on the left of the window. The new application appears under its snake-case process name (`MY_SPRING_APP`).
+
+:::tip
+No GUI available (CI, a container, over SSH)? Start the process headlessly instead:
+
+```shell
+./gradlew writeStartScript -Pgenesis.start.headless=true \
+    -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=<port>
+```
+
+then run `server/build/genesis-start/start.sh`. `restEnabled=true` is required — without it the process starts and immediately exits.
+:::
+
 3. **Start the project** in Genesis Start.
 
 Once the processes are up, the Spring integration is complete. Part 2 builds on this running app.
@@ -329,6 +345,10 @@ Like the CSV seed data under `server/<project-name>-app/src/main/genesis/data`, 
 
 With the app rebuilt, restarted, and seeded:
 
+:::note
+These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml`, or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. Adjust the host:port in the curl examples below to match.
+:::
+
 ```shell
 # canned aggregate on the entity source: total cost/price and widget count per quality grade
 curl -s 'http://localhost:8080/api/v1/cubes/widgets/byQuality?sort=-totalCost'
@@ -374,4 +394,4 @@ With the seed data above, `widgets/byQuality` comes back like this — three gro
 - [JPA data access](../jpa-data-access) — how generated repositories read and write through to the database
 - [Cube query engine](../data-cube) — query syntax, response envelope, caching, and security
 - [Data model foundation](../data-model) — how dictionary tables become generated JPA entities
-- [Build tooling](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin chain and dependency BOM used above
+- [Build tooling](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin chain used above
