@@ -107,7 +107,7 @@ public class TradeProcessorTest {
 
 Let's break down what happens here.
 1. [`@GenesisTest`](#genesistest) - using this annotation will enable the Genesis JUnit extension. It will manage the Genesis resources during the test.
-2. [`@CsvData`](#csvdata)("my-trades.csv") - our test relies on trade data existing in the database. Here we specify that data.
+2. [`@CsvData`](#csvdata)("my-trades.csv") - our test relies on trade data existing in the database. Here we specify that data. `@CsvData` resolves file names as classpath resources, so `my-trades.csv` must live under `src/test/resources` in your test module (following the standard Gradle/JUnit convention), for example at `src/test/resources/my-trades.csv`.
 3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime are available in our test. Here we're getting a reference to the database.
 4. `@Inject` and `TradeProcessor` - we can also inject our own classes. `TradeProcessor` has a constructor annotated with `@Inject`, so the dependency injection mechanism knows how to instantiate it.
 5. By the time the test starts, our injected instances are available and we can start testing.
