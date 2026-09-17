@@ -73,6 +73,8 @@ genesisSpring {
 
 Module dependency versions are pinned by the [Genesis BOM](/build-deploy-operate/build/plugins), which the Settings plugin contributes as a platform dependency — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies.
 
+If this module ends up with its own tests using `@GenesisSpringTest` (see [Test tooling](../test-tooling#overview)), also add `genesisGeneratedCode(withTestDependency = true)` to its `dependencies` block: in this multi-module layout the dictionary `.kts` files live in the `-app` module, not here, and without that dependency `@GenesisSpringTest` resolves a generic placeholder dictionary instead of this project's own.
+
 ### Step 3: Switch logging to Logback
 
 The Genesis Spring integration only works with Logback. That means changes in three places, all in the app module.

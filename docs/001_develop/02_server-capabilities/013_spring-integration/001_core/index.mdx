@@ -638,7 +638,13 @@ above.
 ## Testing
 
 Dedicated test tooling for Spring/Guice-bridged Genesis apps lives in
-[Test tooling](../test-tooling). For a narrow unit test of your own controller and security wiring
+[Test tooling](../test-tooling). Testing a hand-written bean such as `SessionAuditService` or
+`GreetingService` above with `@GenesisSpringTest` needs one extra step: `GenesisTestApplication`
+carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
+`@SpringBootTest(classes = [GenesisTestApplication::class, SessionAuditService::class])` — see
+[Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation.
+
+For a narrow unit test of your own controller and security wiring
 without booting a full Genesis process, exclude the two autoconfiguration classes that would
 otherwise do so:
 

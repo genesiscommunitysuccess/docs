@@ -177,6 +177,7 @@ import global.genesis.eventhandler.spring.annotation.EventCommit;
 import global.genesis.eventhandler.spring.annotation.EventContext;
 import global.genesis.eventhandler.spring.annotation.EventValidate;
 import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+import global.genesis.eventhandler.spring.service.blocking.EventProvider;
 
 @GenesisEventHandler("CREATE")
 public class ValidatingEventHandler {
@@ -366,6 +367,8 @@ A handler method's return value is converted to an `EventReply` automatically:
 - `null`, `Unit`, or a `void` method becomes an empty `EventAck`.
 - Any other value becomes `EventAck(generated = listOf(thatValue))`, or `EventAck(generated = thatList)` if it's a `List<*>`.
 
+`EventReply` is a sealed type with three cases, not two: `EventAck`, `EventNack`, and `EventApprovableAck`. The third exists for the approvable-workflow type discussed in [Limitations](#limitations) below — not reachable through this module today — but a Kotlin `when` that branches on `EventReply` still has to account for it (with an explicit `is EventApprovableAck` branch or an `else`) to be exhaustive.
+
 For full manual control, inject an `EventProvider` (see below) and use its `ack(generated)`, `nack(errorCode, message)` and `warningNack(message)` helpers to build the reply by hand.
 
 Exceptions are mapped to nacks through the following mechanisms:
@@ -373,7 +376,7 @@ Exceptions are mapped to nacks through the following mechanisms:
 - A per-handler `@EventExceptionHandler([SomeException::class])` method, which takes priority for exceptions thrown by that handler's own methods.
 - A separate class annotated `@EventControllerAdvice`, with its own `@EventExceptionHandler` methods, registers globally and is consulted for any handler with no matching handler of its own. An advice class with no `@EventExceptionHandler` methods fails registration.
 - A custom exception class annotated `@EventWarning(status = ...)` is treated as a business warning — the resulting `EventNack` carries it as a `warning` rather than an `error`.
-- Any exception that doesn't match one of the above falls back to a default mapping: an `IllegalArgumentException` produces a nack carrying its message as the error, while any other exception (including the `IllegalStateException` thrown by `commit` above when `details.name` is neither `"warn"` nor `"custom"`) is treated as an internal error and produces a generic internal-error nack, with the exception's own message not exposed to the client.
+- Any exception that doesn't match one of the above falls back to a default mapping: an `IllegalArgumentException`, or an exception annotated `@ExposeClientError` (see below), produces a nack carrying its message as the error. Any other exception — including `ValidatingEventHandler`'s own `IllegalStateException` from [Example configuration](#example-configuration), and the `IllegalStateException` thrown by `commit` above when `details.name` is neither `"warn"` nor `"custom"` — is treated as an internal error and produces a generic internal-error nack, with the exception's own message not exposed to the client.
 
 An `@EventExceptionHandler` method must return `EventReply` and take exactly one `Throwable`-subtype parameter, checked at start-up:
 
@@ -467,7 +470,7 @@ public class ExplodingEventHandler {
 
 `EventReply.EventNack`'s primary constructor takes `warning` before `error` (`EventNack(warning: List<GenesisError> = ..., error: List<GenesisError> = ...)`), which is easy to get backwards positionally from Java — the vararg secondary constructor (`EventNack(vararg error: GenesisError)`) shown above maps unambiguously onto `error` instead.
 
-`@ExposeClientError` also exists, documented as marking an exception's message safe to surface to the client instead of being masked — but it is not read anywhere in the current implementation. In practice, today, an exception's message reaches the client nack regardless of whether `@ExposeClientError` is present, so don't design a "mask by default, opt in to expose" flow around it yet.
+`@ExposeClientError` is the annotation that puts a custom exception class into the "message exposed" branch above, without it needing to be an `IllegalArgumentException` — annotate the exception class itself. Exposure is not unconditional: an unannotated exception that isn't an `IllegalArgumentException` is still masked behind the generic internal-error nack.
 
 ### Triggering other events
 
@@ -635,6 +638,8 @@ See [Test tooling](../test-tooling) for the annotations and base classes (`@Gene
 `@GenesisSpringTest` composes `@SpringBootTest(classes = [GenesisTestApplication::class])`, and `GenesisTestApplication` itself carries only `@Configuration` and `@EnableAutoConfiguration` — no `@ComponentScan`. The test context therefore performs no component scanning at all: a hand-written `@GenesisEventHandler`, `@GenesisEventController` or `@EventControllerAdvice` class is never discovered by package position, wherever it lives. It has to be contributed to the context explicitly, for example by listing it alongside `GenesisTestApplication`:
 
 ```kotlin
+import global.genesis.springboot.test.GenesisTestApplication
+
 @GenesisSpringTest
 @SpringBootTest(classes = [GenesisTestApplication::class, ValidatingEventHandler::class])
 class CreateEventHandlerTest {
@@ -642,7 +647,7 @@ class CreateEventHandlerTest {
 }
 ```
 
-or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. This is different from a generated Spring Data repository such as [Test tooling: A simple example](../test-tooling#a-simple-example)'s `TradeRepository`, which arrives through autoconfiguration and needs no such step — don't generalise from that example to your own handler classes.
+or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. This is different from a generated Spring Data repository such as [Test tooling: A simple example](../test-tooling#a-simple-example)'s `PositionRepository`, which arrives through autoconfiguration and needs no such step — don't generalise from that example to your own handler classes.
 
 ### A worked example
 
@@ -653,8 +658,18 @@ or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration
 
 ```kotlin
 import global.genesis.message.core.event.EventReply
+import global.genesis.springboot.test.GenesisTestApplication
+import global.genesis.testsupport.client.eventhandler.EventClientSync
 
 @GenesisSpringTest
+@SpringBootTest(
+    classes = [
+        GenesisTestApplication::class,
+        ValidatingEventHandler::class,
+        CreateAndTouchEventHandler::class,
+        CommitOnlyEventHandler::class,
+    ],
+)
 class CreateEventHandlerTest {
 
     @Autowired
@@ -667,6 +682,7 @@ class CreateEventHandlerTest {
                 // assert side effects here, e.g. a row via an injected repository
             }
             is EventReply.EventNack -> error("expected an ack, got a nack: ${reply.error}")
+            is EventReply.EventApprovableAck -> error("unexpected: not reachable through this module today")
         }
     }
 
@@ -675,6 +691,7 @@ class CreateEventHandlerTest {
         when (val reply = client.sendEvent(details = Create(name = "widget", qty = 0), messageType = "CREATE")) {
             is EventReply.EventNack -> assert(reply.error.isNotEmpty())
             is EventReply.EventAck -> error("expected a nack, got an ack")
+            is EventReply.EventApprovableAck -> error("unexpected: not reachable through this module today")
         }
     }
 
@@ -688,6 +705,7 @@ class CreateEventHandlerTest {
                 // the TOUCH side effect ran
             }
             is EventReply.EventNack -> error("expected an ack, got a nack: ${reply.error}")
+            is EventReply.EventApprovableAck -> error("unexpected: not reachable through this module today")
         }
     }
 }
@@ -698,8 +716,18 @@ class CreateEventHandlerTest {
 
 ```java
 import global.genesis.message.core.event.EventReply;
+import global.genesis.springboot.test.GenesisTestApplication;
+import global.genesis.testsupport.client.eventhandler.EventClientSync;
 
 @GenesisSpringTest
+@SpringBootTest(
+        classes = {
+                GenesisTestApplication.class,
+                ValidatingEventHandler.class,
+                CreateAndTouchEventHandler.class,
+                CommitOnlyEventHandler.class,
+        }
+)
 class CreateEventHandlerTest {
 
     @Autowired

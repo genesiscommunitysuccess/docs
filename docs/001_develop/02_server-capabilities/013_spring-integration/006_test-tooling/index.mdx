@@ -18,7 +18,7 @@ JUnit 5 support for Spring-based Genesis applications, parallel to [GenesisJunit
 
 `genesis-spring-testsupport` is the JUnit 5 equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
 
-Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: `EventClientSync`/`Async`/`Rx`/`Blocking`, `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx`, and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
+Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: `EventClientSync`/`Async`/`Rx`/`Blocking` (`global.genesis.testsupport.client.eventhandler`), `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx` (all three under `global.genesis.testsupport.client.dataserver` — see [Real-time queries: Testing](/develop/server-capabilities/real-time-queries-data-server/#testing) for a worked example), and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
 
 `@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, which scaffolds an `allprojects { test { systemProperty("DbLayer", "SQL") } }` block — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
 
@@ -28,13 +28,15 @@ test {
 }
 ```
 
-Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure — no further wiring is required:
+Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure:
 
 ```kotlin
 dependencies {
     testImplementation("global.genesis:genesis-spring-testsupport")
 }
 ```
+
+In genx's default multi-module layout, a `-spring` module doesn't own the dictionary `.kts` files — the sibling `-app` module does. Add `genesisGeneratedCode(withTestDependency = true)` alongside the dependency above, or `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`.
 
 If you're testing a classic GPAL script app instead, use `GenesisJunit`/`GenesisSharedContextJunit` from `genesis-testsupport` directly. This module is the Spring-shaped equivalent, not a replacement.
 
@@ -137,6 +139,10 @@ public class BaseGenesisSpringTestJava {
 
 `@GenesisSpringTest` is the only annotation needed to get a live Genesis runtime behind the Spring context. `PositionRepository` is a generated JPA repository, autowirable because its underlying `EntityManagerFactory`/repository beans come from the JPA auto-configuration running against the same in-memory database the test context set up. `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` is a choice to get a fresh Genesis runtime per test class rather than share Spring's context cache — see [Context caching](#context-caching) above for when to share instead.
 
+`Position`/`PositionRepository` are generated per [JPA data access](../jpa-data-access) from the dictionary table `POSITION`. This example only verifies persistence through the repository — it doesn't assert on `UpdateQueue`, audit rows, or transaction boundaries; see [JPA data access: Writing back to the UpdateQueue](../jpa-data-access#writing-back-to-the-updatequeue), [Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for asserting on those specifically.
+
+`GenesisTestApplication` performs no component scanning — see [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation. A generated repository like `PositionRepository` above arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be listed explicitly in `@SpringBootTest(classes = [...])` to be available in a test's Spring context.
+
 This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
 
 ## Testing an HTTP endpoint
@@ -169,10 +175,15 @@ Add the test-only dependencies this needs alongside `genesis-spring-boot-starter
 ```kotlin
 dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.mockito.kotlin:mockito-kotlin")
 }
 ```
+
+`@AutoConfigureMockMvc` itself now lives at
+`org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc`, reachable through the
+new `spring-boot-starter-webmvc-test` dependency above rather than `spring-boot-starter-test` alone.
 
 `spring-boot-starter-security-test` matters even though this example never calls `springSecurity()`
 explicitly: when it's on the test classpath, `@AutoConfigureMockMvc` detects it and applies Spring
@@ -197,7 +208,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -296,4 +307,5 @@ request/response table this test's two cases are drawn from.
 
 - [Spring Integration](../index) for the section overview.
 - [Application core](../core) for the Guice/Spring bridge these tests boot on top of.
+- [Annotation-driven event handlers](../event-handlers#testing) — the fullest worked example of the `EventClientSync` test-client beans introduced above.
 - [Testing API](/develop/server-capabilities/testing-api) for `GenesisJunit`, the equivalent tooling for GPAL script apps, and full reference detail on the annotations listed above.
