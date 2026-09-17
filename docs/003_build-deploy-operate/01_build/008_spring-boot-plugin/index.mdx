@@ -127,6 +127,10 @@ Running `./gradlew generateJpaEntities` against a sibling dictionary module (by 
 
 Generation runs as part of an ordinary build; invoking `generateJpaEntities` directly is only needed to regenerate the sources on demand.
 
+:::note
+Tables with a mutable primary key — one whose value can change after a row is created — aren't eligible for entity generation, since JPA doesn't support that. `generateJpaEntities` skips these tables silently rather than failing the build: a build with skipped tables still reports `BUILD SUCCESSFUL`. To see whether any tables were skipped, check the `generateJpaEntities` task's log for lines such as `Unable to generate JPA entity for table <TABLE_NAME>; JPA does not support mutable primary keys`.
+:::
+
 #### Common configuration
 
 Every property below keys off `packageName` by default:
@@ -138,7 +142,7 @@ Every property below keys off `packageName` by default:
 | `repoPackageName` | `$packageName.repo` | Package for generated repository interfaces. |
 | `enumPackageName` | `$entityPackageName.enums` | Package for generated enums. |
 | `configClassPackageName` | `$packageName.config` | Package for the generated `JpaConfiguration` class. |
-| `dictionaryModuleSuffix` | `-dictionary-cache` | Name suffix used to find sibling subprojects to generate entities from. Matching is by suffix against direct subprojects of the root project only — there's no way to point at a dictionary module by path. |
+| `dictionaryModuleSuffix` | `-dictionary-cache` | Name suffix used to find sibling subprojects to generate entities from. Matching is by suffix against direct subprojects of the root project only — there's no way to point at a dictionary module by path. The default `*-dictionary-cache` module is generated automatically by the Genesis Settings plugin from the project's merged dictionary, so it never appears as a declared subproject in `settings.gradle.kts`. |
 | `sourceSetName` | `main` | Which Kotlin source set the generated sources and auto-configuration resources are attached to. |
 | `generateConfigurationClass` | `true` | Whether a `JpaConfiguration` class (and the matching auto-configuration import) is generated at all. |
 | `useNullableRepo` | `true` | Whether generated repository methods return nullable types. |
