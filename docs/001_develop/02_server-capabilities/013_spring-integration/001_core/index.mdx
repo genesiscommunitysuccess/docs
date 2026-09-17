@@ -146,7 +146,11 @@ class name). Two things are worth knowing:
   disambiguated by a unique `@Primary`, is used before Guice is even consulted — so a
   `@Bean @Primary` override of something Guice also provides works as expected. A
   `@Qualifier`-annotated injection point resolves by Guice binding name instead, which also
-  correctly reaches beans that got a suffixed duplicate name.
+  correctly reaches beans that got a suffixed duplicate name:
+
+  ```kotlin
+  @Qualifier("myDuplicatedBindingName") private val service: MyDuplicatedBinding
+  ```
 
 Injecting a Genesis platform singleton (`UserSessionCache`) into a plain `@Service` needs no `@Bean`
 declared anywhere:
