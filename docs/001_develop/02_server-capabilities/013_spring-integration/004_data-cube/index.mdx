@@ -85,7 +85,29 @@ The starter registers its HTTP layer through its own autoconfiguration class,
 `GenesisSpringWebConfig` — excluding those two from a test context does not exclude a cube
 resource's endpoints.
 
+The `curl`/wire examples below assume the default port `8080` — see [Getting started: Step
+11](../getting-started#step-11-query-it) for how to run on a different port via plain Spring Boot
+`server.port` configuration.
+
 ## Declaring a cube resource
+
+Every code sample on this page refers to the following types by their simple name only:
+
+| Type | Package |
+|---|---|
+| `CubeResource` | `global.genesis.spring.data.cube.resource` |
+| `CubeResourceRegistry` | `global.genesis.spring.data.cube.resource` |
+| `ResolvedCubeResource` | `global.genesis.spring.data.cube.resource` |
+| `PrincipalValues` | `global.genesis.spring.data.cube.resource` |
+| `CubeFactory` | `global.genesis.spring.data.cube` |
+| `EntityCube` | `global.genesis.spring.data.cube` |
+| `QueryRequest` | `global.genesis.spring.data.cube.model` |
+| `GroupKey` | `global.genesis.spring.data.cube.model` |
+| `Aggregate` | `global.genesis.spring.data.cube.model` |
+| `Function` | `global.genesis.spring.data.cube.model` |
+| `PivotSpec` | `global.genesis.spring.data.cube.model` |
+| `PivotDimension` | `global.genesis.spring.data.cube.model` |
+| `PivotMeasure` | `global.genesis.spring.data.cube.model` |
 
 A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResourceBuilder` or the
 Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
@@ -260,7 +282,7 @@ CubeResource trades = CubeResource.forEntity(Trade.class)
 
 ```kotlin
 data class TradeFlat(
-    val tradeId: String,
+    val tradeId: Long,
     val currencyId: String,
     val tradeDate: OffsetDateTime,
     val quantity: Int,
@@ -272,7 +294,7 @@ data class TradeFlat(
 <TabItem value="java">
 
 ```java
-record TradeFlat(String tradeId, String currencyId, OffsetDateTime tradeDate, int quantity, double price) {}
+record TradeFlat(long tradeId, String currencyId, OffsetDateTime tradeDate, int quantity, double price) {}
 ```
 
 </TabItem>
@@ -346,6 +368,43 @@ void example(Pageable pageable) {
             List.of()),
         pageable);
 }
+```
+
+</TabItem>
+</Tabs>
+
+For an entity cube, `FILTER` is a Spring Data JPA `org.springframework.data.jpa.domain.Specification<Trade>`
+— not a `criteriaMatch` string (that's only the filter type for a cube built via `forEntityCriteria`/`forJpqlCriteria`,
+shown in [Filtering](#filtering)). A real, non-null filter for this generic overload is a `Specification` lambda:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+val filtered: CubeResult<Tuple> = trades.query(
+    QueryRequest(
+        groupKeys = listOf(GroupKey("currencyId", "currencyId")),
+        aggregates = listOf(Aggregate(Function.SUM, "quantity", "totalQuantity")),
+        filter = Specification { root, _, cb -> cb.equal(root.get<String>("currencyId"), "USD") },
+    ),
+    pageable,
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+CubeResult<Tuple> filtered = trades.query(
+    new EntityQueryRequest<>(
+        List.of(new GroupKey("currencyId", "currencyId")),
+        List.of(new Aggregate(Function.SUM, "quantity", "totalQuantity")),
+        List.of(),
+        null,
+        null,
+        (root, query, cb) -> cb.equal(root.get("currencyId"), "USD"),
+        List.of()),
+    pageable);
 ```
 
 </TabItem>
@@ -453,14 +512,21 @@ only exercised in-process, not through the wire protocol described here.
 The engine's central design invariant is that **a caller can never tell a hidden column from a
 nonexistent one.** Every rejection — an unpermitted filter column, an unsortable one, a column
 outside the visible set — surfaces as the same RFC 9457 `problem+json` error
-(`.../problems/cube/query-rejected`), as HTTP 400 Bad Request with a standard `ProblemDetail` body:
+(`.../problems/cube/query-rejected`), as HTTP 400 Bad Request with a standard `ProblemDetail` body.
+The guarantee extends to the free-text `detail` field itself: its wording is a fixed template per
+rejection *kind* (unpermitted filter column, unsortable column, outside the visible set) that only
+ever echoes back column names the caller already supplied in their own request — so the string
+never differs between a hidden column and a nonexistent one. Filtering `tradesByCurrency` on
+`quantity` (a column that exists but isn't in this operation's `FilterPolicy` — see [Declaring a
+cube resource](#declaring-a-cube-resource)) produces exactly the same shape a request naming a
+made-up column would:
 
 ```json
 {
   "type": "https://docs.genesis.global/problems/cube/query-rejected",
   "title": "Query rejected",
   "status": 400,
-  "detail": "<rejection detail message>"
+  "detail": "Filter references column(s) not filterable on cube resource 'tradesByCurrency': [quantity]. Only these columns may be filtered: [currencyId]"
 }
 ```
 
@@ -892,6 +958,58 @@ POST /api/v1/cubes/trades/query
 Before wiring up a frontend, `GET /api/v1/cubes/trades` tells you up front whether the resource is
 addressable, cacheable, and what its page-size/filter-length limits are (see
 [Caching](#caching)).
+
+The dynamic `exposeQuery` path is reachable in-process too, without HTTP —
+`ResolvedCubeResource.query`/`prepareQuery` are the `exposeQuery` counterparts of
+[`queryOperation`/`prepareOperation`](#per-user-row-scoping): the request carries the query *shape*
+only (its own `filter` must stay `null`), and the caller's `criteriaMatch` filter, if any, arrives as
+a separate argument instead. Reproducing the grouped-by-currency query above:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Autowired
+lateinit var registry: CubeResourceRegistry
+
+fun example(pageable: Pageable) {
+    val trades = registry.require("trades")
+    val grouped: CubeResult<*> = trades.query(
+        request = QueryRequest(
+            groupKeys = listOf(GroupKey("currencyId", "currencyId")),
+            aggregates = listOf(Aggregate(Function.SUM, "quantity", "totalQuantity")),
+        ),
+        callerCriteria = null,
+        pageable = pageable,
+    )
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Autowired
+CubeResourceRegistry registry;
+
+void example(Pageable pageable) {
+    ResolvedCubeResource trades = registry.require("trades");
+    CubeResult<?> grouped = trades.query(
+        new UnfilteredQueryRequest(
+            List.of(new GroupKey("currencyId", "currencyId")),
+            List.of(new Aggregate(Function.SUM, "quantity", "totalQuantity")),
+            List.of(),
+            null,
+            null,
+            List.of()),
+        null,
+        pageable,
+        name -> null);
+}
+```
+
+</TabItem>
+</Tabs>
 
 ### 2. A JPQL report with a column whitelist
 
