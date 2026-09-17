@@ -11,10 +11,18 @@ sidebar_position: 8
 
 See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis Gradle plugins, and [Spring Integration](/develop/server-capabilities/spring-integration) for the server-side modules this build tooling supports. Everything in that section depends on a module having applied the plugin described here.
 
+| Starter artifact | Adds | Documented on |
+| --- | --- | --- |
+| `genesis-spring-boot-starter` | Guice bridge, system-definition config, HTTP session-token authentication | [Application core](/develop/server-capabilities/spring-integration/core) |
+| `genesis-eventhandler-spring-boot-starter` | Annotation-driven event handlers | [Annotation-driven event handling](/develop/server-capabilities/spring-integration/event-handlers) |
+| `genesis-data-spring-boot-starter` | Spring Data JPA over the existing `DbLayer` | [JPA data access](/develop/server-capabilities/spring-integration/jpa-data-access) |
+| `genesis-data-cube-spring-boot-starter` | Pivot, grouped and flat cube queries over JPA entities | [Cube query engine](/develop/server-capabilities/spring-integration/data-cube) |
+| `genesis-spring-testsupport` | JUnit 5 support for Spring-based Genesis applications | [Test tooling](/develop/server-capabilities/spring-integration/test-tooling) |
+
 ## Genesis Spring Boot plugin
 
 :::note
-Spring integration ships with Genesis Application Platform v10 (currently the pre-GA `10.0.0-beta2`). Make sure your project is on that version (or later) before applying the plugin.
+Spring integration ships with Genesis Application Platform v10 (currently the pre-GA `10.0.0-beta2`). Make sure your project is on that version (or later) before applying the plugin. Check `server/gradle.properties` and make sure `genesisVersion` and `authVersion` are set to `10.0.0-beta2` (or later) — bump them if the generated project seeded an older version.
 :::
 
 The Genesis Spring Boot plugin (`global.genesis.spring`) is the build-time entry point for Genesis's Spring Boot/JPA application style. Applying it to a module provides:
@@ -61,7 +69,13 @@ Neither nested extension needs to be configured to get useful defaults — see b
 
 ### Dependency versions
 
-You don't set a version on any `global.genesis:*` Spring artifact yourself. A Genesis project applies the Genesis Gradle Settings plugin, which contributes the Genesis BOM as a platform dependency — see [Plugins](/build-deploy-operate/build/plugins) for that mechanism — and the BOM is what pins the version every `global.genesis:*` Spring dependency resolves to.
+You don't set a version on any `global.genesis:*` Spring artifact yourself. A Genesis project applies the Genesis Gradle Settings plugin, which contributes the Genesis BOM as a platform dependency — see [Plugins](/build-deploy-operate/build/plugins) for that mechanism — and the BOM is what pins the version every `global.genesis:*` Spring dependency resolves to. For example:
+
+```kotlin
+dependencies {
+    implementation("global.genesis:genesis-spring-boot-starter")
+}
+```
 
 ### Processes and service manifest generation
 
@@ -99,7 +113,6 @@ A minimal configuration only needs `packageName`; every other property is derive
 ```kotlin
 // build.gradle.kts
 plugins {
-    kotlin("jvm")
     id("global.genesis.spring")
 }
 
@@ -169,7 +182,6 @@ Because the pin uses `strictly()`, a consuming module can't simply declare a dif
 ```kotlin
 // build.gradle.kts
 plugins {
-    kotlin("jvm")
     id("global.genesis.spring")
 }
 
