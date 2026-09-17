@@ -65,6 +65,9 @@ The smallest realistic handler is a single event with a commit phase only — no
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+
 data class Update(
     val name: String = "",
     val qty: Int = 0,
@@ -84,6 +87,9 @@ class CommitOnlyEventHandler {
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+
 public class Update {
     private String name = "";
     private int qty = 0;
@@ -134,6 +140,11 @@ Most handlers need both a validation phase and a commit phase — the equivalent
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.EventContext
+import global.genesis.eventhandler.spring.annotation.EventValidate
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+
 data class Create(val name: String = "", val qty: Int = 0)
 data class Created(val id: String)
 data class Validated(val normalisedName: String)
@@ -162,6 +173,11 @@ class ValidatingEventHandler(
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.EventContext;
+import global.genesis.eventhandler.spring.annotation.EventValidate;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+
 @GenesisEventHandler("CREATE")
 public class ValidatingEventHandler {
 
@@ -217,6 +233,8 @@ A parameter typed as the full envelope has access to more than just the payload 
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
 import global.genesis.message.core.event.Event
 
 @GenesisEventHandler("UPDATE")
@@ -235,6 +253,8 @@ class EnvelopeAwareEventHandler {
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
 import global.genesis.message.core.event.Event;
 
 @GenesisEventHandler("UPDATE")
@@ -258,6 +278,10 @@ A single class can also carry static rights checks:
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+import global.genesis.eventhandler.spring.annotation.RequiresAnyRight
+
 @GenesisEventHandler("SECURE")
 @RequiresAnyRight(["WRITE"])
 class AnyRightEventHandler {
@@ -270,6 +294,10 @@ class AnyRightEventHandler {
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+import global.genesis.eventhandler.spring.annotation.RequiresAnyRight;
+
 @GenesisEventHandler("SECURE")
 @RequiresAnyRight({"WRITE"})
 public class AnyRightEventHandler {
@@ -289,6 +317,8 @@ public class AnyRightEventHandler {
 ### Validation
 
 `@EventValidate` runs on every incoming request for its event, including ones sent with `validate=true` (a pre-flight check), and its return value becomes the commit-phase context. When a request has `validate=true`, the framework itself never invokes `@EventCommit` — it returns whatever `@EventValidate` produced, converted to an ack or nack, without running the commit method. You don't need to check `event.validate` yourself — this is handled for both validating and commit-only handlers (a commit-only handler just acks empty instead of running validation logic first).
+
+An exception thrown from `@EventValidate` on any request, not just `validate=true`, skips `@EventCommit` and is mapped to a nack the same way an exception from `@EventCommit` would be — see [Acknowledgement / rejection](#acknowledgement--rejection) below.
 
 Bean Validation is partially wired: a parameter can be annotated `@jakarta.validation.Valid` or `@org.springframework.validation.annotation.Validated`, and the scanner records that on the parameter definition — but nothing downstream currently runs Bean Validation against it. Putting `@Valid` on a payload parameter today does not actually validate anything through this module; write your own checks in `@EventValidate` instead.
 
@@ -351,6 +381,13 @@ An `@EventExceptionHandler` method must return `EventReply` and take exactly one
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.EventExceptionHandler
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+import global.genesis.message.core.HttpStatusCode
+import global.genesis.message.core.error.StandardError
+import global.genesis.message.core.event.EventReply
+
 @EventWarning(status = HttpStatusCode.Conflict)
 class WarningException(message: String) : RuntimeException(message)
 
@@ -380,6 +417,13 @@ class ExplodingEventHandler {
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.EventExceptionHandler;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+import global.genesis.message.core.HttpStatusCode;
+import global.genesis.message.core.error.StandardError;
+import global.genesis.message.core.event.EventReply;
+
 @EventWarning(status = HttpStatusCode.Conflict)
 public class WarningException extends RuntimeException {
     public WarningException(String message) {
@@ -433,6 +477,10 @@ A handler can call another event from within its own commit logic by injecting a
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+import global.genesis.message.core.event.EventReply
+
 @GenesisEventHandler("CREATE_AND_TOUCH")
 class CreateAndTouchEventHandler(
     private val events: EventProvider,
@@ -450,6 +498,10 @@ class CreateAndTouchEventHandler(
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+import global.genesis.message.core.event.EventReply;
+
 @GenesisEventHandler("CREATE_AND_TOUCH")
 public class CreateAndTouchEventHandler {
 
@@ -479,6 +531,9 @@ public class CreateAndTouchEventHandler {
 Any `@EventValidate`/`@EventCommit`/`@EventMapping` method may be a Kotlin `suspend fun`; the scanner detects the compiler-injected `Continuation` parameter and the handler is registered as an asynchronous handler automatically, with no extra annotation needed:
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+
 @GenesisEventHandler("TOUCH_ASYNC")
 class SuspendCommitOnlyEventHandler {
 
@@ -511,6 +566,9 @@ Two of these are easy to trip over in practice. Both reuse classes already defin
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.eventhandler.spring.annotation.EventCommit
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+
 @GenesisEventHandler("TOUCH")
 class CommitOnlyEventHandler {
 
@@ -526,6 +584,9 @@ class CommitOnlyEventHandler {
 <TabItem value="java">
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+
 @GenesisEventHandler("TOUCH")
 public class CommitOnlyEventHandler {
 
@@ -543,6 +604,9 @@ public class CommitOnlyEventHandler {
 A Java `record` payload or handler crashes bean creation at start-up:
 
 ```java
+import global.genesis.eventhandler.spring.annotation.EventCommit;
+import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+
 // Don't do this — crashes with:
 // Can't compute ClassId for primitive type: int
 public record Update(String name, int qty) {
@@ -588,6 +652,8 @@ or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.message.core.event.EventReply
+
 @GenesisSpringTest
 class CreateEventHandlerTest {
 
@@ -611,6 +677,19 @@ class CreateEventHandlerTest {
             is EventReply.EventAck -> error("expected a nack, got an ack")
         }
     }
+
+    @Test
+    fun `also runs the triggered TOUCH handler`() {
+        // CreateAndTouchEventHandler's commit calls events.trigger("TOUCH", ...) in-process;
+        // trigger() throws if no TOUCH handler is registered in this process, so reaching an
+        // ack here is what proves the triggered TOUCH handler actually ran.
+        when (val reply = client.sendEvent(details = Create(name = "widget", qty = 3), messageType = "CREATE_AND_TOUCH")) {
+            is EventReply.EventAck -> {
+                // the TOUCH side effect ran
+            }
+            is EventReply.EventNack -> error("expected an ack, got a nack: ${reply.error}")
+        }
+    }
 }
 ```
 
@@ -618,6 +697,8 @@ class CreateEventHandlerTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.message.core.event.EventReply;
+
 @GenesisSpringTest
 class CreateEventHandlerTest {
 
@@ -644,6 +725,20 @@ class CreateEventHandlerTest {
 
         assertInstanceOf(EventReply.EventNack.class, reply);
         assertFalse(((EventReply.EventNack) reply).getError().isEmpty());
+    }
+
+    @Test
+    void alsoRunsTheTriggeredTouchHandler() {
+        // CreateAndTouchEventHandler's commit calls events.trigger("TOUCH", ...) in-process;
+        // trigger() throws if no TOUCH handler is registered in this process, so reaching an
+        // ack here is what proves the triggered TOUCH handler actually ran.
+        var reply = client.builder()
+                .withDetails(new Create("widget", 3))
+                .withMessageType("CREATE_AND_TOUCH")
+                .send();
+
+        assertInstanceOf(EventReply.EventAck.class, reply);
+        // the TOUCH side effect ran
     }
 }
 ```
