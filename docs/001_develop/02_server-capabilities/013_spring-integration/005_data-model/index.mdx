@@ -51,6 +51,8 @@ table("SIMPLE_TABLE", 100) {
 }
 ```
 
+`TIMESTAMP` here is the implicit system column added to every table — see [Timestamps](/develop/server-capabilities/data-access-apis/#timestamps) — not a field this table declares itself. `primaryKey(name, id) { }` is the dictionary DSL's named-index form, taking the key's name and numeric id followed by a block that lists its fields; it is equivalent to the single-argument `primaryKey(<field 1>, <field 2>, ...)` form documented in the classic [data model](/develop/server-capabilities/data-model/#primarykey), just with an explicit name and id instead of an auto-generated name.
+
 the generator produces the following entity. The Java tab is not a second generator output — it illustrates what a hand-written Java class extending the same `genesis-jpa-base` superclass looks like, to show that the base library is not Kotlin-only, even though generation is.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin (generated)', value: 'kotlin' }, { label: 'Java (hand-written equivalent)', value: 'java' }]}>
@@ -59,6 +61,7 @@ the generator produces the following entity. The Java tab is not a second genera
 ```kotlin
 package global.genesis.jpa.dao
 
+import global.genesis.jpa.base.CubeDefaultIdentity
 import global.genesis.jpa.base.GenesisJpaEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -68,6 +71,7 @@ import jakarta.validation.constraints.NotNull
 
 @Entity
 @Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+@CubeDefaultIdentity("simpleId")
 public class SimpleTable @JvmOverloads constructor(
   simpleId: Int,
 ) : GenesisJpaEntity.Base<Int>() {
@@ -298,7 +302,7 @@ AuditContextHolder.withAuditContext(context, (Function0<Unit>) () -> {
 
 `withAuditContext` restores whatever context was active before the block runs, and is safe to nest. **The context block must enclose the transaction that actually commits the write** — setting the context before calling a service method that opens its own transaction elsewhere, or clearing it before the transaction commits, silently produces no audit row. For coroutine-based code, `AuditContextHolder.asContextElement(context)` returns a `CoroutineContext.Element` that restores the context on every thread the coroutine resumes on, since a plain `ThreadLocal` does not survive a dispatcher switch.
 
-An audited entity looks like this (abridged to the load-bearing members):
+An audited entity looks like this (abridged to the load-bearing members). Like every single-key entity (see [Example configuration](#example-configuration)), `Approval` also gets a `val approvalId: String get() = pk` convenience accessor — generating that accessor is unconditional and unrelated to audit status, so it isn't specific to this example; it's simply left out of the snippet below because that snippet is abridged.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin (generated)', value: 'kotlin' }, { label: 'Java (hand-written equivalent)', value: 'java' }]}>
 <TabItem value="kotlin">
@@ -402,6 +406,8 @@ public class ApprovalAudit @JvmOverloads constructor(
 
 Nothing in `genesis-spring-boot-entity-generation` runs on its own — it is invoked by a Gradle task wired by the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) (`global.genesis.spring`) and its `genesisSpring { entities { packageName = ... } }` configuration block. **This is a hard prerequisite**: without the plugin applied and an `entities` block configured, the generator is never invoked and no code is produced. No Spring Boot runtime dependency is required just to generate entities — only to actually run an `EntityManagerFactory`/`DataSource` against them, which is what [JPA data access](../jpa-data-access) provides.
 
+Generated `@Entity` classes go into `entityPackageName` (`$packageName.dao` by default) — the parent package for every generated entity; the repository, enum, and mapper packages below are all relative to it.
+
 The generator consumes a dictionary's merged table/view definitions the same way classic code generation does, with a few shapes handled specially:
 
 - A table whose primary key is mutable (`TIMESTAMP`-typed) is skipped, with a build warning, not an entity — JPA does not support a primary key that can change value after insert.
@@ -411,7 +417,9 @@ The generator consumes a dictionary's merged table/view definitions the same way
 Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate one of two ways, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim:
 
 - A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default). A field named `QUALITY` generates an enum class named `Quality`; for a multi-word field, underscores are dropped and each segment is PascalCased, e.g. `ASSET_CLASS` becomes `AssetClass`.
-- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example.
+- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example. For a multi-word table, the package segment is only lower-cased — underscores are kept, not stripped (`WORK_ORDER` becomes `work_order`), unlike the shared-enum class-name rule above (`ASSET_CLASS` becomes `AssetClass`, underscores dropped, PascalCased).
+
+Each generated entity also gets a generated mapper companion, named `<EntityClassName>DbMapper`, in `$entityPackageName.mapper` — this is what `toAuditEntity` forwards to (see [Audit support](#audit-support)). An audited entity's `_AUDIT` sibling gets its own mapper generated alongside it, `<EntityClassName>AuditDbMapper`.
 
 ## See also
 
