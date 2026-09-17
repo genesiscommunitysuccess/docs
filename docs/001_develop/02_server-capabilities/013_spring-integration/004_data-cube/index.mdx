@@ -253,6 +253,31 @@ CubeResource trades = CubeResource.forEntity(Trade.class)
 </TabItem>
 </Tabs>
 
+`TradeFlat` is a plain projection of `Trade`'s query-relevant columns:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+data class TradeFlat(
+    val tradeId: String,
+    val currencyId: String,
+    val tradeDate: OffsetDateTime,
+    val quantity: Int,
+    val price: Double,
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+record TradeFlat(String tradeId, String currencyId, OffsetDateTime tradeDate, int quantity, double price) {}
+```
+
+</TabItem>
+</Tabs>
+
 Every shape goes through `POST /api/v1/cubes/{resource}/query` (there's no `GET` here — the query
 shape doesn't fit comfortably in query parameters). A grouped request populates `groupKeys` and
 `aggregates`:
@@ -419,8 +444,7 @@ dimension under the cap.
 :::
 
 A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP today — that shape is
-only exercised in-process, by the test-only dev-server harness described in
-[Grid integration](#grid-integration).
+only exercised in-process, not through the wire protocol described here.
 
 ## Security
 
@@ -442,6 +466,16 @@ outside the visible set — surfaces as the same RFC 9457 `problem+json` error
 
 Splitting that error per reason would reintroduce, in a machine-readable field, exactly the
 column-existence discrimination the rule exists to prevent.
+
+That HTTP wrapping only happens at the `CubeQueryController` boundary — a `@RestControllerAdvice`
+(`CubeProblemHandler`) scoped to that controller catches the rejection and renders it as the
+`problem+json` body above. Reached in-process instead — via `CubeResourceRegistry.require(name)`
+returning a `ResolvedCubeResource`, the same route the [per-user row
+scoping](#per-user-row-scoping) example uses — the identical rejection surfaces as a raw, uncaught
+`global.genesis.spring.data.cube.model.CubeRequestException`, carrying the same message as the HTTP
+body's `detail`, just unwrapped. The no-probing guarantee lives specifically at the
+`ResolvedCubeResource` layer: a raw `Cube`/`EntityCube`/`CubeFactory` has no `visibleColumns` or
+`FilterPolicy` concept at all, so it enforces no column-visibility restriction of its own.
 
 A `FilterPolicy` governs which columns a caller may reference in a **named operation's** filter,
 beyond the columns it already groups by (implicitly filterable, since their values are already
@@ -703,12 +737,10 @@ the whole-cube `exposeQuery()` path's shape (group keys, aggregates, pivot dimen
 grouped vs. pivoted results) maps onto what an [AG Grid Server-Side Row Model](/develop/client-capabilities/grids/grid-pro)
 datasource needs to drive `rowGroupCols`, `groupKeys`, `pivotMode` and `filterModel`.
 
-The module's own test suite includes an in-IDE dev-server harness that translates AG Grid's
-`rowGroupCols`/`groupKeys`/`pivotMode`/`filterModel` into cube query requests and switches to a
-flat, equality-filtered query once a request reaches leaf rows. It's a genuinely useful worked
-reference for building a real frontend adapter, but it's a testing/exploration aid, not a shipped
-adapter or a production code path — a production frontend still has to translate AG Grid's request
-shape into the `/query` body shown in [Query types](#query-types) itself.
+Translating AG Grid's `rowGroupCols`/`groupKeys`/`pivotMode`/`filterModel` into a cube query
+request — including switching to a flat, equality-filtered query once a request reaches leaf rows,
+for an SSRM drill-down step — is left to your own frontend adapter; the `/query` body shape itself
+is exactly what's shown in [Query types](#query-types).
 
 ## Caching
 
