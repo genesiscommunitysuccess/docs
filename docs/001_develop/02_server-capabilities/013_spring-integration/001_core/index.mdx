@@ -399,6 +399,91 @@ mappings; narrow the anonymous mapping, or annotate the sibling too, to resolve 
 narrowed by `params`, `headers`, `consumes`, or `produces` can't be expressed as a plain permit-all
 rule either, and fails the same way — restructure the mapping, or drop the affected condition.
 
+### Router proxying
+
+Every `@RestController` endpoint is also reachable from outside the cluster through
+`GENESIS_ROUTER`, which proxies external traffic straight through to the app's embedded Tomcat.
+Your URL is:
+
+```text
+http(s)://<router-host>:<router-port>/<prefix>/<your-mapping>
+```
+
+Where `<prefix>` is the app's context-path, and the rest of the path is exactly what was written in
+the `@RequestMapping`/`@GetMapping`/etc. — nothing gets rewritten.
+
+**Worked example**
+
+```properties
+# application.properties
+server.servlet.context-path=/orders-app
+```
+
+```kotlin
+@RestController
+class OrderController(private val orders: OrderService) {
+    @GetMapping("/orders")          fun list() = orders.all()
+    @GetMapping("/orders/{id}")     fun get(@PathVariable id: String) = orders.view(id)
+}
+```
+
+| You call directly (Tomcat) | You call through the router |
+|---|---|
+| `http://<app-host>:<tomcat-port>/orders-app/orders` | `http://<router-host>:<router-port>/orders-app/orders` |
+| `http://<app-host>:<tomcat-port>/orders-app/orders/42` | `http://<router-host>:<router-port>/orders-app/orders/42` |
+
+Same path, different host/port — the router just proxies whatever's under `/orders-app/**` straight
+to the app's Tomcat port, path unchanged.
+
+**Where the prefix comes from**
+
+1. `server.servlet.context-path` is set — that's the prefix, verbatim.
+2. It isn't set, but `spring.application.name` is — the prefix is derived from that: the name,
+   lower-cased and slugified to one URL segment. For example, `spring.application.name=OrdersApp`
+   becomes prefix `/ordersapp`. This is logged at startup, so the log can be read instead of
+   guessing.
+3. Neither is set — the app isn't exposed through `GENESIS_ROUTER` at all (a warning is logged, as
+   noted above). It's still reachable directly on its own port, just not via the router.
+
+In practice, most apps already set `spring.application.name` and get a router prefix for free. Only
+set `server.servlet.context-path` explicitly to choose a specific, human-chosen prefix instead of
+the derived slug.
+
+**Enabling it**
+
+Nothing extra is required on the Spring app beyond the property above. On the router side, whoever
+owns the router's service definition needs the proxy switch enabled once, cluster-wide:
+
+```kotlin
+// *-router.kts
+httpProxyEnabled = true
+```
+
+There's no per-app registration and no port to configure anywhere — the app's embedded Tomcat port
+is discovered automatically at boot and published to the cluster, and the router picks it up from
+there.
+
+:::caution
+A few things worth knowing before relying on this:
+
+- **Actuator moves too.** If the prefix is derived from `spring.application.name=orders-app`,
+  health becomes `/orders-app/actuator/health`, not `/actuator/health` — update health-check probes
+  accordingly.
+- **The router performs no authentication for this traffic.** A `SESSION_AUTH_TOKEN` header, if
+  present, is forwarded as-is; the app is responsible for its own security (Spring Security, etc. —
+  see [Session-token authentication](#session-token-authentication) above). The router is only the
+  network path in, not a gatekeeper for these endpoints.
+- **The embedded Tomcat is a second network listener.** It must be reachable from the router's host
+  but not from the outside world directly — bind it to a cluster-internal interface
+  (`server.address`) and firewall the rest. External traffic should only ever reach the app through
+  the router.
+- **Single-word path collisions.** If the derived or explicit prefix is a single segment that
+  collides with an existing native Genesis resource name, the native resource wins and the app
+  isn't reachable under that name — pick a distinct context-path if this happens.
+- **Turning it off entirely.** `genesis.springboot.enabled=false` disables this along with the rest
+  of the Genesis/Spring integration — the app then only serves HTTP on its own port, unrouted.
+:::
+
 ## Migrating from Guice-only components
 
 Existing [Guice-based custom components](/develop/server-capabilities/custom-components) can move
