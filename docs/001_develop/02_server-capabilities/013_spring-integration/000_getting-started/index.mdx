@@ -22,8 +22,12 @@ Spring integration ships with Genesis v10, currently at version 10.0.0-beta2. Ma
 
 ### Step 1: Create the project
 
+:::note
+**Temporary, pre-GA instruction:** until Genesis v10 is generally released, `genx`'s default seed targets the current GA release, not v10. Pass `--ref release-v10` so `genx` scaffolds a v10-compatible project — including a Gradle wrapper new enough for v10's Genesis Gradle plugins. Once Genesis v10 is generally released, drop this flag.
+:::
+
 ```shell
-npx -y @genesislcap/genx@latest init mySpringDemo
+npx -y @genesislcap/genx@latest init mySpringDemo --ref release-v10
 ```
 
 For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the default answer for every prompt, and `--no-shell` stops `genx` dropping into an interactive sub-shell inside the new project when it finishes.
@@ -31,12 +35,10 @@ For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the defa
 `<project-name>` is the name you gave to `genx init`, e.g. `mySpringDemo`.
 
 ```shell
-npx -y @genesislcap/genx@latest init mySpringDemo -x --no-shell
+npx -y @genesislcap/genx@latest init mySpringDemo --ref release-v10 -x --no-shell
 ```
 
-:::note
-Check `server/gradle.properties` and make sure `genesisVersion` and `authVersion` are set to `10.0.0-beta2` (or later) — bump them if the generated project seeded an older version.
-:::
+Scaffolding with `--ref release-v10` already seeds `server/gradle.properties` with `genesisVersion`/`authVersion` at `10.0.0-beta2` or later, so no manual version bump is needed.
 
 ### Step 2: Create the Spring module
 
@@ -89,7 +91,27 @@ genesisExec {
 }
 ```
 
-**2. A Logback config** at `server/<project-name>-app/src/main/genesis/cfg/logback.xml`. There's nothing Spring-specific about it — any valid Logback config works, for example a config that rolls a per-process log file under `GENESIS_HOME/runtime/logs` into `logs/archive`.
+**2. A Logback config** at `server/<project-name>-app/src/main/genesis/cfg/logback.xml`. There's nothing Spring-specific about it — any valid Logback config works, for example one that rolls a per-process log file under `GENESIS_HOME/runtime/logs` into `logs/archive`:
+
+```xml
+<configuration>
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd_HH-mm-ss"/>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${GENESIS_HOME}/runtime/logs/${PROCESS_NAME}.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%date{dd MMM yyyy;HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${GENESIS_HOME}/runtime/logs/archive/${PROCESS_NAME}-${bySecond}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+```
 
 **3. The system definition** — `server/<project-name>-app/src/main/genesis/cfg/genesis-system-definition.kts`:
 
@@ -111,7 +133,7 @@ systemDefinition {
 
 ### Step 4: Define the widget table
 
-Add a `WIDGET` table to the tables dictionary, `server/<project-name>-app/src/main/genesis/cfg/<project-name>-tables-dictionary.kts`:
+The tables dictionary, `server/<project-name>-app/src/main/genesis/cfg/<project-name>-tables-dictionary.kts`, already exists — it's part of the scaffold `genx` generates in Step 1. This step adds a `WIDGET` table to it:
 
 ```kotlin
 table("WIDGET", 12345) {
@@ -209,7 +231,51 @@ then run `server/build/genesis-start/start.sh`. `restEnabled=true` is required �
 
 3. **Start the project** in Genesis Start.
 
-Once the processes are up, the Spring integration is complete. Part 2 builds on this running app.
+Once the processes are up, the Spring integration is complete.
+
+#### Verify it
+
+Confirm the Step 6 event handler actually persists an INSERT by triggering it directly. Every Genesis event handler — annotation-based or GPAL — is triggered the same way: the client sends a `MESSAGE_TYPE` of `EVENT_<event name>`, over Websocket or REST; see [`EVENT_<EVENT_HANDLER_NAME>`](/develop/server-capabilities/core-business-logic-event-handler/#event_event_handler_name) for the full reference. `@GenesisEventController("WIDGET")` with `@EventMapping("INSERT")` from Step 6 registers the event as `WIDGET_INSERT`, so the REST call is:
+
+```
+POST /event-widget-insert HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: <token>
+SOURCE_REF: 1
+
+{
+  "DETAILS": {
+    "NAME": "Widget 1",
+    "PRICE": 10.0,
+    "QUALITY": "GOOD",
+    "COST": 6.0
+  }
+}
+```
+
+A successful insert returns `EVENT_ACK` with the generated `ID`:
+
+```
+HTTP/1.1 200 OK
+content-type: application/json
+
+{
+  "MESSAGE_TYPE": "EVENT_ACK",
+  "SOURCE_REF": "1",
+  "GENERATED": [
+    { "ID": 1 }
+  ],
+  "METADATA": {
+    "IS_EMPTY": true,
+    "ALL": {}
+  }
+}
+```
+
+`9064` is the default port for `GENESIS_ROUTER`, the process that serves this REST gateway on a `genx`-scaffolded project.
+
+Part 2 builds on this running app.
 
 ## Part 2: Data cube
 
