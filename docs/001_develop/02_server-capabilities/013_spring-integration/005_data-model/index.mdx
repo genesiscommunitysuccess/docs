@@ -25,7 +25,7 @@ Three modules make this up:
 - **`genesis-spring-boot-entity-generation`** is a build-time code generator that reads a Genesis dictionary and emits the actual `@Entity`, repository, enum, and configuration source files, all built on `genesis-jpa-base`'s classes.
 - **`genesis-spring-boot-annotations`** ships alongside these modules as a tiny shared vocabulary (`@GenesisApplication`, `@GenesisAnonymous`) used by other Spring/JPA areas.
 
-**Generation itself is Kotlin-only** — the generator emits KotlinPoet source, and there is no generator mode that produces `.java` output. You never hand-write a generated entity: you configure the generator's target package, and a class matching the dictionary appears under `build/generated/` on every build. The base classes themselves are not Kotlin-only, though: a hand-written Java class can extend `GenesisJpaEntity.Base`, `.WithRecordIdPrimaryKey`, or `.WithRecordIdCompositeKey` directly and behave the same way a generated entity would, minus the automatic dictionary sync and the write-propagation bridge described in [JPA data access](../jpa-data-access).
+**Generation itself is Kotlin-only** — the generator emits KotlinPoet source, and there is no generator mode that produces `.java` output. You never hand-write a generated entity: you configure the generator's target package, and a class matching the dictionary appears under `build/generated/` on every build. The base classes themselves are not Kotlin-only, though: a hand-written Java class can extend `GenesisJpaEntity.Base`, `.WithRecordIdPrimaryKey`, or `.WithRecordIdCompositeKey` directly and behave the same way a generated entity would, minus the automatic dictionary sync. Any JPA write — generated or hand-written entity alike — is automatically published to the `UpdateQueue` described in [JPA data access](../jpa-data-access); no manual wiring is required.
 
 The generated entity behaves like a native Genesis row: it carries the same `RECORD_ID`/`TIMESTAMP` system columns, the same composite-key semantics, and the same epoch-millis date encoding as the rest of the platform — it is not a second, disconnected copy of the data.
 
@@ -252,6 +252,18 @@ public class WithRecIdPkComposite(/* ... */) :
 
 `id` is not a value a developer sets or chooses on the annotation — it mirrors the table's own dictionary `id` (declared in the `.kts` dictionary source, e.g. `table(name = "APPROVAL", id = 16, ...)`), or for an `_AUDIT` sibling, the `id` declared inside `audit = details(id = ..., sequence = ...)`. The generator emits it onto the annotation from that declared value.
 
+:::note A primary key declared with `.autoIncrement()` gets plain JPA annotations, not one of the above
+None of the `genesis-jpa-base` generators above apply when the dictionary's primary key is declared with the classic `.autoIncrement()` field modifier (as the getting-started tutorial's `WIDGET.ID` is: `field("ID", LONG).autoIncrement().primaryKey()`). For that shape, the generator instead emits plain `jakarta.persistence` annotations wrapping Hibernate's own native sequence:
+
+```kotlin
+@field:GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_seq_gen")
+@field:SequenceGenerator(name = "id_seq_gen", sequenceName = "WIDGET-ID", allocationSize = 1)
+override var pk: Long = id
+```
+
+This is an ordinary incrementing database sequence — a plain number, with no alphanumeric prefix or zero-padding. It is not the same mechanism as `@GenesisFrameworkSequence`, which is what the dictionary's separate `sequence` field modifier produces. On a non-primary-key field, `.autoIncrement()` instead produces `@DbSequenceValue`, as in the table above.
+:::
+
 ### Audit support
 
 An entity with a paired `_AUDIT` table (see [audited tables](/develop/server-capabilities/data-model/#audited-tables)) implements `JpaAuditableEntity<A>` (`global.genesis.jpa.base.JpaAuditableEntity`), which the generator wires in automatically. The `_AUDIT` table itself gets the same generated entity and Spring Data repository as any other dictionary table, so audit rows can be queried back through a repository — for example `ApprovalAuditRepository` — the same way as any other generated repository. Producing the audit row requires an `AuditContext` (`global.genesis.jpa.base.audit.AuditContext`, with `userName`, `eventType`, `auditText`) to be active on the thread when the write commits, via `AuditContextHolder` (`global.genesis.jpa.base.audit.AuditContextHolder`):
@@ -398,8 +410,8 @@ The generator consumes a dictionary's merged table/view definitions the same way
 
 Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate one of two ways, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim:
 
-- A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default).
-- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example, including why the enum segment is doubled.
+- A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default). A field named `QUALITY` generates an enum class named `Quality`; for a multi-word field, underscores are dropped and each segment is PascalCased, e.g. `ASSET_CLASS` becomes `AssetClass`.
+- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example.
 
 ## See also
 
