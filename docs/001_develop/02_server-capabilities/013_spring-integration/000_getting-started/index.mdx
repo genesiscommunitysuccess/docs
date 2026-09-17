@@ -121,7 +121,7 @@ table("WIDGET", 12345) {
 }
 ```
 
-`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. The doubled `Quality.Quality` segment isn't a typo: a table-scoped enum is namespaced by its table name as its own package, and the enum class inside that package still carries the enum's own name — so `Quality` shows up once for the enum's package and again for the class itself. This is deliberate, so two different tables can each declare a table-scoped enum called `Quality` without their generated classes colliding. `<product>` is the product name configured in `server/settings.gradle.kts` (`genesis { productName = ... }`) — for a project created with `genx init <project-name>`, this is `<project-name>` verbatim; see [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
+`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. The per-table package segment (`widget`, the table name lower-cased) is what lets two different tables each declare a table-scoped enum called `Quality` without their generated classes colliding — the class name itself stays `Quality`, not doubled. `<product>` is the product name configured in `server/settings.gradle.kts` (`genesis { productName = ... }`) — for a project created with `genx init <project-name>`, this is `<project-name>` verbatim; see [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
 
 ### Step 5: Implement the Spring application
 
@@ -156,14 +156,13 @@ import <packageName>.dao.Widget;
 import <packageName>.repo.WidgetRepository;
 import global.genesis.eventhandler.spring.annotation.EventMapping;
 import global.genesis.eventhandler.spring.annotation.GenesisEventController;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @GenesisEventController("WIDGET")
 public class MyEventHandler {
 
     private final WidgetRepository widgetRepository;
 
-    public MyEventHandler(@Autowired WidgetRepository widgetRepository) {
+    public MyEventHandler(WidgetRepository widgetRepository) {
         this.widgetRepository = widgetRepository;
     }
 
@@ -237,7 +236,7 @@ A `CubeResource` is just a `@Bean` — the bean name becomes the `/api/v1/cubes/
 package <packageName>;
 
 import <packageName>.dao.Widget;
-import <packageName>.dao.enums.<product>.widget.Quality.Quality;
+import <packageName>.dao.enums.<product>.widget.Quality; // <product> is the product name explained in Step 4
 import global.genesis.spring.data.cube.resource.CubeResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -307,7 +306,7 @@ The `WIDGET` table starts empty, and an empty cube just returns an empty `rows` 
 package <packageName>;
 
 import <packageName>.dao.Widget;
-import <packageName>.dao.enums.<product>.widget.Quality.Quality;
+import <packageName>.dao.enums.<product>.widget.Quality;
 import <packageName>.repo.WidgetRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -382,6 +381,37 @@ With the seed data above, `widgets/byQuality` comes back like this — three gro
     { "name": "totalCost", "role": "MEASURE", "type": "DOUBLE" },
     { "name": "totalPrice", "role": "MEASURE", "type": "DOUBLE" },
     { "name": "widgetCount", "role": "MEASURE", "type": "LONG" },
+    { "name": "ROW_REF", "role": "ROW_REF", "type": "STRING" }
+  ]
+}
+```
+
+`widgetMargins/query` comes back differently: it's the dynamic path with no grouping, so every seeded row is returned flat, each carrying the full `WidgetMargin` column set plus its own `ROW_REF`:
+
+```json
+{
+  "rows": [
+    { "id": 1, "name": "Widget 1", "quality": "OK", "price": 10.0, "cost": 6.0, "margin": 4.0, "ROW_REF": "1|1" },
+    { "id": 2, "name": "Widget 2", "quality": "BAD", "price": 20.0, "cost": 12.0, "margin": 8.0, "ROW_REF": "1|2" },
+    { "id": 3, "name": "Widget 3", "quality": "GOOD", "price": 30.0, "cost": 18.0, "margin": 12.0, "ROW_REF": "1|3" },
+    { "id": 4, "name": "Widget 4", "quality": "OK", "price": 40.0, "cost": 24.0, "margin": 16.0, "ROW_REF": "1|4" },
+    { "id": 5, "name": "Widget 5", "quality": "BAD", "price": 50.0, "cost": 30.0, "margin": 20.0, "ROW_REF": "1|5" },
+    { "id": 6, "name": "Widget 6", "quality": "GOOD", "price": 60.0, "cost": 36.0, "margin": 24.0, "ROW_REF": "1|6" },
+    { "id": 7, "name": "Widget 7", "quality": "OK", "price": 70.0, "cost": 42.0, "margin": 28.0, "ROW_REF": "1|7" },
+    { "id": 8, "name": "Widget 8", "quality": "BAD", "price": 80.0, "cost": 48.0, "margin": 32.0, "ROW_REF": "1|8" },
+    { "id": 9, "name": "Widget 9", "quality": "GOOD", "price": 90.0, "cost": 54.0, "margin": 36.0, "ROW_REF": "1|9" },
+    { "id": 10, "name": "Widget 10", "quality": "OK", "price": 100.0, "cost": 60.0, "margin": 40.0, "ROW_REF": "1|10" }
+  ],
+  "hasMore": false,
+  "rowKind": "FLAT",
+  "page": { "number": 0, "size": 100 },
+  "columns": [
+    { "name": "id", "role": "KEY", "type": "LONG" },
+    { "name": "name", "role": "KEY", "type": "STRING" },
+    { "name": "quality", "role": "KEY", "type": "ENUM" },
+    { "name": "price", "role": "KEY", "type": "DOUBLE" },
+    { "name": "cost", "role": "KEY", "type": "DOUBLE" },
+    { "name": "margin", "role": "KEY", "type": "DOUBLE" },
     { "name": "ROW_REF", "role": "ROW_REF", "type": "STRING" }
   ]
 }
