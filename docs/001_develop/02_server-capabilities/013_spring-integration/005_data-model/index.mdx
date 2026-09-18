@@ -157,6 +157,8 @@ public class SimpleTableJava extends GenesisJpaEntity.Base<Integer> {
 
 The `recordId`/`timestamp` fields are inherited from `GenesisJpaEntity.Base` and are never set directly by application code — they are populated by Hibernate generators on insert, described under [ID and value generators](#id-and-value-generators) below.
 
+Every generated entity also carries several unconditional members that are omitted from the abridged examples on this page: a class-level KDoc summarizing the primary key and the framework-managed columns; a `DbRecordProvider` (`global.genesis.db.entity.DbRecordProvider`) implementation via a `toDbRecord()` delegate; a `dataEquals()` delegate; and a `toString()` override. All four are generated for every entity, not just this one.
+
 ## Configuration options
 
 ### Base entity classes
@@ -192,6 +194,8 @@ Note the `if (this.pk == 0L) return false` guard in `equals()` — an unsaved (`
 
 `recordId`, `timestamp`, and the primary key on `WithRecordIdPrimaryKey` are never set directly by application code; they are populated by the ID generators described below. Test fixtures or migration code that legitimately needs to set them directly can use `GenesisJpaHelper`, a small utility with one overload per key shape.
 
+A required (non-nullable) column whose JPA type isn't primitive and that has no dictionary default — for example a `notNull()` `STRING` or `BIGDECIMAL` field — is generated as a `lateinit var` rather than a plain property, together with a companion `isXxxSet` accessor (for example `isOtherSet` for a field named `other`) that reports whether the property has been initialized; reading it beforehand throws `UninitializedPropertyAccessException`. A required primitive column (`INT`, `LONG`, `BOOLEAN`, and so on) is unaffected and gets a plain, zero-valued property instead, the way `SimpleTable.simpleId` does in [Example configuration](#example-configuration).
+
 :::note No entity member may be `final`
 Hibernate generates lazy-loading proxy subclasses of every entity, overriding getters and the identifier accessor. If you hand-write an entity or subclass a generated one, do not mark properties or functions `final` — every base class in `genesis-jpa-base` is written with this in mind.
 :::
@@ -206,7 +210,7 @@ package global.genesis.jpa.repo
 interface SimpleTableRepository : GenesisJpaRepository.Nullable<SimpleTable, Int>
 ```
 
-See [JPA data access](../jpa-data-access) for what `GenesisJpaRepository` provides and how a repository's writes reach the database.
+See [JPA data access](../jpa-data-access) for what `GenesisJpaRepository` provides, how a repository's writes reach the database, and the per-dictionary-index `findBy*`/`existsBy*`/`countBy*` methods the generator adds to every repository.
 
 ### Shared annotations
 
@@ -398,6 +402,8 @@ public class ApprovalAudit @JvmOverloads constructor(
 }
 ```
 
+For a complete dictionary example that combines `audit = details(...)` with a sequence-generated primary key end to end, see [How to audit changes to a table](/how-to/ht-audit/).
+
 ### Date/time handling
 
 `LocalDateToLongConverter` and `OffsetDateTimeToLongConverter` (`global.genesis.jpa.converter`, both `@Converter(autoApply = true)`) map JPA `LocalDate`/`OffsetDateTime` properties to the same epoch-millis storage the rest of the platform uses for `DATE`/`DATETIME` fields, so a JPA-mapped table stays binary-compatible with the rest of the platform's date handling without any extra configuration on the entity. `DATE` fields map to `LocalDate` via `LocalDateToLongConverter`; `DATETIME` fields map to `OffsetDateTime` via `OffsetDateTimeToLongConverter`; `NANO_TIMESTAMP` fields map to `Long`. `LocalDate` anchors the calendar date at midnight UTC; `OffsetDateTime` loses its original offset on the round trip — both are read back at UTC, since the underlying column is a bare epoch value with no stored offset. `OffsetDateTimeToLongConverter` stores `toEpochMilli()`, so any sub-millisecond precision is truncated and such a value does not round-trip exactly. Because the converter is auto-applied, it also converts `OffsetDateTime` parameters of derived queries, not only stored fields.
@@ -417,7 +423,22 @@ The generator consumes a dictionary's merged table/view definitions the same way
 Ordinary tables — single-key, composite-key, enum fields, table-scoped or shared enums — are all supported. Enum fields generate one of two ways, both plain `enum class` declarations consumed via `@Enumerated(EnumType.STRING)` on the referencing field — ordinary JPA that Java code can use with no interop shim:
 
 - A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default). A field named `QUALITY` generates an enum class named `Quality`; for a multi-word field, underscores are dropped and each segment is PascalCased, e.g. `ASSET_CLASS` becomes `AssetClass`.
-- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example. For a multi-word table, the package segment is only lower-cased — underscores are kept, not stripped (`WORK_ORDER` becomes `work_order`), unlike the shared-enum class-name rule above (`ASSET_CLASS` becomes `AssetClass`, underscores dropped, PascalCased).
+- A **table-scoped enum**, nested under a per-table package: `<packageName>.dao.enums.<product>.<table-lowercase>.<Enum>`, where `<product>` is the product name configured via `genesis { productName = ... }`. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example. For a multi-word table, the package segment is only lower-cased — underscores are kept, not stripped (`WORK_ORDER` becomes `work_order`), unlike the shared-enum class-name rule above (`ASSET_CLASS` becomes `AssetClass`, underscores dropped, PascalCased). The `<product>` segment, by contrast, is taken verbatim from the dictionary file's own name — it is not lower-cased the way the table segment is.
+
+An `ENUM` field always has a default: as the classic [data model](/develop/server-capabilities/data-model/#enum) documents, when the dictionary doesn't set one explicitly, the first declared value becomes the default. Because a default value marks a field as required, every generated `ENUM` property ends up non-nullable and `@NotNull`-annotated as a consequence of that default, never a nullable type, regardless of whether the dictionary itself declared `.notNull()`. Whichever form generates the enum class, the referencing property carries the same annotation on its backing field (abridged to the load-bearing members):
+
+```kotlin
+public class SomeEntity @JvmOverloads constructor(
+  quality: Quality = Quality.HIGH,
+  // ...other columns elided...
+) : GenesisJpaEntity.Base<String>() {
+  @field:NotNull
+  @field:Column(nullable = false)
+  @field:Enumerated(EnumType.STRING)
+  public var quality: Quality = quality
+  // ...
+}
+```
 
 Each generated entity also gets a generated mapper companion, named `<EntityClassName>DbMapper`, in `$entityPackageName.mapper` — this is what `toAuditEntity` forwards to (see [Audit support](#audit-support)). An audited entity's `_AUDIT` sibling gets its own mapper generated alongside it, `<EntityClassName>AuditDbMapper`. Each mapper implements `JpaDbMapper<T>` (`global.genesis.jpa.base`), converting in both directions (`toDbRecord` and `fromDbRecord`). The generated `JpaConfiguration` class registers a table entity's mapper as a Spring bean, which is how an [`@UpdateQueueListener`](../jpa-data-access#listening-to-updatequeue-changes) turns an update back into an entity. Audit-table mappers are generated and registered exactly like any other table's mapper. View mappers are not registered. Each mapper is generated as a Kotlin `object`, so if you turn off the generated configuration class (`generateConfigurationClass = false` on the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin)), register it by returning the object itself rather than constructing it: `@Bean fun positionDbMapper() = PositionDbMapper` (from Java, return `PositionDbMapper.INSTANCE`).
 
