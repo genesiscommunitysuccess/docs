@@ -22,7 +22,7 @@ See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis
 ## Genesis Spring Boot plugin
 
 :::note
-Spring integration ships with Genesis Application Platform v10 (currently the pre-GA `10.0.0-beta2`). Make sure your project is on that version (or later) before applying the plugin. Check `server/gradle.properties` and make sure `genesisVersion` and `authVersion` are set to `10.0.0-beta2` (or later) — bump them if the generated project seeded an older version.
+Spring integration ships with Genesis Application Platform v10 (currently the pre-GA `10.0.0-beta2`; the plugin itself first shipped in `10.0.0-beta1`). Make sure your project is on that version (or later) before applying the plugin. Check `server/gradle.properties` and make sure `genesisVersion` and `authVersion` are set to `10.0.0-beta2` (or later) — bump them if the generated project seeded an older version.
 :::
 
 The Genesis Spring Boot plugin (`global.genesis.spring`) is the build-time entry point for Genesis's Spring Boot/JPA application style. Applying it to a module provides:
@@ -35,7 +35,7 @@ Unlike the core [Genesis Build plugin](/build-deploy-operate/build/plugins#genes
 
 ### How to enable?
 
-Applying the plugin requires the module's `settings.gradle.kts` to already have Genesis's `global.genesis.settings` plugin applied — the same one that manages `global.genesis.build`. That's because `global.genesis.spring` is a version-managed plugin id, and it only resolves without an explicit version string through that mechanism. A genx-generated project already has `global.genesis.settings` applied, so this is only a concern for a manually-created or restructured build. With that in place, add the plugin to the module's own `build.gradle.kts`:
+Applying the plugin requires the `settings.gradle.kts` of the Gradle build that contains the module (in a genx layout, `server/settings.gradle.kts`) to already have Genesis's `global.genesis.settings` plugin applied — the same one that manages `global.genesis.build`. That's because `global.genesis.spring` is a version-managed plugin id, and it only resolves without an explicit version string through that mechanism. A genx-generated project already has `global.genesis.settings` applied, so this is only a concern for a manually-created or restructured build. With that in place, add the plugin to the module's own `build.gradle.kts`:
 
 ```kotlin
 // build.gradle.kts
@@ -76,6 +76,8 @@ dependencies {
     implementation("global.genesis:genesis-spring-boot-starter")
 }
 ```
+
+To see which version the BOM actually pins for a given dependency, run `./gradlew <module>:dependencies` (or `./gradlew <module>:dependencyInsight --dependency <artifact>`) and inspect the resolved version.
 
 ### Processes and service manifest generation
 
