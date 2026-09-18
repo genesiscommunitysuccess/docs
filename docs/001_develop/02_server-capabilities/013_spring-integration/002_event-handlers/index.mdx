@@ -558,7 +558,6 @@ This module is real, working code with test coverage for everything described ab
 - **`@RequiresAuth` (row-level/dynamic authorisation) is parsed but not enforced.** Only the static `@RequiresAnyRight`/`@RequiresAllRights` checks actually run.
 - **`@IsValidateOnly` only takes effect on a `@GenesisEventController`/`@EventMapping` method**, not on a single `@GenesisEventHandler`'s `@EventCommit` method — see [Manual validate/commit control](#manual-validatecommit-control) above.
 - **Bean Validation (`@Valid`/`@Validated`) on a payload parameter has no effect.** The annotation is recorded but nothing runs validation against it.
-- **`@ExposeClientError` has no observable effect.** An exception's message reaches the client nack either way.
 - **Java `record` classes crash bean creation** for a handler or payload type — always use a Kotlin `data class` or an ordinary Java class instead.
 
 Two of these are easy to trip over in practice. Both reuse classes already defined earlier on this page.
