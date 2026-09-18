@@ -121,7 +121,9 @@ systemDefinition {
         // ...
         item(name = "LogFramework", value = "LOG4J2")
         item(name = "LogFrameworkConfig", value = "logback.xml")
-        item(name = "DbGenerateViewObjects", value = "true") // required for JPA view generation — see below
+
+        // Unrelated to logging — a required setting that happens to live in the same file. See below.
+        item(name = "DbGenerateViewObjects", value = "true")
         // ...
     }
 }
@@ -133,7 +135,7 @@ systemDefinition {
 
 ### Step 4: Define the widget table
 
-The tables dictionary, `server/<project-name>-app/src/main/genesis/cfg/<project-name>-tables-dictionary.kts`, already exists — it's part of the scaffold `genx` generates in Step 1. This step adds a `WIDGET` table to it:
+The tables dictionary, `server/<project-name>-app/src/main/genesis/cfg/<project-name>-tables-dictionary.kts`, already exists — it's part of the scaffold `genx init` generates in Step 1, with an empty top-level `tables { }` wrapper. This step adds a `WIDGET` table to it, inside that wrapper, not alongside it:
 
 ```kotlin
 table("WIDGET", 12345) {
@@ -226,7 +228,7 @@ No GUI available (CI, a container, over SSH)? Start the process headlessly inste
     -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=<port>
 ```
 
-then run `server/build/genesis-start/start.sh`. `restEnabled=true` is required — without it the process starts and immediately exits.
+then run `server/build/genesis-start/start.sh`. `restEnabled=true` is required — without it the process starts and immediately exits. `restPort` here is Genesis Start's own control-plane port for managing the process, not the Spring application's HTTP port — that's the port the curl examples in Part 2 target, configured separately (see Step 11).
 :::
 
 3. **Start the project** in Genesis Start.
@@ -279,8 +281,8 @@ Part 2 builds on this running app.
 
 ## Part 2: Data cube
 
-:::caution
-The data cube's HTTP endpoints don't have authentication yet. Don't point any of this at sensitive data.
+:::note
+Cube endpoints run behind the Spring integration's [session-token authentication](../core#session-token-authentication), the same as any other endpoint — a request needs a valid `SESSION_AUTH_TOKEN` header or it gets `401`. Step 11 shows how to obtain one.
 :::
 
 The `Widget` entity generated in Step 7 is already dictionary-generated with a `@CubeDefaultIdentity`, which is all a cube needs from its source entity.
@@ -416,20 +418,32 @@ With the app rebuilt, restarted, and seeded:
 These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml`, or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. Adjust the host:port in the curl examples below to match.
 :::
 
+:::note
+Every call below needs a `SESSION_AUTH_TOKEN` header (see the note at the start of Part 2). Obtain one by logging in against your project's `GENESIS_ROUTER` — by default port `9064` — with your own project's admin credentials:
+
+```shell
+curl -s -X POST 'http://localhost:9064/event-login-auth' \
+     -H 'Content-Type: application/json' \
+     -d '{"DETAILS": {"USER_NAME": "<user>", "PASSWORD": "<password>"}}'
+```
+
+Take the `SESSION_AUTH_TOKEN` value from the response and substitute it for `<token>` below — see [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) for the full request/response shape.
+:::
+
 ```shell
 # canned aggregate on the entity source: total cost/price and widget count per quality grade
-curl -s 'http://localhost:8080/api/v1/cubes/widgets/byQuality?sort=-totalCost'
+curl -s -H 'SESSION_AUTH_TOKEN: <token>' 'http://localhost:8080/api/v1/cubes/widgets/byQuality?sort=-totalCost'
 
 # dynamic path on the entity source: flat, unfiltered page of raw widgets
 curl -s -X POST 'http://localhost:8080/api/v1/cubes/widgets/query' \
-     -H 'Content-Type: application/json' -d '{}'
+     -H 'Content-Type: application/json' -H 'SESSION_AUTH_TOKEN: <token>' -d '{}'
 
 # canned aggregate on the JPQL source: average margin per quality grade
-curl -s 'http://localhost:8080/api/v1/cubes/widgetMargins/byQuality'
+curl -s -H 'SESSION_AUTH_TOKEN: <token>' 'http://localhost:8080/api/v1/cubes/widgetMargins/byQuality'
 
 # dynamic path on the JPQL source: flat rows including the computed "margin" column
 curl -s -X POST 'http://localhost:8080/api/v1/cubes/widgetMargins/query' \
-     -H 'Content-Type: application/json' -d '{}'
+     -H 'Content-Type: application/json' -H 'SESSION_AUTH_TOKEN: <token>' -d '{}'
 ```
 
 With the seed data above, `widgets/byQuality` comes back like this — three groups (`GOOD`/`OK`/`BAD`), each with its summed cost/price and a count. The group key (`quality`) is also the operation's projection, so it doubles as each row's identity and the response carries a `ROW_REF` per row:
@@ -484,6 +498,8 @@ With the seed data above, `widgets/byQuality` comes back like this — three gro
   ]
 }
 ```
+
+These JSON blocks are abbreviated for readability — a real response's column descriptors also carry `pivot`, `groupLevel`, `numberAsString` and `encoding`, and the envelope itself carries a top-level `generation` string. See [Cube query engine](../data-cube) for the full response shape.
 
 ## Further reading
 
