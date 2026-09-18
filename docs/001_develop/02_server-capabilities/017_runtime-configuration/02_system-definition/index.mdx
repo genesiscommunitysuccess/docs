@@ -181,9 +181,9 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on the [Data Model](/develop/server-capabilities/data-model/#sequence)
 
-**LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
+**LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2. This covers Genesis's own internal processes; in a Spring app it stays `LOG4J2` even when the Spring side is configured to use Logback — see [Spring integration getting started: switch logging to Logback](/develop/server-capabilities/spring-integration/getting-started/#step-3-switch-logging-to-logback).
 
-**LogFrameworkConfig**: Contains name of the log framework configuration file.
+**LogFrameworkConfig**: Contains name of the log framework configuration file. In a Spring app, this is set separately from `LogFramework` to point the Spring side at `logback.xml`.
 
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
