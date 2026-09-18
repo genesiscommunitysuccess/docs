@@ -266,6 +266,14 @@ public class GreetingService {
 bound to prefix `app` is satisfied by the Genesis-sourced value once nothing higher-priority
 supplies it first.
 
+:::note
+A `@GenesisSpringTest` does not read your project's real system-definition files by default, so a
+`@Value`-bound property like `APP_GREETING` above resolves to its fallback in tests unless you
+supply it another way. Use `@SysDefOverwrite` to provide the value directly in the test, or see
+[`enableAppConfigInTests`](/develop/server-capabilities/testing-api#system-definitions-in-tests) to
+opt the test into reading the real system-definition files instead.
+:::
+
 ### Session-token authentication
 
 Because a router-proxied request reaches a Spring controller *before* the router's own

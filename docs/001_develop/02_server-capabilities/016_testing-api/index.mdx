@@ -140,6 +140,24 @@ It will do the following for each test:
 
 The [`@GenesisDatabaseTest`](#genesisdatabasetest) and [`@GenesisTest`](#genesistest) can be found in the `global.genesis.testsupport.jupiter` package.
 
+### System definitions in tests
+
+By default, a Genesis test context — whether started via `@GenesisTest`/`@GenesisDatabaseTest`
+or via `@GenesisSpringTest` — does not read your project's real system-definition files. It builds
+an isolated, in-memory system-definition service, populated only from
+[`@SysDefOverwrite`](#sysdefoverwrite) and [`@ProvidedSysDef`](#providedsysdef). Editing your real
+`genesis-system-definition.kts` has no effect on such a test; any key not supplied by one of those
+two annotations simply resolves to its default.
+
+The `enableAppConfigInTests` system property controls this behaviour for every Genesis test context,
+Spring or classic GenesisJunit alike:
+
+- `false` (the default) — use the isolated, in-memory system-definition service described above.
+- `true` — build the system-definition service from the real system-definition files found on the
+  test classpath instead.
+
+Enable it by passing `-DenableAppConfigInTests=true` to the test JVM.
+
 ### Scenario Testing
 
 You can define and share scenarios for testing.
