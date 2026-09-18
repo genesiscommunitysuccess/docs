@@ -38,6 +38,18 @@ dependencies {
 
 In genx's default multi-module layout, a `-spring` module doesn't own the dictionary `.kts` files — the sibling `-app` module does. Add `genesisGeneratedCode(withTestDependency = true)` alongside the dependency above, or `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`.
 
+The same split affects raw GPAL *script* files too — a `-spring` module doesn't own the sibling `-app` module's scripts under `src/main/genesis` either, so loading one with [`@TestScriptFile`](#annotations) fails with something like `IllegalArgumentException: Unable to find script file(s)`. Add the `-app` module's genesis config directory as an extra test resources source directory to see it:
+
+```kotlin
+sourceSets {
+    test {
+        resources {
+            srcDir("../<app-module>/src/main/genesis")
+        }
+    }
+}
+```
+
 If you're testing a classic GPAL script app instead, use `GenesisJunit`/`GenesisSharedContextJunit` from `genesis-testsupport` directly. This module is the Spring-shaped equivalent, not a replacement.
 
 ## Annotations
@@ -51,6 +63,16 @@ If you're testing a classic GPAL script app instead, use `GenesisJunit`/`Genesis
 - **[`@UserRight`](/develop/server-capabilities/testing-api#userright)** — grants a user rights for the test. Class level only.
 - **[`@PackageScan`](/develop/server-capabilities/testing-api#packagescan)** — marks a class whose package should be scanned. Class level only. This is inherited from GenesisJunit for its own purposes (GPAL script/table package scanning); it is not how Spring discovers `@Component`/event-handler beans for the test context.
 - **[`@ResetTableAfterTest`](/develop/server-capabilities/testing-api#resettableaftertest)** — the one fixture annotation implemented at method level here: it snapshots the named tables before the class's tests run, then restores them after every test method. This reset isn't wrapped in a cache flush the way `GenesisSharedContextJunit`'s is, so a process with a data server or consolidator can retain view state derived from a table's pre-reset rows.
+
+`@TestScriptFile` needs the module under test to carry its own `genesis("pal-<kind>")` test dependency matching the script's kind, or it fails with `MissingDependencyException` (which names the exact dependency to add):
+
+| Script suffix | Test dependency |
+| --- | --- |
+| `-dataserver.kts` | `testImplementation(genesis("pal-dataserver"))` |
+| `-eventhandler.kts` | `testImplementation(genesis("pal-eventhandler"))` |
+| `-reqrep.kts` | `testImplementation(genesis("pal-requestserver"))` |
+| `-consolidator.kts` | `testImplementation(genesis("pal-consolidator"))` |
+| `-pipelines.kts` | `testImplementation(genesis("pal-datapipeline"))` |
 
 If you write your own annotation that composes `@GenesisSpringTest` (for example, to add a product-specific `@Tag`), keep `@Tag("DatabaseTest")` and the `DbLayer=SQL` gate travelling together — a class carrying only one of them runs in no CI job at all.
 
@@ -155,6 +177,14 @@ section](../core#testing) introduces: exclude `GenesisSpringBootConfiguration` a
 `GenesisSpringWebConfig` so no Genesis process boots, then add `@AutoConfigureMockMvc` and stub
 `UserSessionCache` directly instead of logging a session in for real.
 
+Exclude the autoconfiguration class for each other Genesis Spring starter your module depends on
+too, or its beans still try to boot: `global.genesis.springboot.security.GenesisSpringSecurityConfig`
+(also from `genesis-spring-boot-starter`), `global.genesis.eventhandler.spring.GenesisSpringEventHandlerConfig`
+(`genesis-eventhandler-spring-boot-starter`), `global.genesis.spring.data.GenesisDataConfig`
+(`genesis-data-spring-boot-starter`), and `global.genesis.cube.web.CubeWebConfig`
+(`genesis-data-cube-spring-boot-starter`) are the ones the eventhandler, JPA, and data-cube starters
+register.
+
 `UserSessionCache` (`global.genesis.session.UserSessionCache`) has two lookup methods, and which one
 the security layer calls matters for what to stub:
 
@@ -181,6 +211,11 @@ dependencies {
 }
 ```
 
+The Genesis Spring test artifacts are compiled against Kotlin 2.4.0 or later; a consuming module
+pinned to an older Kotlin toolchain (for example the Kotlin Gradle plugin) can hit a Kotlin
+metadata-version mismatch that surfaces as an unresolved-reference compile error on a symbol that
+genuinely exists in the jar — pin the module's own Kotlin plugin to 2.4.0 or later to avoid it.
+
 `@AutoConfigureMockMvc` itself now lives at
 `org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc`, reachable through the
 new `spring-boot-starter-webmvc-test` dependency above rather than `spring-boot-starter-test` alone.
@@ -193,6 +228,9 @@ Security's test support to the built `MockMvc` automatically, so the real filter
 This test exercises the same `/secure` endpoint [Application core's session-token authentication
 example](../core#session-token-authentication) declares; the same shape works against any
 `@RestController` endpoint, including a [cube resource](../data-cube)'s wire endpoints:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 package com.example.myapp.jpa
@@ -297,6 +335,131 @@ class SecureControllerTest {
     }
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+`userLoggedInCheckDb` is still a Kotlin `suspend` function when called from Java — there's no
+`mockito-kotlin` `onBlocking` sugar available, so stub the compiler-generated `Continuation`
+parameter directly with Mockito's `any()`. Plain `org.mockito:mockito-core`, already pulled in by
+`spring-boot-starter-test`, is enough; the `mockito-kotlin` dependency above is only needed for the
+Kotlin version.
+
+```java
+package com.example.myapp.jpa;
+
+import global.genesis.session.UserSessionCache;
+import global.genesis.springboot.annotation.GenesisAnonymous;
+import org.joda.time.DateTime;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import static global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest(
+    classes = SecureControllerTestJava.TestApp.class,
+    properties = {
+        "spring.autoconfigure.exclude=" +
+            "global.genesis.springboot.config.GenesisSpringBootConfiguration," +
+            "global.genesis.springboot.web.GenesisSpringWebConfig",
+    }
+)
+@AutoConfigureMockMvc
+public class SecureControllerTestJava {
+
+    private static final String VALID_TOKEN = "valid-session-token";
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserSessionCache userSessionCache;
+
+    @BeforeEach
+    void stubValidSession() {
+        when(userSessionCache.userLoggedInCheckDb(eq(VALID_TOKEN), any())).thenReturn(
+            new UserSessionCache.UserSessionRef("JaneDoe", "session-1", VALID_TOKEN, DateTime.now().plusHours(1))
+        );
+    }
+
+    @Test
+    @DisplayName("rejects a request with no session token")
+    void rejectsRequestWithNoSessionToken() throws Exception {
+        mockMvc.perform(get("/secure")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("serves a request carrying a valid session token")
+    void servesRequestWithValidSessionToken() throws Exception {
+        mockMvc.perform(get("/secure").header(SESSION_AUTH_TOKEN_HEADER, VALID_TOKEN))
+            .andExpect(status().isOk())
+            .andExpect(content().string("secure"));
+    }
+
+    @Test
+    @DisplayName("serves a GenesisAnonymous endpoint without a token")
+    void servesGenesisAnonymousEndpointWithoutToken() throws Exception {
+        mockMvc.perform(get("/public/ping")).andExpect(status().isOk());
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @EnableAutoConfiguration
+    public static class TestApp {
+        // Stands in for the real UserSessionCache a booted process would bridge from Guice.
+        @Bean
+        public UserSessionCache userSessionCache() {
+            return mock(UserSessionCache.class);
+        }
+
+        @Bean
+        public SecureController secureController() {
+            return new SecureController();
+        }
+
+        @Bean
+        public PublicController publicController() {
+            return new PublicController();
+        }
+    }
+
+    @RestController
+    public static class SecureController {
+        @GetMapping("/secure")
+        public String secure() {
+            return "secure";
+        }
+    }
+
+    @RestController
+    public static class PublicController {
+        @GenesisAnonymous
+        @GetMapping("/public/ping")
+        public String ping() {
+            return "pong";
+        }
+    }
+}
+```
+
+</TabItem>
+</Tabs>
 
 `SESSION_AUTH_TOKEN_HEADER` (`global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER`)
 resolves to `SESSION_AUTH_TOKEN`, the same header the rest of Genesis uses — see [Session-token
