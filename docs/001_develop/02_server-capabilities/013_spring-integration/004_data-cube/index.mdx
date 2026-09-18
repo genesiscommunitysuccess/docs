@@ -34,7 +34,7 @@ Concretely, it gives you:
 - A declarative **exposure layer** (`CubeResource`, built via `CubeResourceBuilder` or the
   `cubeResource { }` Kotlin DSL) that turns a cube into a named HTTP resource: which operations
   exist, which columns callers may group/pivot/filter on, and what per-user row scoping applies.
-- An HTTP wire layer (`CubeQueryController`) exposing each resource at
+- An internal HTTP wire layer exposing each resource at
   `/api/v1/cubes/{resource}/...`, with ETag caching and RFC 9457 `problem+json` errors.
 
 Reach for it when you're building a grid-backed view — a positions blotter, a P&L breakdown, a
@@ -80,10 +80,9 @@ resource's `permission(...)` authority maps onto it.
 | `genesis.cube.web.max-filter-length` | `8192` | Character budget for the wire `filter` parameter before you should switch from GET to POST |
 | `genesis.cube.web.max-sort-orders` | `64` | Ceiling on the number of comma-separated `sort` entries |
 
-The starter registers its HTTP layer through its own autoconfiguration class,
-`global.genesis.cube.web.CubeWebConfig`, independently of `GenesisSpringBootConfiguration` and
-`GenesisSpringWebConfig` — excluding those two from a test context does not exclude a cube
-resource's endpoints.
+The starter registers its HTTP layer through its own autoconfiguration, independently of
+`GenesisSpringBootConfiguration` and `GenesisSpringWebConfig` — excluding those two from a test
+context does not exclude a cube resource's endpoints.
 
 The `curl`/wire examples below assume the default port `8080` — see [Getting started: Step
 11](../getting-started#step-11-query-it) for how to run on a different port via plain Spring Boot
@@ -111,10 +110,12 @@ Every code sample on this page refers to the following types by their simple nam
 
 A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResourceBuilder` or the
 Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
-bean is resolved and validated fail-fast: referenced columns must exist on the entity, an operation
-must declare at least one `groupBy`/aggregation, output column names must not collide, and none may
-be named `ROW_REF` (reserved for row addressing). A misconfigured resource fails application
-startup rather than the first request.
+bean is resolved and validated fail-fast: referenced columns must exist on the entity, a
+JPQL-sourced exposure's projection aliases must all resolve to real columns on the source query, an
+operation must declare at least one `groupBy`/aggregation, output column names must not collide,
+and none may be named `ROW_REF` (reserved for row addressing). A misconfigured resource fails
+application startup rather than the first request — a typo in a JPQL projection alias, for example,
+throws at bean instantiation rather than silently mislabelling a column.
 
 The smallest realistic exposure — one entity, one named operation, queried over HTTP — uses a
 generated entity such as `Trade` (fields including `currencyId`, `tradeType`, `tradeDate`,
@@ -161,17 +162,18 @@ public class TradeCubeConfig {
 </Tabs>
 
 The bean name (`tradesByCurrency`) becomes the resource's wire name unless you pin one explicitly
-with `.name("...")`. Query it at `/api/v1/cubes/{resource}/{operation}`:
+with `.name("...")`. Query it at `/api/v1/cubes/{resource}/{operation}`, with `filter` as a
+`criteriaMatch` expression (grammar covered in [Filtering](#filtering) below):
 
 ```
 GET /api/v1/cubes/tradesByCurrency/byCurrency?filter=currencyId=='USD'&sort=quantity&page=0&size=50
 ```
 
-`filter` is a `criteriaMatch` expression (see [Filtering](#filtering)), gated to the operation's
-filterable columns — here just `currencyId`, its own group key. Filtering on `quantity` is
-rejected the same way a made-up column would be (see [no-probing](#security)), because this
-operation declared no wider `FilterPolicy`. `sort`, `page` and `size` default to unsorted, `0` and
-`100` respectively. A `POST` with a JSON body is equivalent and preferred for longer filters.
+`filter` here is gated to the operation's filterable columns — just `currencyId`, its own group
+key. Filtering on `quantity` is rejected the same way a made-up column would be (see
+[no-probing](#security)), because this operation declared no wider `FilterPolicy`. `sort`, `page`
+and `size` default to unsorted, `0` and `100` respectively. A `POST` with a JSON body is equivalent
+and preferred for longer filters.
 
 A few further builder forms exist alongside the ones above: `exposeQuery()` with no customizer
 exposes the dynamic query path with no restrictions (equivalent to an empty block); `sum`, `avg`,
@@ -186,7 +188,7 @@ endpoint](../test-tooling#testing-an-http-endpoint) for a complete `MockMvc` tes
 `@RestController` endpoint that stubs the session lookup instead of logging in for real; the same
 shape works against a cube resource's endpoints.
 
-The response is a `CubeEnvelope`: a `rows` array, `hasMore`, `rowKind`, an echoed `page`, and the
+The response is an envelope object: a `rows` array, `hasMore`, `rowKind`, an echoed `page`, and the
 resolved `columns` — plus a `ROW_REF` per row when the operation's group key doubles as its
 addressable identity. `ROW_REF` is an opaque, versioned identity string — round-trip it as
 supplied rather than parsing or constructing one yourself.
@@ -240,6 +242,11 @@ A read that selects rows by position (a page, or a limited list) comes back in a
 the caller's sort, then the row's own identity as a tiebreaker — so paging never repeats or drops
 rows, provided the source has an identity to tiebreak on. An unpaged, unsorted read is explicitly
 arbitrary order, not a stable one to rely on.
+
+Every column in a flat query's response — including a computed one, such as a JPQL expression
+column — carries `role: KEY` in the envelope's `columns` list, since none of them are aggregated;
+`role` only distinguishes `KEY`/`MEASURE`/`ROW_REF` once a query groups or pivots (see
+[Grouped](#grouped) below).
 
 ### Grouped
 
@@ -530,16 +537,28 @@ made-up column would:
 }
 ```
 
+Filtering on `bogusColumn` — a column that doesn't exist on `Trade` at all — produces the identical
+shape, right down to the same `type`:
+
+```json
+{
+  "type": "https://docs.genesis.global/problems/cube/query-rejected",
+  "title": "Query rejected",
+  "status": 400,
+  "detail": "Filter references column(s) not filterable on cube resource 'tradesByCurrency': [bogusColumn]. Only these columns may be filtered: [currencyId]"
+}
+```
+
 Splitting that error per reason would reintroduce, in a machine-readable field, exactly the
 column-existence discrimination the rule exists to prevent.
 
-That HTTP wrapping only happens at the `CubeQueryController` boundary — a `@RestControllerAdvice`
-(`CubeProblemHandler`) scoped to that controller catches the rejection and renders it as the
-`problem+json` body above. Reached in-process instead — via `CubeResourceRegistry.require(name)`
-returning a `ResolvedCubeResource`, the same route the [per-user row
-scoping](#per-user-row-scoping) example uses — the identical rejection surfaces as a raw, uncaught
-`global.genesis.spring.data.cube.model.CubeRequestException`, carrying the same message as the HTTP
-body's `detail`, just unwrapped. The no-probing guarantee lives specifically at the
+That HTTP wrapping only happens at the HTTP endpoint boundary — an internal `@RestControllerAdvice`
+scoped to that layer catches the rejection and renders it as the `problem+json` body above. Reached
+in-process instead — via `CubeResourceRegistry.require(name)` returning a `ResolvedCubeResource`,
+the same route the [per-user row scoping](#per-user-row-scoping) example uses — the identical
+rejection surfaces as a raw, uncaught
+`global.genesis.spring.data.cube.model.CubeRequestException`, carrying the same message as the
+HTTP body's `detail`, just unwrapped. The no-probing guarantee lives specifically at the
 `ResolvedCubeResource` layer: a raw `Cube`/`EntityCube`/`CubeFactory` has no `visibleColumns` or
 `FilterPolicy` concept at all, so it enforces no column-visibility restriction of its own.
 
@@ -548,7 +567,9 @@ beyond the columns it already groups by (implicitly filterable, since their valu
 enumerated in the output). It does not apply to the dynamic `.exposeQuery { }` path (see
 [Complete usage examples](#complete-usage-examples)): that path is bounded purely by
 `visibleColumns` — all source columns by default, or narrowed to exactly the fields named in an
-explicit `projection<...>()` if the `exposeQuery` block declares one.
+explicit `projection<...>()` if the `exposeQuery` block declares one. Grouping and pivoting follow
+the same default: if the `exposeQuery { }` block never calls `groupBy(...)`/`pivotOn(...)`, a caller
+may group or pivot on any visible column — both stay open rather than defaulting to empty.
 
 | Policy | Filterable columns |
 |---|---|
@@ -579,7 +600,7 @@ caller's identity yourself as a `PrincipalValues` binding:
 
 ```kotlin
 @Bean
-fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
+fun tradesByCurrencyScoped(): CubeResource = cubeResource<Trade> {
     baseCriteria("currencyId == :username") // reified per caller; scopes every request
     operation("byCurrency") {
         groupBy("currencyId")
@@ -591,7 +612,7 @@ fun tradesByCurrency(): CubeResource = cubeResource<Trade> {
 lateinit var registry: CubeResourceRegistry
 
 fun tradesFor(username: String): CubeResult<*> {
-    val trades = registry.require("tradesByCurrency")
+    val trades = registry.require("tradesByCurrencyScoped")
     val principal = PrincipalValues { name -> if (name == "username") username else null }
     return trades.queryOperation("byCurrency", callerCriteria = null, PageRequest.of(0, 100), principal)
 }
@@ -602,7 +623,7 @@ fun tradesFor(username: String): CubeResult<*> {
 
 ```java
 @Bean
-public CubeResource tradesByCurrency() {
+public CubeResource tradesByCurrencyScoped() {
     return CubeResource.forEntity(Trade.class)
         .baseCriteria("currencyId == :username")
         .operation("byCurrency", op -> op.groupBy("currencyId").count())
@@ -613,7 +634,7 @@ public CubeResource tradesByCurrency() {
 CubeResourceRegistry registry;
 
 CubeResult<?> tradesFor(String username) {
-    ResolvedCubeResource trades = registry.require("tradesByCurrency");
+    ResolvedCubeResource trades = registry.require("tradesByCurrencyScoped");
     PrincipalValues principal = name -> "username".equals(name) ? username : null;
     return trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
 }
@@ -627,7 +648,7 @@ resource declaring `baseCriteria` should not be exposed over the built-in `/api/
 endpoints today — every request that reaches the base criteria will fail. If your application
 needs per-user row scoping now, call `CubeResourceRegistry`/`ResolvedCubeResource` yourself (as
 above) from your own controller, supplying `PrincipalValues` sourced from the authenticated
-principal, rather than relying on `CubeQueryController`. Wiring this through the built-in HTTP layer
+principal, rather than relying on the built-in HTTP wire layer. Wiring this through it
 automatically is expected in a future release.
 
 The same resolution-level call is what you exercise in a test — autowire `CubeResourceRegistry`
@@ -646,14 +667,18 @@ class TradesByCurrencyBaseCriteriaTest {
     lateinit var registry: CubeResourceRegistry
 
     @Test
-    fun `base criteria scopes the caller to their own currency`() {
-        val trades = registry.require("tradesByCurrency")
-        val principal = PrincipalValues { name -> if (name == "username") "USD" else null }
+    fun `base criteria scopes each caller to their own currency`() {
+        val trades = registry.require("tradesByCurrencyScoped")
 
-        val result = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal)
+        val usdPrincipal = PrincipalValues { name -> if (name == "username") "USD" else null }
+        val usdResult = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), usdPrincipal)
+        assertEquals(1, usdResult.totalElements)
+        assertEquals("USD", (usdResult.content.single() as Tuple).get("currencyId"))
 
-        assertEquals(1, result.totalElements)
-        assertEquals("USD", (result.content.single() as Tuple).get("currencyId"))
+        val eurPrincipal = PrincipalValues { name -> if (name == "username") "EUR" else null }
+        val eurResult = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), eurPrincipal)
+        assertEquals(1, eurResult.totalElements)
+        assertEquals("EUR", (eurResult.content.single() as Tuple).get("currencyId"))
     }
 }
 ```
@@ -670,15 +695,19 @@ public class TradesByCurrencyBaseCriteriaTest {
     CubeResourceRegistry registry;
 
     @Test
-    @DisplayName("base criteria scopes the caller to their own currency")
-    void baseCriteriaScopesCallerToOwnCurrency() {
-        ResolvedCubeResource trades = registry.require("tradesByCurrency");
-        PrincipalValues principal = name -> "username".equals(name) ? "USD" : null;
+    @DisplayName("base criteria scopes each caller to their own currency")
+    void baseCriteriaScopesEachCallerToOwnCurrency() {
+        ResolvedCubeResource trades = registry.require("tradesByCurrencyScoped");
 
-        CubeResult<?> result = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), principal);
+        PrincipalValues usdPrincipal = name -> "username".equals(name) ? "USD" : null;
+        CubeResult<?> usdResult = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), usdPrincipal);
+        assertEquals(1, usdResult.getTotalElements());
+        assertEquals("USD", ((Tuple) usdResult.getContent().get(0)).get("currencyId"));
 
-        assertEquals(1, result.getTotalElements());
-        assertEquals("USD", ((Tuple) result.getContent().get(0)).get("currencyId"));
+        PrincipalValues eurPrincipal = name -> "username".equals(name) ? "EUR" : null;
+        CubeResult<?> eurResult = trades.queryOperation("byCurrency", null, PageRequest.of(0, 100), eurPrincipal);
+        assertEquals(1, eurResult.getTotalElements());
+        assertEquals("EUR", ((Tuple) eurResult.getContent().get(0)).get("currencyId"));
     }
 }
 ```
@@ -797,11 +826,12 @@ Which columns a caller may reference beyond an operation's own group-by columns 
 
 ## Grid integration
 
-The wire protocol and response shapes (`CubeEnvelope`, `RowRef`) are generic JSON — nothing in the
-HTTP layer imports or depends on AG Grid directly. The assumption that does exist is architectural:
-the whole-cube `exposeQuery()` path's shape (group keys, aggregates, pivot dimensions, flat vs.
-grouped vs. pivoted results) maps onto what an [AG Grid Server-Side Row Model](/develop/client-capabilities/grids/grid-pro)
-datasource needs to drive `rowGroupCols`, `groupKeys`, `pivotMode` and `filterModel`.
+The wire protocol and response shapes (the response envelope, row references) are generic JSON —
+nothing in the HTTP layer imports or depends on AG Grid directly. The assumption that does exist is
+architectural: the whole-cube `exposeQuery()` path's shape (group keys, aggregates, pivot
+dimensions, flat vs. grouped vs. pivoted results) maps onto what an [AG Grid Server-Side Row
+Model](/develop/client-capabilities/grids/grid-pro) datasource needs to drive `rowGroupCols`,
+`groupKeys`, `pivotMode` and `filterModel`.
 
 Translating AG Grid's `rowGroupCols`/`groupKeys`/`pivotMode`/`filterModel` into a cube query
 request — including switching to a flat, equality-filtered query once a request reaches leaf rows,
@@ -864,7 +894,7 @@ from "unknown", extending the [no-probing rule](#security) to a resource's own e
 `GET /api/v1/cubes/{resource}/schema` returns the same resource's wire shapes as JSON Schema, one
 schema per shape:
 
-- `envelope` — the `CubeEnvelope` response wrapper
+- `envelope` — the response envelope wrapper
 - `operationRequest` — a bare named-operation request
 - `operations` — a map from operation name to that operation's own request schema
 - `queryRequest` — a `POST .../query` request body
@@ -873,6 +903,115 @@ schema per shape:
 Same ETag and `404` behaviour as the capability document above: cacheable, validated with
 `If-None-Match`, answering `304 Not Modified` on a match, and `404` under the same condition — an
 unknown resource, or one that declares neither an operation nor `exposeQuery`.
+
+## Testing
+
+[Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) exercises a `@RestController`
+without booting a real Genesis process: it excludes `GenesisSpringBootConfiguration` and
+`GenesisSpringWebConfig`, then hand-declares a `TestApp` with a mocked `UserSessionCache`. A cube
+resource can't use that recipe as-is — it needs a real JPA entity backed by a real database, which
+only exists under `@GenesisSpringTest`, and `@GenesisSpringTest` never excludes those two
+autoconfiguration classes.
+
+`@GenesisSpringTest` composes `@SpringBootTest(classes = [GenesisTestApplication::class])` with no
+`webEnvironment` override, so it defaults to Spring Boot's own `MOCK` — the same environment
+`@AutoConfigureMockMvc` expects — and it leaves the starter's JPA autoconfiguration
+(`GenesisDataConfig`) and cube autoconfiguration to wire up exactly as they would in a real process.
+Combining the two annotations therefore gives you MockMvc in front of a fully booted cube resource,
+querying a real JPA-backed data source, with no exclusion trick needed. As with [Testing an HTTP
+endpoint](../test-tooling#testing-an-http-endpoint), stubbing the suspend `userLoggedInCheckDb`
+cleanly needs mockito-kotlin's `onBlocking`, so this example is Kotlin-only:
+
+```kotlin
+package com.example.myapp.jpa
+
+import global.genesis.session.UserSessionCache
+import global.genesis.springboot.test.GenesisSpringTest
+import org.joda.time.DateTime
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+@GenesisSpringTest
+@SpringBootTest(classes = [GenesisTestApplication::class, TradeCubeConfig::class, CubeHttpQueryTest.SessionStub::class])
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+class CubeHttpQueryTest {
+
+    @Autowired
+    lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var userSessionCache: UserSessionCache
+
+    @BeforeEach
+    fun stubValidSession() {
+        userSessionCache.stub {
+            onBlocking { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
+                userName = "JaneDoe",
+                sessionId = "session-1",
+                token = VALID_TOKEN,
+                expiryDateTime = DateTime.now().plusHours(1),
+            )
+        }
+    }
+
+    @Test
+    fun `queries a real JPA-backed cube resource over its HTTP endpoint`() {
+        mockMvc.perform(
+            get("/api/v1/cubes/tradesByCurrency/byCurrency")
+                .header("SESSION_AUTH_TOKEN", VALID_TOKEN),
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.rowKind").value("GROUPED"))
+            .andExpect(jsonPath("$.rows").isArray)
+    }
+
+    // A unique @Primary bean wins Spring's own resolution over the Guice-bridged
+    // UserSessionCache (see Application core: BeanFactory bridging), without excluding
+    // GenesisSpringBootConfiguration/GenesisSpringWebConfig — so the real cube/JPA
+    // autoconfiguration stays wired.
+    @Configuration(proxyBeanMethods = false)
+    open class SessionStub {
+        @Bean
+        @Primary
+        open fun userSessionCache(): UserSessionCache = mock()
+    }
+
+    private companion object {
+        const val VALID_TOKEN = "valid-session-token"
+    }
+}
+```
+
+`TradeCubeConfig` is the `@Configuration` class declaring `tradesByCurrency` from [Declaring a cube
+resource](#declaring-a-cube-resource) — like any hand-written bean under `@GenesisSpringTest`
+(`GenesisTestApplication` does no component scanning), it has to be listed explicitly in
+`@SpringBootTest(classes = [...])` alongside `GenesisTestApplication` and the session stub, or the
+resource's bean — and its endpoint — is never registered. `userLoggedInCheckDb` is the method to
+stub, not `userLoggedIn`: see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint)
+for why. `@Primary` is what makes the override win: [Application core's BeanFactory
+bridging](../core#beanfactory-bridging) notes that Spring's own resolution, including `@Primary`,
+always takes priority over a Guice-bridged singleton like the real `UserSessionCache` this starter
+would otherwise install.
+
+Seed real rows through the same JPA repository a non-cube test would use — see [Test tooling: A
+simple example](../test-tooling#a-simple-example) — and the response reflects them exactly as a
+manual `curl` against a running app would; nothing about going through MockMvc changes the cube's
+own query, filtering or no-probing behaviour described earlier on this page.
 
 ## Complete usage examples
 
@@ -1068,6 +1207,119 @@ GET /api/v1/cubes/tradeReport/byCurrency?filter=ccy=='USD'&&tt=='BUY'
 `ccy` (the group key) and `tt` (the whitelisted column) are both filterable; `px` is not, and a
 request naming it is rejected with the same error as a nonexistent column, per the
 [no-probing rule](#security).
+
+### 3. A named operation alongside a dynamic `exposeQuery`
+
+`exposeQuery { }` and `operation(...)` aren't mutually exclusive — a single resource can expose both
+the dynamic query path and one or more named shortcuts over the same entity, each bounded
+independently:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Configuration
+class TradesCubeConfig {
+
+    @Bean
+    fun trades(): CubeResource = cubeResource<Trade> {
+        exposeQuery {
+            projection<TradeFlat>()
+            groupBy("currencyId", "tradeDate")
+        }
+        operation("byCurrency") {
+            groupBy("currencyId")
+            sum("quantity")
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Configuration
+public class TradesCubeConfig {
+
+    @Bean
+    public CubeResource trades() {
+        return CubeResource.forEntity(Trade.class)
+            .exposeQuery(q -> q
+                .projection(TradeFlat.class)
+                .groupBy("currencyId", "tradeDate"))
+            .operation("byCurrency", op -> op
+                .groupBy("currencyId")
+                .sum("quantity"))
+            .build();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`POST /api/v1/cubes/trades/query` reaches the dynamic path, bounded by `exposeQuery`'s own
+`visibleColumns`/`groupBy`/`pivotOn`; `GET /api/v1/cubes/trades/byCurrency` reaches the named
+shortcut, bounded by its own `FilterPolicy`. The two paths share the underlying cube and cache, but
+each enforces its own column-visibility rules.
+
+### 4. A typed projection on a JPQL-sourced `exposeQuery`
+
+`.projection<...>()` isn't limited to an entity-backed resource — a JPQL source can use it too,
+shaping the dynamic path's flat rows as a DTO instead of a raw `Tuple`:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Configuration
+class TradeReportDynamicCubeConfig {
+
+    private val tradeColumns =
+        "select t.currencyId as ccy, t.price as px, t.quantity as qty, t.tradeType as tt from Trade t"
+
+    data class TradeReportRow(val ccy: String, val px: Double, val qty: Int, val tt: String)
+
+    @Bean
+    fun tradeReportDynamic(): CubeResource = cubeResource(tradeColumns) {
+        exposeQuery {
+            projection<TradeReportRow>()
+            groupBy("ccy", "tt")
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Configuration
+public class TradeReportDynamicCubeConfig {
+
+    private static final String TRADE_COLUMNS =
+        "select t.currencyId as ccy, t.price as px, t.quantity as qty, t.tradeType as tt from Trade t";
+
+    record TradeReportRow(String ccy, double px, int qty, String tt) {}
+
+    @Bean
+    public CubeResource tradeReportDynamic() {
+        return CubeResource.forJpql(TRADE_COLUMNS)
+            .exposeQuery(q -> q
+                .projection(TradeReportRow.class)
+                .groupBy("ccy", "tt"))
+            .build();
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+A flat, ungrouped `POST /api/v1/cubes/tradeReportDynamic/query` returns rows shaped like
+`TradeReportRow` — `ccy`, `px`, `qty` and `tt` — exactly as a JPQL-backed named operation would,
+just without pinning the caller to one fixed group-by shape.
 
 ## See also
 
