@@ -926,6 +926,7 @@ cleanly needs mockito-kotlin's `onBlocking`, so this example is Kotlin-only:
 package com.example.myapp.jpa
 
 import global.genesis.session.UserSessionCache
+import global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER
 import global.genesis.springboot.test.GenesisSpringTest
 import org.joda.time.DateTime
 import org.junit.jupiter.api.BeforeEach
@@ -973,7 +974,7 @@ class CubeHttpQueryTest {
     fun `queries a real JPA-backed cube resource over its HTTP endpoint`() {
         mockMvc.perform(
             get("/api/v1/cubes/tradesByCurrency/byCurrency")
-                .header("SESSION_AUTH_TOKEN", VALID_TOKEN),
+                .header(SESSION_AUTH_TOKEN_HEADER, VALID_TOKEN),
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.rowKind").value("GROUPED"))
@@ -1219,10 +1220,10 @@ independently:
 
 ```kotlin
 @Configuration
-class TradesCubeConfig {
+class TradesWithOperationCubeConfig {
 
     @Bean
-    fun trades(): CubeResource = cubeResource<Trade> {
+    fun tradesWithOperation(): CubeResource = cubeResource<Trade> {
         exposeQuery {
             projection<TradeFlat>()
             groupBy("currencyId", "tradeDate")
@@ -1240,10 +1241,10 @@ class TradesCubeConfig {
 
 ```java
 @Configuration
-public class TradesCubeConfig {
+public class TradesWithOperationCubeConfig {
 
     @Bean
-    public CubeResource trades() {
+    public CubeResource tradesWithOperation() {
         return CubeResource.forEntity(Trade.class)
             .exposeQuery(q -> q
                 .projection(TradeFlat.class)
@@ -1259,10 +1260,10 @@ public class TradesCubeConfig {
 </TabItem>
 </Tabs>
 
-`POST /api/v1/cubes/trades/query` reaches the dynamic path, bounded by `exposeQuery`'s own
-`visibleColumns`/`groupBy`/`pivotOn`; `GET /api/v1/cubes/trades/byCurrency` reaches the named
-shortcut, bounded by its own `FilterPolicy`. The two paths share the underlying cube and cache, but
-each enforces its own column-visibility rules.
+`POST /api/v1/cubes/tradesWithOperation/query` reaches the dynamic path, bounded by `exposeQuery`'s
+own `visibleColumns`/`groupBy`/`pivotOn`; `GET /api/v1/cubes/tradesWithOperation/byCurrency` reaches
+the named shortcut, bounded by its own `FilterPolicy`. The two paths share the underlying cube and
+cache, but each enforces its own column-visibility rules.
 
 ### 4. A typed projection on a JPQL-sourced `exposeQuery`
 
