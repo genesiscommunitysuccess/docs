@@ -1,0 +1,57 @@
+---
+title: 'Feature flag utilities'
+sidebar_label: 'Feature flag utilities'
+id: feature-flags-utils
+keywords: [utils, utility, feature flags, isFeatureActivated, getActivatedFeatures, setActivatedFeatures, URL]
+tags:
+  - utils
+  - utility
+  - feature flags
+sidebar_position: 16
+---
+
+URL-based feature flag helpers in `@genesislcap/foundation-utils` let you enable or disable behaviour without a separate build. Flags appear in the query string as `feature.<name>`.
+
+:::info
+For API signatures, see [`isFeatureActivated`](./docs/api/foundation-utils.isfeatureactivated.md) in the [API documentation](docs/api/index.md). The Foundation Header [Feature Flags](/develop/client-capabilities/header/client-header-feature-flags/) control uses these helpers to sync selection with the URL.
+:::
+
+## Key features
+
+- **`isFeatureActivated(name)`** — `true` when `feature.<name>` is present in the current URL (any truthy presence of the key).
+- **`getActivatedFeatures()`** — names of all `feature.*` flags currently in the URL.
+- **`setActivatedFeatures(names, options?)`** — rewrites URL `feature.*` params to match `names` (each selected flag is written as `feature.<name>=true`). Reloads by default so boot-time consumers re-evaluate; pass `{ reload: false }` to update via `history.replaceState` only.
+
+## Usage
+
+```typescript
+import {
+  getActivatedFeatures,
+  isFeatureActivated,
+  setActivatedFeatures,
+} from '@genesislcap/foundation-utils';
+
+// URL: https://example.com/app?feature.darkMode=true
+console.log(isFeatureActivated('darkMode')); // true
+console.log(getActivatedFeatures()); // ['darkMode']
+
+// Enable ai + forceHttp (reloads the page by default)
+setActivatedFeatures(['ai', 'forceHttp']);
+
+// Update the URL without reloading
+setActivatedFeatures(['ai'], { reload: false });
+```
+
+## URL format
+
+```text
+https://your-app.com/?feature.newDashboard=true&feature.experimentalApi=1
+```
+
+Any truthy presence of `feature.<name>` activates that flag. Prefer `setActivatedFeatures` with the default reload when toggling flags that are read at boot time.
+
+## Considerations
+
+- Flags are evaluated at runtime from the current URL — useful for testing and gradual rollouts.
+- URL flags are visible to users; do not use them for security-sensitive controls.
+- Pair with the header [Feature Flags selector](/develop/client-capabilities/header/client-header-feature-flags/) when you want an in-app UI for toggling the same parameters.
