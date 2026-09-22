@@ -245,8 +245,50 @@ To show how many matches there are, read `tracker.matchCount` after every dataso
 `onActiveChanged` only tells you whether *any* matches exist. It will not run again when the count goes from 3 to 5, so a label that updates only there can get stuck on the old number.
 :::
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react', }, { label: 'Genesis', value: 'genesis', }, { label: 'Angular', value: 'angular', }]}>
 
+  <TabItem value="react">
+
+    Usage
+    ```tsx
+    import { DatasourceRowMatchTracker } from '@genesislcap/rapid-grid-pro';
+    import { useMemo, useState } from 'react';
+
+    const criteria = { /* module-scope RowMatchCriteria — see Row alerts */ };
+
+    export function OrdersTabs() {
+      const [alerting, setAlerting] = useState(false);
+      const [matchCount, setMatchCount] = useState(0);
+
+      const tracker = useMemo(
+        () => new DatasourceRowMatchTracker(criteria, setAlerting),
+        [],
+      );
+
+      return (
+        <rapid-tabs>
+          <rapid-tab id="equity" alert={alerting}>
+            {matchCount > 0 ? `Equity (${matchCount})` : 'Equity'}
+          </rapid-tab>
+          <rapid-tab-panel id="equityPanel">
+            <grid-pro-genesis-datasource
+              resourceName="ALL_ORDERS"
+              onDatasourceDataChanged={(event) => {
+                tracker.handleDataChanged(event.detail);
+                setMatchCount(tracker.matchCount);
+              }}
+              onDatasourceDataCleared={() => {
+                tracker.handleDataCleared();
+                setMatchCount(tracker.matchCount);
+              }}
+            />
+          </rapid-tab-panel>
+        </rapid-tabs>
+      );
+    }
+    ```
+
+  </TabItem>
   <TabItem value="genesis">
 
     Usage
@@ -290,48 +332,6 @@ To show how many matches there are, read `tracker.matchCount` after every dataso
         this.tracker.handleDataCleared();
         this.matchCount = this.tracker.matchCount;
       }
-    }
-    ```
-
-  </TabItem>
-  <TabItem value="react">
-
-    Usage
-    ```tsx
-    import { DatasourceRowMatchTracker } from '@genesislcap/rapid-grid-pro';
-    import { useMemo, useState } from 'react';
-
-    const criteria = { /* module-scope RowMatchCriteria — see Row alerts */ };
-
-    export function OrdersTabs() {
-      const [alerting, setAlerting] = useState(false);
-      const [matchCount, setMatchCount] = useState(0);
-
-      const tracker = useMemo(
-        () => new DatasourceRowMatchTracker(criteria, setAlerting),
-        [],
-      );
-
-      return (
-        <rapid-tabs>
-          <rapid-tab id="equity" alert={alerting}>
-            {matchCount > 0 ? `Equity (${matchCount})` : 'Equity'}
-          </rapid-tab>
-          <rapid-tab-panel id="equityPanel">
-            <grid-pro-genesis-datasource
-              resourceName="ALL_ORDERS"
-              onDatasourceDataChanged={(event) => {
-                tracker.handleDataChanged(event.detail);
-                setMatchCount(tracker.matchCount);
-              }}
-              onDatasourceDataCleared={() => {
-                tracker.handleDataCleared();
-                setMatchCount(tracker.matchCount);
-              }}
-            />
-          </rapid-tab-panel>
-        </rapid-tabs>
-      );
     }
     ```
 
