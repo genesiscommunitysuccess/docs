@@ -278,6 +278,49 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.37
+
+###### Features
+
+* `genesis-resource-daemon` : Backport LDAP login mode for the management console
+* `genesis-router` : Sysdef-overridable router and MCP ports
+
+###### Fixes
+
+* `dbmon` : Compare against the comparator date in Expr.dateIsAfter
+
+#### 8.15.36
+
+###### Features
+
+* `genesis-pal-consolidator` : Add excludedEmitters support
+
+###### Fixes
+
+* `criteria` : Parse date literals the same way in memory as in SQL
+* `genesis-clustersupport` : Extend transient-I/O retry to the explicit-pin path 
+
+#### 8.15.35
+
+###### Features
+
+* `clustersupport` : Consul-backed gFlake NodeId allocation, wiring & reclamation 
+* `genesis-db` : Opt-in cached point reads inside transactions 
+* `genesis-pal-dataserver` : Report lmdb space usage as metrics 
+
+###### Fixes
+
+* `genesis-clustersupport` : Scope ConsulClientProvider as a singleton 
+* `genesis-db` : Report an absent field as null rather than dereferencing it 
+* `genesis-db` : Rethrow InterruptedException during SQLEngine dictionary retrieval 
+* `genesis-environment` : Build FDB indexes from record-aligned ranges instead of stitched fragments
+* `genesis-environment` : Harden VerifyFDBIndexes and the record-aligned FDB remap scan
+* `genesis-environment` : Resume an FDB index build after the transaction-size guard stops a batch
+* `genesis-pal-dataserver` : Guard the lmdb env lifecycle instead of one call site 
+* `genesis-pal-dataserver` : Join lmdb background loops before closing the env 
+* `genesis-pal-dataserver` : Read the lmdb space usage in a read transaction
+* `server` : Convert DateTime and enum values on every view DbRecord path 
+
 #### 8.15.34
 
 ###### Features
