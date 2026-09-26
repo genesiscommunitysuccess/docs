@@ -206,6 +206,48 @@ A `nack` can also take an object of type [`Throwable`](https://docs.oracle.com/j
 
 Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NACK`.
 
+### `FieldError`
+
+Use `FieldError` when validation fails on a **specific field** and you want client forms (for example `foundation-form`) to highlight that field inline after submit.
+
+Return `EventReply.EventNack(error = errors)` where `errors` is a list of `FieldError` entries. Each entry must include:
+
+- **`TEXT`** — message shown to the user
+- **`FIELD`** — property name on the event (must match event metadata / JSON schema, e.g. `INSTRUMENT_ID`, `CCY`)
+- **`CODE`** — typically `ErrorCode.VALIDATION_ERROR`
+
+```kotlin
+import global.genesis.message.core.error.ErrorCode
+import global.genesis.message.core.error.FieldError
+import global.genesis.message.core.event.EventReply
+
+onValidate { event ->
+  val errors = mutableListOf<FieldError>()
+
+  if (event.details.quantity <= 0) {
+    errors.add(
+      FieldError(
+        ErrorCode.VALIDATION_ERROR,
+        "Quantity must be greater than zero",
+        "QUANTITY",
+      ),
+    )
+  }
+
+  if (errors.isNotEmpty()) {
+    EventReply.EventNack(error = errors)
+  } else {
+    ack()
+  }
+}
+```
+
+A plain string [`nack`](#nack) (without `FIELD`) still returns `EVENT_NACK`, but clients show it as a **generic** error (toast / `submit-failure`), not inline on a field.
+
+:::info Client forms
+When using **`@genesislcap/foundation-forms`**, `foundation-form` maps `FieldError` entries to inline field errors automatically. See [Server field validation](/develop/client-capabilities/forms/smart-forms/foundation-forms-server-field-validation/).
+:::
+
 ### `eventHandler`
 
 `eventHandler` defines a new event.
