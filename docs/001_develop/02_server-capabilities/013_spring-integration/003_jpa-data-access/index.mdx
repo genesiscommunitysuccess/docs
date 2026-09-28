@@ -38,6 +38,7 @@ Use this starter where ORM-style entity/repository code — Spring Data query de
 | Schema management | Schema created via the classic dictionary/table-definition process | Same schema, but this starter never creates or migrates it — it only validates against it at start-up |
 | Transactions | `readTransaction` / `writeTransaction` blocks | Standard Spring `@Transactional`, via a plain `JpaTransactionManager` |
 | Write propagation to `UpdateQueue` | Built into every write call | Via a Hibernate integrator, registered on the same insert/update/delete events |
+| Listening to `UpdateQueue` changes | `UpdateQueue` table subscriptions | `@UpdateQueueListener` methods on Spring beans — see [Listening to UpdateQueue changes](#listening-to-updatequeue-changes) |
 | Auditing | Explicit `entity.toAuditEntity(...)` call made by the caller | Automatic, in the same transaction as the write, for entities implementing `JpaAuditableEntity` |
 | Concurrency control | System-definition `DbOptimisticConcurrencyMode` check, enforced by the API on modify/delete | See [Optimistic concurrency](#optimistic-concurrency) below — the two mechanisms don't overlap |
 
@@ -71,7 +72,7 @@ The smallest realistic path is a generated entity, a generated Spring Data repos
 
 ```kotlin
 @Entity
-@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA)
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA, name = "POSITION")
 class Position @JvmOverloads constructor(
     positionId: String = "",
     instrumentId: String? = null,
@@ -216,6 +217,82 @@ Publication also depends on the process actually running against a real update-q
 A GenesisJunit-based test (`@GenesisTest`, `@GenesisDatabaseTest`, or the Spring-flavoured `@GenesisSpringTest`) replicates this for test purposes. It will by default provide a local `ZeroMQ` update queue to the application. See [Test tooling](../test-tooling) for more details.
 
 Practical implication: a service method that calls `repository.save(entity)` inside a `@Transactional` boundary gets platform-wide visibility of that write for free on a real deployment — no manual event publication needed, and no manual rollback handling needed either.
+
+### Listening to UpdateQueue changes
+
+To react to changes on a table from Spring code, annotate a method on a Spring bean with `@UpdateQueueListener` (`global.genesis.spring.data`). The method takes exactly one parameter, an `UpdateQueueEvent<T>` for a generated entity `T`, and is subscribed to that entity's table on the `UpdateQueue`:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Component
+class PositionWatcher {
+
+    @UpdateQueueListener
+    fun onAnyChange(event: UpdateQueueEvent<Position>) {
+        println("${event.type} on ${event.tableName}: ${event.entity.pk}")
+    }
+
+    @UpdateQueueListener
+    fun onNewPosition(event: UpdateQueueEvent.Insert<Position>) {
+        println("New position ${event.entity.pk}")
+    }
+
+    @UpdateQueueListener(fields = ["QUANTITY"])
+    fun onQuantityChange(event: UpdateQueueEvent.Modify<Position>) {
+        println("Quantity ${event.previous.quantity} -> ${event.current.quantity}")
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Component
+public class PositionWatcher {
+
+    @UpdateQueueListener
+    public void onAnyChange(UpdateQueueEvent<Position> event) {
+        System.out.println(event.getType() + " on " + event.getTableName() + ": " + event.getEntity().getPk());
+    }
+
+    @UpdateQueueListener
+    public void onNewPosition(UpdateQueueEvent.Insert<Position> event) {
+        System.out.println("New position " + event.getEntity().getPk());
+    }
+
+    @UpdateQueueListener(fields = {"QUANTITY"})
+    public void onQuantityChange(UpdateQueueEvent.Modify<Position> event) {
+        System.out.println("Quantity " + event.getPrevious().getQuantity() + " -> " + event.getCurrent().getQuantity());
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`UpdateQueueEvent` is a sealed type with three variants: `Insert`, `Modify` and `Delete`. Every event carries `entity`, `tableName`, `recordId`, `timestamp` and `type`. `Modify` also carries `previous`, `current` and `modifiedFields`, and its `entity` is `current`. Declaring the parameter as one of the variants subscribes the method to that change type only; `UpdateQueueEvent<T>` receives all three.
+
+| Attribute | Default | Meaning |
+|---|---|---|
+| `entity` | taken from the parameter's type argument | The entity to listen to. Only needed when the parameter doesn't name it; if both are given they must agree |
+| `types` | all | `INSERT`, `MODIFY` and/or `DELETE`. Must agree with the parameter type if that already narrows it |
+| `fields` | all | Dictionary field names (for example `"QUANTITY"`). Only filters modifies: a modify is delivered only when one of these fields changed. Inserts and deletes are always delivered |
+| `delay` | none | Batching interval in milliseconds. Updates are collected and delivered every `delay` ms, so several rapid updates to one record may arrive merged |
+
+Things to know when writing a listener:
+
+- **The entity is a detached copy.** Each event's entity is a new instance built from the update, not one managed by an `EntityManager`. Changing it doesn't write anything; save through a repository if you need to.
+- **It runs on the update queue's own thread, outside any transaction.** The method is called synchronously as updates arrive, so a slow or blocking listener holds up delivery. Hand heavy work off to another thread.
+- **Exceptions are logged, not propagated.** An exception thrown by the method is logged at `ERROR` and the update is dropped. There is no retry.
+- **Only singleton beans.** A listener method on a prototype-scoped bean fails at startup. Listeners start receiving updates once the application's singletons have been created.
+- **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The generated `JpaConfiguration` class does this for tables, but not for views, and only when `generateConfigurationClass` is left on (see [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin)).
+
+Mistakes in the declaration fail at startup rather than when an update arrives: a method with other than one parameter, an entity that can't be determined, an `entity` or `types` value that disagrees with the parameter type, or an entity with no registered mapper.
+
+Listeners receive updates under the same conditions as any other `UpdateQueue` subscriber, so the rules above for [publication](#writing-back-to-the-updatequeue) apply: a JPA write is only published after its transaction commits, and only on a process running against a real update-queue transport.
 
 ### Auditing
 
@@ -373,5 +450,5 @@ Standard Hibernate/JPA optimistic locking is still available as the general-purp
 - [Data model foundation](../data-model) — the entity/repository generator this starter's beans require; generate entities before writing any code here.
 - [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin and KSP setup that drives that generation.
 - [Data access APIs](/develop/server-capabilities/data-access-apis) — the classic generated-DAO API this module sits alongside.
-- [Update Queue](/build-deploy-operate/operate/update-queue) — the mechanism JPA writes are published through.
+- [Update Queue](/build-deploy-operate/operate/update-queue) — the mechanism JPA writes are published through, and `@UpdateQueueListener` methods subscribe to.
 - [Test tooling](../test-tooling) — the `@GenesisSpringTest` test structure this module's tests build on.
