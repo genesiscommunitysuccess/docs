@@ -48,8 +48,8 @@ its own grouping/pivoting (an AG Grid SSRM datasource), expose the whole cube in
 - Not a replacement for the classic Genesis Data Server / Request Server query path — it is a
   parallel, JPA/Hibernate-backed, HTTP-first surface that sits alongside it.
 - Not a general-purpose reporting engine: filtering on an aggregated measure after grouping
-  (`HAVING`) is not supported, and pivot discovery is capped at 25 discovered columns (see
-  [Query types](#query-types)).
+  (`HAVING`) is not available over HTTP, and pivot discovery is capped (25 discovered columns by
+  default; see [Query types](#query-types)).
 - Not a write path. A cube is read-only; writes still go through the normal JPA repository/entity
   layer.
 
@@ -79,6 +79,7 @@ resource's `permission(...)` authority maps onto it.
 | `genesis.cube.web.max-page-size` | `1000` | Ceiling on the wire `size` parameter |
 | `genesis.cube.web.max-filter-length` | `8192` | Character budget for the wire `filter` parameter before you should switch from GET to POST |
 | `genesis.cube.web.max-sort-orders` | `64` | Ceiling on the number of comma-separated `sort` entries |
+| `genesis.cube.pivot.max-columns` | `25` | Ceiling on the number of discovered pivot columns, and on an `OverflowPolicy.TopN` bound. Must be at least `1`; anything else fails startup |
 
 The starter registers its HTTP layer through its own autoconfiguration, independently of
 `GenesisSpringBootConfiguration` and `GenesisSpringWebConfig` — excluding those two from a test
@@ -112,8 +113,12 @@ A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResou
 Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
 bean is resolved and validated fail-fast: referenced columns must exist on the entity, a
 JPQL-sourced exposure's projection aliases must all resolve to real columns on the source query, an
-operation must declare at least one `groupBy`/aggregation, output column names must not collide,
-and none may be named `ROW_REF` (reserved for row addressing). A misconfigured resource fails
+operation must declare at least one `groupBy`/aggregation, an operation's aggregates must suit
+their columns' types (a `SUM` over a string column, for example), output column names must not
+collide, and none may be named `ROW_REF` (reserved for row addressing). An operation may not be
+named `query` or `schema`, since those paths belong to the dynamic-query and schema endpoints. A
+`baseCriteria` template is validated here too (see
+[Per-user row scoping](#per-user-row-scoping)). A misconfigured resource fails
 application startup rather than the first request — a typo in a JPQL projection alias, for example,
 throws at bean instantiation rather than silently mislabelling a column.
 
@@ -328,9 +333,9 @@ POST /api/v1/cubes/trades/query
 ```
 
 Every column named in the request must lie within the resource's visible set — the same
-[no-probing rule](#security) that governs every other rejection. A dynamic request naming a
-non-empty `having` (post-aggregation filtering) is always rejected: grouped filtering is not
-currently supported.
+[no-probing rule](#security) that governs every other rejection. Post-aggregation filtering
+(`HAVING`) is not available over HTTP: the request body has no `having` field, and a body that
+sends one is rejected with `400`.
 
 The same shape is also reachable directly in-process, with no resource involved — `Cube.query`
 takes a `QueryRequest` overload alongside the flat one, always returning `Tuple`s:
@@ -450,6 +455,28 @@ POST /api/v1/cubes/trades/query
 `currencyId` must additionally be in the resource's `pivotOn` allowlist to be used as a pivot
 dimension.
 
+Instead of discovering a dimension's values, a single-dimension pivot can name them explicitly.
+Each value is typed (`int`, `long`, `decimal` or `string`; a decimal is sent as a string), and
+`includeOther` adds a column that collects every row outside the listed values:
+
+```json
+"dimensions": [
+  {
+    "expr": { "type": "field", "attribute": "currencyId" },
+    "values": [
+      { "type": "string", "value": "USD" },
+      { "type": "string", "value": "EUR" }
+    ],
+    "includeOther": true
+  }
+]
+```
+
+With explicit values the generated column names are known up front (`SUM_quantity_USD`,
+`SUM_quantity_EUR`, `SUM_quantity_OTHER`), so the request can [sort](#filtering) on them. Explicit
+`values` cannot be combined with an `overflow` policy or with `INTERVAL` discovery, and
+`includeOther` is rejected without `values`.
+
 The same request is callable directly in-process, exactly as for a grouped query:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -503,14 +530,15 @@ void example(Pageable pageable) {
 </Tabs>
 
 :::caution Pivot discovery is capped
-Discovered pivot-column count is hard-capped at 25, and this is not configurable. A pivot whose
-discovered set (or an `OverflowPolicy.TopN` bound) would exceed 25 fails the request rather than
-silently truncating — use an `OverflowPolicy` (`TopN` or `Within`) to keep a high-cardinality pivot
-dimension under the cap.
+Discovered pivot-column count is capped by `genesis.cube.pivot.max-columns` (default `25`; see
+[Set-up](#set-up)). A pivot whose discovered set (or an `OverflowPolicy.TopN` bound) would exceed
+the cap fails the request rather than silently truncating — use an `OverflowPolicy` (`TopN` or
+`Within`) to keep a high-cardinality pivot dimension under it.
 :::
 
-A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP today — that shape is
-only exercised in-process, not through the wire protocol described here.
+A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP: the request body has
+no `groupExpansion` field. Drill down with the next level as the only group key and an equality
+filter on the parent path instead (see [Grid integration](#grid-integration)).
 
 ## Security
 
@@ -591,6 +619,12 @@ own filter, so two users querying the same resource only ever see their own rows
 filter is itself part of the cache key, so per-user isolation of cached results falls out of
 caching for free, and a caller cannot widen past their own scope by supplying a conflicting filter
 value.
+
+The template is checked at startup, so a mistake in it fails the application rather than the first
+request. It must parse, reference only columns on the source, and be a single boolean expression
+(a trailing `;` is enough to break it). On an entity-sourced resource, the template's own literals
+must also convert to their column's type — an enum constant name that no longer exists, for
+example. Values substituted for placeholders such as `:username` are not part of this check.
 
 This mechanism is implemented and tested at the resource-resolution level, where you supply the
 caller's identity yourself as a `PrincipalValues` binding:
@@ -742,13 +776,21 @@ significant for a multi-column sort. It compiles to a Spring Data `org.springfra
 and the number of comma-separated entries is capped by `genesis.cube.web.max-sort-orders` (see
 [Set-up](#set-up)).
 
+On `POST .../query`, a sort may only name the request's own output columns. A flat request can
+sort on any visible column. A grouped request can sort on its group keys, aggregates and
+calculations, using either the explicit alias or the derived name (`currencyId` for a group key,
+`SUM_quantity` for an unaliased aggregate). A pivoted request can sort on generated columns only
+when the pivot lists its [values explicitly](#pivoted); discovered pivot columns can't be sorted.
+Anything else is rejected with `400`, naming the columns that may be sorted.
+
 The query endpoint accepts exactly four query parameters — `filter`, `sort`, `page` and `size` —
 and nothing else. Any unknown or duplicate parameter is rejected with `400` rather than silently
 ignored, which is deliberate: an unrecognised parameter would otherwise let a caller's own
 cache-buster (for example `?_=<timestamp>`) silently defeat HTTP caching.
 
-A malformed expression, an unknown column, or an unsupported method call is rejected, not thrown as
-a raw parser exception:
+A filter must be a single boolean expression. A malformed expression, an unknown column, an
+unsupported method call, more than one statement (including a trailing `;`) or an expression that
+isn't boolean is rejected, not thrown as a raw parser exception:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -883,6 +925,8 @@ request-size limits:
   "maxFilterLength": 8192,
   "maxPageSize": 1000,
   "defaultPageSize": 100,
+  "maxSortOrders": 64,
+  "maxPivotColumns": 25,
   "cacheable": true
 }
 ```
@@ -896,9 +940,13 @@ schema per shape:
 
 - `envelope` — the response envelope wrapper
 - `operationRequest` — a bare named-operation request
-- `operations` — a map from operation name to that operation's own request schema
-- `queryRequest` — a `POST .../query` request body
-- `query` — the dynamic query shape itself
+- `operations` — a map from operation name to the shape of that operation's result rows
+- `queryRequest` — a `POST .../query` request body, including the limits the server enforces
+  (page size, filter length, list sizes), so a request built from it won't be rejected on bounds
+- `query` — the shape of a `POST .../query` result row. It is deliberately loose, because the
+  columns depend on the request
+
+`queryRequest` and `query` are `null` for a resource without `exposeQuery`.
 
 Same ETag and `404` behaviour as the capability document above: cacheable, validated with
 `If-None-Match`, answering `304 Not Modified` on a match, and `404` under the same condition — an
