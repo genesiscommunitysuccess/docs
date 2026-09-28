@@ -55,7 +55,7 @@ change.
 
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
 
-One hard constraint to plan around from the start: **never model an event payload or handler class as a Java `record`.** Doing so crashes bean creation with `Can't compute ClassId for primitive type: int`, thrown from Kotlin reflection while the module inspects the record's constructor. Use a Kotlin `data class`, or an ordinary Java class with a no-arg constructor and getters/setters, instead.
+A payload can be a Kotlin `data class`, an ordinary Java class, or a Java `record`. Every component of a record is mandatory in the event's schema, because a record has no way to declare an optional one.
 
 ## Example configuration
 
@@ -588,9 +588,8 @@ This module is real, working code with test coverage for everything described ab
   ```
 - **`@IsValidateOnly` only takes effect on a `@GenesisEventController`/`@EventMapping` method**, not on a single `@GenesisEventHandler`'s `@EventCommit` method — see [Manual validate/commit control](#manual-validatecommit-control) above.
 - **Bean Validation (`@Valid`/`@Validated`) on a payload parameter has no effect.** The annotation is recorded but nothing runs validation against it.
-- **Java `record` classes crash bean creation** for a handler or payload type — always use a Kotlin `data class` or an ordinary Java class instead.
 
-Two of these are easy to trip over in practice. Both reuse classes already defined earlier on this page.
+One of these is easy to trip over in practice. The example reuses classes already defined earlier on this page.
 
 `@IsValidateOnly` still compiles and injects a value on a single handler's `@EventCommit` method — it's just meaningless, because that method never runs for a `validate=true` request in the first place:
 
@@ -632,29 +631,6 @@ public class CommitOnlyEventHandler {
 
 </TabItem>
 </Tabs>
-
-A Java `record` payload or handler crashes bean creation at start-up:
-
-```java
-import global.genesis.eventhandler.spring.annotation.EventCommit;
-import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
-
-// Don't do this — crashes with:
-// Can't compute ClassId for primitive type: int
-public record Update(String name, int qty) {
-}
-
-@GenesisEventHandler("TOUCH")
-public class CommitOnlyEventHandler {
-
-    @EventCommit
-    public void commit(Update details) {
-        // never reached — bean creation fails at start-up
-    }
-}
-```
-
-Use the ordinary Java class shown in [Example configuration](#example-configuration) instead.
 
 ## Testing
 
