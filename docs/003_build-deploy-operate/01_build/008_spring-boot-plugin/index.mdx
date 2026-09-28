@@ -44,7 +44,7 @@ plugins {
 }
 ```
 
-The generated JPA entities and repositories are always Kotlin, regardless of what language the rest of the module is written in — `global.genesis.spring` applies the Kotlin JVM plugin (`kotlin("jvm")`) automatically, so a consuming module's own plugin block doesn't need to declare it. The process/service manifest generation works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
+The generated JPA entities and repositories are always Kotlin, regardless of what language the rest of the module is written in — `global.genesis.spring` applies the Kotlin JVM plugin (`kotlin("jvm")`) automatically, so a consuming module's own plugin block doesn't need to declare it. It also applies Kotlin's Spring compiler plugin (`kotlin("plugin.spring")`), which makes Kotlin classes annotated `@Component`, `@Service`, `@Configuration`, `@Transactional` and similar open automatically, so they don't need to be marked `open` for Spring's proxies. JPA entities are not covered by it; they still rely on `kotlin("plugin.jpa")`. The process/service manifest generation works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
 
 Applying the plugin doesn't pull Spring Boot in for you: no Spring Boot dependency needs to be present to apply `global.genesis.spring` itself, and the Spring Boot starter modules a module needs are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
 
@@ -152,7 +152,7 @@ Every property below keys off `packageName` by default:
 Two of these deserve a closer look:
 
 - **`sourceSetName`**, set to `"test"`, keeps generated entities out of the module's published jar entirely — the intended setting for a module whose dictionary is only a test fixture rather than something it ships. A name that doesn't match any real source set in the module silently generates into nothing, with no build error.
-- **`generateConfigurationClass`**, set to `false`, stops the `JpaConfiguration` class and its auto-configuration entry from being generated. Both `generateJpaEntities` and `generateAutoConfig` read the same underlying property, so they can't drift out of sync as long as nothing bypasses the `entities {}` DSL to set either task's input directly.
+- **`generateConfigurationClass`**, set to `false`, stops the `JpaConfiguration` class and its auto-configuration entry from being generated. Both `generateJpaEntities` and `generateAutoConfig` read the same underlying property, so they can't drift out of sync as long as nothing bypasses the `entities {}` DSL to set either task's input directly. The generated `JpaConfiguration` is also what registers each table entity's `JpaDbMapper` bean, so with it turned off an [`@UpdateQueueListener`](/develop/server-capabilities/spring-integration/jpa-data-access#listening-to-updatequeue-changes) fails at startup unless you register the mapper beans yourself.
 
 A dictionary that only exists to back a module's own tests combines both of these:
 
