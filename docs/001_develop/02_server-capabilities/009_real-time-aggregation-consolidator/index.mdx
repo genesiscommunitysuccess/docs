@@ -1141,6 +1141,52 @@ select {
 
 <Log />
 
+
+### Consistency modes
+
+By default, Consolidators use incremental consistency. Under highly concurrent inputs, you can opt in to eventual consistency to prevent stored counts diverging from the source.
+
+To configure the consistency mode, set the `consistencyMode` property inside the `config` block.
+
+| Property value | Description |
+|---|---|
+| `ConsistencyMode.INCREMENTAL` | Default. Applies updates as ordered deltas. |
+| `ConsistencyMode.EVENTUAL` | Marks consolidation groups as dirty on update and rebuilds them in paced batches. |
+
+When you enable `ConsistencyMode.EVENTUAL`, you must define an `indexScan` in the `groupBy` block. The Consolidator fails to start if `indexScan` is missing, because eventual consistency requires re-reading source records by group key.
+
+:::important
+Under eventual consistency, rebuilds of a group replay the [`onCommit`](#oncommit) block, which is idempotent. Any writes made in `onCommit` (for example, audit fields) are silently lost on replay and shouldn't be relied on as the sole place a durable update happens.
+:::
+
+###### Examples
+
+The following example configures a Consolidator to use eventual consistency:
+
+```kotlin
+consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+    config {
+        consistencyMode = ConsistencyMode.EVENTUAL
+    }
+
+    select {
+        ORDER {
+            sum { quantity } into TOTAL_QUANTITY
+        }
+    }
+
+    groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+        build {
+            Order {
+                orderId = groupId.orderId
+                orderDate = groupId.tradeDate
+            }
+        }
+        indexScan { ConsolidatorTrade.byOrderIdTradeDate(groupId.orderId, groupId.tradeDate) }
+    }
+}
+```
+
 ## Metrics
 
 :::info
