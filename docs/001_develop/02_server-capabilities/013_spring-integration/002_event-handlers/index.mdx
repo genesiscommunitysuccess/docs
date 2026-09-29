@@ -32,7 +32,7 @@ Exposing an HTTP surface (`@RestController`) through the Genesis router is **not
 
 ## Getting set up
 
-Add a dependency on `genesis-eventhandler-spring-boot-starter`; `genesis-spring-boot-starter`, `genesis-eventhandler` and `genesis-jpa-base` come transitively. There is no separate annotation-processing or KSP step for this module — annotations are read via runtime reflection when a bean is post-processed, not at compile time.
+Add a dependency on `genesis-eventhandler-spring-boot-starter`; `genesis-spring-boot-starter`, `genesis-eventhandler` and `genesis-jpa-base` come transitively. In a standard multi-module project, this goes in the `-spring` module's build file, `server/<project-name>-spring/build.gradle.kts` (see [Getting started: Step 2](../getting-started#step-2-create-the-spring-module)). There is no separate annotation-processing or KSP step for this module — annotations are read via runtime reflection when a bean is post-processed, not at compile time.
 
 ```kotlin
 plugins {
@@ -55,7 +55,7 @@ change.
 
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
 
-A payload can be a Kotlin `data class`, an ordinary Java class, or a Java `record`. Every component of a record is mandatory in the event's schema, because a record has no way to declare an optional one.
+A payload can be a Kotlin `data class`, an ordinary Java class, or a Java `record`. Every component of a record is mandatory in the event's schema, because a record has no way to declare an optional one. The platform derives a JSON Schema from each handler's input type and exposes it to the front end, as described in [Type-safe messages](/develop/server-capabilities/communications/#type-safe-messages); to see a handler's schema, fetch it from the front end with [`Connect`](/develop/client-capabilities/server-communications/comms-connect/)'s `getJSONSchema(resourceName)` call.
 
 ## Example configuration
 
