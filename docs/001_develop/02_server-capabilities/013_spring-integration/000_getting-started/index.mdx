@@ -229,6 +229,8 @@ No GUI available (CI, a container, over SSH)? Start the process headlessly inste
 ```
 
 then run `server/build/genesis-start/start.sh`. `restEnabled=true` is required — without it the process starts and immediately exits. `restPort` here is Genesis Start's own control-plane port for managing the process, not the Spring application's HTTP port — that's the port the curl examples in Part 2 target, configured separately (see Step 11).
+
+The headless start also needs the `google()` Maven repository in the project's repositories. A project created with `genx init` already declares it in the `allprojects { repositories { ... } }` block of `server/build.gradle.kts`. A project upgraded from an older seed might not, so check that block and add `google()` if it is missing.
 :::
 
 3. **Start the project** in Genesis Start.
