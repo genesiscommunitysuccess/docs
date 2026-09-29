@@ -93,21 +93,26 @@ The `curl`/wire examples below assume the default port `8080` — see [Getting s
 
 Every code sample on this page refers to the following types by their simple name only:
 
-| Type | Package |
-|---|---|
-| `CubeResource` | `global.genesis.spring.data.cube.resource` |
-| `CubeResourceRegistry` | `global.genesis.spring.data.cube.resource` |
-| `ResolvedCubeResource` | `global.genesis.spring.data.cube.resource` |
-| `PrincipalValues` | `global.genesis.spring.data.cube.resource` |
-| `CubeFactory` | `global.genesis.spring.data.cube` |
-| `EntityCube` | `global.genesis.spring.data.cube` |
-| `QueryRequest` | `global.genesis.spring.data.cube.model` |
-| `GroupKey` | `global.genesis.spring.data.cube.model` |
-| `Aggregate` | `global.genesis.spring.data.cube.model` |
-| `Function` | `global.genesis.spring.data.cube.model` |
-| `PivotSpec` | `global.genesis.spring.data.cube.model` |
-| `PivotDimension` | `global.genesis.spring.data.cube.model` |
-| `PivotMeasure` | `global.genesis.spring.data.cube.model` |
+| Type | Package | Notes |
+|---|---|---|
+| `CubeResource` | `global.genesis.spring.data.cube.resource` | |
+| `CubeResourceRegistry` | `global.genesis.spring.data.cube.resource` | |
+| `ResolvedCubeResource` | `global.genesis.spring.data.cube.resource` | |
+| `PrincipalValues` | `global.genesis.spring.data.cube.resource` | |
+| `CubeFactory` | `global.genesis.spring.data.cube` | |
+| `EntityCube` | `global.genesis.spring.data.cube` | |
+| `QueryRequest` | `global.genesis.spring.data.cube.model` | |
+| `GroupKey` | `global.genesis.spring.data.cube.model` | |
+| `Aggregate` | `global.genesis.spring.data.cube.model` | |
+| `Function` | `global.genesis.spring.data.cube.model` | |
+| `PivotSpec` | `global.genesis.spring.data.cube.model` | |
+| `PivotDimension` | `global.genesis.spring.data.cube.model` | |
+| `PivotMeasure` | `global.genesis.spring.data.cube.model` | |
+| `PivotDiscovery` | `global.genesis.spring.data.cube.model` | Enum on `PivotDimension`: how a dimension's pivot columns are discovered (`DISTINCT` or `INTERVAL`) |
+| `CubeResult<T>` | `global.genesis.spring.data.cube.model` | What `Cube.query(filter, pageable)` and `query(request, pageable)` return: a Spring Data `Page` plus the result's `columns` |
+| `EntityQueryRequest<E>` | `global.genesis.spring.data.cube.model` | A `QueryRequest` whose filter is a JPA `Specification<E>` |
+| `UnfilteredQueryRequest` | `global.genesis.spring.data.cube.model` | A `QueryRequest` with no filter |
+| `EntityCriteriaCube<E>` | `global.genesis.spring.data.cube` | What `CubeFactory.forEntityCriteria(...)` returns: an entity cube whose filter is a `criteriaMatch` string |
 
 A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResourceBuilder` or the
 Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
@@ -246,7 +251,8 @@ multiply rows and inflate `SUM`/`COUNT`), fails fast here rather than on a calle
 A read that selects rows by position (a page, or a limited list) comes back in a **total order** —
 the caller's sort, then the row's own identity as a tiebreaker — so paging never repeats or drops
 rows, provided the source has an identity to tiebreak on. An unpaged, unsorted read is explicitly
-arbitrary order, not a stable one to rely on.
+arbitrary order, not a stable one to rely on. See [Sorting](#sorting) for what a flat request can
+sort on.
 
 Every column in a flat query's response — including a computed one, such as a JPQL expression
 column — carries `role: KEY` in the envelope's `columns` list, since none of them are aggregated;
@@ -334,8 +340,14 @@ POST /api/v1/cubes/trades/query
 
 Every column named in the request must lie within the resource's visible set — the same
 [no-probing rule](#security) that governs every other rejection. Post-aggregation filtering
-(`HAVING`) is not available over HTTP: the request body has no `having` field, and a body that
-sends one is rejected with `400`.
+(`HAVING`) is not available over HTTP.
+
+The `POST .../query` body accepts only `filter`, `sort`, `page`, `size`, `groupKeys`, `aggregates`,
+`calculations` and `pivot`, whichever query type you send. Any other field is rejected with `400`
+rather than ignored — including `having` and `groupExpansion`, which exist on the in-process
+`QueryRequest` but not on the wire.
+
+See [Sorting](#sorting) for what a grouped request can sort on.
 
 The same shape is also reachable directly in-process, with no resource involved — `Cube.query`
 takes a `QueryRequest` overload alongside the flat one, always returning `Tuple`s:
@@ -453,29 +465,7 @@ POST /api/v1/cubes/trades/query
 ```
 
 `currencyId` must additionally be in the resource's `pivotOn` allowlist to be used as a pivot
-dimension.
-
-Instead of discovering a dimension's values, a single-dimension pivot can name them explicitly.
-Each value is typed (`int`, `long`, `decimal` or `string`; a decimal is sent as a string), and
-`includeOther` adds a column that collects every row outside the listed values:
-
-```json
-"dimensions": [
-  {
-    "expr": { "type": "field", "attribute": "currencyId" },
-    "values": [
-      { "type": "string", "value": "USD" },
-      { "type": "string", "value": "EUR" }
-    ],
-    "includeOther": true
-  }
-]
-```
-
-With explicit values the generated column names are known up front (`SUM_quantity_USD`,
-`SUM_quantity_EUR`, `SUM_quantity_OTHER`), so the request can [sort](#filtering) on them. Explicit
-`values` cannot be combined with an `overflow` policy or with `INTERVAL` discovery, and
-`includeOther` is rejected without `values`.
+dimension. See [Sorting](#sorting) for which pivot columns a request can sort on.
 
 The same request is callable directly in-process, exactly as for a grouped query:
 
@@ -536,9 +526,67 @@ the cap fails the request rather than silently truncating — use an `OverflowPo
 `Within`) to keep a high-cardinality pivot dimension under it.
 :::
 
-A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP: the request body has
-no `groupExpansion` field. Drill down with the next level as the only group key and an equality
-filter on the parent path instead (see [Grid integration](#grid-integration)).
+A caller cannot request a group-expansion (an SSRM drill-down step) over HTTP: `groupExpansion` is
+one of the fields the request body rejects (see [Grouped](#grouped)). Drill down with the next level
+as the only group key and an equality filter on the parent path instead (see [Grid integration](#grid-integration)).
+
+#### Explicit pivot values
+
+Instead of discovering a dimension's values, a single-dimension pivot can name them explicitly.
+Each value is typed (`int`, `long`, `decimal` or `string`; a decimal is sent as a string), and
+`includeOther` adds a column that collects every row outside the listed values:
+
+```json
+"dimensions": [
+  {
+    "expr": { "type": "field", "attribute": "currencyId" },
+    "values": [
+      { "type": "string", "value": "USD" },
+      { "type": "string", "value": "EUR" }
+    ],
+    "includeOther": true
+  }
+]
+```
+
+With explicit values the generated column names are known up front (`SUM_quantity_USD`,
+`SUM_quantity_EUR`, `SUM_quantity_OTHER`), so the request can [sort](#sorting) on them. Explicit
+`values` cannot be combined with an `overflow` policy or with `INTERVAL` discovery, and
+`includeOther` is rejected without `values`.
+
+### Sorting
+
+Sorting applies to every query type above. `sort` has its own, smaller grammar: a comma-separated
+list of column names, each optionally prefixed with `-` for descending — no prefix means ascending,
+and the order between entries is significant for a multi-column sort. It compiles to a Spring Data `org.springframework.data.domain.Sort`,
+and the number of comma-separated entries is capped by `genesis.cube.web.max-sort-orders` (see
+[Set-up](#set-up)).
+
+On `POST .../query`, a sort may only name the request's own output columns. A flat request can
+sort on any visible column. A grouped request can sort on its group keys, aggregates and
+calculations, using either the explicit alias or the derived name (`currencyId` for a group key,
+`SUM_quantity` for an unaliased aggregate). A pivoted request can sort on generated columns only
+when the pivot lists its [values explicitly](#explicit-pivot-values); discovered pivot columns can't
+be sorted. Anything else is rejected with `400`, naming the columns that may be sorted.
+
+On a `GET`, `sort`, `page` and `size` are query parameters. On any `POST` — `.../query` or a named
+operation — they are fields of the JSON body alongside `filter`: `sort` as the same comma-separated
+string, `page` and `size` as numbers. A `POST` that carries a query string at all is rejected with
+`400`. Sorting the grouped request from [Grouped](#grouped) by total quantity, largest first, and
+taking the first 50 groups:
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [{ "expr": { "type": "field", "attribute": "currencyId" } }],
+  "aggregates": [
+    { "function": "SUM", "input": { "type": "field", "attribute": "quantity" }, "alias": "totalQuantity" }
+  ],
+  "sort": "-totalQuantity,currencyId",
+  "page": 0,
+  "size": 50
+}
+```
 
 ## Security
 
@@ -770,23 +818,11 @@ resource's HTTP `filter` parameter/body field.
 | `currencyId.toUpperCase() == 'USD'` | string method call |
 | `currencyId.substring(0, 1) == 'U'` | substring |
 
-`sort` has its own, smaller grammar: a comma-separated list of column names, each optionally
-prefixed with `-` for descending — no prefix means ascending, and the order between entries is
-significant for a multi-column sort. It compiles to a Spring Data `org.springframework.data.domain.Sort`,
-and the number of comma-separated entries is capped by `genesis.cube.web.max-sort-orders` (see
-[Set-up](#set-up)).
-
-On `POST .../query`, a sort may only name the request's own output columns. A flat request can
-sort on any visible column. A grouped request can sort on its group keys, aggregates and
-calculations, using either the explicit alias or the derived name (`currencyId` for a group key,
-`SUM_quantity` for an unaliased aggregate). A pivoted request can sort on generated columns only
-when the pivot lists its [values explicitly](#pivoted); discovered pivot columns can't be sorted.
-Anything else is rejected with `400`, naming the columns that may be sorted.
-
 The query endpoint accepts exactly four query parameters — `filter`, `sort`, `page` and `size` —
 and nothing else. Any unknown or duplicate parameter is rejected with `400` rather than silently
 ignored, which is deliberate: an unrecognised parameter would otherwise let a caller's own
-cache-buster (for example `?_=<timestamp>`) silently defeat HTTP caching.
+cache-buster (for example `?_=<timestamp>`) silently defeat HTTP caching. On a `POST` the same
+four travel in the JSON body instead, and any query string is rejected (see [Sorting](#sorting)).
 
 A filter must be a single boolean expression. A malformed expression, an unknown column, an
 unsupported method call, more than one statement (including a trailing `;`) or an expression that
