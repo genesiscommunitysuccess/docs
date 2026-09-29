@@ -331,14 +331,20 @@ A second Hibernate integrator persists the audit row, in the same transaction as
 <TabItem value="kotlin">
 
 ```kotlin
+// In TypedRecordService, a Spring bean
 @Transactional
-fun createTypedRecord(groupId: String, itemId: Int, userName: String) {
+fun createTypedRecord(groupId: String, itemId: Int) {
+    typedRecordRepository.save(TypedRecord(groupId = groupId, itemId = itemId))
+}
+
+// In the calling bean: the audit context encloses the whole transaction
+fun bookTypedRecord(groupId: String, itemId: Int, userName: String) {
     AuditContextHolder.withAuditContext(
         AuditContext(userName = userName, eventType = "TYPED_RECORD_INSERT", auditText = "manual booking"),
     ) {
-        typedRecordRepository.save(TypedRecord(groupId = groupId, itemId = itemId))
+        typedRecordService.createTypedRecord(groupId, itemId)
     }
-    // A TypedRecordAudit row is persisted in the same transaction.
+    // The transaction committed inside the block, so a TypedRecordAudit row was persisted with it.
 }
 
 fun readTypedRecordAudit(typedRecordAuditId: String): TypedRecordAudit? =
@@ -349,15 +355,22 @@ fun readTypedRecordAudit(typedRecordAuditId: String): TypedRecordAudit? =
 <TabItem value="java">
 
 ```java
+// In TypedRecordService, a Spring bean
 @Transactional
-public void createTypedRecord(String groupId, int itemId, String userName) {
+public void createTypedRecord(String groupId, int itemId) {
+    typedRecordRepository.save(new TypedRecord(groupId, itemId));
+}
+
+// In the calling bean: the audit context encloses the whole transaction
+public void bookTypedRecord(String groupId, int itemId, String userName) {
     AuditContext context = new AuditContext(userName, "TYPED_RECORD_INSERT", "manual booking");
     AuditContextHolder.set(context);
     try {
-        typedRecordRepository.save(new TypedRecord(groupId, itemId));
+        typedRecordService.createTypedRecord(groupId, itemId);
     } finally {
         AuditContextHolder.clear();
     }
+    // The transaction committed inside the try block, so a TypedRecordAudit row was persisted with it.
 }
 
 public TypedRecordAudit readTypedRecordAudit(String typedRecordAuditId) {
