@@ -55,7 +55,7 @@ change.
 
 A handler class doesn't need its own `@Component` — `@GenesisEventHandler`, `@GenesisEventController` and `@EventControllerAdvice` are themselves meta-annotated `@Component`, so Spring's component scan picks a class up as soon as it carries one of them. Constructor-inject whatever the handler needs (a repository, `RxDb`, `EventProvider`, and so on) the normal Spring way.
 
-A payload can be a Kotlin `data class`, an ordinary Java class, or a Java `record`. Every component of a record is mandatory in the event's schema, because a record has no way to declare an optional one. The platform derives a JSON Schema from each handler's input type and exposes it to the front end, as described in [Type-safe messages](/develop/server-capabilities/communications/#type-safe-messages); to see a handler's schema, fetch it from the front end with [`Connect`](/develop/client-capabilities/server-communications/comms-connect/)'s `getJSONSchema(resourceName)` call.
+A payload can be a Kotlin `data class`, an ordinary Java class, or a Java `record`. Every component of a record is mandatory in the event's schema, because a record has no way to declare an optional one.
 
 ## Example configuration
 
