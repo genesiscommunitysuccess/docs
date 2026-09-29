@@ -520,6 +520,7 @@ class CreateAndTouchEventHandler(
 ```java
 import global.genesis.eventhandler.spring.annotation.EventCommit;
 import global.genesis.eventhandler.spring.annotation.GenesisEventHandler;
+import global.genesis.eventhandler.spring.service.blocking.EventProvider;
 import global.genesis.message.core.event.EventReply;
 
 @GenesisEventHandler("CREATE_AND_TOUCH")
@@ -783,9 +784,26 @@ class CreateEventHandlerTest {
 
 A test can send a `validate=true` pre-flight request the same way — this is what the [`@IsValidateOnly`](#limitations) parameter reflects on a `@GenesisEventController` method, and it makes the framework return the `@EventValidate` result on any handler without running `@EventCommit`:
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
 client.sendEvent(details = Create(name = "widget", qty = 3), messageType = "CREATE", validate = true)
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+var reply = client.builder()
+        .withDetails(new Create("widget", 3))
+        .withMessageType("CREATE")
+        .withValidate(true)
+        .send();
+```
+
+</TabItem>
+</Tabs>
 
 ## See also
 
