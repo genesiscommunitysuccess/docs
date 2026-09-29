@@ -1098,6 +1098,63 @@ simple example](../test-tooling#a-simple-example) — and the response reflects 
 manual `curl` against a running app would; nothing about going through MockMvc changes the cube's
 own query, filtering or no-probing behaviour described earlier on this page.
 
+### Asserting that a bad declaration fails startup
+
+An invalid cube resource fails application startup (see [Declaring a cube
+resource](#declaring-a-cube-resource)). To assert that in a test, start a child context with
+Spring Boot's `ApplicationContextRunner`, using the `@GenesisSpringTest` context as its parent.
+The child imports the cube starter's own `CubeConfig` (`global.genesis.spring.data.cube.lifecycle`)
+and declares the resource under test. The parent does not need to contain that resource: the
+child's `CubeConfig` validates only the `CubeResource` beans declared in the child. See [Test
+tooling](../test-tooling) for the test dependencies. In this Kotlin-only example, `Widget` is a
+generated entity with a `quality` field, and the bad declaration names an operation `query`, which
+is reserved:
+
+```kotlin
+@GenesisSpringTest
+class BadCubeDeclarationTest {
+    @Autowired lateinit var context: ApplicationContext
+
+    private fun runner() = ApplicationContextRunner()
+        .withParent(context)
+        .withInitializer { it.beanFactory.conversionService = ApplicationConversionService.getSharedInstance() }
+        .withUserConfiguration(CubeConfig::class.java)          // global.genesis.spring.data.cube.lifecycle
+
+    @Test fun `reserved operation name fails startup`() {
+        runner().withUserConfiguration(BadCube::class.java).run { ctx ->
+            assertThat(ctx).hasFailed()
+            assertThat(ctx).getFailure().rootCause()
+                .isInstanceOf(CubeServerException::class.java)   // ...cube.model
+                .hasMessageContaining("reserved")
+        }
+    }
+
+    @Test fun `control - valid cube in the same child context starts`() {
+        runner().withUserConfiguration(GoodCube::class.java).run { ctx -> assertThat(ctx).hasNotFailed() }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    class BadCube {
+        @Bean fun badWidgets(): CubeResource = cubeResource<Widget> {
+            operation("query") { groupBy("quality"); count() }
+        }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    class GoodCube {
+        @Bean fun goodWidgets(): CubeResource = cubeResource<Widget> {
+            operation("byQuality") { groupBy("quality"); count() }
+        }
+    }
+}
+```
+
+Keep the `withInitializer` line. A bare `ApplicationContextRunner` context has no Spring Boot
+conversion service, so without it even a valid cube fails to start in the child context, for an
+unrelated reason. The bad-cube test would then pass without proving anything. The control test
+shows that the same child context starts cleanly with a valid cube, so the only difference between
+the two is the bad declaration.
+
 ## Complete usage examples
 
 ### 1. A grouped and pivoted trade blotter
