@@ -1106,11 +1106,29 @@ Spring Boot's `ApplicationContextRunner`, using the `@GenesisSpringTest` context
 The child imports the cube starter's own `CubeConfig` (`global.genesis.spring.data.cube.lifecycle`)
 and declares the resource under test. The parent does not need to contain that resource: the
 child's `CubeConfig` validates only the `CubeResource` beans declared in the child. See [Test
-tooling](../test-tooling) for the test dependencies. In this Kotlin-only example, `Widget` is a
+tooling](../test-tooling) for the test dependencies. In this example, `Widget` is a
 generated entity with a `quality` field, and the bad declaration names an operation `query`, which
 is reserved:
 
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
+import global.genesis.spring.data.cube.lifecycle.CubeConfig
+import global.genesis.spring.data.cube.model.CubeServerException
+import global.genesis.spring.data.cube.resource.CubeResource
+import global.genesis.spring.data.cube.resource.cubeResource
+import global.genesis.spring.demo.dao.Widget
+import global.genesis.springboot.test.GenesisSpringTest
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.convert.ApplicationConversionService
+import org.springframework.boot.test.context.runner.ApplicationContextRunner
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
 @GenesisSpringTest
 class BadCubeDeclarationTest {
     @Autowired lateinit var context: ApplicationContext
@@ -1148,6 +1166,83 @@ class BadCubeDeclarationTest {
     }
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.spring.data.cube.lifecycle.CubeConfig;
+import global.genesis.spring.data.cube.model.CubeServerException;
+import global.genesis.spring.data.cube.resource.CubeResource;
+import global.genesis.spring.demo.dao.Widget;
+import global.genesis.springboot.test.GenesisSpringTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.ApplicationConversionService;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@GenesisSpringTest
+class BadCubeDeclarationTest {
+
+    @Autowired
+    ApplicationContext context;
+
+    private ApplicationContextRunner runner() {
+        return new ApplicationContextRunner()
+            .withParent(context)
+            .withInitializer(ctx -> ctx.getBeanFactory().setConversionService(ApplicationConversionService.getSharedInstance()))
+            .withUserConfiguration(CubeConfig.class);
+    }
+
+    @Test
+    void reservedOperationNameFailsStartup() {
+        runner().withUserConfiguration(BadCube.class).run(ctx -> {
+            assertThat(ctx).hasFailed();
+            assertThat(ctx).getFailure()
+                .rootCause()
+                .isInstanceOf(CubeServerException.class)
+                .hasMessageContaining("reserved");
+        });
+    }
+
+    @Test
+    void validCubeInTheSameChildContextStarts() {
+        runner().withUserConfiguration(GoodCube.class).run(ctx -> assertThat(ctx).hasNotFailed());
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    static class BadCube {
+        @Bean
+        CubeResource badWidgets() {
+            return CubeResource.forEntity(Widget.class)
+                .operation("query", op -> op
+                    .groupBy("quality")
+                    .count())
+                .build();
+        }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    static class GoodCube {
+        @Bean
+        CubeResource goodWidgets() {
+            return CubeResource.forEntity(Widget.class)
+                .operation("byQuality", op -> op
+                    .groupBy("quality")
+                    .count())
+                .build();
+        }
+    }
+}
+```
+
+</TabItem>
+</Tabs>
 
 Keep the `withInitializer` line. A bare `ApplicationContextRunner` context has no Spring Boot
 conversion service, so without it even a valid cube fails to start in the child context, for an
