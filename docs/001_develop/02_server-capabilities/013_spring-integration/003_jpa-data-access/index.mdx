@@ -226,6 +226,9 @@ To react to changes on a table from Spring code, annotate a method on a Spring b
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.spring.data.UpdateQueueEvent
+import global.genesis.spring.data.UpdateQueueListener
+
 @Component
 class PositionWatcher {
 
@@ -250,6 +253,9 @@ class PositionWatcher {
 <TabItem value="java">
 
 ```java
+import global.genesis.spring.data.UpdateQueueEvent;
+import global.genesis.spring.data.UpdateQueueListener;
+
 @Component
 public class PositionWatcher {
 
@@ -278,7 +284,7 @@ public class PositionWatcher {
 | Attribute | Default | Meaning |
 |---|---|---|
 | `entity` | taken from the parameter's type argument | The entity to listen to. Only needed when the parameter doesn't name it; if both are given they must agree |
-| `types` | all | `INSERT`, `MODIFY` and/or `DELETE`. Must agree with the parameter type if that already narrows it |
+| `types` | all | `UpdateQueueEvent.Type` values `INSERT`, `MODIFY` and/or `DELETE`. Must agree with the parameter type if that already narrows it |
 | `fields` | all | Dictionary field names (for example `"QUANTITY"`). Only filters modifies: a modify is delivered only when one of these fields changed. Inserts and deletes are always delivered |
 | `delay` | none | Batching interval in milliseconds. Updates are collected and delivered every `delay` ms, so several rapid updates to one record may arrive merged |
 
