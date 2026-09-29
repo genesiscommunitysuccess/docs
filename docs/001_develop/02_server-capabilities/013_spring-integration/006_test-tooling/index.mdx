@@ -178,12 +178,25 @@ section](../core#testing) introduces: exclude `GenesisSpringBootConfiguration` a
 `UserSessionCache` directly instead of logging a session in for real.
 
 Exclude the autoconfiguration class for each other Genesis Spring starter your module depends on
-too, or its beans still try to boot: `global.genesis.springboot.security.GenesisSpringSecurityConfig`
-(also from `genesis-spring-boot-starter`), `global.genesis.eventhandler.spring.GenesisSpringEventHandlerConfig`
+too, or its beans still try to boot: `global.genesis.eventhandler.spring.GenesisSpringEventHandlerConfig`
 (`genesis-eventhandler-spring-boot-starter`), `global.genesis.spring.data.GenesisDataConfig`
 (`genesis-data-spring-boot-starter`), and `global.genesis.cube.web.CubeWebConfig`
 (`genesis-data-cube-spring-boot-starter`) are the ones the eventhandler, JPA, and data-cube starters
 register.
+
+A module that generates JPA entities has one more autoconfiguration to exclude: its own generated
+`JpaConfiguration`. The [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) writes
+it into `configClassPackageName` (`$packageName.config` by default) and lists it in the module's
+`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`, so it still runs
+once `GenesisDataConfig` is excluded, and its `@EnableJpaRepositories` then fails the context with a
+`Not a managed type` error. For this page's example package, add
+`com.example.myapp.jpa.config.JpaConfiguration` to the exclude list.
+
+Keep `global.genesis.springboot.security.GenesisSpringSecurityConfig` in, even though it also comes
+from `genesis-spring-boot-starter`: it installs the session-token filter chain this test exercises.
+Excluding it replaces the Genesis gate with Spring Boot's default HTTP Basic chain, which also
+answers `401` to a request with no token — so the no-token assertion below still passes, but for the
+wrong reason.
 
 `UserSessionCache` (`global.genesis.session.UserSessionCache`) has two lookup methods, and which one
 the security layer calls matters for what to stub:
@@ -237,7 +250,7 @@ package com.example.myapp.jpa
 
 import global.genesis.session.UserSessionCache
 import global.genesis.springboot.annotation.GenesisAnonymous
-import global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER
+import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
 import org.joda.time.DateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
