@@ -237,7 +237,17 @@ Once the processes are up, the Spring integration is complete.
 
 #### Verify it
 
-Confirm the Step 6 event handler actually persists an INSERT by triggering it directly. Every Genesis event handler — annotation-based or GPAL — is triggered the same way: the client sends a `MESSAGE_TYPE` of `EVENT_<event name>`, over Websocket or REST; see [`EVENT_<EVENT_HANDLER_NAME>`](/develop/server-capabilities/core-business-logic-event-handler/#event_event_handler_name) for the full reference. `@GenesisEventController("WIDGET")` with `@EventMapping("INSERT")` from Step 6 registers the event as `WIDGET_INSERT`, so the REST call is:
+Confirm the Step 6 event handler actually persists an INSERT by triggering it directly. Every Genesis event handler — annotation-based or GPAL — is triggered the same way: the client sends a `MESSAGE_TYPE` of `EVENT_<event name>`, over Websocket or REST; see [`EVENT_<EVENT_HANDLER_NAME>`](/develop/server-capabilities/core-business-logic-event-handler/#event_event_handler_name) for the full reference. `@GenesisEventController("WIDGET")` with `@EventMapping("INSERT")` from Step 6 registers the event as `WIDGET_INSERT`.
+
+The call needs a `SESSION_AUTH_TOKEN` header. A freshly scaffolded project seeds a default user, `admin`, with the password `genesis`; log in as that user to get a token:
+
+```shell
+curl -s -X POST 'http://localhost:9064/event-login-auth' \
+     -H 'Content-Type: application/json' \
+     -d '{"DETAILS": {"USER_NAME": "admin", "PASSWORD": "genesis"}}'
+```
+
+Take the `SESSION_AUTH_TOKEN` value from the response and substitute it for `<token>` below — see [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) for the full request/response shape. The REST call is then:
 
 ```
 POST /event-widget-insert HTTP/1.1
@@ -424,7 +434,7 @@ Every call below needs a `SESSION_AUTH_TOKEN` header (see the note at the start 
 ```shell
 curl -s -X POST 'http://localhost:9064/event-login-auth' \
      -H 'Content-Type: application/json' \
-     -d '{"DETAILS": {"USER_NAME": "<user>", "PASSWORD": "<password>"}}'
+     -d '{"DETAILS": {"USER_NAME": "admin", "PASSWORD": "genesis"}}'
 ```
 
 Take the `SESSION_AUTH_TOKEN` value from the response and substitute it for `<token>` below — see [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) for the full request/response shape.
