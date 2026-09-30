@@ -652,40 +652,14 @@ carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
 `@SpringBootTest(classes = [GenesisTestApplication::class, SessionAuditService::class])` — see
 [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation.
 
-For a narrow unit test of your own controller and security wiring
-without booting a full Genesis process, exclude the two autoconfiguration classes that would
-otherwise do so:
-
-```kotlin
-@SpringBootTest(
-    classes = [MyTestApp::class],
-    properties = [
-        "spring.autoconfigure.exclude=" +
-            "global.genesis.springboot.config.GenesisSpringBootConfiguration," +
-            "global.genesis.springboot.web.GenesisSpringWebConfig",
-    ],
-)
-class MySecurityTest {
-    @Autowired lateinit var context: WebApplicationContext
-    @Autowired lateinit var userSessionCache: UserSessionCache
-
-    // ...set up MockMvc with Spring Security applied, and stub UserSessionCache as needed
-}
-```
-
-This snippet is illustrative only — it does not run as-is. For a complete, runnable version, see
-[Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling guide.
-
-The security autoconfiguration only needs a `UserSessionCache` to resolve tokens against — it does
-not need a booted Genesis process, so the process-bootstrapping autoconfiguration classes can be
-excluded for a fast, focused test. Useful assertions to build on: a request with no token is `401`;
-a token resolving to no live session is `401`; a valid token is served and its username is
-available via `Principal`; a `@GenesisAnonymous`-marked endpoint is served with no token; actuator
-health is reachable with no token while the rest of the actuator tree is not.
-
-For a complete, runnable version of this test — `@AutoConfigureMockMvc`, the exact
-`UserSessionCache` method to stub, and the dependencies it needs — see [Testing an HTTP
-endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling guide.
+For a narrow test of your own controller and security wiring without booting a full Genesis
+process, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling
+guide. It uses Spring Boot's `@WebMvcTest` slice with `GenesisSpringSecurityConfig` imported, so the
+security layer only needs a stubbed `UserSessionCache` to resolve tokens against. Useful assertions to
+build on: a request with no token is `401`; a token resolving to no live session is `401`; a valid
+token is served and its username is available via `Principal`; a `@GenesisAnonymous`-marked endpoint
+is served with no token. Actuator endpoints are not part of the `@WebMvcTest` slice, so asserting on
+actuator health there may need extra configuration.
 
 ## See also
 
