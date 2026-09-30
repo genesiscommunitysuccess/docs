@@ -294,7 +294,7 @@ Things to know when writing a listener:
 - **It runs on the update queue's own thread, outside any transaction.** The method is called synchronously as updates arrive, so a slow or blocking listener holds up delivery. Hand heavy work off to another thread.
 - **Exceptions are logged, not propagated.** An exception thrown by the method is logged at `ERROR` and the update is dropped. There is no retry.
 - **Only singleton beans.** A listener method on a prototype-scoped bean fails at startup. Listeners start receiving updates once the application's singletons have been created.
-- **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The generated `JpaConfiguration` class does this for tables, but not for views, and only when `generateConfigurationClass` is left on (see [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin)).
+- **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The generated `JpaConfiguration` class does this for tables, but not for views.
 
 Mistakes in the declaration fail at startup rather than when an update arrives: a method with other than one parameter, an entity that can't be determined, an `entity` or `types` value that disagrees with the parameter type, or an entity with no registered mapper.
 
