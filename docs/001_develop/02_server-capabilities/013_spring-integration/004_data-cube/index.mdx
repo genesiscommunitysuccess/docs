@@ -72,6 +72,9 @@ Cube HTTP endpoints run through the same Spring Security filter chain as the res
 Spring application — see [Application core](../core) for how that chain is configured and how a
 resource's `permission(...)` authority maps onto it.
 
+Set these properties in the Spring module's `application.properties` (or `application.yml`) — see
+[Getting started: Step 11](../getting-started#step-11-query-it):
+
 | Property | Default | Purpose |
 |---|---|---|
 | `genesis.cube.pivot-ttl-millis` | `600000` (10 min) | Default time-to-live for a discovered pivot's column set, overridable per call |
@@ -99,6 +102,7 @@ Every code sample on this page refers to the following types by their simple nam
 | `CubeResourceRegistry` | `global.genesis.spring.data.cube.resource` | |
 | `ResolvedCubeResource` | `global.genesis.spring.data.cube.resource` | |
 | `PrincipalValues` | `global.genesis.spring.data.cube.resource` | |
+| `projection` | `global.genesis.spring.data.cube.resource` | Kotlin DSL extension function, used as `projection<T>()` inside `exposeQuery { }` or `operation(...) { }`; import it explicitly |
 | `CubeFactory` | `global.genesis.spring.data.cube` | |
 | `EntityCube` | `global.genesis.spring.data.cube` | |
 | `QueryRequest` | `global.genesis.spring.data.cube.model` | |
@@ -269,6 +273,8 @@ may group by:
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.spring.data.cube.resource.projection
+
 val trades = cubeResource<Trade> {
     exposeQuery {
         projection<TradeFlat>()            // the caller's flat shape when it groups by nothing
@@ -1261,6 +1267,8 @@ one `exposeQuery()` block:
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.spring.data.cube.resource.projection
+
 @Configuration
 class TradesCubeConfig {
 
