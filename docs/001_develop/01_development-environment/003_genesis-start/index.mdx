@@ -206,7 +206,7 @@ For a running utility such as DbMon, you can type straight into the log. Your te
 
 Each Application process writes its own log file, normally `<Genesis home>/runtime/logs/<PROCESS_NAME>.log`. The log panel shows that file as it grows.
 
-Utilities, build tasks and the Web UI don't have their own log files: the panel shows their console output, which is only kept inside Genesis Start.
+Utilities, build tasks and the Web UI don't have their own log files: the panel shows their console output, which is only kept inside Genesis Start. In [headless mode](/develop/development-environment/genesis-start/headless-mode/#driving-it-over-rest), you can read the output of build tasks and scripts with the REST API.
 
 Genesis Start's own output goes to `server/build/genesis-start/output.log` and `error.log`.
 

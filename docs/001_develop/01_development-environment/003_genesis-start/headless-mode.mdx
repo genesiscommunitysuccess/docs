@@ -34,7 +34,7 @@ If your project doesn't have Genesis Start yet, [enable it](/develop/development
 
 ## Starting headless mode
 
-There are three ways to start headless mode. For most uses, the start script is best.
+There are two ways to start headless mode. For most uses, the start script is best.
 
 ### The start script
 
@@ -118,22 +118,6 @@ Swagger UI available on http://localhost:18080/api/docs
 OpenApi spec available on http://localhost:18080/api/openapi.json
 ```
 
-### Running the jar directly
-
-For CI or other advanced uses, you can bypass Gradle completely and run the launcher jar yourself:
-
-```bash
-java -cp genesis-start-cp.jar global.genesis.launcher.app.MainKt \
-  --root-project-path=/path/to/project --project=myproj \
-  --task=projectOverviewBuilder --task-path=:projectOverviewBuilder \
-  --outputs=/path/to/output.json \
-  --headless --rest-port=18080
-```
-
-When you run the jar directly, the REST API is on by default, so `--headless` is enough, as long as you don't also pass `--no-rest`. The other REST flags are `--rest-base-path`, `--rest-api-version` and `--rest-max-body`. Add `--enable-experimental-features` to use experimental features, such as a non-zero [port offset](/develop/development-environment/genesis-start/configuration/#port-offset).
-
-To pass database credentials without putting them on the command line, set the `GENESIS_LAUNCHER_DB_HOST`, `GENESIS_LAUNCHER_DB_USERNAME` and `GENESIS_LAUNCHER_DB_PASSWORD` environment variables instead of using `--db-host`, `--db-username` and `--db-password`. If you set both, the command-line flag wins. The names have a `GENESIS_LAUNCHER_` prefix so that a `DbPassword` variable already set in your shell isn't picked up by accident.
-
 ## Checking that it's running
 
 When you use the start script or the Gradle task, Genesis Start writes its output to files rather than to your terminal. To follow them:
@@ -201,6 +185,8 @@ You can also start and stop a process with `POST /api/processes/start` and `POST
 
 Script arguments are split on spaces, with no support for quotes or escaping.
 
+A script run returns a `processId` as well as an `operationId`. Build tasks, such as `genesisSync`, are listed as processes too, when you call `GET /api/processes?includeBuildTasks=true`. To read the output of a script or a build task, call `GET /api/processes/{processId}/log` with its `processId`.
+
 **Settings and profiles**
 
 | Endpoint | What it does |
@@ -211,13 +197,15 @@ Script arguments are split on spaces, with no support for quotes or escaping.
 | `GET /api/process-profiles` | Lists the [process profiles](/develop/development-environment/genesis-start/configuration/#process-profiles) and shows the current one. |
 | `PUT /api/process-profiles/{profileId}` | Switches to another process profile. |
 
-To switch profile, use an `id` from `GET /api/process-profiles`. Ids are case-sensitive, and an unknown id returns 404. After switching, call `GET /api/processes` and `GET /api/scripts` again, because both depend on the profile.
+To switch profile, use an `id` from `GET /api/process-profiles`. Ids are case-sensitive, and an unknown id returns 404. After switching, call `GET /api/processes` and `GET /api/scripts` again, because both depend on the profile. There's no way to preview a profile: to see which processes it gives you, switch to it and then list the processes.
 
-To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-version=v1` to the start script or the jar. There's no Gradle property for this.
+To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-version=v1` to the start script. There's no Gradle property for this.
 
 ### Long-running operations
 
 Bootstrap, sync, start-all, import and script runs return straight away with an `operationId`. To follow the operation, call `GET /api/operations/{operationId}` until its `status` is `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+
+Starting or stopping a single process (`POST /api/processes/{processId}/start` or `/stop`) is different: it returns straight away with `{"started": true}` (or `{"stopped": true}`), and doesn't return an `operationId`. To follow the process, check its state in `GET /api/processes`.
 
 Only one bootstrap, sync or start-all can run at a time. If you start another while one is in progress, you get **409 Conflict**. You also get a 409 if you run a script or import files during a sync.
 
