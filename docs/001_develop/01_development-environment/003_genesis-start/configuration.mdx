@@ -19,23 +19,7 @@ Any project created with Genesis Create or `genx init` already has Genesis Start
 - the simplified project structure
 - the Genesis Gradle Settings plugin
 
-To enable it, you need to change two files:
-
-1. The settings file.
-2. The build file.
-
-### Amending the settings file
-
-In your project's `server/settings.gradle.kts` file, add `google()` to `repositories` under `pluginManagement`:
-
-```kotlin
-pluginManagement {
-    repositories {
-        // other repositories
-        google() // <- add this
-    }
-}
-```
+To enable it, you need to change the build file.
 
 ### Amending the build file
 
@@ -59,7 +43,7 @@ allprojects {
 }
 ```
 
-You need `google()` in both places. The one in `settings.gradle.kts` is only used to find the plugin itself. The plugin then pulls in the libraries its window is built with (Compose Multiplatform and AndroidX), and Gradle looks for those in the `allprojects` repositories. If `google()` is missing there, `genesisStart` fails with an error about missing `androidx.compose.*` or `androidx.lifecycle.*` artifacts, and nothing in the error mentions Genesis Start. You need this even if you only use headless mode.
+This is the only place you need `google()`. The libraries the window is built with (Compose Multiplatform and AndroidX) are resolved at runtime, and Gradle looks for them in the `allprojects` repositories. If `google()` is missing there, `genesisStart` fails with an error about missing `androidx.compose.*` or `androidx.lifecycle.*` artifacts, and nothing in the error mentions Genesis Start. You need this even if you only use headless mode.
 
 ### The standalone plugin
 
