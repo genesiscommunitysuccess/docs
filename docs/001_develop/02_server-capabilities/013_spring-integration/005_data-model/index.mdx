@@ -200,6 +200,47 @@ A required (non-nullable) column whose JPA type isn't primitive and that has no 
 Hibernate generates lazy-loading proxy subclasses of every entity, overriding getters and the identifier accessor. If you hand-write an entity or subclass a generated one, do not mark properties or functions `final` — every base class in `genesis-jpa-base` is written with this in mind.
 :::
 
+A generated view entity takes its primary key from the view's root table. Each key column is a plain primary-constructor parameter (not a property), and the generator builds `pk` from it: annotated `@Id` when the root table has a single-field key, or `@EmbeddedId` wrapping a nested `Pk` class when the key is composite. The excerpts below are abridged from the view entities generated for the platform's `USER_VIEW` (single key) and `PROFILE_USER_VIEW` (composite key). They are shown so you can read what the generator emits; you don't write view entities yourself.
+
+```kotlin
+// Single-field key: USER_VIEW, keyed on USER_NAME
+public class UserView @JvmOverloads constructor(
+  userName: String,
+  @field:Column(name = "USER_FIRST_NAME")
+  public var firstName: String? = null,
+  // ... remaining projected columns, then recordId and timestamp
+) : GenesisReadOnlyJpaEntity<String>() {
+  @field:Id
+  @field:Column(
+    name = "USER_USER_NAME",
+    nullable = false,
+  )
+  @get:JsonIgnore
+  override var pk: String = userName
+  // ...
+}
+
+// Composite key: PROFILE_USER_VIEW, keyed on PROFILE_NAME and USER_NAME
+public class ProfileUserView @JvmOverloads constructor(
+  profileName: String,
+  userName: String,
+  // ... recordId and timestamp
+) : GenesisReadOnlyJpaEntity<ProfileUserView.Pk>() {
+  @field:EmbeddedId
+  override var pk: Pk = Pk(profileName, userName)
+  // ...
+  @Embeddable
+  public class Pk(
+    @field:Column(name = "PROFILE_USER_PROFILE_NAME", nullable = false)
+    public var profileName: String,
+    @field:Column(name = "PROFILE_USER_USER_NAME", nullable = false)
+    public var userName: String,
+  ) : Serializable
+}
+```
+
+Each key field is also exposed on the entity as a read-only `@Transient` convenience property (`userName`, `profileName`) that reads through `pk`; in JPQL, address the key through `pk` (`e.pk` or `e.pk.profileName`).
+
 ### Generated repositories
 
 Every generated entity also gets a generated Spring Data repository interface, named `<EntityClassName>Repository`, in `repoPackageName` (`$packageName.repo` by default — see the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin#common-configuration) for the full property reference). The rule holds for audit and view entities too: `ApprovalAudit` gets `ApprovalAuditRepository`, `ApprovalAuditView` gets `ApprovalAuditViewRepository`.
