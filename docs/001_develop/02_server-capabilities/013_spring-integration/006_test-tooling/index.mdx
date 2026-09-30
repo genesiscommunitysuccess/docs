@@ -85,6 +85,13 @@ This is the main behavioural difference from GenesisJunit. Spring's `TestContext
 - give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` for a fresh runtime per class, or
 - factor shared `@GenesisSpringTest` configuration into a common abstract base class so related test classes intentionally share one runtime, optionally bounding `spring.test.context.cache.maxSize` to cap how many live runtimes accumulate.
 
+The Genesis test configuration that decides whether two classes share a runtime includes their `@CsvData`. Classes with different `@CsvData` always get separate cached runtimes, and switching from one runtime to another truncates the database and reseeds it with the new runtime's CSV data. Classes that share a runtime get no data reset between them: the CSV data is loaded when the runtime boots, and again only after another runtime has truncated the database. A later class sees whatever earlier classes left in the tables, so its results can depend on the order in which test classes run.
+
+`@ResetTableAfterTest` restores the named tables to the state the class found them in, not to the CSV data. Put it on the class that *changes* shared tables, so the next class starts clean. On a class that receives data an earlier class left behind, it cleans nothing: it restores that same data after each test. To isolate a class's data:
+
+- give it its own `@CsvData`, so it gets its own runtime and is reseeded whenever it runs after another one, or
+- put `@ResetTableAfterTest` on every class that writes to the tables it shares.
+
 ## A simple example
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
