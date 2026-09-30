@@ -643,6 +643,37 @@ bridging configuration needed, and the `@Named("APP_GREETING")` system-definitio
 `@Value("\${APP_GREETING:hello}")`, sourced from the same `"genesis"` PropertySource described
 above.
 
+### What changes for a Guice-era HTTP endpoint
+
+Guice-era HTTP endpoints are either GPAL [custom endpoints](/develop/server-capabilities/integrations/custom-endpoints)
+(`webHandlers { endpoint(...) }` in a `*-web-handler.kts` file) or coded `WebEndpoint`,
+`BodyLessWebEndpoint`, `SuspendingWebEndpoint` or `BlockingWebEndpoint` classes registered with
+`WebEndpointRegistry`. Rewriting one as a `@RestController` changes three Genesis-specific things;
+everything else is ordinary Spring MVC (see Spring's
+[Annotated Controllers](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller.html)
+documentation).
+
+- **Authentication.** The Guice-era endpoint decided this itself: `requiresAuth()` (default `true`)
+  on a coded endpoint, or `requiresAuth = false` in a web handler's `config` block. In the Spring
+  app, every request goes through the deny-by-default session-token filter chain before it reaches
+  a controller; `@GenesisAnonymous` on the class or on a single handler method replaces
+  `requiresAuth = false`. See [Session-token authentication](#session-token-authentication).
+- **Reply shapes.** Genesis no longer composes the response. What the endpoint returned from
+  `handleRequest` or `process(...)`, including an `EventReply` from `triggerEvent(...)`, was
+  serialised by Genesis, with `buildResponse`/`HttpResponse` used to set the status and headers. A
+  controller returns a plain value that Spring serialises, or a `ResponseEntity` when it needs to
+  set the status or headers. Nothing in the starter maps an `EventReply` to an HTTP response, so a
+  controller that still returns one must turn an `EventNack` into an error status itself. Logic that
+  is really an event belongs in an [annotation-driven event handler](../event-handlers), which
+  replies with `EventReply` natively.
+- **Routing.** The URL changes. The router served a Guice-era endpoint at
+  `/<product>/<endpoint>`, where the first segment comes from the web handler's file name (or its
+  `basePath`) or from the product a coded endpoint was registered under. A controller is reached at
+  `/<prefix>/<mapping>`, where the prefix is set as described under
+  [Router proxying](#router-proxying). To keep an existing URL, set `server.servlet.context-path` to
+  the old first segment, and retire the old endpoint first: the router serves a path it still has
+  registered locally instead of proxying it.
+
 ## Testing
 
 Dedicated test tooling for Spring/Guice-bridged Genesis apps lives in
