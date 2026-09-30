@@ -14,7 +14,7 @@ This page covers how to add Genesis Start to a project and how to change the way
 
 ## Enabling Genesis Start
 
-Any project generated through Genesis Create already has Genesis Start. An older project can use it if it has:
+Any project created with Genesis Create or `genx init` already has Genesis Start enabled (Genesis Create uses genx to set up the project), so you can skip the rest of this section. The steps below are for a project that came from neither. It can use Genesis Start if it has:
 
 - the simplified project structure
 - the Genesis Gradle Settings plugin
@@ -127,6 +127,10 @@ There's no Gradle property for this flag, so pass it to the [start script](/deve
 build/genesis-start/start.sh --system-definition-property DbHost=jdbc:postgresql://localhost:5433/genesis
 ```
 
+:::caution
+Values you pass with `--system-definition-property` are visible on the command line of the Genesis Start process, so other users on the same machine can read them with `ps`. Don't use it for credentials such as `DbPassword`. Set those through the [database connection settings](#database-connection-settings) instead, which are passed as environment variables.
+:::
+
 ## Database connection settings
 
 You can pass your database connection to Genesis Start as Gradle properties, instead of setting it in your project's system definition. Genesis Start passes each one to every Genesis process it starts, as the matching system definition property:
@@ -142,6 +146,14 @@ You can pass your database connection to Genesis Start as Gradle properties, ins
 | `genesis.start.dbSqlConnectionPoolSize` | `DbSqlConnectionPoolSize` |
 
 You can set these on the command line (`-Pgenesis.start.dbPassword=...`), but it's better to put them in your own `~/.gradle/gradle.properties` file, so the credentials stay out of the project.
+
+For example, to use a local H2 database, set `genesis.start.dbLayer` to `SQL` and `genesis.start.dbHost` to:
+
+```
+jdbc:h2:file:~/genesis-local-db/{app_name}/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE
+```
+
+Replace `{app_name}` with the name of your application.
 
 The host, username and password don't appear on the command line of the Genesis Start process. They are passed as environment variables instead (`GENESIS_LAUNCHER_DB_HOST`, `GENESIS_LAUNCHER_DB_USERNAME` and `GENESIS_LAUNCHER_DB_PASSWORD`), so other users on the same machine can't read them with `ps`. This applies both to `genesisStart` and to the [start script](/develop/development-environment/genesis-start/headless-mode/#the-start-script).
 
