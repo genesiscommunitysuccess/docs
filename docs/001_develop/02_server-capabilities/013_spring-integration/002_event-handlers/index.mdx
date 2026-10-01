@@ -140,6 +140,8 @@ Most handlers need both a validation phase and a commit phase — the equivalent
 <TabItem value="kotlin">
 
 ```kotlin
+import <packageName>.dao.Widget
+import <packageName>.repo.WidgetRepository
 import global.genesis.eventhandler.spring.annotation.EventCommit
 import global.genesis.eventhandler.spring.annotation.EventContext
 import global.genesis.eventhandler.spring.annotation.EventValidate
@@ -175,6 +177,8 @@ class ValidatingEventHandler(
 <TabItem value="java">
 
 ```java
+import <packageName>.dao.Widget;
+import <packageName>.repo.WidgetRepository;
 import global.genesis.eventhandler.spring.annotation.EventCommit;
 import global.genesis.eventhandler.spring.annotation.EventContext;
 import global.genesis.eventhandler.spring.annotation.EventValidate;
@@ -658,7 +662,7 @@ class CreateEventHandlerTest {
 }
 ```
 
-or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. This is different from a generated Spring Data repository such as [Test tooling: A simple example](../test-tooling#a-simple-example)'s `PositionRepository`, which arrives through autoconfiguration and needs no such step — don't generalise from that example to your own handler classes.
+or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. This is different from a generated Spring Data repository such as [Test tooling: A simple example](../test-tooling#a-simple-example)'s `WidgetRepository`, which arrives through autoconfiguration and needs no such step — don't generalise from that example to your own handler classes.
 
 ### A worked example
 
@@ -668,6 +672,7 @@ or via `@Import(ValidatingEventHandler::class)`, or a nested `@TestConfiguration
 <TabItem value="kotlin">
 
 ```kotlin
+import <packageName>.repo.WidgetRepository
 import global.genesis.message.core.event.EventReply
 import global.genesis.springboot.test.GenesisTestApplication
 import global.genesis.testsupport.client.eventhandler.EventClientSync
@@ -727,9 +732,13 @@ class CreateEventHandlerTest {
 <TabItem value="java">
 
 ```java
+import <packageName>.repo.WidgetRepository;
 import global.genesis.message.core.event.EventReply;
 import global.genesis.springboot.test.GenesisTestApplication;
 import global.genesis.testsupport.client.eventhandler.EventClientSync;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @GenesisSpringTest
 @SpringBootTest(
