@@ -243,6 +243,12 @@ A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`
 
 Health comes from the `ResourceDaemon` utility, which bootstrap and start-all don't start. Until you start it (`POST /api/processes/{processId}/start`, with its id from `GET /api/processes`), running processes stay `RUNNING`, and never become `HEALTHY` or `UNHEALTHY`.
 
+Once `ResourceDaemon` has started, your application processes take a few seconds to report their health (around 5–6 seconds in testing). Until then, they show `RUNNING`. The Web UI process never gets a health state, so it stays `RUNNING` even when `ResourceDaemon` is up.
+
+:::important
+`STOPPING` can be very brief, typically well under a second, so you might not see it. A process can go from `RUNNING` or `HEALTHY` straight to `STOPPED` between two checks of `GET /api/processes`. Don't wait for `STOPPING` to appear before you wait for `STOPPED`.
+:::
+
 ### Errors
 
 Errors are returned as JSON, with a `code` (such as `NOT_FOUND`, `CONFLICT` or `VALIDATION_ERROR`), a `message` you can read, and sometimes `details`.
