@@ -203,7 +203,15 @@ To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-versi
 
 ### Long-running operations
 
-Bootstrap, sync, start-all, import and script runs return straight away with an `operationId`. To follow the operation, call `GET /api/operations/{operationId}` until its `status` is `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+Bootstrap, sync, start-all, import and script runs return straight away with an `operationId`:
+
+```json
+{"operationId": "…"}
+```
+
+To follow the operation, call `GET /api/operations/{operationId}` until its `status` is `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+
+Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for 1 hour and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
 
 Starting or stopping a single process (`POST /api/processes/{processId}/start` or `/stop`) is different: it returns straight away with `{"started": true}` (or `{"stopped": true}`), and doesn't return an `operationId`. To follow the process, check its state in `GET /api/processes`.
 
