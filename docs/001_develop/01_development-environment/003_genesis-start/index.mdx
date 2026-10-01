@@ -115,7 +115,7 @@ The `testData` folder is **not** loaded in a production environment. It is only 
 
 ![Import data](/img/genesis-start/genesis-start-import-data.png)
 
-This button opens a file picker where you can select one or more CSV files to import into your application's database. For each file, Genesis Start runs the Genesis [`SendIt`](/build-deploy-operate/operate/commands#sendit) command with `-t <filename>`, from the folder the file is in. Several files are imported in parallel, so the order isn't guaranteed.
+This button opens a file picker where you can select one or more CSV files to import into your application's database. For each file, Genesis Start runs the Genesis [`SendIt`](/build-deploy-operate/operate/commands#sendit) command with `-t <filename>`, from the folder the file is in. SendIt takes the file name without `.csv` as the table name, so each file must be named after its target table; for example, `FUND.csv` loads table `FUND`. Several files are imported in parallel, so the order isn't guaranteed.
 
 ### Sync Processes
 
