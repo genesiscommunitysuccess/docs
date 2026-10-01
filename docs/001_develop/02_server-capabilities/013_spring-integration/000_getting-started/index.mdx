@@ -252,21 +252,12 @@ curl -s -X POST 'http://localhost:9064/event-login-auth' \
 
 Take the `SESSION_AUTH_TOKEN` value from the response and substitute it for `<token>` below — see [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) for the full request/response shape. The REST call is then:
 
-```
-POST /event-widget-insert HTTP/1.1
-Host: localhost:9064
-Content-Type: application/json
-SESSION_AUTH_TOKEN: <token>
-SOURCE_REF: 1
-
-{
-  "DETAILS": {
-    "NAME": "Widget 1",
-    "PRICE": 10.0,
-    "QUALITY": "GOOD",
-    "COST": 6.0
-  }
-}
+```shell
+curl -s -X POST 'http://localhost:9064/event-widget-insert' \
+     -H 'Content-Type: application/json' \
+     -H 'SESSION_AUTH_TOKEN: <token>' \
+     -H 'SOURCE_REF: 1' \
+     -d '{"DETAILS": {"NAME": "Widget 1", "PRICE": 10.0, "QUALITY": "GOOD", "COST": 6.0}}'
 ```
 
 A successful insert returns `EVENT_ACK` with the generated `ID`:
