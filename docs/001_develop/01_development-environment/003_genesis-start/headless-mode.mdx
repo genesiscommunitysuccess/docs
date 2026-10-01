@@ -181,7 +181,7 @@ You can also start and stop a process with `POST /api/processes/start` and `POST
 |---|---|
 | `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. |
 | `POST /api/sync` | Runs Sync Processes. |
-| `POST /api/import` | Imports CSV files with `SendIt`. Body: `{"paths": [...]}`. |
+| `POST /api/import` | Imports CSV files with `SendIt`. Body: `{"paths": [...]}`. Paths can be absolute or relative. A relative path is resolved against Genesis Start's working directory, `build/genesis-start/`, not the project root, so absolute paths are safest. |
 | `GET /api/scripts` | Lists the scripts available for the current process profile. |
 | `POST /api/scripts/run` | Runs a script. Body: `scriptId`, and optionally `arguments`, `workingDirectory` and `waitForExit`. |
 
@@ -211,7 +211,7 @@ Bootstrap, sync, start-all, import and script runs return straight away with an 
 {"operationId": "…"}
 ```
 
-To follow the operation, call `GET /api/operations/{operationId}` until its `status` is `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+To follow the operation, call `GET /api/operations/{operationId}`. While it runs, its `status` is `RUNNING`; poll until it becomes `SUCCESS` or `FAILED`. If it failed, `message` explains why.
 
 Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for about an hour (less once more than 1000 are held) and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
 
