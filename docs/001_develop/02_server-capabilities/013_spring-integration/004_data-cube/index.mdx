@@ -560,6 +560,10 @@ With explicit values the generated column names are known up front (`SUM_quantit
 `values` cannot be combined with an `overflow` policy or with `INTERVAL` discovery, and
 `includeOther` is rejected without `values`.
 
+If the measure has an `alias`, the alias replaces the `SUM_quantity` part of these names, so the
+columns are `<alias>_<value>` (alias `q` gives `q_USD`, not `SUM_q_USD`), and sorts and filters must
+use that name.
+
 ### Sorting
 
 Sorting applies to every query type above. `sort` has its own, smaller grammar: a comma-separated
@@ -1018,7 +1022,7 @@ The `AutoConfigureMockMvc` import below needs `testImplementation("org.springfra
 package com.example.myapp.jpa
 
 import global.genesis.session.UserSessionCache
-import global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER
+import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
 import global.genesis.springboot.test.GenesisSpringTest
 import org.joda.time.DateTime
 import org.junit.jupiter.api.BeforeEach
