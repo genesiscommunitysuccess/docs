@@ -473,6 +473,10 @@ POST /api/v1/cubes/trades/query
 `currencyId` must additionally be in the resource's `pivotOn` allowlist to be used as a pivot
 dimension. See [Sorting](#sorting) for which pivot columns a request can sort on.
 
+The response envelope of a pivot with group keys reports `rowKind: GROUPED`, because `rowKind` says
+how a row is addressed (by its group keys), not which query shape produced it. The pivot shows up in
+the column descriptors instead, as a `pivot` entry on each generated pivot column's descriptor.
+
 The same request is callable directly in-process, exactly as for a grouped query:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -835,8 +839,10 @@ cache-buster (for example `?_=<timestamp>`) silently defeat HTTP caching. On a `
 four travel in the JSON body instead, and any query string is rejected (see [Sorting](#sorting)).
 
 A filter must be a single boolean expression. A malformed expression, an unknown column, an
-unsupported method call, more than one statement (including a trailing `;`) or an expression that
-isn't boolean is rejected, not thrown as a raw parser exception:
+unsupported method call, more than one statement or an expression that isn't boolean is rejected,
+not thrown as a raw parser exception. A single trailing `;` is tolerated on its own, but is rejected
+when the resource declares `baseCriteria`, because the filter is then wrapped in parentheses and
+combined with it — so leave the trailing `;` off:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -901,8 +907,12 @@ public CubeResource tradesByCurrencyWide() {
 </TabItem>
 </Tabs>
 
-```
-GET /api/v1/cubes/tradesByCurrencyWide/byCurrency?filter=currencyId=='USD'&&price>=5
+On a `GET`, the filter must be URL-encoded: an unencoded `&&` splits the query string, and the
+server rejects the request with `400` for an unknown query parameter.
+
+```bash
+curl -G http://localhost:8080/api/v1/cubes/tradesByCurrencyWide/byCurrency \
+  --data-urlencode "filter=currencyId=='USD' && price>=5"
 ```
 
 An empty or blank `filter` is treated as "no filter" and is accepted without error — worth knowing
