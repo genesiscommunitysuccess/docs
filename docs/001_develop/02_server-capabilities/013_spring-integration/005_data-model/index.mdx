@@ -239,6 +239,8 @@ public class ProfileUserView @JvmOverloads constructor(
 }
 ```
 
+Each view column is named `<SOURCEALIAS>_<FIELD_NAME>`, upper-cased: the source table's alias in the view definition, an underscore, then the dictionary field name — so `FIRST_NAME` from the table aliased `USER` becomes `USER_FIRST_NAME`.
+
 Each key field is also exposed on the entity as a read-only `@Transient` convenience property (`userName`, `profileName`) that reads through `pk`; in JPQL, address the key through `pk` (`e.pk` or `e.pk.profileName`).
 
 ### Generated repositories
@@ -423,7 +425,7 @@ public class ApprovalJava extends GenesisJpaEntity.Base<String>
 
 `toAuditEntity` is generator-emitted boilerplate that forwards to a generated mapper companion. When hand-writing an entity, only implementing the interface matters — `toAuditEntity` is an ordinary interface method with no Kotlin-specific calling convention.
 
-The generated audit entity itself (`ApprovalAudit` above) is an ordinary entity — it does not implement `JpaAuditableEntity`; only the source entity does. It carries every column from the source table plus four appended audit-specific columns (`auditEventType`, `auditEventDatetime`, `auditEventText`, `auditEventUser`), and it gets its own independently-generated primary key — a separate sequence, not a copy of the source entity's key (abridged to the load-bearing members):
+The generated audit entity itself (`ApprovalAudit` above) is an ordinary entity — it does not implement `JpaAuditableEntity`; only the source entity does. It carries every column from the source table, each with the source table's nullability (a column that is non-null on the source table is non-null on the audit entity; a nullable one stays nullable), plus four appended audit-specific columns (`auditEventType`, `auditEventDatetime`, `auditEventText`, `auditEventUser`), and it gets its own independently-generated primary key — a separate sequence, not a copy of the source entity's key (abridged to the load-bearing members):
 
 ```kotlin
 @Entity
@@ -453,7 +455,7 @@ For a complete dictionary example that combines `audit = details(...)` with a se
 
 Nothing in `genesis-spring-boot-entity-generation` runs on its own — it is invoked by a Gradle task wired by the [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) (`global.genesis.spring`) and its `genesisSpring { entities { packageName = ... } }` configuration block. **This is a hard prerequisite**: without the plugin applied and an `entities` block configured, the generator is never invoked and no code is produced. No Spring Boot runtime dependency is required just to generate entities — only to actually run an `EntityManagerFactory`/`DataSource` against them, which is what [JPA data access](../jpa-data-access) provides.
 
-Generated `@Entity` classes go into `entityPackageName` (`$packageName.dao` by default) — the parent package for every generated entity; the repository, enum, and mapper packages below are all relative to it.
+Generated `@Entity` classes go into `entityPackageName` (`$packageName.dao` by default) — the parent package for every generated entity; the enum and mapper packages below are relative to it. Repositories are not: `repoPackageName` defaults to `$packageName.repo`, off `packageName`.
 
 The generator consumes a dictionary's merged table/view definitions the same way classic code generation does, with a few shapes handled specially:
 
