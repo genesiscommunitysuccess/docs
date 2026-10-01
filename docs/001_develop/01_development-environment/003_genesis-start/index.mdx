@@ -152,6 +152,8 @@ The dot next to each process shows its state:
 | Red | Unhealthy. |
 | Grey | Stopped. |
 
+Genesis Start gets each process's health from the **ResourceDaemon** utility. Bootstrap and Launch and Start All don't start it, so until you start ResourceDaemon from the [Utilities](#utilities) section, running processes stay yellow and never turn green or red.
+
 ### Starting and stopping individual processes
 
 Each row has a button to start or stop that process:

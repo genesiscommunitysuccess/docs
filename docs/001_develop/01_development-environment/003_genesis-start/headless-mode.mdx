@@ -225,6 +225,8 @@ By default, a script run stays `RUNNING` until the script exits, then becomes `S
 
 A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`, `STOPPING` or `UNHEALTHY`. `RUNNING` means the process is up but hasn't reported its health yet; `HEALTHY` means it has reported itself healthy.
 
+Health comes from the `ResourceDaemon` utility, which bootstrap and start-all don't start. Until you start it (`POST /api/processes/{processId}/start`, with its id from `GET /api/processes`), running processes stay `RUNNING`, and never become `HEALTHY` or `UNHEALTHY`.
+
 ### Errors
 
 Errors are returned as JSON, with a `code` (such as `NOT_FOUND`, `CONFLICT` or `VALIDATION_ERROR`), a `message` you can read, and sometimes `details`.
