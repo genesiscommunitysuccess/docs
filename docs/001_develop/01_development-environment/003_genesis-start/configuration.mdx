@@ -23,16 +23,33 @@ To enable it, you need to change the build file.
 
 ### Amending the build file
 
-In your project's `server/build.gradle.kts` file, add the plugin:
+The plugin version is declared once, in `server/gradle.properties`:
+
+```properties
+startVersion=1.0.0-beta3
+```
+
+In `server/settings.gradle.kts`, declare the plugin in the `pluginManagement` block:
+
+```kotlin
+pluginManagement {
+    val startVersion: String by settings
+
+    plugins {
+        // other plugins
+        id("global.genesis.genesis-start-gui") version startVersion
+    }
+}
+```
+
+In `server/build.gradle.kts`, apply the plugin without a version:
 
 ```kotlin
 plugins {
     // other plugins
-    id("global.genesis.genesis-start-gui") version "1.0.0-beta3"
+    id("global.genesis.genesis-start-gui")
 }
 ```
-
-If your project declares its plugin versions in the `pluginManagement` block of `server/settings.gradle.kts`, add the version there instead, and apply the bare id (`id("global.genesis.genesis-start-gui")`) in `server/build.gradle.kts`.
 
 In the same file, add `google()` to the `repositories` block under `allprojects`:
 
@@ -151,14 +168,14 @@ These settings have the lowest precedence. Any of the [override files](#system-d
 
 ### Two projects on one machine
 
-Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes. Each instance also needs its own `restPort` (the default is `8080`), or the two instances clash on the REST port; see [Setting the port offset](#setting-the-port-offset).
+Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes. Each instance also needs its own `restPort` (the default is `8080`), or the two instances clash on the REST port; see [Setting the port offset](#setting-the-port-offset). To run two independent instances of the same application, use a separate checkout of the project for each instance. Each checkout has its own Genesis home and needs its own `restPort`.
 
 ### Port offset
 
 Two instances can't both use the default ports. A **port offset** moves every port an instance uses, so that several can run side by side.
 
 :::warning Experimental
-Port offset is an experimental feature. To use it, start Genesis Start with `--enable-experimental-features`. There's no Gradle property for this flag, so pass it to the [start script](/develop/development-environment/genesis-start/headless-mode/#the-start-script). Your project's Genesis platform version must also support the feature; if it doesn't, only an offset of 0 is accepted.
+Port offset is an experimental feature. To use it, start Genesis Start with `--enable-experimental-features`. There's no Gradle property for this flag, so pass it to the [start script](/develop/development-environment/genesis-start/headless-mode/#the-start-script). Your project's Genesis platform version must also support the feature; if it doesn't, only an offset of 0 is accepted. Support isn't tied to a particular version number: Genesis Start detects it from your project. To check, call `GET /api/port-offset`, or open **View → Application Info…** in the desktop window and look at its **Ports** section.
 :::
 
 How it works:
