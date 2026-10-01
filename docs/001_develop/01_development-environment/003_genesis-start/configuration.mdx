@@ -182,12 +182,16 @@ Open the [Application view](/develop/development-environment/genesis-start/#the-
 
 The port table below the editor shows the ports for the value you have typed, before you apply it: each port's platform default (service ports have none, so they show "—") and the port it gets at that offset. If the change is refused, the reason appears under the editor, with the same error code the REST API returns.
 
-The editor is disabled, with a one-line reason, while any of these is true:
+![Port offset editor previewing offset 42](/img/genesis-start/genesis-start-port-offset-editor.png)
+
+The editor is disabled, with the reason shown under it, while any of these is true:
 
 - the project overview hasn't loaded yet;
 - port offset is experimental in your Genesis version and you didn't start Genesis Start with `--enable-experimental-features`;
 - your project's platform version doesn't support a non-zero offset;
-- any Genesis process or the Web UI is running.
+- any Genesis process or the Web UI is running. The view then lists the running processes and the offset each was started with.
+
+![Port offset editor disabled while processes run](/img/genesis-start/genesis-start-port-offset-disabled.png)
 
 #### With the REST API
 
