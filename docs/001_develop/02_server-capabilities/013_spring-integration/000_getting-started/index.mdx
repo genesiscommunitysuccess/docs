@@ -194,8 +194,8 @@ public class MyEventHandler {
     }
 
     @EventMapping("INSERT")
-    public void insertWidget(Widget widget) {
-        widgetRepository.save(widget);
+    public Widget insertWidget(Widget widget) {
+        return widgetRepository.save(widget);
     }
 
     @EventMapping("MODIFY")
@@ -260,7 +260,7 @@ curl -s -X POST 'http://localhost:9064/event-widget-insert' \
      -d '{"DETAILS": {"NAME": "Widget 1", "PRICE": 10.0, "QUALITY": "GOOD", "COST": 6.0}}'
 ```
 
-A successful insert returns `EVENT_ACK` with the generated `ID`:
+A successful insert returns `EVENT_ACK`. The ack's `GENERATED` is whatever the handler returns — Step 6's `insertWidget` returns the saved `Widget`, so `GENERATED` carries that row, including its generated `ID`:
 
 ```
 HTTP/1.1 200 OK
@@ -270,7 +270,15 @@ content-type: application/json
   "MESSAGE_TYPE": "EVENT_ACK",
   "SOURCE_REF": "1",
   "GENERATED": [
-    { "ID": 1 }
+    {
+      "ID": 1,
+      "NAME": "Widget 1",
+      "PRICE": 10.0,
+      "QUALITY": "GOOD",
+      "COST": 6.0,
+      "RECORD_ID": "<record id>",
+      "TIMESTAMP": "<timestamp>"
+    }
   ],
   "METADATA": {
     "IS_EMPTY": true,
