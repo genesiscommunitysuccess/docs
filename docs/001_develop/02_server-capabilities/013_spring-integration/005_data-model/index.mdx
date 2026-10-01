@@ -239,7 +239,13 @@ public class ProfileUserView @JvmOverloads constructor(
 }
 ```
 
-Each view column is named `<SOURCEALIAS>_<FIELD_NAME>`, upper-cased: the source table's alias in the view definition, an underscore, then the dictionary field name — so `FIRST_NAME` from the table aliased `USER` becomes `USER_FIRST_NAME`.
+A view definition joins its source tables and declares the view's output columns. The definition gives each output column its name: the source column's name as it is, that name with a prefix, or an alias — `USER.FIRST_NAME` could be output as `FIRST_NAME`, `USER_FIRST_NAME` or `BANANA_NAME`. A view can also add a derived (calculated) field, and the definition names that column too. Output names are UPPER_SNAKE_CASE, and no prefix is added to them automatically.
+
+For an output column taken from a source table, the entity property is the definition's output name in lowerCamelCase: `FIRST_NAME` becomes `firstName`, and `BANANA_NAME` becomes `bananaName`.
+
+The `@Column` name is a different thing. [Remap](/build-deploy-operate/operate/commands/remap/) creates a view object on the database whose columns are the view's *input* fields — every source field the view reads, which can be more than its output columns (for example, a field that only feeds a derived field). Each view column is named `<SOURCEALIAS>_<FIELD_NAME>`, upper-cased: the source table's alias in the view definition, an underscore, then the dictionary field name — so `FIRST_NAME` from the table aliased `USER` becomes `USER_FIRST_NAME`.
+
+`@Column` maps that database view column to the entity property, which is why `USER_FIRST_NAME` (the column) sits on `firstName` (the property) in the `UserView` example.
 
 Each key field is also exposed on the entity as a read-only `@Transient` convenience property (`userName`, `profileName`) that reads through `pk`; in JPQL, address the key through `pk` (`e.pk` or `e.pk.profileName`).
 
