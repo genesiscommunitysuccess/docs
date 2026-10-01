@@ -185,6 +185,16 @@ You can also start and stop a process with `POST /api/processes/start` and `POST
 | `GET /api/scripts` | Lists the scripts available for the current process profile. |
 | `POST /api/scripts/run` | Runs a script. Body: `scriptId`, and optionally `arguments`, `workingDirectory` and `waitForExit`. |
 
+When you send a JSON body, send `Content-Type: application/json` with it. For example, to start all Application processes without running a sync first:
+
+```bash
+curl -X POST http://localhost:18080/api/processes/application/start-all \
+  -H 'Content-Type: application/json' \
+  -d '{"skipSync": true}'
+```
+
+The same header applies to every `POST` that has a body.
+
 Script arguments are split on spaces, with no support for quotes or escaping.
 
 A script run returns a `processId` as well as an `operationId`. Build tasks, such as `genesisSync`, are listed as processes too, when you call `GET /api/processes?includeBuildTasks=true`. To read the output of a script or a build task, call `GET /api/processes/{processId}/log` with its `processId`.
@@ -212,6 +222,12 @@ Bootstrap, sync, start-all, import and script runs return straight away with an 
 ```
 
 To follow the operation, call `GET /api/operations/{operationId}`. While it runs, its `status` is `RUNNING`; poll until it becomes `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+
+:::note
+Start-all's operation includes the Web UI's npm bootstrap, which installs its npm dependencies. The first time on a fresh project, this can take several minutes, so a long `RUNNING` doesn't by itself mean it has hung.
+
+`SUCCESS` means the processes were started, not that they stayed up. If a process crashes afterwards, that only shows in `GET /api/processes`, so check there for their state.
+:::
 
 Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for about an hour (less once more than 1000 are held) and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
 
@@ -249,7 +265,7 @@ Whenever the REST API is enabled, Genesis Start also runs an [MCP](https://model
 
 The endpoint is `/mcp` at the root of the REST server, not under `/api`; for example, `http://127.0.0.1:18080/mcp`. It uses MCP's Streamable HTTP transport, so add it to your agent's MCP configuration as an HTTP server with that URL.
 
-The tools cover the same ground as the REST API: status and application info, starting and stopping processes, bootstrap, sync, import, scripts, logs and terminal output, sending input to utilities, process profiles, settings, view preferences and the port offset. Each tool returns the same JSON body as the matching REST endpoint, as the result's text content and as `structuredContent`. A failed call has `isError: true`, and its text is the same error body REST would return.
+The tools cover the same ground as the REST API: status and application info, starting and stopping processes, bootstrap, sync, import, scripts, logs and terminal output, sending input to utilities, process profiles, settings, view preferences and the port offset. Each tool returns the same JSON body as the matching REST endpoint, as the result's text content and as `structuredContent`. A failed call has `isError: true`, and its text is the error body REST would return, with the HTTP `status` added.
 
 Things to know:
 
