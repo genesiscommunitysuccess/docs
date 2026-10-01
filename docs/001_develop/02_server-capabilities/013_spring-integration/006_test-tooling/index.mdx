@@ -18,30 +18,17 @@ JUnit 5 support for Spring-based Genesis applications, parallel to [GenesisJunit
 
 `genesis-spring-testsupport` is the JUnit 5 equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
 
-Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: [`EventClientSync`](../event-handlers#testing)/`Async`/`Rx`/`Blocking` (`global.genesis.testsupport.client.eventhandler`), `RequestClientSync`/`Async`/`Rx`/`Blocking`, `DataServerQueryViewClient`, `DataServerSubscriptionClientAsync`/`Rx` (all three under `global.genesis.testsupport.client.dataserver` — see [Real-time queries: Testing](/develop/server-capabilities/real-time-queries-data-server/#testing) for a worked example), and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`.
+Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: the four event clients [`EventClientSync`](../event-handlers#testing), `EventClientAsync`, `EventClientRx` and `EventClientBlocking` (all under `global.genesis.testsupport.client.eventhandler`), and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`. The [worked example](#a-simple-example) below uses all four event clients.
 
-`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, which scaffolds an `allprojects { test { systemProperty("DbLayer", "SQL") } }` block — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
-
-```kotlin
-test {
-    systemProperty("DbLayer", "SQL")
-}
-```
-
-Add a test dependency on `genesis-spring-testsupport` (an ordinary library module, not a test-fixtures jar) to pick up the annotation and its supporting infrastructure:
+To use it, add the following to the `build.gradle.kts` of the `-spring` module that runs the tests. In genx's default multi-module layout this is `<project-name>-spring`, and `<app-module>` is its sibling `<project-name>-app`:
 
 ```kotlin
 dependencies {
+    // ... the module's existing dependencies
     testImplementation("global.genesis:genesis-spring-testsupport")
     genesisGeneratedCode(withTestDependency = true)
 }
-```
 
-In genx's default multi-module layout, a `-spring` module doesn't own the dictionary `.kts` files — the sibling `-app` module does. The `genesisGeneratedCode(withTestDependency = true)` line in the snippet above puts them on the test classpath; without it, `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`.
-
-The same split affects raw GPAL *script* files too — a `-spring` module doesn't own the sibling `-app` module's scripts under `src/main/genesis` either, so loading one with [`@TestScriptFile`](#annotations) fails with something like `IllegalArgumentException: Unable to find script file(s)`. Add the `-app` module's genesis config directory as an extra test resources source directory to see it:
-
-```kotlin
 sourceSets {
     test {
         resources {
@@ -51,9 +38,23 @@ sourceSets {
 }
 ```
 
-Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/PROFILE_USER.csv` is loaded with `@CsvData("data/PROFILE_USER.csv")` — `@CsvData("PROFILE_USER.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
+Each of the three additions is needed:
+
+- **`testImplementation("global.genesis:genesis-spring-testsupport")`** picks up the annotation and its supporting infrastructure. It is an ordinary library module, not a test-fixtures jar.
+- **`genesisGeneratedCode(withTestDependency = true)`** puts the dictionary `.kts` files on the test classpath. In genx's default layout, a `-spring` module doesn't own them: the sibling `-app` module does. Without this line, `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`. It goes inside `dependencies { }`; at the top level of the file, the build script fails to compile with `Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch`.
+- **`srcDir("../<app-module>/src/main/genesis")`** goes at the top level of the file, not inside `dependencies { }`. It adds the `-app` module's genesis config directory as an extra test resources directory, because a `-spring` module doesn't own the files under the `-app` module's `src/main/genesis` either. You need it for `@CsvData` seed data, even if you never load a GPAL script: without it, `@CsvData("data/WIDGET.csv")` fails with `IllegalArgumentException: Unable to resolve "data/WIDGET.csv": the folder "/data" was not found on the test classpath`. You also need it to load a raw GPAL script with [`@TestScriptFile`](#annotations), which otherwise fails with something like `IllegalArgumentException: Unable to find script file(s)`.
+
+Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/WIDGET.csv` is loaded with `@CsvData("data/WIDGET.csv")` — `@CsvData("WIDGET.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
 
 The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
+
+`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, which scaffolds an `allprojects { test { systemProperty("DbLayer", "SQL") } }` block — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
+
+```kotlin
+test {
+    systemProperty("DbLayer", "SQL")
+}
+```
 
 If you're testing a classic GPAL script app instead, use `GenesisJunit`/`GenesisSharedContextJunit` from `genesis-testsupport` directly. This module is the Spring-shaped equivalent, not a replacement.
 
@@ -97,85 +98,207 @@ The Genesis test configuration that decides whether two classes share a runtime 
 
 ## A simple example
 
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
+This example tests the `MyEventHandler` from [Getting started: Step 6](../getting-started#step-6-add-a-widget-event-handler), which handles `WIDGET_INSERT` by saving the widget through the generated `WidgetRepository`. It assumes the `-spring` module's `build.gradle.kts` has the additions from the [Overview](#overview). `<packageName>` and `<product>` are the same values as in [Getting started](../getting-started#step-4-define-the-widget-table).
+
+It uses two test classes that extend one abstract base class, so they share one Genesis runtime:
+
+- `WidgetEventHandlerTest` sends `WIDGET_INSERT` through each of the four event clients.
+- `WidgetSharedContextTest` runs afterwards and sees the rows the first class left behind.
+
+### Seed data
+
+The seed data goes in the `-app` module, next to the app's other CSV files, at `server/<app-module>/src/main/genesis/data/WIDGET.csv`:
+
+```
+ID,NAME,PRICE,QUALITY,COST
+1001,Seed widget one,10.0,GOOD,6.0
+1002,Seed widget two,20.0,OK,12.0
+```
+
+The seed IDs start at 1001 to keep them clear of the IDs generated for widgets that the tests insert.
+
+### Test class order
+
+`src/test/resources/junit-platform.properties`, in the `-spring` module:
+
+```
+junit.jupiter.testclass.order.default=org.junit.jupiter.api.ClassOrderer$OrderAnnotation
+```
+
+This makes JUnit run test classes in their `@Order`, so `WidgetSharedContextTest` always runs after `WidgetEventHandlerTest`. The two classes work without it; only the second class's row count depends on the order.
+
+### The shared base class
+
+`src/test/kotlin/<packageName>/WidgetTestBase.kt`:
 
 ```kotlin
-package com.example.myapp.jpa
+package <packageName>
 
-import com.example.myapp.jpa.dao.Position
-import com.example.myapp.jpa.repo.PositionRepository
 import global.genesis.springboot.test.GenesisSpringTest
+import global.genesis.testsupport.jupiter.CsvData
+import org.springframework.context.annotation.Import
+
+@GenesisSpringTest
+@Import(MyEventHandler::class)
+@CsvData("data/WIDGET.csv")
+abstract class WidgetTestBase
+```
+
+- **`@GenesisSpringTest`** is the only annotation needed to get a live Genesis runtime behind the Spring context.
+- **`@Import(MyEventHandler::class)`** contributes the handler to the test context. `GenesisTestApplication` performs no component scanning — see [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation. A generated repository like `WidgetRepository` arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be contributed to the context explicitly — via `@Import(MyService::class)` as here, by listing it alongside `GenesisTestApplication` in `@SpringBootTest(classes = [GenesisTestApplication::class, MyService::class])`, or with a nested `@TestConfiguration` that declares it as a `@Bean`. Don't list it on its own in `classes = [...]`: that replaces `GenesisTestApplication`, the test context's only source of autoconfiguration. Without the handler in the context, every event is nacked with `UNKNOWN_MESSAGE_TYPE`.
+- **`@CsvData("data/WIDGET.csv")`** loads the seed data when the runtime boots. The `data/` prefix is the file's path under the `-app` module's `src/main/genesis`, which the `srcDir` line puts on the test classpath.
+
+Because both test classes inherit this configuration, Spring caches one context for them and they share one runtime. The base class has no `@DirtiesContext`; give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` if you want a fresh Genesis runtime per class instead. See [Context caching](#context-caching) for when to share.
+
+### Testing the event handler
+
+`src/test/kotlin/<packageName>/WidgetEventHandlerTest.kt`:
+
+```kotlin
+package <packageName>
+
+import <packageName>.dao.enums.<product>.widget.Quality
+import <packageName>.repo.WidgetRepository
+import global.genesis.message.core.event.EventReply
+import global.genesis.testsupport.client.eventhandler.EventClientAsync
+import global.genesis.testsupport.client.eventhandler.EventClientBlocking
+import global.genesis.testsupport.client.eventhandler.EventClientRx
+import global.genesis.testsupport.client.eventhandler.EventClientSync
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.annotation.DirtiesContext
 
-@GenesisSpringTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-class BaseGenesisSpringTest {
+@Order(1)
+class WidgetEventHandlerTest : WidgetTestBase() {
 
     @Autowired
-    lateinit var positionRepository: PositionRepository
+    lateinit var eventClient: EventClientSync
+
+    @Autowired
+    lateinit var eventClientAsync: EventClientAsync
+
+    @Autowired
+    lateinit var eventClientRx: EventClientRx
+
+    @Autowired
+    lateinit var eventClientBlocking: EventClientBlocking
+
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
 
     @Test
-    fun `test position`() {
-        val entry = Position(positionId = "POS1", instrumentId = "INSTR1", quantity = 100)
+    fun `seed data from the app module is loaded`() {
+        assertEquals("Seed widget one", widgetRepository.findById(1001L)?.name)
+        assertEquals("Seed widget two", widgetRepository.findById(1002L)?.name)
+    }
 
-        val saved = positionRepository.save(entry)
+    @Test
+    fun `EventClientSync - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClient.sendEvent(
+            details = NewWidget(name = "via-sync", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-sync"))
+    }
 
-        assert(entry.recordId != 0L)
-        assert(saved.recordId == entry.recordId)
-        assert(saved.pk == entry.pk)
+    @Test
+    fun `EventClientAsync - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = runBlocking {
+            eventClientAsync.sendEvent(
+                details = NewWidget(name = "via-async", price = 1.0, quality = Quality.OK, cost = 0.5),
+                messageType = "WIDGET_INSERT",
+            )
+        }
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-async"))
+    }
+
+    @Test
+    fun `EventClientRx - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClientRx.sendEvent(
+            details = NewWidget(name = "via-rx", price = 1.0, quality = Quality.BAD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        ).blockingGet()
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-rx"))
+    }
+
+    @Test
+    fun `EventClientBlocking - EVENT_WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClientBlocking.sendEvent(
+            details = NewWidget(name = "via-blocking", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "EVENT_WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-blocking"))
+    }
+
+    @Test
+    fun `WIDGET_INSERT of a duplicate name is nacked by the handler`() {
+        val reply = eventClient.sendEvent(
+            details = NewWidget(name = "Seed widget one", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventNack::class.java, reply, "$reply")
+        assertEquals(1, widgetRepository.findAll().count { it.name == "Seed widget one" })
+    }
+}
+
+data class NewWidget(val name: String, val price: Double, val quality: Quality, val cost: Double)
+```
+
+`EventClientSync` returns the reply directly, `EventClientAsync.sendEvent` is a `suspend` function (called here inside `runBlocking`), and `EventClientRx` returns a `Single`.
+
+The event payload is a plain `NewWidget` data class rather than the generated `Widget` entity. The event's schema has no `ID` property, so a `Widget` payload is nacked with `VALIDATION_ERROR`.
+
+Each test asserts on the row the handler writes, not only on the reply. That is what makes the test fail when the handler is broken. If `insertWidget` acks without saving, the four insert tests fail on `assertNotNull`. A test that only checks for a nack can pass for the wrong reason: without the handler in the context, the duplicate-name test still passes, because it gets an `UNKNOWN_MESSAGE_TYPE` nack instead of the handler's own. To rule that out, also check the nack's error or a side effect that only the handler produces.
+
+This example only verifies persistence through the repository — it doesn't assert on `UpdateQueue`, audit rows, or transaction boundaries; see [JPA data access: Writing back to the UpdateQueue](../jpa-data-access#writing-back-to-the-updatequeue), [Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for asserting on those specifically.
+
+### A second class sharing the runtime
+
+`src/test/kotlin/<packageName>/WidgetSharedContextTest.kt`:
+
+```kotlin
+package <packageName>
+
+import <packageName>.repo.WidgetRepository
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+@Order(2)
+class WidgetSharedContextTest : WidgetTestBase() {
+
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
+
+    @Test
+    fun `shares the runtime and sees the previous class's rows`() {
+        val names = widgetRepository.findAll().map { it.name }.sorted()
+        assertNotNull(widgetRepository.findById(1001L))
+        assertNotNull(widgetRepository.findByName("via-sync"))
+        assertEquals(6, names.size)
     }
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+This class has the same configuration as `WidgetEventHandlerTest`, so it reuses the same runtime. The database is not truncated and the CSV is not reloaded between the two classes: it sees the two seed rows plus the four rows `WidgetEventHandlerTest` inserted, six in all. This is the behaviour described in [Context caching](#context-caching), and it is why the row count depends on class order.
 
-```java
-package com.example.myapp.jpa;
+### Running it
 
-import com.example.myapp.jpa.dao.Position;
-import com.example.myapp.jpa.repo.PositionRepository;
-import global.genesis.springboot.test.GenesisSpringTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
+From `server/`:
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-@GenesisSpringTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class BaseGenesisSpringTestJava {
-
-    @Autowired
-    private PositionRepository positionRepository;
-
-    @Test
-    @DisplayName("test position")
-    void testPosition() {
-        Position entry = new Position("POS1", "INSTR1", 100, null, null, null);
-
-        Position saved = positionRepository.save(entry);
-
-        assertNotEquals(0L, entry.getRecordId());
-        assertEquals(entry.getRecordId(), saved.getRecordId());
-        assertEquals(entry.getPk(), saved.getPk());
-    }
-}
+```bash
+./gradlew :<project-name>-spring:test
 ```
-
-</TabItem>
-</Tabs>
-
-`@GenesisSpringTest` is the only annotation needed to get a live Genesis runtime behind the Spring context. `PositionRepository` is a generated JPA repository, autowirable because its underlying `EntityManagerFactory`/repository beans come from the JPA auto-configuration running against the same in-memory database the test context set up. `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` is a choice to get a fresh Genesis runtime per test class rather than share Spring's context cache — see [Context caching](#context-caching) above for when to share instead.
-
-`Position`/`PositionRepository` are generated per [JPA data access](../jpa-data-access) from the dictionary table `POSITION`. This example only verifies persistence through the repository — it doesn't assert on `UpdateQueue`, audit rows, or transaction boundaries; see [JPA data access: Writing back to the UpdateQueue](../jpa-data-access#writing-back-to-the-updatequeue), [Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for asserting on those specifically.
-
-`GenesisTestApplication` performs no component scanning — see [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation. A generated repository like `PositionRepository` above arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be contributed to the context explicitly — for example by listing it alongside `GenesisTestApplication` in `@SpringBootTest(classes = [GenesisTestApplication::class, MyService::class])`, or via `@Import(MyService::class)`, or a nested `@TestConfiguration` that declares it as a `@Bean`. Don't list it on its own in `classes = [...]`: that replaces `GenesisTestApplication`, the test context's only source of autoconfiguration.
 
 This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
 
