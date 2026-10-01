@@ -28,7 +28,7 @@ In your project's `server/build.gradle.kts` file, add the plugin:
 ```kotlin
 plugins {
     // other plugins
-    id("global.genesis.genesis-start-gui") version "1.0.0-beta1"
+    id("global.genesis.genesis-start-gui") version "1.0.0-beta3"
 }
 ```
 
@@ -70,6 +70,8 @@ If you need to cut down on memory, choose **Dev Compact** before you start any p
 :::
 
 When you change profile, Genesis Start reloads the project overview for that profile, so the list of processes and scripts changes to match.
+
+You can only change profile when nothing is running. While any process is running, starting or stopping (and that includes utilities, scripts and build tasks), the **Process Profile** menu items are disabled, and the REST API refuses the switch with **409 Conflict**. **Stop All** doesn't stop utilities or running scripts, so stop those on their own first.
 
 ## System definition property overrides
 
@@ -169,9 +171,25 @@ How it works:
 
 ### Setting the port offset
 
-You can only set the offset with the REST API, so you need the REST API enabled (`-Pgenesis.start.restEnabled=true`) even if you use the desktop window. The window shows the offset, but can't change it. Give each instance its own REST port with `restPort`: the offset moves your application's ports, not Genesis Start's own REST port.
+Before you change the offset, stop all of this instance's processes and its Web UI. If you run each instance with the REST API enabled, also give each its own `restPort`: the offset moves your application's ports, not Genesis Start's own REST port.
 
-Before you change the offset, stop all of this instance's processes and its Web UI.
+#### In the window
+
+Open the [Application view](/develop/development-environment/genesis-start/#the-application-view) (the **ⓘ** button in the toolbar, or **View → Application Info…**). In its **Ports** section:
+
+- type an offset from 0 to 99 and click **Apply**, or
+- click **Auto** to have Genesis Start choose the first free offset and apply it straight away.
+
+The port table below the editor shows the ports for the value you have typed, before you apply it: each port's platform default (service ports have none, so they show "—") and the port it gets at that offset. If the change is refused, the reason appears under the editor, with the same error code the REST API returns.
+
+The editor is disabled, with a one-line reason, while any of these is true:
+
+- the project overview hasn't loaded yet;
+- port offset is experimental in your Genesis version and you didn't start Genesis Start with `--enable-experimental-features`;
+- your project's platform version doesn't support a non-zero offset;
+- any Genesis process or the Web UI is running.
+
+#### With the REST API
 
 To set the offset, call `PUT /api/port-offset` with the value you want:
 
@@ -189,7 +207,11 @@ With `"auto"`, Genesis Start tries 2, 4, 6 and so on up to 98, and takes the fir
 
 Then start your processes as usual. `GET /api/port-offset` shows the current offset, the full list of ports, and whether a non-zero offset is available (and if not, why).
 
+#### When Genesis Start restarts
+
 If Genesis Start restarts and picks up its own running processes, it uses the offset they were started with. If they were started with different offsets, it resets to 0 and refuses to start anything (with `409 MIXED_PORT_OFFSETS`) until you have stopped them all.
+
+Genesis Start also goes back to offset 0 by itself when a non-zero offset is no longer allowed: for example, you restarted it without `--enable-experimental-features`, or a sync or profile change loaded a project overview that doesn't support the feature. It waits until no Genesis process or Web UI is still using the old offset, then resets. For the same reason, it refuses to set a non-zero offset while the current project overview doesn't support one (`PORT_OFFSET_NOT_SUPPORTED` or `EXPERIMENTAL_FEATURES_DISABLED`).
 
 These are the errors you might see. The [Swagger UI](/develop/development-environment/genesis-start/headless-mode/#driving-it-over-rest) has the full list.
 
@@ -205,7 +227,7 @@ These are the errors you might see. The [Swagger UI](/develop/development-enviro
 
 ### Seeing the port offset in the window
 
-The status bar shows **Port offset N** on the left. **View → Port Offset…** opens a dialog with the ports for the current offset, why a non-zero offset isn't available (if it isn't), and the offset each running process was started with.
+When the offset isn't 0, the tooltip on the **App - &lt;project&gt;** header above the process list shows it. The [Application view](/develop/development-environment/genesis-start/#the-application-view) shows the current offset, the ports it gives each service, why a non-zero offset isn't available (if it isn't), and any running process that was started with a different offset (for example, "2 (current is 4)").
 
 If a process was started with a different offset from the current one, its row in the process list has an **offset N** badge.
 
@@ -219,8 +241,9 @@ The properties apply to `genesisStart`, and to `writeStartScript`, which builds 
 |---|---|---|
 | `genesis.start.headless` | `false` | Runs without a window, driven over REST. See [headless mode](/develop/development-environment/genesis-start/headless-mode/). `-Pgenesis.start.headless` on its own counts as `true`. |
 | `genesis.start.autoLaunch` | `false` | Runs Bootstrap and Launch as soon as the window opens. Desktop window only. `-Pgenesis.start.autoLaunch` on its own counts as `true`. |
-| `genesis.start.restEnabled` | `false` | Starts the REST API. You need this for headless mode, and to change the [port offset](#port-offset). |
+| `genesis.start.restEnabled` | `false` | Starts the REST API and the [MCP server](/develop/development-environment/genesis-start/headless-mode/#driving-it-from-an-ai-agent-mcp). You need this for headless mode. |
 | `genesis.start.restPort` | `8080` | The REST API's port. Ignored unless `restEnabled=true`. |
+| `genesis.start.restHosts` | `127.0.0.1` | The addresses the REST API listens on, comma-separated (for example, `127.0.0.1,172.17.0.1`). See [Security](/develop/development-environment/genesis-start/headless-mode/#security). Ignored unless `restEnabled=true`. |
 | `genesis.start.restBasePath` | `/api` | The path the REST API is served under. Ignored unless `restEnabled=true`. |
 | `genesis.start.restMaxRequestBodyBytes` | 50 MiB | The largest request body the REST API accepts. Ignored unless `restEnabled=true`. |
 | `genesis.start.dbLayer`, `dbMode`, `dbHost`, `dbUsername`, `dbPassword`, `dbNamespace`, `dbSqlConnectionPoolSize` | | [Database connection settings](#database-connection-settings) passed to every Genesis process. |

@@ -21,6 +21,8 @@ You can use it in two ways:
 - **The desktop window**, described on this page. You click buttons to bootstrap, start and stop processes, run scripts and read logs. This is the normal way to work on a machine with a display.
 - **[Headless mode](/develop/development-environment/genesis-start/headless-mode/)**, where no window opens and you drive Genesis Start over a REST API. Use this on build machines, in CI, or in a remote development environment with no display.
 
+With the REST API enabled, an AI agent can also drive Genesis Start, in either mode, through its [MCP server](/develop/development-environment/genesis-start/headless-mode/#driving-it-from-an-ai-agent-mcp).
+
 Both use the same engine underneath, so clicking **Start** on a process in the window does exactly what the equivalent REST call does.
 
 If your project doesn't have Genesis Start yet, or you want to change how it runs (process profiles, database settings, system definition overrides, running several instances side by side), see [Configuring Genesis Start](/develop/development-environment/genesis-start/configuration/).
@@ -50,7 +52,7 @@ From the command line, go to your project's `server` directory and run:
 
 If the command fails, you probably need to [enable Genesis Start](/develop/development-environment/genesis-start/configuration/#enabling-genesis-start) in your project.
 
-The window opens with the process list in the middle and a toolbar down the left-hand side.
+The window opens with the process list in the middle and a toolbar down the left-hand side. Its title is **&lt;project&gt; - Genesis Start**, so with two windows open you can tell which project each one runs. The project name is the name of your project's folder (if that folder is called `server`, the name of the folder above it).
 
 ![Genesis Start Full Application](/img/genesis-start/genesis-start-full-app.png)
 
@@ -123,13 +125,19 @@ This button synchronises any changes made to your project's [process configurati
 
 When **File → Settings → Use Genesis Sync** is enabled (the default), project changes are synchronised automatically whenever you start something. Use this button to force a sync; for example, after adding or removing processes or scripts.
 
+### Application Info
+
+The **ⓘ** button, just above the help icon, opens the [Application view](#the-application-view).
+
 ### Help
 
-The help icon at the bottom of the toolbar opens the Genesis Start documentation in your browser.
+The help icon (**?**) at the bottom of the toolbar opens the Genesis Start documentation in your browser.
 
 ## The process list
 
 The process list has three sections: **Application**, **Utilities** and **Build Tasks**. Click any row to select it and show its log in the [log panel](#the-log-panel).
+
+The **Application** section's header shows the project name, as **App - &lt;project&gt;** (a long name is shortened). Hover over it for the project name, the Genesis home and, if it isn't 0, the [port offset](/develop/development-environment/genesis-start/configuration/#port-offset).
 
 ![Process list](/img/genesis-start/genesis-start-process-list.png)
 
@@ -155,10 +163,10 @@ Both buttons are disabled while a sync is in progress.
 
 ![Start all](/img/genesis-start/genesis-start-start-all.png)
 
-The **Application** section header has two buttons:
+The **Application** section's header (**App - &lt;project&gt;**) has two buttons:
 
 - **Start All** runs `genesisSync` (if **Use Genesis Sync** is enabled), then starts every stopped Application process and the Web UI. This is the quickest way to start your app if you haven't made any changes to the schema. As with Bootstrap and Launch, the core `GENESIS_*` processes start 5 seconds apart, and failures show the **Start failed** dialog.
-- **Stop All** stops all running Application processes. Other processes stop first, then the core `GENESIS_*` processes 5 seconds later. Genesis Start waits for each process to exit and force-kills any that don't. Anything still waiting to start (including processes held back by the 5-second stagger) is cancelled.
+- **Stop All** stops all running Application processes. Other processes stop first, then the core `GENESIS_*` processes 5 seconds later. Genesis Start waits for each process to exit and force-kills any that don't. Anything still waiting to start (including processes held back by the 5-second stagger) is cancelled. Utilities and running scripts aren't stopped; stop them with their own buttons.
 
 ### Utilities
 
@@ -183,7 +191,9 @@ The panel header shows the process's state dot and name, and two buttons:
 - **Tail Log** turns auto-scrolling on or off. When it's on, new lines scroll into view; when it's off, you can scroll back through the log.
 - **Clear Log** clears the log shown in Genesis Start. The log file on disk isn't changed.
 
-You can select and copy text from the log. Right-click to turn word wrap on or off.
+You can select and copy text from the log. Long lines aren't wrapped; scroll sideways to read them.
+
+Each process keeps its own view of the log: whether **Tail Log** is on, where you have scrolled to, and any input you have half typed. When you switch to another process and back, or open and close the [Application view](#the-application-view), they are as you left them.
 
 ### When a process ends
 
@@ -214,7 +224,6 @@ Genesis Start's own output goes to `server/build/genesis-start/output.log` and `
 
 The bar along the bottom of the window shows:
 
-- **Port offset N** on the left: the current [port offset](/develop/development-environment/genesis-start/configuration/#running-several-instances-side-by-side). You can't change it here.
 - A spinner and a short message (for example, "Running genesisSync") while a sync or similar task is running. Click it to show the Build Tasks section.
 - A red bar with the error message if a bootstrap script fails. This clears when the next sync starts.
 
@@ -231,11 +240,37 @@ This menu selects the process configuration to run. See [Process profiles](/deve
 
 When you choose a profile, Genesis Start reloads the project overview for it, and the process list and scripts are updated to match.
 
+The menu items are disabled while any process is running, starting or stopping, including utilities, scripts and build tasks. Stop everything first, then switch.
+
 ### View
 
 - **Dark Theme** switches between the light and dark themes.
 - **Show Build Tasks** shows or hides the [Build Tasks](#build-tasks) section.
-- **Port Offset…** opens a read-only dialog with the current port offset, the ports it gives each service, and the offset each running process was started with. See [Running several instances side by side](/develop/development-environment/genesis-start/configuration/#running-several-instances-side-by-side).
+- **Application Info…** opens the [Application view](#the-application-view).
+
+### Help
+
+- **Genesis Start Documentation** opens the Genesis Start documentation in your browser.
+
+## The Application view
+
+The Application view shows what this window is running, and is where you change the [port offset](/develop/development-environment/genesis-start/configuration/#setting-the-port-offset). Open it with the **ⓘ** button in the toolbar, or **View → Application Info…**. It opens in place of the log panel; to close it, click a process (to go back to its log) or use the view's close button.
+
+It has five sections:
+
+| Section | What it shows |
+|---|---|
+| **Project** | The project name, project version and Genesis version. |
+| **Environment** | The Genesis home, Java version and Java home, and one row, marked "(override)", for each `--system-definition-property` you passed. |
+| **REST API** | The REST API's address and a link to its documentation. Only shown when the REST API is enabled. |
+| **Ports** | The port offset editor and the ports for each service. See [Setting the port offset](/develop/development-environment/genesis-start/configuration/#setting-the-port-offset). |
+| **Features** | The features your platform version supports, its experimental features, and whether experimental features are enabled. |
+
+Values read from the project overview show "not known yet" until it has loaded. You can select and copy any value.
+
+:::caution
+Overrides are shown exactly as you passed them. If you pass a secret with `--system-definition-property`, it is visible here.
+:::
 
 ## Running a script
 

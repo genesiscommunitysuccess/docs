@@ -2,7 +2,7 @@
 title: 'Genesis Start headless mode'
 sidebar_label: 'Headless mode'
 id: headless-mode
-keywords: [genesis start, launcher, headless, rest, api, ci, remote]
+keywords: [genesis start, launcher, headless, rest, api, mcp, ai agent, ci, remote]
 tags:
 - launcher
 - genesis start
@@ -14,7 +14,7 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-In headless mode, Genesis Start runs without opening a window, and you drive it with its REST API. Everything you would normally do by clicking (bootstrapping, starting and stopping processes, running scripts, checking status, switching process profiles) is done with HTTP requests instead.
+In headless mode, Genesis Start runs without opening a window, and you drive it with its REST API, or let an AI agent drive it over [MCP](#driving-it-from-an-ai-agent-mcp). Everything you would normally do by clicking (bootstrapping, starting and stopping processes, running scripts, checking status, switching process profiles) is done with HTTP requests instead.
 
 Use headless mode on build machines, in CI, or in a remote development environment with no display. It uses the same engine as the [desktop window](/develop/development-environment/genesis-start/), so the processes, profiles and behaviour described there all apply here too.
 
@@ -110,12 +110,12 @@ The Gradle task doesn't enable the REST API unless you ask it to, so always pass
 
 See the [Gradle property reference](/develop/development-environment/genesis-start/configuration/#gradle-property-reference) for the other properties you can set.
 
-The task starts Genesis Start in the background, then waits 5 seconds. If Genesis Start has already exited (for example, because it rejected an argument), the task fails and points you to `error.log` and `output.log`. Otherwise, it prints the process id and the addresses of the API documentation:
+The task starts Genesis Start in the background, then waits 5 seconds. If Genesis Start has already exited (for example, because it rejected an argument), the task fails and points you to `error.log` and `output.log`. Otherwise, it prints the process id and the addresses of the API documentation, one pair for each address the REST API listens on:
 
 ```
 Genesis Start started with PID 12345
-Swagger UI available on http://localhost:18080/api/docs
-OpenApi spec available on http://localhost:18080/api/openapi.json
+Swagger UI available on http://127.0.0.1:18080/api/docs
+OpenApi spec available on http://127.0.0.1:18080/api/openapi.json
 ```
 
 ## Checking that it's running
@@ -131,7 +131,7 @@ When Genesis Start is ready, you see:
 
 ```
 Genesis <appName> is running in headless mode (no GUI window).
-REST API listening at http://localhost:18080/api
+REST API listening at http://127.0.0.1:18080/api
 ```
 
 To check that it's responding:
@@ -142,7 +142,9 @@ curl http://localhost:18080/api/health
 
 ## Driving it over REST
 
-By default, the REST API listens on port **8080** under the path **`/api`** (for example, `http://localhost:8080/api/health`). You can change these with `restPort` and `restBasePath`. The examples on this page use port 18080.
+By default, the REST API listens on `127.0.0.1` only, on port **8080**, under the path **`/api`** (for example, `http://localhost:8080/api/health`). You can change these with `restHosts` (see [Security](#security)), `restPort` and `restBasePath`. The examples on this page use port 18080.
+
+The REST API also works alongside the desktop window: start `genesisStart` with `-Pgenesis.start.restEnabled=true` and without `headless`.
 
 The full reference, with request and response examples for each endpoint, is in the Swagger UI at `/api/docs`. The OpenAPI spec is at `/api/openapi.json`.
 
@@ -166,10 +168,10 @@ Here's a summary of the endpoints.
 | `POST /api/processes/{processId}/start` | Starts one process. |
 | `POST /api/processes/{processId}/stop` | Stops one process. |
 | `POST /api/processes/application/start-all` | Starts all stopped Application processes and the Web UI. Optional body: `{"skipSync": true}`. |
-| `POST /api/processes/application/stop-all` | Stops all Application processes. This stops the processes, not Genesis Start. |
-| `GET /api/processes/{processId}/log` | Reads a process's log. |
+| `POST /api/processes/application/stop-all` | Stops all Application processes. This stops the processes, not Genesis Start. Utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
+| `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored, so there's no paging. An unknown `processId` returns an empty log, not 404. |
 | `POST /api/processes/{processId}/log/clear` | Clears a process's log in Genesis Start. |
-| `POST /api/processes/{processId}/input` | Sends a line to a utility's input. Body: `{"line": "..."}`. |
+| `POST /api/processes/{processId}/input` | Sends one line to a utility's input. Body: `{"line": "..."}`. A line containing `\r` or `\n` is refused with 400, and nothing is sent. |
 
 You can also start and stop a process with `POST /api/processes/start` and `POST /api/processes/stop`, giving the `processId` in the body.
 
@@ -197,7 +199,7 @@ A script run returns a `processId` as well as an `operationId`. Build tasks, suc
 | `GET /api/process-profiles` | Lists the [process profiles](/develop/development-environment/genesis-start/configuration/#process-profiles) and shows the current one. |
 | `PUT /api/process-profiles/{profileId}` | Switches to another process profile. |
 
-To switch profile, use an `id` from `GET /api/process-profiles`. Ids are case-sensitive, and an unknown id returns 404. After switching, call `GET /api/processes` and `GET /api/scripts` again, because both depend on the profile. There's no way to preview a profile: to see which processes it gives you, switch to it and then list the processes.
+To switch profile, use an `id` from `GET /api/process-profiles`. Ids are case-sensitive, and an unknown id returns 404. If any process is running, starting or stopping (including utilities, scripts and build tasks), the switch is refused with 409 and the profile stays as it was. After switching, call `GET /api/processes` and `GET /api/scripts` again, because both depend on the profile. There's no way to preview a profile: to see which processes it gives you, switch to it and then list the processes.
 
 To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-version=v1` to the start script. There's no Gradle property for this.
 
@@ -211,11 +213,11 @@ Bootstrap, sync, start-all, import and script runs return straight away with an 
 
 To follow the operation, call `GET /api/operations/{operationId}` until its `status` is `SUCCESS` or `FAILED`. If it failed, `message` explains why.
 
-Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for 1 hour and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
+Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for about an hour (less once more than 1000 are held) and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
 
-Starting or stopping a single process (`POST /api/processes/{processId}/start` or `/stop`) is different: it returns straight away with `{"started": true}` (or `{"stopped": true}`), and doesn't return an `operationId`. To follow the process, check its state in `GET /api/processes`.
+Starting or stopping a single process (`POST /api/processes/{processId}/start` or `/stop`) is different: it returns straight away with `{"started": true}` (or `{"stopped": true}`), and doesn't return an `operationId`. To follow the process, check its state in `GET /api/processes`. Calling stop on a process that is already `STOPPING` kills it forcibly.
 
-Only one bootstrap, sync or start-all can run at a time. If you start another while one is in progress, you get **409 Conflict**. You also get a 409 if you run a script or import files during a sync.
+Bootstrap, sync, start-all, starting a process, running a script and importing are refused with **409 Conflict** while `syncing` is `true` in `GET /api/status`. That is while a Gradle task runs (including the `genesisSync` that runs before a process start, a script run or an import), and during bootstrap's `remap` and `ConsolidateRights` steps. It isn't the same as "while another operation is in progress": `syncing: false` doesn't mean an earlier operation has finished, so poll the operation itself for that.
 
 By default, a script run stays `RUNNING` until the script exits, then becomes `SUCCESS` if the exit code is 0 and `FAILED` otherwise. For scripts that keep running until you stop them, such as DbMon, pass `"waitForExit": false`. The operation then succeeds as soon as the script has started, and any later failure isn't reported on it.
 
@@ -227,19 +229,66 @@ A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`
 
 Errors are returned as JSON, with a `code` (such as `NOT_FOUND`, `CONFLICT` or `VALIDATION_ERROR`), a `message` you can read, and sometimes `details`.
 
+A request that is malformed, or that has a missing or invalid query or path parameter, gets `INVALID_REQUEST`, with each problem listed in `details`:
+
+```json
+{
+  "code": "INVALID_REQUEST",
+  "message": "Missing/invalid parameters",
+  "details": "limit (query, optional): invalid"
+}
+```
+
+`VALIDATION_ERROR` is for a well-formed request with a value that Genesis Start doesn't accept.
+
+## Driving it from an AI agent (MCP)
+
+Whenever the REST API is enabled, Genesis Start also runs an [MCP](https://modelcontextprotocol.io/) (Model Context Protocol) server, so an AI agent can drive it directly. There's no separate setting, and it works with the desktop window as well as in headless mode.
+
+The endpoint is `/mcp` at the root of the REST server, not under `/api`; for example, `http://127.0.0.1:18080/mcp`. It uses MCP's Streamable HTTP transport. Add it to your agent's MCP configuration as an HTTP server with that URL. For example, with Claude Code:
+
+```bash
+claude mcp add --transport http genesis-start http://127.0.0.1:18080/mcp
+```
+
+The tools cover the same ground as the REST API: status and application info, starting and stopping processes, bootstrap, sync, import, scripts, logs and terminal output, sending input to utilities, process profiles, settings, view preferences and the port offset. Each tool returns the same JSON as the matching REST endpoint, and fails with the same error codes.
+
+Things to know:
+
+- **Read-only and destructive tools are marked.** Each tool carries MCP's `readOnlyHint` or `destructiveHint`, so your agent can ask you before it starts, stops, runs or changes anything.
+- **Long-running tools return straight away.** `start_all`, `stop_all`, `bootstrap`, `sync` and `import_data` return an `operationId`; the agent follows it with `get_operation_status`, as with [long-running operations](#long-running-operations) over REST.
+- **`import_data` needs absolute paths.** A relative path is rejected.
+- **An agent in a container** can reach Genesis Start through `host.docker.internal` on Docker Desktop or Rancher Desktop. On native Linux Docker, add the `docker0` bridge address (usually `172.17.0.1`) to `restHosts`; see [Security](#security).
+
 ## Security
 
 :::warning
-The REST API has **no authentication**, and it listens on **all network interfaces**, not only `localhost`. You can't restrict it to `localhost`.
+The REST API and the MCP server have **no authentication**. Anyone who can reach the port can do everything the API allows: start and stop processes, run scripts with any arguments, import files from any path Genesis Start can read, send input to utilities, read logs and change settings. The same applies to the Swagger UI.
 :::
 
-Anyone who can reach the port can do everything the API allows: start and stop processes, run scripts with any arguments, import files from any path Genesis Start can read, send input to utilities, read logs and change settings. The same applies to the Swagger UI.
+### Which addresses it listens on
 
-Keep the port local:
+By default, the REST API listens on `127.0.0.1` only, so other machines can't reach it. To listen on other addresses as well, list them:
 
-- On a laptop or desktop, make sure the port can't be reached from the network. A firewall on your machine is enough.
-- On a remote development environment, don't open the port to the network. Connect through an SSH tunnel instead; for example, `ssh -L 18080:localhost:18080 devbox`, then use `http://localhost:18080/api` on your own machine.
-- Don't run Genesis Start with the REST API enabled on a shared or untrusted network.
+- with the Gradle property, comma-separated: `-Pgenesis.start.restHosts=127.0.0.1,172.17.0.1`
+- or on the start script's command line, once per address: `--rest-host 127.0.0.1 --rest-host 172.17.0.1`
+
+Each entry must be an IPv4 or IPv6 address. Host names such as `localhost` aren't accepted, and nor is the same address twice. `0.0.0.0` (or `::`) means every network interface; it can't be combined with other addresses. If a value is invalid, Genesis Start exits at startup with an error that names it.
+
+When you'd need this:
+
+- **From another machine**: rather than opening the port, keep the default and use an SSH tunnel; for example, `ssh -L 18080:127.0.0.1:18080 devbox`, then use `http://localhost:18080/api` on your own machine. If you do need the port open, add that interface's address (or `0.0.0.0`), and make sure the network is one you trust.
+- **From a Docker container on native Linux**: add the `docker0` bridge address, usually `172.17.0.1`.
+- **From a Docker container on Docker Desktop or Rancher Desktop (macOS or Windows)**: nothing to do. `host.docker.internal` reaches the host's `127.0.0.1`, so the default is enough.
+
+### Requests from web pages
+
+To stop a web page in your own browser from calling the API, every REST and `/mcp` request is checked first, and refused with **403** (`FORBIDDEN`) if:
+
+- its `Host` header isn't one Genesis Start recognises: `localhost`, a `127.x.x.x` address, `[::1]`, `host.docker.internal`, or an address you gave in `restHosts` (with `0.0.0.0` or `::`, also any address of this machine's network interfaces). The port isn't checked; or
+- it has an `Origin` header that isn't the API's own (`http://` followed by the request's `Host`).
+
+curl, the Gradle tasks, AI agents and the Swagger UI all keep working, including through an SSH tunnel on a different local port. But if you call the API through a host name of your own, such as an `/etc/hosts` alias or the machine's DNS name, you get 403. Use an IP address, `localhost` or `host.docker.internal` instead.
 
 ## Stopping it
 
