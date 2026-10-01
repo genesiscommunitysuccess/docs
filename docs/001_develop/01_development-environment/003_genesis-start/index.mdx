@@ -262,12 +262,13 @@ The Application view shows what this window is running, and is where you change 
 
 ![Application view](/img/genesis-start/genesis-start-application-view.png)
 
-It has five sections. Scroll down the view to reach the later ones:
+It has six sections. Scroll down the view to reach the later ones:
 
 | Section | What it shows |
 |---|---|
 | **Project** | The project name, project version and Genesis version. |
-| **Environment** | The Genesis home, Java version and Java home, and one row, marked "(override)", for each `--system-definition-property` you passed. |
+| **Environment** | The Genesis home, Java version and Java home. |
+| **System definition overrides** | The [system definition overrides](/develop/development-environment/genesis-start/configuration/#seeing-which-overrides-are-in-effect) in effect, each labelled with where it came from: "command line", "project file" or "home file". Overrides that apply to a single process are listed under "&lt;process&gt; only". Shows "none" if there aren't any. |
 | **REST API** | The REST API's address and a link to its documentation. Only shown when the REST API is enabled. |
 | **Ports** | The port offset editor and the ports for each service. See [Setting the port offset](/develop/development-environment/genesis-start/configuration/#setting-the-port-offset). |
 | **Features** | The features your platform version supports, its experimental features, and whether experimental features are enabled. |
@@ -275,7 +276,7 @@ It has five sections. Scroll down the view to reach the later ones:
 Values read from the project overview show "not known yet" until it has loaded. You can select and copy any value.
 
 :::caution
-Overrides are shown exactly as you passed them. If you pass a secret with `--system-definition-property`, it is visible here.
+Override values are shown as they are set, except for keys containing `PASSWORD`, `SECRET`, `TOKEN` or `KEY`, which are masked as `********`. A secret stored under any other key name is visible here.
 :::
 
 ## Running a script
@@ -290,7 +291,7 @@ Click **Run** to start the script and close the dialog. The run appears in the U
 
 ## Closing Genesis Start
 
-Closing the window doesn't stop the processes Genesis Start started. They keep running, and the next time you start Genesis Start for the same project, it picks them up again. If you want them stopped, click **Stop All** before you close the window.
+Closing the window doesn't stop the processes Genesis Start started. They keep running, and the next time you start Genesis Start for the same project, it picks them up again. Processes started by Genesis Start 0.1.x, or not started by Genesis Start at all, aren't picked up; stop those yourself. If you want them stopped, click **Stop All** before you close the window.
 
 Headless mode works differently: it stops its processes when it shuts down. See [Stopping headless mode](/develop/development-environment/genesis-start/headless-mode/#stopping-it).
 
