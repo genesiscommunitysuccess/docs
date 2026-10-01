@@ -92,19 +92,17 @@ The button is disabled while a sync or bootstrap is in progress.
 
 _Since 8.14_
 
-If your main module has a `testData` folder in its `src/main/genesis` directory (see [project structure](/build-deploy-operate/build/project-structure/#server) for details), the CSV files in it are loaded automatically after `remap` runs in a local environment.
+If your project has a `testData` folder in the project root (next to `server/`), the CSV files in it are loaded automatically after `remap` runs in a local environment. Put the CSV files directly in `testData/`: subfolders such as `testData/data` are not read. See [project structure](/build-deploy-operate/build/project-structure/#testdata) for details.
 
 The folder structure should be:
 
 ```
-<application_name>-app/
-└── src/
-    └── main/
-        └── genesis/
-            └── testData/
-                ├── RIGHT.csv
-                ├── PROFILE.csv
-                └── ...
+<project-root>/
+├── server/
+└── testData/
+    ├── RIGHT.csv
+    ├── PROFILE.csv
+    └── ...
 ```
 
 :::important
@@ -197,6 +195,8 @@ The last line of the log says how the process ended:
 - `Process ended (exit code unknown)`: the process was [picked up from an earlier run](#closing-genesis-start) and ended on its own, so Genesis Start can't see its exit code.
 
 A build or npm task that is stopped usually exits with a non-zero code (for example, 143), even though the last line says "stopped". Occasionally, a process's own final output appears just after this line.
+
+Genesis Start adds this outcome line itself: it appears in the log panel and in the response from `GET /api/processes/{processId}/log`, but it isn't written to the log file on disk.
 
 ### Sending input to a utility
 
