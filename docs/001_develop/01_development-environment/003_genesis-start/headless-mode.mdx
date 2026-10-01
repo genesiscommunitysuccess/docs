@@ -245,11 +245,7 @@ A request that is malformed, or that has a missing or invalid query or path para
 
 Whenever the REST API is enabled, Genesis Start also runs an [MCP](https://modelcontextprotocol.io/) (Model Context Protocol) server, so an AI agent can drive it directly. There's no separate setting, and it works with the desktop window as well as in headless mode.
 
-The endpoint is `/mcp` at the root of the REST server, not under `/api`; for example, `http://127.0.0.1:18080/mcp`. It uses MCP's Streamable HTTP transport. Add it to your agent's MCP configuration as an HTTP server with that URL. For example, with Claude Code:
-
-```bash
-claude mcp add --transport http genesis-start http://127.0.0.1:18080/mcp
-```
+The endpoint is `/mcp` at the root of the REST server, not under `/api`; for example, `http://127.0.0.1:18080/mcp`. It uses MCP's Streamable HTTP transport, so add it to your agent's MCP configuration as an HTTP server with that URL.
 
 The tools cover the same ground as the REST API: status and application info, starting and stopping processes, bootstrap, sync, import, scripts, logs and terminal output, sending input to utilities, process profiles, settings, view preferences and the port offset. Each tool returns the same JSON as the matching REST endpoint, and fails with the same error codes.
 
