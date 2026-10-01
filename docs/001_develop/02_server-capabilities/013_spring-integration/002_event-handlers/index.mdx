@@ -152,6 +152,7 @@ data class Validated(val normalisedName: String)
 @GenesisEventHandler("CREATE")
 class ValidatingEventHandler(
     private val events: EventProvider,
+    private val widgets: WidgetRepository, // a Spring Data repository over your own WIDGET table
 ) {
 
     @EventValidate
@@ -162,6 +163,7 @@ class ValidatingEventHandler(
 
     @EventCommit
     fun commit(details: Create, @EventContext ctx: Validated): Created {
+        widgets.save(Widget(name = details.name, qty = details.qty))
         // in-process only; throws if TOUCH isn't registered in this same process
         events.trigger("TOUCH", Update(details.name, details.qty))
         return Created(id = "${ctx.normalisedName}-${details.qty}")
@@ -183,9 +185,11 @@ import global.genesis.eventhandler.spring.service.blocking.EventProvider;
 public class ValidatingEventHandler {
 
     private final EventProvider events;
+    private final WidgetRepository widgets; // a Spring Data repository over your own WIDGET table
 
-    public ValidatingEventHandler(EventProvider events) {
+    public ValidatingEventHandler(EventProvider events, WidgetRepository widgets) {
         this.events = events;
+        this.widgets = widgets;
     }
 
     @EventValidate
@@ -198,6 +202,7 @@ public class ValidatingEventHandler {
 
     @EventCommit
     public Created commit(Create details, @EventContext Validated ctx) {
+        widgets.save(new Widget(details.getName(), details.getQty()));
         // in-process only; throws if TOUCH isn't registered in this same process
         events.trigger("TOUCH", new Update(details.getName(), details.getQty()));
         return new Created(ctx.getNormalisedName() + "-" + details.getQty());
@@ -681,12 +686,13 @@ class CreateEventHandlerTest {
     @Autowired
     lateinit var client: EventClientSync
 
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
+
     @Test
     fun `acks and creates`() {
         when (val reply = client.sendEvent(details = Create(name = "widget", qty = 3), messageType = "CREATE")) {
-            is EventReply.EventAck -> {
-                // assert side effects here, e.g. a row via an injected repository
-            }
+            is EventReply.EventAck -> assert(widgetRepository.findByName("widget") != null)
             is EventReply.EventNack -> error("expected an ack, got a nack: ${reply.error}")
             is EventReply.EventApprovableAck -> error("unexpected: not reachable through this module today")
         }
@@ -695,7 +701,7 @@ class CreateEventHandlerTest {
     @Test
     fun `nacks a non-positive quantity`() {
         when (val reply = client.sendEvent(details = Create(name = "widget", qty = 0), messageType = "CREATE")) {
-            is EventReply.EventNack -> assert(reply.error.isNotEmpty())
+            is EventReply.EventNack -> assert(reply.error.single().code == "INTERNAL_ERROR")
             is EventReply.EventAck -> error("expected a nack, got an ack")
             is EventReply.EventApprovableAck -> error("unexpected: not reachable through this module today")
         }
@@ -739,6 +745,9 @@ class CreateEventHandlerTest {
     @Autowired
     private EventClientSync client;
 
+    @Autowired
+    private WidgetRepository widgetRepository;
+
     @Test
     void acksAndCreates() {
         var reply = client.builder()
@@ -747,7 +756,7 @@ class CreateEventHandlerTest {
                 .send();
 
         assertInstanceOf(EventReply.EventAck.class, reply);
-        // assert side effects here, e.g. a row via an injected repository
+        assertNotNull(widgetRepository.findByName("widget"));
     }
 
     @Test
@@ -758,7 +767,7 @@ class CreateEventHandlerTest {
                 .send();
 
         assertInstanceOf(EventReply.EventNack.class, reply);
-        assertFalse(((EventReply.EventNack) reply).getError().isEmpty());
+        assertEquals("INTERNAL_ERROR", ((EventReply.EventNack) reply).getError().get(0).getCode());
     }
 
     @Test
@@ -781,6 +790,8 @@ class CreateEventHandlerTest {
 </Tabs>
 
 `EventReply.EventNack.error` (and `.warning`) is a `List<GenesisError>`, each entry exposing `code` and `text` — assert on those rather than a `message` property.
+
+Assert on the side effect and on the nack's error code, not just on whether the reply is an ack or a nack: if the handler isn't in the test context (for example, its `@Import` or `classes = [...]` entry is missing), every event to it is nacked with `UNKNOWN_MESSAGE_TYPE`, so a test that only checks for a nack still passes while testing nothing.
 
 A test can send a `validate=true` pre-flight request the same way — this is what the [`@IsValidateOnly`](#limitations) parameter reflects on a `@GenesisEventController` method, and it makes the framework return the `@EventValidate` result on any handler without running `@EventCommit`:
 
