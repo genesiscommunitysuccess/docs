@@ -33,10 +33,11 @@ Add a test dependency on `genesis-spring-testsupport` (an ordinary library modul
 ```kotlin
 dependencies {
     testImplementation("global.genesis:genesis-spring-testsupport")
+    genesisGeneratedCode(withTestDependency = true)
 }
 ```
 
-In genx's default multi-module layout, a `-spring` module doesn't own the dictionary `.kts` files — the sibling `-app` module does. Add `genesisGeneratedCode(withTestDependency = true)` alongside the dependency above, or `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`.
+In genx's default multi-module layout, a `-spring` module doesn't own the dictionary `.kts` files — the sibling `-app` module does. The `genesisGeneratedCode(withTestDependency = true)` line in the snippet above puts them on the test classpath; without it, `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`.
 
 The same split affects raw GPAL *script* files too — a `-spring` module doesn't own the sibling `-app` module's scripts under `src/main/genesis` either, so loading one with [`@TestScriptFile`](#annotations) fails with something like `IllegalArgumentException: Unable to find script file(s)`. Add the `-app` module's genesis config directory as an extra test resources source directory to see it:
 
@@ -49,6 +50,8 @@ sourceSets {
     }
 }
 ```
+
+Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/PROFILE_USER.csv` is loaded with `@CsvData("data/PROFILE_USER.csv")` — `@CsvData("PROFILE_USER.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
 
 The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
 
