@@ -915,6 +915,15 @@ curl -G http://localhost:8080/api/v1/cubes/tradesByCurrencyWide/byCurrency \
   --data-urlencode "filter=currencyId=='USD' && price>=5"
 ```
 
+In a `POST` body the filter is a plain JSON string, sent unencoded:
+
+```json
+POST /api/v1/cubes/tradesByCurrencyWide/byCurrency
+{
+  "filter": "currencyId=='USD' && price>=5"
+}
+```
+
 An empty or blank `filter` is treated as "no filter" and is accepted without error — worth knowing
 if your own frontend adapter can produce a blank criteria string (for example, all filter
 conditions cleared) and needs to distinguish that from "no filter supplied" at all.
@@ -1461,8 +1470,11 @@ public class TradeReportCubeConfig {
 </TabItem>
 </Tabs>
 
-```
-GET /api/v1/cubes/tradeReport/byCurrency?filter=ccy=='USD'&&tt=='BUY'
+The filter is URL-encoded, as in [Filtering](#filtering):
+
+```bash
+curl -G http://localhost:8080/api/v1/cubes/tradeReport/byCurrency \
+  --data-urlencode "filter=ccy=='USD' && tt=='BUY'"
 ```
 
 `ccy` (the group key) and `tt` (the whitelisted column) are both filterable; `px` is not, and a
