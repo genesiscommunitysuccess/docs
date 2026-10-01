@@ -407,6 +407,8 @@ mappings; narrow the anonymous mapping, or annotate the sibling too, to resolve 
 narrowed by `params`, `headers`, `consumes`, or `produces` can't be expressed as a plain permit-all
 rule either, and fails the same way — restructure the mapping, or drop the affected condition.
 
+To exercise this from a test, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint).
+
 ### Router proxying
 
 Every `@RestController` endpoint is also reachable from outside the cluster through
