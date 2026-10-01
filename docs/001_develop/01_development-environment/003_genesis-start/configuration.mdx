@@ -32,6 +32,8 @@ plugins {
 }
 ```
 
+If your project declares its plugin versions in the `pluginManagement` block of `server/settings.gradle.kts`, add the version there instead, and apply the bare id (`id("global.genesis.genesis-start-gui")`) in `server/build.gradle.kts`.
+
 In the same file, add `google()` to the `repositories` block under `allprojects`:
 
 ```kotlin
@@ -147,7 +149,7 @@ These settings have the lowest precedence. Any of the [override files](#system-d
 
 ### Two projects on one machine
 
-Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes.
+Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes. Each instance also needs its own `restPort` (the default is `8080`), or the two instances clash on the REST port; see [Setting the port offset](#setting-the-port-offset).
 
 ### Port offset
 
