@@ -245,9 +245,7 @@ Health comes from the `ResourceDaemon` utility, which bootstrap and start-all do
 
 Once `ResourceDaemon` has started, your application processes take a few seconds to report their health (around 5–6 seconds in testing). Until then, they show `RUNNING`. The Web UI process never gets a health state, so it stays `RUNNING` even when `ResourceDaemon` is up.
 
-:::important
 `STOPPING` can be very brief, typically well under a second, so you might not see it. A process can go from `RUNNING` or `HEALTHY` straight to `STOPPED` between two checks of `GET /api/processes`. Don't wait for `STOPPING` to appear before you wait for `STOPPED`.
-:::
 
 ### Errors
 
