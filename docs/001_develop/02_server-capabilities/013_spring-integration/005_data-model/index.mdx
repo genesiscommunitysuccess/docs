@@ -45,13 +45,11 @@ table("SIMPLE_TABLE", 100) {
     field("SIMPLE_ID", INT)
     TIMESTAMP
 
-    primaryKey("SIMPLE_TABLE_BY_ID", 1) {
-        SIMPLE_ID
-    }
+    primaryKey("SIMPLE_ID")
 }
 ```
 
-`TIMESTAMP` here is the implicit system column added to every table — see [Timestamps](/develop/server-capabilities/data-access-apis/#timestamps) — not a field this table declares itself. `primaryKey(name, id) { }` is the dictionary DSL's named-index form, taking the key's name and numeric id followed by a block that lists its fields; it is equivalent to the single-argument `primaryKey(<field 1>, <field 2>, ...)` form documented in the classic [data model](/develop/server-capabilities/data-model/#primarykey), just with an explicit name and id instead of an auto-generated name.
+`TIMESTAMP` here is the implicit system column added to every table — see [Timestamps](/develop/server-capabilities/data-access-apis/#timestamps) — not a field this table declares itself. Because `SIMPLE_ID` is declared inline with `field(...)` inside `table { }`, the primary key names it by string: `primaryKey("SIMPLE_ID")`, or `primaryKey("FIELD_1", "FIELD_2", ...)` for a composite key. In this inline style a field name such as `SIMPLE_ID` is not a Kotlin name in scope, so the block form `primaryKey { SIMPLE_ID }` used with dictionary-wide fields does not compile here. The string form generates the index name; to set it explicitly, chain `.name("SIMPLE_TABLE_BY_ID")`.
 
 the generator produces the following entity. The Java tab is not a second generator output — it illustrates what a hand-written Java class extending the same `genesis-jpa-base` superclass looks like, to show that the base library is not Kotlin-only, even though generation is.
 
@@ -157,7 +155,7 @@ public class SimpleTableJava extends GenesisJpaEntity.Base<Integer> {
 
 The `recordId`/`timestamp` fields are inherited from `GenesisJpaEntity.Base` and are never set directly by application code — they are populated by Hibernate generators on insert, described under [ID and value generators](#id-and-value-generators) below.
 
-Every generated entity also carries several unconditional members that are omitted from the abridged examples on this page: a class-level KDoc summarizing the primary key and the framework-managed columns; a `DbRecordProvider` (`global.genesis.db.entity.DbRecordProvider`) implementation via a `toDbRecord()` delegate; a `dataEquals()` delegate; and a `toString()` override. All four are generated for every entity, not just this one.
+Every generated entity also carries several unconditional members that are omitted from the abridged examples on this page: a class-level KDoc summarizing the primary key and the framework-managed columns; a `DbRecordProvider` (`global.genesis.db.entity.DbRecordProvider`) implementation via a `toDbRecord()` delegate; a `dataEquals()` delegate; and a `toString()` override. All four are generated for every entity, not just this one. The generated-entity snippets on this page also elide some `@field:Column` attributes that codegen emits, such as `length`, `unique`, `nullable` and `updatable`.
 
 ## Configuration options
 
@@ -204,6 +202,8 @@ A generated view entity takes its primary key from the view's root table. Each k
 
 ```kotlin
 // Single-field key: USER_VIEW, keyed on USER_NAME
+@Immutable
+@CubeDefaultIdentity("userName")
 public class UserView @JvmOverloads constructor(
   userName: String,
   @field:Column(name = "USER_FIRST_NAME")
@@ -221,6 +221,8 @@ public class UserView @JvmOverloads constructor(
 }
 
 // Composite key: PROFILE_USER_VIEW, keyed on PROFILE_NAME and USER_NAME
+@Immutable
+@CubeDefaultIdentity("profileName", "userName")
 public class ProfileUserView @JvmOverloads constructor(
   profileName: String,
   userName: String,
@@ -238,6 +240,8 @@ public class ProfileUserView @JvmOverloads constructor(
   ) : Serializable
 }
 ```
+
+Every generated view entity carries the class-level `@Immutable` (`org.hibernate.annotations.Immutable`) and `@CubeDefaultIdentity` annotations shown above; `@CubeDefaultIdentity` lists the root table's primary-key properties in its declared order. View-entity columns carry `nullable = false` on `@field:Column` but no `@field:NotNull`, unlike table entities.
 
 A view definition joins its source tables and declares the view's output columns. The definition gives each output column its name: the source column's name as it is, that name with a prefix, or an alias — `USER.FIRST_NAME` could be output as `FIRST_NAME`, `USER_FIRST_NAME` or `BANANA_NAME`. A view can also add a derived (calculated) field, and the definition names that column too. Output names are UPPER_SNAKE_CASE, and no prefix is added to them automatically.
 
