@@ -130,7 +130,7 @@ tail -f build/genesis-start/error.log
 When Genesis Start is ready, you see:
 
 ```
-Genesis <appName> is running in headless mode (no GUI window).
+Genesis Start is running in headless mode (no GUI window).
 REST API listening at http://127.0.0.1:18080/api
 ```
 
@@ -169,7 +169,7 @@ Here's a summary of the endpoints.
 | `POST /api/processes/{processId}/stop` | Stops one process. |
 | `POST /api/processes/application/start-all` | Starts all stopped Application processes and the Web UI. Optional body: `{"skipSync": true}`. |
 | `POST /api/processes/application/stop-all` | Stops all Application processes. This stops the processes, not Genesis Start. Utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
-| `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored, so there's no paging. An unknown `processId` returns an empty log, not 404. |
+| `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored (ignored parameters are still type-checked), so there's no paging. An unknown `processId` returns an empty log, not 404. |
 | `POST /api/processes/{processId}/log/clear` | Clears a process's log in Genesis Start. |
 | `POST /api/processes/{processId}/input` | Sends one line to a utility's input. Body: `{"line": "..."}`. A line containing `\r` or `\n` is refused with 400, and nothing is sent. |
 
