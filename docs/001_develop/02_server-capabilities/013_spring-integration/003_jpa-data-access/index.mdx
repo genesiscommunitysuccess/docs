@@ -300,7 +300,7 @@ Mistakes in the declaration fail at startup rather than when an update arrives: 
 
 Listeners receive updates under the same conditions as any other `UpdateQueue` subscriber, so the rules above for [publication](#writing-back-to-the-updatequeue) apply: a JPA write is only published after its transaction commits, and only on a process running against a real update-queue transport.
 
-In a `@GenesisSpringTest`, the listener bean must be added to the test context explicitly, because `GenesisTestApplication` does no component scanning: list it in `classes`, or use `@Import` or a `@TestConfiguration` (see [Test tooling: A simple example](../test-tooling#a-simple-example)).
+In a `@GenesisSpringTest`, the listener bean must be added to the test context explicitly, because `GenesisTestApplication` does no component scanning: register it with `@Import` or a `@TestConfiguration` (see [Test tooling: A simple example](../test-tooling#a-simple-example)).
 
 ### Auditing
 
