@@ -1033,7 +1033,7 @@ autoconfiguration classes.
 Combining the two annotations therefore gives you MockMvc in front of a fully booted cube resource,
 querying a real JPA-backed data source, with no exclusion trick needed. As with [Testing an HTTP
 endpoint](../test-tooling#testing-an-http-endpoint), stubbing the suspend `userLoggedInCheckDb`
-cleanly needs mockito-kotlin's `onBlocking`, so this example is Kotlin-only.
+cleanly needs mockito-kotlin's `on { … }`, so this example is Kotlin-only.
 
 The `AutoConfigureMockMvc` import below needs `testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")`; see [Test tooling](../test-tooling#testing-an-http-endpoint) for the full set of test dependencies:
 
@@ -1076,7 +1076,7 @@ class CubeHttpQueryTest {
     @BeforeEach
     fun stubValidSession() {
         userSessionCache.stub {
-            onBlocking { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
+            on { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
                 userName = "JaneDoe",
                 sessionId = "session-1",
                 token = VALID_TOKEN,

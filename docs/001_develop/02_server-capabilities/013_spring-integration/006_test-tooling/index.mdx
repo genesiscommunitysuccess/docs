@@ -48,11 +48,13 @@ Files from the `-app` module keep their path under `src/main/genesis` on the tes
 
 The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
 
-`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, which scaffolds an `allprojects { test { systemProperty("DbLayer", "SQL") } }` block — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
+`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, whose `subprojects { }` block configures every module's test task with `tasks { test { systemProperty("DbLayer", "SQL") … } }`, alongside an in-memory H2 `DbHost`, `DbQuotedIdentifiers` and `useJUnitPlatform()` — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
 
 ```kotlin
-test {
-    systemProperty("DbLayer", "SQL")
+tasks {
+    test {
+        systemProperty("DbLayer", "SQL")
+    }
 }
 ```
 
@@ -333,7 +335,7 @@ The Spring Boot starter's authenticator (`GenesisSessionAuthenticator`) calls th
 `userLoggedInCheckDb`, not `userLoggedIn` — deliberately: a Spring Boot process only *observes*
 sessions the router creates, so a token written just before this process's own session cache caught
 up would otherwise be refused. Stub `userLoggedInCheckDb`, not `userLoggedIn` — for example with
-[mockito-kotlin](https://github.com/mockito/mockito-kotlin)'s `onBlocking`, which handles the
+[mockito-kotlin](https://github.com/mockito/mockito-kotlin)'s `on { … }`, which handles the
 `suspend` keyword's extra `Continuation` parameter for you.
 
 Add the test-only dependencies this needs alongside `genesis-spring-boot-starter`:
@@ -404,7 +406,7 @@ class SecureControllerTest {
     @BeforeEach
     fun stubValidSession() {
         userSessionCache.stub {
-            onBlocking { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
+            on { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
                 userName = "JaneDoe",
                 sessionId = "session-1",
                 token = VALID_TOKEN,
@@ -440,7 +442,7 @@ class SecureControllerTest {
 <TabItem value="java">
 
 `userLoggedInCheckDb` is still a Kotlin `suspend` function when called from Java — there's no
-`mockito-kotlin` `onBlocking` sugar available, so the compiler-generated `Continuation` parameter
+`mockito-kotlin` `on { … }` sugar available, so the compiler-generated `Continuation` parameter
 appears in the stub. Pass the token and `null` for it directly; the matcher form
 `userLoggedInCheckDb(eq(VALID_TOKEN), any())` throws `InvalidUseOfMatchersException` here. Plain
 `org.mockito:mockito-core`, already pulled in by `spring-boot-starter-test`, is enough; the
