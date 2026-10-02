@@ -172,11 +172,13 @@ The host, username and password don't appear on the command line of the Genesis 
 
 These settings have the lowest precedence. Any of the [override files](#system-definition-property-overrides) that sets the same property overrides them, and a `--system-definition-property` flag overrides everything.
 
+On a new database, run Bootstrap and Launch before starting processes; see [Bootstrap and Launch](/develop/development-environment/genesis-start/#bootstrap-and-launch).
+
 ## Running several instances side by side
 
 ### Two projects on one machine
 
-Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. It also ignores Genesis processes that aren't tagged at all: those started by Genesis Start 0.1.x, or not by Genesis Start. They don't appear in the process list and Genesis Start can't stop them, so stop them yourself before you start Genesis Start. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes. Each instance also needs its own `restPort` (the default is `8080`), or the two instances clash on the REST port; see [Setting the port offset](#setting-the-port-offset). To run two independent instances of the same application, use a separate checkout of the project for each instance. Each checkout has its own Genesis home and needs its own `restPort`.
+Every process Genesis Start launches is tagged with the Genesis home it belongs to. When Genesis Start starts up, it picks up any of its own processes still running from an earlier run, and ignores processes that belong to a different Genesis home. It also ignores Genesis processes that aren't tagged at all: those started by Genesis Start 0.1.x, or not by Genesis Start. They don't appear in the process list and Genesis Start can't stop them, so stop them yourself before you start Genesis Start. So if you run Genesis Start for two different projects, neither one shows or stops the other's processes. Two instances pointed at the same Genesis home do share their processes. Each instance needs its own `restPort` (default 8080), set with `-Pgenesis.start.restPort=…`; see [Gradle property reference](#gradle-property-reference). The two applications' own ports also clash unless you give one of them a port offset; see [Setting the port offset](#setting-the-port-offset). To run two independent instances of the same application, use a separate checkout of the project for each instance. Each checkout has its own Genesis home and needs its own `restPort`.
 
 ### Port offset
 
