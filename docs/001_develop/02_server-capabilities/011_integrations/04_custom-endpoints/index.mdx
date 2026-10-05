@@ -1019,6 +1019,10 @@ There are some simple steps to follow in order to set up your test.
 ###### Create the test class
 Create the test class using the code provided below:
 
+:::note
+The code examples use `jakarta.inject`. In Genesis 8.15 and earlier, import `javax.inject` instead.
+:::
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -1036,7 +1040,7 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @GenesisTest
 @TestScriptFile("genesis-router.kts")
