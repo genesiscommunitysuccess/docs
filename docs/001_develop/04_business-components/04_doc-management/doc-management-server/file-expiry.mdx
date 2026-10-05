@@ -107,11 +107,11 @@ The value is applied as follows:
 
 ## Changing a file's expiry
 
-Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. A null `EXPIRES_AT` clears the expiry, so the file never expires. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
+Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. Send `EXPIRES_AT` as an explicit null to clear the expiry, so the file never expires. Leaving the field out is rejected. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
 
 `EVENT_FILE_STORAGE_UPDATE_EXPIRY` does the same for users. It requires the `FileStorageUpdateExpiry` right, which is part of the `FILE_STORAGE_ADMIN` profile, or the `FileStorageAdminAction` right.
 
-Both events reject an id that is not in `FILE_STORAGE`. They change only `FILE_EXPIRES_AT`, `MODIFIED_AT` and `MODIFIED_BY`, and write a `FILE_STORAGE_AUDIT` record. On an existing installation the `FILE_STORAGE_ADMIN` profile receives the new right through an install hook when you upgrade.
+Both events reject an id that is not in `FILE_STORAGE`. They change only `FILE_EXPIRES_AT`, `MODIFIED_AT` and `MODIFIED_BY`, and write a `FILE_STORAGE_AUDIT` record. On an existing installation the `FILE_STORAGE_ADMIN` profile receives the new right through an install hook when you upgrade. Users who are already members of that profile receive it in their effective rights the next time rights are consolidated, for example when their profile membership changes. Until then they can still use these events through `FileStorageAdminAction`. In a container, the install hooks run only when `GENESIS_DB_UPGRADE=true` (or `GENESIS_DB_INSTALL=true`) is set at start-up.
 
 ## Reports and file expiry
 
@@ -127,7 +127,7 @@ A report's expiry is fixed when its file is saved and is never recalculated. Rep
 When `FILE_STORAGE_EXPIRY_SWEEP_CRON` is set to a valid expression, Reporting does two more things:
 
 - **It marks expired reports.** Each time it receives `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED`, Reporting checks every `GENERATED_REPORT` record that has a file and whose status is `PENDING`, `GENERATED`, `PARTIALLY_DELIVERED` or `DELIVERED`. If Document Management confirms that the file no longer exists, Reporting sets the status to `EXPIRED` and records the previous status in `MESSAGE`. This catches every report whose file has gone, including files deleted by hand in the Document Manager. If Document Management cannot be reached, the records are left unchanged and checked again after the next sweep.
-- **It blocks dispatch of a report whose file has gone.** `DISPATCH_REPORT` is rejected with `Report file no longer available in Document Manager` if Document Management confirms that the file no longer exists. If Document Management cannot be reached, the dispatch goes ahead.
+- **It blocks dispatch of a report whose file has gone.** `DISPATCH_REPORT` for a `PENDING` report is rejected with `Report file no longer available in Document Manager` if Document Management confirms that the file no longer exists. If Document Management cannot be reached, the dispatch goes ahead. A report that is already `EXPIRED` is not `PENDING`, so `DISPATCH_REPORT` rejects it with the general message `Failed requirement.`
 
 Reports with the status `EXPIRED` stay in the generated reports history and are never removed automatically. They can still be deleted by hand. Their file no longer exists in Document Management, so it cannot be downloaded.
 

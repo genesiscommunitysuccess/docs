@@ -209,7 +209,7 @@ Retention applies only to reports generated after it is set. Changing `N` does n
 
 When the sweep is enabled, Reporting also does two things:
 - After each sweep, it sets the status of a generated report to `EXPIRED` if Document Management confirms that the report's file no longer exists.
-- It rejects `DISPATCH_REPORT` for a report whose file no longer exists.
+- It rejects `DISPATCH_REPORT` for a `PENDING` report whose file no longer exists. An `EXPIRED` report is rejected with the general message `Failed requirement.`
 
 `FILE_STORAGE_EXPIRY_SWEEP_CRON` must be set in the `global` block, because both Document Management and Reporting read it. Both items are read at startup, so restart `REPORTING_MANAGER` after you change them.
 
