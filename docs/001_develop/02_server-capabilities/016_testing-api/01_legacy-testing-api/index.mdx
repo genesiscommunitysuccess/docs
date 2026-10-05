@@ -18,11 +18,13 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::info
+:::warning Deprecated in 10.0
 
-This information only applies to Genesis Server Framework (GSF) 7 or before.
+The test-support classes on this page are still part of Genesis Server Framework (GSF) 10.0, but they are deprecated. Existing tests that use them still compile and run, with deprecation warnings when you build them.
 
-For the latest testing API, go to the [Testing API](/develop/server-capabilities/testing-api/) page.
+The deprecated classes are `AbstractGenesisTestSupport`, `GenesisTestSupport`, `GenesisClassGenerationTestSupport`, `GenesisTestConfig`, `DataServerTest`, `EventResponse`, `AbstractDatabaseTest` and `SimpleQueueAbstractDatabaseTest`. The Java classes among them (`GenesisTestSupport`, `GenesisClassGenerationTestSupport` and `AbstractDatabaseTest`) are deprecated since 10.0.0 and marked for removal in a future release.
+
+Write new tests with the annotation-based GenesisJunit API (`@GenesisTest`, `@GenesisSharedContextTest` and `@GenesisDatabaseTest`), and move existing tests to it when you can. See the [Testing API](/develop/server-capabilities/testing-api/) page.
 
 :::
 
