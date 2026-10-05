@@ -205,6 +205,8 @@ systemDefinition {
 | Whole number `N` greater than 0 | Each report file expires `N` days after the report is generated. |
 | Anything else | The `REPORTING_MANAGER` process fails to start. |
 
+Retention applies only to reports generated after it is set. Changing `N` does not re-date existing reports. Reports generated before the upgrade, or while the item was not set, are never deleted automatically. Delete them by hand.
+
 When the sweep is enabled, Reporting also does two things:
 - After each sweep, it sets the status of a generated report to `EXPIRED` if Document Management confirms that the report's file no longer exists.
 - It rejects `DISPATCH_REPORT` for a report whose file no longer exists.

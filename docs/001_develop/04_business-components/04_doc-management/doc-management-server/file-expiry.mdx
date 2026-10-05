@@ -22,18 +22,15 @@ File expiry is off by default. Nothing is deleted until you set `FILE_STORAGE_EX
 | --- | --- | --- |
 | `FILE_STORAGE_EXPIRY_SWEEP_CRON` | Document Management, Reporting | A [Quartz cron expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) that sets when the sweep runs. It is evaluated in UTC. This is the master switch: if there is no valid expression, no files are deleted. |
 | `FILE_STORAGE_DEFAULT_RETENTION_DAYS` | Document Management | The number of days to keep a `USER_DOCUMENT` that was saved without an explicit expiry. Must be a whole number greater than zero. |
-| `REPORTING_DEFAULT_RETENTION_DAYS` | Reporting | The number of days to keep a generated report file. Must be a whole number greater than zero. |
+| `REPORTING_DEFAULT_RETENTION_DAYS` | Reporting | The number of days to keep a generated report file. Must be a whole number greater than zero. Applies only to reports generated after it is set. |
 
 Here is an example configuration that sets all three items:
 
 ```kotlin
 systemDefinition {
     global {
-        // Run the sweep every day at 02:00 UTC
         item(name = "FILE_STORAGE_EXPIRY_SWEEP_CRON", value = "0 0 2 * * ?")
-        // Keep user documents for 30 days unless an expiry is set when the file is saved
         item(name = "FILE_STORAGE_DEFAULT_RETENTION_DAYS", value = "30")
-        // Keep generated report files for 90 days
         item(name = "REPORTING_DEFAULT_RETENTION_DAYS", value = "90")
     }
 }
@@ -60,7 +57,7 @@ A Quartz cron expression has six or seven fields, starting with seconds. Exactly
 | | Whole number `N` greater than 0 | A `USER_DOCUMENT` saved without an explicit expiry gets an expiry `N` days after it is saved. `DOCUMENT_TEMPLATE` and `TEMPLATE_ASSET` files never get the default. Files that already exist are not changed. |
 | | Anything else | The process that hosts Document Management fails to start. |
 | `REPORTING_DEFAULT_RETENTION_DAYS` | Not set | Report files are saved with an expiry of 9999-12-31 UTC, so they never expire. This applies even when `FILE_STORAGE_DEFAULT_RETENTION_DAYS` is set. |
-| | Whole number `N` greater than 0 | Each report file expires `N` days after it is generated. |
+| | Whole number `N` greater than 0 | Each report file expires `N` days after it is generated. Reports that already exist are not changed. |
 | | Anything else | The `REPORTING_MANAGER` process fails to start. |
 
 ## How a file expires
@@ -72,7 +69,7 @@ A Quartz cron expression has six or seven fields, starting with seconds. Exactly
 
    Documents created by [Document Generation](/develop/business-components/doc-generate/) are saved as `USER_DOCUMENT`, so the default applies to them.
 2. **Sweep.** On each scheduled run, the sweep finds every `FILE_STORAGE` record whose `FILE_EXPIRES_AT` is at or before the current time. It deletes the stored file and then the record. Deleting a template or an asset also removes its template-asset links. If a delete fails, the sweep logs a warning and tries that file again on the next run.
-3. **Completion.** After the sweep, Document Management sends `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED`. If Reporting is installed, it uses this event to [mark reports whose files are gone as expired](#reports-and-file-expiry).
+3. **Completion.** After the sweep, Document Management sends `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED`. If Reporting is installed, it uses this event to [mark reports whose files are gone as expired](#reports-and-file-expiry). Only one service receives this event.
 
 The sweep only deletes files saved by the storage manager that is currently configured. If you change `STORAGE_STRATEGY`, files saved under the previous strategy are never swept.
 
@@ -108,6 +105,14 @@ The value is applied as follows:
 - A non-null `expiresAt` always wins, for any file type.
 - A null `expiresAt` does not mean "never expire". It means the default applies, so a `USER_DOCUMENT` still gets `FILE_STORAGE_DEFAULT_RETENTION_DAYS` if that is set. To keep a file permanently whatever the default, pass a far-future date. Reporting does this, using 9999-12-31.
 
+## Changing a file's expiry
+
+Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. A null `EXPIRES_AT` clears the expiry, so the file never expires. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
+
+`EVENT_FILE_STORAGE_UPDATE_EXPIRY` does the same for users. It requires the `FileStorageUpdateExpiry` right, which is part of the `FILE_STORAGE_ADMIN` profile, or the `FileStorageAdminAction` right.
+
+Both events reject an id that is not in `FILE_STORAGE`. They change only `FILE_EXPIRES_AT`, `MODIFIED_AT` and `MODIFIED_BY`, and write a `FILE_STORAGE_AUDIT` record. On an existing installation the `FILE_STORAGE_ADMIN` profile receives the new right through an install hook when you upgrade.
+
 ## Reports and file expiry
 
 Reporting saves every generated report file with an explicit expiry:
@@ -117,18 +122,20 @@ Reporting saves every generated report file with an explicit expiry:
 
 Because the expiry is always explicit, `FILE_STORAGE_DEFAULT_RETENTION_DAYS` never applies to report files.
 
+A report's expiry is fixed when its file is saved and is never recalculated. Reports generated before the upgrade have no expiry, and reports generated while `REPORTING_DEFAULT_RETENTION_DAYS` was not set expire on 9999-12-31, so the sweep never deletes either. Delete them by hand if you no longer need them.
+
 When `FILE_STORAGE_EXPIRY_SWEEP_CRON` is set to a valid expression, Reporting does two more things:
 
 - **It marks expired reports.** Each time it receives `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED`, Reporting checks every `GENERATED_REPORT` record that has a file and whose status is `PENDING`, `GENERATED`, `PARTIALLY_DELIVERED` or `DELIVERED`. If Document Management confirms that the file no longer exists, Reporting sets the status to `EXPIRED` and records the previous status in `MESSAGE`. This catches every report whose file has gone, including files deleted by hand in the Document Manager. If Document Management cannot be reached, the records are left unchanged and checked again after the next sweep.
 - **It blocks dispatch of a report whose file has gone.** `DISPATCH_REPORT` is rejected with `Report file no longer available in Document Manager` if Document Management confirms that the file no longer exists. If Document Management cannot be reached, the dispatch goes ahead.
 
-Reports with the status `EXPIRED` stay in the generated reports history and can still be deleted. Their file no longer exists in Document Management, so it cannot be downloaded.
+Reports with the status `EXPIRED` stay in the generated reports history and are never removed automatically. They can still be deleted by hand. Their file no longer exists in Document Management, so it cannot be downloaded.
 
 ## Operational guidance
 
 - **The Evaluator must be running.** The sweep is triggered by a cron rule, so the `GENESIS_EVALUATOR` process must be enabled. See [Real-time triggers (Evaluator)](/develop/server-capabilities/real-time-triggers-evaluator/#runtime-configuration).
 - **Choose an hourly or daily schedule.** Each sweep reads the whole `FILE_STORAGE` table, and each Reporting check reads the whole `GENERATED_REPORT` table. Running every few seconds or minutes adds load for no benefit.
-- **The first run clears the backlog.** The first sweep after you set `FILE_STORAGE_EXPIRY_SWEEP_CRON` deletes every file that has already passed its expiry.
+- **The first run clears the backlog.** The first sweep after you set `FILE_STORAGE_EXPIRY_SWEEP_CRON` deletes every file whose `FILE_EXPIRES_AT` has already passed. Files with no `FILE_EXPIRES_AT`, including all files saved before the upgrade, are never deleted.
 - **One sweep per scheduled time.** The Evaluator normally runs only on the primary node, so each scheduled time triggers one sweep. If you run the Evaluator on more than one node, each node triggers its own sweep. The end result is the same, but you may see warnings from duplicate delete attempts.
 - **Reporting catches up.** If Reporting is not running when a sweep completes, it marks the affected reports as expired after the next sweep.
 
