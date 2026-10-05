@@ -558,7 +558,7 @@ pipeline("TEST_DB_BULK_QUERY") {
 
 #### `ProgrammaticSource`
 
-This is an implementation of a real-time acknowledgement source. This source additionally has a send method, which can be used by any custom code to provide data to the pipeline.
+`ProgrammaticSource` is a real-time acknowledgement source with an extra `send` method. Your own code calls `send` to push data into the pipeline.
 
 The source is dependent on the calling code being a part of the same process as the pipeline using this source. Upudate your process definition to ensure this is done.
 

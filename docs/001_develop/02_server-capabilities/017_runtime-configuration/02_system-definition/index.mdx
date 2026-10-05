@@ -99,10 +99,12 @@ See our pages on [database technology](/build-deploy-operate/deploy/supporting-i
 
 You may want to encrypt usernames, passwords and other key configuration values such as database credentials.
 
-Use the `encryptUserPassWithKey` script to encrypt username and password values. It prompts you for a username, a password and a key, then outputs the encrypted value of the username and the password. The key must be a string of 32 alphanumeric characters, and you must keep it secret. Set the same key in the system definition item `GenesisKey`. When `GenesisKey` is present, all encrypted system definition values are expected to use that key.
+To encrypt a username and password, run the `encryptUserPassWithKey` script. It asks for a username, a password and a key, and prints the encrypted username and password.
+
+The key must be a 32-character alphanumeric string. Keep it secret, and set the same value in the `GenesisKey` system definition item. Once `GenesisKey` is set, every encrypted value in the system definition must be encrypted with that key.
 
 :::warning
-The older `encryptUserPass` script is deprecated and will be removed in 11.0.0. It belongs to the deprecated `genesis-genesistodb` module, and it encrypts values with a fixed built-in key instead of a key you supply. Use `encryptUserPassWithKey` instead.
+The older `encryptUserPass` script is deprecated and will be removed in 11.0.0. It is part of the deprecated `genesis-genesistodb` module, and it encrypts with a fixed built-in key rather than one you supply. Use `encryptUserPassWithKey` instead.
 :::
 
 Example usage:
