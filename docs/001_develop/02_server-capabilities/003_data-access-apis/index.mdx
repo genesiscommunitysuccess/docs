@@ -2002,6 +2002,10 @@ From version 10.0, repositories are generated for views only. Code generation no
 
 The `generateRepositories` setting has also been removed from `codeGen { }`, so a build script that still sets it will not compile. Delete the line.
 
+:::note
+In Genesis 8.15 and earlier, table repositories can still be generated. Set `generateRepositories = true` inside `codeGen { }` in the **build.gradle.kts** files of the **genesis-generated-dao** and **genesis-generated-view** modules.
+:::
+
 Every view gets its repositories automatically. When you [build your DAOs](/build-deploy-operate/build/bdo-build-overview/#dao), a view called **POSITION_VIEW** gets two, in the `global.genesis.gen.view.repository` package:
 
 * **PositionViewRx3Repository** has an RxJava API, for use from Java.
