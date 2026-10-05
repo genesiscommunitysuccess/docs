@@ -311,7 +311,7 @@ The `join` operation receives two parameters:
 
 `hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided:
 - `userName` the current user name subscribed to the query
-- `row` the pre-built query `row`
+- `queryRow` the pre-built query row
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
 The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view. To declare your own derived fields, call `derivedField` directly in the `enrich` block, outside `fields`.
@@ -340,7 +340,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
         }
         // Hide buyer counterparty id to users associated to counterparty seller if "isHiddenToSeller" is true.
         hideFields { userName, queryRow, userData ->
-            if(userData?.counterpartyId == queryRow.sellerCounterPartyId && queryRow.isHiddenToSeller == true){
+            if(userData?.counterpartyId == queryRow.sellerCounterpartyId && queryRow.isHiddenToSeller == true){
                 listOf(BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID)
             } else{
                 emptyList()
