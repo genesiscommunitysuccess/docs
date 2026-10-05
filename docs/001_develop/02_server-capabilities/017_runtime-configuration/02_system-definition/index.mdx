@@ -24,7 +24,7 @@ systemDefinition {
   global {
     item(name = "DEPLOYED_PRODUCT", value = "position")
     item(name = "MqLayer", value = "ZeroMQ")
-    item(name = "DbLayer", value = "H2")
+    item(name = "DbLayer", value = "SQL")
     item(name = "DictionarySource", value = "DB")
     item(name = "AliasSource", value = "DB")
     item(name = "MetricsEnabled", value = "false")
@@ -32,7 +32,7 @@ systemDefinition {
     item(name = "ZeroMQProxyInboundPort", value = "5001")
     item(name = "ZeroMQProxyOutboundPort", value = "5000")
 
-    item(name = "DbHost", value = "localhost")
+    item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
     item(name = "DbMode", value = "POSTGRESQL")
     item(name = "GenesisNetProtocol", value = "V2")
     item(name = "ResourcePollerTimeout", value = "5")
@@ -84,7 +84,7 @@ If other `system` blocks are defined in a different order in other `system-defin
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to H2. If you want to use PostgreSQL, Oracle or MSSQL, then you need to change this value and then [change the value of the DbHost item](/develop/server-capabilities/runtime-configuration/database-configuration/).
+**DbLayer**: The database layer. Set it to `SQL` for PostgreSQL, Oracle, MSSQL or H2, and then [set the DbHost item](/develop/server-capabilities/runtime-configuration/database-configuration/) to the JDBC connection string for your database. `FDB` and `FDB2` are also accepted, but FoundationDB is deprecated in 10.0 and is planned for removal in 11.0.0.
 
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
@@ -164,7 +164,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use:
-- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers
+- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 - For [Postgres](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql), [MSSQL](/build-deploy-operate/deploy/supporting-infrastructure/#sql-server) and [ORACLE](/build-deploy-operate/deploy/supporting-infrastructure/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.

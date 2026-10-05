@@ -47,7 +47,7 @@ Other packages needed to manage and run Genesis applications are:
 
 Genesis supports several types of database. The currently supported list is:
 
-* [FoundationDB](https://www.foundationdb.org/) (default)
+* [FoundationDB](https://www.foundationdb.org/) (deprecated)
 * [PostgreSQL](https://www.postgresql.org/) (local or RDS within AWS)
 * [MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2016) (Windows environments)
 * [Oracle](https://www.oracle.com/uk/database/)
@@ -55,6 +55,10 @@ Genesis supports several types of database. The currently supported list is:
 
 
 ### Installing FoundationDB
+
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 If resilient FoundationDB is required, it can be clustered across multiple hosts. For safety, an odd number of instances are needed. You can find set-up details in FoundationDB's [documentation](https://apple.github.io/foundationdb/administration.html).
 

@@ -24,7 +24,7 @@ By default, new projects are set up with [H2](https://h2database.com/html/main.h
 
 For production environments (and local production like testing), [Postgresql](#postgresql) is our recommended choice, however Genesis supports the following database technologies:
 
-| Database                 | [FoundationDB](#foundationdb) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
+| Database                 | [FoundationDB](#foundationdb) (deprecated) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
 | ------------------------ | ----------------------------- | ------------------------- | -------------------- |------------------ | --- |
 | Technology               | NOSQL                         | SQL                       | SQL                  | SQL               | SQL |
 | Unlimited operation size | ❌                            | ✔️                         | ✔️                    | ✔️                 | ✔️   |
@@ -33,6 +33,9 @@ For production environments (and local production like testing), [Postgresql](#p
 
 #### FoundationDB
 
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 Genesis provides two database solutions built on FoundationDB.
 
