@@ -1,0 +1,22 @@
+docs/001_develop/02_server-capabilities/008_access-control/02_authentication/index.mdx
+  s_97ad88032c5837::t_cc40fdb8c19d70 289-290,292-316
+  s_97ad88032c5837::t_debedd5f3cd085 244
+  s_97ad88032c5837::t_3d10f4b90ab18b 239-240
+  s_97ad88032c5837::t_917ffc099374e3 275-288,291
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d49b14d94760557d5b5e593a7cc30e608aa8a0d6",
+  "prompts": {},
+  "sessions": {
+    "s_97ad88032c5837": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f48469aa-ecd5-4b16-be01-52714d70d17a",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
