@@ -557,7 +557,7 @@ For type-safe messages, you can annotate specific string fields to use the XSS s
 Apply `@field:JsonSerialize(using = XssSanitizingSerializer::class)` to the field. You need the following imports:
 
 ```kotlin
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import tools.jackson.databind.annotation.JsonSerialize
 import global.genesis.jackson.serialization.XssSanitizingSerializer
 
 
