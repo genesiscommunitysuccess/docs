@@ -1,0 +1,139 @@
+---
+title: 'Deprecation warnings'
+sidebar_label: 'Deprecation warnings'
+id: bdo-operate-deprecation-warnings
+keywords: [operate, operations, deprecation, deprecated, warnings, genesisInstall, modules]
+tags:
+- operate
+- operations
+- deprecation
+sidebar_position: 7
+---
+
+Some parts of the platform are deprecated in 10.0. They still ship and still work, but they are planned for removal in 11.0. Genesis tells you when your application uses one of them, so you can plan the move before the removal.
+
+You can see these warnings in three places:
+
+- in a process's own log, when it starts
+- in the output of `genesisInstall`
+- in the Gradle build of a product that depends on the product that declared the deprecation
+
+None of these warnings stops a process, an install or a build.
+
+This page covers deprecations that a product declares in its build script. Deprecated classes and methods are a separate thing: you see those as ordinary compiler and IDE warnings in your own code.
+
+## What 10.0 deprecates
+
+The Genesis platform declares these deprecations in 10.0. Each is planned for removal in 11.0.
+
+| Kind | Name | Use instead |
+|---|---|---|
+| `MODULE` | `genesis-dataserver2` | `genesis-pal-dataserver` |
+| `MODULE` | `genesis-consolidator2` | `genesis-pal-consolidator` |
+| `MODULE` | `genesis-streamer` | `genesis-pal-streamer` |
+| `MODULE` | `genesis-dbtogenesis` | `genesis-data-ingest` |
+| `MODULE` | `genesis-genesistodb` | `genesis-data-ingest` |
+| `MODULE` | `genesis-webmon`, `webmon` | none |
+| `DB_ENGINE` | `FDB`, `FDB2` | `SQL` |
+
+The `webmon` module has already been removed in 10.0, so you won't see its deprecation warning: a process that still declares it fails at install or at start before the warning can appear. Remove that process definition from your `*-processes.xml`.
+
+## Where the warnings appear
+
+### In the process log
+
+When a process starts, it checks its own definition in `processes.xml`. If its `<module>`, `<package>` or `<classpath>` matches a deprecated name, it writes one line at `WARN` level to its own log, `$GENESIS_HOME/runtime/logs/<PROCESS_NAME>.log`. A `<module>` that lists several modules, such as `genesis-streamer,fix-quickfixj`, is checked one module at a time.
+
+A process that uses the database also checks the database engine set by `DbLayer`. If that engine is deprecated, it writes a warning while it starts.
+
+Each warning has this format:
+
+```
+<Kind> '<name>' is deprecated and will be removed in <removalVersion>. Use '<replacement>' instead.
+```
+
+`<Kind>` is one of `Module`, `Package`, `Database engine` or `Definition format`. When no replacement is declared, the message ends after the removal version. For example:
+
+```
+Module 'genesis-dataserver2' is deprecated and will be removed in 11.0.0. Use 'genesis-pal-dataserver' instead.
+```
+
+### In the genesisInstall output
+
+[`genesisInstall`](/build-deploy-operate/operate/commands/#genesisinstall) checks every process in `processes.xml`. That includes processes that are not set to start and processes that have no `<config>` file. For each deprecated `<module>`, `<package>` or `<classpath>` entry, it prints a warning to the console, using the same message as the process log.
+
+This is a warning, not an error. The install carries on, and you don't need `--ignore`.
+
+### In the Gradle build
+
+If your product depends on another Genesis product that declares deprecations, your build checks your processes against them, including any processes you inherit from a dependency. It checks the module, `<classpath>` and script-module names of each process. Packages are not checked here.
+
+For each deprecated name it finds, the build logs one Gradle warning:
+
+```
+Process '<process>' depends on module '<name>', which a dependency has declared deprecated (genesisManifest.deprecatedModules). It will be removed in a future release -- see that dependency's declaration, or this process's own runtime log once started, for replacement and removal-version details.
+```
+
+The build only knows the deprecated name, not the replacement or the removal version. To get those, look at the process log or the `genesisInstall` output after you deploy.
+
+### When the warnings take effect
+
+The process-log and `genesisInstall` warnings both read `$GENESIS_HOME/generated/cfg/global-product-details.xml`. `genesisInstall` writes this file from the details of each installed product. So a new or changed deprecation takes effect only after `genesisInstall` has run again. If the file doesn't exist yet, nothing is reported.
+
+The Gradle warning doesn't wait for `genesisInstall`. It appears as soon as your build picks up the new version of the dependency.
+
+## Acting on a warning
+
+1. Find the process that uses the deprecated component. In a process log, that's the process the log belongs to. The Gradle warning names the process. The `genesisInstall` warning names only the component, so search your `*-processes.xml` files for it.
+2. Find the replacement. The process-log and `genesisInstall` messages name it after `Use`. If there's no replacement, the component is going away and nothing takes its place.
+3. Plan the change before you upgrade to the release named in the message. Until then, the deprecated component keeps working as it does today.
+
+There is no setting to turn these warnings off. They stop once the process no longer uses the deprecated component.
+
+## Declaring your own deprecations
+
+If you maintain a Genesis product that other applications depend on, you can deprecate parts of it in the same way. Add `deprecatedModules` to the `genesisManifest { }` block in your distribution project's `build.gradle.kts`. That is the `*-distribution` subproject, or the root project if there isn't one.
+
+```kotlin
+import global.genesis.gradle.plugin.productdetails.DeprecatedModuleDeclaration
+
+genesisManifest {
+    deprecatedModules = listOf(
+        DeprecatedModuleDeclaration(
+            kind = "MODULE",
+            name = "my-legacy-module",
+            replacement = "my-new-module",
+            removalVersion = "2.0.0",
+        ),
+        DeprecatedModuleDeclaration(
+            kind = "PACKAGE",
+            name = "com.mycompany.legacy",
+            removalVersion = "2.0.0",
+        ),
+    )
+}
+```
+
+Each `DeprecatedModuleDeclaration` takes:
+
+- `kind`: what is deprecated (see the table below).
+- `name`: the name to match.
+- `replacement`: optional. What to use instead. If you leave it out, the message has no `Use ... instead.` part.
+- `removalVersion`: required. The release in which you plan to remove it. It's free text, copied into the message exactly as written.
+
+| `kind` | `name` is matched against | How it matches |
+|---|---|---|
+| `MODULE` | each `<module>` value, and each `<classpath>` entry with any wildcard removed (`auth-messages*` is matched as `auth-messages`) | whole name, not case-sensitive |
+| `PACKAGE` | each `<package>` value | case-sensitive; the package itself and any package below it, so `com.mycompany.legacy` also matches `com.mycompany.legacy.trades` |
+| `DB_ENGINE` | the database engine set by `DbLayer` | whole name, not case-sensitive |
+| `DEFINITION_FORMAT` | `legacy-system-definition`, which applies when the system definition is not in the JSON format | whole name, not case-sensitive |
+
+For `MODULE`, use the full name exactly as it appears in `<module>`. For example, `dataserver2` doesn't match `<module>genesis-dataserver2</module>`.
+
+`kind` must be one of these four values, in capitals. Any other value fails the `createProductDetails` Gradle task, so you find a typo when you build, not when a warning never shows up:
+
+```
+genesisManifest.deprecatedModules: unrecognised kind '<kind>' for '<name>' — must be one of [MODULE, PACKAGE, DB_ENGINE, DEFINITION_FORMAT] (kept in sync with global.genesis.commons.deprecation.DeprecatedComponent.Kind)
+```
+
+Applications that use your product see the warnings the next time they build against your new version, and in their logs and `genesisInstall` output once they have installed it.
