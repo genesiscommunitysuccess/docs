@@ -174,7 +174,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use:
-- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers
+- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 - For [Postgres](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql), [MSSQL](/build-deploy-operate/deploy/supporting-infrastructure/#sql-server) and [ORACLE](/build-deploy-operate/deploy/supporting-infrastructure/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.

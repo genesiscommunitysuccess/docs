@@ -384,7 +384,7 @@ Lazily evaluated criteria:
 * Any criteria on a derived field
 * If `SqlViewsEnabled` is not true, in views, any criteria on a field on a joined table
 * If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins), any criteria on a field on a joined table
-* On FDB, any criteria that is not a direct index match
+* On FDB, any criteria that is not a direct index match. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
 ###### Hybrid evaluation
 
@@ -938,7 +938,7 @@ This API must be used with caution. Integrity checks are skipped, so it can leav
 
 If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
 
-Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**.
+Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These run operations in the block in a single transaction, if supported.
 
