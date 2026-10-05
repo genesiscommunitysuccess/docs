@@ -236,6 +236,12 @@ The following variables are used to configure an LDAP `connection`, details for 
   * which user permissions are allocated, using `createUserPermissions`
 * `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
 * `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+* `connectTimeoutMs` is the time, in milliseconds, to wait for the connection to the LDAP server to be established. It must be a positive integer, otherwise the application fails to start. Default: `10000`.
+* `responseTimeoutMs` is the time, in milliseconds, to wait for each request to the LDAP server to be answered. This covers every request a login makes, including the bind of the service account (`bindDn`), each search, and the reads made after a successful bind. It must be a positive integer, otherwise the application fails to start. Default: `300000`.
+
+`connectTimeoutMs` and `responseTimeoutMs` are supported from version 10.0. Both are set separately on each `connection`, and a timeout you leave unset uses its default.
+
+A single login makes several requests, and each one waits up to `responseTimeoutMs`. When you configure several connections, a server that is down or slow can therefore delay a login that falls through to the next connection by a multiple of that value. Lower the timeouts if that matters to you.
 
 
 Example ldap connection:
@@ -247,7 +253,7 @@ security {
 			connection {
 				url = "localhost"
           port = 389
-          searchBase {
+          searchBases {
             searchBase("ou=temp,dc=temp")
           }
           userGroups {
@@ -256,6 +262,8 @@ security {
           bindDn = ldap.server.user
           bindPassword = ldap.server.password
           userIdType = "cn"
+          connectTimeoutMs = 5000
+          responseTimeoutMs = 30000
 			}
 		}
   }
