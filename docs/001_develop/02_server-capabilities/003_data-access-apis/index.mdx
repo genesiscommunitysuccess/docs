@@ -1994,58 +1994,24 @@ requestReply("TRADE", TRADE) {
 
 ## Generated repositories
 
-:::warning
-IMPORTANT!
+From version 10.0, repositories are generated for views only. Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables, use the [Entity Db](#entity-db-api).
 
-Generate Repository usage is legacy. Entity DB APIs replace their usage. From GSF version 7.0.0 onwards, code generation for database repositories is disabled by default. To re-enable code generation, change the **generateRepositories** setting inside the **build.gradle.kts** files for the **genesis-generated-dao** and **genesis-generated-view** modules, as shown below:
+The `generateRepositories` setting has also been removed from `codeGen { }`, so a build script that still sets it will not compile. Delete the line.
 
-```{kotlin}
-codeGen {
-    generateRepositories = true
-}
-```
+:::note
+In Genesis 8.15 and earlier, table repositories can still be generated. Set `generateRepositories = true` inside `codeGen { }` in the **build.gradle.kts** files of the **genesis-generated-dao** and **genesis-generated-view** modules.
 :::
 
-During the code generation phase, repository classes can be generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
+Every view gets its repositories automatically. When you [build your DAOs](/build-deploy-operate/build/bdo-build-overview/#dao), a view called **POSITION_VIEW** gets two, in the `global.genesis.gen.view.repository` package:
 
-The main differences between the generated repositories and the [Entity Db](#entity-db-api) are:
+* **PositionViewRx3Repository** has an RxJava API, for use from Java.
+* **PositionViewAsyncRepository** has an Async API, for use from Kotlin.
 
-- The entity db can handle any database entity, each repository can only handle a single entity.
-- The generated repositories have specific methods for every index of table/view, whereas the entity db is fully generic.
-
-|                                                                                                      |                                                          |
-| -----------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| Supports tables                                                                                      | ✔️                                                        |
-| Supports views                                                                                       | ✔️                                                        |
-| Supports any data type                                                                               | ❌                                                       |
-| Class to import                                                                                      | `[TableName]AsyncRepository` \ `[TableName]Rx3Repository`|
-| Type-safe read and write                                                                             | ✔️                                                        |
-| Type-safe write result                                                                               | ❌                                                       |
-| Returns data as                                                                                      | table or view entities                                   |
-| Writes data as                                                                                       | table entities                                           |
-| References indexes as                                                                                | Generated methods                                        |
-| Programming interface                                                                                | Async or RxJava                                          |
-| Write (input)                                                                                        | Generated                                                |
-| Write (output)                                                                                       | Write Result)                                            |
-| Subscribe                                                                                            | Record Update of entity type                             |
-| Bulk or Range Subscribe                                                                              | Bulk of entity type                                      |
-| Available in [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/)       | ❌                                                       |
-| Available in custom [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/) | ❌                                                       |
-
-With generated repositories, there are two flavours of the entity db:
-
-* one has a [RxJava API](/develop/server-capabilities/data-access-apis/#rxentitydb) signatures, for use from Java
-
-* the other flavour has an [Async API](/develop/server-capabilities/data-access-apis/#asyncentitydb) signature, for use by Kotlin
-
-If you have a table called **POSITION**, then, when you run a [generateDao](/build-deploy-operate/build/bdo-build-overview/#dao), two repositories will be generated:
-**PositionRx3Repository** and **PositionAsyncRepository**.
-
-You can perform CRUD operations on Table/View by its primary key and indices.
+View repositories are read-only, with a generated read method for each index of the view. The Entity Db can read views too, using generic methods that take the index as an argument.
 
 ### Write result
 
-This is a single catch-all type for results of a write operation when using generated repositories or RxDb.
+This is a single catch-all type for results of a write operation when using RxDb.
 
 This type has the following fields:
 
