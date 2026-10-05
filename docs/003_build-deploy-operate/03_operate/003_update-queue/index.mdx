@@ -84,6 +84,65 @@ Other config values that are available are listed below:
 If you are using a cloud environment that does not allow multicast traffic (e.g. AWS), then  `ZeroMQProxyModeEnabled` and `ZeroMQProxyUnicastRelayEnabled` must be set to `true`
 :::
 
+### Securing ZeroMQ with CURVE
+
+CURVE is ZeroMQ's built-in public-key security. You can use it to encrypt and authenticate update-queue traffic between processes. It applies only when `MqLayer` is `ZeroMQ`, and it is off by default.
+
+With CURVE on, each update-queue connection starts with a CURVE handshake. The connecting process proves who it is with the client key, and everything sent over the connection is encrypted. This works with or without proxy mode:
+
+- **Without proxy mode**, it covers the connections from subscribers to each process's publisher.
+- **In [proxy mode](#proxy-mode)**, it covers the connections from publishers to the `GENESIS_CLUSTER` proxy, and from the proxy to subscribers.
+
+All processes share one server keypair and one client keypair. A server accepts a client only if the client's public key has a certificate in the server's `allowedClientCertDirectory`.
+
+#### Enabling CURVE
+
+1. Generate the keys and the client certificate with [`GenerateZeroMqCurveKeys`](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/).
+2. Add the `zeroMqEncryption` block that the command prints to `site-specific/cfg/network-config.yaml`. The block refers to the keys through `${...}` environment variable placeholders, which are resolved when the configuration is loaded. Every key is listed in the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#zeromqencryption-section).
+3. On every host, export the four `ZMQ_CURVE_*` environment variables in the environment that the processes start from.
+4. On every host, make sure the client certificate is in the directory that `allowedClientCertDirectory` names.
+5. On every host, run `GenerateZeroMqCurveKeys --verify`.
+6. Restart every process on every node.
+
+:::warning
+Turn CURVE on everywhere at the same time. A process with CURVE on can't exchange update-queue messages with a process that has it off, or with one that uses different keys. You can't switch it on one process at a time. Turn it on for every process on every node, `GENESIS_CLUSTER` included, in a single restart window. Don't set `zeroMqEncryption` differently in a process-level `network-config-<PROCESS_NAME>.yaml`.
+:::
+
+#### Configuration errors
+
+If `zeroMqEncryption.enabled` is `true`, a process won't start unless:
+
+- all four keys are set, and each one is a 40-character Z85 key
+- `allowedClientCertDirectory` is set to a directory that exists and can be read
+
+The error names the YAML key that's wrong. For example: `curveServerPublicKey is required when ZeroMQ CURVE is enabled`.
+
+If an environment variable isn't set, the configuration gets the literal `${...}` text, and you see an error about the key's length. Check the environment before you check the key. `GenerateZeroMqCurveKeys --verify` reports unset variables directly.
+
+#### Handshake failures
+
+A configuration that passes these checks can still fail its handshake with a peer. The usual causes are:
+
+- CURVE is on in one process and off in the other.
+- The two processes have different server keys.
+- The client key has no certificate in the peer's `allowedClientCertDirectory`.
+
+ZeroMQ doesn't retry a connection whose handshake failed, so update-queue messages to and from that peer are lost. For a process with CURVE on, what happens next depends on its other connections:
+
+- **The handshake failed with every peer it connects to.** This process is most likely the one that's misconfigured. It logs an ERROR with the likely cause, then shuts down. In proxy mode, a process connects to just one peer, the proxy, so one failure is enough to stop it. A misconfigured `GENESIS_CLUSTER` therefore stops every process that connects to its proxy.
+- **The handshake failed with some peers, but others are connected.** The process keeps running. It logs an ERROR naming the failed peer and the likely cause, and repeats it every minute.
+- **Some peers haven't connected yet.** The process doesn't shut down while it waits for them. A peer counts only once its first handshake has either succeeded or failed.
+
+The side that accepts a connection never shuts down because of a bad handshake from a peer. It logs the rejected handshake at ERROR, at most once a minute for each host and cause. A process with CURVE off never shuts down either. If its handshake with a CURVE peer fails, it logs the error and keeps running.
+
+:::note
+A process doesn't reconnect to a peer whose handshake failed, even after the peer is fixed and restarted. After you fix a misconfigured process, restart the processes that logged errors about it.
+:::
+
+#### Subscriber readiness
+
+A subscriber isn't connected until its handshake completes. So that messages aren't lost in the meantime, a publisher with CURVE on holds each message for up to `readinessTimeoutMillis` (default: 5 seconds) until a subscriber has subscribed to its topic. If nobody subscribes in time, the publisher logs a warning, `Publishing ZeroMQ topic '<topic>' before subscriber readiness was observed`, and sends the message anyway. With CURVE off, messages are sent straight away, as they were before.
+
 ### Using loopback (development environments)
 
 If you are developing on a laptop, you might be affected by automatic switching between networks; for example, the operating system could suddenly switch to a hotspot. When this happens, the message queue could stop receiving updates. As a result, your processes could go down inexplicably.

@@ -30,6 +30,8 @@ end. See [Running a process with TLS](/develop/server-capabilities/testing-api/#
 
 For a full overview of all available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
 
+TLS doesn't cover the ZeroMQ update queue. To encrypt that traffic, use the `zeroMqEncryption` block in the same files. See [Securing ZeroMQ with CURVE](/build-deploy-operate/operate/update-queue/#securing-zeromq-with-curve).
+
 ## TLS Modes
 Genesis supports four modes for traffic encryption:
 
