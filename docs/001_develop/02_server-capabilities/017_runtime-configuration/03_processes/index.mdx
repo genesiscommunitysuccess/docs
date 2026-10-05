@@ -74,9 +74,10 @@ You can see that this file has separate code blocks for each of the application'
       <groupId>POSITION_APP</groupId>
       <start>true</start>
       <options>-Xmx256m -DRedirectStreamsToLog=true  -DXSD_VALIDATE=false</options>
-      <module>consolidator2</module>
-      <package>global.genesis.consolidator2</package>
-      <config>position_app-consolidator2.xml</config>
+      <module>genesis-pal-consolidator</module>
+      <package>global.genesis.pal.consolidator</package>
+      <script>position_app-consolidator.kts</script>
+      <language>pal</language>
       <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
       <dependency>POSITION_APP_EVENT_HANDLER</dependency>
   </process>
