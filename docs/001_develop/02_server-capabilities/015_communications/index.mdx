@@ -568,6 +568,10 @@ data class SanitisedDataClass(
 )
 ```
 
+:::note
+In Genesis 8.15 and earlier, import `JsonSerialize` from `com.fasterxml.jackson.databind.annotation` instead (Jackson 2).
+:::
+
 When serialising, the `sanitised` field is sanitised (script tags are stripped and certain characters are escaped), while `unsanitised` keeps the raw value. For example:
 
 - **Before sanitisation:** `"<script>alert('XSS')</script><b>Hello</b>"}\"`

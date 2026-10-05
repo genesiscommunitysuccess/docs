@@ -172,6 +172,10 @@ dependencies {
 }
 ```
 
+:::note
+Genesis 10.0 uses Jackson 3, whose BOM is `tools.jackson:jackson-bom`. In Genesis 8.15 and earlier, the platform uses Jackson 2, so override `com.fasterxml.jackson:jackson-bom` instead.
+:::
+
 Please note that the same dependency resolution algorithm will be used when running a Genesis Application locally,
 using the [IntelliJ plugin](/develop/development-environment/intellij-plugin) or [Genesis Start](/develop/development-environment/genesis-start).
 
