@@ -133,6 +133,12 @@ Both types of test work with all three dictionary types.
 
 #### AbstractDatabaseTest
 
+:::warning Deprecated
+
+`AbstractDatabaseTest` is deprecated in 10.0 and marked for removal in a future release. Write database tests with [`@GenesisDatabaseTest`](../index.mdx#genesisdatabasetest) instead.
+
+:::
+
 Use this for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other Genesis components are provided. The only requirement for this type of test is a dictionary.
 
 To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below.
@@ -259,6 +265,12 @@ If you add the `genesis-generated-dao` jar to your classpath, you will be able t
 
 
 #### AbstractGenesisTestSupport
+
+:::warning Deprecated
+
+`AbstractGenesisTestSupport` is deprecated in 10.0. Use [`@GenesisTest`](../index.mdx#genesistest) or [`@GenesisSharedContextTest`](../index.mdx#genesissharedcontexttest) instead, adding `@PackageScan`, `@ProvidedInstance`, `@TestScriptFile` and `@TestConfigFile` as the test requires.
+
+:::
 
 This is a more powerful type of test. In addition to setting up the database, it offers:
 
