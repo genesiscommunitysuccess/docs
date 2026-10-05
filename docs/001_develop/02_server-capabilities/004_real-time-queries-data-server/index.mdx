@@ -148,7 +148,7 @@ dataServer {
   query("ALL_TRADES", TRADE_VIEW) {
     config {
       defaultCriteria = "TRADE_PRICE > 0"
-      backwardsJoins = false
+      backwardsJoin = false
       disableAuthUpdates = false
     }
   }
@@ -159,8 +159,7 @@ dataServer {
 |-------------|-------------|---------|
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
-|`backwardsJoins`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
-|`backJoins`|(Deprecated) Replaced by `backwardsJoins`. Functionally the same.||
+|`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
 
 #### `fields`
 
@@ -315,7 +314,7 @@ The `join` operation receives two parameters:
 - `row` the pre-built query `row`
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
-The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
+The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view. To declare your own derived fields, call `derivedField` directly in the `enrich` block, outside `fields`.
 
 The example below should help you to understand the functionality. Comments are included in the code to ease understanding.
 
@@ -347,24 +346,22 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
                 emptyList()
             }
         }
-        fields {
-            // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
-            // in the reverse scenario it will be the buyer name
-            derivedField("COUNTERPARTY", STRING) {
-                when {
-                    enriched?.counterpartyId == data.buyerId -> data.sellerName
-                    enriched?.counterpartyId == data.sellerId -> data.buyerName
-                    else -> ""
-                }
+        // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
+        // in the reverse scenario it will be the buyer name
+        derivedField("COUNTERPARTY", STRING) {
+            when {
+                enriched?.counterpartyId == data.buyerId -> data.sellerName
+                enriched?.counterpartyId == data.sellerId -> data.buyerName
+                else -> ""
             }
-            // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
-            // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) {
-                when {
-                    enriched?.counterpartyId == data.buyerId -> "BUY"
-                    enriched?.counterpartyId == data.sellerId -> "SELL"
-                    else -> ""
-                }
+        }
+        // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
+        // in the reverse scenario it will be "SELL"
+        derivedField("DIRECTION", STRING) {
+            when {
+                enriched?.counterpartyId == data.buyerId -> "BUY"
+                enriched?.counterpartyId == data.sellerId -> "SELL"
+                else -> ""
             }
         }
     }
@@ -424,10 +421,8 @@ Note the casing of `FAVOURITE_TRADE` and `FavouriteTrade`. The all-caps version 
 query(POSITION) {
     enrich(FAVOURITE_TRADE) {
         join { userName, row -> FavouriteTrade.byUserName(userName) }
-        fields {
-            derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-                data.code == enriched?.code
-            }
+        derivedField("IS_FAVOURITE", BOOLEAN) {
+            data.code == enriched?.code
         }
     }
 }
@@ -701,7 +696,7 @@ dataServer {
         config {
             // Items below only available in query level config
             defaultCriteria = "SIMPLE_PRICE > 0"
-            backwardsJoins = false
+            backwardsJoin = false
             disableAuthUpdates = false
         }
     }
@@ -790,7 +785,7 @@ By default, only updates to the root table are sent. So if you need to see updat
 
 Monitoring of backwards joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. For example, counterparty data, if changed, can wait until overnight. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intra-day.
 
-The backwards join flag is true by default. You must explicitly set `backwardsJoins = false` if you wish to turn backwards joins off for your query.
+The backwards join flag is true by default. You must explicitly set `backwardsJoin = false` if you wish to turn backwards joins off for your query.
 
 ### Logging
 
@@ -2271,5 +2266,3 @@ dataServer {
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
 |`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
-|`backwardsJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||
-|`backJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||
