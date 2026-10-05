@@ -19,6 +19,10 @@ A key part of writing custom code is injecting the objects which your module or 
 
 Genesis supports some of the key annotations from `jakarta.annotation` and `jakarta.inject`, defined in [Jakarta EE](https://jakarta.ee/specifications/), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
 
+:::note
+In Genesis 8.15 and earlier, use the `javax.annotation` and `javax.inject` packages instead.
+:::
+
 ### `@Module`
 
 All classes that need to be created on microservice start-up must be annotated with `@Module`. This ensures the instance is created as singleton.
