@@ -99,22 +99,13 @@ See our pages on [database technology](/build-deploy-operate/deploy/supporting-i
 
 You may want to encrypt usernames, passwords and other key configuration values such as database credentials.
 
-Two scripts are provided as part of the Genesis server framework to encrypt username and password values:
+Use the `encryptUserPassWithKey` script to encrypt username and password values. It prompts you for a username, a password and a key, then outputs the encrypted value of the username and the password. The key must be a string of 32 alphanumeric characters, and you must keep it secret. Set the same key in the system definition item `GenesisKey`. When `GenesisKey` is present, all encrypted system definition values are expected to use that key.
 
-- `encryptUserPass` : This will prompt you to enter a username, then a password, and will output the encrypted value of each. No key will be used to encrypt the values.
-- `encryptUserPassWithKey` : As with `encryptUserPass` you will need to enter username and password, but additionally also supply a key - which needs to be a 32 alphanumeric character string and kept secret. This is a more secure approach where a key is supplied to encrypt values with. This key will need to be set in a system definition item `GenesisKey`, and where this is present all encrypted system definition values will be expected to use the key.
+:::warning
+The older `encryptUserPass` script is deprecated and will be removed in 11.0.0. It belongs to the deprecated `genesis-genesistodb` module, and it encrypts values with a fixed built-in key instead of a key you supply. Use `encryptUserPassWithKey` instead.
+:::
 
-Example usages:
-
-```bash
-global.genesis.genesistodb.utils.PasswordEncryptor
-Enter userName
-my.user
-Enter password
-password123
-UserName: 6913ab67ff0bd7ae475bde29909d12d0857102cfac7378179cb420676e980f12
-Password: 41581be94278017550b40d3df925fb974ab3fb75dad8050b9e2df04713f1038b
-```
+Example usage:
 
 ```bash
 global.genesis.config.utils.PasswordEncryptor

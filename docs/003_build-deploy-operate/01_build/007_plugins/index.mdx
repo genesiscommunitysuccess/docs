@@ -338,10 +338,14 @@ The task analyzes Kotlin classes that implement event handlers or web endpoints.
 - `SyncEventHandler<T, R>`
 - `SyncValidatingEventHandler<T, R>`
 - `SyncContextValidatingEventHandler<T, R>`
-- `AbstractEventHandler` (legacy)
+- `AbstractEventHandler` (legacy, deprecated)
 - `Rx3EventHandler<T, R>`
 - `Rx3ValidatingEventHandler<T, R>`
 - `Rx3ContextValidatingEventHandler<T, R>`
+
+:::warning
+`AbstractEventHandler` is deprecated in 10.0 and will be removed in 11.0.0. For new event handlers, implement one of the typed `Async`, `Sync` or `Rx3` interfaces in this list (package `global.genesis.eventhandler.typed`), or write them as GPAL event handlers.
+:::
 
 **Supported Web Endpoint Types:**
 - `WebEndpoint`
@@ -369,7 +373,7 @@ The task analyzes Kotlin classes that implement event handlers or web endpoints.
    - `name()` method override (for web endpoints)
    - `messageType()` method override (for event handlers)
    - Generic type parameters (for typed event handlers)
-   - Constructor parameters (for `AbstractEventHandler`)
+   - Constructor parameters (for the deprecated `AbstractEventHandler`)
 
 ##### Java Class Files
 
