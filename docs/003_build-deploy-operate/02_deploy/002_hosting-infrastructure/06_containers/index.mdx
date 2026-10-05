@@ -418,6 +418,58 @@ systemDefinition {
 | `ClusterServiceAffinityGroup` | Group services for preferred routing based on this value. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
+| `ConsulNodeName` | The host's identity in Consul, used for its [node ID](#node-ids) claim. Set a stable value in containers | the hostname |
+| `GFlakeNodeIdGraceMinutes` | How long a node ID claim can go without a refresh before another host may take it, in minutes. Also sets how long a process tolerates Consul being unreachable. See [heartbeat and grace period](#heartbeat-and-grace-period) | `30` |
+| `GFlakeNodeIdClusterName` | The name under which node IDs are claimed in Consul. Apps that share a database must use the same value | the deployed product name |
+| `GFlakeNodeIdExplicit` | Set to `true` to use the `NodeId` in the system definition as a fixed node ID | `false` |
+
+### Node IDs
+
+Every record the platform writes gets a `RECORD_ID` from gFlake, which builds it from a timestamp, a node ID and a sequence number. The node ID keeps IDs from different hosts apart: two hosts with the same node ID can generate the same `RECORD_ID`.
+
+In Consul mode, each host claims a unique node ID from Consul when its processes start, so you don't need to configure one. All processes on a host share the same claim, and a host that restarts gets its old ID back. This applies when `ClusterMode` is `CONSUL` and gFlake is enabled (`GFlakeEnabled`, which defaults to `true`).
+
+:::important
+A host's claim is keyed on its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
+
+Apps that share a database must also share the same `GFlakeNodeIdClusterName`. Otherwise they claim IDs separately and can give the same node ID to two hosts writing to that database.
+:::
+
+#### Fixing a node ID
+
+To give a host a fixed node ID, for example to keep the ID of an existing node, set the `GENESIS_SYSDEF_NodeId` environment variable or the `-DNodeId` JVM property on that host. Alternatively, set `NodeId` in the system definition together with `GFlakeNodeIdExplicit=true`.
+
+A fixed ID is still claimed in Consul, so a process refuses to start if another host already holds that ID. A fixed ID applies to the whole host: a process refuses to start if you set one for it alone with `GENESIS_SYSDEF_<PROCESS>_NodeId`.
+
+#### When a process can't get a node ID
+
+If a process can't claim a unique node ID, it refuses to start. This happens, for example, when every ID is taken, or when Consul stays unreachable after a few retries. The claim is made before logging is set up, so look for the reason in `<PROCESS>.log.err`.
+
+#### Heartbeat and grace period
+
+While it runs, each process checks its host's claim in Consul and refreshes it. The check runs every quarter of `GFlakeNodeIdGraceMinutes`, which is every 7.5 minutes with the default of 30.
+
+A process stops itself if it can no longer confirm that the ID is its own:
+
+- at once, if the claim is gone, has been released, can't be read, or now belongs to another host;
+- after about three quarters of `GFlakeNodeIdGraceMinutes` (about 22 minutes by default) if Consul stays unreachable. A brief Consul outage does nothing.
+
+Another host can take an ID only once its owner has left the Consul catalog and the claim has gone unrefreshed for the whole grace period. A process that loses contact with Consul therefore stops before its ID can be handed to anyone else.
+
+A shorter grace period frees the IDs of removed hosts sooner, but it also means a shorter Consul outage stops every process in the cluster.
+
+#### Exit code 3
+
+A process that stops because it can no longer confirm its node ID exits with code `3`. Before 10.0, it exited with code `1`, the same as an unrelated crash. If your monitoring or restart scripts match exit code `1` for this case, update them. Before it exits, the process logs an error that starts with `Halting process:`.
+
+:::warning
+Run Consul mode under a supervisor that restarts stopped processes. When it restarts, a process claims a node ID again, but the platform doesn't always restart it for you:
+
+- In Kubernetes, a `restartPolicy` restarts the container on any non-zero exit code.
+- Otherwise, the platform restarts a process only if [`scheduleRestart`](/develop/server-capabilities/runtime-configuration/processes/) is set to `true` for it, and it gives up after three attempts.
+
+Without one of these, a long Consul outage stops every process on every host, and they stay down until you run `startServer` again.
+:::
 
 ### Troubleshooting
 
