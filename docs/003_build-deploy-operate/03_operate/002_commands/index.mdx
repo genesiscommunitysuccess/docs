@@ -954,6 +954,9 @@ Range purger is similar to bulkPurger, but it performs efficient index range sea
 
 ```kotlin
 purgers {
+ // Inject a class
+ val myClass = inject<MyClass>()
+
  config {
      batchSize = 1000
  }
