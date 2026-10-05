@@ -953,11 +953,7 @@ Range purger is similar to bulkPurger, but it performs efficient index range sea
 - Purger has special function called `whereRange` which is used to filter based on index value
 
 ```kotlin
-import global.genesis.gen.dao.repository.UserSessionRx3Repository
 purgers {
- // Inject repo
- val userSessionRepo = inject<UserSessionRx3Repository>()
-
  config {
      batchSize = 1000
  }
