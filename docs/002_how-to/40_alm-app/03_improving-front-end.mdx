@@ -43,11 +43,11 @@ OK, we are actually going to change the back-end code here - but don't tell anyo
 
 1. Open the file `ALM\server\ALM-app\src\main\genesis\scripts\ALM-reqrep.kts`.
 
-2. Replace the `POSITION` request reply with the `filterWithParameters` clause, as below:
+2. Replace the `POSITION` request reply with the `filter` clause, as below:
 
 ```kotlin
 requestReply(POSITION) {
-	filterWithParameters {
+	filter {
 		data.amount != 0.0
 	}
 }

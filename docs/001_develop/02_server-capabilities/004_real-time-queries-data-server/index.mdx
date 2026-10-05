@@ -339,7 +339,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
             UserCounterpartyMap.ByUserName(userName)
         }
         // Hide buyer counterparty id to users associated to counterparty seller if "isHiddenToSeller" is true.
-        hideFields { userName, row, userData ->
+        hideFields { userName, queryRow, userData ->
             if(userData?.counterpartyId == queryRow.sellerCounterPartyId && queryRow.isHiddenToSeller == true){
                 listOf(BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID)
             } else{
@@ -372,7 +372,7 @@ query("ALL_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
     // Lookup user counterparty favourite view and provide user enrich field to display if a counterparty has been marked as favourite by the user.
     enrich(USER_COUNTERPARTY_FAVOURITE) {
         join { userName, row ->
-            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+            UserCounterpartyFavourite.ByUserNameCounterparty(userName, row.counterpartyId)
         }
         // We only care about selecting the IS_FAVOURITE field from the USER_COUNTERPARTY_FAVOURITE view
         fields {
@@ -406,7 +406,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     }
     enrich(USER_COUNTERPARTY_FAVOURITE) {
         join { userName, row ->
-            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+            UserCounterpartyFavourite.ByUserNameCounterparty(userName, row.counterpartyId)
         }
     }
 }
