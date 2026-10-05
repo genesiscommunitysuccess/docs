@@ -177,7 +177,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 - For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers
 - For [Postgres](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql), [MSSQL](/build-deploy-operate/deploy/supporting-infrastructure/#sql-server) and [ORACLE](/build-deploy-operate/deploy/supporting-infrastructure/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
-**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
+**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes. If it isn't set, GENESIS_CLUSTER uses port `6000`. Before 10.0, the port used when it wasn't set was `9900`; if your system definition doesn't set `ClusterPort` and you need to keep that port, set it to `9900` explicitly. We recommend always setting `ClusterPort`, because the console's system definition request fails without it.
 
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on the [Data Model](/develop/server-capabilities/data-model/#sequence)
 
