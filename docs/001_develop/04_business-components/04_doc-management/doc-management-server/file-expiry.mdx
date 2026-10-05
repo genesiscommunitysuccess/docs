@@ -106,7 +106,6 @@ val fileStorageId = fileStorageClient.saveDocument(
 The value is applied as follows:
 
 - A non-null `expiresAt` always wins, for any file type.
-- A date in the past is accepted. The file is deleted by the next sweep.
 - A null `expiresAt` does not mean "never expire". It means the default applies, so a `USER_DOCUMENT` still gets `FILE_STORAGE_DEFAULT_RETENTION_DAYS` if that is set. To keep a file permanently whatever the default, pass a far-future date. Reporting does this, using 9999-12-31.
 
 ## Reports and file expiry
