@@ -84,9 +84,10 @@ For reference, let's look at a process that has been configured to run on the pr
     <groupId>AUTH</groupId>
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
-    <module>genesis-consolidator2</module>
-    <package>global.genesis.consolidator2</package>
-    <config>auth-consolidator.xml</config>
+    <module>genesis-pal-consolidator</module>
+    <package>global.genesis.pal.consolidator</package>
+    <script>auth-consolidator.kts</script>
+    <language>pal</language>
     <description>Consolidator for all AUTH related consolidations</description>
     <primaryOnly>true</primaryOnly>
 </process>
@@ -138,14 +139,17 @@ Every Genesis process is an independent Java process running on a dedicated JVM.
 Example:
 
 ```xml
-<process name="GENESIS_WEBMON">
+<process name="GENESIS_ROUTER">
     <start>true</start>
     <groupId>GENESIS</groupId>
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
-    <module>webmon</module>
-    <package>global.genesis.webmon</package>
-    <config>genesis-webmon-config.xml</config>
-    <description>Admin and operations web interface</description>
+    <module>genesis-router</module>
+    <package>global.genesis.router,global.genesis.console.router</package>
+    <config>router-process-config.kts</config>
+    <script>genesis-router.kts</script>
+    <language>pal</language>
+    <classpath>genesis-console-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
 </process>
 ```
 
