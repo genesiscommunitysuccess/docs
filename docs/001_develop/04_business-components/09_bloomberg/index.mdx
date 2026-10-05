@@ -117,7 +117,7 @@ In order to use the Bloomberg Client directly in your code, you can inject it vi
     }>
     <TabItem value="Java">
     ```Java
-    import javax.inject.Inject;
+    import jakarta.inject.Inject;
 
     public class BloombergSubscriber {
       private BloombergClient client;
@@ -132,7 +132,7 @@ In order to use the Bloomberg Client directly in your code, you can inject it vi
 
     <TabItem value= 'Kotlin'>
     ```kotlin
-    import javax.inject.Inject
+    import jakarta.inject.Inject
 
     class BloombergSubscriber @Inject constructor(
       private val client: BloombergClient
@@ -215,7 +215,7 @@ If using the Client directly, you can pass an instance of this request to the `s
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.SubscriptionDataEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       import java.util.Arrays;
       import java.util.Collections;
       
@@ -246,7 +246,7 @@ If using the Client directly, you can pass an instance of this request to the `s
       import global.genesis.bloomberg.api.DataSubscription
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.SubscriptionDataEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -295,7 +295,7 @@ If using the Client directly, you only need to pass the string value correlation
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.SubscriptionDataEvent;
 
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
 
       public class ExampleSubscriber implements EventListener {
         private BloombergClient client;
@@ -316,7 +316,7 @@ If using the Client directly, you only need to pass the string value correlation
       <TabItem value= 'Kotlin'>
       ```kotlin
       import global.genesis.bloomberg.api.EventListener
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -360,7 +360,7 @@ If you are using the Client directly, you can pass an instance of this request t
       import global.genesis.bloomberg.api.DataRequest;
       import global.genesis.bloomberg.api.EventListener;
 
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       import java.util.Arrays;
 
       public class ExampleSubscriber implements EventListener {
@@ -389,7 +389,7 @@ If you are using the Client directly, you can pass an instance of this request t
       ```kotlin
       import global.genesis.bloomberg.api.DataRequest
       import global.genesis.bloomberg.api.EventListener
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -438,7 +438,7 @@ If using the Client directly, you can pass an instance of this request to the `l
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.UserLogon;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       
       public class ExampleSubscriber implements EventListener {
         private BloombergClient client;
@@ -465,7 +465,7 @@ If using the Client directly, you can pass an instance of this request to the `l
       ```kotlin
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.UserLogon
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -539,7 +539,7 @@ The `SubscriptionDataEvent` represents an update to an active data subscription.
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.SubscriptionDataEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       import java.util.Map;
       
       public class ExampleSubscriber implements EventListener {
@@ -586,7 +586,7 @@ The `SubscriptionDataEvent` represents an update to an active data subscription.
       import global.genesis.bloomberg.api.DataField
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.SubscriptionDataEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
   
       class ExampleSubscriber @Inject constructor(
           private val client: BloombergClient
@@ -669,7 +669,7 @@ The `SubscriptionRawDataEvent` represents an update to an active data subscripti
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.SubscriptionRawDataEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       import java.util.Map;
       
       public class ExampleSubscriber implements EventListener {
@@ -698,7 +698,7 @@ The `SubscriptionRawDataEvent` represents an update to an active data subscripti
       import global.genesis.bloomberg.api.DataField
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.SubscriptionRawDataEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
   
       class ExampleSubscriber @Inject constructor(
           private val client: BloombergClient
@@ -761,7 +761,7 @@ The `DataResponseEvent` represents a response to a previously issued one-off dat
       import global.genesis.bloomberg.api.DataResponseEvent;
       import global.genesis.bloomberg.api.EventListener;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       import java.util.Map;
       
       public class ExampleSubscriber implements EventListener {
@@ -791,7 +791,7 @@ The `DataResponseEvent` represents a response to a previously issued one-off dat
       ```kotlin
       import global.genesis.bloomberg.api.DataResponseEvent
       import global.genesis.bloomberg.api.EventListener
-      import javax.inject.Inject
+      import jakarta.inject.Inject
 
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -847,7 +847,7 @@ The supported `status` values are:
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.SubscriptionStatusEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       
       public class ExampleSubscriber implements EventListener {
         private BloombergClient client;
@@ -879,7 +879,7 @@ The supported `status` values are:
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.SubscriptionStatus
       import global.genesis.bloomberg.api.SubscriptionStatusEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -931,7 +931,7 @@ These events must be used to drive data visibility rules in the application.
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.UserEntitlementsUpdateEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       
       public class ExampleSubscriber implements EventListener {
         private BloombergClient client;
@@ -960,7 +960,7 @@ These events must be used to drive data visibility rules in the application.
       ```kotlin
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.UserEntitlementsUpdateEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient
@@ -1005,7 +1005,7 @@ This event should be interpreted as a simultaneous receipt of a `UserEntitlement
       import global.genesis.bloomberg.api.EventListener;
       import global.genesis.bloomberg.api.UserEntitlementsRevokedEvent;
       
-      import javax.inject.Inject;
+      import jakarta.inject.Inject;
       
       public class ExampleSubscriber implements EventListener {
         private BloombergClient client;
@@ -1029,7 +1029,7 @@ This event should be interpreted as a simultaneous receipt of a `UserEntitlement
       ```kotlin
       import global.genesis.bloomberg.api.EventListener
       import global.genesis.bloomberg.api.UserEntitlementsRevokedEvent
-      import javax.inject.Inject
+      import jakarta.inject.Inject
       
       class ExampleSubscriber @Inject constructor(
         private val client: BloombergClient

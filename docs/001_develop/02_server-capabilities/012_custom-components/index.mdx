@@ -17,7 +17,7 @@ The Genesis Application Platform enables you to create [modules for business log
 
 A key part of writing custom code is injecting the objects which your module or process relies on.
 
-Genesis supports some of the key annotations from javax.annotation and javax.inject, defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
+Genesis supports some of the key annotations from `jakarta.annotation` and `jakarta.inject`, defined in [Jakarta EE](https://jakarta.ee/specifications/), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
 
 ### `@Module`
 
@@ -39,7 +39,7 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 ```
 
 ### `@Inject`
-This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned `@Module` and `@ProviderOf` annotations. You should use the [Java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) `@Inject` annotation for best practice.
+This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned `@Module` and `@ProviderOf` annotations. You should use the [Jakarta](https://jakarta.ee/specifications/dependency-injection/2.0/apidocs/jakarta/inject/inject) `@Inject` annotation (`jakarta.inject.Inject`) for best practice.
 
 ### `@Named`
 
