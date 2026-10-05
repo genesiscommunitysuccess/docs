@@ -71,7 +71,7 @@ Here, we look look more closely at the two tables and values that we can expect 
 | TIME_ZONE | The [Time Zone](https://docs.oracle.com/cd/E84527_01/wcs/tag-ref/MISC/TimeZones.html) of the cron expression. **Be careful selecting time zones that don't shift with daylight savings**, such as `EST`, which may or may not be desirable. Defaults to the system time where left blank | America/New_York  | false |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event. | `ENABLED` | true |
 | USER_NAME | The username that will be sent on the triggered event. User must have permission to use this event for it to be triggered successfully | admin | false |
-| PROCESS_NAME | The name of the process to send the resulting event | `POSITION_EVENT_HANDLER` | true |
+| PROCESS_NAME | The name of the process to send the resulting event. This is optional; if you leave it blank, service discovery finds the process that serves `MESSAGE_TYPE`. We recommend that you leave this blank to work in all environments, including those running compact processes | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_POSITION_REPORT`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK == 'US') && (TRIGGER == 'RULE')` | false |
 

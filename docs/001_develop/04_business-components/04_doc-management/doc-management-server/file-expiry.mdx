@@ -77,7 +77,7 @@ The sweep only deletes files saved by the storage manager that is currently conf
 The sweep does not run when `STORAGE_STRATEGY` is `SHAREPOINT` or `SHAREPOINT_ON_PREM`. In that case each scheduled run logs a warning, deletes nothing, and does not send the completion event.
 :::
 
-To see the expiry dates of stored files, call the [`/file-server/all-files`](/develop/business-components/doc-management/doc-management-server/doc-management-endpoints/#list-all-files) endpoint, which returns `FILE_EXPIRES_AT`. The Document Manager grid does not show this field.
+To see the expiry dates of stored files, call the [`/file-server/all-files`](/develop/business-components/doc-management/doc-management-server/doc-management-endpoints/#list-all-files) endpoint, which returns `FILE_EXPIRES_AT` and requires the `FileStorageAdminAction` right. The Document Manager grid does not show this field.
 
 ## Setting an explicit expiry
 
@@ -108,6 +108,17 @@ The value is applied as follows:
 ## Changing a file's expiry
 
 Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. Send `EXPIRES_AT` as an explicit null to clear the expiry, so the file never expires. Leaving the field out is rejected. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
+
+There is no typed `FileStorageClient` method for this event, so build the message yourself. The details are:
+
+```json
+{
+  "FILE_STORAGE_ID": "6da038a2-...",
+  "EXPIRES_AT": 1792062912000
+}
+```
+
+`EXPIRES_AT` is a date-time in epoch milliseconds, or `null` to clear the expiry.
 
 `EVENT_FILE_STORAGE_UPDATE_EXPIRY` does the same for users. It requires the `FileStorageUpdateExpiry` right, which is part of the `FILE_STORAGE_ADMIN` profile, or the `FileStorageAdminAction` right.
 
@@ -150,5 +161,5 @@ Upgrade in this order:
 3. Set `FILE_STORAGE_DEFAULT_RETENTION_DAYS`, if you want a default.
 
 :::caution
-Do not set `FILE_STORAGE_DEFAULT_RETENTION_DAYS` while an older version of Reporting is installed. Older versions save report files without an expiry, so those files would receive the Document Management default and be deleted by the sweep.
+Do not set `FILE_STORAGE_DEFAULT_RETENTION_DAYS` while an older version of Reporting is installed. Older versions save report files without an expiry, so those files would receive the Document Management default and be deleted by the sweep. The same applies to any other module that saves `USER_DOCUMENT` files without an expiry, such as user uploads: check that those files can be deleted before you set a default.
 :::

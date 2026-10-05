@@ -36,7 +36,7 @@ To download a file, send a GET request to the following resource path with the f
 
 ## List all files
 
-To list all files, send a GET request to `/file-server/all-files`.
+To list all files, send a GET request to `/file-server/all-files`. This requires the `FileStorageAdminAction` right.
 
 ## Checking whether files exist
 
@@ -49,7 +49,7 @@ val existence: Map<String, FileExistenceStatus> =
     fileStorageClient.checkFileExistence(setOf(firstFileStorageId, secondFileStorageId), userName)
 ```
 
-This sends a `REQ_FILE_EXISTENCE` request to the `FILE_MANAGER` process. The check reads the `FILE_STORAGE` records only, not the stored files. The result contains one entry for each requested id:
+When Document Management runs in another process, this sends a `REQ_FILE_EXISTENCE` request to the process that hosts Document Management (`FILE_MANAGER`, or a compact process). When Document Management is on this process's classpath, the client reads `FILE_STORAGE` directly. The check reads the `FILE_STORAGE` records only, not the stored files. The result contains one entry for each requested id:
 
 | Status | Meaning |
 | --- | --- |
