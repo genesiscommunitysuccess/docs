@@ -211,6 +211,8 @@ When the sweep is enabled, Reporting also does two things:
 - After each sweep, it sets the status of a generated report to `EXPIRED` if Document Management confirms that the report's file no longer exists.
 - It rejects `DISPATCH_REPORT` for a `PENDING` report whose file no longer exists. An `EXPIRED` report is rejected with the general message `Failed requirement.`
 
+`GENERATED_REPORTS` does not return `EXPIRED` reports, so they do not appear in the Generated Reports list. The rows stay in `GENERATED_REPORT` as an audit record, and `GENERATED_REPORT_DELETE` can still delete one by id.
+
 `FILE_STORAGE_EXPIRY_SWEEP_CRON` must be set in the `global` block, because both Document Management and Reporting read it. Both items are read at startup, so restart `REPORTING_MANAGER` after you change them.
 
 See [Document Management file expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/) for the sweep schedule, the full lifecycle and the upgrade order. Upgrade Document Management before Reporting.

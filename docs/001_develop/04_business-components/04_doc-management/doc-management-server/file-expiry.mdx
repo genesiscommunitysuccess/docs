@@ -140,7 +140,7 @@ When `FILE_STORAGE_EXPIRY_SWEEP_CRON` is set to a valid expression, Reporting do
 - **It marks expired reports.** Each time it receives `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED`, Reporting checks every `GENERATED_REPORT` record that has a file and whose status is `PENDING`, `GENERATED`, `PARTIALLY_DELIVERED` or `DELIVERED`. If Document Management confirms that the file no longer exists, Reporting sets the status to `EXPIRED` and records the previous status in `MESSAGE`. This catches every report whose file has gone, including files deleted by hand in the Document Manager. If Document Management cannot be reached, the records are left unchanged and checked again after the next sweep.
 - **It blocks dispatch of a report whose file has gone.** `DISPATCH_REPORT` for a `PENDING` report is rejected with `Report file no longer available in Document Manager` if Document Management confirms that the file no longer exists. If Document Management cannot be reached, the dispatch goes ahead. A report that is already `EXPIRED` is not `PENDING`, so `DISPATCH_REPORT` rejects it with the general message `Failed requirement.`
 
-Reports with the status `EXPIRED` stay in the generated reports history and are never removed automatically. They can still be deleted by hand. Their file no longer exists in Document Management, so it cannot be downloaded.
+Reports with the status `EXPIRED` stay in the `GENERATED_REPORT` table as an audit record, and are never removed automatically. The `GENERATED_REPORTS` request-reply does not return them, so they do not appear in the Generated Reports list. `GENERATED_REPORT_DELETE` can still delete one by id. Their file no longer exists in Document Management, so it cannot be downloaded.
 
 ## Operational guidance
 
