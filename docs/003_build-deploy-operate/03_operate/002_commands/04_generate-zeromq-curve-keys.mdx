@@ -82,6 +82,8 @@ To adopt a key that was issued somewhere else, pass its secret key. The command 
 GenerateZeroMqCurveKeys --server-secret '<40-character Z85 secret key>'
 ```
 
+The rest of the run is the same as a normal one. The command still writes the client certificate named by `--client-name`, and the secret keys it prints include the one you passed, unchanged.
+
 You don't strictly need this command. The keys are standard ZeroMQ Z85 text and the certificate is a standard ZeroMQ certificate. Keys and certificates from other ZeroMQ tools, or from your own PKI, work as they are.
 
 ## Checking a deployment
