@@ -1,0 +1,19 @@
+docs/001_develop/04_business-components/03_reporting/01_user-guide/index.mdx
+  s_28e555f585cbf8::t_25ede604b32b32 210
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fb72617d60fe6cea0ef93d23ed1f261cea30d0f6",
+  "prompts": {},
+  "sessions": {
+    "s_28e555f585cbf8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4fdb69c-ab8f-4526-9577-b03ad75aeaa0",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
