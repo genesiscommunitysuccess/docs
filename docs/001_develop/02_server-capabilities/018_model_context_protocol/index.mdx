@@ -137,7 +137,7 @@ Platform tools check a Genesis right before they run (see [Authorisation](#autho
 - `MCP_ADMIN`
 - an approver code, if you set `approverRight` to something other than `MCP_ADMIN`
 
-See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, load the rights with its [Import data](/develop/development-environment/genesis-start/#import-data) instead.
+See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up.
 
 A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart `GENESIS_MCP`.
 
