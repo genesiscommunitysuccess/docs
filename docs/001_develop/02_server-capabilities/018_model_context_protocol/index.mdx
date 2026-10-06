@@ -273,6 +273,13 @@ authenticationStrategy {
 
 The server takes the user name from the `USER_NAME` header, exactly as sent. It doesn't check it.
 
+The server doesn't check that the user exists, either. An unknown user name is treated as a user with no rights:
+
+- Anything that checks a right refuses it, with the same message as a user who lacks that right.
+- Anything that checks no right lets it through, and runs as that name. That covers the platform tools marked *Authentication only*, every platform tool when `enforcePlatformToolRights = false`, and every `enableMcp` endpoint whose own definition declares no `permissionCodes`.
+
+So the gateway in front of the server must forward only real, authenticated users.
+
 :::warning
 Only use this strategy behind a gateway that authenticates the caller and removes any `USER_NAME` header the client sends. Otherwise any caller can claim to be any user.
 :::
@@ -537,6 +544,30 @@ claude mcp add --transport http genesis http://localhost:3001/mcp \
 ### Using Claude Desktop
 
 See the [MCP quickstart for users](https://modelcontextprotocol.io/quickstart/user) for how to add a server to Claude Desktop.
+
+The Genesis MCP server supports only the Streamable HTTP transport, not stdio. Claude Desktop's `claude_desktop_config.json` file only launches stdio servers, so Claude Desktop can't connect to the Genesis server directly. Use a bridge, such as [`mcp-remote`](https://github.com/geelen/mcp-remote), which runs as a stdio server and forwards to the HTTP endpoint:
+
+```json
+{
+  "mcpServers": {
+    "genesis": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "http://localhost:3001/mcp", "--header", "SESSION_AUTH_TOKEN:${GENESIS_TOKEN}"],
+      "env": { "GENESIS_TOKEN": "<token>" }
+    }
+  }
+}
+```
+
+`mcp-remote` is a third-party package, and `npx` needs Node.js. Write the header with no space after the colon and keep the token in `env`: on Windows, Claude Desktop doesn't quote spaces inside `args`.
+
+The file is at:
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Fully restart Claude Desktop after editing the file.
+
+Claude Desktop's custom connectors, under **Settings → Connectors**, connect from Anthropic's cloud, so they can't reach a server on your local machine.
 
 ### Using `mcphost`
 
