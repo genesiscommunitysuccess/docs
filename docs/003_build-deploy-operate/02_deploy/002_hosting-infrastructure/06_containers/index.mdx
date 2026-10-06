@@ -282,6 +282,28 @@ Note: You need to ensure the port is accessible with the Docker `--port` option;
 ]
 ```
 
+### Process health endpoints
+
+A process that uses the `WEBSOCKET` messaging channel also serves its own health endpoints on its own port, which is the port in its service definition entry. Processes on the default `TCP` channel don't have these endpoints. To set the channel for every process, add this to `network-config.yaml`, or to `network-config-<PROCESS_NAME>.yaml` for a single process:
+
+```yaml
+messaging:
+  channel: WEBSOCKET
+```
+
+All the endpoints accept `GET`. A `status` value is the process state, so besides `UP` and `DOWN` you can see `STARTING`, `STANDBY` and `WARNING`.
+
+| Path | Response |
+| --- | --- |
+| /health | `{"status":"<state>"}`. `503` when the state is `DOWN`, `ERROR` or `UNKNOWN`; otherwise `200` |
+| /health/details | The state plus each monitor's status and, where there is one, its message, under `components`. Same status codes as `/health` |
+| /health/readiness | `{"status":"UP"}` or `{"status":"OUT_OF_SERVICE"}`, with the cluster's readiness and the process state under `details`. `200` only when the cluster is ready and the state is `UP` or `WARNING`; otherwise `503` |
+| /prometheus | Metrics in Prometheus text format. Only present when the [`PROMETHEUS` reporter](/build-deploy-operate/operate/metrics/#prometheus) is enabled |
+
+A `STANDBY` process, such as the secondary node of a cluster, is reachable but not taking work. It returns `200` on `/health` and `503` on `/health/readiness`, so a readiness probe sends it no traffic.
+
+These endpoints don't require authentication: anyone who can reach the process's port can read them, including monitor messages and metrics. The router doesn't forward them, so you can't reach them through the router's port. Restrict access to process ports in your deployment.
+
 
 ## Configuration options
 

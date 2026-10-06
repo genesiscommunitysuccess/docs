@@ -306,7 +306,7 @@ FixEnumValues --commit TRADE POSITION
 
 This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `/generated/cfg/`.
 
-**System Definition token replacement**: For any files collected with file names with suffix `.tmplt.xml`, the command examines the installation environment and looks for system definition tokens. The generated `cfg` file names have their token placeholders replaced with the system definition value for the token assigned for that environment, and the suffix of the file will be changed to `.auto.xml`.
+**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the system definition values for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template.
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
@@ -895,16 +895,20 @@ The `PopulateHolidays` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -c  <!-- PopulateHolidays -c -->     | --country (arg) <!-- PopulateHolidays --country (args) -->  | No        | the country name to search for holidays | No                |
+| -c  <!-- PopulateHolidays -c -->     | --country (arg) <!-- PopulateHolidays --country (args) -->  | Yes       | the country name to search for holidays | No                |
 | -h  <!-- PopulateHolidays -h -->     | --help <!-- PopulateHolidays --help -->            | No        | show help on this command               | No                |
 | -r  <!-- PopulateHolidays -r -->     | --region (arg) <!-- PopulateHolidays --region (args) -->  | No        | the region name to search for holidays  | No                |
-| -y <!-- PopulateHolidays -y -->      | --year (arg) <!-- PopulateHolidays --year (args) -->    | No        | the year of holidays                    | No                |
+| -y <!-- PopulateHolidays -y -->      | --year (arg) <!-- PopulateHolidays --year (args) -->    | Yes       | the year of holidays                    | No                |
 
 For example:
 
 ```bash
-PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+PopulateHolidays -y 2020,2021 -c BR,GB -r rj,eng
 ```
+
+Each region in `-r` applies to the country in the same position in `-c`. If you don't set `-r`, national holidays are populated. Region codes come from the underlying holiday-data library, and each one is checked against the country's calendar: an unrecognised code fails with `Region <code> is not supported for country <country>` instead of writing national data.
+
+8.15 and earlier used different region codes for several countries. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`. The holiday data also changed in 10.0, so re-run `PopulateHolidays` for the years you hold.
 
 ## `PurgeTables`
 
@@ -1586,7 +1590,7 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 :::
 
 ###### Logging
-`startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
+`startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files. Per-process logs left over from the previous run are archived in the background, so process start-up isn't delayed.
 If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
 
 
