@@ -372,7 +372,7 @@ However, this is not recommended as **MQTT is required for dynamic scaling**.
 When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
 ### Networking
-When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports.
+When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
 
 The default Genesis services and their ports are:
 
@@ -429,8 +429,16 @@ Every record the platform writes gets a `RECORD_ID` from gFlake, which builds it
 
 In Consul mode, each host claims a unique node ID from Consul when its processes start, so you don't need to configure one. All processes on a host share the same claim, and a host that restarts gets its old ID back. This applies when `ClusterMode` is `CONSUL` and gFlake is enabled (`GFlakeEnabled`, which defaults to `true`).
 
+Claims live in the Consul key/value store under the prefix `genesis/cluster/<GFlakeNodeIdClusterName>/node-ids/`. Each key under that prefix is a node ID. Its value is a JSON claim that records the identity that owns the ID (`identity`, which is `ConsulNodeName` or the hostname), a `released` flag, and timestamps (`claimedAtEpochMs` and `lastSeenEpochMs`). To list the claims, run:
+
+```bash
+consul kv get -recurse genesis/cluster/<name>/node-ids/
+```
+
+or call the HTTP API at `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`. To find a host's node ID, look for the claim whose `identity` matches that host's identity; the ID is the last part of its key.
+
 :::important
-A host's claim is keyed on its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
+A host's claim is owned by its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
 
 Apps that share a database must also share the same `GFlakeNodeIdClusterName`. Otherwise they claim IDs separately and can give the same node ID to two hosts writing to that database.
 :::
