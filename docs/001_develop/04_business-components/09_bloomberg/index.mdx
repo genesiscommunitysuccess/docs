@@ -163,21 +163,21 @@ pipelines {
         defaultSubscriptionService = "//blp/mktdata"
     }
 
-    pipeline(name = "Bloomberg Subscriptions") {
-        source(dbBulkSubscribe<Instruments>())
+    pipeline(name = "Bloomberg Subscriptions")
+        .source(dbBulkSubscribe<Instruments>())
             .map { element ->
               // Convert instrument to DataSubscription here
             }
             .sink(bloomberg)
-    }
+        .build()
 
-    pipeline(name = "Bloomberg Data Updates") {
-        source(bloomberg)
+    pipeline(name = "Bloomberg Data Updates")
+        .source(bloomberg)
             .map { element ->
               // Convert Data Update to market data record here
             }
             .sink(dbSink())
-    }
+        .build()
 }
 ```
 

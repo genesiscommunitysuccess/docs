@@ -32,11 +32,11 @@ The `fixSource` must be instantiated with any number of session ids that you wan
 
 ```kotlin
 pipelines {
-    pipeline("TEST_FIX_SOURCE") {
-        source(fixSource("FIX.4.0:CPTY1->CPTY2", "FIX.4.0:CPTY3->CPTY4"))
+    pipeline("TEST_FIX_SOURCE")
+        .source(fixSource("FIX.4.0:CPTY1->CPTY2", "FIX.4.0:CPTY3->CPTY4"))
             .filter { it.message.header.getString(35) == "D" }
             .sink(TestFixSink())
-    }
+        .build()
 }
 ```
 
@@ -55,11 +55,11 @@ If no list or an empty list is provided, the message will be sent to the default
 
 ```kotlin
 pipelines {
-    pipeline("TEST_FIX_SINK") {
-        source(Source {
+    pipeline("TEST_FIX_SINK")
+        .source(Source {
             flowOf(OutboundFixMessage(Message(...), listOf("FIX.4.0:CPTY1->CPTY2", "FIX.4.0:CPTY3->CPTY4")), OutboundFixMessage(Message(...)))
         })
             .sink(fixSink())
-    }
+        .build()
 }
 ```

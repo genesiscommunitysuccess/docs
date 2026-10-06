@@ -85,16 +85,16 @@ For example:
 We would then add code into the data pipeline file like this:
 ```jsx
 pipelines {
-    pipeline("MY_PIPELINE") {
-        source(camelSource { location = getDefaultLocalFileCamelLocation(systemDefinition.get("FolderLocation").get(),"FileName") })
+    pipeline("MY_PIPELINE")
+        .source(camelFileSource { location = getDefaultLocalFileCamelLocation(systemDefinition.get("FolderLocation").get(),"FileName") })
             .map { LOG.info("Triggered MY_PIPELINE"); it}
             .split(csvRawDecoder())
             .map { row ->
                 ...
             }
             .sink(dbSink())
-            .onCompletion
-    }
+            .onCompletion { ... }
+        .build()
 }
 ```
 
