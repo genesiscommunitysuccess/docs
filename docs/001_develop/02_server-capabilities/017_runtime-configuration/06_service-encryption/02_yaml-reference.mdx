@@ -238,7 +238,7 @@ This section configures CURVE authentication and encryption for the [ZeroMQ upda
 | `curveServerSecretKey`       | string  | `""`               | Server secret key, Z85 text |
 | `curveClientPublicKey`       | string  | `""`               | Client public key, Z85 text |
 | `curveClientSecretKey`       | string  | `""`               | Client secret key, Z85 text |
-| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere) |
+| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere). Any file name works: the server loads every file in the directory and its subdirectories, and skips (with a warning) any file without a CURVE public key |
 | `readinessTimeoutMillis`     | integer | `5000`             | How long, in milliseconds, a publisher holds a message for a topic that no subscriber has subscribed to yet. After that, the message is sent anyway |
 | `readinessObserveOnly`       | boolean | `false`            | If `true`, the publisher tracks subscriber readiness but never holds messages back |
 
