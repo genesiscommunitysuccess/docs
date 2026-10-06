@@ -182,7 +182,7 @@ The server checks for newly started endpoints every `toolRefreshIntervalMillis`.
 
 ## Server configuration
 
-All of these properties go inside the `server { }` block of `genesis-mcp-server.kts`.
+All of these properties go inside the `server { }` block of `genesis-mcp-server.kts`. Changes to `genesis-mcp-server.kts` take effect after `GENESIS_MCP` is restarted.
 
 | Property | Default | Description |
 |---|---|---|
@@ -288,7 +288,7 @@ authenticationStrategy {
 }
 ```
 
-Every request acts as `userName`, whoever sends it. The caller isn't authenticated at all, so use this only on a local machine.
+Every request acts as `userName`, whoever sends it. The server attaches that identity to every caller, so callers are always identified, and platform tools treat them as `userName`. It checks no credential, though, so nothing is authenticated: use this only on a local machine.
 
 | Property | Default | Description |
 |---|---|---|
@@ -393,7 +393,7 @@ These are registered when `platformTools = true`, the default. The server also r
 Some notes on individual tools:
 - **`call_request`, `query_dataserver`:** `CRITERIA` is a Groovy expression, such as `QUANTITY > 100 && SIDE == 'BUY'`, or a JSON object of field values, such as `{"SIDE": "BUY"}`. If the criteria names a field that doesn't exist, the error lists the endpoint's real fields.
 - **`call_request`:** `REQUEST_NAME` is the request server's name without the `REQ_` prefix.
-- **`modify_record`:** this reads the current record, applies only the fields in `CHANGES`, and sends the whole record through the table's update event. By default that's `EVENT_<TABLE>_UPDATE`, `_UPSERT` or `_MODIFY`; set `EVENT_NAME` if your event has a different name. The event's validation, auditing and approval all still apply.
+- **`modify_record`:** this reads the current record, applies only the fields in `CHANGES`, and sends the whole record through the table's update event. By default it uses the first of these events that exists: `EVENT_<TABLE>_UPDATE`, then `EVENT_<TABLE>_UPSERT`, then `EVENT_<TABLE>_MODIFY`, then `EVENT_MODIFY_<TABLE>`. Set `EVENT_NAME` if your event has a different name. The event's validation, auditing and approval all still apply.
 - **`read_config`:** values whose key contains `PASSWORD`, `PASSWD`, `PWD`, `PASSPHRASE`, `SECRET`, `TOKEN`, `CREDENTIAL`, `PRIVATE_KEY`, `API_KEY` or `APIKEY` are shown as `***`. The `genesis://config/system-definition` resource is hidden the same way.
 - **`read_log`, `search_log`:** `PROCESS_NAME` must be an upper-case process name (letters, digits and underscores only).
 - **`process_control`, `run_remap`:** these act on the instance that the MCP server runs on.
