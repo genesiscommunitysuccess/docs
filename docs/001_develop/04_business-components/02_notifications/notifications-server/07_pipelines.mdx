@@ -47,8 +47,8 @@ Handler that sends an email upon successful pipeline operation.
 GPAL Example:
 
 ```kotlin
-pipeline("TEST_ON_COMPLETION_PIPELINE") {
-    source(dbBulkRealtimeSource)
+pipeline("TEST_ON_COMPLETION_PIPELINE")
+    .source(dbBulkRealtimeSource)
         .map(mapper)
         .sink(logSink)
         .onCompletion(
@@ -58,7 +58,7 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
                     recipients = setOf(EmailRecipient("john.doe@genesis.global", EmailRecipientType.TO), EmailRecipient("jane.doe@genesis.global", EmailRecipientType.CC))
                 }
             )
-}
+    .build()
 ```
 
 ### Notify All Screens On Completion Handler
@@ -68,8 +68,8 @@ Handler that sends a notification to all screens upon successful pipeline operat
 GPAL Example:
 
 ```kotlin
-pipeline("TEST_ON_COMPLETION_PIPELINE") {
-    source(dbBulkRealtimeSource)
+pipeline("TEST_ON_COMPLETION_PIPELINE")
+    .source(dbBulkRealtimeSource)
         .map(mapper)
         .sink(logSink)
         .onCompletion(
@@ -79,7 +79,7 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
                     severity = Severity.Information
                 }
             )
-}
+    .build()
 ```
 
 ### Notify Screen on Completion Handler
@@ -89,8 +89,8 @@ Handler that sends a notification to the screen of a specified user upon success
 GPAL Example:
 
 ```kotlin
-pipeline("TEST_ON_COMPLETION_PIPELINE") {
-    source(dbBulkRealtimeSource)
+pipeline("TEST_ON_COMPLETION_PIPELINE")
+    .source(dbBulkRealtimeSource)
         .map(mapper)
         .sink(logSink)
         .onCompletion(
@@ -101,7 +101,7 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
                     user = "JohnDoe"
                 }
             )
-}
+    .build()
 ```
 
 ### Notify Screen on Error Handler
@@ -111,8 +111,8 @@ Handler that sends a notification to the screen of a specified user upon uncaugh
 GPAL Example:
 
 ```kotlin
-pipeline("TEST_ON_COMPLETION_PIPELINE") {
-    source(dbBulkRealtimeSource)
+pipeline("TEST_ON_COMPLETION_PIPELINE")
+    .source(dbBulkRealtimeSource)
         .map(mapper)
         .sink(logSink)
         .onUncaughtError(
@@ -123,5 +123,5 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
                     user = "JohnDoe"
                 }
             )
-}
+    .build()
 ```
