@@ -21,20 +21,19 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
-If you are testing against previous versions of the framework, see the page on
-[legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api)
+The older test-support classes (`AbstractGenesisTestSupport`, `GenesisTestSupport`, `AbstractDatabaseTest` and related classes) are deprecated in GSF 10.0, and **GenesisJunit**, described on this page, replaces them. Existing tests that use them still compile and run, with deprecation warnings. Write new tests with GenesisJunit. To move an existing test across, see the [mapping to GenesisJunit](/develop/server-capabilities/testing-api/legacy-testing-api/#mapping-to-genesisjunit) on the legacy testing page.
 
 :::
 
-Genesis provides a JUnit 5 extension that helps developers write integration tests.
+Genesis provides a JUnit extension that helps developers write integration tests.
+From GSF 10.0, it runs on JUnit 6 (JUnit Jupiter 6.1); JUnit 4 is no longer supported.
 The extension will create a Genesis microservice for the duration of each test case.
 The GenesisJunit functionality is made available via the `genesis-testsupport` package.
 This page describes the GenesisJunit extension in general.
 
 ::::tip
 Prefer using [`@GenesisTest`](#genesistest) or [`@GenesisDatabaseTest`](#genesisdatabasetest) instead of `@ExtendWith(GenesisJunit...)`.
-These annotations implicitly register the JUnit 5 extension and are more concise.
+These annotations implicitly register the JUnit extension and are more concise.
 ::::
 
 
@@ -255,6 +254,8 @@ identity and a client identity under `certs/` in the home you give it - so no ke
 committed to your repository. Its keystores use the alias and password shown above. Generate it
 before the test context starts, for example from an `@BeforeAll` method.
 
+The material is valid for one day and is deleted when the JVM exits. Calling `TestCertificates.install` again for the same home reuses it, unless its server certificate expires within the next hour; then it's generated again.
+
 A `${...}` placeholder is resolved from the environment, as in a deployment, and a test has no way
 to set an environment variable - so a test config names its paths outright.
 
@@ -276,9 +277,10 @@ service definition. A test has no service-definitions file, so it says the same 
 what keeps a legacy `KeyStoreLocation` system definition booting as it always did.
 
 :::note
-This applies to **GenesisJunit** only. Tests written against the older
+`@SecureProcess` and `@NetworkConfig` work with **GenesisJunit** only. A Kotlin test on the older
 [`AbstractGenesisTestSupport`](/develop/server-capabilities/testing-api/legacy-testing-api/#abstractgenesistestsupport)
-are unchanged and cannot run a process with TLS.
+still reads a network-config file from its test GENESIS_HOME, so a file there with a `tls` mode of
+`TLS` gives that test a TLS listener. A test on the Java `GenesisTestSupport` doesn't read the file.
 :::
 
 :::warning
@@ -320,8 +322,10 @@ Not all annotations are supported when using `@GenesisDatabaseTest`.
 | [PackageNameScan](#packagenamescan)                         | Class/ Method      |     ✔️     |                ✔️                 |
 | [PackageScan](#packagescan)                                 | Class/ Method      |     ✔️     |                ✔️                 |
 | [ProcessArg](#processarg)                                   | Class/ Method      |     ❌      |                 ❌                 |
+| [ProvidedDictionary](#provideddictionary)                   | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedInstance](#providedinstance)                       | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedSysDef](#providedsysdef)                           | Field/ Method      |     ❌      |                ✔️                 |
+| [ProvidedType](#providedtype)                               | Field/ Method      |     ❌      |                ✔️                 |
 | [ResetTableAfterTest](#resettableaftertest)                 | Class/ Method      |     ✔️     |                ✔️                 |
 | [RootLogLevel](#rootloglevel)                               | Class/ Method      |     ❌      |                ✔️                 |
 | [SysDefOverwrite](#sysdefoverwrite)                         | Class/ Method      |     ✔️     |                ✔️                 |
@@ -331,6 +335,7 @@ Not all annotations are supported when using `@GenesisDatabaseTest`.
 | [TestScriptFile](#testscriptfile)                           | Class/ Method      |     ✔️     |                 ❌                 |
 | [ThreadDumpOnFailure](#threaddumponfailure)                 | Class/ Method      |     ❌      |                ✔️                 |
 | [UserRight](#userright)                                     | Class/ Method      |     ✔️     |                ✔️                 |
+| [WithLogLevel](#withloglevel)                               | Class/ Method      |     ✔️     |                ✔️                 |
 
 Some annotations are repeatable, which means you can provide multiple values at the class or method level.
 
@@ -338,7 +343,7 @@ Some annotations are repeatable, which means you can provide multiple values at 
 - If you provide non-Repeatable annotations on both the class and method level, the method-level annotation takes precedence.
 - The enable annotations (`EnableDataDump` and `EnableInMemoryTestAuthCache`) do not support disabling at the method level once they have been enabled on the class level.
 
-All annotations can be found in the `global.genesis.testsupport.jupiter` package.
+All annotations can be found in the `global.genesis.testsupport.jupiter` package, except [`@WithLogLevel`](#withloglevel), which is in `global.genesis.test.log4j`.
 
 #### CsvData
 
@@ -559,6 +564,7 @@ public class EnableInMemoryTestAuthCacheExamplesJavaTest {
 This annotation enables the legacy XML dictionary from the provided Genesis home folder for the test.
 This is only necessary when testing against test-specific dictionaries.
 By default, an application's dictionary is loaded, ensuring consistency between production and test dictionaries without needing to duplicate the dictionary files.
+To define a test dictionary inline in Kotlin instead, use [`@ProvidedDictionary`](#provideddictionary).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1121,6 +1127,55 @@ public class ProcessArgTest {
 </TabItem>
 </Tabs>
 
+#### ProvidedDictionary
+
+Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a `tables { }` block. It is a Kotlin function, so write the provider member in Kotlin.
+
+```kotlin
+import global.genesis.testsupport.jupiter.ProvidedDictionary
+import global.genesis.testsupport.jupiter.providedDictionary
+
+@GenesisTest
+class ProvidedDictionaryTest {
+
+    @ProvidedDictionary
+    fun dictionary(): GenesisDictionary = providedDictionary {
+        table(name = "MY_TEST_TABLE", id = 1) {
+            field("ID").primaryKey()
+        }
+    }
+
+    @Test
+    fun myTest() {
+        // the dictionary holds MY_TEST_TABLE, PROCESS_STATIC_INFO and PROCESS_META_DATA
+    }
+}
+```
+
+- `providedDictionary { }` adds the `PROCESS_STATIC_INFO` and `PROCESS_META_DATA` tables for you, with ids 10001 and 10002. Don't use those ids for your own tables.
+- A test class, including its superclasses, can have only one `@ProvidedDictionary` member. A second one fails the test with `Only one @ProvidedDictionary member is supported`.
+- You can't combine it with [`@EnableLegacyXmlDictionary`](#enablelegacyxmldictionary). The test fails with `@ProvidedDictionary cannot be combined with @EnableLegacyXmlDictionary`.
+- A method must take no parameters and must not be a `@Test` method itself.
+- If the member returns `null` or something other than a `GenesisDictionary`, the test fails. It never falls back to the production dictionary.
+- [`@GenesisSharedContextTest`](#genesissharedcontexttest) builds its context from the class, before any test instance exists. There, put the member in a `companion object`: either a property, or a function annotated `@JvmStatic`. An instance member fails with a message telling you to use a static member.
+- If the table definition doesn't build, the test fails with `Error while reading provided dictionary:` followed by the problems found.
+
+```kotlin
+@GenesisSharedContextTest
+class SharedProvidedDictionaryTest {
+
+    companion object {
+        @JvmStatic
+        @ProvidedDictionary
+        fun dictionary(): GenesisDictionary = providedDictionary {
+            table(name = "MY_TEST_TABLE", id = 1) {
+                field("ID").primaryKey()
+            }
+        }
+    }
+}
+```
+
 #### ProvidedInstance
 
 Annotation used to mark properties or methods as provided instances.
@@ -1200,6 +1255,64 @@ public class ProvidedInstanceTest {
 ```
 </TabItem>
 </Tabs>
+
+:::note
+`@ProvidedInstance` is for instances you have already built. Providing a class here instead (for example `MyClass::class`) is deprecated: it still works, but each such member logs a warning that it will be rejected in a future release. Use [`@ProvidedType`](#providedtype) for a class you want Guice to build.
+:::
+
+#### ProvidedType
+
+Marks a property or a no-argument method that returns a class (a `KClass` in Kotlin, a `Class` in Java). Guice builds and binds that class for the test, as it would if [`@PackageScan`](#packagescan) had found it, but without scanning a package. Use [`@ProvidedInstance`](#providedinstance) when you already have the instance. If the value isn't a class, the test fails with `@ProvidedType must provide a KClass`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@GenesisTest
+internal class ProvidedTypeTest {
+
+    @ProvidedType
+    private val myType = MyClass::class
+
+    @Test
+    fun myTest() {
+        // MyClass is built and bound by Guice
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisTest
+public class ProvidedTypeTest {
+
+    @ProvidedType
+    private Class<?> myType = MyClass.class;
+
+    @Test
+    public void myTest() {
+        // MyClass is built and bound by Guice
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` and annotate it `@JvmStatic`. An instance member is skipped without a message, and the class is not bound. A member that returns `null`, or a method that takes parameters, is skipped the same way. `@ProvidedInstance` behaves the same.
+
+```kotlin
+@GenesisSharedContextTest
+class SharedProvidedTypeTest {
+
+    companion object {
+        @ProvidedType
+        @JvmStatic
+        val myType = MyClass::class
+    }
+}
+```
 
 
 
@@ -1304,13 +1417,77 @@ public class LogLevelTest {
 </TabItem>
 </Tabs>
 
+#### WithLogLevel
+
+Sets the level of a named logger for the duration of a test class or method, and puts the previous level back afterwards. Unlike [`@RootLogLevel`](#rootloglevel), which sets the root level of a GenesisJunit process, `@WithLogLevel` targets one logger, and it is a plain JUnit extension: it works with or without the Genesis test annotations.
+
+- It is in the `global.genesis.test.log4j` package, not `global.genesis.testsupport.jupiter`. It comes with `genesis-testsupport`, so you don't need another dependency.
+- `logger` is a logger name: a package or a class. `WithLogLevel.PACKAGE` (an empty string) means the test class's package.
+- `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`.
+- The annotation is repeatable, so you can set several loggers at once.
+- A class-level annotation applies before the class's tests start, so it also covers set-up done by other extensions. A method-level annotation overrides it for that test.
+- It works with log4j, and with logback when log4j isn't the active logging backend. On logback, `FATAL` is applied as `ERROR`.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.test.log4j.LogLevel
+import global.genesis.test.log4j.WithLogLevel
+
+@GenesisTest
+@WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
+class WithLogLevelTest {
+
+    @Test
+    fun myTest() {
+        // com.example.trades logs at DEBUG
+    }
+
+    @Test
+    @WithLogLevel(logger = "com.example.trades", level = LogLevel.TRACE)
+    @WithLogLevel(logger = WithLogLevel.PACKAGE, level = LogLevel.DEBUG)
+    fun myOtherTest() {
+        // com.example.trades logs at TRACE, and the test class's package at DEBUG
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.test.log4j.LogLevel;
+import global.genesis.test.log4j.WithLogLevel;
+
+@GenesisTest
+@WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
+public class WithLogLevelTest {
+
+    @Test
+    public void myTest() {
+        // com.example.trades logs at DEBUG
+    }
+
+    @Test
+    @WithLogLevel(logger = "com.example.trades", level = LogLevel.TRACE)
+    @WithLogLevel(logger = "com.example.pricing", level = LogLevel.DEBUG)
+    public void myOtherTest() {
+        // com.example.trades logs at TRACE, and com.example.pricing at DEBUG
+    }
+}
+```
+</TabItem>
+</Tabs>
+
 #### SecureProcess
 
 Advertises the process as secure, which is what a service definition's `secure="true"` attribute does
 in a deployment. You can apply this annotation on both classes and methods.
 
 It is only needed under the `SELECTIVE_TLS` mode, where TLS is decided per service. Under `TLS` and
-`MUTUAL_TLS` every process is secure already, and under `PLAIN_TEXT` none is. See
+`MUTUAL_TLS` every process is secure already. Under `PLAIN_TEXT` the process serves plain text either
+way; with `@SecureProcess` it is still advertised as secure. See
 [Running a process with TLS](#running-a-process-with-tls).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
