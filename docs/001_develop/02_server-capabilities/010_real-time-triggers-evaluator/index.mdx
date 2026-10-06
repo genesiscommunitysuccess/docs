@@ -79,6 +79,8 @@ Here, we look look more closely at the two tables and values that we can expect 
 Since version 8.13, `CRON_RULE` records with an invalid `CRON_EXPRESSION` will not cause the Evaluator service to crash. These are detected on startup and a warning is written to the Evaluator logs instead. Ensure you monitor logs and correct any misconfigured cron rules.
 ::::
 
+The Evaluator schedules cron rules with Quartz Scheduler 2.4.1. This version handles nearest-weekday day-of-month expressions, such as `15W`, correctly.
+
 Rules are managed via the API, which exposes CRUD operations for maintaining the table.
 
 ### `DYNAMIC_RULE`
@@ -101,6 +103,24 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/) will set this value to `NOTIFY`|`NOTIFY`|false|
 
 Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/) include a user interface that manages dynamic rule set-up and reads application metadata to help users populate table/view selection and expressions.
+
+### Audit tables
+
+Every change to a rule is recorded: cron rules in `CRON_RULE_AUDIT`, dynamic rules in `DYNAMIC_RULE_AUDIT`. Both are standard [audit tables](/develop/server-capabilities/data-model/#audited-tables), and the Evaluator writes the audit record together with the change. Enabling or disabling a rule is recorded as a `MODIFY`.
+
+Each audit record holds the rule's fields, plus these fields:
+
+| Field Name | Description |
+| --- | --- |
+| `CRON_RULE_AUDIT_ID` / `DYNAMIC_RULE_AUDIT_ID` | Generated ID of the audit record |
+| `AUDIT_EVENT_TYPE` | `INSERT`, `MODIFY` or `DELETE` |
+| `AUDIT_EVENT_DATETIME` | Date and time of the change |
+| `AUDIT_EVENT_USER` | The user who sent the event that changed the rule |
+| `AUDIT_EVENT_TEXT` | Not set by the Evaluator |
+
+`USER_NAME` is the rule's own `USER_NAME`; the user who made the change is in `AUDIT_EVENT_USER`.
+
+In 8.15 and earlier, `CRON_RULE_AUDIT` had `EVENT_TYPE` and `EVENT_DATETIME` instead of `AUDIT_EVENT_TYPE` and `AUDIT_EVENT_DATETIME`, and its `USER_NAME` held the user who made the change. Update any queries or reports that read those columns.
 
 ## Client API
 
@@ -212,7 +232,7 @@ SOURCE_REF: 002
 
 #### `EVENT_CRON_RULE_DELETE`
 
-Delete an existing rule.
+Delete an existing rule. Send only `NAME`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -245,7 +265,7 @@ SOURCE_REF: 003
 
 #### `EVENT_CRON_RULE_ENABLE`
 
-Enable an existing rule.
+Enable an existing rule. Send only `NAME`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -262,7 +282,7 @@ Enable an existing rule.
 </TabItem>
 <TabItem value="rest">
 ```
-POST /event-cron-rule-amend HTTP/1.1
+POST /event-cron-rule-enable HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
@@ -278,7 +298,7 @@ SOURCE_REF: 004
 
 #### `EVENT_CRON_RULE_DISABLE`
 
-Disable an existing rule.
+Disable an existing rule. Send only `NAME`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -371,9 +391,11 @@ SOURCE_REF: 006
 
 Amend an existing rule.
 
-Changing to also trigger on modifications to the record.
+Changing the rule to trigger on modifications to the record instead of inserts.
 
 All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` configuration options](#dynamic_rule)
+
+An amend replaces every editable field of the rule, so send the whole rule each time. `TABLE_OPERATION` is mandatory and takes one value: `INSERT`, `MODIFY`, `DELETE` or `PRIME`. `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are ignored on amend, and `USER_NAME` is always set to the user who sends the event.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -392,7 +414,7 @@ All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` confi
     "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
     "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
-    "TABLE_OPERATION" : "INSERT|MODIFY",
+    "TABLE_OPERATION" : "MODIFY",
     "IS_TEMPLATE" : "true",
     "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
   }
@@ -417,7 +439,7 @@ SOURCE_REF: 007
     "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
     "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
-    "TABLE_OPERATION" : "INSERT|MODIFY",
+    "TABLE_OPERATION" : "MODIFY",
     "IS_TEMPLATE" : "true",
     "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
   }
@@ -429,7 +451,7 @@ SOURCE_REF: 007
 
 #### `EVENT_DYNAMIC_RULE_DELETE`
 
-Delete an existing rule.
+Delete an existing rule. Send only `ID`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -462,7 +484,7 @@ SOURCE_REF: 008
 
 #### `EVENT_DYNAMIC_RULE_ENABLE`
 
-Enable an existing rule.
+Enable an existing rule. Send only `ID`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -495,7 +517,7 @@ SOURCE_REF: 009
 
 #### `EVENT_DYNAMIC_RULE_DISABLE`
 
-Disable an existing rule.
+Disable an existing rule. Send only `ID`; any other field is rejected.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
