@@ -90,8 +90,9 @@ CURVE is ZeroMQ's built-in public-key security. You can use it to encrypt and au
 
 With CURVE on, each update-queue connection starts with a CURVE handshake. The connecting process proves who it is with the client key, and everything sent over the connection is encrypted. This works with or without proxy mode:
 
-- **Without proxy mode**, it covers the connections from subscribers to each process's publisher.
+- **Without proxy mode**, it covers the connections from subscribers to each process's publisher, and the connections that every process makes to the `GENESIS_CLUSTER` proxy ports.
 - **In [proxy mode](#proxy-mode)**, it covers the connections from publishers to the `GENESIS_CLUSTER` proxy, and from the proxy to subscribers.
+- **With `ZeroMQProxyUnicastRelayEnabled`**, it also covers the `GENESIS_CLUSTER`-to-`GENESIS_CLUSTER` connections between nodes, which run over ZeroMQ.
 
 All processes share one server keypair and one client keypair. A server accepts a client only if the client's public key has a certificate in the server's `allowedClientCertDirectory`.
 
@@ -99,13 +100,15 @@ All processes share one server keypair and one client keypair. A server accepts 
 
 1. Generate the keys and the client certificate with [`GenerateZeroMqCurveKeys`](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/).
 2. Add the `zeroMqEncryption` block that the command prints to `site-specific/cfg/network-config.yaml`. The block refers to the keys through `${...}` environment variable placeholders, which are resolved when the configuration is loaded. Every key is listed in the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#zeromqencryption-section).
-3. On every host, export the four `ZMQ_CURVE_*` environment variables in the environment that the processes start from.
+3. On every host, export the four `ZMQ_CURVE_*` environment variables in the environment that the processes start from. When you run locally with Genesis Start, export them in the shell (or IDE run configuration) that launches Genesis Start (`./gradlew genesisStart`); Genesis Start's `.properties` overrides can't set them.
 4. On every host, make sure the client certificate is in the directory that `allowedClientCertDirectory` names.
 5. On every host, run `GenerateZeroMqCurveKeys --verify`.
 6. Restart every process on every node.
 
+For example, copy the client `.key` certificate file to the same `allowedClientCertDirectory` path on each host, and supply the four `ZMQ_CURVE_*` values from whatever secret manager sets the process environment.
+
 :::warning
-Turn CURVE on everywhere at the same time. A process with CURVE on can't exchange update-queue messages with a process that has it off, or with one that uses different keys. You can't switch it on one process at a time. Turn it on for every process on every node, `GENESIS_CLUSTER` included, in a single restart window. Don't set `zeroMqEncryption` differently in a process-level `network-config-<PROCESS_NAME>.yaml`.
+Turn CURVE on everywhere at the same time. A process with CURVE on can't exchange update-queue messages with a process that has it off, or with one that uses different keys. You can't switch it on one process at a time. Turn it on for every process on every node, `GENESIS_CLUSTER` included, in a single restart window. A `zeroMqEncryption` block in a process-level `network-config-<PROCESS_NAME>.yaml` is honoured: it is merged key by key over `network-config.yaml`, so a process given different keys fails its handshakes with its peers. Never do this in production, but you can use it to give one process a different keypair when you want to test a mismatch.
 :::
 
 #### Configuration errors
