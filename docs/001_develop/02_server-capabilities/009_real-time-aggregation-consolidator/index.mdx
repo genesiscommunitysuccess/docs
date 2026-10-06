@@ -150,7 +150,7 @@ The example below has a single consolidator, called `CONSOLIDATE_POSITIONS`.
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
 - The [`config`](#config) block contains Consolidator level configuration
-- The [`select`](#select) block to specify some calculations and assign to output fields
+- The [`select`](#select) block to specify some calculations and assign to output fields (optional)
 - The [`onCommit`](#oncommit) block to amend the output row
 - The [`groupBy`](#groupby) block groups by `INSTRUMENT_ID`
 
@@ -511,7 +511,7 @@ consolidators {
 | Property             | Description                                                                                                                                                                               | Supports Values                                                                                                                                                             | Default Value          |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
 | logLevel             | the default log level used when logging inside the Consolidator                                                                                                                           | TRACE, DEBUG, INFO, WARN, ERROR                                                                                                                                             | DEBUG                  |
-| onNotFound           | determines what to do if an output record is not found (see [build](#build))                                                                                                              | BUILD, WARN, LOG, FAIL                                                                                                                                                      | BUILD                  |
+| onNotFound           | determines what to do if an output record is not found (see [build](#build))                                                                                                              | BUILD (build and insert a new row with [build](#build)), WARN (log a warning and skip the group), LOG (log at the consolidator's `logLevel` and skip the group), FAIL (throw an error), IGNORE (skip the group without logging) | BUILD                  |
 | batchingPeriod       | the time in ms accumulating updates before writing to the database                                                                                                                        | Integer values                                                                                                                                                              | 500                    |
 | ignoreIndexScan      | disables index scans (see [indexScan](#indexscan))                                                                                                                                        | true, false                                                                                                                                                                 | false                  |
 | defaultErrorHandling | what to do if an exception is thrown during any calculation                                                                                                                               | LOG, WARN (produces a warning log), FAIL (crashes the process)                                                                                                              | FAIL                   |
@@ -577,6 +577,13 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
 ```
 
 ### `select`
+
+The `select` block is optional. A consolidator without one has no functions, but it still does two things:
+
+- When `onNotFound` is `BUILD`, it writes a new output row the first time it sees a group.
+- It runs your `onCommit` block for every input it processes.
+
+This suits a consolidation that does all its work in `onCommit`, such as a calculation across related rows of the group: you don't need a placeholder `select` just to make it load. If there is no `onCommit` block either, an input whose output row already exists produces no write.
 
 In the select block, you can specify functions based on the entity `input` values, and a target field in the `output` table. The example below show how it is possible to aggregate all the quantity fields for then input TRADE table into the POSITION table:
 
@@ -1040,6 +1047,10 @@ groupBy { tradeId } into {
 
 The `build` block is required to construct a new record in the output table (or simply a new object in on-demand consolidators), if the record in the output table could not be found.
 This new entity needs all non-nullable properties without a default value to be initialised at this stage.
+
+You only need a `build` block when [`onNotFound`](#config) is `BUILD`, which is the default. With any other `onNotFound` value, the consolidator never builds a new output row, so you can leave `build` out.
+
+If `onNotFound` is `BUILD` and there is no `build` block, the consolidator fails to load. The check runs after the whole `consolidator` block has been read, so a `config` block placed after `groupBy` still counts.
 
 Example:
 

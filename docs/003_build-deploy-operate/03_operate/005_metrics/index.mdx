@@ -152,6 +152,19 @@ When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for
 
 Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
 
+### Data pipeline metrics
+
+Every data pipeline publishes its [record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters) automatically, as a counter metric called `pipeline_records`. This covers the `sent_records` counter written by `dbSink()` and `txDbSink()`, and any counters your pipeline adds. On top of the standard tags, the metric has two tags:
+
+| Tag      | Explanation              |
+|:---------|:-------------------------|
+| pipeline | the name of the pipeline |
+| counter  | the name of the counter  |
+
+Tag values are lowercased, and any character other than a letter, a digit, `_` or `.` is replaced with `_`. For example, a pipeline called `MyPipeline` is tagged `pipeline=mypipeline`.
+
+The metric is only exported when `MetricsEnabled` is `true` and `MetricsReportType` names at least one [reporter](#metric-reporters), or when the [OpenTelemetry](#opentelemetry) Java agent is attached.
+
 ## Metric names
 
 The framework provides an abstraction on top of the reporters. A single interface is used, regardless of how the metrics are reported. 
