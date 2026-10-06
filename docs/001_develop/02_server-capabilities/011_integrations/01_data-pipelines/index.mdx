@@ -85,6 +85,8 @@ An operator is a stage in the pipeline that applies some kind of transformation 
 ### Pipeline context
 The pipeline context is an object that contains processing state that can be passed between the source, sink, error handlers and completion handlers. In a realtime pipeline, a separate context is created for each input element, and a reference to that element is stored in the context. In a batch pipeline, a context is created for each batch execution. In both cases, the context will contain the name of the pipeline executing, a transaction handle (if the sink is transactional), and a mutable map of context parameters for storing state.
 
+The context also holds named record counters. Any stage that has the context can increment and read them, and the platform publishes them as a metric when processing completes. See [Record counters](#record-counters).
+
 ## Building a pipeline
 Within the pipelines GPAL file, you will find a `pipelines` block:
 ```kotlin
@@ -102,6 +104,8 @@ pipelines {
 ```
 
 To start with, the pipeline is empty. We begin by calling the source function to start the pipeline building process.
+
+Each pipeline name must be unique within its `pipelines` block, and every pipeline must end with a call to `build()`. If either rule is broken, the script fails to load; a missing `build()` produces an error that names the unfinished pipeline.
 
 ### `source`
 The source function takes an instance of an object that implements the source interface.
@@ -325,6 +329,48 @@ pipeline(name = "Simple Integer Pipeline With OnCompletion") {
     }
 }
 ```
+
+### Record counters
+A pipeline can count the records it processes. The counters are stored on the [pipeline context](#pipeline-context), so any stage that receives the context can update or read them, and they are shared with any context derived from it. A typical use is an `onCompletion` handler that logs how many records a run wrote.
+
+The context has these functions:
+
+| Function | Description |
+|---|---|
+| `incrementCounter(counterName, delta = 1)` | Adds `delta` to the named counter, creating it if needed, and returns the new value |
+| `getCounter(counterName)` | Returns the current value of the named counter, or `0` if it doesn't exist |
+| `counters` | All the counters on the context, by name |
+
+`dbSink()` and `txDbSink()` increment a counter called `sent_records` by the number of database operations they write.
+
+To count elements at a particular stage, use one of these operators:
+
+| Operator | Use with | Counts |
+|---|---|---|
+| `recordCounter(counterName)` | `.map(...)` | Each element, which is passed through unchanged |
+| `streamRecordCounter(counterName)` | `.transform(...)` | Each element of the stream, which is passed through unchanged |
+| `onOperationErrorCounter(counterName)` | `.onOperationError(...)` | Each operation error that is handled |
+
+`onOperationErrorCounter` always returns `SKIP_ELEMENT`. If it is the only error handler on an operation, an error that would otherwise be rethrown is counted and the element is skipped instead. To keep stricter behaviour, register your own handler on the same operation alongside the counter: when handlers return different actions, the stricter one wins.
+
+```kotlin
+pipelines {
+    pipeline("TRADE_INGEST")
+        .source(tradeSource)
+        .map(recordCounter("received"))
+        .map(tradeMapper)
+        .onOperationError(onOperationErrorCounter("mapping_errors"))
+        .sink(dbSink())
+        .onCompletion { context ->
+            LOG.info("Wrote {} of {} records", context.getCounter("sent_records"), context.getCounter("received"))
+        }
+        .build()
+}
+```
+
+When processing completes, the platform adds every counter on the context to a metric called `pipeline_records`. In a real-time pipeline, this happens once for each element, after the write transaction has committed. In a batch pipeline, it happens once per run.
+
+You don't need to change your script. The metric only appears when metrics are enabled, as described in [Data pipeline metrics](/build-deploy-operate/operate/metrics/#data-pipeline-metrics). The counters themselves work either way.
 
 ## Core elements
 The following core elements are part of the Core Data Pipelines library and are always available for use in your *-pipelines.kts scripts.
@@ -944,13 +990,30 @@ The delivery policy controls how the platform handles timeouts, retries and nega
 
 | Option | Description | Default |
 |---|---|---|
-| `timeout` | The timeout in seconds for each event delivery request. | Platform default |
-| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(seconds)` to give up and throw an exception after the specified deadline. | `holdUntilDelivered()` |
-| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception and propagate the failure to `onOperationError`. Use `logOnNack()` to log the failure and continue. | `logOnNack()` |
+| `timeout` | The timeout in seconds for each event delivery request. | `10` |
+| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
+| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception. Use `logOnNack()` to log the NACK at error level and continue. | `throwOnNack()` |
 
-To prevent data loss, any failure that occurs before the event is successfully sent (such as an unresolvable service or no reachable instances) is automatically held and retried according to your configured `retry` policy. This prevents the pipeline checkpoint from advancing and dropping the event.
+The sink holds an event and retries it with a backoff, under your `retry` setting, whenever the event has definitely not been accepted:
 
-Other exceptions that occur during or after transmission are propagated to `onOperationError` as normal.
+- the target service can't be resolved
+- no instance of the target service is reachable
+- the target replies with an UNAVAILABLE NACK
+
+Delivery is therefore at-least-once: after a retry, the same event can arrive twice. It is re-sent unchanged.
+
+The sink doesn't retry in these cases; it throws an exception instead:
+
+- there is no reply within `timeout`
+- any other error occurs while sending
+- the target replies with a NACK and `onNack` is `throwOnNack()`
+
+An exception thrown by the sink doesn't reach `onOperationError`, which only covers `map` and `split` operations. It goes to the pipeline's [`onUncaughtError`](#onuncaughterror) handlers:
+
+- If there is no `onUncaughtError` handler, a real-time pipeline stops.
+- If a handler returns normally, the element is acknowledged and dropped, and the pipeline carries on.
+
+So with the default `throwOnNack()` and no `onUncaughtError` handler, a single NACK stops the pipeline. To keep it running, use `logOnNack()` or add an `onUncaughtError` handler.
 
 ###### Streaming each element to a FIX gateway
 
@@ -1055,6 +1118,10 @@ pipeline("TEST_TRADE_PIPELINE") {
         .onCompletion(insertTradeOnCompletionHandler)
 }
 ```
+
+`sendEventOnCompletion` always resolves the target service from `eventName`, and logs a NACK at error level instead of throwing. You can't change how it retries. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
+
+In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
 
 #### `sendCustomEventOnCompletion`
 
