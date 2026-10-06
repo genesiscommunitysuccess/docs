@@ -360,6 +360,43 @@ However, when you change any of the permissions tables in this way, the `RIGHT_S
 If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
 :::
 
+###### Example: granting a right with `SendIt`
+This example creates the right code `MCP_VIEW`, attaches it to a new profile called `MCP_USERS`, and adds the existing user `JaneDee` to that profile.
+
+Create one CSV file per table, named after the table, in the directory you run the commands from:
+
+```csv title="RIGHT.csv"
+CODE,DESCRIPTION
+MCP_VIEW,View access to MCP platform tools
+```
+
+```csv title="PROFILE.csv"
+NAME,DESCRIPTION,STATUS
+MCP_USERS,Users of the MCP server,ENABLED
+```
+
+```csv title="PROFILE_RIGHT.csv"
+PROFILE_NAME,RIGHT_CODE
+MCP_USERS,MCP_VIEW
+```
+
+```csv title="PROFILE_USER.csv"
+PROFILE_NAME,USER_NAME
+MCP_USERS,JaneDee
+```
+
+Load the files with [`SendIt`](/build-deploy-operate/operate/commands/#sendit), which inserts the rows, then run `ConsolidateRights` to rebuild `RIGHT_SUMMARY`:
+
+```bash
+SendIt -t RIGHT
+SendIt -t PROFILE
+SendIt -t PROFILE_RIGHT
+SendIt -t PROFILE_USER
+ConsolidateRights
+```
+
+The user must already exist in the `USER` table.
+
 ### Sample explanation
 
 See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`:
