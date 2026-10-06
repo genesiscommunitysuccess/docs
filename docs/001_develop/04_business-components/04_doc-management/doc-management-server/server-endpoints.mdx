@@ -69,7 +69,7 @@ The event is sent once, to the process that serves it. If no process serves it, 
 
 Server code can change the expiry of a saved file with `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL`. Users with the `FileStorageUpdateExpiry` or `FileStorageAdminAction` right can send `EVENT_FILE_STORAGE_UPDATE_EXPIRY`. Both take a `FILE_STORAGE_ID` and an `EXPIRES_AT` date and time.
 
-Send `EXPIRES_AT` as an explicit null to clear the expiry. Leaving it out is rejected. See [File expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/#changing-a-files-expiry).
+Always include `EXPIRES_AT`. Send it as null to clear the expiry. See [File expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/#changing-a-files-expiry).
 
 ## Linking assets
 

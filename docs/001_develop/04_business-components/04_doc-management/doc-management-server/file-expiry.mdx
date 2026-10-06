@@ -107,7 +107,7 @@ The value is applied as follows:
 
 ## Changing a file's expiry
 
-Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. Send `EXPIRES_AT` as an explicit null to clear the expiry, so the file never expires. Leaving the field out is rejected. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
+Other server processes can change the expiry of a file that is already saved by sending `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL` with the `FILE_STORAGE_ID` and the new `EXPIRES_AT`. Always include `EXPIRES_AT`. Send it as null to clear the expiry, so the file never expires. A date in the past makes the file eligible at the next sweep. This event is internal to the application and cannot be called from a client. Use it for example to keep a file longer or to shorten its life.
 
 There is no typed `FileStorageClient` method for this event, so build the message yourself. The details are:
 
@@ -122,7 +122,7 @@ There is no typed `FileStorageClient` method for this event, so build the messag
 
 `EVENT_FILE_STORAGE_UPDATE_EXPIRY` does the same for users. It requires the `FileStorageUpdateExpiry` right, which is part of the `FILE_STORAGE_ADMIN` profile, or the `FileStorageAdminAction` right.
 
-Both events reject an id that is not in `FILE_STORAGE`. They change only `FILE_EXPIRES_AT`, `MODIFIED_AT` and `MODIFIED_BY`, and write a `FILE_STORAGE_AUDIT` record. On an existing installation the `FILE_STORAGE_ADMIN` profile receives the new right through an install hook when you upgrade. Users who are already members of that profile receive it in their effective rights the next time rights are consolidated, for example when their profile membership changes. Until then they can still use these events through `FileStorageAdminAction`. In a container, the install hooks run only when `GENESIS_DB_UPGRADE=true` (or `GENESIS_DB_INSTALL=true`) is set at start-up.
+Both events reject an id that is not in `FILE_STORAGE`. They change only `FILE_EXPIRES_AT`, `MODIFIED_AT` and `MODIFIED_BY`, and write a `FILE_STORAGE_AUDIT` record. On an existing installation the `FILE_STORAGE_ADMIN` profile receives the new right through an install hook when you upgrade. Users who are already members of that profile receive it in their effective rights the next time rights are consolidated, for example when their profile membership changes. Until then they can still use these events through `FileStorageAdminAction`. In a container, the install hooks run only when `GENESIS_DB_UPGRADE=true` is set at start-up. `GENESIS_DB_INSTALL=true` marks them as done without running them.
 
 ## Reports and file expiry
 
