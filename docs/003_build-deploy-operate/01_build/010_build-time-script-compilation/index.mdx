@@ -1,0 +1,198 @@
+---
+title: 'Build-time script compilation'
+sidebar_label: 'Build-time script compilation'
+id: bdo-build-time-script-compilation
+keywords: [build, gradle, kts, scripts, compilation, start-up]
+tags:
+- build
+- gradle
+- scripts
+sidebar_position: 10
+---
+
+By default, a Genesis process compiles every `.kts` script it needs when it starts. It creates a Kotlin compiler, compiles each dictionary or GPAL script, and evaluates the result, which costs time and memory on every start-up.
+
+Build-time script compilation moves that work into the Gradle build. The build compiles your scripts into classes and packs them into the module's jar. At start-up, the process loads each class instead of compiling the script.
+
+The feature is opt-in, and nothing about how you write, name or override scripts changes. If the process can't use a compiled class for any reason, it compiles that script at start-up, exactly as it does without this feature.
+
+## How it works
+
+When build-time compilation is on for a module, the build compiles the module's `.kts` files and writes an index, `META-INF/genesis-precompiled-scripts`, into the module's jar. The compiled classes go into the jar under `META-INF/genesis-precompiled/`, not at their package path, so they are never on the runtime classpath as ordinary classes. The `.kts` files stay where they are and still ship in the jar.
+
+At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
+
+- overriding a script in `site-specific`;
+- overriding an application script from another component;
+- editing a script on a deployed server.
+
+In each case the changed script no longer matches its index entry, so the process compiles it.
+
+The scripts compile in a Gradle source set of their own: `genesisScripts`, or `genesis<SourceSet>Scripts` for a source set other than `main`. Your module's own `.kt` code compiles exactly as before. The script compilation copies the compiler options of the module's Kotlin compile task, such as `jvmTarget`, `optIn` and `freeCompilerArgs`.
+
+## Turning it on
+
+### With the Genesis Settings plugin
+
+If your project uses the Genesis Settings plugin, set `compileScriptsAtBuildTime` in the `genesis` block of `settings.gradle.kts`. The Settings plugin then applies the `global.genesis.script.compilation` plugin to your application's main module, which is `<product>-app` by default.
+
+With the legacy project structure (`global.genesis.settings.legacy`), it applies the plugin to the first `*-config` module and the first `*-script-config` module instead. The build logs a line at lifecycle level for each module it applies the plugin to.
+
+```kotlin
+// settings.gradle.kts
+genesis {
+    compileScriptsAtBuildTime = true
+}
+```
+
+Passing `-Pgenesis.scripts.compileAtBuildTime=true` on the command line, or setting it in `gradle.properties`, has the same effect without editing `settings.gradle.kts`.
+
+### Without the Settings plugin
+
+Apply the plugin in the build file of each module whose scripts you want to compile:
+
+```kotlin
+// <module>/build.gradle.kts
+plugins {
+    id("global.genesis.script.compilation")
+}
+```
+
+Applying the plugin turns the feature on; there is no second switch. If the module doesn't apply the Kotlin JVM plugin (`org.jetbrains.kotlin.jvm`), the plugin does nothing and logs that it has nothing to compile.
+
+In a repository without a Genesis Settings plugin, Gradle has to be able to resolve the plugin id:
+
+- add the Genesis repository, or your own repository that proxies it, to `pluginManagement.repositories` in `settings.gradle.kts` (see [Library access](/build-deploy-operate/build/library-access/) for the repository details);
+- give the plugin a version, either with `version` in the `plugins` block or with a `pluginManagement.resolutionStrategy`.
+
+### Every module in a multi-module build
+
+To turn on build-time compilation for every Kotlin module in a multi-module build, put the plugin on the root build's classpath with `apply false`. Then apply it by id in each subproject that applies the Kotlin JVM plugin. This is safe to do everywhere: a module with no `.kts` files in its script directories registers nothing, unless you set `scriptDirs` or `expectGeneratedScripts`.
+
+```kotlin
+// root build.gradle.kts
+plugins {
+    id("global.genesis.script.compilation") version "<genesis version>" apply false
+}
+
+subprojects {
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        apply(plugin = "global.genesis.script.compilation")
+    }
+}
+```
+
+## Switches
+
+| Switch | Where | Effect |
+| --- | --- | --- |
+| `genesis { compileScriptsAtBuildTime = true }` | `settings.gradle.kts` | Applies the plugin to the application's config module or modules |
+| `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint. Default: `false` |
+| `genesis.scripts.compileAtBuildTime` | Gradle property | `true`: the same as `compileScriptsAtBuildTime = true` when `settings.gradle.kts` doesn't set it. `false`: turns the feature off for the whole build |
+| `genesis.scripts.ktlint` | Gradle property | The default for `ktlintScripts` |
+| `genesisScriptCompilation { enabled = false }` | Module build file | Turns the feature off for one module |
+
+Setting the Gradle property `genesis.scripts.compileAtBuildTime` to `false` turns the feature off for the whole build. It overrides everything else, including `compileScriptsAtBuildTime = true` in `settings.gradle.kts` and `enabled = true` in a module's `genesisScriptCompilation` block.
+
+Otherwise, with a Settings plugin, the setting in `settings.gradle.kts` wins over the Gradle property. In a repository without a Settings plugin, setting the Gradle property to `true` does nothing on its own: only applying the plugin turns the feature on.
+
+### Turning it off
+
+No system definition item, JVM option or environment variable stops a process from loading compiled classes. To stop using them:
+
+- **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`;
+- **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
+- **for one script on a deployed server, without a rebuild:** override the script in `site-specific`. Its source no longer matches the index, so the process compiles it at start-up.
+
+## Configuration options
+
+The `genesisScriptCompilation` block in a module's `build.gradle.kts` file configures the plugin for that module. Every option is optional, and the defaults suit the standard project layout.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `enabled` | The `genesis.scripts.compileAtBuildTime` Gradle property, otherwise `true` | Turns build-time compilation on or off for this module |
+| `sourceSets` | `setOf("main")` | The source sets whose `.kts` files are compiled |
+| `scriptDirNames` | `setOf("cfg", "scripts")`, or empty when `scriptDirs` is set | Script directories, taken as `<each resources source directory>/<name>`. Nested names such as `"genesis/cfg"` are allowed |
+| `scriptDirs` | Empty | Extra script directories. Accepts a `TaskProvider`, so a task that generates scripts runs first. Setting it also tells the plugin that the module has scripts |
+| `include` | `setOf("**/*.kts")` | Ant patterns, relative to each script directory, for the files to compile |
+| `exclude` | Empty | Ant patterns, relative to each script directory, for `.kts` files that must not be compiled |
+| `scriptDefinitions` | Empty | Fully qualified names of script-definition classes to use. Also available as `scriptDefinitions("...", "...")` |
+| `discoverScriptDefinitions` | `true` while `scriptDefinitions` is empty | Find script definitions by scanning the compile classpath |
+| `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint |
+| `expectGeneratedScripts` | `false` (the Settings plugin sets `true`) | Set up compilation even when no `.kts` file exists yet when Gradle configures the build |
+| `failOnMissingScriptClasses` | `true` | Fail the build when a script produced no class |
+
+Script directories are found under each resources source directory of the source set. If your scripts are in a directory that isn't a resources source directory, name it in `scriptDirs`.
+
+Discovering script definitions means resolving the compile classpath while Gradle configures the build. Naming the definitions in `scriptDefinitions` avoids that, and turns discovery off unless you also set `discoverScriptDefinitions = true`. If no script definitions are found, the plugin logs a warning and compiles nothing, and the scripts are compiled at start-up as before.
+
+### Test scripts
+
+You can also compile a module's test scripts, so that tests which start a script don't need a Kotlin compiler. Set `sourceSets = setOf("test")`, and the index lands on the test runtime classpath. Test resources often hold scripts that aren't meant to compile, such as fixtures for error cases, so add those to `exclude`.
+
+```kotlin
+genesisScriptCompilation {
+    sourceSets = setOf("test")
+    scriptDirNames = setOf("genesisHome/site-specific/scripts")
+    scriptDefinitions("global.genesis.dataserver.pal.script.DataServerScript")
+}
+```
+
+## What fails the build
+
+With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
+
+- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. This includes modules named in `@file:ScriptModules("...")`: the module must depend on each of them.
+- **A script that no script definition claims.** It is compiled as plain Kotlin and fails. Add it to `exclude`.
+- **A script that produced no class.** The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
+- **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set.
+- **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module.
+- **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them.
+
+## Scripts with the same file name
+
+The Kotlin compiler names a script's class after its file name only, so two scripts with the same file name in different directories would compile to the same class. To avoid this, the plugin copies each script whose source differs from another of the same name (compared case-insensitively) to `build/genesis/staged-scripts/`, under a name prefixed with part of its source hash, such as `h3f9a2b1c_genesis-router.kts`. It compiles the copy instead.
+
+The build logs each copy, and `staged-from.txt` in that directory maps every copy back to its original. Compiler errors refer to the staged copy. The index still uses the original file name, so nothing changes at runtime.
+
+## At start-up
+
+### Scripts that are always compiled at start-up
+
+Some scripts are never served from a compiled class. The build leaves them out of the index, and the process always compiles them at start-up:
+
+- any script that contains `@file:ScriptModules`;
+- a `*-tables-dictionary.kts` or `*-view-dictionary.kts` file that contains `derivedField`.
+
+### Falling back to compiling
+
+If the compiled class can't be used, the process logs a warning and compiles the script at start-up. That happens if, for example, the class listed in the index is missing, fails to link (with a `NoSuchFieldError`, say), or fails while it is evaluated. A problem with a compiled class never stops a process from starting on its own. A script that is broken in itself still fails, once compiling it fails too.
+
+:::warning
+If a script throws an exception while running from its compiled class, the process can't tell a fault in the script from a stale class. So it compiles the script and runs it again, and anything the script did before the exception happens again. This matters most for scripts that register things or write data as they run, such as `*-eventhandler.kts` and `*-script.kts`. Put non-idempotent work after anything that can fail.
+:::
+
+### Components built with this feature
+
+The index matches a script on its source text alone, not on the dictionary it was compiled against. So if a component (a PBC) compiles its scripts at build time, an application whose generated dictionary differs from the one the component was built with can still be served the component's classes.
+
+- If the class needs a field that is missing or has a different type, the class fails and the process compiles the script instead.
+- If a field has the same name and type but a different meaning, nothing detects it.
+
+If you build a component with this feature, compile its scripts against the same generated dictionary that the application will run with, or add the scripts that depend on the application's dictionary to `exclude`.
+
+## Checking that it worked
+
+Each module that compiled its scripts has `META-INF/genesis-precompiled-scripts` in its jar, with one line for each script that can be served:
+
+```
+<script file name>=<class name>|<source hash>
+```
+
+The hash is not the `sha256sum` of the file, so you can't check it against the source by hand. At start-up, each process logs this line at INFO level for every script it loads from a class:
+
+```
+Loaded <script> from its build-time-compiled class in <n> ms; no compiler was used.
+```
+
+If a script you expected doesn't produce this line, look for a warning that it was compiled instead, and check whether it is one of the [scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up).
