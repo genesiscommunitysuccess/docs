@@ -121,6 +121,17 @@ genesis {
 }
 ```
 
+#### `compileScriptsAtBuildTime`
+
+When `true`, the build compiles your application's `.kts` scripts into classes, and processes load those classes at start-up instead of compiling the scripts. Default: `false`. The Settings plugin does this by applying the [Genesis Script Compilation plugin](/build-deploy-operate/build/build-time-script-compilation/) to your application's main module. `ktlintScripts` also lints those scripts with ktlint; it is `false` by default too.
+
+```kotlin
+genesis {
+    compileScriptsAtBuildTime = true
+    ktlintScripts = false
+}
+```
+
 #### `plugins`
 
 Other Gradle plugins that are necessary for your project are automatically added by the Settings plugin. Below you can see the plugins that are added. These plugins can also be disabled if needed.
@@ -135,6 +146,7 @@ Other Gradle plugins that are necessary for your project are automatically added
 | Genesis Publication Disabler | global.genesis.publication-disabler | Used to disable dictionary-cache sub-module publishing tasks if the project is of type PBC | Yes, if project type is PBC |
 | Genesis Exec | global.genesis.exec | Creates Gradle tasks used by the Genesis IntelliJ plugin and Genesis Start. Applied to the main module. | Yes |
 | Genesis Deploy | global.genesis.deploy | Creates deployment gradle tasks (Note: not required if using Genesis IntelliJ plugin for local development) | No |
+| Genesis Script Compilation | global.genesis.script.compilation | Compiles the application's `.kts` scripts into classes at build time. See [Build-time script compilation](/build-deploy-operate/build/build-time-script-compilation/) | No. Applied to the main module when [`compileScriptsAtBuildTime`](#compilescriptsatbuildtime) is `true` |
 
 
 Here is an example of disabling the Genesis Deploy plugin:
@@ -208,6 +220,27 @@ genesisExec {
     }
 }
 ```
+
+You can also set each `openTelemetry` option with a Gradle property, for example in `gradle.properties`. A value in the `genesisExec` block wins over the Gradle property.
+
+| Option | Gradle property | Default |
+| --- | --- | --- |
+| `enabled` | `genesis.openTelemetry.enabled` | `false` |
+| `serviceNameEnabled` | `genesis.openTelemetry.serviceNameEnabled` | `true` |
+| `extraOptions` | `genesis.openTelemetry.extraOptions` | Not set |
+| `propertiesFilePath` | `genesis.openTelemetry.propertiesFilePath` | Not set |
+
+```properties
+genesis.openTelemetry.enabled=true
+genesis.openTelemetry.extraOptions=-Dotel.traces.exporter=zipkin
+```
+
+#### Gradle property values
+
+The Exec plugin checks the values of its Gradle properties, and an invalid value fails the build.
+
+- **Boolean properties** (`failPreCompileScriptOnErrors`, `enableDynamicDeployment`, `genesis.openTelemetry.enabled` and `genesis.openTelemetry.serviceNameEnabled`) accept `true`, `yes`, `on`, `y` or an empty value for true, and `false`, `no`, `off` or `n` for false, in any case. Any other value fails with `Invalid value '<value>' for Gradle property '<name>'. Expected true or false`.
+- **Enum properties** (`compactProcessesStrategy` and `packagingStrategy`) are matched ignoring case. An unknown value fails the build with a message that lists the valid values.
 
 ## Genesis Build Plugin
 
