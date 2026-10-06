@@ -71,6 +71,8 @@ The MCP server runs as the `GENESIS_MCP` process, which is off by default. To tu
 item(name = "GENESIS_MCP_PROCESS_START", value = "true")
 ```
 
+When processes are compacted with `compactProcessesStrategy=DEV`, as they are in local development, the MCP server runs inside `MCP_COMPACT_PROCESS` rather than appearing as `GENESIS_MCP`.
+
 :::warning
 The shipped `genesis-mcp-server.kts` is for local development only. If you enable `GENESIS_MCP` and keep it:
 
@@ -85,7 +87,7 @@ The shipped `genesis-mcp-server.kts` is for local development only. If you enabl
 
 ### Step 2: Configure the MCP server
 
-The server is configured in `genesis-mcp-server.kts`. The platform ships a default copy of this file; to configure the server, [override the platform-provided file](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) with your own.
+The server is configured in `genesis-mcp-server.kts`. The platform ships a default copy of this file; to configure the server, put your own copy at `<application>-app/src/main/genesis/scripts/genesis-mcp-server.kts` in your application project (on a deployed host, it ends up in `site-specific/scripts/`). Your copy takes precedence over the platform's. See [Overriding platform-provided files](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files).
 
 The platform's default file looks like this:
 
@@ -135,7 +137,9 @@ Platform tools check a Genesis right before they run (see [Authorisation](#autho
 - `MCP_ADMIN`
 - an approver code, if you set `approverRight` to something other than `MCP_ADMIN`
 
-See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them.
+See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, load the rights with its [Import data](/develop/development-environment/genesis-start/#import-data) instead.
+
+A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart `GENESIS_MCP`.
 
 You can use your own right codes instead, by setting the matching `*Right` properties. Or you can set `enforcePlatformToolRights = false` to need authentication only.
 
@@ -259,8 +263,8 @@ The client sends a JWT as `Authorization: Bearer <JWT>`. The server checks its s
 | Property | Default | Description |
 |---|---|---|
 | `issuer` | none | Required. The expected token issuer |
-| `jwksUri` | none | Required. Where to fetch the signing keys. It must be `https`; only a loopback host such as `localhost` may use `http`. The server won't start otherwise |
-| `audience` | not set | The expected audience. If you leave it out, the server accepts any valid token from the issuer, and logs a warning at start-up |
+| `jwksUri` | none | Required. Where to fetch the signing keys. It must be `https`; only a loopback host such as `localhost` may use `http`. The server won't start otherwise, and logs an error starting `MCP oidc jwksUri must be https` |
+| `audience` | not set | The expected audience. If you leave it out, the server accepts any valid token from the issuer, and logs a warning at start-up starting `MCP oidc has no audience configured` |
 | `usernameClaim` | `"sub"` | The claim that holds the Genesis user name |
 | `clockSkewSeconds` | `60` | How much clock difference to allow when checking expiry |
 | `signatureAlgorithms` | `RS256`, `RS384`, `RS512`, `ES256`, `ES384`, `ES512`, `PS256`, `PS384`, `PS512` | The signing algorithms to accept |
@@ -270,6 +274,8 @@ Signing keys are cached for five minutes. A token signed with an unknown key mak
 :::warning
 This strategy checks the token on its own and knows nothing about the user in Genesis. A token stays valid until it expires, even if the user is disabled or logs out. For a Genesis application, use `sessionAuthToken` instead.
 :::
+
+The server doesn't check that the user named by `usernameClaim` exists in Genesis. An unknown user name is handled the same way as with [`providedUserName`](#provided-user).
 
 ### Provided user
 
