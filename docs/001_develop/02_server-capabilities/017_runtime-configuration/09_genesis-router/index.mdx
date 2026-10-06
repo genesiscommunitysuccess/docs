@@ -98,7 +98,9 @@ Let's have a look at the different options for configuring this file. You have s
 
 `authDisabled` This is a dangerous setting! If set to true, it disables all authentication on the router. Typically, it is used for development mode. If you need to use this for another reason, see our section on [non-authenticated Genesis Routers](#non-authenticated-routers). Default value is false.
 
-`strictHttpStatusCode` If set to true, this setting ensures all HTTP status codes found in error responses are applied to the HTTP reply. If set to false, a validation error in an event handler would return the error information payload in an HTTP 200 responses instead of an adequate HTTP error code. Default value is false.
+`strictHttpStatusCode` If set to true, this setting ensures all HTTP status codes found in error responses are applied to the HTTP reply. If set to false, a validation error in an event handler would return the error information payload in an HTTP 200 responses instead of an adequate HTTP error code. Default value is false. This setting doesn't apply to requests that the router forwards through its [HTTP proxy](#http-proxy); those return the process's response, where a NACK is always a 200.
+
+`httpProxyEnabled` If set to true, the router forwards HTTP requests to processes that serve [native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/), instead of translating them into Genesis messages. See [HTTP proxy](#http-proxy). Default value is false.
 
 `nettyLoggingEnabled` If set to true, this setting enables internal netty logging. Default value false.
 
@@ -160,6 +162,51 @@ The default resources that are always exposed are:
 - DATA_GET
 
 `entry` Is the additional accepted `messageType`.
+
+### HTTP proxy
+
+The router can act as a streaming HTTP proxy for processes that serve [native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Request and response bodies are streamed rather than buffered, so large downloads and multipart uploads pass straight through. Turn it on with `httpProxyEnabled`, and tune the connection pool in an optional `httpProxy` block:
+
+```kotlin
+router {
+    httpProxyEnabled = true
+
+    httpProxy {
+        maxConnections = 10
+        maxPendingAcquires = 100
+        acquireTimeout = 30.seconds
+    }
+}
+```
+
+| Setting | Default | Description |
+|---|---|---|
+| `maxConnections` | `10` | Pooled connections to each backend process |
+| `maxPendingAcquires` | `100` | Requests that can wait for a pooled connection; beyond this, the router returns 502 |
+| `acquireTimeout` | `30.seconds` | How long a request waits for a pooled connection before the router returns 502. This is a `kotlin.time.Duration` |
+
+What the router does with each request:
+
+- **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is a request server or event handler. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers, resources on TCP processes, and names that no process owns are handled by the router as usual.
+- **Several path segments** are a custom endpoint. If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
+- **Internal resources** owned by a process get an empty 404.
+
+The request URI and headers are forwarded unchanged, apart from `Host`. When cookie authentication is on, the router has already copied the session cookie into the `SESSION_AUTH_TOKEN` header, so the process can authenticate the request.
+
+In proxy mode, the router stops loading `*-web-handler.kts` files from the application's script folders. Load each web-handler script on a process that uses the WebSocket channel instead. A script that no process loads is dropped without any error, and its endpoints disappear.
+
+:::warning
+
+A request that the router forwards doesn't go through these router checks, and the process doesn't apply them either:
+
+- `allowList` and `blockList`. A request server or event handler blocked at the router can still be reached through the proxy.
+- The router's own authentication, including `authDisabled`. The process authenticates the request instead, and the process's `HttpAuthDisabled` setting applies.
+- `strictHttpStatusCode`. A NACK comes back as a 200.
+- The router's XSS sanitising of responses. The process's response body is relayed as it is.
+
+Requests the router doesn't forward still get all four. If a resource must not be reachable over HTTP through the router, mark it `internal` or leave its process on TCP.
+
+:::
 
 ### Cookie authentication
 

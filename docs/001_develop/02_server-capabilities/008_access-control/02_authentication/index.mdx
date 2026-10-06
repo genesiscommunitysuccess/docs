@@ -2575,6 +2575,14 @@ authentication {
 }
 ```
 
+### SSO token in a cookie
+
+After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
+
+- On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself.
+- On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket accepts little more than the SSO login, and the router adds the token to the first `EVENT_LOGIN_AUTH` message.
+- When the login succeeds or fails, the router clears the cookie.
+
 ### Configuring the front end
 
 In the front end of your application, there are two files that need to be checked and amended to ensure that the SSO workflow works correctly.
