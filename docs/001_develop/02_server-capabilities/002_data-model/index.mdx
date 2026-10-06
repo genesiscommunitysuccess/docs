@@ -999,6 +999,16 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
+`allFields()` behaves differently on the root table and on joined tables. On the view's root table, it includes `RECORD_ID` and `TIMESTAMP`. On a joined table, it leaves them out. If you need a joined table's `RECORD_ID` or `TIMESTAMP`, select it explicitly, and give it an alias or a prefix so that it doesn't clash with the root table's field of the same name:
+
+```kotlin
+    fields {
+      TRADE.allFields()
+      INSTRUMENT.allFields()
+      INSTRUMENT.RECORD_ID withPrefix INSTRUMENT
+    }
+```
+
 If a field has the same name as the field name in another table in the view, you can use one of the following operators to override the field name: 
 
 - `withAlias` gives the field an alternative name on the view
@@ -1180,3 +1190,22 @@ From Genesis 10.0, the separate fields dictionary is deprecated: that is, `*-fie
 Fields dictionaries still work in 10.0, and no removal version has been set. While you keep one, the compiler shows a deprecation message (in your IDE, for example), and the platform logs a warning once per process when it reads the file.
 
 
+
+### Moving fields into tables
+
+When you move a field from a fields dictionary into a `table { }` block, make sure the inline version keeps the same definition. The two styles have different defaults, so a word-for-word translation can change your table. A column can change its size or its nullability. A property on the generated entity can change from non-nullable to nullable, which can break code that uses it.
+
+| Attribute | Fields dictionary (`fields { }`) | Inline in `table { }` |
+|---|---|---|
+| Max size of a `STRING`, `RAW` or `ENUM` field with none given | 64 | None |
+| Nullability of an `ENUM` or `RAW` field | Not null | Nullable unless you add `.notNull()` or `.default(...)` |
+| Nullability of a field with a default | Not null | Not null for `ENUM`, `BOOLEAN`, `DATETIME`, `BIGDECIMAL` and `RAW`; nullable for other types unless you add `.notNull()` |
+| `ENUM` default | The `default` argument | The first value listed, or `.default(...)` |
+
+To keep the definition the same, state the size and nullability explicitly on the inline field. For example, `field(name = "PRICE_SOURCE", type = STRING)` in a fields dictionary becomes `field("PRICE_SOURCE", STRING(64))` inline, and `field(name = "QUANTITY", type = INT, default = 0)` becomes `field("QUANTITY", INT).default(0).notNull()`. The one exception is an `ENUM` field with a `maxSize` in the fields dictionary: inline `ENUM` fields don't take a size, so it can't be kept.
+
+Three other differences can catch you out:
+
+- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them.
+- **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE`.
+- **Consistency between tables.** When several tables declare the same field name inline, the dictionary build doesn't check that the declarations match. If one table declares `PRICE` as a `DOUBLE` and another as an `INT`, the build succeeds and each table gets its own column type. Keeping the declarations consistent is up to you.
