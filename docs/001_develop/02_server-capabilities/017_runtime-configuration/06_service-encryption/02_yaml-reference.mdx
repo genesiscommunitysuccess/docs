@@ -233,12 +233,12 @@ This section configures CURVE authentication and encryption for the [ZeroMQ upda
 | Key                          | Type    | Default            | Description |
 |------------------------------|---------|--------------------|-------------|
 | `enabled`                    | boolean | `false`            | Turns on CURVE for update-queue traffic. When this is `false`, the update queue behaves as it does without this section |
-| `zapDomain`                  | string  | `genesis-internal` | ZAP domain that servers use to authenticate clients |
+| `zapDomain`                  | string  | `genesis-internal` | ZAP domain that servers use to authenticate clients. Any value; every process must use the same one |
 | `curveServerPublicKey`       | string  | `""`               | Server public key, Z85 text |
 | `curveServerSecretKey`       | string  | `""`               | Server secret key, Z85 text |
 | `curveClientPublicKey`       | string  | `""`               | Client public key, Z85 text |
 | `curveClientSecretKey`       | string  | `""`               | Client secret key, Z85 text |
-| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here |
+| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere) |
 | `readinessTimeoutMillis`     | integer | `5000`             | How long, in milliseconds, a publisher holds a message for a topic that no subscriber has subscribed to yet. After that, the message is sent anyway |
 | `readinessObserveOnly`       | boolean | `false`            | If `true`, the publisher tracks subscriber readiness but never holds messages back |
 
@@ -255,7 +255,7 @@ zeroMqEncryption:
   allowedClientCertDirectory: /home/genesis/run/site-specific/cfg/zmq-curve-clients
 ```
 
-Every process has to use the same `enabled` value and the same keys. Don't override this section in a process-level `network-config-{processName}.yaml`.
+Every process has to use the same `enabled` value and the same keys. If a process-level `network-config-{processName}.yaml` sets this section differently, the override is honoured and that process's handshakes with its peers fail. Never do this in production; only use it to test a mismatch.
 
 **Validation:** When `enabled` is `true`, the process fails to start if one of these conditions isn't met:
 
