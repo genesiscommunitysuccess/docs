@@ -36,7 +36,7 @@ The Genesis platform declares these deprecations in 10.0. Each is planned for re
 | `MODULE` | `genesis-webmon`, `webmon` | none |
 | `DB_ENGINE` | `FDB`, `FDB2` | `SQL` |
 
-The `webmon` module has already been removed in 10.0, so you won't see its deprecation warning: a process that still declares it fails at install or at start before the warning can appear. Remove that process definition from your `*-processes.xml`.
+The `webmon` module has already been removed in 10.0, so a process that still declares it can't start. You see its deprecation warning in the `genesisInstall` output, and again when you try to start the process: the start script reports the missing module with its deprecation message and exits with code `3`. Remove that process definition from your `*-processes.xml`.
 
 ## Where the warnings appear
 
