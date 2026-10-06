@@ -71,6 +71,18 @@ The MCP server runs as the `GENESIS_MCP` process, which is off by default. To tu
 item(name = "GENESIS_MCP_PROCESS_START", value = "true")
 ```
 
+:::warning
+The shipped `genesis-mcp-server.kts` is for local development only. If you enable `GENESIS_MCP` and keep it:
+
+- The server listens on all network interfaces, over plain HTTP.
+- Anyone who can reach the port is treated as the user `admin`, with no authentication.
+- Platform tools are on. The tools that need [authentication only](#rights-tiers), such as `process_status`, `list_tables` and `discover_endpoints`, answer every caller.
+- The other platform tools are refused until `admin` holds the matching `MCP_*` rights. The platform doesn't create those rights, and `admin` gets no special bypass.
+- `requiresApproval = true` holds back `call_event`, `modify_record` and your `enableMcp` event tools for approval. It doesn't hold back `process_control`, `run_remap` or `set_log_level`: those run straight away for anyone with the right.
+
+[Override this file](#step-2-configure-the-mcp-server) before you enable `GENESIS_MCP` anywhere other than your own machine.
+:::
+
 ### Step 2: Configure the MCP server
 
 The server is configured in `genesis-mcp-server.kts`. The platform ships a default copy of this file; to configure the server, [override the platform-provided file](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) with your own.
@@ -90,17 +102,7 @@ server {
 }
 ```
 
-:::warning
-The shipped `genesis-mcp-server.kts` is for local development only. If you enable `GENESIS_MCP` and keep it:
-
-- The server listens on all network interfaces, over plain HTTP.
-- Anyone who can reach the port is treated as the user `admin`, with no authentication.
-- Platform tools are on. The tools that need [authentication only](#rights-tiers), such as `process_status`, `list_tables` and `discover_endpoints`, answer every caller.
-- The other platform tools are refused until `admin` holds the matching `MCP_*` rights. The platform doesn't create those rights, and `admin` gets no special bypass.
-- `requiresApproval = true` holds back `call_event`, `modify_record` and your `enableMcp` event tools for approval. It doesn't hold back `process_control`, `run_remap` or `set_log_level`: those run straight away for anyone with the right.
-
-Override this file before you enable `GENESIS_MCP` anywhere other than your own machine.
-:::
+This default is for local development only. See the warning in [Step 1](#step-1-enable-the-mcp-server-process) before you rely on it.
 
 Your own `genesis-mcp-server.kts` replaces the platform file completely. Any property you leave out takes its default from the [server configuration](#server-configuration) table, not from the shipped file.
 
@@ -141,6 +143,8 @@ You can use your own right codes instead, by setting the matching `*Right` prope
 
 Platform tools need no configuration. To expose your own endpoints as well, create an `<application>-mcp.kts` file in `<application>-app/src/main/genesis/scripts`, where `<application>` is your application's name.
 
+This works for Spring event handlers as well as GPAL event handlers: both publish the metadata that MCP needs.
+
 This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/):
 
 ```kotlin
@@ -150,13 +154,15 @@ mcp {
             Event used to enter a new trade into the system.
         """.trimIndent()
     }
-    enableMcp("TRADE") {
+    enableMcp("REQ_TRADE") {
         context = """
             Query providing details of the trades available in the application.
         """.trimIndent()
     }
 }
 ```
+
+Pass `enableMcp` the endpoint's full name as it is registered, prefix included: `EVENT_INSERT_TRADE` for an event handler, `REQ_TRADE` for a request server named `TRADE`. The name must match exactly, so a name without its prefix, such as `enableMcp("TRADE")`, produces no tool. This differs from the [`call_request`](#tools) platform tool, which takes a request server's name without the `REQ_` prefix.
 
 Each `enableMcp` block takes two properties:
 
@@ -168,7 +174,7 @@ Each `enableMcp` block takes two properties:
 MCP reads each endpoint's metadata to work out its fields and types. An event handler becomes a tool named after the event in lower case; a request server becomes `<name>_query`. The example above creates these tools:
 
 - `event_insert_trade`
-- `trade_query`
+- `req_trade_query`
 
 The server checks for newly started endpoints every `toolRefreshIntervalMillis`. An endpoint is listed as a tool only while its process is running.
 
@@ -230,6 +236,8 @@ authenticationStrategy {
 ```
 
 The client sends a Genesis session token, which any Genesis login produces, including SSO. The server reads it from the `SESSION_AUTH_TOKEN` header. If that header is missing, it reads it from `Authorization: Bearer <token>`.
+
+To get a session token, log in with [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) (`POST /event-login-auth`). [`EVENT_LOGOUT`](/develop/server-capabilities/access-control/authentication/#event_logout) ends the session.
 
 The server checks the token the same way the router does. A token stops working once the user logs out, the session ends, or the user is locked out.
 
@@ -528,9 +536,11 @@ The server uses the MCP Streamable HTTP transport, at a single endpoint:
 http://<host>:<port>/mcp
 ```
 
-Use `https` if you have [set up TLS](#tls). Any client that supports Streamable HTTP can connect to it directly.
+If you have [set up TLS](#tls), only the URL changes, to `https://<host>:<port>/mcp`. The transport is still Streamable HTTP, so a client setting such as Claude Code's `--transport http` stays the same. Any client that supports Streamable HTTP can connect to it directly.
 
 Unless you use `staticUser`, the client must send the caller's credentials as an HTTP header on every request. With `sessionAuthToken`, that is `SESSION_AUTH_TOKEN: <token>` or `Authorization: Bearer <token>`.
+
+A token you paste into a client's configuration lasts only as long as its session: it stops working when the session ends or the user logs out. To get a fresh one, log in again with [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) (`POST /event-login-auth`), then replace `<token>` in the client's configuration.
 
 You need access to an AI model as well. Some clients, such as Claude Desktop and Claude Code, use a model in the cloud. You can also run the whole stack locally.
 
