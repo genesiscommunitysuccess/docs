@@ -1,0 +1,23 @@
+docs/001_develop/04_business-components/03_reporting/01_user-guide/index.mdx
+  s_28e555f585cbf8::t_8491e0a5f3f436 197,210
+docs/001_develop/04_business-components/03_reporting/02_developer-guide/index.mdx
+  s_28e555f585cbf8::t_8ef46420fcf358 214-215
+docs/001_develop/04_business-components/04_doc-management/doc-management-server/file-expiry.mdx
+  s_28e555f585cbf8::t_95214ed354d178 143
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b91797cfb5f8b8f622cd8f92cb43dd8ca50877e9",
+  "prompts": {},
+  "sessions": {
+    "s_28e555f585cbf8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4fdb69c-ab8f-4526-9577-b03ad75aeaa0",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
