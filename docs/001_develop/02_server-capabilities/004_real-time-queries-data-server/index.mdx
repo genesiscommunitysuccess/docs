@@ -160,6 +160,9 @@ dataServer {
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
 |`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
+|`cacheBackend`|The cache backend for this query: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|The global setting|
+|`sqlite`|Uses SQLite for this query, in the shared database file, and sets its table-level SQLite settings. Read [SQLite settings](#sqlite-settings) for more details||
+|`sqliteDedicated`|Uses SQLite for this query, in a database file of its own, and sets its SQLite settings. Read [SQLite settings](#sqlite-settings) for more details||
 
 #### `fields`
 
@@ -314,7 +317,7 @@ The `join` operation receives two parameters:
 - `queryRow` the pre-built query row
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
-The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view. To declare your own derived fields, call `derivedField` directly in the `enrich` block, outside `fields`.
+The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view. To declare your own derived fields, call `derivedField` directly in the `enrich` block, outside `fields`. The same [naming rules](#derived-field-names) apply as for query-level derived fields.
 
 The example below should help you to understand the functionality. Comments are included in the code to ease understanding.
 
@@ -705,23 +708,25 @@ dataServer {
 
 | Config item | Description | Default | Overridable in `query` |
 |-------------|-------------|---------|------------------------|
-|`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`)|`2.GIGA_BYTE()`|No|
+|`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`). LMDB only|`2.GIGA_BYTE()`|No|
+|`cacheBackend`|The cache backend for all queries: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|`LMDB`|Yes|
+|`sqlite`|Uses SQLite for all queries and sets the SQLite settings of the shared database file. Read [SQLite settings](#sqlite-settings) for more details||Yes, with `sqlite` or `sqliteDedicated`|
 |`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FORY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
 |`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
 |`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
 |`compression`|When `true`, this compresses the query row data before writing it to the in-memory cache|`false`|Yes|
 |`chunkLargeMessages`|When `true`, it will split large updates into smaller ones.|`false`|Yes|
-| `defaultStringSize`                | Defines the byte array size (in UTF-8 encoding) for storing `String` values in the Data Server LMDB indices. Larger values increase index key sizes, while smaller values reduce them but may cause string overflow. See the [String overflows](#handling-string-overflows) topic for details. | `40`            | Yes                    |
-| `maxBytesPerCharacter`             | Specifies the maximum number of bytes allocated per character when determining the index `String` byte array size. Since some UTF-8 characters require multiple bytes, this setting offers the required flexibility to ensure sufficient space is reserved.                                    | 1               | Yes                    |
+| `defaultStringSize`                | Defines the byte array size (in UTF-8 encoding) for storing `String` values in the Data Server LMDB indices. Larger values increase index key sizes, while smaller values reduce them but may cause string overflow. See the [String overflows](#handling-string-overflows) topic for details. LMDB only | `40`            | Yes                    |
+| `maxBytesPerCharacter`             | Specifies the maximum number of bytes allocated per character when determining the index `String` byte array size. Since some UTF-8 characters require multiple bytes, this setting offers the required flexibility to ensure sufficient space is reserved. LMDB only                          | 1               | Yes                    |
 |`batchingPeriod`|Delay in milliseconds to wait before sending new data to Data Server clients|`500ms`|Yes|
-|`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes|`true`|Yes|
+|`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. SQLite queries don't need it; read [settings that only apply to LMDB](#settings-that-only-apply-to-lmdb)|`true`|Yes|
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
-|`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. |TRUNCATE_FIELD |Yes|
+|`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. LMDB only |TRUNCATE_FIELD |Yes|
 |`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
 |`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
 ###### LMDB allocation and WARNING state
-When the LMDB consumes most of the space allocated by `lmdbAllocateSize`, the status of the Data Server process is automatically changed to `WARNING`. 
+This applies only to queries that use the LMDB cache backend. When the LMDB consumes most of the space allocated by `lmdbAllocateSize`, the status of the Data Server process is automatically changed to `WARNING`. 
 
 There are two simple ways to address this:
 
@@ -777,6 +782,134 @@ So the same comparison using the default criteria evaluator for `TRADE_DATE` wou
 
 This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/develop/client-capabilities/server-communications/criteria-matching/#date-operations) to handle date searches.
 
+### Cache backend: LMDB or SQLite
+
+Each Data Server query keeps its rows in an in-process cache. By default, the cache is LMDB, a memory-mapped key-value store. You can switch to SQLite instead, for the whole Data Server or for individual queries.
+
+SQLite gives clients two things that LMDB doesn't: they can sort a query by any of its fields, not only by an index, and the criteria they send are translated into SQL and evaluated inside SQLite.
+
+#### Choosing the backend
+
+The backend is chosen for each query. The first of these that is set wins:
+
+1. The query's `config`: `cacheBackend = SQLITE`, or a `sqlite` or `sqliteDedicated` block, which selects SQLite on its own.
+2. The global `config`: `cacheBackend = SQLITE`, or a `sqlite` block.
+3. The `DataServerCacheBackend` item in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/), set to `SQLITE` or `LMDB`.
+4. The default, `LMDB`.
+
+```kotlin
+dataServer {
+    config {
+        // All queries use SQLite unless they choose otherwise
+        sqlite {
+            readPoolSize = 12
+            mmapSize = 536_870_912L
+        }
+    }
+
+    query("ALL_TRADES", TRADE) {
+        config {
+            // Table-level settings; the query stays in the shared database file
+            sqlite {
+                batchSize = 1000
+            }
+        }
+    }
+
+    query("ALL_POSITIONS", POSITION) {
+        config {
+            // The query gets its own database file
+            sqliteDedicated {
+                cacheSize = -32000
+            }
+        }
+    }
+
+    query("ALL_INSTRUMENTS", INSTRUMENT) {
+        config {
+            // This query stays on LMDB
+            cacheBackend = LMDB
+        }
+    }
+}
+```
+
+#### SQLite settings
+
+There are three places to configure SQLite:
+
+- a `sqlite` block in the global `config`;
+- a `sqlite` block in a query's `config`;
+- a `sqliteDedicated` block in a query's `config`.
+
+Queries that use `sqlite` share one database file per Data Server process. A query that uses `sqliteDedicated` gets a database file of its own. Some settings apply to a single query's table; others apply to the whole database file.
+
+These table-level settings can be set in any of the three blocks:
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+|`nativeColumns`|When `true`, each field is stored in its own typed column instead of one serialized value per row|`false`|
+|`strictMode`|Creates the table as a SQLite `STRICT` table|`true`|
+|`batchSize`|The maximum number of record IDs in one batched lookup. Must be greater than 0|`500`|
+
+These file-level settings can be set in the global `sqlite` block or in a `sqliteDedicated` block:
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+|`readPoolSize`|The number of read connections in the connection pool|The number of processors, kept between 4 and 16|
+|`pageSize`|SQLite page size in bytes. Must be a power of 2|`4096`|
+|`mmapSize`|Size of the memory-mapped I/O window in bytes|`268_435_456` (256 MB)|
+|`cacheSize`|Page cache per connection. A negative value is in KB; a positive value is a number of pages|`-16000` (16 MB)|
+|`busyTimeout`|How long the write connection waits for a lock, in milliseconds|`5000`|
+|`readBusyTimeout`|How long a read connection waits for a lock, in milliseconds|`1000`|
+|`tempStore`|Where SQLite keeps temporary tables and indices: `"DEFAULT"`, `"FILE"` or `"MEMORY"`|`"MEMORY"`|
+|`walAutocheckpoint`|The number of pages after which the write-ahead log is checkpointed|`10000`|
+|`threads`|The number of helper threads SQLite may use for a query|`2`|
+|`preparedStatementCacheSize`|The number of prepared statements cached per connection|`256`|
+|`busyRetryAttempts`|How many times a single-row write is tried when the database is busy. Must be at least 1; `1` turns retries off|`3`|
+|`busyRetryBaseDelayMs`|The first delay between retries, in milliseconds. It doubles on each retry|`10`|
+|`optimizeInterval`|How often SQLite refreshes its query-planner statistics, for example `optimizeInterval = 2.hours`. A value below 30 minutes is raised to 30 minutes|Off|
+
+A query-level `sqlite` block inherits from the global one: if it doesn't set `nativeColumns`, `strictMode` or `batchSize`, it takes the global value.
+
+A `sqliteDedicated` block doesn't inherit from the global `sqlite` block. It starts from the defaults above, with one exception: `nativeColumns` falls back to the global `sqlite` block, then to the `DataServerNativeColumns` [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item, then to `false`.
+
+#### Files on disk
+
+SQLite keeps its database files in `$GENESIS_HOME/runtime/sqlite/<processName>/`:
+
+- queries that share the database are stored in `shared.db`;
+- each `sqliteDedicated` query is stored in `<queryName>.db`.
+
+The folder is deleted and recreated every time the process starts, and the cache is rebuilt when the queries are primed. If `GENESIS_HOME` isn't set, SQLite queries can't be created and the process fails to start.
+
+#### Settings that only apply to LMDB
+
+These settings have no effect on a SQLite query:
+
+- `lmdbAllocateSize`, and the [LMDB allocation](#lmdb-allocation-and-warning-state) warning;
+- the index string-size settings `defaultStringSize`, `maxBytesPerCharacter` and `onStringOverflow`. SQLite has no fixed index key size, so string overflows don't happen.
+
+`serializationType` and `compression` apply to SQLite too, unless `nativeColumns` is `true`. A SQLite query doesn't need `linearScan`, because SQLite evaluates criteria inside the database; leave it at its default, `true`. Indices that you import with `importEntityIndices` become SQLite indices, and clients can use them in `ORDER_BY`.
+
+#### Sorting and filtering on SQLite
+
+On a SQLite query, the `ORDER_BY` option of `DATA_LOGON` accepts either an index name or a list of fields with directions, such as `TRADE_DATE DESC, PRICE ASC`. On LMDB, it still accepts an index name only.
+
+- Every field in the list must be a field of the query. Enriched fields can't be used.
+- `REVERSE` flips the direction of every field in the list.
+- If the list doesn't include `RECORD_ID`, it is added at the end so that the order is stable.
+- If `ORDER_BY` is neither a valid field list nor an index of the query, the request is rejected with `INVALID_INDEX`.
+
+`CRITERIA_MATCH` uses the same criteria language on both backends. On SQLite, the criteria become a SQL `WHERE` clause that is evaluated inside the database. Conditions on enriched fields can't be translated, so they are checked row by row, as on LMDB.
+
+#### Choosing between them
+
+These are rough tendencies; measure with your own data before you switch.
+
+- **SQLite** tends to be faster when clients filter with criteria, page deep into a large result set, or sort on fields that have no index. It doesn't need memory pre-allocated with `lmdbAllocateSize`.
+- **LMDB** tends to be faster for reading individual rows, reading ranges and batches of rows, and small writes.
+
 ### Backwards joins
 
 Each query in a Data Server creates what is effectively an open connection between each requesting user and the Data Server. After the initial send of all the data, the Data Server sends only modifications, deletions and insertions in real time. Unchanged fields are not sent, which avoids unnecessary traffic.
@@ -815,8 +948,8 @@ To control the flow of data and allow for filtering  and ordering, the following
 | `VIEW_NUMBER`    | 0       | If set to a number different than 0, enables pagination mode and forces `MAX_VIEW` to have the same size as `MAX_ROWS` (i.e. `MAX_ROWS` becomes the page size) and sets `MOVING_VIEW` to `false` (i.e. rows in a page won't be replaced); [read more below](#rows--view-concepts)                                                                     |
 | `CRITERIA_MATCH` |         | The front end can send an expression or a Groovy expression to perform filtering on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000`; [read more below](#criteria_match)                                                                         |
 | `FIELDS`         |         | This parameter enables the front end to select a subset of fields from the query. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. If this option is not specified, all fields are returned                                                                                                                                                          |
-| `ORDER_BY`       |         | This option can be used to select an [index](#indices) in the Data Server query that is being queried for sorting. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest)                                                                                                               |
-| `REVERSE`        | `false` | Reverses the order of data served by the the `ORDER_BY` index. For example, if you are using the default index, the query will return rows from newest database records to oldest                                                                                                                                                                     |
+| `ORDER_BY`       |         | This option can be used to select an [index](#indices) in the Data Server query that is being queried for sorting. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest). On a query that uses the SQLite cache backend, this can also be a list of fields, such as `TRADE_DATE DESC, PRICE ASC`; read [sorting and filtering on SQLite](#sorting-and-filtering-on-sqlite) |
+| `REVERSE`        | `false` | Reverses the order of data served by the the `ORDER_BY` index. For example, if you are using the default index, the query will return rows from newest database records to oldest. With a field list in `ORDER_BY`, it reverses the direction of every field |
 
 Example `DATA_LOGON`
 
@@ -2266,3 +2399,6 @@ dataServer {
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
 |`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
+|`cacheBackend`|The cache backend for this query: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|The global setting|
+|`sqlite`|Uses SQLite for this query, in the shared database file, and sets its table-level SQLite settings. Read [SQLite settings](#sqlite-settings) for more details||
+|`sqliteDedicated`|Uses SQLite for this query, in a database file of its own, and sets its SQLite settings. Read [SQLite settings](#sqlite-settings) for more details||

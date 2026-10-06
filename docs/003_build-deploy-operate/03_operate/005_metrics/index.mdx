@@ -48,6 +48,7 @@ item(name = "MetricsDbCacheEnabled", value = "false")
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
 | MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
 | MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+| MetricsCriteriaOverlapEnabled  | `false` | enables [Data Server criteria metrics](#data-server-criteria-metrics) |
 
 ## Framework metrics
 
@@ -151,6 +152,17 @@ When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for
 - Load statistics
 
 Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
+
+### Data server criteria metrics
+
+Set `MetricsCriteriaOverlapEnabled` to `true` (with `MetricsEnabled` also `true`) and each Data Server query reports two gauges that show how much its subscribers' criteria overlap. Both gauges carry the query name in the `dataserver` tag.
+
+The setting is off by default because it costs extra work at logon: the Data Server parses each new subscription's criteria a second time. The counts are approximate.
+
+| Metric                          | Explanation                                                          |
+|:--------------------------------|:---------------------------------------------------------------------|
+| dataserver_distinct_criteria    | The number of distinct criteria held by the subscribers of a query   |
+| dataserver_distinct_comparisons | The number of distinct comparisons within those criteria             |
 
 ## Metric names
 

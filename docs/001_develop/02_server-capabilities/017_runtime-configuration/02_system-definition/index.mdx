@@ -149,6 +149,8 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **MetricsEnabled**: Default value is false. For more information, go to the page on [metrics](/build-deploy-operate/operate/metrics/).
 
+**MetricsCriteriaOverlapEnabled**: When `true`, each Data Server query reports how much its subscribers' criteria overlap. Default value is false. It only takes effect when `MetricsEnabled` is `true`. For more information, go to the page on [metrics](/build-deploy-operate/operate/metrics/#data-server-criteria-metrics).
+
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
 **DbMode**: The `LEGACY` value is no longer supported. The dictionary is always stored in the namespace-aware store, so [PostgreSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql) works with namespaces/schemas without this setting. If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start, so remove the setting.
@@ -156,6 +158,10 @@ The retry mechanism uses exponential backoff with the following pattern:
 **ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
 
 **ReqRepTimeout**: This setting contains the default timeout (in seconds) for the request server resources in the system.
+
+**DataServerCacheBackend**: The cache backend for Data Server queries that don't choose one in their own configuration: `LMDB` or `SQLITE`. The value isn't case-sensitive, and an unrecognised value is ignored. Default value is `LMDB`. For more information, go to the section on the [cache backend](/develop/server-capabilities/real-time-queries-data-server/#cache-backend-lmdb-or-sqlite).
+
+**DataServerNativeColumns**: When `true`, Data Server queries that use SQLite store each field in its own typed column, unless their own `nativeColumns` setting says otherwise. Default value is false. For more information, go to the section on [SQLite settings](/develop/server-capabilities/real-time-queries-data-server/#sqlite-settings).
 
 **MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside **/runtime/proc_metadata**.
 
