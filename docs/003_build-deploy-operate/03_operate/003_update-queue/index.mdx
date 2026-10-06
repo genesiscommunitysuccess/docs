@@ -103,7 +103,7 @@ All processes share one server keypair and one client keypair. A server accepts 
 3. On every host, export the four `ZMQ_CURVE_*` environment variables in the environment that the processes start from. When you run locally with Genesis Start, export them in the shell (or IDE run configuration) that launches Genesis Start (`./gradlew genesisStart`); Genesis Start's `.properties` overrides can't set them.
 4. On every host, make sure the client certificate is in the directory that `allowedClientCertDirectory` names.
 5. On every host, run `GenerateZeroMqCurveKeys --verify`.
-6. Restart every process on every node.
+6. Restart every process on every node. `--verify` checks only the configuration, so confirm delivery by checking that update-driven parts of the application, such as a Data Server subscription or a UI grid, still receive changes after the restart.
 
 For example, copy the client `.key` certificate file to the same `allowedClientCertDirectory` path on each host, and supply the four `ZMQ_CURVE_*` values from whatever secret manager sets the process environment.
 
