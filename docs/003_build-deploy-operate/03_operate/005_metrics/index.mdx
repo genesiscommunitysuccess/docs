@@ -18,7 +18,7 @@ The Genesis Platform provides metrics both on the framework and at the applicati
 
 Framework metrics are provided out of the box. Once these have been enabled, they provide base-line information. You can build on top of this to provide application-specific metrics.
 
-The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J) and OpenTelemetry Java Agent integration for enhanced observability and integration with monitoring tools like Prometheus.
+The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J, Prometheus) and OpenTelemetry Java Agent integration for enhanced observability and integration with monitoring tools like Prometheus.
 
 Metrics allow in-depth monitoring of running applications and early detection of issues.
 
@@ -43,6 +43,7 @@ item(name = "MetricsDbCacheEnabled", value = "false")
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
+| MetricsJvmEnabled              | `true`  | enables JVM memory, garbage collection and thread metrics; `false`, `no`, `off` or `n` turns them off |
 | MetricsReportType              | n/a     | a comma-separated list of metrics reporters (not required when using OpenTelemetry) |
 | MetricsProcessorStatsEnabled   | `false` | enables additional process metrics          |
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
@@ -74,6 +75,10 @@ When metrics are enabled, the platform automatically collects JVM memory metrics
   - Compressed class space (used, committed, max)
 
 These metrics help monitor memory consumption patterns, identify potential memory leaks, and optimize heap sizing.
+
+:::note
+JVM memory, garbage collection and thread metrics are collected by default. To turn all three off, set `MetricsJvmEnabled` to `false`.
+:::
 
 ### JVM Garbage Collection Metrics
 
@@ -183,6 +188,7 @@ The available built-in reporters are:
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
 | SLF4J    | Publishes metrics to the services' log file                         |
+| PROMETHEUS | Exposes metrics for a [Prometheus](https://prometheus.io/) server to scrape |
 
 ### Graphite
 
@@ -265,6 +271,17 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 | MetricsReportIntervalSecs | `60`    | interval between metrics log messages                            |
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
 | Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
+
+### Prometheus
+
+The `PROMETHEUS` reporter keeps metrics in memory so that a Prometheus server can scrape them from the process's `/prometheus` endpoint. To use it, add it to `MetricsReportType`, alone or alongside other reporters:
+
+```kotlin
+item(name = "MetricsEnabled", value = "true")
+item(name = "MetricsReportType", value = "PROMETHEUS") // or, for example, "GRAPHITE,PROMETHEUS"
+```
+
+The `/prometheus` endpoint is served on the process's own port, and only by processes that use the `WEBSOCKET` messaging channel. On a process that uses the default `TCP` channel there is no endpoint, so nothing can read the metrics the reporter collects. See [process health endpoints](/build-deploy-operate/deploy/hosting-infrastructure/containers/#process-health-endpoints) for how to set the channel and what the endpoints return.
 
 ## OpenTelemetry
 
