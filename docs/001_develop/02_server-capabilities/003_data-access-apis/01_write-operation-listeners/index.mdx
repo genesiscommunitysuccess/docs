@@ -1,0 +1,90 @@
+---
+title: 'Write operation listeners'
+sidebar_label: 'Write operation listeners'
+id: server-write-operation-listeners
+keywords: [data, data access, data api, write, listener, transaction]
+tags:
+- data
+- data access
+- data api
+sidebar_position: 1
+---
+
+A write operation listener is your own code that the database layer calls after each successful write, inside the same transaction as that write. Any writes the listener makes through the transaction object it receives commit or roll back together with the write that triggered it.
+
+Use a listener when an extra write must be atomic with every write, for example to maintain a derived table. Don't use one just to react to changes: a listener runs on every write in the process, so anything slow in it slows down every write. To react to changes, [subscribe](/develop/server-capabilities/data-access-apis/#subscribe-operations) to the data instead.
+
+## The three listener interfaces
+
+There is one listener interface for each style of API, all in the `global.genesis.db.bustxn` package. Each has a default no-op implementation. To replace it, provide your own implementation as a [`@Module`](/develop/server-capabilities/custom-components/#module).
+
+| Interface | Signature | `tx` |
+|---|---|---|
+| `AsyncWriteOperationListener` | `suspend fun onWriteResult(tx: AsyncDb, writeResults: List<WriteResult>)` | an [`AsyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
+| `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
+| `WriteOperationListener` | `fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>)` | an RxJava record API bound to the write's transaction |
+
+Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result) holds the records the write saved and removed.
+
+This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved:
+
+```kotlin
+@Module
+class TradeSummaryListener : SyncWriteOperationListener {
+    override fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>) {
+        writeResults
+            .flatMap { it.savedRecords }
+            .filter { it.tableName == "TRADE" }
+            .forEach { trade ->
+                val summary = DbRecord("TRADE_SUMMARY").apply {
+                    setString("TRADE_ID", trade.getString("TRADE_ID"))
+                    setString("TRADE_STATUS", trade.getString("TRADE_STATUS"))
+                }
+                tx.upsert(ModifyDetails(summary, "TRADE_SUMMARY_BY_TRADE_ID"))
+            }
+    }
+}
+```
+
+The table, index and field names in this example are placeholders for your own data model.
+
+## Which listener is called
+
+Each write calls exactly one listener, never two. Which one depends on the API that made the write and on which listeners your application provides.
+
+When your application provides all three:
+
+| Write made through | Listener called |
+|---|---|
+| `AsyncDb`, `AsyncEntityDb` (including `writeTransaction`), and single writes on an injected `RxEntityDb` | `AsyncWriteOperationListener` |
+| `SyncDb`, `SyncEntityDb`, and `AsyncEntityDb.sync()` | `SyncWriteOperationListener` |
+| `RxDb`, `RxEntityDb.writeTransaction`, and `rxDb.entityDb()` | `WriteOperationListener` |
+
+If your application doesn't provide a listener, its writes fall back to the next one:
+
+- With no `AsyncWriteOperationListener`, the writes in its row of the table call the `SyncWriteOperationListener`.
+- With no `SyncWriteOperationListener`, the writes in its rows call the `WriteOperationListener`.
+
+So if you provide only a `WriteOperationListener`, it is called for every write, through every API. At start-up, the process logs "No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sync write path" at INFO level.
+
+The reverse also holds: when you provide a more specific listener, it takes its writes away from the less specific one. For example, if you provide both a `WriteOperationListener` and a `SyncWriteOperationListener`, the `WriteOperationListener` is called only for writes made through `RxDb`, `RxEntityDb.writeTransaction` and `rxDb.entityDb()`. The process logs a warning once, naming the listener that is skipped and the APIs it no longer sees. When you add a more specific listener, move the old listener's logic into it.
+
+:::note
+On the FoundationDB database layers (`FDB` and `FDB2`), `SyncEntityDb` and `AsyncEntityDb.sync()` writes call the `WriteOperationListener`, and so do `AsyncEntityDb` and `RxEntityDb` writes when there is no `AsyncWriteOperationListener`. FoundationDB is deprecated in 10.0 and is planned for removal in 11.0.0.
+:::
+
+## How a listener is called
+
+- The listener is called after the write, inside the write's transaction, and before the write is published to the update queue.
+- It is called once per write call. A batch write such as `upsertAll` or `modifyAll` calls it once, with one `WriteResult` per record. An audited write is two writes (the record and its audit record), so it calls the listener twice.
+- `tx` is bound to the same transaction. Writes you make through it commit or roll back with the triggering write, are published to the update queue after it, and don't call the listener again.
+- If the listener throws an exception, or one of its own writes fails, the triggering write rolls back and nothing is published.
+- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it.
+
+### `WriteOperationListener` on the SQL write path
+
+When a `WriteOperationListener` is called for a write that didn't go through `RxDb` (see [the fallback above](#which-listener-is-called)), its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
+
+## `RawSQLWriteOperationListener`
+
+`RawSQLWriteOperationListener` was removed in 10.0. Implement `WriteOperationListener` instead.
