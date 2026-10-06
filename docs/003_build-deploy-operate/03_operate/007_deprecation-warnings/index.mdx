@@ -10,7 +10,7 @@ tags:
 sidebar_position: 7
 ---
 
-Some parts of the platform are deprecated in 10.0. They still ship and still work, but they are planned for removal in 11.0. Genesis tells you when your application uses one of them, so you can plan the move before the removal.
+Some parts of the platform are deprecated in 10.0. They still ship and still work, but they are planned for removal in 11.0.0. Genesis tells you when your application uses one of them, so you can plan the move before the removal.
 
 You can see these warnings in three places:
 
@@ -24,7 +24,7 @@ This page covers deprecations that a product declares in its build script. Depre
 
 ## What 10.0 deprecates
 
-The Genesis platform declares these deprecations in 10.0. Each is planned for removal in 11.0.
+The Genesis platform declares these deprecations in 10.0. Each is planned for removal in 11.0.0.
 
 | Kind | Name | Use instead |
 |---|---|---|
@@ -87,6 +87,7 @@ The Gradle warning doesn't wait for `genesisInstall`. It appears as soon as your
 1. Find the process that uses the deprecated component. In a process log, that's the process the log belongs to. The Gradle warning names the process. The `genesisInstall` warning names only the component, so search your `*-processes.xml` files for it.
 2. Find the replacement. The process-log and `genesisInstall` messages name it after `Use`. If there's no replacement, the component is going away and nothing takes its place.
 3. Plan the change before you upgrade to the release named in the message. Until then, the deprecated component keeps working as it does today.
+4. Make the change. In your `*-processes.xml`, replace the deprecated component with its replacement, or remove it if there is none. Then run [`genesisInstall`](/build-deploy-operate/operate/commands/#genesisinstall) and restart the process. A process checks for deprecated components only when it starts, so a process that is already running keeps its old definition until you restart it.
 
 There is no setting to turn these warnings off. They stop once the process no longer uses the deprecated component.
 
