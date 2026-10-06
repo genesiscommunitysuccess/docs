@@ -78,7 +78,13 @@ The build only knows the deprecated name, not the replacement or the removal ver
 
 ### When the warnings take effect
 
-The process-log and `genesisInstall` warnings both read `$GENESIS_HOME/generated/cfg/global-product-details.xml`. `genesisInstall` writes this file from the details of each installed product. So a new or changed deprecation takes effect only after `genesisInstall` has run again. If the file doesn't exist yet, nothing is reported.
+The process-log and `genesisInstall` warnings both read `$GENESIS_HOME/generated/cfg/global-product-details.xml`. `genesisInstall` writes this file from the details of each installed product.
+
+`genesisInstall` writes the file first and then checks your processes against it, in the same run. So it reports a new or changed deprecation on the run that picks it up, including the very first time you run it.
+
+A process reads the file only when it starts. Its log reflects a new or changed deprecation only after `genesisInstall` has run and the process has been restarted. A process started before `genesisInstall` has ever run finds no file, and reports nothing.
+
+`genesisInstall` also runs as part of the `genesisSync` Gradle task. When you run your application locally with [Genesis Start](/develop/development-environment/genesis-start/) and **Use Genesis Sync** is enabled, Genesis Start runs `genesisSync` before it starts your processes, and the `genesisInstall` warnings appear in the output of the `genesisSync` build task.
 
 The Gradle warning doesn't wait for `genesisInstall`. It appears as soon as your build picks up the new version of the dependency.
 
