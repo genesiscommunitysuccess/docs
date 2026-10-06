@@ -1,0 +1,99 @@
+---
+title: 'Code generation and upstream reuse'
+sidebar_label: 'Code generation and upstream reuse'
+id: bdo-codegen-upstream-reuse
+keywords: [build, codegen, code generation, dao, slice, facade, pbc]
+tags:
+- build
+- codegen
+- dao
+sidebar_position: 9
+---
+
+Your application depends on upstream products: Genesis itself, and any PBCs it uses. Each of them has generated code of its own, built from its system definition, fields, tables and views. Rather than regenerate that code every time you build your application, the build reuses the generated code that each upstream product has already published. This makes application builds faster.
+
+This page explains how the generated code is split, how upstream reuse works, and the settings that control it. For an overview of the generated modules, see [DAO](/build-deploy-operate/build/bdo-build-overview/#dao).
+
+## Slices and facades
+
+The generated modules for system definition, fields and DAOs are each generated in two parts:
+
+- The **slice** contains the classes for one product only: for example, that product's tables and entities, and its own `<Product>Fields` holder.
+- The **facade** contains the aggregate classes that span every product on the classpath: `SysDef`, `Fields` and `Tables`. Separate tasks generate the facades: `generateSysDefFacade`, `generateFieldsFacade` and `generateDaoFacade`.
+
+Views have no facade. The view module is generated in one part.
+
+## Upstream reuse
+
+With upstream reuse switched on, the build puts each upstream product's published slice jars on the code-generation classpath. Code generation reads the table and view metadata stored in those jars instead of evaluating that product's `.kts` files again. It then generates your own product's slices, and the facades that combine everything.
+
+Genesis is always an upstream product. The others are the product dependencies declared in your settings file.
+
+The slice jars are resolved with these coordinates:
+
+```
+<groupId>:<artifactId>-generated-sysdef:<version>:slice
+<groupId>:<artifactId>-generated-fields:<version>:slice
+<groupId>:<artifactId>-generated-dao:<version>:slice
+<groupId>:<artifactId>-generated-view:<version>
+```
+
+The view module has no slice jar, so its regular jar is used.
+
+### Upstream products must be built with Genesis 10.0
+
+Upstream reuse needs slice jars, and only products built and published with Genesis 10.0 have them. A PBC published with an earlier version has none, so use PBC versions built with Genesis 10.0.
+
+## Publishing slice jars
+
+Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
+
+## Settings
+
+Set these as Gradle properties, for example in your `gradle.properties` file.
+
+| Property | Default | Description |
+|---|---|---|
+| `genesis.codegen.reuseUpstream` | `true` | Switches upstream reuse on or off. |
+| `genesis.codegen.overrideSlices` | None | A comma-separated list of upstream products to regenerate locally instead of reusing their slice jars, for example `genesis,auth`. |
+| `genesis.codegen.reuseUpstream.strict` | `false` | When `true`, the build fails in the situations described below, instead of logging a warning and carrying on. |
+
+You can also set `genesis.codegen.reuseUpstream` as `codegenReuseUpstream` in the `genesis { }` block of your `settings.gradle.kts` file. If you set it in both places, the settings file wins.
+
+```kotlin
+genesis {
+    productName = "position"
+    codegenReuseUpstream = false
+}
+```
+
+### When reuse switches off automatically
+
+Even with upstream reuse switched on, the build switches it off for a dictionary-cache module in two cases:
+
+- The module belongs to one of the upstream products itself.
+- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override.
+
+In the second case, the build logs a warning that names the products concerned and suggests the `genesis.codegen.overrideSlices` value to set. If `genesis.codegen.reuseUpstream.strict` is `true`, the build fails instead.
+
+### When an upstream product's system definition doesn't match
+
+An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set.
+
+What happens next depends on `genesis.codegen.reuseUpstream.strict`:
+
+- `false` (the default): the build regenerates the affected products locally and logs a `*** DEPRECATION WARNING ***`.
+- `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add.
+
+The lenient behaviour is deprecated, with no removal version set. To opt in to the future behaviour now, set `genesis.codegen.reuseUpstream.strict=true` and list the products concerned in `genesis.codegen.overrideSlices`.
+
+```properties
+genesis.codegen.reuseUpstream.strict=true
+genesis.codegen.overrideSlices=auth
+```
+
+Your application's own product is always handled automatically. You never need to list it in `genesis.codegen.overrideSlices`.
+
+### Extending an upstream table with `tableUnion`
+
+If your application uses `tableUnion` to add fields to a table that belongs to an upstream product, that product's slice jar doesn't contain your extra fields. You must list the product in `genesis.codegen.overrideSlices` so that it is regenerated locally. This applies whatever the `strict` setting. If the product isn't listed, the build fails with a message that names the value to add. Tables that belong to your application's own product don't need this.
