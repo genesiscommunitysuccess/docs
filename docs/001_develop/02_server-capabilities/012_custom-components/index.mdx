@@ -51,11 +51,21 @@ This annotation is used to provide Genesis system definition properties as part 
 
 ### `@PostConstruct`
 
-The Genesis microservice runtime environment will call this only once after initialization of the object, including all injected beans.
+Genesis calls a method annotated with `@PostConstruct` once, synchronously, as soon as the object has been created and its dependencies injected. Singletons are created when the process starts, so their `@PostConstruct` methods run during start-up. If the method throws, the object isn't created: Guice reports a `ProvisionException` and the process fails to start, instead of running on with a half-initialised object.
 
 ### `@PreDestroy`
 
-The Genesis microservice runtime environment will call this only once, just before Genesis removes the object from the application context on JVM shutdown.
+Genesis calls a method annotated with `@PreDestroy` once, when the process shuts down. Objects are torn down in the reverse of the order they were created, on the shutdown thread, with no time limit per method. If a `@PreDestroy` method throws, Genesis logs the error and carries on shutting down the remaining objects.
+
+### Lifecycle rules
+
+Both annotations follow these rules:
+
+- Only `jakarta.annotation.PostConstruct` and `jakarta.annotation.PreDestroy` are honoured. A method annotated with the `javax.annotation` version is never called.
+- The method must be non-static and take no parameters. Genesis logs a warning and skips any other annotated method, including a Kotlin `suspend` function.
+- Annotated methods inherited from a superclass run too. A superclass's `@PostConstruct` runs before the subclass's, and its `@PreDestroy` runs after. Each method runs once per object, even when a subclass overrides an annotated method and annotates it again.
+- Annotations on interface methods, default methods included, are ignored.
+- Objects you bind with `toInstance(...)` in a Guice module are created by you, not by Genesis, so their lifecycle methods aren't called.
 
 ### Example
 

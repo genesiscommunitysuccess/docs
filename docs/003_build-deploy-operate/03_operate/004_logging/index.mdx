@@ -15,8 +15,8 @@ This page relates to Server logging.
 
 ## Overview
 
-Genesis uses [slf4j](https://www.slf4j.org/) for logging and the internal logging framework is [log4j2](https://logging.apache.org/log4j/2.12.x/).
-Logging settings are configured using a log4j2 configuration file, which by default is named `log4j2-default.xml` and can be overridden by a user-defined file with the same name in `site-specific/cfg/`.
+Genesis uses [slf4j](https://www.slf4j.org/) for logging. Behind it, the logging backend is [log4j2](https://logging.apache.org/log4j/2.12.x/) by default, or [Logback](https://logback.qos.ch/) if you choose it; see [Choosing a logging backend](#choosing-a-logging-backend).
+With log4j2, logging is configured by a log4j2 configuration file. By default this is `log4j2-default.xml`, and you can override it with a file of the same name in `site-specific/cfg/`.
 
 See default file below:
 ```xml
@@ -69,6 +69,29 @@ See default file below:
     </Loggers>
 </Configuration>
 ```
+
+## Choosing a logging backend
+
+A Genesis process logs through log4j2 unless you choose Logback. You make the choice when you build your application: the Genesis exec plugin puts exactly one logging backend on your application's runtime classpath. To use Logback, set this Gradle property in your application's `gradle.properties`:
+
+```properties
+genesis.logging-backend=logback
+```
+
+The accepted values are `log4j` (the default) and `logback`, in any case. Any other value fails the build. You can also set the backend in the `logging` block of the `genesisExec` extension:
+
+```kotlin
+genesisExec {
+    logging {
+        backend.set(LOGBACK)
+    }
+}
+```
+
+- At start-up, a process uses the logging backend it finds on its classpath. The `LogFramework` system definition item no longer selects one.
+- The `LogFrameworkConfig` system definition item names the configuration file. Its default is `log4j2-default.xml`. If Logback is the backend and the item still has that default, Genesis loads `logback-default.xml` instead; both files ship with Genesis. Any other value is used as given, so if you name your own file, make sure it is written for the backend you chose.
+- If more than one backend is on the classpath, the process doesn't initialise logging, and prints `Too many logging controllers; unable to initialize logging services; found ...` to standard error. Check that your dependencies don't add a second backend.
+- The setting only changes the runtime classpath of your processes. Tests still log through log4j2.
 
 ## Log directories
 
