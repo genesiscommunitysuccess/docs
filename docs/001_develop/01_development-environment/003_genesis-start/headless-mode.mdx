@@ -134,6 +134,8 @@ Genesis Start is running in headless mode (no GUI window).
 REST API listening at http://127.0.0.1:18080/api
 ```
 
+If you set several `restHosts`, this line lists every address the REST API listens on, comma-separated on a single line. That's different from the Gradle task's output, which prints a pair of lines for each address.
+
 To check that it's responding:
 
 ```bash
@@ -222,6 +224,8 @@ Bootstrap, sync, start-all, import and script runs return straight away with an 
 ```
 
 To follow the operation, call `GET /api/operations/{operationId}`. While it runs, its `status` is `RUNNING`; poll until it becomes `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+
+The scripts that Bootstrap runs, such as `remap`, appear in `GET /api/processes`. To see what remap did, including loading test data, call `GET /api/processes/remap/log`. If Bootstrap fails, the operation's `message` names the script that failed and its exit code (for example, `remap exited with code 1`), and that script's log shows what went wrong.
 
 :::note
 Start-all's operation includes the Web UI's npm bootstrap, which installs its npm dependencies. The first time on a fresh project, this can take several minutes, so a long `RUNNING` doesn't by itself mean it has hung.
