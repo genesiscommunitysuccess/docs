@@ -27,7 +27,7 @@ Views have no facade. The view module is generated in one part.
 
 With upstream reuse switched on, the build puts each upstream product's published slice jars on the code-generation classpath. Code generation reads the table and view metadata stored in those jars instead of evaluating that product's `.kts` files again. It then generates your own product's slices, and the facades that combine everything.
 
-Genesis is always an upstream product. The others are the product dependencies declared in your settings file.
+Genesis is always an upstream product. The others are the [product dependencies declared in your settings file](/build-deploy-operate/build/bdo-build-tools/#dependencies).
 
 The slice jars are resolved with these coordinates:
 
@@ -47,6 +47,8 @@ Upstream reuse needs slice jars, and only products built and published with Gene
 ## Publishing slice jars
 
 Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
+
+To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your dictionary-cache module; to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
 
 ## Settings
 
@@ -72,7 +74,7 @@ genesis {
 Even with upstream reuse switched on, the build switches it off for a dictionary-cache module in two cases:
 
 - The module belongs to one of the upstream products itself.
-- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override.
+- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override. To override auth's tables, copy `cfg/auth-tables-dictionary.kts` from the `auth-config` jar into the `src/main/resources/cfg` directory of one of your application's modules.
 
 In the second case, the build logs a warning that names the products concerned and suggests the `genesis.codegen.overrideSlices` value to set. If `genesis.codegen.reuseUpstream.strict` is `true`, the build fails instead.
 
@@ -97,3 +99,13 @@ Your application's own product is always handled automatically. You never need t
 ### Extending an upstream table with `tableUnion`
 
 If your application uses `tableUnion` to add fields to a table that belongs to an upstream product, that product's slice jar doesn't contain your extra fields. You must list the product in `genesis.codegen.overrideSlices` so that it is regenerated locally. This applies whatever the `strict` setting. If the product isn't listed, the build fails with a message that names the value to add. Tables that belong to your application's own product don't need this.
+
+For example, this `position-tables-dictionary.kts` adds the field `DEPARTMENT`, defined in your application's fields dictionary, to auth's `PROFILE` table:
+
+```kotlin
+tables {
+    tableUnion(name = "PROFILE") {
+        DEPARTMENT
+    }
+}
+```
