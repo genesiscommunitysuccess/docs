@@ -68,6 +68,28 @@ This is the only place you need `google()`. The libraries the window is built wi
 
 If you'd rather not add `google()` to your build, use `global.genesis.genesis-start-gui-standalone` instead. It bundles those libraries into a single jar, so your build doesn't need to download them.
 
+Change the id in both places it appears. In `server/settings.gradle.kts`:
+
+```kotlin
+pluginManagement {
+    val startVersion: String by settings
+
+    plugins {
+        // other plugins
+        id("global.genesis.genesis-start-gui-standalone") version startVersion
+    }
+}
+```
+
+And in `server/build.gradle.kts`:
+
+```kotlin
+plugins {
+    // other plugins
+    id("global.genesis.genesis-start-gui-standalone")
+}
+```
+
 Its tasks have a `-standalone` suffix (`genesisStart-standalone`, `writeStartScript-standalone`). Everything else, including the `genesis.start.*` properties, is the same.
 
 :::note
