@@ -193,6 +193,8 @@ What the router does with each request:
 
 The request URI and headers are forwarded unchanged, apart from `Host`. When cookie authentication is on, the router has already copied the session cookie into the `SESSION_AUTH_TOKEN` header, so the process can authenticate the request.
 
+To check whether the router forwarded a request or handled it itself, set the logger `global.genesis.router.proxy.HttpProxyDispatcher` to DEBUG on the router. Each forwarded request then logs a line beginning `Proxying PAL request` (a request server or event handler) or `Proxying custom endpoint`, naming the host and port it went to. The response won't tell you: the router relays the process's response headers and adds no header that marks a response as forwarded.
+
 In proxy mode, the router stops loading `*-web-handler.kts` files from the application's script folders. Load each web-handler script on a process that uses the WebSocket channel instead. A script that no process loads is dropped without any error, and its endpoints disappear.
 
 :::warning
