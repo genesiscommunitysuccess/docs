@@ -359,6 +359,29 @@ GENESIS_SYSDEF_ClusterMode: LEGACY
 
 In this mode, the hosts must be able to reach each other on `ClusterPort` (`6000` by default). See [Networking](#networking).
 
+### Generating a compose file
+To get a starting `docker-compose.yml`, run the `writeGenesisDockerCompose` task from the root of the `server/` project. The task comes with the Genesis Exec plugin (`global.genesis.exec`), and it writes the file to `build/docker-compose/docker-compose.yml` in your app's main module. The generated file runs one app container, which uses the image built by `buildDebugImage`, alongside a PostgreSQL database and one-off containers that create the tables and load the dev data.
+
+```bash
+./gradlew writeGenesisDockerCompose
+```
+
+For a two-node cluster, copy the app service and give each copy its own settings. The generated file sets `GENESIS_SYSDEF_ClusterMode: LEGACY`, which is [built-in clustering](#built-in-clustering). In that mode, no `GENESIS_SYSDEF_*` setting differs between nodes. Instead, give each app container a hostname that is in the `hosts` list of your system definition.
+
+For [Consul](#consul) mode, change `GENESIS_SYSDEF_ClusterMode` to `CONSUL` on both nodes, and give each node a stable identity for its [node ID](#node-ids) claim:
+
+```yaml
+# node 1
+GENESIS_SYSDEF_ClusterMode: CONSUL
+GENESIS_SYSDEF_ConsulNodeName: node-1
+
+# node 2
+GENESIS_SYSDEF_ClusterMode: CONSUL
+GENESIS_SYSDEF_ConsulNodeName: node-2
+```
+
+If a node's Consul agent is not on `localhost`, also set `GENESIS_SYSDEF_ConsulHostAddress` for that node. See [extended configuration](#extended-configuration).
+
 ### Consul
 The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.
 
