@@ -306,7 +306,7 @@ FixEnumValues --commit TRADE POSITION
 
 This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `/generated/cfg/`.
 
-**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the system definition values for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template.
+**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the system definition values for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. On the server, the command collects these files from each module's `cfg` folder and from `site-specific/cfg`. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; when the build packages it, a file whose name starts with your product name (for example `<product>-processes.templt.xml`) goes to the module's `cfg`, and any other file goes to `site-specific/cfg`. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template.
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
@@ -887,7 +887,7 @@ mon --missing
 ```
 
 ## `PopulateHolidays`
-This command populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
+This command populates the `HOLIDAYS` table with holidays, based on a specific year(s), country(ies) and region(s).
 
 ###### Syntax
 The `PopulateHolidays` command can take the following arguments:
@@ -906,9 +906,9 @@ For example:
 PopulateHolidays -y 2020,2021 -c BR,GB -r rj,eng
 ```
 
-Each region in `-r` applies to the country in the same position in `-c`. If you don't set `-r`, national holidays are populated. Region codes come from the underlying holiday-data library, and each one is checked against the country's calendar: an unrecognised code fails with `Region <code> is not supported for country <country>` instead of writing national data.
+Each region in `-r` applies to the country in the same position in `-c`. If you don't set `-r`, national holidays are populated. Region codes come from the [Jollyday](https://github.com/focus-shift/jollyday) library: they are generally the subdivision part of the [ISO 3166-2](https://github.com/focus-shift/jollyday#iso-3166) code (for example `eng` for `GB-ENG`), and only the subdivisions that Jollyday defines for a country are supported. To find a country's valid codes, look for the `hierarchy` values in its `Holidays_<country>.xml` file in [Jollyday's holiday data](https://github.com/focus-shift/jollyday/tree/main/jollyday-core/src/main/resources/holidays). Each one is checked against the country's calendar: an unrecognised code fails with `Region <code> is not supported for country <country>` instead of writing national data.
 
-8.15 and earlier used different region codes for several countries. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`. The holiday data also changed in 10.0, so re-run `PopulateHolidays` for the years you hold.
+8.15 and earlier used different region codes for several countries. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`. The holiday data also changed in 10.0, so re-run `PopulateHolidays` for the years you hold. `PopulateHolidays` only inserts rows and does not overwrite existing ones, so delete the existing rows in the `HOLIDAYS` table for those years before you re-run it.
 
 ## `PurgeTables`
 
