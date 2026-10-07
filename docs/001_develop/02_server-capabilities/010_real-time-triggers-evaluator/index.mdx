@@ -39,9 +39,9 @@ Example `CRON_RULE` table entry:
 
 | NAME | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| US desk position report | `0 45 6 ? * MON-FRI *` | Send position report to US desk | America/New_York | `ENABLED`| admin | `POSITION_EVENT_HANDLER` | `EVENT_POSITION_REPORT` | `(DESK == 'US')` |
+| US desk position report | `0 45 6 ? * MON-FRI *` | Send position report to US desk | America/New_York | `ENABLED`| admin | `POSITION_EVENT_HANDLER` | `EVENT_POSITION_REPORT` | `(DESK = 'US')` |
 
-In this example, the `EVENT_POSITION_REPORT` event will be triggered with `DETAILS` parameter `DESK == 'US'` at 06:45 AM (EST/EDT) each week day.
+In this example, the `EVENT_POSITION_REPORT` event will be triggered with `DETAILS` parameter `DESK = 'US'` at 06:45 AM (EST/EDT) each week day.
 
 Given its name, we can expect this event to generate and distribute a report for a particular desk's positions.
 
@@ -70,10 +70,10 @@ Here, we look look more closely at the two tables and values that we can expect 
 | DESCRIPTION | Description of the rule | Send position report to US desk | true |
 | TIME_ZONE | The [Time Zone](https://docs.oracle.com/cd/E84527_01/wcs/tag-ref/MISC/TimeZones.html) of the cron expression. **Be careful selecting time zones that don't shift with daylight savings**, such as `EST`, which may or may not be desirable. Defaults to the system time where left blank | America/New_York  | false |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event. | `ENABLED` | true |
-| USER_NAME | The username that will be sent on the triggered event. User must have permission to use this event for it to be triggered successfully | admin | false |
+| USER_NAME | Set automatically to the user who inserts or amends the rule; any value you send is ignored. The rule's event runs as this user, so they must have permission to use that event for it to be triggered successfully | admin | true |
 | PROCESS_NAME | The name of the process to send the resulting event | `POSITION_EVENT_HANDLER` | true |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_POSITION_REPORT`  | true |
-| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK == 'US') && (TRIGGER == 'RULE')` | false |
+| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK = 'US') && (TRIGGER = 'RULE')` | false |
 
 ::::warning
 Since version 8.13, `CRON_RULE` records with an invalid `CRON_EXPRESSION` will not cause the Evaluator service to crash. These are detected on startup and a warning is written to the Evaluator logs instead. Ensure you monitor logs and correct any misconfigured cron rules.
@@ -97,7 +97,7 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. We recommend that you leave this blank to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
-| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. You can configure more than one operation to trigger the rule; where you do this, these must be pipe-delimited. If this value is left blank, only `INSERT` table operations will trigger the rule | `INSERT\|MODIFY\|DELETE` | true |
+| TABLE_OPERATION | The table operation to trigger the rule on. It takes a single value: `INSERT`, `MODIFY`, `DELETE` or `PRIME`. If you omit it on insert, it defaults to `INSERT`; on amend it is mandatory | `INSERT` | true |
 | IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/) where users can define rule templates to which users subscribe. Rules marked as `true` are templates, are never triggered (a subscription to a template creates a new dynamic rule) ||false|
 | RULE_EXECUTION_STRATEGY |Defines how many times the rule should trigger for a given record (record of root table where `RULE_TABLE` is a view). Valid values are `UNLIMITED`, `ONCE_ONLY`, `ONCE_PER_RECORD`. Default is `UNLIMITED`. This is helpful if `TABLE_OPERATION` must include `MODIFY` and the records may have many modifications to stop repeated alerts|`ONCE_ONLY`|false|
 | RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/) will set this value to `NOTIFY`|`NOTIFY`|false|
@@ -120,11 +120,19 @@ Each audit record holds the rule's fields, plus these fields:
 
 `USER_NAME` is the rule's own `USER_NAME`; the user who made the change is in `AUDIT_EVENT_USER`.
 
+::::warning Upgrading from 8.15
+
 In 8.15 and earlier, `CRON_RULE_AUDIT` had `EVENT_TYPE` and `EVENT_DATETIME` instead of `AUDIT_EVENT_TYPE` and `AUDIT_EVENT_DATETIME`, and its `USER_NAME` held the user who made the change. Update any queries or reports that read those columns.
+
+Existing rows are migrated to the new columns automatically when you install 10.0; their audit IDs are regenerated.
+
+::::
 
 ## Client API
 
 Rules can be managed via the API. 
+
+REST requests go to the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/), which listens on port 9064 by default.
 
 In the examples below, responses are omitted for brevity; they are standard `eventHandler` [acks/nacks](/develop/server-capabilities/core-business-logic-event-handler/#ack).
 
@@ -151,7 +159,7 @@ All parameters, descriptions and defaults are listed under [`CRON_RULE` configur
     "RULE_STATUS" : "ENABLED",
     "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
     "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
-    "RESULT_EXPRESSION" : "(DESK == 'US')",
+    "RESULT_EXPRESSION" : "(DESK = 'US')"
   }
 }
 ```
@@ -172,7 +180,7 @@ SOURCE_REF: 001
     "RULE_STATUS" : "ENABLED",
     "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
     "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
-    "RESULT_EXPRESSION" : "(DESK == 'US')",
+    "RESULT_EXPRESSION" : "(DESK = 'US')"
   }
 }
 ```
@@ -202,7 +210,7 @@ All parameters, descriptions and defaults are listed under [`CRON_RULE` configur
     "RULE_STATUS" : "ENABLED",
     "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
     "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
-    "RESULT_EXPRESSION" : "(DESK == 'US')",
+    "RESULT_EXPRESSION" : "(DESK = 'US')"
   }
 }
 ```
@@ -218,12 +226,11 @@ SOURCE_REF: 002
   "DETAILS": {
     "NAME" : "US desk position report",
     "CRON_EXPRESSION" : "0 0 7 ? * MON-FRI *",
-    "NAME" : "US desk position report",
     "TIME_ZONE" : "America/New_York",
     "RULE_STATUS" : "ENABLED",
     "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
     "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
-    "RESULT_EXPRESSION" : "(DESK == 'US')",
+    "RESULT_EXPRESSION" : "(DESK = 'US')"
   }
 }
 ```
@@ -242,7 +249,7 @@ Delete an existing rule. Send only `NAME`; any other field is rejected.
   "SOURCE_REF": "003",
   "MESSAGE_TYPE": "EVENT_CRON_RULE_DELETE",
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -256,7 +263,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 003
 {
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -275,7 +282,7 @@ Enable an existing rule. Send only `NAME`; any other field is rejected.
   "SOURCE_REF": "004",
   "MESSAGE_TYPE": "EVENT_CRON_RULE_ENABLE",
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -289,7 +296,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 004
 {
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -308,7 +315,7 @@ Disable an existing rule. Send only `NAME`; any other field is rejected.
   "SOURCE_REF": "005",
   "MESSAGE_TYPE": "EVENT_CRON_RULE_DISABLE",
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -322,7 +329,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 005
 {
   "DETAILS": {
-    "NAME" : "US desk position report",
+    "NAME" : "US desk position report"
   }
 }
 ```
@@ -355,7 +362,7 @@ All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` confi
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
     "TABLE_OPERATION" : "INSERT",
     "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
   }
 }
 ```
@@ -379,7 +386,7 @@ SOURCE_REF: 006
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
     "TABLE_OPERATION" : "INSERT",
     "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
   }
 }
 ```
@@ -416,7 +423,7 @@ An amend replaces every editable field of the rule, so send the whole rule each 
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
     "TABLE_OPERATION" : "MODIFY",
     "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
   }
 }
 ```
@@ -441,7 +448,7 @@ SOURCE_REF: 007
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
     "TABLE_OPERATION" : "MODIFY",
     "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
   }
 }
 ```
@@ -461,7 +468,7 @@ Delete an existing rule. Send only `ID`; any other field is rejected.
   "SOURCE_REF": "008",
   "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_DELETE",
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -475,7 +482,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 008
 {
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -494,7 +501,7 @@ Enable an existing rule. Send only `ID`; any other field is rejected.
   "SOURCE_REF": "009",
   "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_ENABLE",
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -508,7 +515,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 009
 {
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -527,7 +534,7 @@ Disable an existing rule. Send only `ID`; any other field is rejected.
   "SOURCE_REF": "010",
   "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_DISABLE",
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -541,7 +548,7 @@ SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 010
 {
   "DETAILS": {
-    "ID" : "000000000000001DRLO1",
+    "ID" : "000000000000001DRLO1"
   }
 }
 ```
@@ -550,7 +557,11 @@ SOURCE_REF: 010
 
 ## Runtime configuration
 
-The Evaluator process is not enabled by default. [Override the `genesis-processes.xml` file in your application](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) and set `<start>` to have a value of true. During your next build or `genesisInstall`, the process will show up in your list of processes.
+The Evaluator process is not enabled by default.
+
+If your project was generated by genx, it already contains commented-out `GENESIS_EVALUATOR` blocks in `<app>-processes.xml` and `<app>-service-definitions.xml`. Uncomment both to enable the Evaluator.
+
+Otherwise, [override the `genesis-processes.xml` file in your application](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) and set `<start>` to have a value of true. During your next build or `genesisInstall`, the process will show up in your list of processes.
 
 :::important
 
