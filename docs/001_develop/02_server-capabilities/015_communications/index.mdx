@@ -619,7 +619,7 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 
 Use these APIs to send and receive messages between micro-services.
 
-Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. 8.15 and earlier used MessagePack, which 10.0 removed, so an 8.15 process and a 10.0 process can't exchange binary messages.
+Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. 8.15 and earlier used MessagePack, which 10.0 removed, so an 8.15 process and a 10.0 process can't exchange binary messages. The `MSGPACK` [serialization setting](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section) is still accepted, but it is deprecated: the process logs a warning and uses `SMILE` instead.
 
 ### `ServiceDiscovery`
 
