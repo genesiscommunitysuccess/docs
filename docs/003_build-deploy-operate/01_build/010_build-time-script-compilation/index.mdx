@@ -155,9 +155,9 @@ You can leave `scriptDefinitions` out: discovery finds the definition as long as
 
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
 
-- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. This includes modules named in `@file:ScriptModules("...")`: the module must depend on each of them.
-- **A script that no script definition claims.** It is compiled as plain Kotlin and fails. Add it to `exclude`.
-- **A script that produced no class.** The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
+- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. This includes modules named in `@file:ScriptModules("...")`: the module must depend on each of them. A `ScriptModules` name is matched against the file names of the jars on the classpath, not against Maven coordinates. For example, `@file:ScriptModules("genesis-router")` matches `genesis-router-<version>.jar`, so the module needs the dependency that puts that jar on its compile classpath.
+- **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
+- **A script that produced no class** (for example, a script whose file name contains `$`: the plugin expects `_` in its class name, but the Kotlin compiler keeps the `$`, so the plugin doesn't find the class). The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set.
 - **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module.
 - **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them.
