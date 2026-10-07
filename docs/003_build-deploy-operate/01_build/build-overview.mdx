@@ -103,6 +103,8 @@ These objects must be built with your project, they are generated into applicati
 
 The generated code comes in two parts. A slice holds the classes for your own product's definitions, such as its tables and entities. A facade holds the aggregate classes that span every product on the classpath, such as `Fields`, `Tables` and `SysDef`. By default, your build doesn't regenerate the code for the upstream products your application depends on (Genesis itself and any PBCs); it reuses the slice jars those products publish. For details and the settings that control this, see [Code generation and upstream reuse](/build-deploy-operate/build/codegen-upstream-reuse/).
 
+After a build, you can find the generated code in the `<product-name>-dictionary-cache` module. The Genesis settings plugin creates this module under `server/build/internal-modules/`. It has one submodule per level: `<product-name>-generated-sysdef`, `-generated-fields`, `-generated-dao` and `-generated-view`. Your table entities and their DAOs are in `<product-name>-generated-dao`. In each submodule, the generated Kotlin sources are in `build/generated/sources/<type>/` (for example, `build/generated/sources/dao/`, plus `build/generated/sources/dao-facade/` for the facade), and the built jar is in `build/libs/`.
+
 #### Building
 
 If you use intelliJ's gradle option, you have a project with a _project_name_**-dictionary-cache** submodule. This contains the tasks for generating Genesis DAOs.
