@@ -68,8 +68,14 @@ For more about MCP, see the [official website](https://modelcontextprotocol.io/i
 The MCP server runs as the `GENESIS_MCP` process, which is off by default. To turn it on, add this item to your application's [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/):
 
 ```kotlin
-item(name = "GENESIS_MCP_PROCESS_START", value = "true")
+systemDefinition {
+    global {
+        item(name = "GENESIS_MCP_PROCESS_START", value = "true")
+    }
+}
 ```
+
+Then sync the configuration and restart the application, so that the MCP process starts. With Genesis Start, use [Sync processes](/develop/development-environment/genesis-start/#sync-processes) followed by [Bootstrap and launch](/develop/development-environment/genesis-start/#bootstrap-and-launch).
 
 When processes are compacted with `compactProcessesStrategy=DEV`, as they are in local development, the MCP server runs inside `MCP_COMPACT_PROCESS` rather than appearing as `GENESIS_MCP`.
 
@@ -137,7 +143,7 @@ Platform tools check a Genesis right before they run (see [Authorisation](#autho
 - `MCP_ADMIN`
 - an approver code, if you set `approverRight` to something other than `MCP_ADMIN`
 
-See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up.
+See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data, in `<application>-app/src/main/genesis/data/`, so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up.
 
 A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart `GENESIS_MCP`.
 
@@ -181,6 +187,8 @@ MCP reads each endpoint's metadata to work out its fields and types. An event ha
 - `req_trade_query`
 
 The server checks for newly started endpoints every `toolRefreshIntervalMillis`. An endpoint is listed as a tool only while its process is running.
+
+Changes to `<application>-mcp.kts` take effect after `GENESIS_MCP` is restarted.
 
 #### How endpoint tools behave
 
@@ -293,6 +301,8 @@ The server doesn't check that the user exists, either. An unknown user name is t
 - Anything that checks no right lets it through, and runs as that name. That covers the platform tools marked *Authentication only*, every platform tool when `enforcePlatformToolRights = false`, and every `enableMcp` endpoint whose own definition declares no `permissionCodes`.
 
 So the gateway in front of the server must forward only real, authenticated users.
+
+To give a `providedUserName` caller rights, the user must exist in the `USER` table and be assigned a profile as usual; see [Example: granting a right with `SendIt`](/develop/server-capabilities/access-control/authorization/#example-granting-a-right-with-sendit).
 
 :::warning
 Only use this strategy behind a gateway that authenticates the caller and removes any `USER_NAME` header the client sends. Otherwise any caller can claim to be any user.
@@ -478,6 +488,8 @@ A checker, connected over MCP as a different user, works through these tools:
 
 Checkers can also use any other front end built on the pending approval workflow.
 
+To try maker-checker locally, you need a second user to act as the checker. Create one with [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user), which takes the user's password in the field `ONE_TIME_PASSWORD`, or with **Add User** in the [user management UI](/develop/business-components/user-management/user-management-ui/). A new user starts with an expired password. It can't log in, or get a `sessionAuthToken`, until the password has been changed once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password).
+
 ### Separation of duties
 
 - The platform never lets a user approve or reject their own request.
@@ -545,6 +557,8 @@ http://<host>:<port>/mcp
 If you have [set up TLS](#tls), only the URL changes, to `https://<host>:<port>/mcp`. The transport is still Streamable HTTP, so a client setting such as Claude Code's `--transport http` stays the same. Any client that supports Streamable HTTP can connect to it directly.
 
 Unless you use `staticUser`, the client must send the caller's credentials as an HTTP header on every request. With `sessionAuthToken`, that is `SESSION_AUTH_TOKEN: <token>` or `Authorization: Bearer <token>`.
+
+Some clients can log in by themselves instead; see [OAuth discovery](#oauth-discovery) for what the server advertises to them.
 
 A token you paste into a client's configuration lasts only as long as its session: it stops working when the session ends or the user logs out. To get a fresh one, log in again with [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) (`POST /event-login-auth`), then replace `<token>` in the client's configuration.
 
