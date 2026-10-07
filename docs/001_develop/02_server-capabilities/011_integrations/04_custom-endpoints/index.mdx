@@ -385,6 +385,17 @@ multipartEndpoint("test") {
 }
 ```
 
+Each element of `fileUploads` is a `FileUploadFileData` (package `global.genesis.net.http.multipart`). It is a `java.io.InputStream` over the uploaded file's content, with these additions:
+
+| Member | Purpose |
+| ------ | ------- |
+| `fileName: String` | The file name the client sent with the upload |
+| `size: Long` | The file's size in bytes |
+| `copyTo(path: Path): Long` | Copies the content to `path` and returns the number of bytes written; fails if `path` already exists |
+| `readText(charset)` | Reads the whole content as a string (an extension function in the same package; `charset` defaults to the platform charset) |
+
+Because it is an `InputStream`, you can also read the content directly with `read`, `readAllBytes` or `transferTo`, without writing it to disk first.
+
 #### `config`
 
 The `config` function can be used to configure endpoints, which are supported on different levels:
