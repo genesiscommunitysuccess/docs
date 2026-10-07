@@ -36,12 +36,7 @@ In a Gradle build, the Genesis repository is declared in two places. Gradle plug
 pluginManagement {
     repositories {
         maven {
-            val repoUrl = if(extra.properties["useDevRepo"] == "true") {
-                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
-            } else {
-                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
-            }
-            url = uri(repoUrl)
+            url = uri("https://genesisglobal.jfrog.io/genesisglobal/libs-release-client")
             credentials {
                 username = extra.properties["genesisArtifactoryUser"].toString()
                 password = extra.properties["genesisArtifactoryPassword"].toString()
@@ -49,14 +44,6 @@ pluginManagement {
         }
         gradlePluginPortal()
         mavenCentral()
-        mavenLocal {
-            // Scoped to the launcher's own published artifacts (via publishToMavenLocal) so it
-            // can never shadow platform/framework dependencies with stale local jars.
-            content {
-                includeGroup("global.genesis.launcher")
-                includeGroupByRegex("global\\.genesis\\.genesis-(launcher|start)-gui.*")
-            }
-        }
         google()
     }
 }
@@ -68,21 +55,8 @@ Library dependencies are resolved from the `repositories` block in the root `bui
 // build.gradle.kts
 allprojects {
     repositories {
-        mavenLocal {
-            // Scoped to the launcher's own published artifacts (via publishToMavenLocal) so it
-            // can never shadow platform/framework dependencies with stale local jars.
-            content {
-                includeGroup("global.genesis.launcher")
-                includeGroupByRegex("global\\.genesis\\.genesis-(launcher|start)-gui.*")
-            }
-        }
         maven {
-            val repoUrl = if(properties["useDevRepo"] == "true") {
-                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
-            } else {
-                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
-            }
-            url = uri(repoUrl)
+            url = uri("https://genesisglobal.jfrog.io/genesisglobal/libs-release-client")
             credentials {
                 username = properties["genesisArtifactoryUser"].toString()
                 password = properties["genesisArtifactoryPassword"].toString()
