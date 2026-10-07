@@ -22,7 +22,7 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in `site-specific`;
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (`$GENESIS_HOME/site-specific/scripts/` on a deployed server);
 - overriding an application script from another component;
 - editing a script on a deployed server.
 
@@ -102,7 +102,7 @@ No system definition item, JVM option or environment variable stops a process fr
 
 - **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`;
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script on a deployed server, without a rebuild:** override the script in `site-specific`. Its source no longer matches the index, so the process compiles it at start-up.
+- **for one script on a deployed server, without a rebuild:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in `$GENESIS_HOME/site-specific/scripts/`. Its source no longer matches the index, so the process compiles it at start-up.
 
 ## Configuration options
 
