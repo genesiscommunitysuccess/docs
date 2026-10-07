@@ -31,6 +31,8 @@ If both files are present, process level configuration will overwrite any global
 
 In a project, put `network-config.yaml` and any `network-config-<PROCESS_NAME>.yaml` files in your application module's `src/main/genesis/cfg/` directory. The build deploys them to `site-specific/cfg/`. See step 2 of [Enabling CURVE](/build-deploy-operate/operate/update-queue/#enabling-curve) for an example.
 
+At runtime each file is looked up by name, first in `generated/cfg/`, then in `site-specific/cfg/`, then in each product's `cfg/` folder under `GENESIS_HOME`. The first copy found is used, so a file in `site-specific/cfg/` replaces the application's copy for that deployment instead of merging with it.
+
 ### Environment placeholders
 
 Environment variable placeholders in the YAML are resolved when the config is loaded, use `${...}` to refer to environmental variables.
@@ -85,7 +87,7 @@ messaging:
 
 | Key                       | Type    | Default | Description |
 |---------------------------|---------|---------|-------------|
-| `path`                    | string  | `/`     | WebSocket endpoint path, on both the server and the client |
+| `path`                    | string  | `/`     | WebSocket endpoint path, on both the server and the client. A client connects using its own `path`, not the target's, so every process that talks to another must use the same `path`. Set it in `network-config.yaml`, not a per-process file, or clients of that process (including the router) can't connect |
 | `subProtocols`            | string  | —       | Comma-separated sub-protocols to advertise |
 | `maxFrameSize`            | integer | 64 MiB  | Maximum size of one frame, in bytes |
 | `maxAggregatedFrameSize`  | integer | 64 MiB  | Maximum size of an aggregated message, in bytes |

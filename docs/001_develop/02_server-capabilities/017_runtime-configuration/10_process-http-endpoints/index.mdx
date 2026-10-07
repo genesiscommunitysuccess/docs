@@ -29,6 +29,8 @@ Native HTTP on the process port has three known limitations. Until they are reso
 
 Set `messaging.channel` to `WEBSOCKET` in the network configuration YAML. Use `network-config.yaml` to change every process, or `network-config-<PROCESS_NAME>.yaml` to change one process. When both files exist, the process file is applied over the application file.
 
+Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). To override one for a single deployment, place a file with the same name in `site-specific/cfg/` under `GENESIS_HOME`; the first copy found is used, so it replaces the application's copy rather than merging with it.
+
 ```yaml
 messaging:
   channel: WEBSOCKET
@@ -74,7 +76,7 @@ To turn authentication off for a process's native HTTP, set the system definitio
 
 ## Custom endpoints on a process
 
-A process on the WebSocket channel can load `*-web-handler.kts` files itself, instead of leaving them to GENESIS_ROUTER. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
+A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
 
 ```xml
 <process name="POSITION_APP_EVENT_HANDLER">
@@ -90,7 +92,7 @@ Multipart uploads and file downloads work on the process port in the same way as
 
 You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers with a 404. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
 
-A file-level setting applies to the definitions that come after it in the file, and you can override it on each definition.
+For event handlers and custom endpoints, a file-level setting applies to the definitions that come after it in the file. For request servers, a file-level `config { internal = true }` applies to every table or view request server in the file that sets no configuration of its own, wherever the block sits; a custom request server, or one with its own `config` block or a setting such as `timeout`, only takes the file-level settings that come before it. Put the file-level setting at the top of the file and it applies to every definition. You can override it on each definition.
 
 ```kotlin
 // *-eventhandler.kts
@@ -104,7 +106,7 @@ eventHandler {
 
 // *-reqrep.kts
 requestReplies {
-    config { internal = true }     // every request server in the file
+    config { internal = true }     // every request server defined after this line
     requestReply(TRADE) {
         config { internal = true } // or on one request server
     }
