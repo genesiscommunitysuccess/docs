@@ -300,7 +300,7 @@ pipeline(name = "Simple Integer Pipeline With Error handling") {
 ```
 
 ### `onUncaughtError`
-This error handler accepts an exception as an argument and allows you to take action when an exception that is not caught by any operation level error handlers unexpectedly terminates the pipeline. There is no action to be taken in terms of recovery at this point, as the pipeline has already terminated. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
+This error handler accepts an exception as an argument and allows you to take action when an exception is not caught by any operation level error handler. In a real-time pipeline, if the handler returns normally, the element is acknowledged and dropped, and the pipeline carries on (see [`eventSink`](#eventsink)). In a batch pipeline, the handler runs after the current batch execution has already stopped, so it can't recover that execution. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
 
 ```kotlin
 pipeline(name = "Simple Integer Pipeline With Error handling") {
@@ -639,7 +639,7 @@ pipelines {
 
 #### `httpSource`
 
-The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
+The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/external-rest-apis/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint.
 
@@ -684,7 +684,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 
 #### `typedHttpSource`
 
-The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
+The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/external-rest-apis/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint, as well as the request object being sent (which should be provided in the `execute()` method when triggering this pipeline).
 
@@ -1008,12 +1008,21 @@ The sink doesn't retry in these cases; it throws an exception instead:
 - any other error occurs while sending
 - the target replies with a NACK and `onNack` is `throwOnNack()`
 
+`onNack` only applies to NACKs other than UNAVAILABLE. An UNAVAILABLE NACK is always retried under your `retry` setting, whatever `onNack` is set to.
+
 An exception thrown by the sink doesn't reach `onOperationError`, which only covers `map` and `split` operations. It goes to the pipeline's [`onUncaughtError`](#onuncaughterror) handlers:
 
 - If there is no `onUncaughtError` handler, a real-time pipeline stops.
 - If a handler returns normally, the element is acknowledged and dropped, and the pipeline carries on.
 
 So with the default `throwOnNack()` and no `onUncaughtError` handler, a single NACK stops the pipeline. To keep it running, use `logOnNack()` or add an `onUncaughtError` handler.
+
+If a pipeline stops:
+
+- The pipeline logs `Exception thrown in <pipeline name> but no error handlers have been set` at error level, with the stack trace.
+- The process stays up. Only that pipeline stops; other pipelines in the same process carry on.
+- The process monitor entry named after the pipeline goes to WARNING, with the message `Uncaught exception during pipeline processing: ...`. It doesn't return to UP on its own.
+- To restart the pipeline, restart the process.
 
 ###### Streaming each element to a FIX gateway
 
@@ -1119,7 +1128,7 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
-`sendEventOnCompletion` always resolves the target service from `eventName`, and logs a NACK at error level instead of throwing. You can't change how it retries. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
+`sendEventOnCompletion` always resolves the target service from `eventName`, and logs a NACK at error level instead of throwing. Its retry mode is always `holdUntilDelivered()`, and you can't change it. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
 
 In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
 
