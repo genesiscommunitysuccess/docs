@@ -235,6 +235,14 @@ genesis.openTelemetry.enabled=true
 genesis.openTelemetry.extraOptions=-Dotel.traces.exporter=zipkin
 ```
 
+The Exec plugin adds the Open Telemetry JVM options it generates to the project overview JSON files. These are the files the Genesis IntelliJ plugin and Genesis Start read to run your processes. The `projectOverviewBuilder` task writes one file per process profile in the `build/genesis` folder of your main module:
+
+- `project-overview.json`
+- `project-overview-compact.json`
+- `project-overview-dev-compact.json`
+
+To check your settings, run `./gradlew projectOverviewBuilder` and open the file for the profile you run. Each process under `processes` has a `jvmArgs` list. With Open Telemetry enabled, that list includes `-javaagent:<path to the Open Telemetry agent jar>`, plus `-Dotel.service.name=<process name>` when `serviceNameEnabled` is true, your `extraOptions`, and `-Dotel.javaagent.configuration-file=<path>` when `propertiesFilePath` is set. The service name is the process name in lower case, with underscores replaced by hyphens.
+
 #### Gradle property values
 
 The Exec plugin checks the values of its Gradle properties, and an invalid value fails the build.
