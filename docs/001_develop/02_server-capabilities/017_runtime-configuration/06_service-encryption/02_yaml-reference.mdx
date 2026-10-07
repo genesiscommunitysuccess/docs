@@ -25,9 +25,11 @@ The network configuration drives:
 ### File names and merge behaviour
 
 - **Application-level**: `network-config.yaml` (loaded first)
-- **Process-level** (optional): `network-config-{processName}.yaml` (overrides application config for that process)
+- **Process-level** (optional): `network-config-<PROCESS_NAME>.yaml`, for example `network-config-GENESIS_CLUSTER.yaml` (overrides application config for that process)
 
 If both files are present, process level configuration will overwrite any global settings.
+
+In a project, put `network-config.yaml` and any `network-config-<PROCESS_NAME>.yaml` files in your application module's `src/main/genesis/cfg/` directory. The build deploys them to `site-specific/cfg/`. See step 2 of [Enabling CURVE](/build-deploy-operate/operate/update-queue/#enabling-curve) for an example.
 
 ### Environment placeholders
 
@@ -263,7 +265,7 @@ Every process has to use the same `enabled` value and the same keys. If a proces
 |-----------|---------------|
 | A key is missing or blank | `<key> is required when ZeroMQ CURVE is enabled` |
 | A key isn't exactly 40 characters | `<key> must be 40 characters of Z85, but is <length>` |
-| A key isn't valid Z85 | `<key> must be a valid Z85 CURVE key` |
+| A key isn't valid Z85. Z85 is ZeroMQ's 85-character text encoding ([RFC 32](https://rfc.zeromq.org/spec/32/)); a 40-character key containing a space, quote or comma is not valid Z85 | `<key> must be a valid Z85 CURVE key` |
 | `allowedClientCertDirectory` is missing or blank | `allowedClientCertDirectory is required when ZeroMQ CURVE is enabled` |
 | `allowedClientCertDirectory` isn't a readable directory | `allowedClientCertDirectory must be a readable directory: '<path>'` |
 
