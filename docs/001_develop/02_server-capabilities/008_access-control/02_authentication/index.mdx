@@ -2015,6 +2015,7 @@ Each `identityProvider` configuration has the following properties:
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | No | 50 minutes | Int |
+| tokenDelivery | How the issued SSO token reaches the front end: in the URL query, or in an HttpOnly `ssoToken` cookie. See [SSO token in a cookie](#sso-token-in-a-cookie) | No | `URL_QUERY` | Enum (URL_QUERY, COOKIE) |
 | redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
@@ -2580,8 +2581,37 @@ authentication {
 After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
 
 - On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself.
-- On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket accepts little more than the SSO login, and the router adds the token to the first `EVENT_LOGIN_AUTH` message.
+- On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
+  - `EVENT_LOGIN_AUTH` is accepted only while the router still holds the token from the upgrade. The router adds the token to that message and then discards it, so the token is used once. Any other `EVENT_LOGIN_AUTH` on the socket is rejected as Forbidden.
+  - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
+  - `HEARTBEAT_PING` is answered whether or not the user is logged in. The reply's `IS_AUTHENTICATED` field says which.
+  - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
+  - Every other message is rejected until the user has logged in.
 - When the login succeeds or fails, the router clears the cookie.
+
+The router only reads and clears the `ssoToken` cookie; it never sets it. To have the authentication service deliver the token in the cookie instead of the URL, set `tokenDelivery` to `COOKIE` on the identity provider in your `*-oidc-config.kts` or `*-saml-config.kts` file. The setting is per identity provider and takes `URL_QUERY` (the default) or `COOKIE`. Cookie authentication must also be enabled in the router, as above; otherwise the router ignores the cookie.
+
+```kotlin title="*-oidc-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+oidc {
+  identityProvider("uatOidc") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
+}
+```
+
+```kotlin title="*-saml-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+saml {
+  identityProvider("genesis") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
+}
+```
 
 ### Configuring the front end
 
