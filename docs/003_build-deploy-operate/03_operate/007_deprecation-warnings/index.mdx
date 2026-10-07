@@ -95,6 +95,8 @@ The Gradle warning doesn't wait for `genesisInstall`. It appears as soon as your
 3. Plan the change before you upgrade to the release named in the message. Until then, the deprecated component keeps working as it does today.
 4. Make the change. In your `*-processes.xml`, replace the deprecated component with its replacement, or remove it if there is none. Then run [`genesisInstall`](/build-deploy-operate/operate/commands/#genesisinstall) and restart the process. A process checks for deprecated components only when it starts, so a process that is already running keeps its old definition until you restart it.
 
+   If you run locally with Genesis Start, click [**Sync Processes**](/develop/development-environment/genesis-start/#sync-processes) (or relaunch Genesis Start with `genesisStart`) after you edit `*-processes.xml` and before you restart the process. Genesis Start takes each process's launch arguments from its own copy of the project's process definitions, and only those two actions refresh it. The **Use Genesis Sync** setting doesn't: with only that, the process keeps reporting the old component after a restart. This applies to every process you start from Genesis Start, not only compact processes.
+
 There is no setting to turn these warnings off. They stop once the process no longer uses the deprecated component.
 
 ## Declaring your own deprecations
