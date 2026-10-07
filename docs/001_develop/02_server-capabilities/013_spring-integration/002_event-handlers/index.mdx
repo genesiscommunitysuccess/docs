@@ -574,7 +574,7 @@ class SuspendCommitOnlyEventHandler {
 }
 ```
 
-There is no Java equivalent for this one — suspend functions are a Kotlin-only language feature, and a Java method has no way to declare one. If you need non-blocking handling from a Java class, look at making the surrounding call non-blocking some other way outside this module; there's no `@Async`-style alternative offered here.
+There is no Java equivalent for this one — suspend handlers are supported in Kotlin only. If you need non-blocking handling from a Java class, look at making the surrounding call non-blocking some other way outside this module; there's no `@Async`-style alternative offered here.
 
 ## Limitations
 
