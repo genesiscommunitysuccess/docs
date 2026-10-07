@@ -27,6 +27,8 @@ In Genesis 8.15 and earlier, use the `javax.annotation` and `javax.inject` packa
 
 All classes that need to be created on microservice start-up must be annotated with `@Module`. This ensures the instance is created as singleton.
 
+The class's package must also be in the `<package>` list of the process that should create it in your `*-processes.xml` file; a process only creates `@Module` classes from the packages it scans. See the [`package` tag](/develop/server-capabilities/runtime-configuration/processes/#tags).
+
 ### `@ProviderOf`
 
 This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the `@Singleton` annotation ensures that only one Factory class is created.
@@ -76,7 +78,7 @@ The example below combines `@Module`, `@Named` and `@Inject` annotations on a co
 class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connectionUrl: String) {
 
     @Inject
-    private lateinit var value: Value
+    private lateinit var entityDb: AsyncEntityDb
 
     @PostConstruct
     fun init() {
@@ -89,6 +91,8 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
     }
 }
 ```
+
+`CONNECTION_URL` must be defined as an item in your system definition, or the process fails to start. See [Injectable properties from System Definition](#injectable-properties-from-system-definition).
 
 
 ### Conditional annotations
