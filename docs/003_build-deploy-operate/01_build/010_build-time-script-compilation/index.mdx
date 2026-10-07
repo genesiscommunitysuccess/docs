@@ -149,6 +149,8 @@ genesisScriptCompilation {
 }
 ```
 
+You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing, a test that loads such a script fails with `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`.
+
 ## What fails the build
 
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
