@@ -225,6 +225,10 @@ In the parenthesis you can define:
   }
 ```
 
+:::warning
+Inside an event handler, always use the `entityDb` handle that the event handler provides. Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler. `entityDb` is the handle the event handler manages for you, including the event's transaction when `transactional = true`.
+:::
+
 The `<Type>` (aka Generic) parameter is used to set the event metadata. This metadata defines the event inputs the client can send in, and a certain amount of pre-validation will be performed on any inbound event messages based on this metadata (unless [`schemaValidation`](#schemavalidation) is turned off).
 
 You can use your table entity [DAO](/build-deploy-operate/build/bdo-build-overview/#dao) as the `<Type>`. In this case, the event will inherit the table's fields, their types and their nullability (which determines whether the field is optional or mandatory).
