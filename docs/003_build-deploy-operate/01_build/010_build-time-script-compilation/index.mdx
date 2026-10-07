@@ -72,13 +72,24 @@ To turn on build-time compilation for every Kotlin module in a multi-module buil
 ```kotlin
 // root build.gradle.kts
 plugins {
-    id("global.genesis.script.compilation") version "<genesis version>" apply false
+    id("global.genesis.script.compilation") apply false
 }
 
 subprojects {
     plugins.withId("org.jetbrains.kotlin.jvm") {
         apply(plugin = "global.genesis.script.compilation")
     }
+}
+```
+
+In a build that uses the Genesis Settings plugin, leave out the version, as above. The Settings plugin already puts the plugin on the classpath, so a `version` fails the build with "the plugin is already on the classpath with an unknown version, so compatibility cannot be checked".
+
+Without the Settings plugin, give the plugin a version in the root build instead:
+
+```kotlin
+// root build.gradle.kts, without the Genesis Settings plugin
+plugins {
+    id("global.genesis.script.compilation") version "<genesis version>" apply false
 }
 ```
 
