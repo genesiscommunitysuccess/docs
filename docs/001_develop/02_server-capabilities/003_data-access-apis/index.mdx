@@ -855,7 +855,20 @@ This tries to delete a record.
 
 A batch write must not name the same record twice. This applies to `insertAll`, `modifyAll`, `upsertAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs.
 
-The batch is checked before anything is written. If two items resolve to the same table, the same unique index and the same key values, the call throws a `GenesisDatabaseFailureException` with the error code `DUPLICATE_KEY`, and the database is left unchanged. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
+The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for a plain entity `insertAll`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
+
+```kotlin
+import global.genesis.db.exceptions.DatabaseErrorCode
+import global.genesis.db.exceptions.GenesisDatabaseFailureException
+
+try {
+    db.insertAll(trades)
+} catch (e: GenesisDatabaseFailureException) {
+    if (e.errorCode == DatabaseErrorCode.DUPLICATE_KEY) {
+        // the batch named the same record twice; nothing was written
+    }
+}
+```
 
 These are not treated as duplicates:
 
@@ -1665,12 +1678,15 @@ class TradeCanceller @Inject constructor(
 
 The table, index and field names in this example are placeholders for your own data model.
 
+Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE` table keyed on `TRADE_ID` gets `TRADE_BY_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
+
 ###### Methods
 
 | Kind | Methods |
 |---|---|
 | Reads | `get`, `getAll`, `getAllAsList`, `count`, `getBulk`, `getBulkFromEnd`, `getRange`, `getRangeFromEnd`, `getByCriteria` |
 | Writes | `insert`, `insertAll`, `modify`, `modifyAll`, `upsert`, `upsertAll`, `delete`, `deleteAll`, `recover`, `recoverAll`, `allocateId` |
+| Streaming reads (`SyncDb` only) | `getBulkStream`, `getRangeStream`, `getByCriteriaStream` |
 | Transactions | `readTransaction`, `writeTransaction` |
 
 Writes take a `DbRecord`, or a `ModifyDetails` for `modify` and `upsert`, and return a [`WriteResult`](#write-result).
