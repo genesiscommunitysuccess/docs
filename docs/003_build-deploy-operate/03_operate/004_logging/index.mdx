@@ -72,7 +72,7 @@ See default file below:
 
 ## Choosing a logging backend
 
-A Genesis process logs through log4j2 unless you choose Logback. You make the choice when you build your application: the Genesis exec plugin puts exactly one logging backend on your application's runtime classpath. To use Logback, set this Gradle property in your application's `gradle.properties`:
+A Genesis process logs through log4j2 unless you choose Logback. You make the choice when you build your application: the Genesis exec plugin puts exactly one logging backend on your application's runtime classpath. To use Logback, set this Gradle property in your application's `server/gradle.properties`:
 
 ```properties
 genesis.logging-backend=logback
@@ -87,6 +87,8 @@ genesisExec {
     }
 }
 ```
+
+If you set both, the value in the `genesisExec` block wins; the Gradle property is only its default.
 
 - At start-up, a process uses the logging backend it finds on its classpath. The `LogFramework` system definition item no longer selects one.
 - The `LogFrameworkConfig` system definition item names the configuration file. Its default is `log4j2-default.xml`. If Logback is the backend and the item still has that default, Genesis loads `logback-default.xml` instead; both files ship with Genesis. Any other value is used as given, so if you name your own file, make sure it is written for the backend you chose.
