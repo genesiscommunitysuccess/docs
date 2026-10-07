@@ -395,7 +395,7 @@ SendIt -t PROFILE_USER
 ConsolidateRights
 ```
 
-The user must already exist in the `USER` table.
+The user must already exist in the `USER` table. To create one, send [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user) with the initial password in `ONE_TIME_PASSWORD`, or use **Add User** in the [User Management UI](/develop/business-components/user-management/user-management-ui/#user-management). A new user starts with an expired password and must change it once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password) before it can log in.
 
 ### Sample explanation
 
