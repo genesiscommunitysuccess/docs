@@ -278,6 +278,12 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
 | Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
 
+Each metric is logged on one line: the metric name, its tags in braces, then the value. For example, a Data Server gauge looks like this:
+
+```text
+dataserver_distinct_criteria{dataserver=all_trades,groupName=trading,hostname=localhost,processName=trading_dataserver} value=2
+```
+
 ## OpenTelemetry
 
 OpenTelemetry is an open-source observability framework that provides standardized APIs, libraries, agents, and instrumentation to collect telemetry data (metrics, traces, and logs) from applications. By integrating the OpenTelemetry Java Agent into your Genesis application, you can automatically capture comprehensive telemetry data without modifying your codebase.
