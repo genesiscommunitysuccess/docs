@@ -55,6 +55,8 @@ class TradeSummaryListener : SyncWriteOperationListener {
 
 The table, index and field names in this example are placeholders for your own data model.
 
+Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
+
 A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has the same write methods as `RxDb` (`insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants), and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
 
 ```kotlin
