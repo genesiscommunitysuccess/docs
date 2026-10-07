@@ -585,6 +585,27 @@ The `select` block is optional. A consolidator without one has no functions, but
 
 This suits a consolidation that does all its work in `onCommit`, such as a calculation across related rows of the group: you don't need a placeholder `select` just to make it load. If there is no `onCommit` block either, an input whose output row already exists produces no write.
 
+For example, this consolidator has no `select` block. It builds an `ORDER` row for each order and sets its fields in `onCommit`:
+
+```kotlin
+  consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+    groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+        build {
+            Order {
+                orderId = groupId.orderId
+                orderDate = groupId.tradeDate
+            }
+        }
+    }
+
+    onCommit {
+        output.symbol = input.symbol
+        output.side = input.side
+        output.counterpartyId = input.counterpartyId
+    }
+  }
+```
+
 In the select block, you can specify functions based on the entity `input` values, and a target field in the `output` table. The example below show how it is possible to aggregate all the quantity fields for then input TRADE table into the POSITION table:
 
 ```kotlin
