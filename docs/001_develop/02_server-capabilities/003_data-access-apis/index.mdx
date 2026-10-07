@@ -1684,7 +1684,7 @@ Writes take a `DbRecord`, or a `ModifyDetails` for `modify` and `upsert`, and re
 Inside `readTransaction` and `writeTransaction`, make every read and write through the transaction object passed to the block, not through a separately injected `SyncDb` or `AsyncDb`. Only that object runs on the transaction's connection.
 
 - In a `readTransaction`, the object is a `SyncReadDb` (or `AsyncReadDb`). It has read methods only, so you can't write inside a read transaction.
-- A `writeTransaction` commits when the block completes. If the block throws an exception, or one of its writes reports an error, the whole transaction rolls back.
+- If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is wrapped and rethrown. Otherwise, the transaction commits when the block completes. A write that fails throws, so the same rule covers it.
 - The update-queue notifications for all the writes in a transaction are published once, after the commit.
 
 ###### Virtual threads
