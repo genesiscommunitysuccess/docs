@@ -473,6 +473,15 @@ consul kv get -recurse genesis/cluster/<name>/node-ids/
 
 or call the HTTP API at `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`. To find a host's node ID, look for the claim whose `identity` matches that host's identity; the ID is the last part of its key.
 
+To check that a host's processes have registered, list the services in the Consul catalog, and the nodes behind one of them:
+
+```bash
+consul catalog services
+consul catalog nodes -service=GENESIS_ROUTER
+```
+
+or call the HTTP API at `/v1/catalog/services`. Each Genesis process registers as a service named after the process, such as `GENESIS_ROUTER`, unless you set `ConsulServiceNamePattern`.
+
 :::important
 A host's claim is owned by its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
 
