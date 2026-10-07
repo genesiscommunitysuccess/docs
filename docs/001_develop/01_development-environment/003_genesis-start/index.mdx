@@ -123,7 +123,7 @@ This button opens a file picker where you can select one or more CSV files to im
 
 This button synchronises any changes made to your project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/). It runs the project's sync task, then reloads the project overview, so the process list and the scripts available in [Run Script](#running-a-script) are brought up to date. No processes are started.
 
-When **File → Settings → Use Genesis Sync** is enabled (the default), project changes are synchronised automatically whenever you start something. Use this button to force a sync; for example, after adding or removing processes or scripts.
+When **File → Settings → Use Genesis Sync** is enabled (the default), Genesis Start runs the sync task before it starts anything, but it does not reload the project overview. Genesis Start launches each process with the arguments held in the project overview, so changes to your process definitions (`*-processes.xml`) only reach the processes it launches after you click this button, or after you [start Genesis Start](#starting-genesis-start) again with the `genesisStart` Gradle task. Use it whenever you add, remove or change processes or scripts.
 
 ### Application Info
 
