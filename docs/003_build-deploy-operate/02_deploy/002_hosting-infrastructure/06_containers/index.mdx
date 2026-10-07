@@ -348,6 +348,17 @@ The Genesis Application Platform is highly resilient and easy to cluster for a H
 
 This area takes you through how to configure the platform with our clustering options when using containers.
 
+### Built-in clustering
+Built-in clustering uses [Akka](https://akka.io/) to manage the members of the cluster. It is the `LEGACY` cluster mode, and it is the default: a host uses it when `ClusterMode` is not set. For how it works, including the `hosts` list and setting the primary node, see [clustering for virtual machines](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering).
+
+In a container, set the mode with the `GENESIS_SYSDEF_ClusterMode` environment variable:
+
+```yaml
+GENESIS_SYSDEF_ClusterMode: LEGACY
+```
+
+In this mode, the hosts must be able to reach each other on `ClusterPort` (`6000` by default). See [Networking](#networking).
+
 ### Consul
 The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.
 
@@ -388,6 +399,8 @@ The default Genesis services and their ports are:
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
 The Consul Agents must also be able to access all the services on their defined ports.
+
+When using built-in clustering, the hosts must be able to reach each other by host name and on `ClusterPort` (`6000` by default).
 
 ### Configuring the app
 
