@@ -281,6 +281,23 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 In this example, `DATE` defined on `Trade` will not be part of the meta for this event.
 
+To get the updated metadata, send a JSON schema request to the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/). In this request, `localhost:9064` is the local router port. Set `FEATURE` to the event's full name, including the `EVENT_` prefix:
+
+```
+POST http://localhost:9064/json-schema-request
+Content-Type: application/json
+SOURCE_REF: 123
+USER_NAME: admin
+
+{
+  "MESSAGE_TYPE": "JSON_SCHEMA_REQUEST",
+  "SOURCE_REF": "123",
+  "DETAILS": {
+    "FEATURE" : "EVENT_TRADE_INSERT"
+  }
+}
+```
+
 By default, `excludeMetadataFields` includes two fields, `RECORD_ID` and `TIMESTAMP`. These fields are part of every database object; their values are always set by the database layer, so the client typically does not send them.
 
 :::warning
