@@ -999,7 +999,7 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
-`allFields()` behaves differently on the root table and on joined tables. On the view's root table, it includes `RECORD_ID` and `TIMESTAMP`. On a joined table, it leaves them out. If you need a joined table's `RECORD_ID` or `TIMESTAMP`, select it explicitly, and give it an alias or a prefix so that it doesn't clash with the root table's field of the same name:
+`allFields()` behaves differently on the root table and on joined tables. On the view's root table, it includes `RECORD_ID` and `TIMESTAMP`. On a joined table, it leaves them out. If you need a joined table's `RECORD_ID` or `TIMESTAMP`, select it explicitly, and give it an alias or a prefix so that it doesn't clash with the root table's field of the same name. If it does clash, the build fails at code generation with a `Duplicate output field` configuration error:
 
 ```kotlin
     fields {
@@ -1012,7 +1012,7 @@ You can add all the fields from a given table to a view using the `allFields` ac
 If a field has the same name as the field name in another table in the view, you can use one of the following operators to override the field name: 
 
 - `withAlias` gives the field an alternative name on the view
-- `withPrefix` adds a prefix to the standard field name; this is useful if you have a clash 
+- `withPrefix` adds a prefix to the standard field name (for example, `INSTRUMENT.RECORD_ID withPrefix INSTRUMENT` becomes `INSTRUMENT_RECORD_ID`); this is useful if you have a clash 
 
 For example, if you have COUNTERPARTY joined to INSTRUMENT and both have a NAME field:
 
