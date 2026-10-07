@@ -260,6 +260,105 @@ The service definition is designed to make sure that each module (service) has a
 
 For more information on the attributes that can be set here, go to our page on [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/).
 
+## Metadata requests
+
+Genesis Router answers three requests that describe your application's resources rather than use them:
+
+| Request | `MESSAGE_TYPE` | HTTP path | What it returns |
+|:--------|:---------------|:----------|:----------------|
+| Resources | `RESOURCES_REQUEST` | `GET /resources-request` | Every resource the router can reach, with its type |
+| Metadata | `META_REQUEST` | `GET /meta-request` | The fields of one resource |
+| JSON schema | `JSON_SCHEMA_REQUEST` | `POST /json-schema-request` | The inbound and outbound JSON schemas of one resource |
+
+To get a full Open API specification instead, use the `/gwf/open-api/spec/` endpoint described on the [Open API](/develop/server-capabilities/integrations/open-api/) page. It is built from the same JSON schemas.
+
+### Sending a metadata request
+
+Over HTTP, the path is the message type written in lower case with hyphens: `JSON_SCHEMA_REQUEST` becomes `/json-schema-request`. For a POST request, the router takes the `MESSAGE_TYPE` from the path and reads only the `DETAILS` block of the body. You don't need to put `MESSAGE_TYPE` or `SOURCE_REF` in the body.
+
+All three requests need a logged-in user. Set these headers:
+
+- `SESSION_AUTH_TOKEN` is the token returned when the user [logs in](/develop/server-capabilities/access-control/authentication/#event_login_auth). The router rejects requests without a valid token.
+- `SOURCE_REF` is optional. The router uses it to match the reply to the request, and generates one if you leave it out.
+- `USER_NAME` is only used when the router runs with `authDisabled = true`. In that case, the router takes the user name from this header and does not need `SESSION_AUTH_TOKEN`.
+
+If a proxy strips headers that contain underscores, you can send `SESSION-AUTH-TOKEN`, `SOURCE-REF` and `USER-NAME` instead.
+
+### Choosing the `FEATURE`
+
+Metadata and JSON schema requests name one resource in `DETAILS.FEATURE`. The router sends the request to the process that owns that resource, and that process sends the reply. `FEATURE` must be the resource's exact name:
+
+- for an Event Handler, the event name with its `EVENT_` prefix, for example `EVENT_TRADE_INSERT`
+- for a Request Server, the name of the `requestReply` without the `REQ_` prefix, for example `ALL_TRADES`
+- for a Data Server, the name of the query, for example `ALL_TRADES`
+
+`FEATURE` does not accept wildcards. To find the names you can use, send a resources request first.
+
+`FEATURE` is required. If you leave it out, the router cannot work out where to send the request, and replies with a 404 error saying that the resource is not mapped to a service.
+
+The [`allowList` and `blockList`](#blocked-and-allowed-resources) settings apply to the `FEATURE` value. If a resource is blocked, the router does not return its metadata or JSON schema either.
+
+### Listing resources
+
+```http
+GET http://localhost:9064/resources-request
+SESSION_AUTH_TOKEN: <session-auth-token>
+```
+
+The reply lists each resource by name and type:
+
+```json
+{
+  "MESSAGE_TYPE": "RESOURCES_REQUEST_ACK",
+  "SOURCE_REF": "...",
+  "RESOURCES": [
+    { "RESOURCE_NAME": "EVENT_TRADE_INSERT", "RESOURCE_TYPE": "EVENT_HANDLER" },
+    { "RESOURCE_NAME": "ALL_TRADES", "RESOURCE_TYPE": "DATASERVER" }
+  ]
+}
+```
+
+### Getting a resource's metadata
+
+Pass the resource name as the `DETAILS[FEATURE]` query parameter. Encode the square brackets if your client does not do it for you (`DETAILS%5BFEATURE%5D`).
+
+```http
+GET http://localhost:9064/meta-request?DETAILS[FEATURE]=EVENT_TRADE_INSERT
+SESSION_AUTH_TOKEN: <session-auth-token>
+```
+
+If the resource exists, the reply is a `FEATURE_ACK`. Its `DETAILS` block holds the resource's `NAME` and `TYPE` along with its field definitions. What these look like depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields.
+
+If no resource with that name is registered, the reply is a `META_NACK` with a `FEATURE_NOT_FOUND` error.
+
+### Getting a resource's JSON schema
+
+```http
+POST http://localhost:9064/json-schema-request
+Content-Type: application/json
+SOURCE_REF: <source-ref>
+SESSION_AUTH_TOKEN: <session-auth-token>
+
+{
+  "DETAILS": {
+    "FEATURE": "EVENT_TRADE_INSERT"
+  }
+}
+```
+
+If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `INBOUND` holds the schema of the message the resource accepts, and `OUTBOUND` holds the schema of the reply it sends:
+
+```json
+{
+  "MESSAGE_TYPE": "JSON_SCHEMA_FEATURE_ACK",
+  "SOURCE_REF": "<source-ref>",
+  "INBOUND": { ... },
+  "OUTBOUND": { ... }
+}
+```
+
+Only GPAL Event Handlers, GPAL Request Servers and GPAL Data Server queries publish JSON schemas. For any other resource, or for a name that is not registered, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
+
 ## Custom endpoints
 
 To create a custom endpoint using the Genesis Router, simply implement the `WebEndpoint` interface provided by Genesis Router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
