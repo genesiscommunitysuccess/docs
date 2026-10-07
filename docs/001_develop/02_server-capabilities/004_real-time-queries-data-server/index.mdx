@@ -709,7 +709,7 @@ dataServer {
 | Config item | Description | Default | Overridable in `query` |
 |-------------|-------------|---------|------------------------|
 |`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`). LMDB only|`2.GIGA_BYTE()`|No|
-|`cacheBackend`|The cache backend for all queries: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|`LMDB`|Yes|
+|`cacheBackend`|The cache backend for all queries: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|Not set (falls back to `DataServerCacheBackend`, then `LMDB`; see [Choosing the backend](#choosing-the-backend))|Yes|
 |`sqlite`|Uses SQLite for all queries and sets the SQLite settings of the shared database file. Read [SQLite settings](#sqlite-settings) for more details||Yes, with `sqlite` or `sqliteDedicated`|
 |`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FORY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
 |`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
@@ -895,6 +895,8 @@ These settings have no effect on a SQLite query:
 #### Sorting and filtering on SQLite
 
 On a SQLite query, the `ORDER_BY` option of `DATA_LOGON` accepts either an index name or a list of fields with directions, such as `TRADE_DATE DESC, PRICE ASC`. On LMDB, it still accepts an index name only.
+
+`ORDER_BY` takes a comma-separated list of `<FIELD> [ASC|DESC]`; the direction is case-insensitive and defaults to `ASC`.
 
 - Every field in the list must be a field of the query. Enriched fields can't be used.
 - `REVERSE` flips the direction of every field in the list.
