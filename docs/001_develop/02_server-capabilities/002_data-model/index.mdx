@@ -1197,7 +1197,7 @@ Fields declared in a fields dictionary and fields declared inline have different
 | Validation of a `STRING` field's max size | None | A max-length annotation on the generated entity | `.metadata { maxLength = null }` |
 | Validation of `INT`, `LONG`, `SHORT` and `DOUBLE` | None | Min and max annotations on the generated entity; for `LONG`, ±(2<sup>53</sup> - 1) | `.metadata { unbounded = true }` |
 | Format of a field with no format | The `<TYPE>_DEFAULT_FORMAT` system definition item, if set | None | `.format("...")` |
-| Class of an `ENUM` | `global.genesis.gen.dao.enums.Side` | `global.genesis.gen.dao.enums.<product>.<table>.Side` | `.globalEnumClass()`, from Genesis 10.1 |
+| Class of an `ENUM` | `global.genesis.gen.dao.enums.Side` | `global.genesis.gen.dao.enums.<product>.<table>.Side` | `.globalEnumClass()` |
 
 #### Worked example
 
@@ -1304,13 +1304,11 @@ tables {
     }
     ```
 
-    From Genesis 10.1, also add `.globalEnumClass()` to each `ENUM` field that your code uses, so that its generated class keeps its name:
+    Also add `.globalEnumClass()` to each `ENUM` field that your code uses, so that its generated class keeps its name:
 
     ```kotlin
     field("SIDE", ENUM("BUY", "SELL").maxSize(64)).globalEnumClass()
     ```
-
-    In Genesis 10.0, `globalEnumClass()` isn't available. When you delete the fields dictionary, change the imports of the enum instead, in this case from `global.genesis.gen.dao.enums.Side` to `global.genesis.gen.dao.enums.positions.trade.Side`.
 
 4. Check that the dictionary hasn't changed, using the original files as the baseline:
 
@@ -1347,7 +1345,7 @@ Three other differences can catch you out:
 
 ### Replacing the generated Fields object
 
-From Genesis 10.1, the generated `Fields` object (`global.genesis.gen.config.fields.Fields`) is deprecated, along with each of its properties. It still works, and no removal version has been set. The compiler shows a deprecation message wherever you use it, including where a tables dictionary or a script refers to a field by its bare name.
+From Genesis 10.0, the generated `Fields` object (`global.genesis.gen.config.fields.Fields`) is deprecated, along with each of its properties. It still works, and no removal version has been set. The compiler shows a deprecation message wherever you use it, including where a tables dictionary or a script refers to a field by its bare name.
 
 To replace it:
 
