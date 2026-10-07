@@ -1193,7 +1193,7 @@ Fields dictionaries still work in 10.0, and no removal version has been set. Whi
 
 ### Moving fields into tables
 
-When you move a field from a fields dictionary into a `table { }` block, make sure the inline version keeps the same definition. The two styles have different defaults, so a word-for-word translation can change your table. A column can change its size or its nullability. A property on the generated entity can change from non-nullable to nullable, which can break code that uses it.
+When you move a field from a fields dictionary into a `table { }` block, make sure the inline version keeps the same definition. The two styles have different defaults, so a word-for-word translation can change your table. A column can change its size or its nullability. A property on the generated entity can change from non-nullable to nullable, which can break code that uses it. To check, look at the generated code; the [build overview](/build-deploy-operate/build/bdo-build-overview/#dao) says where it is.
 
 | Attribute | Fields dictionary (`fields { }`) | Inline in `table { }` |
 |---|---|---|
@@ -1202,7 +1202,7 @@ When you move a field from a fields dictionary into a `table { }` block, make su
 | Nullability of a field with a default | Not null | Not null for `ENUM`, `BOOLEAN`, `DATETIME`, `BIGDECIMAL` and `RAW`; nullable for other types unless you add `.notNull()` |
 | `ENUM` default | The `default` argument | The first value listed, or `.default(...)` |
 
-To keep the definition the same, state the size and nullability explicitly on the inline field. For example, `field(name = "PRICE_SOURCE", type = STRING)` in a fields dictionary becomes `field("PRICE_SOURCE", STRING(64))` inline, and `field(name = "QUANTITY", type = INT, default = 0)` becomes `field("QUANTITY", INT).default(0).notNull()`. The one exception is an `ENUM` field with a `maxSize` in the fields dictionary: inline `ENUM` fields don't take a size, so it can't be kept.
+To keep the definition the same, state the size and nullability explicitly on the inline field. For example, `field(name = "PRICE_SOURCE", type = STRING)` in a fields dictionary becomes `field("PRICE_SOURCE", STRING(64))` inline (`RAW(64)` works the same way), and `field(name = "QUANTITY", type = INT, default = 0)` becomes `field("QUANTITY", INT).default(0).notNull()`. The one exception is an `ENUM` field with a `maxSize` in the fields dictionary: inline `ENUM` fields don't take a size, so it can't be kept.
 
 Three other differences can catch you out:
 
