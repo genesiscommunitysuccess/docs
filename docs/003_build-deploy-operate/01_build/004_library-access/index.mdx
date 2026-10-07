@@ -29,6 +29,73 @@ The ideal approach is to point your own instance to the Genesis Jfrog URL: `http
 
 The Genesis artifactory client-level user credentials should be configured in this local repo, and should not be shared with developers.
 
+In a Gradle build, the Genesis repository is declared in two places. Gradle plugins (such as the Genesis Settings plugin) are resolved from `pluginManagement.repositories` in `settings.gradle.kts`:
+
+```kotlin
+// settings.gradle.kts
+pluginManagement {
+    repositories {
+        maven {
+            val repoUrl = if(extra.properties["useDevRepo"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            }
+            url = uri(repoUrl)
+            credentials {
+                username = extra.properties["genesisArtifactoryUser"].toString()
+                password = extra.properties["genesisArtifactoryPassword"].toString()
+            }
+        }
+        gradlePluginPortal()
+        mavenCentral()
+        mavenLocal {
+            // Scoped to the launcher's own published artifacts (via publishToMavenLocal) so it
+            // can never shadow platform/framework dependencies with stale local jars.
+            content {
+                includeGroup("global.genesis.launcher")
+                includeGroupByRegex("global\\.genesis\\.genesis-(launcher|start)-gui.*")
+            }
+        }
+        google()
+    }
+}
+```
+
+Library dependencies are resolved from the `repositories` block in the root `build.gradle.kts`:
+
+```kotlin
+// build.gradle.kts
+allprojects {
+    repositories {
+        mavenLocal {
+            // Scoped to the launcher's own published artifacts (via publishToMavenLocal) so it
+            // can never shadow platform/framework dependencies with stale local jars.
+            content {
+                includeGroup("global.genesis.launcher")
+                includeGroupByRegex("global\\.genesis\\.genesis-(launcher|start)-gui.*")
+            }
+        }
+        maven {
+            val repoUrl = if(properties["useDevRepo"] == "true") {
+                "https://genesisglobal.jfrog.io/genesisglobal/dev-repo"
+            } else {
+                "https://genesisglobal.jfrog.io/genesisglobal/libs-release-client"
+            }
+            url = uri(repoUrl)
+            credentials {
+                username = properties["genesisArtifactoryUser"].toString()
+                password = properties["genesisArtifactoryPassword"].toString()
+            }
+        }
+        mavenCentral()
+        google()
+    }
+}
+```
+
+The credentials are read from the Gradle properties `genesisArtifactoryUser` and `genesisArtifactoryPassword`.
+
 :::tip
 Within certain enterprise infrastructure this setup will require the whitelisting of the following URLs:
 - `genesisglobal.jfrog.io`
