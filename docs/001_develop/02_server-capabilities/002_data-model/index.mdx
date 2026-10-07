@@ -999,7 +999,7 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
-`allFields()` behaves differently on the root table and on joined tables. On the view's root table, it includes `RECORD_ID` and `TIMESTAMP`. On a joined table, it leaves them out. If you need a joined table's `RECORD_ID` or `TIMESTAMP`, select it explicitly, and give it an alias or a prefix so that it doesn't clash with the root table's field of the same name:
+`allFields()` behaves differently on the root table and on joined tables. On the view's root table, it includes `RECORD_ID` and `TIMESTAMP`. On a joined table, it leaves them out. If you need a joined table's `RECORD_ID` or `TIMESTAMP`, select it explicitly, and give it an alias or a prefix so that it doesn't clash with the root table's field of the same name. If it does clash, the build fails at code generation with a `Duplicate output field` configuration error:
 
 ```kotlin
     fields {
@@ -1012,7 +1012,7 @@ You can add all the fields from a given table to a view using the `allFields` ac
 If a field has the same name as the field name in another table in the view, you can use one of the following operators to override the field name: 
 
 - `withAlias` gives the field an alternative name on the view
-- `withPrefix` adds a prefix to the standard field name; this is useful if you have a clash 
+- `withPrefix` adds a prefix to the standard field name (for example, `INSTRUMENT.RECORD_ID withPrefix INSTRUMENT` becomes `INSTRUMENT_RECORD_ID`); this is useful if you have a clash 
 
 For example, if you have COUNTERPARTY joined to INSTRUMENT and both have a NAME field:
 
@@ -1184,7 +1184,7 @@ Use the `updateTablesDictionary` Gradle task to move fields from a fields dictio
 
 #### Why a word-for-word translation isn't enough
 
-Fields declared in a fields dictionary and fields declared inline have different defaults. If you copy `field(name = "QUANTITY", type = INT, default = 0)` across as `field("QUANTITY", INT).default(0)`, the column becomes nullable, and the generated entity's `quantity` property changes type. The task avoids this by writing out every attribute that differs:
+Fields declared in a fields dictionary and fields declared inline have different defaults. If you copy `field(name = "QUANTITY", type = INT, default = 0)` across as `field("QUANTITY", INT).default(0)`, the column becomes nullable, and the generated entity's `quantity` property changes type. To see what a declaration produces, look at the generated code; the [build overview](/build-deploy-operate/build/bdo-build-overview/#dao) says where it is. The task avoids this by writing out every attribute that differs:
 
 | Attribute | Fields dictionary | Inline | Inline form that keeps the fields-dictionary behaviour |
 |---|---|---|---|

@@ -27,7 +27,7 @@ Views have no facade. The view module is generated in one part.
 
 With upstream reuse switched on, the build puts each upstream product's published slice jars on the code-generation classpath. Code generation reads the table and view metadata stored in those jars instead of evaluating that product's `.kts` files again. It then generates your own product's slices, and the facades that combine everything.
 
-Genesis is always an upstream product. The others are the product dependencies declared in your settings file.
+Genesis is always an upstream product. The others are the [product dependencies declared in your settings file](/build-deploy-operate/build/bdo-build-tools/#dependencies).
 
 The slice jars are resolved with these coordinates:
 
@@ -44,9 +44,13 @@ The view module has no slice jar, so its regular jar is used.
 
 Upstream reuse needs slice jars, and only products built and published with Genesis 10.0 have them. A PBC published with an earlier version has none, so use PBC versions built with Genesis 10.0.
 
+To check whether a PBC version has slice jars, look in your repository for its `<product>-generated-{sysdef,fields,dao}-<version>-slice.jar` artifacts. If a version has none, either upgrade to a version built with Genesis 10.0, or list the product in `genesis.codegen.overrideSlices` so that its generated code is produced locally.
+
 ## Publishing slice jars
 
 Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
+
+To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your dictionary-cache module; to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
 
 ## Settings
 
@@ -58,7 +62,7 @@ Set these as Gradle properties, for example in your `gradle.properties` file.
 | `genesis.codegen.overrideSlices` | None | A comma-separated list of upstream products to regenerate locally instead of reusing their slice jars, for example `genesis,auth`. |
 | `genesis.codegen.reuseUpstream.strict` | `false` | When `true`, the build fails in the situations described below, instead of logging a warning and carrying on. |
 
-You can also set `genesis.codegen.reuseUpstream` as `codegenReuseUpstream` in the `genesis { }` block of your `settings.gradle.kts` file. If you set it in both places, the settings file wins.
+You can also set `genesis.codegen.reuseUpstream` as `codegenReuseUpstream` in the `genesis { }` block of your `settings.gradle.kts` file. If you set it in both places, the settings file wins. Either way, the value applies to the whole build: every generated module in your application uses it.
 
 ```kotlin
 genesis {
@@ -72,18 +76,27 @@ genesis {
 Even with upstream reuse switched on, the build switches it off for a dictionary-cache module in two cases:
 
 - The module belongs to one of the upstream products itself.
-- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override.
+- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override. To override auth's tables, copy `cfg/auth-tables-dictionary.kts` from the `auth-config` jar into the `src/main/resources/cfg` directory of one of your application's modules.
 
 In the second case, the build logs a warning that names the products concerned and suggests the `genesis.codegen.overrideSlices` value to set. If `genesis.codegen.reuseUpstream.strict` is `true`, the build fails instead.
 
 ### When an upstream product's system definition doesn't match
 
-An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set.
+An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code, where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
 - `false` (the default): the build regenerates the affected products locally and logs a `*** DEPRECATION WARNING ***`.
 - `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add.
+
+The warning looks like this (trimmed):
+
+```
+[codegen] *** DEPRECATION WARNING ***
+...
+  genesis.codegen.overrideSlices=<products>
+...
+```
 
 The lenient behaviour is deprecated, with no removal version set. To opt in to the future behaviour now, set `genesis.codegen.reuseUpstream.strict=true` and list the products concerned in `genesis.codegen.overrideSlices`.
 
@@ -97,3 +110,13 @@ Your application's own product is always handled automatically. You never need t
 ### Extending an upstream table with `tableUnion`
 
 If your application uses `tableUnion` to add fields to a table that belongs to an upstream product, that product's slice jar doesn't contain your extra fields. You must list the product in `genesis.codegen.overrideSlices` so that it is regenerated locally. This applies whatever the `strict` setting. If the product isn't listed, the build fails with a message that names the value to add. Tables that belong to your application's own product don't need this.
+
+For example, this `position-tables-dictionary.kts` adds the field `DEPARTMENT`, defined in your application's fields dictionary, to auth's `PROFILE` table:
+
+```kotlin
+tables {
+    tableUnion(name = "PROFILE") {
+        DEPARTMENT
+    }
+}
+```
