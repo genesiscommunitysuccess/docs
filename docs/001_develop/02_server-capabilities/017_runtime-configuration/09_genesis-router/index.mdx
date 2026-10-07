@@ -187,7 +187,7 @@ router {
 
 What the router does with each request:
 
-- **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is a request server or event handler. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers, resources on TCP processes, and names that no process owns are handled by the router as usual.
+- **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is tried as a request server or event handler first. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers and resources on TCP processes are handled by the router as usual. If no process owns a resource of that name, the segment is tried as a custom endpoint, as described below, and is handled by the router as usual if no endpoint matches either.
 - **Several path segments** are a custom endpoint. If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
 - **Internal resources** owned by a process get an empty 404.
 
