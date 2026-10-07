@@ -66,7 +66,11 @@ zeroMqEncryption:
   allowedClientCertDirectory: /home/genesis/run/site-specific/cfg/zmq-curve-clients
 ```
 
-`allowedClientCertDirectory` is set to the directory the certificate was written to.
+`allowedClientCertDirectory` is set to the directory the certificate was written to. That absolute path is specific to this host. Before you commit the file, replace the Genesis home part of the path with the `GENESIS_HOME` environment variable, which is set on every Genesis host:
+
+```yaml {title="network-config.yaml"}
+allowedClientCertDirectory: ${GENESIS_HOME}/site-specific/cfg/zmq-curve-clients
+```
 
 :::warning
 The secret keys are printed only once. Store them straight away. You then export `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET`, along with the two public-key variables, on every host.
