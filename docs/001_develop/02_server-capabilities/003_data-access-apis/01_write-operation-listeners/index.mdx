@@ -29,6 +29,13 @@ Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result
 This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved:
 
 ```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.DbRecord
+import global.genesis.db.ModifyDetails
+import global.genesis.db.SyncDb
+import global.genesis.db.bustxn.SyncWriteOperationListener
+import global.genesis.db.engine.WriteResult
+
 @Module
 class TradeSummaryListener : SyncWriteOperationListener {
     override fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>) {
@@ -48,30 +55,39 @@ class TradeSummaryListener : SyncWriteOperationListener {
 
 The table, index and field names in this example are placeholders for your own data model.
 
+A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has the same write methods as `RxDb` (`insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants), and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.DbRecord
+import global.genesis.db.bustxn.WriteOperationListener
+import global.genesis.db.engine.WriteResult
+import global.genesis.db.rx.engine.RxRecordWriteSupport
+
+@Module
+class TradeEventListener : WriteOperationListener {
+    override fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>) {
+        writeResults
+            .flatMap { it.savedRecords }
+            .filter { it.tableName == "TRADE" }
+            .forEach { trade ->
+                val event = DbRecord("TRADE_EVENT").apply {
+                    setString("TRADE_ID", trade.getString("TRADE_ID"))
+                    setString("TRADE_STATUS", trade.getString("TRADE_STATUS"))
+                }
+                tx.insert(event).blockingGet()
+            }
+    }
+}
+```
+
+The table and field names in this example are placeholders for your own data model.
+
 ## Which listener is called
 
-Each write calls exactly one listener, never two. Which one depends on the API that made the write and on which listeners your application provides.
+Every listener your application provides is called for every write, whatever API or caller makes it. This includes writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/): they call all your listeners like any other write. The only difference between the listeners is the `tx` each one receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
 
-When your application provides all three:
-
-| Write made through | Listener called |
-|---|---|
-| `AsyncDb`, `AsyncEntityDb` (including `writeTransaction`), and single writes on an injected `RxEntityDb` | `AsyncWriteOperationListener` |
-| `SyncDb`, `SyncEntityDb`, and `AsyncEntityDb.sync()` | `SyncWriteOperationListener` |
-| `RxDb`, `RxEntityDb.writeTransaction`, and `rxDb.entityDb()` | `WriteOperationListener` |
-
-If your application doesn't provide a listener, its writes fall back to the next one:
-
-- With no `AsyncWriteOperationListener`, the writes in its row of the table call the `SyncWriteOperationListener`.
-- With no `SyncWriteOperationListener`, the writes in its rows call the `WriteOperationListener`.
-
-So if you provide only a `WriteOperationListener`, it is called for every write, through every API. At start-up, the process logs "No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sync write path" at INFO level.
-
-The reverse also holds: when you provide a more specific listener, it takes its writes away from the less specific one. For example, if you provide both a `WriteOperationListener` and a `SyncWriteOperationListener`, the `WriteOperationListener` is called only for writes made through `RxDb`, `RxEntityDb.writeTransaction` and `rxDb.entityDb()`. The process logs a warning once, naming the listener that is skipped and the APIs it no longer sees. When you add a more specific listener, move the old listener's logic into it.
-
-:::note
-On the FoundationDB database layers (`FDB` and `FDB2`), `SyncEntityDb` and `AsyncEntityDb.sync()` writes call the `WriteOperationListener`, and so do `AsyncEntityDb` and `RxEntityDb` writes when there is no `AsyncWriteOperationListener`. FoundationDB is deprecated in 10.0 and is planned for removal in 11.0.0.
-:::
+When you add a more specific listener, move the old listener's logic into it. Because every listener you provide is called for every write, logic that you leave in both the old and the new listener runs twice.
 
 ## How a listener is called
 
@@ -83,8 +99,12 @@ On the FoundationDB database layers (`FDB` and `FDB2`), `SyncEntityDb` and `Asyn
 
 ### `WriteOperationListener` on the SQL write path
 
-When a `WriteOperationListener` is called for a write that didn't go through `RxDb` (see [the fallback above](#which-listener-is-called)), its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
+When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
+
+This requirement is new in 10.0. If you have listener code from 8.x that calls `subscribe()` on a `tx` call without blocking, change it to block.
 
 ## `RawSQLWriteOperationListener`
 
 `RawSQLWriteOperationListener` was removed in 10.0. Implement `WriteOperationListener` instead.
+
+If your old listener ran raw SQL, implement `SyncWriteOperationListener` or `AsyncWriteOperationListener`. They pass you the underlying `SyncDb` or `AsyncDb` as `tx`, and both provide `sqlConnection()`. For the connection interface, see [SQL Database](/develop/server-capabilities/integrations/external-jdbc/).
