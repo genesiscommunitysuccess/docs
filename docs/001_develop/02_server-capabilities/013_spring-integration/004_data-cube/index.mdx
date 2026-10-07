@@ -814,6 +814,35 @@ public class TradesByCurrencyBaseCriteriaTest {
 See [Test tooling](../test-tooling) for `@GenesisSpringTest` itself — the live in-memory database,
 fixture loading, and the `@DirtiesContext` sharing model this example relies on.
 
+### What fails and why
+
+The validation rules on this page, collected in one place. A startup failure stops the application
+from starting; an HTTP 400 rejects that one request.
+
+| Condition | Fails with | Documented in |
+|---|---|---|
+| `genesis.cube.pivot.max-columns` is set below `1` | Startup failure | [Set-up](#set-up) |
+| A column the resource references does not exist on the entity | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| A JPQL-sourced exposure's projection alias does not resolve to a column on the source query | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| An operation declares no `groupBy` or aggregation | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| An operation's aggregate does not suit its column's type (a `SUM` over a string column, for example) | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| Output column names collide, or one is named `ROW_REF` | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| An operation is named `query` or `schema` | Startup failure | [Declaring a cube resource](#declaring-a-cube-resource) |
+| A `FilterPolicy` whitelist or blacklist names a column the entity does not have | Startup failure | [No-probing and column visibility](#no-probing-and-column-visibility) |
+| A `baseCriteria` template does not parse, references a column not on the source, or is not a single boolean expression; or, on an entity-sourced resource, one of its literals does not convert to its column's type | Startup failure | [Per-user row scoping](#per-user-row-scoping) |
+| A JPQL source is invalid, or contains a join without `allowJoins = true` | Fails when `forJpql` creates the cube | [Flat](#flat) |
+| A filter references a column outside the operation's `FilterPolicy`, or outside the visible set on the `exposeQuery` path — whether the column is hidden or does not exist | HTTP 400 | [No-probing and column visibility](#no-probing-and-column-visibility) |
+| A `POST .../query` request names a column outside the resource's visible set | HTTP 400 | [Grouped](#grouped) |
+| A pivot dimension is not in the resource's `pivotOn` allowlist | HTTP 400 | [Pivoted](#pivoted) |
+| A pivot's discovered columns, or its `OverflowPolicy.TopN` bound, would exceed `genesis.cube.pivot.max-columns` | HTTP 400 | [Pivoted](#pivoted) |
+| Explicit pivot `values` are combined with an `overflow` policy or `INTERVAL` discovery, or `includeOther` is set without `values` | HTTP 400 | [Explicit pivot values](#explicit-pivot-values) |
+| A `sort` names a column the request cannot sort on | HTTP 400 | [Sorting](#sorting) |
+| A `POST .../query` body carries a field other than `filter`, `sort`, `page`, `size`, `groupKeys`, `aggregates`, `calculations` and `pivot` (including `having` and `groupExpansion`) | HTTP 400 | [Grouped](#grouped) |
+| A `POST` carries a query string | HTTP 400 | [Sorting](#sorting) |
+| A `GET` carries an unknown or duplicate query parameter (including one produced by an unencoded `&&` in `filter`) | HTTP 400 | [Filtering](#filtering) |
+| A filter is malformed, references an unknown column, calls an unsupported method, has more than one statement, or is not boolean | HTTP 400 | [Filtering](#filtering) |
+| A filter ends in `;` on a resource that declares `baseCriteria` | HTTP 400 | [Filtering](#filtering) |
+
 ## Filtering
 
 Filtering reuses the Genesis Data Server's own `criteriaMatch` grammar: a Groovy expression over
@@ -977,6 +1006,15 @@ If-None-Match: "a1b2c3d4-42-7"
 
 304 Not Modified
 ```
+
+The cube subscribes to the update queue for each of a resource's source tables and invalidates its
+cached responses when any of those tables is updated: the update advances the source freshness
+generation, so the next identical `GET` gets a new ETag, and replaying the old one as
+`If-None-Match` returns `200` with the current rows rather than `304`. The era advances
+independently, whenever the cube's remembered entry for the request is dropped and re-planned —
+when it expires after `genesis.cube.pivot-ttl-millis`, is evicted to stay within
+`genesis.cube.remembered-max-entries`, or is cleared by `Cube.refresh()` — with the same effect on
+a conditional `GET`.
 
 `GET /api/v1/cubes/{resource}` describes a resource itself, before you issue any query against it —
 whether rows are addressable, the identity columns, pagination/caching guarantees, and the
