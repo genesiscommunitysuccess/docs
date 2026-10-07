@@ -124,9 +124,9 @@ The `genesisScriptCompilation` block in a module's `build.gradle.kts` file confi
 | `enabled` | The `genesis.scripts.compileAtBuildTime` Gradle property, otherwise `true` | Turns build-time compilation on or off for this module |
 | `sourceSets` | `setOf("main")` | The source sets whose `.kts` files are compiled |
 | `scriptDirNames` | `setOf("cfg", "scripts")`, or empty when `scriptDirs` is set | Script directories, taken as `<each resources source directory>/<name>`. Nested names such as `"genesis/cfg"` are allowed |
-| `scriptDirs` | Empty | Extra script directories. Accepts a `TaskProvider`, so a task that generates scripts runs first. Setting it also tells the plugin that the module has scripts |
+| `scriptDirs` | Empty | Extra script directories, added with `from`: `scriptDirs.from(layout.projectDirectory.dir("src/main/genesis/scripts"))`. Accepts a `TaskProvider` in `from(...)` too, so a task that generates scripts runs first. Setting it also tells the plugin that the module has scripts |
 | `include` | `setOf("**/*.kts")` | Ant patterns, relative to each script directory, for the files to compile |
-| `exclude` | Empty | Ant patterns, relative to each script directory, for `.kts` files that must not be compiled |
+| `exclude` | Empty | Ant patterns, relative to each script directory, for `.kts` files that must not be compiled, such as `setOf("**/broken-*.kts")` |
 | `scriptDefinitions` | Empty | Fully qualified names of script-definition classes to use. Also available as `scriptDefinitions("...", "...")` |
 | `discoverScriptDefinitions` | `true` while `scriptDefinitions` is empty | Find script definitions by scanning the compile classpath |
 | `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint |
