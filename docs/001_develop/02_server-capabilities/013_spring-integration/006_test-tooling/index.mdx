@@ -12,13 +12,15 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-JUnit 5 support for Spring-based Genesis applications, parallel to [GenesisJunit](/develop/server-capabilities/testing-api).
+JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications, parallel to [GenesisJunit](/develop/server-capabilities/testing-api). Genesis 10.0 manages the JUnit 6 version through the platform BOM, so you don't declare it yourself.
 
 ## Overview
 
-`genesis-spring-testsupport` is the JUnit 5 equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
+`genesis-spring-testsupport` is the JUnit 6 (JUnit Jupiter) equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
 
 Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: the four event clients [`EventClientSync`](../event-handlers#testing), `EventClientAsync`, `EventClientRx` and `EventClientBlocking` (all under `global.genesis.testsupport.client.eventhandler`), and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`. The [worked example](#a-simple-example) below uses all four event clients.
+
+`genesis-spring-testsupport` does not provide or support test clients for Data Server or Request Server components: the `DataServerQueryViewClient` and `RequestClientSync` clients described on those components' pages are not supported under `@GenesisSpringTest`.
 
 To use it, add the following to the `build.gradle.kts` of the `-spring` module that runs the tests. In genx's default multi-module layout this is `<project-name>-spring`, and `<app-module>` is its sibling `<project-name>-app`:
 
