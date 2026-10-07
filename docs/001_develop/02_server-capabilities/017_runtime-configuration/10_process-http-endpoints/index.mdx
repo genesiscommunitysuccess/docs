@@ -11,7 +11,7 @@ tags:
   - genesis router
 ---
 
-By default, Genesis processes exchange messages with each other over raw TCP, and only GENESIS_ROUTER answers HTTP requests. If you switch a process to the WebSocket messaging channel, it keeps serving Genesis messaging and also answers plain HTTP on the same port: each of its request servers, event handlers and custom endpoints gets an HTTP route. You can call those routes directly from inside your cluster, or let the Genesis Router forward HTTP requests to them as a proxy.
+By default, Genesis processes exchange messages with each other over raw TCP, and only GENESIS_ROUTER answers HTTP requests. If you switch a process to the WebSocket messaging channel, it keeps serving Genesis messaging and also answers plain HTTP on the same port, the process's port from its [service definition](/develop/server-capabilities/runtime-configuration/service-definition/) (`*-service-definitions.xml`): each of its request servers, event handlers and custom endpoints gets an HTTP route. You can call those routes directly from inside your cluster, or let the Genesis Router forward HTTP requests to them as a proxy.
 
 A process stays on TCP, and loads none of the HTTP layer, until you configure the channel.
 
@@ -59,7 +59,7 @@ Request and response bodies use the same JSON format as the router. The reply is
 |---|---|
 | No route for the path | 404 |
 | The route exists, but not for this method | 405; the body lists the methods it accepts |
-| No custom endpoint's request criteria accept the request, or more than one does | 406 |
+| The request doesn't match any custom endpoint's required [request parameters](/develop/server-capabilities/integrations/custom-endpoints/#request-parameters) or its `accepts` and `produces` content types, or it matches more than one | 406 |
 | No session token, or an unknown one | 401 |
 | Logged in, but without the endpoint's permission codes | 403 |
 | Request body too large | 413 |
@@ -72,7 +72,13 @@ A NACK from a request server or event handler comes back with status 200. The ro
 
 The process reads the session token from the `SESSION_AUTH_TOKEN` request header, and looks the session up in its own `USER_SESSION` table. Request server and event handler routes require a logged-in user, and don't check any permission codes at the route; permissioning inside the request server or event handler still applies. Custom endpoints apply the permissioning they declare.
 
-To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` for that process. Every request is then treated as anonymous. The default is `false`.
+To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`.
+
+For example, as an environment variable for a process named `POSITION_APP_EVENT_HANDLER`:
+
+```bash
+GENESIS_SYSDEF_POSITION_APP_EVENT_HANDLER_HttpAuthDisabled=true
+```
 
 ## Custom endpoints on a process
 
