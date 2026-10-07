@@ -44,6 +44,8 @@ The view module has no slice jar, so its regular jar is used.
 
 Upstream reuse needs slice jars, and only products built and published with Genesis 10.0 have them. A PBC published with an earlier version has none, so use PBC versions built with Genesis 10.0.
 
+To check whether a PBC version has slice jars, look in your repository for its `<product>-generated-{sysdef,fields,dao}-<version>-slice.jar` artifacts. If a version has none, either upgrade to a version built with Genesis 10.0, or list the product in `genesis.codegen.overrideSlices` so that its generated code is produced locally.
+
 ## Publishing slice jars
 
 Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
@@ -60,7 +62,7 @@ Set these as Gradle properties, for example in your `gradle.properties` file.
 | `genesis.codegen.overrideSlices` | None | A comma-separated list of upstream products to regenerate locally instead of reusing their slice jars, for example `genesis,auth`. |
 | `genesis.codegen.reuseUpstream.strict` | `false` | When `true`, the build fails in the situations described below, instead of logging a warning and carrying on. |
 
-You can also set `genesis.codegen.reuseUpstream` as `codegenReuseUpstream` in the `genesis { }` block of your `settings.gradle.kts` file. If you set it in both places, the settings file wins.
+You can also set `genesis.codegen.reuseUpstream` as `codegenReuseUpstream` in the `genesis { }` block of your `settings.gradle.kts` file. If you set it in both places, the settings file wins. Either way, the value applies to the whole build: every generated module in your application uses it.
 
 ```kotlin
 genesis {
@@ -80,12 +82,21 @@ In the second case, the build logs a warning that names the products concerned a
 
 ### When an upstream product's system definition doesn't match
 
-An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set.
+An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code, where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
 - `false` (the default): the build regenerates the affected products locally and logs a `*** DEPRECATION WARNING ***`.
 - `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add.
+
+The warning looks like this (trimmed):
+
+```
+[codegen] *** DEPRECATION WARNING ***
+...
+  genesis.codegen.overrideSlices=<products>
+...
+```
 
 The lenient behaviour is deprecated, with no removal version set. To opt in to the future behaviour now, set `genesis.codegen.reuseUpstream.strict=true` and list the products concerned in `genesis.codegen.overrideSlices`.
 
