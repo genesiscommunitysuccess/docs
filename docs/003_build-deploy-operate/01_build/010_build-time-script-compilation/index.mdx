@@ -179,10 +179,29 @@ Some scripts are never served from a compiled class. The build leaves them out o
 
 ### Falling back to compiling
 
-If the compiled class can't be used, the process logs a warning and compiles the script at start-up. That happens if, for example, the class listed in the index is missing, fails to link (with a `NoSuchFieldError`, say), or fails while it is evaluated. A problem with a compiled class never stops a process from starting on its own. A script that is broken in itself still fails, once compiling it fails too.
+A process compiles a script at start-up instead of loading its class in two cases, and logs each one differently.
+
+**The script's source no longer matches a compiled class**, for example because you overrode it in `site-specific` or edited it on the server. The process logs this at DEBUG level:
+
+```
+No precompiled class matches the current contents of <script>; compiling.
+```
+
+You won't see this line at the default log level. To see it, set the logger `global.genesis.config.dsl.host.PrecompiledScriptLoader` to DEBUG.
+
+**The compiled class can't be used.** That happens if, for example, the class listed in the index is missing, fails to link (with a `NoSuchFieldError`, say), or fails while it is evaluated. The process logs a warning (WARN level) that ends in `compiling instead.` For a class that fails while it is evaluated, the warning is one of these:
+
+```
+Evaluating the precompiled class for <script> failed; compiling instead.
+Evaluating the precompiled class for <script> threw (<error>); compiling instead.
+```
+
+A problem with a compiled class never stops a process from starting on its own. A script that is broken in itself still fails, once compiling it fails too.
 
 :::warning
-If a script throws an exception while running from its compiled class, the process can't tell a fault in the script from a stale class. So it compiles the script and runs it again, and anything the script did before the exception happens again. This matters most for scripts that register things or write data as they run, such as `*-eventhandler.kts` and `*-script.kts`. Put non-idempotent work after anything that can fail.
+If a script fails while it is evaluated from its compiled class, the process can't tell a fault in the script from a stale class. So it compiles the script and evaluates it again. What runs again is the script's top-level code: every statement outside a handler body, including the DSL calls that declare handlers. Handler bodies, such as the code inside an event handler's `onCommit` block, don't run when the script loads, so they aren't repeated. A missing class or a source mismatch is caught before any of the script runs, so nothing is repeated in those cases.
+
+For example, if a `*-script.kts` file inserts a record at its top level and a later line fails with a `NoSuchFieldError` from a stale class, the record is inserted twice: once by the compiled class and once by the script compiled at start-up. Put top-level work like that at the end of the script, after the code that can fail.
 :::
 
 ### Components built with this feature
