@@ -294,7 +294,16 @@ Metadata and JSON schema requests name one resource in `DETAILS.FEATURE`. The ro
 
 `FEATURE` does not accept wildcards. To find the names you can use, send a resources request first.
 
-`FEATURE` is required. If you leave it out, the router cannot work out where to send the request, and replies with a 404 error saying that the resource is not mapped to a service.
+If `FEATURE` is missing, or names a resource that no process has registered, the router cannot work out where to send the request. It replies with a `MSG_NACK` and HTTP status 404:
+
+```json
+{
+  "MESSAGE_TYPE": "MSG_NACK",
+  "ERROR": [
+    { "CODE": 404, "TEXT": "Resource EVENT_UNKNOWN is not mapped to a service", "STATUS_CODE": "404 Not Found" }
+  ]
+}
+```
 
 The [`allowList` and `blockList`](#blocked-and-allowed-resources) settings apply to the `FEATURE` value. If a resource is blocked, the router does not return its metadata or JSON schema either.
 
@@ -327,9 +336,7 @@ GET http://localhost:9064/meta-request?DETAILS[FEATURE]=EVENT_TRADE_INSERT
 SESSION_AUTH_TOKEN: <session-auth-token>
 ```
 
-If the resource exists, the reply is a `FEATURE_ACK`. Its `DETAILS` block holds the resource's `NAME` and `TYPE` along with its field definitions. What these look like depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields.
-
-If no resource with that name is registered, the reply is a `META_NACK` with a `FEATURE_NOT_FOUND` error.
+The reply is a `FEATURE_ACK`, and its `DETAILS` block describes the resource's fields. The layout depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields.
 
 ### Getting a resource's JSON schema
 
@@ -357,7 +364,7 @@ If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `IN
 }
 ```
 
-Only GPAL Event Handlers, GPAL Request Servers and GPAL Data Server queries publish JSON schemas. For any other resource, or for a name that is not registered, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
+GPAL Event Handlers, Request Servers and Data Server queries all publish JSON schemas. If a resource is registered but has no JSON schema, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
 
 ## Custom endpoints
 
