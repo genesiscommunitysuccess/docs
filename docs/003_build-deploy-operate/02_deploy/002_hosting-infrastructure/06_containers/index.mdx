@@ -473,6 +473,14 @@ consul kv get -recurse genesis/cluster/<name>/node-ids/
 
 or call the HTTP API at `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`. To find a host's node ID, look for the claim whose `identity` matches that host's identity; the ID is the last part of its key.
 
+To return just one host's claim, filter the output on that host's identity. `consul kv get -recurse` prints each claim on its own line, as the key followed by its JSON value:
+
+```bash
+consul kv get -recurse genesis/cluster/<name>/node-ids/ | grep '<host identity>'
+```
+
+The node ID is the last part of the key at the start of the line that matches. Because `grep` matches the identity anywhere on the line, use the full identity, so that a shorter one does not also match another host's claim.
+
 To check that a host's processes have registered, list the services in the Consul catalog, and the nodes behind one of them:
 
 ```bash
