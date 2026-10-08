@@ -30,7 +30,7 @@ Use headless mode on build machines, in CI, or in a remote development environme
 - **The process list is ready straight away.** Genesis Start loads the project overview before the REST API starts listening, so your first request never sees an empty process list.
 - On macOS, headless mode doesn't show an icon in the Dock.
 
-If your project doesn't have Genesis Start yet, [enable it](/develop/development-environment/genesis-start/configuration/#enabling-genesis-start) first. The `google()` repository settings described there are needed for headless mode too, unless you use the standalone plugin.
+If your project doesn't have Genesis Start yet, or `genesisStart` fails because it can't resolve `androidx` artifacts, [enable it](/develop/development-environment/genesis-start/configuration/#enabling-genesis-start) first. The `google()` repository settings described there are needed for headless mode too, unless you use the standalone plugin.
 
 ## Starting headless mode
 
@@ -195,7 +195,7 @@ curl -X POST http://localhost:18080/api/processes/application/start-all \
   -d '{"skipSync": true}'
 ```
 
-The same header applies to every `POST` that has a body.
+The same header applies to every request that has a body, including the `PUT` and `PATCH` calls below.
 
 Script arguments are split on spaces, with no support for quotes or escaping.
 
