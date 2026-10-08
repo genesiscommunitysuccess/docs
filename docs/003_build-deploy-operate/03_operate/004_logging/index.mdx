@@ -16,7 +16,7 @@ This page relates to Server logging.
 ## Overview
 
 Genesis uses [slf4j](https://www.slf4j.org/) for logging. Behind it, the logging backend is [log4j2](https://logging.apache.org/log4j/2.12.x/) by default, or [Logback](https://logback.qos.ch/) if you choose it; see [Choosing a logging backend](#choosing-a-logging-backend).
-With log4j2, logging is configured by a log4j2 configuration file. By default this is `log4j2-default.xml`, and you can override it with a file of the same name in `site-specific/cfg/`.
+Logging is configured by a configuration file for the backend in use. By default this is `log4j2-default.xml` with log4j2 or `logback-default.xml` with Logback, and for either backend you can override it with a file of the same name in `site-specific/cfg/`.
 
 See default file below:
 ```xml
@@ -87,6 +87,8 @@ genesisExec {
     }
 }
 ```
+
+The constants this block accepts are `LOG4J` and `LOGBACK`. log4j2 is the default, so to go back to it you don't need to set anything: remove the Logback setting, whether it is the Gradle property or the `backend.set(LOGBACK)` line.
 
 If you set both, the value in the `genesisExec` block wins; the Gradle property is only its default.
 
