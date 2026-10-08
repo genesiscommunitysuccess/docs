@@ -22,7 +22,7 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`);
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; for a platform script such as `genesis-router.kts` the build deploys it to `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead);
 - overriding an application script from another component;
 - editing a script on a deployed server.
 
@@ -113,7 +113,7 @@ No system definition item, JVM option or environment variable stops a process fr
 
 - **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`;
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, it is in `$GENESIS_HOME/site-specific/scripts/`. Its source no longer matches the index, so the process compiles it at start-up.
+- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, a platform script such as `genesis-router.kts` is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. Its source no longer matches the index, so the process compiles it at start-up.
 
 ## Configuration options
 
@@ -157,7 +157,7 @@ To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/
 
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
 
-- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up.
+- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script fails with `Unable to find specified script module "<module>"`.
 - **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
 - **A script that produced no class** (for example, a script whose file name contains `$`: the plugin expects `_` in its class name, but the Kotlin compiler keeps the `$`, so the plugin doesn't find the class). The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
