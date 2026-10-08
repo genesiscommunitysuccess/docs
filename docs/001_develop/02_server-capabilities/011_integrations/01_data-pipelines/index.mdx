@@ -1128,7 +1128,7 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
-`sendEventOnCompletion` always resolves the target service from `eventName`, and logs a NACK at error level instead of throwing. Its retry mode is always `holdUntilDelivered()`, and you can't change it. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
+`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level instead of throwing. Its retry mode is always `holdUntilDelivered()`, and you can't change it. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
 
 In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
 
