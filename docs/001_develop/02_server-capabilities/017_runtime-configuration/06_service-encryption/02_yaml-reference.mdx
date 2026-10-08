@@ -68,7 +68,7 @@ Unknown top-level keys are ignored.
 
 There is no TLS-style validator for this section; values are used as configured.
 
-The `webSocket` and `http` blocks ignore keys they don't recognise, so a misspelt key is dropped without an error.
+The `webSocket` and `http` blocks ignore keys they don't recognise, so a misspelt key is ignored silently: there is no error and nothing is logged, so check the spelling against this table.
 
 ```yaml
 messaging:
