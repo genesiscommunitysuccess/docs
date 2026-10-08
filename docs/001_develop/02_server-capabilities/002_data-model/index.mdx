@@ -742,6 +742,30 @@ table(name = "GENESIS_PROCESS", id = 12) {
 }
 ```
 
+#### `tableUnion`
+
+`tableUnion` adds fields to a table that is defined elsewhere, for example in an upstream product, without redefining the table. The fields you declare are added to the existing table.
+
+| Parameter name | Type      | Description                                                                 |
+|----------------|-----------|-----------------------------------------------------------------------------|
+| `name`         | `String`  | name of the existing table to add fields to                                  |
+| `ttl`          | `Integer` | optional time to live, as for [`table`](#table)                              |
+| `audit`        | `details` | optional, as for [`table`](#audited-tables)                                  |
+
+You do not give a table `id`: the table already has one. Inside the body you declare the extra fields with [`field`](#field), exactly as in a `table` definition.
+
+###### Example definition
+
+```kotlin
+tables {
+    tableUnion(name = "PROFILE") {
+        field("DEPARTMENT", STRING)
+    }
+}
+```
+
+If you use `tableUnion` on a table that belongs to an upstream product, you must also regenerate that product's code locally. See [Extending an upstream table with `tableUnion`](/build-deploy-operate/build/codegen-upstream-reuse/#extending-an-upstream-table-with-tableunion).
+
 ## `view`
 
 [Views](#views) are defined in  `*-views-dictionary.kts` files. These must be placed in the `cfg` folder in your application's server codebase. They enable you to create views of the data, which draw their data from more than one table.
