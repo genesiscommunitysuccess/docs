@@ -142,7 +142,11 @@ In other words, project files override user files, and service-specific files ov
 
 - **Use `~/.genesis/` for settings you share across projects**: put machine-wide values (for example, database host and port, or common credentials) in your home folder, so they apply to every Genesis project on your machine.
 - **Use the project's `.genesis/` for project-specific settings**: you can share these with your team by committing the folder to source control. Don't commit values that are specific to your machine, or secrets.
-- If you commit the project's `.genesis/` folder, consider adding `.gitignore` rules for sensitive or machine-specific files.
+- If you commit the project's `.genesis/` folder, consider adding `.gitignore` rules for sensitive or machine-specific files. For example, to keep your project-level `development-system-definition.properties` out of source control while still committing the service-specific files, add this line to the `.gitignore` in the root of your project:
+
+  ```text
+  server/.genesis/development-system-definition.properties
+  ```
 
 ### Overriding a property for a single run
 
