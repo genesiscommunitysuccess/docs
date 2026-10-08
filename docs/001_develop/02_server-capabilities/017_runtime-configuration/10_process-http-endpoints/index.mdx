@@ -17,9 +17,8 @@ A process stays on TCP, and loads none of the HTTP layer, until you configure th
 
 :::warning
 
-Native HTTP on the process port has three known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust.
+Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust.
 
-- **Request servers and event handlers run as the caller-supplied `USER_NAME` header.** The session token is checked, but the user it belongs to isn't passed to the request server or event handler. They see whatever `USER_NAME` header the caller sends, so any logged-in caller can act as another user. With no header, the request runs as `UNKNOWN`, and a request server that declares permission codes rejects it. Custom endpoints are not affected; they receive the session user.
 - **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the refresh-token lifetime has passed. `sessionTimeoutMins` isn't checked here, unlike requests that the router handles itself.
 - **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
 
