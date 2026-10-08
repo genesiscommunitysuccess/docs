@@ -22,11 +22,11 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (`$GENESIS_HOME/site-specific/scripts/` on a deployed server);
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`);
 - overriding an application script from another component;
 - editing a script on a deployed server.
 
-In each case the changed script no longer matches its index entry, so the process compiles it.
+In each case the changed script no longer matches its index entry, so the process compiles it. The match covers the script's file name and text only, so a changed classpath or dependency version does not invalidate a precompiled class; rebuild after changing dependencies.
 
 The scripts compile in a Gradle source set of their own: `genesisScripts`, or `genesis<SourceSet>Scripts` for a source set other than `main`. Your module's own `.kt` code compiles exactly as before. The script compilation copies the compiler options of the module's Kotlin compile task, such as `jvmTarget`, `optIn` and `freeCompilerArgs`.
 
@@ -58,7 +58,7 @@ plugins {
 }
 ```
 
-Applying the plugin turns the feature on; there is no second switch. If the module doesn't apply the Kotlin JVM plugin (`org.jetbrains.kotlin.jvm`), the plugin does nothing and logs that it has nothing to compile.
+Applying the plugin turns the feature on; there is no second switch. If the module doesn't apply the Kotlin JVM plugin (`org.jetbrains.kotlin.jvm`), the plugin does nothing and logs a message that begins `Build-time script compilation is applied to <module> but it never applied the 'org.jetbrains.kotlin.jvm' plugin`.
 
 In a repository without a Genesis Settings plugin, Gradle has to be able to resolve the plugin id:
 
@@ -113,7 +113,7 @@ No system definition item, JVM option or environment variable stops a process fr
 
 - **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`;
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script on a deployed server, without a rebuild:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in `$GENESIS_HOME/site-specific/scripts/`. Its source no longer matches the index, so the process compiles it at start-up.
+- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, it is in `$GENESIS_HOME/site-specific/scripts/`. Its source no longer matches the index, so the process compiles it at start-up.
 
 ## Configuration options
 
@@ -129,7 +129,7 @@ The `genesisScriptCompilation` block in a module's `build.gradle.kts` file confi
 | `exclude` | Empty | Ant patterns, relative to each script directory, for `.kts` files that must not be compiled, such as `setOf("**/broken-*.kts")` |
 | `scriptDefinitions` | Empty | Fully qualified names of script-definition classes to use. Also available as `scriptDefinitions("...", "...")` |
 | `discoverScriptDefinitions` | `true` while `scriptDefinitions` is empty | Find script definitions by scanning the compile classpath |
-| `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint |
+| `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint. It takes effect only when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin |
 | `expectGeneratedScripts` | `false` (the Settings plugin sets `true`) | Set up compilation even when no `.kts` file exists yet when Gradle configures the build |
 | `failOnMissingScriptClasses` | `true` | Fail the build when a script produced no class |
 
@@ -144,23 +144,25 @@ You can also compile a module's test scripts, so that tests which start a script
 ```kotlin
 genesisScriptCompilation {
     sourceSets = setOf("test")
-    scriptDirNames = setOf("genesisHome/site-specific/scripts")
+    scriptDirNames = setOf("genesis/scripts") // src/test/resources/genesis/scripts
     scriptDefinitions("global.genesis.dataserver.pal.script.DataServerScript")
 }
 ```
 
 You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing, a test that loads such a script fails with `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`.
 
+To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/testing-api/#testscriptfile) in the Testing API.
+
 ## What fails the build
 
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
 
-- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. This includes modules named in `@file:ScriptModules("...")`: the module must depend on each of them. A `ScriptModules` name is matched against the file names of the jars on the classpath, not against Maven coordinates. For example, `@file:ScriptModules("genesis-router")` matches `genesis-router-<version>.jar`, so the module needs the dependency that puts that jar on its compile classpath.
+- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up.
 - **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
 - **A script that produced no class** (for example, a script whose file name contains `$`: the plugin expects `_` in its class name, but the Kotlin compiler keeps the `$`, so the plugin doesn't find the class). The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
-- **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set.
-- **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module.
-- **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them.
+- **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
+- **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module. The message begins `<module> already has a source set named genesisScripts, which build-time script compilation needs`.
+- **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them, with a message that begins `These scripts still compile to the same class '<class>' after disambiguation:`.
 
 ## Scripts with the same file name
 
