@@ -71,7 +71,7 @@ consolidators {
             }
         }
 
-        groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+        groupBy { Order.byIdDate(orderId, tradeDate) } into {
             build {
                 Order {
                     orderId = groupId.orderId
@@ -199,7 +199,7 @@ consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
         instrumentId
     } into {
         lookup {
-            Position.ByInstrumentId(groupId)
+            Position.byInstrumentId(groupId)
         }
         build {
             Position {
@@ -228,13 +228,13 @@ Effectively, that gives you three types of Consolidator object, which we shall i
 
 ```kotlin
 // consolidate database records:
-val order: Order? = tradeConsolidator.get(Trade.ById("A"))
-val orders: List<Order> = tradeConsolidator.getRange(Trade.ByOrderId("A"), 1).toList()
+val order: Order? = tradeConsolidator.get(Trade.byId("A"))
+val orders: List<Order> = tradeConsolidator.getRange(Trade.byOrderId("A"), 1).toList()
 // consolidate runtime instances:
 val order: Order? = tradeConsolidator.consolidate(trade)
 val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
 // what-if analysis, combine both database records and runtime instances:
-val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
+val result = tradeConsolidator.whatIf(Trade.byOrderId("2"), trade1, trade2)
 ```
 #### Three types of Consolidator object
 In practice, you can create three types of Consolidator object to cover different use cases:
@@ -589,7 +589,7 @@ For example, this consolidator has no `select` block. It builds an `ORDER` row f
 
 ```kotlin
   consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
-    groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+    groupBy { Order.byIdDate(orderId, tradeDate) } into {
         build {
             Order {
                 orderId = groupId.orderId
@@ -1006,8 +1006,10 @@ groupBy { group(allocationId, feeGroup) }
 ```
 - unique index entries on the output table (table only):
 ```kotlin
-groupBy { CommissionAndFeesSummary.ByAllocationId(allocationId, feeGroup) }
+groupBy { CommissionAndFeesSummary.byAllocationId(allocationId, feeGroup) }
 ```
+
+The index entity is generated from the table's key (for example, `ORDER_BY_ID` becomes `byId`); use the one that matches your table's key. For more information, see [Index entities](/develop/server-capabilities/data-access-apis/#index-entities).
 
 Using `tuple` and `group` in `groupBy` can later be interacted with in sub blocks such as lookup.
 
@@ -1060,7 +1062,7 @@ should be defined. In this block, you have access to the `groupId` property, as 
 Example:
 ```kotlin
 groupBy { tradeId } into {
-    lookup { Trade.ById(groupId) }
+    lookup { Trade.byId(groupId) }
 }
 ```
 
@@ -1076,7 +1078,7 @@ If `onNotFound` is `BUILD` and there is no `build` block, the consolidator fails
 Example:
 
 ```kotlin
-groupBy { Trade.ById(tradeId) } into {
+groupBy { Trade.byId(tradeId) } into {
     build {
         Trade {
             tradeId = groupId.tradeId
@@ -1105,8 +1107,8 @@ tell the Consolidator how to do that.
 For example, if you are aggregating the total quantity value of `Trade` entities for a specific `Order` entity, your `indexScan` definition should be able to lookup all trades for that specific `Order`. See example below:
 
 ```kotlin
-groupBy { Order.ById(orderId) } into {
-    indexScan { Trade.ByOrderId(groupId.orderId) }
+groupBy { Order.byId(orderId) } into {
+    indexScan { Trade.byOrderId(groupId.orderId) }
 }
 ```
 
@@ -1335,7 +1337,7 @@ consolidators {
             }
         }
 
-        groupBy { Order.ById(orderId) } into {
+        groupBy { Order.byId(orderId) } into {
             val start = DateTime(2022, 1, 1, 0, 0)
             build {
                 val id = groupId.orderId.toInt()
@@ -1385,7 +1387,7 @@ private fun trade(
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals(22.0*100, record?.totalNotional)
             }
         }
@@ -1402,7 +1404,7 @@ private fun trade(
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
             }
         }
@@ -1478,7 +1480,7 @@ class OrderFromTradesConsolidator : GPalConsolidator({
             }
         }
 
-        groupBy { Order.ById(orderId) } into {
+        groupBy { Order.byId(orderId) } into {
             val start = DateTime(2022, 1, 1, 0, 0)
             build {
                 val id = groupId.orderId.toInt()
@@ -1534,7 +1536,7 @@ class ConsolidatorTest {
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
             }
         }
