@@ -1,0 +1,329 @@
+---
+title: 'Genesis Start headless mode'
+sidebar_label: 'Headless mode'
+id: headless-mode
+keywords: [genesis start, launcher, headless, rest, api, mcp, ai agent, ci, remote]
+tags:
+- launcher
+- genesis start
+- headless
+- rest
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+In headless mode, Genesis Start runs without opening a window, and you drive it with its REST API, or let an AI agent drive it over [MCP](#driving-it-from-an-ai-agent-mcp). Everything you would normally do by clicking (bootstrapping, starting and stopping processes, running scripts, checking status, switching process profiles) is done with HTTP requests instead.
+
+Use headless mode on build machines, in CI, or in a remote development environment with no display. It uses the same engine as the [desktop window](/develop/development-environment/genesis-start/), so the processes, profiles and behaviour described there all apply here too.
+
+## What to expect
+
+- **You need the REST API.** If it isn't enabled, Genesis Start logs an error and exits immediately with exit code 1:
+
+  ```
+  Headless mode requires REST to be enabled (remove --no-rest); exiting.
+  ```
+
+- **Nothing starts automatically.** Headless mode doesn't bootstrap or start any processes on its own. Once it's running, call `POST /api/bootstrap` or `POST /api/processes/application/start-all`, and check the operation it returns (see [Long-running operations](#long-running-operations)). You can't combine headless mode with `autoLaunch`: if you pass both, Genesis Start refuses to start.
+- **The process list is ready straight away.** Genesis Start loads the project overview before the REST API starts listening, so your first request never sees an empty process list.
+- On macOS, headless mode doesn't show an icon in the Dock.
+
+If your project doesn't have Genesis Start yet, or `genesisStart` fails because it can't resolve `androidx` artifacts, [enable it](/develop/development-environment/genesis-start/configuration/#enabling-genesis-start) first. The `google()` repository settings described there are needed for headless mode too, unless you use the standalone plugin.
+
+## Starting headless mode
+
+There are two ways to start headless mode. For most uses, the start script is best.
+
+### The start script
+
+The `writeStartScript` task writes a script that runs exactly the same command as `genesisStart` (the same Java, classpath, JVM arguments and flags), but without going through Gradle. You generate it once, then run it whenever you need to. (With the standalone plugin, the task is called `writeStartScript-standalone`.)
+
+From your project's `server` directory, generate the script with the headless settings built in:
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
+```shell
+.\gradlew.bat writeStartScript -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080
+```
+</TabItem>
+<TabItem value="mac">
+```bash
+./gradlew writeStartScript -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080
+```
+</TabItem>
+</Tabs>
+
+This writes `start.sh` (or `start.bat` on Windows) to `build/genesis-start/`. That is the same folder where the classpath jar is, and where Genesis Start writes `output.log` and `error.log`.
+
+Then run the script. It runs Genesis Start in the foreground, so on Mac or Linux, add `&` to get your shell back:
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
+```shell
+build\genesis-start\start.bat
+```
+</TabItem>
+<TabItem value="mac">
+```bash
+build/genesis-start/start.sh &
+```
+</TabItem>
+</Tabs>
+
+Any arguments you give the script are passed on to Genesis Start, after the ones built into it. This is how you pass the flags that have no Gradle property, such as a one-off [system definition override](/develop/development-environment/genesis-start/configuration/#overriding-a-property-for-a-single-run):
+
+```bash
+build/genesis-start/start.sh --system-definition-property DbHost=jdbc:postgresql://localhost:5433/genesis &
+```
+
+Things to know about the start script:
+
+- It doesn't run as part of `genesisStart`; you run `writeStartScript` yourself. Running it also rebuilds the classpath jar the script uses.
+- It only writes the script for the operating system Gradle is running on.
+- The settings are fixed when the script is written. If you change one (for example, a different `restPort`), run `writeStartScript` again.
+- `autoLaunch` is never built into the script, even if you set it. To use it with the desktop window, pass `--auto-launch` to the script when you run it.
+- The script sets the database host, username and password as environment variables before it starts Genesis Start, so they don't appear on the command line. But the script file itself contains the password **in plain text**. The task tries to make the file readable only by you, but don't commit or share it. On Windows, `start.bat` uses `setlocal`, so those variables don't stay set in your command prompt afterwards.
+- The script only changes how you start Genesis Start. You [stop it](#stopping-it) in the same way as before.
+
+### With Gradle
+
+For a one-off run, you can start headless mode with the Gradle task directly, from your project's `server` directory:
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
+```shell
+.\gradlew.bat genesisStart -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080
+```
+</TabItem>
+<TabItem value="mac">
+```bash
+./gradlew genesisStart -Pgenesis.start.headless=true -Pgenesis.start.restEnabled=true -Pgenesis.start.restPort=18080
+```
+</TabItem>
+</Tabs>
+
+:::important
+The Gradle task doesn't enable the REST API unless you ask it to, so always pass `restEnabled=true`. The other `rest*` properties are ignored without it, so `restPort` on its own isn't enough, and Genesis Start exits straight away.
+:::
+
+See the [Gradle property reference](/develop/development-environment/genesis-start/configuration/#gradle-property-reference) for the other properties you can set.
+
+The task starts Genesis Start in the background, then waits 5 seconds. If Genesis Start has already exited (for example, because it rejected an argument), the task fails and points you to `error.log` and `output.log`. Otherwise, it prints the process id and the addresses of the API documentation, one pair for each address the REST API listens on:
+
+```
+Genesis Start started with PID 12345
+Swagger UI available on http://127.0.0.1:18080/api/docs
+OpenApi spec available on http://127.0.0.1:18080/api/openapi.json
+```
+
+## Checking that it's running
+
+When you use the start script or the Gradle task, Genesis Start writes its output to files rather than to your terminal. To follow them:
+
+```bash
+tail -f build/genesis-start/output.log
+tail -f build/genesis-start/error.log
+```
+
+When Genesis Start is ready, you see:
+
+```
+Genesis Start is running in headless mode (no GUI window).
+REST API listening at http://127.0.0.1:18080/api
+```
+
+If you set several `restHosts`, this line lists every address the REST API listens on, comma-separated on a single line. That's different from the Gradle task's output, which prints a pair of lines for each address.
+
+To check that it's responding:
+
+```bash
+curl http://localhost:18080/api/health
+```
+
+## Driving it over REST
+
+By default, the REST API listens on `127.0.0.1` only, on port **8080**, under the path **`/api`** (for example, `http://localhost:8080/api/health`). You can change these with `restHosts` (see [Security](#security)), `restPort` and `restBasePath`. The examples on this page use port 18080.
+
+The REST API also works alongside the desktop window: start `genesisStart` with `-Pgenesis.start.restEnabled=true` and without `headless`.
+
+The full reference, with request and response examples for each endpoint, is in the Swagger UI at `/api/docs`. The OpenAPI spec is at `/api/openapi.json`.
+
+Here's a summary of the endpoints.
+
+**Status**
+
+| Endpoint | What it does |
+|---|---|
+| `GET /api/health` | Checks that Genesis Start is running. |
+| `GET /api/status` | Shows the application's status, including whether a sync or other operation is in progress (`syncing`). |
+| `GET /api/application-info` | Shows information about the application, including the project's `featureFlags`, whether `experimentalFeaturesEnabled` is on, and the current `portOffset` and `portMap`, and the [system definition overrides](/develop/development-environment/genesis-start/configuration/#seeing-which-overrides-are-in-effect) in effect (`systemDefinitionOverrides`). |
+| `GET /api/docs-url` | Returns a link to the Genesis Start documentation. |
+
+**Processes**
+
+| Endpoint | What it does |
+|---|---|
+| `GET /api/processes` | Lists the processes and their state. |
+| `GET /api/processes/{processId}/info` | Shows details of one process, including its log file (`logFilePath`). |
+| `POST /api/processes/{processId}/start` | Starts one process. |
+| `POST /api/processes/{processId}/stop` | Stops one process. |
+| `POST /api/processes/application/start-all` | Starts all stopped Application processes and the Web UI. Optional body: `{"skipSync": true}`. |
+| `POST /api/processes/application/stop-all` | Stops all Application processes. This stops the processes, not Genesis Start. Utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
+| `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored (ignored parameters are still type-checked), so there's no paging. An unknown `processId` returns an empty log, not 404. |
+| `POST /api/processes/{processId}/log/clear` | Clears a process's log in Genesis Start. |
+| `POST /api/processes/{processId}/input` | Sends one line to a utility's input. Body: `{"line": "..."}`. A line containing `\r` or `\n` is refused with 400, and nothing is sent. |
+
+You can also start and stop a process with `POST /api/processes/start` and `POST /api/processes/stop`, giving the `processId` in the body.
+
+**Bootstrap, sync, import and scripts**
+
+| Endpoint | What it does |
+|---|---|
+| `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. |
+| `POST /api/sync` | Runs Sync Processes. |
+| `POST /api/import` | Imports CSV files with `SendIt`. Body: `{"paths": [...]}`. Paths can be absolute or relative. A relative path is resolved against Genesis Start's working directory, `build/genesis-start/`, not the project root, so absolute paths are safest. |
+| `GET /api/scripts` | Lists the scripts available for the current process profile. |
+| `POST /api/scripts/run` | Runs a script. Body: `scriptId`, and optionally `arguments`, `workingDirectory` and `waitForExit`. |
+
+When you send a JSON body, send `Content-Type: application/json` with it. For example, to start all Application processes without running a sync first:
+
+```bash
+curl -X POST http://localhost:18080/api/processes/application/start-all \
+  -H 'Content-Type: application/json' \
+  -d '{"skipSync": true}'
+```
+
+The same header applies to every request that has a body, including the `PUT` and `PATCH` calls below.
+
+Script arguments are split on spaces, with no support for quotes or escaping.
+
+A script run returns a `processId` as well as an `operationId`. Build tasks, such as `genesisSync`, are listed as processes too, when you call `GET /api/processes?includeBuildTasks=true`. To read the output of a script or a build task, call `GET /api/processes/{processId}/log` with its `processId`.
+
+**Settings and profiles**
+
+| Endpoint | What it does |
+|---|---|
+| `GET` or `PATCH /api/settings` | Reads or changes settings, such as Use Genesis Sync. |
+| `GET` or `PATCH /api/preferences/view` | Reads or changes view preferences. |
+| `GET` or `PUT /api/port-offset` | Reads or sets the [port offset](/develop/development-environment/genesis-start/configuration/#port-offset). |
+| `GET /api/process-profiles` | Lists the [process profiles](/develop/development-environment/genesis-start/configuration/#process-profiles) and shows the current one. |
+| `PUT /api/process-profiles/{profileId}` | Switches to another process profile. |
+
+To switch profile, use an `id` from `GET /api/process-profiles`. Ids are case-sensitive, and an unknown id returns 404. If any process is running, starting or stopping (including utilities, scripts and build tasks), the switch is refused with 409 and the profile stays as it was. After switching, call `GET /api/processes` and `GET /api/scripts` again, because both depend on the profile. There's no way to preview a profile: to see which processes it gives you, switch to it and then list the processes.
+
+To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-version=v1` to the start script. There's no Gradle property for this.
+
+### Long-running operations
+
+Bootstrap, sync, start-all, import and script runs return straight away with an `operationId`:
+
+```json
+{"operationId": "…"}
+```
+
+To follow the operation, call `GET /api/operations/{operationId}`. While it runs, its `status` is `RUNNING`; poll until it becomes `SUCCESS` or `FAILED`. If it failed, `message` explains why.
+
+The scripts that Bootstrap runs, such as `remap`, appear in `GET /api/processes`. To see what remap did, including loading test data, call `GET /api/processes/remap/log`. If Bootstrap fails, the operation's `message` names the script that failed and its exit code (for example, `remap exited with code 1`), and that script's log shows what went wrong.
+
+:::note
+Start-all's operation includes the Web UI's npm bootstrap, which installs its npm dependencies. The first time on a fresh project, this can take several minutes, so a long `RUNNING` doesn't by itself mean it has hung.
+
+`SUCCESS` means the processes were started, not that they stayed up. If a process crashes afterwards, that only shows in `GET /api/processes`, so check there for their state.
+:::
+
+Keep the `operationId` you were given: there is no route that lists operations, so you can't look it up later. Once an operation has finished, it's kept for about an hour (less once more than 1000 are held) and then removed, after which `GET /api/operations/{operationId}` no longer finds it. You can't cancel an operation; there is no `DELETE` route.
+
+Starting or stopping a single process (`POST /api/processes/{processId}/start` or `/stop`) is different: it returns straight away with `{"started": true}` (or `{"stopped": true}`), and doesn't return an `operationId`. To follow the process, check its state in `GET /api/processes`. Calling stop on a process that is already `STOPPING` kills it forcibly.
+
+Bootstrap, sync, start-all, starting a process, running a script and importing are refused with **409 Conflict** while `syncing` is `true` in `GET /api/status`. That is while a Gradle task runs (including the `genesisSync` that runs before a process start, a script run or an import), and during bootstrap's `remap` and `ConsolidateRights` steps. It isn't the same as "while another operation is in progress": `syncing: false` doesn't mean an earlier operation has finished, so poll the operation itself for that.
+
+By default, a script run stays `RUNNING` until the script exits, then becomes `SUCCESS` if the exit code is 0 and `FAILED` otherwise. For scripts that keep running until you stop them, such as DbMon, pass `"waitForExit": false`. The operation then succeeds as soon as the script has started, and any later failure isn't reported on it.
+
+### Process states
+
+A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`, `STOPPING` or `UNHEALTHY`. `RUNNING` means the process is up but hasn't reported its health yet; `HEALTHY` means it has reported itself healthy.
+
+Health comes from the `ResourceDaemon` utility, which bootstrap and start-all don't start. Until you start it (`POST /api/processes/{processId}/start`, with its id from `GET /api/processes`), running processes stay `RUNNING`, and never become `HEALTHY` or `UNHEALTHY`.
+
+Once `ResourceDaemon` has started, your application processes take a few seconds to report their health (around 5–6 seconds in testing). Until then, they show `RUNNING`. The Web UI process never gets a health state, so it stays `RUNNING` even when `ResourceDaemon` is up.
+
+`STOPPING` can be very brief, typically well under a second, so you might not see it. A process can go from `RUNNING` or `HEALTHY` straight to `STOPPED` between two checks of `GET /api/processes`. Don't wait for `STOPPING` to appear before you wait for `STOPPED`.
+
+### Errors
+
+Errors are returned as JSON, with a `code` (such as `NOT_FOUND`, `CONFLICT` or `VALIDATION_ERROR`), a `message` you can read, and sometimes `details`.
+
+A request that is malformed, or that has a missing or invalid query or path parameter, gets `INVALID_REQUEST`, with each problem listed in `details`:
+
+```json
+{
+  "code": "INVALID_REQUEST",
+  "message": "Missing/invalid parameters",
+  "details": "limit (query, optional): invalid"
+}
+```
+
+`VALIDATION_ERROR` is for a well-formed request with a value that Genesis Start doesn't accept.
+
+## Driving it from an AI agent (MCP)
+
+Whenever the REST API is enabled, Genesis Start also runs an [MCP](https://modelcontextprotocol.io/) (Model Context Protocol) server, so an AI agent can drive it directly. There's no separate setting, and it works with the desktop window as well as in headless mode.
+
+The endpoint is `/mcp` at the root of the REST server, not under `/api`; for example, `http://127.0.0.1:18080/mcp`. It uses MCP's Streamable HTTP transport, so add it to your agent's MCP configuration as an HTTP server with that URL.
+
+The tools cover the same ground as the REST API: status and application info, starting and stopping processes, bootstrap, sync, import, scripts, logs and terminal output, sending input to utilities, process profiles, settings, view preferences and the port offset. Each tool returns the same JSON body as the matching REST endpoint, as the result's text content and as `structuredContent`. A failed call has `isError: true`, and its text is the error body REST would return, with the HTTP `status` added.
+
+Things to know:
+
+- **Read-only and destructive tools are marked.** Each tool carries MCP's `readOnlyHint` or `destructiveHint`, so your agent can ask you before it starts, stops, runs or changes anything.
+- **Long-running tools return straight away.** `start_all`, `stop_all`, `bootstrap`, `sync` and `import_data` return an `operationId`; the agent follows it with `get_operation_status`, as with [long-running operations](#long-running-operations) over REST.
+- **`import_data` needs absolute paths.** A relative path is rejected.
+- **An agent in a container** can reach Genesis Start through `host.docker.internal` on Docker Desktop or Rancher Desktop. On native Linux Docker, add the `docker0` bridge address (usually `172.17.0.1`) to `restHosts`; see [Security](#security).
+
+## Security
+
+:::warning
+The REST API and the MCP server have **no authentication**. Anyone who can reach the port can do everything the API allows: start and stop processes, run scripts with any arguments, import files from any path Genesis Start can read, send input to utilities, read logs and change settings. The same applies to the Swagger UI.
+:::
+
+### Which addresses it listens on
+
+By default, the REST API listens on `127.0.0.1` only, so other machines can't reach it. To listen on other addresses as well, list them:
+
+- with the Gradle property, comma-separated: `-Pgenesis.start.restHosts=127.0.0.1,172.17.0.1`
+- or on the start script's command line, once per address: `--rest-host 127.0.0.1 --rest-host 172.17.0.1`
+
+Each entry must be an IPv4 or IPv6 address. Host names such as `localhost` aren't accepted, and nor is the same address twice. `0.0.0.0` (or `::`) means every network interface; it can't be combined with other addresses. If a value is invalid, Genesis Start exits at startup with an error that names it.
+
+When you'd need this:
+
+- **From another machine**: rather than opening the port, keep the default and use an SSH tunnel; for example, `ssh -L 18080:127.0.0.1:18080 devbox`, then use `http://localhost:18080/api` on your own machine. If you do need the port open, add that interface's address (or `0.0.0.0`), and make sure the network is one you trust.
+- **From a Docker container on native Linux**: add the `docker0` bridge address, usually `172.17.0.1`.
+- **From a Docker container on Docker Desktop or Rancher Desktop (macOS or Windows)**: nothing to do. `host.docker.internal` reaches the host's `127.0.0.1`, so the default is enough.
+
+### Requests from web pages
+
+To stop a web page in your own browser from calling the API, every REST and `/mcp` request is checked first, and refused with **403** (`FORBIDDEN`) if:
+
+- its `Host` header isn't one Genesis Start recognises: `localhost`, a `127.x.x.x` address, `[::1]`, `host.docker.internal`, or an address you gave in `restHosts` (with `0.0.0.0` or `::`, also any address of this machine's network interfaces). The port isn't checked; or
+- it has an `Origin` header that isn't the API's own (`http://` followed by the request's `Host`).
+
+curl, the Gradle tasks, AI agents and the Swagger UI all keep working, including through an SSH tunnel on a different local port. But if you call the API through a host name of your own, such as an `/etc/hosts` alias or the machine's DNS name, you get 403. Use an IP address, `localhost` or `host.docker.internal` instead.
+
+## Stopping it
+
+There's no REST endpoint that shuts Genesis Start down. To stop it, press **Ctrl-C** if it's running in the foreground, or send it `SIGTERM`:
+
+```bash
+kill <pid>
+```
+
+Genesis Start logs `Shutdown requested, stopping headless launcher.`, stops the REST API, and stops all running processes (in the same order as [Stop All](/develop/development-environment/genesis-start/#start-all-and-stop-all)). It waits for all of this to finish, for up to about 34 seconds, which is long enough to force-kill any processes that ignore the request to stop. If any processes are still running after that, it exits anyway and logs a warning that names them.
+
+To find the process id (`<pid>`):
+
+- **Gradle task**: it is printed when Genesis Start starts (`Genesis Start started with PID 12345`).
+- **Start script**: the script's process id is the same as Genesis Start's. Capture it when you start the script in the background: `build/genesis-start/start.sh & echo $!`
+- If you've lost it, use `ps aux | grep MainKt`. This is ambiguous if more than one instance is running.
