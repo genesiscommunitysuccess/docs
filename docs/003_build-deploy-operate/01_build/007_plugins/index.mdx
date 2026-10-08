@@ -248,7 +248,9 @@ To check your settings, run `./gradlew projectOverviewBuilder` and open the file
 The Exec plugin checks the values of its Gradle properties, and an invalid value fails the build.
 
 - **Boolean properties** (`failPreCompileScriptOnErrors`, `enableDynamicDeployment`, `genesis.openTelemetry.enabled` and `genesis.openTelemetry.serviceNameEnabled`) accept `true`, `yes`, `on`, `y` or an empty value for true, and `false`, `no`, `off` or `n` for false, in any case. Any other value fails with `Invalid value '<value>' for Gradle property '<name>'. Expected true or false`.
-- **Enum properties** (`compactProcessesStrategy` and `packagingStrategy`) are matched ignoring case. An unknown value fails the build with a message that lists the valid values.
+- **Enum properties** are matched ignoring case. An unknown value fails the build with a message that lists the valid values. The accepted values are:
+  - `compactProcessesStrategy`: `DEFAULT` or `DEV`. See the [`--compactProcessesStrategy` option of `genesisInstall`](/build-deploy-operate/operate/commands/#genesisinstall) for what each does.
+  - `packagingStrategy`: `FULL_APPLICATION` or `SERVER_ONLY`.
 
 ## Genesis Build Plugin
 
