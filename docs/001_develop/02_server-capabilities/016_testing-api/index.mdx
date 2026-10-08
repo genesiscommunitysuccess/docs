@@ -1132,8 +1132,12 @@ public class ProcessArgTest {
 Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a `tables { }` block. It is a Kotlin function, so write the provider member in Kotlin.
 
 ```kotlin
+import global.genesis.db.DbRecord
+import global.genesis.db.SyncDb
+import global.genesis.dictionary.GenesisDictionary
 import global.genesis.testsupport.jupiter.ProvidedDictionary
 import global.genesis.testsupport.jupiter.providedDictionary
+import jakarta.inject.Inject
 
 @GenesisTest
 class ProvidedDictionaryTest {
@@ -1145,9 +1149,16 @@ class ProvidedDictionaryTest {
         }
     }
 
+    @Inject
+    lateinit var db: SyncDb
+
     @Test
     fun myTest() {
         // the dictionary holds MY_TEST_TABLE, PROCESS_STATIC_INFO and PROCESS_META_DATA
+        // MY_TEST_TABLE has no generated entity class, so use DbRecord to write and read a row
+        db.insert(DbRecord.dbRecord("MY_TEST_TABLE") { setString("ID", "A") })
+        val row = db.get(DbRecord.dbRecord("MY_TEST_TABLE") { setString("ID", "A") })
+        assertEquals("A", row?.getString("ID"))
     }
 }
 ```
@@ -1300,7 +1311,7 @@ public class ProvidedTypeTest {
 </TabItem>
 </Tabs>
 
-In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` and annotate it `@JvmStatic`. An instance member is skipped without a message, and the class is not bound. A member that returns `null`, or a method that takes parameters, is skipped the same way. `@ProvidedInstance` behaves the same.
+In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object`: either a property, or a function annotated `@JvmStatic`. An instance member is skipped without a message, and the class is not bound. A member that returns `null`, or a method that takes parameters, is skipped the same way. `@ProvidedInstance` behaves the same.
 
 ```kotlin
 @GenesisSharedContextTest
