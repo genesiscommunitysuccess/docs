@@ -108,9 +108,3 @@ When you add a more specific listener, move the old listener's logic into it. Be
 When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
 
 This requirement is new in 10.0. If you have listener code from 8.x that calls `subscribe()` on a `tx` call without blocking, change it to block.
-
-## `RawSQLWriteOperationListener`
-
-`RawSQLWriteOperationListener` was removed in 10.0. Implement `WriteOperationListener` instead.
-
-If your old listener ran raw SQL, implement `SyncWriteOperationListener` or `AsyncWriteOperationListener`. They pass you the underlying `SyncDb` or `AsyncDb` as `tx`, and both provide `sqlConnection()`. For the connection interface, see [SQL Database](/develop/server-capabilities/integrations/external-jdbc/).
