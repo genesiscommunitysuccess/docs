@@ -39,6 +39,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `genesisHome` | `@GenesisHome("...")` |
 | `scriptFileName` | `@TestScriptFile("...")` (repeatable) |
 | `configFileName` | `@TestConfigFile("...")` |
+| `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [injecting classes in a test](/develop/server-capabilities/testing-api/#a-simple-example) |
 | `parser` / `EventResponse` | Not needed: inject the event, request and data server clients described on the GenesisJunit pages |
 | `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
 | `authCacheOverride` / `authCacheOverrides` | `@EnableInMemoryTestAuthCache`, and inject `InMemoryTestAuthCache` |
@@ -47,7 +48,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `rootLogLevel` | `@RootLogLevel` |
 | `expectedProcessStatus` | `@ExpectedProcessStatus` |
 | Instances the test binds | `@ProvidedInstance` for built instances, `@ProvidedType` for classes |
-| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, injecting the database |
+| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, injecting the database as `SyncEntityDb`, `RxEntityDb` or `AsyncEntityDb` |
 | `createMockDictionary()` returning an inline dictionary | `@ProvidedDictionary` with `providedDictionary { }` |
 | XML dictionary | `@EnableLegacyXmlDictionary` |
 
@@ -317,6 +318,8 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | authCacheOverride | no | overrides auth-perms map to test |
+| dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
+| rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 
 Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
 
