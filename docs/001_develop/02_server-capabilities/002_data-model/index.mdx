@@ -1196,40 +1196,184 @@ table(name = "RIGHT", id = 1004) {
 }
 ```
 
-Legacy will continue to work, but it is simple to move to the new model using a provided a gradle plugin.
-
-To start, add the following line to the top of the `build.gradle.kts` file for the module which contains your legacy dictionary files:
-
-```kotlin
-plugins {
-    id("global.genesis.dictionary.upgrade")
-}
-```
-
-After adding this and performing a Gradle refresh, a new task: `updateTablesDictionary` is available in the Gradle task list, under **genesis**.
-To migrate the table dictionaries in your config module, run the task.
+To move the fields of an existing tables dictionary inline, use the `updateTablesDictionary` Gradle task. See [Moving fields into tables](#moving-fields-into-tables).
 
 From Genesis 10.0, the separate fields dictionary is deprecated: that is, `*-fields-dictionary.kts` files and the `fields { }` block they contain. Instead, declare each field inside its `table { }` block in a `*-tables-dictionary.kts` file, as shown above. If several tables use the same field, declare it in each of them.
 
 Fields dictionaries still work in 10.0, and no removal version has been set. While you keep one, the compiler shows a deprecation message (in your IDE, for example), and the platform logs a warning once per process when it reads the file.
 
-
-
 ### Moving fields into tables
 
-When you move a field from a fields dictionary into a `table { }` block, make sure the inline version keeps the same definition. The two styles have different defaults, so a word-for-word translation can change your table. A column can change its size or its nullability. A property on the generated entity can change from non-nullable to nullable, which can break code that uses it. To check, look at the generated code; the [build overview](/build-deploy-operate/build/bdo-build-overview/#dao) says where it is.
+Use the `updateTablesDictionary` Gradle task to move fields from a fields dictionary into your tables. The task rewrites each `*-tables-dictionary.kts` file in place, replacing every field reference with an inline `field(name, type)` declaration that keeps the column exactly as it was. Before it saves a file, it builds the dictionary from the old and the new version and compares them: the tables, the generated code, the SQL schema for each supported database, and the remap result. If anything would change, it leaves that table as it is.
 
-| Attribute | Fields dictionary (`fields { }`) | Inline in `table { }` |
-|---|---|---|
-| Max size of a `STRING`, `RAW` or `ENUM` field with none given | 64 | None |
-| Nullability of an `ENUM` or `RAW` field | Not null | Nullable unless you add `.notNull()` or `.default(...)` |
-| Nullability of a field with a default | Not null | Not null for `ENUM`, `BOOLEAN`, `DATETIME`, `BIGDECIMAL` and `RAW`; nullable for other types unless you add `.notNull()` |
-| `ENUM` default | The `default` argument | The first value listed, or `.default(...)` |
+#### Why a word-for-word translation isn't enough
 
-To keep the definition the same, state the size and nullability explicitly on the inline field. For example, `field(name = "PRICE_SOURCE", type = STRING)` in a fields dictionary becomes `field("PRICE_SOURCE", STRING(64))` inline (`RAW(64)` works the same way), and `field(name = "QUANTITY", type = INT, default = 0)` becomes `field("QUANTITY", INT).default(0).notNull()`. The one exception is an `ENUM` field with a `maxSize` in the fields dictionary: inline `ENUM` fields don't take a size, so it can't be kept.
+Fields declared in a fields dictionary and fields declared inline have different defaults. If you copy `field(name = "QUANTITY", type = INT, default = 0)` across as `field("QUANTITY", INT).default(0)`, the column becomes nullable, and the generated entity's `quantity` property changes type. To see what a declaration produces, look at the generated code; the [build overview](/build-deploy-operate/build/bdo-build-overview/#dao) says where it is. The task avoids this by writing out every attribute that differs:
+
+| Attribute | Fields dictionary | Inline | Inline form that keeps the fields-dictionary behaviour |
+|---|---|---|---|
+| Max size of `STRING` or `ENUM` with none given | 64 | None | `STRING(64)`, `ENUM(...).maxSize(64)` |
+| `RAW` | Max size 64, not null, `BASE_64` encoding | No max size, nullable, no encoding | `RAW(64).notNull().encoding(BASE_64)` |
+| Nullability of a field with a default | Not null | Not null only for `BOOLEAN`, `BIGDECIMAL`, `ENUM` and `RAW` | `.notNull()` |
+| Default of an `ENUM` | The `default` argument | The first value listed | `.default("...")` |
+| Mask of a `sensitive` field | `******` | `***` | `.sensitive("******")` |
+| Source of a `sequence`, `uuid` or `autoIncrement` field | User provided | Database provided | `.userProvided()` |
+| Validation of a `STRING` field's max size | None | A max-length annotation on the generated entity | `.metadata { maxLength = null }` |
+| Validation of `INT`, `LONG`, `SHORT` and `DOUBLE` | None | Min and max annotations on the generated entity; for `LONG`, ±(2<sup>53</sup> - 1) | `.metadata { unbounded = true }` |
+| Format of a field with no format | The `<TYPE>_DEFAULT_FORMAT` system definition item, if set | None | `.format("...")` |
+| Class of an `ENUM` | `global.genesis.gen.dao.enums.Side` | `global.genesis.gen.dao.enums.<product>.<table>.Side` | `.globalEnumClass()` |
+
+#### Worked example
+
+Here is a fields dictionary and a tables dictionary for a `positions` application:
+
+```kotlin title="positions-fields-dictionary.kts"
+fields {
+    field(name = "TRADE_ID", type = STRING)
+    field(name = "INSTRUMENT_ID", type = STRING, maxSize = 20)
+    field(name = "INSTRUMENT_NAME", type = STRING)
+    field(name = "QUANTITY", type = INT, default = 0)
+    field(name = "PRICE", type = DOUBLE)
+    field(name = "SIDE", type = ENUM("BUY", "SELL", default = "BUY"))
+    field(name = "TRADE_DATE", type = DATE)
+    field(name = "COUNTERPARTY_REF", type = STRING, sensitive = true)
+    field(name = "PAYLOAD", type = RAW)
+}
+```
+
+```kotlin title="positions-tables-dictionary.kts"
+tables {
+    table(name = "TRADE", id = 11000) {
+        sequence(TRADE_ID, "TR")
+        INSTRUMENT_ID not null
+        QUANTITY
+        PRICE
+        SIDE
+        TRADE_DATE
+        COUNTERPARTY_REF
+        PAYLOAD
+        primaryKey {
+            TRADE_ID
+        }
+        indices {
+            nonUnique {
+                INSTRUMENT_ID
+            }
+        }
+    }
+    table(name = "INSTRUMENT", id = 11001) {
+        INSTRUMENT_ID
+        INSTRUMENT_NAME
+        primaryKey {
+            INSTRUMENT_ID
+        }
+    }
+}
+```
+
+1. Apply the plugin in the `build.gradle.kts` file of the module that holds your dictionaries, and refresh Gradle:
+
+    ```kotlin
+    plugins {
+        id("global.genesis.dictionary.upgrade")
+    }
+    ```
+
+2. Run the task from that module:
+
+    ```shell
+    ./gradlew updateTablesDictionary
+    ```
+
+    The task rewrites the tables dictionary:
+
+    ```kotlin title="positions-tables-dictionary.kts"
+    tables {
+        table(name = "TRADE", id = 11000) {
+            field("TRADE_ID", STRING(64)).sequence("TR").userProvided().metadata { maxLength = null }
+            field("INSTRUMENT_ID", STRING(20)).notNull().metadata { maxLength = null }
+            field("QUANTITY", INT).default(0).notNull().metadata { unbounded = true }
+            field("PRICE", DOUBLE).metadata { unbounded = true }
+            field("SIDE", ENUM("BUY", "SELL").maxSize(64))
+            field("TRADE_DATE", DATE)
+            field("COUNTERPARTY_REF", STRING(64)).sensitive("******").metadata { maxLength = null }
+            field("PAYLOAD", RAW(64)).notNull().encoding(BASE_64)
+            primaryKey {
+                TRADE_ID
+            }
+            indices {
+                nonUnique {
+                    INSTRUMENT_ID
+                }
+            }
+        }
+        table(name = "INSTRUMENT", id = 11001) {
+            field("INSTRUMENT_ID", STRING(20)).metadata { maxLength = null }
+            field("INSTRUMENT_NAME", STRING(64)).metadata { maxLength = null }
+            primaryKey {
+                INSTRUMENT_ID
+            }
+        }
+    }
+    ```
+
+    It keeps your comments and formatting. The original file and a report for each file are in `build/genesis/dictionary-upgrade`. If you run the task again, it keeps the original from the first run.
+
+3. Change the keys to name their fields as strings. The block form (`primaryKey { TRADE_ID }`) still refers to the field in the fields dictionary, so it stops compiling when you delete that dictionary:
+
+    ```kotlin
+    primaryKey("TRADE_ID")
+    indices {
+        nonUnique("INSTRUMENT_ID")
+    }
+    ```
+
+    Also add `.globalEnumClass()` to each `ENUM` field that your code uses, so that its generated class keeps its name:
+
+    ```kotlin
+    field("SIDE", ENUM("BUY", "SELL").maxSize(64)).globalEnumClass()
+    ```
+
+4. Check that the dictionary hasn't changed, using the original files as the baseline:
+
+    ```shell
+    ./gradlew checkDictionaryEquivalence --baseline build/genesis/dictionary-upgrade
+    ```
+
+    The task fails if anything differs, and writes the differences to `build/genesis/dictionary-upgrade/dictionary-equivalence.report.txt`. Run it while you still have the fields dictionary, because the original tables dictionary needs it to build.
+
+5. Once no tables dictionary refers to a field in the fields dictionary, delete the fields dictionary. This removes the generated `Fields` object, so replace any `Fields.X` in your code first (see [Replacing the generated Fields object](#replacing-the-generated-fields-object)).
+
+#### Fields the task doesn't move
+
+The task lists any field it leaves as a reference, with the reason, and fails once it has saved the rest. A field stays a reference when:
+
+- it's `RECORD_ID`, `TIMESTAMP` or an audit field, which the platform manages;
+- its fields-dictionary declaration sets `readonly`, `source` or `metadata`, or has a default that can't be written as a literal;
+- the table adds it more than once, inside an `if` or a loop, or refers to it again elsewhere in the table body;
+- moving it would change the column order: inline fields always come after referenced fields, so a field that has to stay a reference also keeps the fields before it as references;
+- it's a subtable's join field and its parent column can't move;
+- the table isn't built under your current system definition, so the task can't check it.
+
+To keep a field as a reference on purpose, name it with `--exclude`, once per field:
+
+```shell
+./gradlew updateTablesDictionary --exclude PRICE --exclude QUANTITY
+```
 
 Three other differences can catch you out:
 
-- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them.
-- **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE`.
+- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them. The task does this for you.
+- **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`. Use the table's own handle instead, for example `TRADE.PRICE`.
 - **Consistency between tables.** When several tables declare the same field name inline, the dictionary build doesn't check that the declarations match. If one table declares `PRICE` as a `DOUBLE` and another as an `INT`, the build succeeds and each table gets its own column type. Keeping the declarations consistent is up to you.
+
+### Replacing the generated Fields object
+
+From Genesis 10.0, the generated `Fields` object (`global.genesis.gen.config.fields.Fields`) is deprecated, along with each of its properties. It still works, and no removal version has been set. The compiler shows a deprecation message wherever you use it, including where a tables dictionary or a script refers to a field by its bare name.
+
+To replace it:
+
+- In code, use the table field: `TRADE.PRICE` instead of `Fields.PRICE`.
+- In a tables dictionary, declare the field inline with `field(name, type)` inside `table { }`, and name key fields as strings, for example `primaryKey("TRADE_ID")`. The `updateTablesDictionary` task does the first part for you.
+
+Where an API doesn't yet take a table field, keep using `Fields` and suppress the message in that file with `@file:Suppress("DEPRECATION")`.
