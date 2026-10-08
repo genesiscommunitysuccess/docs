@@ -416,7 +416,7 @@ security {
 
 This method of MFA sends a temporary code via the Genesis Notify module. By default this is delivered as a one-time login link, but it can be configured as a short numeric code that the user types into the login screen instead (see `tempCodeNumeric`).
 
-Each time a login is unsuccessful, a new temporary code with a short-timed expiry is generated and sent.
+A temporary code with a short-timed expiry is sent when the user logs in without a valid active code, or clicks **Resend code** on the login screen. Entering a wrong code does not send a new one.
 
 When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired.
 
@@ -426,6 +426,8 @@ This block exposes the following configuration items:
 * `tempCodeExpiryDuration` specifies a duration for temporary generated codes. Default is 15 minutes.
 * `tempCodeNumeric` when set to `true`, the temporary code is a numeric-only code the user types in, rather than the default 32-character alphanumeric token delivered as a login link. This applies to the temporary code only; the active code remains a strong 32-character token. Default is `false`.
 * `tempCodeLength` specifies the number of digits in the temporary code when `tempCodeNumeric` is enabled (leading zeros are preserved). Must be a positive integer, otherwise the application fails to start. Default is 6.
+* `tempCodeResendCooldown` specifies the minimum time between temporary codes sent to a user, across all devices, counted from when the last code was sent. Inside it, no new code is sent and the previous one stays valid. `0.seconds` disables it. Default is 60 seconds.
+* `maxTempCodeAttempts` specifies how many wrong attempts a temporary code allows before it is no longer accepted. Default is 5.
 * `activeCodeExpiryDuration` specifies a duration for active generated codes. Default is 30 days.
 * `notifyTopic` is the topic to publish to the notify module on. Default is 'MFA'.
 * `messageHeader` is the header of the resulting message.
