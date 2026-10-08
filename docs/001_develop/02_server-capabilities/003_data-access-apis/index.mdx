@@ -872,7 +872,26 @@ try {
 
 These are not treated as duplicates:
 
-- two items that resolve to different unique indexes;
+- two items that resolve to different unique indexes. In this `modifyAll`, both items address a `TRADE` record, one through the `TRADE_BY_ID` index and one through the `TRADE_BY_REFERENCE` index. The batch is accepted. The index is the second argument of [`ModifyDetails`](#modify-details), the name of a unique index; `null` means the primary key. The table, index and field names here are placeholders for your own data model.
+
+  ```kotlin
+  val byId = DbRecord("TRADE").apply {
+      setString("TRADE_ID", "T1")
+      setString("TRADE_STATUS", "CANCELLED")
+  }
+  val byReference = DbRecord("TRADE").apply {
+      setString("TRADE_REFERENCE", "REF-1")
+      setString("TRADE_STATUS", "CANCELLED")
+  }
+
+  syncDb.modifyAll(
+      listOf(
+          ModifyDetails(byId, "TRADE_BY_ID", listOf("TRADE_STATUS")),
+          ModifyDetails(byReference, "TRADE_BY_REFERENCE", listOf("TRADE_STATUS")),
+      )
+  )
+  ```
+
 - an item whose key isn't fully set yet, such as a record whose key the database generates on insert.
 
 Because the whole batch is checked first, a `Flow` (or `Flowable`) passed to a batch write is collected into memory before anything is written.
@@ -1659,6 +1678,13 @@ dbRecord.differenceInFields(dbRecord2)
 
 `SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject both on every database layer.
 
+:::warning
+Inside an event handler, you can inject them, but you shouldn't. Use the `entityDb` that the event handler provides, as the [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
+
+- The event handler's `entityDb` is enhanced. With `transactional = true`, it audits writes automatically: every write to an [audited table](/develop/server-capabilities/data-model/#audited-tables) gets an audit entry with the event name, user and timestamp. It is also transactional: if the event fails, its writes are rolled back. Writes through an injected `SyncDb` get neither.
+- GPAL event handlers run on coroutines, and `SyncDb` blocks. Never make blocking calls in coroutines.
+:::
+
 Use them when the table you work with isn't known at build time. Otherwise, prefer the type-safe [Entity Db API](#entity-db-api).
 
 ```kotlin
@@ -1682,18 +1708,48 @@ Index names come from your data model. By default, the platform names an index `
 
 ###### Methods
 
-| Kind | Methods |
-|---|---|
-| Reads | `get`, `getAll`, `getAllAsList`, `count`, `getBulk`, `getBulkFromEnd`, `getRange`, `getRangeFromEnd`, `getByCriteria` |
-| Writes | `insert`, `insertAll`, `modify`, `modifyAll`, `upsert`, `upsertAll`, `delete`, `deleteAll`, `recover`, `recoverAll`, `allocateId` |
-| Streaming reads (`SyncDb` only) | `getBulkStream`, `getRangeStream`, `getByCriteriaStream` |
-| Transactions | `readTransaction`, `writeTransaction` |
+| Kind | Method | Signature (`SyncDb`) |
+|---|---|---|
+| Reads | `get` | `get(record: DbRecord, index: String? = null, fields: Set<String> = emptySet()): DbRecord?` |
+| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>` |
+| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>` |
+| Reads | `count` | `count(table: String): Long` |
+| Reads | `getBulk` | `getBulk(table: String, index: String? = null, fields: Set<String> = emptySet()): List<DbRecord>` |
+| Reads | `getBulkFromEnd` | `getBulkFromEnd(table: String, index: String, fields: Set<String> = emptySet()): List<DbRecord>` |
+| Reads | `getRange` | `getRange(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>`<br />`getRange(startRecord: DbRecord, endRecord: DbRecord?, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>` |
+| Reads | `getRangeFromEnd` | `getRangeFromEnd(startRecord: DbRecord, endRecord: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>` |
+| Reads | `getByCriteria` | `getByCriteria(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): List<DbRecord>` |
+| Writes | `insert` | `insert(record: DbRecord): WriteResult` |
+| Writes | `insertAll` | `insertAll(records: List<DbRecord>): WriteResult` |
+| Writes | `modify` | `modify(details: ModifyDetails): WriteResult` |
+| Writes | `modifyAll` | `modifyAll(details: List<ModifyDetails>): List<WriteResult>` |
+| Writes | `upsert` | `upsert(details: ModifyDetails): WriteResult` |
+| Writes | `upsertAll` | `upsertAll(details: List<ModifyDetails>): List<WriteResult>` |
+| Writes | `delete` | `delete(record: DbRecord): WriteResult` |
+| Writes | `deleteAll` | `deleteAll(records: List<DbRecord>): WriteResult` |
+| Writes | `recover` | `recover(record: DbRecord): WriteResult` |
+| Writes | `recoverAll` | `recoverAll(records: List<DbRecord>): WriteResult` |
+| Writes | `allocateId` | `allocateId(entity: String, tableId: Int): String` |
+| Streaming reads (`SyncDb` only) | `getBulkStream` | `getBulkStream(table: String, index: String? = null, fields: Set<String> = emptySet()): Stream<DbRecord>` |
+| Streaming reads (`SyncDb` only) | `getRangeStream` | `getRangeStream(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): Stream<DbRecord>` |
+| Streaming reads (`SyncDb` only) | `getByCriteriaStream` | `getByCriteriaStream(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): Stream<DbRecord>` |
+| Transactions | `readTransaction` | `readTransaction(block: (SyncReadDb) -> T): T` |
+| Transactions | `writeTransaction` | `writeTransaction(block: (SyncDb) -> T): Pair<T, List<WriteResult>>` |
 
-Writes take a `DbRecord`, or a `ModifyDetails` for `modify` and `upsert`, and return a [`WriteResult`](#write-result).
+`AsyncDb` has the same methods, with these differences:
+
+- `get`, `getAll`, `getAllAsList`, `count`, every write, `allocateId`, `readTransaction` and `writeTransaction` are `suspend` functions with the same parameters and return types.
+- The multi-record reads (`getBulk`, `getBulkFromEnd`, both `getRange` forms, `getRangeFromEnd` and `getByCriteria`) are not `suspend`. They return a `Flow<DbRecord>` where `SyncDb` returns a `List<DbRecord>`.
+- The transaction blocks are `suspend` lambdas that receive an `AsyncReadDb` or `AsyncDb`.
+- There are no streaming reads.
+
+Writes take a `DbRecord`, or a [`ModifyDetails`](#modify-details) for `modify` and `upsert` (a `List<ModifyDetails>` for `modifyAll` and `upsertAll`), and return a [`WriteResult`](#write-result), or a `List<WriteResult>` for `modifyAll` and `upsertAll`.
 
 ###### Streaming reads
 
 `SyncDb` also has three lazy reads: `getBulkStream`, `getRangeStream` and `getByCriteriaStream`. Each returns a `java.util.stream.Stream<DbRecord>` backed by an open database cursor, so you must close the stream when you have finished with it. Use Kotlin's `use { }` or Java's try-with-resources.
+
+On SQL, an open stream holds a database connection until you close it or read it to the end (see `SqlConnectionPool.streamingBlockingSqlQuery`). Streams that you neither close nor read to the end leak connections, until the connection pool runs out.
 
 ###### Transactions
 
@@ -2108,7 +2164,7 @@ This type has the following fields:
 
 ### Modify details
 
-`ModifyDetails` does the same job as `EntityModifyDetails` and takes similar arguments for use with RxDb.
+`ModifyDetails` does the same job as `EntityModifyDetails` and takes similar arguments for use with RxDb. It is also what `SyncDb` and `AsyncDb` take for `modify` and `upsert`. Its arguments are `record: DbRecord`, `keyName: String?` (the name of the unique index that identifies the record, or `null` for the primary key) and an optional `modifiedFields: Collection<String>` (the fields to change; empty by default).
 
 ## Deadlocks in the database
 
