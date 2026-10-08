@@ -406,7 +406,9 @@ However, this is not recommended as **MQTT is required for dynamic scaling**.
 When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
 ### Networking
-When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
+All Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. This applies to both built-in clustering and Consul mode.
+
+When using built-in clustering (`ClusterMode` is `LEGACY`), the hosts must also be able to reach each other by host name and on `ClusterPort` (`6000` by default). `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
 
 The default Genesis services and their ports are:
 
@@ -421,9 +423,7 @@ The default Genesis services and their ports are:
 
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
-The Consul Agents must also be able to access all the services on their defined ports.
-
-When using built-in clustering, the hosts must be able to reach each other by host name and on `ClusterPort` (`6000` by default).
+When using Consul mode, the Consul Agents must also be able to access all the services on their defined ports.
 
 ### Configuring the app
 
