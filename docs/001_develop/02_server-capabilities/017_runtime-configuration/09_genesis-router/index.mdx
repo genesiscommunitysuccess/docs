@@ -318,6 +318,8 @@ If `FEATURE` is missing, or names a resource that no process has registered, the
 }
 ```
 
+If `FEATURE` is missing altogether, the resource name in the text is empty, so the text reads `Resource  is not mapped to a service` (with two spaces).
+
 The [`allowList` and `blockList`](#blocked-and-allowed-resources) settings apply to the `FEATURE` value. If a resource is blocked, the router does not return its metadata or JSON schema either.
 
 ### Listing resources
@@ -349,7 +351,7 @@ GET http://localhost:9064/meta-request?DETAILS[FEATURE]=EVENT_TRADE_INSERT
 SESSION_AUTH_TOKEN: <session-auth-token>
 ```
 
-The reply is a `FEATURE_ACK`, and its `DETAILS` block describes the resource's fields. The layout depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields. For a Data Server query, `FIELD` lists each field with its `NAME` and `TYPE` (and `VALID_VALUES` for an enum), and `INDEXES` lists the table's indexes (`NAME`, `FIELDS`).
+The reply is a `FEATURE_ACK`, and its `DETAILS` block describes the resource's fields. The layout depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. `DETAILS` also carries a `DEFINITIONS` block and a `REPLY` block that describes the reply the event can send; `REPLY` has its own `NAME`, `DESCRIPTION`, `FIELD` and `DEFINITIONS`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields, and an `INDICES` array is also present. For a Data Server query, `FIELD` lists each field with its `NAME` and `TYPE` (and `VALID_VALUES` for an enum), and `INDEXES` lists the table's indexes (`NAME`, `FIELDS`).
 
 ### Getting a resource's JSON schema
 
