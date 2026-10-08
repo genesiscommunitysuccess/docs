@@ -37,9 +37,9 @@ Example:
 ```kotlin
 @Singleton
 @ProviderOf(type = PriceFeed::class)
-class PriceFeedProvider : Provider<PriceFeedProvider> {
+class PriceFeedProvider : Provider<PriceFeed> {
     override fun get(): PriceFeed {
-        return new PriceFeed()
+        return PriceFeed()
     }
 }
 ```
@@ -74,6 +74,13 @@ Both annotations follow these rules:
 The example below combines `@Module`, `@Named` and `@Inject` annotations on a constructor and on a field, and it uses `@PostConstruct` and `@PreDestroy`.
 
 ```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
+import jakarta.inject.Inject
+import jakarta.inject.Named
+
 @Module
 class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connectionUrl: String) {
 
