@@ -343,6 +343,7 @@ webHandlers {
 The `status` parameter above is fixed at configuration time. When you need to choose the status code **at runtime** or set response **headers** — for example to return a conditional `304 Not Modified`, an `ETag`, or a `Cache-Control` header — return the result of `buildResponse` from `handleRequest`, and type the endpoint response as `HttpResponse`:
 
 ```kotlin
+import global.genesis.message.core.HttpStatusCode
 import global.genesis.process.web.handler.HttpResponse
 
 endpoint<Unit, HttpResponse>(GET, "trades") {
