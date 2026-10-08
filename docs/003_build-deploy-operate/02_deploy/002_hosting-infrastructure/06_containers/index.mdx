@@ -194,6 +194,7 @@ RUN rm -f genesisproduct-position-1.0.0-SNAPSHOT-bin.zip
 RUN source ~/.bashrc && genesisInstall --ignoreHooks
 RUN source ~/.bashrc && preCompileScripts
 SHELL ["bash", "-c"]
+ENV GENESIS_SYSDEF_BlockGenesisInstall=true
 EXPOSE 8080
 EXPOSE 443
 CMD ["/app/run/genesis/util/dockerStartup.sh", "-p"]
