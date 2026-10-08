@@ -40,6 +40,8 @@ The slice jars are resolved with these coordinates:
 
 The view module has no slice jar, so its regular jar is used.
 
+For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version>:slice`.
+
 ### Upstream products must be built with Genesis 10.0
 
 Upstream reuse needs slice jars, and only products built and published with Genesis 10.0 have them. A PBC published with an earlier version has none, so use PBC versions built with Genesis 10.0.
@@ -51,6 +53,18 @@ To check whether a PBC version has slice jars, look in your repository for its `
 Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
 
 To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your dictionary-cache module; to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
+
+The consuming project must have the repository you published to in its repositories. A generated project restricts `mavenLocal()` with a content filter, so a locally published upstream product is not found unless the filter also includes the upstream product's group:
+
+```kotlin
+repositories {
+    mavenLocal {
+        content {
+            includeGroup("<upstream.group>")
+        }
+    }
+}
+```
 
 Publishing the slice jars is not enough on its own. An application that declares your product as a product dependency also resolves the product's own `-distribution` and `-config` artifacts, so you must publish the upstream product in full as well, with its usual publish task (for example `publishToMavenLocal`). Run `publishAllGeneratedSlicesToMavenLocal` in addition to that task, not instead of it. If the full publication is missing, the consuming build fails with an error such as `Could not find global.genesis:upstream-distribution:1.0.0-SNAPSHOT`.
 
@@ -86,7 +100,7 @@ In the second case, the build logs a warning that names the products concerned a
 
 ### When an upstream product's system definition doesn't match
 
-An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code, where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
+An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code (see [Table entities](/develop/server-capabilities/data-access-apis/#table-entities) for the generated entity class name), where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
