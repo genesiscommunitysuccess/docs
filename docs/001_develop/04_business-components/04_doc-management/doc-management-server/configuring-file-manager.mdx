@@ -131,3 +131,16 @@ If you require requests to be executed for a particular project ID, this can be 
 item(name = "GCS_PROJECT_ID", value = "<projectId>")
 ```
 Otherwise the system will use the project id of the default instance within your Google Cloud Platform.
+
+## File expiry
+
+Document Management can delete files automatically after an expiry date. This is configured with two system definition items:
+- `FILE_STORAGE_EXPIRY_SWEEP_CRON` sets when the sweep runs. Expired files are deleted only when this is set.
+- `FILE_STORAGE_DEFAULT_RETENTION_DAYS` sets a default expiry for user documents.
+
+```kotlin
+item(name = "FILE_STORAGE_EXPIRY_SWEEP_CRON", value = "0 0 2 * * ?")
+item(name = "FILE_STORAGE_DEFAULT_RETENTION_DAYS", value = "30")
+```
+
+See [File expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/) for the full behaviour, the operational guidance and the upgrade steps.

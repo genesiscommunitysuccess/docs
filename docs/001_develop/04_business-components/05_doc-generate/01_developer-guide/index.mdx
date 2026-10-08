@@ -132,6 +132,7 @@ The `generateAndStore` method takes in an object with the following parameters:
 - everything in [`DocumentContentConfiguration`](#documentcontentconfiguration).
 - `fileName` is the file name for the document you would like to generate. This must include the file extension of the type of file that you want to generate.
 - `assetReferences` - see [Providing a Template/Asset](/develop/business-components/doc-generate/developer-guide/#providing-a-templateasset)
+- `expiresAt` (optional) is the date and time after which the generated file can be deleted. See [File expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/#setting-an-explicit-expiry).
 
 For example:
 ```kotlin
