@@ -58,8 +58,8 @@ The consuming project must be able to resolve from the repository you published 
 
 ```kotlin
 repositories {
-    // leave your other repos in place here..
-    // next add maven local as a final check
+    // Keep your existing repositories here.
+    // Add mavenLocal() last, as a final fallback.
     mavenLocal()
 }
 ```
