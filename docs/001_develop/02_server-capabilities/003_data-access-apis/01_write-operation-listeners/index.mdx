@@ -24,7 +24,11 @@ There is one listener interface for each style of API, all in the `global.genesi
 | `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
 | `WriteOperationListener` | `fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>)` | an RxJava record API bound to the write's transaction |
 
-Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result) holds the records the write saved and removed.
+Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result) holds the records the write saved and removed. To tell which operation a `WriteResult` describes, look at which of its two lists is empty, as the database does itself:
+
+- `savedRecords` is empty: a delete. The deleted records are in `removedRecords`.
+- `removedRecords` is empty: an insert. The new records are in `savedRecords`.
+- Both have records: a modify. The two lists are the same size and are paired by position, so `removedRecords[i]` is the previous version of `savedRecords[i]`.
 
 This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved:
 
@@ -57,7 +61,7 @@ The table, index and field names in this example are placeholders for your own d
 
 Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
 
-A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has the same write methods as `RxDb` (`insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants), and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
+A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has `RxDb`'s read and write methods (it extends `RxRecordReadSupport`, so reads such as `get` and `getBulk` are available), bound to the write's transaction. Do not cast it to `RxDb`: that reads outside the write's transaction. The write methods are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -97,7 +101,7 @@ When you add a more specific listener, move the old listener's logic into it. Be
 - It is called once per write call. A batch write such as `upsertAll` or `modifyAll` calls it once, with one `WriteResult` per record. An audited write is two writes (the record and its audit record), so it calls the listener twice.
 - `tx` is bound to the same transaction. Writes you make through it commit or roll back with the triggering write, are published to the update queue after it, and don't call the listener again.
 - If the listener throws an exception, or one of its own writes fails, the triggering write rolls back and nothing is published.
-- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it.
+- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. For `SyncWriteOperationListener` and `AsyncWriteOperationListener` nothing checks this. Unlike `WriteOperationListener`, which throws an error that explains the problem (see [below](#writeoperationlistener-on-the-sql-write-path)), a thread switch in these two shows up as a hang or a failed transaction, with no message that names the cause.
 
 ### `WriteOperationListener` on the SQL write path
 
