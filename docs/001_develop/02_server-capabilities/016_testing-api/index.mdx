@@ -759,6 +759,9 @@ Non-repeatable.
 ```kotlin
 @GenesisDatabaseTest
 class MyDbOnlyTest {
+    @Inject
+    lateinit var db: SyncEntityDb
+
     @Test
     fun myTest() { /* ... */ }
 }
@@ -770,6 +773,9 @@ class MyDbOnlyTest {
 ```java
 @GenesisDatabaseTest
 public class MyDbOnlyTest {
+    @Inject
+    private SyncEntityDb db = null;
+
     @Test
     public void myTest() { /* ... */ }
 }
