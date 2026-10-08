@@ -23,6 +23,8 @@ Native HTTP on the process port has three known limitations. Until they are reso
 - **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the refresh-token lifetime has passed. `sessionTimeoutMins` isn't checked here, unlike requests that the router handles itself.
 - **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
 
+With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401, and missing permissions get 403. On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
+
 :::
 
 ## Enable the WebSocket channel
@@ -61,7 +63,7 @@ Request and response bodies use the same JSON format as the router. The reply is
 | The route exists, but not for this method | 405; the body lists the methods it accepts |
 | The request doesn't match any custom endpoint's required [request parameters](/develop/server-capabilities/integrations/custom-endpoints/#request-parameters) or its `accepts` and `produces` content types, or it matches more than one | 406 |
 | No session token, or an unknown one | 401 |
-| Logged in, but without the endpoint's permission codes | 403 |
+| Logged in, but without the endpoint's permission codes (custom endpoints only) | 403 |
 | Request body too large | 413 |
 | The endpoint threw an exception | 500 |
 | A reply from a request server or event handler, including a NACK | 200 |
@@ -82,12 +84,13 @@ GENESIS_SYSDEF_POSITION_APP_EVENT_HANDLER_HttpAuthDisabled=true
 
 ## Custom endpoints on a process
 
-A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
+A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts, and also add `<package>global.genesis.process.web.handler.script</package>` to the process's definition, alongside the `script` entry. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
 
 ```xml
 <process name="POSITION_APP_EVENT_HANDLER">
   ...
   <script>position_app-eventhandler.kts,position_app-web-handler.kts</script>
+  <package>global.genesis.process.web.handler.script</package>
   ...
 </process>
 ```
@@ -112,7 +115,7 @@ eventHandler {
 
 // *-reqrep.kts
 requestReplies {
-    config { internal = true }     // every request server defined after this line
+    config { internal = true }     // every table or view request server in the file without its own config
     requestReply(TRADE) {
         config { internal = true } // or on one request server
     }
