@@ -54,15 +54,13 @@ Each generated system-definition, fields and DAO module has a `sliceJar` task. I
 
 To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your dictionary-cache module; to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
 
-The consuming project must have the repository you published to in its repositories. A generated project restricts `mavenLocal()` with a content filter, so a locally published upstream product is not found unless the filter also includes the upstream product's group:
+The consuming project must be able to resolve from the repository you published to. For a local publication, add `mavenLocal()` after its other repositories:
 
 ```kotlin
 repositories {
-    mavenLocal {
-        content {
-            includeGroup("<upstream.group>")
-        }
-    }
+    // leave your other repos in place here..
+    // next add maven local as a final check
+    mavenLocal()
 }
 ```
 
