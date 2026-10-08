@@ -23,7 +23,7 @@ This must run on the same instance as the back end.
 
 The GENESIS_ROUTER service on the server acts as the endpoint for all API calls and listens (by default) to port 9064. It proxies all requests to the relevant process based on the `MESSAGE_TYPE`
 
-It can be configured `genesis-router.kts`, which should be placed in the `cfg` folder to override the default platform provided configuration file for an application.
+It can be configured `genesis-router.kts`, which overrides the default platform provided configuration file for an application. In your local project, place this file in your application's `scripts` folder (`server/<app>-app/src/main/genesis/scripts/`). On a deployed server, place it in `site-specific/scripts`, not in `<app>/scripts`.
 
 Here is an example:
 
@@ -86,6 +86,8 @@ router {
     }
 }
 ```
+
+A change to `genesis-router.kts` takes effect only when the router restarts. Run [`killProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#killprocess) followed by [`startProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#startprocess), or, in development, restart the application from Genesis Start.
 
 ## Router configuration
 Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
@@ -259,6 +261,125 @@ The service definition is designed to make sure that each module (service) has a
 ```
 
 For more information on the attributes that can be set here, go to our page on [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/).
+
+## Metadata requests
+
+Genesis Router answers three requests that describe your application's resources rather than use them:
+
+| Request | `MESSAGE_TYPE` | HTTP path | What it returns |
+|:--------|:---------------|:----------|:----------------|
+| Resources | `RESOURCES_REQUEST` | `GET /resources-request` | Every resource the router can reach, with its type |
+| Metadata | `META_REQUEST` | `GET /meta-request` | The fields of one resource |
+| JSON schema | `JSON_SCHEMA_REQUEST` | `POST /json-schema-request` | The inbound and outbound JSON schemas of one resource |
+
+To get a full Open API specification instead, use the `/gwf/open-api/spec/` endpoint described on the [Open API](/develop/server-capabilities/integrations/open-api/) page. It is built from the same JSON schemas.
+
+### Sending a metadata request
+
+Over HTTP, the path is the message type written in lower case with hyphens: `JSON_SCHEMA_REQUEST` becomes `/json-schema-request`. For a POST request, the router takes the `MESSAGE_TYPE` from the path and reads only the `DETAILS` block of the body. You don't need to put `MESSAGE_TYPE` or `SOURCE_REF` in the body.
+
+All three requests need a logged-in user. Set these headers:
+
+- `SESSION_AUTH_TOKEN` is the token returned when the user [logs in](/develop/server-capabilities/access-control/authentication/#event_login_auth). The router rejects requests without a valid token.
+- `SOURCE_REF` is optional. The router uses it to match the reply to the request, and generates one if you leave it out.
+- `USER_NAME` is only used when the router runs with [`authDisabled = true`](#non-authenticated-routers). In that case, the router takes the user name from this header and does not need `SESSION_AUTH_TOKEN`.
+
+If a proxy strips headers that contain underscores, you can send `SESSION-AUTH-TOKEN`, `SOURCE-REF` and `USER-NAME` instead.
+
+If the token is missing or invalid, the router replies with a `MSG_NACK` and HTTP status 401. When no token is sent, the error text is "This request needs the user to be logged in, but the current authentication status is logged out". When the token is invalid, it is "User is not logged in and supplied auth token is invalid.":
+
+```json
+{
+  "MESSAGE_TYPE": "MSG_NACK",
+  "ERROR": [
+    { "CODE": 401, "TEXT": "User is not logged in and supplied auth token is invalid.", "STATUS_CODE": "401 Unauthorized" }
+  ]
+}
+```
+
+### Choosing the `FEATURE`
+
+Metadata and JSON schema requests name one resource in `DETAILS.FEATURE`. The router sends the request to the process that owns that resource, and that process sends the reply. `FEATURE` must be the resource's exact name:
+
+- for an Event Handler, the event name with its `EVENT_` prefix, for example `EVENT_TRADE_INSERT`
+- for a Request Server, the name of the `requestReply` without the `REQ_` prefix, for example `ALL_TRADES`
+- for a Data Server, the name of the query, for example `ALL_TRADES`
+
+`FEATURE` does not accept wildcards. To find the names you can use, send a resources request first.
+
+If `FEATURE` is missing, or names a resource that no process has registered, the router cannot work out where to send the request. It replies with a `MSG_NACK` and HTTP status 404:
+
+```json
+{
+  "MESSAGE_TYPE": "MSG_NACK",
+  "ERROR": [
+    { "CODE": 404, "TEXT": "Resource EVENT_UNKNOWN is not mapped to a service", "STATUS_CODE": "404 Not Found" }
+  ]
+}
+```
+
+If `FEATURE` is missing altogether, the resource name in the text is empty, so the text reads `Resource  is not mapped to a service` (with two spaces).
+
+The [`allowList` and `blockList`](#blocked-and-allowed-resources) settings apply to the `FEATURE` value. If a resource is blocked, the router does not return its metadata or JSON schema either.
+
+### Listing resources
+
+```http
+GET http://localhost:9064/resources-request
+SESSION_AUTH_TOKEN: <session-auth-token>
+```
+
+The reply lists each resource by name and type:
+
+```json
+{
+  "MESSAGE_TYPE": "RESOURCES_REQUEST_ACK",
+  "SOURCE_REF": "...",
+  "RESOURCES": [
+    { "RESOURCE_NAME": "EVENT_TRADE_INSERT", "RESOURCE_TYPE": "EVENT_HANDLER" },
+    { "RESOURCE_NAME": "ALL_TRADES", "RESOURCE_TYPE": "DATASERVER" }
+  ]
+}
+```
+
+### Getting a resource's metadata
+
+Pass the resource name as the `DETAILS[FEATURE]` query parameter. Encode the square brackets if your client does not do it for you (`DETAILS%5BFEATURE%5D`).
+
+```http
+GET http://localhost:9064/meta-request?DETAILS[FEATURE]=EVENT_TRADE_INSERT
+SESSION_AUTH_TOKEN: <session-auth-token>
+```
+
+The reply is a `FEATURE_ACK`, and its `DETAILS` block describes the resource's fields. The layout depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. `DETAILS` also carries a `DEFINITIONS` block and a `REPLY` block that describes the reply the event can send; `REPLY` has its own `NAME`, `DESCRIPTION`, `FIELD` and `DEFINITIONS`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields, and an `INDICES` array is also present. For a Data Server query, `FIELD` lists each field with its `NAME` and `TYPE` (and `VALID_VALUES` for an enum), and `INDEXES` lists the table's indexes (`NAME`, `FIELDS`).
+
+### Getting a resource's JSON schema
+
+```http
+POST http://localhost:9064/json-schema-request
+Content-Type: application/json
+SOURCE_REF: <source-ref>
+SESSION_AUTH_TOKEN: <session-auth-token>
+
+{
+  "DETAILS": {
+    "FEATURE": "EVENT_TRADE_INSERT"
+  }
+}
+```
+
+If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `INBOUND` holds the schema of the message the resource accepts, and `OUTBOUND` holds the schema of the reply it sends:
+
+```json
+{
+  "MESSAGE_TYPE": "JSON_SCHEMA_FEATURE_ACK",
+  "SOURCE_REF": "<source-ref>",
+  "INBOUND": { ... },
+  "OUTBOUND": { ... }
+}
+```
+
+GPAL Event Handlers, Request Servers and Data Server queries all publish JSON schemas. If a resource is registered but has no JSON schema, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
 
 ## Custom endpoints
 
