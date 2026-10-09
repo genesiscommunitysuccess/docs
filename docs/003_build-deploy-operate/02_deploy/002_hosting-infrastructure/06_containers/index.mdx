@@ -284,7 +284,7 @@ Note: You need to ensure the port is accessible with the Docker `--port` option;
 
 ### Process health endpoints
 
-A process that uses the `WEBSOCKET` messaging channel also serves its own health endpoints on its own port, which is the port in its service definition entry. Processes on the default `TCP` channel don't have these endpoints. To set the channel for every process, add this to `network-config.yaml`, or to `network-config-<PROCESS_NAME>.yaml` for a single process. Put the file in `$GENESIS_HOME/site-specific/cfg` (`/app/run/site-specific/cfg` in the image above):
+A process that uses the `WEBSOCKET` messaging channel also serves its own health endpoints on its own port, which is the port in its service definition entry. Processes on the default `TCP` channel don't have these endpoints. To set the channel for every process, add this to `network-config.yaml`, or to `network-config-<PROCESS_NAME>.yaml` for a single process. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; because its name doesn't start with your product name, the build packages it into `$GENESIS_HOME/site-specific/cfg` (`/app/run/site-specific/cfg` in the image above), which is where the process reads it:
 
 ```yaml
 messaging:
