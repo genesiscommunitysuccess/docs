@@ -80,7 +80,7 @@ Bootstrap and Launch does the following:
 1. Runs `genesisSync` to sync the project. This step is skipped if **File → Settings → Use Genesis Sync** is unchecked.
 2. Runs the `remap` script (with `--commit`), then loads any [test data](#automatic-test-data-loading).
 3. Runs the `ConsolidateRights` script (with `--commit`).
-4. Starts every **Application** process that is configured to start and is currently stopped. The core `GENESIS_*` processes start one at a time, 5 seconds apart, so they don't all hit the database at once. The rest then start together.
+4. Starts every **Application** process that is configured to start and is currently stopped, together with the **ResourceDaemon** utility if it is stopped. The core `GENESIS_*` processes start one at a time, 5 seconds apart, so they don't all hit the database at once. The rest, ResourceDaemon among them, then start together. ResourceDaemon only starts once `remap` and `ConsolidateRights` have both finished, so on a fresh database the tables it reads are already there when it starts.
 
 The Web UI starts at the same time as these steps, not after them.
 
@@ -152,7 +152,7 @@ The dot next to each process shows its state:
 | Red | Unhealthy. |
 | Grey | Stopped. |
 
-Genesis Start gets each process's health from the **ResourceDaemon** utility. Bootstrap and Launch and Start All don't start it, so until you start ResourceDaemon from the [Utilities](#utilities) section, running processes stay yellow and never turn green or red.
+Genesis Start gets each process's health from the **ResourceDaemon** utility. Bootstrap and Launch and Start All start ResourceDaemon, and Stop All stops it, so you don't normally need to touch it. If you have turned this off (see [`genesis.start.enableResourceDaemon`](/develop/development-environment/genesis-start/configuration/#gradle-property-reference)), start ResourceDaemon yourself from the [Utilities](#utilities) section; until you do, running processes stay yellow and never turn green or red.
 
 ### Starting and stopping individual processes
 
@@ -169,8 +169,10 @@ Both buttons are disabled while a sync is in progress.
 
 The **Application** section's header (**App - &lt;project&gt;**) has two buttons:
 
-- **Start All** runs `genesisSync` (if **Use Genesis Sync** is enabled), then starts every stopped Application process and the Web UI. This is the quickest way to start your app if you haven't made any changes to the schema. As with Bootstrap and Launch, the core `GENESIS_*` processes start 5 seconds apart, and failures show the **Start failed** dialog.
-- **Stop All** stops all running Application processes. Other processes stop first, then the core `GENESIS_*` processes 5 seconds later. Genesis Start waits for each process to exit and force-kills any that don't. Anything still waiting to start (including processes held back by the 5-second stagger) is cancelled. Utilities and running scripts aren't stopped; stop them with their own buttons.
+- **Start All** runs `genesisSync` (if **Use Genesis Sync** is enabled), then starts every stopped Application process, the Web UI and, if it is stopped, ResourceDaemon. This is the quickest way to start your app if you haven't made any changes to the schema. As with Bootstrap and Launch, the core `GENESIS_*` processes start 5 seconds apart, and failures show the **Start failed** dialog.
+- **Stop All** stops all running Application processes and ResourceDaemon. Other processes stop first, then the core `GENESIS_*` processes 5 seconds later. Genesis Start waits for each process to exit and force-kills any that don't. Anything still waiting to start (including processes held back by the 5-second stagger) is cancelled. Other utilities and running scripts, such as DbMon, aren't stopped; stop them with their own buttons.
+
+Start All and Stop All only manage ResourceDaemon if your project defines a `ResourceDaemon` script and you haven't turned this off with [`genesis.start.enableResourceDaemon=false`](/develop/development-environment/genesis-start/configuration/#gradle-property-reference). A ResourceDaemon that is already running, including one left running by an earlier Genesis Start session, is left alone, so Start All doesn't start a second one. ResourceDaemon also counts when Genesis Start decides which button to show: Start All is shown when every Application process is running but ResourceDaemon is stopped, and Stop All is shown when they are all stopped but ResourceDaemon is running.
 
 ### Utilities
 

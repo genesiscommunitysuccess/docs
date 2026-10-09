@@ -169,8 +169,8 @@ Here's a summary of the endpoints.
 | `GET /api/processes/{processId}/info` | Shows details of one process, including its log file (`logFilePath`). |
 | `POST /api/processes/{processId}/start` | Starts one process. |
 | `POST /api/processes/{processId}/stop` | Stops one process. |
-| `POST /api/processes/application/start-all` | Starts all stopped Application processes and the Web UI. Optional body: `{"skipSync": true}`. |
-| `POST /api/processes/application/stop-all` | Stops all Application processes. This stops the processes, not Genesis Start. Utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
+| `POST /api/processes/application/start-all` | Starts all stopped Application processes, the Web UI and, if it is stopped, `ResourceDaemon`. Optional body: `{"skipSync": true}`. |
+| `POST /api/processes/application/stop-all` | Stops all Application processes and `ResourceDaemon`. This stops the processes, not Genesis Start. Other utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
 | `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored (ignored parameters are still type-checked), so there's no paging. An unknown `processId` returns an empty log, not 404. |
 | `POST /api/processes/{processId}/log/clear` | Clears a process's log in Genesis Start. |
 | `POST /api/processes/{processId}/input` | Sends one line to a utility's input. Body: `{"line": "..."}`. A line containing `\r` or `\n` is refused with 400, and nothing is sent. |
@@ -245,7 +245,7 @@ By default, a script run stays `RUNNING` until the script exits, then becomes `S
 
 A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`, `STOPPING` or `UNHEALTHY`. `RUNNING` means the process is up but hasn't reported its health yet; `HEALTHY` means it has reported itself healthy.
 
-Health comes from the `ResourceDaemon` utility, which bootstrap and start-all don't start. Until you start it (`POST /api/processes/{processId}/start`, with its id from `GET /api/processes`), running processes stay `RUNNING`, and never become `HEALTHY` or `UNHEALTHY`.
+Health comes from the `ResourceDaemon` utility. Bootstrap and start-all start it if it is stopped, and stop-all stops it. If it isn't running (for example, because you turned this off with [`genesis.start.enableResourceDaemon=false`](/develop/development-environment/genesis-start/configuration/#gradle-property-reference), or your project has no `ResourceDaemon` script), running processes stay `RUNNING` and never become `HEALTHY` or `UNHEALTHY`. Start it yourself with `POST /api/processes/{processId}/start`, using its id from `GET /api/processes`.
 
 Once `ResourceDaemon` has started, your application processes take a few seconds to report their health (around 5–6 seconds in testing). Until then, they show `RUNNING`. The Web UI process never gets a health state, so it stays `RUNNING` even when `ResourceDaemon` is up.
 
