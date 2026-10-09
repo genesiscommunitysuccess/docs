@@ -24,7 +24,7 @@ systemDefinition {
   global {
     item(name = "DEPLOYED_PRODUCT", value = "position")
     item(name = "MqLayer", value = "ZeroMQ")
-    item(name = "DbLayer", value = "H2")
+    item(name = "DbLayer", value = "SQL")
     item(name = "DictionarySource", value = "DB")
     item(name = "AliasSource", value = "DB")
     item(name = "MetricsEnabled", value = "false")
@@ -32,7 +32,7 @@ systemDefinition {
     item(name = "ZeroMQProxyInboundPort", value = "5001")
     item(name = "ZeroMQProxyOutboundPort", value = "5000")
 
-    item(name = "DbHost", value = "localhost")
+    item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
     item(name = "DbMode", value = "POSTGRESQL")
     item(name = "GenesisNetProtocol", value = "V2")
     item(name = "ResourcePollerTimeout", value = "5")
@@ -84,7 +84,7 @@ If other `system` blocks are defined in a different order in other `system-defin
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to H2. If you want to use PostgreSQL, Oracle or MSSQL, then you need to change this value and then [change the value of the DbHost item](/develop/server-capabilities/runtime-configuration/database-configuration/).
+**DbLayer**: The database layer. Set it to `SQL` for PostgreSQL, Oracle, MSSQL or H2, and then [set the DbHost item](/develop/server-capabilities/runtime-configuration/database-configuration/) to the JDBC connection string for your database. `FDB` and `FDB2` are also accepted, but FoundationDB is deprecated in 10.0 and is planned for removal in 11.0.0.
 
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
@@ -99,22 +99,15 @@ See our pages on [database technology](/build-deploy-operate/deploy/supporting-i
 
 You may want to encrypt usernames, passwords and other key configuration values such as database credentials.
 
-Two scripts are provided as part of the Genesis server framework to encrypt username and password values:
+To encrypt a username and password, run the `encryptUserPassWithKey` script. It asks for a username, a password and a key, and prints the encrypted username and password.
 
-- `encryptUserPass` : This will prompt you to enter a username, then a password, and will output the encrypted value of each. No key will be used to encrypt the values.
-- `encryptUserPassWithKey` : As with `encryptUserPass` you will need to enter username and password, but additionally also supply a key - which needs to be a 32 alphanumeric character string and kept secret. This is a more secure approach where a key is supplied to encrypt values with. This key will need to be set in a system definition item `GenesisKey`, and where this is present all encrypted system definition values will be expected to use the key.
+The key must be a 32-character alphanumeric string. Keep it secret, and set the same value in the `GenesisKey` system definition item. Once `GenesisKey` is set, every encrypted value in the system definition must be encrypted with that key.
 
-Example usages:
+:::warning
+The older `encryptUserPass` script is deprecated and will be removed in 11.0.0. It is part of the deprecated `genesis-genesistodb` module, and it encrypts with a fixed built-in key rather than one you supply. Use `encryptUserPassWithKey` instead.
+:::
 
-```bash
-global.genesis.genesistodb.utils.PasswordEncryptor
-Enter userName
-my.user
-Enter password
-password123
-UserName: 6913ab67ff0bd7ae475bde29909d12d0857102cfac7378179cb420676e980f12
-Password: 41581be94278017550b40d3df925fb974ab3fb75dad8050b9e2df04713f1038b
-```
+Example usage:
 
 ```bash
 global.genesis.config.utils.PasswordEncryptor
@@ -158,10 +151,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is only used for [PostgresSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql); it can be one of two values:
-
-- POSTGRESQL if you want PostgreSQL to work with namespaces/schemas
-- LEGACY, which is the default mode; this stores the dictionary in a table called `dictionary` and a schema called `metadata`
+**DbMode**: The `LEGACY` value is no longer supported. The dictionary is always stored in the namespace-aware store, so [PostgreSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql) works with namespaces/schemas without this setting. If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start, so remove the setting.
 
 **ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
 
@@ -174,7 +164,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use:
-- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers
+- For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 - For [Postgres](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql), [MSSQL](/build-deploy-operate/deploy/supporting-infrastructure/#sql-server) and [ORACLE](/build-deploy-operate/deploy/supporting-infrastructure/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.

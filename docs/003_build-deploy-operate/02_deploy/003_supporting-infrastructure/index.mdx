@@ -24,7 +24,7 @@ By default, new projects are set up with [H2](https://h2database.com/html/main.h
 
 For production environments (and local production like testing), [Postgresql](#postgresql) is our recommended choice, however Genesis supports the following database technologies:
 
-| Database                 | [FoundationDB](#foundationdb) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
+| Database                 | [FoundationDB](#foundationdb) (deprecated) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
 | ------------------------ | ----------------------------- | ------------------------- | -------------------- |------------------ | --- |
 | Technology               | NOSQL                         | SQL                       | SQL                  | SQL               | SQL |
 | Unlimited operation size | ❌                            | ✔️                         | ✔️                    | ✔️                 | ✔️   |
@@ -33,6 +33,9 @@ For production environments (and local production like testing), [Postgresql](#p
 
 #### FoundationDB
 
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 Genesis provides two database solutions built on FoundationDB.
 
@@ -170,11 +173,11 @@ More information on connection configuration can be found [in the jdbc documenta
 For optimum performance using PostgreSQL, set the `SqlMaxParametersPerRequest` parameter to -1 in your application's **system-definitions.kts** file.
 :::
 
-If you want PostgreSQL to work with different namespaces/schemas, you must add the following system definition items to your **genesis-system-definitions.kts** file:
+If you want PostgreSQL to work with different namespaces/schemas, you must add the `DbNamespace` system definition item to your **genesis-system-definitions.kts** file. `DbMode` is no longer needed:
 
 | Setting     | Description                                                                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
+| DbMode      | No longer needed: the dictionary is always stored in the namespace-aware store. The `LEGACY` value is no longer supported; if `DbMode` is set to `LEGACY`, the database fails to start. |
 | DbNamespace | This is the namespace/schema of database. This allows you to segregate data from different Genesis apps whilst using a single database.     |
 
 ##### SQL Server

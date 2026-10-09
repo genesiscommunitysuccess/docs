@@ -317,10 +317,9 @@ The results are returned in the order they were requested and will be `null` if 
 
 * `getAllAsList(Flow<UI<E>>): List<E?>`
 * `getAllAsList(List<UI<E>>): List<E?>`
-* `getAllAsList(vararg UI<E>): List<E?>`
 
 ```kotlin
-val list = db.getAllAsList(Trade.byId("TRADE_A"), Trade.byId("TRADE_B"))
+val list = db.getAllAsList(listOf(Trade.byId("TRADE_A"), Trade.byId("TRADE_B")))
 
 val recordA = list[0]
 val recordB = list[1]
@@ -384,7 +383,7 @@ Lazily evaluated criteria:
 * Any criteria on a derived field
 * If `SqlViewsEnabled` is not true, in views, any criteria on a field on a joined table
 * If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins), any criteria on a field on a joined table
-* On FDB, any criteria that is not a direct index match
+* On FDB, any criteria that is not a direct index match. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
 ###### Hybrid evaluation
 
@@ -510,7 +509,7 @@ The records will be sorted in ascending order by the index provided. If no index
 
 There is also the `getBulkFromEnd` function, which returns records in descending order.
 
-There are also a number of continuation operations, which return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
+The continuation overloads of `getBulk` and `getBulkFromEnd`, which took a record to start after, have been removed. To read on from a given record, use [`getRange`](#getrange) or `getRangeFromEnd`, or [`getByCriteria`](#getbycriteria) with paging.
 
 :::note
 The overloads below show the `AsyncEntityDb` (Kotlin) signatures, which return `Flow<E>`. The same operations exist on `SyncEntityDb` (returning `List<E>`) and `RxEntityDb` (returning `Flowable<E>`) — see [Return Types](#return-types) for the full breakdown.
@@ -522,10 +521,7 @@ The overloads below show the `AsyncEntityDb` (Kotlin) signatures, which return `
 * `getBulk([Class<E> /  KClass<E>]): Flow<E>`
 * `getBulk(UR<E>): Flow<E>`
 * `getBulk(UR<E>, fields): Flow<E>`
-* `getBulk(UR<E>, E, fields): Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>): Flow<E>`
-* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation) (Deprecated)
-* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>, fields): Flow<E>`
 
 ###### Syntax
@@ -861,7 +857,7 @@ The update operation is a condensed syntax for modifying data in the database. I
 * `updateRangeBy` - an index range
 * `updateAll` - a whole table
 
-The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in the database, and can be modified in place, with the changes applied to the database. All update calls use the `safeWriteTransaction` and are transactional if the database supports it.
+The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in the database, and can be modified in place, with the changes applied to the database. All update calls run in a `writeTransaction` and are transactional if the database supports it.
 
 * In the async entity db, the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
 `this` will refer to the row, which should be modified in place.
@@ -938,9 +934,9 @@ This API must be used with caution. Integrity checks are skipped, so it can leav
 
 If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
 
-Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**.
+Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
-When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These run operations in the block in a single transaction, if supported.
+When code is expected to run on multiple database types, transactions should be used when available. You can use `readTransaction` and `writeTransaction`. These run operations in the block in a single transaction, if supported.
 
 There is a distinction between using Kotlin and Java here.
 
@@ -1998,58 +1994,24 @@ requestReply("TRADE", TRADE) {
 
 ## Generated repositories
 
-:::warning
-IMPORTANT!
+From version 10.0, repositories are generated for views only. Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables, use the [Entity Db](#entity-db-api).
 
-Generate Repository usage is legacy. Entity DB APIs replace their usage. From GSF version 7.0.0 onwards, code generation for database repositories is disabled by default. To re-enable code generation, change the **generateRepositories** setting inside the **build.gradle.kts** files for the **genesis-generated-dao** and **genesis-generated-view** modules, as shown below:
+The `generateRepositories` setting has also been removed from `codeGen { }`, so a build script that still sets it will not compile. Delete the line.
 
-```{kotlin}
-codeGen {
-    generateRepositories = true
-}
-```
+:::note
+In Genesis 8.15 and earlier, table repositories can still be generated. Set `generateRepositories = true` inside `codeGen { }` in the **build.gradle.kts** files of the **genesis-generated-dao** and **genesis-generated-view** modules.
 :::
 
-During the code generation phase, repository classes can be generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
+Every view gets its repositories automatically. When you [build your DAOs](/build-deploy-operate/build/bdo-build-overview/#dao), a view called **POSITION_VIEW** gets two, in the `global.genesis.gen.view.repository` package:
 
-The main differences between the generated repositories and the [Entity Db](#entity-db-api) are:
+* **PositionViewRx3Repository** has an RxJava API, for use from Java.
+* **PositionViewAsyncRepository** has an Async API, for use from Kotlin.
 
-- The entity db can handle any database entity, each repository can only handle a single entity.
-- The generated repositories have specific methods for every index of table/view, whereas the entity db is fully generic.
-
-|                                                                                                      |                                                          |
-| -----------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| Supports tables                                                                                      | ✔️                                                        |
-| Supports views                                                                                       | ✔️                                                        |
-| Supports any data type                                                                               | ❌                                                       |
-| Class to import                                                                                      | `[TableName]AsyncRepository` \ `[TableName]Rx3Repository`|
-| Type-safe read and write                                                                             | ✔️                                                        |
-| Type-safe write result                                                                               | ❌                                                       |
-| Returns data as                                                                                      | table or view entities                                   |
-| Writes data as                                                                                       | table entities                                           |
-| References indexes as                                                                                | Generated methods                                        |
-| Programming interface                                                                                | Async or RxJava                                          |
-| Write (input)                                                                                        | Generated                                                |
-| Write (output)                                                                                       | Write Result)                                            |
-| Subscribe                                                                                            | Record Update of entity type                             |
-| Bulk or Range Subscribe                                                                              | Bulk of entity type                                      |
-| Available in [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/)       | ❌                                                       |
-| Available in custom [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/) | ❌                                                       |
-
-With generated repositories, there are two flavours of the entity db:
-
-* one has a [RxJava API](/develop/server-capabilities/data-access-apis/#rxentitydb) signatures, for use from Java
-
-* the other flavour has an [Async API](/develop/server-capabilities/data-access-apis/#asyncentitydb) signature, for use by Kotlin
-
-If you have a table called **POSITION**, then, when you run a [generateDao](/build-deploy-operate/build/bdo-build-overview/#dao), two repositories will be generated:
-**PositionRx3Repository** and **PositionAsyncRepository**.
-
-You can perform CRUD operations on Table/View by its primary key and indices.
+View repositories are read-only, with a generated read method for each index of the view. The Entity Db can read views too, using generic methods that take the index as an argument.
 
 ### Write result
 
-This is a single catch-all type for results of a write operation when using generated repositories or RxDb.
+This is a single catch-all type for results of a write operation when using RxDb.
 
 This type has the following fields:
 
@@ -2109,7 +2071,7 @@ If after a configurable threshold (10 seconds by default):
 The database will warn of a potential deadlock situation:
 
 ```
-WARN  global.genesis.db.engine.sql.utils.RxJdbcDataSource - No database connections available, last connection provided 10.802010372s ago
+WARN  global.genesis.db.engine.sql.utils.SqlConnectionPool - No database connections available, last connection provided 10.802010372s ago
 INFO  global.genesis.clustersupport.availability.ProcessState - Setting process to WARNING. Database connection pool deadlock has been detected
 ```
 
@@ -2118,7 +2080,7 @@ This will also set the process status to WARNING.
 The issue might resolve itself over time, in which case you will see:
 
 ```
-INFO  global.genesis.db.engine.sql.utils.RxJdbcDataSource - Connections once again available
+INFO  global.genesis.db.engine.sql.utils.SqlConnectionPool - Connections once again available
 INFO  global.genesis.clustersupport.availability.ProcessState - Setting process to UP. Database connection pool is healthy
 ```
 
@@ -2137,7 +2099,7 @@ If we cancel, we should be able to return the connection to the pool.
 
 The warning will look like this in the log file:
 ```
-WARN  global.genesis.db.engine.sql.utils.RxJdbcDataSource - Slow Query detected, no data was consumed in 10s
+WARN  global.genesis.db.engine.sql.utils.SqlConnectionPool - Slow Query detected, no data was consumed in 10s
 ```
 
 ### Deadlock related system definition items: 
