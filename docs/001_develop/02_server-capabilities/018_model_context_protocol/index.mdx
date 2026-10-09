@@ -204,7 +204,7 @@ The server checks for newly started endpoints every `toolRefreshIntervalMillis`.
 
 Changes to `<application>-mcp.kts` take effect after `GENESIS_MCP` is restarted.
 
-A newly added endpoint needs more first: sync and build so that its script is deployed, and make sure the process that hosts it is running, restarting it so that it picks up the new script. Then restart `GENESIS_MCP`, or wait for `toolRefreshIntervalMillis`, for the tool to be listed.
+Before a newly added endpoint is listed, sync and build so its script is deployed, then start or restart the process that hosts it. Then restart `GENESIS_MCP`, or wait for `toolRefreshIntervalMillis`.
 
 #### How endpoint tools behave
 
@@ -512,7 +512,7 @@ A checker, connected over MCP as a different user, works through these tools:
 
 Checkers can also use any other front end built on the pending approval workflow.
 
-To try maker-checker locally, you need a second user to act as the checker. Log in first with the [local development default login](#session-token). Create one with [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user), which takes the user's password in the field `ONE_TIME_PASSWORD`, or with **Add User** in the [user management UI](/develop/business-components/user-management/user-management-ui/). A new user starts with an expired password. It can't log in, or get a `sessionAuthToken`, until the password has been changed once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password).
+To try maker-checker locally, you need a second user to act as the checker. Logged in with the [local development default login](#session-token), create it with [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user), which takes the user's password in the field `ONE_TIME_PASSWORD`, or with **Add User** in the [user management UI](/develop/business-components/user-management/user-management-ui/). A new user starts with an expired password. It can't log in, or get a `sessionAuthToken`, until the password has been changed once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password).
 
 ### Separation of duties
 
