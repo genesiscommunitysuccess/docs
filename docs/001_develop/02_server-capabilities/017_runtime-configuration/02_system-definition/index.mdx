@@ -229,6 +229,8 @@ GENESIS_SYSDEF_GENESIS_AUTH_MANAGER_DbSqlMaxPoolSize=50
 
 In this example, all processes will use `DbSqlMaxPoolSize=10` by default, but the `GENESIS_AUTH_MANAGER` process will use `DbSqlMaxPoolSize=50`.
 
+For local development under Genesis Start only, you can also use per-process system-definition properties files; see [System definition property overrides](/develop/development-environment/genesis-start/#system-definition-property-overrides). These files do not apply in a deployed environment, where processes use the environment-variable forms described above.
+
 ## Overriding processes.xml settings
 You can override the values defined for a process definition inside the [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes) file by using the following naming convention:
 `<process_name>_PROCESS_<property>`
