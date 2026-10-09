@@ -167,7 +167,13 @@ The retry mechanism uses exponential backoff with the following pattern:
 - For [FoundationDB](/build-deploy-operate/deploy/supporting-infrastructure/#foundationdb), this is used when creating internal DirectoryLayers. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 - For [Postgres](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql), [MSSQL](/build-deploy-operate/deploy/supporting-infrastructure/#sql-server) and [ORACLE](/build-deploy-operate/deploy/supporting-infrastructure/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
-**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
+**ClusterMode**: This setting selects how the nodes of your application form a cluster. It can be one of three values:
+
+- LEGACY, which is the default mode if `ClusterMode` isn't set; this uses the built-in Akka clustering in GENESIS_CLUSTER, which establishes cluster membership on `ClusterPort`
+- CONSUL, which uses Consul-based clustering; `ClusterPort` is not used in this mode
+- DISABLED, which turns clustering off
+
+**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes. It is separate from the `GENESIS_CLUSTER` service port set in the [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/). `ClusterPort` is not used when `ClusterMode` is `CONSUL`. If it isn't set, GENESIS_CLUSTER uses port `6000`. Before 10.0, the port used when it wasn't set was `9900`; if your system definition doesn't set `ClusterPort` and you need to keep that port, set it to `9900` explicitly.
 
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on the [Data Model](/develop/server-capabilities/data-model/#sequence)
 
@@ -199,7 +205,7 @@ These settings control compilation and caching of GPal scripts and system-defini
 
 You can override system-definition values in any environment by using environment variables. To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_` or `GENESIS_SYSDEF_ENCRYPTED_`. 
 
-`GENESIS_SYSDEF_ENCRYPTED` is needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
+`GENESIS_SYSDEF_ENCRYPTED_` needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
 
 Here is an example where system definition items `DbHost`, `DbUser`, `DbPassword` and `GenesisKey` are all being set via environment variables. These values will override the configuration found in the system definition file:
 

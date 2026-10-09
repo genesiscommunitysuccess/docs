@@ -1,7 +1,7 @@
 ---
 title: 'Containers'
 sidebar_label: 'Containers'
-id: bdo-deploy-virtual-machines
+id: bdo-deploy-containers
 keywords: [hosts, container, containers, docker, image, registry]
 tags:
 - hosts
@@ -348,6 +348,40 @@ The Genesis Application Platform is highly resilient and easy to cluster for a H
 
 This area takes you through how to configure the platform with our clustering options when using containers.
 
+### Built-in clustering
+Built-in clustering uses [Akka](https://akka.io/) to manage the members of the cluster. It is the `LEGACY` cluster mode, and it is the default: a host uses it when `ClusterMode` is not set. For how it works, including the `hosts` list and setting the primary node, see [clustering for virtual machines](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering).
+
+In a container, set the mode with the `GENESIS_SYSDEF_ClusterMode` environment variable:
+
+```yaml
+GENESIS_SYSDEF_ClusterMode: LEGACY
+```
+
+In this mode, the hosts must be able to reach each other on `ClusterPort` (`6000` by default). See [Networking](#networking).
+
+### Generating a compose file
+To get a starting `docker-compose.yml`, run the `writeGenesisDockerCompose` task from the root of the `server/` project. The task comes with the Genesis Exec plugin (`global.genesis.exec`), and it writes the file to `build/docker-compose/docker-compose.yml` in your app's main module. The generated file runs one app container, which uses the image built by `buildDebugImage`, alongside a PostgreSQL database and one-off containers that create the tables and load the dev data.
+
+```bash
+./gradlew writeGenesisDockerCompose
+```
+
+For a two-node cluster, copy the app service and give each copy its own settings. The generated file sets `GENESIS_SYSDEF_ClusterMode: LEGACY`, which is [built-in clustering](#built-in-clustering). In that mode, no `GENESIS_SYSDEF_*` setting differs between nodes. Instead, give each app container a hostname that is in the `hosts` list of your system definition.
+
+For [Consul](#consul) mode, change `GENESIS_SYSDEF_ClusterMode` to `CONSUL` on both nodes, and give each node a stable identity for its [node ID](#node-ids) claim:
+
+```yaml
+# node 1
+GENESIS_SYSDEF_ClusterMode: CONSUL
+GENESIS_SYSDEF_ConsulNodeName: node-1
+
+# node 2
+GENESIS_SYSDEF_ClusterMode: CONSUL
+GENESIS_SYSDEF_ConsulNodeName: node-2
+```
+
+If a node's Consul agent is not on `localhost`, also set `GENESIS_SYSDEF_ConsulHostAddress` for that node. See [extended configuration](#extended-configuration).
+
 ### Consul
 The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.
 
@@ -372,7 +406,9 @@ However, this is not recommended as **MQTT is required for dynamic scaling**.
 When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
 ### Networking
-When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports.
+All Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. This applies to both built-in clustering and Consul mode.
+
+When using built-in clustering (`ClusterMode` is `LEGACY`), the hosts must also be able to reach each other by host name and on `ClusterPort` (`6000` by default). `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
 
 The default Genesis services and their ports are:
 
@@ -385,9 +421,16 @@ The default Genesis services and their ports are:
 | `GENESIS_EVALUATOR` | `9015` |
 | `GENESIS_ROUTER` | `9017` |
 
+These system definition items must also be reachable between hosts. They are required for the processes that use `GENESIS_CLUSTER` as a proxy for the update queue:
+
+| System definition item | Port |
+| --- | --- |
+| `ZeroMQProxyOutboundPort` | `5000` |
+| `ZeroMQProxyInboundPort` | `5001` |
+
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
-The Consul Agents must also be able to access all the services on their defined ports.
+When using Consul mode, the Consul Agents must also be able to access all the services on their defined ports.
 
 ### Configuring the app
 
@@ -418,6 +461,83 @@ systemDefinition {
 | `ClusterServiceAffinityGroup` | Group services for preferred routing based on this value. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
+| `ConsulNodeName` | The host's identity in Consul, used for its [node ID](#node-ids) claim. Set a stable value in containers | the hostname |
+| `GFlakeNodeIdGraceMinutes` | How long a node ID claim can go without a refresh before another host may take it, in minutes. Also sets how long a process tolerates Consul being unreachable. See [heartbeat and grace period](#heartbeat-and-grace-period) | `30` |
+| `GFlakeNodeIdClusterName` | The name under which node IDs are claimed in Consul. Apps that share a database must use the same value | the deployed product name |
+| `GFlakeNodeIdExplicit` | Set to `true` to use the `NodeId` in the system definition as a fixed node ID | `false` |
+
+### Node IDs
+
+Every record the platform writes gets a `RECORD_ID` from gFlake, which builds it from a timestamp, a node ID and a sequence number. The node ID keeps IDs from different hosts apart: two hosts with the same node ID can generate the same `RECORD_ID`.
+
+In Consul mode, each host claims a unique node ID from Consul when its processes start, so you don't need to configure one. All processes on a host share the same claim, and a host that restarts gets its old ID back. This applies when `ClusterMode` is `CONSUL` and gFlake is enabled (`GFlakeEnabled`, which defaults to `true`).
+
+Claims live in the Consul key/value store under the prefix `genesis/cluster/<GFlakeNodeIdClusterName>/node-ids/`. Each key under that prefix is a node ID. Its value is a JSON claim that records the identity that owns the ID (`identity`, which is `ConsulNodeName` or the hostname), a `released` flag, and timestamps (`claimedAtEpochMs` and `lastSeenEpochMs`). To list the claims, run:
+
+```bash
+consul kv get -recurse genesis/cluster/<name>/node-ids/
+```
+
+or call the HTTP API at `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`. To find a host's node ID, look for the claim whose `identity` matches that host's identity; the ID is the last part of its key.
+
+To return just one host's claim, filter the output on that host's identity. `consul kv get -recurse` prints each claim on its own line, as the key followed by its JSON value:
+
+```bash
+consul kv get -recurse genesis/cluster/<name>/node-ids/ | grep '<host identity>'
+```
+
+The node ID is the last part of the key at the start of the line that matches. Because `grep` matches the identity anywhere on the line, use the full identity, so that a shorter one does not also match another host's claim.
+
+To check that a host's processes have registered, list the services in the Consul catalog, and the nodes behind one of them:
+
+```bash
+consul catalog services
+consul catalog nodes -service=GENESIS_ROUTER
+```
+
+or call the HTTP API at `/v1/catalog/services`. Each Genesis process registers as a service named after the process, such as `GENESIS_ROUTER`, unless you set `ConsulServiceNamePattern`.
+
+:::important
+A host's claim is owned by its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
+
+Apps that share a database must also share the same `GFlakeNodeIdClusterName`. Otherwise they claim IDs separately and can give the same node ID to two hosts writing to that database.
+:::
+
+#### Fixing a node ID
+
+To give a host a fixed node ID, for example to keep the ID of an existing node, set the `GENESIS_SYSDEF_NodeId` environment variable or the `-DNodeId` JVM property on that host. Alternatively, set `NodeId` in the system definition together with `GFlakeNodeIdExplicit=true`.
+
+A fixed ID is still claimed in Consul, so a process refuses to start if another host already holds that ID. A fixed ID applies to the whole host: a process refuses to start if you set one for it alone with `GENESIS_SYSDEF_<PROCESS>_NodeId`.
+
+#### When a process can't get a node ID
+
+If a process can't claim a unique node ID, it refuses to start. This happens, for example, when every ID is taken, or when Consul stays unreachable after a few retries. The claim is made before logging is set up, so on a non-container install, look for the reason in `<PROCESS>.log.err`. In a container, the reason is in `docker logs <container>`: `<PROCESS>.log.err` is only written when processes are not started with `--verbose`, and the stock container starts them with `--verbose`.
+
+#### Heartbeat and grace period
+
+While it runs, each process checks its host's claim in Consul and refreshes it. The check runs every quarter of `GFlakeNodeIdGraceMinutes`, which is every 7.5 minutes with the default of 30.
+
+A process stops itself if it can no longer confirm that the ID is its own:
+
+- at once, if the claim is gone, has been released, can't be read, or now belongs to another host;
+- after about three quarters of `GFlakeNodeIdGraceMinutes` (about 22 minutes by default) if Consul stays unreachable. A brief Consul outage does nothing.
+
+Another host can take an ID only once its owner has left the Consul catalog and the claim has gone unrefreshed for the whole grace period. A process that loses contact with Consul therefore stops before its ID can be handed to anyone else.
+
+A shorter grace period frees the IDs of removed hosts sooner, but it also means a shorter Consul outage stops every process in the cluster.
+
+#### Exit code 3
+
+A process that stops because it can no longer confirm its node ID exits with code `3`. Before 10.0, it exited with code `1`, the same as an unrelated crash. If your monitoring or restart scripts match exit code `1` for this case, update them. Before it exits, the process logs an error that starts with `Halting process:`.
+
+:::warning
+Run Consul mode under a supervisor that restarts stopped processes. When it restarts, a process claims a node ID again, but the platform doesn't always restart it for you:
+
+- In Kubernetes, a `restartPolicy` restarts the container on any non-zero exit code.
+- Otherwise, the platform restarts a process only if [`scheduleRestart`](/develop/server-capabilities/runtime-configuration/processes/) is set to `true` for it, and it gives up after three attempts.
+
+Without one of these, a long Consul outage stops every process on every host, and they stay down until you run `startServer` again.
+:::
 
 ### Troubleshooting
 
