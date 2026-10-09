@@ -28,6 +28,32 @@ Write new tests with the annotation-based GenesisJunit API (`@GenesisTest`, `@Ge
 
 :::
 
+### Mapping to GenesisJunit
+
+Most settings of the legacy test configuration have an equivalent in the annotation-based GenesisJunit API. Use this table to move a test across. The annotations are in the `global.genesis.testsupport.jupiter` package and are described on the [Testing API](/develop/server-capabilities/testing-api/#annotations) page.
+
+| Legacy | GenesisJunit |
+|---|---|
+| `extends AbstractGenesisTestSupport` / `GenesisTestSupport` | `@GenesisTest` (a fresh process per test method) or `@GenesisSharedContextTest` (one process per class) |
+| `packageName` / `packageNames` | `@PackageScan(SomeClass::class)` or `@PackageNameScan("...")` |
+| `genesisHome` | `@GenesisHome("...")` |
+| `scriptFileName` | `@TestScriptFile("...")` (repeatable) |
+| `configFileName` | `@TestConfigFile("...")` |
+| `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [injecting classes in a test](/develop/server-capabilities/testing-api/#a-simple-example) |
+| `parser` / `EventResponse` | Not needed: inject the event, request and data server clients described on the GenesisJunit pages |
+| `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
+| `authCacheOverride` / `authCacheOverrides` | `@EnableInMemoryTestAuthCache`, and inject `InMemoryTestAuthCache` |
+| `useTempClassloader = true`, or `GenesisClassGenerationTestSupport` | `@EnableTestClassLoader` |
+| `dataDumpOn` | `@EnableDataDump` |
+| `rootLogLevel` | `@RootLogLevel` |
+| `expectedProcessStatus` | `@ExpectedProcessStatus` |
+| Instances the test binds | `@ProvidedInstance` for built instances, `@ProvidedType` for classes |
+| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, injecting the database as `SyncEntityDb`, `RxEntityDb` or `AsyncEntityDb` |
+| `createMockDictionary()` returning an inline dictionary | `@ProvidedDictionary` with `providedDictionary { }` |
+| XML dictionary | `@EnableLegacyXmlDictionary` |
+
+The mapping is by purpose: check each converted test, because the two APIs don't behave identically in every detail. For example, data dump is on by default in the legacy API and off by default in GenesisJunit. Some legacy dictionary set-ups have no GenesisJunit equivalent: a dictionary loaded from an explicit file path, the production dictionary filtered to some tables, and swapping the dictionary in the middle of a test. Keep those tests on the legacy classes, which still compile and run.
+
 ### Database and service tests
 
 Two types of test are included in the platform:
@@ -97,6 +123,8 @@ override fun createMockDictionary(): GenesisDictionary = testDictionary {
 :::important
 Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
 :::
+
+In GenesisJunit, use [`@ProvidedDictionary`](/develop/server-capabilities/testing-api/#provideddictionary) instead.
 
 #### File dictionary
 
@@ -279,6 +307,7 @@ This is a more powerful type of test. In addition to setting up the database, it
 - injection of other components directly into the test
 - mock auth-perms
 - asynchronous message handling with timeout and parsing
+- the in-memory database, as the `rxDb` property (an `RxDb`), for loading data and asserting on database state
 
 To create a test, you need to provide a `GenesisTestConfig` instance in the constructor:
 
@@ -290,6 +319,8 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | authCacheOverride | no | overrides auth-perms map to test |
+| dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
+| rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 
 Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
 
@@ -311,7 +342,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
       configFileName = "config.xml"
     }
     ) {
-      // no tests defined yet
+      @Test
+      fun initialDataIsLoaded() {
+        // rxDb is provided by AbstractGenesisTestSupport
+        assert(rxDb.count("USER").blockingGet() > 0L)
+      }
     }
     ```
 
@@ -331,6 +366,12 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
     .setConfigFileName("config.xml")
     .build()
     );
+  }
+
+    @Test
+    public void initialDataIsLoaded() {
+    // rxDb is provided by AbstractGenesisTestSupport
+    assert getRxDb().count("USER").blockingGet() > 0L;
   }
   }
     ```
