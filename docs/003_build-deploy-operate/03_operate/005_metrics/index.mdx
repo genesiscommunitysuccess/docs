@@ -48,6 +48,7 @@ item(name = "MetricsDbCacheEnabled", value = "false")
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
 | MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
 | MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+| MetricsCriteriaOverlapEnabled  | `false` | enables [Data Server criteria metrics](#data-server-criteria-metrics) |
 
 ## Framework metrics
 
@@ -151,6 +152,39 @@ When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for
 - Load statistics
 
 Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
+
+### Data server criteria metrics
+
+Set `MetricsCriteriaOverlapEnabled` to `true` (with `MetricsEnabled` also `true`) and each Data Server query reports two gauges that show how much its subscribers' criteria overlap. Both gauges carry the query name in the `dataserver` tag.
+
+The setting is off by default because it costs extra work at logon: the Data Server parses each new subscription's criteria a second time. The counts are approximate.
+
+| Metric                          | Explanation                                                          |
+|:--------------------------------|:---------------------------------------------------------------------|
+| dataserver_distinct_criteria    | The number of distinct criteria held by the subscribers of a query   |
+| dataserver_distinct_comparisons | The number of distinct comparisons within those criteria             |
+
+Overlap is only counted for live WebSocket subscriptions. A REST `DATA_LOGON` returns a single update and ends, so it never holds a subscription open and the gauges do not move. A WebSocket connection to the Genesis router is only possible after a successful HTTP login, because the session is carried in a cookie; see [Cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication).
+
+To see the gauges change, hold two subscriptions open on the same query:
+
+1. Log in over HTTP and keep the session cookie that the response sets.
+2. Open a WebSocket connection, sending that cookie with the upgrade request.
+3. Send a `DATA_LOGON` for the query, using a distinct `SOURCE_REF`.
+4. Send a second `DATA_LOGON` for the same query, with a different `SOURCE_REF`.
+
+```
+{
+    "MESSAGE_TYPE" : "DATA_LOGON",
+    "SOURCE_REF" : "123",
+    "DETAILS" : {
+        "DATASOURCE_NAME": "ALL_TRADES",
+        "CRITERIA_MATCH": "QUANTITY > 200"
+    }
+}
+```
+
+Leave both subscriptions open while you read the gauges. See [`DATA_LOGON`](/develop/server-capabilities/real-time-queries-data-server/#data_logon) for the full set of options.
 
 ## Metric names
 
@@ -264,7 +298,13 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 |:--------------------------|:--------|:-----------------------------------------------------------------|
 | MetricsReportIntervalSecs | `60`    | interval between metrics log messages                            |
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
-| Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
+| Slf4jReporterLogInactive  | `false` | When `true`, meters with no activity (zero counts) are also logged; when `false` they are skipped. Gauges are always logged. |
+
+Each metric is logged on one line: the metric name, its tags in braces, then the value. For example, a Data Server gauge looks like this:
+
+```text
+dataserver_distinct_criteria{dataserver=all_trades,groupName=trading,hostname=localhost,processName=trading_dataserver} value=2
+```
 
 ## OpenTelemetry
 
