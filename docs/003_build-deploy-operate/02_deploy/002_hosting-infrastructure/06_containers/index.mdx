@@ -160,9 +160,7 @@ curl -H "Accept: application/json" http://localhost:9064/my-endpoint
 
 If you want more control over the image, you can create your own Dockerfile. This gives you complete control over the base image and the versions of the underlying dependencies.
 
-There are quite a few configuration steps and dependencies that are required as part of the image build. Below is a simplified example to illustrate the typical steps; it is not the file the Gradle task generates, which is more detailed and changes between releases. To see the current generated Dockerfile, run `./gradlew createDockerfile` from the root of the `server/` project and open the file it writes to `build/docker/`.
-
-**Note**: This is just an example. You will need to manage the locations of the dependencies for copying to the container. If the dependencies are remote, you might need to use `wget` or a similar tool.
+There are quite a few configuration steps and dependencies that are required as part of the image build. Below is a simplified example to illustrate the typical steps; it is not the file the Gradle task generates, which is more detailed and changes between releases. You will need to manage the locations of the dependencies for copying to the container. If the dependencies are remote, you might need to use `wget` or a similar tool. To see the current generated Dockerfile, run `./gradlew createDockerfile` from the root of the `server/` project and open the file it writes to `build/docker/`.
 
 ```docker
 FROM rockylinux:8
