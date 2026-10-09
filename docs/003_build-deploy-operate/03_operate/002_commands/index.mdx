@@ -355,6 +355,12 @@ WARNING: genesisInstall cannot be executed because BlockGenesisInstall is set to
 - For configuration or GPAL changes, build and deploy a new image.
 - To run `genesisInstall` in a container anyway, start the container with `GENESIS_SYSDEF_BlockGenesisInstall=false`.
 
+To run Genesis commands in a container with `docker exec`, use an interactive shell, because the Genesis environment and command aliases are set up in the shell's `.bashrc`:
+
+```bash
+docker exec -it <container> bash -ic 'genesisInstall'
+```
+
 The Windows `install.bat` script doesn't check this item.
 
 ### Install hooks
