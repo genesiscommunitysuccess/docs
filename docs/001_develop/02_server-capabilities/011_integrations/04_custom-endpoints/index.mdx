@@ -43,6 +43,8 @@ Custom endpoints are defined in the `*-web-handler.kts` files.
 
 Once a web-handler.kts is available within your product/script directory, it is immediately available as an endpoint in the router.
 
+By default, the Genesis Router loads every `*-web-handler.kts` file in your application's script folders and serves its endpoints. You can also load a web-handler script in the process that owns the logic, if that process uses the WebSocket messaging channel; see [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process). If you turn on the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy), the router stops loading web-handler scripts from the script folders, so each script must then be loaded by a process.
+
 ## Example configuration
 
 The following shows example web endpoint configurations.
@@ -341,7 +343,8 @@ webHandlers {
 The `status` parameter above is fixed at configuration time. When you need to choose the status code **at runtime** or set response **headers** — for example to return a conditional `304 Not Modified`, an `ETag`, or a `Cache-Control` header — return the result of `buildResponse` from `handleRequest`, and type the endpoint response as `HttpResponse`:
 
 ```kotlin
-import global.genesis.router.server.web.http.extensions.HttpResponse
+import global.genesis.message.core.HttpStatusCode
+import global.genesis.process.web.handler.HttpResponse
 
 endpoint<Unit, HttpResponse>(GET, "trades") {
     handleRequest {
@@ -364,6 +367,8 @@ Inside `buildResponse` you can set:
 | `body(value)` | The response body, serialised the same way as a returned value |
 | `contentType(contentType)` | Override the response content type |
 
+8.15 and earlier import `HttpResponse` from `global.genesis.router.server.web.http.extensions`; 10.0 moved it to `global.genesis.process.web.handler`.
+
 For a status code that does **not** depend on the request, prefer the [`status` parameter](#override-status-code) on `endpoint` or the [`HttpResponseCode` annotation](#httpresponsecode-annotation) instead.
 
 #### `multipartEndpoint`
@@ -380,6 +385,17 @@ multipartEndpoint("test") {
     }
 }
 ```
+
+Each element of `fileUploads` is a `FileUploadFileData` (package `global.genesis.net.http.multipart`). It is a `java.io.InputStream` over the uploaded file's content, with these additions:
+
+| Member | Purpose |
+| ------ | ------- |
+| `fileName: String` | The file name the client sent with the upload |
+| `size: Long` | The file's size in bytes |
+| `copyTo(path: Path): Long` | Copies the content to `path` and returns the number of bytes written; fails if `path` already exists |
+| `readText(charset)` | Reads the whole content as a string (an extension function in the same package; `charset` defaults to the platform charset) |
+
+Because it is an `InputStream`, you can also read the content directly with `read`, `readAllBytes` or `transferTo`, without writing it to disk first.
 
 #### `config`
 
@@ -906,7 +922,9 @@ endpoint<String>(GET, "users") {
 
 ## Runtime configuration
 
-GPAL custom endpoints require no configuration beyond the web-handler.kts file. No modifications to the processes.xml file are required. Files will be picked up automatically by the Genesis Router from the /script folders.
+When the Genesis Router serves your custom endpoints, which is the default, they need no configuration beyond the web-handler.kts file and no changes to the processes.xml file. The router picks the files up automatically from the script folders.
+
+To serve the endpoints from another process instead, that process must use the WebSocket messaging channel, and the script file must be listed in that process's `script` entry in processes.xml. See [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process).
 
 ### Script modules
 

@@ -17,7 +17,7 @@ This document describes the YAML configuration for the Genesis network layer. Th
 
 The network configuration drives:
 
-- **Messaging**: protocol version, serialization format, request-reply timeout
+- **Messaging**: protocol version, serialization format, request-reply timeout, transport channel
 - **Netty**: thread usage and socket options
 - **TLS**: encryption mode, identity/trust, client auth, peer verification, and authorization
 
@@ -27,6 +27,8 @@ The network configuration drives:
 - **Process-level** (optional): `network-config-{processName}.yaml` (overrides application config for that process)
 
 If both files are present, process level configuration will overwrite any global settings.
+
+Both files go in the application's `cfg` folder (`src/main/genesis/cfg/`). At runtime each file is looked up by name, first in `generated/cfg/`, then in `site-specific/cfg/`, then in each product's `cfg/` folder under `GENESIS_HOME`. The first copy found is used, so a file in `site-specific/cfg/` replaces the application's copy for that deployment instead of merging with it.
 
 ### Environment placeholders
 
@@ -57,10 +59,50 @@ Unknown top-level keys are ignored.
 | Key               | Type    | Default   | Description |
 |-------------------|---------|-----------|-------------|
 | `protocol`        | string  | `V2`      | Genesis net protocol: `V1` or `V2` |
-| `serialization`   | string  | `MSGPACK` | Message serialization: `MSGPACK` or `JSON` |
+| `serialization`   | string  | `SMILE`   | Binary message serialization: `SMILE` or `JSON`. `MSGPACK` is deprecated and resolves to `SMILE` |
 | `requestTimeout`  | integer | `60`      | Request-reply timeout in seconds |
+| `channel`         | string  | `TCP`     | Transport between processes: `TCP` or `WEBSOCKET`. A process on `WEBSOCKET` also serves [native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/) |
+| `transportMode`   | string  | `NATIVE`  | `NATIVE` or `EXTERNAL`. `EXTERNAL` is used by Spring-hosted processes |
+| `webSocket`       | object  | —         | WebSocket settings, used only when `channel` is `WEBSOCKET` ([below](#messagingwebsocket)) |
+| `http`            | object  | —         | HTTP settings for the process port, used only when `channel` is `WEBSOCKET` ([below](#messaginghttp)) |
 
 There is no TLS-style validator for this section; values are used as configured.
+
+The `webSocket` and `http` blocks ignore keys they don't recognise, so a misspelt key is ignored silently: there is no error and nothing is logged, so check the spelling against this table.
+
+```yaml
+messaging:
+  channel: WEBSOCKET
+  serialization: SMILE
+  http:
+    maxInitialLineLength: 8192
+```
+
+### `messaging.webSocket`
+
+| Key                       | Type    | Default | Description |
+|---------------------------|---------|---------|-------------|
+| `path`                    | string  | `/`     | WebSocket endpoint path, on both the server and the client. A client connects using its own `path`, not the target's, so every process that talks to another must use the same `path`. Set it in `network-config.yaml`, not a per-process file, or clients of that process (including the router) can't connect |
+| `subProtocols`            | string  | —       | Comma-separated sub-protocols to advertise |
+| `maxFrameSize`            | integer | 64 MiB  | Maximum size of one frame, in bytes |
+| `maxAggregatedFrameSize`  | integer | 64 MiB  | Maximum size of an aggregated message, in bytes |
+| `allowExtensions`         | boolean | `true`  | Allow WebSocket extensions |
+| `forceCloseTimeoutMillis` | integer | `-1`    | How long to wait for the peer to complete a close handshake. A negative value turns the timeout off; `0` doesn't |
+| `compression`             | boolean | `false` | Per-message deflate compression |
+
+### `messaging.http`
+
+These settings tune HTTP handling on the process port when `channel` is `WEBSOCKET`, and mirror the router's `httpServerCodec` and `httpObjectAggregator` blocks. One default differs: `maxContentLength` is 64 MiB here, but 262144 bytes on the router.
+
+| Key                        | Type    | Default | Description |
+|----------------------------|---------|---------|-------------|
+| `maxInitialLineLength`     | integer | `4096`  | Maximum length of the request line |
+| `maxHeaderSize`            | integer | `8192`  | Maximum combined size of the headers |
+| `maxChunkSize`             | integer | `8192`  | Maximum size of one content chunk |
+| `validateHeaders`          | boolean | `true`  | Validate header names and values |
+| `initialBufferSize`        | integer | `128`   | Initial buffer size of the decoder |
+| `maxContentLength`         | integer | 64 MiB  | Maximum size of a request body, in bytes |
+| `closeOnExpectationFailed` | boolean | `false` | Close the connection when an `Expect: 100-continue` request is too large |
 
 ---
 
@@ -369,4 +411,6 @@ tls:
 | Enum | Allowed values |
 |------|-----------------|
 | **GenesisNetProtocol** (`messaging.protocol`) | `V1`, `V2` |
-| **MessageSerialization** (`messaging.serialization`) | `MSGPACK`, `JSON` |
+| **MessageSerialization** (`messaging.serialization`) | `SMILE`, `JSON`; `MSGPACK` is deprecated and resolves to `SMILE` |
+| **ChannelType** (`messaging.channel`) | `TCP`, `WEBSOCKET` |
+| **TransportMode** (`messaging.transportMode`) | `NATIVE`, `EXTERNAL` |
