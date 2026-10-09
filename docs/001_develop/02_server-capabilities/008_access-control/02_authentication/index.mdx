@@ -979,11 +979,17 @@ This triggers a self-service password reset. [Self Service Reset](#selfservicere
 
 Changes a user's password.
 
+:::info
+No `SESSION_AUTH_TOKEN` required.
+:::
+
+This is how a user whose password has expired, or who has been given a one-time password, activates their account: they send their current password as `OLD_PASSWORD` and choose a new one as `NEW_PASSWORD`, without logging in first.
+
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
 ```
 {
-  "USER_NAME": "admin",
+  "USER_NAME": "JohnDoe",
   "SOURCE_REF": "004",
   "MESSAGE_TYPE": "EVENT_CHANGE_USER_PASSWORD",
   "DETAILS": {
@@ -998,7 +1004,7 @@ Changes a user's password.
 POST /event-change-user-password HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
-SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+USER_NAME: JohnDoe
 SOURCE_REF: 004
 {
   "DETAILS": {
