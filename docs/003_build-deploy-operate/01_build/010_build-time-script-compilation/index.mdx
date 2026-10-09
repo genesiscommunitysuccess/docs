@@ -47,6 +47,8 @@ genesis {
 
 Passing `-Pgenesis.scripts.compileAtBuildTime=true` on the command line, or setting it in `gradle.properties`, has the same effect without editing `settings.gradle.kts`.
 
+The Settings plugin only covers that main module. Any other module needs the plugin applied itself, as described in [Every module in a multi-module build](#every-module-in-a-multi-module-build).
+
 ### Without the Settings plugin
 
 Apply the plugin in the build file of each module whose scripts you want to compile:
@@ -163,7 +165,7 @@ With build-time compilation on, the build has to resolve everything a process us
 
 - **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script fails with `Unable to find specified script module "<module>"`.
 - **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
-- **A script that produced no class** (for example, a script whose file name contains `$`: the plugin expects `_` in its class name, but the Kotlin compiler keeps the `$`, so the plugin doesn't find the class). The build fails with `Build-time script compilation produced no class for N script(s): ...`. To accept this deliberately, set `failOnMissingScriptClasses = false`.
+- **A script that produced no class** (for example, a script whose file name contains `$`). The build fails with `Build-time script compilation produced no class for N script(s): ...`. Rename the file, using only letters, digits and underscores, or set `failOnMissingScriptClasses = false` to accept it deliberately.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
 - **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module. The message begins `<module> already has a source set named genesisScripts, which build-time script compilation needs`.
 - **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them, with a message that begins `These scripts still compile to the same class '<class>' after disambiguation:`.
