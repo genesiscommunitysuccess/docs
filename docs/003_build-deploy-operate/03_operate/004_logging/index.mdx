@@ -11,6 +11,9 @@ tags:
 sidebar_position: 4
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This page relates to Server logging.
 
 ## Overview
@@ -18,7 +21,12 @@ This page relates to Server logging.
 Genesis uses [slf4j](https://www.slf4j.org/) for logging. Behind it, the logging backend is [log4j2](https://logging.apache.org/log4j/2.12.x/) by default, or [Logback](https://logback.qos.ch/) if you choose it; see [Choosing a logging backend](#choosing-a-logging-backend).
 Logging is configured by a configuration file for the backend in use. By default this is `log4j2-default.xml` with log4j2 or `logback-default.xml` with Logback, and for either backend you can override it with a file of the same name in `site-specific/cfg/`.
 
-See default file below:
+See default files below:
+
+<Tabs defaultValue="log4j2" values={[{ label: 'Log4j2', value: 'log4j2' }, { label: 'Logback', value: 'logback' }]}>
+
+<TabItem value="log4j2">
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
@@ -69,6 +77,84 @@ See default file below:
     </Loggers>
 </Configuration>
 ```
+
+</TabItem>
+
+<TabItem value="logback">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${GENESIS_HOME}/runtime/logs/${PROCESS_NAME}.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${GENESIS_HOME}/runtime/logs/currentRun/${PROCESS_NAME}_%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="MetricsRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${GENESIS_HOME}/runtime/logs/${PROCESS_NAME}.log.metrics</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${GENESIS_HOME}/runtime/logs/currentRun/${PROCESS_NAME}_%d{yyyy-MM-dd}.log.metrics.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="RequestLogRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${GENESIS_HOME}/runtime/logs/${PROCESS_NAME}.log.request</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyyMMdd}|%d{HH:mm}|%d{UNIX_MILLIS}|%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${GENESIS_HOME}/runtime/logs/currentRun/${PROCESS_NAME}_%d{yyyy-MM-dd}.log.request.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="global.genesis." level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="org.apache.commons.configuration2" level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="org.ehcache" level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="global.genesis.metrics" level="debug" additivity="false">
+        <appender-ref ref="MetricsRollingFile"/>
+    </logger>
+
+    <logger name="global.genesis.net.logging.RequestLogger" level="trace" additivity="false">
+        <appender-ref ref="RequestLogRollingFile"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="RollingFile"/>
+    </root>
+</configuration>
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Choosing a logging backend
 
@@ -202,4 +288,14 @@ Show just the Source Ref attribute in json format:
 <JsonLayout complete="false" compact="true" eventEol="true" >
     <KeyValuePair key="SourceRef" value="${ctx:genesis.source_ref}"/>
 </JsonLayout>
+```
+
+### Example Logback configuration
+
+Show just the Source Ref attribute. This is the Logback equivalent of the log4j2 `<Pattern>` above:
+
+```xml
+<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} [SourceRef = %X{genesis.source_ref}] - %msg%n</pattern>
+</encoder>
 ```
