@@ -90,16 +90,20 @@ To build the server project, within the project's `server` directory you can run
 ### DAO
 The system definition, fields, tables and views you define generate [DAO](/develop/glossary/#dao)s (Database Access Objects).
 
-There are five hierarchical levels:
+There are four hierarchical levels:
 
 1. System Definition
 2. Fields (deprecated from Genesis 10.0; declare fields inside your tables instead, as described in [Migrating from legacy data model structure](/develop/server-capabilities/data-model/#migrating-from-legacy-data-model-structure))
 3. Tables
-5. Views
+4. Views
 
 Each layer can reference the layers above in the hierarchy, so for example, `tables` can reference `system definition` items, and `views` can use `table` items.
 
 These objects must be built with your project, they are generated into application jars and can then be used by the other parts of your code. Whenever you edit any of these definitions you should rebuild the DAOs to start referencing them in your code.
+
+The generated code comes in two parts. A slice holds the classes for your own product's definitions, such as its tables and entities. A facade holds the aggregate classes that span every product on the classpath, such as `Fields`, `Tables` and `SysDef`. By default, your build doesn't regenerate the code for the upstream products your application depends on (Genesis itself and any PBCs); it reuses the slice jars those products publish. For details and the settings that control this, see [Code generation and upstream reuse](/build-deploy-operate/build/codegen-upstream-reuse/).
+
+After a build, you can find the generated code in the `<product-name>-dictionary-cache` module. The Genesis settings plugin creates this module under `server/build/internal-modules/`. It has one submodule per level: `<product-name>-generated-sysdef`, `-generated-fields`, `-generated-dao` and `-generated-view`. Your table entities and their DAOs are in `<product-name>-generated-dao`. In each submodule, the generated Kotlin sources are in `build/generated/sources/<type>/` (for example, `build/generated/sources/dao/`, plus `build/generated/sources/dao-facade/` for the facade), and the built jar is in `build/libs/`.
 
 #### Building
 
@@ -113,12 +117,16 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 
 #### Commands for DAO generation
 
-|Dao Type|Gradle Task|
-|--|--|
-|System Definition|`genesis-generated-sysdef`|
-|Fields|`genesis-generated-fields`|
-|Tables|`genesis-generated-dao`|
-|Views|`genesis-generated-view`|
+|Dao Type|Project (module)|Generate task|Facade task|
+|--|--|--|--|
+|System Definition|`<product-name>-generated-sysdef`|`generateSysDef`|`generateSysDefFacade`|
+|Fields|`<product-name>-generated-fields`|`generateFields`|`generateFieldsFacade`|
+|Tables|`<product-name>-generated-dao`|`generateDao`|`generateDaoFacade`|
+|Views|`<product-name>-generated-view`|`generateView`|None|
+
+Each task runs in its project, so the full task path takes the form `:<product-name>-dictionary-cache:<product-name>-generated-dao:generateDaoFacade`.
+
+The facade tasks exist only when upstream reuse is switched on, which is the default.
 
 #### Bundling generated code with product distribution
 
