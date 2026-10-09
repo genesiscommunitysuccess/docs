@@ -367,6 +367,12 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
     .build()
     );
   }
+
+    @Test
+    public void initialDataIsLoaded() {
+    // rxDb is provided by AbstractGenesisTestSupport
+    assert getRxDb().count("USER").blockingGet() > 0L;
+  }
   }
     ```
 
