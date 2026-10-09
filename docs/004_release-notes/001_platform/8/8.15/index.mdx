@@ -278,6 +278,57 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.42
+
+###### Fixes
+
+* `datapipeline` : Bound sendEventOnCompletion's hold inside a txDbSink transaction
+* `genesis-conventions` : Downgrade quartz to 2.4.1 to fix 1W cron regression 
+* `genesis-dataserver2` : Apply criteria to rows and fix index bounds on linearScan=false queries 
+* `genesis-db` : Lift only a trusted criteria's leading imports so a user name cannot cut its literals 
+* `genesis-db` : Make ZeroMQ removeListener remove metrics-wrapped and proxy registrations
+* `genesis-environment` : RenameFields keeps the alias store consistent with the renamed dictionary
+* `genesis-pal-dataserver` : Stop MORE_ROWS reading past a full fixed MAX_VIEW 
+* `genesis-subcore` : Close the JMSUpdateQueue addListener/terminate race and tighten the failed-subscribe rollback
+
+#### 8.15.41
+
+###### Features
+
+* `exec-gradle-plugin` : Add feature-flag support to project-overview.json 
+
+###### Performance improvements
+
+* `criteria` : Share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval 
+
+###### Fixes
+
+* `commons` : Free the criteria replacer when a compile fails 
+* `genesis-pal-dataserver` : AuthKeyWithUserName and enrichedAuth queries receive live grants and revocations
+* `genesis-pal-dataserver` : EnrichedAuth queries never receive live grants
+* `dataserver2` : Apply the criteria vocabulary to client criteria 
+* `genesis-config` : Resolve a script module to its own jar, not a longer-named sibling 
+* `genesis-db` : Bound criteria query cache and free compiled expressions on eviction 
+* `genesis-db` : Parse client criteria without running Groovy AST transformations 
+
+#### 8.15.39
+
+###### Fixes
+
+* `genesis-db` : Quote dbnamespace in generated SQL when DbQuotedIdentifiers is true 
+* `genesis-pal-dataserver` : Only set ROWS_COUNT on first chunk of chunked initial load
+* `genesis-pal-dataserver` : Stop chunked initial load double-counting rows against MAX_VIEW 
+* `genesis-router` : Keep the mfaCode cookie unless login returns a new code 
+
+#### 8.15.38
+
+###### Fixes
+
+* `genesis-clustersupport` : Demote a primary that loses contact with Consul 
+* `genesis-conventions` : Resolve Gradle plugins from our own repo and Plugin Portal before Maven Central 
+* `genesis-environment` : Use javax nullability annotations in SendTable 
+* `genesis-scripts` : Honour the process restart suppression flag in processRestarter 
+
 #### 8.15.37
 
 ###### Features
