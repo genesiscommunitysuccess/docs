@@ -420,6 +420,10 @@ The default Genesis services and their ports are:
 | `GENESIS_CLUSTER` | `9000` |
 | `GENESIS_EVALUATOR` | `9015` |
 | `GENESIS_ROUTER` | `9017` |
+| `ZeroMQProxyOutboundPort` | `5000` |
+| `ZeroMQProxyInboundPort` | `5001` |
+
+`ZeroMQProxyOutboundPort` and `ZeroMQProxyInboundPort` are not services, but system definition items. They are required for the processes that use `GENESIS_CLUSTER` as a proxy for the update queue, so these two ports must also be reachable between hosts.
 
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
@@ -504,7 +508,7 @@ A fixed ID is still claimed in Consul, so a process refuses to start if another 
 
 #### When a process can't get a node ID
 
-If a process can't claim a unique node ID, it refuses to start. This happens, for example, when every ID is taken, or when Consul stays unreachable after a few retries. The claim is made before logging is set up, so look for the reason in `<PROCESS>.log.err`.
+If a process can't claim a unique node ID, it refuses to start. This happens, for example, when every ID is taken, or when Consul stays unreachable after a few retries. The claim is made before logging is set up, so on a non-container install, look for the reason in `<PROCESS>.log.err`. In a container, the reason is in `docker logs <container>`: `<PROCESS>.log.err` is only written when processes are not started with `--verbose`, and the stock container starts them with `--verbose`.
 
 #### Heartbeat and grace period
 
