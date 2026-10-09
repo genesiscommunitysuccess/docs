@@ -330,6 +330,7 @@ package <packageName>;
 
 import <packageName>.dao.Widget;
 import <packageName>.dao.enums.<product>.widget.Quality; // <product> is the product name explained in Step 4
+// for this tutorial (project mySpringDemo): import global.genesis.spring.demo.dao.enums.mySpringDemo.widget.Quality;
 import global.genesis.spring.data.cube.resource.CubeResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -399,7 +400,7 @@ The `WIDGET` table starts empty, and an empty cube just returns an empty `rows` 
 package <packageName>;
 
 import <packageName>.dao.Widget;
-import <packageName>.dao.enums.<product>.widget.Quality;
+import <packageName>.dao.enums.<product>.widget.Quality; // <product> is the product name explained in Step 4
 import <packageName>.repo.WidgetRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
