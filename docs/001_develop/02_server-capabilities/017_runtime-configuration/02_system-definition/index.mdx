@@ -215,7 +215,7 @@ These settings control compilation and caching of GPal scripts and system-defini
 
 You can override system-definition values in any environment by using environment variables. To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_` or `GENESIS_SYSDEF_ENCRYPTED_`. 
 
-`GENESIS_SYSDEF_ENCRYPTED` is needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
+`GENESIS_SYSDEF_ENCRYPTED_` needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
 
 Here is an example where system definition items `DbHost`, `DbUser`, `DbPassword` and `GenesisKey` are all being set via environment variables. These values will override the configuration found in the system definition file:
 
