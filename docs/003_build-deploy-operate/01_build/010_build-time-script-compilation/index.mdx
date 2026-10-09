@@ -22,11 +22,11 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; for a platform script such as `genesis-router.kts` the build deploys it to `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead);
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; for a platform script such as `genesis-router.kts` the build deploys it to `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the platform's;
 - overriding an application script from another component;
-- editing a script on a deployed server.
+- editing a script on a deployed server. This still works as a fallback, but it is not a supported way to override a script; see [Turning it off](#turning-it-off).
 
-In each case the changed script no longer matches its index entry, so the process compiles it. The match covers the script's file name and text only, so a changed classpath or dependency version does not invalidate a precompiled class; rebuild after changing dependencies.
+In the last two cases the changed script no longer matches its index entry, so the process compiles it. The match covers the script's file name and text only, so a changed classpath or dependency version does not invalidate a precompiled class; rebuild after changing dependencies.
 
 The scripts compile in a Gradle source set of their own: `genesisScripts`, or `genesis<SourceSet>Scripts` for a source set other than `main`. Your module's own `.kt` code compiles exactly as before. The script compilation copies the compiler options of the module's Kotlin compile task, such as `jvmTarget`, `optIn` and `freeCompilerArgs`.
 
