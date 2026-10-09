@@ -90,12 +90,12 @@ To build the server project, within the project's `server` directory you can run
 ### DAO
 The system definition, fields, tables and views you define generate [DAO](/develop/glossary/#dao)s (Database Access Objects).
 
-There are five hierarchical levels:
+There are four hierarchical levels:
 
 1. System Definition
 2. Fields (deprecated from Genesis 10.0; declare fields inside your tables instead, as described in [Migrating from legacy data model structure](/develop/server-capabilities/data-model/#migrating-from-legacy-data-model-structure))
 3. Tables
-5. Views
+4. Views
 
 Each layer can reference the layers above in the hierarchy, so for example, `tables` can reference `system definition` items, and `views` can use `table` items.
 
@@ -117,12 +117,14 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 
 #### Commands for DAO generation
 
-|Dao Type|Gradle Task|Facade task|
-|--|--|--|
-|System Definition|`genesis-generated-sysdef`|`generateSysDefFacade`|
-|Fields|`genesis-generated-fields`|`generateFieldsFacade`|
-|Tables|`genesis-generated-dao`|`generateDaoFacade`|
-|Views|`genesis-generated-view`|None|
+|Dao Type|Project (module)|Generate task|Facade task|
+|--|--|--|--|
+|System Definition|`<product-name>-generated-sysdef`|`generateSysDef`|`generateSysDefFacade`|
+|Fields|`<product-name>-generated-fields`|`generateFields`|`generateFieldsFacade`|
+|Tables|`<product-name>-generated-dao`|`generateDao`|`generateDaoFacade`|
+|Views|`<product-name>-generated-view`|`generateView`|None|
+
+Each task runs in its project, so the full task path takes the form `:<product-name>-dictionary-cache:<product-name>-generated-dao:generateDaoFacade`.
 
 The facade tasks exist only when upstream reuse is switched on, which is the default.
 
