@@ -938,6 +938,10 @@ Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **O
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `readTransaction` and `writeTransaction`. These run operations in the block in a single transaction, if supported.
 
+:::note
+In Genesis 8.15 and earlier, the entity db also accepts `safeReadTransaction` and `safeWriteTransaction`. Genesis 10.0 removed them.
+:::
+
 There is a distinction between using Kotlin and Java here.
 
 * When using Kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction.
