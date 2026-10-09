@@ -307,6 +307,7 @@ This is a more powerful type of test. In addition to setting up the database, it
 - injection of other components directly into the test
 - mock auth-perms
 - asynchronous message handling with timeout and parsing
+- the in-memory database, as the `rxDb` property (an `RxDb`), for loading data and asserting on database state
 
 To create a test, you need to provide a `GenesisTestConfig` instance in the constructor:
 
@@ -341,7 +342,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
       configFileName = "config.xml"
     }
     ) {
-      // no tests defined yet
+      @Test
+      fun initialDataIsLoaded() {
+        // rxDb is provided by AbstractGenesisTestSupport
+        assert(rxDb.count("USER").blockingGet() > 0L)
+      }
     }
     ```
 
