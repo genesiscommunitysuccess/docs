@@ -1,0 +1,112 @@
+---
+title: 'Write operation listeners'
+sidebar_label: 'Write operation listeners'
+id: server-write-operation-listeners
+keywords: [data, data access, data api, write, listener, transaction]
+tags:
+- data
+- data access
+- data api
+sidebar_position: 1
+---
+
+A write operation listener is your own code that the database layer calls after each successful write, inside the same transaction as that write. Any writes the listener makes through the transaction object it receives commit or roll back together with the write that triggered it.
+
+Use a listener when an extra write must be atomic with every write, for example to maintain a derived table. Don't use one just to react to changes: a listener runs on every write in the process, so anything slow in it slows down every write. To react to changes, [subscribe](/develop/server-capabilities/data-access-apis/#subscribe-operations) to the data instead.
+
+## The three listener interfaces
+
+There is one listener interface for each style of API, all in the `global.genesis.db.bustxn` package. Each has a default no-op implementation. To replace it, provide your own implementation as a [`@Module`](/develop/server-capabilities/custom-components/#module).
+
+| Interface | Signature | `tx` |
+|---|---|---|
+| `AsyncWriteOperationListener` | `suspend fun onWriteResult(tx: AsyncDb, writeResults: List<WriteResult>)` | an [`AsyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
+| `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
+| `WriteOperationListener` | `fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>)` | an RxJava record API bound to the write's transaction |
+
+Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result) holds the records the write saved and removed. To tell which operation a `WriteResult` describes, look at which of its two lists is empty, as the database does itself:
+
+- `savedRecords` is empty: a delete. The deleted records are in `removedRecords`.
+- `removedRecords` is empty: an insert. The new records are in `savedRecords`.
+- Both have records: a modify. The two lists are the same size and are paired by position, so `removedRecords[i]` is the previous version of `savedRecords[i]`.
+
+This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.DbRecord
+import global.genesis.db.ModifyDetails
+import global.genesis.db.SyncDb
+import global.genesis.db.bustxn.SyncWriteOperationListener
+import global.genesis.db.engine.WriteResult
+
+@Module
+class TradeSummaryListener : SyncWriteOperationListener {
+    override fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>) {
+        writeResults
+            .flatMap { it.savedRecords }
+            .filter { it.tableName == "TRADE" }
+            .forEach { trade ->
+                val summary = DbRecord("TRADE_SUMMARY").apply {
+                    setString("TRADE_ID", trade.getString("TRADE_ID"))
+                    setString("TRADE_STATUS", trade.getString("TRADE_STATUS"))
+                }
+                tx.upsert(ModifyDetails(summary, "TRADE_SUMMARY_BY_TRADE_ID"))
+            }
+    }
+}
+```
+
+The table, index and field names in this example are placeholders for your own data model.
+
+For what `ModifyDetails` is, see [Modify details](/develop/server-capabilities/data-access-apis/#modify-details).
+
+Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
+
+A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has `RxDb`'s read and write methods (it extends `RxRecordReadSupport`, so reads such as `get` and `getBulk` are available), bound to the write's transaction. Do not cast it to `RxDb`: that reads outside the write's transaction. The write methods are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.DbRecord
+import global.genesis.db.bustxn.WriteOperationListener
+import global.genesis.db.engine.WriteResult
+import global.genesis.db.rx.engine.RxRecordWriteSupport
+
+@Module
+class TradeEventListener : WriteOperationListener {
+    override fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>) {
+        writeResults
+            .flatMap { it.savedRecords }
+            .filter { it.tableName == "TRADE" }
+            .forEach { trade ->
+                val event = DbRecord("TRADE_EVENT").apply {
+                    setString("TRADE_ID", trade.getString("TRADE_ID"))
+                    setString("TRADE_STATUS", trade.getString("TRADE_STATUS"))
+                }
+                tx.insert(event).blockingGet()
+            }
+    }
+}
+```
+
+The table and field names in this example are placeholders for your own data model.
+
+## Which listener is called
+
+Every listener your application provides is called for every write, whatever API or caller makes it. This includes writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/): they call all your listeners like any other write. The only difference between the listeners is the `tx` each one receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
+
+When you add a more specific listener, move the old listener's logic into it. Because every listener you provide is called for every write, logic that you leave in both the old and the new listener runs twice.
+
+## How a listener is called
+
+- The listener is called after the write, inside the write's transaction, and before the write is published to the update queue.
+- It is called once per write call. A batch write such as `upsertAll` or `modifyAll` calls it once, with one `WriteResult` per record. An audited write is two writes (the record and its audit record), so it calls the listener twice.
+- `tx` is bound to the same transaction. Writes you make through it commit or roll back with the triggering write, are published to the update queue after it, and don't call the listener again.
+- If the listener throws an exception, or one of its own writes fails, the triggering write rolls back and nothing is published.
+- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. For `SyncWriteOperationListener` and `AsyncWriteOperationListener` nothing checks this. Unlike `WriteOperationListener`, which throws an error that explains the problem (see [below](#writeoperationlistener-on-the-sql-write-path)), a thread switch in these two shows up as a hang or a failed transaction, with no message that names the cause.
+
+### `WriteOperationListener` on the SQL write path
+
+When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
+
+This requirement is new in 10.0. If you have listener code from 8.x that calls `subscribe()` on a `tx` call without blocking, change it to block.
