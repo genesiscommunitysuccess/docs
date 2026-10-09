@@ -420,10 +420,13 @@ The default Genesis services and their ports are:
 | `GENESIS_CLUSTER` | `9000` |
 | `GENESIS_EVALUATOR` | `9015` |
 | `GENESIS_ROUTER` | `9017` |
+
+These system definition items must also be reachable between hosts. They are required for the processes that use `GENESIS_CLUSTER` as a proxy for the update queue:
+
+| System definition item | Port |
+| --- | --- |
 | `ZeroMQProxyOutboundPort` | `5000` |
 | `ZeroMQProxyInboundPort` | `5001` |
-
-`ZeroMQProxyOutboundPort` and `ZeroMQProxyInboundPort` are not services, but system definition items. They are required for the processes that use `GENESIS_CLUSTER` as a proxy for the update queue, so these two ports must also be reachable between hosts.
 
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
