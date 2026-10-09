@@ -107,7 +107,7 @@ public class TradeProcessorTest {
 
 Let's break down what happens here.
 1. [`@GenesisTest`](#genesistest) - using this annotation will enable the Genesis JUnit extension. It will manage the Genesis resources during the test.
-2. [`@CsvData`](#csvdata)("my-trades.csv") - our test relies on trade data existing in the database. Here we specify that data.
+2. [`@CsvData`](#csvdata)("my-trades.csv") - our test relies on trade data existing in the database. Here we specify that data. `@CsvData` resolves file names as classpath resources, so `my-trades.csv` must live under `src/test/resources` in your test module (following the standard Gradle/JUnit convention), for example at `src/test/resources/my-trades.csv`.
 3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime are available in our test. Here we're getting a reference to the database.
 4. `@Inject` and `TradeProcessor` - we can also inject our own classes. `TradeProcessor` has a constructor annotated with `@Inject`, so the dependency injection mechanism knows how to instantiate it.
 5. By the time the test starts, our injected instances are available and we can start testing.
@@ -139,6 +139,24 @@ It will do the following for each test:
 | Clean up resources                    |           ✔️           |         ✔️         |
 
 The [`@GenesisDatabaseTest`](#genesisdatabasetest) and [`@GenesisTest`](#genesistest) can be found in the `global.genesis.testsupport.jupiter` package.
+
+### System definitions in tests
+
+By default, a Genesis test context — whether started via `@GenesisTest`/`@GenesisDatabaseTest`
+or via `@GenesisSpringTest` — does not read your project's real system-definition files. It builds
+an isolated, in-memory system-definition service, populated only from
+[`@SysDefOverwrite`](#sysdefoverwrite) and [`@ProvidedSysDef`](#providedsysdef). Editing your real
+`genesis-system-definition.kts` has no effect on such a test; any key not supplied by one of those
+two annotations simply resolves to its default.
+
+The `enableAppConfigInTests` system property controls this behaviour for every Genesis test context,
+Spring or classic GenesisJunit alike:
+
+- `false` (the default) — use the isolated, in-memory system-definition service described above.
+- `true` — build the system-definition service from the real system-definition files found on the
+  test classpath instead.
+
+Enable it by passing `-DenableAppConfigInTests=true` to the test JVM.
 
 ### Scenario Testing
 

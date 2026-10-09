@@ -1,0 +1,529 @@
+---
+title: 'Test tooling'
+sidebar_label: 'Test tooling'
+id: server-spring-test-tooling
+keywords: [spring, testing, junit]
+tags:
+- spring
+- testing
+sidebar_position: 6
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications, parallel to [GenesisJunit](/develop/server-capabilities/testing-api). Genesis 10.0 manages the JUnit 6 version through the platform BOM, so you don't declare it yourself.
+
+## Overview
+
+`genesis-spring-testsupport` is the JUnit 6 (JUnit Jupiter) equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
+
+Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: the four event clients [`EventClientSync`](../event-handlers#testing), `EventClientAsync`, `EventClientRx` and `EventClientBlocking` (all under `global.genesis.testsupport.client.eventhandler`), and `InMemoryTestAuthCache`. Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`. The [worked example](#a-simple-example) below uses all four event clients.
+
+`genesis-spring-testsupport` does not provide or support test clients for Data Server or Request Server components: the `DataServerQueryViewClient` and `RequestClientSync` clients described on those components' pages are not supported under `@GenesisSpringTest`.
+
+To use it, add the following to the `build.gradle.kts` of the `-spring` module that runs the tests. In genx's default multi-module layout this is `<project-name>-spring`, and `<app-module>` is its sibling `<project-name>-app`:
+
+```kotlin
+dependencies {
+    // ... the module's existing dependencies
+    testImplementation("global.genesis:genesis-spring-testsupport")
+    genesisGeneratedCode(withTestDependency = true)
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir("../<app-module>/src/main/genesis")
+        }
+    }
+}
+```
+
+Each of the three additions is needed:
+
+- **`testImplementation("global.genesis:genesis-spring-testsupport")`** picks up the annotation and its supporting infrastructure. It is an ordinary library module, not a test-fixtures jar.
+- **`genesisGeneratedCode(withTestDependency = true)`** puts the dictionary `.kts` files on the test classpath. In genx's default layout, a `-spring` module doesn't own them: the sibling `-app` module does. Without this line, `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`. It goes inside `dependencies { }`; at the top level of the file, the build script fails to compile with `Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch`.
+- **`srcDir("../<app-module>/src/main/genesis")`** goes at the top level of the file, not inside `dependencies { }`. It adds the `-app` module's genesis config directory as an extra test resources directory, because a `-spring` module doesn't own the files under the `-app` module's `src/main/genesis` either. You need it for `@CsvData` seed data, even if you never load a GPAL script: without it, `@CsvData("data/WIDGET.csv")` fails with `IllegalArgumentException: Unable to resolve "data/WIDGET.csv": the folder "/data" was not found on the test classpath`. You also need it to load a raw GPAL script with [`@TestScriptFile`](#annotations), which otherwise fails with something like `IllegalArgumentException: Unable to find script file(s)`.
+
+Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/WIDGET.csv` is loaded with `@CsvData("data/WIDGET.csv")` — `@CsvData("WIDGET.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
+
+The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
+
+`@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, whose `subprojects { }` block configures every module's test task with `tasks { test { systemProperty("DbLayer", "SQL") … } }`, alongside an in-memory H2 `DbHost`, `DbQuotedIdentifiers` and `useJUnitPlatform()` — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
+
+```kotlin
+tasks {
+    test {
+        systemProperty("DbLayer", "SQL")
+    }
+}
+```
+
+If you're testing a classic GPAL script app instead, use `GenesisJunit`/`GenesisSharedContextJunit` from `genesis-testsupport` directly. This module is the Spring-shaped equivalent, not a replacement.
+
+## Annotations
+
+`@GenesisSpringTest` honours the same class-level Genesis test annotations as GenesisJunit, all from `global.genesis.testsupport.jupiter`. It walks the enclosing-class chain, so a `@Nested` class inside an annotated outer class still picks up its configuration. Because every test method — and every test class whose Spring configuration matches — shares *one* Genesis runtime (see [Context caching](#context-caching)), most of these only work at class level. `@ResetTableAfterTest` is the one exception, implemented at method level.
+
+- **`@GenesisSpringTest`** — the single entry point described above. Class level only. Composes `@SpringBootTest(classes = [GenesisTestApplication::class])` together with `@Tag("DatabaseTest")` and the `DbLayer=SQL` gate.
+- **[`@TestScriptFile`](/develop/server-capabilities/testing-api#testscriptfile)** — loads a GPAL script file for the test. Class level only under `@GenesisSpringTest`.
+- **[`@CsvData`](/develop/server-capabilities/testing-api#csvdata)** — loads CSV fixture data. Supported at class level; a method-level `@CsvData` is rejected with an explicit error rather than silently ignored, since every method already shares the class's runtime.
+- **[`@SysDefOverwrite`](/develop/server-capabilities/testing-api#sysdefoverwrite)** — overrides a system definition property for the test. Class level only.
+- **[`@UserRight`](/develop/server-capabilities/testing-api#userright)** — grants a user rights for the test. Class level only.
+- **[`@PackageScan`](/develop/server-capabilities/testing-api#packagescan)** — marks a class whose package should be scanned. Class level only. This is inherited from GenesisJunit for its own purposes (GPAL script/table package scanning); it is not how Spring discovers `@Component`/event-handler beans for the test context.
+- **[`@ResetTableAfterTest`](/develop/server-capabilities/testing-api#resettableaftertest)** — the one fixture annotation implemented at method level here: it snapshots the named tables before the class's tests run, then restores them after every test method. This reset isn't wrapped in a cache flush the way `GenesisSharedContextJunit`'s is, so a process with a data server or consolidator can retain view state derived from a table's pre-reset rows.
+
+`@TestScriptFile` needs the module under test to carry its own `genesis("pal-<kind>")` test dependency matching the script's kind, or it fails with `MissingDependencyException` (which names the exact dependency to add):
+
+| Script suffix | Test dependency |
+| --- | --- |
+| `-dataserver.kts` | `testImplementation(genesis("pal-dataserver"))` |
+| `-eventhandler.kts` | `testImplementation(genesis("pal-eventhandler"))` |
+| `-reqrep.kts` | `testImplementation(genesis("pal-requestserver"))` |
+| `-consolidator.kts` | `testImplementation(genesis("pal-consolidator"))` |
+| `-pipelines.kts` | `testImplementation(genesis("pal-datapipeline"))` |
+
+If you write your own annotation that composes `@GenesisSpringTest` (for example, to add a product-specific `@Tag`), keep `@Tag("DatabaseTest")` and the `DbLayer=SQL` gate travelling together — a class carrying only one of them runs in no CI job at all.
+
+## Context caching
+
+This is the main behavioural difference from GenesisJunit. Spring's `TestContext` framework caches one Spring context per distinct merged test configuration — which includes each class's Genesis annotations alongside any other class-level Spring test configuration (profiles, `@MockBean`, other customizers). Two `@GenesisSpringTest` classes share a cached runtime only if their full configuration matches, not just their Genesis annotations. Every runtime in the same JVM addresses the same underlying database, so booting a new one truncates whatever a previous one had loaded — sharing is opt-out, not opt-in. The framework automatically reseeds a class's `@CsvData` fixtures if another cached context has truncated the shared database since that class last ran, but it's still worth choosing your sharing model deliberately:
+
+- give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` for a fresh runtime per class, or
+- factor shared `@GenesisSpringTest` configuration into a common abstract base class so related test classes intentionally share one runtime, optionally bounding `spring.test.context.cache.maxSize` to cap how many live runtimes accumulate.
+
+The Genesis test configuration that decides whether two classes share a runtime includes their `@CsvData`. Classes with different `@CsvData` always get separate cached runtimes, and switching from one runtime to another truncates the database and reseeds it with the new runtime's CSV data. Classes that share a runtime get no data reset between them: the CSV data is loaded when the runtime boots, and again only after another runtime has truncated the database. A later class sees whatever earlier classes left in the tables, so its results can depend on the order in which test classes run.
+
+`@ResetTableAfterTest` restores the named tables to the state the class found them in, not to the CSV data. Put it on the class that *changes* shared tables, so the next class starts clean. On a class that receives data an earlier class left behind, it cleans nothing: it restores that same data after each test. To isolate a class's data:
+
+- give it its own `@CsvData`, so it gets its own runtime and is reseeded whenever it runs after another one, or
+- put `@ResetTableAfterTest` on every class that writes to the tables it shares.
+
+## A simple example
+
+This example tests the `MyEventHandler` from [Getting started: Step 6](../getting-started#step-6-add-a-widget-event-handler), which handles `WIDGET_INSERT` by saving the widget through the generated `WidgetRepository`. It assumes the `-spring` module's `build.gradle.kts` has the additions from the [Overview](#overview). `<packageName>` and `<product>` are the same values as in [Getting started](../getting-started#step-4-define-the-widget-table).
+
+It uses two test classes that extend one abstract base class, so they share one Genesis runtime:
+
+- `WidgetEventHandlerTest` sends `WIDGET_INSERT` through each of the four event clients.
+- `WidgetSharedContextTest` runs afterwards and sees the rows the first class left behind.
+
+### Seed data
+
+The seed data goes in the `-app` module, next to the app's other CSV files, at `server/<app-module>/src/main/genesis/data/WIDGET.csv`:
+
+```
+ID,NAME,PRICE,QUALITY,COST
+1001,Seed widget one,10.0,GOOD,6.0
+1002,Seed widget two,20.0,OK,12.0
+```
+
+The seed IDs start at 1001 to keep them clear of the IDs generated for widgets that the tests insert.
+
+### Test class order
+
+`src/test/resources/junit-platform.properties`, in the `-spring` module:
+
+```
+junit.jupiter.testclass.order.default=org.junit.jupiter.api.ClassOrderer$OrderAnnotation
+```
+
+This makes JUnit run test classes in their `@Order`, so `WidgetSharedContextTest` always runs after `WidgetEventHandlerTest`. The two classes work without it; only the second class's row count depends on the order.
+
+### The shared base class
+
+`src/test/kotlin/<packageName>/WidgetTestBase.kt`:
+
+```kotlin
+package <packageName>
+
+import global.genesis.springboot.test.GenesisSpringTest
+import global.genesis.testsupport.jupiter.CsvData
+import org.springframework.context.annotation.Import
+
+@GenesisSpringTest
+@Import(MyEventHandler::class)
+@CsvData("data/WIDGET.csv")
+abstract class WidgetTestBase
+```
+
+- **`@GenesisSpringTest`** is the only annotation needed to get a live Genesis runtime behind the Spring context.
+- **`@Import(MyEventHandler::class)`** contributes the handler to the test context. `GenesisTestApplication` performs no component scanning — see [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation. A generated repository like `WidgetRepository` arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be contributed to the context explicitly — via `@Import(MyService::class)` as here, by listing it alongside `GenesisTestApplication` in `@SpringBootTest(classes = [GenesisTestApplication::class, MyService::class])`, or with a nested `@TestConfiguration` that declares it as a `@Bean`. Don't list it on its own in `classes = [...]`: that replaces `GenesisTestApplication`, the test context's only source of autoconfiguration. Without the handler in the context, every event is nacked with `UNKNOWN_MESSAGE_TYPE`.
+- **`@CsvData("data/WIDGET.csv")`** loads the seed data when the runtime boots. The `data/` prefix is the file's path under the `-app` module's `src/main/genesis`, which the `srcDir` line puts on the test classpath.
+
+Because both test classes inherit this configuration, Spring caches one context for them and they share one runtime. The base class has no `@DirtiesContext`; give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` if you want a fresh Genesis runtime per class instead. See [Context caching](#context-caching) for when to share.
+
+### Testing the event handler
+
+`src/test/kotlin/<packageName>/WidgetEventHandlerTest.kt`:
+
+```kotlin
+package <packageName>
+
+import <packageName>.dao.enums.<product>.widget.Quality
+import <packageName>.repo.WidgetRepository
+import global.genesis.message.core.event.EventReply
+import global.genesis.testsupport.client.eventhandler.EventClientAsync
+import global.genesis.testsupport.client.eventhandler.EventClientBlocking
+import global.genesis.testsupport.client.eventhandler.EventClientRx
+import global.genesis.testsupport.client.eventhandler.EventClientSync
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+@Order(1)
+class WidgetEventHandlerTest : WidgetTestBase() {
+
+    @Autowired
+    lateinit var eventClient: EventClientSync
+
+    @Autowired
+    lateinit var eventClientAsync: EventClientAsync
+
+    @Autowired
+    lateinit var eventClientRx: EventClientRx
+
+    @Autowired
+    lateinit var eventClientBlocking: EventClientBlocking
+
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
+
+    @Test
+    fun `seed data from the app module is loaded`() {
+        assertEquals("Seed widget one", widgetRepository.findById(1001L)?.name)
+        assertEquals("Seed widget two", widgetRepository.findById(1002L)?.name)
+    }
+
+    @Test
+    fun `EventClientSync - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClient.sendEvent(
+            details = NewWidget(name = "via-sync", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-sync"))
+    }
+
+    @Test
+    fun `EventClientAsync - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = runBlocking {
+            eventClientAsync.sendEvent(
+                details = NewWidget(name = "via-async", price = 1.0, quality = Quality.OK, cost = 0.5),
+                messageType = "WIDGET_INSERT",
+            )
+        }
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-async"))
+    }
+
+    @Test
+    fun `EventClientRx - WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClientRx.sendEvent(
+            details = NewWidget(name = "via-rx", price = 1.0, quality = Quality.BAD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        ).blockingGet()
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-rx"))
+    }
+
+    @Test
+    fun `EventClientBlocking - EVENT_WIDGET_INSERT is acked and persists the widget`() {
+        val reply = eventClientBlocking.sendEvent(
+            details = NewWidget(name = "via-blocking", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "EVENT_WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
+        assertNotNull(widgetRepository.findByName("via-blocking"))
+    }
+
+    @Test
+    fun `WIDGET_INSERT of a duplicate name is nacked by the handler`() {
+        val reply = eventClient.sendEvent(
+            details = NewWidget(name = "Seed widget one", price = 1.0, quality = Quality.GOOD, cost = 0.5),
+            messageType = "WIDGET_INSERT",
+        )
+        assertInstanceOf(EventReply.EventNack::class.java, reply, "$reply")
+        assertEquals(1, widgetRepository.findAll().count { it.name == "Seed widget one" })
+    }
+}
+
+data class NewWidget(val name: String, val price: Double, val quality: Quality, val cost: Double)
+```
+
+`EventClientSync` returns the reply directly, `EventClientAsync.sendEvent` is a `suspend` function (called here inside `runBlocking`), and `EventClientRx` returns a `Single`.
+
+The event payload is a plain `NewWidget` data class rather than the generated `Widget` entity. The event's schema has no `ID` property, so a `Widget` payload is nacked with `VALIDATION_ERROR`.
+
+Each test asserts on the row the handler writes, not only on the reply. That is what makes the test fail when the handler is broken. If `insertWidget` acks without saving, the four insert tests fail on `assertNotNull`. A test that only checks for a nack can pass for the wrong reason: without the handler in the context, the duplicate-name test still passes, because it gets an `UNKNOWN_MESSAGE_TYPE` nack instead of the handler's own. To rule that out, also check the nack's error or a side effect that only the handler produces.
+
+This example only verifies persistence through the repository — it doesn't assert on `UpdateQueue`, audit rows, or transaction boundaries; see [JPA data access: Writing back to the UpdateQueue](../jpa-data-access#writing-back-to-the-updatequeue), [Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for asserting on those specifically.
+
+### A second class sharing the runtime
+
+`src/test/kotlin/<packageName>/WidgetSharedContextTest.kt`:
+
+```kotlin
+package <packageName>
+
+import <packageName>.repo.WidgetRepository
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+
+@Order(2)
+class WidgetSharedContextTest : WidgetTestBase() {
+
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
+
+    @Test
+    fun `shares the runtime and sees the previous class's rows`() {
+        val names = widgetRepository.findAll().map { it.name }.sorted()
+        assertNotNull(widgetRepository.findById(1001L))
+        assertNotNull(widgetRepository.findByName("via-sync"))
+        assertEquals(6, names.size)
+    }
+}
+```
+
+This class has the same configuration as `WidgetEventHandlerTest`, so it reuses the same runtime. The database is not truncated and the CSV is not reloaded between the two classes: it sees the two seed rows plus the four rows `WidgetEventHandlerTest` inserted, six in all. This is the behaviour described in [Context caching](#context-caching), and it is why the row count depends on class order.
+
+### Running it
+
+From `server/`:
+
+```bash
+./gradlew :<project-name>-spring:test
+```
+
+This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overview) above — and it's skipped silently, not failed, if that property is missing.
+
+## Testing an HTTP endpoint
+
+The example above tests JPA/database access through a live Genesis runtime. Testing a Spring Boot
+app's **HTTP surface** — including the [session-token authentication](../core#session-token-authentication)
+layer every Genesis Spring web app installs by default — is a narrower concern and doesn't need
+`@GenesisSpringTest` at all. Use Spring Boot's `@WebMvcTest` slice, naming the controllers under
+test, import `GenesisSpringSecurityConfig`, and stub `UserSessionCache` with `@MockitoBean` instead of
+logging a session in for real. The slice loads only the web layer, so no Genesis process boots and
+none of your module's JPA, event handler or data-cube configuration runs.
+
+The import is needed because no Genesis class is part of the `@WebMvcTest` slice.
+`global.genesis.springboot.security.GenesisSpringSecurityConfig` is the autoconfiguration that installs
+the session-token filter chain this test exercises. Without it, Spring Boot's default HTTP Basic chain
+takes its place. That chain also answers `401` to a request with no token, so the no-token assertion
+below still passes, but for the wrong reason.
+
+Any dependency your own controller injects, such as a repository or a service, needs a `@MockitoBean`
+of its own, as usual for a `@WebMvcTest`.
+
+`UserSessionCache` (`global.genesis.session.UserSessionCache`) has two lookup methods, and which one
+the security layer calls matters for what to stub:
+
+- `userLoggedIn(token: String): UserSessionRef?` is a cache-only read — a `ConcurrentHashMap` hit or
+  nothing.
+- `userLoggedInCheckDb(token: String): UserSessionRef?` is a **suspend** function: the same cache-first
+  read, falling back to a single database read on a miss.
+
+The Spring Boot starter's authenticator (`GenesisSessionAuthenticator`) calls the suspend
+`userLoggedInCheckDb`, not `userLoggedIn` — deliberately: a Spring Boot process only *observes*
+sessions the router creates, so a token written just before this process's own session cache caught
+up would otherwise be refused. Stub `userLoggedInCheckDb`, not `userLoggedIn` — for example with
+[mockito-kotlin](https://github.com/mockito/mockito-kotlin)'s `on { … }`, which handles the
+`suspend` keyword's extra `Continuation` parameter for you.
+
+Add the test-only dependencies this needs alongside `genesis-spring-boot-starter`:
+
+```kotlin
+dependencies {
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
+}
+```
+
+The Genesis Spring test artifacts are compiled against Kotlin 2.4.0 or later; a consuming module
+pinned to an older Kotlin toolchain (for example the Kotlin Gradle plugin) can hit a Kotlin
+metadata-version mismatch that surfaces as an unresolved-reference compile error on a symbol that
+genuinely exists in the jar — pin the module's own Kotlin plugin to 2.4.0 or later to avoid it.
+
+`@WebMvcTest` itself now lives at
+`org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest`, reachable through the
+new `spring-boot-starter-webmvc-test` dependency above rather than `spring-boot-starter-test` alone.
+
+`spring-boot-starter-security-test` is required even though this example never calls
+`springSecurity()` explicitly. It contributes the Spring Security autoconfiguration to the slice;
+without it the context fails to start, because `GenesisSpringSecurityConfig` finds no `HttpSecurity`
+bean. It also applies Spring Security's test support to the built `MockMvc`, so the real filter
+chain — the one `GenesisSessionAuthenticator` installs — runs on every `perform(...)` call.
+
+This test exercises the same `/secure` and `/public/ping` endpoints [Application core's session-token
+authentication example](../core#session-token-authentication) declares, so it sits in the same
+package as those controllers. The same shape works against any `@RestController` endpoint; for cube
+resources, see [Data cube: Testing](../data-cube#testing) instead:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.session.UserSessionCache
+import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
+import global.genesis.springboot.security.GenesisSpringSecurityConfig
+import org.joda.time.DateTime
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.stub
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+@WebMvcTest(SecureController::class, PublicController::class)
+@ImportAutoConfiguration(GenesisSpringSecurityConfig::class)
+class SecureControllerTest {
+
+    @Autowired
+    lateinit var mockMvc: MockMvc
+
+    // Stands in for the real UserSessionCache a booted process would bridge from Guice.
+    @MockitoBean
+    lateinit var userSessionCache: UserSessionCache
+
+    @BeforeEach
+    fun stubValidSession() {
+        userSessionCache.stub {
+            on { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
+                userName = "JaneDoe",
+                sessionId = "session-1",
+                token = VALID_TOKEN,
+                expiryDateTime = DateTime.now().plusHours(1),
+            )
+        }
+    }
+
+    @Test
+    fun `rejects a request with no session token`() {
+        mockMvc.perform(get("/secure")).andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    fun `serves a request carrying a valid session token`() {
+        mockMvc.perform(get("/secure").header(SESSION_AUTH_TOKEN_HEADER, VALID_TOKEN))
+            .andExpect(status().isOk)
+            .andExpect(content().string("secure"))
+    }
+
+    @Test
+    fun `serves a GenesisAnonymous endpoint without a token`() {
+        mockMvc.perform(get("/public/ping")).andExpect(status().isOk)
+    }
+
+    private companion object {
+        const val VALID_TOKEN = "valid-session-token"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+`userLoggedInCheckDb` is still a Kotlin `suspend` function when called from Java — there's no
+`mockito-kotlin` `on { … }` sugar available, so the compiler-generated `Continuation` parameter
+appears in the stub. Pass the token and `null` for it directly; the matcher form
+`userLoggedInCheckDb(eq(VALID_TOKEN), any())` throws `InvalidUseOfMatchersException` here. Plain
+`org.mockito:mockito-core`, already pulled in by `spring-boot-starter-test`, is enough; the
+`mockito-kotlin` dependency above is only needed for the Kotlin version.
+
+```java
+package com.example.app;
+
+import global.genesis.session.UserSessionCache;
+import global.genesis.springboot.security.GenesisSpringSecurityConfig;
+import org.joda.time.DateTime;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest({SecureController.class, PublicController.class})
+@ImportAutoConfiguration(GenesisSpringSecurityConfig.class)
+public class SecureControllerTestJava {
+
+    private static final String VALID_TOKEN = "valid-session-token";
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    // Stands in for the real UserSessionCache a booted process would bridge from Guice.
+    @MockitoBean
+    private UserSessionCache userSessionCache;
+
+    @BeforeEach
+    void stubValidSession() {
+        when(userSessionCache.userLoggedInCheckDb(VALID_TOKEN, null)).thenReturn(
+            new UserSessionCache.UserSessionRef("JaneDoe", "session-1", VALID_TOKEN, DateTime.now().plusHours(1))
+        );
+    }
+
+    @Test
+    @DisplayName("rejects a request with no session token")
+    void rejectsRequestWithNoSessionToken() throws Exception {
+        mockMvc.perform(get("/secure")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("serves a request carrying a valid session token")
+    void servesRequestWithValidSessionToken() throws Exception {
+        mockMvc.perform(get("/secure").header(SESSION_AUTH_TOKEN_HEADER, VALID_TOKEN))
+            .andExpect(status().isOk())
+            .andExpect(content().string("secure"));
+    }
+
+    @Test
+    @DisplayName("serves a GenesisAnonymous endpoint without a token")
+    void servesGenesisAnonymousEndpointWithoutToken() throws Exception {
+        mockMvc.perform(get("/public/ping")).andExpect(status().isOk());
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`SESSION_AUTH_TOKEN_HEADER` (`global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER`)
+resolves to `SESSION_AUTH_TOKEN`, the same header the rest of Genesis uses — see [Session-token
+authentication](../core#session-token-authentication) for the hyphenated alias and the full
+request/response table this test's two cases are drawn from.
+
+## See also
+
+- [Spring Integration](../index) for the section overview.
+- [Application core](../core) for the Guice/Spring bridge these tests boot on top of.
+- [Annotation-driven event handlers](../event-handlers#testing) — the fullest worked example of the `EventClientSync` test-client beans introduced above.
+- [Testing API](/develop/server-capabilities/testing-api) for `GenesisJunit`, the equivalent tooling for GPAL script apps, and full reference detail on the annotations listed above.
