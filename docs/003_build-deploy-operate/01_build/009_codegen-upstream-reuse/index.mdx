@@ -87,14 +87,23 @@ genesis {
 
 ### When reuse switches off automatically
 
-Even with upstream reuse switched on, the build switches it off for a dictionary-cache module in two cases:
+Even with upstream reuse switched on, the build switches it off for a dictionary-cache module that belongs to one of the upstream products itself.
 
-- The module belongs to one of the upstream products itself.
-- Your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file. The upstream slice jar would supply the original definitions and ignore your override. To override auth's tables, copy `auth-tables-dictionary.kts` into the `src/main/resources/cfg` directory of one of your application's modules. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application's server module. The `_copyDependenciesCfgFiles` task populates that directory, and the Genesis install and sync tasks depend on it, so run one of those first if the directory is empty.
+The build does not detect an override of an upstream dictionary file for you. If your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file, the upstream slice jar still supplies the original definitions and ignores your override, with no warning. So you must tell the build to regenerate that code.
+
+To override auth's tables:
+
+1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application's server module. The `_copyDependenciesCfgFiles` task populates that directory, and the Genesis install and sync tasks depend on it, so run one of those first if the directory is empty.
+2. Make your changes in the copy.
+3. Set one of these properties:
+    - `genesis.codegen.overrideSlices=auth` regenerates auth's code locally, and keeps reusing the slice jars of every other upstream product.
+    - `genesis.codegen.reuseUpstream=false` regenerates the code of every upstream product locally.
+
+```properties
+genesis.codegen.overrideSlices=auth
+```
 
 Your copy replaces auth's whole table dictionary, not just the tables you change. The build copies your application's own configuration before the dependencies' and keeps the first file it finds with a given name. So keep every auth table in your copy, not only the ones you edit.
-
-In the second case, the build logs a warning that names the products concerned and suggests the `genesis.codegen.overrideSlices` value to set. If `genesis.codegen.reuseUpstream.strict` is `true`, the build fails instead.
 
 ### When an upstream product's system definition doesn't match
 
