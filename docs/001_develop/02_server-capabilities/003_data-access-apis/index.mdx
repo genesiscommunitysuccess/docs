@@ -975,6 +975,12 @@ The following recover operations are supported:
 - `recover`
 - `recoverAll`
 
+###### Overloads
+
+* `recover(E): InsertResult<E>`
+* `recoverAll(List<E>): List<InsertResult<E>>`
+* `recoverAll(Flow<E>): List<InsertResult<E>>`
+
 :::danger
 
 This API must be used with caution. Integrity checks are skipped, so it can leave your Genesis application in a poor state if used incorrectly. Record IDs and timestamps are assumed to be unique.
@@ -1711,8 +1717,8 @@ Index names come from your data model. By default, the platform names an index `
 | Kind | Method | Signature (`SyncDb`) |
 |---|---|---|
 | Reads | `get` | `get(record: DbRecord, index: String? = null, fields: Set<String> = emptySet()): DbRecord?` |
-| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>` |
-| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>` |
+| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) |
+| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) |
 | Reads | `count` | `count(table: String): Long` |
 | Reads | `getBulk` | `getBulk(table: String, index: String? = null, fields: Set<String> = emptySet()): List<DbRecord>` |
 | Reads | `getBulkFromEnd` | `getBulkFromEnd(table: String, index: String, fields: Set<String> = emptySet()): List<DbRecord>` |
@@ -1744,6 +1750,41 @@ Index names come from your data model. By default, the platform names an index `
 - There are no streaming reads.
 
 Writes take a `DbRecord`, or a [`ModifyDetails`](#modify-details) for `modify` and `upsert` (a `List<ModifyDetails>` for `modifyAll` and `upsertAll`), and return a [`WriteResult`](#write-result), or a `List<WriteResult>` for `modifyAll` and `upsertAll`.
+
+###### Reading several records at once
+
+`getAll` and `getAllAsList` look up many records in one call. Each lookup is described by a search-details object, in the package `global.genesis.db.engine`. Each one holds three things: the `DbRecord` to look up, with the key fields of the index set; the name of the index to look it up by; and, optionally, a set of field names to return.
+
+| Type | Use with | Build with | Result |
+|---|---|---|---|
+| `RecordMapSearchDetails` | `getAll` | `RecordMapSearchDetails.newInstance(searchRecord: DbRecord, searchKeyName: String, mapAlias: String, searchFields: Set<String>? = null)` | A `Map<String, DbRecord?>`, keyed by the `mapAlias` of each request. |
+| `RecordListSearchDetails` | `getAllAsList` | `RecordSearchDetails.newInstance(searchRecord: DbRecord, searchKeyName: String, searchFields: Set<String>? = null)` | A `List<DbRecord?>`, in the same order as the requests. |
+
+`RecordListSearchDetails` is an interface. `RecordSearchDetails.newInstance` returns the standard implementation of it. `RecordMapSearchDetails` also implements it, so you can pass a list of them to `getAllAsList` too. In both results, a lookup that finds no record gives `null`. Use a different `mapAlias` for each request in a `getAll` call, because the alias is the key of the result.
+
+```kotlin
+val tradeLookup = DbRecord("TRADE").apply { setString("TRADE_ID", tradeId) }
+val clientLookup = DbRecord("CLIENT").apply { setString("CLIENT_ID", clientId) }
+
+// getAll: results come back in a map, keyed by the alias you chose
+val byAlias: Map<String, DbRecord?> = syncDb.getAll(
+    listOf(
+        RecordMapSearchDetails.newInstance(tradeLookup, "TRADE_BY_ID", "trade"),
+        RecordMapSearchDetails.newInstance(clientLookup, "CLIENT_BY_ID", "client"),
+    )
+)
+val trade = byAlias["trade"]
+
+// getAllAsList: results come back in the order of the requests
+val inOrder: List<DbRecord?> = syncDb.getAllAsList(
+    listOf(
+        RecordSearchDetails.newInstance(tradeLookup, "TRADE_BY_ID"),
+        RecordSearchDetails.newInstance(clientLookup, "CLIENT_BY_ID", setOf("CLIENT_ID", "CLIENT_NAME")),
+    )
+)
+```
+
+The table, index and field names in this example are placeholders for your own data model. In Java, call the same `newInstance` factories as static methods.
 
 ###### Streaming reads
 
