@@ -22,7 +22,7 @@ The name of a derived field must not match any of these, ignoring case:
 - an aliased field that you have already selected;
 - another derived field in the same definition.
 
-These rules also apply to derived fields in a Data Server `enrich` block. A clash stops the definition from loading when the process starts, and the error message names the clashing field. Compiling the script at build time doesn't catch it, because compiling doesn't run the definition. To check your names, [start the process](/build-deploy-operate/operate/commands/#startprocess) or [run a test](#testing) that loads the definition.
+A clash stops the definition from loading when the process starts, and the error message names the clashing field. Compiling the script at build time doesn't catch it, because compiling doesn't run the definition. To check your names, [start the process](/build-deploy-operate/operate/commands/#startprocess) or [run a test](#testing) that loads the definition.
 
 #### `derivedFieldWithUserName`
 
