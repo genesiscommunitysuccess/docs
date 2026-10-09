@@ -1369,7 +1369,7 @@ public class LogLevelTest {
 
 #### WithLogLevel
 
-Sets the level of a named logger for the duration of a test class or method, and puts the previous level back afterwards. Unlike [`@RootLogLevel`](#rootloglevel), which sets the root level of a GenesisJunit process, `@WithLogLevel` targets one logger, and it is a plain JUnit extension: it works with or without the Genesis test annotations. The annotation registers its own JUnit extension (it is meta-annotated with `@ExtendWith(WithLogLevelExtension::class)`), so a plain JUnit 5 test needs no `@ExtendWith` and no Genesis test annotation.
+Sets the level of a named logger for the duration of a test class or method, and puts the previous level back afterwards. Unlike [`@RootLogLevel`](#rootloglevel), which sets the root level of a GenesisJunit process, `@WithLogLevel` targets one logger, and it is a plain JUnit extension: it works with or without the Genesis test annotations. The annotation registers its own JUnit extension.
 
 - It is in the `global.genesis.test.log4j` package, not `global.genesis.testsupport.jupiter`. It comes with `genesis-testsupport`, so you don't need another dependency.
 - `logger` is a logger name: a package or a class. `WithLogLevel.PACKAGE` (an empty string) means the test class's package.
