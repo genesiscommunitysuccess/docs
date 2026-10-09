@@ -20,13 +20,16 @@ The network configuration drives:
 - **Messaging**: protocol version, serialization format, request-reply timeout
 - **Netty**: thread usage and socket options
 - **TLS**: encryption mode, identity/trust, client auth, peer verification, and authorization
+- **ZeroMQ encryption**: CURVE authentication and encryption for the ZeroMQ update queue
 
 ### File names and merge behaviour
 
 - **Application-level**: `network-config.yaml` (loaded first)
-- **Process-level** (optional): `network-config-{processName}.yaml` (overrides application config for that process)
+- **Process-level** (optional): `network-config-<PROCESS_NAME>.yaml`, for example `network-config-GENESIS_CLUSTER.yaml` (overrides application config for that process)
 
 If both files are present, process level configuration will overwrite any global settings.
+
+In a project, put `network-config.yaml` and any `network-config-<PROCESS_NAME>.yaml` files in your application module's `src/main/genesis/cfg/` directory. The build deploys them to `site-specific/cfg/`. See step 2 of [Enabling CURVE](/build-deploy-operate/operate/update-queue/#enabling-curve) for an example.
 
 ### Environment placeholders
 
@@ -35,6 +38,7 @@ Environment variable placeholders in the YAML are resolved when the config is lo
 ### Validation
 
 - When `tls.mode` is not `PLAIN_TEXT`, the TLS block is validated after parsing.
+- When `zeroMqEncryption.enabled` is `true`, the `zeroMqEncryption` block is validated when the process starts its update queue.
 
 ---
 
@@ -47,6 +51,7 @@ The YAML root is the network config container. Top-level keys:
 | `messaging` | object | [messaging section](#messaging-section) |
 | `netty`     | object | [netty section](#netty-section) |
 | `tls`       | object | [tls section](#tls-section) (default: PLAIN_TEXT) |
+| `zeroMqEncryption` | object | [zeroMqEncryption section](#zeromqencryption-section) (default: disabled) |
 
 Unknown top-level keys are ignored.
 
@@ -220,6 +225,53 @@ When `tls.mode` is not `PLAIN_TEXT`, the TLS subtree is validated. Invalid or un
 | `identityPatterns`| list of string | `[]`    | Regex patterns for identities |
 
 **Validation:** When authorization is enabled: `defaultDecision` and `identitySource.sanType` must be valid; at least one of `allow` or `deny` must have non-empty `identities` or `identityPatterns` (otherwise: "authorization is enabled but no allow or deny rules are configured").
+
+---
+
+## `zeroMqEncryption` section
+
+This section configures CURVE authentication and encryption for the [ZeroMQ update queue](/build-deploy-operate/operate/update-queue/#securing-zeromq-with-curve). It only has an effect when `MqLayer` is `ZeroMQ`. CURVE is off by default. The [`GenerateZeroMqCurveKeys`](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/) command generates the keys and prints a block you can paste in.
+
+| Key                          | Type    | Default            | Description |
+|------------------------------|---------|--------------------|-------------|
+| `enabled`                    | boolean | `false`            | Turns on CURVE for update-queue traffic. When this is `false`, the update queue behaves as it does without this section |
+| `zapDomain`                  | string  | `genesis-internal` | ZAP domain that servers use to authenticate clients. Any value; every process must use the same one |
+| `curveServerPublicKey`       | string  | `""`               | Server public key, Z85 text |
+| `curveServerSecretKey`       | string  | `""`               | Server secret key, Z85 text |
+| `curveClientPublicKey`       | string  | `""`               | Client public key, Z85 text |
+| `curveClientSecretKey`       | string  | `""`               | Client secret key, Z85 text |
+| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere). Any file name works: the server loads every file in the directory and its subdirectories, and skips (with a warning) any file without a CURVE public key. The directory is checked when a client connects, so adding or removing a certificate takes effect for new connections without a restart; connections already open are not affected |
+| `readinessTimeoutMillis`     | integer | `5000`             | How long, in milliseconds, a publisher holds a message for a topic that no subscriber has subscribed to yet. After that, the message is sent anyway |
+| `readinessObserveOnly`       | boolean | `false`            | If `true`, the publisher tracks subscriber readiness but never holds messages back |
+
+Every process is both a ZeroMQ server (it publishes) and a ZeroMQ client (it subscribes to its peers), so each one needs both secret keys.
+
+Use environment variable placeholders for the keys, so the secrets stay out of the file:
+
+```yaml
+zeroMqEncryption:
+  enabled: true
+  zapDomain: genesis-internal
+  curveServerPublicKey: ${ZMQ_CURVE_SERVER_PUBLIC}
+  curveServerSecretKey: ${ZMQ_CURVE_SERVER_SECRET}
+  curveClientPublicKey: ${ZMQ_CURVE_CLIENT_PUBLIC}
+  curveClientSecretKey: ${ZMQ_CURVE_CLIENT_SECRET}
+  allowedClientCertDirectory: /home/genesis/run/site-specific/cfg/zmq-curve-clients
+```
+
+Every process has to use the same `enabled` value and the same keys. If a process-level `network-config-{processName}.yaml` sets this section differently, the override is honoured and that process's handshakes with its peers fail. Never do this in production; only use it to test a mismatch.
+
+**Validation:** When `enabled` is `true`, the process fails to start if one of these conditions isn't met:
+
+| Condition | Error message |
+|-----------|---------------|
+| A key is missing or blank | `<key> is required when ZeroMQ CURVE is enabled` |
+| A key isn't exactly 40 characters | `<key> must be 40 characters of Z85, but is <length>` |
+| A key isn't valid Z85. Z85 is ZeroMQ's 85-character text encoding ([RFC 32](https://rfc.zeromq.org/spec/32/)); a 40-character key containing a space, quote or comma is not valid Z85 | `<key> must be a valid Z85 CURVE key` |
+| `allowedClientCertDirectory` is missing or blank | `allowedClientCertDirectory is required when ZeroMQ CURVE is enabled` |
+| `allowedClientCertDirectory` isn't a readable directory | `allowedClientCertDirectory must be a readable directory: '<path>'` |
+
+`<key>` is the YAML key name, for example `curveServerPublicKey`. The secret keys are hidden in log output.
 
 ---
 
