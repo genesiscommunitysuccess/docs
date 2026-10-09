@@ -59,6 +59,8 @@ class TradeSummaryListener : SyncWriteOperationListener {
 
 The table, index and field names in this example are placeholders for your own data model.
 
+For what `ModifyDetails` is, see [Modify details](/develop/server-capabilities/data-access-apis/#modify-details).
+
 Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
 
 A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It has `RxDb`'s read and write methods (it extends `RxRecordReadSupport`, so reads such as `get` and `getBulk` are available), bound to the write's transaction. Do not cast it to `RxDb`: that reads outside the write's transaction. The write methods are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
