@@ -33,7 +33,9 @@ Genesis applications include both server-side and web code.
 
 ### Java/Kotlin
 
-Genesis recommends [openjdk-17](https://openjdk.org/projects/jdk/17/) as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
+Genesis supports [OpenJDK](https://openjdk.org/) 17 and 25 as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
+
+The default JVM arguments of every Genesis process already include the flags for JDK 25; JDK 17 ignores the ones it doesn't recognise. On JDK 25, these flags turn on compact object headers, so a process uses less heap.
 
 ### Third-party software
 
