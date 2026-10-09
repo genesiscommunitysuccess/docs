@@ -40,7 +40,7 @@ Use this starter where ORM-style entity/repository code — Spring Data query de
 | Write propagation to `UpdateQueue` | Built into every write call | Via a Hibernate integrator, registered on the same insert/update/delete events |
 | Listening to `UpdateQueue` changes | `UpdateQueue` table subscriptions | `@UpdateQueueListener` methods on Spring beans — see [Listening to UpdateQueue changes](#listening-to-updatequeue-changes) |
 | Auditing | Explicit `entity.toAuditEntity(...)` call made by the caller | Automatic, in the same transaction as the write, for entities implementing `JpaAuditableEntity` |
-| Concurrency control | System-definition `DbOptimisticConcurrencyMode` check, enforced by the API on modify/delete | See [Optimistic concurrency](#optimistic-concurrency) below — the two mechanisms don't overlap |
+| Concurrency control | System-definition `DbOptimisticConcurrencyMode` check, enforced by the API on modify/delete | None — see [Optimistic concurrency](#optimistic-concurrency) below |
 
 ## Getting set up
 
