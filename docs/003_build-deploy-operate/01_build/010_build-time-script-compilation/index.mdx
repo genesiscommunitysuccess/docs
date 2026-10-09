@@ -111,9 +111,13 @@ Otherwise, with a Settings plugin, the setting in `settings.gradle.kts` wins ove
 
 No system definition item, JVM option or environment variable stops a process from loading compiled classes. To stop using them:
 
-- **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`;
+- **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`. With the property set to `false`, a module that configures a `genesisScriptCompilation` block fails to build, so remove or guard that block first;
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, a platform script such as `genesis-router.kts` is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. Its source no longer matches the index, so the process compiles it at start-up.
+- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, a platform script such as `genesis-router.kts` is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. The build compiles your copy with the rest of the app's scripts, and the process loads that compiled copy in place of the platform's.
+
+:::warning
+Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless sync is switched off. Use the copy in `src/main/genesis/scripts` described above.
+:::
 
 ## Configuration options
 
@@ -149,7 +153,7 @@ genesisScriptCompilation {
 }
 ```
 
-You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing, a test that loads such a script fails with `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`.
+You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing and the test scripts are compiled at build time, the build fails: no script definition claims the script, so it compiles as plain Kotlin and its use of the DSL fails (see [A script that no script definition claims](#what-fails-the-build)). The message `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`, appears at runtime when a test loads a script that was not compiled at build time.
 
 To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/testing-api/#testscriptfile) in the Testing API.
 
@@ -230,3 +234,10 @@ Loaded <script> from its build-time-compiled class in <n> ms; no compiler was us
 ```
 
 If a script you expected doesn't produce this line, look for a warning that it was compiled instead, and check whether it is one of the [scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up).
+
+An index entry that the process never uses is not a failure. Common cases:
+
+- the system definition is read from JSON, so the system definition script is never evaluated;
+- a module's dictionary scripts are evaluated when the dictionary is installed or remapped, not when a process starts;
+- a script was edited after the build, so the process compiles it at start-up and logs that at DEBUG level (see [Falling back to compiling](#falling-back-to-compiling));
+- the tables dictionary is in dynamic-fields mode, so it is compiled at every start.
