@@ -240,9 +240,11 @@ This section configures CURVE authentication and encryption for the [ZeroMQ upda
 | `curveServerSecretKey`       | string  | `""`               | Server secret key, Z85 text |
 | `curveClientPublicKey`       | string  | `""`               | Client public key, Z85 text |
 | `curveClientSecretKey`       | string  | `""`               | Client secret key, Z85 text |
-| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere). Any file name works: the server loads every file in the directory and its subdirectories, and skips (with a warning) any file without a CURVE public key |
+| `allowedClientCertDirectory` | string  | `""`               | Directory of client certificates. A server accepts only clients whose public key has a certificate here. Any standard ZeroMQ certificate file works, including ones produced by other ZeroMQ tools; see [Using keys issued elsewhere](/build-deploy-operate/operate/commands/generate-zeromq-curve-keys/#using-keys-issued-elsewhere). Any file name works: the server loads every file in the directory and its subdirectories, and skips (with a warning) any file without a CURVE public key. The directory is checked when a client connects, so adding or removing a certificate takes effect for new connections without a restart; connections already open are not affected |
 | `readinessTimeoutMillis`     | integer | `5000`             | How long, in milliseconds, a publisher holds a message for a topic that no subscriber has subscribed to yet. After that, the message is sent anyway |
 | `readinessObserveOnly`       | boolean | `false`            | If `true`, the publisher tracks subscriber readiness but never holds messages back |
+
+Every process is both a ZeroMQ server (it publishes) and a ZeroMQ client (it subscribes to its peers), so each one needs both secret keys.
 
 Use environment variable placeholders for the keys, so the secrets stay out of the file:
 
