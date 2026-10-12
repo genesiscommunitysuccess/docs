@@ -573,7 +573,7 @@ server {
 }
 ```
 
-`keyStorePath` and `keyStorePassword` are required. `keyStoreType` defaults to `"PKCS12"`. To create a keystore for local testing, see [Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/#generating-test-certificates), which gives `keytool` commands.
+`keyStorePath` and `keyStorePassword` are required. `keyStoreType` defaults to `"PKCS12"`. To create a keystore for local testing, see [Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/#generating-test-certificates), which gives `keytool` commands. Those commands create a JKS keystore, so either set `keyStoreType = "JKS"` or pass `-storetype PKCS12` to `keytool`.
 
 ## Connecting an AI client
 
