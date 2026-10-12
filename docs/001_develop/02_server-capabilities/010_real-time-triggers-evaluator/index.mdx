@@ -93,7 +93,7 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | USER_NAME | The username that will be sent on the triggered event. User must have permission to use this event for it to be triggered successfully | admin | false |
 | RULE_TABLE | The [`table`](/develop/server-capabilities/data-model/#tables) or [`view`](/develop/server-capabilities/data-model/#views) the rule listens to for updates | `TRADE_VIEW` | true |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event | `ENABLED` | true |
-| RULE_EXPRESSION | Boolean logic for trigger. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets  | `((NOTIONAL > 1000000))` | false |
+| RULE_EXPRESSION | Boolean logic for trigger. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets. It must be a non-blank Groovy expression that returns a Boolean. A blank expression is accepted when you insert or amend the rule, but the Evaluator disables the rule the first time it fires  | `((NOTIONAL > 1000000))` | false |
 | PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. We recommend that you leave this blank to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
@@ -122,7 +122,9 @@ Each audit record holds the rule's fields, plus these fields:
 
 `USER_NAME` is the rule's own `USER_NAME`; the user who made the change is in `AUDIT_EVENT_USER`.
 
-::::warning Upgrading from 8.15
+### Upgrading from 8.15
+
+::::warning
 
 In 8.15 and earlier, `CRON_RULE_AUDIT` had `EVENT_TYPE` and `EVENT_DATETIME` instead of `AUDIT_EVENT_TYPE` and `AUDIT_EVENT_DATETIME`, and its `USER_NAME` held the user who made the change. `DYNAMIC_RULE_AUDIT` is unchanged. Update any queries or reports that read those columns.
 
@@ -404,7 +406,7 @@ Changing the rule to trigger on modifications to the record instead of inserts.
 
 All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` configuration options](#dynamic_rule)
 
-An amend replaces every editable field of the rule, so send the whole rule each time. `TABLE_OPERATION` is mandatory and takes one value: `INSERT`, `MODIFY`, `DELETE` or `PRIME` (see [`DYNAMIC_RULE`](#dynamic_rule) for what `PRIME` does). `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are ignored on amend, and `USER_NAME` is always set to the user who sends the event.
+An amend replaces every editable field of the rule, so send the whole rule each time. An amend that leaves out any editable field is rejected with a validation error, and nothing is cleared. `TABLE_OPERATION` is mandatory and takes one value: `INSERT`, `MODIFY`, `DELETE` or `PRIME` (see [`DYNAMIC_RULE`](#dynamic_rule) for what `PRIME` does). `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are ignored on amend, and `USER_NAME` is always set to the user who sends the event.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
