@@ -22,7 +22,7 @@ Native HTTP on the process port has two known limitations. Until they are resolv
 - **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the [refresh-token lifetime](/develop/server-capabilities/access-control/authentication/#refreshtokenexpirationmins) has passed. [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins) isn't checked here, unlike requests that the router handles itself.
 - **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
 
-With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401, and missing permissions get 403. On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
+This is not a third limitation, but a note on how proxied requests are authenticated, and on `USER_NAME` for routes with no authentication. With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401, and missing permissions get 403. On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
 
 :::
 
@@ -100,7 +100,11 @@ Multipart uploads and file downloads work on the process port in the same way as
 
 You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers with a 404. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
 
-For event handlers and custom endpoints, a file-level setting applies to the definitions that come after it in the file. For request servers, a file-level `config { internal = true }` applies to every table or view request server in the file that sets no configuration of its own, wherever the block sits; a custom request server, or one with its own `config` block or a setting such as `timeout`, only takes the file-level settings that come before it. Put the file-level setting at the top of the file and it applies to every definition. You can override it on each definition.
+**Event handlers and custom endpoints:** a file-level setting applies to the definitions that come after it in the file.
+
+**Request servers:** a file-level `config { internal = true }` applies to every table or view request server in the file that sets no configuration of its own, wherever the block sits. A custom request server, or one with its own `config` block or a setting such as `timeout`, only takes the file-level settings that come before it.
+
+For all of these, put the file-level setting at the top of the file and it applies to every definition. You can override it on each definition.
 
 ```kotlin
 // *-eventhandler.kts
