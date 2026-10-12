@@ -100,7 +100,7 @@ plugins {
 | Switch | Where | Effect |
 | --- | --- | --- |
 | `genesis { compileScriptsAtBuildTime = true }` | `settings.gradle.kts` | Applies the plugin to the application's config module or modules |
-| `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint. Default: `false` |
+| `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint, when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin; see [Linting scripts with ktlint](#linting-scripts-with-ktlint). Default: `false` |
 | `genesis.scripts.compileAtBuildTime` | Gradle property | `true`: the same as `compileScriptsAtBuildTime = true` when `settings.gradle.kts` doesn't set it. `false`: turns the feature off for the whole build |
 | `genesis.scripts.ktlint` | Gradle property | The default for `ktlintScripts` |
 | `genesisScriptCompilation { enabled = false }` | Module build file | Turns the feature off for one module |
@@ -118,7 +118,7 @@ No system definition item, JVM option or environment variable stops a process fr
 - **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, a platform script such as `genesis-router.kts` is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. The build compiles your copy with the rest of the app's scripts, and the process loads that compiled copy in place of the platform's.
 
 :::warning
-Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless sync is switched off. Use the copy in `src/main/genesis/scripts` described above.
+Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes). Use the copy in `src/main/genesis/scripts` described above.
 :::
 
 ## Configuration options
@@ -157,6 +157,18 @@ genesisScriptCompilation {
 
 You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing and the test scripts are compiled at build time, the build fails: no script definition claims the script, so it compiles as plain Kotlin and its use of the DSL fails (see [A script that no script definition claims](#what-fails-the-build)). The message `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`, appears at runtime when a test loads a script that was not compiled at build time.
 
+### Linting scripts with ktlint
+
+The Genesis plugins don't apply ktlint for you. Setting `ktlintScripts = true` does nothing unless the module that holds the scripts, normally the application's config module, applies the ktlint Gradle plugin. In that module's `build.gradle.kts`:
+
+```kotlin
+plugins {
+    id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
+}
+```
+
+Then turn the switch on, either with `genesis { ktlintScripts = true }` in `settings.gradle.kts`, `ktlintScripts = true` in the module's `genesisScriptCompilation` block, or the `genesis.scripts.ktlint` Gradle property. With the plugin applied and the switch off, the plugin keeps ktlint away from the scripts.
+
 To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/testing-api/#testscriptfile) in the Testing API.
 
 ## What fails the build
@@ -165,7 +177,7 @@ With build-time compilation on, the build has to resolve everything a process us
 
 - **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script fails with `Unable to find specified script module "<module>"`.
 - **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
-- **A script that produced no class** (for example, a script whose file name contains `$`). The build fails with `Build-time script compilation produced no class for N script(s): ...`. Rename the file, using only letters, digits and underscores, or set `failOnMissingScriptClasses = false` to accept it deliberately.
+- **A script that produced no class**. The build fails with `Build-time script compilation produced no class for N script(s): ...`. Rename the file, using only letters, digits and underscores, or set `failOnMissingScriptClasses = false` to accept it deliberately.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
 - **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module. The message begins `<module> already has a source set named genesisScripts, which build-time script compilation needs`.
 - **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them, with a message that begins `These scripts still compile to the same class '<class>' after disambiguation:`.
@@ -189,7 +201,7 @@ Some scripts are never served from a compiled class. The build leaves them out o
 
 A process compiles a script at start-up instead of loading its class in two cases, and logs each one differently.
 
-**The script's source no longer matches a compiled class**, for example because you overrode it in `site-specific` or edited it on the server. The process logs this at DEBUG level:
+**The script's source no longer matches a compiled class**, for example because you edited it on the server. The process logs this at DEBUG level:
 
 ```
 No precompiled class matches the current contents of <script>; compiling.
