@@ -225,7 +225,7 @@ The available built-in reporters are:
 |:---------|:--------------------------------------------------------------------|
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
-| SLF4J    | Publishes metrics to the services' log file                         |
+| SLF4J    | Publishes metrics to the services' metrics log file                 |
 | PROMETHEUS | Exposes metrics for a [Prometheus](https://prometheus.io/) server to scrape |
 
 ### Graphite
@@ -292,7 +292,9 @@ item(name = "MetricsDatadogUri", value = "https://api.datadoghq.com")
 
 ### SLF4J
 
-Metrics can be reported straight to the log file.
+Metrics can be reported straight to a metrics log file.
+
+With the default logging configuration, these metrics are not written to the process log. They go to a separate metrics log beside it, `${GENESIS_HOME}/runtime/logs/<PROCESS_NAME>.log.metrics`. The `global.genesis.metrics` logger is set to `debug` by default, so the reporter's default `DEBUG` level is visible with no change to your logging configuration.
 
 This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
 
