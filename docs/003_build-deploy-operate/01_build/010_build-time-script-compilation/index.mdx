@@ -60,7 +60,7 @@ plugins {
 }
 ```
 
-Applying the plugin turns the feature on; there is no second switch. If the module doesn't apply the Kotlin JVM plugin (`org.jetbrains.kotlin.jvm`), the plugin does nothing and logs a message that begins `Build-time script compilation is applied to <module> but it never applied the 'org.jetbrains.kotlin.jvm' plugin`.
+Applying the plugin turns the feature on; there is no second switch. If the module doesn't apply the Kotlin JVM plugin (`org.jetbrains.kotlin.jvm`), the plugin does nothing and logs a message that begins `Build-time script compilation is applied to <module> but it never applied the 'org.jetbrains.kotlin.jvm' plugin`. The message is logged at INFO, so run Gradle with `--info` to see it, or at WARN when the module sets `scriptDirs` or `expectGeneratedScripts`.
 
 In a repository without a Genesis Settings plugin, Gradle has to be able to resolve the plugin id:
 
@@ -145,7 +145,7 @@ Discovering script definitions means resolving the compile classpath while Gradl
 
 ### Test scripts
 
-You can also compile a module's test scripts, so that tests which start a script don't need a Kotlin compiler. Set `sourceSets = setOf("test")`, and the index lands on the test runtime classpath. Test resources often hold scripts that aren't meant to compile, such as fixtures for error cases, so add those to `exclude`.
+You can also compile a module's test scripts, so that tests which start a script don't need a Kotlin compiler. Set `sourceSets = setOf("test")`, and the index lands on the test runtime classpath: the build copies it into the output of the module's `processTestResources` task, so by default it is at `build/resources/test/META-INF/genesis-precompiled-scripts`. Test resources often hold scripts that aren't meant to compile, such as fixtures for error cases, so add those to `exclude`.
 
 ```kotlin
 genesisScriptCompilation {
@@ -184,7 +184,9 @@ With build-time compilation on, the build has to resolve everything a process us
 
 ## Scripts with the same file name
 
-The Kotlin compiler names a script's class after its file name only, so two scripts with the same file name in different directories would compile to the same class. To avoid this, the plugin copies each script whose source differs from another of the same name (compared case-insensitively) to `build/genesis/staged-scripts/`, under a name prefixed with part of its source hash, such as `h3f9a2b1c_genesis-router.kts`. It compiles the copy instead.
+The Kotlin compiler names a script's class after its file name and its `package`. Two scripts with the same file name in different directories compile to different classes as long as they declare different packages, and the plugin leaves them alone. The build logs `More than one script named '<name>' was precompiled`, and at runtime the scripts are told apart by content hash.
+
+Two scripts that would compile to the same class are those with the same file name (compared case-insensitively) that declare the same package, or none. For these, the plugin copies each one to `build/genesis/staged-scripts/`, under a name prefixed with part of its source hash, such as `h3f9a2b1c_genesis-router.kts`. It compiles the copy instead.
 
 The build logs each copy, and `staged-from.txt` in that directory maps every copy back to its original. Compiler errors refer to the staged copy. The index still uses the original file name, so nothing changes at runtime.
 
