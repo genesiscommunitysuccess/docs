@@ -256,7 +256,7 @@ zeroMqEncryption:
   curveServerSecretKey: ${ZMQ_CURVE_SERVER_SECRET}
   curveClientPublicKey: ${ZMQ_CURVE_CLIENT_PUBLIC}
   curveClientSecretKey: ${ZMQ_CURVE_CLIENT_SECRET}
-  allowedClientCertDirectory: /home/genesis/run/site-specific/cfg/zmq-curve-clients
+  allowedClientCertDirectory: ${GENESIS_HOME}/site-specific/cfg/zmq-curve-clients
 ```
 
 Every process has to use the same `enabled` value and the same keys. If a process-level `network-config-{processName}.yaml` sets this section differently, the override is honoured and that process's handshakes with its peers fail. Never do this in production; only use it to test a mismatch.
