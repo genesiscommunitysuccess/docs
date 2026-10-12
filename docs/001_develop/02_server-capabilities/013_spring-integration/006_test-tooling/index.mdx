@@ -156,6 +156,8 @@ Because both test classes inherit this configuration, Spring caches one context 
 
 ### Testing the event handler
 
+The `EVENT_` prefix is added to the message type automatically when it is missing, so `WIDGET_INSERT` and `EVENT_WIDGET_INSERT` both work.
+
 `src/test/kotlin/<packageName>/WidgetEventHandlerTest.kt`:
 
 ```kotlin
@@ -233,10 +235,10 @@ class WidgetEventHandlerTest : WidgetTestBase() {
     }
 
     @Test
-    fun `EventClientBlocking - EVENT_WIDGET_INSERT is acked and persists the widget`() {
+    fun `EventClientBlocking - WIDGET_INSERT is acked and persists the widget`() {
         val reply = eventClientBlocking.sendEvent(
             details = NewWidget(name = "via-blocking", price = 1.0, quality = Quality.GOOD, cost = 0.5),
-            messageType = "EVENT_WIDGET_INSERT",
+            messageType = "WIDGET_INSERT",
         )
         assertInstanceOf(EventReply.EventAck::class.java, reply, "$reply")
         assertNotNull(widgetRepository.findByName("via-blocking"))
