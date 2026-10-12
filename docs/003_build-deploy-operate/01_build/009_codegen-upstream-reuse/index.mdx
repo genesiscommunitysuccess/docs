@@ -40,7 +40,9 @@ The slice jars are resolved with these coordinates:
 
 The view module has no slice jar, so its regular jar is used.
 
-For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version>:slice`.
+The `<groupId>` is the Gradle `group` of the upstream product's build. A generated project sets it in the `allprojects { }` block of `server/build.gradle.kts`; for Genesis and auth it is `global.genesis`.
+
+For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version>:slice`, and Genesis's is `global.genesis:genesis-generated-dao:<version>:slice`.
 
 ### Upstream products must be built with Genesis 10.0
 
@@ -52,9 +54,9 @@ To check whether a PBC version has slice jars, look in your repository for its `
 
 Each generated system-definition, fields and DAO module has a `sliceJar` task. It builds the slice jar, with the classifier `slice`, in `build/slice-libs`. The jar is published through a Maven publication called `generatedSlice`, so that applications using your product can reuse it. A slice jar never contains the facade classes.
 
-To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your dictionary-cache module; to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
+To publish the slice jars to your local Maven repository, run the `publishAllGeneratedSlicesToMavenLocal` task of your [dictionary-cache module](/build-deploy-operate/build/bdo-build-overview/#dao) (`server/build/internal-modules/<product>-dictionary-cache`); to publish them to a remote repository, use the normal `publish` task. An application that depends on your product resolves the slice jars from its configured repositories like any other dependency, except when your product's generated modules are part of the same composite build: then it reads them directly from your local Maven repository, so publish them there first.
 
-The consuming project must be able to resolve from the repository you published to. For a local publication, add `mavenLocal()` after its other repositories:
+The consuming project must be able to resolve from the repository you published to. For a local publication, add a plain `mavenLocal()` to the `repositories` block of its `server/build.gradle.kts`, after its other repositories:
 
 ```kotlin
 repositories {
@@ -64,11 +66,13 @@ repositories {
 }
 ```
 
+Declare `mavenLocal()` last in the block, after the remote repositories. A generated project may already declare a `mavenLocal` earlier in that block, restricted to the launcher's own artifacts. Leave it as it is: the plain `mavenLocal()` at the end is the one that resolves your slice jars.
+
 Publishing the slice jars is not enough on its own. An application that declares your product as a product dependency also resolves the product's own `-distribution` and `-config` artifacts, so you must publish the upstream product in full as well, with its usual publish task (for example `publishToMavenLocal`). Run `publishAllGeneratedSlicesToMavenLocal` in addition to that task, not instead of it. If the full publication is missing, the consuming build fails with an error such as `Could not find global.genesis:upstream-distribution:1.0.0-SNAPSHOT`.
 
 ## Settings
 
-Set these as Gradle properties, for example in your `gradle.properties` file.
+Set these as Gradle properties, for example in your `gradle.properties` file. Table names and IDs must not collide with those of any upstream product; see [the data model](/develop/server-capabilities/data-model/#tables).
 
 | Property | Default | Description |
 |---|---|---|
@@ -89,7 +93,7 @@ genesis {
 
 Even with upstream reuse switched on, the build switches it off for a dictionary-cache module that belongs to one of the upstream products itself.
 
-The build does not detect an override of an upstream dictionary file for you. If your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file, the upstream slice jar still supplies the original definitions and ignores your override, with no warning. So you must tell the build to regenerate that code.
+The build does not detect an override of an upstream dictionary file for you. If your application overrides a dictionary file from an upstream product in `src/main/genesis/cfg`, for example with its own copy of an upstream `*-tables-dictionary.kts` file, the upstream slice jar still supplies the original definitions and ignores your override, with no warning, unless you set `genesis.codegen.overrideSlices`. So you must tell the build to regenerate that code.
 
 To override auth's tables:
 
