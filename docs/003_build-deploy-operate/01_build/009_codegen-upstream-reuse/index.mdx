@@ -97,7 +97,7 @@ The build does not detect an override of an upstream dictionary file for you. If
 
 To override auth's tables:
 
-1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application's server module. The `_copyDependenciesCfgFiles` task populates that directory, and the Genesis install and sync tasks depend on it, so run one of those first if the directory is empty.
+1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application module, for example `server/<product>-app/build/genesis-home/auth/cfg/auth-tables-dictionary.kts`. The `_copyDependenciesCfgFiles` task populates that directory, and the Genesis install and sync tasks depend on it, so run one of those first if the directory is empty.
 2. Make your changes in the copy.
 3. Set one of these properties:
     - `genesis.codegen.overrideSlices=auth` regenerates auth's code locally, and keeps reusing the slice jars of every other upstream product.
@@ -113,6 +113,8 @@ Your copy replaces auth's whole table dictionary, not just the tables you change
 
 An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code (see [Table entities](/develop/server-capabilities/data-access-apis/#table-entities) for the generated entity class name), where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
+To change an upstream product's system definition value, add it to your application's own `genesis-system-definition.kts`. That file takes precedence over the system definitions of upstream products, so for example you set `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` there, not in a copy of auth's system definition file. Never copy an upstream product's system definition file.
+
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
 - `false` (the default): the build regenerates the affected products locally and logs a `*** DEPRECATION WARNING ***`.
@@ -127,12 +129,14 @@ The warning looks like this (trimmed):
 ...
 ```
 
-The lenient behaviour is deprecated, with no removal version set. To opt in to the future behaviour now, set `genesis.codegen.reuseUpstream.strict=true` and list the products concerned in `genesis.codegen.overrideSlices`.
+The lenient behaviour is deprecated, with no removal version set. To opt in to the future behaviour now, set `genesis.codegen.reuseUpstream.strict=true` and list the products concerned in `genesis.codegen.overrideSlices`. Use the value that the build's warning or error names.
 
 ```properties
 genesis.codegen.reuseUpstream.strict=true
-genesis.codegen.overrideSlices=auth
+genesis.codegen.overrideSlices=genesis,auth
 ```
+
+This example lists `genesis` as well as `auth` because Genesis's own dictionary also reads `ADMIN_PERMISSION_ENTITY_FIELD`, so setting these values flags both products.
 
 Your application's own product is always handled automatically. You never need to list it in `genesis.codegen.overrideSlices`.
 
