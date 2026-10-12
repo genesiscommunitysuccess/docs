@@ -115,6 +115,8 @@ This can be:
 - a custom class written in your application that implements one of the Data Pipelines API source interfaces
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 // Example using a platform provided source
 val camelSource = camelFileSource {
     location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
@@ -150,6 +152,8 @@ pipelines {
 A filter operator allows you to exclude certain elements from being sent to the sink. The input and output type remain the same with a filter operator.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Filtering") {
   source(
     BatchSource {
@@ -171,6 +175,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A map operator transforms the input type to the output type.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Mapping") {
   source(
     BatchSource {
@@ -192,6 +198,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A split operator transforms an input element into many output elements. For example, you can split a file object into its constituent lines.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Split") {
   source(
     BatchSource {
@@ -217,6 +225,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A transform operator allows you to apply a transformation operation to the entire input stream, rather than just an individual element. For example, if you want to sort records before sinking them to a file, or remove elements with duplicate data, these are stream level operations rather than element level operations and require a transform operator.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Transform") {
   source(
     BatchSource {
@@ -558,6 +568,8 @@ This source implementation is not recoverable. On each invocation of this pipeli
 The source returns a flow of `Bulk` objects for your chosen entity. This needs to be converted to the underlying record using a mapper, an example of which has been provided below:
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 // the following mapper class extracts the Trades record from each Bulk<Trades> object and returns it to the pipeline:
 class TradesMapper : SuspendElementOperator<Bulk<Trades>, Trades> {
     override suspend fun apply(input: Bulk<Trades>): Trades? = when (input) {
@@ -738,6 +750,9 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 - an object of a user-defined type representing the data of each CSV line;
 
 ```kotlin
+import global.genesis.pipeline.api.db.DbOperation
+import global.genesis.pipeline.file.CsvRow
+
 // Decoding CSV to a class
 pipeline("TEST_PIPELINE_DECODER") {
   source(
@@ -775,6 +790,9 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 - a map holding the data for each CSV line of type `Map<String, String>`
 
 ```kotlin
+import global.genesis.pipeline.api.db.DbOperation
+import global.genesis.pipeline.file.CsvRow
+
 // Decoding CSV to Map<String, String>
 pipeline("TEST_PIPELINE_RAW_DECODER") {
   source(
@@ -849,6 +867,9 @@ For modifications (Upsert and Modify operations types), you can supply a list of
 This is a sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'.
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+import global.genesis.pipeline.api.db.DbOperation
+
 // Non-transactional db sink
 pipeline("TEST_DB_SINK") {
   source(dbBulkSubscribe<Trade>())
@@ -869,6 +890,9 @@ pipeline("TEST_DB_SINK") {
 This is a transactional sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'.
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+import global.genesis.pipeline.api.db.DbOperation
+
 // Transactional db sink
 pipeline("TEST_DB_SINK") {
   source(dbBulkSubscribe<Trade>())
@@ -892,6 +916,9 @@ This sink implementation allows you to write data to files on the file system of
 ###### Writing to a local Directory
 
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+import kotlinx.coroutines.flow.asFlow
+
 pipeline("OUTBOUND_FILE_PIPELINE") {
   source(
     BatchSource {
@@ -927,6 +954,8 @@ camelFileSink {
 
 ###### Writing to a local directory
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+
 pipeline("CAMEL_OUTBOUND_PIPELINE") {
   source(
     camelFileSource {
@@ -951,6 +980,8 @@ pipeline("CAMEL_OUTBOUND_PIPELINE") {
 
 ###### Writing to an SFTP server
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+
 val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
 val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
 
@@ -982,7 +1013,7 @@ This sink uses the Genesis messaging API to send an event to an event handler fo
 
 The `eventSink` separates three concerns:
 
-- **What** — the event payload, built per element via `buildEvent`.
+- **What** — the event payload, built per element via `buildEvent`, where the incoming record is `element`.
 - **Where** — the destination. By default, the platform resolves the target service from the event name. You can explicitly pin a service using `to = service("serviceName")`. Pin the service explicitly when one event name is served by several processes (otherwise, name resolution is ambiguous).
 - **How** — the delivery policy, configured in the `delivery` block.
 
@@ -991,7 +1022,7 @@ The delivery policy controls how the platform handles timeouts, retries and nega
 | Option | Description | Default |
 |---|---|---|
 | `timeout` | The timeout in seconds for each event delivery request. | `10` |
-| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
+| `retry` | The retry mode when no target is reachable or the target replies with an UNAVAILABLE NACK. Use `holdUntilDelivered()` to hold the event until it is accepted (never drops the event). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
 | `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception. Use `logOnNack()` to log the NACK at error level and continue. | `throwOnNack()` |
 
 The sink holds an event and retries it with a backoff, under your `retry` setting, whenever the event has definitely not been accepted:
@@ -1110,6 +1141,8 @@ eventHandler<TradeDetails>("TRADE_LOGIC", transactional = true) {
 The following handler can be used:
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 
 val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Trade>, TradeDetails> {
             eventName = "EVENT_TRADE_LOGIC"
@@ -1137,6 +1170,8 @@ In a real-time pipeline with `txDbSink()`, completion handlers run inside the wr
 This handler works in the same way as `sendEventOnCompletion` above, except the return type of the event can be specified. This can therefore be used when the return type of your custom event is anything other than EventReply.
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 
 val customTradeOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDetails, EventCustomTradeReply> {
             eventName = "EVENT_CUSTOM_TRADE"
