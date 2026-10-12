@@ -220,6 +220,8 @@ You can also set them as environment variables. To do this, prefix the variable 
 
 If both a global override (`GENESIS_SYSDEF_<ItemName>`) and a process-scoped override are set, the process-scoped override takes precedence **for that process only**.
 
+You can't set a per-process value in `genesis-system-definition.kts` by prefixing the item name with the process name; a prefixed item there is never read, and the unprefixed item applies. To set a value for one process in a file, use the `process { systemDefinition { ... } }` form in that process's `*-process-config.kts`, as above.
+
 For example:
 
 ```bash
