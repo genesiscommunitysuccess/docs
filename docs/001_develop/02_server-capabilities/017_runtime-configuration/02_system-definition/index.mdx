@@ -207,16 +207,16 @@ These settings control compilation and caching of GPal scripts and system-defini
 
 ## Setting system-definition values from environment variables
 
-You can override system-definition values in any environment by using environment variables. To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_` or `GENESIS_SYSDEF_ENCRYPTED_`. 
+You can override system-definition values in any environment by using environment variables. To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_` or `GENESIS_ENCRYPTED_SYSDEF_`.
 
-`GENESIS_SYSDEF_ENCRYPTED` is needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
+`GENESIS_ENCRYPTED_SYSDEF_` needs to be used where the value of the system definition is sensitive and is encrypted (e.g. for sensitive content you do not wish to go into any code repository in plain text) as explained under the [Items defined / Database username and password encryption](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) section above. 
 
 Here is an example where system definition items `DbHost`, `DbUser`, `DbPassword` and `GenesisKey` are all being set via environment variables. These values will override the configuration found in the system definition file:
 
 ```bash
 GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis
-GENESIS_SYSDEF_ENCRYPTED_DbUsername=ab8b6921e904a1dbf058041ae176f27323ed2f835c0a5276b307ef539f6ef6d9
-GENESIS_SYSDEF_ENCRYPTED_DbPassword=a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a
+GENESIS_ENCRYPTED_SYSDEF_DbUsername=ab8b6921e904a1dbf058041ae176f27323ed2f835c0a5276b307ef539f6ef6d9
+GENESIS_ENCRYPTED_SYSDEF_DbPassword=a8a4d770afe25446434c2a13fa614be74274220c10a5b8346cf5629807374d2a
 GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 ```
 
