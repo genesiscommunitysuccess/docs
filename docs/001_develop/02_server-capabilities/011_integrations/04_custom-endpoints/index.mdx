@@ -69,7 +69,7 @@ webHandlers {
         }
     }
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
                 authKey { data.instrument }
@@ -346,7 +346,7 @@ The `status` parameter above is fixed at configuration time. When you need to ch
 import global.genesis.message.core.HttpStatusCode
 import global.genesis.process.web.handler.HttpResponse
 
-endpoint<Unit, HttpResponse>(GET, "trades") {
+endpoint<HttpResponse>(GET, "trades") {
     handleRequest {
         buildResponse {
             status(HttpStatusCode.Ok)                 // or status(code, "reason")
@@ -976,7 +976,7 @@ import global.genesis.trade.TradeInformationClient
 webHandlers {
     val tradeInformationClient = injector<TradeInformationClient>()
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         val tradeId: String by queryParameter("trade-id")
 
         handleRequest {
@@ -1190,7 +1190,7 @@ To test dynamic authorization, you need to amend your Web Endpoint definition. B
 webHandlers {
     val tradeInformationClient = injector<TradeInformationClient>()
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
                 authKey { data.instrument }
