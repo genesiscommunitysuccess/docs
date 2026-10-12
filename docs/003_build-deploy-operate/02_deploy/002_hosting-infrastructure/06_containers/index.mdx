@@ -318,7 +318,7 @@ To build a debug image, use the separate `buildDebugImage` task.
 
 ### Local plugin configuration
 
-The Genesis Application Platform also supports overrides of the Docker extension configuration, allowing for different values for different environments. This means that you can set your own values without changing any files that are tracked in SCM.
+The Genesis Application Platform also supports overriding the Docker registry credentials (`dockerUrl`, `dockerUsername`, `dockerPassword` and `dockerEmail`), allowing for different values for different environments. This means that you can set your own values without changing any files that are tracked in SCM. No other `dockerImage` setting can be overridden this way.
 
 This is done by adding `server/gradle.properties` and ensuring that the file is ignored by SCM.
 
