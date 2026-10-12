@@ -75,6 +75,8 @@ systemDefinition {
 }
 ```
 
+Add the item inside the existing `global { }` block of the file. Don't add a second `systemDefinition` block.
+
 Then sync the configuration and restart the application, so that the MCP process starts. With Genesis Start, use [Sync processes](/develop/development-environment/genesis-start/#sync-processes) followed by [Bootstrap and launch](/develop/development-environment/genesis-start/#bootstrap-and-launch).
 
 When processes are compacted with `compactProcessesStrategy=DEV`, as they are in local development, the MCP server runs inside `MCP_COMPACT_PROCESS` rather than appearing as `GENESIS_MCP`.
