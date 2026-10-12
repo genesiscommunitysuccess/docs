@@ -114,7 +114,7 @@ views {
 
             COUNTERPARTY.COUNTERPARTY_ID
             COUNTERPARTY.COUNTERPARTY_CODE withAlias "CTPTY_CODE"
-            COUNTERPARTY.NAME withAlias CTPTY_NAME
+            COUNTERPARTY.NAME withAlias "CTPTY_NAME"
             
             derivedField("NOTIONAL", DOUBLE) {
                 withInput(TRADE.QUANTITY, TRADE.PRICE) { quantity, price -> 
@@ -147,7 +147,7 @@ views {
 
             COUNTERPARTY.COUNTERPARTY_ID
             COUNTERPARTY.COUNTERPARTY_CODE withAlias "CTPTY_CODE"
-            COUNTERPARTY.NAME withAlias CTPTY_NAME
+            COUNTERPARTY.NAME withAlias "CTPTY_NAME"
 
             val myLambda: DerivedField2<Double, Double, Double> = { quantity, price -> quantity * price }
             
