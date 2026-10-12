@@ -165,7 +165,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **ReqRepTimeout**: This setting contains the default timeout (in seconds) for the request server resources in the system.
 
-**DataServerCacheBackend**: The cache backend for Data Server queries that don't choose one in their own configuration: `LMDB` or `SQLITE`. The value isn't case-sensitive, and an unrecognised value is ignored. Default value is `LMDB`. For more information, go to the section on the [cache backend](/develop/server-capabilities/real-time-queries-data-server/#cache-backend-lmdb-or-sqlite).
+**DataServerCacheBackend**: The cache backend for Data Server queries when neither the query's `config` nor the Data Server's global `config` chooses one: `LMDB` or `SQLITE`. The value isn't case-sensitive, and an unrecognised value is ignored. Default value is `LMDB`. For more information, go to the section on [choosing the backend](/develop/server-capabilities/real-time-queries-data-server/#choosing-the-backend).
 
 **DataServerNativeColumns**: When `true`, Data Server queries that use SQLite store each field in its own typed column, unless their own `nativeColumns` setting says otherwise. Default value is false. For more information, go to the section on [SQLite settings](/develop/server-capabilities/real-time-queries-data-server/#sqlite-settings).
 
