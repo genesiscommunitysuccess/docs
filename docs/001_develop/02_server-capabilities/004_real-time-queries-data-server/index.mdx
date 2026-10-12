@@ -710,7 +710,7 @@ dataServer {
 |-------------|-------------|---------|------------------------|
 |`lmdbAllocateSize`|This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. (See the section on [LMDB allocation](#lmdb-allocation-and-warning-state) for information about memory usage.) Value must be defined in `MEGA_BYTE` (`512.MEGA_BYTE()`) or `GIGA_BYTE` (`2.GIGA_BYTE()`). LMDB only|`2.GIGA_BYTE()`|No|
 |`cacheBackend`|The cache backend for all queries: `LMDB` or `SQLITE`. Read [cache backend](#cache-backend-lmdb-or-sqlite) for more details|Not set (falls back to `DataServerCacheBackend`, then `LMDB`; see [Choosing the backend](#choosing-the-backend))|Yes|
-|`sqlite`|Uses SQLite for all queries and sets the SQLite settings of the shared database file. Read [SQLite settings](#sqlite-settings) for more details||Yes, with `sqlite` or `sqliteDedicated`|
+|`sqlite`|Uses SQLite for all queries and sets the SQLite settings of the shared database file. Read [SQLite settings](#sqlite-settings) for more details||Yes, with `cacheBackend`, `sqlite` or `sqliteDedicated`|
 |`serializationType`| Serialization approach for converting query rows into bytes and vice versa. There are two options: `SerializationType.KRYO` and `SerializationType.FORY`. See the [Serialization](#serialization-considerations) topic for details. |KRYO|No|
 |`serializationBufferMode`| This option changes the buffer type used to read from and write to LMDB. There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. See the [Serialization](#serialization-considerations) topic for details. |`ON_HEAP`|No|
 |`directBufferSize`|Sets the buffer size in bytes used by the `serializationBufferMode` option when using `SerializationBufferMode.OFF_HEAP`|8096 bytes|No|
@@ -792,8 +792,8 @@ SQLite gives clients two things that LMDB doesn't: they can sort a query by any 
 
 The backend is chosen for each query. The first of these that is set wins:
 
-1. The query's `config`: `cacheBackend = SQLITE`, or a `sqlite` or `sqliteDedicated` block, which selects SQLite on its own.
-2. The global `config`: `cacheBackend = SQLITE`, or a `sqlite` block.
+1. The query's `config`: a `cacheBackend` setting (`LMDB` or `SQLITE`), or a `sqlite` or `sqliteDedicated` block, which selects SQLite on its own.
+2. The global `config`: a `cacheBackend` setting (`LMDB` or `SQLITE`), or a `sqlite` block.
 3. The `DataServerCacheBackend` item in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/), set to `SQLITE` or `LMDB`.
 4. The default, `LMDB`.
 
@@ -869,6 +869,8 @@ These file-level settings can be set in the global `sqlite` block or in a `sqlit
 |`busyRetryAttempts`|How many times a single-row write is tried when the database is busy. Must be at least 1; `1` turns retries off|`3`|
 |`busyRetryBaseDelayMs`|The first delay between retries, in milliseconds. It doubles on each retry|`10`|
 |`optimizeInterval`|How often SQLite refreshes its query-planner statistics, for example `optimizeInterval = 2.hours`. A value below 30 minutes is raised to 30 minutes|Off|
+
+A query's own `sqlite` block accepts only the table-level settings. To give a query its own file-level settings, use `sqliteDedicated`.
 
 A query-level `sqlite` block inherits from the global one: if it doesn't set `nativeColumns`, `strictMode` or `batchSize`, it takes the global value.
 
