@@ -68,10 +68,6 @@ dependencies {
 }
 ```
 
-Cube HTTP endpoints run through the same Spring Security filter chain as the rest of a Genesis
-Spring application — see [Application core](../core) for how that chain is configured and how a
-resource's `permission(...)` authority maps onto it.
-
 Set these properties in the Spring module's `application.properties` (or `application.yml`) — see
 [Getting started: Step 11](../getting-started#step-11-query-it):
 
@@ -117,6 +113,9 @@ Every code sample on this page refers to the following types by their simple nam
 | `EntityQueryRequest<E>` | `global.genesis.spring.data.cube.model` | A `QueryRequest` whose filter is a JPA `Specification<E>` |
 | `UnfilteredQueryRequest` | `global.genesis.spring.data.cube.model` | A `QueryRequest` with no filter |
 | `EntityCriteriaCube<E>` | `global.genesis.spring.data.cube` | What `CubeFactory.forEntityCriteria(...)` returns: an entity cube whose filter is a `criteriaMatch` string |
+| `Tuple` | `jakarta.persistence` | |
+| `Pageable` | `org.springframework.data.domain` | |
+| `PageRequest` | `org.springframework.data.domain` | |
 
 A `CubeResource` is an immutable descriptor, built via the Java-first `CubeResourceBuilder` or the
 Kotlin `cubeResource { }` DSL, then published as a Spring bean. At startup, every `CubeResource`
@@ -1081,6 +1080,7 @@ package com.example.myapp.jpa
 import global.genesis.session.UserSessionCache
 import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
 import global.genesis.springboot.test.GenesisSpringTest
+import global.genesis.springboot.test.GenesisTestApplication
 import org.joda.time.DateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -1431,6 +1431,8 @@ fun example(pageable: Pageable) {
     )
 }
 ```
+
+In Kotlin, `principal` is optional and defaults to a binding that resolves nothing, the same as the Java sample's `name -> null`.
 
 </TabItem>
 <TabItem value="java">
