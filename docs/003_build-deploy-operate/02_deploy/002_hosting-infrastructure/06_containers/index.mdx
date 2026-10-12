@@ -382,6 +382,45 @@ GENESIS_SYSDEF_ConsulNodeName: node-2
 
 If a node's Consul agent is not on `localhost`, also set `GENESIS_SYSDEF_ConsulHostAddress` for that node. See [extended configuration](#extended-configuration).
 
+#### Running Consul and an MQTT broker
+
+The generated file doesn't include Consul or an MQTT broker. Add them as services alongside the app nodes. This fragment is for development and testing: it runs a single Consul agent in dev mode, which keeps no data when it stops, and a Mosquitto broker that accepts anonymous connections. For production, use a Consul cluster with an agent on each host, and a broker that is secured and hosted separately. See [Prerequisites](#prerequisites).
+
+```yaml
+services:
+  consul:
+    image: hashicorp/consul:1.20.2
+    command: agent -dev -client=0.0.0.0
+    ports:
+      - "8500:8500"
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+```
+
+Mosquitto 2.x only accepts connections from its own container unless you configure a listener, so create a `mosquitto.conf` next to the compose file:
+
+```
+listener 1883
+allow_anonymous true
+```
+
+Then point each app node at them, with the same settings on every node. `ConsulHostAddress` and `ConsulHostPort` are described in [extended configuration](#extended-configuration), and `MqLayer` and `MqttBrokerUrl` in [MQTT configuration options](/build-deploy-operate/operate/update-queue/#mqtt-configuration-options):
+
+```yaml
+GENESIS_SYSDEF_ConsulHostAddress: consul
+GENESIS_SYSDEF_MqLayer: MQTT
+GENESIS_SYSDEF_MqttBrokerUrl: tcp://mosquitto:1883
+```
+
+The service names `consul` and `mosquitto` are the hostnames the app containers use on the compose network. Add `depends_on` entries for both services to the app nodes if you want them to start first.
+
+The app image does not include the `consul` binary. Run `consul` commands, such as the `consul kv get` and `consul catalog` commands in [Node IDs](#node-ids), in the Consul container, for example `docker compose exec consul consul kv get -recurse genesis/cluster/<name>/node-ids/`. Alternatively, call Consul's HTTP API on port 8500, for example `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`.
+
 ### Consul
 The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.
 
