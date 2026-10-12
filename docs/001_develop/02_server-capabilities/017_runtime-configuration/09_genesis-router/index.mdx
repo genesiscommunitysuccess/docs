@@ -302,7 +302,7 @@ If the token is missing or invalid, the router replies with a `MSG_NACK` and HTT
 Metadata and JSON schema requests name one resource in `DETAILS.FEATURE`. The router sends the request to the process that owns that resource, and that process sends the reply. `FEATURE` must be the resource's exact name:
 
 - for an Event Handler, the event name with its `EVENT_` prefix, for example `EVENT_TRADE_INSERT`
-- for a Request Server, the name of the `requestReply` without the `REQ_` prefix, for example `ALL_TRADES`
+- for a Request Server, the name of the `requestReply` without the `REQ_` prefix, for example `TRADE_DETAILS`
 - for a Data Server, the name of the query, for example `ALL_TRADES`
 
 `FEATURE` does not accept wildcards. To find the names you can use, send a resources request first.
@@ -317,6 +317,8 @@ If `FEATURE` is missing, or names a resource that no process has registered, the
   ]
 }
 ```
+
+Every `MSG_NACK` from the router also carries a `DETAILS` block with `ERROR` and `STATUS_CODE`, which repeats the first entry in `ERROR`. For example, `"DETAILS": {"ERROR": "Resource EVENT_UNKNOWN is not mapped to a service", "STATUS_CODE": "404 Not Found"}`.
 
 If `FEATURE` is missing altogether, the resource name in the text is empty, so the text reads `Resource  is not mapped to a service` (with two spaces).
 
