@@ -161,7 +161,7 @@ Every generated entity also carries several unconditional members that are omitt
 
 ### Base entity classes
 
-Every generated entity extends one of three `@MappedSuperclass` shapes nested under `GenesisJpaEntity` (`genesis-jpa-base`), chosen by the generator based on the table's declared primary key. A fourth, `GenesisReadOnlyJpaEntity`, is the root shape used only by generated *view* entities, which are read-only. It is declared as `abstract class GenesisReadOnlyJpaEntity<PK>` and exposes the primary key as `abstract val pk: PK`.
+Every generated entity extends one of three `@MappedSuperclass` shapes nested under `GenesisJpaEntity` (`genesis-jpa-base`), chosen by the generator based on the table's declared primary key. A fourth, `GenesisReadOnlyJpaEntity`, is the root shape used only by generated *view* entities, which are read-only. It is declared as `abstract class GenesisReadOnlyJpaEntity<PK>` and exposes the primary key as `abstract val pk: PK`, along with the two framework columns every view carries, `abstract val recordId: Long` and `abstract val timestamp: Long`.
 
 | Shape | Chosen when | Primary key |
 |---|---|---|
@@ -208,7 +208,9 @@ public class UserView @JvmOverloads constructor(
   userName: String,
   @field:Column(name = "USER_FIRST_NAME")
   public var firstName: String? = null,
-  // ... remaining projected columns, then recordId and timestamp
+  // ... remaining projected columns, then recordId and timestamp (shown below)
+  recordId: Long,
+  timestamp: Long,
 ) : GenesisReadOnlyJpaEntity<String>() {
   @field:Id
   @field:Column(
@@ -218,6 +220,17 @@ public class UserView @JvmOverloads constructor(
   @get:JsonIgnore
   override var pk: String = userName
   // ...
+  @field:Column(
+    name = "USER_RECORD_ID",
+    nullable = false,
+  )
+  override var recordId: Long = recordId
+
+  @field:Column(
+    name = "USER_TIMESTAMP",
+    nullable = false,
+  )
+  override var timestamp: Long = timestamp
 }
 
 // Composite key: PROFILE_USER_VIEW, keyed on PROFILE_NAME and USER_NAME
@@ -311,7 +324,7 @@ public class WithRecIdPkComposite(/* ... */) :
 | `@GenesisFrameworkSequence(sequence, id)` | On insert, delegates to a pluggable sequence generator, matching the platform's `sequence` field modifier in the [data model](/develop/server-capabilities/data-model/#sequence). |
 | `@DbSequenceValue(sequence, incrementSize)` | Wraps Hibernate's native sequence generator for an ordinary (non-primary-key) auto-incrementing value. |
 
-`id` is not a value a developer sets or chooses on the annotation — it mirrors the table's own dictionary `id` (declared in the `.kts` dictionary source, e.g. `table(name = "APPROVAL", id = 16, ...)`), or for an `_AUDIT` sibling, the `id` declared inside `audit = details(id = ..., sequence = ...)`. The generator emits it onto the annotation from that declared value.
+`id` is not a value a developer sets or chooses on the annotation — it mirrors the table's own dictionary `id` (declared in the `.kts` dictionary source, e.g. `table(name = "APPROVAL", id = 16, ...)`), or for an `_AUDIT` sibling, the `id` declared inside `audit = details(id = ..., sequence = ...)`, on the audited table's own declaration, for example `table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {` (see [Adding the audit parameter](/how-to/ht-audit/#adding-the-audit-parameter)). The generator emits it onto the annotation from that declared value.
 
 :::note A primary key declared with `.autoIncrement()` gets plain JPA annotations, not one of the above
 None of the `genesis-jpa-base` generators above apply when the dictionary's primary key is declared with the classic `.autoIncrement()` field modifier (as the getting-started tutorial's `WIDGET.ID` is: `field("ID", LONG).autoIncrement().primaryKey()`). For that shape, the generator instead emits plain `jakarta.persistence` annotations wrapping Hibernate's own native sequence:
@@ -477,6 +490,8 @@ Ordinary tables — single-key, composite-key, enum fields, table-scoped or shar
 
 - A **shared enum**, reused across every referencing field, generated into `enumPackageName` (`$entityPackageName.enums` by default). A field named `QUALITY` generates an enum class named `Quality`; for a multi-word field, underscores are dropped and each segment is PascalCased, e.g. `ASSET_CLASS` becomes `AssetClass`.
 - A **table-scoped enum**, nested under a per-table package: `<enumPackageName>.<product>.<table-lowercase>.<Enum>` (`<packageName>.dao.enums` by default), where `<product>` is the dictionary file's name before `-tables-dictionary.kts`, taken verbatim except that any non-word character becomes `_`. It normally equals the project's `genesis { productName = ... }`, because genx names the dictionary file after the project. See [Getting started: Step 4](../getting-started#step-4-define-the-widget-table) for a worked example. For a multi-word table, the package segment is only lower-cased — underscores are kept, not stripped (`WORK_ORDER` becomes `work_order`), unlike the shared-enum class-name rule above (`ASSET_CLASS` becomes `AssetClass`, underscores dropped, PascalCased). The `<product>` segment, by contrast, is not lower-cased the way the table segment is.
+
+An enum field projected onto a view entity, or on an `_AUDIT` entity, resolves to the **source table's** scope package. The enum type is shared with the source table's entity, not generated a second time, so a view or audit entity refers to the same enum class as the table it came from.
 
 An `ENUM` field always has a default: as the classic [data model](/develop/server-capabilities/data-model/#enum) documents, when the dictionary doesn't set one explicitly, the first declared value becomes the default. Because a default value marks a field as required, every generated `ENUM` property ends up non-nullable and `@NotNull`-annotated as a consequence of that default, never a nullable type, regardless of whether the dictionary itself declared `.notNull()`. Whichever form generates the enum class, the referencing property carries the same annotation on its backing field (abridged to the load-bearing members):
 
