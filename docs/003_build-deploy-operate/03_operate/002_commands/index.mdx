@@ -910,6 +910,17 @@ Each region in `-r` applies to the country in the same position in `-c`. If you 
 
 8.15 and earlier used different region codes for several countries. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`. The holiday data also changed in 10.0, so re-run `PopulateHolidays` for the years you hold. `PopulateHolidays` only inserts rows and does not overwrite existing ones, so delete the existing rows in the `HOLIDAYS` table for those years before you re-run it.
 
+Each row in `HOLIDAYS` has a `DATE` field, which holds the holiday date, so the year of a row is the year of its `DATE`. The `COUNTRY_CODE` and `REGION_CODE` fields hold the values you passed to `-c` and `-r`; `REGION_CODE` is `NATIONAL` for rows populated without `-r`. To delete the rows for a year, use [`DbMon`](#dbmon) to select the `HOLIDAYS` table, check what matches with `search`, then remove the rows with `deleteWhere`. For example, to remove the 2020 and 2021 rows for `GB` and `eng`:
+
+```javascript
+DbMon>table HOLIDAYS
+DbMon:HOLIDAYS>search COUNTRY_CODE=='GB' && REGION_CODE=='eng' && DATE>='20200101' && DATE<='20211231'
+DbMon:HOLIDAYS>writeMode
+DbMon:HOLIDAYS>deleteWhere COUNTRY_CODE=='GB' && REGION_CODE=='eng' && DATE>='20200101' && DATE<='20211231'
+```
+
+`deleteWhere` asks you to confirm before it deletes anything. Repeat for each country and region you re-populate. To delete every row for a year regardless of country, leave out the `COUNTRY_CODE` and `REGION_CODE` conditions. See [Deleting rows](/build-deploy-operate/operate/commands/dbmon/#deletewhere) in the DbMon page for details.
+
 ## `PurgeTables`
 
 This enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
