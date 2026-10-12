@@ -1175,4 +1175,8 @@ plugins {
 After adding this and performing a Gradle refresh, a new task: `updateTablesDictionary` is available in the Gradle task list, under **genesis**.
 To migrate the table dictionaries in your config module, run the task.
 
+From Genesis 10.0, the separate fields dictionary is deprecated: that is, `*-fields-dictionary.kts` files and the `fields { }` block they contain. Instead, declare each field inside its `table { }` block in a `*-tables-dictionary.kts` file, as shown above. If several tables use the same field, declare it in each of them.
+
+Fields dictionaries still work in 10.0, and no removal version has been set. While you keep one, the compiler shows a deprecation message (in your IDE, for example), and the platform logs a warning once per process when it reads the file.
+
 
