@@ -171,13 +171,13 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on the [Data Model](/develop/server-capabilities/data-model/#sequence)
 
-**LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
+**LogFramework**: Kept for compatibility. Genesis no longer uses this item to choose the logging framework; you choose the backend when you build your application. See [Choosing a logging backend](/build-deploy-operate/operate/logging/#choosing-a-logging-backend).
 
-**LogFrameworkConfig**: Contains name of the log framework configuration file.
+**LogFrameworkConfig**: Contains the name of the logging configuration file. The default is `log4j2-default.xml`. If your application uses Logback and this item keeps its default, Genesis loads `logback-default.xml` instead.
 
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
-**LogFrameworkConfig**: Contains name of the log framework configuration file.
+**LogFrameworkConfig**: Contains the name of the logging configuration file. The default is `log4j2-default.xml`. If your application uses Logback and this item keeps its default, Genesis loads `logback-default.xml` instead.
 
 **ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
 

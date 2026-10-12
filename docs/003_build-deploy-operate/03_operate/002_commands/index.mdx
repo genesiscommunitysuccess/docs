@@ -1547,10 +1547,10 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.process.GenesisProcessBootstra
 
 ###### Logging
 `startProcess` will redirect the standard error stream to a log file in the `$L` directory. The log file will be named `<process_name>.log.err` (for example, `GENESIS_AUTH_DATASERVER.log.err`).
-If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file managed by Log4j2.
+If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file.
 
 `startProcess` will also compress and move existing process logs in the `$L` directory by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$RL` directory. This only affects the logs of the process you are starting.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `startServer`
@@ -1587,7 +1587,7 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 
 ###### Logging
 `startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `readSysDef`
