@@ -484,14 +484,14 @@ The config block is available at both the file and Consolidator level with exact
 
 See sample configuration below with the default values.
 
-```
+```kotlin
 consolidators {
   config {
-    logLevel = LogLevel.DEBUG,
-    onNotFound = OnNotFound.BUILD
+    logLevel = DEBUG
+    onNotFound = BUILD
     batchingPeriod = 500
     ignoreIndexScan = false
-    defaultErrorHandling = ErrorHandling.FAIL
+    defaultErrorHandling = FAIL
     backPressure = 100
     logFunctions = false
     transactionType = ConsolidationTransactionType.DEFAULT
@@ -1073,7 +1073,7 @@ This new entity needs all non-nullable properties without a default value to be 
 
 You only need a `build` block when [`onNotFound`](#config) is `BUILD`, which is the default. With any other `onNotFound` value, the consolidator never builds a new output row, so you can leave `build` out.
 
-If `onNotFound` is `BUILD` and there is no `build` block, the consolidator fails to load. The check runs after the whole `consolidator` block has been read, so a `config` block placed after `groupBy` still counts.
+If `onNotFound` is `BUILD` and there is no `build` block, the consolidator fails to load, with one exception: when `groupBy` returns a unique index of the output table that covers every non-nullable field of that table, the consolidator builds the new row itself and you can leave `build` out. This is the only case where `build` can be omitted under `BUILD`. The check runs after the whole `consolidator` block has been read, so a `config` block placed after `groupBy` still counts.
 
 Example:
 
@@ -1085,6 +1085,14 @@ groupBy { Trade.byId(tradeId) } into {
             feeAmount = input.feeAmount ?: 0
         }
     }
+}
+```
+
+For example, if the `Trade` table's primary key is `tradeId` and `tradeId` is the only non-nullable field, grouping by the primary key lets the consolidator build the row itself:
+
+```kotlin
+groupBy { Trade.byId(tradeId) } into {
+    // No build block needed: the consolidator builds the Trade row from the group ID
 }
 ```
 
