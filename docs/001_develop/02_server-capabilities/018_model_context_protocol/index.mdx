@@ -209,6 +209,11 @@ Before a newly added endpoint is listed, sync and build so its script is deploye
 #### How endpoint tools behave
 
 - **Identity.** An endpoint tool runs as the caller identified from the request headers (see [Authentication](#authentication)). The endpoint's own permissions apply to that user. Endpoint tools don't check the MCP rights.
+- **Arguments.** An endpoint tool takes the event's (or request's) fields as top-level arguments, with no `DETAILS` or `REQUEST_FIELDS` wrapper, unlike `call_event` and `call_request`. For example, the `arguments` of an `event_insert_trade` call look like this:
+
+  ```json
+  {"QUANTITY": 100, "SIDE": "BUY"}
+  ```
 - **Request server inputs.** A request server tool takes the endpoint's own request fields, plus three optional query options: `CRITERIA_MATCH` (a Groovy filter expression), `MAX_ROWS` and `ORDER_BY`.
 - **Reserved names.** The names `CRITERIA_MATCH`, `MAX_ROWS`, `ORDER_BY`, `VIEW_NUMBER` and `OFFSET`, in any case, are always read as query options. If your request server has a request field with one of these names, that field isn't passed to the endpoint, and the server logs a warning.
 - **Writes.** Event tools are subject to [maker-checker approval](#maker-checker-approval). A held write reports `PENDING_APPROVAL` instead of success.
@@ -532,7 +537,7 @@ MCP connection - outcome=rejected, detail=<reason>
 
 - **`user`** is `anonymous` when the caller couldn't be identified.
 - **`outcome`** is one of `success`, `error`, `denied: unauthenticated`, `denied: missing <right> right` or `denied: restricted table <table>`.
-- **`args`** lists the tool's arguments, shortened. Any argument whose name or value looks like a secret is shown as `***`.
+- **`args`** lists the tool's arguments, shortened. Any argument whose name or value looks like a secret is shown as `***`. The match is on the argument's name or its whole value, so a JSON-string argument such as `DETAILS` that contains a secret-looking key or value is masked as a whole, not field by field.
 - **Endpoint tools** are logged with the endpoint's name (for example, `EVENT_INSERT_TRADE`) as `tool`, without arguments, and with `durationMs=-1`.
 
 Line breaks are removed from user names and arguments, so a caller can't forge an extra audit line.
@@ -541,7 +546,7 @@ Line breaks are removed from user names and arguments, so a caller can't forge a
 
 ### OAuth discovery
 
-Some MCP clients can log in by themselves: they read where to log in from the server, then run a browser login. The server supports this with OAuth Protected Resource Metadata ([RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728)).
+Some MCP clients can log in by themselves: they read where to log in from the server, then run a browser login. The server supports this with OAuth Protected Resource Metadata ([RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728)). Client support for discovery varies, so check your client's own documentation; if it doesn't support discovery, replace the token by hand as described in [Connecting an AI client](#connecting-an-ai-client).
 
 Discovery is on when `oauthAuthorizationServer` is set, or when the strategy is `oidc`. The server then advertises `oauthAuthorizationServer` if it's set, or else the `oidc` issuer. It:
 - serves the metadata at `/.well-known/oauth-protected-resource/mcp`;
@@ -568,7 +573,7 @@ server {
 }
 ```
 
-`keyStorePath` and `keyStorePassword` are required. `keyStoreType` defaults to `"PKCS12"`.
+`keyStorePath` and `keyStorePassword` are required. `keyStoreType` defaults to `"PKCS12"`. To create a keystore for local testing, see [Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/#generating-test-certificates), which gives `keytool` commands.
 
 ## Connecting an AI client
 
