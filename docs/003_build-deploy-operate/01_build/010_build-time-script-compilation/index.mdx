@@ -184,9 +184,9 @@ With build-time compilation on, the build has to resolve everything a process us
 
 ## Scripts with the same file name
 
-The Kotlin compiler names a script's class after its file name and its `package`. Two scripts with the same file name in different directories compile to different classes as long as they declare different packages, and the plugin leaves them alone. The build logs `More than one script named '<name>' was precompiled`, and at runtime the scripts are told apart by content hash.
+The Kotlin compiler names a script's class after its file name and its `package`. Scripts usually declare no package, so two scripts with the same file name anywhere in the module, for example one in `cfg/` and one in `scripts/`, would compile to the same class. For these, the plugin copies each one to `build/genesis/staged-scripts/`, under a name prefixed with part of its source hash, such as `h3f9a2b1c_genesis-router.kts`. It compiles the copy instead. File names are compared case-insensitively.
 
-Two scripts that would compile to the same class are those with the same file name (compared case-insensitively) that declare the same package, or none. For these, the plugin copies each one to `build/genesis/staged-scripts/`, under a name prefixed with part of its source hash, such as `h3f9a2b1c_genesis-router.kts`. It compiles the copy instead.
+If same-named scripts declare different packages, they compile to different classes and the plugin does not stage them. The build logs `More than one script named '<name>' was precompiled`, and at runtime the scripts are told apart by content hash.
 
 The build logs each copy, and `staged-from.txt` in that directory maps every copy back to its original. Compiler errors refer to the staged copy. The index still uses the original file name, so nothing changes at runtime.
 
