@@ -297,27 +297,24 @@ The table below describes the values that can be changed:
 | Name | Description | Default |
 | --- | --- | --- |
 | `compactProcesses` | When set to `true`, combines compatible services into a single process, which reduces the number of services running within the container  | false |
-| `debugEnvVars` | Allows you to provide a map of the environment variables that will be passed to the containers created by the extra tasks enabled with debugMode<br/>This has no effect, unless `debugMode` is set to `true` | null |
-| `debugMode` | When set to `true`, this changes the Dockerfile to create an image that has extra tools in it to help debugging.<br/>Extra yum packages include: vim, net-tools | false |
-| `networkName` | When using the extra debug tasks, this setting allows you to specify a custom Docker network for the containers to use.<br/>This has no effect unless `debugMode` is set to `true` | null |
+| `compactProcessesStrategy` | Sets the strategy used when `compactProcesses` is enabled. | `DEFAULT` |
+| `propagateSysDefEnvVarsInDockerFile` | When set to `true`, sets all `GENESIS_SYSDEF_` environment variables that are available at build time in the Dockerfile.<br/>This allows template processing when `genesisInstall` is executed, and default values to be pre-set during the build. | false |
+| `customDockerfile` | The path to a Dockerfile that overrides the generated Dockerfile for the main image. | Not set |
+| `customDebugDockerfile` | The path to a Dockerfile that overrides the generated Dockerfile for the debug image. | Not set |
 | `useGenesisContainerLogConfig` | Defines whether the container should use a specific log4j configuration file that is designed for our containers.<br/>When set to `true`, logs are effectively output by the container PID1, allowing most container orchestration systems to capture all the logs with default settings. | true |
 | `preCompileScripts` | When set to `true`, the build process must include a step that compiles all the .kts scripts and caches the results.<br/>This results in a slower build process, but dramatically decreases the start-up time of the container.<br/>See also [Build-time script compilation](/build-deploy-operate/build/build-time-script-compilation/). | true |
 
 `preCompileScripts` and [`compileScriptsAtBuildTime`](/build-deploy-operate/build/build-time-script-compilation/) are independent, and it is safe to have both turned on. The image build still compiles every script into the script cache, and at start-up the platform uses the scripts compiled at build time first, falling back to the cache. Once your scripts are compiled at build time, you can set `preCompileScripts` to `false` to make the image build faster.
 
-These settings should be set in the `server/build.gradle.kts` file:
+These settings should be set in the `build.gradle.kts` file of your app module (for example, `server/example-app/build.gradle.kts`), where the Genesis exec plugin is applied. The `dockerImage` extension is not available in `server/build.gradle.kts`.
 
 ```kotlin
 dockerImage {
   compactProcesses.set(true)
-  debugMode.set(true)
-  debugEnvVars.putAll(
-    mapOf(
-      "DB_HOST" to "172.17.0.2"
-    )
-  )
 }
 ```
+
+To build a debug image, use the separate `buildDebugImage` task.
 
 ### Local plugin configuration
 
@@ -325,15 +322,7 @@ The Genesis Application Platform also supports overrides of the Docker extension
 
 This is done by adding `server/gradle.properties` and ensuring that the file is ignored by SCM.
 
-
-| Extension Config | Gradle Properties Equivalent | Notes |
-| --- | --- | --- |
-| `compactProcesses` | `dockerCompactProcesses` | N/A |
-| `debugEnvVars` | `dockerDebugEnvVars` | This should be a comma-separated list.<br/>e.g DB_HOST=genesis_db,DB_PORT=5432 |
-| `debugMode` | `dockerDebugMode` | N/A |
-| `networkName` | `dockerNetworkName` | N/A |
-| `useGenesisContainerLogConfig` | `dockerUseGenesisContainerLogConfig` | N/A |
-| `preCompileScripts` | `dockerPreCompileScripts` | N/A |
+Only the registry credentials can be supplied as Gradle properties: `dockerUrl`, `dockerUsername`, `dockerPassword` and `dockerEmail`, each set as a Gradle property of the same name (for example, in `server/gradle.properties`). The other `dockerImage` settings must be set in the `dockerImage` block.
 
 ### Environment variables
 
