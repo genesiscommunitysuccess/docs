@@ -169,8 +169,8 @@ Here's a summary of the endpoints.
 | `GET /api/processes/{processId}/info` | Shows details of one process, including its log file (`logFilePath`). |
 | `POST /api/processes/{processId}/start` | Starts one process. |
 | `POST /api/processes/{processId}/stop` | Stops one process. |
-| `POST /api/processes/application/start-all` | Starts all stopped Application processes, the Web UI and, if it is stopped, `ResourceDaemon`. Optional body: `{"skipSync": true}`. |
-| `POST /api/processes/application/stop-all` | Stops all Application processes and `ResourceDaemon`. This stops the processes, not Genesis Start. Other utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
+| `POST /api/processes/application/start-all` | Starts all stopped Application processes, the Web UI and, unless `genesis.start.enableResourceDaemon=false`, `ResourceDaemon` if it is stopped. Optional body: `{"skipSync": true}`. |
+| `POST /api/processes/application/stop-all` | Stops all Application processes and, unless `genesis.start.enableResourceDaemon=false`, `ResourceDaemon`. This stops the processes, not Genesis Start. Other utilities and running scripts keep running: stop each of them with `POST /api/processes/{processId}/stop`. |
 | `GET /api/processes/{processId}/log` | Reads the log that Genesis Start holds in memory for a process (what the log panel shows). The `tail`, `offset` and `limit` parameters are ignored (ignored parameters are still type-checked), so there's no paging. An unknown `processId` returns an empty log, not 404. |
 | `POST /api/processes/{processId}/log/clear` | Clears a process's log in Genesis Start. |
 | `POST /api/processes/{processId}/input` | Sends one line to a utility's input. Body: `{"line": "..."}`. A line containing `\r` or `\n` is refused with 400, and nothing is sent. |
@@ -217,7 +217,7 @@ To put all routes under a version prefix (`/api/v1/...`), pass `--rest-api-versi
 
 ### Long-running operations
 
-Bootstrap, sync, start-all, import and script runs return straight away with an `operationId`:
+Bootstrap, sync, start-all, stop-all, import and script runs return straight away with an `operationId`:
 
 ```json
 {"operationId": "…"}
