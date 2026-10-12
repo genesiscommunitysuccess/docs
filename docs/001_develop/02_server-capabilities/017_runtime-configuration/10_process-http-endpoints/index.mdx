@@ -17,9 +17,9 @@ A process stays on TCP, and loads none of the HTTP layer, until you configure th
 
 :::warning
 
-Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust.
+Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust. That covers both ways a caller can reach the process port: front-end traffic that the router's HTTP proxy forwards, and anything with network access to the process port directly, such as other services in the cluster.
 
-- **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the refresh-token lifetime has passed. `sessionTimeoutMins` isn't checked here, unlike requests that the router handles itself.
+- **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the [refresh-token lifetime](/develop/server-capabilities/access-control/authentication/#refreshtokenexpirationmins) has passed. [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins) isn't checked here, unlike requests that the router handles itself.
 - **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
 
 With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401, and missing permissions get 403. On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
@@ -64,7 +64,7 @@ Request and response bodies use the same JSON format as the router. The reply is
 | No session token, or an unknown one | 401 |
 | Logged in, but without the endpoint's permission codes (custom endpoints only) | 403 |
 | Request body too large | 413 |
-| The endpoint threw an exception | 500 |
+| A custom endpoint threw an exception, or the request couldn't be dispatched or timed out (an exception in a request server or event handler comes back as a 200 NACK, below) | 500 |
 | A reply from a request server or event handler, including a NACK | 200 |
 
 A NACK from a request server or event handler comes back with status 200. The router's `strictHttpStatusCode` setting doesn't apply to the process port.
