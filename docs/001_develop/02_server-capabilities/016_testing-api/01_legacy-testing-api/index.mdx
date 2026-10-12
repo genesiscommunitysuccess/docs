@@ -40,7 +40,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `scriptFileName` | `@TestScriptFile("...")` (repeatable) |
 | `configFileName` | `@TestConfigFile("...")` |
 | `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [injecting classes in a test](/develop/server-capabilities/testing-api/#a-simple-example) |
-| `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use `EventClientSync` (or `EventClientAsync` / `EventClientRx`) for event handlers, `RequestClientSync` (or `RequestClientAsync` / `RequestClientRx`) for request servers, and `DataServerSubscriptionClientAsync`, `DataServerSubscriptionClientRx` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/#testing-specific-services) |
+| `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use `EventClientSync` (or `EventClientAsync`) for event handlers, `RequestClientSync` (or `RequestClientAsync`) for request servers, and `DataServerSubscriptionClientAsync` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/#testing-specific-services) |
 | `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
 | `authCacheOverride` / `authCacheOverrides` | `@EnableInMemoryTestAuthCache`, and inject `InMemoryTestAuthCache` |
 | `useTempClassloader = true`, or `GenesisClassGenerationTestSupport` | `@EnableTestClassLoader` |
