@@ -361,7 +361,7 @@ To run Genesis commands in a container with `docker exec`, use an interactive sh
 docker exec -it <container> bash -ic 'genesisInstall'
 ```
 
-The Windows `install.bat` script doesn't check this item.
+Running `genesisInstall` on Windows is supported only for local development, through [Genesis Start](/develop/development-environment/genesis-start/) or IntelliJ with the [Genesis IntelliJ plugin](/develop/development-environment/intellij-plugin/). Windows is not a supported server platform, so this block, which guards servers, does not apply there.
 
 ### Install hooks
 
