@@ -80,21 +80,24 @@ import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.inject.Inject
 import jakarta.inject.Named
+import org.slf4j.LoggerFactory
 
 @Module
 class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connectionUrl: String) {
+
+    private val LOG = LoggerFactory.getLogger(PriceFeed::class.java)
 
     @Inject
     private lateinit var entityDb: AsyncEntityDb
 
     @PostConstruct
     fun init() {
-        // code would go here
+        LOG.info("Starting PriceFeed, connecting to {}", connectionUrl)
     }
 
     @PreDestroy
     fun cleanUp() {
-        // code would go here
+        LOG.info("Stopping PriceFeed")
     }
 }
 ```
