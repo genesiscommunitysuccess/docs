@@ -55,6 +55,15 @@ We want to make sure our trade is marked as processed, once complete.
 <TabItem value="kotlin">
 
 ```kotlin
+import com.example.trades.TradeProcessor
+import com.example.trades.TradeStatus
+import global.genesis.db.rx.entity.multi.SyncEntityDb
+import global.genesis.gen.dao.Trade
+import global.genesis.testsupport.jupiter.CsvData
+import global.genesis.testsupport.jupiter.GenesisTest
+import jakarta.inject.Inject
+import org.junit.jupiter.api.Test
+
 @GenesisTest // 1
 @CsvData("my-trades.csv") // 2
 class TradeProcessorTest {
@@ -81,6 +90,15 @@ class TradeProcessorTest {
 <TabItem value="java">
 
 ```java
+import com.example.trades.TradeProcessor;
+import com.example.trades.TradeStatus;
+import global.genesis.db.rx.entity.multi.SyncEntityDb;
+import global.genesis.gen.dao.Trade;
+import global.genesis.testsupport.jupiter.CsvData;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
 @GenesisTest // 1
 @CsvData("my-trades.csv") // 2
 public class TradeProcessorTest {
@@ -1073,9 +1091,11 @@ Marks a property or a no-argument method that returns the `GenesisDictionary` fo
 import global.genesis.db.DbRecord
 import global.genesis.db.SyncDb
 import global.genesis.dictionary.GenesisDictionary
+import global.genesis.testsupport.jupiter.GenesisTest
 import global.genesis.testsupport.jupiter.ProvidedDictionary
 import global.genesis.testsupport.jupiter.providedDictionary
 import jakarta.inject.Inject
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 @GenesisTest
@@ -1106,7 +1126,7 @@ class ProvidedDictionaryTest {
 - A test class, including its superclasses, can have only one `@ProvidedDictionary` member. A second one fails the test with `Only one @ProvidedDictionary member is supported`.
 - You can't combine it with [`@EnableLegacyXmlDictionary`](#enablelegacyxmldictionary). The test fails with `@ProvidedDictionary cannot be combined with @EnableLegacyXmlDictionary`.
 - A method must take no parameters and must not be a `@Test` method itself.
-- If the member returns `null` or something other than a `GenesisDictionary`, the test fails. It never falls back to the production dictionary.
+- If the member returns `null` or something other than a `GenesisDictionary`, the test fails with `<class>.<member> is annotated @ProvidedDictionary but does not provide a GenesisDictionary`, where `<class>.<member>` is the fully qualified class name and the member name. It never falls back to the production dictionary.
 - [`@GenesisSharedContextTest`](#genesissharedcontexttest) builds its context from the class, before any test instance exists. There, put the member in a `companion object`: either a property, or a function annotated `@JvmStatic`. An instance member fails with a message telling you to use a static member.
 - If the table definition doesn't build, the test fails with `Error while reading provided dictionary:` followed by the problems found.
 
@@ -1250,7 +1270,10 @@ public class ProvidedTypeTest {
 </TabItem>
 </Tabs>
 
-In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object`: either a property, or a function annotated `@JvmStatic`. An instance member is skipped without a message, and the class is not bound. A member that returns `null`, or a method that takes parameters, is skipped the same way. `@ProvidedInstance` behaves the same.
+In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` in Kotlin: either a property, or a function annotated `@JvmStatic`. In Java, declare the field or method `static`. An instance member fails the test, as does a member that returns `null` or a method that takes parameters. `@ProvidedInstance` is less strict: it skips such a member without a message.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
 @GenesisSharedContextTest
@@ -1258,11 +1281,24 @@ class SharedProvidedTypeTest {
 
     companion object {
         @ProvidedType
-        @JvmStatic
         val myType = MyClass::class
     }
 }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@GenesisSharedContextTest
+public class SharedProvidedTypeTest {
+
+    @ProvidedType
+    private static Class<?> myType = MyClass.class;
+}
+```
+</TabItem>
+</Tabs>
 
 
 
@@ -1384,6 +1420,8 @@ Sets the level of a named logger for the duration of a test class or method, and
 ```kotlin
 import global.genesis.test.log4j.LogLevel
 import global.genesis.test.log4j.WithLogLevel
+import global.genesis.testsupport.jupiter.GenesisTest
+import org.junit.jupiter.api.Test
 
 @GenesisTest
 @WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
@@ -1409,6 +1447,8 @@ class WithLogLevelTest {
 ```java
 import global.genesis.test.log4j.LogLevel;
 import global.genesis.test.log4j.WithLogLevel;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import org.junit.jupiter.api.Test;
 
 @GenesisTest
 @WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
