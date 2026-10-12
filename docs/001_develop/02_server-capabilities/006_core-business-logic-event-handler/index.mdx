@@ -281,6 +281,23 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 In this example, `DATE` defined on `Trade` will not be part of the meta for this event.
 
+To get the updated metadata, send a JSON schema request to the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/). In this request, `localhost:9064` is the local router port. Set `FEATURE` to the event's full name, including the `EVENT_` prefix:
+
+```
+POST http://localhost:9064/json-schema-request
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 123
+
+{
+  "MESSAGE_TYPE": "JSON_SCHEMA_REQUEST",
+  "SOURCE_REF": "123",
+  "DETAILS": {
+    "FEATURE" : "EVENT_TRADE_INSERT"
+  }
+}
+```
+
 By default, `excludeMetadataFields` includes two fields, `RECORD_ID` and `TIMESTAMP`. These fields are part of every database object; their values are always set by the database layer, so the client typically does not send them.
 
 :::warning
@@ -288,6 +305,25 @@ Typically when using a table entity as the eventHandler `<Type>`, you don't need
 
 An exception is when you are using [optimistic concurrency](#optimistic-concurrency) mode. In this case, it is essential to include the `TIMESTAMP` field in the event meta. This happens automatically where `excludeMetadataFields` has not been set.
 :::
+
+##### Excluding fields of nested objects
+
+If a field of your input class is itself an object, such as a table entity, you can exclude one of that object's fields. Give its path: the field on the input class, a dot, then the nested field, both in upper-underscore form. Only that occurrence is excluded. The same field on any other nested object stays in the metadata.
+
+```kotlin
+data class CompanyPair(val main: Company, val secondary: Company)
+
+eventHandler {
+    eventHandler<CompanyPair>(name = "COMPANY_PAIR") {
+        excludeMetadataFields = setOf("MAIN.RECORD_ID", "MAIN.TIMESTAMP")
+        onCommit { event ->
+            ack()
+        }
+    }
+}
+```
+
+Here, `MAIN` loses `RECORD_ID` and `TIMESTAMP`, and `SECONDARY` keeps both.
 
 #### `overrideMetadataFields`
 
@@ -2259,7 +2295,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 
 | Name | Signature | Default value | Description                                                                                                                                                                                                                                                                                              |
 | --- | --- | --- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`                                                                                                                                                                                                   |
+| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`. To exclude a field of a nested object, use a dotted path such as `MAIN.RECORD_ID`; see [Excluding fields of nested objects](#excluding-fields-of-nested-objects)                                                                                                                                                                                                   |
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`. For detailed information on how this works and examples, see the [`overrideMetadataFields` section](#overridemetadatafields).                                                                                        |
