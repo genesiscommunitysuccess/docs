@@ -26,7 +26,7 @@ To enable it, you need to change the build file.
 The plugin version is declared once, in `server/gradle.properties`:
 
 ```properties
-startVersion=1.0.0-beta4
+startVersion=1.0.0-beta5
 ```
 
 In `server/settings.gradle.kts`, declare the plugin in the `pluginManagement` block:
@@ -303,6 +303,7 @@ The properties apply to `genesisStart`, and to `writeStartScript`, which builds 
 | `genesis.start.restHosts` | `127.0.0.1` | The addresses the REST API listens on, comma-separated (for example, `127.0.0.1,172.17.0.1`). See [Security](/develop/development-environment/genesis-start/headless-mode/#security). Ignored unless `restEnabled=true`. |
 | `genesis.start.restBasePath` | `/api` | The path the REST API is served under. Ignored unless `restEnabled=true`. |
 | `genesis.start.restMaxRequestBodyBytes` | 50 MiB | The largest request body the REST API accepts. Ignored unless `restEnabled=true`. |
+| `genesis.start.enableResourceDaemon` | `true` | Starts the `ResourceDaemon` utility with Bootstrap and Launch and Start All, and stops it with Stop All. Set it to `false` to manage ResourceDaemon yourself; you can still start and stop it on its own. On the start script, the matching flags are `--resource-daemon` and `--no-resource-daemon`. |
 | `genesis.start.dbLayer`, `dbMode`, `dbHost`, `dbUsername`, `dbPassword`, `dbNamespace`, `dbSqlConnectionPoolSize` | | [Database connection settings](#database-connection-settings) passed to every Genesis process. |
 | `genesis.java.version` | `17` | The Java version Gradle uses to run Genesis Start. |
 | `genesis-start.renderApi` | | The graphics backend the window uses (for example, `OPENGL`). Defaults to `OPENGL` on Windows under Citrix; otherwise it is chosen automatically. |
