@@ -304,13 +304,13 @@ FixEnumValues --commit TRADE POSITION
 
 ## `genesisInstall`
 
-This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `/generated/cfg/`.
+This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `$GENESIS_HOME/generated/cfg/`.
 
-**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the [system definition values](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. Any item defined in the system definition, including your own, can be used as a `{{token}}`. On the server, the command collects these files from each module's `cfg` folder and from `site-specific/cfg`. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; the build packages it, so after adding the file, rebuild and redeploy the project before you run `genesisInstall`. A file whose name starts with your product name (for example `<product>-processes.templt.xml`) goes to the module's `cfg`, and any other file goes to `site-specific/cfg`. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template; it is copied as is, without token replacement.
+**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the [system definition values](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. Any item defined in the system definition, including your own, can be used as a `{{token}}`. On the server, the command collects these files from each module's `cfg` folder and from `site-specific/cfg`. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; the build packages it, so after adding the file, rebuild and redeploy the project before you run `genesisInstall`. A file whose name starts with your [product name](/build-deploy-operate/build/plugins/#productname) (the `rootProject.name` in your `settings.gradle.kts`; for example `<product>-processes.templt.xml`) goes to the module's `cfg`, and any other file goes to `site-specific/cfg`. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template; it is copied as is, without token replacement.
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
-`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `generated/cfg` area and a message will be printed. See `--ignore` flag details below on how to ignore errors and copy the files regardless.
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `$GENESIS_HOME/generated/cfg/` area and a message will be printed. See `--ignore` flag details below on how to ignore errors and copy the files regardless.
 
 ###### Syntax
 The `genesisInstall` command can take the following arguments:
@@ -888,6 +888,26 @@ mon --missing
 
 ## `PopulateHolidays`
 This command populates the `HOLIDAYS` table with holidays, based on a specific year(s), country(ies) and region(s).
+
+The platform does not ship the `HOLIDAYS` table in your application's dictionary, so you must define it yourself before you run the command. In your **app-name**-tables-dictionary.kts add the following. Replace `<table-id>` with the next free table id in sequence with your own tables' ids.
+
+```kts
+tables {
+  table(name = "HOLIDAYS", id = <table-id>) {
+    field("HOLIDAY_ID", STRING).sequence("HO")
+    field("COUNTRY_CODE", STRING)
+    field("REGION_CODE", STRING).default("NATIONAL")
+    field("DATE", DATE)
+
+    primaryKey("HOLIDAY_ID").name("HOLIDAY_BY_ID")
+
+    indices {
+      nonUnique("COUNTRY_CODE", "REGION_CODE", "DATE").name("HOLIDAYS_BY_COUNTRY_CODE_REGION_CODE_DATE")
+      nonUnique("COUNTRY_CODE", "DATE", "HOLIDAY_ID").name("HOLIDAYS_BY_COUNTRY_CODE_DATE")
+    }
+  }
+}
+```
 
 ###### Syntax
 The `PopulateHolidays` command can take the following arguments:
