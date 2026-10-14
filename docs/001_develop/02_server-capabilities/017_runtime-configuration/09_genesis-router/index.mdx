@@ -317,13 +317,18 @@ If `FEATURE` is missing, or names a resource that no process has registered, the
 ```json
 {
   "MESSAGE_TYPE": "MSG_NACK",
+  "SOURCE_REF": "...",
   "ERROR": [
     { "CODE": 404, "TEXT": "Resource EVENT_UNKNOWN is not mapped to a service", "STATUS_CODE": "404 Not Found" }
-  ]
+  ],
+  "DETAILS": {
+    "ERROR": "Resource EVENT_UNKNOWN is not mapped to a service",
+    "STATUS_CODE": "404 Not Found"
+  }
 }
 ```
 
-Every `MSG_NACK` from the router also carries a `DETAILS` block with `ERROR` and `STATUS_CODE`, which repeats the first entry in `ERROR`. For example, `"DETAILS": {"ERROR": "Resource EVENT_UNKNOWN is not mapped to a service", "STATUS_CODE": "404 Not Found"}`.
+Every `MSG_NACK` from the router also carries a `DETAILS` block with `ERROR` and `STATUS_CODE`, which repeats the first entry in `ERROR`.
 
 If `FEATURE` is missing altogether, the resource name in the text is empty, so the text reads `Resource  is not mapped to a service` (with two spaces).
 
