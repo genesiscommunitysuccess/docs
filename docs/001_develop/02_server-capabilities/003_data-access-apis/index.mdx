@@ -853,7 +853,7 @@ This tries to delete a record.
 
 #### Batches that name the same record twice
 
-A batch write must not name the same record twice. This applies to `insertAll`, `modifyAll`, `upsertAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs.
+A batch write must not name the same record twice. This applies to `insertAll`, `modifyAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs.
 
 The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for a plain entity `insertAll`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
 
@@ -893,6 +893,8 @@ These are not treated as duplicates:
   ```
 
 - an item whose key isn't fully set yet, such as a record whose key the database generates on insert.
+
+`upsertAll` is different: a batch that names the same record twice is not supported. It may be rejected, or it may be applied with either of the two entries winning. Avoid duplicate entries in an `upsertAll` batch.
 
 Because the whole batch is checked first, a `Flow` (or `Flowable`) passed to a batch write is collected into memory before anything is written.
 
@@ -968,12 +970,16 @@ db.updateAll(Trade.class, trade -> {
 
 #### `recover`
 
+:::warning
+`recover` and `recoverAll` are specialised recovery operations. They work like an insert, but bypass parts of the insert so that the record appears as it did originally, rather than as a recently inserted row. They can have unintended consequences. They are documented for completeness only. Do not use them.
+:::
+
 The `recover` operation enables you to insert a document into the database using the record's preset timestamp and ID.
 
 The following recover operations are supported:
 
 - `recover`
-- `recoverAll`
+- `recoverAll` - recovers a batch of records; the batch form of `recover`
 
 ###### Overloads
 
@@ -1682,7 +1688,11 @@ dbRecord.differenceInFields(dbRecord2)
 
 ### SyncDb and AsyncDb
 
-`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject both on every database layer.
+`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject both on every [database layer](/develop/server-capabilities/runtime-configuration/database-configuration/) (SQL, FDB and FDB2).
+
+:::note
+`SyncDb` and `AsyncDb` are low-level interfaces and are not type-safe. Prefer [`SyncEntityDb`](#syncentitydb) or [`AsyncEntityDb`](#asyncentitydb), which support type-safe operations.
+:::
 
 :::warning
 Inside an event handler, you can inject them, but you shouldn't. Use the `entityDb` that the event handler provides, as the [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
@@ -1694,6 +1704,8 @@ Inside an event handler, you can inject them, but you shouldn't. Use the `entity
 Use them when the table you work with isn't known at build time. Otherwise, prefer the type-safe [Entity Db API](#entity-db-api).
 
 ```kotlin
+import global.genesis.db.ModifyDetails
+
 class TradeCanceller @Inject constructor(
     private val syncDb: SyncDb,
 ) {
@@ -2200,8 +2212,10 @@ This type has the following fields:
 - `removedRecords` - the deleted records
 - `modifiedFields` - the updated fields
 - `numRecordsDeleted` - the number of records deleted
-- `isError` - there was an error during the database operation. Needs to be checked when `ValidationMode.LEGACY` is used
-- `errorText` - the error description. Needs to be checked when `ValidationMode.LEGACY` is used
+- `isError` - there was an error during the database operation
+- `errorText` - the error description
+
+A write that fails throws an exception.
 
 ### Modify details
 
