@@ -22,7 +22,7 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. This applies to your own application's scripts. An override of a platform-owned script falls back to runtime compilation, and `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at runtime, because they are excluded from build-time compilation by design;
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. This applies to your own application's scripts. `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at runtime, because they are excluded from build-time compilation by design;
 - overriding an application script from another component;
 - editing a script on a deployed server. This still works as a fallback, but it is not a supported way to override a script; see [Turning it off](#turning-it-off).
 
@@ -115,7 +115,7 @@ No system definition item, JVM option or environment variable stops a process fr
 
 - **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`. With the property set to `false`, a module that configures a `genesisScriptCompilation` block fails to build, so remove or guard that block first;
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, your copy is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. The build compiles your copy with the rest of the app's scripts, and the process loads that compiled copy in place of the original. A `site-specific` override of a platform-owned script is not served from compiled code and falls back to runtime compilation.
+- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, your copy is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. The build compiles your copy with the rest of the app's scripts, and the process loads that compiled copy in place of the original. `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at runtime, because they are excluded from build-time compilation by design.
 
 :::warning
 Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes). Use the copy in `src/main/genesis/scripts` described above.
@@ -227,11 +227,6 @@ For example, if a `*-script.kts` file inserts a record at its top level and a la
 :::
 
 ### Components built with this feature
-
-The index matches a script on its source text alone, not on the dictionary it was compiled against. So if a component (a PBC) compiles its scripts at build time, an application whose generated dictionary differs from the one the component was built with can still be served the component's classes.
-
-- If the class needs a field that is missing or has a different type, the class fails and the process compiles the script instead.
-- If a field has the same name and type but a different meaning, nothing detects it.
 
 A component compiles its scripts against its own dictionary, which is packaged and distributed with it automatically, so you need no extra step when you build a component with this feature.
 
