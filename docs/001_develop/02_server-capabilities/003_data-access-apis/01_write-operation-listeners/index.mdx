@@ -109,4 +109,9 @@ When you add a more specific listener, move the old listener's logic into it. Be
 
 When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
 
-This requirement is new in 10.0. If you have listener code from 8.x that calls `subscribe()` on a `tx` call without blocking, change it to block.
+This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to return, but reactive work the listener started on `tx` without blocking was neither enforced nor awaited.
+
+Whether you need to change your listener depends on how it uses `tx`:
+
+- A listener that already blocks on every `tx` call (for example with `blockingGet()`), or that calls `tx` only on the thread running `onWriteResult` with no `subscribeOn` or `observeOn`, needs no change.
+- A listener that uses `tx` from another thread, or after `onWriteResult` returns, now gets an `IllegalStateException`. If you have 8.x listener code that calls `subscribe()` on a `tx` call without blocking, change it to block.
