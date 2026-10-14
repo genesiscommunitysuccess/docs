@@ -39,6 +39,25 @@ GenerateZeroMqCurveKeys --verify
 | -h | --help | no | Shows usage information | No |
 | -V | --version | no | Shows version information | No |
 
+### In a project
+
+In a Genesis Start project, run the Gradle task `generateZeroMqCurveKeys` from the project root instead of the command above:
+
+```bash
+./gradlew <app-module>:generateZeroMqCurveKeys [--client-name=<name>] [--output-root=<dir>] [--force] [--yes]
+```
+
+The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` under the output root, and prints the same output as the command.
+
+| Option | Description |
+|--------|-------------|
+| `--client-name` | Name recorded in the certificate, and used for its file name, `<name>.key`. Default: `genesis-client` |
+| `--output-root` | Directory the certificate is written under, relative to the module. Default: `src/main/genesis` |
+| `--force` | Replaces a certificate that already exists. Without it, the task fails if the certificate is there |
+| `--yes` | Skips the confirmation prompt. The task prints the secret keys to the build output, so it asks you to confirm first. Don't run it on CI or with a build scan, where that output is captured |
+
+The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option.
+
 ## Generating keys
 
 Run the command as the user that owns the Genesis installation:
@@ -87,6 +106,8 @@ GenerateZeroMqCurveKeys --server-secret '<40-character Z85 secret key>'
 ```
 
 The rest of the run is the same as a normal one. The command still writes the client certificate named by `--client-name`, and the secret keys it prints include the one you passed, unchanged.
+
+The Gradle task takes no secret options. To import existing keys with it, set the environment variables `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET` before you run it. It uses the ones you set and generates the other.
 
 You don't strictly need this command. The keys are standard ZeroMQ Z85 text and the certificate is a standard ZeroMQ certificate. Keys and certificates from other ZeroMQ tools, or from your own PKI, work as they are.
 
