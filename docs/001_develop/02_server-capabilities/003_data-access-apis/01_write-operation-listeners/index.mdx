@@ -18,7 +18,7 @@ Use a listener when an extra write must be atomic with every write, for example 
 
 There is one listener interface for each style of API, all in the `global.genesis.db.bustxn` package. Each has a default no-op implementation. To replace it, provide your own implementation as a [`@Module`](/develop/server-capabilities/custom-components/#module).
 
-A listener is only bound in a process whose [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) `<package>` section scans the listener's package, and whose `<classpath>` section includes the jar that holds it; see [conditional on missing class](/develop/server-capabilities/custom-components/#conditional-on-missing-class). Every process that writes and should notify the listener must scan it. There is no property or flag that enables listener support.
+A listener is only bound in a process whose [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) `<package>` section scans the listener's package, and whose `<classpath>` section includes the jar that holds it. Every process that writes and should notify the listener must scan it. There is no property or flag that enables listener support.
 
 When a process starts, it logs one of two lines from `RxDb`. `Database WriteOperationListener support not enabled` means no custom listener was bound in that process, so no listener is called for its writes. If you see it and expected a listener, check the process's `<package>` and `<classpath>` entries. `Enabling database WriteOperationListener support` means a custom listener was bound.
 
