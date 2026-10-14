@@ -292,7 +292,7 @@ Things to know when writing a listener:
 
 - **The entity is a detached copy.** Each event's entity is a new instance built from the update, not one managed by an `EntityManager`. Changing it doesn't write anything; save through a repository if you need to.
 - **It runs on the update queue's own thread, outside any transaction.** The method is called synchronously as updates arrive, so a slow or blocking listener holds up delivery. Hand heavy work off to another thread.
-- **Exceptions are logged, not propagated.** An exception thrown by the method is logged at `ERROR` and the update is dropped. There is no retry.
+- **Exceptions are logged, not propagated.** An exception thrown by the method is logged at `ERROR` and the update is dropped. There is no retry. The listener stays registered and receives later updates.
 - **Only singleton beans.** A listener method on a prototype-scoped bean fails at startup. Listeners start receiving updates once the application's singletons have been created.
 - **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The [generated `JpaConfiguration`](../data-model#codegen) class does this for tables, but not for views.
 
