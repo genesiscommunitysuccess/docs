@@ -66,6 +66,8 @@ repositories {
 }
 ```
 
+In a generated project this `repositories` block may sit inside an `allprojects { }` block rather than at the top level of the file; if so, add the line there.
+
 A generated project may already declare a `mavenLocal` earlier in that block, restricted to the launcher's own artifacts. Leave it as it is: the plain `mavenLocal()` at the end is the one that resolves your slice jars.
 
 Publishing the slice jars is not enough on its own. An application that declares your product as a product dependency also resolves the product's own `-distribution` and `-config` artifacts, so you must publish the upstream product in full as well, with its usual publish task (for example `publishToMavenLocal`). Run `publishAllGeneratedSlicesToMavenLocal` in addition to that task, not instead of it. If the full publication is missing, the consuming build fails with an error such as `Could not find global.genesis:upstream-distribution:1.0.0-SNAPSHOT`.
