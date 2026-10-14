@@ -44,7 +44,7 @@ dependencies {
 }
 ```
 
-The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency and annotating a `@Component` bean is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context — the [Spring application core](../core)'s own auto-configuration supplies all of these, so set that up first and there's nothing extra to wire in.
+The module ships its own Spring Boot auto-configuration (`GenesisSpringEventHandlerConfig`), so adding the dependency is enough — there's nothing to `@Import` manually. That configuration does expect `RightSummaryCache`, `TypedEventManager`, `MetaDataRegistry`, `ServiceRegistry` and `ServiceDiscovery` to already be in the Spring context — the [Spring application core](../core)'s own auto-configuration supplies all of these, so set that up first and there's nothing extra to wire in.
 
 :::note
 This includes logging: Genesis Spring integration only supports **Logback**, not the Log4j2 backend
