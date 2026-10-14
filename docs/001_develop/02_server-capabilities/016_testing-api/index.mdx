@@ -1130,6 +1130,22 @@ class ProvidedDictionaryTest {
 - [`@GenesisSharedContextTest`](#genesissharedcontexttest) builds its context from the class, before any test instance exists. There, put the member in a `companion object`: either a property, or a function annotated `@JvmStatic`. An instance member fails with a message telling you to use a static member.
 - If the table definition doesn't build, the test fails with `Error while reading provided dictionary:` followed by the problems found.
 
+To inspect the active dictionary, inject `GenesisDictionary` into the test. For example, to check that the added tables are present:
+
+```kotlin
+@Inject
+lateinit var dict: GenesisDictionary
+
+@Test
+fun dictionaryHasProvidedTables() {
+    assertTrue(dict.containsTable("MY_TEST_TABLE"))
+    assertTrue(dict.containsTable("PROCESS_STATIC_INFO"))
+    assertTrue(dict.containsTable("PROCESS_META_DATA"))
+}
+```
+
+In Java, declare the field as `@Inject GenesisDictionary dict;` and call the same `containsTable` method.
+
 ```kotlin
 @GenesisSharedContextTest
 class SharedProvidedDictionaryTest {
@@ -1244,9 +1260,13 @@ internal class ProvidedTypeTest {
     @ProvidedType
     private val myType = MyClass::class
 
+    @Inject
+    lateinit var myClass: MyClass
+
     @Test
     fun myTest() {
-        // MyClass is built and bound by Guice
+        // MyClass is built and bound by Guice, so it can be injected and used
+        myClass.doSomething()
     }
 }
 ```
@@ -1261,9 +1281,13 @@ public class ProvidedTypeTest {
     @ProvidedType
     private Class<?> myType = MyClass.class;
 
+    @Inject
+    MyClass myClass;
+
     @Test
     public void myTest() {
-        // MyClass is built and bound by Guice
+        // MyClass is built and bound by Guice, so it can be injected and used
+        myClass.doSomething();
     }
 }
 ```
@@ -1422,6 +1446,8 @@ import global.genesis.test.log4j.LogLevel
 import global.genesis.test.log4j.WithLogLevel
 import global.genesis.testsupport.jupiter.GenesisTest
 import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
+import kotlin.test.assertTrue
 
 @GenesisTest
 @WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
@@ -1430,6 +1456,7 @@ class WithLogLevelTest {
     @Test
     fun myTest() {
         // com.example.trades logs at DEBUG
+        assertTrue(LoggerFactory.getLogger("com.example.trades").isDebugEnabled)
     }
 
     @Test
@@ -1437,6 +1464,7 @@ class WithLogLevelTest {
     @WithLogLevel(logger = WithLogLevel.PACKAGE, level = LogLevel.DEBUG)
     fun myOtherTest() {
         // com.example.trades logs at TRACE, and the test class's package at DEBUG
+        assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled)
     }
 }
 ```
@@ -1449,6 +1477,9 @@ import global.genesis.test.log4j.LogLevel;
 import global.genesis.test.log4j.WithLogLevel;
 import global.genesis.testsupport.jupiter.GenesisTest;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @GenesisTest
 @WithLogLevel(logger = "com.example.trades", level = LogLevel.DEBUG)
@@ -1457,6 +1488,7 @@ public class WithLogLevelTest {
     @Test
     public void myTest() {
         // com.example.trades logs at DEBUG
+        assertTrue(LoggerFactory.getLogger("com.example.trades").isDebugEnabled());
     }
 
     @Test
@@ -1464,6 +1496,7 @@ public class WithLogLevelTest {
     @WithLogLevel(logger = "com.example.pricing", level = LogLevel.DEBUG)
     public void myOtherTest() {
         // com.example.trades logs at TRACE, and com.example.pricing at DEBUG
+        assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled());
     }
 }
 ```
