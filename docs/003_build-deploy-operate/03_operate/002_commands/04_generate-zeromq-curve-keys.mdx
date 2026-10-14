@@ -1,0 +1,141 @@
+---
+title: 'Operations - GenerateZeroMqCurveKeys'
+sidebar_label: 'GenerateZeroMqCurveKeys'
+id: generate-zeromq-curve-keys
+keywords: [operations, server, commands, ZeroMQ, CURVE, encryption, update queue]
+tags:
+    - server
+    - commands
+    - ZeroMQ
+    - encryption
+---
+
+# GenerateZeroMqCurveKeys
+
+`GenerateZeroMqCurveKeys` creates the keys you need to [secure the ZeroMQ update queue with CURVE](/build-deploy-operate/operate/update-queue/#securing-zeromq-with-curve). It can also check a deployed configuration before you restart the processes.
+
+The command makes three things:
+
+- a server keypair
+- a client keypair
+- a client certificate, written to the directory that servers check incoming clients against
+
+Every process uses the same server keypair and the same client keypair. CURVE applies only when `MqLayer` is `ZeroMQ`.
+
+## Syntax
+
+```bash
+GenerateZeroMqCurveKeys [--cert-dir <dir>] [--client-name <name>] [--server-secret <key>] [--client-secret <key>]
+GenerateZeroMqCurveKeys --verify
+```
+
+| Argument | Argument long name | Mandatory | Description | Restricted values |
+|----------|--------------------|-----------|-------------|-------------------|
+| | --cert-dir | no | Directory to write the client certificate to. Use the same directory for `allowedClientCertDirectory`. Default: `$GENESIS_HOME/site-specific/cfg/zmq-curve-clients` | No |
+| | --client-name | no | Name recorded in the certificate, and used for its file name, `<name>.key`. Default: `genesis-client` | Must not contain `/`, `\` or `..` |
+| | --server-secret | no | Imports an existing server secret key instead of generating one. The command works out the public key from it | A 40-character Z85 CURVE key |
+| | --client-secret | no | Imports an existing client secret key instead of generating one. The command works out the public key from it | A 40-character Z85 CURVE key |
+| | --verify | no | Checks the deployed configuration. Generates nothing | Can't be combined with the other options |
+| -h | --help | no | Shows usage information | No |
+| -V | --version | no | Shows version information | No |
+
+### In a project
+
+In a Genesis Start project, run the Gradle task `generateZeroMqCurveKeys` from the project root instead of the command above:
+
+```bash
+./gradlew <app-module>:generateZeroMqCurveKeys [--client-name=<name>] [--output-root=<dir>] [--force] [--yes]
+```
+
+The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` under the output root, and prints the generated keys and a `zeroMqEncryption` block to paste into your configuration, as the command does. Two things differ: the block gives `allowedClientCertDirectory` as `${GENESIS_HOME}/site-specific/cfg/zmq-curve-clients` rather than a literal path, and there is no closing line telling you to run `GenerateZeroMqCurveKeys --verify`.
+
+| Option | Description |
+|--------|-------------|
+| `--client-name` | Name recorded in the certificate, and used for its file name, `<name>.key`. Default: `genesis-client` |
+| `--output-root` | Directory the certificate is written under, relative to the module. Default: `src/main/genesis` |
+| `--force` | Replaces a certificate that already exists. Without it, the task fails if the certificate is there |
+| `--yes` | Skips the confirmation prompt. The task prints the secret keys to the build output, so it asks you to confirm first. Don't run it on CI or with a build scan, where that output is captured |
+
+The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option.
+
+To verify keys in a project, run `GenerateZeroMqCurveKeys --verify` from [Genesis Start](/develop/development-environment/genesis-start/) (*Add Config → Run Script*), so the check sees the same environment the processes start with.
+
+## Generating keys
+
+Run the command as the user that owns the Genesis installation:
+
+```bash
+GenerateZeroMqCurveKeys
+```
+
+The command writes the client certificate, which only its owner can read. Then it prints:
+
+- the `zeroMqEncryption` block to add to `site-specific/cfg/network-config.yaml`
+- the two public keys, which are safe to commit
+- the two secret keys
+
+The block doesn't hold the keys. It refers to them through environment variables, so you can commit the file and keep the secrets in a secret store:
+
+```yaml {title="network-config.yaml"}
+zeroMqEncryption:
+  enabled: true
+  zapDomain: genesis-internal
+  curveServerPublicKey: ${ZMQ_CURVE_SERVER_PUBLIC}
+  curveServerSecretKey: ${ZMQ_CURVE_SERVER_SECRET}
+  curveClientPublicKey: ${ZMQ_CURVE_CLIENT_PUBLIC}
+  curveClientSecretKey: ${ZMQ_CURVE_CLIENT_SECRET}
+  allowedClientCertDirectory: /home/genesis/run/site-specific/cfg/zmq-curve-clients
+```
+
+`allowedClientCertDirectory` is set to the directory the certificate was written to. That absolute path is specific to this host. Before you commit the file, replace the Genesis home part of the path with the `GENESIS_HOME` environment variable, which is set on every Genesis host:
+
+```yaml {title="network-config.yaml"}
+allowedClientCertDirectory: ${GENESIS_HOME}/site-specific/cfg/zmq-curve-clients
+```
+
+:::warning
+The secret keys are printed only once. Store them straight away. You then export `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET`, along with the two public-key variables, on every host.
+:::
+
+The command never overwrites a certificate that already exists. New keys break every process still using the old ones. If you do want to replace the keys, delete the old certificate first.
+
+### Using keys issued elsewhere
+
+To adopt a key that was issued somewhere else, pass its secret key. The command works out the matching public key:
+
+```bash
+GenerateZeroMqCurveKeys --server-secret '<40-character Z85 secret key>'
+```
+
+The rest of the run is the same as a normal one. The command still writes the client certificate named by `--client-name`, and the secret keys it prints include the one you passed, unchanged.
+
+The Gradle task takes no secret options. To import existing keys with it, set the environment variables `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET` before you run it. It uses the ones you set and generates the other.
+
+You don't strictly need this command. The keys are standard ZeroMQ Z85 text and the certificate is a standard ZeroMQ certificate. Keys and certificates from other ZeroMQ tools, or from your own PKI, work as they are.
+
+## Checking a deployment
+
+Before you restart the processes, run this on each host:
+
+```bash
+GenerateZeroMqCurveKeys --verify
+```
+
+The command reads the deployed `network-config.yaml` and reports any of the following problems:
+
+- a `${...}` placeholder whose environment variable isn't set in the current shell
+- a configuration that fails the update queue's own validation
+- a public key that doesn't belong to its secret key
+- a client public key that has no certificate in `allowedClientCertDirectory`, so the server would reject it
+
+Run it in a shell with the same environment as the processes. The placeholder check is the one most worth running. An unset variable stays in the configuration as the literal text `${...}`. The process then reports a malformed key, which sends you looking at the key instead of the environment.
+
+The check covers only the host you run it on. It can't tell whether the secrets are exported on the other hosts.
+
+### Exit codes
+
+| Exit code | Meaning |
+|-----------|---------|
+| `0` | Keys generated. With `--verify`: the configuration checks out, or `zeroMqEncryption.enabled` is `false` |
+| `1` | Keys not generated, because the certificate already exists or can't be written. With `--verify`: a problem was found, or no `network-config.yaml` was found |
+| `2` | Invalid arguments. For example, `--verify` combined with another option, an unusable client name, or a secret key that isn't a 40-character Z85 key |
