@@ -291,9 +291,14 @@ If the token is missing or invalid, the router replies with a `MSG_NACK` and HTT
 ```json
 {
   "MESSAGE_TYPE": "MSG_NACK",
+  "SOURCE_REF": "...",
   "ERROR": [
     { "CODE": 401, "TEXT": "User is not logged in and supplied auth token is invalid.", "STATUS_CODE": "401 Unauthorized" }
-  ]
+  ],
+  "DETAILS": {
+    "ERROR": "User is not logged in and supplied auth token is invalid.",
+    "STATUS_CODE": "401 Unauthorized"
+  }
 }
 ```
 
