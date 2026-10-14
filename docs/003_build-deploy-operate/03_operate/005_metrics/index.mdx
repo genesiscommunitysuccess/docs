@@ -29,7 +29,11 @@ This helps early detection of problems and gives you invaluable context if an in
 
 ## Enabling metrics
 
-To enable metrics on your application, add the following settings to your [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
+To enable metrics on your application, add the following settings to your application's [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/). This file is found in the `cfg` directory of your application.
+
+:::warning
+Set these items in `genesis-system-definition.kts`, not in your application's `<product>-system-definition.kts` file. If the same item is set in both, the value from the `genesis` product is selected and the value in `<product>-system-definition.kts` is ignored. The platform logs this as `Duplicate System property MetricsEnabled; selected value false from product genesis`.
+:::
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
