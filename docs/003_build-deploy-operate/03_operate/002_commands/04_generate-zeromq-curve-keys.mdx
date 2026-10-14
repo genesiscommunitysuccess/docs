@@ -47,7 +47,7 @@ In a Genesis Start project, run the Gradle task `generateZeroMqCurveKeys` from t
 ./gradlew <app-module>:generateZeroMqCurveKeys [--client-name=<name>] [--output-root=<dir>] [--force] [--yes]
 ```
 
-The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` under the output root, and prints the same output as the command.
+The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` under the output root, and prints the generated keys and a `zeroMqEncryption` block to paste into your configuration, as the command does. Two things differ: the block gives `allowedClientCertDirectory` as `${GENESIS_HOME}/site-specific/cfg/zmq-curve-clients` rather than a literal path, and there is no closing line telling you to run `GenerateZeroMqCurveKeys --verify`.
 
 | Option | Description |
 |--------|-------------|
@@ -57,6 +57,8 @@ The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` und
 | `--yes` | Skips the confirmation prompt. The task prints the secret keys to the build output, so it asks you to confirm first. Don't run it on CI or with a build scan, where that output is captured |
 
 The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option.
+
+To verify keys in a project, run `GenerateZeroMqCurveKeys --verify` from [Genesis Start](/develop/development-environment/genesis-start/) (*Add Config → Run Script*), so the check sees the same environment the processes start with.
 
 ## Generating keys
 
