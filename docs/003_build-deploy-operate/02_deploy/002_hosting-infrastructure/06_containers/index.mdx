@@ -536,6 +536,20 @@ consul catalog nodes -service=GENESIS_ROUTER
 
 or call the HTTP API at `/v1/catalog/services`. Each Genesis process registers as a service named after the process, such as `GENESIS_ROUTER`, unless you set `ConsulServiceNamePattern`.
 
+To tie a catalog entry back to its node-ID claim, look at its `ServiceMeta`. Each process's entry carries a `genesisNodeIdentity` key, and its value matches the `identity` field of the host's claim. To see it, call the HTTP API for one service:
+
+```bash
+curl http://localhost:8500/v1/catalog/service/GENESIS_ROUTER
+```
+
+The `ServiceMeta` field of each entry in the response contains the key:
+
+```json
+"ServiceMeta": {
+  "genesisNodeIdentity": "<host identity>"
+}
+```
+
 :::important
 A host's claim is owned by its identity: `ConsulNodeName` if it is set, otherwise the hostname. In containers, set `ConsulNodeName` to a value that stays the same across restarts, such as a StatefulSet ordinal. If the identity changes on every restart, each restart claims a new ID, and eventually there are none left.
 
