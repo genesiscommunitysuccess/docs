@@ -163,7 +163,7 @@ Add the matching `RIGHT.csv` row (`CODE,DESCRIPTION`) only if `MCP_VIEW` doesn't
 
 A user's profile membership is in `PROFILE_USER.csv`. Grant the rights to a profile that the user belongs to.
 
-A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart `GENESIS_MCP`.
+A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart the MCP process, which is `GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when `compactProcessesStrategy=DEV` is set (the compact process then includes `GENESIS_MCP`).
 
 You can use your own right codes instead, by setting the matching `*Right` properties. Or you can set `enforcePlatformToolRights = false` to need authentication only.
 
@@ -206,9 +206,9 @@ MCP reads each endpoint's metadata to work out its fields and types. An event ha
 
 The server checks for newly started endpoints every `toolRefreshIntervalMillis`. An endpoint is listed as a tool only while its process is running.
 
-Changes to `<application>-mcp.kts` take effect after the MCP process is restarted. That is `GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when `compactProcessesStrategy=DEV` is set, because the compact process then includes `GENESIS_MCP` and there is no separate `GENESIS_MCP` process.
+Changes to `<application>-mcp.kts` take effect after the MCP process is restarted.
 
-Before a newly added endpoint is listed, sync and build so its script is deployed, then start or restart the process that hosts it. Then restart the MCP process (`GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when `compactProcessesStrategy=DEV` is set, as it includes `GENESIS_MCP`), or wait for `toolRefreshIntervalMillis`.
+Before a newly added endpoint is listed, sync and build so its script is deployed, then start or restart the process that hosts it. Then restart the MCP process, or wait for `toolRefreshIntervalMillis`.
 
 #### How endpoint tools behave
 
@@ -225,7 +225,7 @@ Before a newly added endpoint is listed, sync and build so its script is deploye
 
 ## Server configuration
 
-All of these properties go inside the `server { }` block of `genesis-mcp-server.kts`. Changes to `genesis-mcp-server.kts` take effect after the MCP process is restarted: `GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when `compactProcessesStrategy=DEV` is set, because the compact process then includes `GENESIS_MCP`.
+All of these properties go inside the `server { }` block of `genesis-mcp-server.kts`. Changes to `genesis-mcp-server.kts` take effect after the MCP process is restarted.
 
 | Property | Default | Description |
 |---|---|---|
@@ -287,7 +287,7 @@ authenticationStrategy {
         jwksUri = "https://issuer.example/.well-known/jwks.json"
         audience = "my-app"
         usernameClaim = "preferred_username"
-        signatureAlgorithms = setOf("RS256", "RS384") // optional; a Set<String>, not a List
+        signatureAlgorithms = setOf("RS256", "RS384") // optional
     }
 }
 ```
