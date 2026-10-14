@@ -242,6 +242,26 @@ curl -s -X POST 'http://localhost:<port>/api/bootstrap' \
 
 Bootstrap runs Remap, which installs the database schema and loads the seed data in your app module's `src/main/genesis/data` folder, including the `admin` user that [Verify it](#verify-it) logs in as. It then consolidates rights and starts every application process. Skip it and the processes have no users, so the login in Verify it fails. The call returns `202 Accepted` straight away, but bootstrap itself can take several minutes. Poll `GET http://localhost:<port>/api/processes` until `MY_SPRING_APP` reports `RUNNING` or `HEALTHY` before going on.
 
+To stop the processes again, or to check their status, call the same control-plane port. Stop every application process with:
+
+```shell
+curl -s -X POST 'http://localhost:<port>/api/processes/application/stop-all'
+```
+
+This returns `202 Accepted` straight away and the shutdown carries on in the background. To stop a single process, name it in the path:
+
+```shell
+curl -s -X POST 'http://localhost:<port>/api/processes/MY_SPRING_APP/stop'
+```
+
+Check the state of the processes with:
+
+```shell
+curl -s 'http://localhost:<port>/api/processes'
+```
+
+A stopped process reports `STOPPED`.
+
 The headless start also needs the `google()` Maven repository in the project's repositories. A project recently created with `genx init` already declares it in the `allprojects { repositories { ... } }` block of `server/build.gradle.kts`. A project upgraded from an older seed might not, so check that block and add `google()` if it is missing.
 :::
 
@@ -439,7 +459,7 @@ Like the CSV seed data under `server/<project-name>-app/src/main/genesis/data`, 
 With the app rebuilt, restarted, and seeded:
 
 :::note
-These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml`, or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. Adjust the host:port in the curl examples below to match.
+These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml` (the scaffolded `-spring` module has neither, so create the file if it does not exist, for example `server/<project-name>-spring/src/main/resources/application.properties`), or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. Adjust the host:port in the curl examples below to match.
 :::
 
 :::note
