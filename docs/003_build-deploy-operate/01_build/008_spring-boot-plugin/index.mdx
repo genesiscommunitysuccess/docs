@@ -46,6 +46,23 @@ plugins {
 
 The generated JPA entities and repositories are always Kotlin, regardless of what language the rest of the module is written in — `global.genesis.spring` applies the Kotlin JVM plugin (`kotlin("jvm")`) automatically, so a consuming module's own plugin block doesn't need to declare it. It also applies Kotlin's Spring compiler plugin (`kotlin("plugin.spring")`), which makes Kotlin classes annotated `@Component`, `@Service`, `@Configuration`, `@Transactional` and similar open automatically, so they don't need to be marked `open` for Spring's proxies. JPA entities are not covered by it; they still rely on `kotlin("plugin.jpa")`. The process/service manifest generation works the same whether your `@GenesisApplication` classes are written in Kotlin or Java.
 
+For example, this class needs no `open` modifiers:
+
+```kotlin
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+@Service
+class OrderService {
+    @Transactional
+    fun placeOrder() { /* ... */ }
+}
+```
+
+:::tip
+To confirm Spring created a proxy for a class like this, inject the bean in a `@SpringBootTest` and inspect `orderService.javaClass.name`. A CGLIB proxy class name, containing `$$SpringCGLIB$$`, confirms the plugin applied.
+:::
+
 Applying the plugin doesn't pull Spring Boot in for you: no Spring Boot dependency needs to be present to apply `global.genesis.spring` itself, and the Spring Boot starter modules a module needs are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
 
 Applying the plugin creates a `genesisSpring { ... }` extension with two nested extensions, `processes {}` and `entities {}`:
