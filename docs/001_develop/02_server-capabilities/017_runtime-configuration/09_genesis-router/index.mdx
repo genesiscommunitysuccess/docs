@@ -33,7 +33,6 @@ router {
     socketPort = 9065
     pollingTimeout = 60
     authDisabled = false
-    strictHttpStatusCode = false
     nettyLoggingEnabled = false
 
     httpServerCodec {
@@ -104,7 +103,13 @@ Let's have a look at the different options for configuring this file. You have s
 
 `authDisabled` This is a dangerous setting! If set to true, it disables all authentication on the router. Typically, it is used for development mode. If you need to use this for another reason, see our section on [non-authenticated Genesis Routers](#non-authenticated-routers). Default value is false.
 
-`strictHttpStatusCode` If set to true, this setting ensures all HTTP status codes found in error responses are applied to the HTTP reply. If set to false, a validation error in an event handler would return the error information payload in an HTTP 200 responses instead of an adequate HTTP error code. Default value is false. This setting doesn't apply to requests that the router forwards through its [HTTP proxy](#http-proxy); those return the process's response, where a NACK is always a 200.
+`StrictHttpStatusCode` is not a router setting. It is a [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item, and the `strictHttpStatusCode` setting that used to sit in `router { }` was removed in 10.0. If the item is `true`, all HTTP status codes found in error responses are applied to the HTTP reply. If it is `false`, a validation error in an event handler returns the error information payload in an HTTP 200 response instead of an adequate HTTP error code. Default value is `false`. Set it in `genesis-system-definition.kts`:
+
+```kotlin
+item(name = "StrictHttpStatusCode", value = "true")
+```
+
+This item doesn't apply to requests that the router forwards through its [HTTP proxy](#http-proxy); those return the process's response, where a NACK is always a 200.
 
 `httpProxyEnabled` If set to true, the router forwards HTTP requests to processes that serve [native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/), instead of translating them into Genesis messages. See [HTTP proxy](#http-proxy). Default value is false.
 
@@ -195,7 +200,7 @@ What the router does with each request:
 
 - **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is tried as a request server or event handler first. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers and resources on TCP processes are handled by the router as usual. If no process owns a resource of that name, the segment is tried as a custom endpoint, as described below, and is handled by the router as usual if no endpoint matches either.
 - **Several path segments** are a custom endpoint. If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
-- **Internal resources** owned by a process are refused exactly as if they did not exist. The caller gets the same 404 as for an unknown name, with or without the proxy.
+- **Internal resources** owned by a process are refused exactly as if they did not exist. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one.
 
 The request URI and headers are forwarded unchanged, apart from `Host`. When cookie authentication is on, the router has already copied the session cookie into the `SESSION_AUTH_TOKEN` header, so the process can authenticate the request.
 
