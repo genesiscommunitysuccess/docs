@@ -593,7 +593,7 @@ Authenticates and logs the user in.
 No `SESSION_AUTH_TOKEN` required.
 :::
 
-There are 2 example events here, one takes a `USER_NAME` and `PASSWORD`, and the other a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above.
+There are 3 example events here, one takes a `USER_NAME` and `PASSWORD`, another a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above, and the third logs in with an SSO token held in a cookie.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
