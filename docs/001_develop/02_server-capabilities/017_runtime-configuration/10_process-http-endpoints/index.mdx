@@ -17,7 +17,7 @@ A process stays on TCP, and loads none of the HTTP layer, until you configure th
 
 :::warning
 
-Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust. That covers both ways a caller can reach the process port: front-end traffic that the router's HTTP proxy forwards, and anything with network access to the process port directly, such as other services in the cluster.
+Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust. That covers both ways a caller can reach the process port: front-end traffic that the router's HTTP proxy forwards, and anything with network access to the process port directly, such as other services in the cluster. Restrict access to the process port at the network level (a firewall or network policy), so that only the router and the callers you intend can reach it.
 
 - **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the [refresh-token lifetime](/develop/server-capabilities/access-control/authentication/#refreshtokenexpirationmins) has passed. [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins) isn't checked here, unlike requests that the router handles itself.
 - **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
@@ -46,11 +46,12 @@ For the other `messaging` settings, including the `webSocket` and `http` blocks,
 | Resource | Route | Example |
 |---|---|---|
 | [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `HELLO_WORLD` | `GET /req-hello-world` | `GET /req-hello-world?REQUEST.NAME=World` |
+| [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `requestReply(WIDGET)` | `GET /req-widget` | `GET /req-widget` |
 | Event handler `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
 | Data server | none | Data servers are served by the Genesis Router only |
 | Custom endpoint | the method and path it declares | see [Custom endpoints on a process](#custom-endpoints-on-a-process) |
 
-The route for a request server or event handler is its resource name converted from `UPPER_UNDERSCORE` to `lower-hyphen`, and request servers get a `req-` prefix. This is the same URL scheme the Genesis Router uses, so a URL that works through the router also works on the process port. Paths are matched exactly: `/EVENT_CUSTOM_MODIFY` returns 404.
+The route for a request server or event handler is its resource name converted from `UPPER_UNDERSCORE` to `lower-hyphen`, and request servers get a `req-` prefix. The prefix is added to the name the request server was given, so `REQ_` is never doubled: `requestReply(WIDGET)` is served at `/req-widget`, not `/req-req-widget`. This is the same URL scheme the Genesis Router uses, so a URL that works through the router also works on the process port. Paths are matched exactly: `/EVENT_CUSTOM_MODIFY` returns 404.
 
 Request and response bodies use the same JSON format as the router. The reply is the JSON form of the reply message; for example, an event handler replies with `"MESSAGE_TYPE": "EVENT_ACK"`.
 
@@ -98,7 +99,7 @@ Multipart uploads and file downloads work on the process port in the same way as
 
 ## Internal resources
 
-You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers with a 404. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
+You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
 
 **Event handlers and custom endpoints:** a file-level setting applies to the definitions that come after it in the file.
 
