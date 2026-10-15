@@ -505,7 +505,7 @@ We use standard HTTP status codes to represent the response status. This is a we
 
 To get the appropriate status code for an error message, you need to enable the `StrictHttpStatusCode` item in the system definition. It is not a router setting: the `strictHttpStatusCode` property that used to sit in `router { }` was removed in 10.0, and a router that still sets it fails to start.
 
-`StrictHttpStatusCode` is `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-settings) on the Genesis router page for how to set it in **genesis-system-definition.kts**.
+`StrictHttpStatusCode` is `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the Genesis router page for how to set it in **genesis-system-definition.kts**.
 
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
