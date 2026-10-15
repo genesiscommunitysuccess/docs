@@ -555,7 +555,7 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 // this source will return batches of List<TestIndexTable>
 ```
 
-### `dbBulkSubscribe`
+#### `dbBulkSubscribe`
 
 This is a real-time bulk subscription to the database for a particular entity and can be used for tables or views.
 
@@ -603,7 +603,7 @@ pipeline("TEST_DB_BULK_SUBSCRIBE") {
     }
 ```
 
-### `dbBulkQuery`
+#### `dbBulkQuery`
 
 This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object that you specified when you defined the source:
 
@@ -1023,7 +1023,7 @@ The delivery policy controls how the platform handles timeouts, retries and nega
 |---|---|---|
 | `timeout` | The timeout in seconds for each event delivery request. | `10` |
 | `retry` | The retry mode when no target is reachable or the target replies with an UNAVAILABLE NACK. Use `holdUntilDelivered()` to hold the event until it is accepted (never drops the event). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
-| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception. Use `logOnNack()` to log the NACK at error level and continue. | `throwOnNack()` |
+| `onNack` | The action to take when a NACK other than UNAVAILABLE is received. UNAVAILABLE NACKs are always retried under your `retry` setting. Use `throwOnNack()` to throw, `logOnNack()` to log at error level and continue. | `throwOnNack()` |
 
 The sink holds an event and retries it with a backoff, under your `retry` setting, whenever the event has definitely not been accepted:
 
@@ -1161,9 +1161,9 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
-`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level instead of throwing. Its retry mode is always `holdUntilDelivered()`, and you can't change it. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely.
+`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level instead of throwing. You can't change its retry behaviour: it holds until the event is delivered, except inside a write transaction (`txDbSink()`), where it gives up after `timeout`. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. Under `txDbSink()`, `timeout` limits the whole attempt instead. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely, except under `txDbSink()`, where the handler gives up after `timeout`.
 
-In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
+In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds, which under `txDbSink()` is at most `timeout`. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
 
 #### `sendCustomEventOnCompletion`
 
