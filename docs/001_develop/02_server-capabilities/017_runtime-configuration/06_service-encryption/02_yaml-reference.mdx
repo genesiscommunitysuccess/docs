@@ -97,7 +97,7 @@ messaging:
 
 ### `messaging.http`
 
-These settings tune HTTP handling on the process port when `channel` is `WEBSOCKET`, and mirror the router's `httpServerCodec` and `httpObjectAggregator` blocks. One default differs: `maxContentLength` is 64 MiB here, but 262144 bytes on the router.
+These settings tune HTTP handling on the process port when `channel` is `WEBSOCKET`, and mirror the [router's `httpServerCodec` and `httpObjectAggregator` blocks](/develop/server-capabilities/runtime-configuration/genesis-router/#netty-configuration). One default differs: `maxContentLength` is 64 MiB here, but 262144 bytes on the router.
 
 | Key                        | Type    | Default | Description |
 |----------------------------|---------|---------|-------------|
