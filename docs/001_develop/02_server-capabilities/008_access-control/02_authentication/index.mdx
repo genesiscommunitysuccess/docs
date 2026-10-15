@@ -785,6 +785,21 @@ SOURCE_REF: 001b
 }
 ```
 
+<a id="sso-login"></a>
+SSO login example (SSO token in the `ssoToken` cookie)
+```
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+Cookie: ssoToken=<SSO token issued by the authentication service>
+SOURCE_REF: 001c
+{
+  "DETAILS": {}
+}
+```
+
+The client does not put the SSO token in the body or in a header. When [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled, the router takes the token from the `ssoToken` cookie and supplies the `SSO_TOKEN` header itself; any `SSO_TOKEN` header the client sends is dropped. See [SSO token in a cookie](#sso-token-in-a-cookie).
+
 Response
 ```
 {
@@ -2580,7 +2595,7 @@ authentication {
 
 After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
 
-- On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself.
+- On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself. For the request to send, see the [SSO login example](#sso-login) under `EVENT_LOGIN_AUTH`.
 - On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
   - `EVENT_LOGIN_AUTH` is accepted only while the router still holds the token from the upgrade. The router adds the token to that message and then discards it, so the token is used once. Any other `EVENT_LOGIN_AUTH` on the socket is rejected as Forbidden.
   - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
