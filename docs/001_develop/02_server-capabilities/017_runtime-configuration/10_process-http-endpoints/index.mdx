@@ -68,7 +68,7 @@ Request and response bodies use the same JSON format as the router. The reply is
 | A custom endpoint threw an exception, or the request couldn't be dispatched or timed out (an exception in a request server or event handler comes back as a 200 NACK, below) | 500 |
 | A reply from a request server or event handler, including a NACK | 200 |
 
-By default a NACK from a request server or event handler comes back with status 200. If the `StrictHttpStatusCode` [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item is `true`, the process maps the NACK's error status code to the HTTP status instead. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-settings) on the router page; the same item applies whether the request arrives directly or through the router's HTTP proxy.
+By default a NACK from a request server or event handler comes back with status 200. If the `StrictHttpStatusCode` [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item is `true`, the process maps the NACK's error status code to the HTTP status instead. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the router page; the same item applies whether the request arrives directly or through the router's HTTP proxy.
 
 ## Authentication
 
