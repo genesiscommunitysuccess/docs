@@ -264,7 +264,7 @@ The event payload is a plain `NewWidget` data class rather than the generated `W
 
 Each test asserts on the row the handler writes, not only on the reply. That is what makes the test fail when the handler is broken. If `insertWidget` acks without saving, the four insert tests fail on `assertNotNull`. A test that only checks for a nack can pass for the wrong reason: without the handler in the context, the duplicate-name test still passes, because it gets an `UNKNOWN_MESSAGE_TYPE` nack instead of the handler's own. To rule that out, also check the nack's error or a side effect that only the handler produces.
 
-This example only verifies persistence through the repository — it doesn't assert on `UpdateQueue`, audit rows, or transaction boundaries; see [JPA data access: Writing back to the UpdateQueue](../jpa-data-access#writing-back-to-the-updatequeue), [Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for asserting on those specifically.
+This example only verifies persistence through the repository — it doesn't assert on audit rows or transaction boundaries; see [JPA data access: Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for those. To assert on what reaches the update queue, see [Testing an update-queue listener](#testing-an-update-queue-listener) below.
 
 ### A second class sharing the runtime
 
@@ -297,6 +297,67 @@ class WidgetSharedContextTest : WidgetTestBase() {
 ```
 
 This class has the same configuration as `WidgetEventHandlerTest`, so it reuses the same runtime. The database is not truncated and the CSV is not reloaded between the two classes: it sees the two seed rows plus the four rows `WidgetEventHandlerTest` inserted, six in all. This is the behaviour described in [Context caching](#context-caching), and it is why the row count depends on class order.
+
+### Testing an update-queue listener
+
+A [`@UpdateQueueListener`](../jpa-data-access#listening-to-updatequeue-changes) method is tested by writing through a repository and asserting on what the listener recorded. The listener is an ordinary bean, so it has to be contributed to the test context like the event handler was: `GenesisTestApplication` performs no component scanning, and without the `@Import` the listener is never registered and the test times out.
+
+`src/test/kotlin/<packageName>/WidgetListenerTest.kt`:
+
+```kotlin
+package <packageName>
+
+import <packageName>.dao.enums.<product>.widget.Quality
+import <packageName>.dao.Widget
+import <packageName>.repo.WidgetRepository
+import global.genesis.spring.data.UpdateQueueEvent
+import global.genesis.spring.data.UpdateQueueListener
+import global.genesis.springboot.test.GenesisSpringTest
+import org.awaitility.Awaitility.await
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
+import org.springframework.stereotype.Component
+import java.time.Duration
+import java.util.concurrent.CopyOnWriteArrayList
+
+@Component
+class WidgetInsertRecorder {
+    val inserts = CopyOnWriteArrayList<UpdateQueueEvent.Insert<Widget>>()
+
+    @UpdateQueueListener
+    fun onInsert(event: UpdateQueueEvent.Insert<Widget>) {
+        inserts += event
+    }
+}
+
+@GenesisSpringTest
+@Import(WidgetInsertRecorder::class)
+class WidgetListenerTest {
+
+    @Autowired
+    lateinit var widgetRepository: WidgetRepository
+
+    @Autowired
+    lateinit var recorder: WidgetInsertRecorder
+
+    @Test
+    fun `the listener sees a widget inserted through the repository`() {
+        widgetRepository.save(Widget(0L, "via-listener", 1.0, Quality.GOOD, 0.5))
+
+        await().atMost(Duration.ofSeconds(10)).untilAsserted {
+            assertEquals(1, recorder.inserts.count { it.entity.name == "via-listener" })
+        }
+    }
+}
+```
+
+The test needs a wait. The listener is called on the update queue's own thread, after the write has committed, not on the test thread, so `save` can return before the listener has run. `await().untilAsserted { ... }` polls until the assertion passes or the timeout expires. The recorder uses a `CopyOnWriteArrayList` because the listener thread writes to it while the test thread reads it.
+
+Awaitility needs no extra dependency: `spring-boot-starter-test` brings it onto the test classpath, and `genesis-spring-testsupport` exposes that starter. The Kotlin extension (`org.awaitility.kotlin.await`) is a separate artifact, `org.awaitility:awaitility-kotlin`, that you add yourself; the example uses the plain `Awaitility.await()`, which works from Kotlin as is.
+
+This class has a different configuration from `WidgetTestBase` (a different `@Import`, no `@CsvData`), so Spring boots a separate Genesis runtime for it, as described in [Context caching](#context-caching).
 
 ### Running it
 
