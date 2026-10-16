@@ -1267,6 +1267,7 @@ The code above does two things:
 
 * It enables **GenesisJunit**.
 * It specifies the Event Handler script that we want to test, using the `TestScriptFile` annotation.
+  A bare file name, such as `hello-world-eventhandler.kts`, is looked up at `scripts/<name>` or at the root of the test resources. A script anywhere else needs its path relative to the test resources root, for example `@TestScriptFile("genesis/scripts/my-eventhandler.kts")`.
 
 There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
