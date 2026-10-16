@@ -100,7 +100,11 @@ Let's have a look at the different options for configuring this file. You have s
 `StrictHttpStatusCode` is not a router setting. It is a [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item, and the `strictHttpStatusCode` setting that used to sit in `router { }` was removed in 10.0. If the item is `true`, all HTTP status codes found in error responses are applied to the HTTP reply. If it is `false`, a validation error in an event handler returns the error information payload in an HTTP 200 response instead of an adequate HTTP error code. Default value is `false`. Set it in `genesis-system-definition.kts`:
 
 ```kotlin
-item(name = "StrictHttpStatusCode", value = "true")
+systemDefinition {
+    global {
+        item(name = "StrictHttpStatusCode", value = "true")
+    }
+}
 ```
 
 The item is read by whichever process builds the reply, so it also governs requests that the router forwards through its [HTTP proxy](#http-proxy) and requests sent straight to the [process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#status-codes): set it in the system definition that process reads. The router relays the status the process returns.
