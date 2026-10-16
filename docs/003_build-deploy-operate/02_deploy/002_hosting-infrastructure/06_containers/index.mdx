@@ -366,9 +366,11 @@ To get a starting `docker-compose.yml`, run the `writeGenesisDockerCompose` task
 ./gradlew writeGenesisDockerCompose
 ```
 
-For a two-node cluster, copy the app service and give each copy its own settings. The generated file sets `GENESIS_SYSDEF_ClusterMode: LEGACY`, which is [built-in clustering](#built-in-clustering). In that mode, no `GENESIS_SYSDEF_*` setting differs between nodes. Instead, give each app container a hostname that is in the `hosts` list of your system definition.
+For a two-node cluster, copy the app service and give each copy its own settings. The generated file sets `GENESIS_SYSDEF_ClusterMode: LEGACY`, which is [built-in clustering](#built-in-clustering). In that mode, no `GENESIS_SYSDEF_*` setting differs between nodes. Instead, give each app container its own hostname, and list all of those hostnames together in the `hosts` list of one `system` block in your system definition. In this mode the `hosts` list is also the cluster membership list, so each node needs a distinct hostname.
 
-For [Consul](#consul) mode, change `GENESIS_SYSDEF_ClusterMode` to `CONSUL` on both nodes, and give each node a stable identity for its [node ID](#node-ids) claim:
+An app chooses its environment in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) by matching its own hostname against the `host(...)` entries. A `host(LOCAL_HOST)` block matches any container, and it must be the last `system` block. That is how the generated compose file works without setting `hostname:` on the app container.
+
+For [Consul](#consul) mode, a `host(LOCAL_HOST)` system block is enough, and no per-container `hostname:` is needed. Change `GENESIS_SYSDEF_ClusterMode` to `CONSUL` on both nodes, and give each node a stable identity for its [node ID](#node-ids) claim with `ConsulNodeName`:
 
 ```yaml
 # node 1
