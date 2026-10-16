@@ -104,7 +104,7 @@ views {
               on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
             }
             joining(COUNTERPARTY) {
-              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+              on(TRADE { COUNTERPARTY_ID } to COUNTERPARTY { COUNTERPARTY_ID })
             }
         }
         fields {
@@ -137,7 +137,7 @@ views {
               on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
             }
             joining(COUNTERPARTY) {
-              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+              on(TRADE { COUNTERPARTY_ID } to COUNTERPARTY { COUNTERPARTY_ID })
             }
         }
         fields {
@@ -875,6 +875,7 @@ If you do not specify the `joinType`, it defaults to `JoinType.OUTER`.
 ```kotlin
 joining(INSTRUMENT, JoinType.INNER) {
     on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+}
 ```
 
 #### Parameterized joins
@@ -1036,7 +1037,7 @@ You can add all the fields from a given table to a view using the `allFields` ac
 If a field has the same name as the field name in another table in the view, you can use one of the following operators to override the field name: 
 
 - `withAlias` gives the field an alternative name on the view
-- `withPrefix` adds a prefix to the standard field name (for example, `INSTRUMENT.RECORD_ID withPrefix INSTRUMENT` becomes `INSTRUMENT_RECORD_ID`); this is useful if you have a clash 
+- `withPrefix` adds a prefix to the standard field name (for example, `INSTRUMENT.RECORD_ID withPrefix INSTRUMENT` becomes `INSTRUMENT_RECORD_ID`, and the property on the generated Kotlin entity is `instrumentRecordId`); this is useful if you have a clash 
 
 For example, if you have COUNTERPARTY joined to INSTRUMENT and both have a NAME field:
 
@@ -1236,7 +1237,7 @@ When no size is given, an SQL database creates a `STRING` or `ENUM` column 64 ch
 
 Four other differences can catch you out:
 
-- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them.
-- **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE`.
+- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them. Passing a non-enum type, for example `sharedField("MY_STRING", STRING)`, fails to compile with `Unresolved reference 'STRING'`, because the field type builders are only available inside a `table { }` block, not at `tables { }` level. Declare such fields in each table instead.
+- **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE` (import it from `global.genesis.gen.config.tables`; see [Imports](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#imports)).
 - **Generated enum package.** Moving an `ENUM` field from a fields dictionary to an inline table field moves the generated enum class. A dictionary enum is generated as `global.genesis.gen.dao.enums.<Enum>`; an inline one is generated as `global.genesis.gen.dao.enums.<product>.<table>.<Enum>`, for example `global.genesis.gen.dao.enums.myapp.trade.MyEnum`. Imports in your custom code must change to match.
 - **Consistency between tables.** When several tables declare the same field name inline, the dictionary build doesn't check that the declarations match. If one table declares `PRICE` as a `DOUBLE` and another as an `INT`, the build succeeds and each table gets its own column type. Keeping the declarations consistent is up to you.
