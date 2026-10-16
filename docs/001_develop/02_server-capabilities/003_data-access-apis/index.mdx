@@ -203,6 +203,14 @@ The objects cannot be used with entity Db APIs.
 
 All three entity DB APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`) use the same types and implement the same API methods, with the exception of their [return types](#return-types).
 
+Import each one by name:
+
+```kotlin
+import global.genesis.db.rx.entity.multi.SyncEntityDb
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import global.genesis.db.rx.entity.multi.RxEntityDb
+```
+
 ### Type convention
 
 | Type                               | Meaning                           | Example        |
@@ -995,7 +1003,7 @@ This API must be used with caution. Integrity checks are skipped, so it can leav
 
 ### Transactions
 
-If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
+If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. For what happens when a write transaction fails, see [Write transactions](#write-transactions). Subscribe operations are not supported within transactions.
 
 Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
@@ -1036,8 +1044,7 @@ Single<OrderTrade> orderTrade = db.readTransaction(transaction -> {
 
 #### Write transactions
 
-Write transactions ensure all read and write operations are consistent. If any exception reaches the
-transaction level, all writes are rolled back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,
+Write transactions ensure all read and write operations are consistent. If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is wrapped and rethrown. Otherwise, the transaction commits when the block completes. An exception that you catch inside the block does not bubble up, so the other writes commit; rethrow it to roll back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,
 where `T` is the value returned in the `writeTransaction` lambda.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -1688,14 +1695,14 @@ dbRecord.differenceInFields(dbRecord2)
 
 ### SyncDb and AsyncDb
 
-`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject both on every [database layer](/develop/server-capabilities/runtime-configuration/database-configuration/) (SQL, FDB and FDB2).
-
-:::note
-`SyncDb` and `AsyncDb` are low-level interfaces and are not type-safe. Prefer [`SyncEntityDb`](#syncentitydb) or [`AsyncEntityDb`](#asyncentitydb), which support type-safe operations.
+:::warning
+`SyncDb` and `AsyncDb` are low-level interfaces and are **not type-safe**. Don't use them unless you need type-unsafe operations; use [`SyncEntityDb`](#syncentitydb) or [`AsyncEntityDb`](#asyncentitydb) instead. Never inject them into GPAL scripts.
 :::
 
+`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject them into any class, Kotlin or Java, in a custom module or process.
+
 :::warning
-Inside an event handler, you can inject them, but you shouldn't. Use the `entityDb` that the event handler provides, as the [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
+In a GPAL event handler, never inject them. Use the `entityDb` that the event handler provides, as the [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
 
 - The event handler's `entityDb` is enhanced. With `transactional = true`, it audits writes automatically: every write to an [audited table](/develop/server-capabilities/data-model/#audited-tables) gets an audit entry with the event name, user and timestamp. It is also transactional: if the event fails, its writes are rolled back. Writes through an injected `SyncDb` get neither.
 - GPAL event handlers run on coroutines, and `SyncDb` blocks. Never make blocking calls in coroutines.
@@ -1809,8 +1816,8 @@ On SQL, an open stream holds a database connection until you close it or read it
 Inside `readTransaction` and `writeTransaction`, make every read and write through the transaction object passed to the block, not through a separately injected `SyncDb` or `AsyncDb`. Only that object runs on the transaction's connection.
 
 - In a `readTransaction`, the object is a `SyncReadDb` (or `AsyncReadDb`). It has read methods only, so you can't write inside a read transaction.
-- If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is wrapped and rethrown. Otherwise, the transaction commits when the block completes. A write that fails throws, so the same rule covers it.
-- The update-queue notifications for all the writes in a transaction are published once, after the commit.
+- A `writeTransaction` follows the same commit and rollback rules as [Write transactions](#write-transactions).
+- The transaction collects one update-queue message for each write. Nothing is published before the commit, and nothing if the transaction rolls back. After the commit, the messages are published to the update queue one at a time, in order.
 
 ###### Virtual threads
 
