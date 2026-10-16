@@ -48,7 +48,8 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `rootLogLevel` | `@RootLogLevel` |
 | `expectedProcessStatus` | `@ExpectedProcessStatus` |
 | Instances the test binds | `@ProvidedInstance` for built instances, `@ProvidedType` for classes |
-| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, injecting the database as `SyncEntityDb`, `RxEntityDb` or `AsyncEntityDb`, or as `SyncDb`, `RxDb` or `AsyncDb` if the test works with `DbRecord` and table names |
+| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, and [`@Inject`](/develop/server-capabilities/testing-api/#a-simple-example) the database as `SyncEntityDb`, `RxEntityDb` or `AsyncEntityDb`, or as `SyncDb`, `RxDb` or `AsyncDb` if the test works with `DbRecord` and table names |
+| `rxDb` (on `AbstractGenesisTestSupport`) | [`@Inject`](/develop/server-capabilities/testing-api/#a-simple-example) the database, as on the `extends AbstractDatabaseTest` row, with the same choice of types |
 | `createMockDictionary()` returning an inline dictionary | `@ProvidedDictionary` with `providedDictionary { }` |
 | XML dictionary | `@EnableLegacyXmlDictionary` |
 
