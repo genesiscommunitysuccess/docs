@@ -22,7 +22,7 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. This applies to your own application's scripts. `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at runtime, because they are excluded from build-time compilation by design;
+- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. This applies to your own application's scripts, with one exception: `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at start-up (see [Scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up));
 - overriding an application script from another component;
 - editing a script on a deployed server. This still works as a fallback, but it is not a supported way to override a script; see [Turning it off](#turning-it-off).
 
@@ -36,13 +36,19 @@ The scripts compile in a Gradle source set of their own: `genesisScripts`, or `g
 
 If your project uses the Genesis Settings plugin, set `compileScriptsAtBuildTime` in the `genesis` block of `settings.gradle.kts`. The Settings plugin then applies the `global.genesis.script.compilation` plugin to your application's main module, which is `<product>-app` by default.
 
-With the legacy project structure (`global.genesis.settings.legacy`), it applies the plugin to the first `*-config` module and the first `*-script-config` module instead. The build logs a line at lifecycle level for each module it applies the plugin to.
+With the legacy project structure (`global.genesis.settings.legacy`), it applies the plugin to the first `*-config` module and the first `*-script-config` module instead.
 
 ```kotlin
 // settings.gradle.kts
 genesis {
     compileScriptsAtBuildTime = true
 }
+```
+
+With either project structure, the build logs a line at lifecycle level for each module it applies the plugin to:
+
+```
+Genesis: compiling .kts at build time for <module path>...
 ```
 
 Passing `-Pgenesis.scripts.compileAtBuildTime=true` on the command line, or setting it in `gradle.properties`, has the same effect without editing `settings.gradle.kts`.
@@ -101,7 +107,7 @@ plugins {
 | --- | --- | --- |
 | `genesis { compileScriptsAtBuildTime = true }` | `settings.gradle.kts` | Applies the plugin to the application's config module or modules |
 | `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint, when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin; see [Linting scripts with ktlint](#linting-scripts-with-ktlint). Default: `false` |
-| `genesis.scripts.compileAtBuildTime` | Gradle property | `true`: the same as `compileScriptsAtBuildTime = true` when `settings.gradle.kts` doesn't set it. `false`: turns the feature off for the whole build |
+| `genesis.scripts.compileAtBuildTime` | Gradle property | `true`: with a Settings plugin, the same as `compileScriptsAtBuildTime = true` when `settings.gradle.kts` doesn't set it; without one, does nothing on its own. `false`: turns the feature off for the whole build |
 | `genesis.scripts.ktlint` | Gradle property | The default for `ktlintScripts` |
 | `genesisScriptCompilation { enabled = false }` | Module build file | Turns the feature off for one module |
 
@@ -114,8 +120,8 @@ Otherwise, with a Settings plugin, the setting in `settings.gradle.kts` wins ove
 No system definition item, JVM option or environment variable stops a process from loading compiled classes. To stop using them:
 
 - **for the whole build:** rebuild with `-Pgenesis.scripts.compileAtBuildTime=false`. With the property set to `false`, a module that configures a `genesisScriptCompilation` block fails to build, so remove or guard that block first;
-- **for one module:** set `enabled = false` in its `genesisScriptCompilation` block, or add single scripts to `exclude`;
-- **for one script:** override the script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/), by putting your copy in the app module's `src/main/genesis/scripts` folder. After your next build and deploy, your copy is in `$GENESIS_HOME/site-specific/scripts/`; files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead. The build compiles your copy with the rest of the app's scripts, and the process loads that compiled copy in place of the original. `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at runtime, because they are excluded from build-time compilation by design.
+- **for one module:** set `enabled = false` in its `genesisScriptCompilation` block;
+- **for one script:** add it to `exclude` in the module's `genesisScriptCompilation` block, with an Ant pattern relative to the script directory, such as `exclude = setOf("**/my-script.kts")` (see [Configuration options](#configuration-options)). The process then compiles that script at start-up.
 
 :::warning
 Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes). Use the copy in `src/main/genesis/scripts` described above.
@@ -175,9 +181,8 @@ To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/
 
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
 
-- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script fails with `Unable to find specified script module "<module>"`.
+- **A missing dependency.** A script uses a type that isn't on the module's compile classpath. The build fails with the Kotlin compiler's own error, for example `Unresolved reference '<name>'`. Add the module that provides the type to the module's `dependencies`. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script at start-up fails with `Unable to find specified script module "<module>"`. That error is the start-up case for `@file:ScriptModules`, not a build failure.
 - **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails to compile. Add it to `exclude`.
-- **A script that produced no class**. The build fails with `Build-time script compilation produced no class for N script(s): ...`. Rename the file, using only letters, digits and underscores, or set `failOnMissingScriptClasses = false` to accept it deliberately.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
 - **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module. The message begins `<module> already has a source set named genesisScripts, which build-time script compilation needs`.
 - **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them, with a message that begins `These scripts still compile to the same class '<class>' after disambiguation:`.
@@ -194,10 +199,11 @@ The build logs each copy, and `staged-from.txt` in that directory maps every cop
 
 ### Scripts that are always compiled at start-up
 
-Some scripts are never served from a compiled class. The build leaves them out of the index, and the process always compiles them at start-up:
+Some scripts are never served from a compiled class, and the process always compiles them at start-up. For the first two kinds, the build leaves the script out of the index:
 
 - any script that contains `@file:ScriptModules`;
-- a `*-tables-dictionary.kts` or `*-view-dictionary.kts` file that contains `derivedField`.
+- a `*-tables-dictionary.kts` or `*-view-dictionary.kts` file that contains `derivedField`;
+- `genesis-router.kts` and `genesis-mcp-server.kts`. The platform does not compile these two. If your app overrides one in `site-specific`, the build does compile your copy into the app's index, but the router and the MCP server do not load classes from the app's jar, so they always compile it at start-up.
 
 ### Falling back to compiling
 
@@ -209,7 +215,7 @@ A process compiles a script at start-up instead of loading its class in two case
 No precompiled class matches the current contents of <script>; compiling.
 ```
 
-You won't see this line at the default log level. To see it, set the logger `global.genesis.config.dsl.host.PrecompiledScriptLoader` to DEBUG.
+You won't see this line at the default log level. To see it, set the logger `global.genesis.config.dsl.host.PrecompiledScriptLoader` to DEBUG, as described in [Logging](/build-deploy-operate/operate/logging/).
 
 **The compiled class can't be used.** That happens if, for example, the class listed in the index is missing, fails to link (with a `NoSuchFieldError`, say), or fails while it is evaluated. The process logs a warning (WARN level) that ends in `compiling instead.` For a class that fails while it is evaluated, the warning is one of these:
 
@@ -245,6 +251,8 @@ Loaded <script> from its build-time-compiled class in <n> ms; no compiler was us
 ```
 
 If a script you expected doesn't produce this line, look for a warning that it was compiled instead, and check whether it is one of the [scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up).
+
+`genesis-router.kts` and `genesis-mcp-server.kts` are the exception: they never produce the `Loaded ...` line, and no "compiled instead" warning either. At DEBUG level on `PrecompiledScriptLoader`, you may see `No precompiled class matches ...; compiling.`, or nothing at all if no index is on the process's classpath.
 
 An index entry that the process never uses is not a failure. Common cases:
 
