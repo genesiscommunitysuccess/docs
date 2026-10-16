@@ -152,6 +152,19 @@ When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for
 
 Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
 
+### Data pipeline metrics
+
+Every data pipeline publishes its [record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters) automatically, as a counter metric called `pipeline_records`. This covers the `sent_records` counter written by `dbSink()` and `txDbSink()`, and any counters your pipeline adds. On top of the standard tags, the metric has two tags:
+
+| Tag      | Explanation              |
+|:---------|:-------------------------|
+| pipeline | the name of the pipeline |
+| counter  | the name of the counter  |
+
+Tag values are lowercased, and any character other than a letter, a digit, `_` or `.` is replaced with `_`. For example, a pipeline called `MyPipeline` is tagged `pipeline=mypipeline`.
+
+The metric is only exported when `MetricsEnabled` is `true` and `MetricsReportType` names at least one [reporter](#metric-reporters), or when the [OpenTelemetry](#opentelemetry) Java agent is attached.
+
 ## Metric names
 
 The framework provides an abstraction on top of the reporters. A single interface is used, regardless of how the metrics are reported. 
@@ -182,7 +195,7 @@ The available built-in reporters are:
 |:---------|:--------------------------------------------------------------------|
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
-| SLF4J    | Publishes metrics to the services' log file                         |
+| SLF4J    | Publishes metrics to the services' metrics log file (`<PROCESS_NAME>.log.metrics` by default) |
 
 ### Graphite
 
@@ -248,7 +261,9 @@ item(name = "MetricsDatadogUri", value = "https://api.datadoghq.com")
 
 ### SLF4J
 
-Metrics can be reported straight to the log file.
+Metrics can be reported straight to a log file.
+
+With the default log4j2 configuration, the reporter's output does not go to the main `.log` file. The `global.genesis.metrics` logger has `additivity="false"` and writes to the `MetricsRollingFile` appender, so the metrics appear in `<PROCESS_NAME>.log.metrics` in the process's log directory. See the log4j2 sample on the [Logging](/build-deploy-operate/operate/logging/) page for the `MetricsRollingFile` appender.
 
 This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
 

@@ -85,6 +85,8 @@ An operator is a stage in the pipeline that applies some kind of transformation 
 ### Pipeline context
 The pipeline context is an object that contains processing state that can be passed between the source, sink, error handlers and completion handlers. In a realtime pipeline, a separate context is created for each input element, and a reference to that element is stored in the context. In a batch pipeline, a context is created for each batch execution. In both cases, the context will contain the name of the pipeline executing, a transaction handle (if the sink is transactional), and a mutable map of context parameters for storing state.
 
+The context also holds named record counters. Any stage that has the context can increment and read them, and the platform publishes them as a metric when processing completes. See [Record counters](#record-counters).
+
 ## Building a pipeline
 Within the pipelines GPAL file, you will find a `pipelines` block:
 ```kotlin
@@ -103,6 +105,8 @@ pipelines {
 
 To start with, the pipeline is empty. We begin by calling the source function to start the pipeline building process.
 
+Each pipeline name must be unique within its `pipelines` block, and every pipeline must end with a call to `build()`. If either rule is broken, the script fails to load; a missing `build()` produces an error that names the unfinished pipeline.
+
 ### `source`
 The source function takes an instance of an object that implements the source interface.
 This can be:
@@ -111,6 +115,8 @@ This can be:
 - a custom class written in your application that implements one of the Data Pipelines API source interfaces
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 // Example using a platform provided source
 val camelSource = camelFileSource {
     location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
@@ -146,6 +152,8 @@ pipelines {
 A filter operator allows you to exclude certain elements from being sent to the sink. The input and output type remain the same with a filter operator.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Filtering") {
   source(
     BatchSource {
@@ -167,6 +175,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A map operator transforms the input type to the output type.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Mapping") {
   source(
     BatchSource {
@@ -188,6 +198,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A split operator transforms an input element into many output elements. For example, you can split a file object into its constituent lines.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Split") {
   source(
     BatchSource {
@@ -213,6 +225,8 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 A transform operator allows you to apply a transformation operation to the entire input stream, rather than just an individual element. For example, if you want to sort records before sinking them to a file, or remove elements with duplicate data, these are stream level operations rather than element level operations and require a transform operator.
 
 ```kotlin
+import kotlinx.coroutines.flow.asFlow
+
 pipeline(name = "Simple Integer Pipeline With Transform") {
   source(
     BatchSource {
@@ -296,7 +310,7 @@ pipeline(name = "Simple Integer Pipeline With Error handling") {
 ```
 
 ### `onUncaughtError`
-This error handler accepts an exception as an argument and allows you to take action when an exception that is not caught by any operation level error handlers unexpectedly terminates the pipeline. There is no action to be taken in terms of recovery at this point, as the pipeline has already terminated. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
+This error handler accepts an exception as an argument and allows you to take action when an exception is not caught by any operation level error handler. In a real-time pipeline, if the handler returns normally, the element is acknowledged and dropped, and the pipeline carries on (see [`eventSink`](#eventsink)). In a batch pipeline, the handler runs after the current batch execution has already stopped, so it can't recover that execution. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
 
 ```kotlin
 pipeline(name = "Simple Integer Pipeline With Error handling") {
@@ -325,6 +339,48 @@ pipeline(name = "Simple Integer Pipeline With OnCompletion") {
     }
 }
 ```
+
+### Record counters
+A pipeline can count the records it processes. The counters are stored on the [pipeline context](#pipeline-context), so any stage that receives the context can update or read them, and they are shared with any context derived from it. A typical use is an `onCompletion` handler that logs how many records a run wrote.
+
+The context has these functions:
+
+| Function | Description |
+|---|---|
+| `incrementCounter(counterName, delta = 1)` | Adds `delta` to the named counter, creating it if needed, and returns the new value |
+| `getCounter(counterName)` | Returns the current value of the named counter, or `0` if it doesn't exist |
+| `counters` | All the counters on the context, by name |
+
+`dbSink()` and `txDbSink()` increment a counter called `sent_records` by the number of database operations they write.
+
+To count elements at a particular stage, use one of these operators:
+
+| Operator | Use with | Counts |
+|---|---|---|
+| `recordCounter(counterName)` | `.map(...)` | Each element, which is passed through unchanged |
+| `streamRecordCounter(counterName)` | `.transform(...)` | Each element of the stream, which is passed through unchanged |
+| `onOperationErrorCounter(counterName)` | `.onOperationError(...)` | Each operation error that is handled |
+
+`onOperationErrorCounter` always returns `SKIP_ELEMENT`. If it is the only error handler on an operation, an error that would otherwise be rethrown is counted and the element is skipped instead. To keep stricter behaviour, register your own handler on the same operation alongside the counter: when handlers return different actions, the stricter one wins.
+
+```kotlin
+pipelines {
+    pipeline("TRADE_INGEST")
+        .source(tradeSource)
+        .map(recordCounter("received"))
+        .map(tradeMapper)
+        .onOperationError(onOperationErrorCounter("mapping_errors"))
+        .sink(dbSink())
+        .onCompletion { context ->
+            LOG.info("Wrote {} of {} records", context.getCounter("sent_records"), context.getCounter("received"))
+        }
+        .build()
+}
+```
+
+When processing completes, the platform adds every counter on the context to a metric called `pipeline_records`. In a real-time pipeline, this happens once for each element. With a transactional sink such as `txDbSink()`, it happens after the write transaction has committed. A non-transactional pipeline publishes the metric once the element is processed, with no commit to wait for. In a batch pipeline, it happens once per run.
+
+You don't need to change your script. The metric only appears when metrics are enabled, as described in [Data pipeline metrics](/build-deploy-operate/operate/metrics/#data-pipeline-metrics). The counters themselves work either way.
 
 ## Core elements
 The following core elements are part of the Core Data Pipelines library and are always available for use in your *-pipelines.kts scripts.
@@ -499,7 +555,7 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 // this source will return batches of List<TestIndexTable>
 ```
 
-### `dbBulkSubscribe`
+#### `dbBulkSubscribe`
 
 This is a real-time bulk subscription to the database for a particular entity and can be used for tables or views.
 
@@ -512,6 +568,8 @@ This source implementation is not recoverable. On each invocation of this pipeli
 The source returns a flow of `Bulk` objects for your chosen entity. This needs to be converted to the underlying record using a mapper, an example of which has been provided below:
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 // the following mapper class extracts the Trades record from each Bulk<Trades> object and returns it to the pipeline:
 class TradesMapper : SuspendElementOperator<Bulk<Trades>, Trades> {
     override suspend fun apply(input: Bulk<Trades>): Trades? = when (input) {
@@ -545,7 +603,7 @@ pipeline("TEST_DB_BULK_SUBSCRIBE") {
     }
 ```
 
-### `dbBulkQuery`
+#### `dbBulkQuery`
 
 This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object that you specified when you defined the source:
 
@@ -593,7 +651,7 @@ pipelines {
 
 #### `httpSource`
 
-The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
+The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/external-rest-apis/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint.
 
@@ -638,7 +696,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 
 #### `typedHttpSource`
 
-The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
+The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/external-rest-apis/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint, as well as the request object being sent (which should be provided in the `execute()` method when triggering this pipeline).
 
@@ -692,6 +750,9 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 - an object of a user-defined type representing the data of each CSV line;
 
 ```kotlin
+import global.genesis.pipeline.api.db.DbOperation
+import global.genesis.pipeline.file.CsvRow
+
 // Decoding CSV to a class
 pipeline("TEST_PIPELINE_DECODER") {
   source(
@@ -729,6 +790,9 @@ This is a split operator that decodes a PipelineFile object into a stream of Csv
 - a map holding the data for each CSV line of type `Map<String, String>`
 
 ```kotlin
+import global.genesis.pipeline.api.db.DbOperation
+import global.genesis.pipeline.file.CsvRow
+
 // Decoding CSV to Map<String, String>
 pipeline("TEST_PIPELINE_RAW_DECODER") {
   source(
@@ -800,9 +864,12 @@ For modifications (Upsert and Modify operations types), you can supply a list of
 
 
 ##### `dbSink`
-This is a sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'.
+This is a sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs outside of any database transaction. Use this version of the sink if you want the behaviour to be 'best effort'. Its input elements must be `DbOperation`s; see [Database Sinks](#database-sinks).
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+import global.genesis.pipeline.api.db.DbOperation
+
 // Non-transactional db sink
 pipeline("TEST_DB_SINK") {
   source(dbBulkSubscribe<Trade>())
@@ -823,6 +890,9 @@ pipeline("TEST_DB_SINK") {
 This is a transactional sink into the Genesis database. The sink operation for each input element (real-time) or execution (batch) occurs within a single database transaction. Use this version of the sink if you want the behaviour to be 'all-or-nothing'.
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+import global.genesis.pipeline.api.db.DbOperation
+
 // Transactional db sink
 pipeline("TEST_DB_SINK") {
   source(dbBulkSubscribe<Trade>())
@@ -846,6 +916,9 @@ This sink implementation allows you to write data to files on the file system of
 ###### Writing to a local Directory
 
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+import kotlinx.coroutines.flow.asFlow
+
 pipeline("OUTBOUND_FILE_PIPELINE") {
   source(
     BatchSource {
@@ -881,6 +954,8 @@ camelFileSink {
 
 ###### Writing to a local directory
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+
 pipeline("CAMEL_OUTBOUND_PIPELINE") {
   source(
     camelFileSource {
@@ -905,6 +980,8 @@ pipeline("CAMEL_OUTBOUND_PIPELINE") {
 
 ###### Writing to an SFTP server
 ```kotlin
+import global.genesis.pipeline.file.NewPipelineFile
+
 val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
 val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
 
@@ -936,7 +1013,7 @@ This sink uses the Genesis messaging API to send an event to an event handler fo
 
 The `eventSink` separates three concerns:
 
-- **What** — the event payload, built per element via `buildEvent`.
+- **What** — the event payload, built per element via `buildEvent`, where the incoming record is `element`.
 - **Where** — the destination. By default, the platform resolves the target service from the event name. You can explicitly pin a service using `to = service("serviceName")`. Pin the service explicitly when one event name is served by several processes (otherwise, name resolution is ambiguous).
 - **How** — the delivery policy, configured in the `delivery` block.
 
@@ -944,13 +1021,39 @@ The delivery policy controls how the platform handles timeouts, retries and nega
 
 | Option | Description | Default |
 |---|---|---|
-| `timeout` | The timeout in seconds for each event delivery request. | Platform default |
-| `retry` | The retry mode when a target is unavailable. Use `holdUntilDelivered()` to hold the event until the target is reachable (never drops the event). Use `holdWithDeadline(seconds)` to give up and throw an exception after the specified deadline. | `holdUntilDelivered()` |
-| `onNack` | The action to take when a NACK is received. Use `throwOnNack()` to throw an exception and propagate the failure to `onOperationError`. Use `logOnNack()` to log the failure and continue. | `logOnNack()` |
+| `timeout` | The timeout in seconds for each event delivery request. | `10` |
+| `retry` | The retry mode when no target is reachable or the target replies with an UNAVAILABLE NACK. Use `holdUntilDelivered()` to hold the event until it is accepted (never drops the event on UNAVAILABLE; see below for `throwOnNack()` errors). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
+| `onNack` | The action to take when a NACK other than UNAVAILABLE is received. UNAVAILABLE NACKs are always retried under your `retry` setting. Use `throwOnNack()` to throw, `logOnNack()` to log at error level and continue. | `throwOnNack()` |
 
-To prevent data loss, any failure that occurs before the event is successfully sent (such as an unresolvable service or no reachable instances) is automatically held and retried according to your configured `retry` policy. This prevents the pipeline checkpoint from advancing and dropping the event.
+The sink holds an event and retries it with a backoff, under your `retry` setting, whenever the event has definitely not been accepted:
 
-Other exceptions that occur during or after transmission are propagated to `onOperationError` as normal.
+- the target service can't be resolved
+- no instance of the target service is reachable
+- the target replies with an UNAVAILABLE NACK
+
+Delivery is therefore at-least-once: after a retry, the same event can arrive twice. It is re-sent unchanged.
+
+The sink doesn't retry in these cases; it throws an exception instead:
+
+- there is no reply within `timeout`
+- any other error occurs while sending
+- the target replies with a NACK and `onNack` is `throwOnNack()`
+
+`onNack` only applies to NACKs other than UNAVAILABLE. An UNAVAILABLE NACK is always retried under your `retry` setting, whatever `onNack` is set to.
+
+An exception thrown by the sink doesn't reach `onOperationError`, which only covers `map` and `split` operations. It goes to the pipeline's [`onUncaughtError`](#onuncaughterror) handlers:
+
+- If there is no `onUncaughtError` handler, a real-time pipeline stops.
+- If a handler returns normally, the element is acknowledged and dropped, and the pipeline carries on.
+
+So with the default `throwOnNack()` and no `onUncaughtError` handler, a single NACK stops the pipeline. To keep it running, use `logOnNack()` or add an `onUncaughtError` handler.
+
+If a pipeline stops:
+
+- The pipeline logs `Exception thrown in <pipeline name> but no error handlers have been set` at error level, with the stack trace.
+- The process stays up. Only that pipeline stops; other pipelines in the same process carry on.
+- The process monitor entry named after the pipeline goes to WARNING, with the message `Uncaught exception during pipeline processing: ...`. It doesn't return to UP on its own.
+- To restart the pipeline, restart the process.
 
 ###### Streaming each element to a FIX gateway
 
@@ -1038,6 +1141,8 @@ eventHandler<TradeDetails>("TRADE_LOGIC", transactional = true) {
 The following handler can be used:
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 
 val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Trade>, TradeDetails> {
             eventName = "EVENT_TRADE_LOGIC"
@@ -1056,11 +1161,17 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
+`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level instead of throwing. You can't change its retry behaviour: it holds until the event is delivered, except inside a write transaction (`txDbSink()`), where it gives up after `timeout`. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. Under `txDbSink()`, `timeout` limits the whole attempt instead. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely, except under `txDbSink()`, where the handler gives up after `timeout`.
+
+In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds, which under `txDbSink()` is at most `timeout`. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
+
 #### `sendCustomEventOnCompletion`
 
 This handler works in the same way as `sendEventOnCompletion` above, except the return type of the event can be specified. This can therefore be used when the return type of your custom event is anything other than EventReply.
 
 ```kotlin
+import global.genesis.db.updatequeue.Bulk
+
 
 val customTradeOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDetails, EventCustomTradeReply> {
             eventName = "EVENT_CUSTOM_TRADE"
