@@ -40,7 +40,7 @@ The slice jars are resolved with these coordinates:
 
 The view module has no slice jar, so its regular jar is used.
 
-The `<groupId>` is the Gradle `group` of the upstream product's build. A generated project sets it in the `allprojects { }` block of `server/build.gradle.kts`; for Genesis and auth it is `global.genesis`.
+The `<groupId>` is the Gradle `group` of the upstream product's build. A generated project sets it in the `allprojects { }` block of `server/build.gradle.kts`; for Genesis and auth it is `global.genesis`. The `<version>` is the upstream project's Gradle `version`, which a generated project sets in the same `allprojects { }` block in `server/build.gradle.kts` (for example `version = "1.0.0-SNAPSHOT"`, next to `group = ...`). It is the version the consumer puts in `dependency("groupId:productName:version")`.
 
 For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version>:slice`, and Genesis's is `global.genesis:genesis-generated-dao:<version>:slice`.
 
@@ -99,7 +99,7 @@ The build does not detect an override of an upstream dictionary file for you. If
 
 To override auth's tables:
 
-1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application module, for example `server/<product>-app/build/genesis-home/auth/cfg/auth-tables-dictionary.kts`. The `_copyDependenciesCfgFiles` task populates that directory, and the Genesis install and sync tasks depend on it, so run one of those first if the directory is empty.
+1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application module, for example `server/<product>-app/build/genesis-home/auth/cfg/auth-tables-dictionary.kts`. The app's sync fills that directory, which Genesis Start and the IntelliJ plugin do for you, so if it is empty, start or sync the app from one of them first (if you are working outside both tools, run `./gradlew genesisSync`).
 2. Make your changes in the copy.
 3. Set one of these properties:
     - `genesis.codegen.overrideSlices=auth` regenerates auth's code locally, and keeps reusing the slice jars of every other upstream product.
@@ -115,7 +115,7 @@ Your copy replaces auth's whole table dictionary, not just the tables you change
 
 An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code (see [Table entities](/develop/server-capabilities/data-access-apis/#table-entities) for the generated entity class name), where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
-To change an upstream product's system definition value, add it to your application's own `genesis-system-definition.kts`. That file takes precedence over the system definitions of upstream products, so for example you set `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` there, not in a copy of auth's system definition file. Never copy an upstream product's system definition file.
+To change an upstream product's system definition value, add it to your application's own `genesis-system-definition.kts`. That file takes precedence over the system definitions of upstream products, so for example you set [`ADMIN_PERMISSION_ENTITY_TABLE`](/develop/server-capabilities/access-control/authorization/#simple-configuration) and `ADMIN_PERMISSION_ENTITY_FIELD` there, not in a copy of auth's system definition file. Never copy an upstream product's system definition file.
 
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
