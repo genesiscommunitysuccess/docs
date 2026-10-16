@@ -60,7 +60,7 @@ class OrderService {
 ```
 
 :::tip
-To confirm Spring created a proxy for a class like this, inject the bean in a `@SpringBootTest` and inspect `orderService.javaClass.name`. A CGLIB proxy class name, containing `$$SpringCGLIB$$`, confirms the plugin applied.
+To confirm Spring created a proxy for a class like this, inject the bean in a `@GenesisSpringTest` (not a bare `@SpringBootTest`) that contributes it with `@Import(OrderService::class)`, and inspect `orderService.javaClass.name`. A CGLIB proxy class name, containing `$$SpringCGLIB$$`, confirms the plugin applied. See [Test tooling](/develop/server-capabilities/spring-integration/test-tooling).
 :::
 
 Applying the plugin doesn't pull Spring Boot in for you: no Spring Boot dependency needs to be present to apply `global.genesis.spring` itself, and the Spring Boot starter modules a module needs are added by the consuming module independently, for runtime concerns the plugin doesn't touch.
