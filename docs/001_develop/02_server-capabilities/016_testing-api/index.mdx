@@ -1140,7 +1140,7 @@ class ProvidedDictionaryTest {
 }
 ```
 
-- `providedDictionary { }` adds the `PROCESS_STATIC_INFO` and `PROCESS_META_DATA` tables for you, with ids 10001 and 10002. Don't use those ids for your own tables.
+- `providedDictionary { }` adds the `PROCESS_STATIC_INFO` and `PROCESS_META_DATA` tables for you. Ids 10001 and 10002 are reserved for these tables, so do not use them for your own tables.
 - A test class, including its superclasses, can have only one `@ProvidedDictionary` member. A second one fails the test with `Only one @ProvidedDictionary member is supported`.
 - You can't combine it with [`@EnableLegacyXmlDictionary`](#enablelegacyxmldictionary). The test fails with `@ProvidedDictionary cannot be combined with @EnableLegacyXmlDictionary`.
 - A method must take no parameters and must not be a `@Test` method itself.
@@ -1227,7 +1227,7 @@ Then we can override the implementation at runtime using a fake/mock implementat
 internal class ProvidedInstanceTest {
 
     /**
-     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
+     * Provides a [MyInterface] instance during the dependency injection phase.
      */
     @ProvidedInstance
     private val myInstance: MyInterface = FakeImpl()
@@ -1312,7 +1312,7 @@ public class ProvidedTypeTest {
 </TabItem>
 </Tabs>
 
-In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` in Kotlin: either a property, or a function annotated `@JvmStatic`. In Java, declare the field or method `static`. An instance member fails the test, as does a member that returns `null` or a method that takes parameters. `@ProvidedInstance` is less strict: it skips such a member without a message.
+In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` in Kotlin: either a property, or a function annotated `@JvmStatic`. In Java, declare the field or method `static`. An instance member fails the test with a message telling you to use a static member, as does a member that returns `null` or a method that takes parameters. `@ProvidedInstance` is less strict: it skips such a member without a message.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1511,7 +1511,7 @@ public class WithLogLevelTest {
 
     @Test
     @WithLogLevel(logger = "com.example.trades", level = LogLevel.TRACE)
-    @WithLogLevel(logger = "com.example.pricing", level = LogLevel.DEBUG)
+    @WithLogLevel(logger = WithLogLevel.PACKAGE, level = LogLevel.DEBUG)
     public void myOtherTest() {
         // com.example.trades logs at TRACE, and com.example.pricing at DEBUG
         assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled());
