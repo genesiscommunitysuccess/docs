@@ -77,10 +77,6 @@ systemDefinition {
 
 Add the item inside the existing `global { }` block of the file. Don't add a second `systemDefinition` block.
 
-Then sync the configuration and restart the application, so that the MCP process starts. With Genesis Start, use [Sync processes](/develop/development-environment/genesis-start/#sync-processes) followed by [Bootstrap and launch](/develop/development-environment/genesis-start/#bootstrap-and-launch).
-
-When processes are compacted with `compactProcessesStrategy=DEV`, as they are in local development, the MCP server runs inside `MCP_COMPACT_PROCESS` rather than appearing as `GENESIS_MCP`.
-
 :::warning
 The shipped `genesis-mcp-server.kts` is for local development only. If you enable `GENESIS_MCP` and keep it:
 
@@ -92,6 +88,10 @@ The shipped `genesis-mcp-server.kts` is for local development only. If you enabl
 
 [Override this file](#step-2-configure-the-mcp-server) before you enable `GENESIS_MCP` anywhere other than your own machine.
 :::
+
+Then sync the configuration and restart the application, so that the MCP process starts. With Genesis Start, use [Sync processes](/develop/development-environment/genesis-start/#sync-processes) followed by [Bootstrap and launch](/develop/development-environment/genesis-start/#bootstrap-and-launch).
+
+When processes are compacted with `compactProcessesStrategy=DEV`, as they are in local development, the MCP server runs inside `MCP_COMPACT_PROCESS` rather than appearing as `GENESIS_MCP`.
 
 ### Step 2: Configure the MCP server
 
@@ -418,6 +418,8 @@ Whatever the caller's rights, `query_table`, `investigate_record`, `reconcile` a
 These are registered when `platformTools = true`, the default. The server also registers `get_current_time`, which returns the current time, whatever the settings.
 
 ### Tools
+
+Every platform-tool argument is passed as a string, including the numeric ones. For example, send `"MAX_ROWS": "5"`, not `"MAX_ROWS": 5`.
 
 | Tool | Tier | Parameters | What it does |
 |---|---|---|---|
