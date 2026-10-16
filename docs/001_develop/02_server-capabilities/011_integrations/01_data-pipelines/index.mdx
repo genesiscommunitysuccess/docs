@@ -1022,7 +1022,7 @@ The delivery policy controls how the platform handles timeouts, retries and nega
 | Option | Description | Default |
 |---|---|---|
 | `timeout` | The timeout in seconds for each event delivery request. | `10` |
-| `retry` | The retry mode when no target is reachable or the target replies with an UNAVAILABLE NACK. Use `holdUntilDelivered()` to hold the event until it is accepted (never drops the event on UNAVAILABLE; it does not cover a `throwOnNack()` error that an [`onUncaughtError`](#onuncaughterror) handler swallows, which is acknowledged and dropped, see below). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
+| `retry` | The retry mode when no target is reachable or the target replies with an UNAVAILABLE NACK. Use `holdUntilDelivered()` to hold the event until it is accepted (never drops the event on UNAVAILABLE; see below for `throwOnNack()` errors). Use `holdWithDeadline(maxWaitMs)` to give up and throw an exception once the deadline, in milliseconds, has passed. | `holdUntilDelivered()` |
 | `onNack` | The action to take when a NACK other than UNAVAILABLE is received. UNAVAILABLE NACKs are always retried under your `retry` setting. Use `throwOnNack()` to throw, `logOnNack()` to log at error level and continue. | `throwOnNack()` |
 
 The sink holds an event and retries it with a backoff, under your `retry` setting, whenever the event has definitely not been accepted:
