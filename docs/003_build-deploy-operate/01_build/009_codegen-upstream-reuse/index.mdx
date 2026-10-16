@@ -40,7 +40,7 @@ The slice jars are resolved with these coordinates:
 
 The view module has no slice jar, so its regular jar is used.
 
-The `<groupId>` is the Gradle `group` of the upstream product's build. A generated project sets it in the `allprojects { }` block of `server/build.gradle.kts`; for Genesis and auth it is `global.genesis`. The `<version>` is the upstream project's Gradle `version`, which a generated project sets in the same `allprojects { }` block in `server/build.gradle.kts` (for example `version = "1.0.0-SNAPSHOT"`, next to `group = ...`). It is the version the consumer puts in `dependency("groupId:productName:version")`.
+The `<groupId>` is the Gradle `group` of the upstream product's build. A generated project sets it in the `allprojects { }` block of `server/build.gradle.kts`; for Genesis and auth it is `global.genesis`. The `<version>` is the upstream project's Gradle `version`, which a generated project sets in the same `allprojects { }` block (for example `version = "1.0.0-SNAPSHOT"`, next to `group = ...`). It is the version the consumer puts in `dependency("groupId:productName:version")`.
 
 For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version>:slice`, and Genesis's is `global.genesis:genesis-generated-dao:<version>:slice`.
 
