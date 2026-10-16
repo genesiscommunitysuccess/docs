@@ -37,7 +37,7 @@ messaging:
   channel: WEBSOCKET
 ```
 
-Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record, so there is nothing for you to inspect or configure.
+Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record.
 
 For the other `messaging` settings, including the `webSocket` and `http` blocks, see the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section).
 
