@@ -214,6 +214,16 @@ GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 
 System-definition items can be set at **process scope** (for example inside a `*-process-config.kts` file using `process { systemDefinition { ... } }`).
 
+```kotlin
+process {
+    systemDefinition {
+        item("HttpAuthDisabled", "true")
+    }
+}
+```
+
+The `*-process-config.kts` file only applies to a process if that process names it in a `<config>` element in `processes.xml`. See the [`config` tag](/develop/server-capabilities/runtime-configuration/processes/#tags) on the processes page.
+
 You can also set them as environment variables. To do this, prefix the variable name with the process name:
 
 - `GENESIS_SYSDEF_<PROCESS_NAME>_<ItemName>=...`
