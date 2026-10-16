@@ -459,7 +459,7 @@ Like the CSV seed data under `server/<project-name>-app/src/main/genesis/data`, 
 With the app rebuilt, restarted, and seeded:
 
 :::note
-These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml` (the scaffolded `-spring` module has neither, so create the file if it does not exist, for example `server/<project-name>-spring/src/main/resources/application.properties`), or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. Adjust the host:port in the curl examples below to match.
+These examples assume the default port `8080`. To run on a different port, set `server.port` in `application.properties`/`application.yml` (the scaffolded `-spring` module has neither, so create the file if it does not exist, for example `server/<project-name>-spring/src/main/resources/application.properties`), or pass `-Dserver.port=<port>` — this is plain Spring Boot configuration. The router's port (9064 by default) is overridden with `GENESIS_ROUTER_PORT`; see [Service definition: Overriding ports at runtime](/develop/server-capabilities/runtime-configuration/service-definition/#overriding-ports-at-runtime). Adjust the host:port in the curl examples below to match.
 :::
 
 :::note
