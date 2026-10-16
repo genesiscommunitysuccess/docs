@@ -1312,7 +1312,7 @@ public class ProvidedTypeTest {
 </TabItem>
 </Tabs>
 
-In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` in Kotlin: either a property, or a function annotated `@JvmStatic`. In Java, declare the field or method `static`. An instance member fails the test with a message telling you to use a static member, as does a member that returns `null` or a method that takes parameters. `@ProvidedInstance` is less strict: it skips such a member without a message.
+In a [`@GenesisSharedContextTest`](#genesissharedcontexttest), no test instance exists when these members are read, so put the member in a `companion object` in Kotlin: either a property, or a function annotated `@JvmStatic`. In Java, declare the field or method `static`. An instance member fails the test with a message telling you to use a static member. A member that returns `null`, or a method that takes parameters, also fails the test. `@ProvidedInstance` is less strict: it skips such a member without a message.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1513,7 +1513,7 @@ public class WithLogLevelTest {
     @WithLogLevel(logger = "com.example.trades", level = LogLevel.TRACE)
     @WithLogLevel(logger = WithLogLevel.PACKAGE, level = LogLevel.DEBUG)
     public void myOtherTest() {
-        // com.example.trades logs at TRACE, and com.example.pricing at DEBUG
+        // com.example.trades logs at TRACE, and the test class's package at DEBUG
         assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled());
     }
 }
