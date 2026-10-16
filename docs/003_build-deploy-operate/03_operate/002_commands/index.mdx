@@ -345,6 +345,8 @@ genesisInstall --compactProcesses
 
 You can also set `BlockGenesisInstall` in your project's system definition. `genesisInstall` checks the installed system definition in `$GENESIS_HOME/generated/cfg`, not your project's source, so a change there takes effect from the install after the one that deploys it. If both are set, the environment variable wins.
 
+To unblock an install whose installed system definition sets `BlockGenesisInstall`, run `genesisInstall` once with `GENESIS_SYSDEF_BlockGenesisInstall=false`; that install deploys your source value.
+
 Because the exit status is `0`, a script that calls `genesisInstall` can't tell a blocked run from a successful install by its status; check the output for this warning instead. The warning text is the only signal that the install was skipped: there is no distinct exit code or flag, and the wording may change between releases.
 
 ```
