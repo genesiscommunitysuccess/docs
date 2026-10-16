@@ -63,6 +63,10 @@ systemDefinition {
 }
 ```
 
+## Applying a change
+
+Processes read the system definition when they start, so a running process doesn't pick up a change. After you change an item, run `genesisInstall`, then restart the processes that use the item. `genesisInstall` regenerates the copy of the system definition that `startProcess` reads, for example for `JVM_OPTIONS` and for the [process overrides](#overriding-processesxml-settings) described below.
+
 ## Global, System and Host levels
 
 As you can see from the example, you can define items at global, system and host level.
@@ -149,6 +153,8 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **MetricsEnabled**: Default value is false. For more information, go to the page on [metrics](/build-deploy-operate/operate/metrics/).
 
+**MetricsJvmEnabled**: When metrics are enabled, controls whether JVM memory, garbage collection and thread metrics are collected. They are on by default; set this item to `false` to turn them off. For more information, go to the page on [metrics](/build-deploy-operate/operate/metrics/#jvm-memory-metrics).
+
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
 **DbMode**: The `LEGACY` value is no longer supported. The dictionary is always stored in the namespace-aware store, so [PostgreSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql) works with namespaces/schemas without this setting. If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start, so remove the setting.
@@ -175,11 +181,15 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
+**DataDumpJsonFormatEnabled**: When `true`, messages logged because of `DATADUMP_ON` or `DATADUMP_NACK_ON` are written as a single JSON string instead of the multi-line format. Default value is `false`. A process reads this item once, when it starts.
+
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
 **ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
+
+**TransportReadyTimeoutMs**: Applies only to processes in the `EXTERNAL` transport mode. After service registration, the process waits this many milliseconds for its host to signal that it is serving; if the signal doesn't arrive, the process goes to `ERROR`. Default value is `120000`.
 
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](/build-deploy-operate/build/bdo-build-overview/#bundling-generated-code-with-product-distribution).
 
@@ -231,7 +241,7 @@ In this example, all processes will use `DbSqlMaxPoolSize=10` by default, but th
 
 ## Overriding processes.xml settings
 You can override the values defined for a process definition inside the [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes) file by using the following naming convention:
-`<process_name>_PROCESS_<property>`
+`<PROCESS_NAME>_PROCESS_<property>`
 
 This approach makes it really easy to set the properties for a process definition without having to override/modify the corresponding `processes.xml` file directly, which simplifies the deployment process and long term maintenance.
 Additionally, this mechanism works both for a local development environment (using [Genesis Start](/develop/development-environment/genesis-start/) or the [IntelliJ plugin](/develop/development-environment/intellij-plugin/)) and for a deployed environment.
@@ -278,8 +288,36 @@ See table below with all the available properties and the mapping to the corresp
 | LANGUAGE              | `<language>`            |
 
 :::info
-The `JVM_OPTIONS` system definition item will still be taken into account when overriding the process `<options>` property.
+`<PROCESS_NAME>_PROCESS_OPTIONS` replaces the process's `<options>` tag entirely, whether you set it with a system definition item or an environment variable. Nothing from the tag is kept, so repeat any flags you still need, such as `-DRedirectStreamsToLog=true`.
+
+The global `JVM_OPTIONS` item is still merged in. If both set `-Xmx` or `-Xms`, the value from `<PROCESS_NAME>_PROCESS_OPTIONS` wins. Without an override, the value from `JVM_OPTIONS` wins over the process's own `<options>` tag.
+
+Genesis starts every process with `-XX:+IgnoreUnrecognizedVMOptions`, so the JVM silently ignores any `-XX:` flag it doesn't recognise, including a misspelt one. Check the spelling of any `-XX:` flags you add.
 :::
+
+### Overriding at start time
+
+`startProcess` also reads these overrides each time it starts a process. `preCompileScripts` reads them the same way, so pre-compiled scripts match what `startProcess` runs. For a process `<PROCESS_NAME>` and a property `<property>`, the value comes from the first of these that is set:
+
+1. the environment variable `GENESIS_SYSDEF_<PROCESS_NAME>_PROCESS_<property>`
+2. the system definition item `<PROCESS_NAME>_PROCESS_<property>`
+3. the tag in `processes.xml`
+4. the tag's default
+
+`<PROCESS_NAME>` must match the process name in `processes.xml` exactly. The lookup is case-sensitive, so `GENESIS_SYSDEF_genesis_auth_perms_PROCESS_OPTIONS` is ignored for a process named `GENESIS_AUTH_PERMS`.
+
+An environment variable takes effect the next time you run `startProcess`; you don't need to run `genesisInstall`. A system definition item is read from the installed system definition, so it still needs `genesisInstall`.
+
+At start time, this covers `PACKAGE`, `OPTIONS`, `CONFIG`, `LOGGING_LEVEL`, `CONFIG_OVERRIDES_FILE`, `SCRIPT`, `LANGUAGE`, `MODULE`, `ARGUMENTS` and `CLASSPATH`. The other properties in the table are applied when `genesisInstall` generates `processes.xml`.
+
+For example, this changes the JVM options of `GENESIS_AUTH_PERMS` the next time it starts:
+
+```bash
+export GENESIS_SYSDEF_GENESIS_AUTH_PERMS_PROCESS_OPTIONS="-Xmx1g -DXSD_VALIDATE=false"
+startProcess GENESIS_AUTH_PERMS
+```
+
+Don't confuse these names with [process-scoped system-definition overrides](#process-scoped-system-definition-overrides). `GENESIS_SYSDEF_<PROCESS_NAME>_<ItemName>` sets a system definition item for one process; `GENESIS_SYSDEF_<PROCESS_NAME>_PROCESS_<property>` sets one of its `processes.xml` properties.
 
 ## Retrieving system-definition properties
 
