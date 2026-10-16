@@ -202,6 +202,8 @@ A generated view entity takes its primary key from the view's root table. Each k
 
 ```kotlin
 // Single-field key: USER_VIEW, keyed on USER_NAME
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA, name = "USER_VIEW")
 @Immutable
 @CubeDefaultIdentity("userName")
 public class UserView @JvmOverloads constructor(
@@ -234,6 +236,8 @@ public class UserView @JvmOverloads constructor(
 }
 
 // Composite key: PROFILE_USER_VIEW, keyed on PROFILE_NAME and USER_NAME
+@Entity
+@Table(schema = GenesisJpaEntity.GENESIS_SCHEMA, name = "PROFILE_USER_VIEW")
 @Immutable
 @CubeDefaultIdentity("profileName", "userName")
 public class ProfileUserView @JvmOverloads constructor(
@@ -254,7 +258,7 @@ public class ProfileUserView @JvmOverloads constructor(
 }
 ```
 
-Every generated view entity carries the class-level `@Immutable` (`org.hibernate.annotations.Immutable`) and `@CubeDefaultIdentity` annotations shown above; `@CubeDefaultIdentity` lists the root table's primary-key properties in its declared order. View-entity columns carry `nullable = false` on `@field:Column` but no `@field:NotNull`, unlike table entities.
+Every generated view entity carries the class-level `@Immutable` (`org.hibernate.annotations.Immutable`) and `@CubeDefaultIdentity` annotations shown above; `@CubeDefaultIdentity` lists the root table's primary-key properties in its declared order. View-entity columns carry `nullable = false` on `@field:Column` but no `@field:NotNull`, unlike table entities. The Kotlin property itself stays non-null and keeps the source field's default, as on table entities.
 
 A view definition joins its source tables and declares the view's output columns. The definition gives each output column its name: the source column's name as it is, that name with a prefix, or an alias — `USER.FIRST_NAME` could be output as `FIRST_NAME`, `USER_FIRST_NAME` or `BANANA_NAME`. A view can also add a derived (calculated) field, and the definition names that column too. Output names are UPPER_SNAKE_CASE, and no prefix is added to them automatically.
 
