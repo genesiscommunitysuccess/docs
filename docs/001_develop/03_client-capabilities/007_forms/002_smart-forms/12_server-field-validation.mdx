@@ -1,0 +1,180 @@
+---
+title: 'Foundation Forms - server field validation'
+sidebar_label: 'Server field validation'
+id: foundation-forms-server-field-validation
+keywords: [genesis, foundation, ui, forms, smart forms, field error, server validation, event nack]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+  - server validation
+  - field error
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Foundation Forms - server field validation
+
+When an event handler returns `EventReply.EventNack` with **`FieldError`** entries, `foundation-form` maps them automatically to **inline field errors** after submit. You do not need to wire `additionalErrors` manually on the client.
+
+## Live demo (showcase client-app)
+
+The showcase includes a dedicated example you can run end-to-end:
+
+1. Build and remap the **showcase server** (`showcase-eventhandler.kts`).
+2. Run the **showcase client-app**.
+3. Open **Forms → Server Field Validation**.
+4. Submit with the default invalid values — inline errors appear under **Counterparty ID**, **Instrument ID**, and **Quantity**.
+5. Fix each field and submit again; the server error for an edited field clears when you change that field.
+
+Server validation lives in `TRADE_INSERT` → `onValidate` in `showcase-eventhandler.kts`. The form uses open text fields (not connected selects) so you can type invalid values deliberately.
+
+## How it works
+
+| Layer | Source | When it runs |
+| ----- | ------ | ------------ |
+| JSON Schema (AJV) | Event metadata / `jsonSchema` | On change and before submit |
+| UI schema `validateFn` | Client UI schema | On change and before submit |
+| Server `FieldError` | `onValidate` → `EventNack` | After submit reaches the server |
+
+These layers are **merged**, not replaced. Submit is blocked while **client** errors exist; the server is only called when local validation passes. After a NACK, server errors appear alongside any remaining client errors. Editing a field clears the **server** error for that field path only.
+
+## Server: return `FieldError`
+
+Use `FieldError` when the error belongs to a specific field. Use a plain [`nack`](/develop/server-capabilities/core-business-logic-event-handler/#nack) or `StandardError` for generic failures (shown via toast / `submit-failure`, not inline on a field).
+
+### Do — inline errors on fields
+
+```kotlin
+import global.genesis.message.core.error.ErrorCode
+import global.genesis.message.core.error.FieldError
+import global.genesis.message.core.event.EventReply
+
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+  onValidate { event ->
+    val trade = event.details
+    val errors = mutableListOf<FieldError>()
+
+    val instrumentId = trade.instrumentId?.trim()
+    if (instrumentId.isNullOrEmpty()) {
+      errors.add(FieldError(ErrorCode.VALIDATION_ERROR, "Instrument is required", "INSTRUMENT_ID"))
+    } else if (entityDb.get(Instrument.ById(instrumentId)) == null) {
+      errors.add(
+        FieldError(
+          ErrorCode.VALIDATION_ERROR,
+          "Instrument '$instrumentId' does not exist",
+          "INSTRUMENT_ID",
+        ),
+      )
+    }
+
+    if (trade.quantity <= 0) {
+      errors.add(FieldError(ErrorCode.VALIDATION_ERROR, "Quantity must be greater than zero", "QUANTITY"))
+    }
+
+    if (errors.isNotEmpty()) {
+      EventReply.EventNack(error = errors)
+    } else {
+      ack()
+    }
+  }
+  onCommit { event ->
+    // ...
+    ack()
+  }
+}
+```
+
+### Don't — toast only, no inline highlight
+
+```kotlin
+return@onValidate nack("Instrument does not exist")   // no FIELD — not mapped inline
+require(instrument != null) { "Instrument is required" } // same
+```
+
+| NACK entry | Has `FIELD` or `PATH`? | Client behaviour |
+| ---------- | ---------------------- | ---------------- |
+| `FieldError` | Yes | Inline error on the matching field |
+| `StandardError` / string `nack` | No | Toast / `submit-failure` only |
+
+The **`FIELD`** value must match the **event / JSON schema property name** (for example `INSTRUMENT_ID`, `CCY`). It is case-sensitive. Optional `PATH` is supported for nested payloads (see implementation in `@genesislcap/foundation-forms`).
+
+For more on event handler validation, see [`onValidate`](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) and [FieldError](/develop/server-capabilities/core-business-logic-event-handler/#fielderror).
+
+## Client: minimal wiring
+
+Point `foundation-form` at the event with `resourceName`. Optionally pass `uischema` to control layout (recommended for demos that use plain text fields instead of connected selects).
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react' }, { label: 'Genesis', value: 'genesis' }, { label: 'Angular', value: 'angular' }]}>
+
+<TabItem value="react">
+
+```tsx
+<FoundationForm
+  prefix="rapid"
+  resourceName="EVENT_CURRENCY_HOLIDAY_INSERT"
+  uischema={holidayUiSchema}
+/>
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_TRADE_INSERT"
+  :uischema=${(x) => x.tradeUiSchema}
+></foundation-form>
+```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_TRADE_INSERT"
+  [uischema]="tradeUiSchema"
+></foundation-form>
+```
+
+</TabItem>
+
+</Tabs>
+
+**You do not need to:**
+
+- maintain React/Vue state for `additionalErrors` and map NACK errors by hand;
+- pass a non-public `additionalErrors` prop into `foundation-form`;
+- call imperative APIs on the inner `json-forms` element from application code.
+
+**`entity-management`** create/update modals render `foundation-form` internally — the same automatic mapping applies when `createEvent` / `updateEvent` returns `FieldError` entries.
+
+Keep `@submit-failure` only if you need logging, analytics, or custom toast handling for **generic** errors (entries without `FIELD`).
+
+## Troubleshooting
+
+### Inline errors never appear
+
+| Check | What to do |
+| ----- | ---------- |
+| **Server response** | In DevTools, confirm NACK `ERROR[]` contains objects with `FIELD` and `TEXT` (not only a generic message). |
+| **Field name** | `FIELD` must match the schema property (e.g. `CCY`, not `ccy`, if the schema uses `CCY`). |
+| **Client errors** | Fix required fields / `validateFn` failures first — submit may never reach the server. |
+| **Manual wiring** | Remove legacy `additionalErrors` state; it is not required and may conflict with built-in behaviour. |
+
+### Errors show in a toast but not on fields
+
+The server returned a **generic** NACK (`nack("message")` or `StandardError` without `FIELD`). Switch to `FieldError(ErrorCode.VALIDATION_ERROR, "message", "FIELD_NAME")`.
+
+## Related
+
+- [Validation (client-side)](/develop/client-capabilities/forms/smart-forms/foundation-forms-validation/)
+- [HTML API events](/develop/client-capabilities/forms/smart-forms/foundation-forms-html-api/) — `submit-failure`
+- [Event handler `onValidate`](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate)
