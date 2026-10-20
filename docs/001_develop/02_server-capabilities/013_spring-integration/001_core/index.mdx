@@ -278,11 +278,11 @@ opt the test into reading the real system-definition files instead.
 
 Because a router-proxied request reaches a Spring controller *before* the router's own
 authentication logic runs (the proxy simply forwards headers verbatim), this starter installs its
-own, independent, **deny-by-default** authentication layer. It resolves the same
+own, independent, **deny-by-default** authentication layer. It reads the same
 `SESSION_AUTH_TOKEN` header the rest of Genesis uses (the hyphenated `SESSION-AUTH-TOKEN` spelling
-is also accepted, since some proxies drop headers containing underscores), checked against the same
-`UserSessionCache`-backed session store. An endpoint opts out of authentication explicitly with
-`@GenesisAnonymous`.
+is also accepted, since some proxies drop headers containing underscores) and resolves it through
+`OnDemandUserSessionCache`, which reads a session from `USER_SESSION` the first time its token is
+seen and caches it. An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
 
 This layer is an authorisation filter: when it sees a `SESSION_AUTH_TOKEN` (or `SESSION-AUTH-TOKEN`)
 header on the incoming request, it resolves the token against the session store and populates the
@@ -688,7 +688,7 @@ carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
 For a narrow test of your own controller and security wiring without booting a full Genesis
 process, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling
 guide. It uses Spring Boot's `@WebMvcTest` slice with `GenesisSpringSecurityConfig` imported, so the
-security layer only needs a stubbed `UserSessionCache` to resolve tokens against. Useful assertions to
+security layer only needs a stubbed `OnDemandUserSessionCache` to resolve tokens against. Useful assertions to
 build on: a request with no token is `401`; a token resolving to no live session is `401`; a valid
 token is served and its username is available via `Principal`; a `@GenesisAnonymous`-marked endpoint
 is served with no token. Actuator endpoints are not part of the `@WebMvcTest` slice, so asserting on
