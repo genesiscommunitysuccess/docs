@@ -1815,7 +1815,9 @@ On SQL, an open stream holds a database connection until you close it or read it
 
 ###### Transactions
 
-Inside `readTransaction` and `writeTransaction`, make every read and write through the transaction object passed to the block, not through a separately injected `SyncDb` or `AsyncDb`. Only that object runs on the transaction's connection.
+Inside `readTransaction` and `writeTransaction`, make every read and write through the transaction object passed to the block, not through a separately injected `SyncDb` or `AsyncDb`.
+
+On SQL, a call on an injected database API from inside the block, on the same thread or coroutine, joins the open transaction instead of taking a second connection. It sees the transaction's uncommitted writes, and its own writes commit or roll back with the transaction. But those writes can be published to the update queue as soon as they finish, before the transaction commits and even if it then rolls back. The transaction object has none of these caveats.
 
 - In a `readTransaction`, the object is a `SyncReadDb` (or `AsyncReadDb`). It has read methods only, so you can't write inside a read transaction.
 - A `writeTransaction` follows the same commit and rollback rules as [Write transactions](#write-transactions).
