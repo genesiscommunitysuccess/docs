@@ -924,7 +924,7 @@ endpoint<String>(GET, "users") {
 
 When the Genesis Router serves your custom endpoints, which is the default, they need no configuration beyond the web-handler.kts file and no changes to the processes.xml file. The router picks the files up automatically from the script folders.
 
-To serve the endpoints from another process instead, that process must use the WebSocket messaging channel, and the script file must be listed in that process's `script` entry in processes.xml. See [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process).
+To serve the endpoints from another process instead, that process needs the WebSocket messaging channel and a few entries in processes.xml. See [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process) for the full list.
 
 ### Script modules
 
