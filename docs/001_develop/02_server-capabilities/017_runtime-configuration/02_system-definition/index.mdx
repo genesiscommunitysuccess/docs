@@ -216,6 +216,8 @@ These settings control compilation and caching of GPal scripts and system-defini
 
 These settings apply only to scripts that a process compiles at start-up. If your build [compiles scripts at build time](/build-deploy-operate/build/build-time-script-compilation/), the process loads those scripts from their compiled classes and doesn't use the script cache for them.
 
+**StrictHttpStatusCode**: When `true`, the router applies the HTTP status codes found in error responses to the HTTP reply; when `false` (the default), it returns the error payload in an HTTP 200 response. See [Router configuration](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) for details.
+
 
 ## Setting system-definition values from environment variables
 
