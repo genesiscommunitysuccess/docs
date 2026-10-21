@@ -151,7 +151,7 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: The `LEGACY` value is no longer supported. The dictionary is always stored in the namespace-aware store, so [PostgreSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql) works with namespaces/schemas without this setting. If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start, so remove the setting.
+**DbMode**: The `LEGACY` value is no longer supported. The dictionary is always stored in the namespace-aware store, so [PostgreSQL](/build-deploy-operate/deploy/supporting-infrastructure/#postgresql) works with namespaces/schemas without this setting. If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start, so remove the setting. In Genesis 8.15 and earlier, `DbMode` also accepts `LEGACY`; Genesis 10.0 removed it.
 
 **ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
 

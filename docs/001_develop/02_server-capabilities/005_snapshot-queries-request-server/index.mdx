@@ -301,6 +301,10 @@ In the example below, we will filter out rows where the COUNTERPARTY_NAME is equ
   }
 ```
 
+:::note
+In Genesis 8.15 and earlier, `requestReply` also accepts the two-argument `where { row, parameters -> }` predicate. Genesis 10.0 removed it.
+:::
+
 #### `filterWithRequest`
 
 Similar to `filterWithParameters` but the `genesisSet` context property contains the whole request payload and not just the parameters.
