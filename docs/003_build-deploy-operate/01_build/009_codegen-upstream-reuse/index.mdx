@@ -146,6 +146,12 @@ Your application's own product is always handled automatically. You never need t
 
 If your application uses `tableUnion` to add fields to a table that belongs to an upstream product, that product's slice jar doesn't contain your extra fields. You must list the product in `genesis.codegen.overrideSlices` so that it is regenerated locally. This applies whatever the `strict` setting. If the product isn't listed, the build fails with a message that names the value to add. Tables that belong to your application's own product don't need this.
 
+The error looks like this. The table and product names depend on your build:
+
+```
+[codegen] tableUnion detected for table(s) [WIDGET] belonging to upstream product(s) [auth] — their slice jars lack the union fields. Add 'genesis.codegen.overrideSlices=auth' to gradle.properties to regenerate those products' entity classes locally.
+```
+
 For example, this `position-tables-dictionary.kts` adds the field `DEPARTMENT`, declared inline inside the `tableUnion`, to auth's `PROFILE` table:
 
 ```kotlin
