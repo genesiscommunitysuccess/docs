@@ -18,9 +18,15 @@ Use a listener when an extra write must be atomic with every write, for example 
 
 There is one listener interface for each style of API, all in the `global.genesis.db.bustxn` package. Each has a default no-op implementation. To replace it, provide your own implementation as a [`@Module`](/develop/server-capabilities/custom-components/#module).
 
-A listener is only bound in a process whose [processes.xml](/develop/server-capabilities/runtime-configuration/processes/) `<package>` section scans the listener's package, and whose `<classpath>` section includes the jar that holds it. Every process that writes and should notify the listener must scan it. There is no property or flag that enables listener support.
+A listener is only bound if its package is in the scan of the base injector, which is the one that builds the database layer. To put it there, add an empty classpath resource file named after the listener's package, under `META-INF/global/genesis/bootstrap/extensions/`. For a listener in the package `com.example.listeners`, in your app module:
 
-When a process starts, it logs one of two lines from `RxDb`. `Database WriteOperationListener support not enabled` means no custom listener was bound in that process, so no listener is called for its writes. If you see it and expected a listener, check the process's `<package>` and `<classpath>` entries. `Enabling database WriteOperationListener support` means a custom listener was bound.
+```text
+src/main/resources/META-INF/global/genesis/bootstrap/extensions/com.example.listeners
+```
+
+The file must end up in the deployed app jar, on the classpath of every process that writes and should notify the listener. There is no property or flag that enables listener support.
+
+When a process starts, it logs one of two lines from `RxDb`. `Database WriteOperationListener support not enabled` means no custom `WriteOperationListener` was bound in that process. `Enabling database WriteOperationListener support` means one was bound. Both lines are about `WriteOperationListener` only: they say nothing about `SyncWriteOperationListener` or `AsyncWriteOperationListener`, and the "not enabled" line is logged whether or not you have bound one of those. Check those two by their effect, for example by a side effect or log line in the listener itself after a write. If you expected a `WriteOperationListener` and see the "not enabled" line, check that the extensions file exists, is named exactly after the listener's package, and is in the process's classpath.
 
 | Interface | Signature | `tx` |
 |---|---|---|
