@@ -141,19 +141,23 @@ class MyDataServerTest {
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.MyDataServer
 import org.junit.jupiter.api.Test
 
 @GenesisTest
 class MyDataServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val myDataServer = MyDataServer::class
 
     // inject a client and write tests as usual
 }
 ```
+
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
 
 `@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedInstance` accepts a `KClass` too (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type) or a pre-built instance if you'd rather construct it yourself. Either annotation is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedInstance` with `@TestScriptFile` to bring everything into the same test.
 
