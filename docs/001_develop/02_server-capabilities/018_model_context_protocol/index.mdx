@@ -147,7 +147,7 @@ Platform tools check a Genesis right before they run (see [Authorisation](#autho
 
 See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data, in `<application>-app/src/main/genesis/data/`, so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up. It is safe to run Bootstrap again on a project that you have already bootstrapped.
 
-When you use Import data after Bootstrap, import only the new rows. This warning is about Import data, not about running Bootstrap again. Never import a whole table that Bootstrap already loaded, because rows that already exist make the import fail with "not all data was imported". Import:
+When you use Import data after Bootstrap, import only the new rows. Never import a whole table that Bootstrap already loaded, because rows that already exist make the import fail with "not all data was imported". Import:
 
 - a `RIGHT` row for each right code that doesn't exist yet;
 - a `PROFILE_RIGHT` row for each right you grant to an existing profile.
