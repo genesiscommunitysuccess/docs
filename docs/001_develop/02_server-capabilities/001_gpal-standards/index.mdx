@@ -53,8 +53,10 @@ Then within your GPAL script, you can directly reference the system definition l
 ```kotlin
 pipelines {
     if (MY_PIPELINE_ENABLED) {
-        pipeline(name = "My Pipeline") {
-        }
+        pipeline(name = "My Pipeline")
+            .source(mySource)
+            .sink(mySink)
+            .build()
     }
 }
 ```
