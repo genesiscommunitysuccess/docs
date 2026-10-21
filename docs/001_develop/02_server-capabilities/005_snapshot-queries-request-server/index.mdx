@@ -864,7 +864,7 @@ For compiled definitions only, use your app's module and definition package and 
 
 ## Testing
 
-You can test using **compiled definitions** (classes extending `GPalRequestServer`) with `@PackageScan` or `@ProvidedInstance` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
+You can test using **compiled definitions** (classes extending `GPalRequestServer`) with `@PackageScan` or `@ProvidedType` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
 
 :::info
 
@@ -1231,7 +1231,7 @@ We have covered:
 
 ### Testing compiled definitions
 
-If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedInstance` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. `RequestClientSync` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedType` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. `RequestClientSync` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Request Server:
 
