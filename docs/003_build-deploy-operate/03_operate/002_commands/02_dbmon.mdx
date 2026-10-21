@@ -450,6 +450,12 @@ So, what has this found?
 - At the bottom, the Total Results is 8. There are 8 records where the region is UK but the country code is not GBR.
 - The Distinct Values is 6. There are 6 Country Codes where the region is UK, but whose country code is not GBR. These are the six rows displayed.
 
+The argument before `-where` is an expression that is evaluated for each record, and records are grouped by the result. This means you can count by a combination of fields, not just a single field. For example, to count `HOLIDAYS` records for each combination of `COUNTRY_CODE` and `REGION`:
+
+```jsx
+DbMon:HOLIDAYS>distinct COUNTRY_CODE + REGION
+```
+
 Note that there is no validation of the field when you use the `distinct` command. So if we ran the previous example, but we incorrectly typed `COUNTRY_COD` instead of `COUNTRY_CODE`. The command would still work, but the result is potentially confusing.
 
 ```jsx
