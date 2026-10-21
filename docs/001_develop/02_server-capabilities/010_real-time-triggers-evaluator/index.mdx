@@ -406,7 +406,7 @@ Changing the rule to trigger on modifications to the record instead of inserts.
 
 All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` configuration options](#dynamic_rule)
 
-An amend replaces every editable field of the rule, so send the whole rule each time. An amend that leaves out any editable field is rejected with a validation error, and nothing is cleared. `TABLE_OPERATION` is mandatory and takes one value: `INSERT`, `MODIFY`, `DELETE` or `PRIME` (see [`DYNAMIC_RULE`](#dynamic_rule) for what `PRIME` does). `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are ignored on amend, and `USER_NAME` is always set to the user who sends the event.
+An amend replaces every editable field of the rule, so send the whole rule each time. An amend that leaves out a mandatory field is rejected with a validation error, and nothing is cleared. `TABLE_OPERATION` is mandatory and takes one value: `INSERT`, `MODIFY`, `DELETE` or `PRIME` (see [`DYNAMIC_RULE`](#dynamic_rule) for what `PRIME` does). `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are ignored on amend, and `USER_NAME` is always set to the user who sends the event.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
