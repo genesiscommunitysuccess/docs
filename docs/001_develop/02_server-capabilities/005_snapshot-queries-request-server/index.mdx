@@ -1291,22 +1291,26 @@ class HelloWorldRequestServerTest {
 }
 ```
 
-Or, to register just this one class without scanning its whole package, use `@ProvidedInstance` with a `KClass` reference instead — this is the form the framework's own test suite uses for compiled Request Servers:
+Or, to register just this one class without scanning its whole package, use `@ProvidedType` with a `KClass` reference instead:
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.HelloWorldRequestServer
 
 @GenesisTest
 class HelloWorldRequestServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val helloWorldRequestServer = HelloWorldRequestServer::class
 
     // ... same client, workflow and test as above
 }
 ```
+
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
 
 `@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
 
