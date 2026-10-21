@@ -192,7 +192,7 @@ For SSL on process communication, see the [service definition](/develop/server-c
 These settings control compilation and caching of GPal scripts and system-definition files. Because these files rarely change between restarts, using cached versions speeds up process start-up and reduces memory use.
 
 
-**ScriptCacheDir**: The directory used for script caching. Defaults to `%GENESIS_HOME%/runtime/scriptcache` if not set.
+**ScriptCacheDir**: The directory used for script caching. Defaults to `$GENESIS_HOME/runtime/scriptcache` if not set.
 
 **ScriptCachePerService**: When `true`, the script cache is process-specific rather than shared. Defaults to `false` if not provided. Process-specific caching avoids cross-process cache conflicts and can make startup more reliable.
 
