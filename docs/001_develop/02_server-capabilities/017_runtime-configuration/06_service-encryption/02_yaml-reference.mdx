@@ -104,6 +104,13 @@ These settings tune HTTP handling on the process port when `channel` is `WEBSOCK
 | `maxContentLength`         | integer | 64 MiB  | Maximum size of a request body, in bytes |
 | `closeOnExpectationFailed` | boolean | `false` | Close the connection when an `Expect: 100-continue` request is too large |
 
+When a request exceeds one of these limits, the caller gets a plain-text error reply and the connection is closed:
+
+- Request line longer than `maxInitialLineLength`: `414 URI Too Long`.
+- Headers larger than `maxHeaderSize`: `431 Request Header Fields Too Large`.
+- Body larger than `maxContentLength`: `413`, sent by the HTTP object aggregator (Netty's default response).
+- Any other request that fails to decode: `400 Bad Request`.
+
 ---
 
 ## `netty` section
