@@ -18,11 +18,13 @@ Use a listener when an extra write must be atomic with every write, for example 
 
 There is one listener interface for each style of API, all in the `global.genesis.db.bustxn` package. Each has a default no-op implementation. To replace it, provide your own implementation as a [`@Module`](/develop/server-capabilities/custom-components/#module).
 
-A listener is only bound if its package is in the scan of the base injector, which is the one that builds the database layer. To put it there, add an empty classpath resource file named after the listener's package, under `META-INF/global/genesis/bootstrap/extensions/`. For a listener in the package `com.example.listeners`, in your app module:
+A listener is only bound if its package is registered as a core extension package, which is scanned at start-up together with the platform's database layer. To register it, add an empty classpath resource file named after the listener's package, under `META-INF/global/genesis/bootstrap/extensions/`. For a listener in the package `com.example.listeners`, in your app module:
 
 ```text
 src/main/resources/META-INF/global/genesis/bootstrap/extensions/com.example.listeners
 ```
+
+Listing the package in a process's `<package>` section in processes.xml does not bind a listener.
 
 The file must end up in the deployed app jar, on the classpath of every process that writes and should notify the listener. There is no property or flag that enables listener support.
 
