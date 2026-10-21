@@ -345,7 +345,9 @@ genesisInstall --compactProcesses
 
 You can also set `BlockGenesisInstall` in your project's system definition. `genesisInstall` checks the installed system definition in `$GENESIS_HOME/generated/cfg`, not your project's source, so a change there takes effect from the install after the one that deploys it. If both are set, the environment variable wins.
 
-To unblock an install whose installed system definition sets `BlockGenesisInstall`, run `genesisInstall` once with `GENESIS_SYSDEF_BlockGenesisInstall=false`; that install deploys your source value.
+`BlockGenesisInstall` is a guard for deployed environments, such as servers and containers, to stop `genesisInstall` being run against an existing setup outside your normal release process. It isn't a local development setting: development tooling such as Genesis Start and the Genesis IntelliJ plugin keeps your local environment synced for you, and that sync isn't stopped by the block, so there is nothing to unblock in local development.
+
+To unblock an install in a deployed environment whose installed system definition sets `BlockGenesisInstall`, run `genesisInstall` once with `GENESIS_SYSDEF_BlockGenesisInstall=false`; that install deploys your source value.
 
 Because the exit status is `0`, a script that calls `genesisInstall` can't tell a blocked run from a successful install by its status; check the output for this warning instead. The warning text is the only signal that the install was skipped: there is no distinct exit code or flag, and the wording may change between releases.
 
@@ -363,7 +365,7 @@ To run Genesis commands in a container with `docker exec`, use an interactive sh
 docker exec -it <container> bash -ic 'genesisInstall'
 ```
 
-Running `genesisInstall` on Windows is supported only for local development, through [Genesis Start](/develop/development-environment/genesis-start/) or IntelliJ with the [Genesis IntelliJ plugin](/develop/development-environment/intellij-plugin/).
+On Windows, running `genesisInstall` is supported only for local development, which is handled by [Genesis Start](/develop/development-environment/genesis-start/) or IntelliJ with the [Genesis IntelliJ plugin](/develop/development-environment/intellij-plugin/); neither is a way to unblock a deployed environment.
 
 ### Install hooks
 
