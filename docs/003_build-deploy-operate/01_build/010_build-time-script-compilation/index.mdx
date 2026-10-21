@@ -123,6 +123,8 @@ No system definition item, JVM option or environment variable stops a process fr
 - **for one module:** set `enabled = false` in its `genesisScriptCompilation` block;
 - **for one script:** add it to `exclude` in the module's `genesisScriptCompilation` block, with an Ant pattern relative to the script directory, such as `exclude = setOf("**/my-script.kts")` (see [Configuration options](#configuration-options)). The process then compiles that script at start-up.
 
+The `-P` switch applies only to the Gradle invocation it is passed to. Genesis Start runs Gradle again (its sync runs `assemble`) without that property, which invalidates the build and compiles the scripts again from the persistent setting. To keep build-time compilation off under Genesis Start, or for good, set `compileScriptsAtBuildTime = false` in `settings.gradle.kts`.
+
 :::warning
 Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes). Use the copy in `src/main/genesis/scripts` described above.
 :::
@@ -143,7 +145,7 @@ The `genesisScriptCompilation` block in a module's `build.gradle.kts` file confi
 | `discoverScriptDefinitions` | `true` while `scriptDefinitions` is empty | Find script definitions by scanning the compile classpath |
 | `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint. It takes effect only when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin |
 | `expectGeneratedScripts` | `false` (the Settings plugin sets `true`) | Set up compilation even when no `.kts` file exists yet when Gradle configures the build |
-| `failOnMissingScriptClasses` | `true` | Fail the build when a script produced no class |
+| `failOnMissingScriptClasses` | `true` | Fail the build if the compiler emits no class for a script. This shouldn't happen in normal use |
 
 Script directories are found under each resources source directory of the source set. If your scripts are in a directory that isn't a resources source directory, name it in `scriptDirs`.
 
