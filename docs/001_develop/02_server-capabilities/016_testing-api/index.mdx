@@ -433,6 +433,10 @@ However, once enabled on the class level, there is no way to disable on the meth
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.jupiter.EnableInMemoryTestAuthCache
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.mock.InMemoryTestAuthCache
+
 @GenesisTest
 @EnableInMemoryTestAuthCache
 internal class EnableInMemoryTestAuthCacheExamples {
@@ -472,6 +476,10 @@ internal class EnableInMemoryTestAuthCacheExamples {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.jupiter.EnableInMemoryTestAuthCache;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import global.genesis.testsupport.mock.InMemoryTestAuthCache;
+
 @GenesisTest
 @EnableInMemoryTestAuthCache
 public class EnableInMemoryTestAuthCacheExamplesJavaTest {
@@ -1133,6 +1141,8 @@ class ProvidedDictionaryTest {
 To inspect the active dictionary, inject `GenesisDictionary` into the test. For example, to check that the added tables are present:
 
 ```kotlin
+import kotlin.test.assertTrue
+
 @Inject
 lateinit var dict: GenesisDictionary
 
