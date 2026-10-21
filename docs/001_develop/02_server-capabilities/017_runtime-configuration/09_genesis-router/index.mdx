@@ -203,7 +203,7 @@ router {
 What the router does with each request:
 
 - **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is tried as a request server or event handler first. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers and resources on TCP processes are handled by the router as usual. If no process owns a resource of that name, the segment is tried as a custom endpoint, as described below, and is handled by the router as usual if no endpoint matches either.
-- **Several path segments** are a custom endpoint. If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
+- **Several path segments** are always a custom endpoint (a single segment can be one too, as above). If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
 - **Internal resources** owned by a process are refused exactly as if they did not exist. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one.
 
 The request URI and headers are forwarded unchanged, apart from `Host`. When cookie authentication is on, the router has already copied the session cookie into the `SESSION_AUTH_TOKEN` header, so the process can authenticate the request.
