@@ -14,6 +14,16 @@ In the example below, we add a trade description made up of many fields from the
 Derived fields cannot be used within a `filter` block.
 :::
 
+##### Derived field names
+
+The name of a derived field must not match any of these, ignoring case:
+
+- a field of the query's table or view;
+- an aliased field that you have already selected;
+- another derived field in the same definition.
+
+A clash stops the definition from loading when the process starts, and the error message names the clashing field. Compiling the script at build time doesn't catch it, because compiling doesn't run the definition. To check your names, [start the process](/build-deploy-operate/operate/commands/#startprocess) or [run a test](#testing) that loads the definition.
+
 #### `derivedFieldWithUserName`
 
 This is the same as `derivedField` but also has a context property `userName` with the username who requested the data.
