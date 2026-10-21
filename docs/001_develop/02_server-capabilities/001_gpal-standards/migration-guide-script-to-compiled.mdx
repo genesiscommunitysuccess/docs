@@ -123,7 +123,7 @@ When using **compiled definitions only**, the process definition uses your defin
 `testImplementation(genesis("testsupport"))` should already be in your app module's `build.gradle.kts` by default — it's the only test dependency you need, covering [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) and every GPAL type's test client. There's no separate one per type. A compiled definition can be brought into a GenesisJunit test in either of two ways:
 
 - **`@PackageScan`** adds the definition class's whole package to the scan list; GenesisJunit discovers and constructs every scanned definition in it, exactly as a running process would.
-- **`@ProvidedInstance`** registers one exact class (or a pre-built instance) without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains.
+- **`@ProvidedType`** registers one exact class without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance.
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
@@ -159,7 +159,7 @@ class MyDataServerTest {
 `@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
-`@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedInstance` accepts a `KClass` too (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type) or a pre-built instance if you'd rather construct it yourself. Either annotation is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedInstance` with `@TestScriptFile` to bring everything into the same test.
+`@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedType` registers one exact class (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type), while `@ProvidedInstance` is for a pre-built instance you construct yourself. Either `@PackageScan` or `@ProvidedType` is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedType` with `@TestScriptFile` to bring everything into the same test.
 
 For full worked examples, including injecting a client and asserting behaviour, see the testing sections in each GPAL type's documentation (e.g. [Data Server testing](/develop/server-capabilities/real-time-queries-data-server/#testing-compiled-definitions), [Event Handler testing](/develop/server-capabilities/core-business-logic-event-handler/#testing-compiled-definitions)) and the [Testing API](/develop/server-capabilities/testing-api/).
 
