@@ -357,6 +357,12 @@ In a container, set the mode with the `GENESIS_SYSDEF_ClusterMode` environment v
 GENESIS_SYSDEF_ClusterMode: LEGACY
 ```
 
+In `LEGACY` mode, choose the primary node by setting `GENESIS_PRIMARY: "true"` on exactly one app service. The image's start-up script then runs `SetPrimary` when that container starts. Without it, every node starts as `SECONDARY` and `primaryOnly` processes never start.
+
+```yaml
+GENESIS_PRIMARY: "true"
+```
+
 In this mode, the hosts must be able to reach each other on `ClusterPort` (`6000` by default). See [Networking](#networking).
 
 ### Generating a compose file
@@ -369,6 +375,8 @@ To get a starting `docker-compose.yml`, run the `writeGenesisDockerCompose` task
 For a two-node cluster, copy the app service and give each copy its own settings. The generated file sets `GENESIS_SYSDEF_ClusterMode: LEGACY`, which is [built-in clustering](#built-in-clustering). In that mode, no `GENESIS_SYSDEF_*` setting differs between nodes. Instead, give each app container its own hostname, and list all of those hostnames together in the `hosts` list of one `system` block in your system definition. In this mode the `hosts` list is also the cluster membership list, so each node needs a distinct hostname.
 
 An app chooses its environment in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) by matching its own hostname against the `host(...)` entries. A `host(LOCAL_HOST)` block matches any container, and it must be the last `system` block. That is how the generated compose file works without setting `hostname:` on the app container.
+
+A node matched by `host(LOCAL_HOST)` runs with that block's environment. For example, in a genx-generated system definition that lists explicit hosts under `PROD` and then has `DEV` with `host(LOCAL_HOST)`, any unlisted container gets the `DEV` values. To run as an environment whose block lists explicit hosts, the container's `hostname:` must match one of those hosts.
 
 For [Consul](#consul) mode, a `host(LOCAL_HOST)` system block is enough, and no per-container `hostname:` is needed. Change `GENESIS_SYSDEF_ClusterMode` to `CONSUL` on both nodes, and give each node a stable identity for its [node ID](#node-ids) claim with `ConsulNodeName`:
 
