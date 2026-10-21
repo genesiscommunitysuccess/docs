@@ -42,7 +42,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [injecting classes in a test](/develop/server-capabilities/testing-api/#a-simple-example) |
 | `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use `EventClientSync` (or `EventClientAsync`) for event handlers, `RequestClientSync` (or `RequestClientAsync`) for request servers, and `DataServerSubscriptionClientAsync` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/#testing-specific-services) |
 | `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
-| `authCacheOverride` / `authCacheOverrides` | `@EnableInMemoryTestAuthCache`, and inject `InMemoryTestAuthCache` |
+| `authCacheOverride` / `authCacheOverrides` | [`@EnableInMemoryTestAuthCache`](/develop/server-capabilities/testing-api/#enableinmemorytestauthcache), and inject `InMemoryTestAuthCache`. The auth map name is now passed per call, `authCache.authorise(authMap = …)`, not set as configuration |
 | `useTempClassloader = true`, or `GenesisClassGenerationTestSupport` | `@EnableTestClassLoader` |
 | `dataDumpOn` | `@EnableDataDump` |
 | `rootLogLevel` | `@RootLogLevel` |
@@ -170,19 +170,22 @@ Both types of test work with all three dictionary types.
 
 Use this for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other Genesis components are provided. The only requirement for this type of test is a dictionary.
 
-To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below.
+To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below. `prodDictionary()`, `testDictionary { }` and `field` are inherited from the base class, so they need no import.
 
 In the first instance, we are using a **production directory**.
 
 - in Kotlin, through the `rxDb` property
 - in Java, using the `getRxDb()` method
 
-The test makes sure there are no records in the `USER` table. In both languages, the `RxDb` is available.
+The test makes sure there are no records in the `USER` table, then inserts a record and reads it back. In both languages, the `RxDb` is available. Java builds the record with the `DbRecord` constructor and plain setters and getters, where Kotlin uses the `dbRecord { }` builder.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.db.DbRecord.Companion.dbRecord
+    import global.genesis.db.util.AbstractDatabaseTest
+
     class SampleKotlinTest : AbstractDatabaseTest() {
 
     override fun createMockDictionary(): GenesisDictionary = prodDictionary()
@@ -191,6 +194,13 @@ The test makes sure there are no records in the `USER` table. In both languages,
     fun `test count`() {
     assert(rxDb.count("USER").blockingGet() == 0L)
   }
+
+    @Test
+    fun `test insert and get`() {
+    rxDb.insert(dbRecord("USER") { setString("USER_NAME", "JohnDoe") }).blockingGet()
+    val found = rxDb.get(dbRecord("USER") { setString("USER_NAME", "JohnDoe") }, "USER_BY_NAME").blockingGet()
+    assert(found.getString("USER_NAME") == "JohnDoe")
+  }
   }
     ```
 
@@ -198,6 +208,9 @@ The test makes sure there are no records in the `USER` table. In both languages,
   <TabItem value="java">
 
     ```java
+    import global.genesis.db.DbRecord;
+    import global.genesis.db.util.AbstractDatabaseTest;
+
     public class SampleJavaTest extends AbstractDatabaseTest {
 
     @Override
@@ -208,6 +221,18 @@ The test makes sure there are no records in the `USER` table. In both languages,
     @Test
     public void testCount() {
     assert getRxDb().count("USER").blockingGet() == 0L;
+  }
+
+    @Test
+    public void testInsertAndGet() {
+    DbRecord user = new DbRecord("USER");
+    user.setString("USER_NAME", "JohnDoe");
+    getRxDb().insert(user).blockingGet();
+
+    DbRecord key = new DbRecord("USER");
+    key.setString("USER_NAME", "JohnDoe");
+    DbRecord found = getRxDb().get(key, "USER_BY_NAME").blockingGet();
+    assert "JohnDoe".equals(found.getString("USER_NAME"));
   }
   }
     ```
@@ -223,6 +248,8 @@ In this test, we define two fields and a table that uses these. We make sure the
 
 
 ```kotlin
+import global.genesis.db.util.AbstractDatabaseTest
+
 class SampleKotlinTest : AbstractDatabaseTest() {
 
     val USER_NAME by field(name = "USER_NAME", type = STRING)
@@ -259,6 +286,8 @@ If you add the `genesis-generated-dao` jar to your classpath, you will be able t
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.db.util.AbstractDatabaseTest
+
     class SampleKotlinTest : AbstractDatabaseTest() {
 
     override fun dictionaryName() = "/genesisHome/genesis/cfg/genesis-dictionary.xml"
@@ -274,6 +303,8 @@ If you add the `genesis-generated-dao` jar to your classpath, you will be able t
   <TabItem value="java">
 
     ```java
+    import global.genesis.db.util.AbstractDatabaseTest;
+
     public class SampleJavaTest extends AbstractDatabaseTest {
 
     @Test
@@ -314,7 +345,8 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 
 | Property | Required | Sets |
 | --- | --- | --- |
-| packageName | yes | corresponds to the <package/> tag in processes.xml |
+| packageName | yes | corresponds to the <package/> tag in processes.xml. Setting it more than once appends to `packageNames` rather than replacing the earlier value |
+| packageNames | no | `MutableList<String>` of packages, for tests that scan more than one. In Java, use `setPackageNames(List<String>)` or call `addPackageName` repeatedly |
 | genesisHome | yes | GENESIS_HOME folder for additional configuration |
 | parser | yes | function that takes a GenesisSet and transforms it, this will determine the generic type of AbstractGenesisTestSupport |
 | initialDataFile | no | csv files to load into the database |
@@ -323,7 +355,7 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
 | rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 
-Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
+Any path provided for `genesisHome` and `initialDataFile` must be an absolute location on the test classpath, for example `/genesisHome` for a folder at `src/test/resources/genesisHome`.
 
 Tests can also use **compiled GPAL definitions** (classes extending `GPalDataserver`, `GPalEventHandler`, and so on) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required.
 
