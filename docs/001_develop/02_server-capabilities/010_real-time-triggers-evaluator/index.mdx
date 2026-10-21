@@ -90,13 +90,13 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | ID | ID for the rule. Auto-generated where left unspecified on insert | `000000000000001DRLO1` | true |
 | NAME | Name of the rule | Large trade | true |
 | DESCRIPTION | Description of the rule | A large trade has been received | true |
-| USER_NAME | The username that will be sent on the triggered event. User must have permission to use this event for it to be triggered successfully | admin | false |
+| USER_NAME | Set automatically to the user who inserts or amends the rule; any value you send is ignored | admin | false |
 | RULE_TABLE | The [`table`](/develop/server-capabilities/data-model/#tables) or [`view`](/develop/server-capabilities/data-model/#views) the rule listens to for updates | `TRADE_VIEW` | true |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event | `ENABLED` | true |
-| RULE_EXPRESSION | Boolean logic for trigger. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets. It must be a non-blank Groovy expression that returns a Boolean. A blank expression is accepted when you insert or amend the rule, but the Evaluator disables the rule the first time it fires  | `((NOTIONAL > 1000000))` | false |
-| PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. We recommend that you leave this blank to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
+| RULE_EXPRESSION | Boolean logic for trigger. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets. It must be a non-blank Groovy expression that returns a Boolean. A blank `RULE_EXPRESSION` is rejected when you insert or amend the rule | `((NOTIONAL > 1000000))` | true |
+| PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. This field can be omitted, and we recommend that you omit it to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
-| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
+| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`. The field must be present, but a blank value is accepted | `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | true |
 | TABLE_OPERATION | The table operation to trigger the rule on. It takes a single value: `INSERT`, `MODIFY`, `DELETE` or `PRIME` (see below). If you omit it on insert, it defaults to `INSERT`; on amend it is mandatory | `INSERT` | true |
 | IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/) where users can define rule templates to which users subscribe. Rules marked as `true` are templates, are never triggered (a subscription to a template creates a new dynamic rule) ||false|
 | RULE_EXECUTION_STRATEGY |Defines how many times the rule should trigger for a given record (record of root table where `RULE_TABLE` is a view). Valid values are `UNLIMITED`, `ONCE_ONLY`, `ONCE_PER_RECORD`. Default is `UNLIMITED`. This is helpful if `TABLE_OPERATION` must include `MODIFY` and the records may have many modifications to stop repeated alerts|`ONCE_ONLY`|false|
@@ -419,15 +419,11 @@ An amend replaces every editable field of the rule, so send the whole rule each 
     "ID" : "000000000000001DRLO1",
     "NAME" : "Warn large trade",
     "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
-    "USER_NAME" : "admin",
     "RULE_TABLE" : "TRADE_VIEW",
-    "RULE_STATUS" : "ENABLED",
     "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
     "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
-    "TABLE_OPERATION" : "MODIFY",
-    "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
+    "TABLE_OPERATION" : "MODIFY"
   }
 }
 ```
@@ -444,15 +440,11 @@ SOURCE_REF: 007
     "ID" : "000000000000001DRLO1",
     "NAME" : "Warn large trade",
     "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
-    "USER_NAME" : "admin",
     "RULE_TABLE" : "TRADE_VIEW",
-    "RULE_STATUS" : "ENABLED",
     "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
     "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
     "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
-    "TABLE_OPERATION" : "MODIFY",
-    "IS_TEMPLATE" : "true",
-    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD"
+    "TABLE_OPERATION" : "MODIFY"
   }
 }
 ```
