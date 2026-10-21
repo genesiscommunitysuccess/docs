@@ -240,7 +240,7 @@ The `DumpIt` command can take the following arguments:
 | -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
 | -s  <!-- DumpIt -s -->     | --sql (arg) <!-- DumpIt --sql (args) -->     | no        | name of the sql file to export the table to            | none              | none    |
 | -t  <!-- DumpIt -t -->     | --table (arg) <!-- DumpIt --table (args) -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
-| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode (arg) <!-- DumpIt --criteriaEvaluatorMode (args) --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode (arg) <!-- DumpIt --criteriaEvaluatorMode (args) --> | no        | the type of criteria evaluator to be used. `LEGACY` is no longer supported, and passing it fails with `Unsupported criteriaEvaluatorMode 'LEGACY'` | TYPE_AWARE | TYPE_AWARE |
 | -fm <!-- DumpIt -fm -->     | --formatMode (arg) <!-- DumpIt --formatMode (args) -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
 | -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
 |          | -where (arg) <!-- DumpIt -where (args) -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
@@ -953,10 +953,9 @@ Range purger is similar to bulkPurger, but it performs efficient index range sea
 - Purger has special function called `whereRange` which is used to filter based on index value
 
 ```kotlin
-import global.genesis.gen.dao.repository.UserSessionRx3Repository
 purgers {
- // Inject repo
- val userSessionRepo = inject<UserSessionRx3Repository>()
+ // Inject a class
+ val myClass = inject<MyClass>()
 
  config {
      batchSize = 1000
@@ -1550,10 +1549,10 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.process.GenesisProcessBootstra
 
 ###### Logging
 `startProcess` will redirect the standard error stream to a log file in the `$L` directory. The log file will be named `<process_name>.log.err` (for example, `GENESIS_AUTH_DATASERVER.log.err`).
-If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file managed by Log4j2.
+If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file.
 
 `startProcess` will also compress and move existing process logs in the `$L` directory by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$RL` directory. This only affects the logs of the process you are starting.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `startServer`
@@ -1590,7 +1589,7 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 
 ###### Logging
 `startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `readSysDef`

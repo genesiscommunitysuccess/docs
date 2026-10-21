@@ -14,12 +14,16 @@ tags:
 The Genesis Application Platform supports the following database technology:
 
 * H2
-* FoundationDB
+* FoundationDB (deprecated)
 * Postgres (PostgreSQL)
 * MSSQL
 * Oracle
 
 Because we abstract from the underlying technology, you can easily toggle between any of these four.
+
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 There are also tools that enable you to stream real-time data reliably to and from any classic [Oracle/SQL database](/build-deploy-operate/deploy/supporting-infrastructure/#sql).
 
@@ -84,16 +88,15 @@ item(name = "DbQuotedIdentifiers", value = "true")
 
 #### SQL database mode configuration
 
-You can configure the SQL database mode using the `DbMode` property. The platform supports two internal SQL modes:
+The `LEGACY` SQL database mode is no longer supported, so you don't need to set the `DbMode` property. The dictionary is always read from the namespace-aware store.
 
-* `ADVANCED` (Default): This is the default mode. If you do not set `DbMode`, or if you set it to any value other than `LEGACY` (such as `POSTGRESQL` or `VANILLA`), the platform resolves it to `ADVANCED`. Note that `POSTGRESQL` is a string alias for `ADVANCED`, not a distinct mode.
-* `LEGACY`: Use this mode if you need to maintain compatibility with older legacy database schemas.
+If `DbMode` is set to `LEGACY` on PostgreSQL, H2 or HSQL, the database fails to start with an error that begins:
 
-To set the database mode, add the following line to your system definition file:
-
-```kotlin
-item(name = "DbMode", value = "ADVANCED")
 ```
+DbMode=LEGACY is no longer supported. The dictionary is now always read from the namespace-aware store.
+```
+
+To fix this, remove the `DbMode` item from your system definition file. Oracle and SQL Server never used the `LEGACY` mode, so they are not affected.
 
 ### 2. Activate the new configuration
 

@@ -556,16 +556,16 @@ pipeline("TEST_DB_BULK_QUERY") {
     }
 ```
 
-#### `AbstractProgrammaticSource`
+#### `ProgrammaticSource`
 
-This is an abstract implementation of a real-time acknowledgement source. This source additionally has a send method, which can be used by any custom code to provide data to the pipeline.
+`ProgrammaticSource` is a real-time acknowledgement source with an extra `send` method. Your own code calls `send` to push data into the pipeline.
 
 The source is dependent on the calling code being a part of the same process as the pipeline using this source. Upudate your process definition to ensure this is done.
 
 Here is an example of using this source to provide Trade objects:
 
 ```kotlin
-object ProgrammaticTradeSource : AbstractProgrammaticSource<Trade>()
+object ProgrammaticTradeSource : ProgrammaticSource<Trade>()
 ```
 
 Here is an `eventHandler` that sends to this `ProgrammaticTradeSource`:
