@@ -74,7 +74,7 @@ This block is required where setting up for [Genesis password](#genesis-password
 
 Example configuration:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   authentication {
     genesisPassword {
@@ -248,7 +248,7 @@ A single login makes several requests, and each one waits up to `responseTimeout
 
 Example ldap connection:
 
-```kotlin {3-5}
+```kotlin title="auth-preferences.kts" {3-5}
 security {
   authentication {
     ldap {
@@ -331,7 +331,7 @@ authentication {
 Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
 A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   sessionTimeoutMins = 60
 }
@@ -343,7 +343,7 @@ Default value: 30
 
 Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   refreshTokenExpirationMins = 2880
 }
@@ -371,7 +371,7 @@ If the value is zero, is not defined, or is not a positive integer, then any num
 
 When the maximum number of sessions is reached, the system will provide host/IP information for each active session to help the user identify which sessions they may want to log out from.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   maxSimultaneousUserLogins = 2
 }
@@ -385,7 +385,7 @@ Specifies whether to hide host/IP information from the user when they have reach
 
 By default, this is set to `false`, which means the host/IP information is sent back to the client. This information can be used by the user to select a specific session to log out from so that a new session can be created.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   hideHostsFromMaxActiveSessionsReachedMessage = true
 }
@@ -395,7 +395,7 @@ Default value: false
 
 ### `retry`
 
-```kotlin {5-8}
+```kotlin title="auth-preferences.kts" {5-8}
 security {
   authentication {
     ...
@@ -444,7 +444,7 @@ This method of MFA generates a qrCode that can be imported into apps such as Goo
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -487,7 +487,7 @@ This block exposes the following configuration items:
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -507,7 +507,7 @@ security {
 
 To send a short numeric code that the user types in instead of a login link, enable `tempCodeNumeric` and omit `{{LOGIN_URL}}` from the message:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -568,7 +568,7 @@ The following functions will be invoked on this table or view:
 Example configuration:
 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   loginAck(USER_ATTRIBUTES) {
@@ -2659,6 +2659,10 @@ After a SAML or OIDC login, the authentication service hands the front end an SS
   - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
   - Every other message is rejected until the user has logged in.
 - When the login succeeds or fails, the router clears the cookie.
+
+:::tip
+To check that the header is ignored, send a valid `ssoToken` cookie together with an invalid `SSO_TOKEN` header. The login succeeds because the router ignores the header.
+:::
 
 The router only reads and clears the `ssoToken` cookie; it never sets it. To have the authentication service deliver the token in the cookie instead of the URL, set `tokenDelivery` to `COOKIE` on the identity provider in your `*-oidc-config.kts` or `*-saml-config.kts` file. The setting is per identity provider and takes `URL_QUERY` (the default) or `COOKIE`. Cookie authentication must also be enabled in the router, as above; otherwise the router ignores the cookie.
 
