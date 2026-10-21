@@ -1761,6 +1761,8 @@ Index names come from your data model. By default, the platform names an index `
 | Transactions | `readTransaction` | `readTransaction(block: (SyncReadDb) -> T): T` |
 | Transactions | `writeTransaction` | `writeTransaction(block: (SyncDb) -> T): Pair<T, List<WriteResult>>` |
 
+`numKeyFields` works as for the entity API; see [`numKeyFields` property](#numkeyfields-property).
+
 `AsyncDb` has the same methods, with these differences:
 
 - `get`, `getAll`, `getAllAsList`, `count`, every write, `allocateId`, `readTransaction` and `writeTransaction` are `suspend` functions with the same parameters and return types.
