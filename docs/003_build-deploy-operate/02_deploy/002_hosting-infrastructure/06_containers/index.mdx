@@ -46,6 +46,17 @@ The Gradle plugin provides the easiest and quickest way to get Genesis running i
 - `buildImage` - runs `createDockerfile` as a sub-task, and then runs `docker build` on the generated Dockerfile.
 - `pushImage` - pushes the generated image to a repository defined in `gradle.properties` (see [section on pushing](#pushing)).
 
+The plugin also registers a debug variant of each of these tasks:
+
+- `createDebugDockerfile` - the debug equivalent of `createDockerfile`. It generates the Dockerfile and its context in `build/docker-debug`.
+- `buildDebugImage` - the debug equivalent of `buildImage`.
+- `pushDebugImage` - the debug equivalent of `pushImage`.
+
+`buildDebugImage` builds an image called `<product>-debug:<version>` in `build/docker-debug`, rather than `<product>:<version>`. Compared with the image from `buildImage`, the debug image:
+
+- installs `openssh-server`, sets the login credentials to `genesis:genesis` and starts `sshd`;
+- copies the plugin's `dev-data/` folder into `/app/dev-data`.
+
 ### Using the plugin
 
 1. Create or use an existing Genesis project.
@@ -368,6 +379,8 @@ In this mode, the hosts must be able to reach each other on `ClusterPort` (`6000
 ### Generating a compose file
 To get a starting `docker-compose.yml`, run the `writeGenesisDockerCompose` task from the root of the `server/` project. The task comes with the Genesis Exec plugin (`global.genesis.exec`), and it writes the file to `build/docker-compose/docker-compose.yml` in your app's main module. The generated file runs one app container, which uses the image built by `buildDebugImage`, alongside a PostgreSQL database and one-off containers that create the tables and load the dev data.
 
+The generated compose file always uses the debug image, which has SSH enabled with fixed credentials and includes dev data. It is intended for local development, not for deployment. The compose extension's `build` task depends on `buildDebugImage`.
+
 ```bash
 ./gradlew writeGenesisDockerCompose
 ```
@@ -457,7 +470,7 @@ When Consul is used, processes that are set to `primaryOnly` failover automatica
 ### Networking
 All Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. This applies to both built-in clustering and Consul mode.
 
-When using built-in clustering (`ClusterMode` is `LEGACY`), the hosts must also be able to reach each other by host name and on `ClusterPort` (`6000` by default). `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
+When using built-in clustering (`ClusterMode` is `LEGACY`), the hosts must also be able to reach each other by host name and on [`ClusterPort`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) (`6000` by default). `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
 
 The default Genesis services and their ports are:
 
@@ -470,12 +483,16 @@ The default Genesis services and their ports are:
 | `GENESIS_EVALUATOR` | `9015` |
 | `GENESIS_ROUTER` | `9017` |
 
-These system definition items must also be reachable between hosts. They are required for the processes that use `GENESIS_CLUSTER` as a proxy for the update queue:
+When `MqLayer` is `ZeroMQ` and the ZeroMQ proxy is not used (`ZeroMQProxyModeEnabled` is `false`, which is the default), each service also listens on its port plus `10000`; for example, `GENESIS_CLUSTER` also listens on `19000`. Those ports must also be reachable between hosts.
+
+When the ZeroMQ proxy is used, the processes that use `GENESIS_CLUSTER` as a proxy for the update queue use these system definition items:
 
 | System definition item | Port |
 | --- | --- |
 | `ZeroMQProxyOutboundPort` | `5000` |
 | `ZeroMQProxyInboundPort` | `5001` |
+
+`ZeroMQProxyOutboundPort` (`5000`) must be reachable between hosts when `ZeroMQProxyModeEnabled` is `true` and `ZeroMQProxyUnicastRelayEnabled` is `false`. `ZeroMQProxyInboundPort` (`5001`) is only used on the local host. When `ZeroMQProxyUnicastRelayEnabled` is `true`, traffic between nodes goes to the `GENESIS_CLUSTER` service port instead.
 
 See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
