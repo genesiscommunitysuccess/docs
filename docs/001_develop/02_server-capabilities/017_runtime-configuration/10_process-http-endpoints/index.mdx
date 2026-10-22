@@ -37,7 +37,7 @@ messaging:
   channel: WEBSOCKET
 ```
 
-Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record and isn't shown at start-up: no start-up log line, console command or DbMon field shows it. To confirm a connection is using WebSocket, look in the calling process's log: a process that connects to another over WebSocket logs `WebSocket handshake complete with <host>:<port>` at INFO, naming the target's host and port.
+Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record; no start-up log line, console command or DbMon field shows it. To confirm a connection is using WebSocket, look in the calling process's log: a process that connects to another over WebSocket logs `WebSocket handshake complete with <host>:<port>` at INFO, naming the target's host and port.
 
 For the other `messaging` settings, including the `webSocket` and `http` blocks, see the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section).
 
