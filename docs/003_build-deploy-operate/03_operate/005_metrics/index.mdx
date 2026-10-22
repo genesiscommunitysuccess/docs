@@ -177,7 +177,7 @@ The simplest way to hold subscriptions open long enough to observe the overlap i
 
 To see the gauges change, hold two subscriptions open on the same query.
 
-If cookie authentication is enabled in `genesis-router.kts` (the router script shipped with the product enables it), the WebSocket connection is only possible after a successful HTTP login, because the session is carried in a cookie; see [Cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication). In that case, start with steps 1 and 2. Otherwise, open the WebSocket connection and log in over it.
+If cookie authentication is enabled in `genesis-router.kts` (the router script shipped with the product enables it), the WebSocket connection is only possible after a successful HTTP login, because the session is carried in a cookie; see [Cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication). In that case, start with steps 1 and 2. Otherwise, open the WebSocket connection, log in over it, and continue from step 3.
 
 1. Log in over HTTP and keep the session cookie that the response sets.
 2. Open a WebSocket connection, sending that cookie with the upgrade request.
