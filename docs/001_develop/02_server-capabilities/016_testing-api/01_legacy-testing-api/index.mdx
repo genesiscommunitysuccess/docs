@@ -39,7 +39,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `genesisHome` | `@GenesisHome("...")` |
 | `scriptFileName` | `@TestScriptFile("...")` (repeatable) |
 | `configFileName` | `@TestConfigFile("...")` |
-| `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [injecting classes in a test](/develop/server-capabilities/testing-api/#a-simple-example) |
+| `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. See [sending messages in a GenesisJunit test](#sending-messages-in-a-genesisjunit-test) |
 | `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use `EventClientSync` (or `EventClientAsync`) for event handlers, `RequestClientSync` (or `RequestClientAsync`) for request servers, and `DataServerSubscriptionClientAsync` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/#testing-specific-services) |
 | `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
 | `authCacheOverride` / `authCacheOverrides` | [`@EnableInMemoryTestAuthCache`](/develop/server-capabilities/testing-api/#enableinmemorytestauthcache), and inject `InMemoryTestAuthCache`. The auth map name is now passed per call, `authCache.authorise(authMap = …)`, not set as configuration |
@@ -54,6 +54,73 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | XML dictionary | `@EnableLegacyXmlDictionary` |
 
 The mapping is by purpose: check each converted test, because the two APIs don't behave identically in every detail. For example, data dump is on by default in the legacy API and off by default in GenesisJunit. Some legacy dictionary set-ups have no GenesisJunit equivalent: a dictionary loaded from an explicit file path, the production dictionary filtered to some tables, and swapping the dictionary in the middle of a test. Keep those tests on the legacy classes, which still compile and run.
+
+### Sending messages in a GenesisJunit test
+
+Inject a `GenesisMessageClient` into a `@GenesisTest` class, and use it where a legacy test called `sendMessage` or `sendMessageAsync`. The client is connected to the service the test starts. Build the request as a `GenesisSet`, as in a legacy test, and pass it to `sendReqRep` with a callback that receives the reply:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.commons.model.GenesisSet
+import global.genesis.net.GenesisMessageClient
+import global.genesis.testsupport.jupiter.GenesisTest
+import jakarta.inject.Inject
+import org.junit.jupiter.api.Test
+
+@GenesisTest
+class SendMessageTest {
+
+    @Inject
+    lateinit var messageClient: GenesisMessageClient
+
+    @Test
+    fun sendsRequest() {
+        val set = GenesisSet()
+        set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT")
+        // set the other fields the event handler expects
+
+        messageClient.sendReqRep(set) { reply ->
+            // assert on the reply GenesisSet here
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.commons.model.GenesisSet;
+import global.genesis.net.GenesisMessageClient;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+@GenesisTest
+public class SendMessageTest {
+
+    @Inject
+    private GenesisMessageClient messageClient = null;
+
+    @Test
+    public void sendsRequest() {
+        GenesisSet set = new GenesisSet();
+        set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT");
+        // set the other fields the event handler expects
+
+        messageClient.sendReqRep(set, reply -> {
+            // assert on the reply GenesisSet here
+        });
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`sendReqRep` has an overload that takes a timeout in milliseconds as a third argument, `sendReqRep(set, consumer, reqRepTimeout)`. To send a message without waiting for a reply, call `sendMessage(set)`. It returns `false` if the client is not connected.
 
 ### Database and service tests
 
@@ -80,7 +147,7 @@ There are three types of dictionary you can use:
 
 Use this type of dictionary if you want to test against the production dictionary. This is the preferred way of using a dictionary in product tests, as production and test dictionaries are always in sync.
 
-This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default, as it is for GenesisJunit tests (see [EnableLegacyXmlDictionary](/develop/server-capabilities/testing-api/#enablelegacyxmldictionary)). To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
   <TabItem value="kotlin">
@@ -240,7 +307,14 @@ The test makes sure there are no records in the `USER` table, then inserts a rec
   </TabItem>
 </Tabs>
 
+When you move a Java test like this to GenesisJunit and inject a `SyncDb`, the lookup with an index needs all three arguments, because `SyncDb.get` has no shorter Java overloads. Pass an empty set for the fields:
 
+```java
+import global.genesis.db.SyncDb;
+import java.util.Collections;
+
+DbRecord found = db.get(key, "USER_BY_NAME", Collections.emptySet());
+```
 
 Here is a similar test using an **inline dictionary**.
 
@@ -365,6 +439,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.testsupport.AbstractGenesisTestSupport
+    import global.genesis.testsupport.EventResponse
+    import global.genesis.testsupport.GenesisTestConfig
+    import org.junit.jupiter.api.Test
+
     class UserControllerTest : AbstractGenesisTestSupport<EventResponse>(
     GenesisTestConfig {
       packageName = "global.genesis.auth.manager"
@@ -387,6 +466,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
   <TabItem value="java">
 
     ```java
+    import global.genesis.testsupport.AbstractGenesisTestSupport;
+    import global.genesis.testsupport.EventResponse;
+    import global.genesis.testsupport.GenesisTestConfigImpl;
+    import org.junit.jupiter.api.Test;
+
     public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResponse> {
 
     public UserControllerJavaTest() {
