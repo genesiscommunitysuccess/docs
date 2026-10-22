@@ -1039,6 +1039,8 @@ The sink doesn't retry in these cases; it throws an exception instead:
 - any other error occurs while sending
 - the target replies with a NACK and `onNack` is `throwOnNack()`
 
+If the target replies with a NACK other than UNAVAILABLE and `onNack` is `logOnNack()`, the sink logs the NACK at error level, drops the event and carries on; it does not retry or throw.
+
 `onNack` only applies to NACKs other than UNAVAILABLE. An UNAVAILABLE NACK is always retried under your `retry` setting, whatever `onNack` is set to.
 
 An exception thrown by the sink doesn't reach `onOperationError`, which only covers `map` and `split` operations. It goes to the pipeline's [`onUncaughtError`](#onuncaughterror) handlers:
