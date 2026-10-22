@@ -1077,6 +1077,8 @@ SOURCE_REF: 004
 </TabItem>
 </Tabs>
 
+In the REST API, send `USER_NAME` as an HTTP header, as in the example above, and only `DETAILS` is read from the request body; in the Websocket API, `USER_NAME` goes in the message body.
+
 ### `EVENT_EXPIRE_USER_PASSWORD`
 
 Used to expire a user's password. 
