@@ -11,7 +11,7 @@ tags:
   - genesis router
 ---
 
-By default, Genesis processes exchange messages with each other over raw TCP, and only GENESIS_ROUTER answers HTTP requests. If you switch a process to the WebSocket messaging channel, it keeps serving Genesis messaging and also answers plain HTTP on the same port, the process's port from its [service definition](/develop/server-capabilities/runtime-configuration/service-definition/) (`*-service-definitions.xml`): each of its request servers, event handlers and custom endpoints gets an HTTP route. You can call those routes directly from inside your cluster, or let the Genesis Router forward HTTP requests to them as a proxy.
+By default, Genesis processes exchange messages with each other over raw TCP, and only GENESIS_ROUTER answers HTTP requests. If you switch a process to the WebSocket messaging channel, it keeps serving Genesis messaging and also answers plain HTTP on the same port, the process's port from its [service definition](/develop/server-capabilities/runtime-configuration/service-definition/) (`*-service-definitions.xml`). Under Genesis Start with a [port offset](/develop/development-environment/genesis-start/configuration/#port-offset), the port is shifted; the Application view shows the port each process was given. Each of its request servers, event handlers and custom endpoints gets an HTTP route. You can call those routes directly from inside your cluster, or let the Genesis Router forward HTTP requests to them as a proxy.
 
 A process stays on TCP, and loads none of the HTTP layer, until you configure the channel.
 
@@ -37,7 +37,7 @@ messaging:
   channel: WEBSOCKET
 ```
 
-Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record and isn't observable in normal operation: no start-up log line, console command or DbMon field shows it.
+Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record and isn't shown at start-up: no start-up log line, console command or DbMon field shows it. To confirm a connection is using WebSocket, look in the calling process's log: a process that connects to another over WebSocket logs `WebSocket handshake complete with <host>:<port>` at INFO, naming the target's host and port.
 
 For the other `messaging` settings, including the `webSocket` and `http` blocks, see the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section).
 
@@ -47,7 +47,7 @@ For the other `messaging` settings, including the `webSocket` and `http` blocks,
 |---|---|---|
 | [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `HELLO_WORLD` | `GET /req-hello-world` | `GET /req-hello-world?REQUEST.NAME=World` |
 | [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `requestReply(WIDGET)` | `GET /req-widget` | `GET /req-widget` |
-| Event handler `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
+| [Event handler](/develop/server-capabilities/core-business-logic-event-handler/) `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
 | Data server | none | Data servers are served by the Genesis Router only |
 | Custom endpoint | the method and path it declares | see [Custom endpoints on a process](#custom-endpoints-on-a-process) |
 
@@ -61,10 +61,10 @@ Request and response bodies use the same JSON format as the router. The reply is
 |---|---|
 | No route for the path | 404 |
 | The route exists, but not for this method | 405; the body lists the methods it accepts |
-| The request doesn't match any custom endpoint's required [request parameters](/develop/server-capabilities/integrations/custom-endpoints/#request-parameters) or its `accepts` and `produces` content types, or it matches more than one | 406 |
+| The request doesn't match any custom endpoint's required [request parameters](/develop/server-capabilities/integrations/custom-endpoints/#request-parameters) or its `accepts` and `produces` content types, or it matches more than one (custom endpoints only) | 406 |
 | No session token, or an unknown one | 401 |
 | Logged in, but without the endpoint's permission codes (custom endpoints only) | 403 |
-| Request body too large | 413 |
+| Request body larger than [`maxContentLength`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaginghttp) (64 MiB by default) | 413 |
 | A custom endpoint threw an exception (an exception in a request server or event handler comes back as a 200 NACK, below) | 500 |
 | The request couldn't be dispatched or timed out (any route type) | 500 |
 | A reply from a request server or event handler, including a NACK | 200 |
