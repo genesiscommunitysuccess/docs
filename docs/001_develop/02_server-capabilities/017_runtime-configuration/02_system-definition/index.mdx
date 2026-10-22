@@ -90,7 +90,7 @@ If other `system` blocks are defined in a different order in other `system-defin
 
 
 ```kotlin
-item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
+item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
 ```
 
 See our pages on [database technology](/build-deploy-operate/deploy/supporting-infrastructure/#databases) for more information on how to configure a specific database.
@@ -182,8 +182,6 @@ The retry mechanism uses exponential backoff with the following pattern:
 **LogFrameworkConfig**: Contains the name of the logging configuration file. The default is `log4j2-default.xml`. If your application uses Logback and this item keeps its default, Genesis loads `logback-default.xml` instead.
 
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
-
-**LogFrameworkConfig**: Contains the name of the logging configuration file. The default is `log4j2-default.xml`. If your application uses Logback and this item keeps its default, Genesis loads `logback-default.xml` instead.
 
 **ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
 
