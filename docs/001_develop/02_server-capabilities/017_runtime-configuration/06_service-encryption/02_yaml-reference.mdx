@@ -244,7 +244,7 @@ This section configures CURVE authentication and encryption for the [ZeroMQ upda
 | `readinessTimeoutMillis`     | integer | `5000`             | How long, in milliseconds, a publisher holds a message for a topic that no subscriber has subscribed to yet. After that, the message is sent anyway |
 | `readinessObserveOnly`       | boolean | `false`            | If `true`, the publisher tracks subscriber readiness but never holds messages back |
 
-Every process is both a ZeroMQ server (it publishes) and a ZeroMQ client (it subscribes to its peers), so each one needs both secret keys.
+Every process is both a ZeroMQ server (it publishes) and a ZeroMQ client (it subscribes to its peers), so each one needs both secret keys. As a server (the publishing side) a process uses the server keypair, `curveServerPublicKey` and `curveServerSecretKey`. As a client (the subscribing side) it uses the client keypair, `curveClientPublicKey` and `curveClientSecretKey`, and authenticates the server by its `curveServerPublicKey`.
 
 Use environment variable placeholders for the keys, so the secrets stay out of the file:
 
