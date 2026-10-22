@@ -173,6 +173,8 @@ The retry mechanism uses exponential backoff with the following pattern:
 - CONSUL, which uses Consul-based clustering; `ClusterPort` is not used in this mode
 - DISABLED, which turns clustering off
 
+The value is case-sensitive. If `ClusterMode` is unset or blank, the mode is LEGACY. Any other value makes startup fail with an error that lists the accepted values. Before 10.0, an unrecognised value was treated as LEGACY.
+
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes. It is separate from the `GENESIS_CLUSTER` service port set in the [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/). `ClusterPort` is not used when `ClusterMode` is `CONSUL`. If it isn't set, GENESIS_CLUSTER uses port `6000`. Before 10.0, the port used when it wasn't set was `9900`; if your system definition doesn't set `ClusterPort` and you need to keep that port, set it to `9900` explicitly.
 
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on the [Data Model](/develop/server-capabilities/data-model/#sequence)
