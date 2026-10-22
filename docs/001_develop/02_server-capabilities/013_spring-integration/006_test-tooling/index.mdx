@@ -56,6 +56,9 @@ The same source directory is also what [`-DenableAppConfigInTests=true`](/develo
 tasks {
     test {
         systemProperty("DbLayer", "SQL")
+        systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+        systemProperty("DbQuotedIdentifiers", "true")
+        useJUnitPlatform()
     }
 }
 ```
