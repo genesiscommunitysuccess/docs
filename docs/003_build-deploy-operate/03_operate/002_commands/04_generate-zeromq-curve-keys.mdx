@@ -56,7 +56,7 @@ The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` und
 | `--force` | Replaces a certificate that already exists. Without it, the task fails if the certificate is there |
 | `--yes` | Skips the confirmation prompt. The task prints the secret keys to the build output, so it asks you to confirm first. Don't run it on CI or with a build scan, where that output is captured |
 
-The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option.
+The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option. To import existing keys with the task, set the `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET` environment variables instead; see [Using keys issued elsewhere](#using-keys-issued-elsewhere).
 
 To verify keys in a project, run `GenerateZeroMqCurveKeys --verify` from [Genesis Start](/develop/development-environment/genesis-start/) (*Add Config → Run Script*), so the check sees the same environment the processes start with.
 
