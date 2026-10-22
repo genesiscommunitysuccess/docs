@@ -247,7 +247,7 @@ A process is in one of these states: `STOPPED`, `STARTING`, `RUNNING`, `HEALTHY`
 
 Health comes from the `ResourceDaemon` utility. Bootstrap and start-all start it if it is stopped, and stop-all stops it. If it isn't running (for example, because you turned this off with [`genesis.start.enableResourceDaemon=false`](/develop/development-environment/genesis-start/configuration/#gradle-property-reference)), running processes stay `RUNNING` and never become `HEALTHY` or `UNHEALTHY`. Start it yourself with `POST /api/processes/{processId}/start`, using its id from `GET /api/processes`.
 
-Once `ResourceDaemon` has started, your application processes take a few seconds to report their health (around 5–6 seconds in testing). Until then, they show `RUNNING`. The Web UI process never gets a health state, so it stays `RUNNING` even when `ResourceDaemon` is up.
+Once `ResourceDaemon` has started, your application processes take some time to report their health. How long depends on how long your processes take to start, and can be a minute or more for a full application. Until they report, they show `RUNNING`. Poll `GET /api/processes` until they show `HEALTHY`. Processes the daemon doesn't report on, such as the Web UI and `ResourceDaemon` itself, never get a health state and stay `RUNNING`.
 
 `STOPPING` can be very brief, typically well under a second, so you might not see it. A process can go from `RUNNING` or `HEALTHY` straight to `STOPPED` between two checks of `GET /api/processes`. Don't wait for `STOPPING` to appear before you wait for `STOPPED`.
 
