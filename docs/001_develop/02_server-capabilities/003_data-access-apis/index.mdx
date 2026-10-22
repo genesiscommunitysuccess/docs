@@ -1711,7 +1711,6 @@ In a GPAL event handler, never inject them. Use the `entityDb` that the event ha
 Use them when the table you work with isn't known at build time. Otherwise, prefer the type-safe [Entity Db API](#entity-db-api).
 
 ```kotlin
-import global.genesis.db.AsyncDb
 import global.genesis.db.DbRecord
 import global.genesis.db.ModifyDetails
 import global.genesis.db.SyncDb
@@ -1730,7 +1729,7 @@ class TradeCanceller @Inject constructor(
 }
 ```
 
-`SyncDb` and `AsyncDb` are both in the package `global.genesis.db`, as are `DbRecord` and `ModifyDetails`. The example imports `AsyncDb` as well, to show its path; it only injects `SyncDb`.
+`SyncDb` and `AsyncDb` are both in the package `global.genesis.db`, as are `DbRecord` and `ModifyDetails`.
 
 The table, index and field names in this example are placeholders for your own data model.
 
@@ -1835,10 +1834,10 @@ import global.genesis.db.rx.RxDb
 ```
 
 :::note
-`RxDb` is deprecated as of 10.0, but it is still supported. Use `SyncDb` or `AsyncDb` for record reads and writes, and `AsyncEntityDb` for entity access. Some `RxDb` features have no `SyncDb` or `AsyncDb` equivalent, and on FoundationDB `RxDb` is the only implementation.
+`RxDb` is deprecated as of 10.0, but it is still supported. Use `SyncDb` or `AsyncDb` for record reads and writes, and `AsyncEntityDb` for entity access. Some `RxDb` features have no `SyncDb` or `AsyncDb` equivalent.
 :::
 
-These are the methods that customers use most. Table, index and field names are strings, as in `SyncDb`.
+Table, index and field names are strings, as in `SyncDb`. The main methods are:
 
 | Kind | Methods |
 |---|---|
