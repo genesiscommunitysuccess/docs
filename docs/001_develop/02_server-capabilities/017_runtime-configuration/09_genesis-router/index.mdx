@@ -264,13 +264,14 @@ For more information on the attributes that can be set here, go to our page on [
 
 ## Metadata requests
 
-Genesis Router answers three requests that describe your application's resources rather than use them:
+Genesis Router answers three requests that describe your application's resources rather than use them. To get the shape of a resource, use `JSON_SCHEMA_REQUEST`.
+
 
 | Request | `MESSAGE_TYPE` | HTTP path | What it returns |
 |:--------|:---------------|:----------|:----------------|
 | Resources | `RESOURCES_REQUEST` | `GET /resources-request` | Every resource the router can reach, with its type |
-| Metadata | `META_REQUEST` | `GET /meta-request` | The fields of one resource |
 | JSON schema | `JSON_SCHEMA_REQUEST` | `POST /json-schema-request` | The inbound and outbound JSON schemas of one resource |
+| Metadata (legacy) | `META_REQUEST` | `GET /meta-request` | The fields of one resource, in the older metadata format |
 
 To get a full Open API specification instead, use the `/gwf/open-api/spec/` endpoint described on the [Open API](/develop/server-capabilities/integrations/open-api/) page. It is built from the same JSON schemas.
 
@@ -354,17 +355,6 @@ The reply lists each resource by name and type:
 }
 ```
 
-### Getting a resource's metadata
-
-Pass the resource name as the `DETAILS[FEATURE]` query parameter. Encode the square brackets if your client does not do it for you (`DETAILS%5BFEATURE%5D`).
-
-```http
-GET http://localhost:9064/meta-request?DETAILS[FEATURE]=EVENT_TRADE_INSERT
-SESSION_AUTH_TOKEN: <session-auth-token>
-```
-
-The reply is a `FEATURE_ACK`, and its `DETAILS` block describes the resource's fields. The layout depends on the resource type. For an Event Handler, `FIELD` lists each input field with its `NAME`, `TYPE` and flags such as `OPTIONAL`. `DETAILS` also carries a `DEFINITIONS` block and a `REPLY` block that describes the reply the event can send; `REPLY` has its own `NAME`, `DESCRIPTION`, `FIELD` and `DEFINITIONS`. For a Request Server, `REQUEST_FIELD` and `REPLY_FIELD` list the request and reply fields, and an `INDICES` array is also present. For a Data Server query, `FIELD` lists each field with its `NAME` and `TYPE` (and `VALID_VALUES` for an enum), and `INDEXES` lists the table's indexes (`NAME`, `FIELDS`).
-
 ### Getting a resource's JSON schema
 
 ```http
@@ -392,6 +382,8 @@ If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `IN
 ```
 
 GPAL Event Handlers, Request Servers and Data Server queries all publish JSON schemas. If a resource is registered but has no JSON schema, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
+
+`META_REQUEST` is the older metadata format. It is legacy and discouraged for new clients, but older UI clients still send it, so the router still supports it.
 
 ## Custom endpoints
 
