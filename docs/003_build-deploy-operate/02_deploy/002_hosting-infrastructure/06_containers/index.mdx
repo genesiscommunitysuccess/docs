@@ -40,7 +40,7 @@ The Genesis Application Platform provides two different options for building a D
 
 The Gradle plugin provides the easiest and quickest way to get Genesis running in a Docker container. We provide a Gradle task that generates a Dockerfile for you, with all the necessary dependencies, and then builds it.
 
-**There are 3 Gradle tasks that are provided to help you build your Docker image:**
+**The plugin provides three main Gradle tasks to help you build your Docker image:**
 
 - `createDockerfile` - generates the Dockerfile dynamically based on user-defined settings and dependencies. It also copies all the files needed for the context into the same folder.
 - `buildImage` - runs `createDockerfile` as a sub-task, and then runs `docker build` on the generated Dockerfile.
