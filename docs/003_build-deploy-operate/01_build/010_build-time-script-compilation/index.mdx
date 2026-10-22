@@ -22,11 +22,11 @@ When build-time compilation is on for a module, the build compiles the module's 
 
 At start-up, the process looks up each script in the index by its file name and a hash of its source text. If it finds a match, it loads the class; if not, it compiles the script as usual. Because the lookup uses the source hash, these all keep working:
 
-- overriding a script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. This applies to your own application's scripts, with one exception: `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at start-up (see [Scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up));
+- overriding a platform script in [`site-specific`](/develop/server-capabilities/runtime-configuration/site-specific/) (put your copy in the app module's `src/main/genesis/scripts` folder; the build deploys it to `$GENESIS_HOME/site-specific/scripts/`, and files named `<product>-*` deploy to `$GENESIS_HOME/<product>/scripts` instead). The build compiles your copy with the app's other scripts, and the process loads that compiled copy in place of the original. Editing a script in your own application works the same way, with one exception: `genesis-router.kts` and `genesis-mcp-server.kts` are always compiled at start-up (see [Scripts that are always compiled at start-up](#scripts-that-are-always-compiled-at-start-up));
 - overriding an application script from another component;
-- editing a script on a deployed server. This still works as a fallback, but it is not a supported way to override a script; see [Turning it off](#turning-it-off).
+- editing a script directly on a deployed server. This still works as a fallback, but it is not a supported way to change a script; see [Turning it off](#turning-it-off).
 
-In the last two cases the changed script no longer matches its index entry, so the process compiles it. The match covers the script's file name and text only, so a changed classpath or dependency version does not invalidate a precompiled class; rebuild after changing dependencies.
+In the cases of overriding a script from another component and editing a script on a deployed server, the changed script no longer matches its index entry, so the process compiles it. The match covers the script's file name and text only, so a changed classpath or dependency version does not invalidate a precompiled class; rebuild after changing dependencies.
 
 The scripts compile in a Gradle source set of their own: `genesisScripts`, or `genesis<SourceSet>Scripts` for a source set other than `main`. Your module's own `.kt` code compiles exactly as before. The script compilation copies the compiler options of the module's Kotlin compile task, such as `jvmTarget`, `optIn` and `freeCompilerArgs`.
 
@@ -111,7 +111,7 @@ plugins {
 | `genesis.scripts.ktlint` | Gradle property | The default for `ktlintScripts` |
 | `genesisScriptCompilation { enabled = false }` | Module build file | Turns the feature off for one module |
 
-Setting the Gradle property `genesis.scripts.compileAtBuildTime` to `false` turns the feature off for the whole build. It overrides everything else, including `compileScriptsAtBuildTime = true` in `settings.gradle.kts` and `enabled = true` in a module's `genesisScriptCompilation` block.
+Setting the Gradle property `genesis.scripts.compileAtBuildTime` to `false` turns the feature off for the whole build. It overrides `compileScriptsAtBuildTime = true` in `settings.gradle.kts`. A module that configures a `genesisScriptCompilation` block, including with `enabled = true`, then fails to build; see [Turning it off](#turning-it-off).
 
 Otherwise, with a Settings plugin, the setting in `settings.gradle.kts` wins over the Gradle property. In a repository without a Settings plugin, setting the Gradle property to `true` does nothing on its own: only applying the plugin turns the feature on.
 
@@ -126,7 +126,7 @@ No system definition item, JVM option or environment variable stops a process fr
 The `-P` switch applies only to the Gradle invocation it is passed to. Genesis Start runs Gradle again (its sync runs `assemble`) without that property, which invalidates the build and compiles the scripts again from the persistent setting. To keep build-time compilation off under Genesis Start, or for good, set `compileScriptsAtBuildTime = false` in `settings.gradle.kts`.
 
 :::warning
-Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to override it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes). Use the copy in `src/main/genesis/scripts` described above.
+Editing a script directly in the deployed home, on a Genesis Start environment or on a server, is not a supported way to change it. The process sees that the source no longer matches its compiled class and compiles the script at start-up instead. Genesis Start's sync also replaces the edited file the next time it deploys, unless [sync is switched off](/develop/development-environment/genesis-start/#sync-processes) (for Genesis Start run headless, see [headless mode](/develop/development-environment/genesis-start/headless-mode/): `PATCH /api/settings` for Use Genesis Sync, or `{"skipSync": true}` on start-all or bootstrap). Edit the script in your app's `src/main/genesis/scripts` folder instead, as described above.
 :::
 
 ## Configuration options
@@ -163,7 +163,7 @@ genesisScriptCompilation {
 }
 ```
 
-You can leave `scriptDefinitions` out: discovery finds the definition as long as the module that provides your script type is on the test classpath, such as the data server module for data server scripts. If that module is missing and the test scripts are compiled at build time, the build fails: no script definition claims the script, so it compiles as plain Kotlin and its use of the DSL fails (see [A script that no script definition claims](#what-fails-the-build)). The message `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`, appears at runtime when a test loads a script that was not compiled at build time.
+You can leave `scriptDefinitions` out: discovery finds the definition as long as [the module that provides your script type](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#gpal-types-and-base-classes) is on the test classpath, such as the data server module for data server scripts. The table there shows `implementation(...)`; for test scripts, add the dependency with `testImplementation(...)` instead. If that module is missing and the test scripts are compiled at build time, the build fails: no script definition claims the script, so it compiles as plain Kotlin and its use of the DSL fails (see [A script that no script definition claims](#what-fails-the-build)). The message `Missing required dependencies in your Gradle build script`, followed by the line to add, for example `testImplementation(genesis("pal-dataserver"))`, appears at runtime when a test loads a script that was not compiled at build time.
 
 ### Linting scripts with ktlint
 
