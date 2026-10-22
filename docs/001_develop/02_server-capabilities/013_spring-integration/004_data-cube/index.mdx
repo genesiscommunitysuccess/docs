@@ -663,6 +663,23 @@ POST /api/v1/cubes/trades/query
 }
 ```
 
+`alias` is optional on a group key, an aggregate and a calculation. Leave it out and the column is
+named from its function and input, so an aggregate `SUM` over `quantity` becomes `SUM_quantity`.
+The same request, sorted on that derived name:
+
+```json
+POST /api/v1/cubes/trades/query
+{
+  "groupKeys": [{ "expr": { "type": "field", "attribute": "currencyId" } }],
+  "aggregates": [
+    { "function": "SUM", "input": { "type": "field", "attribute": "quantity" } }
+  ],
+  "sort": "-SUM_quantity,currencyId",
+  "page": 0,
+  "size": 50
+}
+```
+
 ## Security
 
 ### No-probing and column visibility
