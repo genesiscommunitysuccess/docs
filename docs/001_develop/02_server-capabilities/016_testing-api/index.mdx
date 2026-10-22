@@ -546,6 +546,10 @@ To define a test dictionary inline in Kotlin instead, use [`@ProvidedDictionary`
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.jupiter.EnableLegacyXmlDictionary
+import global.genesis.testsupport.jupiter.GenesisTest
+import org.junit.jupiter.api.Test
+
 @GenesisTest
 @EnableLegacyXmlDictionary
 class LegacyXmlDictionaryTest {
@@ -560,6 +564,10 @@ class LegacyXmlDictionaryTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.jupiter.EnableLegacyXmlDictionary;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import org.junit.jupiter.api.Test;
+
 @GenesisTest
 @EnableLegacyXmlDictionary
 public class LegacyXmlDictionaryTest {
@@ -804,6 +812,9 @@ In the example, the microservice is started only once, and used by both `myTest`
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.jupiter.GenesisSharedContextTest
+import org.junit.jupiter.api.Test
+
 @GenesisSharedContextTest
 class MyGenesisTest {
     @Test
@@ -817,6 +828,9 @@ class MyGenesisTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.jupiter.GenesisSharedContextTest;
+import org.junit.jupiter.api.Test;
+
 @GenesisSharedContextTest
 public class MyGenesisTest {
     @Test
