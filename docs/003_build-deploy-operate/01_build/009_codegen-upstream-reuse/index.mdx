@@ -91,7 +91,7 @@ genesis {
 }
 ```
 
-The dictionary files of a product must be named `<productName>-*-dictionary.kts`, starting with `<productName>-`. For a product that other projects depend on, the build rejects any other dictionary file name.
+The `productName` also sets the prefix of your dictionary file names: each must start with `<productName>-`, for example `position-tables-dictionary.kts`. For a product that other projects depend on, the build fails on any other name.
 
 ### When reuse switches off automatically
 
