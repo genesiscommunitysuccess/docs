@@ -91,6 +91,8 @@ genesis {
 }
 ```
 
+The dictionary files of a product must be named `<productName>-*-dictionary.kts`, starting with `<productName>-`. For a product that other projects depend on, the build rejects any other dictionary file name.
+
 ### When reuse switches off automatically
 
 Even with upstream reuse switched on, the build switches it off for a dictionary-cache module that belongs to one of the upstream products itself.
@@ -119,7 +121,7 @@ To change an upstream product's system definition value, add it to your applicat
 
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
-- `false` (the default): the build regenerates the affected products locally and logs a `*** DEPRECATION WARNING ***`.
+- `false` (the default): the build regenerates the affected products locally, into your application's own [dictionary-cache module](/build-deploy-operate/build/bdo-build-overview/#dao) alongside its own generated classes, and logs a `*** DEPRECATION WARNING ***`.
 - `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add.
 
 The warning looks like this (trimmed):
@@ -149,7 +151,7 @@ If your application uses `tableUnion` to add fields to a table that belongs to a
 The error looks like this. The table and product names depend on your build:
 
 ```
-[codegen] tableUnion detected for table(s) [WIDGET] belonging to upstream product(s) [auth] — their slice jars lack the union fields. Add 'genesis.codegen.overrideSlices=auth' to gradle.properties to regenerate those products' entity classes locally.
+[codegen] tableUnion detected for table(s) [PROFILE] belonging to upstream product(s) [auth] — their slice jars lack the union fields. Add 'genesis.codegen.overrideSlices=auth' to gradle.properties to regenerate those products' entity classes locally.
 ```
 
 For example, this `position-tables-dictionary.kts` adds the field `DEPARTMENT`, declared inline inside the `tableUnion`, to auth's `PROFILE` table:
