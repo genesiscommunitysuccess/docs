@@ -266,7 +266,6 @@ For more information on the attributes that can be set here, go to our page on [
 
 Genesis Router answers three requests that describe your application's resources rather than use them. To get the shape of a resource, use `JSON_SCHEMA_REQUEST`.
 
-
 | Request | `MESSAGE_TYPE` | HTTP path | What it returns |
 |:--------|:---------------|:----------|:----------------|
 | Resources | `RESOURCES_REQUEST` | `GET /resources-request` | Every resource the router can reach, with its type |
@@ -383,7 +382,7 @@ If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `IN
 
 GPAL Event Handlers, Request Servers and Data Server queries all publish JSON schemas. If a resource is registered but has no JSON schema, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
 
-`META_REQUEST` is the older metadata format. It is legacy and discouraged for new clients, but older UI clients still send it, so the router still supports it.
+`META_REQUEST` is the older metadata format. It is legacy and discouraged for new clients, but Genesis UI components still send it (for example foundation-ui's `getMetadata`), so the router still supports it.
 
 ## Custom endpoints
 
