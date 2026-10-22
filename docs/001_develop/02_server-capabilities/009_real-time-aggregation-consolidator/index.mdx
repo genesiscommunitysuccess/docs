@@ -581,7 +581,7 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
 The `select` block is optional. A consolidator without one has no functions, but it still does two things:
 
 - When `onNotFound` is `BUILD`, it writes a new output row the first time it sees a group.
-- It runs your `onCommit` block for every input it processes.
+- It runs your `onCommit` block once for each group it processes in a batch, including groups that already have an output row.
 
 This suits a consolidation that does all its work in `onCommit`, such as a calculation across related rows of the group: you don't need a placeholder `select` just to make it load. If there is no `onCommit` block either, an input whose output row already exists produces no write.
 
