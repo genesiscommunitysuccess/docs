@@ -68,6 +68,8 @@ import global.genesis.net.GenesisMessageClient
 import global.genesis.testsupport.jupiter.GenesisTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Test
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
 
 @GenesisTest
 class SendMessageTest {
@@ -81,9 +83,11 @@ class SendMessageTest {
         set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT")
         // set the other fields the event handler expects
 
-        messageClient.sendReqRep(set) { reply ->
-            // assert on the reply GenesisSet here
-        }
+        val future = CompletableFuture<GenesisSet>()
+        messageClient.sendReqRep(set) { reply -> future.complete(reply) }
+
+        val reply = future.get(10, TimeUnit.SECONDS)
+        // assert on the reply GenesisSet here
     }
 }
 ```
@@ -98,6 +102,9 @@ import global.genesis.testsupport.jupiter.GenesisTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+
 @GenesisTest
 public class SendMessageTest {
 
@@ -105,14 +112,16 @@ public class SendMessageTest {
     private GenesisMessageClient messageClient = null;
 
     @Test
-    public void sendsRequest() {
+    public void sendsRequest() throws Exception {
         GenesisSet set = new GenesisSet();
         set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT");
         // set the other fields the event handler expects
 
-        messageClient.sendReqRep(set, reply -> {
-            // assert on the reply GenesisSet here
-        });
+        CompletableFuture<GenesisSet> future = new CompletableFuture<>();
+        messageClient.sendReqRep(set, reply -> future.complete(reply));
+
+        GenesisSet reply = future.get(10, TimeUnit.SECONDS);
+        // assert on the reply GenesisSet here
     }
 }
 ```
@@ -120,7 +129,7 @@ public class SendMessageTest {
 </TabItem>
 </Tabs>
 
-`sendReqRep` has an overload that takes a timeout in milliseconds as a third argument, `sendReqRep(set, consumer, reqRepTimeout)`. To send a message without waiting for a reply, call `sendMessage(set)`. It returns `false` if the client is not connected.
+`sendReqRep` has an overload that takes a timeout in seconds as a third argument, `sendReqRep(set, consumer, reqRepTimeout)`. `sendReqRep` does not wait for the reply, and it does not throw when the client is not connected: it logs an error and the reply never arrives, which is why the test waits on the future with a timeout. To send a message without waiting for a reply, call `sendMessage(set)`. It returns `false` if the client is not connected.
 
 ### Database and service tests
 
