@@ -48,7 +48,15 @@ For example, auth's DAO slice jar is `global.genesis:auth-generated-dao:<version
 
 Upstream reuse needs slice jars, and only products built and published with Genesis 10.0 have them. A PBC published with an earlier version has none, so use PBC versions built with Genesis 10.0.
 
-To check whether a PBC version has slice jars, look in your repository for its `<product>-generated-{sysdef,fields,dao}-<version>-slice.jar` artifacts. If a version has none, either upgrade to a version built with Genesis 10.0, or list the product in `genesis.codegen.overrideSlices` so that its generated code is produced locally.
+The build reports any upstream product whose version has no codegen slice jars. The report looks like this, with one line for each product concerned:
+
+```
+[genesis codegen] Upstream product(s) in '<module>' have no codegen slice jars, so reuseUpstream cannot use them:
+  - auth 8.15.3 (missing auth-generated-sysdef, ...)
+Those versions were most likely not built with Genesis 10.0, or could not be downloaded. Upgrade them to versions built with Genesis 10.0, or set genesis.codegen.overrideSlices=auth to generate their classes locally.
+```
+
+By default this is a warning; with `genesis.codegen.reuseUpstream.strict=true` the build fails with the same message. If a version has no slice jars, either upgrade to a version built with Genesis 10.0, or list the product in `genesis.codegen.overrideSlices` so that its generated code is produced locally.
 
 ## Publishing slice jars
 
@@ -70,7 +78,13 @@ In a generated project this `repositories` block may sit inside an `allprojects 
 
 A generated project may already declare a `mavenLocal` earlier in that block, restricted to the launcher's own artifacts. Leave it as it is: the plain `mavenLocal()` at the end is the one that resolves your slice jars.
 
-Publishing the slice jars is not enough on its own. An application that declares your product as a product dependency also resolves the product's own `-distribution` and `-config` artifacts, so you must publish the upstream product in full as well, with its usual publish task (for example `publishToMavenLocal`). Run `publishAllGeneratedSlicesToMavenLocal` in addition to that task, not instead of it. If the full publication is missing, the consuming build fails with an error such as `Could not find global.genesis:upstream-distribution:1.0.0-SNAPSHOT`.
+Publishing the slice jars is not enough on its own. An application that declares your product as a product dependency also resolves the product's own `-distribution` and `-config` artifacts, so you must publish the upstream product in full as well, with its usual publish task (for example `publishToMavenLocal`). Run `publishAllGeneratedSlicesToMavenLocal` in addition to that task, not instead of it. For example, from the `server` directory:
+
+```bash
+./gradlew publishToMavenLocal :<product>-dictionary-cache:publishAllGeneratedSlicesToMavenLocal
+```
+
+If the full publication is missing, the consuming build fails with an error such as `Could not find global.genesis:upstream-distribution:1.0.0-SNAPSHOT`.
 
 ## Settings
 
@@ -97,18 +111,24 @@ The `productName` also sets the prefix of your dictionary file names: each must 
 
 Even with upstream reuse switched on, the build switches it off for a dictionary-cache module that belongs to one of the upstream products itself.
 
-The build does not detect an override of an upstream dictionary file for you. If your application overrides a dictionary file from an upstream product in `src/main/genesis/cfg`, for example with its own copy of an upstream `*-tables-dictionary.kts` file, the upstream slice jar still supplies the original definitions and ignores your override, with no warning, unless you set `genesis.codegen.overrideSlices`. So you must tell the build to regenerate that code.
+The build also detects an override of an upstream dictionary file. If your application overrides a dictionary file from an upstream product, for example with its own copy of an upstream `*-tables-dictionary.kts` file in `src/main/genesis/cfg`, the build logs a warning like this:
+
+```
+[genesis codegen] reuseUpstream disabled for '<module>': app overrides upstream dictionary files ([<file>]) ...
+```
+
+It then switches upstream reuse off and generates every upstream product locally, so your override takes effect, at the cost of a slower build. With `genesis.codegen.reuseUpstream.strict=true`, the build fails with the same message instead.
+
+Keeping upstream reuse while overriding an upstream dictionary file is not supported yet. Listing the product in `genesis.codegen.overrideSlices` does not work for this: the build fails in `generateView` (GSF-8733).
 
 To override auth's tables:
 
 1. Copy `auth-tables-dictionary.kts` into the `src/main/genesis/cfg` directory of your application's module. You don't need to look for it in a jar: the build unpacks auth's configuration (from its `auth-config` artifact) into your application's Genesis Home, so you can take the file from `build/genesis-home/auth/cfg/auth-tables-dictionary.kts` in your application module, for example `server/<product>-app/build/genesis-home/auth/cfg/auth-tables-dictionary.kts`. The app's sync fills that directory, which Genesis Start and the IntelliJ plugin do for you, so if it is empty, start or sync the app from one of them first (if you are working outside both tools, run `./gradlew genesisSync`).
 2. Make your changes in the copy.
-3. Set one of these properties:
-    - `genesis.codegen.overrideSlices=auth` regenerates auth's code locally, and keeps reusing the slice jars of every other upstream product.
-    - `genesis.codegen.reuseUpstream=false` regenerates the code of every upstream product locally.
+3. Build as usual. The build detects the override, switches upstream reuse off and generates every upstream product locally. To avoid the warning, you can switch reuse off yourself:
 
 ```properties
-genesis.codegen.overrideSlices=auth
+genesis.codegen.reuseUpstream=false
 ```
 
 Your copy replaces auth's whole table dictionary, not just the tables you change. The build copies your application's own configuration before the dependencies' and keeps the first file it finds with a given name. So keep every auth table in your copy, not only the ones you edit.
@@ -122,7 +142,14 @@ To change an upstream product's system definition value, add it to your applicat
 What happens next depends on `genesis.codegen.reuseUpstream.strict`:
 
 - `false` (the default): the build regenerates the affected products locally, into your application's own [dictionary-cache module](/build-deploy-operate/build/bdo-build-overview/#dao) alongside its own generated classes, and logs a `*** DEPRECATION WARNING ***`.
-- `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add.
+- `true`: the build fails, with a message that names the `genesis.codegen.overrideSlices` value to add. For the auth example above, it reads:
+
+```
+[codegen] Upstream product(s) [auth] sysdef has changed — their slice jars may have structurally incorrect entity classes for this deployment (e.g. sysdef-conditional fields are missing or have wrong values).
+Changed products:
+  - auth: changed keys [ADMIN_PERMISSION_ENTITY_TABLE, ADMIN_PERMISSION_ENTITY_FIELD]
+Add 'genesis.codegen.overrideSlices=auth' to gradle.properties to regenerate those products' entity classes locally.
+```
 
 The warning looks like this (trimmed):
 
