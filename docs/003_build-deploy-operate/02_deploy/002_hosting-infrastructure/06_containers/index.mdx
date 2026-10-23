@@ -240,6 +240,9 @@ It is normal for `/health/status` to return `503` during startup while processes
 Note: You need to ensure the port is accessible with the Docker `--port` option; alternatively, check the documentation for whichever container orchestration system you use.
 
 ### Sample response 
+
+This is an example only. The processes and ports in your response depend on your configuration.
+
 ```
 [
     {
@@ -472,18 +475,9 @@ All Genesis services within an app need to be able to access all the other Genes
 
 When using built-in clustering (`ClusterMode` is `LEGACY`), the hosts must also be able to reach each other by host name and on [`ClusterPort`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) (`6000` by default). `ClusterPort` is not used when `ClusterMode` is `CONSUL`, so it does not need to be opened between hosts.
 
-The default Genesis services and their ports are:
+Service ports are configured, not fixed. Each process's port is set in its service definitions (`<app>-service-definitions.xml`) and can be overridden per deployment. For example, the auth service's definitions ship as `auth/cfg/auth-service-definitions.xml` in the auth distribution. To see the ports in use, run [`mon`](/build-deploy-operate/operate/commands/#mon) on a running node, or read the deployed service definitions. Every service port listed there must be reachable between the hosts in the cluster.
 
-| Service | Port |
-| --- | --- |
-| `GENESIS_AUTH_CONSOLIDATOR` | `8005` |
-| `GENESIS_AUTH_MANAGER` | `8001` |
-| `GENESIS_AUTH_PERMS` | `8003` |
-| `GENESIS_CLUSTER` | `9000` |
-| `GENESIS_EVALUATOR` | `9015` |
-| `GENESIS_ROUTER` | `9017` |
-
-When `MqLayer` is `ZeroMQ` and the ZeroMQ proxy is not used (`ZeroMQProxyModeEnabled` is `false`, which is the default), each service also listens on its port plus `10000`; for example, `GENESIS_CLUSTER` also listens on `19000`. Those ports must also be reachable between hosts.
+When `MqLayer` is `ZeroMQ` and the ZeroMQ proxy is not used (`ZeroMQProxyModeEnabled` is `false`, which is the default), each service also listens on its port plus `10000`; for example, a service on port `9000` also listens on `19000`. Those ports must also be reachable between hosts.
 
 When the ZeroMQ proxy is used, the processes that use `GENESIS_CLUSTER` as a proxy for the update queue use these system definition items:
 
