@@ -58,6 +58,8 @@ The task writes the client certificate to `cfg/zmq-curve-clients/<name>.key` und
 
 The `--cert-dir`, `--verify`, `--server-secret` and `--client-secret` options belong to the deployed command only. The task rejects them, and it has no verify option. To import existing keys with the task, set the `ZMQ_CURVE_SERVER_SECRET` and `ZMQ_CURVE_CLIENT_SECRET` environment variables instead; see [Using keys issued elsewhere](#using-keys-issued-elsewhere).
 
+The build copies the `cfg/zmq-curve-clients` directory into the deployed Genesis home, and the next build or sync overwrites the deployed copy, as it does `network-config.yaml`. To revoke a client in a project, delete its certificate from the project's `src/main/genesis/cfg/zmq-curve-clients`, not from the deployed `allowedClientCertDirectory`: a certificate removed only from the deployed side comes back on the next sync.
+
 To verify keys in a project, run `GenerateZeroMqCurveKeys --verify` from [Genesis Start](/develop/development-environment/genesis-start/) (*Add Config → Run Script*), so the check sees the same environment the processes start with.
 
 ## Generating keys
@@ -68,7 +70,7 @@ Run the command as the user that owns the Genesis installation:
 GenerateZeroMqCurveKeys
 ```
 
-The command writes the client certificate, which only its owner can read. Then it prints:
+The command writes the client certificate, which only its owner can read. On every host, the certificate file must be owned by the user that runs the Genesis processes, so after copying it to another host, or creating it through a Docker volume, check its owner. Run `GenerateZeroMqCurveKeys --verify` as that user: run as another user, such as root, it can pass while the processes still cannot read the file. Then it prints:
 
 - the `zeroMqEncryption` block to add to `site-specific/cfg/network-config.yaml`
 - the two public keys, which are safe to commit
