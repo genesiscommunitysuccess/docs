@@ -2105,19 +2105,19 @@ class MyDataServerTest {
 }
 ```
 
-Alternatively, use `@ProvidedInstance` to hand the test an already-constructed instance instead of having GenesisJunit discover it via package scanning — useful when the definition needs a dependency you want to stub out yourself:
+Alternatively, use `@ProvidedType` to register just this one class without scanning its whole package:
 
 ```kotlin
 import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import jakarta.inject.Inject
 import myapp.definition.MyDataServer
 
 @GenesisTest
 class MyDataServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val myDataServer = MyDataServer::class
 
     @Inject
@@ -2127,7 +2127,11 @@ class MyDataServerTest {
 }
 ```
 
-`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedInstance` registers only the exact class (or instance) you give it. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
+
+`@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.
 
 ### Integration testing (legacy)
 

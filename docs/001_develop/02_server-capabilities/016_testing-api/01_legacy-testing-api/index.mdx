@@ -28,6 +28,109 @@ Write new tests with the annotation-based GenesisJunit API (`@GenesisTest`, `@Ge
 
 :::
 
+### Mapping to GenesisJunit
+
+Most settings of the legacy test configuration have an equivalent in the annotation-based GenesisJunit API. Use this table to move a test across. The annotations are in the `global.genesis.testsupport.jupiter` package and are described on the [Testing API](/develop/server-capabilities/testing-api/#annotations) page.
+
+| Legacy | GenesisJunit |
+|---|---|
+| `extends AbstractGenesisTestSupport` / `GenesisTestSupport` | `@GenesisTest` (a fresh process per test method) or `@GenesisSharedContextTest` (one process per class) |
+| `packageName` / `packageNames` | `@PackageScan(SomeClass::class)` or `@PackageNameScan("...")` |
+| `genesisHome` | `@GenesisHome("...")` |
+| `scriptFileName` | `@TestScriptFile("...")` (repeatable) |
+| `configFileName` | `@TestConfigFile("...")` |
+| `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. This is the generic route: for a service with its own client (such as an event handler, with `EventClientSync`), prefer that client instead, as described in the `parser` row below. See [sending messages in a GenesisJunit test](#sending-messages-in-a-genesisjunit-test) |
+| `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use [`EventClientSync`](/develop/server-capabilities/core-business-logic-event-handler/#testing-compiled-definitions) (or `EventClientAsync`) for event handlers, `RequestClientSync` (or `RequestClientAsync`) for request servers, and `DataServerSubscriptionClientAsync` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/#testing-specific-services) |
+| `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
+| `authCacheOverride` / `authCacheOverrides` | [`@EnableInMemoryTestAuthCache`](/develop/server-capabilities/testing-api/#enableinmemorytestauthcache), and inject `InMemoryTestAuthCache`. The auth map name is now passed per call, `authCache.authorise(authMap = …)`, not set as configuration |
+| `useTempClassloader = true`, or `GenesisClassGenerationTestSupport` | `@EnableTestClassLoader` |
+| `dataDumpOn` | `@EnableDataDump` |
+| `rootLogLevel` | `@RootLogLevel` |
+| `expectedProcessStatus` | `@ExpectedProcessStatus` |
+| Instances the test binds | `@ProvidedInstance` for built instances, `@ProvidedType` for classes |
+| `extends AbstractDatabaseTest` | `@GenesisDatabaseTest`, and [`@Inject`](/develop/server-capabilities/testing-api/#a-simple-example) the database as `SyncEntityDb`, `RxEntityDb` or `AsyncEntityDb`, or as `SyncDb`, `RxDb` or `AsyncDb` if the test works with `DbRecord` and table names |
+| `rxDb` (on `AbstractGenesisTestSupport`) | [`@Inject`](/develop/server-capabilities/testing-api/#a-simple-example) the database, as on the `extends AbstractDatabaseTest` row, with the same choice of types |
+| `createMockDictionary()` returning an inline dictionary | `@ProvidedDictionary` with `providedDictionary { }` |
+| XML dictionary | `@EnableLegacyXmlDictionary` |
+
+The mapping is by purpose: check each converted test, because the two APIs don't behave identically in every detail. For example, data dump is on by default in the legacy API and off by default in GenesisJunit. Some legacy dictionary set-ups have no GenesisJunit equivalent: a dictionary loaded from an explicit file path, the production dictionary filtered to some tables, and swapping the dictionary in the middle of a test. Keep those tests on the legacy classes, which still compile and run.
+
+### Sending messages in a GenesisJunit test
+
+Inject a `GenesisMessageClient` into a `@GenesisTest` class, and use it where a legacy test called `sendMessage` or `sendMessageAsync`. The client is connected to the service the test starts. Build the request as a `GenesisSet`, as in a legacy test, and pass it to `sendReqRep` with a callback that receives the reply:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.commons.model.GenesisSet
+import global.genesis.net.GenesisMessageClient
+import global.genesis.testsupport.jupiter.GenesisTest
+import jakarta.inject.Inject
+import org.junit.jupiter.api.Test
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
+
+@GenesisTest
+class SendMessageTest {
+
+    @Inject
+    lateinit var messageClient: GenesisMessageClient
+
+    @Test
+    fun sendsRequest() {
+        val set = GenesisSet()
+        set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT")
+        // set the other fields the event handler expects
+
+        val future = CompletableFuture<GenesisSet>()
+        messageClient.sendReqRep(set) { reply -> future.complete(reply) }
+
+        val reply = future.get(10, TimeUnit.SECONDS)
+        // assert on the reply GenesisSet here
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.commons.model.GenesisSet;
+import global.genesis.net.GenesisMessageClient;
+import global.genesis.testsupport.jupiter.GenesisTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+
+@GenesisTest
+public class SendMessageTest {
+
+    @Inject
+    private GenesisMessageClient messageClient = null;
+
+    @Test
+    public void sendsRequest() throws Exception {
+        GenesisSet set = new GenesisSet();
+        set.setString("MESSAGE_TYPE", "EVENT_MY_EVENT");
+        // set the other fields the event handler expects
+
+        CompletableFuture<GenesisSet> future = new CompletableFuture<>();
+        messageClient.sendReqRep(set, reply -> future.complete(reply));
+
+        GenesisSet reply = future.get(10, TimeUnit.SECONDS);
+        // assert on the reply GenesisSet here
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`sendReqRep` has an overload that takes a timeout in seconds as a third argument, `sendReqRep(set, consumer, reqRepTimeout)`. `sendReqRep` does not wait for the reply, and it does not throw when the client is not connected: it logs an error and the reply never arrives, which is why the test waits on the future with a timeout. To send a message without waiting for a reply, call `sendMessage(set)`. It returns `false` if the client is not connected.
+
 ### Database and service tests
 
 Two types of test are included in the platform:
@@ -53,7 +156,7 @@ There are three types of dictionary you can use:
 
 Use this type of dictionary if you want to test against the production dictionary. This is the preferred way of using a dictionary in product tests, as production and test dictionaries are always in sync.
 
-This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default, as it is for GenesisJunit tests (see [EnableLegacyXmlDictionary](/develop/server-capabilities/testing-api/#enablelegacyxmldictionary)). To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
   <TabItem value="kotlin">
@@ -98,6 +201,8 @@ override fun createMockDictionary(): GenesisDictionary = testDictionary {
 Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
 :::
 
+In GenesisJunit, use [`@ProvidedDictionary`](/develop/server-capabilities/testing-api/#provideddictionary) instead.
+
 #### File dictionary
 
 Only use a File dictionary if the dictionary you want to test is:
@@ -141,19 +246,22 @@ Both types of test work with all three dictionary types.
 
 Use this for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other Genesis components are provided. The only requirement for this type of test is a dictionary.
 
-To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below.
+To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below. `prodDictionary()`, `testDictionary { }` and `field` are inherited from the base class, so they need no import.
 
 In the first instance, we are using a **production directory**.
 
 - in Kotlin, through the `rxDb` property
 - in Java, using the `getRxDb()` method
 
-The test makes sure there are no records in the `USER` table. In both languages, the `RxDb` is available.
+The test makes sure there are no records in the `USER` table, then inserts a record and reads it back. In both languages, the `RxDb` is available. Java builds the record with the `DbRecord` constructor and plain setters and getters, where Kotlin uses the `dbRecord { }` builder.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.db.DbRecord.Companion.dbRecord
+    import global.genesis.db.util.AbstractDatabaseTest
+
     class SampleKotlinTest : AbstractDatabaseTest() {
 
     override fun createMockDictionary(): GenesisDictionary = prodDictionary()
@@ -162,6 +270,13 @@ The test makes sure there are no records in the `USER` table. In both languages,
     fun `test count`() {
     assert(rxDb.count("USER").blockingGet() == 0L)
   }
+
+    @Test
+    fun `test insert and get`() {
+    rxDb.insert(dbRecord("USER") { setString("USER_NAME", "JohnDoe") }).blockingGet()
+    val found = rxDb.get(dbRecord("USER") { setString("USER_NAME", "JohnDoe") }, "USER_BY_NAME").blockingGet()
+    assert(found.getString("USER_NAME") == "JohnDoe")
+  }
   }
     ```
 
@@ -169,6 +284,9 @@ The test makes sure there are no records in the `USER` table. In both languages,
   <TabItem value="java">
 
     ```java
+    import global.genesis.db.DbRecord;
+    import global.genesis.db.util.AbstractDatabaseTest;
+
     public class SampleJavaTest extends AbstractDatabaseTest {
 
     @Override
@@ -180,13 +298,32 @@ The test makes sure there are no records in the `USER` table. In both languages,
     public void testCount() {
     assert getRxDb().count("USER").blockingGet() == 0L;
   }
+
+    @Test
+    public void testInsertAndGet() {
+    DbRecord user = new DbRecord("USER");
+    user.setString("USER_NAME", "JohnDoe");
+    getRxDb().insert(user).blockingGet();
+
+    DbRecord key = new DbRecord("USER");
+    key.setString("USER_NAME", "JohnDoe");
+    DbRecord found = getRxDb().get(key, "USER_BY_NAME").blockingGet();
+    assert "JohnDoe".equals(found.getString("USER_NAME"));
+  }
   }
     ```
 
   </TabItem>
 </Tabs>
 
+When you move a Java test like this to GenesisJunit and inject a `SyncDb`, the lookup with an index needs all three arguments, because `SyncDb.get` has no shorter Java overloads. Pass an empty set for the fields:
 
+```java
+import global.genesis.db.SyncDb;
+import java.util.Collections;
+
+DbRecord found = db.get(key, "USER_BY_NAME", Collections.emptySet());
+```
 
 Here is a similar test using an **inline dictionary**.
 
@@ -194,6 +331,8 @@ In this test, we define two fields and a table that uses these. We make sure the
 
 
 ```kotlin
+import global.genesis.db.util.AbstractDatabaseTest
+
 class SampleKotlinTest : AbstractDatabaseTest() {
 
     val USER_NAME by field(name = "USER_NAME", type = STRING)
@@ -230,6 +369,8 @@ If you add the `genesis-generated-dao` jar to your classpath, you will be able t
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.db.util.AbstractDatabaseTest
+
     class SampleKotlinTest : AbstractDatabaseTest() {
 
     override fun dictionaryName() = "/genesisHome/genesis/cfg/genesis-dictionary.xml"
@@ -245,6 +386,8 @@ If you add the `genesis-generated-dao` jar to your classpath, you will be able t
   <TabItem value="java">
 
     ```java
+    import global.genesis.db.util.AbstractDatabaseTest;
+
     public class SampleJavaTest extends AbstractDatabaseTest {
 
     @Test
@@ -279,19 +422,23 @@ This is a more powerful type of test. In addition to setting up the database, it
 - injection of other components directly into the test
 - mock auth-perms
 - asynchronous message handling with timeout and parsing
+- the in-memory database, as the `rxDb` property (an `RxDb`), for loading data and asserting on database state
 
 To create a test, you need to provide a `GenesisTestConfig` instance in the constructor:
 
 | Property | Required | Sets |
 | --- | --- | --- |
-| packageName | yes | corresponds to the <package/> tag in processes.xml |
+| packageName | yes | corresponds to the <package/> tag in processes.xml. Setting it more than once appends to `packageNames` rather than replacing the earlier value |
+| packageNames | no | `MutableList<String>` of packages, for tests that scan more than one. In Java, use `setPackageNames(List<String>)` or call `addPackageName` repeatedly |
 | genesisHome | yes | GENESIS_HOME folder for additional configuration |
 | parser | yes | function that takes a GenesisSet and transforms it, this will determine the generic type of AbstractGenesisTestSupport |
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | authCacheOverride | no | overrides auth-perms map to test |
+| dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
+| rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 
-Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
+Any path provided for `genesisHome` and `initialDataFile` must be an absolute location on the test classpath, for example `/genesisHome` for a folder at `src/test/resources/genesisHome`.
 
 Tests can also use **compiled GPAL definitions** (classes extending `GPalDataserver`, `GPalEventHandler`, and so on) by ensuring the definition's package is scanned (e.g. by providing an instance of the definition class). In that case no script file or `scriptFileName` is required.
 
@@ -301,6 +448,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
   <TabItem value="kotlin">
 
     ```kotlin
+    import global.genesis.testsupport.AbstractGenesisTestSupport
+    import global.genesis.testsupport.EventResponse
+    import global.genesis.testsupport.GenesisTestConfig
+    import org.junit.jupiter.api.Test
+
     class UserControllerTest : AbstractGenesisTestSupport<EventResponse>(
     GenesisTestConfig {
       packageName = "global.genesis.auth.manager"
@@ -311,7 +463,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
       configFileName = "config.xml"
     }
     ) {
-      // no tests defined yet
+      @Test
+      fun initialDataIsLoaded() {
+        // rxDb is provided by AbstractGenesisTestSupport
+        assert(rxDb.count("USER").blockingGet() > 0L)
+      }
     }
     ```
 
@@ -319,6 +475,11 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
   <TabItem value="java">
 
     ```java
+    import global.genesis.testsupport.AbstractGenesisTestSupport;
+    import global.genesis.testsupport.EventResponse;
+    import global.genesis.testsupport.GenesisTestConfigImpl;
+    import org.junit.jupiter.api.Test;
+
     public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResponse> {
 
     public UserControllerJavaTest() {
@@ -331,6 +492,12 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
     .setConfigFileName("config.xml")
     .build()
     );
+  }
+
+    @Test
+    public void initialDataIsLoaded() {
+    // rxDb is provided by AbstractGenesisTestSupport
+    assert getRxDb().count("USER").blockingGet() > 0L;
   }
   }
     ```
