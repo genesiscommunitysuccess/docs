@@ -304,7 +304,7 @@ In a `@GenesisSpringTest`, the listener bean must be added to the test context e
 
 ### Auditing
 
-Independently of `UpdateQueue` publication, an entity can implement `JpaAuditableEntity<A>` to get an automatic audit trail. Where a dictionary table has an [audit sibling table](../data-model#audited-tables), the generator makes the source entity implement it in addition to the usual base classes:
+Independently of `UpdateQueue` publication, an entity can implement `JpaAuditableEntity<A>` to get an automatic audit trail. Where a dictionary table has an [audit sibling table](/develop/server-capabilities/data-model/#audited-tables), the generator makes the source entity implement it in addition to the usual base classes:
 
 ```kotlin
 class TypedRecord @JvmOverloads constructor(
