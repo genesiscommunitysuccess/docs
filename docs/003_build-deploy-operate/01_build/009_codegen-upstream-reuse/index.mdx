@@ -119,7 +119,7 @@ The build also detects an override of an upstream dictionary file. If your appli
 
 It then switches upstream reuse off and generates every upstream product locally, so your override takes effect, at the cost of a slower build. With `genesis.codegen.reuseUpstream.strict=true`, the build fails with the same message instead.
 
-Keeping upstream reuse while overriding an upstream dictionary file is not supported yet. Listing the product in `genesis.codegen.overrideSlices` does not work for this: the build fails in `generateView` (GSF-8733).
+Keeping upstream reuse while overriding an upstream dictionary file is not supported yet. Listing the product in `genesis.codegen.overrideSlices` does not work for this yet: the build fails in `generateView`.
 
 To override auth's tables:
 
