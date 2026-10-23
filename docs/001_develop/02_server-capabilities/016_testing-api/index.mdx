@@ -1107,7 +1107,7 @@ public class ProcessArgTest {
 
 #### ProvidedDictionary
 
-Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a `tables { }` block. It is a Kotlin function, so write the provider member in Kotlin.
+Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a [`tables { }` block](../002_data-model/index.mdx#tables). A field declared without a type is a `STRING`. It is a Kotlin function, so write the provider member in Kotlin.
 
 ```kotlin
 import global.genesis.db.DbRecord
@@ -1127,6 +1127,7 @@ class ProvidedDictionaryTest {
     fun dictionary(): GenesisDictionary = providedDictionary {
         table(name = "MY_TEST_TABLE", id = 1) {
             field("ID").primaryKey()
+            field("AGE", INT)
         }
     }
 
@@ -1459,7 +1460,7 @@ Sets the level of a named logger for the duration of a test class or method, and
 - `logger` is a logger name: a package or a class. `WithLogLevel.PACKAGE` (an empty string) means the test class's package.
 - `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`.
 - The annotation is repeatable, so you can set several loggers at once.
-- A class-level annotation applies before the class's tests start, so it also covers set-up done by other extensions. A method-level annotation overrides it for that test.
+- A class-level annotation applies before the class's tests start, so it also covers Genesis start-up, which happens before each test. Another extension's class-level set-up is covered only if `@WithLogLevel` is declared above it. A method-level annotation overrides it for that test.
 - It works with log4j, and with logback when log4j isn't the active logging backend. On logback, `FATAL` is applied as `ERROR`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
