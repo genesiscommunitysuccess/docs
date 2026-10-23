@@ -818,13 +818,11 @@ CubeResult<?> tradesFor(String username) {
 </TabItem>
 </Tabs>
 
-The built-in HTTP controller does not yet populate this binding from the authenticated caller, so a
-resource declaring `baseCriteria` should not be exposed over the built-in `/api/v1/cubes/...`
-endpoints today — every request that reaches the base criteria will fail. If your application
-needs per-user row scoping now, call `CubeResourceRegistry`/`ResolvedCubeResource` yourself (as
-above) from your own controller, supplying `PrincipalValues` sourced from the authenticated
-principal, rather than relying on the built-in HTTP wire layer. Wiring this through it
-automatically is expected in a future release.
+The built-in `/api/v1/cubes/...` endpoints bind `:username` to the name of the authenticated
+caller (the Genesis user name), so a resource declaring `baseCriteria` can be exposed over them and
+each request is scoped to its own caller. In a custom controller that calls
+`CubeResourceRegistry`/`ResolvedCubeResource` directly, supply the binding yourself as a
+`PrincipalValues` sourced from the authenticated principal, as above.
 
 The same resolution-level call is what you exercise in a test — autowire `CubeResourceRegistry`
 inside a `@GenesisSpringTest` the same way you would in application code, and assert on the
