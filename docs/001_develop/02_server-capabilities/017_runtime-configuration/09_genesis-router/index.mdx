@@ -382,7 +382,7 @@ If the resource has a JSON schema, the reply is a `JSON_SCHEMA_FEATURE_ACK`. `IN
 
 GPAL Event Handlers, Request Servers and Data Server queries all publish JSON schemas. If a resource is registered but has no JSON schema, the reply is a `JSON_SCHEMA_NACK` with a `FEATURE_NOT_FOUND` error.
 
-`META_REQUEST` is the older metadata format. It is legacy and discouraged for new clients, but Genesis UI components still send it (for example foundation-ui's `getMetadata`), so the router still supports it.
+`META_REQUEST` is the older metadata format. It is legacy and discouraged for new clients, but Genesis UI components still send it (for example foundation-ui's `getMetadata`), so the router still supports it. Send it as a `GET` and pass the resource in the query string, for example `GET /meta-request?DETAILS[FEATURE]=<resource>`.
 
 ## Custom endpoints
 
