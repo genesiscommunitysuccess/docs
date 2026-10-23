@@ -249,7 +249,7 @@ All of these properties go inside the `server { }` block of `genesis-mcp-server.
 | `approverRight` | `"MCP_ADMIN"` | Right code for approving and rejecting held writes |
 | `restrictedTables` | empty | Extra tables that the raw-database tools must refuse. See [Restricted tables](#restricted-tables) |
 | `oauthAuthorizationServer` | not set | The OAuth authorization server to advertise to clients. See [OAuth discovery](#oauth-discovery) |
-| `routerHttpPort` | `9064`, or the `RouterWebPort` system definition item | The local router's HTTP port. The server uses it to fetch the OpenAPI specification for the `genesis://api/openapi-spec` resource and for `describe_endpoint`. A value set in this file wins over the system definition item |
+| `routerHttpPort` | `9064`, or the `RouterWebPort` system definition item | The local router's HTTP port. Used to fetch the OpenAPI specification for the `genesis://api/openapi-spec` resource, which fails if the router is unreachable. `describe_endpoint` also uses it to add detail from the spec, and falls back to the endpoint's own metadata if it cannot connect. A value set in this file wins over the system definition item |
 | `tls { }` | not set | Serve MCP over HTTPS. See [TLS](#tls) |
 | `authenticationStrategy { }` | none | Required. Exactly one strategy; see [Authentication](#authentication). The server won't start without one |
 
@@ -547,7 +547,7 @@ To try maker-checker locally, you need a second user to act as the checker. Logg
 
 ## Audit logging
 
-The server writes one audit line, at INFO level, for each tool call, each prompt or resource read, and each rejected connection. The lines go to a logger named `global.genesis.mcp.audit`, so you can route them separately in the process's logging configuration.
+The server writes one audit line, at INFO level, for each tool call, each prompt or resource read, and each rejected connection. The lines go to a logger named `global.genesis.mcp.audit`, so you can route them separately in the process's logging configuration. Unless you route the logger elsewhere, audit lines are written to the MCP process's own log (`GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when processes are compacted).
 
 ```
 MCP tool call - user=<user>, tool=<tool>, outcome=<outcome>, durationMs=<ms>, args=<arguments>
