@@ -1107,7 +1107,7 @@ public class ProcessArgTest {
 
 #### ProvidedDictionary
 
-Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a [`tables { }` block](../002_data-model/index.mdx#tables). A field declared without a type is a `STRING`. It is a Kotlin function, so write the provider member in Kotlin.
+Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a [`tables { }` block](/develop/server-capabilities/data-model/#tables). A field declared without a type is a `STRING`. It is a Kotlin function, so write the provider member in Kotlin.
 
 ```kotlin
 import global.genesis.db.DbRecord
