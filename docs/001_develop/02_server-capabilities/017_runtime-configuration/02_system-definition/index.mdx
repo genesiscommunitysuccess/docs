@@ -181,6 +181,8 @@ The retry mechanism uses exponential backoff with the following pattern:
 
 **ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
 
+**StrictHttpStatusCode**: When `true`, the router applies the HTTP status codes found in error responses to the HTTP reply; when `false` (the default), it returns the error payload in an HTTP 200 response. See [Router configuration](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) for details.
+
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](/build-deploy-operate/build/bdo-build-overview/#bundling-generated-code-with-product-distribution).
 
 For SSL on process communication, see the [service definition](/develop/server-capabilities/runtime-configuration/service-definition/#enabling-ssl-for-processes) page.
@@ -214,11 +216,23 @@ GENESIS_SYSDEF_GenesisKey=ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
 
 System-definition items can be set at **process scope** (for example inside a `*-process-config.kts` file using `process { systemDefinition { ... } }`).
 
+```kotlin
+process {
+    systemDefinition {
+        item("HttpAuthDisabled", "true")
+    }
+}
+```
+
+The `*-process-config.kts` file only applies to a process if that process names it in a `<config>` element in `processes.xml`. See the [`config` tag](/develop/server-capabilities/runtime-configuration/processes/#tags) on the processes page.
+
 You can also set them as environment variables. To do this, prefix the variable name with the process name:
 
 - `GENESIS_SYSDEF_<PROCESS_NAME>_<ItemName>=...`
 
 If both a global override (`GENESIS_SYSDEF_<ItemName>`) and a process-scoped override are set, the process-scoped override takes precedence **for that process only**.
+
+You can't set a per-process value in `genesis-system-definition.kts` by prefixing the item name with the process name; a prefixed item there is never read, and the unprefixed item applies. To set a value for one process in a file, use the `process { systemDefinition { ... } }` form in that process's `*-process-config.kts`, as above.
 
 For example:
 
@@ -228,6 +242,8 @@ GENESIS_SYSDEF_GENESIS_AUTH_MANAGER_DbSqlMaxPoolSize=50
 ```
 
 In this example, all processes will use `DbSqlMaxPoolSize=10` by default, but the `GENESIS_AUTH_MANAGER` process will use `DbSqlMaxPoolSize=50`.
+
+For local development under Genesis Start only, you can also use per-process system-definition properties files; see [System definition property overrides](/develop/development-environment/genesis-start/configuration/#system-definition-property-overrides). These files do not apply in a deployed environment, where processes use the environment-variable forms described above.
 
 ## Overriding processes.xml settings
 You can override the values defined for a process definition inside the [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes) file by using the following naming convention:

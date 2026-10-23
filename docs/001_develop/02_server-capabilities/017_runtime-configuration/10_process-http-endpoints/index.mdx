@@ -1,0 +1,142 @@
+---
+title: 'Native HTTP on the process port'
+sidebar_label: 'Native HTTP on the process port'
+id: server-process-http-endpoints
+keywords: [server, configuration, http, websocket, process, endpoints, genesis router, proxy]
+tags:
+  - server
+  - configuration
+  - http
+  - websocket
+  - genesis router
+---
+
+By default, Genesis processes exchange messages with each other over raw TCP, and only GENESIS_ROUTER answers HTTP requests. If you switch a process to the WebSocket messaging channel, it keeps serving Genesis messaging and also answers plain HTTP on the same port, the process's port from its [service definition](/develop/server-capabilities/runtime-configuration/service-definition/) (`*-service-definitions.xml`). Under Genesis Start with a [port offset](/develop/development-environment/genesis-start/configuration/#port-offset), the port is shifted; the Application view shows the port each process was given. Each of its request servers, event handlers and custom endpoints gets an HTTP route. You can call those routes directly from inside your cluster, or let the Genesis Router forward HTTP requests to them as a proxy.
+
+A process stays on TCP, and loads none of the HTTP layer, until you configure the channel.
+
+:::warning
+
+Native HTTP on the process port has two known limitations. Until they are resolved, don't expose a process on the WebSocket channel to callers you don't trust. That covers both ways a caller can reach the process port: front-end traffic that the router's HTTP proxy forwards, and anything with network access to the process port directly, such as other services in the cluster. Restrict access to the process port at the network level (a firewall or network policy), so that only the router and the callers you intend can reach it. Network rules do not stop requests that the router proxies, so to keep a resource away from front-end callers, mark it [`internal`](#internal-resources) or leave the router's HTTP proxy off.
+
+- **The session idle timeout isn't applied.** A token is accepted for as long as its session exists: until logout, or until the session is removed once the [refresh-token lifetime](/develop/server-capabilities/access-control/authentication/#refreshtokenexpirationmins) has passed. The auth manager removes such sessions in a sweep that runs every [`expiryCheckMins`](/develop/server-capabilities/access-control/authentication/#expirycheckmins), so a session can stay usable for up to that long after its refresh token expires. [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins) isn't checked here, unlike requests that the router handles itself.
+- **Requests proxied by the router skip some router checks.** See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
+
+This is not a third limitation, but a note on how proxied requests are authenticated, and on `USER_NAME` for routes with no authentication. With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401. Missing permissions get 403 on a custom endpoint, but an event handler or request server returns its NACK as a 200 (unless `StrictHttpStatusCode` is on). On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
+
+:::
+
+## Enable the WebSocket channel
+
+Set `messaging.channel` to `WEBSOCKET` in the network configuration YAML. Use `network-config.yaml` to change every process, or `network-config-<PROCESS_NAME>.yaml` to change one process. When both files exist, the process file is applied over the application file.
+
+Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). To override one for a single deployment, place a file with the same name in `site-specific/cfg/` under `GENESIS_HOME`; the first copy found is used, so it replaces the application's copy rather than merging with it.
+
+```yaml
+messaging:
+  channel: WEBSOCKET
+```
+
+Processes on TCP and processes on WebSocket can run side by side in the same application: a client picks the channel for each target process automatically. The channel is carried in the process's service-discovery record; no start-up log line, console command or DbMon field shows it. To confirm a connection is using WebSocket, look in the calling process's log: a process that connects to another over WebSocket logs `WebSocket handshake complete with <host>:<port>` at INFO, naming the target's host and port.
+
+For the other `messaging` settings, including the `webSocket` and `http` blocks, see the [network configuration YAML reference](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section).
+
+## Routes
+
+| Resource | Route | Example |
+|---|---|---|
+| [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `HELLO_WORLD` | `GET /req-hello-world` | `GET /req-hello-world?REQUEST.NAME=World` |
+| [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `requestReply(WIDGET)` | `GET /req-widget` | `GET /req-widget` |
+| [Event handler](/develop/server-capabilities/core-business-logic-event-handler/) `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
+| Data server | none | Data servers are served by the Genesis Router only |
+| Custom endpoint | the method and path it declares | see [Custom endpoints on a process](#custom-endpoints-on-a-process) |
+
+The route for a request server or event handler is its resource name converted from `UPPER_UNDERSCORE` to `lower-hyphen`, and request servers get a `req-` prefix. The prefix is added to the name the request server was given, so `REQ_` is never doubled: `requestReply(WIDGET)` is served at `/req-widget`, not `/req-req-widget`. This is the same URL scheme the Genesis Router uses, so a URL that works through the router also works on the process port. Paths are matched exactly: `/EVENT_CUSTOM_MODIFY` returns 404.
+
+Request and response bodies use the same JSON format as the router. The reply is the JSON form of the reply message; for example, an event handler replies with `"MESSAGE_TYPE": "EVENT_ACK"`.
+
+## Status codes
+
+| Situation | Status |
+|---|---|
+| No route for the path | 404 |
+| The route exists, but not for this method | 405; the body lists the methods it accepts |
+| The request doesn't match any custom endpoint's required [request parameters](/develop/server-capabilities/integrations/custom-endpoints/#request-parameters) or its `accepts` and `produces` content types, or it matches more than one (custom endpoints only) | 406 |
+| No session token, or an unknown one | 401 |
+| Logged in, but without the endpoint's permission codes (custom endpoints only) | 403 |
+| Request body larger than [`maxContentLength`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaginghttp) (64 MiB by default) | 413 |
+| A custom endpoint threw an exception (an exception in a request server or event handler comes back as a 200 NACK, below) | 500 |
+| The request couldn't be dispatched or timed out (any route type) | 500 |
+| A reply from a request server or event handler, including a NACK | 200 |
+
+By default a NACK from a request server or event handler comes back with status 200. If the `StrictHttpStatusCode` [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) item is `true`, the process maps the NACK's error status code to the HTTP status instead. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the router page; the same item applies whether the request arrives directly or through the router's HTTP proxy.
+
+## Authentication
+
+The process reads the session token from the `SESSION_AUTH_TOKEN` request header, and looks the session up in its own `USER_SESSION` table. Request server and event handler routes require a logged-in user, and don't check any permission codes at the route; permissioning inside the request server or event handler still applies. Custom endpoints apply the permissioning they declare.
+
+To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`.
+
+For example, as an environment variable for a process named `POSITION_APP_EVENT_HANDLER`:
+
+```bash
+GENESIS_SYSDEF_POSITION_APP_EVENT_HANDLER_HttpAuthDisabled=true
+```
+
+## Custom endpoints on a process
+
+A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
+
+```xml
+<process name="POSITION_APP_EVENT_HANDLER">
+  ...
+  <script>position_app-eventhandler.kts,position_app-web-handler.kts</script>
+  ...
+</process>
+```
+
+Multipart uploads and file downloads work on the process port in the same way as on the router. For the script syntax, see [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/).
+
+## Internal resources
+
+You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
+
+**Event handlers and custom endpoints:** a file-level setting applies to the definitions that come after it in the file.
+
+**Request servers:** a file-level `config { internal = true }` applies to every table or view request server in the file that sets no configuration of its own, wherever the block sits. A custom request server, or one with its own `config` block or a setting such as `timeout`, only takes the file-level settings that come before it.
+
+For all of these, put the file-level setting at the top of the file and it applies to every definition. You can override it on each definition.
+
+```kotlin
+// *-eventhandler.kts
+eventHandler {
+    internal = true                // every event handler defined after this line
+    eventHandler<Trade>(name = "TRADE_SYNC") {
+        internal = true            // or on one event handler
+        // ...
+    }
+}
+
+// *-reqrep.kts
+requestReplies {
+    config { internal = true }     // every table or view request server in the file without its own config
+    requestReply(TRADE) {
+        config { internal = true } // or on one request server
+    }
+}
+
+// *-web-handler.kts
+webHandlers {
+    internal = true                // every endpoint defined after this line
+    endpoint(GET, "health") {
+        internal = true            // or on one endpoint
+        // ...
+    }
+}
+```
+
+## Through the Genesis Router
+
+To route HTTP from the front end to these processes, enable the router's HTTP proxy. With the proxy on, the router forwards requests for resources owned by a process on the WebSocket channel, and streams the request and response through without buffering them. Requests for data servers, and for resources on TCP processes, are handled by the router as before.
+
+See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the Genesis Router page.
