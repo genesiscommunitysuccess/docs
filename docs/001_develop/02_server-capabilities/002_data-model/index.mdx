@@ -516,9 +516,10 @@ table(name = "TRADE", id = 11002) {
 
 #### `sharedField`
 
-You can use `sharedField` to define field definitions that can be reused across multiple tables. This is particularly useful for enum fields that represent the same set of values in different tables, ensuring consistency and reducing duplication.
+You can use `sharedField` to define field definitions that can be reused across multiple tables. This is particularly useful for fields that represent the same thing in different tables, such as an enum with the same set of values, ensuring consistency and reducing duplication.
 
-Currently, the accepted shared fields are:
+The accepted shared fields are:
+- `STRING`, `SHORT`, `INT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, `BOOLEAN`, `DATE`, `DATETIME`, `NANO_TIMESTAMP` and `RAW`
 - Simple enums (e.g., `ENUM("X", "Y", "Z")`)
 - Aliased enums (e.g., `ENUM("BUY" to "Buy Order", "SELL" to "Sell Order")`)
 
@@ -1239,7 +1240,7 @@ When no size is given, an SQL database creates a `STRING` or `ENUM` column 64 ch
 
 Four other differences can catch you out:
 
-- **Sharing a field across tables.** `sharedField` accepts scalar types as well as enums. Declare the field once inside `tables { }`, for example `val sharedCode = sharedField("SHARED_CODE", STRING(16))`, then use it in each table with `field(sharedCode)`, or with `field("OTHER_NAME", sharedCode)` to give it a different name in that table. The accepted types are `STRING`, `INT`, `LONG`, `DOUBLE` (and the other numeric types), `NANO_TIMESTAMP`, `DATETIME`, `BIGDECIMAL`, `BOOLEAN`, `RAW`, and simple and aliased `ENUM`. A shared field is not a function, so write `sharedCode`, not `sharedCode()`.
+- **Sharing a field across tables.** `sharedField` accepts scalar types as well as enums. Declare the field once inside `tables { }`, for example `val sharedCode = sharedField("SHARED_CODE", STRING(16))`, then use it in each table with `field(sharedCode)`, or with `field("OTHER_NAME", sharedCode)` to give it a different name in that table. The accepted types are `STRING`, `SHORT`, `INT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, `BOOLEAN`, `DATE`, `DATETIME`, `NANO_TIMESTAMP`, `RAW`, and simple and aliased `ENUM`. A shared field is not a function, so write `sharedCode`, not `sharedCode()`.
 - **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE` (import it from `global.genesis.gen.config.tables`; see [Imports](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#imports)).
 - **Generated enum package.** Moving an `ENUM` field from a fields dictionary to an inline table field moves the generated enum class. A dictionary enum is generated as `global.genesis.gen.dao.enums.<Enum>`; an inline one is generated as `global.genesis.gen.dao.enums.<product>.<table>.<Enum>`, for example `global.genesis.gen.dao.enums.myapp.trade.MyEnum`. Imports in your custom code must change to match.
 - **Consistency between tables.** When several tables declare the same field name inline, the dictionary build doesn't check that the declarations match. If one table declares `PRICE` as a `DOUBLE` and another as an `INT`, the build succeeds and each table gets its own column type. Keeping the declarations consistent is up to you.
