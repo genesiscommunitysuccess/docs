@@ -70,11 +70,13 @@ Run the command as the user that owns the Genesis installation:
 GenerateZeroMqCurveKeys
 ```
 
-The command writes the client certificate, which only its owner can read. On every host, the certificate file must be owned by the user that runs the Genesis processes, so after copying it to another host, or creating it through a Docker volume, check its owner. Run `GenerateZeroMqCurveKeys --verify` as that user: run as another user, such as root, it can pass while the processes still cannot read the file. Then it prints:
+The command writes the client certificate, which only its owner can read. Then it prints:
 
 - the `zeroMqEncryption` block to add to `site-specific/cfg/network-config.yaml`
 - the two public keys, which are safe to commit
 - the two secret keys
+
+On every host, the certificate file must be owned by the user that runs the Genesis processes, so after copying it to another host, or creating it through a Docker volume, check its owner. Run `GenerateZeroMqCurveKeys --verify` as that user: run as another user, such as root, it can pass while the processes still cannot read the file.
 
 The block doesn't hold the keys. It refers to them through environment variables, so you can commit the file and keep the secrets in a secret store:
 
