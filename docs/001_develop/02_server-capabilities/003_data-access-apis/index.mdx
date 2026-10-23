@@ -1733,7 +1733,7 @@ class TradeCanceller @Inject constructor(
 
 The table, index and field names in this example are placeholders for your own data model.
 
-Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, dropping the table name from the start of a field name, so a `TRADE` table keyed on `TRADE_ID` gets `TRADE_BY_ID`. You can override the name with `.name()`; see [primaryKey](/develop/server-capabilities/data-model/#primarykey).
+Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, as described in [primaryKey](/develop/server-capabilities/data-model/#primarykey), so a `TRADE` table keyed on `TRADE_ID` gets `TRADE_BY_ID`. You can override the name with `.name()`.
 
 ###### Methods
 
