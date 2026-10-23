@@ -585,7 +585,7 @@ The `select` block is optional. A consolidator without one has no functions, but
 
 This suits a consolidation that does all its work in `onCommit`, such as a calculation across related rows of the group: you don't need a placeholder `select` just to make it load. If there is no `onCommit` block either, an input whose output row already exists produces no write.
 
-For example, this consolidator has no `select` block. It builds an `ORDER` row for each order and sets its fields in `onCommit`:
+For example, this is the `CON_ORDER_FROM_TRADES` consolidator from the top of the page, rewritten without a `select` block. It builds an `ORDER` row for each order and sets its fields in `onCommit`:
 
 ```kotlin
   consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
