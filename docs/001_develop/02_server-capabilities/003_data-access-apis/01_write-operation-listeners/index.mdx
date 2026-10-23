@@ -105,9 +105,9 @@ The table and field names in this example are placeholders for your own data mod
 
 ## Which listener is called
 
-Every listener bound in the writing process is called for every write in that process, whatever API or caller makes it. This includes writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/): they call all your listeners like any other write. The only difference between the listeners is the `tx` each one receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
+Bind only one write listener in a service: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. The only difference between the three is the `tx` the listener receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
 
-When you add a more specific listener, move the old listener's logic into it. Because every listener bound in the process is called for every write, logic that you leave in both the old and the new listener runs twice.
+To switch to a different listener type, replace the old listener with the new one: move the old listener's logic into the new one and stop binding the old one.
 
 ## How a listener is called
 
@@ -121,7 +121,7 @@ When you add a more specific listener, move the old listener's logic into it. Be
 
 When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
 
-This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to return, but reactive work the listener started on `tx` without blocking was neither enforced nor awaited.
+This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to return, but reactive work the listener started on `tx` without blocking was neither enforced nor awaited. In 8.x, a `WriteOperationListener` was already called for `AsyncEntityDb` and `SyncEntityDb` writes as well, so which writes your listener sees has not changed; only the blocking requirement on `tx` is new.
 
 Whether you need to change your listener depends on how it uses `tx`:
 
