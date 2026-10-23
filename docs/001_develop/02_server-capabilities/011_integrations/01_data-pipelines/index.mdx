@@ -378,6 +378,8 @@ pipelines {
 }
 ```
 
+A counter counts every element that reaches it. If your source emits `Bulk` wrappers, such as `dbBulkSubscribe`, which also emits `Bulk.Prime.Completed`, place the counter after the mapper that unwraps them, so that it counts only records. The mapper's `null` results are dropped before the next stage, so they are not counted.
+
 When processing completes, the platform adds every counter on the context to a metric called `pipeline_records`. In a real-time pipeline, this happens once for each element. With a transactional sink such as `txDbSink()`, it happens after the write transaction has committed. A non-transactional pipeline publishes the metric once the element is processed, with no commit to wait for. In a batch pipeline, it happens once per run.
 
 You don't need to change your script. The metric only appears when metrics are enabled, as described in [Data pipeline metrics](/build-deploy-operate/operate/metrics/#data-pipeline-metrics). The counters themselves work either way.
@@ -1399,6 +1401,8 @@ To include your Data Pipeline definitions in a runtime process, configure the pr
 - **module**: ensure `genesis-pal-datapipeline` is included
 - **script**: your `*-pipelines.kts` file(s), comma-separated if more than one
 - **language**: `pal`
+
+A project generated from the template already has `genesis-pal-datapipeline` on its classpath through its script-config module. Otherwise, add `implementation(genesis("pal-datapipeline"))` to your application module's `build.gradle.kts`, as shown under [Using compiled definitions only](#using-compiled-definitions-only).
 
 ### Using compiled definitions only
 
