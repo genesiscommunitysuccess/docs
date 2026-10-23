@@ -625,6 +625,11 @@ By default, the platform automatically generates names for each key in the follo
 
 `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. 
 
+Where a field name starts with the table name, that table-name prefix is dropped from the field in the index name; otherwise the field name is used whole. For example:
+
+- `TRADE.TRADE_ID` gives `TRADE_BY_ID`
+- `MY_TRADE.TRADE_ID` gives `MY_TRADE_BY_TRADE_ID`, because `TRADE_ID` does not start with `MY_TRADE`, so nothing is dropped
+
 If you wish to give your primary key a specific name, apply `.name(<pk name>)` against it. Here are two examples:
 
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
