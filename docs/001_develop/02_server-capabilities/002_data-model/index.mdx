@@ -831,6 +831,8 @@ You can also add nested joins, joining to joined tables, recursively as needed, 
 
 The above example also demonstrates how to use a hard-coded value to join. Note where `ALTERNATE_TYPE` is set to "REFINITIV".
 
+The fields you join on must be covered by an index on the joined table: either its primary key, or an index whose leading fields are the join fields. If there is no such index, code generation fails with `unable to find index for join on table <TABLE>`. The message names the index to add.
+
 Joins can be one-to-one (key field match) or one-to-many (part-key-field match). However, *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/)* - as they would be very inefficient and could potentially use up a lot of the cache.
 
 #### `backwardsJoin`
@@ -1237,7 +1239,7 @@ When no size is given, an SQL database creates a `STRING` or `ENUM` column 64 ch
 
 Four other differences can catch you out:
 
-- **Sharing a field across tables.** `sharedField` shares enum fields only. Any other field that several tables use must be declared in each of them. Passing a non-enum type, for example `sharedField("MY_STRING", STRING)`, fails to compile with `Unresolved reference 'STRING'`, because the field type builders are only available inside a `table { }` block, not at `tables { }` level. Declare such fields in each table instead.
+- **Sharing a field across tables.** `sharedField` accepts scalar types as well as enums. Declare the field once inside `tables { }`, for example `val sharedCode = sharedField("SHARED_CODE", STRING(16))`, then use it in each table with `field(sharedCode)`, or with `field("OTHER_NAME", sharedCode)` to give it a different name in that table. The accepted types are `STRING`, `INT`, `LONG`, `DOUBLE` (and the other numeric types), `NANO_TIMESTAMP`, `DATETIME`, `BIGDECIMAL`, `BOOLEAN`, `RAW`, and simple and aliased `ENUM`. A shared field is not a function, so write `sharedCode`, not `sharedCode()`.
 - **The generated `Fields` constants.** Codegen creates a `Fields.X` constant only for fields declared in a fields dictionary, plus the framework fields. A field that exists only inline has no `Fields.X`, so code that refers to one no longer compiles. Use the table's own handle instead, for example `TRADE.PRICE` (import it from `global.genesis.gen.config.tables`; see [Imports](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#imports)).
 - **Generated enum package.** Moving an `ENUM` field from a fields dictionary to an inline table field moves the generated enum class. A dictionary enum is generated as `global.genesis.gen.dao.enums.<Enum>`; an inline one is generated as `global.genesis.gen.dao.enums.<product>.<table>.<Enum>`, for example `global.genesis.gen.dao.enums.myapp.trade.MyEnum`. Imports in your custom code must change to match.
 - **Consistency between tables.** When several tables declare the same field name inline, the dictionary build doesn't check that the declarations match. If one table declares `PRICE` as a `DOUBLE` and another as an `INT`, the build succeeds and each table gets its own column type. Keeping the declarations consistent is up to you.
