@@ -1138,7 +1138,7 @@ unknown resource, or one that declares neither an operation nor `exposeQuery`.
 
 [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) exercises a `@RestController`
 without booting a real Genesis process: it excludes `GenesisSpringBootConfiguration` and
-`GenesisSpringWebConfig`, then hand-declares a `TestApp` with a mocked `UserSessionCache`. A cube
+`GenesisSpringWebConfig`, then hand-declares a `TestApp` with a mocked `OnDemandUserSessionCache`. A cube
 resource can't use that recipe as-is — it needs a real JPA entity backed by a real database, which
 only exists under `@GenesisSpringTest`, and `@GenesisSpringTest` never excludes those two
 autoconfiguration classes.
@@ -1149,24 +1149,23 @@ autoconfiguration classes.
 (`GenesisDataConfig`) and cube autoconfiguration to wire up exactly as they would in a real process.
 Combining the two annotations therefore gives you MockMvc in front of a fully booted cube resource,
 querying a real JPA-backed data source, with no exclusion trick needed. As with [Testing an HTTP
-endpoint](../test-tooling#testing-an-http-endpoint), stubbing the suspend `userLoggedInCheckDb`
-cleanly needs mockito-kotlin's `on { … }`, so this example is Kotlin-only.
+endpoint](../test-tooling#testing-an-http-endpoint), stubbing the suspend `liveSessionOrNull`
+cleanly needs mockito-kotlin's `onBlocking { … }`, so this example is Kotlin-only.
 
 The `AutoConfigureMockMvc` import below needs `testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")`; see [Test tooling](../test-tooling#testing-an-http-endpoint) for the full set of test dependencies:
 
 ```kotlin
 package com.example.myapp.jpa
 
-import global.genesis.session.UserSessionCache
+import global.genesis.session.OnDemandUserSessionCache
+import global.genesis.session.UserSessionCache.UserSessionRef
 import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
 import global.genesis.springboot.test.GenesisSpringTest
 import global.genesis.springboot.test.GenesisTestApplication
 import org.joda.time.DateTime
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.stub
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -1188,21 +1187,6 @@ class CubeHttpQueryTest {
     @Autowired
     lateinit var mockMvc: MockMvc
 
-    @Autowired
-    lateinit var userSessionCache: UserSessionCache
-
-    @BeforeEach
-    fun stubValidSession() {
-        userSessionCache.stub {
-            on { userLoggedInCheckDb(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
-                userName = "JaneDoe",
-                sessionId = "session-1",
-                token = VALID_TOKEN,
-                expiryDateTime = DateTime.now().plusHours(1),
-            )
-        }
-    }
-
     @Test
     fun `queries a real JPA-backed cube resource over its HTTP endpoint`() {
         mockMvc.perform(
@@ -1215,14 +1199,21 @@ class CubeHttpQueryTest {
     }
 
     // A unique @Primary bean wins Spring's own resolution over the Guice-bridged
-    // UserSessionCache (see Application core: BeanFactory bridging), without excluding
+    // OnDemandUserSessionCache (see Application core: BeanFactory bridging), without excluding
     // GenesisSpringBootConfiguration/GenesisSpringWebConfig — so the real cube/JPA
     // autoconfiguration stays wired.
     @Configuration(proxyBeanMethods = false)
     open class SessionStub {
         @Bean
         @Primary
-        open fun userSessionCache(): UserSessionCache = mock()
+        open fun onDemandUserSessionCache(): OnDemandUserSessionCache = mock {
+            onBlocking { liveSessionOrNull(VALID_TOKEN) } doReturn UserSessionRef(
+                userName = "JaneDoe",
+                sessionId = "session-1",
+                token = VALID_TOKEN,
+                expiryDateTime = DateTime.now().plusHours(1),
+            )
+        }
     }
 
     private companion object {
@@ -1235,11 +1226,11 @@ class CubeHttpQueryTest {
 resource](#declaring-a-cube-resource) — like any hand-written bean under `@GenesisSpringTest`
 (`GenesisTestApplication` does no component scanning), it has to be listed explicitly in
 `@SpringBootTest(classes = [...])` alongside `GenesisTestApplication` and the session stub, or the
-resource's bean — and its endpoint — is never registered. `userLoggedInCheckDb` is the method to
-stub, not `userLoggedIn`: see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint)
+resource's bean — and its endpoint — is never registered. `liveSessionOrNull` is the method to
+stub, with a non-blank `userName` on the returned session: see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint)
 for why. `@Primary` is what makes the override win: [Application core's BeanFactory
 bridging](../core#beanfactory-bridging) notes that Spring's own resolution, including `@Primary`,
-always takes priority over a Guice-bridged singleton like the real `UserSessionCache` this starter
+always takes priority over a Guice-bridged singleton like the real `OnDemandUserSessionCache` this starter
 would otherwise install.
 
 Seed real rows through the same JPA repository a non-cube test would use — see [Test tooling: A
