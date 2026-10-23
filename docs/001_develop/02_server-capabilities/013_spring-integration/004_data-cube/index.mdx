@@ -767,8 +767,8 @@ request. It must parse, reference only columns on the source, and be a single bo
 must also convert to their column's type — an enum constant name that no longer exists, for
 example. Values substituted for placeholders such as `:username` are not part of this check.
 
-This mechanism is implemented and tested at the resource-resolution level, where you supply the
-caller's identity yourself as a `PrincipalValues` binding:
+At the resource-resolution level — a custom controller, or a test — you supply the caller's
+identity yourself as a `PrincipalValues` binding:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
