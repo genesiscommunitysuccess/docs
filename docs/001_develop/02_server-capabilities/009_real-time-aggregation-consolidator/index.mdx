@@ -44,7 +44,7 @@ Consolidators are defined in the `*-consolidator.kts` files or in compiled Kotli
 Here is an example Consolidator file that defines two Consolidators used as a service:
 
 * CON_ORDER_FROM_TRADES.
-This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ORDER_ID``` and ```ORDER.ORDER_DATE``` fields (using [`groupBy`](#groupby) and [`build`](#build)). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator [`coldStart`](#coldstart).
+This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ID``` and ```ORDER.ORDER_DATE``` fields (using [`groupBy`](#groupby) and [`build`](#build)). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator [`coldStart`](#coldstart).
 
 * CON_ORDER_SUMMARY_FROM_ORDER. This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple [`groupBy`](#groupby) conditions based on your requirement.
 In this second Consolidator, we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different [`groupBy`](#groupby) conditions.
@@ -74,7 +74,7 @@ consolidators {
         groupBy { Order.byIdDate(orderId, tradeDate) } into {
             build {
                 Order {
-                    orderId = groupId.orderId
+                    id = groupId.orderId
                     orderDate = groupId.tradeDate
                 }
             }
@@ -103,7 +103,7 @@ consolidators {
 val sideEnum = sharedField("SIDE", ENUM("BUY", "SELL"))
 
   table("ORDER", 1001) {
-    field(name = "ORDER_ID", type = INT)
+    field(name = "ID", type = INT)
     field(name = "ORDER_DATE", type = DATE).notNull()
     field(name = "TRADE_COUNT", type = INT)
     field(name = "TOTAL_QUANTITY", type = LONG)
@@ -592,7 +592,7 @@ For example, this is the `CON_ORDER_FROM_TRADES` consolidator from the top of th
     groupBy { Order.byIdDate(orderId, tradeDate) } into {
         build {
             Order {
-                orderId = groupId.orderId
+                id = groupId.orderId
                 orderDate = groupId.tradeDate
             }
         }
