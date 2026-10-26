@@ -71,7 +71,7 @@ This Gradle task will create a standalone zip distribution for an application th
 The zip file will include the full Genesis distribution, each PBC distribution, the app's server and web distribution.
 
 There are two ways in which this zip can be constructed:
-* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars.
+* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars. This non-dynamic mechanism is deprecated; see [Dynamic Deployments](#dynamic-deployments).
 * If dynamic deployments are enabled, an App can take control of dependency resolution, and this will result in a single set of jars in `site-specific/lib`
 
 ### Dynamic Deployments
@@ -79,6 +79,11 @@ There are two ways in which this zip can be constructed:
 Using dynamic deployments, Apps can take control of dependency resolution, which achieves the following:
 * Apps are able to overwrite vulnerable dependencies. It is the developer's responsibility to assess binary compatibility.
 * A smaller distribution will be created, as jars are only included if required, and then only once.
+* Each process's classpath is resolved and checked at build time, so a missing module or jar fails the build, or fails at `startProcess` with the names of the missing jars, instead of surfacing later as a `ClassNotFoundException`.
+
+:::warning
+Non-dynamic deployment (`enableDynamicDeployment=false`, still the default) is deprecated and will be removed in Genesis 11.0.0. Builds that use it log a deprecation warning. We recommend that all Genesis 10 applications enable dynamic deployments; follow [Migrating from non-dynamic deployments](#migrating-from-non-dynamic-deployments) below.
+:::
 
 #### Note on dynamic deployments and `-processes.templt.xml` files
 
@@ -103,6 +108,32 @@ genesisExec {
     enableDynamicDeployment = true
 }
 ```
+
+#### Migrating from non-dynamic deployments
+
+1. Set `enableDynamicDeployment=true`, as shown in [Enabling Dynamic Deployments](#enabling-dynamic-deployments).
+
+2. Build the distribution with `appDistZip` and check the build log for `written N process classpaths` and `written N module classpaths`. The build fails if a process that is started by default names a module or classpath item that none of the application's dependencies provide; with non-dynamic deployments, this was only found when the process was started.
+
+3. Inspect the archive. With the default packaging, paths are under `server/`. `site-specific/lib` should hold the jars, `site-specific/modules/process` should hold one `.classpath` file per process, and `genesis/lib` should hold no jars.
+
+4. Move anything that you used to add to the classpath by hand into Gradle dependencies (for example, using the [`genesisRuntime` configuration](#using-genesisruntime-configuration)). A dynamic classpath only lists what the build resolved, so:
+   * jars copied by hand into `site-specific/lib` (or any other folder under `$GENESIS_HOME`) are not picked up
+   * `GlobalClasspathAdditions` in the system definition is ignored
+   * a JDBC driver is only on the classpath if your application depends on it
+
+5. Deploy the new archive to a fresh `$GENESIS_HOME`, or replace the installation's `genesis` folder with the one from the archive. Then run `genesisInstall` and start the processes. If a jar is missing, `startProcess` fails with `classpath file ... references N missing JAR(s)` and names each missing jar.
+
+#### Rolling back to non-dynamic deployments
+
+1. Rebuild with `enableDynamicDeployment=false` and redeploy.
+2. Remove the `site-specific/modules/process` folder from the installation. While that folder exists, the launcher scripts treat the installation as dynamic.
+
+#### Known limitations
+
+* **`GlobalClasspathAdditions`**: this system definition item is ignored under dynamic deployments. Declare each entry as a Gradle dependency instead.
+* **Jars added by hand**: jars copied into `site-specific/lib` manually, rather than resolved by the build, are not on any process classpath. Declare them as Gradle dependencies instead.
+* **OpenTelemetry Java Agent**: with [`OpenTelemetryJavaAgentEnabled`](/build-deploy-operate/operate/tracing/) set to `true`, the launcher adds `-javaagent:$GENESIS_HOME/genesis/lib/opentelemetry-javaagent.jar`, but dynamic deployments do not ship that jar. Until this is fixed, an application that uses the agent at runtime must supply that file itself. Running processes from the IDE or Gradle is not affected.
 
 #### Using `genesisRuntime` configuration
 
