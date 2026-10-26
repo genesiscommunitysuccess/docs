@@ -1039,7 +1039,7 @@ The sink doesn't retry in these cases; it throws an exception instead:
 
 - there is no reply within `timeout`
 - any other error occurs while sending
-- the target replies with a NACK and `onNack` is `throwOnNack()`
+- the target replies with a NACK other than UNAVAILABLE and `onNack` is `throwOnNack()`
 
 If the target replies with a NACK other than UNAVAILABLE and `onNack` is `logOnNack()`, the sink logs the NACK at error level, drops the event and carries on; it does not retry or throw.
 
@@ -1061,7 +1061,7 @@ If a pipeline stops:
 
 ###### Streaming each element to a FIX gateway
 
-The following example configures an `eventSink` that targets an explicit FIX gateway service, holds events until delivered, and throws an exception on any NACK:
+The following example configures an `eventSink` that targets an explicit FIX gateway service, holds events until delivered, and throws an exception on any NACK other than UNAVAILABLE:
 
 ```kotlin
 .sink(eventSink<FIXOutData, RawFixEvent> {
