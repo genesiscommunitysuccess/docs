@@ -5,8 +5,31 @@ sidebar_position: 4
 id: '8.7-integrations'
 ---
 
-No changes
+### BREAKING CHANGES
+
+* Upgrade to Kotlin 2.1.0
+
+### Features
+
+* Add Bloomberg client implementation, and adaptors for Data Pipelines V2
+* Add JMS MQ source and sink
+* Add Kafka source implementation
+* Use pipeline monitor to update process status
+
+### Fixes
+
+* Close consumer when source is stopped
+* Make dependencies visible
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.7.1
+
+###### Fixes
+
+* Fix initialisation issue in BloombergClient related to metrics
+* Fix initialisation issue with Bloomberg data pipelines connector
+
+###### Dependency changes
+
+* Bump actions/upload-artifact from 3 to 4

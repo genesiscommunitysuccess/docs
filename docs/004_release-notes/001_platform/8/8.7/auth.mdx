@@ -5,7 +5,20 @@ sidebar_position: 1
 id: '8.7-auth'
 ---
 
-No changes
+### BREAKING CHANGES
+
+* Upgrade to Kotlin 2.1.0
+
+### Fixes
+
+* Login-auth-ack and login-details-ack messages now return a `ZERO_MQ_PROXY_OUTBOUND_PORT` property instead of the misspelt `ZERO_MQ_PROXY_OUTOUND_PORT`
+* Make user active_sessions eventually consistent with USER_SESSION table
+
+### Dependency changes
+
+* Bump com.jfrog.artifactory from 5.2.3 to 5.2.5
+* Bump org.passay:passay from 1.6.5 to 1.6.6
+* Bump org.sonarqube from 5.0.0.4638 to 5.1.0.4882
 
 ### Patch releases
 

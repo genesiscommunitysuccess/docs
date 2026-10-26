@@ -5,8 +5,42 @@ sidebar_position: 5
 id: '8.6-notify'
 ---
 
-No changes
+### Features
+
+* Add support to suppress toast notifications but still deliver alerts to the alerts centre
+* Add new dataserver specifically for toasts
+* Allow null values on email address lists
+* Display missing permissions on notify dashboard
+* Add filtering to the alerts inbox component
+
+### Fixes
+
+* Relax validation restrictions on Email Gateway config to make SMTP credentials optional
+* Fix Clear All button not working
+* Correctly handle multiple alert updates
+* Correctly process deletes/modifies after resetting state
+* Separate inbox service instances for flyout counter and inbox
+* Use UTC dates when filtering
+
+### Dependency changes
+
+* Bump io.mockk:mockk-jvm from 1.13.10 to 1.13.13
+* Bump org.apache.pdfbox:pdfbox from 3.0.2 to 3.0.3
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 8.6.2
+
+###### Features
+
+* Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration
+
+#### 8.6.1
+
+###### Features
+
+* Add support to set arbitrary properties on SMTP config for advanced use cases such as TLS trusted hosts
+
+###### Fixes
+
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues

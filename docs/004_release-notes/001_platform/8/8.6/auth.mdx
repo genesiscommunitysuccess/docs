@@ -5,12 +5,29 @@ sidebar_position: 1
 id: '8.6-auth'
 ---
 
-No changes
+### Features
+
+* Add validation for password on user insert
+
+### Fixes
+
+* Login-auth-ack and login-details-ack messages now return a `ZERO_MQ_PROXY_OUTBOUND_PORT` property instead of the misspelt `ZERO_MQ_PROXY_OUTOUND_PORT`
+
+### Dependency changes
+
+* Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.17.0
+* Bump org.gradle.test-retry from 1.5.10 to 1.6.0
 
 ### Patch releases
 
 #### 8.6.2
 
-### Fixes
+###### Fixes
 
 * `auth-manager` : Audit password changes in USER_LOGIN_AUDIT
+
+#### 8.6.1
+
+###### Fixes
+
+* `auth-manager` : Fix deadlock from occurring in logon process
