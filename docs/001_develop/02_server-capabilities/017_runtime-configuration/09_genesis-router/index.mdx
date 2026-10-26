@@ -87,7 +87,11 @@ router {
 }
 ```
 
-A change to `genesis-router.kts` takes effect only when the router restarts. Run [`killProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#killprocess) followed by [`startProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#startprocess), or, in development, restart the application from Genesis Start.
+A change to `genesis-router.kts` takes effect only when the router restarts. Run [`killProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#killprocess) followed by [`startProcess GENESIS_ROUTER`](/build-deploy-operate/operate/commands/#startprocess), or, in development, restart the application from Genesis Start (stop it, then start it).
+
+A deployed router reads `genesis-router.kts` from genesis-home (`$GENESIS_HOME/site-specific/scripts/` or `$GENESIS_HOME/<product>/scripts/`), not from `src/main/genesis`. Before you restart with `killProcess` and `startProcess`, run `genesisInstall` or edit the installed copy.
+
+Under Genesis Start, the default profile is Dev Compact, which runs the router inside `GENESIS_COMPACT_PROCESS`. There is no `GENESIS_ROUTER` process in that case, so restart `GENESIS_COMPACT_PROCESS` instead: stop it, then start it from Genesis Start.
 
 ## Router configuration
 Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
@@ -310,7 +314,7 @@ Metadata and JSON schema requests name one resource in `DETAILS.FEATURE`. The ro
 - for a Request Server, the name of the `requestReply` without the `REQ_` prefix, for example `TRADE_DETAILS`
 - for a Data Server, the name of the query, for example `ALL_TRADES`
 
-`FEATURE` does not accept wildcards. To find the names you can use, send a resources request first.
+`FEATURE` does not accept wildcards: a name containing one is treated as an unknown resource and gets the same 404 `MSG_NACK`. To find the names you can use, send a resources request first.
 
 If `FEATURE` is missing, or names a resource that no process has registered, the router cannot work out where to send the request. It replies with a `MSG_NACK` and HTTP status 404:
 
