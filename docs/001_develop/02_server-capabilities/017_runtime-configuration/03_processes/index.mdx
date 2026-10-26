@@ -125,6 +125,8 @@ For each process, the tags define key information. Let's look at the tags that a
 If you are using [Consul](/build-deploy-operate/deploy/hosting-infrastructure/containers/#consul), you need to be aware of the [ProcessDependencyTimeout setting](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined). The default value is 20 seconds, and you might need to increase that if you have any processes that start more slowly.
 :::
 
+You can override any of these tags for an environment without editing `processes.xml`, by setting a system definition item or an environment variable. See [Overriding processes.xml settings](/develop/server-capabilities/runtime-configuration/system-definition/#overriding-processesxml-settings).
+
 ### Process groups
 Groups give you a convenient way of starting multiple processes on the server with a single click. The commands `startGroup` and `killGroup` use the `groupId` to start or kill groups of processes. 
 
