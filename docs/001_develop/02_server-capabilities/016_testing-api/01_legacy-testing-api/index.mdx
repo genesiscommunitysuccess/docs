@@ -53,6 +53,17 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `createMockDictionary()` returning an inline dictionary | `@ProvidedDictionary` with `providedDictionary { }` |
 | XML dictionary | `@EnableLegacyXmlDictionary` |
 
+The database types in the `extends AbstractDatabaseTest` row are in these packages:
+
+| Type | Package |
+| --- | --- |
+| `SyncEntityDb` | `global.genesis.db.rx.entity.multi` |
+| `RxEntityDb` | `global.genesis.db.rx.entity.multi` |
+| `AsyncEntityDb` | `global.genesis.db.rx.entity.multi` |
+| `SyncDb` | `global.genesis.db` |
+| `RxDb` | `global.genesis.db.rx` |
+| `AsyncDb` | `global.genesis.db` |
+
 The mapping is by purpose: check each converted test, because the two APIs don't behave identically in every detail. For example, data dump is on by default in the legacy API and off by default in GenesisJunit. Some legacy dictionary set-ups have no GenesisJunit equivalent: a dictionary loaded from an explicit file path, the production dictionary filtered to some tables, and swapping the dictionary in the middle of a test. Keep those tests on the legacy classes, which still compile and run.
 
 ### Sending messages in a GenesisJunit test
@@ -434,6 +445,7 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | parser | yes | function that takes a GenesisSet and transforms it, this will determine the generic type of AbstractGenesisTestSupport |
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
+| scriptFileName | no | `String?`: the GPAL script file under test. Not needed for compiled GPAL definitions |
 | authCacheOverride | no | overrides auth-perms map to test |
 | dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
 | rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
@@ -461,6 +473,7 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
       authCacheOverride = "USER_VISIBILITY"
       parser = EventResponse
       configFileName = "config.xml"
+      scriptFileName = "auth-manager-eventhandler.kts"
     }
     ) {
       @Test
@@ -490,6 +503,7 @@ To use `AbstractGenesisTestSupport`, create a new class and extend:
     .addInitialDataFile("standard-user-setup.csv")
     .setParser(EventResponse.Companion)
     .setConfigFileName("config.xml")
+    .setScriptFileName("auth-manager-eventhandler.kts")
     .build()
     );
   }
