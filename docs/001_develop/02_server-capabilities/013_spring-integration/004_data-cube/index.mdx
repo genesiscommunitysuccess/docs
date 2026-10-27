@@ -683,6 +683,15 @@ POST /api/v1/cubes/trades/query
 
 ## Security
 
+A resource or an operation can declare `permission(...)` with a Genesis user right code. The built-in
+`/api/v1/cubes` endpoints check that code against the caller's rights: a request with no authenticated
+caller is rejected with HTTP 401 (`.../problems/cube/unauthenticated`), and a caller who lacks the right
+with HTTP 403 (`.../problems/cube/forbidden`). A request that names no operation is checked against the
+resource's `permission`. A request that names an operation is checked against that operation's own
+`permission` **instead of** the resource's, with no fallback, so an operation that declares none is open
+even when its resource declares one. The describe and schema paths accept a caller who holds any one of
+the route's rights.
+
 ### No-probing and column visibility
 
 The engine's central design invariant is that **a caller can never tell a hidden column from a
@@ -894,7 +903,7 @@ fixture loading, and the `@DirtiesContext` sharing model this example relies on.
 ### What fails and why
 
 The validation rules on this page, collected in one place. A startup failure stops the application
-from starting; an HTTP 400 rejects that one request.
+from starting; an HTTP 400, 401 or 403 rejects that one request.
 
 | Condition | Fails with | Documented in |
 |---|---|---|
@@ -919,6 +928,8 @@ from starting; an HTTP 400 rejects that one request.
 | A `GET` carries an unknown or duplicate query parameter (including one produced by an unencoded `&&` in `filter`) | HTTP 400 | [Filtering](#filtering) |
 | A filter is malformed, references an unknown column, calls an unsupported method, has more than one statement, or is not boolean | HTTP 400 | [Filtering](#filtering) |
 | A filter ends in `;` on a resource that declares `baseCriteria` | HTTP 400 | [Filtering](#filtering) |
+| A route declares a `permission` and the request has no authenticated caller | HTTP 401 | [Security](#security) |
+| The caller lacks the right code the route's `permission` declares | HTTP 403 | [Security](#security) |
 
 ## Filtering
 
