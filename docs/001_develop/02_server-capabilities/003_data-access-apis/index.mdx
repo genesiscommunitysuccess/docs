@@ -1758,8 +1758,8 @@ Index names come from your data model. By default, the platform names an index `
 | Kind | Method | Signature (`SyncDb`) |
 |---|---|---|
 | Reads | `get` | `get(record: DbRecord, index: String? = null, fields: Set<String> = emptySet()): DbRecord?`<br />See [DbRecord](#dbrecord) |
-| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once)<br />See [DbRecord](#dbrecord) |
-| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once)<br />See [DbRecord](#dbrecord) |
+| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) and [DbRecord](#dbrecord) |
+| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) and [DbRecord](#dbrecord) |
 | Reads | `count` | `count(table: String): Long` |
 | Reads | `getBulk` | `getBulk(table: String, index: String? = null, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
 | Reads | `getBulkFromEnd` | `getBulkFromEnd(table: String, index: String, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
