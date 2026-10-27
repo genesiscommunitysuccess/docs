@@ -904,7 +904,7 @@ These are not treated as duplicates:
 
 `upsertAll` is different: a batch that names the same record twice is not supported. It may be rejected, or it may be applied with either of the two entries winning. Avoid duplicate entries in an `upsertAll` batch.
 
-Because the whole batch is checked first, a `Flow` (or `Flowable`) passed to a batch write is collected into memory before anything is written.
+Because the whole batch is checked first, a `Flow` passed to an entity-API batch write, or a `Flowable` passed to an `RxDb` one, is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
 
 #### Write operation listeners
 
@@ -1757,31 +1757,31 @@ Index names come from your data model. By default, the platform names an index `
 
 | Kind | Method | Signature (`SyncDb`) |
 |---|---|---|
-| Reads | `get` | `get(record: DbRecord, index: String? = null, fields: Set<String> = emptySet()): DbRecord?` |
-| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) |
-| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once) |
+| Reads | `get` | `get(record: DbRecord, index: String? = null, fields: Set<String> = emptySet()): DbRecord?`<br />See [DbRecord](#dbrecord) |
+| Reads | `getAll` | `getAll(requestDetails: List<RecordMapSearchDetails>): Map<String, DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once)<br />See [DbRecord](#dbrecord) |
+| Reads | `getAllAsList` | `getAllAsList(requestDetails: List<RecordListSearchDetails>): List<DbRecord?>`<br />See [Reading several records at once](#reading-several-records-at-once)<br />See [DbRecord](#dbrecord) |
 | Reads | `count` | `count(table: String): Long` |
-| Reads | `getBulk` | `getBulk(table: String, index: String? = null, fields: Set<String> = emptySet()): List<DbRecord>` |
-| Reads | `getBulkFromEnd` | `getBulkFromEnd(table: String, index: String, fields: Set<String> = emptySet()): List<DbRecord>` |
-| Reads | `getRange` | `getRange(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>`<br />`getRange(startRecord: DbRecord, endRecord: DbRecord?, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>` |
-| Reads | `getRangeFromEnd` | `getRangeFromEnd(startRecord: DbRecord, endRecord: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>` |
-| Reads | `getByCriteria` | `getByCriteria(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): List<DbRecord>` |
-| Writes | `insert` | `insert(record: DbRecord): WriteResult` |
-| Writes | `insertAll` | `insertAll(records: List<DbRecord>): WriteResult` |
-| Writes | `modify` | `modify(details: ModifyDetails): WriteResult` |
-| Writes | `modifyAll` | `modifyAll(details: List<ModifyDetails>): List<WriteResult>` |
-| Writes | `upsert` | `upsert(details: ModifyDetails): WriteResult` |
-| Writes | `upsertAll` | `upsertAll(details: List<ModifyDetails>): List<WriteResult>` |
-| Writes | `delete` | `delete(record: DbRecord): WriteResult` |
-| Writes | `deleteAll` | `deleteAll(records: List<DbRecord>): WriteResult` |
-| Writes | `recover` | `recover(record: DbRecord): WriteResult` |
-| Writes | `recoverAll` | `recoverAll(records: List<DbRecord>): WriteResult` |
+| Reads | `getBulk` | `getBulk(table: String, index: String? = null, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Reads | `getBulkFromEnd` | `getBulkFromEnd(table: String, index: String, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Reads | `getRange` | `getRange(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>`<br />`getRange(startRecord: DbRecord, endRecord: DbRecord?, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Reads | `getRangeFromEnd` | `getRangeFromEnd(startRecord: DbRecord, endRecord: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Reads | `getByCriteria` | `getByCriteria(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): List<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Writes | `insert` | `insert(record: DbRecord): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
+| Writes | `insertAll` | `insertAll(records: List<DbRecord>): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
+| Writes | `modify` | `modify(details: ModifyDetails): WriteResult`<br />See [Modify details](#modify-details) and [Write result](#write-result) |
+| Writes | `modifyAll` | `modifyAll(details: List<ModifyDetails>): List<WriteResult>`<br />See [Modify details](#modify-details) and [Write result](#write-result) |
+| Writes | `upsert` | `upsert(details: ModifyDetails): WriteResult`<br />See [Modify details](#modify-details) and [Write result](#write-result) |
+| Writes | `upsertAll` | `upsertAll(details: List<ModifyDetails>): List<WriteResult>`<br />See [Modify details](#modify-details) and [Write result](#write-result) |
+| Writes | `delete` | `delete(record: DbRecord): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
+| Writes | `deleteAll` | `deleteAll(records: List<DbRecord>): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
+| Writes | `recover` | `recover(record: DbRecord): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
+| Writes | `recoverAll` | `recoverAll(records: List<DbRecord>): WriteResult`<br />See [DbRecord](#dbrecord) and [Write result](#write-result) |
 | Writes | `allocateId` | `allocateId(entity: String, tableId: Int): String` |
-| Streaming reads (`SyncDb` only) | `getBulkStream` | `getBulkStream(table: String, index: String? = null, fields: Set<String> = emptySet()): Stream<DbRecord>` |
-| Streaming reads (`SyncDb` only) | `getRangeStream` | `getRangeStream(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): Stream<DbRecord>` |
-| Streaming reads (`SyncDb` only) | `getByCriteriaStream` | `getByCriteriaStream(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): Stream<DbRecord>` |
+| Streaming reads (`SyncDb` only) | `getBulkStream` | `getBulkStream(table: String, index: String? = null, fields: Set<String> = emptySet()): Stream<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Streaming reads (`SyncDb` only) | `getRangeStream` | `getRangeStream(record: DbRecord, index: String, numKeyFields: Int, fields: Set<String> = emptySet()): Stream<DbRecord>`<br />See [DbRecord](#dbrecord) |
+| Streaming reads (`SyncDb` only) | `getByCriteriaStream` | `getByCriteriaStream(table: String, criteria: String = "true", ordering: OrderSpecProvider<DbRecord>? = null, paging: PagingSpec? = null, fields: Set<String> = emptySet()): Stream<DbRecord>`<br />See [DbRecord](#dbrecord) |
 | Transactions | `readTransaction` | `readTransaction(block: (SyncReadDb) -> T): T` |
-| Transactions | `writeTransaction` | `writeTransaction(block: (SyncDb) -> T): Pair<T, List<WriteResult>>` |
+| Transactions | `writeTransaction` | `writeTransaction(block: (SyncDb) -> T): Pair<T, List<WriteResult>>`<br />See [Write result](#write-result) |
 
 `numKeyFields` works as for the entity API; see [`numKeyFields` property](#numkeyfields-property).
 
