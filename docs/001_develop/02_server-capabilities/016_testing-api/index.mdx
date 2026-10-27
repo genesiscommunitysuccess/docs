@@ -1508,6 +1508,7 @@ class WithLogLevelTest {
     fun myOtherTest() {
         // com.example.trades logs at TRACE, and the test class's package at DEBUG
         assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled)
+        assertTrue(LoggerFactory.getLogger(WithLogLevelTest::class.java.packageName).isDebugEnabled)
     }
 }
 ```
@@ -1540,6 +1541,7 @@ public class WithLogLevelTest {
     public void myOtherTest() {
         // com.example.trades logs at TRACE, and the test class's package at DEBUG
         assertTrue(LoggerFactory.getLogger("com.example.trades").isTraceEnabled());
+        assertTrue(LoggerFactory.getLogger(WithLogLevelTest.class.getPackageName()).isDebugEnabled());
     }
 }
 ```
