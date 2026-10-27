@@ -603,10 +603,10 @@ Username and password login example
 ```
 {
   "SOURCE_REF": "001",
-  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH"
+  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
   "DETAILS": {
     "USER_NAME": "admin",
-    "PASSWORD": "genesis",
+    "PASSWORD": "genesis"
   }
 }
 ```
@@ -765,10 +765,11 @@ POST /event-login-auth HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SOURCE_REF: 001
+
 {
   "DETAILS": {
     "USER_NAME": "admin",
-    "PASSWORD": "genesis",
+    "PASSWORD": "genesis"
   }
 }
 ```
@@ -779,6 +780,7 @@ POST /event-login-auth HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SOURCE_REF: 001b
+
 {
   "DETAILS": {
     "USER_NAME": "admin",
