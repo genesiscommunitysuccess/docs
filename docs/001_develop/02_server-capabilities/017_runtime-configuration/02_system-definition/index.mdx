@@ -191,6 +191,8 @@ The value is case-sensitive. If `ClusterMode` is unset or blank, the mode is LEG
 
 **DataDumpJsonFormatEnabled**: When `true`, messages logged because of `DATADUMP_ON` or `DATADUMP_NACK_ON` are written as a single JSON string instead of the multi-line format. Default value is `false`. A process reads this item once, when it starts.
 
+**StrictNullChecksEnabled**: Controls whether messages that put a `null` inside a non-null Kotlin collection are rejected. If a class declares a field as a non-null collection, such as `List<String>`, a message with a `null` element in that field fails to deserialise. That also covers a `null` value in a map inside a list, such as `List<Map<String, Any?>>`, even though the map's values are declared nullable. Default value is `true`. Set it to `false` to accept those nulls, as Genesis 8.15 and earlier did. In a GenesisJunit test, use `@SysDefOverwrite("StrictNullChecksEnabled", "false")`.
+
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
 **ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
