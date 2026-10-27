@@ -861,7 +861,7 @@ This tries to delete a record.
 
 #### Batches that name the same record twice
 
-A batch write must not name the same record twice. This applies to [`insertAll`](#table-entities), `modifyAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs.
+A batch write must not name the same record twice. This applies to `insertAll`, `modifyAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs. To build the entities you pass in a batch, see [Table entities](#table-entities).
 
 The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for a plain entity `insertAll`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
 
@@ -902,7 +902,7 @@ These are not treated as duplicates:
 
 - an item whose key isn't fully set yet, such as a record whose key the database generates on insert.
 
-[`upsertAll`](#table-entities) is different: a batch that names the same record twice is not supported. It may be rejected, or it may be applied with either of the two entries winning. Avoid duplicate entries in an `upsertAll` batch.
+`upsertAll` is different: a batch that names the same record twice is not supported. It may be rejected, or it may be applied with either of the two entries winning. Avoid duplicate entries in an `upsertAll` batch.
 
 Because the whole batch is checked first, a `Flow` (or `Flowable`) passed to a batch write is collected into memory before anything is written.
 
@@ -1680,9 +1680,9 @@ You need to specify the name and the value of the column. The setter you call de
 | `DOUBLE` | `setDouble(column: String, value: Double?)` |
 | `BIGDECIMAL` | `setBigDecimal(column: String, value: BigDecimal?)` |
 | `RAW` | `setRaw(columnName: String, value: ByteArray?)` |
-| `NANO_TIMESTAMP` | No dedicated setter; use the generic `setObject(column: String, value: Any?)` |
+| `NANO_TIMESTAMP` | `setLong(column: String, value: Long?)` (nanoseconds since the epoch, stored as a `LONG`) |
 
-A field with `autoIncrement` uses the setter of its base type (`setLong`).
+A field with `autoIncrement` uses the setter of its base type (`setLong` for a `LONG` field, `setInteger` for an `INT`).
 
 If you are trying to set a Double field, the method would look like this: `fun setDouble(column: String, value: Double?)`; the value needs to be non-null.
 
