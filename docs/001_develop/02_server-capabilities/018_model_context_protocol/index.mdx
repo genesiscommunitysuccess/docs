@@ -145,7 +145,7 @@ Platform tools check a Genesis right before they run (see [Authorisation](#autho
 - `MCP_ADMIN`
 - an approver code, if you set `approverRight` to something other than `MCP_ADMIN`
 
-See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data, in `<application>-app/src/main/genesis/data/`, so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up. It is safe to run Bootstrap again on a project that you have already bootstrapped.
+See [Authorization](/develop/server-capabilities/access-control/authorization/) for how to create right codes and assign them. If you run your application locally with Genesis Start, put the rights CSVs in your project data, in `<application>-app/src/main/genesis/data/`, so that [Bootstrap](/develop/development-environment/genesis-start/#bootstrap-and-launch) loads them and runs `ConsolidateRights`. If you have already bootstrapped, load them with [Import data](/develop/development-environment/genesis-start/#import-data) instead, then run Bootstrap again so that `ConsolidateRights` picks them up. It is safe to run Bootstrap again on a project that you have already bootstrapped. Under Genesis Start, though, Bootstrap refuses to run while Genesis processes are running (`409 PROCESSES_RUNNING`): stop them first, or see [`POST /api/bootstrap`](/develop/development-environment/genesis-start/headless-mode/#driving-it-over-rest) for the `stopRunning` option.
 
 When you use Import data after Bootstrap, import only the new rows. Never import a whole table that Bootstrap already loaded, because rows that already exist make the import fail with "not all data was imported". Import:
 
@@ -161,7 +161,7 @@ SUPPORT,MCP_VIEW
 
 Add the matching `RIGHT.csv` row (`CODE,DESCRIPTION`) only if `MCP_VIEW` doesn't exist yet.
 
-A user's profile membership is in `PROFILE_USER.csv`. Grant the rights to a profile that the user belongs to.
+A user's profile membership is in `PROFILE_USER.csv`. Grant the rights to a profile that the user belongs to. To see which profile an existing user, such as `admin`, is in on a running system, query the `PROFILE_USER` table with DbMon, which Genesis Start lists as a utility (see [Sending input to a utility](/develop/development-environment/genesis-start/#sending-input-to-a-utility)).
 
 A newly granted right takes effect as soon as `ConsolidateRights` finishes, allowing for a brief sync measured in milliseconds, not minutes. You don't need to restart the MCP process, which is `GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when `compactProcessesStrategy=DEV` is set (the compact process then includes `GENESIS_MCP`).
 
@@ -173,7 +173,7 @@ Platform tools need no configuration. To expose your own endpoints as well, crea
 
 This works for Spring event handlers as well as GPAL event handlers: both publish the metadata that MCP needs.
 
-This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/):
+This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/). In your `<application>-mcp.kts`, add:
 
 ```kotlin
 mcp {
@@ -468,7 +468,7 @@ Some notes on individual tools:
   ```
 - **`modify_record`:** this reads the current record, applies only the fields in `CHANGES`, and sends the whole record through the table's update event. By default it uses the first of these events that exists: `EVENT_<TABLE>_UPDATE`, then `EVENT_<TABLE>_UPSERT`, then `EVENT_<TABLE>_MODIFY`, then `EVENT_MODIFY_<TABLE>`. Set `EVENT_NAME` if your event has a different name. The event's validation, auditing and approval all still apply.
 - **`read_config`:** values whose key contains `PASSWORD`, `PASSWD`, `PWD`, `PASSPHRASE`, `SECRET`, `TOKEN`, `CREDENTIAL`, `PRIVATE_KEY`, `API_KEY` or `APIKEY` are shown as `***`. The `genesis://config/system-definition` resource is hidden the same way.
-- **`read_log`, `search_log`:** `PROCESS_NAME` must be an upper-case process name (letters, digits and underscores only).
+- **`read_log`, `search_log`, `process_control`:** `PROCESS_NAME` must be an upper-case process name (letters, digits and underscores only).
 - **`process_control`, `run_remap`:** these act on the instance that the MCP server runs on.
 
 ### Prompts
@@ -537,7 +537,7 @@ A checker, connected over MCP as a different user, works through these tools:
 
 Checkers can also use any other front end built on the pending approval workflow.
 
-To try maker-checker locally, you need a second user to act as the checker. Logged in with the [local development default login](#session-token), create it with [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user), which takes the user's password in the field `ONE_TIME_PASSWORD`, or with **Add User** in the [user management UI](/develop/business-components/user-management/user-management-ui/). Give the checker a profile that holds the approver right (`MCP_ADMIN`, or your `approverRight`): pass it in `USER_PROFILES` when you create the user, or grant the right to one of its profiles as in [Step 3](#step-3-grant-the-mcp-rights). A new user starts with an expired password. It can't log in, or get a `sessionAuthToken`, until the password has been changed once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password). Over REST, send `USER_NAME` as an HTTP header, not in the JSON body; only `DETAILS` is read from the body.
+To try maker-checker locally, you need a second user to act as the checker. Logged in with the [local development default login](#session-token), create it with [`EVENT_INSERT_USER`](/develop/server-capabilities/access-control/authentication/#event_insert_user), which takes the user's password in the field `ONE_TIME_PASSWORD`, or with **Add User** in the [user management UI](/develop/business-components/user-management/user-management-ui/). Give the checker a profile that holds the approver right (`MCP_ADMIN`, or your `approverRight`) and also `MCP_VIEW` (or your configured `viewRight`), because the checker's first step, `list_pending_approvals`, is a VIEW tool (see [Rights tiers](#rights-tiers)). Pass the rights in `USER_PROFILES` when you create the user, or grant them to one of its profiles as in [Step 3](#step-3-grant-the-mcp-rights). A new user starts with an expired password. It can't log in, or get a `sessionAuthToken`, until the password has been changed once with [`EVENT_CHANGE_USER_PASSWORD`](/develop/server-capabilities/access-control/authentication/#event_change_user_password). Over REST, send `USER_NAME` as an HTTP header, not in the JSON body; only `DETAILS` is read from the body.
 
 ### Separation of duties
 
@@ -578,7 +578,7 @@ Discovery is on when `oauthAuthorizationServer` is set, or when the strategy is 
 
 The server only sends a 401 when `requireAuthenticatedConnections = true`, so set that too.
 
-Genesis isn't an OAuth authorization server itself. With `sessionAuthToken`, point `oauthAuthorizationServer` at an authorization server that runs the Genesis login and gives the client a Genesis session token.
+Genesis isn't an OAuth authorization server itself. With `sessionAuthToken`, point `oauthAuthorizationServer` at an authorization server that runs the Genesis login and gives the client a Genesis session token. No reference authorization server ships with Genesis, so replacing the token by hand, as described in [Connecting an AI client](#connecting-an-ai-client), is the supported path for `sessionAuthToken`.
 
 When the server sits behind a proxy, it builds the URLs it advertises from the `X-Forwarded-Proto` and `X-Forwarded-Host` headers, if present.
 
