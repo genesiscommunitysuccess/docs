@@ -1402,7 +1402,7 @@ To include your Data Pipeline definitions in a runtime process, configure the pr
 - **script**: your `*-pipelines.kts` file(s), comma-separated if more than one
 - **language**: `pal`
 
-A project generated from the template already has `genesis-pal-datapipeline` on its classpath through its script-config module. Otherwise, add `implementation(genesis("pal-datapipeline"))` to your application module's `build.gradle.kts`, as shown under [Using compiled definitions only](#using-compiled-definitions-only).
+Make sure `genesis-pal-datapipeline` is on your application module's classpath. If your `build.gradle.kts` does not already pull it in, add `implementation(genesis("pal-datapipeline"))`, as shown under [Using compiled definitions only](#using-compiled-definitions-only).
 
 ### Using compiled definitions only
 
