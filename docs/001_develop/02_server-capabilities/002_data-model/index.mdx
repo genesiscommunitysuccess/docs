@@ -1238,7 +1238,7 @@ To keep the definition the same, state the nullability explicitly on the inline 
 
 Inline fields do not take a `default =` argument. Set a default with `.default(...)`, as in `field("QUANTITY", INT).default(0)`; for an `ENUM`, the default is its first argument, so `ENUM("NEW", "DONE")` defaults to `"NEW"`.
 
-Write the type inline on every field. In 10.0, `field("NAME")` with no type creates a `STRING` field and does not look the name up in any fields dictionary, so a field that was an `INT` becomes a `String?` without any error. Write `field("MY_INT", INT)`, not `field("MY_INT")`.
+Give every field you write by name a type. In 10.0, `field("NAME")` with no type creates a `STRING` field and does not look the name up in any fields dictionary, so a field that was an `INT` becomes a `String?` without any error. Write `field("MY_INT", INT)`, not `field("MY_INT")`.
 
 When no size is given, an SQL database creates a `STRING` or `ENUM` column 64 characters wide in both styles, so the column is the same. Writing `STRING(64)` inline would instead set the generated `maxLength` metadata to 64 (in `Field(...)` and as `@MaxLength(64)` on the entity property), which a fields dictionary field with no size does not have. The column is `VARCHAR(64)` in all three cases, so the generated output is still not identical.
 
