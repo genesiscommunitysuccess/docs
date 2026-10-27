@@ -28,6 +28,8 @@ Listing the package in a process's `<package>` section in processes.xml does not
 
 The file must end up in the deployed app jar, on the classpath of every process that writes and should notify the listener. There is no property or flag that enables listener support.
 
+A listener is bound in every process whose `<classpath>` includes the jar holding its extensions file, so a listener in a jar that every process loads is bound in all of them. A write listener runs inside the transaction of the process that makes the write, so it is always in-process: it sees only the writes made by the process it is bound in. To react to writes made by another process, [subscribe](/develop/server-capabilities/data-access-apis/#subscribe-operations) to the update queue instead, which is asynchronous and crosses process boundaries. To give different processes different listeners, put each listener, with its extensions file, in a module or jar that only that process's `<classpath>` includes. See [Processes](/develop/server-capabilities/runtime-configuration/processes/) for the `<classpath>` element.
+
 When a process starts, it logs one of two lines from `RxDb`. `Database WriteOperationListener support not enabled` means no custom `WriteOperationListener` was bound in that process. `Enabling database WriteOperationListener support` means one was bound. Both lines are about `WriteOperationListener` only: they say nothing about `SyncWriteOperationListener` or `AsyncWriteOperationListener`, and the "not enabled" line is logged whether or not you have bound one of those. Check those two by their effect, for example by a side effect or log line in the listener itself after a write. A process whose only listener is a `WriteOperationListener` also logs `INFO ... No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sync write path`. This is expected: the `WriteOperationListener` is being used for sync writes. If you expected a `WriteOperationListener` and see the "not enabled" line, check that the extensions file exists, is named exactly after the listener's package, and is in the process's classpath.
 
 | Interface | Signature | `tx` |
@@ -105,7 +107,7 @@ The table and field names in this example are placeholders for your own data mod
 
 ## Which listener is called
 
-Bind only one write listener in a service: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. Writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) reach your listener like any other write. The only difference between the three is the `tx` the listener receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
+Bind only one write listener in each process: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. To run several pieces of logic in one process, write one listener that dispatches to your own classes. Writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) reach your listener like any other write. The only difference between the three is the `tx` the listener receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
 
 To switch to a different listener type, replace the old listener with the new one: move the old listener's logic into the new one and delete the old listener class.
 
@@ -122,7 +124,7 @@ To switch to a different listener type, replace the old listener with the new on
 
 When a `WriteOperationListener` is called for a write that didn't go through `RxDb`, its `tx` is backed by the write's own transaction. Block on every call you make through it, for example with `blockingGet()`, on the thread that called `onWriteResult`. A call through `tx` from any other thread fails with an error that explains this.
 
-This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to return, but reactive work the listener started on `tx` without blocking was neither enforced nor awaited. In 8.x, a `WriteOperationListener` was already called for `AsyncEntityDb` and `SyncEntityDb` writes as well, so which writes your listener sees has not changed; only the blocking requirement on `tx` is new.
+This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to return, but reactive work the listener started on `tx` without blocking was neither enforced nor awaited. Because 8.x committed as soon as `onWriteResult` returned, that work raced the commit: it could be written in the same transaction, written after it, or fail without an error reaching the caller. If your 8.x listener did this, check the records it wrote. In 8.x, a `WriteOperationListener` was already called for `AsyncEntityDb` and `SyncEntityDb` writes as well, so which writes your listener sees has not changed; only the blocking requirement on `tx` is new.
 
 Whether you need to change your listener depends on how it uses `tx`:
 
