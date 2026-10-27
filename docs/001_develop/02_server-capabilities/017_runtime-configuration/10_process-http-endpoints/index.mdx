@@ -55,6 +55,15 @@ The route for a request server or event handler is its resource name converted f
 
 Request and response bodies use the same JSON format as the router. The reply is the JSON form of the reply message; for example, an event handler replies with `"MESSAGE_TYPE": "EVENT_ACK"`.
 
+To call an event handler on the process port, send a `POST` to its route with the event's fields under `DETAILS`. The route supplies the message type, so leave `MESSAGE_TYPE` out of the body; for example, for `EVENT_WIDGET_INSERT`:
+
+```
+POST /event-widget-insert
+{"DETAILS": {"NAME": "x", "PRICE": 1.0, "QUANTITY": 1}}
+```
+
+If a `DETAILS` field can't be converted to the event's type, for example a number sent as a string, the reply is a NACK with `UNKNOWN_MESSAGE_TYPE` in an HTTP 200, so check the field types first.
+
 ## Status codes
 
 | Situation | Status |
@@ -134,6 +143,8 @@ webHandlers {
     }
 }
 ```
+
+The endpoint bodies in the snippet above are elided (`// ...`), so it is not complete code on its own. A custom endpoint needs a `handleRequest` block; for a full example, see [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/).
 
 ## Through the Genesis Router
 
