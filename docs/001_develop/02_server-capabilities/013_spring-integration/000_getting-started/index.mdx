@@ -98,15 +98,14 @@ This puts the Logback backend on the classpath of every process the application 
 
 ```xml
 <configuration>
-    <timestamp key="bySecond" datePattern="yyyy-MM-dd_HH-mm-ss"/>
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${GENESIS_HOME}/runtime/logs/${PROCESS_NAME}.log</file>
         <append>true</append>
         <encoder>
             <pattern>%date{dd MMM yyyy;HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${GENESIS_HOME}/runtime/logs/archive/${PROCESS_NAME}-${bySecond}.log.gz</fileNamePattern>
+            <fileNamePattern>${GENESIS_HOME}/runtime/logs/archive/${PROCESS_NAME}-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
