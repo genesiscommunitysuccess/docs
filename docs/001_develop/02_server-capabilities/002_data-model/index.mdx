@@ -1137,6 +1137,32 @@ derivedField("SPREAD", DOUBLE) {
 
 ```
 
+## Overriding another product's dictionary
+
+Your application can change the tables of another product it depends on, such as Genesis, auth or a business component. This is discouraged, and we intend to stop supporting it. New applications shouldn't do it: keep your data in your own application's tables, and use the extension points that the product provides.
+
+A product's compiled Kotlin code, and its [build-time-compiled scripts](/build-deploy-operate/build/build-time-script-compilation/), are compiled against the code generated from the product's own dictionary. If your override changes something that code relies on, the build and start-up still succeed. The product fails at runtime instead, with a `NoSuchMethodError` or `NoSuchFieldError`, the first time the affected code runs. For auth, that can be when a user logs in. A build-time-compiled script that fails this way is compiled again at start-up against your dictionary, which fails if the script uses what you changed.
+
+Where you can't avoid an override yet:
+
+- add fields to the product's table with `tableUnion`, rather than replacing the product's whole dictionary file. Treat `tableUnion` as a stopgap, not a long-term pattern;
+- list the product in the `genesis.codegen.overrideSlices` Gradle property, for example `genesis.codegen.overrideSlices=auth`, so that the product's generated code is produced locally, with your changes.
+
+### Compatible and incompatible changes
+
+Only these changes are compatible:
+
+- adding a field that is nullable or has a default;
+- adding an index;
+- increasing the maximum size of a `STRING` field.
+
+Any other change is incompatible and can break the product at runtime, including in a later release of the product. For example:
+
+- changing the type or the nullability of a field;
+- removing a field, index or table;
+- changing a primary key or index;
+- adding a non-null field with no default. The product fails when it creates a record in that table; for example, auth creates users when it provisions them from JWT, LDAP or SSO.
+
 ## Migrating from legacy data model structure
 
 Before version 7.2 of the Genesis Platform fields were defined in their own dictionary file, separately from tables.
