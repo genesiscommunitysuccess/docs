@@ -53,11 +53,11 @@ Genesis: compiling .kts at build time for <module path>...
 
 Passing `-Pgenesis.scripts.compileAtBuildTime=true` on the command line, or setting it in `gradle.properties`, has the same effect without editing `settings.gradle.kts`.
 
-The Settings plugin only covers that main module. Any other module whose scripts you want compiled needs the plugin applied itself, as described in [Every module in a multi-module build](#every-module-in-a-multi-module-build).
+The Settings plugin only covers that main module. Any other module whose scripts you want compiled needs the plugin applied itself, as described in [Applying the plugin to a module](#applying-the-plugin-to-a-module). To apply it to every module at once, see [Every module in a multi-module build](#every-module-in-a-multi-module-build).
 
-### Without the Settings plugin
+### Applying the plugin to a module
 
-Apply the plugin in the build file of each module whose scripts you want to compile:
+Without a Genesis Settings plugin, this is how you turn the feature on. With one, it is how you add a module beyond the main module the Settings plugin covers. Apply the plugin in the build file of each module whose scripts you want to compile:
 
 ```kotlin
 // <module>/build.gradle.kts
@@ -184,7 +184,7 @@ To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/
 With build-time compilation on, the build has to resolve everything a process used to resolve only at start-up. These problems now fail the build instead of failing later:
 
 - **A missing dependency.** A script uses a type that isn't on the module's compile classpath. The build fails with the Kotlin compiler's own error, for example `Unresolved reference '<name>'`. Add the module that provides the type to the module's `dependencies`. A module named in `@file:ScriptModules("...")` is not checked here: a script that contains `@file:ScriptModules` is left out of the index and compiled at start-up, so a missing module is not caught at build time and surfaces at start-up. At start-up the name is matched against the classpath and the Genesis home install: `@file:ScriptModules("genesis-router")` matches `genesis-router.jar` or `genesis-router-<version>.jar`. If nothing matches, compiling the script at start-up fails with `Unable to find specified script module "<module>"`. That error is the start-up case for `@file:ScriptModules`, not a build failure.
-- **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails the build with the Kotlin compiler's own error on the DSL call, `Unresolved reference '<name>'`. This is the same message as for a missing dependency; what tells the two apart is the script's location, which is outside every script definition's script directories. Add it to `exclude`.
+- **A script that no script definition claims.** It is compiled as plain Kotlin, so any use of a Genesis DSL in it fails the build with the Kotlin compiler's own error on the DSL call, `Unresolved reference '<name>'`. This is the same message as for a missing dependency; what tells the two apart is the script's file name, which matches no script definition's pattern (for example, `*-router.kts` for the router). Add it to `exclude`.
 - **`scriptDirs` with more than one source set.** Setting `scriptDirs` while `sourceSets` names more than one source set fails the build. Use `scriptDirNames` instead, or configure one source set. The message begins `genesisScriptCompilation in <module> names [...] in sourceSets and also sets scriptDirs.`
 - **A source set name clash.** The module already has a source set named `genesisScripts` (or `genesis<SourceSet>Scripts`). Rename it, or turn the feature off for the module. The message begins `<module> already has a source set named genesisScripts, which build-time script compilation needs`.
 - **Scripts that still clash after renaming.** See [Scripts with the same file name](#scripts-with-the-same-file-name). If two scripts still compile to one class, the build fails and asks you to rename one of them, with a message that begins `These scripts still compile to the same class '<class>' after disambiguation:`.
@@ -246,7 +246,7 @@ Each module that compiled its scripts has `META-INF/genesis-precompiled-scripts`
 <script file name>=<class name>|<source hash>
 ```
 
-The hash is not the `sha256sum` of the file, so you can't check it against the source by hand. At start-up, each process logs this line at INFO level for every script it loads from a class:
+The hash is not the `sha256sum` of the file, so you can't check it against the source by hand. At start-up, each process logs this line at INFO level, on `PrecompiledScriptEvaluator` (full name `global.genesis.config.dsl.host.PrecompiledScriptEvaluator`), for every script it loads from a class:
 
 ```
 Loaded <script> from its build-time-compiled class in <n> ms; no compiler was used.
