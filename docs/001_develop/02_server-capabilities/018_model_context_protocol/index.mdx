@@ -84,7 +84,7 @@ The shipped `genesis-mcp-server.kts` is for local development only. If you enabl
 - Anyone who can reach the port is treated as the user `admin`, with no authentication.
 - Platform tools are on. The tools that need [authentication only](#rights-tiers), such as `process_status`, `list_tables` and `discover_endpoints`, answer every caller.
 - The other platform tools are refused until `admin` holds the matching `MCP_*` rights. The platform doesn't create those rights, and `admin` gets no special bypass.
-- `requiresApproval = true` holds back `call_event`, `modify_record` and your `enableMcp` event tools for approval. It doesn't hold back `process_control`, `run_remap` or `set_log_level`: those run straight away for anyone with the right.
+- `requiresApproval = true` holds back `call_event`, `modify_record` and your `enableMcp` event tools for approval. It doesn't hold back `process_control`, `run_remap` or `set_log_level`: those run straight away for anyone with the right. Every write and every approval come from `admin`, so this gives no [separation of duties](#separation-of-duties).
 
 [Override this file](#step-2-configure-the-mcp-server) before you enable `GENESIS_MCP` anywhere other than your own machine.
 :::
@@ -173,7 +173,7 @@ Platform tools need no configuration. To expose your own endpoints as well, crea
 
 This works for Spring event handlers as well as GPAL event handlers: both publish the metadata that MCP needs.
 
-This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/). In your `<application>-mcp.kts`, add:
+This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/). In your `<application>-mcp.kts` (not `genesis-mcp-server.kts`, which holds only the `server { }` block), add an `mcp { }` block that lists the endpoints to expose:
 
 ```kotlin
 mcp {
@@ -623,6 +623,8 @@ You need access to an AI model as well. Some clients, such as Claude Desktop and
 claude mcp add --transport http genesis http://localhost:3001/mcp \
   --header "SESSION_AUTH_TOKEN: <token>"
 ```
+
+When the token expires, run `claude mcp remove genesis` and then the `claude mcp add` command again with the new token.
 
 If the server uses `https` with a certificate signed by a custom or self-signed CA, set `NODE_EXTRA_CA_CERTS=/path/to/ca.pem` before launching `claude` (or in the `env` block of Claude Code's `settings.json`), or install the CA in the operating system's trust store, which Claude Code reads by default.
 
