@@ -238,6 +238,8 @@ For example, if a `*-script.kts` file inserts a record at its top level and a la
 
 A component compiles its scripts against its own dictionary, which is packaged and distributed with it automatically, so you need no extra step when you build a component with this feature.
 
+If your application overrides a component's dictionary, the component's compiled scripts fail to link when they use a field or table your override changed incompatibly. The process then compiles them at start-up against your dictionary, which fails too. See [Overriding another product's dictionary](/develop/server-capabilities/data-model/#overriding-another-products-dictionary).
+
 ## Checking that it worked
 
 Each module that compiled its scripts has `META-INF/genesis-precompiled-scripts` in its jar, with one line for each script that can be served:
