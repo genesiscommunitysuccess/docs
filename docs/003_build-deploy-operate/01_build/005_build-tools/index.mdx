@@ -120,7 +120,7 @@ genesisExec {
 4. Move anything that you used to add to the classpath by hand into Gradle dependencies (for example, using the [`genesisRuntime` configuration](#using-genesisruntime-configuration)). A dynamic classpath only lists what the build resolved, so:
    * jars copied by hand into `site-specific/lib` (or any other folder under `$GENESIS_HOME`) are not picked up
    * `GlobalClasspathAdditions` in the system definition is ignored
-   * a JDBC driver is only on the classpath if your application depends on it
+   * a JDBC driver is only on the classpath if your application depends on it; see [Declaring a JDBC driver](#declaring-a-jdbc-driver)
 
 5. Deploy the new archive to a fresh `$GENESIS_HOME`, or replace the installation's `genesis` folder with the one from the archive. Then run `genesisInstall` and start the processes. If a jar is missing, `startProcess` fails with `classpath file ... references N missing JAR(s)` and names each missing jar.
 
@@ -145,6 +145,76 @@ dependencies {
     genesisRuntime("javax.mail:mail:1.4")
 }
 ```
+
+#### Declaring a JDBC driver
+
+The Genesis database modules do not bring vendor JDBC drivers with them. Each deployment ships the driver for the database it uses, and nothing else.
+
+| Deployment | What to do |
+|---|---|
+| Non-dynamic (`enableDynamicDeployment=false`) | Nothing. Every driver is still shipped in `genesis/lib`. |
+| Dynamic (`enableDynamicDeployment=true`) | Declare the driver for your `DbHost`, as shown below. |
+
+In a dynamic deployment, each process's classpath is built from its module's dependencies plus the [`genesisRuntime` configuration](#using-genesisruntime-configuration). Add the driver there, in the `dependencies { }` block of `server/build.gradle.kts` (the project that builds `appDistZip`). Leave the version out; the Genesis BOM supplies it.
+
+:::warning
+Declare the driver with `genesisRuntime`. A driver declared with `runtimeOnly` or `implementation` does not reach the process classpaths of a dynamic deployment.
+:::
+
+| Database | Declaration |
+|---|---|
+| PostgreSQL | `genesisRuntime("org.postgresql:postgresql")` |
+| SQL Server | `genesisRuntime("com.microsoft.sqlserver:mssql-jdbc")` |
+| Oracle | `genesisRuntime("com.oracle.database.jdbc:ojdbc11")` and `genesisRuntime("com.oracle.database.xml:xdb")`, each excluding `com.oracle.database.xml:xmlparserv2` (see the example below) |
+| AWS Advanced JDBC Wrapper (`jdbc:aws-wrapper:…`) | `genesisRuntime("software.amazon.jdbc:aws-advanced-jdbc-wrapper")`, plus the driver for the database that it wraps |
+| H2 | Nothing; H2 is always present |
+
+For example, an application on PostgreSQL:
+
+```kotlin
+dependencies {
+    genesisRuntime("org.postgresql:postgresql")
+}
+```
+
+An application on Oracle:
+
+```kotlin
+dependencies {
+    genesisRuntime("com.oracle.database.jdbc:ojdbc11") {
+        exclude(group = "com.oracle.database.xml", module = "xmlparserv2")
+    }
+    genesisRuntime("com.oracle.database.xml:xdb") {
+        exclude(group = "com.oracle.database.xml", module = "xmlparserv2")
+    }
+}
+```
+
+`genesisRuntime` reaches every module's classpath, including `genesisInstall`, remap and the console tools, so one declaration covers the whole deployment.
+
+##### Other databases that your application connects to
+
+`DbHost` is not the only database a deployment can reach. Declare a driver for every database engine that the following connect to:
+
+* the [`DictionaryBuilder`](/build-deploy-operate/operate/commands/#dictionarybuilder), `DbToGenesis` and `GenesisToDb` tools, which read from or write to an external database
+* external database sinks in data ingestion pipelines
+* JDBC sources in [data pipelines](/develop/server-capabilities/integrations/data-pipelines/)
+
+##### Tests
+
+Tests that use `genesis-testsupport` get every driver at test runtime, so they run against any database engine without extra declarations.
+
+Code that uses driver classes directly, such as `org.postgresql.util.PSQLException`, must declare the driver as an ordinary dependency (`implementation` or `compileOnly`), because it no longer arrives through the Genesis database modules.
+
+##### When a driver is missing
+
+A process whose `DbHost` driver is not on its classpath fails at start-up with a message that names the dependency and the declaration to add, for example:
+
+```
+No JDBC driver on the classpath for DbHost jdbc:postgresql. Add "org.postgresql:postgresql" to the process classpath; in a dynamic deployment, declare genesisRuntime("org.postgresql:postgresql").
+```
+
+The message shows only the engine part of the URL, never the full `DbHost`, so credentials in the URL are not logged.
 
 #### Overwriting Dependency Vulnerabilities
 
