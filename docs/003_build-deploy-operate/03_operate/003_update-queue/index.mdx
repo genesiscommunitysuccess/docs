@@ -92,7 +92,8 @@ With CURVE on, each update-queue connection starts with a CURVE handshake. The c
 
 - **Without proxy mode**, it covers the connections from subscribers to each process's publisher, and the connections that every process makes to the `GENESIS_CLUSTER` proxy ports.
 - **In [proxy mode](#proxy-mode)**, it covers the connections from publishers to the `GENESIS_CLUSTER` proxy, and from the proxy to subscribers.
-- **With `ZeroMQProxyUnicastRelayEnabled`**, it also covers the `GENESIS_CLUSTER`-to-`GENESIS_CLUSTER` connections between nodes, which run over ZeroMQ.
+- **With `ZeroMQProxyUnicastRelayEnabled`**, it does not cover the link between nodes. That link is Genesis messaging on the `GENESIS_CLUSTER` service port, not ZeroMQ. [Service TLS](/develop/server-capabilities/runtime-configuration/service-encryption/) covers it instead; under selective TLS it is encrypted only if the `GENESIS_CLUSTER` service is marked `secure`. A multi-node deployment with the relay enabled therefore needs both CURVE and TLS to encrypt the whole update-queue path.
+- **Without the relay**, subscribers connect directly to the other nodes over ZeroMQ, and CURVE covers those connections.
 
 All processes share one server keypair and one client keypair. A server accepts a client only if the client's public key has a certificate in the server's `allowedClientCertDirectory`.
 
