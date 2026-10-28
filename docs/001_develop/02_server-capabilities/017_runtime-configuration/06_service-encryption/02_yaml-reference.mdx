@@ -97,7 +97,7 @@ messaging:
 
 ### `messaging.http`
 
-These settings tune HTTP handling on the process port when `channel` is `WEBSOCKET`, and mirror the [router's `httpServerCodec` and `httpObjectAggregator` blocks](/develop/server-capabilities/runtime-configuration/genesis-router/#netty-configuration). One default differs: `maxContentLength` is 64 MiB here, but 262144 bytes on the router.
+These settings tune HTTP handling on the process port when `channel` is `WEBSOCKET`, and mirror the [router's `httpServerCodec` and `httpObjectAggregator` blocks](/develop/server-capabilities/runtime-configuration/genesis-router/#netty-configuration). One default differs: `maxContentLength` is 67108864 bytes (64 MiB) here, but 262144 bytes on the router.
 
 | Key                        | Type    | Default | Description |
 |----------------------------|---------|---------|-------------|
@@ -106,7 +106,7 @@ These settings tune HTTP handling on the process port when `channel` is `WEBSOCK
 | `maxChunkSize`             | integer | `8192`  | Maximum size of one content chunk |
 | `validateHeaders`          | boolean | `true`  | Validate header names and values |
 | `initialBufferSize`        | integer | `128`   | Initial buffer size of the decoder |
-| `maxContentLength`         | integer | 64 MiB  | Maximum size of a request body, in bytes |
+| `maxContentLength`         | integer | `67108864` (64 MiB) | Maximum size of a request body, in bytes |
 | `closeOnExpectationFailed` | boolean | `false` | Close the connection when an `Expect: 100-continue` request is too large |
 
 When a request exceeds one of these limits, the caller gets a plain-text error reply and the connection is closed:
