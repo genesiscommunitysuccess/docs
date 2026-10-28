@@ -278,7 +278,7 @@ authenticationStrategy {
 
 The client sends a Genesis session token, which any Genesis login produces, including SSO. The server reads it from the `SESSION_AUTH_TOKEN` header. If that header is missing, it reads it from `Authorization: Bearer <token>`.
 
-To get a session token, log in with [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) (`POST /event-login-auth`). [`EVENT_LOGOUT`](/develop/server-capabilities/access-control/authentication/#event_logout) ends the session. On a local development setup, the default login is documented in [Running Locally](/develop/development-environment/launchpad/downloading-your-project-to-run-locally/#login-to-your-application); it is for local development only, not a production account.
+To get a session token, log in with [`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth) (`POST /event-login-auth`). Send the login to the router, not to the MCP server's own port. Locally the router listens on `http://localhost:9064` by default (the `RouterWebPort` system definition item, which is also the default for `routerHttpPort` in the [Server configuration](#server-configuration) table). In a deployed set-up, log in through your gateway at the address it exposes for the router. [`EVENT_LOGOUT`](/develop/server-capabilities/access-control/authentication/#event_logout) ends the session. On a local development setup, the default login is documented in [Running Locally](/develop/development-environment/launchpad/downloading-your-project-to-run-locally/#login-to-your-application); it is for local development only, not a production account.
 
 The server checks the token the same way the router does. A token stops working once the user logs out, the session ends, or the user is locked out.
 
@@ -408,7 +408,7 @@ A user needs each tier's right separately: holding `MCP_ADMIN` doesn't grant VIE
 
 `query_table`, `investigate_record` and `reconcile` read tables straight from the database. They skip the row, entity and field permissions that data servers and request servers apply. Treat the DB_READ right as read access to the whole database.
 
-Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions still apply.
+Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so [your application's permissions](/develop/server-capabilities/real-time-queries-data-server/#example-configuration) still apply, as they do for [request servers](/develop/server-capabilities/snapshot-queries-request-server/#example-configuration).
 
 ### Restricted tables
 
@@ -531,7 +531,19 @@ Events whose names start with `EVENT_PENDING_APPROVAL_` are never held, so a che
 ### Approving or rejecting a held write
 
 A checker, connected over MCP as a different user, works through these tools:
-1. `list_pending_approvals` lists the pending writes: who asked, which event, the message and when. The tool reads at most 2,000 approval records; when it reaches that limit, it sets `truncated` to `true`.
+1. `list_pending_approvals` lists the pending writes: who asked, which event, the message and when. Each entry also carries the approval's id in `APPROVAL_ID`, which `describe_approval`, `approve_request` and `reject_request` take as their `APPROVAL_ID` argument. For example:
+
+   ```json
+   {
+     "APPROVAL_ID": "...",
+     "REQUESTED_BY": "JaneDee",
+     "EVENT": "EVENT_TRADE_INSERT",
+     "MESSAGE": "...",
+     "REQUESTED_AT": "..."
+   }
+   ```
+
+   The entries are in the `pending` array of the response, next to `pending_count`. The tool reads at most 2,000 approval records; when it reaches that limit, it sets `truncated` to `true`.
 2. `describe_approval` shows the full held write, with secret-looking fields hidden.
 3. `approve_request` or `reject_request` acts on it, with an optional `COMMENT`. These send `EVENT_PENDING_APPROVAL_ACCEPT` or `EVENT_PENDING_APPROVAL_REJECT` as the checker.
 
@@ -547,7 +559,7 @@ To try maker-checker locally, you need a second user to act as the checker. Logg
 
 ## Audit logging
 
-The server writes one audit line, at INFO level, for each tool call, each prompt or resource read, and each rejected connection. The lines go to a logger named `global.genesis.mcp.audit`, so you can route them separately in the process's logging configuration. Unless you route the logger elsewhere, audit lines are written to the MCP process's own log (`GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when processes are compacted).
+The server writes one audit line, at INFO level, for each tool call, each prompt or resource read, and each rejected connection. The lines go to a logger named `global.genesis.mcp.audit`, so you can route them separately in the process's logging configuration. Unless you route the logger elsewhere, audit lines are written to [the MCP process's own log](/build-deploy-operate/operate/logging/#log-directories) (`GENESIS_MCP`, or `MCP_COMPACT_PROCESS` when processes are compacted).
 
 ```
 MCP tool call - user=<user>, tool=<tool>, outcome=<outcome>, durationMs=<ms>, args=<arguments>
