@@ -1164,7 +1164,7 @@ class ProvidedDictionaryTest {
 ```
 
 - `providedDictionary { }` adds the `PROCESS_STATIC_INFO` and `PROCESS_META_DATA` tables for you. Ids 10001 and 10002 are reserved for these tables, so do not use them for your own tables.
-- A test class, including its superclasses, can have only one `@ProvidedDictionary` member. A second one fails the test with `Only one @ProvidedDictionary member is supported`.
+- A test class, including its superclasses, can have only one `@ProvidedDictionary` member. A second one fails the test with `Only one @ProvidedDictionary member is supported, found: …`, followed by the names of the members it found.
 - You can't combine it with [`@EnableLegacyXmlDictionary`](#enablelegacyxmldictionary). The test fails with `@ProvidedDictionary cannot be combined with @EnableLegacyXmlDictionary`.
 - A method must take no parameters and must not be a `@Test` method itself.
 - If the member returns `null` or something other than a `GenesisDictionary`, the test fails with `<class>.<member> is annotated @ProvidedDictionary but does not provide a GenesisDictionary`, where `<class>.<member>` is the fully qualified class name and the member name. It never falls back to the production dictionary.
@@ -1430,6 +1430,11 @@ Providing this annotation at the method level will take precedence over the clas
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.jupiter.GenesisTest
+import global.genesis.testsupport.jupiter.RootLogLevel
+import org.junit.jupiter.api.Test
+import org.slf4j.event.Level
+
 @GenesisTest
 @RootLogLevel(Level.INFO)
 class LogLevelTest {
@@ -1451,6 +1456,11 @@ class LogLevelTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.jupiter.GenesisTest;
+import global.genesis.testsupport.jupiter.RootLogLevel;
+import org.junit.jupiter.api.Test;
+import org.slf4j.event.Level;
+
 @GenesisTest
 @RootLogLevel(Level.INFO)
 public class LogLevelTest {
@@ -1476,7 +1486,7 @@ Sets the level of a named logger for the duration of a test class or method, and
 
 - It is in the `global.genesis.test.log4j` package, not `global.genesis.testsupport.jupiter`. It comes with `genesis-testsupport`, so you don't need another dependency.
 - `logger` is a logger name: a package or a class. `WithLogLevel.PACKAGE` (an empty string) means the test class's package.
-- `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`.
+- `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`. SLF4J has no `FATAL` level, so to check `FATAL` read the logger through log4j: `org.apache.logging.log4j.LogManager.getLogger("com.example.trades").isFatalEnabled`.
 - The annotation is repeatable, so you can set several loggers at once.
 - A class-level annotation applies before the class's tests start, so it also covers Genesis start-up, which happens before each test. Another extension's class-level set-up is covered only if `@WithLogLevel` is declared above it. A method-level annotation overrides it for that test.
 - It works with log4j, and with logback when log4j isn't the active logging backend. On logback, `FATAL` is applied as `ERROR`.
