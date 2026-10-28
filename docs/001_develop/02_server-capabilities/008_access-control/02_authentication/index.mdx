@@ -2657,7 +2657,7 @@ After a SAML or OIDC login, the authentication service hands the front end an SS
   - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
   - `HEARTBEAT_PING` is answered whether or not the user is logged in. The reply's `IS_AUTHENTICATED` field says which.
   - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
-  - Every other message is rejected until the user has logged in.
+  - Every other message is rejected as Forbidden until the user has logged in: the reply is a `MSG_NACK` with `STATUS_CODE` 403 and the text `Unable to call <MESSAGE_TYPE> via websocket`.
 - When the login succeeds or fails, the router clears the cookie.
 
 :::tip
