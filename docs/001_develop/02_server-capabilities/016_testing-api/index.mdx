@@ -1291,7 +1291,7 @@ public class ProvidedInstanceTest {
 
 #### ProvidedType
 
-Marks a property or a no-argument method that returns a class (a `KClass` in Kotlin, a `Class` in Java). Guice builds and binds that class for the test, as it would if [`@PackageScan`](#packagescan) had found it, but without scanning a package. Use [`@ProvidedInstance`](#providedinstance) when you already have the instance. If the value isn't a class, the test fails with `@ProvidedType must provide a KClass`.
+Marks a property or a no-argument method that returns a class (a `KClass` in Kotlin, a `Class` in Java). Guice builds and binds that class for the test, as it would if [`@PackageScan`](#packagescan) had found it, but without scanning a package. Use [`@ProvidedInstance`](#providedinstance) when you already have the instance. If the value isn't a class, the test fails with `<member> is annotated @ProvidedType but provides <type>; it must provide a KClass` (where `<type>` is `null` for a null value).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
