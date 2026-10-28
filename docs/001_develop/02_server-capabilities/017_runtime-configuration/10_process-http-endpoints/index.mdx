@@ -94,7 +94,7 @@ GENESIS_SYSDEF_POSITION_APP_EVENT_HANDLER_HttpAuthDisabled=true
 
 ## Custom endpoints on a process
 
-A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer. Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it.
+A process on the WebSocket channel can also load `*-web-handler.kts` files itself. Unless the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) is on, GENESIS_ROUTER keeps serving the same script, so both the router and the process answer (this holds only for endpoints not marked `internal`; see [Internal resources](#internal-resources)). Add the script file name to the process's `script` entry in `processes.xml`, comma-separated from any other scripts. The script content is the same as for the router. Each endpoint is registered on the process port and published to service discovery, so a router in proxy mode can forward requests to it. To confirm which endpoints a process registered, check its log at DEBUG level: `ProcessWebEndpointLoader` logs `Registered HTTP endpoint: <method> <path> → custom handler (auth: …)` for each one. The INFO line "HTTP endpoint handler installed on native port" does not name them.
 
 ```xml
 <process name="POSITION_APP_EVENT_HANDLER">
@@ -108,7 +108,7 @@ Multipart uploads and file downloads work on the process port in the same way as
 
 ## Internal resources
 
-You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one. For custom endpoints, this only takes effect when the endpoint is loaded by a process and the router reaches it through the proxy. An endpoint that the router serves itself ignores `internal`.
+You can mark an event handler, request server or custom endpoint as `internal`. The process still serves it on its own port, so calls from inside your cluster work as before, but the Genesis Router refuses it to external callers. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one. A custom endpoint marked `internal` that the router would serve itself, because the HTTP proxy is off, is not registered on the router: the router logs a warning and refuses it like a missing endpoint. To serve an internal endpoint to callers inside the cluster, load it on a process (see [Custom endpoints on a process](#custom-endpoints-on-a-process)).
 
 **Event handlers and custom endpoints:** a file-level setting applies to the definitions that come after it in the file.
 
