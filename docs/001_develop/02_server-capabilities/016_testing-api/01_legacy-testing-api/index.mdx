@@ -450,7 +450,7 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | scriptFileName | no | `String?`: the GPAL script file under test. Not needed for compiled GPAL definitions |
-| authCacheOverride | no | overrides auth-perms map to test |
+| authCacheOverride | no | overrides auth-perms map to test; grant access with `authorise(map, entity, user)` (see [Testing with authorization](/develop/server-capabilities/core-business-logic-event-handler/#testing-with-authorization)) |
 | dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
 | rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 
