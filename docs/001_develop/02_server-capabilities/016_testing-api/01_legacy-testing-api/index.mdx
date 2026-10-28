@@ -167,7 +167,7 @@ There are three types of dictionary you can use:
 
 Use this type of dictionary if you want to test against the production dictionary. This is the preferred way of using a dictionary in product tests, as production and test dictionaries are always in sync.
 
-This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default, as it is for GenesisJunit tests (see [EnableLegacyXmlDictionary](/develop/server-capabilities/testing-api/#enablelegacyxmldictionary)). To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default, as it is for GenesisJunit tests, which load the application's dictionary unless you opt out with [`@EnableLegacyXmlDictionary`](/develop/server-capabilities/testing-api/#enablelegacyxmldictionary). To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
   <TabItem value="kotlin">
@@ -188,6 +188,8 @@ This dictionary type is easiest to use, and it is supported in both Java and Kot
 
   </TabItem>
 </Tabs>
+
+GenesisJunit has no equivalent for filtering the production dictionary to some tables; keep tests that do on the legacy classes (see [Mapping to GenesisJunit](#mapping-to-genesisjunit)).
 
 #### Inline dictionary
 
