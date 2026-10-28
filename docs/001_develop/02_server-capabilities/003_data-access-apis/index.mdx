@@ -1045,7 +1045,7 @@ Single<OrderTrade> orderTrade = db.readTransaction(transaction -> {
 #### Write transactions
 
 Write transactions ensure all read and write operations are consistent. If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is wrapped and rethrown. Otherwise, the transaction commits when the block completes. An exception that you catch inside the block does not bubble up, so the other writes commit; rethrow it to roll back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,
-where `T` is the value returned in the `writeTransaction` lambda.
+where `T` is the value returned in the `writeTransaction` lambda. On `RxEntityDb` it is wrapped in a `Single`: `Single<Pair<T, List<EntityWriteResult<*>>>>`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1561,6 +1561,12 @@ In Kotlin, a function modified with the `suspend` keyword becomes a suspending
 - Flow. This can emit multiple values sequentially. A flow is conceptually a stream of data that can be computed asynchronously. The emitted values must be of the same type. For example, a `Flow<Int>` is a flow that emits integer values.
 
 In the `AsyncEntityDb` API, `getByCriteria`, `getRange` and `getBulk` operations return a `Flow<E>`.
+
+###### Calling from blocking code
+
+`AsyncEntityDb.sync()` returns a synchronous (blocking) view of the same database, for code that must call the database from a blocking context. Writes use `SyncWriteSupport` and reads use `SyncReadSupport`.
+
+Writes made through this view do not notify an `AsyncWriteOperationListener`; only suspend writes do.
 
 #### RxEntityDb
 
