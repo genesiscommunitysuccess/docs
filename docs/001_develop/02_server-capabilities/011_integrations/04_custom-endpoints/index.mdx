@@ -153,6 +153,8 @@ On handling a request, reads all file uploads from the request body and writes t
 
 The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**.
 
+Put helper classes and any other declarations before the `webHandlers { }` block. The block must be the last expression in the file; a declaration after it (for example a `data class`) stops the process starting, with `ClassCastException: class kotlin.Unit cannot be cast to class global.genesis.process.web.handler.WebHandlerScriptResult`.
+
 ###### Overriding the base path
 
 You can specify a `basePath` in the `webHandlers` block:
