@@ -374,6 +374,8 @@ When it starts, the server logs one line describing its security set-up:
 MCP security posture: strategy=SessionAuthToken, requireAuthenticatedConnections=true, requireApprovalForWrites=true, tls=false
 ```
 
+`requireApprovalForWrites` here is the server-level setting only. With `staticUser`, writes are also held when `requiresApproval = true` (its default), even though this line shows `requireApprovalForWrites=false`.
+
 It also logs a warning for each of these:
 - the `staticUser` strategy;
 - the `providedUserName` strategy;
@@ -575,6 +577,8 @@ MCP connection - outcome=rejected, detail=<reason>
   ```
   MCP tool call - user=admin, tool=EVENT_INSERT_TRADE, outcome=success, durationMs=-1, args=
   ```
+
+  For a request server this is the name you passed to `enableMcp` (for example `WIDGET`), not the tool name `widget_query`.
 
 Line breaks are removed from user names and arguments, so a caller can't forge an extra audit line.
 
