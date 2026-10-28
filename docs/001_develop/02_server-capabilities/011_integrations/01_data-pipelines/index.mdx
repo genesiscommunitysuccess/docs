@@ -1011,7 +1011,7 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
 
 #### `eventSink`
 
-This sink uses the Genesis messaging API to send an event to an event handler for every element that flows through the pipeline. This is different from the `sendEventOnCompletion` handler (see [Completion handlers](#completion-handlers)), which fires once after the pipeline finishes. Use an `eventSink` when a pipeline's primary job is to forward each record as an event (for example, streaming to a FIX gateway).
+This sink uses the Genesis messaging API to send an event to an [event handler](/develop/server-capabilities/core-business-logic-event-handler/) for every element that flows through the pipeline. This is different from the `sendEventOnCompletion` handler (see [Completion handlers](#completion-handlers)), which fires once after the pipeline finishes. Use an `eventSink` when a pipeline's primary job is to forward each record as an event (for example, streaming to a FIX gateway).
 
 The `eventSink` separates three concerns:
 
@@ -1019,7 +1019,7 @@ The `eventSink` separates three concerns:
 - **Where** — the destination. By default, the platform resolves the target service from the event name. You can explicitly pin a service using `to = service("serviceName")`. Pin the service explicitly when one event name is served by several processes (otherwise, name resolution is ambiguous).
 - **How** — the delivery policy, configured in the `delivery` block.
 
-The delivery policy controls how the platform handles timeouts, retries and negative acknowledgements (NACKs):
+The delivery policy controls how the platform handles timeouts, retries and negative acknowledgements ([NACKs](/develop/server-capabilities/core-business-logic-event-handler/#nack)):
 
 | Option | Description | Default |
 |---|---|---|
