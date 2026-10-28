@@ -109,7 +109,9 @@ The table and field names in this example are placeholders for your own data mod
 
 Bind only one write listener in each process: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. To run several pieces of logic in one process, write one listener that dispatches to your own classes. Writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) reach your listener like any other write. The only difference between the three is the `tx` the listener receives: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
 
-To switch to a different listener type, replace the old listener with the new one: move the old listener's logic into the new one and delete the old listener class.
+Which writes notify your listener also depends on its type. An `AsyncWriteOperationListener` is notified only by async (suspend) writes: `AsyncDb` and `AsyncEntityDb` suspend writes, and single `RxEntityDb` writes. It is not notified by `SyncDb` or `SyncEntityDb` writes, or by blocking views such as `AsyncEntityDb.sync()`. If a process writes through a mix of these APIs, bind a listener type that sees all of those writes.
+
+To switch to a different listener type, replace the old listener with the new one: move the old listener's logic into the new one and delete the old listener class. If the new listener is in a different package, register that package with its own extensions file (see *The three listener interfaces*), and delete the old package's file if nothing else in that package needs binding.
 
 ## How a listener is called
 
@@ -129,4 +131,4 @@ This requirement is new in 10.0. In 8.x, the write waited for `onWriteResult` to
 Whether you need to change your listener depends on how it uses `tx`:
 
 - A listener that already blocks on every `tx` call (for example with `blockingGet()`), or that calls `tx` only on the thread running `onWriteResult` with no `subscribeOn` or `observeOn`, needs no change.
-- A listener that uses `tx` from another thread, or after `onWriteResult` returns, now gets an `IllegalStateException`. The exception is thrown on the other thread after the triggering write has committed, so the triggering write and anything the listener wrote before the switch stay committed. If you have 8.x listener code that calls `subscribe()` on a `tx` call without blocking, change it to block.
+- A listener that uses `tx` from another thread, or after `onWriteResult` returns, now gets an `IllegalStateException` on that thread. If `onWriteResult` waits for that work (for example with `blockingGet()`), the exception reaches it and the triggering write rolls back; if it doesn't wait, the triggering write and anything the listener wrote before the switch stay committed. If you have 8.x listener code that calls `subscribe()` on a `tx` call without blocking, change it to block.
