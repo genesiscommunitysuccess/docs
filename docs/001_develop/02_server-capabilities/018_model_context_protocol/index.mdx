@@ -408,7 +408,7 @@ A user needs each tier's right separately: holding `MCP_ADMIN` doesn't grant VIE
 
 `query_table`, `investigate_record` and `reconcile` read tables straight from the database. They skip the row, entity and field permissions that data servers and request servers apply. Treat the DB_READ right as read access to the whole database.
 
-Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so [your application's permissions](/develop/server-capabilities/real-time-queries-data-server/#example-configuration) still apply, as they do for [request servers](/develop/server-capabilities/snapshot-queries-request-server/#example-configuration).
+Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions (set on the [data server](/develop/server-capabilities/real-time-queries-data-server/#example-configuration) and the [request server](/develop/server-capabilities/snapshot-queries-request-server/#example-configuration)) still apply.
 
 ### Restricted tables
 
