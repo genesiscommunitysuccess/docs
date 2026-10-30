@@ -1416,7 +1416,7 @@ fun `test nested consolidation`() = runBlocking {
 
 ### Testing compiled definitions
 
-The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedInstance`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedType`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Consolidator (the same configuration as the script example above):
 
@@ -1510,21 +1510,25 @@ class ConsolidatorTest {
 }
 ```
 
-Or, to register just this one class without scanning its whole package, use `@ProvidedInstance` with a `KClass` reference instead:
+Or, to register just this one class without scanning its whole package, use `@ProvidedType` with a `KClass` reference instead:
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.OrderFromTradesConsolidator
 
 @GenesisTest
 class ConsolidatorTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val orderFromTradesConsolidator = OrderFromTradesConsolidator::class
 
     // ... same entityDb injection and test as above
 }
 ```
 
-`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedInstance` registers only the exact class (or instance) you give it. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
+
+`@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
