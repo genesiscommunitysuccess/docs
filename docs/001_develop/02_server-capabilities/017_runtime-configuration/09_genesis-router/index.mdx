@@ -203,7 +203,7 @@ router {
 What the router does with each request:
 
 - **A single path segment**, such as `/event-trade-insert` or `/req-trades`, is tried as a request server or event handler first. The router forwards it when the process that owns the resource is on the WebSocket channel. Data servers and resources on TCP processes are handled by the router as usual. If no process owns a resource of that name, the segment is tried as a custom endpoint, as described below, and is handled by the router as usual if no endpoint matches either.
-- **Several path segments** are always a custom endpoint (a single segment can be one too, as above). If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there.
+- **Several path segments** are always a custom endpoint (a single segment can be one too, as above). If the endpoint is defined in the router itself, the router serves it. Otherwise, the router looks for a process that published the endpoint to service discovery and forwards the request there. If neither applies, the router handles it as usual, and an unknown endpoint gets 404.
 - **Internal resources** owned by a process are refused exactly as if they did not exist. A caller who isn't logged in gets 401 for any resource name, internal or unknown, because authentication is checked first. A logged-in caller gets the same 404 for an internal name as for an unknown one.
 
 The request URI and headers are forwarded unchanged, apart from `Host`. When cookie authentication is on, the router has already copied the session cookie into the `SESSION_AUTH_TOKEN` header, so the process can authenticate the request.
@@ -211,6 +211,8 @@ The request URI and headers are forwarded unchanged, apart from `Host`. When coo
 To check whether the router forwarded a request or handled it itself, set the logger `global.genesis.router.proxy.HttpProxyDispatcher` to DEBUG on the router. Each forwarded request then logs a line beginning `Proxying PAL request` (a request server or event handler) or `Proxying custom endpoint`, naming the host and port it went to. The response won't tell you: the router relays the process's response headers and adds no header that marks a response as forwarded.
 
 In proxy mode, the router stops loading `*-web-handler.kts` files from the application's script folders. [Load each web-handler script on a process](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process) that uses the WebSocket channel instead. A script that no process loads is dropped without any error, and its endpoints disappear.
+
+#### Checks a proxied request skips
 
 :::warning
 
