@@ -503,18 +503,9 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-To get the appropriate status code for an error message, you need to enable this at router-level. You do this using the property `strictHttpStatusCode`.
+To get the appropriate status code for an error message, you need to enable the `StrictHttpStatusCode` item in the system definition. It is not a router setting: the `strictHttpStatusCode` property that used to sit in `router { }` was removed in 10.0, and a router that still sets it fails to start.
 
-For example, `strictHttpStatusCode` is set to `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. So, we set `strictHttpStatusCode` to `true` in the **genesis-router.kts** file:
-
-```kotlin
-router {
-    webPort = 9064
-    socketPort = 9065
-    strictHttpStatusCode = true
-    nettyLoggingEnabled = true
-}
-```
+`StrictHttpStatusCode` is `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the Genesis router page for how to set it in **genesis-system-definition.kts**.
 
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
@@ -618,6 +609,8 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 ## Network API
 
 Use these APIs to send and receive messages between micro-services.
+
+Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. 8.15 and earlier used MessagePack, which 10.0 removed, so an 8.15 process and a 10.0 process can't exchange binary messages. The `MSGPACK` [serialization setting](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section) is still accepted, but it is deprecated and resolves to `SMILE` without logging a warning.
 
 ### `ServiceDiscovery`
 
