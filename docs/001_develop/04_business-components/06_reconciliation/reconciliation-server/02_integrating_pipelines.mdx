@@ -48,33 +48,33 @@ The java/kotlin object types expected for the data dictionary field types are as
 Here is an example of a simple pipeline integration reading data from the Genesis Application database:
 
 ```kotlin
-pipeline("DB_TRADE_TO_RECON") {
-  source(dbBulkQuery<Trade>())
+pipeline("DB_TRADE_TO_RECON")
+  .source(dbBulkQuery<Trade>())
     .map(tableEntityNormaliser())
     .sink(reconSink())
-}
+  .build()
 ```
 
 #### `tableEntityNormaliser`
 The table entity normaliser is a convenience operator to convert a table entity read from the Genesis Application Datatbase to the normalised format required by the Reconciliation Manager:
 
 ```kotlin
-pipeline("DB_TRADE_TO_RECON") {
-  source(dbBulkQuery<Trade>())
+pipeline("DB_TRADE_TO_RECON")
+  .source(dbBulkQuery<Trade>())
     .map(tableEntityNormaliser())
     .sink(reconSink())
-}
+  .build()
 ```
 
 #### `viewEntityNormaliser`
 The view entity normaliser is a convenience operator to convert a view entity read from the Genesis Application Datatbase to the normalised format required by the Reconciliation Manager:
 
 ```kotlin
-pipeline("DB_TRADE_TO_RECON") {
-  source(dbBulkQuery<TradeView>())
+pipeline("DB_TRADE_TO_RECON")
+  .source(dbBulkQuery<TradeView>())
     .map(viewEntityNormaliser())
     .sink(reconSink())
-}
+  .build()
 ```
 
 ### Using Pipelines in a Reconciliation
