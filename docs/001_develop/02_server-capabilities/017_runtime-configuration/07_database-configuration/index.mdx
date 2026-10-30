@@ -98,6 +98,10 @@ DbMode=LEGACY is no longer supported. The dictionary is now always read from the
 
 To fix this, remove the `DbMode` item from your system definition file. Oracle and SQL Server never used the `LEGACY` mode, so they are not affected.
 
+:::note
+In Genesis 8.15 and earlier, `DbMode` also accepts `LEGACY`. Genesis 10.0 removed that value.
+:::
+
 ### 2. Activate the new configuration
 
 Run `genesisInstall`.
