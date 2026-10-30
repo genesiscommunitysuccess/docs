@@ -154,20 +154,22 @@ A filter operator allows you to exclude certain elements from being sent to the 
 ```kotlin
 import kotlinx.coroutines.flow.asFlow
 
-pipeline(name = "Simple Integer Pipeline With Filtering")
-  .source(
-    BatchSource {
-      (1..10).toList().asFlow()
-    }
-  )
-  .filter { i ->
-    i % 2 == 0
-  }
-  .sink { i, _ ->
-    println(i)
-    true
-  }
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Filtering")
+      .source(
+        BatchSource {
+          (1..10).toList().asFlow()
+        }
+      )
+      .filter { i ->
+        i % 2 == 0
+      }
+      .sink { i, _ ->
+        println(i)
+        true
+      }
+      .build()
+}
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The filter operator will only include even numbers.
 
@@ -177,20 +179,22 @@ A map operator transforms the input type to the output type.
 ```kotlin
 import kotlinx.coroutines.flow.asFlow
 
-pipeline(name = "Simple Integer Pipeline With Mapping")
-  .source(
-    BatchSource {
-      (1..10).toList().asFlow()
-    }
-  )
-  .map { i ->
-    i.toString()
-  }
-  .sink { s, _ ->
-    println(s)
-    true
-  }
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Mapping")
+      .source(
+        BatchSource {
+          (1..10).toList().asFlow()
+        }
+      )
+      .map { i ->
+        i.toString()
+      }
+      .sink { s, _ ->
+        println(s)
+        true
+      }
+      .build()
+}
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The map operator will mutate the integer values into their string representation.
 
@@ -200,24 +204,26 @@ A split operator transforms an input element into many output elements. For exam
 ```kotlin
 import kotlinx.coroutines.flow.asFlow
 
-pipeline(name = "Simple Integer Pipeline With Split")
-  .source(
-    BatchSource {
-      (1..10).toList().asFlow()
-    }
-  )
-  .split { i ->
-    flow<Int> {
-      for (j in 1..10) {
-        emit(j * i)
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Split")
+      .source(
+        BatchSource {
+          (1..10).toList().asFlow()
+        }
+      )
+      .split { i ->
+        flow<Int> {
+          for (j in 1..10) {
+            emit(j * i)
+          }
+        }
       }
-    }
-  }
-  .sink { i, _ ->
-    println(i)
-    true
-  }
-  .build()
+      .sink { i, _ ->
+        println(i)
+        true
+      }
+      .build()
+}
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The split operator will emit multiple elements for each number, resulting in the multiplication table for each number being printed.
 
@@ -227,20 +233,22 @@ A transform operator allows you to apply a transformation operation to the entir
 ```kotlin
 import kotlinx.coroutines.flow.asFlow
 
-pipeline(name = "Simple Integer Pipeline With Transform")
-  .source(
-    BatchSource {
-      listOf(1, 1, 2, 2, 3, 3, 4, 4, 5, 5).asFlow()
-    }
-  )
-  .transform { flow ->
-    flow.toSet().asFlow()
-  }
-  .sink { i, _ ->
-    println(i)
-    true
-  }
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Transform")
+      .source(
+        BatchSource {
+          listOf(1, 1, 2, 2, 3, 3, 4, 4, 5, 5).asFlow()
+        }
+      )
+      .transform { flow ->
+        flow.toSet().asFlow()
+      }
+      .sink { i, _ ->
+        println(i)
+        true
+      }
+      .build()
+}
 ```
 In this example, we have a simple pipeline that will emit the integer values 1 to 5 with duplicates from the source, and the sink will print them to the console. The transform operator will collect all elements in the stream to a set, removing duplicates, then send all the elements downstream to the sink.
 
@@ -295,49 +303,55 @@ You can attach an error handling callback to any individual `map` or `split` ope
 
 Note that the semantic meaning of these actions is slightly different depending on whether the pipeline is a batch or real-time pipeline. SKIP_STREAM and STOP_PIPELINE are equivalent for a batch pipeline, and result in the current batch execution being terminated. SKIP_STREAM for a real-time pipeline results in the current input element, i.e. the stream of elements derived from the input element, to be ignored. For example, if processing a real time stream of files, and the current file has been split into many lines, SKIP_STREAM will mean the entire file is discarded from processing. However, any elements from that stream which have already been sent to the sink prior to this exception, will still be processed.
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Error handling")
-  .source(IntegerSource())
-    .map { i ->
-      if (i == 7) throw Exception()
-      i
-    }
-    .onOperationError { int, context, throwable ->
-      LOG.warn("Error caught while handling value $int, error was: ", throwable)
-      OperationErrorAction.SKIP_ELEMENT
-    }
-    .sink(IntegerSink())
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Error handling")
+      .source(IntegerSource())
+        .map { i ->
+          if (i == 7) throw Exception()
+          i
+        }
+        .onOperationError { int, context, throwable ->
+          LOG.warn("Error caught while handling value $int, error was: ", throwable)
+          OperationErrorAction.SKIP_ELEMENT
+        }
+        .sink(IntegerSink())
+      .build()
+}
 ```
 
 ### `onUncaughtError`
 This error handler accepts an exception as an argument and allows you to take action when an exception is not caught by any operation level error handler. In a real-time pipeline, if the handler returns normally, the element is acknowledged and dropped, and the pipeline carries on (see [`eventSink`](#eventsink)). In a batch pipeline, the handler runs after the current batch execution has already stopped, so it can't recover that execution. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With Error handling")
-  .source(IntegerSource())
-    .map { i ->
-      if (i == 7) throw Exception()
-      i
-    }
-    .sink(IntegerSink())
-    .onUncaughtError { throwable ->
-      LOG.warn("Error uncaught:", throwable)
-    }
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With Error handling")
+      .source(IntegerSource())
+        .map { i ->
+          if (i == 7) throw Exception()
+          i
+        }
+        .sink(IntegerSink())
+        .onUncaughtError { throwable ->
+          LOG.warn("Error uncaught:", throwable)
+        }
+      .build()
+}
 ```
 
 ### `onCompletion`
 This handler can be attached by calling `onCompletion()` on a complete pipeline (after calling `.sink()`), and will fire when each element has completed processing in a real-time pipeline, or when a batch has completed processing in a batch pipeline. Note that these handlers are only called when the element has finished being processed by the sink, therefore if the element is filtered using a filter operator or a map operator that returns null, the completion handlers will not fire.
 
 ```kotlin
-pipeline(name = "Simple Integer Pipeline With OnCompletion")
-  .source(IntegerSource())
-    .map { i -> i.toString()}
-    .sink(StringSink())
-    .onCompletion { context ->
-      LOG.info("Successfully processed input ${context.data}")
-    }
-  .build()
+pipelines {
+    pipeline(name = "Simple Integer Pipeline With OnCompletion")
+      .source(IntegerSource())
+        .map { i -> i.toString()}
+        .sink(StringSink())
+        .onCompletion { context ->
+          LOG.info("Successfully processed input ${context.data}")
+        }
+      .build()
+}
 ```
 
 ### Record counters
@@ -431,26 +445,28 @@ If no `routeId` is provided, one will be assigned by Camel internally, and the p
 
 ###### Reading from a local directory
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE")
-  .source(
-    camelFileSource {
-      routeHandler {
-        val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
-        val idempotentRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
+pipelines {
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE")
+      .source(
+        camelFileSource {
+          routeHandler {
+            val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
+            val idempotentRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
 
-        from("file://${pathStr}")
-          .idempotentConsumer(
-            header("CamelFileName"),
-            FileIdempotentRepository.fileIdempotentRepository(File(idempotentRepo), 300000, 15000000)
-          )
-          .process(dataPipelineProcessor)
+            from("file://${pathStr}")
+              .idempotentConsumer(
+                header("CamelFileName"),
+                FileIdempotentRepository.fileIdempotentRepository(File(idempotentRepo), 300000, 15000000)
+              )
+              .process(dataPipelineProcessor)
+          }
+        }
+      ).sink { file, context ->
+        LOG.info("Received file $file")
+        true
       }
-    }
-  ).sink { file, context ->
-    LOG.info("Received file $file")
-    true
-  }
-  .build()
+      .build()
+}
 ```
 
 ###### Reading from an SFTP server
@@ -460,27 +476,29 @@ The example below defines an [SFTP component](https://camel.apache.org/component
 This is particularly useful when integrating with external services where connection details are likely to vary between environments.
 
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE")
-  .source(
-    camelFileSource {
-      routeHandler {
-          val sftpEndPointPath = systemDefinition.getItem("SFTP_SERVER_SFTP")
-          val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
-          val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
-          val sftpFileName = systemDefinition.getItem("SFTP_SERVER_FILENAME")
-          val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
-          val sftpConsumerRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
+pipelines {
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE")
+      .source(
+        camelFileSource {
+          routeHandler {
+              val sftpEndPointPath = systemDefinition.getItem("SFTP_SERVER_SFTP")
+              val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
+              val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
+              val sftpFileName = systemDefinition.getItem("SFTP_SERVER_FILENAME")
+              val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
+              val sftpConsumerRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
 
-          from("sftp:${sftpEndPointPath}?username=${sftpUserName}&password=${sftpPassword}&include=$${sftpFileName}" +
-              "&delay=1000&sortBy=file:modified&delete=false&bridgeErrorHandler=true" +
-              "&knownHostsFile=/home/myapp/.ssh/known_hosts&throwExceptionOnConnectFailed=true&stepwise=false")
-              .idempotentConsumer(header("CamelFileName"),
-                  FileIdempotentRepository.fileIdempotentRepository(File(sftpConsumerRepo), 300000, 15000000))
-              .process(dataPipelineProcessor)
-      }
-    }
-  ).sink(filesSink)
-  .build()
+              from("sftp:${sftpEndPointPath}?username=${sftpUserName}&password=${sftpPassword}&include=$${sftpFileName}" +
+                  "&delay=1000&sortBy=file:modified&delete=false&bridgeErrorHandler=true" +
+                  "&knownHostsFile=/home/myapp/.ssh/known_hosts&throwExceptionOnConnectFailed=true&stepwise=false")
+                  .idempotentConsumer(header("CamelFileName"),
+                      FileIdempotentRepository.fileIdempotentRepository(File(sftpConsumerRepo), 300000, 15000000))
+                  .process(dataPipelineProcessor)
+          }
+        }
+      ).sink(filesSink)
+      .build()
+}
 ```
 
 :::info
@@ -584,11 +602,13 @@ class TradesMapper : SuspendElementOperator<Bulk<Trades>, Trades> {
 }
 
 // then in your pipelines script:
-pipeline("TEST_DB_BULK_SUBSCRIBE")
-        .source(dbBulkSubscribe<Trades>())
-            .map(TradesMapper())
-            .sink(TradesSink())
-        .build()
+pipelines {
+    pipeline("TEST_DB_BULK_SUBSCRIBE")
+            .source(dbBulkSubscribe<Trades>())
+                .map(TradesMapper())
+                .sink(TradesSink())
+            .build()
+}
 ```
 
 If you want to use this source to subscribe to a view, you have the option of setting `backwardsJoin` to `true`. 
@@ -598,11 +618,13 @@ In order to receive updates from changes to any non-primary table in your view, 
 This setting is defaulted to false. Here is an example of how to set it to true:
 
 ```kotlin
-pipeline("TEST_DB_BULK_SUBSCRIBE")
-        .source(dbBulkSubscribe<Trades>() { backwardsJoin = true })
-            .map(TradesMapper())
-            .sink(TradesSink())
-        .build()
+pipelines {
+    pipeline("TEST_DB_BULK_SUBSCRIBE")
+            .source(dbBulkSubscribe<Trades>() { backwardsJoin = true })
+                .map(TradesMapper())
+                .sink(TradesSink())
+            .build()
+}
 ```
 
 #### `dbBulkQuery`
@@ -610,10 +632,12 @@ pipeline("TEST_DB_BULK_SUBSCRIBE")
 This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object that you specified when you defined the source:
 
 ```kotlin
-pipeline("TEST_DB_BULK_QUERY")
-        .source(dbBulkQuery<Trades>())
-            .sink(TradesSink())
-        .build()
+pipelines {
+    pipeline("TEST_DB_BULK_QUERY")
+            .source(dbBulkQuery<Trades>())
+                .sink(TradesSink())
+            .build()
+}
 ```
 
 #### `ProgrammaticSource`
@@ -756,18 +780,20 @@ import global.genesis.pipeline.api.db.DbOperation
 import global.genesis.pipeline.file.CsvRow
 
 // Decoding CSV to a class
-pipeline("TEST_PIPELINE_DECODER")
-  .source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-    }
-  )
-  .split(csvDecoder<System>()) // Deserialize to System class
-  .map { input: CsvRow<System> ->
-    DbOperation.Insert(input.data)
-  }
-  .sink(txDbSink())
-  .build()
+pipelines {
+    pipeline("TEST_PIPELINE_DECODER")
+      .source(
+        camelFileSource {
+          location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
+        }
+      )
+      .split(csvDecoder<System>()) // Deserialize to System class
+      .map { input: CsvRow<System> ->
+        DbOperation.Insert(input.data)
+      }
+      .sink(txDbSink())
+      .build()
+}
 ```
 
 You also have the option of providing configuration to specify the following:
@@ -796,23 +822,25 @@ import global.genesis.pipeline.api.db.DbOperation
 import global.genesis.pipeline.file.CsvRow
 
 // Decoding CSV to Map<String, String>
-pipeline("TEST_PIPELINE_RAW_DECODER")
-  .source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-    }
-  )
-  .split(csvRawDecoder()) // Default to deserializing to Map<String, String>
-  .map { input: CsvRow<Map<String, String>> ->
-    DbOperation.Insert(
-      System {
-        systemKey = input.data["SYSTEM_KEY"]!!
-        systemValue = input.data["SYSTEM_VALUE"]!!
+pipelines {
+    pipeline("TEST_PIPELINE_RAW_DECODER")
+      .source(
+        camelFileSource {
+          location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
+        }
+      )
+      .split(csvRawDecoder()) // Default to deserializing to Map<String, String>
+      .map { input: CsvRow<Map<String, String>> ->
+        DbOperation.Insert(
+          System {
+            systemKey = input.data["SYSTEM_KEY"]!!
+            systemValue = input.data["SYSTEM_VALUE"]!!
+          }
+        )
       }
-    )
-  }
-  .sink(txDbSink())
-  .build()
+      .sink(txDbSink())
+      .build()
+}
 ```
 
 ### Transform operators
@@ -873,19 +901,21 @@ import global.genesis.db.updatequeue.Bulk
 import global.genesis.pipeline.api.db.DbOperation
 
 // Non-transactional db sink
-pipeline("TEST_DB_SINK")
-  .source(dbBulkSubscribe<Trade>())
-  .map {
-    when (it) {
-      Bulk.Prime.Completed -> null
-      is Bulk.Prime.Record -> null
-      is Bulk.Update.Delete -> DbOperation.Delete(it.record)
-      is Bulk.Update.Insert -> DbOperation.Insert(it.record)
-      is Bulk.Update.Modify -> DbOperation.Modify(it.record)
-    }
-  }
-  .sink(dbSink())
-  .build()
+pipelines {
+    pipeline("TEST_DB_SINK")
+      .source(dbBulkSubscribe<Trade>())
+      .map {
+        when (it) {
+          Bulk.Prime.Completed -> null
+          is Bulk.Prime.Record -> null
+          is Bulk.Update.Delete -> DbOperation.Delete(it.record)
+          is Bulk.Update.Insert -> DbOperation.Insert(it.record)
+          is Bulk.Update.Modify -> DbOperation.Modify(it.record)
+        }
+      }
+      .sink(dbSink())
+      .build()
+}
 ```
 
 ##### `txDbSink`
@@ -896,19 +926,21 @@ import global.genesis.db.updatequeue.Bulk
 import global.genesis.pipeline.api.db.DbOperation
 
 // Transactional db sink
-pipeline("TEST_DB_SINK")
-  .source(dbBulkSubscribe<Trade>())
-  .map {
-    when (it) {
-      Bulk.Prime.Completed -> null
-      is Bulk.Prime.Record -> null
-      is Bulk.Update.Delete -> DbOperation.Delete(it.record)
-      is Bulk.Update.Insert -> DbOperation.Insert(it.record)
-      is Bulk.Update.Modify -> DbOperation.Modify(it.record)
-    }
-  }
-  .sink(txDbSink())
-  .build()
+pipelines {
+    pipeline("TEST_DB_SINK")
+      .source(dbBulkSubscribe<Trade>())
+      .map {
+        when (it) {
+          Bulk.Prime.Completed -> null
+          is Bulk.Prime.Record -> null
+          is Bulk.Update.Delete -> DbOperation.Delete(it.record)
+          is Bulk.Update.Insert -> DbOperation.Insert(it.record)
+          is Bulk.Update.Modify -> DbOperation.Modify(it.record)
+        }
+      }
+      .sink(txDbSink())
+      .build()
+}
 ```
 
 #### `fileSink`
@@ -921,19 +953,21 @@ This sink implementation allows you to write data to files on the file system of
 import global.genesis.pipeline.file.NewPipelineFile
 import kotlinx.coroutines.flow.asFlow
 
-pipeline("OUTBOUND_FILE_PIPELINE")
-  .source(
-    BatchSource {
-      (1..100).asFlow()
-    }
-  ).map {
-    NewPipelineFile(
-      name = it.toString() + "txt", 
-      path = "/path-to/output-directory",
-      content = it.toString().byteInputStream(),
-    )
-  }.sink(fileSink())
-  .build()
+pipelines {
+    pipeline("OUTBOUND_FILE_PIPELINE")
+      .source(
+        BatchSource {
+          (1..100).asFlow()
+        }
+      ).map {
+        NewPipelineFile(
+          name = it.toString() + "txt", 
+          path = "/path-to/output-directory",
+          content = it.toString().byteInputStream(),
+        )
+      }.sink(fileSink())
+      .build()
+}
 ```
 
 
@@ -958,26 +992,28 @@ camelFileSink {
 ```kotlin
 import global.genesis.pipeline.file.NewPipelineFile
 
-pipeline("CAMEL_OUTBOUND_PIPELINE")
-  .source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
-    }
-  ).map {
-    NewPipelineFile(
-      name = it.name,
-      path = "src/test/resources/camel-sink-temp",
-      content = it.content
-    )
-  }.sink(
-    camelFileSink {
-      routeHandler {
-        from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
-          .to("file://src/test/resources/camel-sink-output")
-      }
-    }
-  )
-  .build()
+pipelines {
+    pipeline("CAMEL_OUTBOUND_PIPELINE")
+      .source(
+        camelFileSource {
+          location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
+        }
+      ).map {
+        NewPipelineFile(
+          name = it.name,
+          path = "src/test/resources/camel-sink-temp",
+          content = it.content
+        )
+      }.sink(
+        camelFileSink {
+          routeHandler {
+            from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
+              .to("file://src/test/resources/camel-sink-output")
+          }
+        }
+      )
+      .build()
+}
 ```
 
 ###### Writing to an SFTP server
@@ -987,26 +1023,28 @@ import global.genesis.pipeline.file.NewPipelineFile
 val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
 val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
 
-pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE")
-  .source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
-    }
-  ).map {
-    NewPipelineFile(
-      name = it.name,
-      path = "src/test/resources/camel-sink-temp",
-      content = it.content
-    )
-  }.sink(
-    camelFileSink {
-      routeHandler {
-        from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
-          .to("sftp://remote-host:22/remote-path?username=${sftpUserName}&password={sftpPassword}")
-      }
-    }
-  )
-  .build()
+pipelines {
+    pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE")
+      .source(
+        camelFileSource {
+          location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
+        }
+      ).map {
+        NewPipelineFile(
+          name = it.name,
+          path = "src/test/resources/camel-sink-temp",
+          content = it.content
+        )
+      }.sink(
+        camelFileSink {
+          routeHandler {
+            from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
+              .to("sftp://remote-host:22/remote-path?username=${sftpUserName}&password={sftpPassword}")
+          }
+        }
+      )
+      .build()
+}
 ```
 
 #### `eventSink`
@@ -1035,11 +1073,12 @@ The sink holds an event and retries it with a backoff, under your `retry` settin
 
 Delivery is therefore at-least-once: after a retry, the same event can arrive twice. It is re-sent unchanged.
 
-The sink doesn't retry in these cases; it throws an exception instead:
+The sink stops retrying, or doesn't retry, and throws an exception instead in these cases:
 
 - there is no reply within `timeout`
 - any other error occurs while sending
 - the target replies with a NACK other than UNAVAILABLE and `onNack` is `throwOnNack()`
+- `retry` is `holdWithDeadline(maxWaitMs)` and the event has not been accepted when the deadline passes
 
 If the target replies with a NACK other than UNAVAILABLE and `onNack` is `logOnNack()`, the sink logs the NACK at error level, drops the event and carries on; it does not retry or throw.
 
@@ -1087,18 +1126,20 @@ This is an example of how to use the connector in a pipeline.
 ```kotlin
 val tradesConnector = connector<Trade>()
 
-pipeline("TEST_CSV_ENCODER")
-        .source(dbBulkQuery<Trade>())
-            .transform(csvEncoder())
-            .sink(tradesConnector)
+pipelines {
+    pipeline("TEST_CSV_ENCODER")
+            .source(dbBulkQuery<Trade>())
+                .transform(csvEncoder())
+                .sink(tradesConnector)
+            .build()
+
+
+    pipeline("TEST_TRADE_TO_KAFKA")
+        // same connector object can be used as source for another pipeline
+        .source(tradesConnector)
+        .sink(kafkaSink) // see how to define a kafkaSink further down
         .build()
-
-
-pipeline("TEST_TRADE_TO_KAFKA")
-    // same connector object can be used as source for another pipeline
-    .source(tradesConnector)
-    .sink(kafkaSink) // see how to define a kafkaSink further down
-    .build()
+}
 ```
 
 #### ackConnector
@@ -1108,18 +1149,20 @@ The `ackConnector` is the same as the `connector`, except it incorporates the ac
 ```kotlin
 val tradesConnector = ackConnector<Trade>()
 
-pipeline("TEST_CSV_ENCODER")
-        .source(dbBulkQuery<Trade>())
-            .transform(csvEncoder())
-            .sink(tradesConnector)
+pipelines {
+    pipeline("TEST_CSV_ENCODER")
+            .source(dbBulkQuery<Trade>())
+                .transform(csvEncoder())
+                .sink(tradesConnector)
+            .build()
+
+
+    pipeline("TEST_TRADE_TO_KAFKA")
+        // same connector object can be used as source for another pipeline
+        .source(tradesConnector)
+        .sink(kafkaSink) // see how to define a kafkaSink further down
         .build()
-
-
-pipeline("TEST_TRADE_TO_KAFKA")
-    // same connector object can be used as source for another pipeline
-    .source(tradesConnector)
-    .sink(kafkaSink) // see how to define a kafkaSink further down
-    .build()
+}
 ```
 
 ### Completion handlers
@@ -1157,15 +1200,17 @@ val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Trade>, TradeDet
             }
         }
 
-pipeline("TEST_TRADE_PIPELINE")
-    .source(dbBulkRealtimeSource)
-        .map(mapper)
-        .sink(logSink)
-        .onCompletion(insertTradeOnCompletionHandler)
-    .build()
+pipelines {
+    pipeline("TEST_TRADE_PIPELINE")
+        .source(dbBulkRealtimeSource)
+            .map(mapper)
+            .sink(logSink)
+            .onCompletion(insertTradeOnCompletionHandler)
+        .build()
+}
 ```
 
-`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level and the event is dropped, without throwing. You can't change how it retries an UNAVAILABLE NACK: it holds until the event is delivered, except inside a write transaction (`txDbSink()`), where it gives up after `timeout`. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. Under `txDbSink()`, `timeout` limits the whole attempt instead. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely, except under `txDbSink()`, where the handler gives up after `timeout`.
+`sendEventOnCompletion` always resolves the target service from `eventName`. An UNAVAILABLE NACK is always retried, as for [`eventSink`](#eventsink); any other NACK is logged at error level and the event is dropped, without throwing. You can't change how it retries an UNAVAILABLE NACK: it holds until the event is delivered, except inside a write transaction (`txDbSink()`), where it gives up after `timeout` and throws an exception. If the target service can't be resolved, or no instance of it is reachable, the handler holds and retries until the event is delivered, with no time limit; its `timeout` setting (10 seconds by default) only limits each request. Under `txDbSink()`, `timeout` limits the whole attempt instead. An event name that no running service handles, such as a misspelt one, holds the pipeline indefinitely, except under `txDbSink()`, where the handler gives up after `timeout`.
 
 In a real-time pipeline with `txDbSink()`, completion handlers run inside the write transaction, so the transaction stays open for as long as the handler holds, which under `txDbSink()` is at most `timeout`. If the database retries that transaction, the handler runs again and can send the event more than once. With `dbSink()`, or in a batch pipeline, a hold only stalls the pipeline. To pin the target service or set a deadline, use [`eventSink`](#eventsink) instead.
 
@@ -1186,13 +1231,15 @@ val customTradeOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDet
             }
         }
 
-pipeline("TEST_CSV_ENCODER")
-        .source(dbBulkQuery<Trade>())
-            // encoder is expecting objects of type Trade as defined in source
-            .transform(csvEncoder())
-            .sink(streamSink)
-            .onCompletion(customTradeOnCompletionHandler)
-        .build()
+pipelines {
+    pipeline("TEST_CSV_ENCODER")
+            .source(dbBulkQuery<Trade>())
+                // encoder is expecting objects of type Trade as defined in source
+                .transform(csvEncoder())
+                .sink(streamSink)
+                .onCompletion(customTradeOnCompletionHandler)
+            .build()
+}
 ```
 
 ## Non-core elements
