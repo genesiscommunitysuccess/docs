@@ -30,7 +30,7 @@ This is not a third limitation, but a note on how proxied requests are authentic
 
 Set `messaging.channel` to `WEBSOCKET` in the network configuration YAML. Use `network-config.yaml` to change every process, or `network-config-<PROCESS_NAME>.yaml` to change one process. When both files exist, the process file is applied over the application file.
 
-Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). The build deploys them to `site-specific/cfg/` under `GENESIS_HOME`, not to the product's own `cfg` folder. Keep the file name exactly `network-config.yaml` (or `network-config-<processName>.yaml`); a product prefix on the name means the file is not read. To override one for a single deployment, place a file with the same name in `site-specific/cfg/` under `GENESIS_HOME`; the first copy found is used, so it replaces the application's copy rather than merging with it.
+Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). The build deploys them to `site-specific/cfg/` under `GENESIS_HOME`, not to the product's own `cfg` folder. Keep the file name exactly `network-config.yaml` (or `network-config-<processName>.yaml`); a product prefix on the name means the file is not read. A file with the same name found in `site-specific/cfg/` first is the one read; it replaces the application's copy rather than merging with it.
 
 ```yaml
 messaging:
@@ -84,7 +84,7 @@ By default a NACK from a request server or event handler comes back with status 
 
 The process reads the session token from the `SESSION_AUTH_TOKEN` request header, and looks the session up in its own `USER_SESSION` table. Request server and event handler routes require a logged-in user, and don't check any permission codes at the route; permissioning inside the request server or event handler still applies. Custom endpoints apply the permissioning they declare.
 
-To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`. After you add the `<config>` to the process in `processes.xml`, sync (Genesis Start's sync, or `POST /api/sync`) before you restart the process. A plain restart does not pick up a new `<config>`, because the launcher builds the process's `-config` argument at sync, not at start.
+To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`. If you set it with the process-scoped override (a `<config>` entry for the process in `processes.xml`), sync (Genesis Start's sync, or `POST /api/sync`) before you restart the process. A plain restart does not pick up a new `<config>`, because the launcher builds the process's `-config` argument at sync, not at start.
 
 For example, as an environment variable for a process named `POSITION_APP_EVENT_HANDLER`:
 
