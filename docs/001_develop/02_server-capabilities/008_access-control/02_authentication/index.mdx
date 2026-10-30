@@ -1002,6 +1002,10 @@ Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 002
 SESSION_ID: b08f6955-48a0-4d42-83a0-41e65c0dc084
+
+{
+  "DETAILS": {}
+}
 ```
 </TabItem>
 </Tabs>
@@ -1035,11 +1039,17 @@ This triggers a self-service password reset. [Self Service Reset](#selfservicere
 
 Changes a user's password.
 
+:::info
+No `SESSION_AUTH_TOKEN` required.
+:::
+
+This is how a user whose password has expired, or who has been given a one-time password, activates their account: they send their current password as `OLD_PASSWORD` and choose a new one as `NEW_PASSWORD`, without logging in first.
+
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
 ```
 {
-  "USER_NAME": "admin",
+  "USER_NAME": "JohnDoe",
   "SOURCE_REF": "004",
   "MESSAGE_TYPE": "EVENT_CHANGE_USER_PASSWORD",
   "DETAILS": {
@@ -1054,8 +1064,9 @@ Changes a user's password.
 POST /event-change-user-password HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
-SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+USER_NAME: JohnDoe
 SOURCE_REF: 004
+
 {
   "DETAILS": {
     "OLD_PASSWORD": "genesis",
@@ -1065,6 +1076,8 @@ SOURCE_REF: 004
 ```
 </TabItem>
 </Tabs>
+
+In the REST API, send `USER_NAME` as an HTTP header, as in the example above, and only `DETAILS` is read from the request body; in the Websocket API, `USER_NAME` goes in the message body.
 
 ### `EVENT_EXPIRE_USER_PASSWORD`
 
@@ -1095,9 +1108,12 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 004
-"DETAILS": {
-  "PASSWORD": "optional",
-  "USER_NAME": "JohnDoe"
+
+{
+  "DETAILS": {
+    "PASSWORD": "optional",
+    "USER_NAME": "JohnDoe"
+  }
 }
 ```
 </TabItem>
@@ -1127,6 +1143,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 006
+
 {
   "DETAILS": {
     "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
@@ -1179,6 +1196,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 010
+
 {
   "DETAILS": {
     "ACCESS_TYPE": "ALL",
@@ -1268,6 +1286,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 011
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1327,6 +1346,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 012
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1372,6 +1392,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 013
+
 {
   "DETAILS": {
     "NAME": "TRADERS",
@@ -1433,6 +1454,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 014
+
 {
   "DETAILS": {
     "DESCRIPTION": "A profile for users who are traders",
@@ -1480,6 +1502,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 015
+
 {
   "DETAILS": {
     "NAME": "TRADERS"
