@@ -30,7 +30,7 @@ This is not a third limitation, but a note on how proxied requests are authentic
 
 Set `messaging.channel` to `WEBSOCKET` in the network configuration YAML. Use `network-config.yaml` to change every process, or `network-config-<PROCESS_NAME>.yaml` to change one process. When both files exist, the process file is applied over the application file.
 
-Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). The build deploys them to `site-specific/cfg/` under `GENESIS_HOME`, not to the product's own `cfg` folder. Keep the file name exactly `network-config.yaml` (or `network-config-<processName>.yaml`); a product prefix on the name means the file is not read. A file with the same name found in `site-specific/cfg/` first is the one read; it replaces the application's copy rather than merging with it.
+Put the files in your application's `cfg` folder (`src/main/genesis/cfg/`). The build deploys them to `site-specific/cfg/` under `GENESIS_HOME`, not to the product's own `cfg` folder. Keep the file name exactly `network-config.yaml` (or `network-config-<processName>.yaml`); a product prefix on the name means the file is not read.
 
 ```yaml
 messaging:
