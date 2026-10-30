@@ -71,7 +71,7 @@ This Gradle task will create a standalone zip distribution for an application th
 The zip file will include the full Genesis distribution, each PBC distribution, the app's server and web distribution.
 
 There are two ways in which this zip can be constructed:
-* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars.
+* By default, each Genesis dependency, including Genesis-Server and each PBC, will include its full set of jars. This non-dynamic mechanism is deprecated; see [Dynamic Deployments](#dynamic-deployments).
 * If dynamic deployments are enabled, an App can take control of dependency resolution, and this will result in a single set of jars in `site-specific/lib`
 
 ### Dynamic Deployments
@@ -79,6 +79,11 @@ There are two ways in which this zip can be constructed:
 Using dynamic deployments, Apps can take control of dependency resolution, which achieves the following:
 * Apps are able to overwrite vulnerable dependencies. It is the developer's responsibility to assess binary compatibility.
 * A smaller distribution will be created, as jars are only included if required, and then only once.
+* Each process's classpath is resolved and checked at build time, so a missing module or jar fails the build, or fails at `startProcess` with the names of the missing jars, instead of surfacing later as a `ClassNotFoundException`.
+
+:::warning
+Non-dynamic deployment (`enableDynamicDeployment=false`, still the default) is deprecated and will be removed in Genesis 11.0.0. Builds that use it log a deprecation warning. We recommend that all Genesis 10 applications enable dynamic deployments; follow [Migrating from non-dynamic deployments](#migrating-from-non-dynamic-deployments) below.
+:::
 
 #### Note on dynamic deployments and `-processes.templt.xml` files
 
@@ -104,6 +109,32 @@ genesisExec {
 }
 ```
 
+#### Migrating from non-dynamic deployments
+
+1. Set `enableDynamicDeployment=true`, as shown in [Enabling Dynamic Deployments](#enabling-dynamic-deployments).
+
+2. Build the distribution with `appDistZip` and check the build log for `written N process classpaths` and `written N module classpaths`. The build fails if a process that is started by default names a module or classpath item that none of the application's dependencies provide; with non-dynamic deployments, this was only found when the process was started.
+
+3. Inspect the archive. With the default packaging, paths are under `server/`. `site-specific/lib` should hold the jars, `site-specific/modules/process` should hold one `.classpath` file per process, and `genesis/lib` should hold no jars.
+
+4. Move anything that you used to add to the classpath by hand into Gradle dependencies (for example, using the [`genesisRuntime` configuration](#using-genesisruntime-configuration)). A dynamic classpath only lists what the build resolved, so:
+   * jars copied by hand into `site-specific/lib` (or any other folder under `$GENESIS_HOME`) are not picked up
+   * `GlobalClasspathAdditions` in the system definition is ignored
+   * a JDBC driver is only on the classpath if your application depends on it; see [Declaring a JDBC driver](#declaring-a-jdbc-driver)
+
+5. Deploy the new archive to a fresh `$GENESIS_HOME`, or replace the installation's `genesis` folder with the one from the archive. Then run `genesisInstall` and start the processes. If a jar is missing, `startProcess` fails with `classpath file ... references N missing JAR(s)` and names each missing jar.
+
+#### Rolling back to non-dynamic deployments
+
+1. Rebuild with `enableDynamicDeployment=false` and redeploy.
+2. Remove the `site-specific/modules/process` folder from the installation. While that folder exists, the launcher scripts treat the installation as dynamic.
+
+#### Known limitations
+
+* **`GlobalClasspathAdditions`**: this system definition item is ignored under dynamic deployments. Declare each entry as a Gradle dependency instead.
+* **Jars added by hand**: jars copied into `site-specific/lib` manually, rather than resolved by the build, are not on any process classpath. Declare them as Gradle dependencies instead.
+* **OpenTelemetry Java Agent**: with [`OpenTelemetryJavaAgentEnabled`](/build-deploy-operate/operate/tracing/) set to `true`, the launcher adds `-javaagent:$GENESIS_HOME/genesis/lib/opentelemetry-javaagent.jar`, but dynamic deployments do not ship that jar. Until this is fixed, an application that uses the agent at runtime must supply that file itself. Running processes from the IDE or Gradle is not affected.
+
 #### Using `genesisRuntime` configuration
 
 To add runtime dependencies and set constraints, use the `genesisRuntime` configuration in Gradle.
@@ -114,6 +145,76 @@ dependencies {
     genesisRuntime("javax.mail:mail:1.4")
 }
 ```
+
+#### Declaring a JDBC driver
+
+The Genesis database modules do not bring vendor JDBC drivers with them. Each deployment ships the driver for the database it uses, and nothing else.
+
+| Deployment | What to do |
+|---|---|
+| Non-dynamic (`enableDynamicDeployment=false`) | Nothing. Every driver is still shipped in `genesis/lib`. |
+| Dynamic (`enableDynamicDeployment=true`) | Declare the driver for your `DbHost`, as shown below. |
+
+In a dynamic deployment, each process's classpath is built from its module's dependencies plus the [`genesisRuntime` configuration](#using-genesisruntime-configuration). Add the driver there, in the `dependencies { }` block of `server/build.gradle.kts` (the project that builds `appDistZip`). Leave the version out; the Genesis BOM supplies it.
+
+:::warning
+Declare the driver with `genesisRuntime`. A driver declared with `runtimeOnly` or `implementation` does not reach the process classpaths of a dynamic deployment.
+:::
+
+| Database | Declaration |
+|---|---|
+| PostgreSQL | `genesisRuntime("org.postgresql:postgresql")` |
+| SQL Server | `genesisRuntime("com.microsoft.sqlserver:mssql-jdbc")` |
+| Oracle | `genesisRuntime("com.oracle.database.jdbc:ojdbc11")` and `genesisRuntime("com.oracle.database.xml:xdb")`, each excluding `com.oracle.database.xml:xmlparserv2` (see the example below) |
+| AWS Advanced JDBC Wrapper (`jdbc:aws-wrapper:…`) | `genesisRuntime("software.amazon.jdbc:aws-advanced-jdbc-wrapper")`, plus the driver for the database that it wraps |
+| H2 | Nothing; H2 is always present |
+
+For example, an application on PostgreSQL:
+
+```kotlin
+dependencies {
+    genesisRuntime("org.postgresql:postgresql")
+}
+```
+
+An application on Oracle:
+
+```kotlin
+dependencies {
+    genesisRuntime("com.oracle.database.jdbc:ojdbc11") {
+        exclude(group = "com.oracle.database.xml", module = "xmlparserv2")
+    }
+    genesisRuntime("com.oracle.database.xml:xdb") {
+        exclude(group = "com.oracle.database.xml", module = "xmlparserv2")
+    }
+}
+```
+
+`genesisRuntime` reaches every module's classpath, including `genesisInstall`, remap and the console tools, so one declaration covers the whole deployment.
+
+##### Other databases that your application connects to
+
+`DbHost` is not the only database a deployment can reach. Declare a driver for every database engine that the following connect to:
+
+* the [`DictionaryBuilder`](/build-deploy-operate/operate/commands/#dictionarybuilder), `DbToGenesis` and `GenesisToDb` tools, which read from or write to an external database
+* external database sinks in data ingestion pipelines
+* JDBC sources in [data pipelines](/develop/server-capabilities/integrations/data-pipelines/)
+
+##### Tests
+
+Tests that use `genesis-testsupport` get every driver at test runtime, so they run against any database engine without extra declarations.
+
+Code that uses driver classes directly, such as `org.postgresql.util.PSQLException`, must declare the driver as an ordinary dependency (`implementation` or `compileOnly`), because it no longer arrives through the Genesis database modules.
+
+##### When a driver is missing
+
+A process whose `DbHost` driver is not on its classpath fails at start-up with a message that names the dependency and the declaration to add, for example:
+
+```
+No JDBC driver on the classpath for DbHost jdbc:postgresql. Add "org.postgresql:postgresql" to the process classpath; in a dynamic deployment, declare genesisRuntime("org.postgresql:postgresql").
+```
+
+The message shows only the engine part of the URL, never the full `DbHost`, so credentials in the URL are not logged.
 
 #### Overwriting Dependency Vulnerabilities
 
