@@ -1568,6 +1568,46 @@ In the `AsyncEntityDb` API, `getByCriteria`, `getRange` and `getBulk` operations
 
 Writes made through this view do not notify an `AsyncWriteOperationListener`; only suspend writes do.
 
+###### Calling from non-suspending code
+
+A `suspend` function can only be called from a coroutine. Genesis skips a `suspend` `@PostConstruct` method, so launch the work in a coroutine scope that the module owns:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
+import jakarta.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+
+@Module
+class TradeLoader {
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    @Inject
+    private lateinit var entityDb: AsyncEntityDb
+
+    @PostConstruct
+    fun init() {
+        scope.launch {
+            entityDb.insert(Trade { tradeId = "TRADE_1" })
+        }
+    }
+
+    @PreDestroy
+    fun cleanUp() {
+        scope.cancel()
+    }
+}
+```
+
+The write runs after `init` returns, so it can't make `init` wait for it. For code that must block, use [`SyncEntityDb`](#syncentitydb) or `AsyncEntityDb.sync()`, described above.
+
 #### RxEntityDb
 
 [RxJava](https://github.com/reactivex/RxJava/wiki) is a Java implementation of reactive extensions. The Genesis database uses this library to represent asynchronous database operations in java.
@@ -2270,7 +2310,7 @@ View repositories are read-only, with a generated read method for each index of 
 
 ### Write result
 
-This is a single catch-all type for results of a write operation when using RxDb.
+This is the result type of write operations made through `RxDb`, `SyncDb` and `AsyncDb`. The written record is in `savedRecords`, for example `syncDb.insert(record).savedRecords.first()`.
 
 This type has the following fields:
 
