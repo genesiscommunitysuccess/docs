@@ -1007,6 +1007,10 @@ final var writeResults = pair.getSecond();
 </TabItem>
 </Tabs>
 
+:::note
+A single or bulk write made inside an open write transaction joins it without a savepoint of its own. If the write fails and your code catches the failure, the transaction keeps whatever the write had already done (on PostgreSQL, the whole transaction is aborted instead). To make such a write atomic on its own, wrap it in a nested `writeTransaction { }`.
+:::
+
 ### Subscribe operations
 
 Subscribe operations create a subscription to the given table or view. They will be invoked whenever updates occur to the entity they are listening to.
