@@ -1728,6 +1728,8 @@ Before we can begin writing tests for our Data Server, we need to inject referen
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
+
 @GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
@@ -1747,6 +1749,8 @@ class DataServerTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient;
+
 @GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
