@@ -33,7 +33,9 @@ Genesis applications include both server-side and web code.
 
 ### Java/Kotlin
 
-Genesis recommends [openjdk-17](https://openjdk.org/projects/jdk/17/) as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
+Genesis supports [OpenJDK](https://openjdk.org/) 17 and 25 as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
+
+The default JVM arguments of every Genesis process already include the flags for JDK 25; JDK 17 ignores the ones it doesn't recognise. On JDK 25, these flags turn on compact object headers, so a process uses less heap.
 
 ### Third-party software
 
@@ -47,7 +49,7 @@ Other packages needed to manage and run Genesis applications are:
 
 Genesis supports several types of database. The currently supported list is:
 
-* [FoundationDB](https://www.foundationdb.org/) (default)
+* [FoundationDB](https://www.foundationdb.org/) (deprecated)
 * [PostgreSQL](https://www.postgresql.org/) (local or RDS within AWS)
 * [MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2016) (Windows environments)
 * [Oracle](https://www.oracle.com/uk/database/)
@@ -55,6 +57,10 @@ Genesis supports several types of database. The currently supported list is:
 
 
 ### Installing FoundationDB
+
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 If resilient FoundationDB is required, it can be clustered across multiple hosts. For safety, an odd number of instances are needed. You can find set-up details in FoundationDB's [documentation](https://apple.github.io/foundationdb/administration.html).
 

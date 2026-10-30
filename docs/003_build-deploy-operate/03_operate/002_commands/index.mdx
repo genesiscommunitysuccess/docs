@@ -240,7 +240,7 @@ The `DumpIt` command can take the following arguments:
 | -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
 | -s  <!-- DumpIt -s -->     | --sql (arg) <!-- DumpIt --sql (args) -->     | no        | name of the sql file to export the table to            | none              | none    |
 | -t  <!-- DumpIt -t -->     | --table (arg) <!-- DumpIt --table (args) -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
-| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode (arg) <!-- DumpIt --criteriaEvaluatorMode (args) --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode (arg) <!-- DumpIt --criteriaEvaluatorMode (args) --> | no        | the type of criteria evaluator to be used. `LEGACY` is no longer supported, and passing it fails with `Unsupported criteriaEvaluatorMode 'LEGACY'` | TYPE_AWARE | TYPE_AWARE |
 | -fm <!-- DumpIt -fm -->     | --formatMode (arg) <!-- DumpIt --formatMode (args) -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
 | -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
 |          | -where (arg) <!-- DumpIt -where (args) -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
@@ -304,13 +304,13 @@ FixEnumValues --commit TRADE POSITION
 
 ## `genesisInstall`
 
-This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `/generated/cfg/`.
+This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `$GENESIS_HOME/generated/cfg/`.
 
-**System Definition token replacement**: For any files collected with file names with suffix `.tmplt.xml`, the command examines the installation environment and looks for system definition tokens. The generated `cfg` file names have their token placeholders replaced with the system definition value for the token assigned for that environment, and the suffix of the file will be changed to `.auto.xml`.
+**System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the [system definition values](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. Any item defined in the system definition, including your own, can be used as a `{{token}}`. On the server, the command collects these files from each module's `cfg` folder and from `site-specific/cfg`. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; the build packages it, so after adding the file, rebuild and redeploy the project before you run `genesisInstall`. A file whose name starts with your [product name](/build-deploy-operate/build/plugins/#productname) (the `rootProject.name` in your `settings.gradle.kts`; for example `<product>-processes.templt.xml`) is packaged by the build into the module's `cfg`, and any other file into `site-specific/cfg` (next to `generated/cfg` under `$GENESIS_HOME`). Either way, the rendered `.auto.` file is written to `$GENESIS_HOME/generated/cfg/`. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template; it is copied as is to `$GENESIS_HOME/generated/cfg/`, without token replacement.
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
-`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `generated/cfg` area and a message will be printed. See `--ignore` flag details below on how to ignore errors and copy the files regardless.
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `$GENESIS_HOME/generated/cfg/` area and a message will be printed. See `--ignore` flag details below on how to ignore errors and copy the files regardless.
 
 ###### Syntax
 The `genesisInstall` command can take the following arguments:
@@ -338,6 +338,34 @@ The example combines all compatible processes into a single process.
 ```bash
 genesisInstall --compactProcesses
 ```
+
+### When `genesisInstall` is blocked
+
+`genesisInstall` doesn't run when the [`BlockGenesisInstall`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) system definition item is `true`. The usual way to set it is the environment variable `GENESIS_SYSDEF_BlockGenesisInstall=true`. Docker images generated by the Genesis Gradle plugin set it this way, so inside a running container, `genesisInstall` prints a warning and exits with status `0` without installing anything. `genesisInstall` reads the environment variable each time it runs, so a change takes effect immediately for any `genesisInstall` started with the new value.
+
+You can also set `BlockGenesisInstall` in your project's system definition. `genesisInstall` checks the installed system definition in `$GENESIS_HOME/generated/cfg`, not your project's source, so a change there takes effect from the install after the one that deploys it. If both are set, the environment variable wins.
+
+`BlockGenesisInstall` is a guard for deployed environments, such as servers and containers, to stop `genesisInstall` being run against an existing setup outside your normal release process. It isn't a local development setting: development tooling such as Genesis Start and the Genesis IntelliJ plugin keeps your local environment synced for you, and that sync isn't stopped by the block, so there is nothing to unblock in local development.
+
+To unblock an install in a deployed environment whose installed system definition sets `BlockGenesisInstall`, run `genesisInstall` once with `GENESIS_SYSDEF_BlockGenesisInstall=false`; that install deploys your source value.
+
+Because the exit status is `0`, a script that calls `genesisInstall` can't tell a blocked run from a successful install by its status; check the output for this warning instead. The warning text is the only signal that the install was skipped: there is no distinct exit code or flag, and the wording may change between releases.
+
+```
+WARNING: genesisInstall cannot be executed because BlockGenesisInstall is set to "true".
+```
+
+- To change system definition values in a container, use environment variables.
+- For configuration or GPAL changes, build and deploy a new image.
+- To run `genesisInstall` in a container anyway, start the container with `GENESIS_SYSDEF_BlockGenesisInstall=false`.
+
+To run Genesis commands in a container with `docker exec`, use an interactive shell, because the Genesis environment and command aliases are set up in the shell's `.bashrc`:
+
+```bash
+docker exec -it <container> bash -ic 'genesisInstall'
+```
+
+On Windows, running `genesisInstall` is supported only for local development, which is handled by [Genesis Start](/develop/development-environment/genesis-start/) or IntelliJ with the [Genesis IntelliJ plugin](/develop/development-environment/intellij-plugin/); neither is a way to unblock a deployed environment.
 
 ### Install hooks
 
@@ -762,7 +790,9 @@ If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` an
 
 ## `mon`
 
-This command shows the status of the overall system, so you can see if the server is up or not. By default, it displays a snapshot. If you want the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
+This command shows the status of the overall system, so you can see if the server is up or not. By default, it displays a snapshot. If you want the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`. `mon` covers the local node only; to see every node in a cluster, use [`MonCluster`](#moncluster).
+
+The ports in the output below are an example only. Each process's port comes from its service definitions and depends on your configuration, so the ports on your node may differ.
 
 ```bash
 
@@ -803,7 +833,7 @@ By default, the command shows the following columns of information per process:
 |--------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | PID          | The process ID, which is generated by the system                                                                                            |
 | Process Name | The process name                                                                                                                            |
-| Port         | The port where the process is operating; you can change the defaults in the **process.xml** file                                            |
+| Port         | The port where the process is operating; it is set in the process's service definitions (`<app>-service-definitions.xml`). |
 | Status       | The status of the process [(see below)](#process-statuses)                                                                                  |
 | CPU          | The percentage of CPU being used by the process. For multi-core CPUs or multiple CPUs, the total percentage of all processes can exceed 100 |
 | Memory       | The percentage of RAM being used by the process                                                                                             |
@@ -886,8 +916,46 @@ The example below runs `mon`, but only shows processes that are missing.
 mon --missing
 ```
 
+## `MonCluster`
+
+This command shows every node in the cluster, together with the state of each node. Where [`mon`](#mon) covers only the local node, `MonCluster` covers the whole cluster. By default, the display refreshes live. Use `-snapshot` to print a single snapshot and exit.
+
+###### Syntax
+
+```bash
+MonCluster [-snapshot]
+```
+
+| Argument  | Mandatory | Description                                              |
+|-----------|-----------|----------------------------------------------------------|
+| -snapshot | no        | print one snapshot of the cluster and exit, instead of refreshing live |
+
+For an example of the display, see the [clustering walkthrough](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering).
+
 ## `PopulateHolidays`
-This command populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
+This command populates the `HOLIDAYS` table with holidays, based on a specific year(s), country(ies) and region(s).
+
+The platform does not ship the `HOLIDAYS` table in your application's dictionary, so you must define it yourself before you run the command. In your **app-name**-tables-dictionary.kts add the following. Replace `<table-id>` with the next free table id in sequence with your own tables' ids.
+
+```kts
+tables {
+  table(name = "HOLIDAYS", id = <table-id>) {
+    field("HOLIDAY_ID", STRING).sequence("HO")
+    field("COUNTRY_CODE", STRING)
+    field("REGION_CODE", STRING).default("NATIONAL")
+    field("DATE", DATE)
+
+    primaryKey("HOLIDAY_ID").name("HOLIDAY_BY_ID")
+
+    indices {
+      nonUnique("COUNTRY_CODE", "REGION_CODE", "DATE").name("HOLIDAYS_BY_COUNTRY_CODE_REGION_CODE_DATE")
+      nonUnique("COUNTRY_CODE", "DATE", "HOLIDAY_ID").name("HOLIDAYS_BY_COUNTRY_CODE_DATE")
+    }
+  }
+}
+```
+
+Then run `genesisInstall` and `remap --commit` so the table exists before you run `PopulateHolidays`.
 
 ###### Syntax
 The `PopulateHolidays` command can take the following arguments:
@@ -895,16 +963,31 @@ The `PopulateHolidays` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -c  <!-- PopulateHolidays -c -->     | --country (arg) <!-- PopulateHolidays --country (args) -->  | No        | the country name to search for holidays | No                |
+| -c  <!-- PopulateHolidays -c -->     | --country (arg) <!-- PopulateHolidays --country (args) -->  | Yes       | Comma-separated list of country codes | No                |
 | -h  <!-- PopulateHolidays -h -->     | --help <!-- PopulateHolidays --help -->            | No        | show help on this command               | No                |
-| -r  <!-- PopulateHolidays -r -->     | --region (arg) <!-- PopulateHolidays --region (args) -->  | No        | the region name to search for holidays  | No                |
-| -y <!-- PopulateHolidays -y -->      | --year (arg) <!-- PopulateHolidays --year (args) -->    | No        | the year of holidays                    | No                |
+| -r  <!-- PopulateHolidays -r -->     | --region (arg) <!-- PopulateHolidays --region (args) -->  | No        | Comma-separated list of region codes, matched to `-c` by position | No                |
+| -y <!-- PopulateHolidays -y -->      | --year (arg) <!-- PopulateHolidays --year (args) -->    | Yes       | Comma-separated list of years                | No                |
 
 For example:
 
 ```bash
-PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+PopulateHolidays -y 2020,2021 -c BR,GB -r rj,eng
 ```
+
+Each region in `-r` applies to the country in the same position in `-c`. If you don't set `-r`, national holidays are populated. Region codes come from the [Jollyday](https://github.com/focus-shift/jollyday) library: they are generally the subdivision part of the [ISO 3166-2](https://github.com/focus-shift/jollyday#iso-3166) code (for example `eng` for `GB-ENG`), and only the subdivisions that Jollyday defines for a country are supported. To find a country's valid codes, look for the `hierarchy` values in its `Holidays_<country>.xml` file in [Jollyday's holiday data](https://github.com/focus-shift/jollyday/tree/main/jollyday-core/src/main/resources/holidays). Each one is checked against the country's calendar: an unrecognised code fails with `Region <code> is not supported for country <country>` instead of writing national data.
+
+8.15 and earlier used different region codes for several countries. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`. The holiday data also changed in 10.0, so re-run `PopulateHolidays` for the years you hold. `PopulateHolidays` only inserts rows and does not overwrite existing ones, so delete the existing rows in the `HOLIDAYS` table for those years before you re-run it. Dates that already exist are neither replaced nor duplicated: those inserts fail, and the run prints `Failed to import data for year <year> and country <country>`.
+
+Each row in `HOLIDAYS` has a `DATE` field, which holds the holiday date, so the year of a row is the year of its `DATE`. The `COUNTRY_CODE` and `REGION_CODE` fields hold the values you passed to `-c` and `-r`; `REGION_CODE` is `NATIONAL` for rows populated without `-r`. To delete the rows for a year, use [`DbMon`](#dbmon) to select the `HOLIDAYS` table, check what matches with `search`, then remove the rows with `deleteWhere`. For example, to remove the 2020 and 2021 rows for `GB` and `eng`:
+
+```javascript
+DbMon>table HOLIDAYS
+DbMon:HOLIDAYS>search COUNTRY_CODE=='GB' && REGION_CODE=='eng' && DATE>='20200101' && DATE<='20211231'
+DbMon:HOLIDAYS>writeMode
+DbMon:HOLIDAYS>deleteWhere COUNTRY_CODE=='GB' && REGION_CODE=='eng' && DATE>='20200101' && DATE<='20211231'
+```
+
+`deleteWhere` asks you to confirm before it deletes anything. Repeat for each country and region you re-populate. To delete every row for a year regardless of country, leave out the `COUNTRY_CODE` and `REGION_CODE` conditions. See [`deleteWhere`](/build-deploy-operate/operate/commands/dbmon/#deletewhere) on the DbMon page for details.
 
 ## `PurgeTables`
 
@@ -953,10 +1036,9 @@ Range purger is similar to bulkPurger, but it performs efficient index range sea
 - Purger has special function called `whereRange` which is used to filter based on index value
 
 ```kotlin
-import global.genesis.gen.dao.repository.UserSessionRx3Repository
 purgers {
- // Inject repo
- val userSessionRepo = inject<UserSessionRx3Repository>()
+ // Inject a class
+ val myClass = inject<MyClass>()
 
  config {
      batchSize = 1000
@@ -1550,10 +1632,10 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.process.GenesisProcessBootstra
 
 ###### Logging
 `startProcess` will redirect the standard error stream to a log file in the `$L` directory. The log file will be named `<process_name>.log.err` (for example, `GENESIS_AUTH_DATASERVER.log.err`).
-If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file managed by Log4j2.
+If the `RedirectStreamsToLog` system definition is set to `true` (by default is `false`), this log file will not be created and the output of the standard error stream will be written to the standard process log file.
 
 `startProcess` will also compress and move existing process logs in the `$L` directory by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$RL` directory. This only affects the logs of the process you are starting.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startProcess` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `startServer`
@@ -1589,8 +1671,8 @@ The -s option requires the `EnableDaemonScriptController` system definition prop
 :::
 
 ###### Logging
-`startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files.
-If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. Please ensure the Log4j2 configuration is set up correctly to handle log rotation if this is the case.
+`startServer` will also compress and move existing process logs in the `$L` and `$RL` directories by default (see [logging](/build-deploy-operate/operate/logging) for more information) to the `$AL` directory. This affects all existing log files. Per-process logs left over from the previous run are archived in the background, so process start-up isn't delayed.
+If the `LogArchivingEnabled` system definition setting is set to `false` (by default is `true`), `startServer` will not attempt to compress and move existing process logs. If this is the case, make sure your logging configuration (Log4j2 or Logback) handles log rotation.
 
 
 ## `readSysDef`

@@ -236,6 +236,14 @@ The following variables are used to configure an LDAP `connection`, details for 
   * which user permissions are allocated, using `createUserPermissions`
 * `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
 * `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+* `verifyHostname` is a boolean value indicating whether to check that the server's certificate matches the hostname in `url`. It only applies with `useTLS = true`. Default: `false`.
+* `trust` defines how the server's certificate is validated when `useTLS` is `true`. Default: not set, which checks only the certificate's validity dates. See [TLS certificate validation](#tls-certificate-validation).
+* `connectTimeoutMs` is the time, in milliseconds, to wait for the connection to the LDAP server to be established. It must be a positive integer, otherwise the application fails to start. Default: `10000`.
+* `responseTimeoutMs` is the time, in milliseconds, to wait for each request to the LDAP server to be answered. This covers every request a login makes, including the bind of the service account (`bindDn`), each search, and the reads made after a successful bind. It must be a positive integer, otherwise the application fails to start. Default: `300000`.
+
+`connectTimeoutMs`, `responseTimeoutMs`, `verifyHostname` and `trust` are supported from version 10.0. The timeouts are set separately on each `connection`, and a timeout you leave unset uses its default.
+
+A single login makes several requests, and each one waits up to `responseTimeoutMs`. When you configure several connections, a server that is down or slow can therefore delay a login that falls through to the next connection by a multiple of that value. Lower the timeouts if that matters to you.
 
 
 Example ldap connection:
@@ -247,7 +255,7 @@ security {
 			connection {
 				url = "localhost"
           port = 389
-          searchBase {
+          searchBases {
             searchBase("ou=temp,dc=temp")
           }
           userGroups {
@@ -256,8 +264,52 @@ security {
           bindDn = ldap.server.user
           bindPassword = ldap.server.password
           userIdType = "cn"
+          connectTimeoutMs = 5000
+          responseTimeoutMs = 30000
 			}
 		}
+  }
+}
+```
+
+#### TLS certificate validation
+
+With `useTLS = true` and no `trust` block, the server's certificate is checked only for its validity dates. Its issuer and chain are not checked, and neither is its hostname. To rely on a certificate authority instead, add a `trust` block, and set `verifyHostname = true` to check that the certificate was issued for the server you are connecting to.
+
+Choose one of the following inside the `trust` block:
+
+* `systemSource()` trusts the certificate authorities that the Java runtime trusts by default. An empty `trust { }` block does the same.
+* `certificate { caBundlePath = "..." }` trusts the certificates in the CA bundle (PEM) file at that path. To trust further bundles as well, add `additionalCaBundles("...")` inside the same `trust` block; it can only be used together with `certificate`.
+* `truststore { path = "..."; storePassword = "..." }` trusts the certificates in the keystore file at that path. The store type is `PKCS12` unless you call `jksType()` inside the `truststore` block.
+
+Use absolute paths for these files. Take `storePassword` from the same place as `bindPassword`, rather than writing it into the script.
+
+`trust` and `verifyHostname` only apply with `useTLS = true`, and the application fails to start if you set either without it. It also fails to start if a file named in the `trust` block is missing or unreadable, or if the truststore password is wrong, so a configuration problem shows up when the application starts and not at the first login.
+
+Example ldap connection over TLS, validating the server's certificate against your own CA bundle:
+
+```kotlin {7-13}
+security {
+  authentication {
+    ldap {
+      connection {
+        url = "ldap.example.com"
+        port = 636
+        useTLS = true
+        verifyHostname = true
+        trust {
+          certificate {
+            caBundlePath = "/etc/ssl/certs/internal-ca.pem"
+          }
+        }
+        searchBases {
+          searchBase("ou=temp,dc=temp")
+        }
+        bindDn = ldap.server.user
+        bindPassword = ldap.server.password
+        userIdType = "cn"
+      }
+    }
   }
 }
 ```
