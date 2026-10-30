@@ -377,6 +377,8 @@ Below is a list of environment variables that can be passed to the Docker contai
 
 You can also [set System Definitions values from environment variables](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables), which allows you to change the location of external dependencies (such as the database) between your production and non-production environments.
 
+If you [secure the ZeroMQ update queue with CURVE](/build-deploy-operate/operate/update-queue/#enabling-curve-in-containers), pass its four `ZMQ_CURVE_*` keys to the container as environment variables at runtime too, never at image build time.
+
 ## Clustering
 
 The Genesis Application Platform is highly resilient and easy to cluster for a High Availability (HA) setup.
