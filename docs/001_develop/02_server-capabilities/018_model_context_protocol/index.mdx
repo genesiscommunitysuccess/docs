@@ -17,7 +17,7 @@ Genesis can expose your application through **MCP (Model Context Protocol)**, so
 The Genesis MCP server gives an AI client two kinds of tool:
 
 - **Platform tools**, built in and available to every application with no extra configuration: process health, logs, tables, endpoint discovery, record lookups and changes, and maker-checker approvals.
-- **Endpoint tools**: event handlers and request servers that you choose to expose with `enableMcp`.
+- **Endpoint tools**: event handlers and request servers that you choose to expose with [`enableMcp`](#step-4-expose-your-own-event-handlers-and-request-servers), in an `mcp { }` block of a separate `<application>-mcp.kts` file.
 
 The server identifies every caller from HTTP headers, checks their rights before each platform tool runs, can hold writes for a second user to approve, and writes an audit line for every call.
 
@@ -309,7 +309,7 @@ The client sends a JWT as `Authorization: Bearer <JWT>`. The server checks its s
 | `clockSkewSeconds` | `60` | How much clock difference to allow when checking expiry |
 | `signatureAlgorithms` | `RS256`, `RS384`, `RS512`, `ES256`, `ES384`, `ES512`, `PS256`, `PS384`, `PS512` | The signing algorithms to accept |
 
-Signing keys are cached for five minutes. A token signed with an unknown key makes the server fetch the keys again, at most once every 30 seconds. An invalid, expired or missing token identifies nobody.
+Signing keys are cached for five minutes. A token signed with an unknown key makes the server fetch the keys again, at most once every 30 seconds. An invalid, expired or missing token identifies nobody. So does a valid token without the `usernameClaim` claim, or with it blank. See [Requiring authenticated connections](#requiring-authenticated-connections) for what happens next.
 
 :::warning
 This strategy checks the token on its own and knows nothing about the user in Genesis. A token stays valid until it expires, even if the user is disabled or logs out. For a Genesis application, use `sessionAuthToken` instead.
@@ -571,7 +571,8 @@ MCP connection - outcome=rejected, detail=<reason>
 
 - **`user`** is `anonymous` when the caller couldn't be identified.
 - **`outcome`** is one of `success`, `error`, `denied: unauthenticated`, `denied: missing <right> right` or `denied: restricted table <table>`.
-- **`args`** lists the tool's arguments, shortened. Any argument whose name or value looks like a secret is shown as `***`. The match is on the argument's name or its whole value, so a JSON-string argument such as `DETAILS` that contains a secret-looking key or value is masked as a whole, not field by field.
+- **`args`** lists the tool's arguments, shortened. Any argument whose name or value looks like a secret is shown as `***`. The match is on the argument's name or any part of its value: it is a substring match on secret hints such as `PASSWORD`, `SECRET` and `TOKEN`. For example, a `query_table` call on `MY_SECRET_TABLE` logs `args=TABLE_NAME=***`. A JSON-string argument such as `DETAILS` that contains a secret-looking key or value is masked as a whole, not field by field.
+- **A call blocked by the restricted-table guard** writes two lines. The first has `outcome=denied: restricted table <table>`, which names the table, and an empty `args=`. An `outcome=error` line with the masked args follows. So the `denied` line is where the table name shows.
 - **Endpoint tools** are logged with the endpoint's name (for example, `EVENT_INSERT_TRADE`) as `tool`, with an empty `args=`, and with `durationMs=-1`. For example:
 
   ```
