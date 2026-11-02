@@ -436,9 +436,9 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
 3. You can add a new pipeline itself in the `pipelines{}` section. Use the code below:
 
 ```kotlin
-  pipeline("KAFKA_TO_DB_PIPELINE") {
+  pipeline("KAFKA_TO_DB_PIPELINE")
     // sourcing from the kafka source as defined above
-    source(source)
+    .source(source)
         // split operator to split up batch of ConsumerRecords as defined above
         .split(splitOperator).split { input -> 
             flow<FxRate>{
@@ -459,7 +459,7 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
         }
         // here we are using a simple database sink to perform the above operation - txDbSink is a transactional database sink
         .sink(txDbSink())
-    }
+    .build()
 ```
 
 :::info Checking your work
