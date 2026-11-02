@@ -623,6 +623,14 @@ Within the context of `handleRequest`, the following properties are in scope:
 | `userName` | The user name of the user making the request | When logged in |
 | `request`  | The request object                           | Always         |
 
+These properties are members of the receiver of the `handleRequest` block, so you use them directly by name. The block does not take a lambda parameter; do not write `handleRequest { request -> ... }`, because `userName` and the other properties are not then in scope.
+
+```kotlin
+handleRequest {
+    mapOf("user" to userName)
+}
+```
+
 Any write call to the `db` will create audit entries for auditable tables, and will be executed in a transaction, if supported by the database layer.
 
 Additionally, the `triggerEvent` function is available to trigger events from the endpoint:
