@@ -104,6 +104,14 @@ A process on the WebSocket channel can also load `*-web-handler.kts` files itsel
 </process>
 ```
 
+The process reads the script once, at startup, so restart the process after you add the script to its `script` entry.
+
+The endpoint is served at the path it declares, on the process port, with no process-name or base-path prefix. A leading slash is optional: `endpoint(GET, "custom-endpoint")` and `endpoint(GET, "/custom-endpoint")` declare the same route. For example, for a script that declares `endpoint(GET, "custom-endpoint")`, call it with the session token in the `SESSION_AUTH_TOKEN` header, as for any other [process-port call](#authentication):
+
+```bash
+curl -H "SESSION_AUTH_TOKEN: <session-token>" http://<host>:<process-port>/custom-endpoint
+```
+
 Multipart uploads and file downloads work on the process port in the same way as on the router. For the script syntax, see [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/).
 
 ## Internal resources
