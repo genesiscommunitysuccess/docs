@@ -371,10 +371,10 @@ Set `requireAuthenticatedConnections = true` to close that gap. The server then 
 When it starts, the server logs one line describing its security set-up:
 
 ```
-MCP security posture: strategy=SessionAuthToken, requireAuthenticatedConnections=true, requireApprovalForWrites=true, tls=false
+MCP security posture: strategy=SessionAuthToken, requireAuthenticatedConnections=true, requireApprovalForWrites=true, writesHeldForApproval=true, tls=false
 ```
 
-`requireApprovalForWrites` here is the server-level setting only. With `staticUser`, writes are also held when `requiresApproval = true` (its default), even though this line shows `requireApprovalForWrites=false`.
+`requireApprovalForWrites` is the server-level flag. `writesHeldForApproval` is the effective setting, that is, whether writes are actually held. With `staticUser` it is also `true` when `requiresApproval = true` (its default), even if `requireApprovalForWrites=false`.
 
 It also logs a warning for each of these:
 - the `staticUser` strategy;
@@ -528,7 +528,9 @@ A held write is stored in the `APPROVAL` table with `approvalMessage` as its mes
 }
 ```
 
-Events whose names start with `EVENT_PENDING_APPROVAL_` are never held, so a checker can always act on a request.
+Three events are never held: `EVENT_PENDING_APPROVAL_ACCEPT`, `EVENT_PENDING_APPROVAL_REJECT` and `EVENT_PENDING_APPROVAL_CANCEL`. They are matched by exact name, so an app event that only shares the prefix, such as `EVENT_PENDING_APPROVAL_LIMIT_UPDATE`, is still held. Because these three are never held, a checker can always act on a request.
+
+Under the `staticUser` strategy the server refuses these three events over MCP. The caller approves or rejects with `approve_request` and `reject_request`, and cancels in the UI.
 
 ### Approving or rejecting a held write
 
