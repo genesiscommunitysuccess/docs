@@ -528,9 +528,9 @@ A held write is stored in the `APPROVAL` table with `approvalMessage` as its mes
 }
 ```
 
-Three events are never held: `EVENT_PENDING_APPROVAL_ACCEPT`, `EVENT_PENDING_APPROVAL_REJECT` and `EVENT_PENDING_APPROVAL_CANCEL`. They are matched by exact name, so an app event that only shares the prefix, such as `EVENT_PENDING_APPROVAL_LIMIT_UPDATE`, is still held. Because these three are never held, a checker can always act on a request.
+Three events are never held: `EVENT_PENDING_APPROVAL_ACCEPT`, `EVENT_PENDING_APPROVAL_REJECT` and `EVENT_PENDING_APPROVAL_CANCEL`. They are matched by exact name, so an app event that only shares the prefix, such as `EVENT_PENDING_APPROVAL_LIMIT_UPDATE`, is still held.
 
-Under the `staticUser` strategy the server refuses these three events over MCP. The caller approves or rejects with `approve_request` and `reject_request`, and cancels in the UI.
+Under the `staticUser` strategy the server refuses these three events when an MCP client sends them as event tools. A checker approves or rejects with `approve_request` and `reject_request` instead, and cancels in the UI.
 
 ### Approving or rejecting a held write
 
