@@ -105,7 +105,7 @@ pipelines {
 
 To start with, the pipeline is empty. We begin by calling the source function to start the pipeline building process.
 
-Each pipeline name must be unique within its `pipelines` block, and every pipeline must end with a call to `build()`. If either rule is broken, the script fails to load; a missing `build()` produces an error that names the unfinished pipeline.
+Each pipeline name must be unique within its `pipelines` block, and every pipeline must end with a call to `build()`. If either rule is broken, the script fails to load; a missing `build()` produces an error that names the unfinished pipeline, and a duplicate name produces an error that says the pipeline "is declared more than once".
 
 ### `source`
 The source function takes an instance of an object that implements the source interface.
