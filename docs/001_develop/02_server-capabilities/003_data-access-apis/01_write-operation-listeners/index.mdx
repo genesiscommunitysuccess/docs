@@ -24,7 +24,7 @@ A listener is only bound if its package is registered as a core extension packag
 src/main/resources/META-INF/global/genesis/bootstrap/extensions/com.example.listeners
 ```
 
-Listing the package in a process's `<package>` section in processes.xml does not bind a listener. Worse, if the listener's package, or a parent package of it, is listed in a process's `<package>` section and the package is also registered through the extensions file, the listener is bound twice and the process fails at start-up with a Guice `BindingAlreadySet` error. Put the listener in a package that is outside every scanned `<package>`.
+Listing the package in a process's `<package>` section in processes.xml does not bind a listener. If a parent package of the listener's package is listed in a process's `<package>` section and the listener's package is registered through the extensions file, the listener is bound twice and the process fails at start-up with a Guice `BindingAlreadySet` error. Don't list a parent of the listener's package in a process's `<package>` section.
 
 The file must end up in the deployed app jar, on the classpath of every process that writes and should notify the listener. There is no property or flag that enables listener support.
 
