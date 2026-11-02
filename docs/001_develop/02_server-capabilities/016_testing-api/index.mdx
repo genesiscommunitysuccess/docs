@@ -51,6 +51,54 @@ Let's have a look at a simple test.
 We have a `TradeProcessor` class that takes a trade Id, processes the trade and updates the status.
 We want to make sure our trade is marked as processed, once complete.
 
+Here is the class. It has a constructor annotated with `@Inject`, which receives the database.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.trades
+
+import global.genesis.db.rx.entity.multi.SyncEntityDb
+import jakarta.inject.Inject
+
+class TradeProcessor @Inject constructor(private val db: SyncEntityDb) {
+
+    fun processTrade(tradeId: String) {
+        // look up the trade, process it and set its status to TradeStatus.PROCESSED
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="java">
+
+```java
+package com.example.trades;
+
+import global.genesis.db.rx.entity.multi.SyncEntityDb;
+import jakarta.inject.Inject;
+
+public class TradeProcessor {
+
+    private final SyncEntityDb db;
+
+    @Inject
+    public TradeProcessor(SyncEntityDb db) {
+        this.db = db;
+    }
+
+    public void processTrade(String tradeId) {
+        // look up the trade, process it and set its status to TradeStatus.PROCESSED
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+And here is the test.
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -1489,7 +1537,7 @@ Sets the level of a named logger for the duration of a test class or method, and
 - `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`. SLF4J has no `FATAL` level, so to check `FATAL` read the logger through log4j: `org.apache.logging.log4j.LogManager.getLogger("com.example.trades").isFatalEnabled`.
 - The annotation is repeatable, so you can set several loggers at once.
 - A class-level annotation applies before the class's tests start, so it also covers Genesis start-up, which happens before each test. Another extension's class-level set-up is covered only if `@WithLogLevel` is declared above it. A method-level annotation overrides it for that test.
-- It works with log4j, and with logback when log4j isn't the active logging backend. On logback, `FATAL` is applied as `ERROR`.
+- It works with log4j, and with logback when log4j isn't the active logging backend (see [Step 3: Switch logging to Logback](/develop/server-capabilities/spring-integration/getting-started/#step-3-switch-logging-to-logback)). On logback, `FATAL` is applied as `ERROR`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
