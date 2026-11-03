@@ -498,6 +498,8 @@ consolidators {
     groupName = "DEFAULT"
     tableTransient = false
     backwardsJoin = true
+    consistencyMode = ConsistencyMode.INCREMENTAL
+    excludedEmitters = setOf("PurgeTables")
     audit = false
   }
   consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
@@ -523,6 +525,8 @@ consolidators {
 | tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
 | backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
 | audit                | writes `_AUDIT` rows for inserts and modifications to an audited `output` table (see [audit](#audit)). Available from versions 8.15.44 and 10.0.0.                                         | true, false                                                                                                                                                                 | false                  |
+| consistencyMode      | INCREMENTAL applies each update to the aggregate as it arrives. EVENTUAL never applies updates incrementally: each one marks its group for a rebuild from the current source rows, which needs an [indexScan](#indexscan) on the source (a Consolidator without one is rejected at startup). Available from version 8.15.31. | INCREMENTAL, EVENTUAL | INCREMENTAL |
+| excludedEmitters     | process names whose updates this Consolidator drops; they are never applied to the aggregate. A warning listing them is logged at startup. Use an empty set to process updates from every process. `excludedEmitters("A", "B")` is shorthand for `excludedEmitters = setOf("A", "B")`. Available from version 8.15.36. | Set of process names | `setOf("PurgeTables")` (the Purger) |
 
 #### `audit`
 
