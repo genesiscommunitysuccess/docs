@@ -1013,11 +1013,13 @@ val systemDefinition: SystemDefinitionService
 val rxDb: RxDb
 val entityDb: AsyncEntityDb
 val evaluatorPool: EvaluatorPool
-val networkConfiguration: NetworkConfiguration
+val networkConfigContainer: NetworkConfigContainer
 val serviceDetailProvider: ServiceDetailProvider
 val serviceDiscovery: ServiceDiscovery
-val injector: Injector
+val injector: GenesisInjector
 ```
+
+`networkConfigContainer` holds the process's network configuration, resolved from [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/) and `network-config-<PROCESS_NAME>.yaml`, or from the system definition when neither file exists. The older `networkConfiguration` property, of type `NetworkConfiguration`, is deprecated in 10.0.0. It is derived from `networkConfigContainer` and can't express its TLS settings. Use `networkConfigContainer` instead.
 
 As shown in the previous code example, you can perform database lookups to retrieve additional information and return `true` only if the necessary rights or attributes are in place. For example, if your system has the concept of internal and external users, and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
 

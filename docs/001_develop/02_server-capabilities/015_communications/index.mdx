@@ -708,7 +708,11 @@ public class TestAuthManagerService {
 
 #### Constructor
 
-`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)`
+`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfigContainer, requestLogger: RequestLogger)`
+
+`configuration` takes the same settings as [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/). Inside a process, inject `NetworkConfigContainer` to get the configuration that process resolved. `secure` is only taken into account when `tls.mode` is `SELECTIVE_TLS`.
+
+The constructors that take a `NetworkConfiguration`, or no configuration at all, are deprecated.
 
 #### Functions
 
@@ -716,11 +720,11 @@ public class TestAuthManagerService {
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Reply<O>` |
-| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout,): O` |
-| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout): O where O : Outbound, O : ParametricType<P>` |
+| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Reply<O>` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout,): O` |
+| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout): O where O : Outbound, O : ParametricType<P>` |
 | sendMessage | `fun sendMessage(set: GenesisSet): Boolean` |
 | sendMessage | `fun sendMessage(set: GenesisMessage): Boolean` |
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
@@ -729,8 +733,8 @@ public class TestAuthManagerService {
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout): O?` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.messaging.requestTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): O?` |
 | addListener | `fun addListener(listener: GenesisMessageListener<GenesisSet>)` |
 | removeListener | `fun removeListener(listener: GenesisMessageListener<GenesisSet>)` |
 | addGenesisMessageListener | `fun <V : GenesisMessage> addGenesisMessageListener(clazz: Class<V>, listener: GenesisMessageListener<V>)` |
