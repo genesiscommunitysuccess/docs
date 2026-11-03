@@ -330,7 +330,7 @@ val recordB = list[1]
 `getByCriteria` is a database operation that supports criteria, sorting and pagination.
 Criteria are optional. Where supported, they are pushed down to the underlying database; otherwise, they are evaluated lazily.
 Sorting can reference fields or indices and is only supported on SQL databases.
-Pagination is supported natively on SQL databases. If criteria are evaluated lazily, pagination is also evaluated lazily.
+Pagination is supported natively on SQL databases, when the criteria are evaluated entirely on the database. If any part of the criteria is evaluated lazily, a query with paging fails with `Paging not supported on lazy criteria evaluation`.
 Derived fields are evaluated only in the application layer, so any criteria on them are evaluated lazily.
 Sorting on derived fields is not supported.
 
@@ -338,7 +338,7 @@ Sorting on derived fields is not supported.
 `getByCriteria` is supported from version 8.14.0
 
 Views are fully supported in this operation, including joined tables, when the system definition item [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) is `true`, which is the default from 10.0.
-Otherwise, criteria on joined tables are evaluated lazily and sorting by joined fields is not supported.
+If it is set to `false`, criteria on joined tables are evaluated lazily, so they can't be combined with paging, and sorting by joined fields is not supported.
 :::
 
 In this example, we query for a specific instrument.
