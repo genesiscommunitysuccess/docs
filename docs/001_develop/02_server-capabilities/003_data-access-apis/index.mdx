@@ -337,7 +337,7 @@ Sorting on derived fields is not supported.
 :::info
 `getByCriteria` is supported from version 8.14.0
 
-Views are fully supported in this operation, including joined tables, only when the system definition `SqlViewsEnabled` is set to `true`.
+Views are fully supported in this operation, including joined tables, when the system definition item [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) is `true`, which is the default from 10.0.
 Otherwise, criteria on joined tables are evaluated lazily and sorting by joined fields is not supported.
 :::
 
@@ -381,7 +381,7 @@ This is not an either/or situation. In cases where the platform is able to parti
 
 Lazily evaluated criteria:
 * Any criteria on a derived field
-* If `SqlViewsEnabled` is not true, in views, any criteria on a field on a joined table
+* If `SqlViewsEnabled` is set to `false`, in views, any criteria on a field on a joined table
 * If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins), any criteria on a field on a joined table
 * On FDB, any criteria that is not a direct index match. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
