@@ -2009,6 +2009,10 @@ Every view gets its repositories automatically. When you [build your DAOs](/buil
 
 View repositories are read-only, with a generated read method for each index of the view. The Entity Db can read views too, using generic methods that take the index as an argument.
 
+:::warning
+The generated view repositories are deprecated, except those of views with [parameterized joins](../data-model/#parameterized-joins). Their interfaces and implementation classes carry `@Deprecated("Deprecated in 6.6. Use AsyncEntityDb or SyncEntityDb.")`, so code that uses them compiles with a deprecation warning. To read views, use the [Entity Db](#entity-db-api) instead.
+:::
+
 ### Write result
 
 This is a single catch-all type for results of a write operation when using RxDb.
