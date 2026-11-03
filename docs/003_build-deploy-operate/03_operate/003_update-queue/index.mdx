@@ -200,6 +200,8 @@ The Genesis platform enables you to use a [Jakarta Messaging](https://en.wikiped
 
 Using a centralized external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity at the cost of maintaining or (re-using) a message broker.
 
+The JMS update queue publishes updates one at a time, in the order they were submitted, and delivers updates for the same record in the order they arrive.
+
 ### Prerequisites
 
 To use Genesis Jakarta Messaging on the platform, you must install **ArtemisMQ in the host** (or hosts in case of [High Availability](#high-availability)). This is described in the [ArtemisMQ documentation](https://activemq.apache.org/components/artemis/documentation/).
