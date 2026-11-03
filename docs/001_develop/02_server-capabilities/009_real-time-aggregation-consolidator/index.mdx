@@ -498,6 +498,7 @@ consolidators {
     groupName = "DEFAULT"
     tableTransient = false
     backwardsJoin = true
+    audit = false
   }
   consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
     config {
@@ -521,6 +522,30 @@ consolidators {
 | groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                             | Free text.                                                                                                                                                                  | No grouping by default |
 | tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
 | backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
+| audit                | writes `_AUDIT` rows for inserts and modifications to an audited `output` table (see [audit](#audit))                                                                                       | true, false                                                                                                                                                                 | false                  |
+
+#### `audit`
+
+Set `audit = true` to write audit records when the Consolidator inserts or modifies rows in its `output` table. The `output` table must be declared with `audit = details(...)` (see [Audited tables](/develop/server-capabilities/data-model/#audited-tables)); for an `output` table without audit, the setting has no effect.
+
+```kotlin
+consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
+  config {
+    audit = true
+  }
+  // Rest of consolidator definition
+}
+```
+
+Each audit record has these values:
+
+| Field              | Value                                                  |
+|--------------------|--------------------------------------------------------|
+| `AUDIT_EVENT_USER` | `SYSTEM`                                               |
+| `AUDIT_EVENT_TYPE` | the Consolidator name                                  |
+| `AUDIT_EVENT_TEXT` | `INSERT` for a new row, `MODIFY` for an updated row    |
+
+When the Consolidator runs with [`--coldStart`](#coldstart), clearing the `output` table is not audited; the rows written by the rebuild that follows are.
 
 #### `groupName`
 
