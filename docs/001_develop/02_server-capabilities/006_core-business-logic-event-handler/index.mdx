@@ -43,6 +43,7 @@ All the events that you specify are available via REST automatically, including 
 
 ## Example configuration
 
+In this example, `pricingLibrary`, `Instrument` and `Counterparty` are placeholders that stand in for your own entities and services.
 
 ```kotlin
 
@@ -1314,6 +1315,9 @@ This test makes sure that the Event Handler returns an ack.
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.message.core.event.EventReply
+
+
 @Test
 fun testHelloWorld() {
     val reply = client.sendEvent(
@@ -1329,6 +1333,8 @@ fun testHelloWorld() {
 <TabItem value="java">
 
 ```java
+import global.genesis.message.core.event.EventReply;
+
 @Test
 void testHelloWorld() {
     var reply = client.builder()
