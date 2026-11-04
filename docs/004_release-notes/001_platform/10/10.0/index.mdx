@@ -1,0 +1,1034 @@
+---
+title: '10.0'
+sidebar_label: '10.0'
+sidebar_position: 1
+id: '10.0'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-changes-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
+## Server
+
+### Breaking changes
+
+* build!: drop the BOM constraints orphaned by the v10 module removals
+* build!: enable JDK 25 toolchain + Mockito-on-JDK-25 remediation + Guice 5 -> 7 and Javax -> Jakarta migration + Junit 5 -> 6 and Junit4 support retirement
+* build!: retire the Maven plugin submodules in favour of the Gradle codegen plugins
+* build(deps)!: Update to Apache Fory 0.14.1
+* build(deps)!: Upgrade Kotlin to 2.3
+* build(deps)!: bump camelVersion from 4.14.4 to 4.18.0 in /genesis-conventions
+* build(deps)!: drop ktor-client-gson, fest-assert and the unused commons-csv declaration
+* build(deps)!: drop the javax JAXB api and impl, nothing loads them
+* build(deps)!: migrate genesis-server to Jackson 3.1.4 
+* chore!: delete orphaned genesis-wsbridge and stale build-output directories
+* chore!: remove the genesis-sync module
+* chore(genesis-codegen)!: delete the deprecated GenesisVersion
+* chore(genesis-dbtogenesis)!: drop the abandoned bonecp test dependency
+* ci!: make Postgres 15 the default CI database, H2 and FDB label-gated
+* feat!: Move CRON_RULE_AUDIT to generated audit table and migrate data via installHooks
+* feat!: deprecate genesis-dbtogenesis and genesis-genesistodb
+* feat!: remove the genesis-groovy module
+* feat!: remove the genesis-hft module and the HFT feature line 
+* feat!: remove the genesis-protobuf adapter module
+* feat!: remove the genesis-protobufsim module
+* feat!: remove the genesis-publisher module
+* feat!: remove the genesis-shell module and the ki-shell dependency
+* feat!: remove the genesis-web-client-api client SDK
+* feat!: remove the genesis-webmon module after all
+* feat!: remove the legacy genesis-streamer module
+* feat!: remove the legacy genesis-streamerclient module
+* feat(genesis-clustersupport)!: delete the unused job scheduler package
+* feat(genesis-codegen)!: deprecate the generated Fields object
+* feat(genesis-codegen)!: stop emitting the deprecated entity Builder and is-prefixed setters
+* feat(genesis-codegen)!: stop generating the deprecated per-entity table repositories 
+* feat(genesis-config)!: remove the deprecated Shiro security helpers and drop shiro-core
+* feat(genesis-data-ingest)!: move CDC support to platform-integrations
+* feat(genesis-db)!: default DbLayer to SQL and deprecate FoundationDB
+* feat(genesis-db)!: delete the HIDDEN binary-compatibility shims
+* feat(genesis-db)!: deprecate the RxDb, RxDbImpl and RxEntityDb types
+* feat(genesis-db)!: enable SQL views by default 
+* feat(genesis-db)!: remove dead transaction interfaces, safeWriteTransaction and isBulkSorted 
+* feat(genesis-db)!: remove deprecated reflection helpers, SQLDictionaryStore and SqlMode.LEGACY
+* feat(genesis-db)!: remove entity-level continuation reads
+* feat(genesis-db)!: remove the deprecated Entity interface
+* feat(genesis-db)!: remove the deprecated buildStatement overloads
+* feat(genesis-db)!: remove the deprecated cache API isTableCached and addTable(String) 
+* feat(genesis-db)!: remove the remaining deprecated database-details members
+* feat(genesis-db)!: remove vararg overload from entity-DB getAllAsList
+* feat(genesis-db)!: sync-core DB layer with Rx/Sync/Async record & entity APIs
+* feat(genesis-dictionary)!: deprecate the fields dictionary DSL in favour of inline table fields
+* feat(genesis-dictionary)!: move framework fields inline in updateTablesDictionary
+* feat(genesis-dictionary)!: remove LambdaExtractor, dtaHosts and enumField 
+* feat(genesis-eventhandler)!: deprecate the AbstractEventHandler API ahead of v11 removal
+* feat(genesis-eventhandler)!: remove the legacy XML event-handler definition format 
+* feat(genesis-net)!: add HTTP/Websocket transport support and improve Netty byte buffer reusability
+* feat(genesis-net)!: native HTTP endpoints per process (req-rep and eventhandler) + streaming router proxy
+* feat(genesis-net)!: remove ListenableFuture-based sendReqRep
+* feat(genesis-net)!: switch binary serialization to Smile and remove MessagePack dataformat
+* feat(genesis-pal)!: converge the permissioning auth DSL on filter and authKey
+* feat(genesis-pal)!: remove deprecated eventhandler and requestserver DSL members
+* feat(genesis-pal-datapipeline)!: remove deprecated DSL syntax and guard pipeline completion 
+* feat(genesis-pal-dataserver)!: remove deprecated DSL syntax and the FURY serialization type
+* feat(genesis-process)!: decouple web-handler script DSL from router into genesis-process
+* feat(genesis-process)!: remove deprecated log-level, message-delegator and test auth-cache members
+* feat(genesis-router)!: remove the deprecated webSocketCompression router setting
+* feat(genesis-testsupport)!: honour a network-config file and run a TLS-enabled process
+* feat(server)!: transport-neutral endpoints and response composition
+* fix!: improve warning/error around derivedFields on dataservers, request-replies
+* fix(build)!: declare script permissions on genesis distribution archives
+* fix(codegen-gradle-plugin)!: fail build if DEPLOYED_PRODUCT is set but generated jars aren't distributed
+* fix(coreproduct)!: remove MigrateDictionaryToGenesis scripts broken by dta dependencies removal in 8.15.0 
+* fix(exec-gradle-plugin)!: add BLOCK_GENESIS_INSTALL Sysdef to block genesisInstall in docker deployments
+* fix(genesis-cluster)!: correct three cluster defects and converge the ClusterPort default 
+* fix(genesis-cluster)!: replace Java serialization on the cluster transport
+* fix(genesis-commons)!: stop exporting the Kotlin compiler to every consumer
+* fix(genesis-config)!: reject unrecognised ClusterMode values at startup 
+* fix(genesis-db)!: converge the update-queue default on ZeroMQ
+* fix(genesis-evaluator)!: point dynamic rules using !in at !(A in B)
+* fix(genesis-net)!: resolve every network consumer from NetworkConfigContainer
+* fix(genesis-pal-datapipeline)!: move a Camel file to .error when the pipeline stops on an uncaught error
+* fix(genesis-process)!: correct boostrap typo to bootstrap in META-INF resource path
+* fix(genesis-router)!: Sanitise output strings for XSS attacks
+* fix(genesis-router)!: apply allowList/blockList, strict status and XSS settings to proxied HTTP requests
+* fix(server)!: API contract cleanup across the transport stack
+* perf(genesis-jackson)!: lazily init cold mappers and per-instance schema registry
+* refactor!: decouple genesis-calendar from genesis-process 
+* refactor!: decouple genesis-codegen and genesis-process from genesis-hft
+* refactor(codegen)!: remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
+* refactor(deps)!: bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
+* refactor(genesis-commons)!: remove XMLConfiguration-returning ConfigReadable methods
+* refactor(genesis-commons)!: retire the ANTLR Kotlin parser 
+* refactor(genesis-console)!: move StatusDataserver onto genesis-pal-dataserver
+* refactor(genesis-db)!: drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
+* refactor(genesis-dictionary)!: remove the deprecated GenesisDictionary.sequenceIdFields
+* refactor(genesis-environment)!: implement the remap type conversions without commons-beanutils
+* refactor(genesis-environment)!: migrate PopulateHolidays to maintained de.focus-shift jollyday
+* refactor(genesis-evaluator)!: migrate rule event handlers to the typed EventHandler API 
+* refactor(genesis-eventhandler)!: remove unused generic insert/modify/delete event handlers 
+* refactor(genesis-net)!: make ClientConnectionsManager internal
+* refactor(genesis-pal)!: remove deprecated FileReader definition entry points
+* refactor(genesis-pipeline-api)!: remove deprecated DbSink and DbRxSink typealiases
+* refactor(groovy)!: trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
+
+### Features
+
+* feat(clustersupport): Consul-backed gFlake NodeId allocation, wiring & reclamation
+* feat(codegen): Reduce application build time via codegen slice+facade split and add KTS cache reusability + incompatibility detection
+* feat(core): Support overriding process level system definition properties using environment variables
+* feat(coreproduct): Allow override of any process level config through sysdef or environment variables, including JVM options
+* feat(coreproduct): increase maxSize to 256 for SYSTEM_KEY field
+* feat(cube): reject a non-boolean baseCriteria at registration
+* feat(cube): validate a base-criteria template's own literals at registration
+* feat(dataserver): export how much subscribed criteria overlap behind an opt-in metrics flag
+* feat(db): notify AsyncWriteOperationListener from the async write paths
+* feat(distribution-gradle-plugin): let platform PBCs build their distribution with the plugin
+* feat(docker): Optimise generated Dockerfile build
+* feat(exec-gradle-plugin): add feature-flag support to project-overview.json
+* feat(genesis-cluster): Add `DISABLED` ClusterMode option to completely disable primary only checks and cluster health messages
+* feat(genesis-cluster): Add `ZeroMQProxyUnicastRelayExcludedTopics` system definition option to avoid retransmitting specific update queue topics to other cluster nodes
+* feat(genesis-clustersupport): scope ServiceDiscovery by (service, resource) composite key
+* feat(genesis-codegen): add equals and hashcode methods to entity builder classes
+* feat(genesis-columnar): SCDB columnar wire encoding for dataserver & request-server
+* feat(genesis-config): load build-time-compiled .kts instead of compiling them at startup
+* feat(genesis-conventions): centralise Spring dependency management via an opt-in platform
+* feat(genesis-conventions): configure dokka to resolve @sample code samples
+* feat(genesis-conventions): declare the test logging backend in one line
+* feat(genesis-data-cube-spring-boot-starter): Exposure API — declarative CubeResource beans + query seam
+* feat(genesis-data-cube-spring-boot-starter): address rows with a server-decided ROW_REF column
+* feat(genesis-data-cube-spring-boot-starter): bind watermark-backed cache freshness
+* feat(genesis-data-cube-spring-boot-starter): canonical request identity token
+* feat(genesis-data-cube-spring-boot-starter): deterministic pagination via identity ORDER BY tiebreaker
+* feat(genesis-data-cube-spring-boot-starter): front-end filtering typed columns, unified filter model, JPQL compiler
+* feat(genesis-data-cube-spring-boot-starter): initial implementation of genesis data cube
+* feat(genesis-data-cube-spring-boot-starter): make the pivot column cap configurable
+* feat(genesis-data-cube-spring-boot-starter): plan named operations at registration to type their aggregate outputs
+* feat(genesis-data-cube-spring-boot-starter): port the SSRM dev server onto the real cube HTTP endpoints
+* feat(genesis-data-cube-spring-boot-starter): publish JSON Schema leaves alongside the cube capability document
+* feat(genesis-data-cube-spring-boot-starter): return a slice rather than a page from the cube HTTP plane
+* feat(genesis-data-cube-spring-boot-starter): row identity and composite-key columns
+* feat(genesis-data-cube-spring-boot-starter): serve the cube HTTP snapshot plane
+* feat(genesis-data-cube-spring-boot-starter): serve the cube resource capability document
+* feat(genesis-data-cube-spring-boot-starter): source-set extraction for cube sources
+* feat(genesis-data-spring-boot-starter): add a Spring-native @UpdateQueueListener
+* feat(genesis-data-spring-boot-starter): add support h2, oracle and sql server
+* feat(genesis-data-spring-boot-starter): provide jpa support in spring
+* feat(genesis-data-spring-boot-starter): publish JPA repository writes to the update queue
+* feat(genesis-db): Add transactional support for SqlDatabaseConnection, integration with our standard database APIs, and opt-in system definition property for automatic table/column naming convention translation
+* feat(genesis-db): SQL criteria translation framework with SQLite adapter
+* feat(genesis-db): add `updateBy` to SyncEntityDb
+* feat(genesis-db): add configurable ZeroMQ CURVE auth and XPUB readiness flow
+* feat(genesis-db): add delimiter-aware ContainsWordsStartingWithIgnoreCase
+* feat(genesis-db): added `DbMaxRetryBeforeExit` system property to terminate process after failed retries
+* feat(genesis-db): configurable IO dispatcher for SyncEntityDb
+* feat(genesis-db): default getRangeFromEnd numKeyFields to the index width
+* feat(genesis-db): deprecate the ASYNC backward-join cache mode
+* feat(genesis-db): derive cache generations from update-queue watermarks
+* feat(genesis-db): opt-in cached point reads inside transactions
+* feat(genesis-db): split WriteOperationListener into sync/async flavors
+* feat(genesis-db-server): rebuild GENESIS_DB_SERVER on genesis-pal-dataserver
+* feat(genesis-dbtest): dictionary-cache drift consistency test
+* feat(genesis-dictionary): inline field parity with the fields DSL
+* feat(genesis-dictionary): lossless inline-field migration and dictionary equivalence check
+* feat(genesis-dictionary): share non-enum fields with sharedField
+* feat(genesis-environment): generate ZeroMQ CURVE keys and client certificates
+* feat(genesis-environment): rename a column in one table with TABLE.FIELD in RenameFields
+* feat(genesis-environment): support custom main classes
+* feat(genesis-environment): support generic .templt. rendering in genesisInstall
+* feat(genesis-eventhandler-spring-boot-starter): add support for suspend methods
+* feat(genesis-eventhandler-spring-boot-starter): auto-audit JPA writes in Spring event handlers
+* feat(genesis-eventhandler-spring-boot-starter): bind EventHandlerType.INTERNAL for in-process event triggering
+* feat(genesis-eventhandler-spring-boot-starter): implement EventControllerAdvice support
+* feat(genesis-jackson): add Smile serialization for GenesisSet
+* feat(genesis-jackson): move cube temporal serialisers into genesis-jackson
+* feat(genesis-jpa-base): add @Transactional annotations and paging/sorting support
+* feat(genesis-ldap): multi-connection, DSL config factory, trust mode, nullable canonical id, hook lifecycle
+* feat(genesis-log4j-testsupport): add WithLogLevel annotation to adjust log levels during tests
+* feat(genesis-logging): provide support for switching between logback and log4j
+* feat(genesis-logging-api): log the active logging backend and resolved config at process start-up
+* feat(genesis-mcp): built-in platform tools with tiered auth, maker-checker approvals, and audit
+* feat(genesis-messages): rename Approvable.approvalMessage to resultMessage
+* feat(genesis-pal): add @sample coverage across GPAL DSL modules
+* feat(genesis-pal): introduce 'internal' resource scoping for router gating
+* feat(genesis-pal-consolidator): Add IGNORE to OnNotFound config in ConsolidatorBuilder
+* feat(genesis-pal-consolidator): Allow consolidator definitions without a select block
+* feat(genesis-pal-consolidator): GPAL consolidator stored counts diverge from source under concurrent input
+* feat(genesis-pal-consolidator): Make build block optional when onNotFound is not BUILD
+* feat(genesis-pal-consolidator): add excludedEmitters support
+* feat(genesis-pal-datapipeline): add ability for dbBatchQuery source to start polling from latest
+* feat(genesis-pal-datapipeline): add record count to pipeline processing context
+* feat(genesis-pal-dataserver): Add SQLite backend for full "order by" support including pagination, criteria to SQL translation, avoid LMDB limitations, and other benefits (with trade-offs)
+* feat(genesis-pal-dataserver): report lmdb space usage as metrics
+* feat(genesis-pal-requestserver): expose Request.Details to custom reqrep handlers
+* feat(genesis-pal-requestserver): opt-in response caching with ETag validation
+* feat(genesis-pal-streamerclient): name GenesisSet streamer-client fields with TableField
+* feat(genesis-parent): add @ProcessArg annotation to GenesisJunit
+* feat(genesis-parent): add @ProvidedType, a type-safe alternative to @ProvidedInstance
+* feat(genesis-process): Add sysdef flag to print DATADUMP_ON messages as single-line JSON string
+* feat(genesis-process): add runtime deprecation-warning mechanism for modules, packages and DB engines
+* feat(genesis-process): add system definition flag to explicitly disable tracing
+* feat(genesis-process): default /health, /health/details, /health/readiness, and /prometheus endpoints per process
+* feat(genesis-process): refuse Netty-typed endpoints at startup in one-port mode
+* feat(genesis-resource-daemon): LDAP login mode for the management console
+* feat(genesis-resource-daemon): authenticated management API and browser console
+* feat(genesis-router): Add `httpCompression` option to router definition
+* feat(genesis-router): add sessionCookies configuration to allow undefined max-age cookies
+* feat(genesis-router): add ssoToken pre-auth cookie support for SSO token delivery
+* feat(genesis-router): sysdef toggles for OpenAPI and RESOURCES_REQUEST, and hide internal/blocked resources from both
+* feat(genesis-router): sysdef-overridable router and MCP ports
+* feat(genesis-session): opt-in on-demand session cache for process HTTP auth, router and MCP
+* feat(genesis-spring-boot-gradle-plugin): generate jpa entities for genesis views
+* feat(genesis-spring-boot-gradle-plugin): let the JPA generator target a named source set
+* feat(genesis-spring-boot-starter): authenticate callers on the Spring HTTP plane
+* feat(genesis-spring-boot-starter): handle duplicate Guice-to-Spring bean name clashes
+* feat(genesis-spring-boot-starter): resolve web server genesis settings once at startup
+* feat(genesis-spring-boot-starter): route a Spring app's HTTP surface through GENESIS_ROUTER
+* feat(genesis-spring-boot-starter): serve the one-port surface with genesis TLS
+* feat(genesis-spring-testsupport): integration test support for Spring Boot event handlers
+* feat(genesis-subcore): Update startServer script to allow archiving to run in the background
+* feat(genesis-subcore): add deleteAll() and deleteAll(entities) to GenesisJpaRepository
+* feat(genesis-subcore): genesis-dev-tools convention with generateZeroMqCurveKeys and inlineDictionaryFields
+* feat(genesis-testsupport): add @ProvidedDictionary
+* feat(genesis-testsupport): deprecate legacy pre-GenesisJunit test-support API
+* feat(gradle): Add packagingStrategy property to ExecExtension for app distribution folder structure
+* feat(jpa): map schema DATE fields to LocalDate
+* feat(lifecycle): replace Netflix Governator with Genesis lifecycle adapter
+* feat(pipeline): event sink with process/service targeting
+* feat(script-compilation-gradle-plugin): compile Genesis .kts in a source set of their own
+* feat(script-compilation-gradle-plugin): compile same-named .kts under distinct class names
+* feat(script-compilation-gradle-plugin): enable build-time .kts compilation without the settings plugin
+* feat(server): multipart uploads on the servlet transport
+* feat(server): route a one-port Spring app through GENESIS_ROUTER by stripping a published prefix
+* feat(server): servlet transport adapter for one-port mode
+* feat(server): transport-neutral HTTP request abstraction
+* feat(server): transport-neutral core seam for Spring/Genesis server unification
+* feat(testsupport): mark @ResetQuery and CacheFlusher as platform-internal test API
+* feat: Add formatting support for java.time Temporal types
+* feat: Implement Graceful Shutdown in Spring interop
+* feat: Permissions Support for Spring Boot Event Handler
+* feat: Prepare exec and distribution plugin for dynamic file creation
+* feat: Spring Boot Event Handler implementation
+* feat: add AppDistTarGz task that mirrors AppDistZip; but create a tar.gz file
+* feat: added 'METRICS_JVM_ENABLED' field to SysDefs to allow users to choose to run jvm specific metrics
+* feat: automatically detect @GenesisApplication and provide process xml
+* feat: deprecate genesis-consolidator2 instead of removing it
+* feat: deprecate genesis-dataserver2 instead of removing it
+* feat: deprecate genesis-streamer instead of removing it
+* feat: deprecate genesis-web-client-api instead of removing it
+* feat: deprecate genesis-webmon instead of removing it
+* feat: harden module-deprecation detection with classpath scanning and a build-time warning
+* feat: write _AUDIT rows for consolidator writes to audited tables 
+
+### Performance improvements
+
+* perf(commons): take the Expr date caches off Caffeine and hold the today and range brackets
+* perf(criteria): fold comparisons on one variable across an AND/OR chain
+* perf(criteria): serve cached criteria without queuing behind a compile
+* perf(criteria): share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval
+* perf(dataserver): cut per-row, per-client waste from the update fan-out
+* perf(dataserver): reuse authorisation keys and verdicts across a batch, and keep authKeyWithUserName keys per user
+* perf(db): parse and compile a repeated getByCriteria once, in the engine's criteria cache
+* perf(genesis-commons): cut GenesisSet construction, message-boundary and conversion overhead
+* perf(genesis-commons): load out-of-order keys into the paged sorted maps faster with no extra heap
+* perf(genesis-db): optimize DataTypeConverter resolution
+* perf(genesis-pal-dataserver): batch enrichment DB lookups to reduce N round-trips to 1
+* perf(genesis-pal-dataserver): cache derived field evaluations lazily in EnhancedRow
+* perf(genesis-pal-dataserver): cache full-table row count for O(1) lookup
+* perf(genesis-pal-dataserver): optimize LMDB batch dedup and reduce runBlocking overhead
+* perf(genesis-pal-dataserver): parallelize client fan-out in DataserverUpdateProcessor
+* perf(genesis-pal-dataserver): reduce boxing in MemoryTable, MemoryTableSubscriber, and PublishClientIndex
+* perf(genesis-pal-dataserver): replace runBlocking with non-blocking dispatch in ConnectionManager
+* perf(genesis-pal-execution): Reduce memory footprint of backward join cache by optimising backward joins implementation and add special case for Identity branches
+* perf(genesis-pal-execution): encode each join key once per update in the memory-efficient sync backward-join cache
+* perf(genesis-pal-execution): exact memory-efficient sync backward-join cache with compact storage
+* perf(genesis-pal-execution): share parent keys between sibling identity backward-join branches
+* perf(genesis-pal-execution): store root primary keys encoded in the memory-efficient backward-join cache
+
+### Fixes
+
+* fix(.github): stop a GitHub 500 on test-result publish failing the PR build
+* fix(build): artifactoryPublish drops library modules under Gradle 9 (module-conventions afterEvaluate)
+* fix(build): compile against the JDK 17 API with --release 17
+* fix(build): stop wholesale System.getProperties() read breaking the configuration cache
+* fix(build): wire ktlint check tasks to generator tasks for Gradle 9
+* fix(build): wire test source-set tasks to generateInternalModules for Gradle 9
+* fix(build-gradle-plugin): let the root build script declare genesisManifest \{\}
+* fix(cicd): estate-usage scan picked wrong current-major version
+* fix(cicd): resolve genesisVersion for Maven-only estate-scan consumers
+* fix(cicd): restore the OWASP dependency-check vulnerability gate
+* fix(cicd): run the Spring module SQL tests in CI
+* fix(cicd): stop publishing into the shared runner maven local
+* fix(cicd): stop the OWASP gate publishing an incomplete NVD database
+* fix(cicd): uncap the changed-file gate and cover the composed test annotation
+* fix(cluster): make HostDiff actually reach every node and report failures
+* fix(clustersupport): route pipeline event sink through MessageService with UNAVAILABLE retry and auto-failover
+* fix(codegen): fix seed-app publish and stale ZipFile handle in PR CI
+* fix(codegen): gate sysdef-mismatch fail-fast behind existing reuseUpstream.strict flag
+* fix(codegen): generateView defines overridden upstream tables twice with overrideSlices
+* fix(codegen): multi-word product DAO slice missing local tables
+* fix(codegen): preserve slice publishing under PBC dictionary-cache disabler
+* fix(codegen): sliceJar output dir collision with build/libs
+* fix(codegen-gradle-plugin): auto-resolve local product in tableUnion overrideSlices check
+* fix(codegen-gradle-plugin): drop all upstream types for override products
+* fix(codegen-gradle-plugin): evaluate every own dictionary under reuseUpstream and fail PBCs on mismatched prefixes
+* fix(codegen-gradle-plugin): generate upstream product classes locally on a lenient sysdef mismatch
+* fix(codegen-gradle-plugin): honour overrideSlices and src/main/genesis/cfg in the reuseUpstream override check
+* fix(codegen-gradle-plugin): publish only the slice jar from slice modules whatever the build names its publication
+* fix(codegen-gradle-plugin): publish the generated modules without relying on the build's publishing block
+* fix(commons): free the criteria replacer when a compile fails
+* fix(consul): sessionJob starts unconditionally and monitor checks always register as critical
+* fix(consul): shut down replaced client to stop Netty reconnect loop retrying dead node
+* fix(core): Process shuts down when a dependant process has shut down
+* fix(core): surface removed-module deprecations at install and startProcess
+* fix(coreproduct): Handle boolean start flags in getListOfProcessNames()
+* fix(coreproduct): keep pre-logging startup failures in .log.err in every start mode
+* fix(coreproduct): make logback-default.xml honour L/RL and match log4j2 rollover
+* fix(coreproduct): report removed Groovy support instead of an unknown scripting engine
+* fix(coreproduct): show monitor details in mon -a while limiting default status messages to warning/error
+* fix(coreproduct): skip configured jar prefixes in manifest and classpath-file resolution
+* fix(criteria): parse date literals the same way in memory as in SQL
+* fix(daemon): Fix minor resource leak in daemon script if an exception occurs
+* fix(daemon): resolve the network config in standalone script DI
+* fix(datapipeline): bound sendEventOnCompletion's hold inside a txDbSink transaction
+* fix(dataserver): enrichedAuth queries never receive live grants
+* fix(dataserver): inherit server-level SQLite strictMode and batchSize in query-level sqlite \{ \}
+* fix(dataserver2): apply the criteria vocabulary to client criteria
+* fix(db): bridge WriteOperationListener onto the SQL sync write path
+* fix(db): log the FDB/FDB2 deprecation warning on the Guice engine path
+* fix(db): refuse to start on an empty dictionary when the 8.15 one is still in METADATA.DICTIONARY
+* fix(dbmon): compare against the comparator date in Expr.dateIsAfter
+* fix(deps): exclude transitive dependency jmh-core from genesis distribution
+* fix(distribution-gradle-plugin): publish the bin and minimal zips as one publication
+* fix(distribution-gradle-plugin): reuseUpstream default fallback and upstream slice-jar resolution ordering
+* fix(exec-gradle-plugin): appDistZip crash when genesisServer/genesisWeb configurations are empty
+* fix(exec-gradle-plugin): bind logback on the test classpath when backend = LOGBACK
+* fix(exec-gradle-plugin): ensure AppDistZip and AppDistTarGz files are compatible with gradle config cache
+* fix(exec-gradle-plugin): ensure image name is always lowercase
+* fix(exec-gradle-plugin): list enum Gradle property values as declared in the invalid-value error
+* fix(exec-gradle-plugin): set GENESIS_PRIMARY in the dev docker-compose template
+* fix(exec-gradle-plugin): support multiple files in genesisServer for appDistZip
+* fix(exec-gradle-plugin): sync an application's seed data into genesis-home
+* fix(genesis-bom): repair BOM and platform dependency metadata for Spring apps
+* fix(genesis-cluster): Consul TTL healcheck pings should only start after successful service registration
+* fix(genesis-cluster): Validate hostname in order to produce specific error
+* fix(genesis-clustersupport): Consul failover — UNAVAILABLE nack swap + exclude STARTING primaryOnly nodes
+* fix(genesis-clustersupport): Ensure Consul TTL health check coroutines run independently to avoid contention problems
+* fix(genesis-clustersupport): Make consul health checks use elapsed time scheduling rather than fixed time scheduling and simplify primaryOnly health checks
+* fix(genesis-clustersupport): demote a primary that loses contact with Consul
+* fix(genesis-clustersupport): distinct exit code for NodeId-lost halt
+* fix(genesis-clustersupport): drain one merged stream so a chatty child cannot deadlock a runtime command
+* fix(genesis-clustersupport): extend transient-I/O retry to the explicit-pin path
+* fix(genesis-clustersupport): fix race condition in consul health point registration
+* fix(genesis-clustersupport): keep service discovery updating, heal missed deletes, bound MCP lookups
+* fix(genesis-clustersupport): keep the wildcard bind where Consul must reach the process
+* fix(genesis-clustersupport): migrate ProcessHeartbeatTest off the JUnit 4 API
+* fix(genesis-clustersupport): publish the resource internal flag from the Consul service registry
+* fix(genesis-clustersupport): reach a one-port process on the channel it published
+* fix(genesis-clustersupport): replay current snapshot on addServiceListener to avoid waitForDependencies hang
+* fix(genesis-clustersupport): restore statusMessage over the wire and tolerate its absence
+* fix(genesis-clustersupport): scope ClusterManagerProvider as a singleton
+* fix(genesis-clustersupport): scope ConsulClientProvider as a singleton
+* fix(genesis-clustersupport): use a claim token instead of timestamps to detect sibling adoption
+* fix(genesis-codegen): backtick-escape Kotlin-keyword field names in generated DAOs
+* fix(genesis-codegen): suppress the RxDb deprecation in generated view repos, configs and join caches
+* fix(genesis-commons): DST-safe week boundary in dateTimeIsInRange tests
+* fix(genesis-commons): Disable ANTLR4 Groovy parser to improve parsing performance and reduce memory footprint
+* fix(genesis-commons): one strict criteria rule set for dataserver2 and genesis-db
+* fix(genesis-commons): run each lifecycle hook exactly once and stop pinning classloaders
+* fix(genesis-commons): skip teardown of an already-destroyed instance during the drain too
+* fix(genesis-config): Replace shiro with javax.crypto and add tests for backwards compatibility
+* fix(genesis-config): merge SysDef JVM_OPTIONS heap flags instead of appending
+* fix(genesis-config): resolve @file:ScriptModules before parsing so wildcard imports see it
+* fix(genesis-config): script cache invalidation targets wrong file in attemptToRecover
+* fix(genesis-console): reply to SYSTEM_DEFINITION when ClusterPort is unset
+* fix(genesis-conventions): guard the Spring starters' logging-provider classpath contract
+* fix(genesis-conventions): resolve Gradle plugins from our own repo and Plugin Portal before Maven Central
+* fix(genesis-criteria): `dateTimeIsInRange` throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* fix(genesis-criteria): allow nested binary expressions in evaluator result/rule expressions
+* fix(genesis-data-cube-spring-boot-starter): accept a sort on a wire-reachable pivot-generated column
+* fix(genesis-data-cube-spring-boot-starter): accept explicit null pivot on a noPivot exposeQuery resource
+* fix(genesis-data-cube-spring-boot-starter): answer 415 and 405 in the plane's own error contract
+* fix(genesis-data-cube-spring-boot-starter): attribute base-criteria coercion failures to the server, not the caller
+* fix(genesis-data-cube-spring-boot-starter): base64-encode ByteArray row-ref components
+* fix(genesis-data-cube-spring-boot-starter): bound dynamic-query sort to the request's own output columns
+* fix(genesis-data-cube-spring-boot-starter): cache enum valid-values instead of recomputing per request
+* fix(genesis-data-cube-spring-boot-starter): cap the request shape, filter and sort on the cube snapshot plane
+* fix(genesis-data-cube-spring-boot-starter): close gaps in the source-set completeness rule
+* fix(genesis-data-cube-spring-boot-starter): describe grouped+projected DTO rows from the DTO, not the source column
+* fix(genesis-data-cube-spring-boot-starter): enable HAVING on the exposeQuery dynamic path
+* fix(genesis-data-cube-spring-boot-starter): enable dynamic groupExpansion drill-down on exposeQuery
+* fix(genesis-data-cube-spring-boot-starter): enforce cube resource permissions and bind :username over HTTP
+* fix(genesis-data-cube-spring-boot-starter): fill JPQL flat DTO projections by name, not position
+* fix(genesis-data-cube-spring-boot-starter): fold the cube era into the ETag
+* fix(genesis-data-cube-spring-boot-starter): honour a RAW field's declared Encoding on the wire
+* fix(genesis-data-cube-spring-boot-starter): inspect a JPQL subquery's FROM for the dictionary-generated-entity rule
+* fix(genesis-data-cube-spring-boot-starter): never cache remember() plans against uncommitted writes
+* fix(genesis-data-cube-spring-boot-starter): omit pivot for a noPivot() resource's exposeQuery request schema
+* fix(genesis-data-cube-spring-boot-starter): publish query-request bounds in exposeQuery schema
+* fix(genesis-data-cube-spring-boot-starter): reject ambiguous column naming in the cube
+* fix(genesis-data-cube-spring-boot-starter): report missing wire fields by name in CubeNumberAsStringWireTest
+* fix(genesis-data-cube-spring-boot-starter): resolve pivot-generated column aliases for HAVING on exposeQuery
+* fix(genesis-data-cube-spring-boot-starter): restore enumValidValues for raw-Class operation schema path
+* fix(genesis-data-cube-spring-boot-starter): shape-check aggregation aliases at startup
+* fix(genesis-data-cube-spring-boot-starter): sharpen cube schema test assertions
+* fix(genesis-data-cube-spring-boot-starter): stamp the remembered entry instead of a runner-global era
+* fix(genesis-data-cube-spring-boot-starter): stop honouring a bare If-None-Match star
+* fix(genesis-data-ingest): exclude maven-artifact from kafka-connect deps
+* fix(genesis-dataserver2): add Joda-Time Kryo serializers to remove kryo-serializers dependency
+* fix(genesis-db): Add logging for non default connection pool size
+* fix(genesis-db): Add maxSize validation to STRING fields to fail fast
+* fix(genesis-db): Preserve input order/count in Bulk upsertAll
+* fix(genesis-db): Return a more specific exception message when a certain path is unavailable
+* fix(genesis-db): Translate SQL select aliases correctly in SqlStatementTranslator
+* fix(genesis-db): a listener's nested async transaction joins the write it listens to
+* fix(genesis-db): a nested write transaction that joins an open one rolls back on its own when it fails
+* fix(genesis-db): add Java overloads for SyncReadDb defaulted reads
+* fix(genesis-db): anchor temporal->Long converter writes at UTC
+* fix(genesis-db): bind Oracle booleans as "1"/"0" on the coroutine path
+* fix(genesis-db): bind the subscription handler to the swapped update queue
+* fix(genesis-db): bound criteria query cache and free compiled expressions on eviction
+* fix(genesis-db): coerce DateTime/enum by field type when binding SQL params
+* fix(genesis-db): correct native sql handling of (non-)nullable methods in proxy classes
+* fix(genesis-db): correct threading in jms update queue implementation
+* fix(genesis-db): do not pin H2 close-on-exit when AUTO_SERVER is set
+* fix(genesis-db): expose no-arg getBulk()/count() to GPAL scripts
+* fix(genesis-db): fail fast when a sync or async write listener uses its tx outside the write
+* fix(genesis-db): fail on colliding SQL view select labels
+* fix(genesis-db): honor injected DatabaseRetryDetails override in DatabaseDetailsProvider
+* fix(genesis-db): honour read direction in seeded bulk reads, plus dbmon nav coverage
+* fix(genesis-db): honour reverse order in SQL view getRangeFromEnd with an index reference
+* fix(genesis-db): honour the index-only start contract in FDB2 reverse bulk reads
+* fix(genesis-db): keep SQL Server dropDatabase working for dbo, shared schemas and user views
+* fix(genesis-db): keep a SQL write transaction's writes inside it when called from another coroutine, thread or its rx() view
+* fix(genesis-db): legacy Rx writes inside a native SQL transaction join it
+* fix(genesis-db): lower Expr.dateIsEqual/After/LessEqual to whole-day ranges
+* fix(genesis-db): make AccumulatingUpdateQueueListener.destroy() idempotent
+* fix(genesis-db): make CoroutineAsyncMultiEntityWriteWrapper.readOnly()/sync() honour the wrapper's guarantees
+* fix(genesis-db): make ZeroMQ removeListener remove metrics-wrapped and proxy registrations
+* fix(genesis-db): make standalone SyncEntityDb and SyncDb writes atomic with their listener
+* fix(genesis-db): map Oracle result-set columns regardless of SQL translation
+* fix(genesis-db): merge both sides of two Modify updates
+* fix(genesis-db): narrow SyncDb.readTransaction to a read-only receiver
+* fix(genesis-db): notify WriteOperationListener for writes through SyncEntityDb
+* fix(genesis-db): notify WriteOperationListener once with a merged WriteResult for modifyAll
+* fix(genesis-db): notify WriteOperationListener once with the full batch for upsertAll
+* fix(genesis-db): notify a WriteOperationListener for writes through SyncDb and AsyncDb
+* fix(genesis-db): optimistic concurrency strict upsertAll with new record throws exception when timestamp not provided
+* fix(genesis-db): parse client criteria without running Groovy AST transformations
+* fix(genesis-db): pass an update without a RECORD_ID through batching instead of dropping the batch
+* fix(genesis-db): publish a WriteOperationListener's nested writes on the Rx/FDB path
+* fix(genesis-db): publish a write that joins an enclosing transaction only once that transaction commits
+* fix(genesis-db): quote dbnamespace in generated SQL on Postgres and SQL Server
+* fix(genesis-db): quote the new column name when renaming a column
+* fix(genesis-db): range subscriptions unlink rows and join chains they no longer hold, order and bound range refreshes
+* fix(genesis-db): readOnlyBlocking returns null on non-sync storage engines
+* fix(genesis-db): reject batches with duplicate keys before any write happens
+* fix(genesis-db): release a streaming read's connection when it is drained
+* fix(genesis-db): remove blocking calls in CriteriaCacheManager.kt
+* fix(genesis-db): remove the dead RxDb.callback default
+* fix(genesis-db): report an absent field as null rather than dereferencing it
+* fix(genesis-db): reset oracle sequence values and continue setsequence batch on row errors
+* fix(genesis-db): resolve BigDecimal scale-sensitivity bugs in SendIt test and batch deleteAll
+* fix(genesis-db): resolve SQL view labels over the engine identifier limit at runtime
+* fix(genesis-db): resolve suffixed result-set columns ignoring case
+* fix(genesis-db): resolve the SQL view connection per query instead of pinning the first transaction's
+* fix(genesis-db): restore cancellation and unblock concurrent coroutine-native SQL reads
+* fix(genesis-db): rethrow InterruptedException during SQLEngine dictionary retrieval
+* fix(genesis-db): reuse the storage engine's criteria evaluator pool in NonSqlCriteriaHelper
+* fix(genesis-db): route WriteOperationListener through AsyncEntityDb's async write path
+* fix(genesis-db): set both java.util.TimeZone and Joda DateTimeZone to UTC
+* fix(genesis-db): start top-level Rx entry points on DB_TXN instead of Dispatchers.Default
+* fix(genesis-db): stop the SQL connection pool losing permits and connections
+* fix(genesis-db): support Field.Type.RAW in DbUtil so @CsvData can seed RAW columns
+* fix(genesis-db): trusted criteria lift only leading imports, match rows when import- or comment-led, and keep trust apart
+* fix(genesis-db): warn at start-up when more than one write listener is bound
+* fix(genesis-db): writeTransaction returns every write's entity results
+* fix(genesis-db):Preserve input order/count in Bulk insertAll and deleteAll
+* fix(genesis-dbmon): support -l flag in search/qsearch when criteriaMode is enabled
+* fix(genesis-dbtest): give each dataserver Test task its own SQL schema
+* fix(genesis-dbtest): stop the test database clear silently leaving rows behind on H2
+* fix(genesis-dictionary): Turn cross-table duplicate sequence into a warning
+* fix(genesis-dictionary): keep a global field's sensitive mask in tables that reference it
+* fix(genesis-dictionary): reject empty indices and inline fields referenced in index blocks
+* fix(genesis-dictionary): restore pre-unbounded FieldMetadata number constructors
+* fix(genesis-distribution): correct v10-cleanup removalVersion labels to 11.0.0
+* fix(genesis-distribution): one jnr-ffi, one jffi, one asm — and pin to what lmdbjava asks for
+* fix(genesis-distribution): ship the Spring starters in genesis/bin
+* fix(genesis-environment): Improve GetNextSequenceNumbers/GetNextAutoIncrementNumbers handling for empty tables and UUID-style IDs
+* fix(genesis-environment): Improve remap handling in complex situations
+* fix(genesis-environment): SendIt BigDecimal Precision and Rounding Issues for FDB Migrations
+* fix(genesis-environment): build FDB indexes from record-aligned ranges instead of stitched fragments
+* fix(genesis-environment): correct remap --dataLoad prompt and help text
+* fix(genesis-environment): escape template values only for XML/HTML outputs and support \{\{\{token\}\}\}
+* fix(genesis-environment): harden VerifyFDBIndexes and the record-aligned FDB remap scan
+* fix(genesis-environment): let RenameFields rename inline table columns
+* fix(genesis-environment): make DumpTableFormattedTest locale-independent
+* fix(genesis-environment): make LogLevel work over WebSocket and from the console
+* fix(genesis-environment): recreate view objects on remap when only the views have changed
+* fix(genesis-environment): resume an FDB index build after the transaction-size guard stops a batch
+* fix(genesis-environment): store observed holiday dates in PopulateHolidays so substitute bank holidays are kept
+* fix(genesis-environment): update DumpTable to use commons-collections4
+* fix(genesis-evaluator): don't crash on a syntactically invalid cron expression
+* fix(genesis-evaluator): give DynamicRulesEngine a scope it can cancel
+* fix(genesis-evaluator): make PROCESS_NAME optional on rule events and reject blank RULE_EXPRESSION
+* fix(genesis-eventhandler): Interface resolution misses inherited interfaces causing type lookup failures
+* fix(genesis-eventhandler): Prevent duplicate event handler registration with ClassUtils.getAllInterfaces
+* fix(genesis-eventhandler): scan the user class, not the proxy
+* fix(genesis-gradle): read genesisVersion, clientName, skipWeb and enableGenesisIntellijHelperTasks via providers.gradleProperty
+* fix(genesis-jackson): accept an ISO datetime string for a LocalDate field
+* fix(genesis-jackson): stop strict null checks rejecting null fields in request replies and event acks
+* fix(genesis-kts-aot-test): apply logback-test-conventions to guarantee a single slf4j binding
+* fix(genesis-kts-aot-test): stop staged dictionaries duplicating in sourcesJar
+* fix(genesis-log4j-testsupport): make @WithLogLevel work on logback-only Spring test classpaths
+* fix(genesis-log4j-testsupport): stop shipping test jars in the distribution
+* fix(genesis-logging-api): attribute unusableCount per provider, not per ServiceLoader retry
+* fix(genesis-mcp): honour staticUser approvalMessage for held events
+* fix(genesis-mcp): re-list restarted enableMcp endpoints by bounding tool builds
+* fix(genesis-mcp): re-register a restarted endpoint's MCP tool when discovery misses it
+* fix(genesis-mcp): report effective write approval in the MCP security posture line
+* fix(genesis-mcp): send only the update event's accepted fields from modify_record
+* fix(genesis-metrics): point GaugeCounter.getValue's ReplaceWith at a successor that compiles
+* fix(genesis-net): harden suspendRequest hang regression test
+* fix(genesis-net): keep a client's TLS context client-side after a certificate reload
+* fix(genesis-net): let a transport override set one field without resetting the other
+* fix(genesis-net): make suspendRequest's timeout actually cancel a pending reply
+* fix(genesis-net): read CURVE secret keys back from network-config.yaml
+* fix(genesis-net): validate messages sent to a process HTTP port as the router route does
+* fix(genesis-net-http): authenticate before revealing whether a process route exists
+* fix(genesis-net-http): free request resources only once the response is written
+* fix(genesis-net-http): run native HTTP PAL requests as the session user
+* fix(genesis-pal): do not mark a join as identity when its key reads an ancestor field
+* fix(genesis-pal): exclude joined RECORD_ID/TIMESTAMP from implicit allFields()
+* fix(genesis-pal): make update-queue watermarks shutdown-safe and set-shaped
+* fix(genesis-pal): reject key-less map-based auth and fields \{ \} inside auth
+* fix(genesis-pal): scope the ReqRep and MCP definition providers as singletons
+* fix(genesis-pal-consolidator): Improve consolidator error messages and scope DSL in the Consolidator
+* fix(genesis-pal-consolidator): flaky cold-start Order convergence tests
+* fix(genesis-pal-datapipeline): Ensure buildIndex filter is applied from the first poll when no persistence entry exists
+* fix(genesis-pal-datapipeline): keep the DB poller checkpoint on a sink timeout or a terminated pipeline
+* fix(genesis-pal-datapipeline): re-read instead of checkpointing past a record whose sink is unavailable
+* fix(genesis-pal-dataserver): Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites
+* fix(genesis-pal-dataserver): bound PermissionCodesTests with maxView to stop async auth catch-up overrunning maxRows
+* fix(genesis-pal-dataserver): check range filter in processOutOfSyncUpdate to remove out-of-range records
+* fix(genesis-pal-dataserver): fix SQLite priming hang caused by PRAGMA optimize on query_only connections
+* fix(genesis-pal-dataserver): fix auth pipeline race conditions and deadlock
+* fix(genesis-pal-dataserver): fix auth update silent data loss and batch emissions
+* fix(genesis-pal-dataserver): fix enriched row state not cleaned up on row deletion
+* fix(genesis-pal-dataserver): guard the lmdb env lifecycle instead of one call site
+* fix(genesis-pal-dataserver): isolate failing rows in the reprime replay and auth key batch, and fail a broken auth key rebuild
+* fix(genesis-pal-dataserver): join lmdb background loops before closing the env
+* fix(genesis-pal-dataserver): only set ROWS_COUNT on first chunk of chunked initial load
+* fix(genesis-pal-dataserver): read the lmdb space usage in a read transaction
+* fix(genesis-pal-dataserver): return defensive copy from MultiRowEntityToRowMap.recordsForEntity to prevent concurrent iteration on live LongHashSet
+* fix(genesis-pal-dataserver): stop MORE_ROWS reading past a full fixed MAX_VIEW
+* fix(genesis-pal-dataserver): stop chunked initial load double-counting rows against MAX_VIEW
+* fix(genesis-pal-eventhandler): Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined
+* fix(genesis-pal-execution): backward-join cache missed updates, join ordering, merges, fields and SQL view replay memo
+* fix(genesis-pal-execution): fix CompoundAuthEvaluator single-arg overloads throwing instead of delegating
+* fix(genesis-pal-execution): move BulkJoinProcessor channels to per-call scope
+* fix(genesis-pal-execution): recover backward-join child updates dropped before the link exists
+* fix(genesis-pal-execution): share one backward-join root collection across every enricher client
+* fix(genesis-pal-requestserver): register ReqRepHttpTest custom endpoints once
+* fix(genesis-pal-streamerclient): Revert "Resource-based service discovery for streamer clients with compact process support" due to resource name clashing issues
+* fix(genesis-pal-test): close the streams that wedge every Postgres nightly cell
+* fix(genesis-parent): bind the in-memory auth cache factory when a test enables it with no service packages
+* fix(genesis-parent): correct consolidator error message examples
+* fix(genesis-parent): default-import consolidator config enum classes so OnNotFound.BUILD resolves
+* fix(genesis-parent): fail clearly when an Event Handler script is missing
+* fix(genesis-parent): fail startup for @UpdateQueueListener on uninjected prototype-scoped beans
+* fix(genesis-parent): keep @UpdateQueueListener beans eager under global lazy initialization
+* fix(genesis-parent): keep an un-ignored JPA entity key in the derived event schema
+* fix(genesis-parent): make USER_NAME optional on EVENT_CRON_RULE_INSERT
+* fix(genesis-parent): one consistent, right-sized kotlin.daemon.jvmargs for fixtures
+* fix(genesis-parent): reject @UpdateQueueListener on non-singleton FactoryBean products
+* fix(genesis-parent): separate and widen the unresolved test-data path hint
+* fix(genesis-parent): withdraw the TLS test kit from genesis-testsupport's public API
+* fix(genesis-pipeline-api): restore UncaughtRealTimePipelineException's binary-compatible constructors
+* fix(genesis-process): anchor the generated BigDecimal JSON schema pattern
+* fix(genesis-process): check a session without building RightSummaryCache when no permission codes are required
+* fix(genesis-process): default-import HttpResponse and HttpResponseCode in web-handler scripts
+* fix(genesis-process): describe a LocalDate payload field as DATE, not as an object
+* fix(genesis-process): enforce declared min/max on BigDecimal fields in the generated JSON schema
+* fix(genesis-process): keep an EXTERNAL-transport process below UP when it closes before transport-ready
+* fix(genesis-process): load web handler scripts from a process's script entry; share the script dependency check
+* fix(genesis-process): nullable Any-typed fields lose their null option in generated JSON schema
+* fix(genesis-process): recognise Java record accessor-derived properties in event handler schema
+* fix(genesis-process): stop the native genesis listener when the lifecycle closes
+* fix(genesis-process): support dotted excludeMetadataFields paths for nested DAOs
+* fix(genesis-process): time out an EXTERNAL process that never becomes transport-ready
+* fix(genesis-queue-handler): Hoist executor into field and ensure it is shutdown in close to prevent thread leak
+* fix(genesis-queue-handler): read the ZeroMQ proxy's CURVE config from network-config.yaml
+* fix(genesis-resource-daemon): correct health endpoint handling with processes disabled
+* fix(genesis-resource-daemon): don't abort the login provider loop on a no-rights identity
+* fix(genesis-resource-daemon): resolve management console rights daemon-locally instead of via RightSummaryCache
+* fix(genesis-router): keep SOURCE_REF on REST calls proxied to WEBSOCKET-channel processes
+* fix(genesis-router): keep auth events off the HTTP proxy
+* fix(genesis-router): keep the mfaCode cookie unless login returns a new code
+* fix(genesis-router): let a stale session cookie fall through to the ssoToken on WebSocket upgrade
+* fix(genesis-router): preserve MORE_ROWS flag in HTTP dataserver polling response
+* fix(genesis-router): refuse internal resources over HTTP exactly like missing ones
+* fix(genesis-router): resume a failed proxy forward once
+* fix(genesis-router): router proxy decides TLS from tls.mode, not the secure flag
+* fix(genesis-router): stop the HTTP proxy writing a 502 after a relayed response has started
+* fix(genesis-router): warn when the router serves a web endpoint marked internal
+* fix(genesis-scripts): honour the process restart suppression flag in processRestarter
+* fix(genesis-scripts): keep JVM_OPTIONS when a process options override is set
+* fix(genesis-scripts): stop startServer archiving a freshly started process's log
+* fix(genesis-session): expire sessions on a fixed lifetime from START_TIMESTAMP across all auth paths
+* fix(genesis-session): pre-generate Chronicle value flyweight to avoid startup OOM
+* fix(genesis-spring-boot-entity-generation): carry RAW field Encoding into JPA view entities
+* fix(genesis-spring-boot-entity-generation): carry RAW field Encoding onto generated JPA entities
+* fix(genesis-spring-boot-entity-generation): carry RAW field encoding through composite primary keys
+* fix(genesis-spring-boot-entity-generation): publish a single-field PK under its dictionary name
+* fix(genesis-spring-boot-entity-generation): stop doubling table-scoped enum FQN
+* fix(genesis-spring-boot-entity-generation): stop generating a view's prefixed joined RECORD_ID/TIMESTAMP as an override
+* fix(genesis-spring-boot-entity-generation): un-ignore a Standard entity's sole ID/PK-named primary key
+* fix(genesis-spring-boot-gradle-plugin): apply kotlin("plugin.spring") automatically
+* fix(genesis-spring-boot-gradle-plugin): honour generateConfigurationClass in generateAutoConfig
+* fix(genesis-spring-boot-gradle-plugin): publish the real descriptor, not an empty shell
+* fix(genesis-spring-boot-starter): bind genesis.spring.* before a post-processor can consume it
+* fix(genesis-spring-boot-starter): force Logback on Spring starters so LoggingController works
+* fix(genesis-spring-boot-starter): publish the router prefix as secure when genesis TLS serves the one-port app
+* fix(genesis-spring-testsupport): log4j-slf4j2-impl conflicts with Spring Boot's Logback bridge
+* fix(genesis-spring-testsupport): reload @CsvData when another context has truncated it
+* fix(genesis-subcore): Verify that site specific folder exists on environment before calling script within it
+* fix(genesis-subcore): always generate JpaConfiguration in the Spring Boot plugin
+* fix(genesis-subcore): bind UpdateQueue for MqLayer MQTT and AERON
+* fix(genesis-subcore): close the JMSUpdateQueue addListener/terminate race and tighten the failed-subscribe rollback
+* fix(genesis-subcore): deliver updates written during priming in SHARED_FLOW bulkSubscribe
+* fix(genesis-subcore): deliver updates written during priming in SHARED_FLOW rangeSubscribe and no-join view subscriptions
+* fix(genesis-subcore): fail generateZeroMqCurveKeys fast when the build cannot prompt
+* fix(genesis-subcore): generate the debug Dockerfile with ssh and dev data, in its own context
+* fix(genesis-subcore): process detection no longer matches any command line containing name + "java"
+* fix(genesis-subcore): publish standalone async writes to the update queue after commit
+* fix(genesis-subcore): reject HTTP requests exceeding codec limits with 414/431 instead of routing them
+* fix(genesis-subcore): report upstream products whose version has no codegen slice jars
+* fix(genesis-subcore): resolve kotlin("plugin.jpa")'s version automatically
+* fix(genesis-subcore): resolve the injected SqlDatabaseConnection per call instead of pinning the first one
+* fix(genesis-subcore): reuse the legacy blocking connection in SQLEngine.sqlConnection()
+* fix(genesis-subcore): subscribe again on each sync backward-join branch retry, and release BLOCKING listeners a priming view never collected
+* fix(genesis-testsupport): bind provided members under @GenesisDatabaseTest
+* fix(genesis-testsupport): bind the test message server to loopback, not the wildcard address
+* fix(genesis-testsupport): honour Guice optional injection, and skip the FDB2 partial-lookup case
+* fix(genesis-testsupport): prefix an explicit messageType with EVENT_ in EventClientBlocking
+* fix(genesis-testsupport): reject leftover javax.inject annotations on test injection points
+* fix(gradle): Change default docker url back to genesis which is used in docker image name
+* fix(gradle): Remove duplicate entries in docker genesis-home
+* fix(gradle-plugin-common): read the whole file-annotation region for @file:ScriptModules
+* fix(hooks): migrate legacy CRON_RULE_AUDIT rows with install hooks
+* fix(process): align startProcess override keys and remove dead joinPub
+* fix(remap): remap: Add FDB transaction limit checks whilst performing batch write operations to prevent blocker failures whislt executing remap
+* fix(server): convert DateTime and enum values on every view DbRecord path
+* fix(server): reconcile WS decode logging and restore write-inclusive WEB_ENDPOINT duration
+* fix(settings-gradle-plugin-common): keep genesisScriptCompilation registered when compileAtBuildTime=false
+* fix(settings-gradle-plugin-common): warn when gradle.properties sets a manifest default the settings plugin overrides
+* fix(simple-settings-plugin-test): build the MavenPublicationTest fixture against the Genesis jars from the same build
+* fix(streamerclient): signal-based full-queue wait, and fix three flaky tests
+* fix(templates): make the generated project build, test and publish cleanly
+* fix(testsupport): fail fast on unreadable @ProvidedType members
+* fix(zeromq): log rejected CURVE client keys on the accepting side
+* fix(zeromq): name network-config.yaml keys in CURVE validation errors
+* fix(zeromq): stop the process when a CURVE handshake fails instead of dropping traffic
+* fix: Avoid exposure of internal details through API and expose them in LOG instead
+* fix: Fix dependabot failure at JFROG CLI setup
+* fix: Install custom Nginx version via dnf
+* fix: Split delimited cache table indices in XML config file
+* fix: add JFROG_AUTH_DEPENDABOT gradle builds
+* fix: add genesisType for BigDecimal nullable and non-nullable case
+* fix: bump jackson-core from 2.19.2 to 2.21.1
+* fix: cache NVD database in OWASP dependency check
+* fix: downgrade quartz to 2.4.1 to fix 1W cron regression
+* fix: exclude plexus-utils and spring-core from distribution zip
+* fix: pass primingBatchSize through table range subscriptions
+* fix: report ktlintScripts when its prerequisites are missing
+* fix: revert changes for custom req-reps done on GSF-7636
+* fix: root-cause the flaky site-specific distribution and dataserver custom-index tests
+* fix: serialise recordId and timestamp as strings on the JSON plane
+* fix: update installed toolsets in docker images
+* fix: upgrade Jetty from 11.0.26 to 12.1.6 in genesis-mcp
+
+### Dependency changes
+
+* build(deps): Rollback artifactory-maven-plugin upgrade
+* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* build(deps): add Jetty 12.1.8 version management to genesis-conventions platform
+* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
+* build(deps): bump Kotlin from 2.4.0 to 2.4.20
+* build(deps): bump Kotlin from 2.4.20 to 2.4.21
+* build(deps): bump actions/cache from 4 to 5
+* build(deps): bump actions/cache from 5 to 6
+* build(deps): bump actions/checkout from 4 to 6
+* build(deps): bump actions/checkout from 6 to 7
+* build(deps): bump actions/create-github-app-token from 1 to 3
+* build(deps): bump actions/setup-java from 4 to 5
+* build(deps): bump actions/setup-java from 5 to 6
+* build(deps): bump actions/upload-artifact from 4 to 7
+* build(deps): bump aeronVersion from 1.50.0 to 1.50.1 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.50.1 to 1.50.2 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.50.2 to 1.50.3 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.50.3 to 1.50.4 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.50.4 to 1.51.0 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.51.0 to 1.51.1 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.51.1 to 1.52.0 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.52.0 to 1.52.1 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.52.1 to 1.52.2 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.52.2 to 1.53.0 in /genesis-conventions
+* build(deps): bump aeronVersion from 1.53.0 to 1.53.1 in /genesis-parent
+* build(deps): bump aeronVersion from 1.53.1 to 1.53.2 in /genesis-parent
+* build(deps): bump aeronVersion from 1.53.2 to 1.53.3 in /genesis-parent
+* build(deps): bump apachePoi from 5.5.1 to 6.0.0 in /genesis-parent
+* build(deps): bump at.yawk.lz4:lz4-java from 1.10.3 to 1.10.4 in /genesis-conventions
+* build(deps): bump at.yawk.lz4:lz4-java from 1.10.4 to 1.11.0 in /genesis-conventions
+* build(deps): bump at.yawk.lz4:lz4-java from 1.11.0 to 1.11.1 in /genesis-conventions
+* build(deps): bump at.yawk.lz4:lz4-java from 1.11.1 to 1.11.2 in /genesis-conventions
+* build(deps): bump at.yawk.lz4:lz4-java from 1.11.2 to 1.11.3 in /genesis-parent
+* build(deps): bump at.yawk.lz4:lz4-java from 1.11.3 to 1.12.0 in /genesis-parent
+* build(deps): bump at.yawk.lz4:lz4-java from 1.12.0 to 1.12.1 in /genesis-parent
+* build(deps): bump awaitility to 4.3.0
+* build(deps): bump bcprovVersion from 1.84 to 1.85 in /genesis-conventions
+* build(deps): bump bcprovVersion from 1.85 to 1.86 in /genesis-parent
+* build(deps): bump byteBuddyVersion from 1.18.10 to 1.18.11 in /genesis-conventions
+* build(deps): bump byteBuddyVersion from 1.18.11 to 1.18.12 in /genesis-conventions
+* build(deps): bump byteBuddyVersion from 1.18.12 to 1.18.13 in /genesis-parent
+* build(deps): bump byteBuddyVersion from 1.18.13 to 1.18.14 in /genesis-parent
+* build(deps): bump byteBuddyVersion from 1.18.14 to 1.18.15 in /genesis-parent
+* build(deps): bump byteBuddyVersion from 1.18.15 to 1.18.16 in /genesis-parent
+* build(deps): bump byteBuddyVersion from 1.18.4 to 1.18.5 in /genesis-conventions
+* build(deps): bump byteBuddyVersion from 1.18.5 to 1.18.7 in /genesis-conventions
+* build(deps): bump byteBuddyVersion from 1.18.7 to 1.18.8 in /genesis-conventions
+* build(deps): bump byteBuddyVersion from 1.18.8 to 1.18.10 in /genesis-conventions
+* build(deps): bump camel from 4.18.1 to 4.18.2
+* build(deps): bump camelVersion from 4.18.0 to 4.18.1 in /genesis-conventions
+* build(deps): bump camelVersion from 4.18.2 to 4.18.3 in /genesis-conventions
+* build(deps): bump camelVersion from 4.21.0 to 4.22.0 in /genesis-conventions
+* build(deps): bump camelVersion from 4.22.0 to 4.22.1 in /genesis-parent
+* build(deps): bump camelVersion from 4.22.1 to 4.23.0 in /genesis-parent
+* build(deps): bump chronicle BOM to 2026.x for JDK 25 runtime support
+* build(deps): bump classgraph to 4.8.199 and cap Dependabot below 5.0.0
+* build(deps): bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.20 to 0.17.21 in /genesis-subcore/deploy-gradle-plugin
+* build(deps): bump com.esotericsoftware:kryo from 5.6.2 to 5.7.0 in /genesis-parent
+* build(deps): bump com.esotericsoftware:kryo from 5.7.0 to 5.7.1 in /genesis-parent
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.21.1 to 2.21.2 in /genesis-conventions
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.21.2 to 2.21.3 in /genesis-conventions
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.21.3 to 2.22.0 in /genesis-conventions
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.22.0 to 2.22.1 in /genesis-conventions
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.22.1 to 2.22.2 in /genesis-conventions
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.22.2 to 2.22.3 in /genesis-parent
+* build(deps): bump com.fasterxml.jackson:jackson-bom from 2.22.3 to 2.22.4 in /genesis-parent
+* build(deps): bump com.github.ben-manes.caffeine:caffeine from 3.2.3 to 3.2.4 in /genesis-conventions
+* build(deps): bump com.github.ben-manes.caffeine:caffeine from 3.2.4 to 3.3.0 in /genesis-parent
+* build(deps): bump com.github.ben-manes.caffeine:caffeine from 3.3.0 to 3.3.1 in /genesis-parent
+* build(deps): bump com.github.javaparser:javaparser-core from 3.28.0 to 3.28.1 in /genesis-subcore/build-gradle-plugin
+* build(deps): bump com.github.javaparser:javaparser-core from 3.28.1 to 3.28.2 in /genesis-subcore/build-gradle-plugin
+* build(deps): bump com.github.jsqlparser:jsqlparser from 5.3 to 5.4 in /genesis-parent
+* build(deps): bump com.github.oshi:oshi-core from 6.10.0 to 6.11.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 6.11.0 to 6.11.1 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 6.11.1 to 6.12.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 6.12.0 to 7.0.1 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 6.9.3 to 6.10.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.0.1 to 7.1.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.1.0 to 7.3.2 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.3.2 to 7.4.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.4.0 to 7.4.1 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.4.1 to 7.4.2 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.4.2 to 7.4.4 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.4.4 to 7.5.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.5.0 to 7.6.0 in /genesis-conventions
+* build(deps): bump com.github.oshi:oshi-core from 7.6.0 to 7.6.1 in /genesis-parent
+* build(deps): bump com.github.oshi:oshi-core from 7.6.1 to 7.7.0 in /genesis-parent
+* build(deps): bump com.github.oshi:oshi-core from 7.7.0 to 7.7.1 in /genesis-parent
+* build(deps): bump com.github.oshi:oshi-core from 7.7.1 to 7.7.2 in /genesis-parent
+* build(deps): bump com.github.spullara.mustache.java:compiler from 0.9.10 to 0.9.14 in /genesis-parent
+* build(deps): bump com.google.devtools.ksp from 2.3.11 to 2.3.12 in /genesis-parent
+* build(deps): bump com.google.errorprone:error_prone_annotations from 2.46.0 to 2.47.0 in /genesis-conventions
+* build(deps): bump com.google.errorprone:error_prone_annotations from 2.47.0 to 2.48.0 in /genesis-conventions
+* build(deps): bump com.google.errorprone:error_prone_annotations from 2.48.0 to 2.49.0 in /genesis-conventions
+* build(deps): bump com.google.errorprone:error_prone_annotations from 2.49.0 to 2.50.0 in /genesis-conventions
+* build(deps): bump com.google.errorprone:error_prone_annotations from 2.50.0 to 2.51.0 in /genesis-parent
+* build(deps): bump com.google.guava:guava from 33.5.0-jre to 33.6.0-jre in /genesis-conventions
+* build(deps): bump com.google.guava:guava from 33.6.0-jre to 33.7.1-jre in /genesis-conventions
+* build(deps): bump com.google.guava:guava from 33.7.1-jre to 33.7.2-jre in /genesis-parent
+* build(deps): bump com.google.jimfs:jimfs from 1.3.1 to 1.3.2 in /genesis-parent/genesis-environment
+* build(deps): bump com.google.protobuf:protobuf-java from 4.33.5 to 4.34.0 in /genesis-conventions
+* build(deps): bump com.google.protobuf:protobuf-java from 4.34.0 to 4.34.1 in /genesis-conventions
+* build(deps): bump com.google.protobuf:protobuf-java from 4.34.1 to 4.35.0 in /genesis-conventions
+* build(deps): bump com.google.protobuf:protobuf-java from 4.35.0 to 4.35.1 in /genesis-conventions
+* build(deps): bump com.google.protobuf:protobuf-java from 4.35.1 to 4.36.0 in /genesis-conventions
+* build(deps): bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260102.1 to 20260313.1 in /genesis-parent
+* build(deps): bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260313.1 to 20260921.1 in /genesis-parent
+* build(deps): bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260921.1 to 20260924.2 in /genesis-parent
+* build(deps): bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260924.2 to 20261011.1 in /genesis-parent
+* build(deps): bump com.gradleup.gratatouille from 0.2.2 to 0.2.3 in /genesis-parent
+* build(deps): bump com.gradleup.gratatouille.tasks from 0.2.2 to 0.2.3 in /genesis-parent
+* build(deps): bump com.jayway.jsonpath:json-path from 2.9.0 to 3.0.0 in /genesis-parent
+* build(deps): bump com.lmax:disruptor from 3.4.4 to 4.0.0 in /genesis-conventions
+* build(deps): bump com.microsoft.sqlserver:mssql-jdbc from 13.2.1.jre11 to 13.4.0.jre11 in /genesis-conventions
+* build(deps): bump com.microsoft.sqlserver:mssql-jdbc from 13.4.0.jre11 to 13.6.0.jre11 in /genesis-parent
+* build(deps): bump com.microsoft.sqlserver:mssql-jdbc from 13.6.0.jre11 to 13.6.1.jre11 in /genesis-parent
+* build(deps): bump com.squareup.okhttp3:okhttp from 4.12.0 to 5.4.0 in /genesis-conventions
+* build(deps): bump com.squareup.okhttp3:okhttp from 5.4.0 to 5.5.0 in /genesis-conventions
+* build(deps): bump com.squareup.okhttp3:okhttp from 5.5.0 to 5.5.1 in /genesis-parent
+* build(deps): bump com.squareup:kotlinpoet-jvm from 2.2.0 to 2.3.0 in /genesis-conventions
+* build(deps): bump com.squareup:kotlinpoet-jvm from 2.3.0 to 2.4.0 in /genesis-parent
+* build(deps): bump com.unboundid:unboundid-ldapsdk from 7.0.4 to 7.0.5 in /genesis-conventions
+* build(deps): bump com.zaxxer:HikariCP from 6.3.2 to 7.1.0 in /genesis-conventions
+* build(deps): bump commons-codec:commons-codec from 1.21.0 to 1.22.0 in /genesis-conventions
+* build(deps): bump commons-codec:commons-codec from 1.22.0 to 1.22.1 in /genesis-conventions
+* build(deps): bump commons-codec:commons-codec from 1.22.1 to 1.23.0 in /genesis-parent
+* build(deps): bump commons-io:commons-io from 2.21.0 to 2.22.0 in /genesis-conventions
+* build(deps): bump commons-net:commons-net from 3.12.0 to 3.13.0 in /genesis-conventions
+* build(deps): bump dcarbone/install-jq-action from 3.1.1 to 3.2.0
+* build(deps): bump dcarbone/install-jq-action from 3.2.0 to 4.0.1
+* build(deps): bump debeziumVersion from 3.2.2.Final to 3.5.0.Final in /genesis-conventions
+* build(deps): bump debeziumVersion from 3.5.0.Final to 3.5.1.Final in /genesis-conventions
+* build(deps): bump debeziumVersion from 3.5.1.Final to 3.5.2.Final in /genesis-conventions
+* build(deps): bump debeziumVersion from 3.5.2.Final to 3.6.0.Final in /genesis-conventions
+* build(deps): bump debeziumVersion from 3.6.0.Final to 3.6.1.Final in /genesis-conventions
+* build(deps): bump docker/login-action from 3 to 4
+* build(deps): bump foundationdb-rs/foundationdb-actions-install from 2.1.0 to 2.3.0
+* build(deps): bump gradle/actions from 4 to 5
+* build(deps): bump gradle/actions from 5 to 6.2.0
+* build(deps): bump io.github.classgraph:classgraph from 4.8.184 to 4.8.186 in /genesis-conventions
+* build(deps): bump io.github.classgraph:classgraph from 4.8.186 to 4.8.192 in /genesis-conventions
+* build(deps): bump io.github.classgraph:classgraph from 4.8.192 to 4.8.193 in /genesis-conventions
+* build(deps): bump io.github.classgraph:classgraph from 4.8.193 to 4.8.194 in /genesis-conventions
+* build(deps): bump io.github.classgraph:classgraph from 4.8.194 to 4.8.195 in /genesis-parent
+* build(deps): bump io.github.classgraph:classgraph from 4.8.195 to 4.8.196 in /genesis-parent
+* build(deps): bump io.javalin:javalin from 6.7.0 to 7.0.0 in /genesis-conventions
+* build(deps): bump io.javalin:javalin from 7.0.0 to 7.1.0 in /genesis-conventions
+* build(deps): bump io.javalin:javalin from 7.1.0 to 7.2.0 in /genesis-conventions
+* build(deps): bump io.javalin:javalin from 7.2.0 to 7.2.2 in /genesis-conventions
+* build(deps): bump io.javalin:javalin from 7.2.2 to 7.2.3 in /genesis-conventions
+* build(deps): bump io.javalin:javalin from 7.2.3 to 7.2.4 in /genesis-parent
+* build(deps): bump io.javalin:javalin-rendering-freemarker from 7.0.0 to 7.1.0 in /genesis-conventions
+* build(deps): bump io.javalin:javalin-rendering-freemarker from 7.1.0 to 7.2.0 in /genesis-conventions
+* build(deps): bump io.javalin:javalin-rendering-freemarker from 7.2.0 to 7.2.2 in /genesis-conventions
+* build(deps): bump io.javalin:javalin-rendering-freemarker from 7.2.2 to 7.2.3 in /genesis-conventions
+* build(deps): bump io.modelcontextprotocol.sdk:mcp from 0.10.0 to 1.1.0 in /genesis-parent/genesis-mcp
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.17.1 to 2.26.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.26.0 to 2.26.1 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.26.1 to 2.27.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.27.0 to 2.28.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.28.0 to 2.29.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.29.0 to 2.30.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.30.0 to 2.31.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.31.0 to 2.31.1 in /genesis-conventions
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.31.1 to 2.32.0 in /genesis-parent
+* build(deps): bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.33.0 to 2.33.1 in /genesis-parent
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.24.0 to 2.25.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.25.0 to 2.26.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.26.0 to 2.26.1 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.26.1 to 2.27.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.27.0 to 2.29.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.29.0 to 2.30.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.30.0 to 2.31.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.31.0 to 2.31.1 in /genesis-conventions
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.31.1 to 2.32.0 in /genesis-parent
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.32.0 to 2.33.0 in /genesis-parent
+* build(deps): bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.33.0 to 2.33.1 in /genesis-parent
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.51.0 to 1.61.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.61.0 to 1.62.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.62.0 to 1.63.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.63.0 to 1.64.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.64.0 to 1.65.0 in /genesis-conventions
+* build(deps): bump io.opentelemetry:opentelemetry-bom from 1.65.0 to 1.66.0 in /genesis-parent
+* build(deps): bump it.unimi.dsi:fastutil-core from 8.5.18 to 8.5.19 in /genesis-conventions
+* build(deps): bump jakarta.inject:jakarta.inject-api from 1 to 2.0.1 in /genesis-parent/genesis-router
+* build(deps): bump jakarta.persistence:jakarta.persistence-api from 3.1.0 to 3.2.0 in /genesis-conventions
+* build(deps): bump jettyVersion from 11.0.25 to 11.0.26 in /genesis-parent/genesis-mcp
+* build(deps): bump jettyVersion from 12.1.10 to 12.1.11 in /genesis-conventions
+* build(deps): bump jettyVersion from 12.1.11 to 12.1.12 in /genesis-conventions
+* build(deps): bump jettyVersion from 12.1.12 to 12.1.13 in /genesis-parent
+* build(deps): bump jettyVersion from 12.1.13 to 12.1.14 in /genesis-parent
+* build(deps): bump jettyVersion from 12.1.6 to 12.1.8 in /genesis-parent/genesis-mcp
+* build(deps): bump jettyVersion from 12.1.8 to 12.1.9 in /genesis-conventions
+* build(deps): bump jettyVersion from 12.1.9 to 12.1.10 in /genesis-conventions
+* build(deps): bump jfrog/setup-jfrog-cli from 4 to 5
+* build(deps): bump jnaVersion from 5.18.1 to 5.19.1 in /genesis-conventions
+* build(deps): bump joda-time:joda-time from 2.14.0 to 2.14.1 in /genesis-conventions
+* build(deps): bump joda-time:joda-time from 2.14.1 to 2.14.2 in /genesis-conventions
+* build(deps): bump joda-time:joda-time from 2.14.2 to 2.14.3 in /genesis-conventions
+* build(deps): bump joda-time:joda-time from 2.14.3 to 2.14.4 in /genesis-parent
+* build(deps): bump joda-time:joda-time from 2.14.4 to 2.15.0 in /genesis-parent
+* build(deps): bump jollydayVersion from 1.5.2 to 2.19.0 in /genesis-conventions
+* build(deps): bump jollydayVersion from 2.19.0 to 2.20.0 in /genesis-parent
+* build(deps): bump jollydayVersion from 2.20.0 to 2.21.0 in /genesis-parent
+* build(deps): bump jollydayVersion from 2.21.0 to 2.22.1 in /genesis-parent
+* build(deps): bump junitVersion from 6.1.0 to 6.1.1 in /genesis-conventions
+* build(deps): bump junitVersion from 6.1.1 to 6.1.2 in /genesis-conventions
+* build(deps): bump junitVersion from 6.1.2 to 6.1.3 in /genesis-conventions
+* build(deps): bump kafkaClientVersion from 4.1.1 to 4.1.2 in /genesis-conventions
+* build(deps): bump kafkaClientVersion from 4.1.2 to 4.3.1 in /genesis-conventions
+* build(deps): bump korthout/backport-action from 3 to 4
+* build(deps): bump kspVersion from 2.3.10 to 2.3.11 in /genesis-conventions
+* build(deps): bump kspVersion from 2.3.11 to 2.3.12 in /genesis-parent
+* build(deps): bump kspVersion from 2.3.6 to 2.3.9 in /genesis-conventions
+* build(deps): bump kspVersion from 2.3.9 to 2.3.10 in /genesis-conventions
+* build(deps): bump ktorVersion from 3.2.3 to 3.4.2 in /genesis-conventions
+* build(deps): bump ktorVersion from 3.4.2 to 3.4.3 in /genesis-conventions
+* build(deps): bump ktorVersion from 3.4.3 to 3.5.0 in /genesis-conventions
+* build(deps): bump ktorVersion from 3.5.0 to 3.5.1 in /genesis-conventions
+* build(deps): bump ktorVersion from 3.5.1 to 3.5.2 in /genesis-conventions
+* build(deps): bump log4jVersion from 2.25.3 to 2.25.4 in /genesis-conventions
+* build(deps): bump log4jVersion from 2.25.4 to 2.26.0 in /genesis-conventions
+* build(deps): bump log4jVersion from 2.26.0 to 2.26.1 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.5.32 to 1.5.37 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.5.37 to 1.5.38 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.5.38 to 1.6.0 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.6.0 to 1.6.1 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.6.1 to 1.6.3 in /genesis-conventions
+* build(deps): bump logbackVersion from 1.6.3 to 1.6.4 in /genesis-parent
+* build(deps): bump logbackVersion from 1.6.4 to 1.6.5 in /genesis-parent
+* build(deps): bump logbackVersion from 1.6.5 to 1.6.6 in /genesis-parent
+* build(deps): bump maven-plugin-api.version from 3.9.12 to 3.9.13 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump maven-plugin-api.version from 3.9.13 to 3.9.14 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump maven-plugin-api.version from 3.9.14 to 3.9.15 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump maven-plugin-api.version from 3.9.15 to 3.9.16 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump mcpVersion from 1.1.0 to 1.1.1 in /genesis-parent/genesis-mcp
+* build(deps): bump mcpVersion from 1.1.1 to 1.1.2 in /genesis-parent/genesis-mcp
+* build(deps): bump mcpVersion from 1.1.2 to 1.1.3 in /genesis-parent/genesis-mcp
+* build(deps): bump mcpVersion from 2.0.0 to 2.0.1 in /genesis-parent/genesis-mcp
+* build(deps): bump mcpVersion from 2.0.1 to 2.1.0 in /genesis-parent
+* build(deps): bump mi-kas/kover-report from 1 to 2
+* build(deps): bump micrometerVersion from 1.16.2 to 1.16.3 in /genesis-conventions
+* build(deps): bump micrometerVersion from 1.16.3 to 1.16.4 in /genesis-conventions
+* build(deps): bump micrometerVersion from 1.16.4 to 1.16.5 in /genesis-conventions
+* build(deps): bump micrometerVersion from 1.16.5 to 1.17.0 in /genesis-conventions
+* build(deps): bump micrometerVersion from 1.17.0 to 1.17.1 in /genesis-conventions
+* build(deps): bump micrometerVersion from 1.17.1 to 1.17.2 in /genesis-parent
+* build(deps): bump mockitoVersion from 5.21.0 to 5.22.0 in /genesis-conventions
+* build(deps): bump mockitoVersion from 5.22.0 to 5.23.0 in /genesis-conventions
+* build(deps): bump mockitoVersion from 5.23.0 to 5.24.0 in /genesis-parent
+* build(deps): bump msgpackVersion from 0.9.11 to 0.9.12 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.12 to 2026.18 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.18 to 2026.19 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.19 to 2026.20 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.20 to 2026.21 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.21 to 2026.22 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.22 to 2026.24 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.24 to 2026.25 in /genesis-conventions
+* build(deps): bump net.openhft:chronicle-bom from 2026.25 to 2026.26 in /genesis-parent
+* build(deps): bump nettyVersion from 4.2.10.Final to 4.2.11.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.11.Final to 4.2.12.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.12.Final to 4.2.13.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.13.Final to 4.2.14.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.14.Final to 4.2.15.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.15.Final to 4.2.16.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.16.Final to 4.2.17.Final in /genesis-conventions
+* build(deps): bump nettyVersion from 4.2.17.Final to 4.2.18.Final in /genesis-parent
+* build(deps): bump nettyVersion from 4.2.18.Final to 4.2.19.Final in /genesis-parent
+* build(deps): bump nettyVersion from 4.2.9.Final to 4.2.10.Final in /genesis-conventions
+* build(deps): bump oracleJdbcVersion from 23.26.1.0.0 to 23.26.2.0.0 in /genesis-conventions
+* build(deps): bump oracleJdbcVersion from 23.26.2.0.0 to 23.26.3.0.0 in /genesis-conventions
+* build(deps): bump oracleJdbcVersion from 23.9.0.25.07 to 23.26.1.0.0 in /genesis-conventions
+* build(deps): bump org.agrona:agrona from 2.4.0 to 2.4.1 in /genesis-conventions
+* build(deps): bump org.agrona:agrona from 2.4.1 to 2.5.0 in /genesis-conventions
+* build(deps): bump org.agrona:agrona from 2.5.0 to 2.6.0 in /genesis-conventions
+* build(deps): bump org.agrona:agrona from 2.6.0 to 2.6.1 in /genesis-parent
+* build(deps): bump org.agrona:agrona from 2.6.1 to 2.7.0 in /genesis-parent
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.50.0 to 2.51.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.51.0 to 2.52.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.52.0 to 2.53.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.53.0 to 2.54.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.54.0 to 2.55.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.55.0 to 2.56.0 in /genesis-conventions
+* build(deps): bump org.apache.activemq:artemis-jakarta-client from 2.56.0 to 2.57.0 in /genesis-parent
+* build(deps): bump org.apache.arrow:arrow-memory-unsafe from 18.1.0 to 19.0.0 in /genesis-parent
+* build(deps): bump org.apache.commons:commons-configuration2 from 2.13.0 to 2.14.0 in /genesis-conventions
+* build(deps): bump org.apache.commons:commons-configuration2 from 2.13.0 to 2.14.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.1 in /genesis-conventions
+* build(deps): bump org.apache.commons:commons-configuration2 from 2.15.0 to 2.15.1 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.commons:commons-lang3 from 3.20.0 to 3.21.0 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 0.14.1 to 0.15.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 0.15.0 to 0.16.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 0.16.0 to 0.17.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 1.0.0 to 1.3.0
+* build(deps): bump org.apache.fory:fory-kotlin from 1.3.0 to 1.4.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 1.4.0 to 1.5.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 1.5.0 to 1.6.1 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 1.6.1 to 1.7.0 in /genesis-conventions
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.0 to 1.7.1 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.1 to 1.7.2 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.2 to 1.7.3 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.3 to 1.7.4 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.4 to 1.7.5 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.5 to 1.7.6 in /genesis-parent
+* build(deps): bump org.apache.fory:fory-kotlin from 1.7.6 to 1.7.7 in /genesis-parent
+* build(deps): bump org.apache.ivy:ivy from 2.5.3 to 2.6.0 in /genesis-conventions
+* build(deps): bump org.apache.maven.plugins:maven-compiler-plugin from 3.14.1 to 3.15.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven.plugins:maven-dependency-plugin from 3.10.0 to 3.11.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven.plugins:maven-dependency-plugin from 3.9.0 to 3.10.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven.plugins:maven-enforcer-plugin from 3.6.2 to 3.6.3 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven.plugins:maven-resources-plugin from 3.4.0 to 3.5.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven.plugins:maven-site-plugin from 3.21.0 to 3.22.0 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven:maven-artifact from 3.9.10 to 3.9.15 in /genesis-conventions
+* build(deps): bump org.apache.maven:maven-artifact from 3.9.15 to 3.9.16 in /genesis-conventions
+* build(deps): bump org.apache.maven:maven-model from 3.9.12 to 3.9.13 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven:maven-model from 3.9.13 to 3.9.14 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven:maven-model from 3.9.14 to 3.9.15 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.maven:maven-model from 3.9.15 to 3.9.16 in /genesis-parent/genesis-maven-submodules
+* build(deps): bump org.apache.shiro:shiro-core from 2.0.6 to 2.1.0 in /genesis-conventions
+* build(deps): bump org.apache.shiro:shiro-core from 2.1.0 to 2.2.0 in /genesis-conventions
+* build(deps): bump org.apache.shiro:shiro-core from 2.2.0 to 3.0.0 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 3.53.0 to 3.53.1 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 3.53.1 to 3.54.0 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 3.54.0 to 3.54.1 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 3.54.1 to 3.55.1 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 3.55.1 to 4.0.0 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 4.0.0 to 4.1.0 in /genesis-conventions
+* build(deps): bump org.checkerframework:checker-qual from 4.1.0 to 4.2.0 in /genesis-conventions
+
+### Patch releases
+
+There are currently no patch releases for this version
+
+## Client
+
+### Features
+
+### Fixes
+
+## Breaking changes guidance
+
