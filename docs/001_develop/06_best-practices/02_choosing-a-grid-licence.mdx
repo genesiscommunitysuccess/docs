@@ -1,0 +1,127 @@
+---
+title: 'Choosing a grid licence'
+sidebar_label: 'Choosing a grid licence'
+id: best-practices-choosing-a-grid-licence
+keywords: [grid, licence, license, enterprise, business analysis, requirements, ag-grid, csv, excel, grouping]
+tags:
+  - grid
+  - requirements
+  - business analysis
+  - enterprise
+---
+
+Use this page when you are shaping **client requirements**, workshops, or user stories and need to decide whether the application needs an **AG Grid Enterprise** licence.
+
+This is a third-party grid licence, separate from the Genesis platform. Commercial terms (who must be licensed, and for which environments) come from [AG Grid](https://www.ag-grid.com/license-pricing/). This page is about **which user behaviours** force that purchase, and which behaviours Genesis can deliver without it.
+
+Delivery detail lives on [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features). Share that page with developers once the behaviours are agreed.
+
+## What you are deciding
+
+The licence applies to the **application**, not to a single screen. If any production grid depends on an Enterprise-only behaviour, the application needs the licence. A later phase that adds grouping or Excel export to one grid has the same effect.
+
+Many requests that sound like “a full enterprise grid” are covered by Foundation UI features that ship with Grid Pro and do not need the licence: CSV export, a row-count status bar, a column chooser, filters on known value lists (status, side, currency), and scrolling through a large list.
+
+Agree the behaviours **per screen**, then roll them up. The application needs a licence if **any** screen lands in the Enterprise column.
+
+## Behaviours that do not need a licence
+
+| What the user wants | What they get | Capture this in the requirement |
+| ------------------- | ------------- | -------------------------------- |
+| Right-click a row and **export CSV** | A context menu with CSV export, plus any extra items you specify (for example alert settings) | “Export CSV from the grid menu.” Name any other menu actions. |
+| See **how many rows** are loaded, a cap, **Load more**, or **Reload** | A status bar under the grid | “Status bar shows row count and Reload.” Say whether Load more is required. |
+| **Show, hide, and reorder columns** | A Columns panel on the edge of the grid | “Users choose and reorder columns from a side panel.” |
+| Tick values on a field with a **known list** (status, side, currency, product type) | A searchable checkbox filter. Labels are readable (`PENDING_APPROVAL` shows as “Pending Approval”). Blank cells can be included. | “Filter Status by ticking Pending, Confirmed, Cancelled.” List the allowed values. |
+| **Scroll a long list** that loads as they move, and filter or sort it, without groups or totals | Rows load in blocks. On a **live** feed, updates arrive as data changes. On a **snapshot** screen, other people’s changes appear when the user reloads, searches, or scrolls into rows not yet loaded. A save made on that screen shows up immediately. | “Users scroll and filter a list of up to [N] rows. No grouping or totals.” State live or snapshot. See [Planning data and screens for performance](/develop/best-practices/performance/planning-data-for-performance/). |
+| Ordinary column filters (contains, equals, date, number) and sorting | Included with Grid Pro | List the filter and sort fields that must work on day one. |
+
+## Behaviours that need an Enterprise licence
+
+| What the user wants | Why it needs the licence |
+| ------------------- | ------------------------ |
+| **Excel** export (`.xlsx`), or “export like Excel” when they mean a workbook rather than CSV | Excel export is an AG Grid Enterprise feature. CSV does not need the licence. |
+| **Group** rows (by desk, then by status) and expand or collapse those groups | Row grouping is Enterprise. |
+| **Pivot** the grid (turn values into columns, cross-tab a blotter) | Pivoting is Enterprise. |
+| **Totals** on a column or a group: sum, average, min, max, count of values | Value aggregation, including those figures in the status bar, is Enterprise. A status bar that only shows how many rows are loaded does not need it. |
+| Filter by **every distinct value that happens to be in the column**, when that list is not a defined set of business values | The built-in tick-list is for a known list (an enum). Discovering the set from whatever is stored in the rows is the Enterprise set filter. Free-text filters (contains, equals) do not need the licence. |
+| A **grouped or aggregated** view of a table too large to load into the browser | That uses AG Grid’s server-side row model, which needs the licence. Scrolling and filtering the same table **without** groups or totals does not. |
+
+If a screen needs one row from this table, record an Enterprise licence for the application.
+
+## Questions to ask in discovery
+
+Use these in workshops. Write the answers into the requirement.
+
+### Export
+
+- When users say “export”, do they need a file that **opens in Excel as a workbook**, or is **CSV** enough?
+- Who receives the file, and is a formatted workbook part of an existing operational process?
+
+### Shape of the grid
+
+- Do users need to **group** rows, or is a flat list with sort and filter enough?
+- Do they need **subtotals**, a **grand total**, or a pivot?
+- Is the status bar a **row count and a Reload button**, or must it show **sums and averages**?
+
+### Columns and filters
+
+- Is choosing and reordering columns enough, or do users depend on a specific Excel-like column menu you have seen in another product?
+- For each filter, is the choice a **known list** (the statuses the business defines) or “whatever values are in the data today”?
+
+### Large lists
+
+- Is this a **working list** (scroll, filter, select, act) or an **analysis grid** (group, pivot, total)?
+- How many rows can exist in the system, and how many must be on screen at once? Agree a cap or “latest N”. Volume and freshness are covered in [Planning data and screens for performance](/develop/best-practices/performance/planning-data-for-performance/).
+- Must the list **move as soon as data changes**, or is Reload / Search acceptable?
+
+### Roadmap
+
+- Will a **later phase** add grouping, pivots, totals, or Excel export to any grid in this application? That phase needs the licence even if the first release does not.
+
+## How to write the requirement
+
+| User need | Licence | Write the requirement like this |
+| --------- | ------- | -------------------------------- |
+| Blotter users export what they see | Community | “Right-click exports the current rows to CSV.” |
+| Operations must drop the file into a process that only accepts Excel | Enterprise | “Export the current rows to an Excel workbook.” |
+| Users hide unused columns and drag others into order | Community | “A Columns panel lets users show, hide, and reorder columns. The choice is remembered.” |
+| Users tick Pending / Confirmed on Status | Community | “Status filter offers only Pending, Confirmed, and Cancelled.” |
+| Users scroll a year of trades, filtered by desk and date, with no groups | Community | “After filters, users scroll the result. The grid loads further rows as they scroll. No grouping or totals.” |
+| Users collapse a desk and read the notional sum | Enterprise | “Group by desk. Each group shows the sum of notional.” |
+| The footer shows the sum of the selected notionals | Enterprise | “Status bar shows the sum of Notional for the selected rows.” |
+
+## Challenges to raise early
+
+| Client ask | What to clarify | Direction that avoids a licence | Direction that needs a licence |
+| ---------- | --------------- | -------------------------------- | ------------------------------ |
+| “We need the enterprise grid because there are a lot of rows” | Do they group or total, or only scroll and filter? | Scroll and filter a capped result | Group, pivot, or total that result |
+| “Export to Excel” | Workbook, or a file Excel can open? | CSV | Excel workbook |
+| “A status bar” | Row count, or sums? | Row count, cap, Reload | Sum, average, min, max |
+| “Filter this column like Excel” | Known list of values, or every value found in the rows? | Tick-list of the business’s values, or a text filter | Set filter over whatever is stored |
+| “Same as our other blotter” | Which behaviours of that blotter are actually used? | List the ones from the community table | Any grouping, pivot, total, or Excel export |
+
+## Checklist before sign-off
+
+- [ ] Every grid in scope is listed, with the behaviours it needs.
+- [ ] **CSV or Excel** is explicit wherever users export.
+- [ ] **Grouping, pivot, and totals** are each marked yes or no. “Maybe later” is recorded as a licence risk.
+- [ ] Large lists say whether users only **scroll and filter**, or also **group**.
+- [ ] Status fields name the **allowed values** users can tick.
+- [ ] The epic states the application decision: **Enterprise licence required** or **community Grid Pro is sufficient**.
+- [ ] Stakeholders have seen that a licence for one screen applies to the **whole application**.
+
+## Who does what next
+
+| Role | Next step |
+| ---- | --------- |
+| **Business analyst / product** | Keep this checklist on the epic. Record the licence decision in the client-facing spec. |
+| **Solution / engineering** | Map each behaviour to community Grid Pro or an Enterprise module. Implement from [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features). |
+| **Commercial / account** | If the decision is Enterprise, confirm the AG Grid licence for the environments you will run. |
+| **Client stakeholders** | Sign the trade-offs (CSV or Excel, flat list or grouped, row count or totals) before build. |
+
+## Related reading
+
+- [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features) — how Grid Pro implements each path
+- [Planning data and screens for performance](/develop/best-practices/performance/planning-data-for-performance/) — how much data belongs on a screen, and live versus snapshot
+- [UI Performance](/develop/best-practices/performance/) — technical tuning once the behaviours are agreed
+- [Grid Pro](/develop/client-capabilities/grids/grid-pro/) — grid overview for delivery teams

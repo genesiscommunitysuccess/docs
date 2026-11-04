@@ -41,34 +41,28 @@ For more detailed information on API and configurations, refer to the [API docum
 
 ## Enterprise features and licensing
 
-**Important:** Some Grid Pro features require AG Grid Enterprise licensing and module registration:
+Some Grid Pro behaviour comes from AG Grid Enterprise. Foundation UI also provides community alternatives for the status bar, right-click menu, columns panel, enum set filter, and lazy loading. How the two paths differ, and when Grid Pro picks each one, is described in [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features).
 
-- **Status Bar Components**: All status bar functionality (`with-status-bar`, `statusBarConfig`) requires AG Grid Enterprise
-- **Server-Side Row Model**: Server-side datasource requires `@ag-grid-enterprise/server-side-row-model`
-- **Advanced Filtering**: Some advanced filtering features may require Enterprise modules
-- **Excel Export**: Excel export functionality requires AG Grid Enterprise
+The AG Grid implementations below need an Enterprise licence and the matching module on the **v36** `ModuleRegistry` (imported from `ag-grid-community`):
 
-For production use, you must obtain appropriate AG Grid Enterprise licenses. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
+- **Status bar**: `StatusBarModule`. Without it, `with-status-bar` draws Foundation UI's status bar.
+- **Server-side row model**: `ServerSideRowModelModule`, required by `<grid-pro-server-side-datasource>`. The community infinite row model is `<grid-pro-infinite-datasource>`.
+- **Set filter**: `SetFilterModule`. Without it, enum columns use Foundation UI's enum filter.
+- **Excel export**: Excel export requires AG Grid Enterprise. CSV export is available from the community right-click menu.
+
+For production use of those modules, obtain an AG Grid Enterprise licence. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
 
 ### Enterprise module registration
 
-**REQUIRED for Status Bar and Server-Side Datasource Features**
-
-If you plan to use Status Bar components (`with-status-bar`) or Server-Side datasource (`<grid-pro-server-side-datasource>`), you **MUST** register the appropriate AG Grid Enterprise modules:
+Register these modules when the grid should use AG Grid's status bar or server-side row model. Current Grid Pro reads the v36 registry. The `@ag-grid-community/core` registry applies to the legacy v29 grid only.
 
 ```typescript
-import { ModuleRegistry } from '@ag-grid-community/core';
+import { ModuleRegistry } from 'ag-grid-community';
+import { ServerSideRowModelModule, StatusBarModule } from 'ag-grid-enterprise';
 
-// Required for Status Bar components (with-status-bar, statusBarConfig)
-import { StatusBarModule } from '@ag-grid-enterprise/status-bar';
-
-// Required for Server-Side datasource (<grid-pro-server-side-datasource>)
-import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
-
-// Register the enterprise modules you need
 ModuleRegistry.registerModules([
-  StatusBarModule,          // Required for: with-status-bar, statusBarConfig
-  ServerSideRowModelModule, // Required for: <grid-pro-server-side-datasource>
+  StatusBarModule, // AG Grid status bar for with-status-bar and statusBarConfig
+  ServerSideRowModelModule, // <grid-pro-server-side-datasource>
 ]);
 ```
 
@@ -343,13 +337,13 @@ The `<grid-pro>` element supports the following attributes and properties:
 | `persist-filter-model-key`       | `string`      | -           | **Key for persisting filter model** in local browser or KV storage. Maintains filter state across sessions. |
 | `row-height`                     | `number`      | -           | Custom row height in pixels. Overrides theme defaults. |
 | `theme`                          | `string`      | `alpine`    | AG Grid theme name. Available: `alpine`, `alpine-dark`, `balham`, `balham-dark`, `material`. |
-| `with-status-bar`                | `boolean`     | `false`     | **Enterprise Feature**: Enables status bar at bottom of grid. **Requires AG Grid Enterprise module**. |
+| `with-status-bar`                | `boolean`     | `false`     | Enables the status bar. Uses AG Grid's bar when `StatusBarModule` is registered, and Foundation UI's bar otherwise. See [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features#status-bar). |
 | `:customErrorHandlerTemplate` | `(prefix: string, gridErrorItems: GridProErrorItem<any>[]) => ViewTemplate` | - | **Custom error handling**: Function that returns a custom template for displaying datasource errors. If not provided, uses the default error dialog. |
 | `:eventsAndCallbacks`            | `GridProEventsAndCallbacks` | - | **AG Grid events**: Object containing AG Grid event handlers and callbacks. |
 | `:gridComponents`                | `{[componentName: string]: any}` | - | **Custom components**: Object containing custom AG Grid components (cell renderers, editors, filters). |
 | `:gridFontFace`                  | `string`      | `defaultAgGridFontFace` | **Font configuration**: Font face configuration for AG Grid themes. |
 | `:rowData`                       | `any[]`       | -           | **Manual data**: Array of row data for scenarios where you set data manually without using datasource components. |
-| `:statusBarConfig`               | `GridProStatusBarConfig` | `DEFAULT_STATUS_BAR_CONFIG` | **Enterprise Feature**: Configuration for status bar components. Must use binding syntax with observable property. |
+| `:statusBarConfig`               | `GridProStatusBarConfig` | `DEFAULT_STATUS_BAR_CONFIG` | Panels for the status bar (`rows`, `maxRows`, `loadMore`, `reload`, `aggregation`). `aggregation` needs AG Grid's status bar. Bind an observable property. |
 
 ## Custom error handling
 
@@ -561,7 +555,7 @@ const advancedErrorHandlerTemplate = (prefix: string, errors: GridProErrorItem<a
 
 ## Status bar configuration
 
-**Enterprise License Required**: Status bar functionality requires the AG Grid Enterprise license and the `StatusBarModule` to be registered (see [Enterprise Module Registration](#enterprise-module-registration) above). Status bar components will only be displayed if the Enterprise module is properly licensed and configured.
+`with-status-bar` shows a bar under the grid. When `StatusBarModule` is registered, the panels below are AG Grid's, which needs an Enterprise licence (see [Enterprise module registration](#enterprise-module-registration)). When that module is absent, Grid Pro draws its own bar for `rows`, `maxRows`, `loadMore`, and `reload`, and ignores `aggregation`. See [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features#status-bar).
 
 **Important Datasource Behavior:**
 

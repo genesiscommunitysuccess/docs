@@ -1,0 +1,393 @@
+---
+title: 'Enterprise and community features'
+sidebar_label: 'Enterprise and community'
+id: grid-pro-community-features
+keywords:
+  [
+    grid,
+    grid-pro,
+    ag-grid,
+    enterprise,
+    community,
+    license,
+    context menu,
+    status bar,
+    column selection,
+    enum filter,
+    infinite row model,
+  ]
+tags:
+  - grid
+  - grid-pro
+  - ag-grid
+  - enterprise
+pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts
+pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Enterprise and community features
+
+For a non-technical guide that helps business analysts decide whether the client needs an AG Grid Enterprise licence, see [Choosing a grid licence](/develop/best-practices/choosing-a-grid-licence).
+
+[Grid Pro](/develop/client-capabilities/grids/grid-pro/) is built on AG Grid. Some AG Grid capabilities ship only with an Enterprise licence. Foundation UI adds its own versions of the features applications use most often, so a grid can offer them on AG Grid Community.
+
+Grid Pro decides per feature. Register the matching Enterprise module and Grid Pro keeps AG Grid's implementation. Leave that module unregistered and Grid Pro uses the Foundation UI version, where one exists.
+
+These alternatives apply to current Grid Pro (AG Grid 36, `@genesislcap/grid-pro` / `@genesislcap/rapid-grid-pro`). The legacy v29 grid keeps the Enterprise-only behaviour.
+
+:::info Separate module registries
+AG Grid 36 and the legacy v29 grid each have their own `ModuleRegistry`. Register Enterprise modules for current Grid Pro on the registry from `ag-grid-community`. Modules registered through `@ag-grid-community/core` apply only to the legacy grid.
+:::
+
+## Which path to use
+
+| Job | AG Grid Enterprise | Foundation UI alternative |
+| --- | --- | --- |
+| Right-click menu and CSV export | Context menu module | [`contextMenuItems`](#right-click-menu), including [`defaultGridContextMenuItems`](#right-click-menu) |
+| Status bar | `StatusBarModule` | [`with-status-bar`](#status-bar) draws Foundation UI's bar when that module is absent |
+| Choose and reorder columns | Columns tool panel and sidebar | [`enable-column-selection`](#columns-panel) |
+| Filter an enum column by its values | `SetFilterModule` (`agSetColumnFilter`) | [`EnumColumnFilter`](#enum-column-filter), used automatically when the set-filter module is absent |
+| Lazy-load a large result as the user scrolls | Server-side row model (`<grid-pro-server-side-datasource>`) | Infinite row model ([`<grid-pro-infinite-datasource>`](#infinite-row-model)) |
+
+Register the Enterprise module when you need the AG Grid behaviour listed below. Leave it out when the Foundation UI column is enough.
+
+The following still need an AG Grid Enterprise licence. Foundation UI does not replace them:
+
+- Excel export. CSV export is available through the community menu.
+- Row grouping, pivoting, and value aggregation, including the aggregation status-bar panel.
+- The server-side row model, when you need grouping or aggregation on the server. Lazy loading without those features can use the infinite row model.
+
+## Right-click menu
+
+AG Grid's context menu is an Enterprise feature. Grid Pro can draw its own menu, with no Enterprise module, when you set `contextMenuItems`.
+
+`contextMenuItems` is a function. Grid Pro calls it with the cell's context-menu event and renders whatever you return. Assign `defaultGridContextMenuItems` for a **CSV Export** item, or spread that result into a menu of your own. The item uses AG Grid Community `exportDataAsCsv()`. It is omitted when the grid sets `suppressCsvExport`.
+
+While `contextMenuItems` is set, Grid Pro suppresses AG Grid's menu, including when the Enterprise context-menu module is registered. Clear the property and Grid Pro restores the grid's own `suppressContextMenu` setting. Leave `contextMenuItems` unset and right-click is unchanged: AG Grid's menu when its module is registered, otherwise the browser menu. Return an empty list from the function to show the browser menu for that cell.
+
+Each entry is an item or the string `'separator'`:
+
+| Field | Role |
+| --- | --- |
+| `name` | Label |
+| `action` | Called when the item is chosen |
+| `shortcut` | Text drawn to the right of the name, such as a key combination |
+| `tooltip` | Shown on hover, including while the item is disabled |
+| `disabled` | Item cannot be chosen |
+| `checked` | `true` or `false` makes the item a checkbox. Leave it unset for a plain item |
+| `subMenu` | Nested entries, opened as a flyout |
+
+The menu uses the design system's menu components (`rapid-menu` and `rapid-menu-item` when the prefix is `rapid`). Register the design system base components with the grid. Arrow keys, Enter, and Escape move through the menu.
+
+[Row alerts](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts) expose the same shape. `createRowAlert(...).createMenuItem(api)` returns the **Alert flash** submenu so you can place it after CSV Export.
+
+```tsx
+import {
+  createRowAlert,
+  defaultGridContextMenuItems,
+  type GridProContextMenuEntry,
+} from '@genesislcap/grid-pro';
+import type { CellContextMenuEvent } from 'ag-grid-community';
+
+const rowAlert = createRowAlert(criteria, {
+  persistPreferencesKey: 'orders.row-alert',
+});
+
+function contextMenuItems(event: CellContextMenuEvent): GridProContextMenuEntry[] {
+  return [
+    ...defaultGridContextMenuItems(event),
+    'separator',
+    rowAlert.createMenuItem(event.api),
+  ];
+}
+```
+
+Pass that function to the grid as `contextMenuItems` (React) or `:contextMenuItems` (Genesis). `getContextMenuItems` on `gridOptions` is AG Grid's own callback and still needs the Enterprise context-menu module.
+
+## Status bar
+
+Set `with-status-bar` to show a bar under the grid. `statusBarConfig` chooses the panels. Grid Pro checks `StatusBarModule` when the grid is ready:
+
+- **Module registered.** Grid Pro builds AG Grid's status bar from `statusBarConfig`, and keeps any `gridOptions.statusBar` panels you set. `aggregation: true` maps to AG Grid's aggregation panel. This path needs an Enterprise licence. See [Status bar configuration](/develop/client-capabilities/grids/grid-pro/#status-bar-configuration).
+- **Module not registered.** Grid Pro draws its own bar in document flow under the grid. `aggregation` is ignored. A `gridOptions.statusBar` value is ignored, and Grid Pro logs a one-time warning. Use `statusBarConfig` for this bar.
+
+The community bar includes:
+
+| `statusBarConfig` | Client-side datasource | Infinite and server-side datasources |
+| --- | --- | --- |
+| `rows` | Row count | Row count. On a server-side grid without pagination, an uncertain total uses a `+` suffix |
+| `maxRows` | Maximum rows label | Maximum rows label |
+| `loadMore` | Load More button | Omitted |
+| `reload` | Reload button | Reload button |
+| `aggregation` | Ignored | Ignored |
+
+`grid.getStatusPanel(key)` works for either bar.
+
+The rapid grid bundle already registers the status-bar element. An application that registers grid pieces individually also registers `rapidGridProStatusBar` from `@genesislcap/rapid-grid-pro`. Without that element, the community bar is not shown.
+
+```tsx
+import type { GridProStatusBarConfig } from '@genesislcap/grid-pro';
+
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,
+  maxRows: true,
+  reload: { tooltip: 'Reload from the server' },
+};
+```
+
+```tsx
+<GridPro withStatusBar statusBarConfig={statusBarConfig}>
+  {/* datasource */}
+</GridPro>
+```
+
+## Columns panel
+
+AG Grid's columns tool panel sits in the Enterprise sidebar. Set `enable-column-selection` on `grid-pro` (or `entity-management`) to dock Foundation UI's column list on the trailing edge of the grid.
+
+The panel overlays the grid. Opening it does not move the grid or the status bar. The **Columns** tab sits at the top of that edge; the list slides out beside it and stops above the status bar when one is enabled. Users show, hide, and reorder columns from the list. Entity Manager uses this panel and does not add a separate column-selection button in its header.
+
+This attribute is opt-in. It does not depend on `ColumnsToolPanelModule` or `SideBarModule`. Register those modules only when you want AG Grid's own sidebar.
+
+## Enum column filter
+
+`agSetColumnFilter` needs `SetFilterModule`. Enum columns describe a fixed list of values (field metadata `enumOptions`, an array, or a getter), so Grid Pro can filter them without that module.
+
+`EnumColumnFilter` is a checkbox list with search, a tri-state **(Select All)** limited to the current search, and a **(Blanks)** entry unless `filterParams.blanks` is `false`. Labels default to capital case (`PENDING_APPROVAL` becomes `Pending Approval`). Override them with `filterParams.valueFormatter`. The filter applies as the user toggles values.
+
+The model is `{ filterType: 'set', values }`, the same shape as `agSetColumnFilter`, so saved filter models and server `CRITERIA_MATCH` translation treat both filters the same way. A `null` entry in `values` is the blanks row.
+
+When column metadata asks for `agSetColumnFilter` and `SetFilterModule` is not registered, Grid Pro switches that column to the enum filter and keeps the metadata values. A multi-filter whose set sub-filter cannot load is flattened to the enum filter, or keeps its multi-filter wrapper when `MultiFilterModule` is registered and only the set piece is missing. Register `SetFilterModule` and those columns keep AG Grid's set filter.
+
+Set the filter yourself when the column is not generated from metadata:
+
+```tsx
+import { GridProFilterTypes } from '@genesislcap/grid-pro';
+import type { ColDef } from 'ag-grid-community';
+
+const columns: ColDef[] = [
+  {
+    field: 'STATUS',
+    filter: GridProFilterTypes.enumFilter,
+    filterParams: {
+      values: ['PENDING', 'CONFIRMED', 'CANCELLED'],
+      blanks: false,
+    },
+  },
+];
+```
+
+`GridProFilterTypes.enumFilter` is the component name `enumColumnFilter`. The companion floating filter (`enumColumnFloatingFilter`) is wired as `floatingFilterComponent` and stays off until the column sets `floatingFilter: true`. One floating filter adds a header row across every column, so Grid Pro leaves it off and shows the active filter through AG Grid's header filter icon and a header tooltip such as `Filtered: (2) Pending, Confirmed`.
+
+The option list comes from the enum. It is not built by scanning row values.
+
+## Infinite row model
+
+`<grid-pro-server-side-datasource>` uses AG Grid's server-side row model and needs `ServerSideRowModelModule` plus an Enterprise licence. Use it when the grid groups, pivots, or aggregates on the server. Setup is on [Datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/).
+
+`<grid-pro-infinite-datasource>` uses AG Grid's Infinite Row Model, which is part of AG Grid Community. It lazy-loads rows as the user scrolls and sends sort and filter to the server. It does not provide row grouping, pivoting, or value aggregation.
+
+On Entity Manager, set `datasource-type="infinite"`. The legacy v29 grid does not support this datasource.
+
+| | Infinite row model | Server-side row model |
+| --- | --- | --- |
+| Licence | AG Grid Community | AG Grid Enterprise |
+| Element | `<grid-pro-infinite-datasource>` | `<grid-pro-server-side-datasource>` |
+| Entity Manager | `datasource-type="infinite"` | `datasource-type="server"` |
+| Grouping, pivoting, aggregation | Unavailable | Available with the Enterprise modules |
+| Data Server | Live. The paging subscription receives inserts, updates, and deletes | Live, with server-side row model behaviour |
+| Request Server | Read when the grid asks again (scroll into a block, filter, sort, or reload). A commit for an event in `pollTriggerEvents` re-reads the loaded blocks, so this session's create, update, and delete show up immediately | Server-side row model requests |
+
+Data Server rows load in order. Scrolling through the result is the intended use; a jump toward the end of a large view walks there one block at a time. `MAX_VIEW` still caps how many rows the server will serve. Data Server sort uses a named index on the resource. Columns outside every named index are not sortable on that transport.
+
+```tsx
+import { GridProInfiniteDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+
+export function InfiniteGrid() {
+  return (
+    <GridPro enableColumnSelection withStatusBar statusBarConfig={{ rows: true, reload: true }}>
+      <GridProInfiniteDatasource resourceName="ALL_TRADES" maxRows={50} />
+    </GridPro>
+  );
+}
+```
+
+## Using the community features together
+
+A grid can take the community menu, status bar, columns panel, and enum filter with no Enterprise modules registered.
+
+<Tabs defaultValue="react" values={[{ label: 'React', value: 'react' }, { label: 'Genesis', value: 'genesis' }, { label: 'Angular', value: 'angular' }]}>
+
+<TabItem value="react">
+
+```tsx
+import {
+  defaultGridContextMenuItems,
+  GridProFilterTypes,
+  type GridProStatusBarConfig,
+} from '@genesislcap/grid-pro';
+import { GridProClientSideDatasource } from '@genesislcap/grid-pro/react';
+import { RapidGridPro as GridPro } from '@genesislcap/rapid-grid-pro/react';
+import type { ColDef, GridOptions } from 'ag-grid-community';
+
+const columnDefs: ColDef[] = [
+  { field: 'TRADE_ID', headerName: 'Trade' },
+  {
+    field: 'TRADE_STATUS',
+    filter: GridProFilterTypes.enumFilter,
+    filterParams: { values: ['PENDING', 'CONFIRMED'], blanks: false },
+  },
+];
+
+const gridOptions: GridOptions = { columnDefs };
+
+const statusBarConfig: GridProStatusBarConfig = {
+  rows: true,
+  maxRows: true,
+  loadMore: true,
+  reload: true,
+};
+
+export function CommunityGrid() {
+  return (
+    <GridPro
+      enableColumnSelection
+      withStatusBar
+      statusBarConfig={statusBarConfig}
+      gridOptions={gridOptions}
+      contextMenuItems={defaultGridContextMenuItems}
+    >
+      <GridProClientSideDatasource resourceName="ALL_TRADES" />
+    </GridPro>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="genesis">
+
+```typescript
+import {
+  defaultGridContextMenuItems,
+  GridProFilterTypes,
+  type GridProStatusBarConfig,
+} from '@genesislcap/grid-pro';
+import { customElement, GenesisElement, html, observable } from '@genesislcap/web-core';
+import type { ColDef, GridOptions } from 'ag-grid-community';
+
+const columnDefs: ColDef[] = [
+  { field: 'TRADE_ID', headerName: 'Trade' },
+  {
+    field: 'TRADE_STATUS',
+    filter: GridProFilterTypes.enumFilter,
+    filterParams: { values: ['PENDING', 'CONFIRMED'], blanks: false },
+  },
+];
+
+@customElement({
+  name: 'community-grid-example',
+  template: html`
+    <rapid-grid-pro
+      enable-column-selection
+      with-status-bar
+      :statusBarConfig="${(x) => x.statusBarConfig}"
+      :gridOptions="${(x) => x.gridOptions}"
+      :contextMenuItems="${() => defaultGridContextMenuItems}"
+    >
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES"></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+})
+export class CommunityGridExample extends GenesisElement {
+  @observable statusBarConfig: GridProStatusBarConfig = {
+    rows: true,
+    maxRows: true,
+    loadMore: true,
+    reload: true,
+  };
+
+  @observable gridOptions: GridOptions = { columnDefs };
+}
+```
+
+</TabItem>
+
+<TabItem value="angular">
+
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  defaultGridContextMenuItems,
+  GridProFilterTypes,
+  type GridProStatusBarConfig,
+} from '@genesislcap/grid-pro';
+import type { ColDef, GridOptions } from 'ag-grid-community';
+
+const columnDefs: ColDef[] = [
+  { field: 'TRADE_ID', headerName: 'Trade' },
+  {
+    field: 'TRADE_STATUS',
+    filter: GridProFilterTypes.enumFilter,
+    filterParams: { values: ['PENDING', 'CONFIRMED'], blanks: false },
+  },
+];
+
+@Component({
+  selector: 'community-grid-example',
+  template: `
+    <rapid-grid-pro
+      enable-column-selection
+      with-status-bar
+      [statusBarConfig]="statusBarConfig"
+      [gridOptions]="gridOptions"
+      [contextMenuItems]="contextMenuItems"
+    >
+      <grid-pro-client-side-datasource resource-name="ALL_TRADES"></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class CommunityGridExample {
+  contextMenuItems = defaultGridContextMenuItems;
+  statusBarConfig: GridProStatusBarConfig = {
+    rows: true,
+    maxRows: true,
+    loadMore: true,
+    reload: true,
+  };
+  gridOptions: GridOptions = { columnDefs };
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+To take the AG Grid implementations of the status bar, set filter, or server-side row model, register those modules on the v36 registry and keep a valid Enterprise licence:
+
+```typescript
+import { ModuleRegistry } from 'ag-grid-community';
+import { ServerSideRowModelModule, SetFilterModule, StatusBarModule } from 'ag-grid-enterprise';
+
+ModuleRegistry.registerModules([
+  StatusBarModule,
+  SetFilterModule,
+  ServerSideRowModelModule,
+]);
+```
+
+The right-click menu and the columns panel stay on the Foundation UI path whenever `contextMenuItems` or `enable-column-selection` is set.
+
+## Related
+
+- [Choosing a grid licence](/develop/best-practices/choosing-a-grid-licence) — for business analysts
+- [Grid Pro](/develop/client-capabilities/grids/grid-pro/)
+- [Datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/)
+- [Row alerts](/develop/client-capabilities/grids/grid-pro/grid-pro-row-alerts)
+- [Entity Manager](/develop/client-capabilities/grids/entity-manager/)

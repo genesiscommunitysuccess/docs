@@ -29,27 +29,26 @@ This document outlines the available features of our two "Grid Pro" datasources:
 
 ## Enterprise features and licensing
 
-**Important:** Server-side datasource features require AG Grid Enterprise licensing:
+**Important:** `<grid-pro-server-side-datasource>` uses AG Grid's server-side row model and needs an Enterprise licence:
 
-- **Server-Side Row Model**: Server-side datasource requires `@ag-grid-enterprise/server-side-row-model`
+- **Server-Side Row Model**: register `ServerSideRowModelModule` from `ag-grid-enterprise` on the v36 `ModuleRegistry`
 - **Custom Sort Indicators**: Server-side datasources automatically display always-visible sort indicators
 - **Advanced Filtering**: Some advanced filtering features may require Enterprise modules
 
-For production use, you must obtain appropriate AG Grid Enterprise licenses. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
+Lazy loading without row grouping or aggregation can use the community infinite row model (`<grid-pro-infinite-datasource>`) with no Enterprise licence. See [Enterprise and community features](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features#infinite-row-model).
+
+For production use of the server-side row model, obtain an AG Grid Enterprise licence. Contact [AG Grid](https://www.ag-grid.com/license-pricing/) for licensing information.
 
 ### Enterprise module registration
 
 **REQUIRED for Server-Side Datasource Features**
 
-If you plan to use Server-Side datasource (`<grid-pro-server-side-datasource>`), you **MUST** register the appropriate AG Grid Enterprise module:
+If you plan to use Server-Side datasource (`<grid-pro-server-side-datasource>`), register `ServerSideRowModelModule` on the v36 registry. The `@ag-grid-community/core` registry applies to the legacy v29 grid only.
 
 ```typescript
-import { ModuleRegistry } from '@ag-grid-community/core';
+import { ModuleRegistry } from 'ag-grid-community';
+import { ServerSideRowModelModule } from 'ag-grid-enterprise';
 
-// Required for Server-Side datasource (<grid-pro-server-side-datasource>)
-import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
-
-// Register the enterprise module
 ModuleRegistry.registerModules([
   ServerSideRowModelModule, // Required for: <grid-pro-server-side-datasource>
 ]);
