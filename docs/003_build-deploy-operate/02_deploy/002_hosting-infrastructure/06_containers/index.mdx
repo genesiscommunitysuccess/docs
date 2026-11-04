@@ -64,10 +64,10 @@ The plugin also registers a debug variant of each of these tasks:
 2. Make the necessary changes to the `genesis-system-definitions.kts` for your dependencies, such as [the location of the database](/build-deploy-operate/deploy/supporting-infrastructure/#databases).
 
 :::tip
-Steps 3 & 4 below should already be included in any recently created Genesis application code bases. The instructions are required on more legacy applications that don't have these settings already set up.
+Step 3 is required. A newly created project does not set `genesisDeploy.enabled` for you, so add it yourself before you run `buildImage`.
 :::
 
-3. Ensure `genesisDeploy.enabled = true` is set in your `server/settings.gradle.kts` within the `genesis` plugins section. For example:
+3. Set `genesisDeploy.enabled = true` in your `server/settings.gradle.kts` within the `genesis` plugins section. This step is required before you run `buildImage`. For example:
 
 ```kotlin
 genesis {
@@ -83,7 +83,9 @@ genesis {
 }
 ```
 
-4. Ensure the client is included in the image by adding the following to `server/settings.gradle.kts`:
+Without this setting, `buildImage` fails with `Cannot expand ZIP ... as it does not exist`. If you see that error, check that the flag is set. When the flag is set, Gradle prints a deprecation warning for `genesisDeploy`; this is expected in 10.0.0 and you can ignore it.
+
+4. Ensure the client is included in the image by adding the following to `server/settings.gradle.kts`. Do this only if your project has a web client in `client/`; leave it out for a server-only project:
 ```kotlin
 includeBuild("../client")
 ```
@@ -94,7 +96,7 @@ includeBuild("../client")
 group = "global.genesis"
 ```
 
-    - Then add the following to the `dependencies` block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`):
+    - Then add the following to the `dependencies` block in your `build.gradle.kts` within the app module (for example, `server/example-app/build.gradle.kts`). Again, only if your project has a web client in `client/`; leave it out for a server-only project:
 ```kotlin
 genesisWeb("global.genesis:client")
 ```
@@ -139,6 +141,8 @@ Created image with ID 'eaa290495637'.
 
 
 ## Running
+
+The container needs an external database. H2, the default for local development, is not supported inside the container: `remap` fails with `No suitable driver`. Point the container at PostgreSQL, MSSQL or Oracle. To get a starting point, see [Generating a compose file](#generating-a-compose-file): the `writeGenesisDockerCompose` task writes a compose file that starts a PostgreSQL service and configures the Genesis services to use it.
 
 If you haven’t already initialised the database, you can run the Docker container passing the environment variable `GENESIS_DB_INSTALL=true`. This triggers a `remap` to create all the tables and will exit on completion.
 
