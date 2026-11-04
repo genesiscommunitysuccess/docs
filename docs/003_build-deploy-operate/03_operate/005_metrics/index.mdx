@@ -44,8 +44,6 @@ item(name = "MetricsExecutorEnabled", value = "true")
 item(name = "MetricsDbCacheEnabled", value = "false")
 ```
 
-After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes for the change to take effect.
-
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
@@ -55,6 +53,8 @@ After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild 
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
 | MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
 | MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+
+After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes for the change to take effect.
 
 ## Framework metrics
 
