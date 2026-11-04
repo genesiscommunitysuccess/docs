@@ -15,12 +15,14 @@ To run a Genesis application, including on your local machine, the following sof
 
 |Software                            | Access Information                                                                      |
 |------------------------------------|-----------------------------------------------------------------------------------------|
-| JDK v17                            | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
+| JDK 17 or 25                       | [Downloads](https://www.oracle.com/java/technologies/downloads/) |
 | Node.js v22                        | [Windows (.msi)](https://nodejs.org/dist/v22.22.2/node-v22.22.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
 | LMDB (Mac Only)                    | [Installation Guide](#lmdb-installation-guide-macos)                                                                        |
 | Genesis Server Framework (GSF)     | [Artifact Access](/build-deploy-operate/build/library-access/#server-artifacts)                                             |
 | Genesis Web Framework (Foundation) | [Artifact Access](/build-deploy-operate/build/library-access/#client-artifacts)                                             |
 | Gradle                             | Bundled with your Genesis application project (unless you [create a new project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/downloading-your-project-to-run-locally/#downloading-your-project))  |
+
+Genesis supports JDK 17 and 25 equally. New projects target JDK 17: the project template sets `jvmToolchain(17)` in the server build. Genesis libraries are compiled against the JDK 17 API, so they run on JDK 17 as well as 25.
 
 ### LMDB installation guide (MacOS)
 
@@ -168,9 +170,13 @@ However, care should be taken to remove this overwrite once the platform is upgr
 dependencies {
     // remove once Genesis platform version is upgraded
     // to cover CVE-2020-1234
-    genesisRuntime(enforcedPlatform("com.fasterxml.jackson:jackson-bom:2.16.1"))
+    genesisRuntime(enforcedPlatform("tools.jackson:jackson-bom:3.1.8"))
 }
 ```
+
+:::note
+Genesis 10.0 uses Jackson 3, whose BOM is `tools.jackson:jackson-bom`. In Genesis 8.15 and earlier, the platform uses Jackson 2, so override `com.fasterxml.jackson:jackson-bom` instead.
+:::
 
 Please note that the same dependency resolution algorithm will be used when running a Genesis Application locally,
 using the [IntelliJ plugin](/develop/development-environment/intellij-plugin) or [Genesis Start](/develop/development-environment/genesis-start).

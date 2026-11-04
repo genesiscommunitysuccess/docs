@@ -688,7 +688,7 @@ carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
 For a narrow test of your own controller and security wiring without booting a full Genesis
 process, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling
 guide. It uses Spring Boot's `@WebMvcTest` slice with `GenesisSpringSecurityConfig` imported, so the
-security layer only needs a stubbed `OnDemandUserSessionCache` to resolve tokens against. Useful assertions to
+security layer only needs a mock `OnDemandUserSessionCache` to resolve tokens against. Useful assertions to
 build on: a request with no token is `401`; a token resolving to no live session is `401`; a valid
 token is served and its username is available via `Principal`; a `@GenesisAnonymous`-marked endpoint
 is served with no token. Actuator endpoints are not part of the `@WebMvcTest` slice, so asserting on

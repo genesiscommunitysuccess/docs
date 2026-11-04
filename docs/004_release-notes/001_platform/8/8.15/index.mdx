@@ -278,6 +278,108 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.43
+
+###### Fixes
+
+* `exec-gradle-plugin` : Set GENESIS_PRIMARY in the dev docker-compose template
+* `genesis-net` : Keep a clients TLS context client-side after a certificate reload
+* `genesis-pal-datapipeline` : Re-read instead of checkpointing past a record whose sink is unavailable
+
+#### 8.15.42
+
+###### Fixes
+
+* `datapipeline` : Bound sendEventOnCompletion's hold inside a txDbSink transaction
+* `genesis-conventions` : Downgrade quartz to 2.4.1 to fix 1W cron regression 
+* `genesis-dataserver2` : Apply criteria to rows and fix index bounds on linearScan=false queries 
+* `genesis-db` : Lift only a trusted criteria's leading imports so a user name cannot cut its literals 
+* `genesis-db` : Make ZeroMQ removeListener remove metrics-wrapped and proxy registrations
+* `genesis-environment` : RenameFields keeps the alias store consistent with the renamed dictionary
+* `genesis-pal-dataserver` : Stop MORE_ROWS reading past a full fixed MAX_VIEW 
+* `genesis-subcore` : Close the JMSUpdateQueue addListener/terminate race and tighten the failed-subscribe rollback
+
+#### 8.15.41
+
+###### Features
+
+* `exec-gradle-plugin` : Add feature-flag support to project-overview.json 
+
+###### Performance improvements
+
+* `criteria` : Share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval 
+
+###### Fixes
+
+* `commons` : Free the criteria replacer when a compile fails 
+* `genesis-pal-dataserver` : AuthKeyWithUserName and enrichedAuth queries receive live grants and revocations
+* `genesis-pal-dataserver` : EnrichedAuth queries never receive live grants
+* `dataserver2` : Apply the criteria vocabulary to client criteria 
+* `genesis-config` : Resolve a script module to its own jar, not a longer-named sibling 
+* `genesis-db` : Bound criteria query cache and free compiled expressions on eviction 
+* `genesis-db` : Parse client criteria without running Groovy AST transformations 
+
+#### 8.15.39
+
+###### Fixes
+
+* `genesis-db` : Quote dbnamespace in generated SQL when DbQuotedIdentifiers is true 
+* `genesis-pal-dataserver` : Only set ROWS_COUNT on first chunk of chunked initial load
+* `genesis-pal-dataserver` : Stop chunked initial load double-counting rows against MAX_VIEW 
+* `genesis-router` : Keep the mfaCode cookie unless login returns a new code 
+
+#### 8.15.38
+
+###### Fixes
+
+* `genesis-clustersupport` : Demote a primary that loses contact with Consul 
+* `genesis-conventions` : Resolve Gradle plugins from our own repo and Plugin Portal before Maven Central 
+* `genesis-environment` : Use javax nullability annotations in SendTable 
+* `genesis-scripts` : Honour the process restart suppression flag in processRestarter 
+
+#### 8.15.37
+
+###### Features
+
+* `genesis-resource-daemon` : Backport LDAP login mode for the management console
+* `genesis-router` : Sysdef-overridable router and MCP ports
+
+###### Fixes
+
+* `dbmon` : Compare against the comparator date in Expr.dateIsAfter
+
+#### 8.15.36
+
+###### Features
+
+* `genesis-pal-consolidator` : Add excludedEmitters support
+
+###### Fixes
+
+* `criteria` : Parse date literals the same way in memory as in SQL
+* `genesis-clustersupport` : Extend transient-I/O retry to the explicit-pin path 
+
+#### 8.15.35
+
+###### Features
+
+* `clustersupport` : Consul-backed gFlake NodeId allocation, wiring & reclamation 
+* `genesis-db` : Opt-in cached point reads inside transactions 
+* `genesis-pal-dataserver` : Report lmdb space usage as metrics 
+
+###### Fixes
+
+* `genesis-clustersupport` : Scope ConsulClientProvider as a singleton 
+* `genesis-db` : Report an absent field as null rather than dereferencing it 
+* `genesis-db` : Rethrow InterruptedException during SQLEngine dictionary retrieval 
+* `genesis-environment` : Build FDB indexes from record-aligned ranges instead of stitched fragments
+* `genesis-environment` : Harden VerifyFDBIndexes and the record-aligned FDB remap scan
+* `genesis-environment` : Resume an FDB index build after the transaction-size guard stops a batch
+* `genesis-pal-dataserver` : Guard the lmdb env lifecycle instead of one call site 
+* `genesis-pal-dataserver` : Join lmdb background loops before closing the env 
+* `genesis-pal-dataserver` : Read the lmdb space usage in a read transaction
+* `server` : Convert DateTime and enum values on every view DbRecord path 
+
 #### 8.15.34
 
 ###### Features

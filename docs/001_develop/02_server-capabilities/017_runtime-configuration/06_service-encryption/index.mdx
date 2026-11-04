@@ -27,6 +27,8 @@ Environment variables can be used in the YAML directly using `${...}`.
 
 For a full overview of all available options, see the [Network configuration YAML reference](./network-configuration-yaml/).
 
+TLS doesn't cover the update queue's ZeroMQ connections. To encrypt those, use the `zeroMqEncryption` block in the same files. See [Securing ZeroMQ with CURVE](/build-deploy-operate/operate/update-queue/#securing-zeromq-with-curve). TLS does cover the unicast relay between nodes (`ZeroMQProxyUnicastRelayEnabled`), which is Genesis messaging.
+
 ## TLS Modes
 Genesis supports four modes for traffic encryption:
 

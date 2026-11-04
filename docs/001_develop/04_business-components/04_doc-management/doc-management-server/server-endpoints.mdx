@@ -14,6 +14,8 @@ import TabItem from '@theme/TabItem';
 
 Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically on start-up.
 
+For server code, it also provides a [file existence check](#checking-whether-files-exist), an [event sent after each file expiry sweep](#expiry-sweep-completed-event), and [events that change a file's expiry](#changing-a-files-expiry).
+
 ## File upload
 
 To upload a file, send a multiform POST request to the following resource path:  **/file-server/upload**. 
@@ -34,8 +36,40 @@ To download a file, send a GET request to the following resource path with the f
 
 ## List all files
 
-To list all files, send a GET request to `/file-server/all-files`.
+To list all files, send a GET request to `/file-server/all-files`. This requires the `FileStorageAdminAction` right.
 
+## Checking whether files exist
+
+Server code can check whether a set of files still exists in Document Management. Call `checkFileExistence` on `FileStorageClient`:
+
+```kotlin
+val fileStorageClient = inject<FileStorageClient>()
+
+val existence: Map<String, FileExistenceStatus> =
+    fileStorageClient.checkFileExistence(setOf(firstFileStorageId, secondFileStorageId), userName)
+```
+
+When Document Management runs in another process, this sends a `REQ_FILE_EXISTENCE` request to the process that hosts Document Management (`FILE_MANAGER`, or a compact process). When Document Management is on this process's classpath, the client reads `FILE_STORAGE` directly. The check reads the `FILE_STORAGE` records only, not the stored files. The result contains one entry for each requested id:
+
+| Status | Meaning |
+| --- | --- |
+| `FOUND` | The file exists. |
+| `NOT_FOUND` | Document Management confirmed that the file does not exist. |
+| `AMBIGUOUS` | No answer was obtained for this id. For example, Document Management could not be reached or the request failed. |
+
+Treat a file as gone only when its status is `NOT_FOUND`. Never treat `AMBIGUOUS` as missing.
+
+## Expiry sweep completed event
+
+After each [file expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/) sweep, Document Management sends `EVENT_FILE_STORAGE_EXPIRY_SWEEP_COMPLETED` with empty `DETAILS`. The Reporting component handles this event to mark reports whose files have expired.
+
+The event is sent once, to the process that serves it. If no process serves it, nothing is sent. A failed delivery is logged as a warning and does not affect the sweep, whose deletions have already been made.
+
+## Changing a file's expiry
+
+Server code can change the expiry of a saved file with `EVENT_FILE_STORAGE_UPDATE_EXPIRY_INTERNAL`. Users with the `FileStorageUpdateExpiry` or `FileStorageAdminAction` right can send `EVENT_FILE_STORAGE_UPDATE_EXPIRY`. Both take a `FILE_STORAGE_ID` and an `EXPIRES_AT` date and time.
+
+Always include `EXPIRES_AT`. Send it as null to clear the expiry. See [File expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/#changing-a-files-expiry).
 
 ## Linking assets
 

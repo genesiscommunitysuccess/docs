@@ -15,6 +15,10 @@ Site specific is an area of the run directory, on a deployed application instanc
 
 Any *platform-provided files* placed in your application's `cfg` or `script` will supersede those provided by the platform. *Platform-provided files* can be any files provided by Genesis, auth, or any business component or module that is not your application. 
 
+:::warning
+Don't override another product's dictionary files, such as a `*-tables-dictionary.kts` file from Genesis, auth or a business component. This is discouraged, and we intend to stop supporting it. An override that isn't compatible with the product's own code breaks the product at runtime, not at build or start-up. If you can't avoid one yet, follow the rules in [Overriding another product's dictionary](/develop/server-capabilities/data-model/#overriding-another-products-dictionary).
+:::
+
 ## Overriding platform-provided files
 
 Once you have built a project for the first time locally, you can find all the platform-provided module artifacts, including those in `cfg` and `scripts`, to copy into your application's respective `cfg` and `scripts` directories, as required.

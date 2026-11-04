@@ -186,6 +186,37 @@ When using Genesis Create this will automatically be populated with all of the e
 
 Only [Request Server endpoints](/develop/server-capabilities/snapshot-queries-request-server/#request) are valid report data sources. Anything listed in `REPORTING_DATASOURCE_LIST` which is not a valid request server endpoint in the application will be ignored.
 
+### Report retention
+
+Generated report files are stored in the Document Manager. By default they never expire. To delete them automatically after a number of days, set `REPORTING_DEFAULT_RETENTION_DAYS`. Expired files are only deleted if Document Management's expiry sweep is also enabled with `FILE_STORAGE_EXPIRY_SWEEP_CRON`.
+
+```kotlin
+systemDefinition {
+    global {
+        item(name = "REPORTING_DEFAULT_RETENTION_DAYS", value = "90")
+        item(name = "FILE_STORAGE_EXPIRY_SWEEP_CRON", value = "0 0 2 * * ?")
+    }
+}
+```
+
+| `REPORTING_DEFAULT_RETENTION_DAYS` | Behaviour |
+| --- | --- |
+| Not set | Report files are saved with an expiry of 9999-12-31 UTC, so they never expire. This applies even when Document Management's `FILE_STORAGE_DEFAULT_RETENTION_DAYS` is set. |
+| Whole number `N` greater than 0 | Each report file expires `N` days after the report is generated. |
+| Anything else | The `REPORTING_MANAGER` process fails to start. |
+
+Retention applies only to reports generated after it is set. Changing `N` does not re-date existing reports. Reports generated before the upgrade, or while the item was not set, are never deleted automatically. Delete them by hand.
+
+When the sweep is enabled, Reporting also does two things:
+- After each sweep, it sets the status of a generated report to `EXPIRED` if Document Management confirms that the report's file no longer exists.
+- It rejects `DISPATCH_REPORT` for a `PENDING` report whose file no longer exists. An `EXPIRED` report is rejected with the general message `Failed requirement.`
+
+`GENERATED_REPORTS` does not return `EXPIRED` reports, so they do not appear in the Generated Reports list. The rows stay in `GENERATED_REPORT` as an audit record, and `GENERATED_REPORT_DELETE` can still delete one by id.
+
+`FILE_STORAGE_EXPIRY_SWEEP_CRON` must be set in the `global` block, because both Document Management and Reporting read it. Both items are read at startup, so restart `REPORTING_MANAGER` after you change them.
+
+See [Document Management file expiry](/develop/business-components/doc-management/doc-management-server/doc-management-file-expiry/) for the sweep schedule, the full lifecycle and the upgrade order. Upgrade Document Management before Reporting.
+
 ## UI customisations
 
 ### Component sizing configuration

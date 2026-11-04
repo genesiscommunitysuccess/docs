@@ -1,0 +1,45 @@
+---
+title: '8.7 Notify'
+sidebar_label: 'Notify'
+sidebar_position: 5
+id: '8.7-notify'
+---
+
+### BREAKING CHANGES
+
+* Upgrade to Kotlin 2.1.0
+
+### Features
+
+* Add new dataserver specifically for toasts
+* Allow null values on email address lists
+* Add No Rows and Loading messages for alert centre
+
+### Fixes
+
+* Relax validation restrictions on Email Gateway config to make SMTP credentials optional
+* Adapt codebase to changes related to cluster simplification in GSF
+* Add part to alert inbox to allow for styling overrides
+* Debounce text-based filters
+* Force a new package-lock with up-to-date dependency refs
+* Handle date and datetime fields in rule builder
+* Make Topic field in rule dialog a combobox
+* Retain field name on right side of rule dialog
+
+### Patch releases
+
+#### 8.7.2
+
+###### Features
+
+* Expose properties for `sessionTimeout`, `verifyServerIdentity`, `trustedSslHosts` and `trustAllSslHosts` in Email Gateway configuration
+
+#### 8.7.1
+
+###### Features
+
+* Add support to set arbitrary properties on SMTP config for advanced use cases such as TLS trusted hosts
+
+###### Fixes
+
+* `SendGrid` : Only log outbound email body if debug enabled, to prevent memory issues

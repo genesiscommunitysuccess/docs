@@ -56,6 +56,9 @@ The same source directory is also what [`-DenableAppConfigInTests=true`](/develo
 tasks {
     test {
         systemProperty("DbLayer", "SQL")
+        systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+        systemProperty("DbQuotedIdentifiers", "true")
+        useJUnitPlatform()
     }
 }
 ```
@@ -375,7 +378,7 @@ The example above tests JPA/database access through a live Genesis runtime. Test
 app's **HTTP surface** — including the [session-token authentication](../core#session-token-authentication)
 layer every Genesis Spring web app installs by default — is a narrower concern and doesn't need
 `@GenesisSpringTest` at all. Use Spring Boot's `@WebMvcTest` slice, naming the controllers under
-test, import `GenesisSpringSecurityConfig`, and stub `OnDemandUserSessionCache` with `@MockitoBean` instead of
+test, import `GenesisSpringSecurityConfig`, and declare a mock `OnDemandUserSessionCache` bean instead of
 logging a session in for real. The slice loads only the web layer, so no Genesis process boots and
 none of your module's JPA, event handler or data-cube configuration runs.
 
@@ -388,14 +391,26 @@ below still passes, but for the wrong reason.
 Any dependency your own controller injects, such as a repository or a service, needs a `@MockitoBean`
 of its own, as usual for a `@WebMvcTest`.
 
-The starter's authenticator (`GenesisSessionAuthenticator`) resolves tokens through
-`OnDemandUserSessionCache` (`global.genesis.session.OnDemandUserSessionCache`), not `UserSessionCache`.
-It loads a session from `USER_SESSION` the first time its token is seen and caches it from then on,
-so it never loads the whole table up front. A `UserSessionCache` mock is never consulted by the
-security layer.
+The Spring Boot starter's authenticator (`GenesisSessionAuthenticator`) looks a token up through one
+call, the suspend function `OnDemandUserSessionCache.liveSessionOrNull(token)`
+(`global.genesis.session.OnDemandUserSessionCache`). Its signature is:
 
-The one method to stub is `liveSessionOrNull(token: String, ownSession: UserSessionRef? = null): UserSessionRef?`,
-a **suspend** function: cache first, then a single database read on a miss. In Kotlin, stub it with
+```kotlin
+suspend fun liveSessionOrNull(token: String, ownSession: UserSessionRef? = null): UserSessionCache.UserSessionRef?
+```
+
+It returns `null` when there is no live session for the token. The authenticator rejects a session whose
+`userName` is blank, so the stubbed session must carry a non-blank one. Stub that one call and nothing
+else on the cache is touched. `@WebMvcTest` has no real cache, so without an `OnDemandUserSessionCache`
+bean the context fails to start with a "No qualifying bean" error from `GenesisSpringSecurityConfig`.
+
+Declare the mock as a `@Bean` marked `@Primary`. The `@Primary` matters under
+[`@GenesisSpringTest`](../data-cube#testing), where the real cache is a Guice singleton bridged into
+Spring and a non-primary mock can be silently shadowed by it. It is harmless in a `@WebMvcTest`, so the
+same shape works in both.
+
+`OnDemandUserSessionCache` is a `final` class, so the mock needs Mockito's inline mock maker, which is
+the default from Mockito 5. Stubbing a `suspend` function from Kotlin needs
 [mockito-kotlin](https://github.com/mockito/mockito-kotlin)'s `onBlocking { … }`, which handles the
 `suspend` keyword's extra `Continuation` parameter for you.
 
@@ -437,18 +452,19 @@ resources, see [Data cube: Testing](../data-cube#testing) instead:
 package com.example.app
 
 import global.genesis.session.OnDemandUserSessionCache
-import global.genesis.session.UserSessionCache
+import global.genesis.session.UserSessionCache.UserSessionRef
 import global.genesis.springboot.security.GenesisSessionAuthenticator.Companion.SESSION_AUTH_TOKEN_HEADER
 import global.genesis.springboot.security.GenesisSpringSecurityConfig
 import org.joda.time.DateTime
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.stub
+import org.mockito.kotlin.mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
-import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -460,22 +476,6 @@ class SecureControllerTest {
 
     @Autowired
     lateinit var mockMvc: MockMvc
-
-    // Stands in for the real OnDemandUserSessionCache a booted process would bridge from Guice.
-    @MockitoBean
-    lateinit var userSessionCache: OnDemandUserSessionCache
-
-    @BeforeEach
-    fun stubValidSession() {
-        userSessionCache.stub {
-            onBlocking { liveSessionOrNull(VALID_TOKEN) } doReturn UserSessionCache.UserSessionRef(
-                userName = "JaneDoe",
-                sessionId = "session-1",
-                token = VALID_TOKEN,
-                expiryDateTime = DateTime.now().plusHours(1),
-            )
-        }
-    }
 
     @Test
     fun `rejects a request with no session token`() {
@@ -494,6 +494,21 @@ class SecureControllerTest {
         mockMvc.perform(get("/public/ping")).andExpect(status().isOk)
     }
 
+    // Stands in for the real OnDemandUserSessionCache a booted process would bridge from Guice.
+    @TestConfiguration(proxyBeanMethods = false)
+    class SessionStub {
+        @Bean
+        @Primary
+        fun onDemandUserSessionCache(): OnDemandUserSessionCache = mock {
+            onBlocking { liveSessionOrNull(VALID_TOKEN) } doReturn UserSessionRef(
+                userName = "JaneDoe",
+                sessionId = "session-1",
+                token = VALID_TOKEN,
+                expiryDateTime = DateTime.now().plusHours(1),
+            )
+        }
+    }
+
     private companion object {
         const val VALID_TOKEN = "valid-session-token"
     }
@@ -504,30 +519,33 @@ class SecureControllerTest {
 <TabItem value="java">
 
 `liveSessionOrNull` is still a Kotlin `suspend` function when called from Java — there's no
-`mockito-kotlin` `onBlocking { … }` sugar available, and Kotlin default arguments don't apply, so
-both `ownSession` and the compiler-generated `Continuation` parameter appear in the stub. Pass the
-token and `null` for each of the other two directly; the matcher form
-`liveSessionOrNull(eq(VALID_TOKEN), isNull(), any())` throws `InvalidUseOfMatchersException` here. Plain
-`org.mockito:mockito-core`, already pulled in by `spring-boot-starter-test`, is enough; the
-`mockito-kotlin` dependency above is only needed for the Kotlin version.
+`mockito-kotlin` `onBlocking { … }` sugar available, so the compiler-generated `Continuation` parameter
+appears in the stub, and Kotlin's default for `ownSession` does not apply. Pass the token, `null` for
+`ownSession` and `null` for the `Continuation` directly; the matcher form
+`liveSessionOrNull(eq(VALID_TOKEN), any(), any())` throws `InvalidUseOfMatchersException` here. Plain
+`org.mockito:mockito-core`, already pulled in by `spring-boot-starter-test`, is enough, provided it is
+Mockito 5 or later so the inline mock maker can mock the `final` class; the `mockito-kotlin` dependency
+above is only needed for the Kotlin version.
 
 ```java
 package com.example.app;
 
 import global.genesis.session.OnDemandUserSessionCache;
-import global.genesis.session.UserSessionCache;
+import global.genesis.session.UserSessionCache.UserSessionRef;
 import global.genesis.springboot.security.GenesisSpringSecurityConfig;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -541,17 +559,6 @@ public class SecureControllerTestJava {
 
     @Autowired
     private MockMvc mockMvc;
-
-    // Stands in for the real OnDemandUserSessionCache a booted process would bridge from Guice.
-    @MockitoBean
-    private OnDemandUserSessionCache userSessionCache;
-
-    @BeforeEach
-    void stubValidSession() {
-        when(userSessionCache.liveSessionOrNull(VALID_TOKEN, null, null)).thenReturn(
-            new UserSessionCache.UserSessionRef("JaneDoe", "session-1", VALID_TOKEN, DateTime.now().plusHours(1))
-        );
-    }
 
     @Test
     @DisplayName("rejects a request with no session token")
@@ -572,6 +579,20 @@ public class SecureControllerTestJava {
     void servesGenesisAnonymousEndpointWithoutToken() throws Exception {
         mockMvc.perform(get("/public/ping")).andExpect(status().isOk());
     }
+
+    // Stands in for the real OnDemandUserSessionCache a booted process would bridge from Guice.
+    @TestConfiguration(proxyBeanMethods = false)
+    static class SessionStub {
+        @Bean
+        @Primary
+        OnDemandUserSessionCache onDemandUserSessionCache() {
+            OnDemandUserSessionCache cache = mock(OnDemandUserSessionCache.class);
+            when(cache.liveSessionOrNull(VALID_TOKEN, null, null)).thenReturn(
+                new UserSessionRef("JaneDoe", "session-1", VALID_TOKEN, DateTime.now().plusHours(1))
+            );
+            return cache;
+        }
+    }
 }
 ```
 
@@ -585,7 +606,7 @@ request/response table this test's two cases are drawn from.
 
 ## See also
 
-- [Spring Integration](../index) for the section overview.
+- [Spring Integration](../) for the section overview.
 - [Application core](../core) for the Guice/Spring bridge these tests boot on top of.
 - [Annotation-driven event handlers](../event-handlers#testing) — the fullest worked example of the `EventClientSync` test-client beans introduced above.
 - [Testing API](/develop/server-capabilities/testing-api) for `GenesisJunit`, the equivalent tooling for GPAL script apps, and full reference detail on the annotations listed above.
