@@ -589,7 +589,7 @@ Both conditions must be met for audit records to be written:
 
 If `audit = true` is set but the output table is not audited, the setting is ignored and the Consolidator writes as normal.
 
-You can set `audit` for a single Consolidator, or in the file-level `config` block to apply it to every Consolidator in the file:
+You can set `audit` for a single Consolidator, or in the file-level `config` block. A file-level setting applies to every Consolidator declared after that `config` block, so place the block at the top of the file:
 
 ```kotlin
 consolidators {
@@ -614,10 +614,14 @@ The audit user is always `SYSTEM`. A Consolidator has no user context, and a sin
 
 Note the following behaviour:
 
-- **Transactions**: with the default `transactionType`, data and audit records are written in the same database transaction, so they are committed or rolled back together. With `transactionType = ConsolidationTransactionType.LOCAL`, each batch of audited writes is wrapped in its own database transaction, so each batch opens one transaction.
+- **Transactions**: with the default `transactionType`, data and audit records are written in the same database transaction, so they are committed or rolled back together. With `transactionType = ConsolidationTransactionType.LOCAL`, writes do not normally use a database transaction. When auditing is on, each batch of writes is wrapped in its own database transaction, so its data and audit records are also committed together. This adds one database transaction per batch.
 - **Volume**: writes are batched (see `batchingPeriod`), so expect roughly one audit record per group per batch, not one per input update.
-- **No change, no record**: if a recalculation leaves a group's values unchanged, no row is written and no audit record is created.
-- **Cold start**: the records cleared at the start of a [`coldStart`](#coldstart) are not audited. The rebuild that follows is audited, producing one record per group: `MODIFY` if `tableTransient` is false (records are zeroed, then recalculated), or `INSERT` if `tableTransient` is true (records are deleted, then rebuilt).
+- **Unchanged values**: with the default `consistencyMode` (`INCREMENTAL`):
+  - an update that only changes input fields the Consolidator doesn't use (in `select`, `groupBy` or `where`) writes no row and no audit record, unless the Consolidator has an [`onCommit`](#oncommit) block, which writes the row on every update to the group
+  - an update that leaves a group's values unchanged, such as two trades swapping quantities, still writes the row and adds a `MODIFY` audit record
+
+  With `consistencyMode = ConsistencyMode.EVENTUAL`, a group rebuild that leaves the selected values unchanged writes no row and no audit record.
+- **Cold start**: the records cleared at the start of a [`coldStart`](#coldstart) are not audited. The recalculation that follows is audited, producing one record for each group that has input records: `MODIFY` if `tableTransient` is false (records are zeroed, then recalculated; a group with no existing output record gets `INSERT`), or `INSERT` if `tableTransient` is true (records are deleted, then rebuilt). A record is written even if the recalculated values match the values before the cold start.
 
 ### `select`
 
