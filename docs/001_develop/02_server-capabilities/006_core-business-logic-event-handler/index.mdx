@@ -21,3 +21,7 @@ There are two ways to write event handlers:
 - **[Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring)** describes event handlers written as annotated Kotlin or Java classes in a Spring Boot application. They use `@GenesisEventHandler`, `@EventValidate` and `@EventCommit`.
 
 To a client, an event looks the same whichever way it is written, and both kinds of handler can run in the same process. GPAL remains the default for core business logic. The Spring module is still being developed, so choose it only when your process is already a Spring Boot application and staying in that programming model matters more to you than GPAL's greater maturity.
+
+:::tip Working with Spring?
+Start with [Getting Started with Spring](/develop/development-environment/getting-started-with-spring), a step-by-step tutorial that sets up a Spring module, then [Application core](/develop/development-environment/getting-started-with-spring/application-core) for how Spring is bridged into a Genesis application.
+:::

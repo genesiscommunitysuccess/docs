@@ -1254,8 +1254,8 @@ resource](#declaring-a-cube-resource)). To assert that in a test, start a child 
 Spring Boot's `ApplicationContextRunner`, using the `@GenesisSpringTest` context as its parent.
 The child imports the cube starter's own `CubeConfig` (`global.genesis.spring.data.cube.lifecycle`)
 and declares the resource under test. The parent does not need to contain that resource: the
-child's `CubeConfig` validates only the `CubeResource` beans declared in the child. See [Test
-tooling](/develop/server-capabilities/testing-api/spring) for the test dependencies. In this example, `Widget` is a
+child's `CubeConfig` validates only the `CubeResource` beans declared in the child. See [Testing API
+(Spring)](/develop/server-capabilities/testing-api/spring) for the test dependencies. In this example, `Widget` is a
 generated entity with a `quality` field, and the bad declaration names an operation `query`, which
 is reserved:
 
@@ -1716,7 +1716,7 @@ just without pinning the caller to one fixed group-by shape.
 
 ## See also
 
-- [Getting Started with Spring](/develop/development-environment/getting-started-with-spring) — the overview of this whole section.
+- [Getting Started with Spring](/develop/development-environment/getting-started-with-spring) — step-by-step tutorial for adding Spring to a Genesis application.
 - [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — repositories and entities the cube engine reads from.
 - [Data model (Spring)](/develop/server-capabilities/data-model/spring) — the dictionary-to-JPA codegen that produces the
   entities a cube is built over; a hard prerequisite for this module.

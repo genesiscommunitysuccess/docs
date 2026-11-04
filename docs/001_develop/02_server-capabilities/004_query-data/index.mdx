@@ -24,7 +24,7 @@ There are three ways to expose your application's data to clients:
 | What the client gets | An initial set of data, then a live stream of changes | One snapshot per request | One page of flat, grouped or pivoted rows per request |
 | How clients connect | WebSocket subscription; also available over REST | Request and reply; also available over REST, with an OpenAPI spec | HTTP, under `/api/v1/cubes/{resource}/...` |
 | Where you define it | `*-dataserver.kts` files or `GPalDataserver` classes | `*-reqrep.kts` files or `GPalRequestServer` classes | `CubeResource` declarations in a Spring Boot module |
-| What it reads | Tables and views from the data model | Tables and views from the data model | JPA entities, or a JPQL query |
+| What it reads | Tables and views from the data model | Tables and views from the data model, or custom logic in a custom Request Server | JPA entities, or a JPQL query |
 | Grouping and pivoting | No | No | Yes |
 | Live updates | Yes | No | No |
 
@@ -32,4 +32,8 @@ There are three ways to expose your application's data to clients:
 
 - Use a **Data Server** when the client needs to see changes as they happen, for example a live blotter.
 - Use a **Request Server** when the client needs the current data on demand, for example a lookup or a report.
-- Use the **Cube Query Engine** when your application already uses Spring and [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa), and a grid needs to group, pivot or page through that data on the server. It sits alongside the Data Server and Request Server rather than replacing them. It is read-only, and works with SQL databases only.
+- Use the **Cube Query Engine** when your application already uses Spring and [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa), and a grid needs to group, pivot or page through that data on the server. It sits alongside the Data Server and Request Server rather than replacing them. It is read-only, and because it is built on JPA it needs a SQL database.
+
+:::tip Working with Spring?
+Start with [Getting Started with Spring](/develop/development-environment/getting-started-with-spring), a step-by-step tutorial that sets up a Spring module, then [Application core](/develop/development-environment/getting-started-with-spring/application-core) for how Spring is bridged into a Genesis application.
+:::
