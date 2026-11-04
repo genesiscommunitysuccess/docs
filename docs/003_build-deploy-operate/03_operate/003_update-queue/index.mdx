@@ -166,7 +166,7 @@ The Config variables are listed below.
 | `JmsHost` (required)             | The host name, can hold multiple values separated by comma; this enables you to use HA failover | `http://localhost:61616` |
 | `JmsUsername`                    | Username to connect | |
 | `JmsPassword`                    | Password to connect (can be encrypted using `GenesisKey`) | |
-| `JmsClientId`                    | A template pattern for the client ID, which identifies the process's durable subscriptions on the broker. You can use `{{PROCESS_NAME}}`, `{{HOST_NAME}}`, any system definition item and any environment variable. See [Stable client IDs](#stable-client-ids). (Available since 8.15.44.) | `{{PROCESS_NAME}}@{{HOST_NAME}}` |
+| `JmsClientId`                    | A template pattern for the client ID, which identifies the process's durable subscriptions on the broker. You can use `{{PROCESS_NAME}}`, `{{HOST_NAME}}`, any system definition item and any of the process's environment variables, by name. See [Stable client IDs](#stable-client-ids). (Available since 8.15.44.) | `{{PROCESS_NAME}}@{{HOST_NAME}}` |
 | `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
 | `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker before declaring the process `DOWN` | 20 |
 | `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case of connectivity problems or other faults | 1000 |
@@ -228,7 +228,7 @@ process {
 }
 ```
 
-`{{PROCESS_NAME}}` and `{{HOST_NAME}}` take precedence over system definition items with the same name, and system definition items take precedence over environment variables. A placeholder with no value resolves to an empty string.
+`{{PROCESS_NAME}}` and `{{HOST_NAME}}` take precedence over system definition items with the same name, and system definition items take precedence over environment variables. Environment variables here are the process's ordinary environment, referenced by their own name: `{{POD_INDEX}}` reads the `POD_INDEX` variable. A placeholder with no value resolves to an empty string.
 
 :::warning
 The client ID must be unique for each running instance of a process. The broker rejects a second connection that uses a client ID already in use.
