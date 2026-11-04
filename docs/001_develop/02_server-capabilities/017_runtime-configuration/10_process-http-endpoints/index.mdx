@@ -15,14 +15,6 @@ By default, Genesis processes exchange messages with each other over raw TCP, an
 
 A process stays on TCP, and loads none of the HTTP layer, until you configure the channel.
 
-:::warning
-
-Native HTTP on the process port has a known limitation: requests that the router proxies skip some router checks. See [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#checks-a-proxied-request-skips) on the Genesis Router page. Until it is resolved, don't expose a process on the WebSocket channel to callers you don't trust. That covers both ways a caller can reach the process port: front-end traffic that the router's HTTP proxy forwards, and anything with network access to the process port directly, such as other services in the cluster. Restrict access to the process port at the network level (a firewall or network policy), so that only the router and the callers you intend can reach it. Network rules do not stop requests that the router proxies, so to keep a resource away from front-end callers, mark it [`internal`](#internal-resources) or leave the router's HTTP proxy off.
-
-This is not a second limitation, but a note on how proxied requests are authenticated, and on `USER_NAME` for routes with no authentication. With the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on, front-end callers reach these routes through the router, which forwards the request, headers included, without authenticating it. The process does the authentication, from the session token (`SESSION_AUTH_TOKEN`) and not from `USER_NAME`: a missing or invalid token gets 401. Missing permissions get 403 on a custom endpoint, but an event handler or request server returns its NACK as a 200 (unless `StrictHttpStatusCode` is on). On a route with no authentication (`AuthCriteria.Always`, or HTTP authentication disabled for the process), `USER_NAME` is whatever the caller sent, so don't treat it as the caller's identity there.
-
-:::
-
 ## Enable the WebSocket channel
 
 Set `messaging.channel` to `WEBSOCKET` in the network configuration YAML. Use `network-config.yaml` to change every process, or `network-config-<PROCESS_NAME>.yaml` to change one process. When both files exist, the process file is applied over the application file.
@@ -83,7 +75,7 @@ By default a NACK from a request server or event handler comes back with status 
 
 The process reads the session token from the `SESSION_AUTH_TOKEN` request header, and looks the session up in its own `USER_SESSION` table. A token is accepted until its session times out, [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins) after the session started, as on the router. Request server and event handler routes require a logged-in user, and don't check any permission codes at the route; permissioning inside the request server or event handler still applies. Custom endpoints apply the permissioning they declare.
 
-To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`. If you set it with the process-scoped override (a `<config>` entry for the process in `processes.xml`), sync (Genesis Start's sync, or `POST /api/sync`) before you restart the process. A plain restart does not pick up a new `<config>`, because the launcher builds the process's `-config` argument at sync, not at start.
+To turn authentication off for a process's native HTTP, set the system definition item `HttpAuthDisabled` to `true` [for that process](/develop/server-capabilities/runtime-configuration/system-definition/#process-scoped-system-definition-overrides). Every request is then treated as anonymous. The default is `false`. Requests forwarded by the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) are authenticated by the process, not the router, so set `HttpAuthDisabled` the same way as the router's [`authDisabled`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration). If you set it with the process-scoped override (a `<config>` entry for the process in `processes.xml`), sync (Genesis Start's sync, or `POST /api/sync`) before you restart the process. A plain restart does not pick up a new `<config>`, because the launcher builds the process's `-config` argument at sync, not at start.
 
 For example, as an environment variable for a process named `POSITION_APP_EVENT_HANDLER`:
 
