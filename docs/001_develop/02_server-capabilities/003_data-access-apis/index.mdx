@@ -1008,7 +1008,7 @@ final var writeResults = pair.getSecond();
 </Tabs>
 
 :::note
-A single or bulk write made inside an open write transaction joins it without a savepoint of its own. If the write fails and your code catches the failure, the transaction keeps whatever the write had already done (on PostgreSQL, the whole transaction is aborted instead). To make such a write atomic on its own, wrap it in a nested `writeTransaction { }`.
+On SQL databases, a single or bulk write made inside an open write transaction joins it without a savepoint of its own. If the write fails and your code catches the failure, the transaction keeps whatever the write had already done; on PostgreSQL, the failed statement aborts the whole transaction instead, so it rolls back rather than commits. To make such a write atomic on its own, wrap it in a nested `writeTransaction { }`, which runs under a savepoint and rolls back on its own if it fails. A single `AsyncDb` write to an entity with a synchronous write operation listener already runs this way.
 :::
 
 ### Subscribe operations
