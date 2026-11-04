@@ -178,6 +178,8 @@ The constants this block accepts are `LOG4J` and `LOGBACK`. log4j2 is the defaul
 
 If you set both, the value in the `genesisExec` block wins; the Gradle property is only its default.
 
+The change takes effect only once your application's process classpath is rebuilt. After you change the backend, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes. Restarting after `writeStartScript` alone keeps the old backend.
+
 - At start-up, a process uses the logging backend it finds on its classpath. The `LogFramework` system definition item no longer selects one.
 - The `LogFrameworkConfig` system definition item names the configuration file. Its default is `log4j2-default.xml`. If Logback is the backend and the item still has that default, Genesis loads `logback-default.xml` instead; both files ship with Genesis. Any other value is used as given, so if you name your own file, make sure it is written for the backend you chose.
 - If more than one backend is on the classpath, the process doesn't initialise logging, and prints `Too many logging controllers; unable to initialize logging services; found ...` to standard error. Check that your dependencies don't add a second backend.
