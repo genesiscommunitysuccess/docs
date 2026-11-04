@@ -97,7 +97,7 @@ For example, consider the lifecycle of a trade. Perhaps you want to ensure that 
 
 To achieve this, you could modify an existing TRADE_MODIFY event and then create a new modify event for super users only.
 
-The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) codeblock:
+The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#onvalidate) codeblock:
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
@@ -172,6 +172,6 @@ Genesis has tested the examples successfully on the H2 and Postgres databases.
 Find more details in our in our reference documentation:
 
 - [Authorization](/develop/server-capabilities/access-control/authorization/) 
-- [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) 
-- [`onValidate` codeblocks](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate)
+- [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) 
+- [`onValidate` codeblocks](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#onvalidate)
 
