@@ -353,7 +353,7 @@ Default value: 7200 (5 days)
 
 ### `expiryCheckMins` 
 
-Specifies the time interval (in minutes) at which the auth manager deletes sessions whose [refresh token has expired](#refreshtokenexpirationmins). A session that has passed [`sessionTimeoutMins`](#sessiontimeoutmins) is not deleted by this check, but its session token is rejected as soon as the session times out. Until this check deletes a session, its expired refresh token can still be used to log in.
+Specifies the interval (in minutes) at which the auth manager deletes sessions whose [refresh token](#refreshtokenexpirationmins) has expired.
 
 ```kotlin title="auth-preferences.kts"
 security {
