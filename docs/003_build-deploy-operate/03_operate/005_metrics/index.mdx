@@ -44,6 +44,8 @@ item(name = "MetricsExecutorEnabled", value = "true")
 item(name = "MetricsDbCacheEnabled", value = "false")
 ```
 
+After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes for the change to take effect.
+
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
