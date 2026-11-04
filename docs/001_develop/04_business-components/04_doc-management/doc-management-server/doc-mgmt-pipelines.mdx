@@ -56,10 +56,10 @@ GPAL Example:
 val fileStorageSource = fileStorageSource()
 
 pipelines {
-    pipeline("TEST_FILE_STORAGE") {
-        source(fileStorageSource)
+    pipeline("TEST_FILE_STORAGE")
+        .source(fileStorageSource)
             .sink(fileSink)
-    }
+        .build()
 }
 ```
 
@@ -103,15 +103,14 @@ val fileSink = fileStorageSink {
 }
 
 pipelines {
-    pipeline("TEST_FILE_STORAGE") {
-
-    // since the source outputs a different type to what the sink takes we convert it to the respective type, i.e. a string.
-        source(dbSource)
+    pipeline("TEST_FILE_STORAGE")
+        // since the source outputs a different type to what the sink takes we convert it to the respective type, i.e. a string.
+        .source(dbSource)
           .map{
             "${it.recordId}, ${it.timestamp}"
         }
             .sink(fileSink)
-    }
+        .build()
 }
 ```
 

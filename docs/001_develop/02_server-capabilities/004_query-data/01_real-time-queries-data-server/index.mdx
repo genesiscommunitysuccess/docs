@@ -11,7 +11,7 @@ tags:
 - lmdb
 - lmdb allocation
 - serialization
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
@@ -54,7 +54,7 @@ All Data Server queries are available via REST automatically too.
 
 ## Example configuration
 
-Here is an example Data Server configuration that matches the [data model examples](/develop/server-capabilities/data-model/#example-configuration).
+Here is an example Data Server configuration that matches the [data model examples](/develop/server-capabilities/data-model/gpal-java/#example-configuration).
 
 ```kotlin
 dataServer {
@@ -148,7 +148,7 @@ dataServer {
   query("ALL_TRADES", TRADE_VIEW) {
     config {
       defaultCriteria = "TRADE_PRICE > 0"
-      backwardsJoins = false
+      backwardsJoin = false
       disableAuthUpdates = false
     }
   }
@@ -159,8 +159,7 @@ dataServer {
 |-------------|-------------|---------|
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
-|`backwardsJoins`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
-|`backJoins`|(Deprecated) Replaced by `backwardsJoins`. Functionally the same.||
+|`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
 
 #### `fields`
 
@@ -199,7 +198,7 @@ A query can optionally include an `indices` block to define additional indexing 
 A Data Server always uses the internal RECORD_ID value of the database records to create the default index. This is equivalent to indexing records by their creation date. Data Servers do not use table/view indices automatically. To query records efficiently, you need to recreate indices at the Data Server level or use the [`importEntityIndices`](#global-config) configuration option.
 :::
 
-The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
+The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/gpal-java/#indices).
 
 Example:
 
@@ -312,10 +311,10 @@ The `join` operation receives two parameters:
 
 `hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided:
 - `userName` the current user name subscribed to the query
-- `row` the pre-built query `row`
+- `queryRow` the pre-built query row
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
-The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
+The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view. To declare your own derived fields, call `derivedField` directly in the `enrich` block, outside `fields`.
 
 The example below should help you to understand the functionality. Comments are included in the code to ease understanding.
 
@@ -340,31 +339,29 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
             UserCounterpartyMap.ByUserName(userName)
         }
         // Hide buyer counterparty id to users associated to counterparty seller if "isHiddenToSeller" is true.
-        hideFields { userName, row, userData ->
-            if(userData?.counterpartyId == queryRow.sellerCounterPartyId && queryRow.isHiddenToSeller == true){
+        hideFields { userName, queryRow, userData ->
+            if(userData?.counterpartyId == queryRow.sellerCounterpartyId && queryRow.isHiddenToSeller == true){
                 listOf(BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID)
             } else{
                 emptyList()
             }
         }
-        fields {
-            // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
-            // in the reverse scenario it will be the buyer name
-            derivedField("COUNTERPARTY", STRING) {
-                when {
-                    enriched?.counterpartyId == data.buyerId -> data.sellerName
-                    enriched?.counterpartyId == data.sellerId -> data.buyerName
-                    else -> ""
-                }
+        // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
+        // in the reverse scenario it will be the buyer name
+        derivedField("COUNTERPARTY", STRING) {
+            when {
+                enriched?.counterpartyId == data.buyerId -> data.sellerName
+                enriched?.counterpartyId == data.sellerId -> data.buyerName
+                else -> ""
             }
-            // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
-            // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) {
-                when {
-                    enriched?.counterpartyId == data.buyerId -> "BUY"
-                    enriched?.counterpartyId == data.sellerId -> "SELL"
-                    else -> ""
-                }
+        }
+        // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
+        // in the reverse scenario it will be "SELL"
+        derivedField("DIRECTION", STRING) {
+            when {
+                enriched?.counterpartyId == data.buyerId -> "BUY"
+                enriched?.counterpartyId == data.sellerId -> "SELL"
+                else -> ""
             }
         }
     }
@@ -375,7 +372,7 @@ query("ALL_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
     // Lookup user counterparty favourite view and provide user enrich field to display if a counterparty has been marked as favourite by the user.
     enrich(USER_COUNTERPARTY_FAVOURITE) {
         join { userName, row ->
-            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+            UserCounterpartyFavourite.ByUserNameCounterparty(userName, row.counterpartyId)
         }
         // We only care about selecting the IS_FAVOURITE field from the USER_COUNTERPARTY_FAVOURITE view
         fields {
@@ -409,7 +406,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     }
     enrich(USER_COUNTERPARTY_FAVOURITE) {
         join { userName, row ->
-            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+            UserCounterpartyFavourite.ByUserNameCounterparty(userName, row.counterpartyId)
         }
     }
 }
@@ -424,10 +421,8 @@ Note the casing of `FAVOURITE_TRADE` and `FavouriteTrade`. The all-caps version 
 query(POSITION) {
     enrich(FAVOURITE_TRADE) {
         join { userName, row -> FavouriteTrade.byUserName(userName) }
-        fields {
-            derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-                data.code == enriched?.code
-            }
+        derivedField("IS_FAVOURITE", BOOLEAN) {
+            data.code == enriched?.code
         }
     }
 }
@@ -464,7 +459,7 @@ table(name = "FAVOURITE_TRADE", id = 1601) {
 
 #### Index driven
 
-You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange).
+You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/gpal-java/#getrange).
 
 You can use the following options when you create index-based queries:
 
@@ -492,7 +487,7 @@ The example below shows how advanced `where` queries differ from basic `filter` 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
 - Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/gpal-java/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
@@ -701,7 +696,7 @@ dataServer {
         config {
             // Items below only available in query level config
             defaultCriteria = "SIMPLE_PRICE > 0"
-            backwardsJoins = false
+            backwardsJoin = false
             disableAuthUpdates = false
         }
     }
@@ -790,7 +785,7 @@ By default, only updates to the root table are sent. So if you need to see updat
 
 Monitoring of backwards joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. For example, counterparty data, if changed, can wait until overnight. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intra-day.
 
-The backwards join flag is true by default. You must explicitly set `backwardsJoins = false` if you wish to turn backwards joins off for your query.
+The backwards join flag is true by default. You must explicitly set `backwardsJoin = false` if you wish to turn backwards joins off for your query.
 
 ### Logging
 
@@ -798,7 +793,7 @@ The backwards join flag is true by default. You must explicitly set `backwardsJo
 
 ## Optimistic concurrency
 
-Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#data-server)
+Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#data-server)
 
 ## Client API
 
@@ -1670,7 +1665,7 @@ If you are testing against an earlier version of the framework, go to [legacy te
 
 This document looks at the basics of testing Data Servers.
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#genesisjunit), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#genesisjunit), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up your test.
@@ -1712,7 +1707,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `TestScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 ###### 2. Load test data
 
@@ -1733,6 +1728,8 @@ Before we can begin writing tests for our Data Server, we need to inject referen
 <TabItem value="kotlin">
 
 ```kotlin
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
+
 @GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
@@ -1752,6 +1749,8 @@ class DataServerTest {
 <TabItem value="java">
 
 ```java
+import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient;
+
 @GenesisTest
 @TestScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
@@ -2110,19 +2109,19 @@ class MyDataServerTest {
 }
 ```
 
-Alternatively, use `@ProvidedInstance` to hand the test an already-constructed instance instead of having GenesisJunit discover it via package scanning — useful when the definition needs a dependency you want to stub out yourself:
+Alternatively, use `@ProvidedType` to register just this one class without scanning its whole package:
 
 ```kotlin
 import global.genesis.testsupport.client.dataserver.DataServerQueryViewClient
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import jakarta.inject.Inject
 import myapp.definition.MyDataServer
 
 @GenesisTest
 class MyDataServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val myDataServer = MyDataServer::class
 
     @Inject
@@ -2132,7 +2131,11 @@ class MyDataServerTest {
 }
 ```
 
-`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedInstance` registers only the exact class (or instance) you give it. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
+
+`@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.
 
 ### Integration testing (legacy)
 
@@ -2271,5 +2274,3 @@ dataServer {
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
 |`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
-|`backwardsJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||
-|`backJoins`|(Deprecated) Replaced by `backwardsJoin`. Functionally the same.||

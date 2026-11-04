@@ -18,13 +18,13 @@ Data storage is essential to all applications. Genesis applications have optiona
 
 ### Databases	 
 
-Your Genesis application can be configured to use one of the following database technologies to store the [data model](/develop/server-capabilities/data-model/) and its associated data.
+Your Genesis application can be configured to use one of the following database technologies to store the [data model](/develop/server-capabilities/data-model/gpal-java/) and its associated data.
 
 By default, new projects are set up with [H2](https://h2database.com/html/main.html) database, which enables you to learn and create simple trial applications without any configuration. This is intended to be used in development environments only, not for production.
 
 For production environments (and local production like testing), [Postgresql](#postgresql) is our recommended choice, however Genesis supports the following database technologies:
 
-| Database                 | [FoundationDB](#foundationdb) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
+| Database                 | [FoundationDB](#foundationdb) (deprecated) | [Postgresql](#postgresql) | [MSSQL](#sql-server) | [Oracle](#oracle) | H2  |
 | ------------------------ | ----------------------------- | ------------------------- | -------------------- |------------------ | --- |
 | Technology               | NOSQL                         | SQL                       | SQL                  | SQL               | SQL |
 | Unlimited operation size | ❌                            | ✔️                         | ✔️                    | ✔️                 | ✔️   |
@@ -33,6 +33,9 @@ For production environments (and local production like testing), [Postgresql](#p
 
 #### FoundationDB
 
+:::warning
+FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
+:::
 
 Genesis provides two database solutions built on FoundationDB.
 
@@ -56,7 +59,7 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 | `DbThreadsMin`                | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units                                                                                                                                         |
 | `DbThreadsMax`                | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2                                                                                                                         |
 | `DbThreadKeepAliveSeconds`    | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
-| `DbOptimisticConcurrencyMode` | Set the [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/#optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                          |
+| `DbOptimisticConcurrencyMode` | Set the [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                          |
 
 Sample configurations
 ###### Min and max thread count
@@ -140,12 +143,12 @@ Whichever SQL technology you are using, you need to configure it correctly in yo
 | `DbSqlCachePrepStmts`               | Enable or disable prepared statement cache. Default: true                                                                                                                                                                                                                                                                                                                                                                            |
 | `DbSqlPrepStmtCacheSize`            | Set the maximum number of cached prepared statements. Default: 250                                                                                                                                                                                                                                                                                                                                                                   |
 | `DbSqlPrepStmtCacheSqlLimit`        | Define the maximum length of SQL statements that can be cached. Default: 2048                                                                                                                                                                                                                                                                                                                                                        |
-| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/#optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                                                                                                                                                                                     |
+| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                                                                                                                                                                                     |
 | `SqlMaxParametersPerRequest`    | For Postgres and SQL Server databases only. Set to enable bulk operations for the database (`insertAll`, `getAllAsList`, etc). This speeds up priming (in views, Genesis uses `getAllAsList` internally to get joined records) and makes modify, delete and insert operations much faster. **-1** sets to the Platform default, which is 5000 for Postgres and 2000 for SQL Server. Other database technologies ignore this setting. |
 | `DbSqlResultSetFetchSize`       | Defines the number of rows that will be fetched from the database when more rows are needed while executing a statement. Default: 10000 |
-| `SqlConnectionDeadlockThresholdSeconds` | The threshold in seconds before detecting a deadlock. Default 10; for more details see [deadlock detection](/develop/server-capabilities/data-access-apis/#sql-deadlock-detection)                                                                                                                                                                                                                                                   |
-| `QueryReadTimeoutSeconds`               | The threshold in seconds before timing out a slow consuming query. Default 10; for more details see [Slow consuming query detection](/develop/server-capabilities/data-access-apis/#slow-consuming-query-detection)                                                                                                                                                                                                                  |
-| `QueryCancelOnReadTimeout`              | Set to true to cancel slow consuming queries, set to false to log only. Default false; for more details see [Slow consuming query detection](/develop/server-capabilities/data-access-apis/#slow-consuming-query-detection)                                                                                                                                                                                                          |
+| `SqlConnectionDeadlockThresholdSeconds` | The threshold in seconds before detecting a deadlock. Default 10; for more details see [deadlock detection](/develop/server-capabilities/data-access-apis/gpal-java/#sql-deadlock-detection)                                                                                                                                                                                                                                                   |
+| `QueryReadTimeoutSeconds`               | The threshold in seconds before timing out a slow consuming query. Default 10; for more details see [Slow consuming query detection](/develop/server-capabilities/data-access-apis/gpal-java/#slow-consuming-query-detection)                                                                                                                                                                                                                  |
+| `QueryCancelOnReadTimeout`              | Set to true to cancel slow consuming queries, set to false to log only. Default false; for more details see [Slow consuming query detection](/develop/server-capabilities/data-access-apis/gpal-java/#slow-consuming-query-detection)                                                                                                                                                                                                          |
 | `QueryBufferSize`                       | The number of records to buffer in memory                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ##### PostgreSQL
@@ -170,11 +173,11 @@ More information on connection configuration can be found [in the jdbc documenta
 For optimum performance using PostgreSQL, set the `SqlMaxParametersPerRequest` parameter to -1 in your application's **system-definitions.kts** file.
 :::
 
-If you want PostgreSQL to work with different namespaces/schemas, you must add the following system definition items to your **genesis-system-definitions.kts** file:
+If you want PostgreSQL to work with different namespaces/schemas, you must add the `DbNamespace` system definition item to your **genesis-system-definitions.kts** file. `DbMode` is no longer needed:
 
 | Setting     | Description                                                                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
+| DbMode      | No longer needed: the dictionary is always stored in the namespace-aware store. The `LEGACY` value is no longer supported; if `DbMode` is set to `LEGACY`, the database fails to start. |
 | DbNamespace | This is the namespace/schema of database. This allows you to segregate data from different Genesis apps whilst using a single database.     |
 
 ##### SQL Server

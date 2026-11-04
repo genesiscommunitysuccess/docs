@@ -17,7 +17,7 @@ Every application must have a `*-service-definitions.xml` file. This is where yo
 ```xml
 <configuration>
   <service host="localhost" name="GENESIS_CLUSTER" port="8510"/>
-  <service host="localhost" name="GENESIS_WEBMON" port="8511"/>
+  <service host="localhost" name="GENESIS_EVALUATOR" port="8511"/>
   <service host="localhost" name="GENESIS_WEB_ADAPTER" port="8512"/>
 </configuration>
 ```
@@ -34,7 +34,7 @@ Here is an example of a `global-service-definitions.xml` file where we have the 
   <service external="false" host="localhost" name="GENESIS_AUTH_MANAGER" port="8501" secure="false"/>
   <service external="false" host="localhost" name="GENESIS_AUTH_PERMS" port="8503" secure="false"/>
   <service external="false" host="localhost" name="GENESIS_CLUSTER" port="8510" secure="false"/>
-  <service external="false" host="localhost" name="GENESIS_WEBMON" port="8511" secure="false"/>
+  <service external="false" host="localhost" name="GENESIS_EVALUATOR" port="8511" secure="false"/>
   <service external="false" host="localhost" name="GENESIS_ROUTER" port="8512" secure="false"/>
   <service external="false" host="localhost" name="GCOM_DATA_SERVER" port="8570" secure="false"/>
   <service external="false" host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="false"/>
@@ -60,6 +60,9 @@ For example:
   <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
 </configuration>
 ```
+
+The `secure` attribute only takes effect in [selective TLS](/develop/server-capabilities/runtime-configuration/service-encryption/#selective-tls): with the legacy configuration below, or with `tls.mode: SELECTIVE_TLS` in `network-config.yaml`. With the other `tls.mode` values, the mode applies to every process and `secure` is ignored: `PLAIN_TEXT` uses no TLS, and `TLS` and `MUTUAL_TLS` use TLS for every process. This applies to connections between processes and to the events and HTTP endpoint requests that the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/) proxies to a process on the port in its service definition.
+
 You must also edit the `genesis-system-definition.kts` file, as specified in the example below:
 
 

@@ -8,7 +8,7 @@ tags:
 - snapshot
 - request
 - request server
-sidebar_position: 5
+sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
@@ -42,7 +42,7 @@ All Request Server queries are available via REST automatically, including Open 
 
 ## Example configuration
 
-Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following shows example request configurations.
+Keeping with the [data model examples](/develop/server-capabilities/data-model/gpal-java/#example-configuration) the following shows example request configurations.
 
 
 ```kotlin
@@ -128,7 +128,7 @@ Using `criteriaOnlyRequest` enables enhancements targeted at SQL databases:
 * Sorting at the database level
 * Native database pagination support
 
-Internally, this uses the [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria) database operation. See the linked documentation for details.
+Internally, this uses the [`getByCriteria`](/develop/server-capabilities/data-access-apis/gpal-java/#getbycriteria) database operation. See the linked documentation for details.
 
 When using criteria only mode, use [`criteriaTemplate`](#criteriatemplate), rather than `filter` type operations.
 Criteria templates are merged with criteria on request, and evaluated eagerly on the database, where possible.
@@ -193,7 +193,7 @@ You can also use an index as the request input, this will ensure all the fields 
   }
 ```
 
-In this example, with reference to [data model examples](/develop/server-capabilities/data-model/#example-configuration), we would have the following `REQUEST` inputs available to the client:
+In this example, with reference to [data model examples](/develop/server-capabilities/data-model/gpal-java/#example-configuration), we would have the following `REQUEST` inputs available to the client:
 - `COUNTERPARTY_ID`
 - `DATE`
 
@@ -284,10 +284,10 @@ Values specified at the file level, can be overwritten at the `requestReply` lev
 | Property                         | Effect                                                                                                                                                            |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | criteriaOnlyRequest              | Enables criteria only mode                                                                                                                                        |
-| supportLazyPredicates            | Supports lazy criteria in criteria mode, see [here](../data-access-apis/#database-vs-lazy-evaluation) for more details                                            |
+| supportLazyPredicates            | Supports lazy criteria in criteria mode, see [here](/develop/server-capabilities/data-access-apis/gpal-java/#database-vs-lazy-evaluation) for more details                                            |
 | timeoutInSeconds                 | Timeout in seconds                                                                                                                                                |
 | maxRows                          | Max results in reply                                                                                                                                              |
-| enableTypeAwareCriteriaEvaluator | Enhanced criteria evaluation when not using criteria only, see [here](../real-time-queries-data-server/#using-the-type-aware-criteria-evaluator) for more details |
+| enableTypeAwareCriteriaEvaluator | Enhanced criteria evaluation when not using criteria only, see [here](/develop/server-capabilities/query-data/real-time-queries-data-server/#using-the-type-aware-criteria-evaluator) for more details |
 
 #### `filterWithParameters`
 
@@ -528,7 +528,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. Combined with [`getByCriteria`](/develop/server-capabilities/data-access-apis/#getbycriteria), the platform can do the sorting and paging at the database layer.
+The `details` property gives you access to the `Request.Details` fields sent by the client: `orderBy`, `offset`, `viewNumber`, `maxRows`, and `criteriaMatch`. Combined with [`getByCriteria`](/develop/server-capabilities/data-access-apis/gpal-java/#getbycriteria), the platform can do the sorting and paging at the database layer.
 
 ```kotlin
 data class TradeQuery(val counterpartyId: String)
@@ -633,7 +633,7 @@ requestReply<Unit, LiquidityScoreResponse>(name = "LIQUIDITY_SCORE_ALL")
 
 ## Optimistic concurrency
 
-Find details around [how request servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#request-server)
+Find details around [how request servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#request-server)
 
 ## Client API
 
@@ -805,7 +805,7 @@ You must specify both `_FROM` and `_TO` to get a result. Specifying only one end
 
 :::note
 1. Ranges must be based on indexes. Post-fixing the request parameter targeting records without an index, will process the request ignoring the range.
-2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/#timestamps).
+2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/gpal-java/#timestamps).
 :::
 
 ## Metrics
@@ -864,7 +864,7 @@ For compiled definitions only, use your app's module and definition package and 
 
 ## Testing
 
-You can test using **compiled definitions** (classes extending `GPalRequestServer`) with `@PackageScan` or `@ProvidedInstance` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
+You can test using **compiled definitions** (classes extending `GPalRequestServer`) with `@PackageScan` or `@ProvidedType` instead of loading a script file. In that case no script file or `@TestScriptFile` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses script-based definitions with `@TestScriptFile`.
 
 :::info
 
@@ -937,7 +937,7 @@ This test class does three things:
 * It enables **GenesisJunit**.
 * It identifies the Request Server script that we want to test, using the `TestScriptFile` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 ###### Inject references
 
@@ -1231,7 +1231,7 @@ We have covered:
 
 ### Testing compiled definitions
 
-If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedInstance` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. `RequestClientSync` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+If your Request Server is a **compiled definition** (a class extending `GPalRequestServer`) rather than a `.kts` script, use `@PackageScan` or `@ProvidedType` in place of `@TestScriptFile` to bring it into the test. Everything else — injecting a client, building the workflow, asserting on the reply — works exactly as shown above. `RequestClientSync` comes from `testImplementation(genesis("testsupport"))`, same as the annotations — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Request Server:
 
@@ -1291,24 +1291,28 @@ class HelloWorldRequestServerTest {
 }
 ```
 
-Or, to register just this one class without scanning its whole package, use `@ProvidedInstance` with a `KClass` reference instead — this is the form the framework's own test suite uses for compiled Request Servers:
+Or, to register just this one class without scanning its whole package, use `@ProvidedType` with a `KClass` reference instead:
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.HelloWorldRequestServer
 
 @GenesisTest
 class HelloWorldRequestServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val helloWorldRequestServer = HelloWorldRequestServer::class
 
     // ... same client, workflow and test as above
 }
 ```
 
-`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
+
+`@PackageScan` and `@ProvidedType` each work standalone — you don't need both. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
 
 ## Integration testing (legacy)
 
