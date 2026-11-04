@@ -1,24 +1,24 @@
 ---
-title: 'Test tooling'
-sidebar_label: 'Test tooling'
+title: 'Testing API (Spring)'
+sidebar_label: 'Testing API (Spring)'
 id: server-spring-test-tooling
 keywords: [spring, testing, junit]
 tags:
 - spring
 - testing
-sidebar_position: 6
+sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications, parallel to [GenesisJunit](/develop/server-capabilities/testing-api). Genesis 10.0 manages the JUnit 6 version through the platform BOM, so you don't declare it yourself.
+JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications, parallel to [GenesisJunit](/develop/server-capabilities/testing-api/gpal-java). Genesis 10.0 manages the JUnit 6 version through the platform BOM, so you don't declare it yourself.
 
 ## Overview
 
 `genesis-spring-testsupport` is the JUnit 6 (JUnit Jupiter) equivalent of GenesisJunit for a Spring Boot/JPA Genesis application. Its single entry point, `@GenesisSpringTest` (`global.genesis.springboot.test.GenesisSpringTest`), composes `@SpringBootTest` and boots the same underlying test-context machinery GenesisJunit uses — a live in-memory SQL database, message server, and Guice injector — then wires it into the Spring test context in place of the production bootstrap.
 
-Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: the four event clients [`EventClientSync`](../event-handlers#testing), `EventClientAsync`, `EventClientRx` and `EventClientBlocking` (all under `global.genesis.testsupport.client.eventhandler`), and [`InMemoryTestAuthCache`](/develop/server-capabilities/testing-api#enableinmemorytestauthcache) (`global.genesis.testsupport.mock.InMemoryTestAuthCache`). Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`. The [worked example](#a-simple-example) below uses all four event clients.
+Genesis's test clients are exposed directly as Spring beans, so a test can `@Autowired` them: the four event clients [`EventClientSync`](/develop/server-capabilities/core-business-logic-event-handler/spring#testing), `EventClientAsync`, `EventClientRx` and `EventClientBlocking` (all under `global.genesis.testsupport.client.eventhandler`), and [`InMemoryTestAuthCache`](/develop/server-capabilities/testing-api/gpal-java#enableinmemorytestauthcache) (`global.genesis.testsupport.mock.InMemoryTestAuthCache`). Anything else — any platform singleton with no Spring binding of its own — is still reachable via `@Autowired lateinit var injector: Injector`. The [worked example](#a-simple-example) below uses all four event clients.
 
 `genesis-spring-testsupport` does not provide or support test clients for Data Server or Request Server components: the `DataServerQueryViewClient` and `RequestClientSync` clients described on those components' pages are not supported under `@GenesisSpringTest`.
 
@@ -46,9 +46,9 @@ Each of the three additions is needed:
 - **`genesisGeneratedCode(withTestDependency = true)`** puts the dictionary `.kts` files on the test classpath. In genx's default layout, a `-spring` module doesn't own them: the sibling `-app` module does. Without this line, `@GenesisSpringTest` resolves a generic placeholder dictionary instead of the project's own, failing with something like `ScriptFailureException: Unresolved reference 'ENTITY_ID'`. It goes inside `dependencies { }`; at the top level of the file, the build script fails to compile with `Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch`.
 - **`srcDir("../<app-module>/src/main/genesis")`** goes at the top level of the file, not inside `dependencies { }`. It adds the `-app` module's genesis config directory as an extra test resources directory, because a `-spring` module doesn't own the files under the `-app` module's `src/main/genesis` either. You need it for `@CsvData` seed data, even if you never load a GPAL script: without it, `@CsvData("data/WIDGET.csv")` fails with `IllegalArgumentException: Unable to resolve "data/WIDGET.csv": the folder "/data" was not found on the test classpath`. You also need it to load a raw GPAL script with [`@TestScriptFile`](#annotations), which otherwise fails with something like `IllegalArgumentException: Unable to find script file(s)`.
 
-Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/WIDGET.csv` is loaded with `@CsvData("data/WIDGET.csv")` — `@CsvData("WIDGET.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
+Files from the `-app` module keep their path under `src/main/genesis` on the test classpath, so a CSV at `src/main/genesis/data/WIDGET.csv` is loaded with `@CsvData("data/WIDGET.csv")` — `@CsvData("WIDGET.csv")` fails with `IllegalArgumentException`, unlike the single-module case on the [testing API](/develop/server-capabilities/testing-api/gpal-java#csvdata) page, where fixture CSVs live directly under `src/test/resources`.
 
-The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
+The same source directory is also what [`-DenableAppConfigInTests=true`](/develop/server-capabilities/testing-api/gpal-java#system-definitions-in-tests) needs: it builds the system definition from the `cfg/*system-definition.kts` files on the test classpath, and in this layout those live in the `-app` module.
 
 `@GenesisSpringTest` only supports the SQL `DbLayer`, and is gated with `@EnabledIfSystemProperty(named = "DbLayer", matches = "SQL")`: without `-DDbLayer=SQL` set, tests are silently skipped rather than failed. genx-generated projects already have this wired at the root `server/build.gradle.kts`, whose `subprojects { }` block configures every module's test task with `tasks { test { systemProperty("DbLayer", "SQL") … } }`, alongside an in-memory H2 `DbHost`, `DbQuotedIdentifiers` and `useJUnitPlatform()` — if you're restructuring the build or writing a non-generated CI config, apply the same setting to the module running these tests:
 
@@ -70,12 +70,12 @@ If you're testing a classic GPAL script app instead, use `GenesisJunit`/`Genesis
 `@GenesisSpringTest` honours the same class-level Genesis test annotations as GenesisJunit, all from `global.genesis.testsupport.jupiter`. It walks the enclosing-class chain, so a `@Nested` class inside an annotated outer class still picks up its configuration. Because every test method — and every test class whose Spring configuration matches — shares *one* Genesis runtime (see [Context caching](#context-caching)), most of these only work at class level. `@ResetTableAfterTest` is the one exception, implemented at method level.
 
 - **`@GenesisSpringTest`** — the single entry point described above. Class level only. Composes `@SpringBootTest(classes = [GenesisTestApplication::class])` together with `@Tag("DatabaseTest")` and the `DbLayer=SQL` gate.
-- **[`@TestScriptFile`](/develop/server-capabilities/testing-api#testscriptfile)** — loads a GPAL script file for the test. Class level only under `@GenesisSpringTest`.
-- **[`@CsvData`](/develop/server-capabilities/testing-api#csvdata)** — loads CSV fixture data. Supported at class level; a method-level `@CsvData` is rejected with an explicit error rather than silently ignored, since every method already shares the class's runtime.
-- **[`@SysDefOverwrite`](/develop/server-capabilities/testing-api#sysdefoverwrite)** — overrides a system definition property for the test. Class level only.
-- **[`@UserRight`](/develop/server-capabilities/testing-api#userright)** — grants a user rights for the test. Class level only.
-- **[`@PackageScan`](/develop/server-capabilities/testing-api#packagescan)** — marks a class whose package should be scanned. Class level only. This is inherited from GenesisJunit for its own purposes (GPAL script/table package scanning); it is not how Spring discovers `@Component`/event-handler beans for the test context.
-- **[`@ResetTableAfterTest`](/develop/server-capabilities/testing-api#resettableaftertest)** — the one fixture annotation implemented at method level here: it snapshots the named tables before the class's tests run, then restores them after every test method. This reset isn't wrapped in a cache flush the way `GenesisSharedContextJunit`'s is, so a process with a data server or consolidator can retain view state derived from a table's pre-reset rows.
+- **[`@TestScriptFile`](/develop/server-capabilities/testing-api/gpal-java#testscriptfile)** — loads a GPAL script file for the test. Class level only under `@GenesisSpringTest`.
+- **[`@CsvData`](/develop/server-capabilities/testing-api/gpal-java#csvdata)** — loads CSV fixture data. Supported at class level; a method-level `@CsvData` is rejected with an explicit error rather than silently ignored, since every method already shares the class's runtime.
+- **[`@SysDefOverwrite`](/develop/server-capabilities/testing-api/gpal-java#sysdefoverwrite)** — overrides a system definition property for the test. Class level only.
+- **[`@UserRight`](/develop/server-capabilities/testing-api/gpal-java#userright)** — grants a user rights for the test. Class level only.
+- **[`@PackageScan`](/develop/server-capabilities/testing-api/gpal-java#packagescan)** — marks a class whose package should be scanned. Class level only. This is inherited from GenesisJunit for its own purposes (GPAL script/table package scanning); it is not how Spring discovers `@Component`/event-handler beans for the test context.
+- **[`@ResetTableAfterTest`](/develop/server-capabilities/testing-api/gpal-java#resettableaftertest)** — the one fixture annotation implemented at method level here: it snapshots the named tables before the class's tests run, then restores them after every test method. This reset isn't wrapped in a cache flush the way `GenesisSharedContextJunit`'s is, so a process with a data server or consolidator can retain view state derived from a table's pre-reset rows.
 
 `@TestScriptFile` needs the module under test to carry its own `genesis("pal-<kind>")` test dependency matching the script's kind, or it fails with `MissingDependencyException` (which names the exact dependency to add):
 
@@ -105,7 +105,7 @@ The Genesis test configuration that decides whether two classes share a runtime 
 
 ## A simple example
 
-This example tests the `MyEventHandler` from [Getting started: Step 6](../getting-started#step-6-add-a-widget-event-handler), which handles `WIDGET_INSERT` by saving the widget through the generated `WidgetRepository`. It assumes the `-spring` module's `build.gradle.kts` has the additions from the [Overview](#overview). `<packageName>` and `<product>` are the same values as in [Getting started](../getting-started#step-4-define-the-widget-table).
+This example tests the `MyEventHandler` from [Getting Started with Spring: Step 6](/develop/development-environment/getting-started-with-spring#step-6-add-a-widget-event-handler), which handles `WIDGET_INSERT` by saving the widget through the generated `WidgetRepository`. It assumes the `-spring` module's `build.gradle.kts` has the additions from the [Overview](#overview). `<packageName>` and `<product>` are the same values as in [Getting Started with Spring](/develop/development-environment/getting-started-with-spring#step-4-define-the-widget-table).
 
 It uses two test classes that extend one abstract base class, so they share one Genesis runtime:
 
@@ -152,7 +152,7 @@ abstract class WidgetTestBase
 ```
 
 - **`@GenesisSpringTest`** is the only annotation needed to get a live Genesis runtime behind the Spring context.
-- **`@Import(MyEventHandler::class)`** contributes the handler to the test context. `GenesisTestApplication` performs no component scanning — see [Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation. A generated repository like `WidgetRepository` arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be contributed to the context explicitly — via `@Import(MyService::class)` as here, by listing it alongside `GenesisTestApplication` in `@SpringBootTest(classes = [GenesisTestApplication::class, MyService::class])`, or with a nested `@TestConfiguration` that declares it as a `@Bean`. Don't list it on its own in `classes = [...]`: that replaces `GenesisTestApplication`, the test context's only source of autoconfiguration. Without the handler in the context, every event is nacked with `UNKNOWN_MESSAGE_TYPE`.
+- **`@Import(MyEventHandler::class)`** contributes the handler to the test context. `GenesisTestApplication` performs no component scanning — see [Core business logic (Spring): Testing](/develop/server-capabilities/core-business-logic-event-handler/spring#testing) for the fuller explanation. A generated repository like `WidgetRepository` arrives through JPA auto-configuration and needs no extra step, but a hand-written `@Service`/`@Component` bean has to be contributed to the context explicitly — via `@Import(MyService::class)` as here, by listing it alongside `GenesisTestApplication` in `@SpringBootTest(classes = [GenesisTestApplication::class, MyService::class])`, or with a nested `@TestConfiguration` that declares it as a `@Bean`. Don't list it on its own in `classes = [...]`: that replaces `GenesisTestApplication`, the test context's only source of autoconfiguration. Without the handler in the context, every event is nacked with `UNKNOWN_MESSAGE_TYPE`.
 - **`@CsvData("data/WIDGET.csv")`** loads the seed data when the runtime boots. The `data/` prefix is the file's path under the `-app` module's `src/main/genesis`, which the `srcDir` line puts on the test classpath.
 
 Because both test classes inherit this configuration, Spring caches one context for them and they share one runtime. The base class has no `@DirtiesContext`; give a class `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)` if you want a fresh Genesis runtime per class instead. See [Context caching](#context-caching) for when to share.
@@ -267,7 +267,7 @@ The event payload is a plain `NewWidget` data class rather than the generated `W
 
 Each test asserts on the row the handler writes, not only on the reply. That is what makes the test fail when the handler is broken. If `insertWidget` acks without saving, the four insert tests fail on `assertNotNull`. A test that only checks for a nack can pass for the wrong reason: without the handler in the context, the duplicate-name test still passes, because it gets an `UNKNOWN_MESSAGE_TYPE` nack instead of the handler's own. To rule that out, also check the nack's error or a side effect that only the handler produces.
 
-This example only verifies persistence through the repository — it doesn't assert on audit rows or transaction boundaries; see [JPA data access: Auditing](../jpa-data-access#auditing) and [Transactions](../jpa-data-access#transactions) for those. To assert on what reaches the update queue, see [Testing an update-queue listener](#testing-an-update-queue-listener) below.
+This example only verifies persistence through the repository — it doesn't assert on audit rows or transaction boundaries; see [Data access APIs (JPA): Auditing](/develop/server-capabilities/data-access-apis/jpa#auditing) and [Transactions](/develop/server-capabilities/data-access-apis/jpa#transactions) for those. To assert on what reaches the update queue, see [Testing an update-queue listener](#testing-an-update-queue-listener) below.
 
 ### A second class sharing the runtime
 
@@ -303,7 +303,7 @@ This class has the same configuration as `WidgetEventHandlerTest`, so it reuses 
 
 ### Testing an update-queue listener
 
-A [`@UpdateQueueListener`](../jpa-data-access#listening-to-updatequeue-changes) method is tested by writing through a repository and asserting on what the listener recorded. The listener is an ordinary bean, so it has to be contributed to the test context like the event handler was: `GenesisTestApplication` performs no component scanning, and without the `@Import` the listener is never registered and the test times out.
+A [`@UpdateQueueListener`](/develop/server-capabilities/data-access-apis/jpa#listening-to-updatequeue-changes) method is tested by writing through a repository and asserting on what the listener recorded. The listener is an ordinary bean, so it has to be contributed to the test context like the event handler was: `GenesisTestApplication` performs no component scanning, and without the `@Import` the listener is never registered and the test times out.
 
 `src/test/kotlin/<packageName>/WidgetListenerTest.kt`:
 
@@ -375,7 +375,7 @@ This example only runs when `-DDbLayer=SQL` is set — the [prerequisite](#overv
 ## Testing an HTTP endpoint
 
 The example above tests JPA/database access through a live Genesis runtime. Testing a Spring Boot
-app's **HTTP surface** — including the [session-token authentication](../core#session-token-authentication)
+app's **HTTP surface** — including the [session-token authentication](/develop/development-environment/getting-started-with-spring/application-core#session-token-authentication)
 layer every Genesis Spring web app installs by default — is a narrower concern and doesn't need
 `@GenesisSpringTest` at all. Use Spring Boot's `@WebMvcTest` slice, naming the controllers under
 test, import `GenesisSpringSecurityConfig`, and declare a mock `OnDemandUserSessionCache` bean instead of
@@ -405,7 +405,7 @@ else on the cache is touched. `@WebMvcTest` has no real cache, so without an `On
 bean the context fails to start with a "No qualifying bean" error from `GenesisSpringSecurityConfig`.
 
 Declare the mock as a `@Bean` marked `@Primary`. The `@Primary` matters under
-[`@GenesisSpringTest`](../data-cube#testing), where the real cache is a Guice singleton bridged into
+[`@GenesisSpringTest`](/develop/server-capabilities/query-data/cube-query-engine#testing), where the real cache is a Guice singleton bridged into
 Spring and a non-primary mock can be silently shadowed by it. It is harmless in a `@WebMvcTest`, so the
 same shape works in both.
 
@@ -441,9 +441,9 @@ bean. It also applies Spring Security's test support to the built `MockMvc`, so 
 chain — the one `GenesisSessionAuthenticator` installs — runs on every `perform(...)` call.
 
 This test exercises the same `/secure` and `/public/ping` endpoints [Application core's session-token
-authentication example](../core#session-token-authentication) declares, so it sits in the same
+authentication example](/develop/development-environment/getting-started-with-spring/application-core#session-token-authentication) declares, so it sits in the same
 package as those controllers. The same shape works against any `@RestController` endpoint; for cube
-resources, see [Data cube: Testing](../data-cube#testing) instead:
+resources, see [Cube Query Engine: Testing](/develop/server-capabilities/query-data/cube-query-engine#testing) instead:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -601,12 +601,12 @@ public class SecureControllerTestJava {
 
 `SESSION_AUTH_TOKEN_HEADER` (`global.genesis.springboot.security.GenesisSessionAuthenticator.SESSION_AUTH_TOKEN_HEADER`)
 resolves to `SESSION_AUTH_TOKEN`, the same header the rest of Genesis uses — see [Session-token
-authentication](../core#session-token-authentication) for the hyphenated alias and the full
+authentication](/develop/development-environment/getting-started-with-spring/application-core#session-token-authentication) for the hyphenated alias and the full
 request/response table this test's two cases are drawn from.
 
 ## See also
 
-- [Spring Integration](../) for the section overview.
-- [Application core](../core) for the Guice/Spring bridge these tests boot on top of.
-- [Annotation-driven event handlers](../event-handlers#testing) — the fullest worked example of the `EventClientSync` test-client beans introduced above.
-- [Testing API](/develop/server-capabilities/testing-api) for `GenesisJunit`, the equivalent tooling for GPAL script apps, and full reference detail on the annotations listed above.
+- [Getting Started with Spring](/develop/development-environment/getting-started-with-spring) for the section overview.
+- [Application core](/develop/development-environment/getting-started-with-spring/application-core) for the Guice/Spring bridge these tests boot on top of.
+- [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring#testing) — the fullest worked example of the `EventClientSync` test-client beans introduced above.
+- [Testing API](/develop/server-capabilities/testing-api/gpal-java) for `GenesisJunit`, the equivalent tooling for GPAL script apps, and full reference detail on the annotations listed above.

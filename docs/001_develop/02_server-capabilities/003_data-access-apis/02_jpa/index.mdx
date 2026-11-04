@@ -1,24 +1,24 @@
 ---
-title: 'JPA data access'
-sidebar_label: 'JPA data access'
+title: 'Data access APIs (JPA)'
+sidebar_label: 'Data access APIs (JPA)'
 id: server-spring-jpa-data-access
 keywords: [spring, jpa, data access, dblayer, updatequeue]
 tags:
 - spring
 - jpa
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Wiring Spring Data JPA onto the existing SQL [`DbLayer`](/develop/server-capabilities/data-access-apis), including how writes are fed back into the `UpdateQueue`.
+Wiring Spring Data JPA onto the existing SQL [`DbLayer`](/develop/server-capabilities/data-access-apis/gpal-java), including how writes are fed back into the `UpdateQueue`.
 
 ## Overview
 
 `genesis-data-spring-boot-starter` lets a Spring Boot Genesis process read and write its data through Spring Data JPA / Hibernate, instead of (or alongside) the classic generated-DAO / `DbLayer` API. It is a Spring Boot autoconfiguration module (`GenesisDataConfig`): adding it to a module's dependencies is enough to get a working `EntityManagerFactory`, `DataSource`, `PlatformTransactionManager` and Spring Data repository support, all pre-wired to Genesis's own storage — `spring-boot-starter-data-jpa` itself comes along transitively, and only needs to be declared explicitly if a consuming module excludes transitive dependencies.
 
-This is not a generic JPA set-up pointed at some database — every bean is deliberately wired back into the same storage stack the classic [data access APIs](/develop/server-capabilities/data-access-apis) already use:
+This is not a generic JPA set-up pointed at some database — every bean is deliberately wired back into the same storage stack the classic [data access APIs](/develop/server-capabilities/data-access-apis/gpal-java) already use:
 
 - The `DataSource` is the JDBC connection pool the SQL engine already owns, not an independently configured pool.
 - Table, column, schema and sequence names are mapped onto the exact physical names the Genesis dictionary and SQL engine use, so a JPA entity reads and writes the identical tables the generated DAO/view code targets.
@@ -30,7 +30,7 @@ Use this starter where ORM-style entity/repository code — Spring Data query de
 
 ### Compared with the data access APIs
 
-| | [Data access APIs](/develop/server-capabilities/data-access-apis) (`SyncEntityDb` / `AsyncEntityDb` / `RxEntityDb` / `RxDb`) | JPA data access (`genesis-data-spring-boot-starter`) |
+| | [Data access APIs](/develop/server-capabilities/data-access-apis/gpal-java) (`SyncEntityDb` / `AsyncEntityDb` / `RxEntityDb` / `RxDb`) | JPA data access (`genesis-data-spring-boot-starter`) |
 |---|---|---|
 | Programming model | Generated type-safe DAOs, called directly (`db.insert(trade)`) | Spring Data repositories over `@Entity` classes (`repository.save(trade)`); derived and `@Query` finder methods |
 | Supported `DbLayer` | Any (FoundationDB, MS SQL, Oracle, PostgreSQL) | SQL engines only — no FoundationDB equivalent |
@@ -46,7 +46,7 @@ Use this starter where ORM-style entity/repository code — Spring Data query de
 
 Before writing any code against this starter, two things must already be true:
 
-1. **JPA entities have been generated from the dictionary.** This starter supplies plumbing only — the `DataSource`, `EntityManagerFactory`, naming strategy, ID allocation, write-propagation and auditing. It has no entities of its own to persist. The `@Entity` classes and their Spring Data `Repository` interfaces are produced by a separate, dictionary-driven generator — see [Data model foundation](../data-model), a hard prerequisite for this module.
+1. **JPA entities have been generated from the dictionary.** This starter supplies plumbing only — the `DataSource`, `EntityManagerFactory`, naming strategy, ID allocation, write-propagation and auditing. It has no entities of its own to persist. The `@Entity` classes and their Spring Data `Repository` interfaces are produced by a separate, dictionary-driven generator — see [Data model (Spring)](/develop/server-capabilities/data-model/spring), a hard prerequisite for this module.
 2. **The Gradle plugin that drives generation is applied to the module.** Entity and repository generation runs as a KSP-based Gradle plugin step during the build, not as something invoked by hand. See [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin).
 
 With those in place, add `genesis-data-spring-boot-starter` to the module's dependencies. There is nothing further to `@Import` — `GenesisDataConfig` is a Spring Boot autoconfiguration, active as soon as both it and `spring-boot-starter-data-jpa` are on the classpath. `spring-boot-starter-data-jpa` is typically already present transitively via `genesis-data-spring-boot-starter`; it only needs to be declared explicitly if a consuming module excludes transitive dependencies.
@@ -214,7 +214,7 @@ This starter closes that gap with a Hibernate integrator registered on the `POST
 
 Publication also depends on the process actually running against a real update-queue transport (a genuine multi-process deployment on ZeroMQ, MQTT or JMS) rather than the in-memory queue a standalone or test process falls back to — the same distinction classic `RxDb` writes already respect. On a process where that isn't the case, JPA writes still land in the database; they simply aren't published anywhere. There's no error or warning-level log for this — a write that "doesn't show up" downstream, with no other symptom, is usually this.
 
-A GenesisJunit-based test (`@GenesisTest`, `@GenesisDatabaseTest`, or the Spring-flavoured `@GenesisSpringTest`) replicates this for test purposes. It will by default provide a local `ZeroMQ` update queue to the application. See [Test tooling](../test-tooling) for more details.
+A GenesisJunit-based test (`@GenesisTest`, `@GenesisDatabaseTest`, or the Spring-flavoured `@GenesisSpringTest`) replicates this for test purposes. It will by default provide a local `ZeroMQ` update queue to the application. See [Testing API (Spring)](/develop/server-capabilities/testing-api/spring) for more details.
 
 Practical implication: a service method that calls `repository.save(entity)` inside a `@Transactional` boundary gets platform-wide visibility of that write for free on a real deployment — no manual event publication needed, and no manual rollback handling needed either.
 
@@ -294,17 +294,17 @@ Things to know when writing a listener:
 - **It runs on the update queue's own thread, outside any transaction.** The method is called synchronously as updates arrive, so a slow or blocking listener holds up delivery. Hand heavy work off to another thread.
 - **Exceptions are logged, not propagated.** An exception thrown by the method is logged at `ERROR` and the update is dropped. There is no retry. The listener stays registered and receives later updates.
 - **Only singleton beans.** A listener method on a prototype-scoped bean fails at startup. Listeners start receiving updates once the application's singletons have been created.
-- **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The [generated `JpaConfiguration`](../data-model#codegen) class does this for tables, but not for views.
+- **Only generated table entities.** The entity must carry `@Table(name = ...)`, and its generated mapper must be registered as a bean. The [generated `JpaConfiguration`](/develop/server-capabilities/data-model/spring#codegen) class does this for tables, but not for views.
 
 Mistakes in the declaration fail at startup rather than when an update arrives: a method with other than one parameter, an entity that can't be determined, an `entity` or `types` value that disagrees with the parameter type, or an entity with no registered mapper.
 
 Listeners receive updates under the same conditions as any other `UpdateQueue` subscriber, so the rules above for [publication](#writing-back-to-the-updatequeue) apply: a JPA write is only published after its transaction commits, and only on a process running against a real update-queue transport.
 
-In a `@GenesisSpringTest`, the listener bean must be added to the test context explicitly, because `GenesisTestApplication` does no component scanning: register it with `@Import` or a `@TestConfiguration` (see [Test tooling: A simple example](../test-tooling#a-simple-example)).
+In a `@GenesisSpringTest`, the listener bean must be added to the test context explicitly, because `GenesisTestApplication` does no component scanning: register it with `@Import` or a `@TestConfiguration` (see [Testing API (Spring): A simple example](/develop/server-capabilities/testing-api/spring#a-simple-example)).
 
 ### Auditing
 
-Independently of `UpdateQueue` publication, an entity can implement `JpaAuditableEntity<A>` to get an automatic audit trail. Where a dictionary table has an [audit sibling table](/develop/server-capabilities/data-model/#audited-tables), the generator makes the source entity implement it in addition to the usual base classes:
+Independently of `UpdateQueue` publication, an entity can implement `JpaAuditableEntity<A>` to get an automatic audit trail. Where a dictionary table has an [audit sibling table](/develop/server-capabilities/data-model/gpal-java/#audited-tables), the generator makes the source entity implement it in addition to the usual base classes:
 
 ```kotlin
 class TypedRecord @JvmOverloads constructor(
@@ -385,7 +385,7 @@ public TypedRecordAudit readTypedRecordAudit(String typedRecordAuditId) {
 
 With no context set, the write is still persisted, but no audit row appears — silently, with no error or log. Whether the audit row itself reaches the `UpdateQueue` follows the same publication rules described above.
 
-The `withAuditContext` block's placement relative to the `@Transactional` boundary is also load-bearing, not just whether a context is set at all — see [Audit support](../data-model#audit-support) on the data model page for the placement rule.
+The `withAuditContext` block's placement relative to the `@Transactional` boundary is also load-bearing, not just whether a context is set at all — see [Audit support](/develop/server-capabilities/data-model/spring#audit-support) on the data model page for the placement rule.
 
 ### Transactions
 
@@ -458,14 +458,14 @@ To check transaction state programmatically — for example, to assert a method 
 
 ## Optimistic concurrency
 
-The Spring JPA layer does no optimistic concurrency checking. It doesn't generate `@Version` annotations, it doesn't read the `DbOptimisticConcurrencyMode` setting, and nothing links the two. Those settings apply to the [classic Genesis data access APIs](/develop/server-capabilities/data-access-apis#optimistic-concurrency) and haven't been ported to Spring yet.
+The Spring JPA layer does no optimistic concurrency checking. It doesn't generate `@Version` annotations, it doesn't read the `DbOptimisticConcurrencyMode` setting, and nothing links the two. Those settings apply to the [classic Genesis data access APIs](/develop/server-capabilities/data-access-apis/gpal-java#optimistic-concurrency) and haven't been ported to Spring yet.
 
 ## See also
 
-- [Spring Integration](../) — section overview.
-- [Application core](../core) — the base Spring Boot starter this module builds on.
-- [Data model foundation](../data-model) — the entity/repository generator this starter's beans require; generate entities before writing any code here.
+- [Getting Started with Spring](/develop/development-environment/getting-started-with-spring) — section overview.
+- [Application core](/develop/development-environment/getting-started-with-spring/application-core) — the base Spring Boot starter this module builds on.
+- [Data model (Spring)](/develop/server-capabilities/data-model/spring) — the entity/repository generator this starter's beans require; generate entities before writing any code here.
 - [Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin and KSP setup that drives that generation.
-- [Data access APIs](/develop/server-capabilities/data-access-apis) — the classic generated-DAO API this module sits alongside.
+- [Data access APIs](/develop/server-capabilities/data-access-apis/gpal-java) — the classic generated-DAO API this module sits alongside.
 - [Update Queue](/build-deploy-operate/operate/update-queue) — the mechanism JPA writes are published through, and `@UpdateQueueListener` methods subscribe to.
-- [Test tooling](../test-tooling) — the `@GenesisSpringTest` test structure this module's tests build on.
+- [Testing API (Spring)](/develop/server-capabilities/testing-api/spring) — the `@GenesisSpringTest` test structure this module's tests build on.

@@ -1,6 +1,6 @@
 ---
-title: 'Data model'
-sidebar_label: 'Data model'
+title: 'Data model (GPAL / Java)'
+sidebar_label: 'Data model (GPAL / Java)'
 id: server-data-model
 keywords: [data, data model, database, tables]
 tags:
@@ -10,7 +10,7 @@ tags:
 - tables
 - views
 - dictionary
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 
@@ -26,7 +26,7 @@ The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
 ### Tables
 
-Each table is defined with a set of fields (entity attributes), which make up a record representing the entity. Every table is also given the `RECORD_ID` and `TIMESTAMP` fields automatically; see [Timestamps](/develop/server-capabilities/data-access-apis/#timestamps).
+Each table is defined with a set of fields (entity attributes), which make up a record representing the entity. Every table is also given the `RECORD_ID` and `TIMESTAMP` fields automatically; see [Timestamps](/develop/server-capabilities/data-access-apis/gpal-java/#timestamps).
 
 Each table requires:
 
@@ -162,7 +162,7 @@ views {
 
 ### Summary
 
-Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and client components that rely on data. 
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/query-data/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/query-data/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and client components that rely on data. 
 
 Tables and views are also used to power server capabilities, such as:
 
@@ -834,7 +834,7 @@ The above example also demonstrates how to use a hard-coded value to join. Note 
 
 The fields you join on must be covered by an index on the joined table: either its primary key, or an index whose leading fields are the join fields. If there is no such index, code generation fails with `unable to find index for join on table <TABLE>`. The message names the index to add.
 
-Joins can be one-to-one (key field match) or one-to-many (part-key-field match). However, *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/)* - as they would be very inefficient and could potentially use up a lot of the cache.
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match). However, *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/query-data/real-time-queries-data-server/)* - as they would be very inefficient and could potentially use up a lot of the cache.
 
 #### `backwardsJoin`
 

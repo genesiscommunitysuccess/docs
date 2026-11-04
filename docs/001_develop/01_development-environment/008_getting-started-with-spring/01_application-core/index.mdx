@@ -50,8 +50,8 @@ independently useful:
    [Session-token authentication](#session-token-authentication) below.
 
 This starter does not give you JPA entities, repositories, or database access — see
-[JPA data access](../jpa-data-access) — and it does not give you annotation-driven Genesis event
-handlers — see [Annotation-driven event handling](../event-handlers). A Genesis application can
+[Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — and it does not give you annotation-driven Genesis event
+handlers — see [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring). A Genesis application can
 freely mix GPAL-scripted processes and Spring Boot processes in the same cluster, since both
 ultimately register with the same `ServiceRegistry`/`MetaDataRegistry` and router.
 
@@ -87,14 +87,14 @@ dependency, not opt-in** — every Genesis Spring web app is authenticated by de
 Your Spring Boot application's entry-point class must also carry `@GenesisApplication` alongside
 `@SpringBootApplication` — this is what actually boots the class as a Genesis process and wires in
 the Guice `Injector` bridge described above. See
-[Getting started: Step 5](../getting-started#step-5-implement-the-spring-application) for a
+[Getting Started with Spring: Step 5](/develop/development-environment/getting-started-with-spring#step-5-implement-the-spring-application) for a
 complete example.
 
 :::note
 Genesis Spring integration only supports **Logback** for logging, not the Log4j2 backend used by
 GPAL-scripted processes. Switching requires three changes — `backend = LOGBACK`, a `logback.xml`
 config, and the `LogFramework`/`LogFrameworkConfig` system-definition keys — see
-[Getting started: Step 3](../getting-started#step-3-switch-logging-to-logback) for the details.
+[Getting Started with Spring: Step 3](/develop/development-environment/getting-started-with-spring#step-3-switch-logging-to-logback) for the details.
 :::
 
 Your application still needs a normal Genesis process environment — system definitions,
@@ -270,7 +270,7 @@ supplies it first.
 A `@GenesisSpringTest` does not read your project's real system-definition files by default, so a
 `@Value`-bound property like `APP_GREETING` above resolves to its fallback in tests unless you
 supply it another way. Use `@SysDefOverwrite` to provide the value directly in the test, or see
-[`enableAppConfigInTests`](/develop/server-capabilities/testing-api#system-definitions-in-tests) to
+[`enableAppConfigInTests`](/develop/server-capabilities/testing-api/gpal-java#system-definitions-in-tests) to
 opt the test into reading the real system-definition files instead.
 :::
 
@@ -407,7 +407,7 @@ mappings; narrow the anonymous mapping, or annotate the sibling too, to resolve 
 narrowed by `params`, `headers`, `consumes`, or `produces` can't be expressed as a plain permit-all
 rule either, and fails the same way — restructure the mapping, or drop the affected condition.
 
-To exercise this from a test, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint).
+To exercise this from a test, see [Testing an HTTP endpoint](/develop/server-capabilities/testing-api/spring#testing-an-http-endpoint).
 
 ### Router proxying
 
@@ -666,7 +666,7 @@ documentation).
   controller returns a plain value that Spring serialises, or a `ResponseEntity` when it needs to
   set the status or headers. Nothing in the starter maps an `EventReply` to an HTTP response, so a
   controller that still returns one must turn an `EventNack` into an error status itself. Logic that
-  is really an event belongs in an [annotation-driven event handler](../event-handlers), which
+  is really an event belongs in an [annotation-driven event handler](/develop/server-capabilities/core-business-logic-event-handler/spring), which
   replies with `EventReply` natively.
 - **Routing.** The URL changes. The router served a Guice-era endpoint at
   `/<product>/<endpoint>`, where the first segment comes from the web handler's file name (or its
@@ -679,14 +679,14 @@ documentation).
 ## Testing
 
 Dedicated test tooling for Spring/Guice-bridged Genesis apps lives in
-[Test tooling](../test-tooling). Testing a hand-written bean such as `SessionAuditService` or
+[Testing API (Spring)](/develop/server-capabilities/testing-api/spring). Testing a hand-written bean such as `SessionAuditService` or
 `GreetingService` above with `@GenesisSpringTest` needs one extra step: `GenesisTestApplication`
 carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
 `@SpringBootTest(classes = [GenesisTestApplication::class, SessionAuditService::class])` — see
-[Annotation-driven event handlers: Testing](../event-handlers#testing) for the fuller explanation.
+[Core business logic (Spring): Testing](/develop/server-capabilities/core-business-logic-event-handler/spring#testing) for the fuller explanation.
 
 For a narrow test of your own controller and security wiring without booting a full Genesis
-process, see [Testing an HTTP endpoint](../test-tooling#testing-an-http-endpoint) in the test-tooling
+process, see [Testing an HTTP endpoint](/develop/server-capabilities/testing-api/spring#testing-an-http-endpoint) in the test-tooling
 guide. It uses Spring Boot's `@WebMvcTest` slice with `GenesisSpringSecurityConfig` imported, so the
 security layer only needs a mock `OnDemandUserSessionCache` to resolve tokens against. Useful assertions to
 build on: a request with no token is `401`; a token resolving to no live session is `401`; a valid
@@ -696,9 +696,9 @@ actuator health there may need extra configuration.
 
 ## See also
 
-- [Annotation-driven event handling](../event-handlers) — builds directly on this starter and adds
+- [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring) — builds directly on this starter and adds
   an application-ready-driven flush path for annotation-based event handlers.
-- [JPA data access](../jpa-data-access) — also builds directly on this starter, so JPA repositories
+- [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — also builds directly on this starter, so JPA repositories
   and entities live in the same Spring/Guice-bridged context described above.
-- [Test tooling](../test-tooling) — JUnit 6 support purpose-built for testing code that sits on top
+- [Testing API (Spring)](/develop/server-capabilities/testing-api/spring) — JUnit 6 support purpose-built for testing code that sits on top
   of this starter.

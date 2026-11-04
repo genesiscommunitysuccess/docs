@@ -1,6 +1,6 @@
 ---
-title: 'Testing API'
-sidebar_label: 'Testing API'
+title: 'Testing API (GPAL / Java)'
+sidebar_label: 'Testing API (GPAL / Java)'
 id: server-testing
 keywords: [component, testing, unit, test, curl, junit, api]
 tags:
@@ -11,7 +11,7 @@ tags:
   - junit
   - curl
   - api
-sidebar_position: 16
+sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
@@ -41,9 +41,9 @@ These annotations implicitly register the JUnit extension and are more concise.
 
 In addition to general test support, **GenesisJunit** also provides support for specific services.
 For more information, have a look at the links below.
-* [Testing Data Servers](/develop/server-capabilities/real-time-queries-data-server/#testing)
-* [Testing Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#testing)
-* [Testing Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/#testing)
+* [Testing Data Servers](/develop/server-capabilities/query-data/real-time-queries-data-server/#testing)
+* [Testing Request Servers](/develop/server-capabilities/query-data/snapshot-queries-request-server/#testing)
+* [Testing Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing)
 
 ### A simple example
 
@@ -1173,7 +1173,7 @@ public class ProcessArgTest {
 
 #### ProvidedDictionary
 
-Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a [`tables { }` block](/develop/server-capabilities/data-model/#tables). A field declared without a type is a `STRING`. It is a Kotlin function, so write the provider member in Kotlin.
+Marks a property or a no-argument method that returns the `GenesisDictionary` for the test, in place of the application's production dictionary. Use it when a test needs tables of its own that the production dictionary doesn't define. The `providedDictionary { }` helper builds the dictionary from an inline table definition, in the same syntax as a [`tables { }` block](/develop/server-capabilities/data-model/gpal-java/#tables). A field declared without a type is a `STRING`. It is a Kotlin function, so write the provider member in Kotlin.
 
 ```kotlin
 import global.genesis.db.DbRecord
@@ -1537,7 +1537,7 @@ Sets the level of a named logger for the duration of a test class or method, and
 - `level` takes a `LogLevel`: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` or `FATAL`. SLF4J has no `FATAL` level, so to check `FATAL` read the logger through log4j: `org.apache.logging.log4j.LogManager.getLogger("com.example.trades").isFatalEnabled`.
 - The annotation is repeatable, so you can set several loggers at once.
 - A class-level annotation applies before the class's tests start, so it also covers Genesis start-up, which happens before each test. Another extension's class-level set-up is covered only if `@WithLogLevel` is declared above it. A method-level annotation overrides it for that test.
-- It works with log4j, and with logback when log4j isn't the active logging backend (see [Step 3: Switch logging to Logback](/develop/server-capabilities/spring-integration/getting-started/#step-3-switch-logging-to-logback)). On logback, `FATAL` is applied as `ERROR`.
+- It works with log4j, and with logback when log4j isn't the active logging backend (see [Step 3: Switch logging to Logback](/develop/development-environment/getting-started-with-spring/#step-3-switch-logging-to-logback)). On logback, `FATAL` is applied as `ERROR`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

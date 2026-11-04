@@ -11,7 +11,7 @@ tags:
 - lmdb
 - lmdb allocation
 - serialization
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
@@ -54,7 +54,7 @@ All Data Server queries are available via REST automatically too.
 
 ## Example configuration
 
-Here is an example Data Server configuration that matches the [data model examples](/develop/server-capabilities/data-model/#example-configuration).
+Here is an example Data Server configuration that matches the [data model examples](/develop/server-capabilities/data-model/gpal-java/#example-configuration).
 
 ```kotlin
 dataServer {
@@ -198,7 +198,7 @@ A query can optionally include an `indices` block to define additional indexing 
 A Data Server always uses the internal RECORD_ID value of the database records to create the default index. This is equivalent to indexing records by their creation date. Data Servers do not use table/view indices automatically. To query records efficiently, you need to recreate indices at the Data Server level or use the [`importEntityIndices`](#global-config) configuration option.
 :::
 
-The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
+The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/gpal-java/#indices).
 
 Example:
 
@@ -459,7 +459,7 @@ table(name = "FAVOURITE_TRADE", id = 1601) {
 
 #### Index driven
 
-You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange).
+You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/gpal-java/#getrange).
 
 You can use the following options when you create index-based queries:
 
@@ -487,7 +487,7 @@ The example below shows how advanced `where` queries differ from basic `filter` 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
 - Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/gpal-java/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
@@ -793,7 +793,7 @@ The backwards join flag is true by default. You must explicitly set `backwardsJo
 
 ## Optimistic concurrency
 
-Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#data-server)
+Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#data-server)
 
 ## Client API
 
@@ -1665,7 +1665,7 @@ If you are testing against an earlier version of the framework, go to [legacy te
 
 This document looks at the basics of testing Data Servers.
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#genesisjunit), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#genesisjunit), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up your test.
@@ -1707,7 +1707,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `TestScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 ###### 2. Load test data
 

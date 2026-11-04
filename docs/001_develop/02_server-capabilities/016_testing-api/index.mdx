@@ -1,0 +1,20 @@
+---
+title: 'Testing API'
+sidebar_label: 'Testing API'
+id: server-testing-overview
+keywords: [testing, test, junit, integration, spring]
+tags:
+- testing
+- test
+- junit
+- spring
+sidebar_position: 16
+---
+
+Genesis provides JUnit 6 (JUnit Jupiter) support for integration tests. Each test starts the Genesis services it needs for the duration of the test, so you can test your server code end to end.
+
+Which page you need depends on how your application is built:
+
+- **[Testing API (GPAL / Java)](/develop/server-capabilities/testing-api/gpal-java)** describes GenesisJunit, which you use to test GPAL and Java components such as event handlers, Data Servers and Request Servers.
+- **[Testing API (Spring)](/develop/server-capabilities/testing-api/spring)** describes `@GenesisSpringTest`, the equivalent for Spring Boot / JPA applications. It runs the same test machinery inside a Spring test context and makes the event clients available as Spring beans. It does not support the Data Server or Request Server test clients.
+- **[Legacy Testing API](/develop/server-capabilities/testing-api/legacy-testing-api)** describes the older test-support classes, which are deprecated in GSF 10.0, and explains how to move tests that use them to GenesisJunit.

@@ -1,0 +1,23 @@
+---
+title: 'Core business logic (Event Handler)'
+sidebar_label: 'Core business logic (Event Handler)'
+id: server-core-business-logic-event-handler-overview
+keywords: [core, logic, business, events, handler, event, spring]
+tags:
+- core
+- logic
+- business
+- events
+- handler
+- spring
+sidebar_position: 6
+---
+
+The Event Handler is the microservice that runs your application's business logic. Clients trigger named events, such as inserting, modifying or deleting a trade. The Event Handler validates each event, applies your logic, writes to the database, and replies with an acknowledgement or an error.
+
+There are two ways to write event handlers:
+
+- **[Core business logic (GPAL / Java)](/develop/server-capabilities/core-business-logic-event-handler/gpal-java)** describes event handlers written in GPAL, either as `*-eventhandler.kts` scripts or as compiled classes extending `GPalEventHandler`, plus Java event handlers. This page also covers features such as approval workflow, metrics and the client API.
+- **[Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring)** describes event handlers written as annotated Kotlin or Java classes in a Spring Boot application. They use `@GenesisEventHandler`, `@EventValidate` and `@EventCommit`.
+
+To a client, an event looks the same whichever way it is written, and both kinds of handler can run in the same process. GPAL remains the default for core business logic. The Spring module is still being developed, so choose it only when your process is already a Spring Boot application and staying in that programming model matters more to you than GPAL's greater maturity.

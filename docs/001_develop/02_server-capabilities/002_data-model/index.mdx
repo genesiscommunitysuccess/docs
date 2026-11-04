@@ -1,0 +1,22 @@
+---
+title: 'Data model'
+sidebar_label: 'Data model'
+id: server-data-model-overview
+keywords: [data, data model, database, tables, spring, jpa]
+tags:
+- data
+- data model
+- database
+- tables
+- spring
+sidebar_position: 2
+---
+
+The data model defines the tables and views that hold your application's data. Every Genesis application defines it once, in its `*-dictionary.kts` files, and the rest of the platform is driven from that definition.
+
+There are two ways to work with the data model in code:
+
+- **[Data model (GPAL / Java)](/develop/server-capabilities/data-model/gpal-java)** covers the dictionary itself: how to define tables, fields, keys and views. The [data access APIs](/develop/server-capabilities/data-access-apis/gpal-java) use DAO classes generated from it. Start here for any Genesis application.
+- **[Data model (Spring)](/develop/server-capabilities/data-model/spring)** covers how the same dictionary is turned into JPA `@Entity` classes and Spring Data repositories, so that a Spring Boot process can read and write the same tables through Hibernate.
+
+The Spring approach does not replace the dictionary. Both approaches read the same dictionary and work against the same physical tables, so the GPAL / Java page remains the reference for defining your data model, even if you then use it from Spring.

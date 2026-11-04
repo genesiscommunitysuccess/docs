@@ -1,6 +1,6 @@
 ---
-title: 'Core business logic (Event Handler)'
-sidebar_label: 'Core business logic (Event Handler)'
+title: 'Core business logic (GPAL / Java)'
+sidebar_label: 'Core business logic (GPAL / Java)'
 id: server-core-business-logic-event-handler
 keywords: [core, logic, business, events, handler, event]
 tags:
@@ -10,7 +10,7 @@ tags:
 - events
 - handler
 - event
-sidebar_position: 6
+sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
@@ -213,7 +213,7 @@ Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NA
 In the parenthesis you can define:
 
 - `name` : the name of the event. `name` will automatically be prefixed with `EVENT_`. so `name = "TRADE_INSERT"` will be targeted by the client as `EVENT_TRADE_INSERT`. Where left unspecified the name will default to the eventHandler Type class name.
-- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/#audited-tables).
+- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables).
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -667,7 +667,7 @@ The `validationAck` must return an object matching the type of the first `<Type>
 
 ## Optimistic concurrency
 
-Optimistic Concurrency helps prevent users from updating or deleting a stale version of a record. Our page on [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/#event-handler) provides details around how this works for event handlers.
+Optimistic Concurrency helps prevent users from updating or deleting a stale version of a record. Our page on [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/gpal-java/#event-handler) provides details around how this works for event handlers.
 
 ## Client API
 
@@ -687,7 +687,7 @@ There are several options that can be specified in the message header:
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
 | `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true |
 | `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence |
-| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` |
+| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/gpal-java/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` |
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -999,7 +999,7 @@ The platform makes the following objects accessible to the `insert` block:
 The following objects are accessible within the `accept`, `cancel` and `reject` blocks:
 
 * `userName` - a string property containing the user name who triggered the pending approval event (e.g. accept, reject or cancel).
-* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](/develop/server-capabilities/data-access-apis/#table-entities)).
+* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](/develop/server-capabilities/data-access-apis/gpal-java/#table-entities)).
 * `approvalMessage` - an instance of the `ApprovalMessage` class, which represents the payload of the message sent to EVENT_PENDING_APPROVAL_ACCEPT, EVENT_PENDING_APPROVAL_CANCEL and EVENT_PENDING_APPROVAL_REJECT. It contains two properties:
     * `approvalMessage` - the message text sent by the user who initiated this pending approval action
     * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
@@ -1217,7 +1217,7 @@ This section covers the basics of testing Event Handlers. We shall use a very si
 
 This includes how to test dynamic authorization.
 
-This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), which is designed to make testing easy.
+This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#integration-testing), which is designed to make testing easy.
 
 In this example, we shall test the following Event Handler:
 
@@ -1271,7 +1271,7 @@ The code above does two things:
 * It specifies the Event Handler script that we want to test, using the `TestScriptFile` annotation.
   A bare file name, such as `hello-world-eventhandler.kts`, is looked up at `scripts/<name>` or at the root of the test resources. A script anywhere else needs its path relative to the test resources root, for example `@TestScriptFile("genesis/scripts/my-eventhandler.kts")`.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 #### Injecting an Event Handler client
 Use the code below to inject an Event Handler client:
@@ -1543,7 +1543,7 @@ However, you have covered the basics of communication between tests and Event Ha
 * setting the user on the event
 * handling dynamic authorization
 
-For more details about testing with Genesis, take a look at our [integration test documentation](/develop/server-capabilities/testing-api/#integration-testing).
+For more details about testing with Genesis, take a look at our [integration test documentation](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 
 ### Testing compiled definitions
@@ -1903,7 +1903,7 @@ An API client, such as [Postman](https://www.postman.com/) or [Insomnia](https:/
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/develop/server-capabilities/testing-api/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/develop/server-capabilities/testing-api/gpal-java/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
@@ -2692,7 +2692,7 @@ Here is an example:
 ### Sync
 
 
-Sync works similarly to [Async](/develop/server-capabilities/data-access-apis/#asyncentitydb) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](/develop/server-capabilities/data-access-apis/gpal-java/#asyncentitydb) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
 #### SyncEventHandler
 
@@ -3105,7 +3105,7 @@ So far, we have seen `ack` and `nack.  There is a third reply type: `warningNack
 
 ### Transactional Event Handlers (ACID)
 
-If you want your  `eventHandler` to comply with ACID, you need to use the RxEntityDb [writeTransaction](/develop/server-capabilities/data-access-apis/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
+If you want your  `eventHandler` to comply with ACID, you need to use the RxEntityDb [writeTransaction](/develop/server-capabilities/data-access-apis/gpal-java/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
 
 ```java
 

@@ -37,6 +37,18 @@ const config = {
     [
       "@docusaurus/plugin-client-redirects",
       {
+        redirects: [
+          ["/develop/server-capabilities/real-time-queries-data-server/", "/develop/server-capabilities/query-data/real-time-queries-data-server/"],
+          ["/develop/server-capabilities/snapshot-queries-request-server/", "/develop/server-capabilities/query-data/snapshot-queries-request-server/"],
+          ["/develop/server-capabilities/spring-integration/", "/develop/development-environment/getting-started-with-spring/"],
+          ["/develop/server-capabilities/spring-integration/getting-started/", "/develop/development-environment/getting-started-with-spring/"],
+          ["/develop/server-capabilities/spring-integration/core/", "/develop/development-environment/getting-started-with-spring/application-core/"],
+          ["/develop/server-capabilities/spring-integration/event-handlers/", "/develop/server-capabilities/core-business-logic-event-handler/spring/"],
+          ["/develop/server-capabilities/spring-integration/jpa-data-access/", "/develop/server-capabilities/data-access-apis/jpa/"],
+          ["/develop/server-capabilities/spring-integration/data-cube/", "/develop/server-capabilities/query-data/cube-query-engine/"],
+          ["/develop/server-capabilities/spring-integration/data-model/", "/develop/server-capabilities/data-model/spring/"],
+          ["/develop/server-capabilities/spring-integration/test-tooling/", "/develop/server-capabilities/testing-api/spring/"],
+        ].map(([from, to]) => ({ from, to })),
         createRedirects(existingPath) {
           if (
             existingPath.includes("/server") &&

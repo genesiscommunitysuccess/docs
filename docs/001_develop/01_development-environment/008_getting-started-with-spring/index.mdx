@@ -1,15 +1,15 @@
 ---
-title: 'Getting started'
-sidebar_label: 'Getting started'
+title: 'Getting Started with Spring'
+sidebar_label: 'Getting Started with Spring'
 id: server-spring-getting-started
 keywords: [spring, quickstart, tutorial, data cube]
 tags:
 - spring
 - quickstart
-sidebar_position: 0
+sidebar_position: 8
 ---
 
-This tutorial builds a small Spring Boot integration on top of a Genesis project created with [`genx`](/develop/development-environment/genx), then exposes the data it manages through a [data cube](../data-cube).
+This tutorial builds a small Spring Boot integration on top of a Genesis project created with [`genx`](/develop/development-environment/genx), then exposes the data it manages through a [data cube](/develop/server-capabilities/query-data/cube-query-engine).
 
 - **Part 1** takes you through the Spring integration itself: project set-up, a `WIDGET` table, a Spring application with an event handler, and running it all under Genesis.
 - **Part 2** builds a data cube on top of Part 1: HTTP query and aggregation endpoints over the `WIDGET` table. It's optional — stop after Part 1 if you only need the Spring integration.
@@ -76,7 +76,7 @@ genesisSpring {
 
 Module dependency versions are pinned by the [Genesis BOM](/build-deploy-operate/build/plugins), which the Settings plugin contributes as a platform dependency — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies.
 
-The `genesisGeneratedCode(withTestDependency = true)` line is there because the dictionary `.kts` files live in the `-app` module, and `@GenesisSpringTest` (see [Test tooling](../test-tooling#overview)) needs them on this module's test classpath.
+The `genesisGeneratedCode(withTestDependency = true)` line is there because the dictionary `.kts` files live in the `-app` module, and `@GenesisSpringTest` (see [Testing API (Spring)](/develop/server-capabilities/testing-api/spring#overview)) needs them on this module's test classpath.
 
 ### Step 3: Switch logging to Logback
 
@@ -149,7 +149,7 @@ table("WIDGET", 12345) {
 }
 ```
 
-`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. The per-table package segment (`widget`, the table name lower-cased) is what lets two different tables each declare a table-scoped enum called `Quality` without their generated classes colliding — the class name itself stays `Quality`, not doubled. `<product>` is the dictionary file's name before `-tables-dictionary.kts`, taken verbatim except that any non-word character becomes `_` — it is not lower-cased. It normally equals the `productName` configured in `server/settings.gradle.kts` (`genesis { productName = ... }`), because genx names the dictionary file after the project: for a project created with `genx init <project-name>`, the file is `<project-name>-tables-dictionary.kts`, so `<product>` is `<project-name>`, with any hyphen or other non-word character turned into `_`. See [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model foundation](../data-model) for how dictionary definitions map onto generated JPA entities.
+`QUALITY` is declared inline, inside the table block, which makes it a table-scoped enum — the generated `enum class` ends up at `<packageName>.dao.enums.<product>.widget.Quality`, not the flat `<packageName>.dao.enums.Quality` you'd get from a field declared globally in the fields dictionary. The per-table package segment (`widget`, the table name lower-cased) is what lets two different tables each declare a table-scoped enum called `Quality` without their generated classes colliding — the class name itself stays `Quality`, not doubled. `<product>` is the dictionary file's name before `-tables-dictionary.kts`, taken verbatim except that any non-word character becomes `_` — it is not lower-cased. It normally equals the `productName` configured in `server/settings.gradle.kts` (`genesis { productName = ... }`), because genx names the dictionary file after the project: for a project created with `genx init <project-name>`, the file is `<project-name>-tables-dictionary.kts`, so `<product>` is `<project-name>`, with any hyphen or other non-word character turned into `_`. See [`productName`](/build-deploy-operate/build/plugins#productname) for the full property reference. See [Data model (Spring)](/develop/server-capabilities/data-model/spring) for how dictionary definitions map onto generated JPA entities.
 
 ### Step 5: Implement the Spring application
 
@@ -173,7 +173,7 @@ public class MySpringApp {
 }
 ```
 
-Use the `@GenesisApplication` annotation and pass `args` to `SpringApplication`. Genesis derives the process name from the class name, converted from camel case to snake case (`MySpringApp` ⇒ `MY_SPRING_APP`); the name can be overridden in the `@GenesisApplication` annotation. See [Application core](../core) for what this annotation wires up.
+Use the `@GenesisApplication` annotation and pass `args` to `SpringApplication`. Genesis derives the process name from the class name, converted from camel case to snake case (`MySpringApp` ⇒ `MY_SPRING_APP`); the name can be overridden in the `@GenesisApplication` annotation. See [Application core](/develop/development-environment/getting-started-with-spring/application-core) for what this annotation wires up.
 
 ### Step 6: Add a widget event handler
 
@@ -215,7 +215,7 @@ public class MyEventHandler {
 }
 ```
 
-`Widget` and `WidgetRepository` are JPA entities/repositories generated by the build from the table definition in Step 4 — expect unresolved-symbol errors in your IDE until the first build in Step 7. See [Annotation-driven event handling](../event-handlers) for the full annotation reference, and [JPA data access](../jpa-data-access) for how a repository like `WidgetRepository` is generated and how its writes reach the database.
+`Widget` and `WidgetRepository` are JPA entities/repositories generated by the build from the table definition in Step 4 — expect unresolved-symbol errors in your IDE until the first build in Step 7. See [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring) for the full annotation reference, and [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) for how a repository like `WidgetRepository` is generated and how its writes reach the database.
 
 ### Step 7: Build, refresh, and run
 
@@ -270,7 +270,7 @@ Once the processes are up, the Spring integration is complete.
 
 #### Verify it
 
-Confirm the Step 6 event handler actually persists an INSERT by triggering it directly. Every Genesis event handler — annotation-based or GPAL — is triggered the same way: the client sends a `MESSAGE_TYPE` of `EVENT_<event name>`, over Websocket or REST; see [`EVENT_<EVENT_HANDLER_NAME>`](/develop/server-capabilities/core-business-logic-event-handler/#event_event_handler_name) for the full reference. `@GenesisEventController("WIDGET")` with `@EventMapping("INSERT")` from Step 6 registers the event as `WIDGET_INSERT`.
+Confirm the Step 6 event handler actually persists an INSERT by triggering it directly. Every Genesis event handler — annotation-based or GPAL — is triggered the same way: the client sends a `MESSAGE_TYPE` of `EVENT_<event name>`, over Websocket or REST; see [`EVENT_<EVENT_HANDLER_NAME>`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event_event_handler_name) for the full reference. `@GenesisEventController("WIDGET")` with `@EventMapping("INSERT")` from Step 6 registers the event as `WIDGET_INSERT`.
 
 The call needs a `SESSION_AUTH_TOKEN` header. A freshly scaffolded project seeds a default user, `admin`, with the password `genesis`; log in as that user to get a token:
 
@@ -324,7 +324,7 @@ Part 2 builds on this running app.
 ## Part 2: Data cube
 
 :::note
-Cube endpoints run behind the Spring integration's [session-token authentication](../core#session-token-authentication), the same as any other endpoint — a request needs a valid `SESSION_AUTH_TOKEN` header or it gets `401`. Step 11 shows how to obtain one.
+Cube endpoints run behind the Spring integration's [session-token authentication](/develop/development-environment/getting-started-with-spring/application-core#session-token-authentication), the same as any other endpoint — a request needs a valid `SESSION_AUTH_TOKEN` header or it gets `401`. Step 11 shows how to obtain one.
 :::
 
 The `Widget` entity generated in Step 7 is already dictionary-generated with a `@CubeDefaultIdentity`, which is all a cube needs from its source entity.
@@ -402,7 +402,7 @@ record MarginByQuality(Quality quality, Double avgMargin, Long widgetCount) {}
 
 `widgets` deliberately calls `exposeQuery()` with no customizer — fully permissive, every entity column visible on the dynamic `/widgets/query` path, no projection DTO needed. `widgetMargins` bounds its `exposeQuery` to the `WidgetMargin` projection instead, since the JPQL source's computed `margin` column only exists inside that projection's column set.
 
-A few rules specific to the JPQL path — see [Cube query engine](../data-cube) for the full reference (query syntax, response envelope, caching):
+A few rules specific to the JPQL path — see [Cube Query Engine](/develop/server-capabilities/query-data/cube-query-engine) for the full reference (query syntax, response envelope, caching):
 
 - Every selection needs an alias, and that alias is the column name callers use — including a computed expression like `margin`, which JPQL cannot name automatically. The alias is separate from the entity property it selects (the `price` in `w.price`).
 - Joining another table requires calling `.allowJoins()` explicitly, since a join can multiply rows and inflate `SUM`/`COUNT`.
@@ -550,13 +550,13 @@ With the seed data above plus the Part 1 "Widget 1" (`GOOD`, price 10, cost 6), 
 }
 ```
 
-These JSON blocks are abbreviated for readability — a real response's column descriptors also carry `pivot`, `groupLevel`, `numberAsString` and `encoding`, and the envelope itself carries a top-level `generation` string. See [Cube query engine](../data-cube) for the full response shape.
+These JSON blocks are abbreviated for readability — a real response's column descriptors also carry `pivot`, `groupLevel`, `numberAsString` and `encoding`, and the envelope itself carries a top-level `generation` string. See [Cube Query Engine](/develop/server-capabilities/query-data/cube-query-engine) for the full response shape.
 
 ## Further reading
 
-- [Application core](../core) — the Guice/Spring bridge underlying `@GenesisApplication`
-- [Annotation-driven event handling](../event-handlers) — the full annotation reference
-- [JPA data access](../jpa-data-access) — how generated repositories read and write through to the database
-- [Cube query engine](../data-cube) — query syntax, response envelope, caching, and security
-- [Data model foundation](../data-model) — how dictionary tables become generated JPA entities
+- [Application core](/develop/development-environment/getting-started-with-spring/application-core) — the Guice/Spring bridge underlying `@GenesisApplication`
+- [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring) — the full annotation reference
+- [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — how generated repositories read and write through to the database
+- [Cube Query Engine](/develop/server-capabilities/query-data/cube-query-engine) — query syntax, response envelope, caching, and security
+- [Data model (Spring)](/develop/server-capabilities/data-model/spring) — how dictionary tables become generated JPA entities
 - [Build tooling](/build-deploy-operate/build/spring-boot-plugin) — the Gradle plugin chain used above

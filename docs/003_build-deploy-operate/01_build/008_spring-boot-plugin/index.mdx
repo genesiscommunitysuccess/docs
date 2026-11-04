@@ -9,15 +9,15 @@ tags:
 sidebar_position: 8
 ---
 
-See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis Gradle plugins, and [Spring Integration](/develop/server-capabilities/spring-integration) for the server-side modules this build tooling supports. Everything in that section depends on a module having applied the plugin described here.
+See also [Plugins](/build-deploy-operate/build/plugins) for the existing Genesis Gradle plugins, and [Getting Started with Spring](/develop/development-environment/getting-started-with-spring) for the server-side modules this build tooling supports. Everything in that section depends on a module having applied the plugin described here.
 
 | Starter artifact | Adds | Documented on |
 | --- | --- | --- |
-| `genesis-spring-boot-starter` | Guice bridge, system-definition config, HTTP session-token authentication | [Application core](/develop/server-capabilities/spring-integration/core) |
-| `genesis-eventhandler-spring-boot-starter` | Annotation-driven event handlers | [Annotation-driven event handling](/develop/server-capabilities/spring-integration/event-handlers) |
-| `genesis-data-spring-boot-starter` | Spring Data JPA over the existing `DbLayer` | [JPA data access](/develop/server-capabilities/spring-integration/jpa-data-access) |
-| `genesis-data-cube-spring-boot-starter` | Pivot, grouped and flat cube queries over JPA entities | [Cube query engine](/develop/server-capabilities/spring-integration/data-cube) |
-| `genesis-spring-testsupport` | JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications | [Test tooling](/develop/server-capabilities/spring-integration/test-tooling) |
+| `genesis-spring-boot-starter` | Guice bridge, system-definition config, HTTP session-token authentication | [Application core](/develop/development-environment/getting-started-with-spring/application-core) |
+| `genesis-eventhandler-spring-boot-starter` | Annotation-driven event handlers | [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring) |
+| `genesis-data-spring-boot-starter` | Spring Data JPA over the existing `DbLayer` | [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) |
+| `genesis-data-cube-spring-boot-starter` | Pivot, grouped and flat cube queries over JPA entities | [Cube Query Engine](/develop/server-capabilities/query-data/cube-query-engine) |
+| `genesis-spring-testsupport` | JUnit 6 (JUnit Jupiter) support for Spring-based Genesis applications | [Testing API (Spring)](/develop/server-capabilities/testing-api/spring) |
 
 ## Genesis Spring Boot plugin
 
@@ -60,7 +60,7 @@ class OrderService {
 ```
 
 :::tip
-To confirm Spring created a proxy for a class like this, inject the bean in a `@GenesisSpringTest` (not a bare `@SpringBootTest`) that contributes it with `@Import(OrderService::class)`, and inspect `orderService.javaClass.name`. A CGLIB proxy class name, containing `$$SpringCGLIB$$`, confirms the plugin applied. See [Test tooling](/develop/server-capabilities/spring-integration/test-tooling).
+To confirm Spring created a proxy for a class like this, inject the bean in a `@GenesisSpringTest` (not a bare `@SpringBootTest`) that contributes it with `@Import(OrderService::class)`, and inspect `orderService.javaClass.name`. A CGLIB proxy class name, containing `$$SpringCGLIB$$`, confirms the plugin applied. See [Testing API (Spring)](/develop/server-capabilities/testing-api/spring).
 :::
 
 Applying the plugin doesn't pull Spring Boot in for you: no Spring Boot dependency needs to be present to apply `global.genesis.spring` itself, and the Spring Boot starter modules a module needs are added by the consuming module independently, for runtime concerns the plugin doesn't touch.

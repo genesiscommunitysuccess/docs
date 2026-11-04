@@ -21,7 +21,7 @@ import CommonGpalStandards from '/snippet/_common-gpal-standards.md'
 
 ## Overview
 
-**Streamer clients** link data streams from [streamers](/develop/server-capabilities/integrations/streamer-apis/streamer/) to a target [event handler](/develop/server-capabilities/core-business-logic-event-handler/) based on their configuration.
+**Streamer clients** link data streams from [streamers](/develop/server-capabilities/integrations/streamer-apis/streamer/) to a target [event handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) based on their configuration.
 This linkage takes into account whether the data has been processed by the event handler in order to provide recoverability in case of failure.
 
 The core streamer client behaviour is the following:
@@ -172,7 +172,7 @@ In more detail, there are three types of streamer client definitions, including 
 streamerClient(clientName = "{name}") { ... }
 ```
 
-2. Table or View entity streamer client. It uses an existing [`DbEntity`](/develop/server-capabilities/data-access-apis/#database-entities) for type safe configuration. Most useful when the streamer is streaming `DbEntity` objects.
+2. Table or View entity streamer client. It uses an existing [`DbEntity`](/develop/server-capabilities/data-access-apis/gpal-java/#database-entities) for type safe configuration. Most useful when the streamer is streaming `DbEntity` objects.
 ```kotlin
 // builds a type safe QUOTE streamer client
 streamerClient(clientName = "{name}", source = QUOTES { ... }

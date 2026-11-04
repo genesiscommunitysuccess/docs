@@ -45,9 +45,9 @@ For the other `messaging` settings, including the `webSocket` and `http` blocks,
 
 | Resource | Route | Example |
 |---|---|---|
-| [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `HELLO_WORLD` | `GET /req-hello-world` | `GET /req-hello-world?REQUEST.NAME=World` |
-| [Request server](/develop/server-capabilities/snapshot-queries-request-server/#requestreply) `requestReply(WIDGET)` | `GET /req-widget` | `GET /req-widget` |
-| [Event handler](/develop/server-capabilities/core-business-logic-event-handler/) `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
+| [Request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#requestreply) `HELLO_WORLD` | `GET /req-hello-world` | `GET /req-hello-world?REQUEST.NAME=World` |
+| [Request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#requestreply) `requestReply(WIDGET)` | `GET /req-widget` | `GET /req-widget` |
+| [Event handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) `EVENT_CUSTOM_MODIFY` | `POST /event-custom-modify` | body `{"DETAILS": {"NAME": "http-test"}}` |
 | Data server | none | Data servers are served by the Genesis Router only |
 | Custom endpoint | the method and path it declares | see [Custom endpoints on a process](#custom-endpoints-on-a-process) |
 

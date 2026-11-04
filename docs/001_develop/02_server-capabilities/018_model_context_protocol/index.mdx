@@ -173,7 +173,7 @@ Platform tools need no configuration. To expose your own endpoints as well, crea
 
 This works for Spring event handlers as well as GPAL event handlers: both publish the metadata that MCP needs.
 
-This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/). In your `<application>-mcp.kts` (not `genesis-mcp-server.kts`, which holds only the `server { }` block), add an `mcp { }` block that lists the endpoints to expose:
+This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) and one [request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/). In your `<application>-mcp.kts` (not `genesis-mcp-server.kts`, which holds only the `server { }` block), add an `mcp { }` block that lists the endpoints to expose:
 
 ```kotlin
 mcp {
@@ -411,7 +411,7 @@ A user needs each tier's right separately: holding `MCP_ADMIN` doesn't grant VIE
 
 `query_table`, `investigate_record` and `reconcile` read tables straight from the database. They skip the row, entity and field permissions that data servers and request servers apply. Treat the DB_READ right as read access to the whole database.
 
-Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions (set on the [data server](/develop/server-capabilities/real-time-queries-data-server/#example-configuration) and the [request server](/develop/server-capabilities/snapshot-queries-request-server/#example-configuration)) still apply.
+Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions (set on the [data server](/develop/server-capabilities/query-data/real-time-queries-data-server/#example-configuration) and the [request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#example-configuration)) still apply.
 
 ### Restricted tables
 
@@ -508,7 +508,7 @@ For example, to fetch a prompt and read a resource:
 
 ## Maker-checker approval
 
-Maker-checker means one user (the maker) asks for a change, and a different user (the checker) approves it before it takes effect. MCP uses the platform's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler/#pending-approval-workflow) for this.
+Maker-checker means one user (the maker) asks for a change, and a different user (the checker) approves it before it takes effect. MCP uses the platform's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#pending-approval-workflow) for this.
 
 ### Which writes are held
 
