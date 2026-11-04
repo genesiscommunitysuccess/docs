@@ -169,13 +169,13 @@ The Config variables are listed below.
 | `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
 | `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker before declaring the process `DOWN` | 20 |
 | `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case of connectivity problems or other faults | 1000 |
-| `JmsRetryToSendDelayMs`          | The amount of time in milliseconds before the first retry of a failed send; each later retry waits twice as long as the previous one, up to one minute | 1000 |
+| `JmsRetryToSendDelayMs`          | The amount of time in milliseconds before the first retry of a failed send; each later retry waits twice as long as the previous one, up to one minute (or up to this value, if it is longer) | 1000 |
 | `JmsRetryToSendAction`           | What to do when sending an update fails: `RESCHEDULE` or `RETRY` retries the update; `IGNORE` drops it. See [Publish failures](#publish-failures) | `RESCHEDULE` |
 | `JmsRetryToSendLimit`            | The number of times a failed send is retried before the process stops publishing and shuts down. See [Publish failures](#publish-failures) | 5 |
 
 #### Publish failures
 
-If an update fails to send and `JmsRetryToSendAction` is `RESCHEDULE` or `RETRY` (they behave the same), the process retries that update in place before it sends any other update. The first retry waits `JmsRetryToSendDelayMs`; each retry after that waits twice as long as the previous one, up to one minute. No other updates are published while it retries.
+If an update fails to send and `JmsRetryToSendAction` is `RESCHEDULE` or `RETRY` (they behave the same), the process retries that update in place before it sends any other update. The first retry waits `JmsRetryToSendDelayMs`; each retry after that waits twice as long as the previous one, up to one minute (or up to `JmsRetryToSendDelayMs`, if that is longer). No other updates are published while it retries.
 
 If the update still fails after `JmsRetryToSendLimit` retries, the process:
 
