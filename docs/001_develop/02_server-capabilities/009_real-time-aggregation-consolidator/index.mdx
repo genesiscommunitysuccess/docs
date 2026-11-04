@@ -486,10 +486,12 @@ See sample configuration below with the default values.
 
 ```
 import global.genesis.pal.consolidator.definition.config.ConsistencyMode
+import global.genesis.pal.consolidator.definition.config.ConsolidationTransactionType
+import global.genesis.pal.consolidator.definition.config.LogLevel
 
 consolidators {
   config {
-    logLevel = LogLevel.DEBUG,
+    logLevel = LogLevel.DEBUG
     onNotFound = OnNotFound.BUILD
     batchingPeriod = 500
     ignoreIndexScan = false
