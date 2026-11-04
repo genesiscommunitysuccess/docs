@@ -173,7 +173,7 @@ Platform tools need no configuration. To expose your own endpoints as well, crea
 
 This works for Spring event handlers as well as GPAL event handlers: both publish the metadata that MCP needs.
 
-This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/) and one [request server](/develop/server-capabilities/snapshot-queries-request-server/). In your `<application>-mcp.kts` (not `genesis-mcp-server.kts`, which holds only the `server { }` block), add an `mcp { }` block that lists the endpoints to expose:
+This example exposes one [event handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) and one [request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/). In your `<application>-mcp.kts` (not `genesis-mcp-server.kts`, which holds only the `server { }` block), add an `mcp { }` block that lists the endpoints to expose:
 
 ```kotlin
 mcp {
@@ -240,7 +240,7 @@ All of these properties go inside the `server { }` block of `genesis-mcp-server.
 | `platformTools` | `true` | Register the [platform tools, prompts and resources](#platform-tools-prompts-and-resources). Set to `false` to expose only your `enableMcp` endpoints |
 | `requireAuthenticatedConnections` | `false` | Reject any connection whose caller can't be identified, with HTTP 401, before any tool runs. See [Requiring authenticated connections](#requiring-authenticated-connections) |
 | `requireApprovalForWrites` | `false` | Hold writes made over MCP for [maker-checker approval](#maker-checker-approval) instead of running them |
-| `approvalMessage` | `"Submitted for approval via MCP"` | The approval message attached to every held write |
+| `approvalMessage` | `"Submitted for approval via MCP"` | The approval message attached to every held write. A `staticUser` strategy's own `approvalMessage` takes precedence |
 | `enforcePlatformToolRights` | `true` | Check the [tier right](#rights-tiers) before each platform tool, prompt and resource. Set to `false` to need authentication only |
 | `viewRight` | `"MCP_VIEW"` | Right code for the VIEW tier. It also gates the prompts and resources |
 | `dbReadRight` | `"MCP_DB_READ"` | Right code for the DB_READ tier |
@@ -357,6 +357,7 @@ Every request acts as `userName`, whoever sends it. The server attaches that ide
 |---|---|---|
 | `userName` | none | Required. The user that every request acts as |
 | `requiresApproval` | `true` | Hold every write for [maker-checker approval](#maker-checker-approval) |
+| `approvalMessage` | not set | The approval message attached to every held write, including writes held by `requireApprovalForWrites`. When not set, the server-level [`approvalMessage`](#server-configuration) is used |
 
 You can't combine `staticUser` with `requireAuthenticatedConnections = true`: the server refuses to start. Because every write shares one identity, maker-checker gives no real separation of duties with this strategy.
 
@@ -410,7 +411,7 @@ A user needs each tier's right separately: holding `MCP_ADMIN` doesn't grant VIE
 
 `query_table`, `investigate_record` and `reconcile` read tables straight from the database. They skip the row, entity and field permissions that data servers and request servers apply. Treat the DB_READ right as read access to the whole database.
 
-Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions (set on the [data server](/develop/server-capabilities/real-time-queries-data-server/#example-configuration) and the [request server](/develop/server-capabilities/snapshot-queries-request-server/#example-configuration)) still apply.
+Grant it separately from VIEW. The VIEW tools `query_dataserver` and `call_request` go through the data server and request server, so your application's permissions (set on the [data server](/develop/server-capabilities/query-data/real-time-queries-data-server/#example-configuration) and the [request server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#example-configuration)) still apply.
 
 ### Restricted tables
 
@@ -507,7 +508,7 @@ For example, to fetch a prompt and read a resource:
 
 ## Maker-checker approval
 
-Maker-checker means one user (the maker) asks for a change, and a different user (the checker) approves it before it takes effect. MCP uses the platform's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler/#pending-approval-workflow) for this.
+Maker-checker means one user (the maker) asks for a change, and a different user (the checker) approves it before it takes effect. MCP uses the platform's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#pending-approval-workflow) for this.
 
 ### Which writes are held
 
@@ -517,7 +518,7 @@ A write made over MCP is held for approval when either of these is true:
 
 This covers `call_event`, `modify_record` and your `enableMcp` event tools. It doesn't cover `process_control`, `run_remap` or `set_log_level`, or any read.
 
-A held write is stored in the `APPROVAL` table with `approvalMessage` as its message, and isn't applied. Instead of a normal result, the tool returns:
+A held write is stored in the `APPROVAL` table and isn't applied. Its message is the `staticUser` strategy's `approvalMessage` if you set one, otherwise the server-level `approvalMessage`. Instead of a normal result, the tool returns:
 
 ```json
 {

@@ -485,10 +485,14 @@ The config block is available at both the file and Consolidator level with exact
 See sample configuration below with the default values.
 
 ```kotlin
+import global.genesis.pal.consolidator.definition.config.ConsistencyMode
+import global.genesis.pal.consolidator.definition.config.ConsolidationTransactionType
+import global.genesis.pal.consolidator.definition.config.LogLevel
+
 consolidators {
   config {
-    logLevel = DEBUG
-    onNotFound = BUILD
+    logLevel = LogLevel.DEBUG
+    onNotFound = OnNotFound.BUILD
     batchingPeriod = 500
     ignoreIndexScan = false
     defaultErrorHandling = FAIL
@@ -498,6 +502,9 @@ consolidators {
     groupName = "DEFAULT"
     tableTransient = false
     backwardsJoin = true
+    consistencyMode = ConsistencyMode.INCREMENTAL
+    excludedEmitters = setOf("PurgeTables")
+    audit = false
   }
   consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
     config {
@@ -520,7 +527,35 @@ consolidators {
 | transactionType      | determines the consolidation approach when writing to database.                                                                                                                           | DEFAULT (currently DATABASE), DATABASE (will use database transactions to handle delta changes), LOCAL (will use in-memory copies of consolidated records to apply changes) | DEFAULT                |
 | groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                             | Free text.                                                                                                                                                                  | No grouping by default |
 | tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
-| backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
+| backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/gpal-java/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
+| audit                | writes `_AUDIT` rows for inserts and modifications to an audited `output` table (see [audit](#audit)). Available from versions 8.15.44 and 10.0.0.                                         | true, false                                                                                                                                                                 | false                  |
+| consistencyMode      | INCREMENTAL applies each update to the aggregate as it arrives. EVENTUAL never applies updates incrementally: each one marks its group for a rebuild from the current source rows, which needs an [indexScan](#indexscan) on the source (a Consolidator without one is rejected at startup). | INCREMENTAL, EVENTUAL | INCREMENTAL |
+| excludedEmitters     | process names whose updates this Consolidator drops; they are never applied to the aggregate. A warning listing them is logged at startup. Use an empty set to process updates from every process. `excludedEmitters("A", "B")` is shorthand for `excludedEmitters = setOf("A", "B")`. | Set of process names | `setOf("PurgeTables")` (the Purger) |
+
+#### `audit`
+
+Available from versions 8.15.44 and 10.0.0.
+
+Set `audit = true` to write audit records when the Consolidator inserts or modifies rows in its `output` table. The `output` table must be declared with `audit = details(...)` (see [Audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables)); for an `output` table without audit, the setting has no effect.
+
+```kotlin
+consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
+  config {
+    audit = true
+  }
+  // Rest of consolidator definition
+}
+```
+
+Each audit record has these values:
+
+| Field              | Value                                                  |
+|--------------------|--------------------------------------------------------|
+| `AUDIT_EVENT_USER` | `SYSTEM`                                               |
+| `AUDIT_EVENT_TYPE` | the Consolidator name                                  |
+| `AUDIT_EVENT_TEXT` | `INSERT` for a new row, `MODIFY` for an updated row    |
+
+When the Consolidator runs with [`--coldStart`](#coldstart), clearing the `output` table is not audited; the rows written by the rebuild that follows are.
 
 #### `groupName`
 
@@ -1009,7 +1044,7 @@ groupBy { group(allocationId, feeGroup) }
 groupBy { CommissionAndFeesSummary.byAllocationId(allocationId, feeGroup) }
 ```
 
-The index entity is generated from the table's key (for example, `ORDER_BY_ID` becomes `byId`); use the one that matches your table's key. For more information, see [Index entities](/develop/server-capabilities/data-access-apis/#index-entities).
+The index entity is generated from the table's key (for example, `ORDER_BY_ID` becomes `byId`); use the one that matches your table's key. For more information, see [Index entities](/develop/server-capabilities/data-access-apis/gpal-java/#index-entities).
 
 Using `tuple` and `group` in `groupBy` can later be interacted with in sub blocks such as lookup.
 
@@ -1299,7 +1334,7 @@ There are three ways to initiate cold start:
 You can test using **compiled definitions** (classes extending `GPalConsolidator`) by scanning the definition's package instead of loading a script file. In that case no script file or `scriptFileName` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses a script-based definition with `scriptFileName`.
 
 :::info
-For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 :::
 
 The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
@@ -1458,7 +1493,7 @@ fun `test nested consolidation`() = runBlocking {
 
 ### Testing compiled definitions
 
-The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedType`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedType`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Consolidator (the same configuration as the script example above):
 

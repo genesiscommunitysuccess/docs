@@ -97,7 +97,7 @@ systemDefinition {
 }
 ```
 
-In this example we use `COUNTERPARTY` table and it's ID field `COUNTERPARTY_ID`, however you can set any entity in your [data model](/develop/server-capabilities/data-model/) and it's common ID field as required.
+In this example we use `COUNTERPARTY` table and it's ID field `COUNTERPARTY_ID`, however you can set any entity in your [data model](/develop/server-capabilities/data-model/gpal-java/) and it's common ID field as required.
 
 Setting these items and installing your application will create the `USER_COUNTERPARTY_MAP` table which can be populated. You can then set `"ENTITY_VISIBILITY"` in [`auth`](#auth) blocks to restrict entity access according to that table in any client facing components as required. 
 
@@ -177,7 +177,7 @@ dynamicPermissions {
 
 ##### `entity`
 
-The `entity` block will need an entity, which can be a [table](/develop/server-capabilities/data-model/#table) or a [view](/develop/server-capabilities/data-model/#table) from your application's data model.
+The `entity` block will need an entity, which can be a [table](/develop/server-capabilities/data-model/gpal-java/#table) or a [view](/develop/server-capabilities/data-model/gpal-java/#table) from your application's data model.
 
 An entity can have the following attributes:
 
