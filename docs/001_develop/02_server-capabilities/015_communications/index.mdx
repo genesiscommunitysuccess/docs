@@ -708,7 +708,11 @@ public class TestAuthManagerService {
 
 #### Constructor
 
-`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)`
+`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfigContainer, requestLogger: RequestLogger)`
+
+`configuration` takes the same settings as [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/). Inside a process, inject `NetworkConfigContainer` to get the configuration that process resolved. When `tls.mode` is `SELECTIVE_TLS`, `secure` decides whether the connection uses TLS; in the other modes, `tls.mode` alone decides. On the `WEBSOCKET` channel, `secure` also sets the scheme of the WebSocket handshake URI: `wss` when `true`, `ws` when `false`.
+
+The constructors that take a `NetworkConfiguration`, or no configuration at all, are deprecated.
 
 #### Functions
 
@@ -716,21 +720,22 @@ public class TestAuthManagerService {
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Reply<O>` |
-| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout,): O` |
-| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout): O where O : Outbound, O : ParametricType<P>` |
+| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Reply<O>` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout): O` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: List<Class<*>>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout): O where O : Outbound, O : ParametricType<P>` |
 | sendMessage | `fun sendMessage(set: GenesisSet): Boolean` |
 | sendMessage | `fun sendMessage(set: GenesisMessage): Boolean` |
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout): O?` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Any> suspendRequest(message: I, timeout: Int = configuration.messaging.requestTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): O?` |
 | addListener | `fun addListener(listener: GenesisMessageListener<GenesisSet>)` |
 | removeListener | `fun removeListener(listener: GenesisMessageListener<GenesisSet>)` |
 | addGenesisMessageListener | `fun <V : GenesisMessage> addGenesisMessageListener(clazz: Class<V>, listener: GenesisMessageListener<V>)` |
@@ -740,18 +745,19 @@ public class TestAuthManagerService {
 | triggerCallback | `fun <V : GenesisMessage> triggerCallback(sourceRef: String, message: V): Boolean` |
 | registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.simpleName))` |
 | registerReaderType | `fun registerReaderType(clazz: KClass<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.java.simpleName))` |
-| registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: KClass<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.java.simpleName))` |
+| registerReaderType | `fun registerReaderType(clazz: KClass<out GenesisMessage>, parametricType: KClass<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.java.simpleName))` |
 | registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: Class<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.simpleName))` |
 | notifyConnectionDown | `fun notifyConnectionDown(ctx: ChannelHandlerContext)` |
-| waitForConnection | `fun waitForConnection()` |
+| waitForConnection | `@Throws(InterruptedException::class) fun waitForConnection()` |
 
 #### Properties
 
 | Name | Summary |
 | --- | --- |
 | handler | Returns GenesisMessageHandler, which allows us to attach listeners to servers and clients |
-| isActive | Checks whether the netty connector is open for a new connection |
-| isConnected | Checks whether the netty connector is open for a new connection |
+| isActive | Checks whether the Netty channel to the server is open |
+| isConnected | Checks whether the client is connected to the server |
+| isShutdown | Checks whether `shutdown` has been called |
 
 Example:
 
@@ -865,10 +871,10 @@ public class TestAuthManagerService {
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet): Single<Boolean>` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet): Boolean` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet): Single<Boolean>` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet): Boolean` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
 | rxRequest | `fun rxRequest(set: GenesisSet): Single<GenesisSet>` |
 | rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
 | suspendRequest | `suspend fun suspendRequest(set: GenesisSet): GenesisSet?` |
