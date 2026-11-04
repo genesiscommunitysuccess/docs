@@ -21,7 +21,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * build(deps)!: bump camelVersion from 4.14.4 to 4.18.0 in /genesis-conventions
 * build(deps)!: drop ktor-client-gson, fest-assert and the unused commons-csv declaration
 * build(deps)!: drop the javax JAXB api and impl, nothing loads them
-* build(deps)!: migrate genesis-server to Jackson 3.1.4 
+* build(deps)!: migrate genesis-server to Jackson 3.1.4
 * chore!: delete orphaned genesis-wsbridge and stale build-output directories
 * chore!: remove the genesis-sync module
 * chore(genesis-codegen)!: delete the deprecated GenesisVersion
@@ -30,7 +30,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * feat!: Move CRON_RULE_AUDIT to generated audit table and migrate data via installHooks
 * feat!: deprecate genesis-dbtogenesis and genesis-genesistodb
 * feat!: remove the genesis-groovy module
-* feat!: remove the genesis-hft module and the HFT feature line 
+* feat!: remove the genesis-hft module and the HFT feature line
 * feat!: remove the genesis-protobuf adapter module
 * feat!: remove the genesis-protobufsim module
 * feat!: remove the genesis-publisher module
@@ -42,34 +42,34 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * feat(genesis-clustersupport)!: delete the unused job scheduler package
 * feat(genesis-codegen)!: deprecate the generated Fields object
 * feat(genesis-codegen)!: stop emitting the deprecated entity Builder and is-prefixed setters
-* feat(genesis-codegen)!: stop generating the deprecated per-entity table repositories 
+* feat(genesis-codegen)!: stop generating the deprecated per-entity table repositories
 * feat(genesis-config)!: remove the deprecated Shiro security helpers and drop shiro-core
 * feat(genesis-data-ingest)!: move CDC support to platform-integrations
 * feat(genesis-db)!: default DbLayer to SQL and deprecate FoundationDB
 * feat(genesis-db)!: delete the HIDDEN binary-compatibility shims
 * feat(genesis-db)!: deprecate the RxDb, RxDbImpl and RxEntityDb types
-* feat(genesis-db)!: enable SQL views by default 
-* feat(genesis-db)!: remove dead transaction interfaces, safeWriteTransaction and isBulkSorted 
+* feat(genesis-db)!: enable SQL views by default
+* feat(genesis-db)!: remove dead transaction interfaces, safeWriteTransaction and isBulkSorted
 * feat(genesis-db)!: remove deprecated reflection helpers, SQLDictionaryStore and SqlMode.LEGACY
 * feat(genesis-db)!: remove entity-level continuation reads
 * feat(genesis-db)!: remove the deprecated Entity interface
 * feat(genesis-db)!: remove the deprecated buildStatement overloads
-* feat(genesis-db)!: remove the deprecated cache API isTableCached and addTable(String) 
+* feat(genesis-db)!: remove the deprecated cache API isTableCached and addTable(String)
 * feat(genesis-db)!: remove the remaining deprecated database-details members
 * feat(genesis-db)!: remove vararg overload from entity-DB getAllAsList
 * feat(genesis-db)!: sync-core DB layer with Rx/Sync/Async record & entity APIs
 * feat(genesis-dictionary)!: deprecate the fields dictionary DSL in favour of inline table fields
 * feat(genesis-dictionary)!: move framework fields inline in updateTablesDictionary
-* feat(genesis-dictionary)!: remove LambdaExtractor, dtaHosts and enumField 
+* feat(genesis-dictionary)!: remove LambdaExtractor, dtaHosts and enumField
 * feat(genesis-eventhandler)!: deprecate the AbstractEventHandler API ahead of v11 removal
-* feat(genesis-eventhandler)!: remove the legacy XML event-handler definition format 
+* feat(genesis-eventhandler)!: remove the legacy XML event-handler definition format
 * feat(genesis-net)!: add HTTP/Websocket transport support and improve Netty byte buffer reusability
 * feat(genesis-net)!: native HTTP endpoints per process (req-rep and eventhandler) + streaming router proxy
 * feat(genesis-net)!: remove ListenableFuture-based sendReqRep
 * feat(genesis-net)!: switch binary serialization to Smile and remove MessagePack dataformat
 * feat(genesis-pal)!: converge the permissioning auth DSL on filter and authKey
 * feat(genesis-pal)!: remove deprecated eventhandler and requestserver DSL members
-* feat(genesis-pal-datapipeline)!: remove deprecated DSL syntax and guard pipeline completion 
+* feat(genesis-pal-datapipeline)!: remove deprecated DSL syntax and guard pipeline completion
 * feat(genesis-pal-dataserver)!: remove deprecated DSL syntax and the FURY serialization type
 * feat(genesis-process)!: decouple web-handler script DSL from router into genesis-process
 * feat(genesis-process)!: remove deprecated log-level, message-delegator and test auth-cache members
@@ -79,12 +79,12 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * fix!: improve warning/error around derivedFields on dataservers, request-replies
 * fix(build)!: declare script permissions on genesis distribution archives
 * fix(codegen-gradle-plugin)!: fail build if DEPLOYED_PRODUCT is set but generated jars aren't distributed
-* fix(coreproduct)!: remove MigrateDictionaryToGenesis scripts broken by dta dependencies removal in 8.15.0 
+* fix(coreproduct)!: remove MigrateDictionaryToGenesis scripts broken by dta dependencies removal in 8.15.0
 * fix(exec-gradle-plugin)!: add BLOCK_GENESIS_INSTALL Sysdef to block genesisInstall in docker deployments
-* fix(genesis-cluster)!: correct three cluster defects and converge the ClusterPort default 
+* fix(genesis-cluster)!: correct three cluster defects and converge the ClusterPort default
 * fix(genesis-cluster)!: replace Java serialization on the cluster transport
 * fix(genesis-commons)!: stop exporting the Kotlin compiler to every consumer
-* fix(genesis-config)!: reject unrecognised ClusterMode values at startup 
+* fix(genesis-config)!: reject unrecognised ClusterMode values at startup
 * fix(genesis-db)!: converge the update-queue default on ZeroMQ
 * fix(genesis-evaluator)!: point dynamic rules using !in at !(A in B)
 * fix(genesis-net)!: resolve every network consumer from NetworkConfigContainer
@@ -94,19 +94,19 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * fix(genesis-router)!: apply allowList/blockList, strict status and XSS settings to proxied HTTP requests
 * fix(server)!: API contract cleanup across the transport stack
 * perf(genesis-jackson)!: lazily init cold mappers and per-instance schema registry
-* refactor!: decouple genesis-calendar from genesis-process 
+* refactor!: decouple genesis-calendar from genesis-process
 * refactor!: decouple genesis-codegen and genesis-process from genesis-hft
 * refactor(codegen)!: remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
 * refactor(deps)!: bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
 * refactor(genesis-commons)!: remove XMLConfiguration-returning ConfigReadable methods
-* refactor(genesis-commons)!: retire the ANTLR Kotlin parser 
+* refactor(genesis-commons)!: retire the ANTLR Kotlin parser
 * refactor(genesis-console)!: move StatusDataserver onto genesis-pal-dataserver
 * refactor(genesis-db)!: drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
 * refactor(genesis-dictionary)!: remove the deprecated GenesisDictionary.sequenceIdFields
 * refactor(genesis-environment)!: implement the remap type conversions without commons-beanutils
 * refactor(genesis-environment)!: migrate PopulateHolidays to maintained de.focus-shift jollyday
-* refactor(genesis-evaluator)!: migrate rule event handlers to the typed EventHandler API 
-* refactor(genesis-eventhandler)!: remove unused generic insert/modify/delete event handlers 
+* refactor(genesis-evaluator)!: migrate rule event handlers to the typed EventHandler API
+* refactor(genesis-eventhandler)!: remove unused generic insert/modify/delete event handlers
 * refactor(genesis-net)!: make ClientConnectionsManager internal
 * refactor(genesis-pal)!: remove deprecated FileReader definition entry points
 * refactor(genesis-pipeline-api)!: remove deprecated DbSink and DbRxSink typealiases
@@ -258,7 +258,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * feat: deprecate genesis-web-client-api instead of removing it
 * feat: deprecate genesis-webmon instead of removing it
 * feat: harden module-deprecation detection with classpath scanning and a build-time warning
-* feat: write _AUDIT rows for consolidator writes to audited tables 
+* feat: write _AUDIT rows for consolidator writes to audited tables
 
 ### Performance improvements
 

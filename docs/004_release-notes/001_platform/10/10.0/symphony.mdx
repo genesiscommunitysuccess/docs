@@ -1,0 +1,46 @@
+---
+title: '10.0 Symphony'
+sidebar_label: 'Symphony'
+sidebar_position: 8
+id: '10.0-symphony'
+---
+
+### Features
+
+* feat: persist displayName on Symphony notify routes
+
+### Fixes
+
+* fix(server): force H2 to the genesis-bom pinned version for every subproject
+* fix: Disable reuseUpstream codegen for sibling dict-cache builds
+* fix: apply the test-retry plugin to subprojects so the retry block resolves
+* fix: configure test-retry plugin bounds in server
+* fix: exclude genesis-symphony-test-dictionary-cache from product manifest
+* fix: keep displayName and route settings on Symphony route updates
+
+### Dependency changes
+
+* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* build(deps): add genesisVersion consistency guard across gradle.properties files
+* build(deps): adopt global.genesis.settings.legacy so Kotlin tracks the platform
+* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
+* build(deps): bump actions/checkout from 4 to 7
+* build(deps): bump com.jfrog.artifactory from 5.2.0 to 6.0.4
+* build(deps): bump gradle-wrapper from 9.6.1 to 9.7.1 in /server
+* build(deps): bump org.finos.symphony.bdk:symphony-bdk-bom from 3.2.1 to 3.3.14
+* build(deps): bump org.finos.symphony.bdk:symphony-bdk-bom from 3.3.14 to 3.3.15
+* build(deps): bump org.finos.symphony.bdk:symphony-bdk-bom from 3.3.15 to 3.5.1
+* build(deps): bump org.finos.symphony.bdk:symphony-bdk-bom from 3.5.1 to 3.6.0
+* build(deps): bump org.finos.symphony.bdk:symphony-bdk-bom from 3.6.0 to 3.6.1
+* build(deps): bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
+* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
+* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
+* build(deps): bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
+* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
+* build(deps): bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+
+### Patch releases
+
+There are currently no patch releases for this version
