@@ -498,6 +498,7 @@ consolidators {
     groupName = "DEFAULT"
     tableTransient = false
     backwardsJoin = true
+    audit = false
   }
   consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
     config {
@@ -521,6 +522,7 @@ consolidators {
 | groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                             | Free text.                                                                                                                                                                  | No grouping by default |
 | tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
 | backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
+| audit                | writes an audit record to the output table's `_AUDIT` table for each insert or modify the Consolidator makes. Has no effect if the output table is not audited (see [audit](#audit))     | true, false                                                                                                                                                                 | false                  |
 
 #### `groupName`
 
@@ -575,6 +577,47 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
         groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
     }
 ```
+
+#### `audit`
+
+If the output table is an [audited table](/develop/server-capabilities/data-model/#audited-tables) (defined with `audit = details(...)`), you can make the Consolidator write a record to the output table's `_AUDIT` table every time it inserts or modifies a row. Auditing is off by default; set `audit = true` to turn it on.
+
+Both conditions must be met for audit records to be written:
+
+- the output table is defined with `audit = details(...)`
+- `audit = true` is set in the `config` block
+
+If `audit = true` is set but the output table is not audited, the setting is ignored and the Consolidator writes as normal.
+
+You can set `audit` for a single Consolidator, or in the file-level `config` block to apply it to every Consolidator in the file:
+
+```kotlin
+consolidators {
+    consolidator("TRADE_TO_POSITION", TRADE, POSITION) {
+        config {
+            audit = true
+        }
+        // Rest of consolidator definition
+    }
+}
+```
+
+Each audit record contains the full output row, plus the following values:
+
+| Field              | Value                                                  |
+|--------------------|--------------------------------------------------------|
+| `AUDIT_EVENT_USER` | `SYSTEM`                                               |
+| `AUDIT_EVENT_TYPE` | The name of the Consolidator (see [consolidator](#consolidator)) |
+| `AUDIT_EVENT_TEXT` | `INSERT` or `MODIFY`                                   |
+
+The audit user is always `SYSTEM`. A Consolidator has no user context, and a single write can combine updates from several users. To see who made each underlying change, audit the Consolidator's input tables as well.
+
+Note the following behaviour:
+
+- **Transactions**: with the default `transactionType`, data and audit records are written in the same database transaction, so they are committed or rolled back together. With `transactionType = ConsolidationTransactionType.LOCAL`, each batch of audited writes is wrapped in its own database transaction, so each batch opens one transaction.
+- **Volume**: writes are batched (see `batchingPeriod`), so expect roughly one audit record per group per batch, not one per input update.
+- **No change, no record**: if a recalculation leaves a group's values unchanged, no row is written and no audit record is created.
+- **Cold start**: the records cleared at the start of a [`coldStart`](#coldstart) are not audited. The rebuild that follows is audited, producing one record per group: `MODIFY` if `tableTransient` is false (records are zeroed, then recalculated), or `INSERT` if `tableTransient` is true (records are deleted, then rebuilt).
 
 ### `select`
 
