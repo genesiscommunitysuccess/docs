@@ -710,7 +710,7 @@ public class TestAuthManagerService {
 
 `GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfigContainer, requestLogger: RequestLogger)`
 
-`configuration` takes the same settings as [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/). Inside a process, inject `NetworkConfigContainer` to get the configuration that process resolved. `secure` is only taken into account when `tls.mode` is `SELECTIVE_TLS`.
+`configuration` takes the same settings as [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/). Inside a process, inject `NetworkConfigContainer` to get the configuration that process resolved. When `tls.mode` is `SELECTIVE_TLS`, `secure` decides whether the connection uses TLS; in the other modes, `tls.mode` alone decides. On the `WEBSOCKET` channel, it also sets the scheme of the WebSocket handshake URI: `wss` when `true`, `ws` when `false`.
 
 The constructors that take a `NetworkConfiguration`, or no configuration at all, are deprecated.
 
