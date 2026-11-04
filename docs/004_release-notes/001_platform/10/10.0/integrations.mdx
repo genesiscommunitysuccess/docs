@@ -1,0 +1,36 @@
+---
+title: '10.0 Integrations'
+sidebar_label: 'Integrations'
+sidebar_position: 4
+id: '10.0-integrations'
+---
+
+### Breaking changes
+
+* build(deps)!: v9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
+* feat(jms-genesis)!: activemq-client 6.3.1 and the jakarta JMS API
+
+### Features
+
+* feat(cdc-genesis): add CDC/Debezium module moved from genesis-server
+* feat(kafka-genesis): add an opt-in transactional Kafka sink that fences across a failover
+* feat: Added excel decoder library to data pipelines with example
+
+### Performance improvements
+
+* perf: Remove blocking on each send to improve Kafka Sink throughput
+
+### Fixes
+
+* fix(cdc-genesis): exclude the javax JAXB api from where it actually comes from
+* fix(cdc-genesis): gate the MsSql CDC test on SQL Server Agent instead of waiting forever
+* fix: bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
+* fix: migrate javax.annotation imports to jakarta
+
+### Dependency changes
+
+
+
+### Patch releases
+
+There are currently no patch releases for this version
