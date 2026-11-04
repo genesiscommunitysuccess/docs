@@ -2001,7 +2001,7 @@ requestReply("TRADE", TRADE) {
 :::warning
 IMPORTANT!
 
-Generate Repository usage is legacy. Entity DB APIs replace their usage. The generated table and view repositories are deprecated, except those of views with [parameterized joins](../data-model/#parameterized-joins): their interfaces and implementation classes carry `@Deprecated("Replace with AsyncEntityDb")` (Async repositories) or `@Deprecated("Replace with RxEntityDb")` (Rx3 repositories). From GSF version 7.0.0 onwards, code generation for database repositories is disabled by default. To re-enable code generation, change the **generateRepositories** setting inside the **build.gradle.kts** files for the **genesis-generated-dao** and **genesis-generated-view** modules, as shown below:
+Generate Repository usage is legacy. Entity DB APIs replace their usage. The generated table and view repositories are deprecated, except those of views with [parameterized joins](../data-model/#parameterized-joins): their interfaces and implementation classes are annotated with `@Deprecated`, with the message `Replace with AsyncEntityDb` (Async repositories) or `Replace with RxEntityDb` (Rx3 repositories). From GSF version 7.0.0 onwards, code generation for database repositories is disabled by default. To re-enable code generation, change the **generateRepositories** setting inside the **build.gradle.kts** files for the **genesis-generated-dao** and **genesis-generated-view** modules, as shown below:
 
 ```{kotlin}
 codeGen {
