@@ -61,7 +61,7 @@ For example:
 </configuration>
 ```
 
-The `secure` attribute only takes effect in [selective TLS](/develop/server-capabilities/runtime-configuration/service-encryption/#selective-tls): with the legacy configuration below, or with `tls.mode: SELECTIVE_TLS` in `network-config.yaml`. With the other `tls.mode` values, the mode applies to every process and `secure` is ignored: `PLAIN_TEXT` uses no TLS, and `TLS` and `MUTUAL_TLS` use TLS for every process. This applies to connections between processes and to the events and HTTP endpoint requests that the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/) proxies to a process.
+The `secure` attribute only takes effect in [selective TLS](/develop/server-capabilities/runtime-configuration/service-encryption/#selective-tls): with the legacy configuration below, or with `tls.mode: SELECTIVE_TLS` in `network-config.yaml`. With the other `tls.mode` values, the mode applies to every process and `secure` is ignored: `PLAIN_TEXT` uses no TLS, and `TLS` and `MUTUAL_TLS` use TLS for every process. This applies to connections between processes and to the events and HTTP endpoint requests that the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router/) proxies to a process on the port in its service definition.
 
 You must also edit the `genesis-system-definition.kts` file, as specified in the example below:
 
