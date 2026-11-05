@@ -218,6 +218,10 @@ When you create an audit table, it has all the same fields as the source table, 
 | `AUDIT_EVENT_USER`            | `STRING`    | User on the event message                                                                                      |
 | `<source-table>_AUDIT_ID` | `STRING`    | A generated unique ID for the audit record, which uses the `sequence` defined in the `audit = details()` detailed above, where `<source-table>` is the name of the table being audited.  |
 
+:::note
+Consolidators do not write audit records by default. To audit the rows a Consolidator writes to an audited table, set [`audit = true`](/develop/server-capabilities/real-time-aggregation-consolidator/#audit) in its `config` block.
+:::
+
 #### `field`
 
 A table is made up of one or more fields. Each field must have a unique name (unique within the table definition) and a data type. 
