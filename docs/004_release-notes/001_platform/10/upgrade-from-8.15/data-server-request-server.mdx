@@ -170,23 +170,23 @@ fields {
 
 ## 5. Check the criteria your clients send
 
-**Applies to:** front ends and API clients that send criteria (`CRITERIA_MATCH`) to Data Server queries, and code that queries the database by criteria. Queries that set `linearScan = false` are the most likely to be affected.
+**Applies to:** front ends and API clients that send criteria (`CRITERIA_MATCH`) to Data Server queries, Data Server queries that set `defaultCriteria`, and code that queries the database by criteria. Queries that set `linearScan = false` are the most likely to be affected.
 
 **Why:** in 10.0, the Data Server and the database layer check criteria against the same rule set. In 8.15, each had its own rules, so a few expressions were accepted by one and refused by the other. Most of the rules are not new: constructs that 8.15 already refused, such as `matches` or a ternary, are still refused. Two changes can make a criteria that worked in 8.15 fail in 10.0:
 
 - **`!in` is refused.** Write `!(A in B)` instead.
 - **`linearScan = false` no longer falls back to a full scan.** On a query that sets `linearScan = false`, 10.0 refuses a criteria expression that doesn't bound the first field of the query's index. In 8.15, such a criteria could still run as a scan of every row.
 
-**What goes wrong if you skip this:** the Data Server refuses the request with an `INVALID_CRITERIA` error, so the grid or API call that sent it gets no data. For a `linearScan = false` query, the error looks like this:
+**What goes wrong if you skip this:** the Data Server refuses the request with an `INVALID_CRITERIA` error, so the grid or API call that sent it gets no data. For a `linearScan = false` query, the error includes this text:
 
 ```
 Criteria "<criteria>" on query <query> bounds no value of <field>, the first field of index <index>, so it would scan every row, which linearScan="false" does not allow. ...
 ```
 
-**What to do:** before you upgrade, run the criteria that your front ends and API callers send against a 10.0 environment, and rewrite any that are refused:
+**What to do:** before you upgrade, run the criteria that your front ends and API callers send, and each query's `defaultCriteria`, against a 10.0 environment, and rewrite any that are refused:
 
 - Replace `A !in B` with `!(A in B)`.
-- On a `linearScan = false` query, compare the index's first field to a value with `==`, `<`, `<=`, `>` or `>=`, and join it to the rest of the criteria with `&&`. If the query really does need criteria that can't do that, set `linearScan = true` on it.
+- On a `linearScan = false` query, compare the index's first field to a literal value with `==`, `<`, `<=`, `>` or `>=`, and join it to the rest of the criteria with `&&`. If the query really does need criteria that can't do that, set `linearScan = true` on it.
 
 ## 6. Stop using the `ASYNC` backward-join cache mode
 
