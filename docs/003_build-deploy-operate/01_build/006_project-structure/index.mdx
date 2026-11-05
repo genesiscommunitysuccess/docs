@@ -58,7 +58,9 @@ Any platform module provided `cfg` files which are placed in here will take prec
 
 ### `testData`
 
-The `testData` directory in the project root is intended to contain any data which might be helpful when developing the application but should not go into a production system. It can contain a `data` subfolder (`testData/data`) which is similar to the application's [data](#data) in that it should contain `.csv` files in [SendIt](/build-deploy-operate/operate/commands/#sendit) format that can be loaded into the application's database. 
+The `testData` directory in the project root is intended to contain any data which might be helpful when developing the application but should not go into a production system. Like the application's [data](#data) directory, it contains `.csv` files in [SendIt](/build-deploy-operate/operate/commands/#sendit) format that can be loaded into the application's database. Put the `.csv` files directly in `testData/`, not in a `data` subfolder; subfolders are not read.
+
+The project root is the folder that holds `server/` and the top-level `settings.gradle.kts`. If there is no settings file above `server/`, test data is read from `server/testData/` instead. 
 
 It **will not** be bundled in the application's distribution zip. Data required in all environments including production should be placed in the [data](#data) directory.
 

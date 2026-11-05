@@ -1359,6 +1359,8 @@ SendIt -t FUND -f FUND.csv
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
+You can also give `-t` a file name, `<table>.csv` or `<table>.csv.gz`, without `-f`. SendIt drops the extension to get the table name and reads the file from the current directory; for example, `SendIt -t FUND.csv` loads **FUND.csv** into the FUND table.
+
 ### Modifying and upserting
 
 :::info

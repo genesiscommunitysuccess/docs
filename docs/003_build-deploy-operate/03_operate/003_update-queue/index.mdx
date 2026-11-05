@@ -121,7 +121,7 @@ Other config values that are available are listed below:
 | --- | --- | --- |
 | `MqttBrokerUrl` | The URL of the MQTT broker | `tcp://localhost:1883` |
 | `MqttQos` | The MQTT Quality of Service level <br/><br/>At most once (0) <br/>At least once (1) <br/>Exactly once (2) | `2` |
-| `MqttClientId` | A template pattern for the client ID using HOSTNAME and PROCESS_NAME | `genesis/{{HOSTNAME}}/{{PROCESS_NAME}}` |
+| `MqttClientId` | A template pattern for the client ID. You can use `{{PROCESS_NAME}}`, `{{HOST_NAME}}` (the local host name) and environment variables; the default's `{{HOSTNAME}}` is the `HOSTNAME` environment variable | `genesis/{{HOSTNAME}}/{{PROCESS_NAME}}` |
 | `MqttQueueNamePattern` | A template pattern for the queue name using TABLE_NAME | `genesis/database/{{TABLE_NAME}}` |
 | `MqttThreadPoolSize` | Number of threads to use  | `4` |
 | `MqttUsername` | MQTT Username | `null` |
@@ -166,6 +166,7 @@ The Config variables are listed below.
 | `JmsHost` (required)             | The host name, can hold multiple values separated by comma; this enables you to use HA failover | `http://localhost:61616` |
 | `JmsUsername`                    | Username to connect | |
 | `JmsPassword`                    | Password to connect (can be encrypted using `GenesisKey`) | |
+| `JmsClientId`                    | A template pattern for the client ID, which identifies the process's durable subscriptions on the broker. You can use `{{PROCESS_NAME}}`, `{{HOST_NAME}}`, any system definition item and any of the process's environment variables, by name. See [Stable client IDs](#stable-client-ids). (Available since 8.15.44.) | `{{PROCESS_NAME}}@{{HOST_NAME}}` |
 | `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
 | `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker before declaring the process `DOWN` | 20 |
 | `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case of connectivity problems or other faults | 1000 |
@@ -208,6 +209,32 @@ process {
 :::danger
 Do not define `JmsTopicSubscriptionMode` at Global level, as this will cause all messages to be stored and delivered once the process is back online.
 :::
+
+#### Stable client IDs
+
+The broker identifies a durable subscription by the client ID of the process that created it. The default client ID includes the host name, so if a durable consumer restarts on a host with a different name (for example, a pod in a Kubernetes Deployment), it creates a new subscription. The old one is never consumed again and keeps accumulating messages on the broker.
+
+If you use `JmsTopicSubscriptionMode = PERSISTENT` where host names change between restarts, set `JmsClientId` to a pattern that stays the same across restarts. For example:
+
+```kotlin {title="alpha-consolidator-process-config.kts"}
+process {
+    systemDefinition {
+        item(name = "JmsTopicSubscriptionMode", value = "PERSISTENT")
+        // one instance of the process
+        item(name = "JmsClientId", value = "{{PROCESS_NAME}}")
+        // or, with several instances, a per-instance value from an environment variable
+        // item(name = "JmsClientId", value = "{{PROCESS_NAME}}-{{POD_INDEX}}")
+    }
+}
+```
+
+`{{PROCESS_NAME}}` and `{{HOST_NAME}}` take precedence over system definition items with the same name, and system definition items take precedence over environment variables. Environment variables here are the process's ordinary environment, referenced by their own name: `{{POD_INDEX}}` reads the `POD_INDEX` variable. A placeholder with no value resolves to an empty string.
+
+:::warning
+The client ID must be unique for each running instance of a process. The broker rejects a second connection that uses a client ID already in use.
+:::
+
+If you change `JmsClientId` on an existing deployment, the subscriptions created under the old client ID are not removed automatically; delete them on the broker.
 
 ### High availability
 
