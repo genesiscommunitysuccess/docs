@@ -5,4 +5,204 @@ sidebar_position: 2
 id: 'upgrade-10.0-removed-modules'
 ---
 
-This page will describe how to upgrade applications that use modules removed or deprecated in 10.0 from 8.15 to 10.0.
+Genesis 10.0 removes a set of old or little-used modules outright, and marks a second set as deprecated. This page takes you through the changes your application needs for the removals. The deprecated modules keep working in 10.0, so they need no action for this upgrade; the last section lists them so that you can plan for 11.0.
+
+## Where you will see problems
+
+| When | What fails | Step |
+|------|------------|------|
+| Dependency resolution and compilation | A removed artifact, Gradle plugin or build setting | [2](#2-remove-dependencies-on-removed-artifacts-and-plugins), [4](#4-remove-generatecache-from-the-codegen-block), [5](#5-add-cdc-genesis-for-database-change-data-capture-sources), [6](#6-add-genesis-calendar-if-you-use-calendar-classes-directly) |
+| `genesisInstall` | A process definition for a removed platform process | [1](#1-remove-process-definitions-for-removed-platform-processes) |
+| Process start | A Groovy script process, or a process whose module was removed | [1](#1-remove-process-definitions-for-removed-platform-processes), [3](#3-convert-groovy-script-processes-to-gpal) |
+| Running `DumpIt` | The `LEGACY` criteria evaluator mode | [3](#3-convert-groovy-script-processes-to-gpal) |
+| Warnings only | Anything deprecated | [7](#7-expect-deprecation-warnings) |
+
+## 1. Remove process definitions for removed platform processes
+
+**Applies to:** applications whose own `*-processes.xml` declares `GENESIS_WEBMON`, `GENESIS_PROTOBUF_ADAPTER`, `GENESIS_PROTOBUF_SIM` or `GENESIS_SYNC` (for example, a copy of the platform definition with `<start>` set to `true`), or any process whose `<module>` is one of the modules removed in [step 2](#2-remove-dependencies-on-removed-artifacts-and-plugins).
+
+**Why:** in 8.15, the platform defined these four processes, switched off by default. 10.0 no longer ships them, their configuration files, their service definitions or their modules. There is no replacement for webmon, the protobuf adapter and simulator, or database sync.
+
+**If you skip it:**
+- `genesisInstall` fails. The configuration check reports the missing configuration file as an error, for example `genesis-webmon-config.xml does not exist for process GENESIS_WEBMON`, whether or not the process is set to start. If the process is set to start, the missing service definition is an error, too. For webmon, the check also prints a warning that names the module as deprecated.
+- `startProcess` refuses to start the process and names the module whose jar it cannot find:
+
+  ```
+  Module 'genesis-sync': no jar found in any $GENESIS_HOME/*/bin directory. Process GENESIS_SYNC will not start.
+  ```
+
+  For webmon, the message also says `Module 'genesis-webmon' is deprecated and will be removed in 11.0.0.`, even though the module is already gone.
+
+**What to do:** delete the whole `<process>` stanza and its matching `<service>` entry. For example, delete this:
+
+```xml
+<process name="GENESIS_WEBMON">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <module>genesis-webmon</module>
+    <package>global.genesis.webmon</package>
+    <config>genesis-webmon-config.xml</config>
+</process>
+```
+
+Do the same for any process whose `<module>` is `genesis-protobuf`, `genesis-protobufsim`, `genesis-sync`, `genesis-streamerclient`, `genesis-publisher` or `genesis-groovy`. To keep the function of a legacy streamer client, rebuild it as described in [step 2](#legacy-streamer-client).
+
+## 2. Remove dependencies on removed artifacts and plugins
+
+**Applies to:** builds that depend on any of the artifacts or Gradle plugins below, or code that uses their classes.
+
+**Why:** these artifacts are not published for 10.0.
+
+**If you skip it:** Gradle cannot resolve the dependency or plugin, and the build fails. Code that uses classes from them does not compile.
+
+**What to do:** remove each dependency, and the code that uses it.
+
+| Remove | Use instead |
+|--------|-------------|
+| `genesis-groovy` | Nothing; see [step 3](#3-convert-groovy-script-processes-to-gpal) |
+| `genesis-hft`, and the Gradle plugin `global.genesis.codegen.hft` | Nothing |
+| `genesis-protobuf`, `genesis-protobufsim` | Nothing |
+| `genesis-streamerclient` | `genesis-pal-streamerclient` |
+| `genesis-webmon` | Nothing |
+| `genesis-web-client-api` (the Java WebSocket client) | Call the server's HTTP and WebSocket endpoints directly |
+| `genesis-publisher` | Nothing |
+| `genesis-sync` | Nothing |
+| `genesis-shell` | Nothing |
+
+These classes have also been removed, so delete any code that uses them:
+- everything in `global.genesis.clustersupport.job`
+- `JoinExpression`, `JoinDefinition` and `JoinDefinitionReader` in `global.genesis.process`
+- `GenesisHFT`
+
+If your build still has a generated HFT module (a `<product>-generated-hft` project next to the generated DAO and view modules), delete it. Gradle warns that it is a leftover, and builds it as an empty module.
+
+The following command aliases have been removed from `setup.sh`. Remove them from any scripts that call them:
+- `GenesisShell`
+- `GenesisLoadTester`
+- `ReconcileDatabaseSync`
+- `PurgeHftTables`
+- `RecoverHFTTable`
+
+### Legacy streamer client
+
+A process that runs `<module>genesis-streamerclient</module>` must be rebuilt on `genesis-pal-streamerclient`, with a GPAL `*-streamer-client.kts` script; see [Streamer client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/). That module and its DSL are already available in 8.15, so you can do this before you upgrade.
+
+## 3. Convert Groovy script processes to GPAL
+
+**Applies to:** processes that run a Groovy script (`.gy` or `.groovy`), processes that set `<language>groovy</language>`, code that imports Groovy libraries other than the core ones, and scripts that run `DumpIt` with `-cem LEGACY`.
+
+**Why:** 10.0 removes Groovy script processes and the `genesis-groovy` module. When a process does not set `<language>`, the default is now `pal`; in 8.15, it was `groovy`.
+
+**If you skip it:** the process does not start. `startProcess` prints one of these messages:
+
+| 8.15 process definition | 10.0 result |
+|-------------------------|-------------|
+| `<script>foo.gy</script>`, no `<language>` | `Groovy script processes were removed in 10.0: foo.gy. Migrate the script to GPAL (.kts) and set <language>pal</language>. Process will not start.` |
+| `<language>groovy</language>` | `Groovy script processes were removed in 10.0: <language>groovy</language> is no longer supported. Migrate the script to GPAL (.kts) and set <language>pal</language>. Process will not start.` |
+| A `.kts` script with a `<module>` and `<language>pal</language>` | Unchanged |
+| The same, without `<language>` | Starts as `pal` |
+
+**What to do:**
+- Rewrite each Groovy script process as a GPAL `.kts` script, and give the process a `<module>`.
+- You can keep `<language>pal</language>` or remove it; `pal` is now the default.
+
+### Groovy libraries
+
+`genesis-commons` no longer provides `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` or `groovy-cli-picocli`, and the Genesis BOM no longer manages their versions. If your own code imports from them (for example, `groovy.json.JsonSlurper`, `groovy.sql.Sql` or `CliBuilder`), add the dependency yourself, at the same version as the `groovy` jar that the platform provides:
+
+```kotlin
+implementation("org.codehaus.groovy:groovy-json:<groovy version>")
+```
+
+`groovy`, `groovy-astbuilder` and `groovy-xml` are still provided.
+
+### DumpIt
+
+Remove `-cem LEGACY` and `--criteriaEvaluatorMode LEGACY` from any scripts that run `DumpIt`. `TYPE_AWARE`, which was already the default in 8.15, is now the only mode. If you pass `LEGACY`, `DumpIt` fails with:
+
+```
+Unsupported criteriaEvaluatorMode 'LEGACY'. Supported modes: [TYPE_AWARE]. LEGACY was removed in 10.0.
+```
+
+## 4. Remove `generateCache` from the `codeGen` block
+
+**Applies to:** builds that set `generateCache` in the `codeGen { }` block, or that refer to the `generateDaoCache` or `generateViewCache` tasks.
+
+**Why:** the code generation cache has been removed. The `generateCache` setting and the two cache tasks no longer exist.
+
+**If you skip it:** your `build.gradle.kts` does not compile.
+
+**What to do:** delete the line, and delete the `codeGen` block if it is now empty. Remove any references to `generateDaoCache` and `generateViewCache`.
+
+```kotlin
+// 8.15
+codeGen {
+    generateCache = true
+}
+
+// 10.0: delete it
+```
+
+The `generateRepositories` setting has been removed from the same block; see [Dictionary and code generation](./dictionary-codegen.mdx).
+
+## 5. Add `cdc-genesis` for database change-data-capture sources
+
+**Applies to:** data pipelines (`*-data-pipeline.kts`) that use `postgresSource`, `oracleSource` or `msSqlSource`.
+
+**Why:** these change-data-capture sources have moved out of the platform and into a separate integration library, `cdc-genesis`.
+
+**If you skip it:** the data pipeline script does not compile.
+
+**What to do:** add `cdc-genesis` to the server module that contains the data pipeline script. It is not in the Genesis BOM, so give a 10.x version explicitly.
+
+```kotlin
+dependencies {
+    implementation("global.genesis:cdc-genesis:<version>")
+}
+```
+
+The script itself does not change. `postgresSource`, `oracleSource` and `msSqlSource` keep their names and parameters, and a data pipeline script imports them automatically. `cdc-genesis` now brings in Debezium and Kafka Connect. Debezium offsets and history are still stored in the `DATAPIPELINE_OFFSET` and `DATAPIPELINE_HISTORY` tables.
+
+For other changes to data pipelines, see [Consolidator and data pipelines](./consolidator-pipelines.mdx).
+
+## 6. Add `genesis-calendar` if you use calendar classes directly
+
+**Applies to:** modules that use classes in `global.genesis.calendar` (for example, `TradingCalendar`) and get `genesis-calendar` only through `genesis-process`.
+
+**Why:** `genesis-process` no longer brings in `genesis-calendar`.
+
+**If you skip it:** the module does not compile. A module that depends on `genesis-environment` is not affected, because `genesis-environment` still brings in `genesis-calendar`.
+
+**What to do:** if compilation fails on `global.genesis.calendar`, add the dependency:
+
+```kotlin
+implementation("global.genesis:genesis-calendar")
+```
+
+Use the same dependency form as the other Genesis modules in your build.
+
+## 7. Expect deprecation warnings
+
+**Applies to:** applications that use any of the components below.
+
+**Why:** these are deprecated in 10.0. They still work. Most are due to be removed in 11.0.0, and some have no removal date yet.
+
+**If you skip it:** nothing breaks in 10.0. You see warnings until you move off them.
+
+**What to do:** nothing is needed for 10.0. Use this table to plan the work before 11.0.
+
+| You use | What you see | Move to |
+|---------|--------------|---------|
+| `<module>genesis-dataserver2</module>` | A warning in the process log and from `genesisInstall` | GPAL Data Server, `genesis-pal-dataserver` |
+| `<module>genesis-consolidator2</module>` | The same | GPAL Consolidator, `genesis-pal-consolidator` |
+| `<module>genesis-streamer</module>` | The same | `genesis-pal-streamer` |
+| `<module>genesis-dbtogenesis</module>` or `<module>genesis-genesistodb</module>` | The same | `genesis-data-ingest` pipelines |
+| The `encryptUserPass` alias | Nothing; the alias will go when `genesis-genesistodb` is removed | `encryptUserPassWithKey`, with `GenesisKey` set, for system definition values |
+| `DbLayer=FDB` or `DbLayer=FDB2` | A warning in the process log at start-up | A SQL database; see [Database layer](./database.mdx) |
+| `RxDb` and `RxEntityDb` | Compiler warnings | `SyncDb` or `AsyncDb`, and `AsyncEntityDb` (no removal date set) |
+| `AbstractEventHandler` and related classes | Compiler warnings | The typed `EventHandler` interfaces or GPAL; see [Event handlers and Evaluator](./event-handlers-evaluator.mdx) |
+| `*-fields-dictionary.kts` | A compiler warning, and a warning when the dictionary is read | Fields declared inside `table { }` (no removal date set) |
+| `AbstractGenesisTestSupport`, `AbstractDatabaseTest` and related classes | Compiler warnings | GenesisJunit; see [Test support](./test-support.mdx) |
+| `table(..., isHFT = true)` | A warning when the dictionary is read; the table is now an ordinary table | Remove `isHFT` |
+
+If you see a warning about a component you don't use, check the processes your application inherits from its dependencies. `genesisInstall` checks every process in the merged `processes.xml`.
