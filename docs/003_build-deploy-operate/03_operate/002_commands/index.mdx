@@ -346,6 +346,25 @@ The example combines all compatible processes into a single process.
 genesisInstall --compactProcesses
 ```
 
+### Preventing execution with BlockGenesisInstall
+
+You can prevent the execution of `genesisInstall` by setting the system definition property `BlockGenesisInstall` to `true`. This is useful in containerised environments (such as Docker) where running `genesisInstall` directly is discouraged.
+
+When `BlockGenesisInstall` is enabled:
+- Running `genesisInstall` prints a warning and exits cleanly without performing any installation steps.
+- The Genesis Gradle plugin automatically sets the environment variable `GENESIS_SYSDEF_BlockGenesisInstall=true` in generated Docker runtime images to prevent accidental execution.
+
+If you need to override this block in a containerised environment, you can set the environment variable `GENESIS_SYSDEF_BlockGenesisInstall` to `false`.
+
+###### Examples
+
+To temporarily allow `genesisInstall` to run in an environment where it is blocked, set the environment variable before running the command:
+
+```bash
+export GENESIS_SYSDEF_BlockGenesisInstall=false
+genesisInstall
+```
+
 ### Install hooks
 
 Install hooks are scripts that run automatically the next time `genesisInstall` is run in an environment. They are typically operations that should run only once for a given environment, as part of an application version upgrade. If any install hook fails, an error will be provided and it will run again on the next `genesisInstall`.
@@ -1620,23 +1639,4 @@ To resolve multiple properties, such as `DbHost`, `DbMode`, and `MqLayer`:
 
 ```bash
 readSysDef DbHost DbMode MqLayer
-```
-
-### Preventing execution with BlockGenesisInstall
-
-You can prevent the execution of `genesisInstall` by setting the system definition property `BlockGenesisInstall` to `true`. This is useful in containerised environments (such as Docker) where running `genesisInstall` directly is discouraged.
-
-When `BlockGenesisInstall` is enabled:
-- Running `genesisInstall` prints a warning and exits cleanly without performing any installation steps.
-- The Genesis Gradle plugin automatically sets the environment variable `GENESIS_SYSDEF_BlockGenesisInstall=true` in generated Docker runtime images to prevent accidental execution.
-
-If you need to override this block in a containerised environment, you can set the environment variable `GENESIS_SYSDEF_BlockGenesisInstall` to `false`.
-
-###### Examples
-
-To temporarily allow `genesisInstall` to run in an environment where it is blocked, set the environment variable before running the command:
-
-```bash
-export GENESIS_SYSDEF_BlockGenesisInstall=false
-genesisInstall
 ```
