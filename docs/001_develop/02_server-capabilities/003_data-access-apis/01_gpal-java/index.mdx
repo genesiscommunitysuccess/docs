@@ -861,7 +861,7 @@ This tries to delete a record.
 
 #### Batches that name the same record twice
 
-A batch write must not name the same record twice. This applies to `insertAll`, `modifyAll`, `deleteAll` and `recoverAll`, in both the entity APIs and the record-level APIs. To build the entities you pass in a batch, see [Table entities](#table-entities).
+A batch write must not name the same record twice. The record-level APIs (`SyncDb`, `AsyncDb` and `RxDb`, including `rxDb.entityDb()`) reject a batch that does this for `insertAll`, `modifyAll`, `deleteAll`, `recoverAll` and `upsertAll`. To build the entities you pass in a batch, see [Table entities](#table-entities).
 
 The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for a plain entity `insertAll`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
 
@@ -900,9 +900,9 @@ These are not treated as duplicates:
   )
   ```
 
-- an item whose key isn't fully set yet, such as a record whose key the database generates on insert.
+- an item whose key isn't fully set yet, such as a record whose key the database generates on insert. This applies to `upsertAll` too.
 
-`upsertAll` is different: a batch that names the same record twice is not supported. It may be rejected, or it may be applied with either of the two entries winning. Avoid duplicate entries in an `upsertAll` batch.
+The entity APIs (`SyncEntityDb`, `AsyncEntityDb` and the injected `RxEntityDb`) don't run this check, so a batch that names the same record twice isn't reliably rejected. For `upsertAll`, either of the two entries may win. On the entity APIs, avoid duplicate entries in a batch.
 
 Because the whole batch is checked first, a `Flow` passed to an entity-API batch write, or a `Flowable` passed to an `RxDb` one, is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
 
@@ -1763,7 +1763,7 @@ dbRecord.differenceInFields(dbRecord2)
 `SyncDb` and `AsyncDb` are low-level interfaces and are **not type-safe**. Don't use them unless you need type-unsafe operations; use [`SyncEntityDb`](#syncentitydb) or [`AsyncEntityDb`](#asyncentitydb) instead. Never inject them into GPAL scripts.
 :::
 
-`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can inject them into any class, Kotlin or Java, in a custom module or process.
+`SyncDb` and `AsyncDb` work with [`DbRecord`](#dbrecord)s rather than generated entities, so you name tables, indexes and fields as strings. `SyncDb` is blocking. `AsyncDb` has the same methods as `suspend` functions, and returns a `Flow<DbRecord>` wherever `SyncDb` returns a `List<DbRecord>`. You can use `SyncDb` from Kotlin or Java, and `AsyncDb` from Kotlin only, in a custom module or process.
 
 :::warning
 In a GPAL event handler, never inject them. Use the `entityDb` that the event handler provides, as the [Event Handler (GPAL / Java)](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
@@ -2318,8 +2318,6 @@ This type has the following fields:
 - `removedRecords` - the deleted records
 - `modifiedFields` - the updated fields
 - `numRecordsDeleted` - the number of records deleted
-- `isError` - there was an error during the database operation
-- `errorText` - the error description
 
 A write that fails throws an exception.
 
