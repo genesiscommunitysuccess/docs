@@ -183,9 +183,9 @@ If the update still fails after `JmsRetryToSendLimit` retries, the process:
 - doesn't send any of the updates queued behind the failed one, and logs each of them at ERROR
 - shuts down with exit status 1
 
-With the defaults, this happens about 31 seconds after the first failure.
+With the defaults, the five retries wait 31 seconds in total.
 
-The limit only counts sends that fail on a live connection. If the connection to the broker is lost, the process keeps reconnecting, as set by `JmsReconnectDelayMs`, without using up retries.
+Only failed sends count towards the limit. While the connection to the broker is down, the process keeps trying to reconnect, as set by `JmsReconnectDelayMs`, and those attempts don't count.
 
 With `JmsRetryToSendAction` set to `IGNORE`, a failed update is dropped and logged at ERROR, and later updates are still sent.
 
