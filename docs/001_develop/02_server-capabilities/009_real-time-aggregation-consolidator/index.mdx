@@ -536,26 +536,48 @@ consolidators {
 
 Available from versions 8.15.44 and 10.0.0.
 
-Set `audit = true` to write audit records when the Consolidator inserts or modifies rows in its `output` table. The `output` table must be declared with `audit = details(...)` (see [Audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables)); for an `output` table without audit, the setting has no effect.
+If the output table is an [audited table](/develop/server-capabilities/data-model/gpal-java/#audited-tables) (defined with `audit = details(...)`), you can make the Consolidator write a record to the output table's `_AUDIT` table every time it inserts or modifies a row. Auditing is off by default; set `audit = true` to turn it on.
+
+Both conditions must be met for audit records to be written:
+
+- the output table is defined with `audit = details(...)`
+- `audit = true` is set in the `config` block
+
+If `audit = true` is set but the output table is not audited, the setting is ignored and the Consolidator writes as normal.
+
+You can set `audit` for a single Consolidator, or in the file-level `config` block. A file-level setting applies to every Consolidator declared after that `config` block, so place the block at the top of the file:
 
 ```kotlin
-consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) {
-  config {
-    audit = true
-  }
-  // Rest of consolidator definition
+consolidators {
+    consolidator("TRADE_TO_POSITION", TRADE, POSITION) {
+        config {
+            audit = true
+        }
+        // Rest of consolidator definition
+    }
 }
 ```
 
-Each audit record has these values:
+Each audit record contains the full output row, plus the following values:
 
 | Field              | Value                                                  |
 |--------------------|--------------------------------------------------------|
 | `AUDIT_EVENT_USER` | `SYSTEM`                                               |
-| `AUDIT_EVENT_TYPE` | the Consolidator name                                  |
+| `AUDIT_EVENT_TYPE` | The name of the Consolidator (see [consolidator](#consolidator)) |
 | `AUDIT_EVENT_TEXT` | `INSERT` for a new row, `MODIFY` for an updated row    |
 
-When the Consolidator runs with [`--coldStart`](#coldstart), clearing the `output` table is not audited; the rows written by the rebuild that follows are.
+The audit user is always `SYSTEM`. A Consolidator has no user context, and a single write can combine updates from several users. To see who made each underlying change, audit the Consolidator's input tables as well.
+
+Note the following behaviour:
+
+- **Transactions**: with the default `transactionType`, data and audit records are written in the same database transaction, so they are committed or rolled back together. With `transactionType = ConsolidationTransactionType.LOCAL`, writes do not normally use a database transaction. When auditing is on, each batch of writes is wrapped in its own database transaction, so its data and audit records are also committed together. This adds one database transaction per batch.
+- **Volume**: writes are batched (see `batchingPeriod`), so expect roughly one audit record per group per batch, not one per input update.
+- **Unchanged values**: with the default `consistencyMode` (`INCREMENTAL`):
+  - an update that only changes input fields the Consolidator doesn't use (in `select`, `groupBy` or `where`) writes no row and no audit record, unless the Consolidator has an [`onCommit`](#oncommit) block, which writes the row on every update to the group
+  - an update that leaves a group's values unchanged, such as two trades swapping quantities, still writes the row and adds a `MODIFY` audit record
+
+  With `consistencyMode = ConsistencyMode.EVENTUAL`, a group rebuild that leaves the selected values unchanged writes no row and no audit record.
+- **Cold start**: the records cleared at the start of a [`coldStart`](#coldstart) are not audited. The recalculation that follows is audited, producing one record for each group that has input records: `MODIFY` if `tableTransient` is false (records are zeroed, then recalculated; a group with no existing output record gets `INSERT`), or `INSERT` if `tableTransient` is true (records are deleted, then rebuilt). A record is written even if the recalculated values match the values before the cold start.
 
 #### `groupName`
 
