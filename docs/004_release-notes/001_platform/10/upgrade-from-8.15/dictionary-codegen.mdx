@@ -214,7 +214,7 @@ If an index changes because of this fix, the database schema changes too, so run
 
 **Applies to:** every application. Most need no change.
 
-**Why:** in 10.0, the build reuses the generated code that each upstream product (Genesis itself and every PBC your application depends on) has already published, instead of generating it again from that product's dictionary files. This is switched on by default. For how it works, and for every setting mentioned here, see [Code generation and upstream reuse](/build-deploy-operate/build/bdo-codegen-upstream-reuse/).
+**Why:** in 10.0, the build reuses the generated code that each upstream product (Genesis itself and every PBC your application depends on) has already published, instead of generating it again from that product's dictionary files. This is switched on by default. For how it works, and for every setting mentioned here, see [Code generation and upstream reuse](/build-deploy-operate/build/codegen-upstream-reuse/).
 
 **What goes wrong if you skip this:** in most cases, nothing. In the cases below, the build warns, fails, or is slower than it needs to be.
 
