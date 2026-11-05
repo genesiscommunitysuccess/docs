@@ -87,7 +87,7 @@ When you make the change:
 
 - **Keep the fields in the same order.** The key is the field values joined in order, so the same order gives the same key, and the entries already in your auth maps still match.
 - **Use fields of the query's own table or view.** In a query on `TRADE_VIEW`, write `TRADE_VIEW.TRADE_ID`. A field from another table is now a compile error. In 8.15, it was accepted and matched by name only.
-- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. Don't set `rowLevelPermissions` yourself to make up for this. On a key that isn't unique, the data server logs a warning when a second row shares a key and falls back to the heavier map, and a row can briefly miss a live permission update while that happens.
+- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. Don't set `rowLevelPermissions` yourself to make up for this. On a key that isn't unique, the data server logs a warning when a second row shares a key, and falls back to the heavier map.
 - **Use one form of `authKey` in each block.** Following `authKey(TABLE.FIELD)` with `authKey { ... }` in the same block has the same effect as setting `rowLevelPermissions` yourself.
 - **If the old `where` used the user name**, as in `where { user -> user != "JohnDoe" }`, use `filterWithUserName { userName != "JohnDoe" }` instead.
 
@@ -213,7 +213,7 @@ auth {
   - `LdapResult.InvalidCredentials` is now an interface. Replace `== LdapResult.InvalidCredentials` and `LdapResult.InvalidCredentials ->` with `is LdapResult.InvalidCredentials ->`.
   - `LdapConfig.trust` is now an `LdapTrustMode`. Wrap your `TrustConfig` in `LdapTrustMode.Standard(...)`.
   - `LdapConfig.canonicalIdAttribute` can now be `null`.
-  - Creating an `LdapConfig` now throws `LdapConfigException` if it has required groups and a `userDnTemplate` that doesn't produce a valid DN. This is the same check as in step 6.
+  - This one is not a compile error: at runtime, creating an `LdapConfig` now throws `LdapConfigException` if it has required groups and a `userDnTemplate` that doesn't produce a valid DN. This is the same check as in step 6.
 
 ## 6. Management console: check `LdapUserDnTemplate` if you set `LdapUserGroups`
 
