@@ -191,7 +191,10 @@ streamerClient(clientName = "CLIENT", selectOn = QUOTE.SYMBOL) {
 In the case of `GenesisSet` streamer clients, the field selection syntax can be one of the following:
 
 ```kotlin
-// use the Fields object:
+// use a table field:
+genesisSetStreamerClient(clientName = "CLIENT", selectionField = QUOTE.SYMBOL) { ... }
+
+// use the Fields object (deprecated from Genesis 10.0):
 streamerClient(clientName = "CLIENT", selectionField = Fields.SYMBOL) { ... }
 
 // specify a field and type
@@ -200,6 +203,8 @@ streamerClient(clientName = "CLIENT", selectionField = "SYMBOL", type = INTEGER)
 // if no type is specified it will default to STRING
 streamerClient(clientName = "CLIENT", selectionField = "SYMBOL") { ... }
 ```
+
+In a `GenesisSet` streamer client, you can also read and write message fields with a table field as the key, for example `output[QUOTE.PRICE] = input[QUOTE.PRICE]`. Reading an `ENUM` field this way returns the generated enum, and reading a `RAW` field returns a `ByteArray`.
 
 #### `dataSource`
 
