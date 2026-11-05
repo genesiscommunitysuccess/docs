@@ -5,7 +5,7 @@ sidebar_position: 5
 id: 'upgrade-10.0-process-runtime-clustering'
 ---
 
-This page covers how processes are configured and started, how nodes form a cluster, and the operational scripts that sit around them. Most of the steps are for whoever runs the deployment rather than for application code. The ones most likely to affect you are checking `ClusterMode` (step 5) and `ClusterPort` (step 6), and updating `PopulateHolidays` region codes (step 9).
+This page covers how processes are configured and started, how nodes form a cluster, and the operational scripts that sit around them. Most of the steps are for whoever runs the deployment rather than for application code. The ones most likely to affect you are checking `ClusterMode` (step 5) and updating `PopulateHolidays` region codes (step 9).
 
 The steps show up at different points of the upgrade:
 
@@ -15,7 +15,7 @@ The steps show up at different points of the upgrade:
 | A process fails to start | 5 (an unrecognised `ClusterMode`) and 7 (an invalid host name) |
 | Nodes can't reach each other | 6 (the `ClusterPort` default) |
 | An operational script fails or misreads | 8 (a Consul exit code), 9 (`PopulateHolidays` region codes) and 10 (`mon` output and process detection) |
-| Behaviour differs silently | 1 (the `bootstrap` folder), 2 (heap flags), 3 (start-time overrides) and 4 (`joinPub`) |
+| Behaviour differs silently | 1 (the `bootstrap` folder), 2 (heap flags), 3 (start-time overrides) and 4 (`joinPub` in a process definition) |
 
 These have not changed, so they need no action:
 
@@ -72,7 +72,7 @@ item(name = "MY_PROCESS_PROCESS_OPTIONS", value = "-Xmx2g")
 
 **Why:** the `joinPub` process option has been removed. 10.0 no longer reads it from the process definition, and the process bootstrap no longer accepts `-joinPub`.
 
-**What goes wrong if you skip this:** a `<joinPub>` element is ignored. On a hand-written command line, `-joinPub` is no longer recognised as an option, and the options that follow it are not read either.
+**What goes wrong if you skip this:** a `<joinPub>` element is ignored. On a hand-written command line, `-joinPub` is no longer recognised as an option, and the options that follow it are not read either, which can stop the process from starting.
 
 **What to do:** delete `<joinPub>` from your process definitions and `-joinPub <file>` from any launch scripts.
 
@@ -134,7 +134,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 
 **What goes wrong if you skip this:** alerting, supervisor rules or restart scripts that look for exit code `1` in this case no longer match it.
 
-**What to do:** update those rules to match exit code `3`. A Kubernetes `restartPolicy`, which restarts on any non-zero exit, and the platform's process restarter, which restarts any process with `scheduleRestart` that is no longer running, need no change.
+**What to do:** update those rules to match exit code `3`. Restart mechanisms that don't look at the exit code, such as a Kubernetes `restartPolicy` of `Always` or `OnFailure`, or the platform's process restarter, need no change.
 
 ## 9. Update `PopulateHolidays` region codes, and re-populate `HOLIDAYS`
 
@@ -158,7 +158,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
   ```
 
   If a run for a region that worked on 8.15 now fails, look up that region's current code in the library.
-- **Data:** re-run `PopulateHolidays` for the years you hold, so that `HOLIDAYS` matches the new data.
+- **Data:** delete the existing rows in `HOLIDAYS` for the years you hold, then re-run `PopulateHolidays` for those years, so that the table matches the new data. `PopulateHolidays` only inserts rows: it doesn't replace dates that already exist, and the run prints `Failed to import data for year <year> and country <country>` for them. The [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays) reference shows how to delete the rows with `DbMon`.
 - **Code:** move any code that imports `de.jollyday.*` to the new library's packages.
 
 ## 10. Check scripts that parse `mon` output or find processes themselves
@@ -167,7 +167,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 
 **Why:** two behaviours have changed:
 
-- **The `mon` message column** is now empty unless the process state is `WARNING` or `ERROR`. Informational monitor text on healthy processes is no longer shown there; run `mon -a` to see it.
+- **The process status message** is now empty unless the process state is `WARNING` or `ERROR`. Informational monitor text on healthy processes is no longer shown in the `mon` message column, or anywhere else that reads the process status message; run `mon -a` to see it.
 - **Process detection** in `mon`, `killProcess`, `startServer` and the process restarter now recognises only a `java` process whose arguments include `-name <PROCESS_NAME>`.
 
 **What goes wrong if you skip this:** a script that reads informational text from the message column finds it empty. A process started without `-name`, or through a wrapper whose executable isn't `java`, is no longer seen as running, so the platform scripts report it as missing and may try to start it again.
@@ -183,7 +183,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 | Removed | Use instead |
 |---|---|
 | `ConfigReadable.readConfigFile(name, validate)`, which returned an `XMLConfiguration` | `readExtendedConfigFile(name, validate).requireXmlConfig()`, or `ConfigUtil.readXmlConfig(reader, name, validate)` |
-| `ConfigReadable.readConfigFilesContaining(name, validate)`, which returned a `List<XMLConfiguration>` | `readExtendedConfigFilesContaining(name, validate)`, which returns a `List<ConfigFile>`, or `ConfigUtil.readXmlConfigFiles(reader, name, validate)` |
+| `ConfigReadable.readConfigFilesContaining(name, validate)`, which returned a `List<XMLConfiguration>` | `readExtendedConfigFilesContaining(name, validate)`, which returns a `List<ConfigFile>`; call `requireXmlConfig()` on each to get its `XMLConfiguration`. Or `ConfigUtil.readXmlConfigFiles(reader, name, validate)`, which returns a `List<XmlConfigFile>` and skips files that are not XML |
 | `SecurityUtil.encryptOld` and `SecurityUtil.decryptOld`, and the transitive `org.apache.shiro:shiro-core` dependency | `SecurityUtil.encrypt` and `SecurityUtil.decrypt` |
 | `StaticLogLevelHandler.apply(loggingLevels, rootLogger)` | `StaticLogLevelHandler.apply(loggingLevels)` |
 | `MessageDelegator.allowAnonymousRequestsForMessage(messageType)` | Nothing; delete the call |
@@ -204,7 +204,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 
 | In 8.15 | In 10.0 |
 |---|---|
-| `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes drop the value. Only `String`, `Double`, `ConfigurationInfo` and `ProcessStateMapPayload` values get through, and you can't add your own type. Unless your own code reads these values on other nodes, there is nothing to change |
+| `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes drop the value: only the platform's own value types get through, and you can't add your own. Unless your own code reads these values on other nodes, there is nothing to change |
 | `ClusterMessage.getStatusMessage()` and `setStatusMessage(Serializable)` | Deprecated for removal. Use `getStatusMessageText()` and `setStatusMessageText(String)`; only a `String` survives the trip between nodes |
 | `InboundMessageListener.onNewMessage(ClusterMessage)` | Now `onNewMessage(ClusterMessage, String senderHost)` |
 | Your own Pekko modules on 1.4.x | Align them with Pekko 1.7, the version 10.0 brings in |
