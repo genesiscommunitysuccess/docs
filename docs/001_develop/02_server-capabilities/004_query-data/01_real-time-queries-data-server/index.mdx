@@ -525,7 +525,7 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
         // range on dates
         refresh {
             // either every
-            every(120.minutes)
+            every(2.hours)
             // or at specific time
             at(8.pm)
         }
