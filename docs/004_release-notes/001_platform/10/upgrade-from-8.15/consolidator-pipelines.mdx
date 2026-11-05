@@ -17,6 +17,8 @@ The steps show up at different points of the upgrade:
 
 Every replacement in steps 1, 3, 4, 5 and 6 already exists in 8.15, so you can make those changes on 8.15 first and then upgrade.
 
+If a `*-data-pipeline.kts` script uses `postgresSource`, `oracleSource` or `msSqlSource`, it also needs a new dependency, because these sources have moved out of the core platform. That is covered in [Removed and deprecated modules](./removed-modules.mdx).
+
 These have changed, but need no action:
 
 - **Consolidators.** In 10.0, `select { }` and `build { }` are optional, and `onNotFound` accepts a new `IGNORE` value. Existing definitions keep working.
@@ -71,7 +73,7 @@ The following pipelines were not correctly completed [X]. Please ensure the buil
 
 **Applies to:** `pipelines { }` blocks that declare two pipelines with the same name.
 
-**Why:** in 8.15, a repeated name was accepted, but the later pipeline replaced the earlier one, so one of them silently never ran. 10.0 rejects the duplicate.
+**Why:** in 8.15, a repeated name was accepted. If both pipelines were of the same kind (both real-time, for example), the later one replaced the earlier one, so one of them silently never ran. 10.0 rejects any repeated name, even between a real-time and a batch pipeline.
 
 **What goes wrong if you skip this:** the process fails to start with:
 
@@ -141,7 +143,7 @@ class MySink : DbSink<MyRow> { /* ... */ }
 class MySink : TransactionalSink<MyRow> { /* ... */ }
 ```
 
-The `dbSink()` and `txDbSink()` functions in pipeline scripts are not affected. They build different classes, which have not changed.
+The `dbSink()` and `txDbSink()` functions in pipeline scripts are not affected. They build different classes, whose API has not changed.
 
 ## 5. Qualify outer-block calls in consolidator definitions
 
@@ -176,7 +178,7 @@ groupBy { Order.ById(orderId) } into {
 }
 ```
 
-On 8.15, an `indexScan` inside `build { }` was never registered. If your consolidator had needed the index scan, it would already have failed, so you can move it out of `build { }` or delete it without changing behaviour.
+On 8.15, an `indexScan` inside `build { }` was never registered. If your consolidator had needed the index scan, it would already have failed. So deleting it keeps the behaviour you had on 8.15. Moving it into `into { }` registers the scan for the first time, and the consolidator then uses it, so test the result if you move it.
 
 These are unchanged:
 
@@ -197,7 +199,7 @@ These are unchanged:
 
 ## 7. Watch the `.error` folder for failed Camel files
 
-**Applies to:** real-time pipelines that read files with `camelFileSource` and have no `onUncaughtError` handler.
+**Applies to:** real-time pipelines that read files with `camelFileSource` and have no `onUncaughtError` handler, or one that can throw.
 
 **Why:** when an error that nothing handles stops such a pipeline, 10.0 no longer treats the file it was processing as done. In 8.15, the file was handled like a successfully processed one: it was moved or deleted as the route was configured. In 10.0, it goes to a folder named `.error` next to the file. If a file with the same name is already there, the moved file gets a timestamp prefix. As in 8.15, the pipeline stops.
 
@@ -225,7 +227,7 @@ The error raised for the file says which of these happened.
 | Case | 8.15 | 10.0 |
 |---|---|---|
 | No service can be found for the event name | Throws `Unable to resolve service for endpoint ...`, so the pipeline's error handling runs | Logs a warning and retries with backoff until the event is delivered, with no time limit. Inside `txDbSink()`, it gives up after `timeout` and throws. |
-| The target replies with a NACK | Logged at error level | Unchanged |
+| The target replies with a NACK other than UNAVAILABLE | Logged at error level | Unchanged |
 | No reply within `timeout` | Throws | Unchanged |
 
 **What goes wrong if you skip this:** a pipeline whose target service is missing, or whose event name is misspelt, stalls instead of failing. Any `onUncaughtError` handling or alerting that relied on the error no longer runs.
