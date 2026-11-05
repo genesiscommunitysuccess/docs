@@ -29,8 +29,8 @@ For example, if you are building an Order Management System, you could define th
 - COMPLETED
 - CANCELLED
 
-To achieve this, you can create an [ENUM field](/develop/server-capabilities/data-model/#enum) on your Order [table](/develop/server-capabilities/data-model/#tables) called `ORDER_STATUS`. Each value in the ENUM field represents an Order status.
-Once you have the states, there are two main sets of logic that you have to define. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) service:
+To achieve this, you can create an [ENUM field](/develop/server-capabilities/data-model/gpal-java/#enum) on your Order [table](/develop/server-capabilities/data-model/gpal-java/#tables) called `ORDER_STATUS`. Each value in the ENUM field represents an Order status.
+Once you have the states, there are two main sets of logic that you have to define. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) service:
 
 - **Transitions**. You must define all the required transitions from state to state. In our example, you could define that an order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. And you might want `CANCELLED` orders to remain cancelled, so you would not define any transitions from there.
 
@@ -40,10 +40,10 @@ You need to create an `eventHandler` for every required transition in the workfl
 
 ## Example configuration
 
-You can specify your State Machine in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). This is the recommended approach when using GPAL in your application.
+You can specify your State Machine in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/). This is the recommended approach when using GPAL in your application.
 
 :::info
-If you decide to write your `eventHandler` codeblocks using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api), you need to create your State Machine as a set of Java or Kotlin classes. Our section on the [StateMachine API](#statemachine-api) provides details and examples.
+If you decide to write your `eventHandler` codeblocks using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event-handler-api), you need to create your State Machine as a set of Java or Kotlin classes. Our section on the [StateMachine API](#statemachine-api) provides details and examples.
 :::
 
 The following example of a State Machine defines events for insert and modify. After these, it defines five `transitionEvent` events that control the transition of orders from one state to another.
@@ -176,13 +176,13 @@ eventHandler {
 
 ## Configuration options
 
-The recommended way to create a State Machine is to write it in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). Alternatively, you can write specific classes in Kotlin and inject them for use. Configuration options for both are detailed here.
+The recommended way to create a State Machine is to write it in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/). Alternatively, you can write specific classes in Kotlin and inject them for use. Configuration options for both are detailed here.
 
 ### `stateMachine`
 
 This takes two parameters:
 - `tableField` is the field in the table that holds the state.
-- `transactional` is an optional boolean parameter (default is true). This makes the event [`transactional` in the same way as a standard eventHandler](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler).
+- `transactional` is an optional boolean parameter (default is true). This makes the event [`transactional` in the same way as a standard eventHandler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#eventhandler).
 
 ```kotlin
 eventHandler {
@@ -258,7 +258,7 @@ This removes fields defined on the table from the event. These fields should onl
 
 ##### `onValidate`
 
-This validates the inbound event details. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+This validates the inbound event details. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#onvalidate) for the full usage of `onValidate`.
 
 **For a State Machine, you must not return an `ack` or `nack` at the end of the `onValidate` block**. If you do, it will not compile. This is a major difference between a State Machine and a standard Event Handler.
 
@@ -283,7 +283,7 @@ Other exceptions will result in a `nack` as well, but will be considered interna
 
 ##### `onCommit`
 
-Commit the inbound event details here. See the [Event Handler `onCommit` documentation](/develop/server-capabilities/core-business-logic-event-handler/#oncommit) for the full usage of `onCommit`.
+Commit the inbound event details here. See the [Event Handler `onCommit` documentation](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#oncommit) for the full usage of `onCommit`.
 
 This block is optional.
 
@@ -375,7 +375,7 @@ In the example below, the `Order.OrderStatus` must be NEW for this event to vali
 
 ## Client API
 
-The State Machine is used to configure workflow states, and works hand in hand with Event Handlers. There is no Client API specifically for a State Machine. Use [the Event Handler client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api) to interact with your events.
+The State Machine is used to configure workflow states, and works hand in hand with Event Handlers. There is no Client API specifically for a State Machine. Use [the Event Handler client API](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#client-api) to interact with your events.
 
 ## Runtime configuration
 
@@ -389,11 +389,11 @@ If you have defined your State Machine in Kotlin, make sure the Event Handler de
 
 A State Machine is just another layer of an Event Handler, so the test configuration is the same as for Event Handlers. You should add further tests to test your transition workflow logic works as expected.
 
-See the [Event Handlers testing section](/develop/server-capabilities/core-business-logic-event-handler/#testing) for more details.
+See the [Event Handlers testing section](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing) for more details.
 
 ## StateMachine API
 
-The Genesis Application Platform also offers an API for writing your State Machine in Kotlin. This approach is best used when you have written your Event Handlers using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
+The Genesis Application Platform also offers an API for writing your State Machine in Kotlin. This approach is best used when you have written your Event Handlers using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event-handler-api).
 
 ### Example code
 
@@ -545,7 +545,7 @@ You can build a State Machine using this interface by providing:
 
 The following is an example State Machine written in Kotlin. This would be injected into your Event Handler as described in the [configuration options](#configuration-options) section.
 
-This option is only recommended when you are using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) for your Event Handler.
+This option is only recommended when you are using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event-handler-api) for your Event Handler.
 
 ```kotlin {5,10-17}
 @Module
@@ -622,7 +622,7 @@ suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? =
 
 ### Injecting State Machine
 
-#### [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api)
+#### [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event-handler-api)
 
 ```kotlin
 @Module
@@ -642,7 +642,7 @@ class EventCompanyHandlerAsync @Inject constructor(
 Find more details on injection on our [Custom Components page](/develop/server-capabilities/custom-components/#injecting-dependencies)
 :::
 
-#### [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) file
+#### [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) file
 
 It is recommended that you use in-line State Machines, as described in the [example configuration](#example-configuration). However, you can also inject into a GPAL Event Handler. 
 

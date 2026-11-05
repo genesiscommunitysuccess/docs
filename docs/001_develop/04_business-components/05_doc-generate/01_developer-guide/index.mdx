@@ -227,7 +227,7 @@ If you aren't seeing your data populated in the generated document, make sure th
 
 The `data` map can contain many objects, this allows you to create very rich PDFs containing lots of application data, for example a client specific report including their current positions, trades from the past month, and any other dynamic data you wish.
 
-More likely you will want to include data read from the application's database to include in the report. The following is a more realistic example where an [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) is triggering the generation of a PDF document, populating it with data from the database.
+More likely you will want to include data read from the application's database to include in the report. The following is a more realistic example where an [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) is triggering the generation of a PDF document, populating it with data from the database.
 
 ```kotlin
 val documentGenerator = inject<DocumentGenerator>()

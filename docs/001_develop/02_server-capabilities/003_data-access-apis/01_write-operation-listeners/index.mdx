@@ -12,7 +12,7 @@ sidebar_position: 1
 
 A write operation listener is your own code that the database layer calls after each successful write, inside the same transaction as that write. Any writes the listener makes through the transaction object it receives commit or roll back together with the write that triggered it.
 
-Use a listener when an extra write must be atomic with every write, for example to maintain a derived table. Don't use one just to react to changes: a listener runs on every write in the process, so anything slow in it slows down every write. To react to changes, [subscribe](/develop/server-capabilities/data-access-apis/#subscribe-operations) to the data instead.
+Use a listener when an extra write must be atomic with every write, for example to maintain a derived table. Don't use one just to react to changes: a listener runs on every write in the process, so anything slow in it slows down every write. To react to changes, [subscribe](/develop/server-capabilities/data-access-apis/gpal-java/#subscribe-operations) to the data instead.
 
 ## The three listener interfaces
 
@@ -24,27 +24,27 @@ A listener is only bound if its package is registered as a core extension packag
 src/main/resources/META-INF/global/genesis/bootstrap/extensions/com.example.listeners
 ```
 
-Listing the package in a process's `<package>` section in processes.xml does not bind a listener.
+Listing the listener's package in a process's `<package>` section in processes.xml is not enough to make the platform use it; register it with the extensions file. Because `<package>` scanning also installs any `@Module` it finds, don't list the listener's package, or a parent of it, in a process's `<package>` section as well: the listener is then installed twice and the process fails at start-up with a Guice `BindingAlreadySet` error.
 
 The file must end up in the deployed app jar, on the classpath of every process that writes and should notify the listener. There is no property or flag that enables listener support.
 
-A listener is bound in every process whose `<classpath>` includes the jar holding its extensions file, so a listener in a jar that every process loads is bound in all of them. A write listener runs inside the transaction of the process that makes the write, so it is always in-process: it sees only the writes made by the process it is bound in. To react to writes made by another process, [subscribe](/develop/server-capabilities/data-access-apis/#subscribe-operations) to the update queue instead, which is asynchronous and crosses process boundaries. To give different processes different listeners, put each listener, with its extensions file, in a module or jar that only that process's `<classpath>` includes. See [Processes](/develop/server-capabilities/runtime-configuration/processes/) for the `<classpath>` element.
+A listener is bound in every process whose `<classpath>` includes the jar holding its extensions file, so a listener in a jar that every process loads is bound in all of them. A write listener runs inside the transaction of the process that makes the write, so it is always in-process: it sees only the writes made by the process it is bound in. To react to writes made by another process, [subscribe](/develop/server-capabilities/data-access-apis/gpal-java/#subscribe-operations) to the update queue instead, which is asynchronous and crosses process boundaries. To give different processes different listeners, put each listener, with its extensions file, in a module or jar that only that process's `<classpath>` includes. See [Processes](/develop/server-capabilities/runtime-configuration/processes/) for the `<classpath>` element.
 
 When a process starts, it logs one of two lines from `RxDb`. `Database WriteOperationListener support not enabled` means no custom `WriteOperationListener` was bound in that process. `Enabling database WriteOperationListener support` means one was bound. Both lines are about `WriteOperationListener` only: they say nothing about `SyncWriteOperationListener` or `AsyncWriteOperationListener`, and the "not enabled" line is logged whether or not you have bound one of those. Check those two by their effect, for example by a side effect or log line in the listener itself after a write. A process whose only listener is a `WriteOperationListener` also logs `INFO ... No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sync write path`. This is expected: the `WriteOperationListener` is being used for sync writes. If you expected a `WriteOperationListener` and see the "not enabled" line, check that the extensions file exists, is named exactly after the listener's package, and is in the process's classpath.
 
 | Interface | Signature | `tx` |
 |---|---|---|
-| `AsyncWriteOperationListener` | `suspend fun onWriteResult(tx: AsyncDb, writeResults: List<WriteResult>)` | an [`AsyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
-| `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/#syncdb-and-asyncdb) bound to the write's transaction |
+| `AsyncWriteOperationListener` | `suspend fun onWriteResult(tx: AsyncDb, writeResults: List<WriteResult>)` | an [`AsyncDb`](/develop/server-capabilities/data-access-apis/gpal-java/#syncdb-and-asyncdb) bound to the write's transaction |
+| `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/gpal-java/#syncdb-and-asyncdb) bound to the write's transaction |
 | `WriteOperationListener` | `fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>)` | an RxJava record API bound to the write's transaction |
 
-Each [`WriteResult`](/develop/server-capabilities/data-access-apis/#write-result) holds the records the write saved and removed. To tell which operation a `WriteResult` describes, look at which of its two lists is empty, as the database does itself:
+Each [`WriteResult`](/develop/server-capabilities/data-access-apis/gpal-java/#write-result) holds the records the write saved and removed. To tell which operation a `WriteResult` describes, look at which of its two lists is empty, as the database does itself:
 
 - `savedRecords` is empty: a delete. The deleted records are in `removedRecords`.
 - `removedRecords` is empty: an insert. The new records are in `savedRecords`.
 - Both have records: a modify. The two lists are the same size and are paired by position, so `removedRecords[i]` is the previous version of `savedRecords[i]`.
 
-This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved:
+This listener keeps a `TRADE_SUMMARY` row in step with every `TRADE` that is saved, building the row as a [`DbRecord`](/develop/server-capabilities/data-access-apis/gpal-java/#set-record):
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -73,9 +73,9 @@ class TradeSummaryListener : SyncWriteOperationListener {
 
 The table, index and field names in this example are placeholders for your own data model.
 
-For what `ModifyDetails` is, see [Modify details](/develop/server-capabilities/data-access-apis/#modify-details).
+For what `ModifyDetails` is, see [Modify details](/develop/server-capabilities/data-access-apis/gpal-java/#modify-details).
 
-Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, as described in [primaryKey](/develop/server-capabilities/data-model/#primarykey), so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`.
+Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, as described in [primaryKey](/develop/server-capabilities/data-model/gpal-java/#primarykey), so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`.
 
 A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It offers the write methods only, bound to the write's transaction. They are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). Do not cast it to `RxDb`: anything done through `RxDb` runs outside the write's transaction. This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
 
@@ -107,9 +107,9 @@ The table and field names in this example are placeholders for your own data mod
 
 ## Which listener is called
 
-Bind only one write listener in each process: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. To run several pieces of logic in one process, write one listener that dispatches to your own classes. Writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) reach your listener like any other write. Each of the three receives a different `tx`: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
+Bind only one write listener in each process: one of `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. If you bind more than one, the behaviour is undefined. To run several pieces of logic in one process, write one listener that dispatches to your own classes. Writes from [GPAL Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) reach your listener like any other write. Each of the three receives a different `tx`: an `AsyncWriteOperationListener` gets an `AsyncDb`, a `SyncWriteOperationListener` gets a `SyncDb`, and a `WriteOperationListener` gets an `RxRecordWriteSupport`.
 
-Which writes notify your listener also depends on its type. An `AsyncWriteOperationListener` is notified only by async (suspend) writes: `AsyncDb` and `AsyncEntityDb` suspend writes, and single `RxEntityDb` writes. It is not notified by `SyncDb` or `SyncEntityDb` writes, or by blocking views such as `AsyncEntityDb.sync()`. A `SyncWriteOperationListener` is notified by `SyncDb`, `SyncEntityDb` and `.sync()` view writes, and also by `AsyncDb` and `AsyncEntityDb` suspend writes when no `AsyncWriteOperationListener` is bound. A `WriteOperationListener` is notified by `RxDb` writes, including writes through `rxDb.entityDb()`. `RxDb` writes notify only a `WriteOperationListener`, so if you switch from it to a `SyncWriteOperationListener` or an `AsyncWriteOperationListener`, your listener no longer sees `RxDb` writes.
+Which writes notify your listener also depends on its type. An `AsyncWriteOperationListener` is notified only by async (suspend) writes: `AsyncDb` and `AsyncEntityDb` suspend writes, and single `RxEntityDb` writes. It is not notified by `SyncDb` or `SyncEntityDb` writes, or by blocking views such as `AsyncEntityDb.sync()`. A `SyncWriteOperationListener` is notified by `SyncDb`, `SyncEntityDb` and `.sync()` view writes, and also by `AsyncDb`, `AsyncEntityDb` and single `RxEntityDb` writes when no `AsyncWriteOperationListener` is bound. A `WriteOperationListener` is notified by `RxDb` writes, including writes through `rxDb.entityDb()`. When it is the only listener bound, it is also notified by `SyncDb`, `SyncEntityDb`, `AsyncDb` and `AsyncEntityDb` writes, which are bridged onto the sync path as in 8.x; see [`WriteOperationListener` on the SQL write path](#writeoperationlistener-on-the-sql-write-path) for what that means for `tx`. Single `RxEntityDb` writes are async writes, not `RxDb` writes, because an injected `RxEntityDb` wraps `AsyncEntityDb`. `RxDb` writes notify only a `WriteOperationListener`, so if you switch from it to a `SyncWriteOperationListener` or an `AsyncWriteOperationListener`, your listener no longer sees `RxDb` writes. Writes made inside `RxEntityDb.writeTransaction` are the same: they notify only a `WriteOperationListener`, and a `SyncWriteOperationListener` or `AsyncWriteOperationListener` is not notified by them.
 
 To switch to a different listener type, replace the old listener with the new one: move the old listener's logic into the new one and delete the old listener class. If the new listener is in a different package, register that package with its own extensions file (see *The three listener interfaces*), and delete the old package's file if nothing else in that package needs binding.
 
