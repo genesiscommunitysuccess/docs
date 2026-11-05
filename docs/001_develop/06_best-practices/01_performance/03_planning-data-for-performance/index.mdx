@@ -41,7 +41,7 @@ Most Genesis screens use one of these patterns (or a deliberate mix). Clarify wh
 
 A **small bounded** live window (for example “latest N rows” on a blotter) can still be the right choice; reserve live stream for where stale data is genuinely unacceptable.
 
-**Concurrent edits:** When two people can change the same record, stakeholders often ask how the system avoids one person silently overwriting the other’s work. Genesis supports **optimistic concurrency**: if someone else saved first, the second user is warned and can refresh before saving again. Call this out in requirements for shared edit screens so delivery teams enable it on the server and wire edit flows correctly. Technical setup is described under [Optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/#optimistic-concurrency) and [Entity Manager submit errors](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
+**Concurrent edits:** When two people can change the same record, stakeholders often ask how the system avoids one person silently overwriting the other’s work. Genesis supports **optimistic concurrency**: if someone else saved first, the second user is warned and can refresh before saving again. Call this out in requirements for shared edit screens so delivery teams enable it on the server and wire edit flows correctly. Technical setup is described under [Optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#optimistic-concurrency) and [Entity Manager submit errors](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
 
 ## Questions to ask clients in discovery
 

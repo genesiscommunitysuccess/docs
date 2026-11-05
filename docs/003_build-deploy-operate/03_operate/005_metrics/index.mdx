@@ -197,6 +197,19 @@ If cookie authentication is enabled in `genesis-router.kts` (the router script s
 
 Leave both subscriptions open while you read the gauges. See [`DATA_LOGON`](/develop/server-capabilities/real-time-queries-data-server/#data_logon) for the full set of options.
 
+### Data pipeline metrics
+
+Every data pipeline publishes its [record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters) automatically, as a counter metric called `pipeline_records`. This covers the `sent_records` counter written by `dbSink()` and `txDbSink()`, and any counters your pipeline adds. On top of the standard tags, the metric has two tags:
+
+| Tag      | Explanation              |
+|:---------|:-------------------------|
+| pipeline | the name of the pipeline |
+| counter  | the name of the counter  |
+
+Tag values are lowercased, and any character other than a letter, a digit, `_` or `.` is replaced with `_`. For example, a pipeline called `MyPipeline` is tagged `pipeline=mypipeline`.
+
+The metric is only exported when `MetricsEnabled` is `true` and `MetricsReportType` names at least one [reporter](#metric-reporters), or when the [OpenTelemetry](#opentelemetry) Java agent is attached.
+
 ## Metric names
 
 The framework provides an abstraction on top of the reporters. A single interface is used, regardless of how the metrics are reported. 
@@ -227,7 +240,7 @@ The available built-in reporters are:
 |:---------|:--------------------------------------------------------------------|
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
-| SLF4J    | Publishes metrics to the services' metrics log file                 |
+| SLF4J    | Publishes metrics to the services' metrics log file (`<PROCESS_NAME>.log.metrics` by default) |
 | PROMETHEUS | Exposes metrics for a [Prometheus](https://prometheus.io/) server to scrape |
 
 ### Graphite
@@ -296,7 +309,7 @@ item(name = "MetricsDatadogUri", value = "https://api.datadoghq.com")
 
 Metrics can be reported straight to a metrics log file.
 
-With the default logging configuration, these metrics are not written to the process log. They go to a separate metrics log beside it, `${GENESIS_HOME}/runtime/logs/<PROCESS_NAME>.log.metrics`. The `global.genesis.metrics` logger is set to `debug` by default, so the reporter's default `DEBUG` level is visible with no change to your logging configuration.
+With the default log4j2 configuration, these metrics are not written to the main process log. The `global.genesis.metrics` logger has `additivity="false"` and writes to the `MetricsRollingFile` appender, so the metrics go to a separate log beside it, `${GENESIS_HOME}/runtime/logs/<PROCESS_NAME>.log.metrics`. That logger is set to `debug` by default, so the reporter's default `DEBUG` level is visible with no change to your logging configuration. See the log4j2 sample on the [Logging](/build-deploy-operate/operate/logging/) page for the `MetricsRollingFile` appender.
 
 This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
 
