@@ -63,6 +63,25 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
   }
 ```
 
+### Consolidators
+
+GPAL Consolidators do not audit their writes by default. To audit the rows a Consolidator writes to an audited output table, set `audit = true` in the Consolidator's `config` block:
+
+```kotlin
+consolidators {
+    consolidator("TRADE_TO_POSITION", TRADE, POSITION) {
+        config {
+            audit = true
+        }
+        // Rest of consolidator definition
+    }
+}
+```
+
+Each insert or modify the Consolidator makes then adds a record to the output table's audit table (`POSITION_AUDIT` in this example), with `SYSTEM` as the user, the Consolidator name as the event type, and `INSERT` or `MODIFY` as the event text. The output table must be defined with `audit = details(...)`; otherwise the setting has no effect.
+
+See [Consolidator `audit`](/develop/server-capabilities/real-time-aggregation-consolidator/#audit) for details of transactions, cold starts and the number of records written.
+
 ### Java Event Handlers
 If you are using Java Event Handlers, then the records of an auditable table are not audited automatically. 
 
@@ -102,6 +121,7 @@ To test that you audit tables are working as expected:
 
 Find more details in our in our reference documentation:
 
-- [audited tables](/develop/server-capabilities/data-model/#audited-tables) 
-- [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/)
-- [Java Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/#java-event-handlers) 
+- [audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables) 
+- [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/)
+- [Consolidators](/develop/server-capabilities/real-time-aggregation-consolidator/#audit)
+- [Java Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#java-event-handlers) 

@@ -181,7 +181,7 @@ You can also start and stop a process with `POST /api/processes/start` and `POST
 
 | Endpoint | What it does |
 |---|---|
-| `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. |
+| `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. It is refused with `409 PROCESSES_RUNNING` while Genesis processes are running: stop them first, or retry with `stopRunning=true`. |
 | `POST /api/sync` | Runs Sync Processes. |
 | `POST /api/import` | Imports CSV files with `SendIt`. Body: `{"paths": [...]}`. Paths can be absolute or relative. A relative path is resolved against Genesis Start's working directory, `build/genesis-start/`, not the project root, so absolute paths are safest. |
 | `GET /api/scripts` | Lists the scripts available for the current process profile. |

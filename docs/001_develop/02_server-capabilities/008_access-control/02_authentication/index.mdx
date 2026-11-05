@@ -74,7 +74,7 @@ This block is required where setting up for [Genesis password](#genesis-password
 
 Example configuration:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   authentication {
     genesisPassword {
@@ -248,7 +248,7 @@ A single login makes several requests, and each one waits up to `responseTimeout
 
 Example ldap connection:
 
-```kotlin {3-5}
+```kotlin title="auth-preferences.kts" {3-5}
 security {
   authentication {
     ldap {
@@ -331,7 +331,7 @@ authentication {
 Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
 A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   sessionTimeoutMins = 60
 }
@@ -343,7 +343,7 @@ Default value: 30
 
 Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   refreshTokenExpirationMins = 2880
 }
@@ -355,7 +355,7 @@ Default value: 7200 (5 days)
 
 Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   expiryCheckMins = 10
 }
@@ -371,7 +371,7 @@ If the value is zero, is not defined, or is not a positive integer, then any num
 
 When the maximum number of sessions is reached, the system will provide host/IP information for each active session to help the user identify which sessions they may want to log out from.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   maxSimultaneousUserLogins = 2
 }
@@ -385,7 +385,7 @@ Specifies whether to hide host/IP information from the user when they have reach
 
 By default, this is set to `false`, which means the host/IP information is sent back to the client. This information can be used by the user to select a specific session to log out from so that a new session can be created.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   hideHostsFromMaxActiveSessionsReachedMessage = true
 }
@@ -395,7 +395,7 @@ Default value: false
 
 ### `retry`
 
-```kotlin {5-8}
+```kotlin title="auth-preferences.kts" {5-8}
 security {
   authentication {
     ...
@@ -444,7 +444,7 @@ This method of MFA generates a qrCode that can be imported into apps such as Goo
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -487,7 +487,7 @@ This block exposes the following configuration items:
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -507,7 +507,7 @@ security {
 
 To send a short numeric code that the user types in instead of a login link, enable `tempCodeNumeric` and omit `{{LOGIN_URL}}` from the message:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -568,7 +568,7 @@ The following functions will be invoked on this table or view:
 Example configuration:
 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   loginAck(USER_ATTRIBUTES) {
@@ -589,9 +589,9 @@ The `customLoginAck` function enables you to modify the list of permissions, pro
 
 This can be helpful in combination with `customPermissions` blocks being set in your client facing genesis services for which a typical use case is when using an external permissions system. In this case you can define logic to send the front end the external system's normalized access codes and then the genesis application's front end can permission UI components using the same logic as the back end without requiring any integration with the custom permission system:
 
-- [Data Servers](/develop/server-capabilities/real-time-queries-data-server/#custompermissions)
-- [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#custompermissions) 
-- [Event handlers](/develop/server-capabilities/core-business-logic-event-handler/#custompermissions)
+- [Data Servers](/develop/server-capabilities/query-data/real-time-queries-data-server/#custompermissions)
+- [Request Servers](/develop/server-capabilities/query-data/snapshot-queries-request-server/#custompermissions) 
+- [Event handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#custompermissions)
 
 The `user` record is provided as a parameter, and there are three properties to set:
 * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
@@ -618,7 +618,7 @@ In this example an `entitlementUtils` object wraps an external API we can call t
 
 ## Client API
 
-Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
+Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
 
 This section will give an overview of the auth API events available to users, which are already available in a client UI in any applications using the [User management](/develop/business-components/user-management/) component. They are listed here for those who wish to build their own Client API to authenticate to use the application API, and further if they wish to interact with users/profile setup from their client.
 
@@ -647,7 +647,7 @@ Authenticates and logs the user in.
 No `SESSION_AUTH_TOKEN` required.
 :::
 
-There are 2 example events here, one takes a `USER_NAME` and `PASSWORD`, and the other a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above.
+There are 3 example events here, one takes a `USER_NAME` and `PASSWORD`, another a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above, and the third logs in with an SSO token held in a cookie.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -841,6 +841,21 @@ SOURCE_REF: 001b
 }
 ```
 
+<a id="sso-login"></a>
+SSO login example (SSO token in the `ssoToken` cookie)
+```
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+Cookie: ssoToken=<SSO token issued by the authentication service>
+SOURCE_REF: 001c
+{
+  "DETAILS": {}
+}
+```
+
+The client does not put the SSO token in the body or in a header. When [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled, the router takes the token from the `ssoToken` cookie and supplies the `SSO_TOKEN` header itself; any `SSO_TOKEN` header the client sends is dropped. See [SSO token in a cookie](#sso-token-in-a-cookie).
+
 Response
 ```
 {
@@ -1002,6 +1017,10 @@ Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 002
 SESSION_ID: b08f6955-48a0-4d42-83a0-41e65c0dc084
+
+{
+  "DETAILS": {}
+}
 ```
 </TabItem>
 </Tabs>
@@ -1035,11 +1054,17 @@ This triggers a self-service password reset. [Self Service Reset](#selfservicere
 
 Changes a user's password.
 
+:::info
+No `SESSION_AUTH_TOKEN` required.
+:::
+
+This is how a user whose password has expired, or who has been given a one-time password, activates their account: they send their current password as `OLD_PASSWORD` and choose a new one as `NEW_PASSWORD`, without logging in first.
+
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
 ```
 {
-  "USER_NAME": "admin",
+  "USER_NAME": "JohnDoe",
   "SOURCE_REF": "004",
   "MESSAGE_TYPE": "EVENT_CHANGE_USER_PASSWORD",
   "DETAILS": {
@@ -1054,8 +1079,9 @@ Changes a user's password.
 POST /event-change-user-password HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
-SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+USER_NAME: JohnDoe
 SOURCE_REF: 004
+
 {
   "DETAILS": {
     "OLD_PASSWORD": "genesis",
@@ -1065,6 +1091,8 @@ SOURCE_REF: 004
 ```
 </TabItem>
 </Tabs>
+
+In the REST API, send `USER_NAME` as an HTTP header, as in the example above, and only `DETAILS` is read from the request body; in the Websocket API, `USER_NAME` goes in the message body.
 
 ### `EVENT_EXPIRE_USER_PASSWORD`
 
@@ -1095,9 +1123,12 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 004
-"DETAILS": {
-  "PASSWORD": "optional",
-  "USER_NAME": "JohnDoe"
+
+{
+  "DETAILS": {
+    "PASSWORD": "optional",
+    "USER_NAME": "JohnDoe"
+  }
 }
 ```
 </TabItem>
@@ -1127,6 +1158,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 006
+
 {
   "DETAILS": {
     "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
@@ -1179,6 +1211,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 010
+
 {
   "DETAILS": {
     "ACCESS_TYPE": "ALL",
@@ -1268,6 +1301,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 011
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1327,6 +1361,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 012
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1372,6 +1407,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 013
+
 {
   "DETAILS": {
     "NAME": "TRADERS",
@@ -1433,6 +1469,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 014
+
 {
   "DETAILS": {
     "DESCRIPTION": "A profile for users who are traders",
@@ -1480,6 +1517,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 015
+
 {
   "DETAILS": {
     "NAME": "TRADERS"
@@ -1493,7 +1531,7 @@ SOURCE_REF: 015
 
 The Data server query `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME=='JohnDoe'` (in this example, if the user's name were "JohnDoe") to receive push updates to user privileges.
 
-This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
+This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/query-data/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
 
 ### Event auditing
 
@@ -2071,6 +2109,7 @@ Each `identityProvider` configuration has the following properties:
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | No | 50 minutes | Int |
+| tokenDelivery | How the issued SSO token reaches the front end: in the URL query, or in an HttpOnly `ssoToken` cookie. See [SSO token in a cookie](#sso-token-in-a-cookie) | No | `URL_QUERY` | Enum (URL_QUERY, COOKIE) |
 | redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
@@ -2628,6 +2667,47 @@ Finally, you need to ensure [`ssoToken()`](#ssotoken) is in your `auth-preferenc
 ```kotlin
 authentication {
   ssoToken()
+}
+```
+
+### SSO token in a cookie
+
+After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
+
+- On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself. For the request to send, see the [SSO login example](#sso-login) under `EVENT_LOGIN_AUTH`.
+- On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
+  - `EVENT_LOGIN_AUTH` is accepted only while the router still holds the token from the upgrade. The router adds the token to that message and then discards it, so the token is used once. Any other `EVENT_LOGIN_AUTH` on the socket is rejected as Forbidden.
+  - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
+  - `HEARTBEAT_PING` is answered whether or not the user is logged in. The reply's `IS_AUTHENTICATED` field says which.
+  - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
+  - Every other message is rejected as Forbidden until the user has logged in: the reply is a `MSG_NACK` with `STATUS_CODE` 403 and the text `Unable to call <MESSAGE_TYPE> via websocket`.
+- When the login succeeds or fails, the router clears the cookie.
+
+:::tip
+To check that the header is ignored, send a valid `ssoToken` cookie together with an invalid `SSO_TOKEN` header. The login succeeds because the router ignores the header.
+:::
+
+The router only reads and clears the `ssoToken` cookie; it never sets it. To have the authentication service deliver the token in the cookie instead of the URL, set `tokenDelivery` to `COOKIE` on the identity provider in your `*-oidc-config.kts` or `*-saml-config.kts` file. The setting is per identity provider and takes `URL_QUERY` (the default) or `COOKIE`. Cookie authentication must also be enabled in the router, as above; otherwise the router ignores the cookie.
+
+```kotlin title="*-oidc-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+oidc {
+  identityProvider("uatOidc") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
+}
+```
+
+```kotlin title="*-saml-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+saml {
+  identityProvider("genesis") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
 }
 ```
 

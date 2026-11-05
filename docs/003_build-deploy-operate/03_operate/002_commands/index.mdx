@@ -129,7 +129,7 @@ This command creates sequences in the database for ID fields that rely on auto-g
 
 The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
 
-This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](/develop/server-capabilities/data-model/#sequence).
+This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](/develop/server-capabilities/data-model/gpal-java/#sequence).
 
 ###### Syntax
 
@@ -307,6 +307,8 @@ FixEnumValues --commit TRADE POSITION
 This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `$GENESIS_HOME/generated/cfg/`.
 
 **System Definition token replacement**: For any collected file whose name ends in `.templt.<extension>`, such as `.templt.xml` or `.templt.cfg`, the command looks up the [system definition values](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) for the installation environment and replaces the file's tokens (for example `{{DbHost}}`) with them. Any item defined in the system definition, including your own, can be used as a `{{token}}`. On the server, the command collects these files from each module's `cfg` folder and from `site-specific/cfg`. In your project's source tree, put the file in the application module's `src/main/genesis/cfg/` folder; the build packages it, so after adding the file, rebuild and redeploy the project before you run `genesisInstall`. A file whose name starts with your [product name](/build-deploy-operate/build/plugins/#productname) (the `rootProject.name` in your `settings.gradle.kts`; for example `<product>-processes.templt.xml`) is packaged by the build into the module's `cfg`, and any other file into `site-specific/cfg` (next to `generated/cfg` under `$GENESIS_HOME`). Either way, the rendered `.auto.` file is written to `$GENESIS_HOME/generated/cfg/`. The generated file name replaces `.templt.` with `.auto.`, so `my-dataserver.templt.xml` becomes `my-dataserver.auto.xml` and `fix-in-quickfix.templt.cfg` becomes `fix-in-quickfix.auto.cfg`. The extension after `.templt.` must not contain a dot: `archive.templt.tar.gz` is not treated as a template; it is copied as is to `$GENESIS_HOME/generated/cfg/`, without token replacement.
+
+**Escaping of token values**: Token values are HTML-escaped only when the generated file's extension is `.xml`, `.html`, `.htm` or `.xhtml`; for example, `=` in a JDBC URL is written as `&#61;`. In any other file, such as a `.cfg` file, the value is written exactly as defined. To write a value without escaping in any file, use triple braces (`{{{DbHost}}}`) or an ampersand (`{{&DbHost}}`) instead of `{{DbHost}}`.
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
@@ -1265,63 +1267,6 @@ All cascade purge methods automatically:
 Also:
 - Use `batchFinally` with `purgeAllDerivedRecords` or `purgeAllDerivedRanges` for better performance when processing many records
 - Use `finally` with `purgeDerivedRecord` or `purgeDerivedRange` for simpler cases with individual records
-
-## `ReconcileDatabaseSync`
-
-<!-- The ReconcileDatabaseSync command has a list of possible arguments: -d, -f, -H, -P, -u, -p, -s, -n, -i, -h -->
-
-This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
-
-Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
-
-The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
-
-The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
-
-```xml
-<sync>
-    <tables>
-        <table name="TRADE"/>
-        <table name="ORDER"/>
-    </tables>
-</sync>
-```
-
-If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
-There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
-
-Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
-because the tables being compared are in separate databases. Therefore, these fields are not compared.
-
-###### Arguments
-
-| Argument | Argument long name | Mandatory | Description | Restricted Values |
-| -- | -- | -- | -- | -- |
-| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
-| -f <!-- ReconcileDatabaseSync -f --> | --fdb <!-- ReconcileDatabaseSync --fdb --> | false | FDB cluster file name |No |
-| -H <!-- ReconcileDatabaseSync -H --> | --host <!-- ReconcileDatabaseSync --host --> | false | Remote DB hostname |No |
-| -P <!-- ReconcileDatabaseSync -P --> | --port <!-- ReconcileDatabaseSync --port --> | false | Remote DB port |Yes: Number > 0 |
-| -u <!-- ReconcileDatabaseSync -u --> | --username <!-- ReconcileDatabaseSync --username --> | false | DB user username |No |
-| -p <!-- ReconcileDatabaseSync -p --> | --password <!-- ReconcileDatabaseSync --password --> | false | DB user password |No |
-| -s <!-- ReconcileDatabaseSync -s --> | --nullstring <!-- ReconcileDatabaseSync --nullstring --> | false | Evaluate null and empty strings as equal |No value required |
-| -n <!-- ReconcileDatabaseSync -n --> | --numdays <!-- ReconcileDatabaseSync --numdays --> | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
-| -i <!-- ReconcileDatabaseSync -i --> | --ignorefields <!-- ReconcileDatabaseSync --ignorefields --> | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
-| -h <!-- ReconcileDatabaseSync -h --> | --help <!-- ReconcileDatabaseSync --help --> | false | Show usage information |No |
-
-###### Examples
-
-This is a simple run with a remote Postgres DB:
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
-```
-
-This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
-```
-
 
 ## `remap`
 
