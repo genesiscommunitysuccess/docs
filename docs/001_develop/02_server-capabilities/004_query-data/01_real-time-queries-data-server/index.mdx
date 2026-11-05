@@ -525,7 +525,7 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
         // range on dates
         refresh {
             // either every
-            every(2.hours)
+            every(120.minutes)
             // or at specific time
             at(8.pm)
         }
@@ -721,7 +721,7 @@ dataServer {
 |`batchingPeriod`|Delay in milliseconds to wait before sending new data to Data Server clients|`500ms`|Yes|
 |`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. SQLite queries don't need it; read [settings that only apply to LMDB](#settings-that-only-apply-to-lmdb)|`true`|Yes|
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
-|`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. LMDB only |TRUNCATE_FIELD |Yes|
+|`onStringOverflow`|Controls how the system responds to a string overflow. There are two options: `IGNORE_ROW` and `TRUNCATE_FIELD`. See the [String overflows](#handling-string-overflows) topic for details. LMDB only |IGNORE_ROW |Yes|
 |`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. See the [type-aware criteria evaluator](#using-the-type-aware-criteria-evaluator) topic for details. |`false`|Yes|
 |`importEntityIndices`| Enables/disables the automatic definition of dataserver indices based on the source table/view indices. |`false`|Yes|
 
@@ -868,7 +868,7 @@ These file-level settings can be set in the global `sqlite` block or in a `sqlit
 |`preparedStatementCacheSize`|The number of prepared statements cached per connection|`256`|
 |`busyRetryAttempts`|How many times a single-row write is tried when the database is busy. Must be at least 1; `1` turns retries off|`3`|
 |`busyRetryBaseDelayMs`|The first delay between retries, in milliseconds. It doubles on each retry|`10`|
-|`optimizeInterval`|How often SQLite refreshes its query-planner statistics, for example `optimizeInterval = 2.hours`. A value below 30 minutes is raised to 30 minutes|Off|
+|`optimizeInterval`|How often SQLite refreshes its query-planner statistics, for example `optimizeInterval = 120.minutes`. A value below 30 minutes is raised to 30 minutes|Off|
 
 A query's own `sqlite` block accepts only the table-level settings. To give a query its own file-level settings, use `sqliteDedicated`.
 
