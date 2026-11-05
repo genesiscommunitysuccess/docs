@@ -5,4 +5,236 @@ sidebar_position: 6
 id: 'upgrade-10.0-networking-router'
 ---
 
-This page will describe how to upgrade networking and router configuration from 8.15 to 10.0.
+This page covers how processes talk to each other and how the Genesis Router serves HTTP and WebSocket clients. Most applications only need to fix some imports in their custom endpoints (step 2) and check their `genesis-router.kts` (steps 4 and 5). The rest affects custom binary clients, code that calls the messaging client directly, and HTTP clients that depend on exact status codes.
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 2 (web-handler and HTTP type imports), 3 (removed request methods) and 6 (`NetworkConfiguration` in constructors you call) |
+| The router fails to start | 4 (`webSocketCompression`) and 5 (`strictHttpStatusCode` and `xssStringSanitizer`) |
+| A custom client or stored data stops working | 1 (MessagePack replaced by Smile) |
+| A warning appears in the logs | 6 (an injected `NetworkConfiguration`) and 7 (`MessageSerialization=MSGPACK`) |
+| An HTTP client sees different responses | 8 (oversized requests) and 9 (blocked resources in the OpenAPI spec) |
+
+You can do steps 3, 4 and 6 on 8.15 before you upgrade, because their replacements already exist there. The other steps need 10.0.
+
+These have not changed, so they need no action:
+
+- **The messaging channel.** Processes still talk to each other over TCP by default, and the platform ships no `network-config.yaml`.
+- **The router's HTTP handling.** `httpProxyEnabled` defaults to `false`, so the router keeps translating HTTP requests into Genesis messages, as in 8.15.
+- **Wrong-method responses.** A request with the wrong HTTP method on a router-served web endpoint still gets `405 Method Not Allowed`.
+- **Browser front ends.** They send JSON over the WebSocket, so the change of binary format in step 1 doesn't affect them.
+
+10.0 also adds several networking features: a WebSocket channel between processes, native HTTP on a process's own port, a proxy mode for the router, and `internal` resources. None of them is switched on by an upgrade. If you decide to adopt one, read [Before you adopt the WebSocket channel or the router proxy](#before-you-adopt-the-websocket-channel-or-the-router-proxy) first.
+
+## 1. Move custom binary clients and stored bytes from MessagePack to Smile
+
+**Applies to:** clients that encode Genesis binary messages themselves rather than through the Genesis libraries, and code that stores bytes produced by `GenesisJacksonMapper.defaultMsgPackMapper`.
+
+**Why:** 10.0 removes MessagePack. Binary messages are now encoded as [Smile](https://github.com/FasterXML/smile-format-specification), a binary form of JSON. The router's binary socket and the binary frames on its WebSocket always use Smile, whatever the serialization setting says.
+
+**What goes wrong if you skip this:** a custom client that sends or expects MessagePack can no longer talk to the router. Stored MessagePack bytes can't be read back: in 10.0, `defaultMsgPackMapper` is a deprecated alias for the Smile mapper. For the same reason, an 8.15 process and a 10.0 process can't exchange binary messages, so upgrade all the processes of an application together.
+
+**What to do:**
+
+- Switch custom binary clients to Smile, or to JSON.
+- Re-encode any stored bytes that were written with `defaultMsgPackMapper`, and use `GenesisJacksonMapper.defaultSmileMapper` from now on.
+
+## 2. Update imports of the web-handler DSL and the HTTP types
+
+**Applies to:** `*-web-handler.kts` files with explicit imports, classes that extend `AbstractAsyncEndpoint` or implement `AsyncWebEndpoint`, and any other code that uses the router's HTTP types.
+
+**Why:** the web-handler DSL has moved from the `genesis-router` module to `genesis-process`, and the HTTP helper types have moved to a new module, `genesis-net-http`. No aliases were left in the old packages.
+
+**What goes wrong if you skip this:** code that imports from the old packages no longer compiles.
+
+**What to do:** change the imports. These are the common cases:
+
+| 8.15 | 10.0 |
+|---|---|
+| `global.genesis.router.server.web.http.extensions.HttpResponse` | `global.genesis.process.web.handler.HttpResponse` |
+| `global.genesis.router.server.web.http.extensions.{AbstractAsyncEndpoint, AsyncWebEndpoint, RequestHandlerContext, HttpExtensionException}` | `global.genesis.process.web.handler.*` |
+| `global.genesis.router.extension.builder.*`, `global.genesis.router.extension.config.*` and `global.genesis.router.extension.transform.*` | the same sub-package under `global.genesis.process.web.handler` |
+| `global.genesis.router.extension.ContentType` | `global.genesis.net.http.request.ContentType` |
+| `global.genesis.router.server.web.http.extensions.RequestType` | `global.genesis.net.http.endpoint.RequestType` |
+| `global.genesis.router.extension.builder.RequestCriteria` | `global.genesis.net.http.endpoint.RequestCriteria` |
+| `global.genesis.router.extension.builder.AuthCriteria` | `global.genesis.net.http.auth.AuthCriteria` |
+| `global.genesis.router.extension.request.{HttpRequest, HttpHeaders, NettyHttpRequest}` | `global.genesis.net.http.request.*` |
+| `global.genesis.router.extension.transform.response.FileDownload` | `global.genesis.net.http.transform.FileDownload` |
+| `global.genesis.router.server.web.handlers.{FileUploadHandler, FileUploadRequest}`, `global.genesis.router.data.{FileData, FileUploadFileData, MultipartHttpBody}` and `global.genesis.router.extension.MultiPartConfig` | `global.genesis.net.http.multipart.*` |
+| `global.genesis.router.server.web.http.HttpSets` | `global.genesis.net.http.translation.HttpSets` |
+
+The import you are most likely to have is the one for `HttpResponse`:
+
+```kotlin
+// 8.15
+import global.genesis.router.server.web.http.extensions.HttpResponse
+
+// 10.0
+import global.genesis.process.web.handler.HttpResponse
+```
+
+In a `*-web-handler.kts` file you can simply delete this import instead: `HttpResponse`, `HttpResponseCode` and `HttpStatusCode` are imported by default. A script with no explicit imports compiles unchanged.
+
+If you implement the lower-level endpoint interfaces yourself, three signatures have also changed:
+
+- `HttpRequest` no longer has a type parameter.
+- The second parameter of `AsyncWebEndpoint.process` is now `Any?` (the transport's own connection object, or `null`), not a Netty `Channel`.
+- `ResponseComposer.invoke` now returns `EndpointResponse` (from `global.genesis.net.http.endpoint`) instead of `Any`.
+
+You don't need a new dependency: `genesis-net-http` comes in through `genesis-process` and `genesis-router`. If you compile `*-web-handler.kts` files at build time, rebuild them against the 10.0 libraries; the script definition is now `global.genesis.process.web.handler.WebHandlerScript`.
+
+## 3. Replace the removed `ListenableFuture` request methods
+
+**Applies to:** code that calls `GenesisMessageClient.sendReqRep` and uses the returned future, calls `queryLogoffAndShutdown`, or uses `ClientConnectionsManager`.
+
+**Why:** the three `sendReqRep` overloads that returned a Guava `ListenableFuture`, and `queryLogoffAndShutdown`, were deprecated in 8.15 and have now been removed.
+
+**What goes wrong if you skip this:** the code no longer compiles.
+
+**What to do:** in Kotlin, use `suspendRequest`. In Java, use `rxRequest`, because `suspendRequest` is not visible from Java.
+
+```kotlin
+// 8.15
+val reply: GenesisSet = client.sendReqRep(request).get()
+
+// 10.0
+val reply: GenesisSet? = client.suspendRequest(request, timeout)
+```
+
+```java
+// 8.15
+GenesisSet reply = client.sendReqRep(request, 30).get();
+
+// 10.0
+GenesisSet reply = client.rxRequest(request, 30).blockingGet();
+```
+
+The callback overloads, `sendReqRep(set, consumer)` and `sendReqRep(set, consumer, timeout)`, are still available if you prefer them.
+
+Two things behave differently:
+
+- **`SOURCE_REF`.** The removed methods always replaced a `SOURCE_REF` already in the message. `suspendRequest` and `rxRequest` keep it. If you resend a stored message, clear its `SOURCE_REF` first, or the reply may be routed to whoever sent the original.
+- **A disconnected client.** `suspendRequest` throws `ClientNotConnectedException` straight away, instead of returning a failed future.
+
+`queryLogoffAndShutdown` has no replacement.
+
+`ClientConnectionsManager`, deprecated in 8.15, is no longer public either. If your code uses it, use `ServiceDiscovery` instead.
+
+## 4. Move `webSocketCompression` into `websocketServer { }`
+
+**Applies to:** `genesis-router.kts` files that set `webSocketCompression`.
+
+**Why:** the top-level `webSocketCompression` setting was deprecated in 8.15 and has been removed.
+
+**What goes wrong if you skip this:** the router script no longer compiles, so the router doesn't start.
+
+**What to do:** set `compression` inside `websocketServer { }` instead. This also works on 8.15.
+
+```kotlin
+// 8.15
+router {
+    webSocketCompression = true
+}
+
+// 10.0, and 8.15
+router {
+    websocketServer {
+        compression = true
+    }
+}
+```
+
+On 8.15, if both were set, `webSocketCompression` won. Make sure you keep the value that was actually in effect.
+
+## 5. Move `strictHttpStatusCode` and `xssStringSanitizer` to the system definition
+
+**Applies to:** `genesis-router.kts` files that set `strictHttpStatusCode` or `xssStringSanitizer`.
+
+**Why:** both settings are now [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) items, `StrictHttpStatusCode` and `XssStringSanitizer`. They are read by whichever process builds the HTTP reply. That is the router for requests it translates, but it can also be a process that serves HTTP itself, so a router setting could no longer cover every case.
+
+**What goes wrong if you skip this:** the router script no longer compiles, so the router doesn't start.
+
+**What to do:** delete the settings from `router { }` and set the items in the system definition instead. Both default to `false`.
+
+```kotlin
+// 8.15: genesis-router.kts
+router {
+    strictHttpStatusCode = true
+    xssStringSanitizer = true
+}
+
+// 10.0: genesis-system-definition.kts
+systemDefinition {
+    global {
+        item(name = "StrictHttpStatusCode", value = "true")
+        item(name = "XssStringSanitizer", value = "true")
+    }
+}
+```
+
+Setting them under `global` makes them apply to every process, which matches what the router setting did on 8.15.
+
+## 6. Inject `NetworkConfigContainer` instead of `NetworkConfiguration`
+
+**Applies to:** custom code that injects `NetworkConfiguration`, `-approval.kts` scripts that use `networkConfiguration`, and code that constructs platform classes directly, for example in tests.
+
+**Why:** network settings now come from one place, `NetworkConfigContainer`, which also carries the settings in `network-config.yaml`. `NetworkConfiguration` is deprecated. An injected `NetworkConfiguration` still works, but it is derived from the container and leaves out its TLS settings. Several platform classes now take a `NetworkConfigContainer` in their constructor, in place of a `NetworkConfiguration`.
+
+**What goes wrong if you skip this:** an injected `NetworkConfiguration` logs a warning when it is first used, and its TLS settings are empty. Code that calls the changed constructors no longer compiles.
+
+**What to do:**
+
+- Inject `NetworkConfigContainer` instead. It is already available for injection on 8.15. Most values have moved into groups: for example, `reqRepTimeout` is now `messaging.requestTimeout`, `messageSerialization` is `messaging.serialization` and `useNettyThreads` is `netty.useNettyThreads`.
+- In `-approval.kts` scripts, use `networkConfigContainer` instead of `networkConfiguration`. This property is new in 10.0.
+- Where you construct a platform class directly, pass a `NetworkConfigContainer`. If you only have a `NetworkConfiguration`, convert it with `asNetworkConfigContainer()`.
+
+## 7. Remove `MessageSerialization=MSGPACK`
+
+**Applies to:** system definitions that set `MessageSerialization` to `MSGPACK`, and `network-config.yaml` files that set `serialization: MSGPACK`.
+
+**Why:** MessagePack has been removed (see step 1), and the default is now `SMILE`. `MSGPACK` is still accepted, but it is deprecated and resolves to `SMILE`.
+
+**What goes wrong if you skip this:** nothing breaks. In the system definition, `MSGPACK` logs a deprecation warning every time a process starts. In `network-config.yaml`, it resolves to `SMILE` without a warning.
+
+**What to do:** remove the setting to take the default, or set it to `SMILE`. `JSON` works as before.
+
+## 8. Check HTTP clients that expect `400` for oversized requests
+
+**Applies to:** HTTP clients and monitoring that look for `400 Bad Request` when a request line or its headers are too long.
+
+**Why:** when a request is longer than the HTTP codec limits allow, the router now answers with a more specific status: `414 URI Too Long` for a request line longer than `maxInitialLineLength`, and `431 Request Header Fields Too Large` for headers larger than `maxHeaderSize`. On 8.15 it answered `400`. Other malformed requests still get `400`.
+
+**What goes wrong if you skip this:** a client or alert that matches only `400` no longer matches these cases.
+
+**What to do:** treat `414` and `431` the same way as `400`, or raise the codec limits if legitimate requests are hitting them.
+
+## 9. Check what consumes the OpenAPI spec and `RESOURCES_REQUEST`
+
+**Applies to:** routers with an `allowList` or `blockList`, where something reads the router's OpenAPI spec or sends a `RESOURCES_REQUEST`.
+
+**Why:** the router now leaves resources that its `allowList` or `blockList` blocks out of its OpenAPI spec and out of its reply to `RESOURCES_REQUEST`. Clients could not call those resources anyway, so the listings now match what is reachable.
+
+**What goes wrong if you skip this:** a tool that reads either listing and expects a blocked resource in it no longer finds it.
+
+**What to do:** nothing, unless you relied on blocked resources appearing in these listings. Two new system definition items let you switch the listings off altogether: `RouterOpenApiEnabled` and `RouterResourcesRequestEnabled`. Both default to `true`.
+
+## Before you adopt the WebSocket channel or the router proxy
+
+The upgrade doesn't need any of this. Read it before you put a process on `channel: WEBSOCKET` or set [`httpProxyEnabled`](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the router.
+
+**Web-handler scripts in proxy mode.** With `httpProxyEnabled = true`, the router stops loading `*-web-handler.kts` files from `GENESIS_HOME`. List each script in the `script` entry of a process on the WebSocket channel instead; a script that no process loads disappears without an error. Moving a process to the WebSocket channel also makes it load every `*-web-handler.kts` listed in its `script` entry, so check those entries for scripts you didn't mean it to serve.
+
+**Checks on proxied requests.** For requests that the router proxies:
+
+- Its `allowList` and `blockList` still apply. A blocked resource is never proxied.
+- `StrictHttpStatusCode` and `XssStringSanitizer` are applied by the process that serves the request, so set them in the system definition that process reads.
+- Authentication is done by the process that serves the request. The router's `authDisabled` doesn't apply there; the process's `HttpAuthDisabled` item does. An unauthenticated caller gets `401` for every path.
+- Requests to request servers and event handlers run as the user of the session, as they do through the router. A `USER_NAME` header sent by the client is overwritten.
+- Login and other authentication requests are never proxied; the router handles them as before.
+- The proxy connects to the process using TLS or not according to the `tls.mode` set in `network-config.yaml`.
+
+**The WebSocket channel.** A process on this channel also serves HTTP on its own port. That port validates request payloads against the endpoint's schema, enforces `tls.authorization` from `network-config.yaml`, and refuses `internal` resources as if they did not exist.
+
+**Codec limits.** A process port answers oversized requests with `414` and `431`, the same as the router (see step 8).
