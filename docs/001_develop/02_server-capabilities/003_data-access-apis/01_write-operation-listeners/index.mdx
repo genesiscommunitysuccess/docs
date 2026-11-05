@@ -120,9 +120,9 @@ To switch to a different listener type, replace the old listener with the new on
 - `tx` is bound to the same transaction. Writes you make through it commit or roll back with the triggering write, are published to the update queue after it, and don't call the listener again.
 - If the listener throws an exception, or one of its own writes fails, the triggering write rolls back and nothing is published.
 - Only an exception thrown before `onWriteResult` returns rolls the triggering write back. Work you hand to another thread is outside the transaction.
-- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. Since 10.0.0, `SyncWriteOperationListener` and `AsyncWriteOperationListener` check this and throw an `IllegalStateException`:
+- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. Since 10.0.0, `SyncWriteOperationListener` and `AsyncWriteOperationListener` catch some of this and throw an `IllegalStateException`:
   - In a `SyncWriteOperationListener`, using `tx` on any thread other than the one that calls `onWriteResult` throws an `IllegalStateException` that names the listener and the thread. It tells you to make each `tx` call on that thread, and not to hand `tx` to another thread, executor or coroutine dispatcher.
-  - In an `AsyncWriteOperationListener`, using `tx` after `onWriteResult` returns throws an `IllegalStateException`. It tells you to finish every `tx` call before returning: await or join any coroutine that uses `tx`, and don't launch one into another scope. This check is scope-based, not a thread check.
+  - In an `AsyncWriteOperationListener`, using `tx` after `onWriteResult` returns throws an `IllegalStateException`. It tells you to finish every `tx` call before returning: await or join any coroutine that uses `tx`, and don't launch one into another scope. This check is scope-based, not a thread check. It does not catch `tx` used on another dispatcher before `onWriteResult` returns.
 
 ### `WriteOperationListener` on the SQL write path
 
