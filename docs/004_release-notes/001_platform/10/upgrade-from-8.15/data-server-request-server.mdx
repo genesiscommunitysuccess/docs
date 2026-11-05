@@ -5,7 +5,7 @@ sidebar_position: 9
 id: 'upgrade-10.0-data-server-request-server'
 ---
 
-Most of the work on this page is in your `*-dataserver.kts` and `*-reqrep.kts` scripts: 10.0 removes DSL spellings that 8.15 deprecated (steps 1 and 2), and it rejects derived fields whose names clash with other fields (step 3). Two changes reach beyond the scripts: views no longer pass on the `RECORD_ID` and `TIMESTAMP` of joined tables (step 4), and criteria sent by clients are checked more strictly (step 5).
+Most of the work on this page is in your `*-dataserver.kts` and `*-reqrep.kts` scripts: 10.0 removes DSL spellings that 8.15 deprecated (steps 1 and 2), and it rejects derived fields whose names clash with other fields (step 3). Two changes reach beyond the scripts: views no longer pass on the `RECORD_ID` and `TIMESTAMP` of joined tables (step 4), and some criteria that clients send are now refused (step 5).
 
 The steps show up at different points of the upgrade:
 
@@ -13,7 +13,7 @@ The steps show up at different points of the upgrade:
 |---|---|
 | The build fails | 1 (removed Data Server DSL) and 2 (removed Request Server DSL) |
 | The process fails to start | 3 (derived field names that clash) |
-| Client requests that used to work are refused | 5 (stricter client criteria) |
+| Client requests that used to work are refused | 5 (client criteria) |
 | The process logs a warning at startup | 6 (the `ASYNC` backward-join cache mode) |
 | Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) |
 
@@ -32,7 +32,7 @@ These have not changed, so they need no action:
 
 ## 1. Replace the removed Data Server DSL
 
-**Applies to:** `*-dataserver.kts` scripts that use any of the spellings in the table below. All of them were deprecated in 8.15.
+**Applies to:** `*-dataserver.kts` scripts that use any of the spellings in the table below. All of them were deprecated or superseded in 8.15.
 
 **Why:** 10.0 removes them.
 
@@ -172,18 +172,10 @@ fields {
 
 **Applies to:** front ends and API clients that send criteria (`CRITERIA_MATCH`) to Data Server queries, and code that queries the database by criteria. Queries that set `linearScan = false` are the most likely to be affected.
 
-**Why:** in 10.0, the Data Server and the database layer check client criteria against the same strict set of rules. In 8.15, each had its own rules, and some expressions were accepted by one and refused by the other.
+**Why:** in 10.0, the Data Server and the database layer check criteria against the same rule set. In 8.15, each had its own rules, so a few expressions were accepted by one and refused by the other. Most of the rules are not new: constructs that 8.15 already refused, such as `matches` or a ternary, are still refused. Two changes can make a criteria that worked in 8.15 fail in 10.0:
 
-Under the 10.0 rules, a criteria expression is refused if it uses any of these:
-
-- a method on a field that isn't one of the supported field methods (for example, `matches`), or a method on `Expr` that isn't one of the documented `Expr` methods;
-- `*` on anything that isn't a number (in Groovy, `*` also repeats strings);
-- a number with more than 100 digits or with an exponent beyond ±1000, or arithmetic that builds such a number;
-- arithmetic on a number parsed from a field, such as `new BigDecimal(NAME) % 2`;
-- the `!in` operator;
-- a ternary (`a ? b : c`), an Elvis operator (`?:`), a closure, a list or map literal, or a statement such as `if` or `while`.
-
-On top of that, a query with `linearScan = false` now refuses a criteria expression that doesn't bound the first field of the query's index. In 8.15, such a criteria could still run as a scan of every row.
+- **`!in` is refused.** Write `!(A in B)` instead.
+- **`linearScan = false` no longer falls back to a full scan.** On a query that sets `linearScan = false`, 10.0 refuses a criteria expression that doesn't bound the first field of the query's index. In 8.15, such a criteria could still run as a scan of every row.
 
 **What goes wrong if you skip this:** the Data Server refuses the request with an `INVALID_CRITERIA` error, so the grid or API call that sent it gets no data. For a `linearScan = false` query, the error looks like this:
 
@@ -193,9 +185,8 @@ Criteria "<criteria>" on query <query> bounds no value of <field>, the first fie
 
 **What to do:** before you upgrade, run the criteria that your front ends and API callers send against a 10.0 environment, and rewrite any that are refused:
 
-- Write `!(A in B)` instead of `A !in B`.
+- Replace `A !in B` with `!(A in B)`.
 - On a `linearScan = false` query, compare the index's first field to a value with `==`, `<`, `<=`, `>` or `>=`, and join it to the rest of the criteria with `&&`. If the query really does need criteria that can't do that, set `linearScan = true` on it.
-- Replace an unsupported method with one listed in [Criteria matching](../../../../001_develop/03_client-capabilities/002_server-communications/05_criteria-matching.mdx).
 
 ## 6. Stop using the `ASYNC` backward-join cache mode
 
