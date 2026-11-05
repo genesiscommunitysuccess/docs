@@ -11,7 +11,7 @@ The steps show up at different points of the upgrade:
 
 | When it shows up | Steps |
 |---|---|
-| The build fails | 1 to 5 (`fields { }`, `field { }` and `where { }` in auth blocks, and the removed types) |
+| The build fails | 1 to 5 (`fields { }`, `field { }` and `where { }` in auth blocks, `rowLevelPermissions` in `enrichedAuth`, and the removed or changed types) |
 | A process fails to start | 1, 2 and 3 (an auth block on an auth map that has no `authKey`) |
 | The management console's LDAP login is turned off | 6 (a `LdapUserDnTemplate` that isn't a DN, with `LdapUserGroups`) |
 
@@ -57,7 +57,7 @@ auth("TRADE_VISIBILITY") {
 ```
 
 ```kotlin
-// 8.15
+// 8.15 (in a query on TRADE)
 auth("TRADE_VISIBILITY") {
     fields {
         TRADE_ID
@@ -87,17 +87,17 @@ When you make the change:
 
 - **Keep the fields in the same order.** The key is the field values joined in order, so the same order gives the same key, and the entries already in your auth maps still match.
 - **Use fields of the query's own table or view.** In a query on `TRADE_VIEW`, write `TRADE_VIEW.TRADE_ID`. A field from another table is now a compile error. In 8.15, it was accepted and matched by name only.
-- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. Don't set `rowLevelPermissions` yourself to make up for this: on a key that isn't unique, rows that share a key can miss live permission updates.
+- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. Don't set `rowLevelPermissions` yourself to make up for this. On a key that isn't unique, the data server logs a warning when a second row shares a key and falls back to the heavier map, and a row can briefly miss a live permission update while that happens.
 - **Use one form of `authKey` in each block.** Following `authKey(TABLE.FIELD)` with `authKey { ... }` in the same block has the same effect as setting `rowLevelPermissions` yourself.
 - **If the old `where` used the user name**, as in `where { user -> user != "JohnDoe" }`, use `filterWithUserName { userName != "JohnDoe" }` instead.
 
-## 2. Data servers: write the `enrichedAuth(...)` key in full
+## 2. Data servers and request servers: write the `enrichedAuth(...)` key in full
 
-**Applies to:** `enrichedAuth("MAP_NAME", TABLE) { }` blocks in data server queries.
+**Applies to:** `enrichedAuth("MAP_NAME", TABLE) { }` blocks in data server queries and table-based request servers.
 
 **Why:** the change in step 1 applies here too. `enrichedAuth` has no `authKey(TABLE.FIELD)` form, so you write the key as an expression in `authKey { key(...) }`. For each field, you choose whether it comes from the main record (`data`) or from the enriched record (`enriched`).
 
-**What goes wrong if you skip this:** a block that has no `authKey` stops the process at startup, with the same error as in step 1. A `fields { }` or a two-parameter `where { }` in the block is a compile error.
+**What goes wrong if you skip this:** a block that has no `authKey` stops the process at startup, with an error like the one in step 1 that names the `enrichedAuth` block. A `fields { }` or a two-parameter `where { }` in the block is a compile error, and so is setting `rowLevelPermissions` in an `enrichedAuth` block. That setting never had any effect there in 8.15, so delete it.
 
 **What to do:**
 
@@ -128,7 +128,7 @@ Then check that the new key still matches your auth map. In 8.15, each field of 
 
 **Why:** `field { }`, `fields { }` and `where { }` have been removed from these blocks.
 
-**What goes wrong if you skip this:** the script doesn't compile. A block on an auth map that has no `authKey` stops the process at startup, with the same error as in step 1.
+**What goes wrong if you skip this:** the script doesn't compile. A block on an auth map that has no `authKey` stops the process at startup, with an error like the one in step 1.
 
 **What to do:** set the key with `authKey { key(...) }`, and the filter with `filter { }`, reading the record as `data`.
 
@@ -213,6 +213,7 @@ auth {
   - `LdapResult.InvalidCredentials` is now an interface. Replace `== LdapResult.InvalidCredentials` and `LdapResult.InvalidCredentials ->` with `is LdapResult.InvalidCredentials ->`.
   - `LdapConfig.trust` is now an `LdapTrustMode`. Wrap your `TrustConfig` in `LdapTrustMode.Standard(...)`.
   - `LdapConfig.canonicalIdAttribute` can now be `null`.
+  - Creating an `LdapConfig` now throws `LdapConfigException` if it has required groups and a `userDnTemplate` that doesn't produce a valid DN. This is the same check as in step 6.
 
 ## 6. Management console: check `LdapUserDnTemplate` if you set `LdapUserGroups`
 
@@ -220,7 +221,7 @@ auth {
 
 **Why:** 10.0 rejects an `LdapUserDnTemplate` that doesn't produce a valid DN, such as `{0}@example.com` or `EXAMPLE\{0}`, when `LdapUserGroups` is set. With such a template, group membership can never be checked, because the group lookup reads the bound value as a DN. In 8.15, this configuration was accepted and then failed at every login.
 
-**What goes wrong if you skip this:** the management console doesn't offer LDAP login. The other login providers in `DaemonMgmtUiLoginMode` keep working, and the daemon itself still starts. The first time someone uses the console login, the daemon logs this at ERROR:
+**What goes wrong if you skip this:** the management console doesn't offer LDAP login. The other login providers in `DaemonMgmtUiLoginMode` keep working, and the daemon itself still starts. The first time the console login page is requested after the daemon starts, the daemon logs this at ERROR:
 
 ```
 Refusing to enable console login provider LDAP: userDnTemplate '...' does not produce a valid DN ...
@@ -234,7 +235,7 @@ These changes don't require you to change anything, but code or operations that 
 
 - **Sessions expire a fixed time after they are created.** `sessionTimeoutMins` is now the lifetime of a session, counted from when it was created, rather than an idle timeout. Activity no longer extends it. To keep access, a client logs in again with its refresh token before the session expires. This applies on every authentication path, including native HTTP endpoints and web endpoints served through the router.
 - **Platform LDAP login (the `ldap { connection { } }` script DSL):**
-  - If a connection sets both `bindDn` and `userGroups`, make sure the `bindDn` account can read group membership on user entries. Group membership is now read with that account, and if it can't read it, every login that requires a group is denied.
-  - Directory connections now time out after 5 seconds, and directory responses after 10 seconds.
+  - If a connection sets both `bindDn` and `userGroups`, make sure the `bindDn` account can read group membership (`memberOf`) on user entries. Group membership is now read with that account rather than with the user's own connection, and if the account can't read it, every login that requires a group is denied. A connection that doesn't set `bindDn` is not affected.
+  - By default, a connection now times out after 10 seconds when connecting and after 300 seconds waiting for any directory response, including a bind. In 8.15, a bind timed out after 30 seconds. To change either value for a connection, set `connectTimeoutMs` or `responseTimeoutMs` in its `connection { }` block.
 - **Management console login with `DaemonMgmtUiLoginMode=LDAP,USER_PASSWORD`:** a user whom the directory has verified, but who has no `ENABLED` row in the `USER` table, now gets "Invalid username or password." The login no longer falls through to `USER_PASSWORD`, so these users need a `USER` row. A `USER` row whose name differs from the directory name only in case now matches.
 - **Management console rights:** rights granted or revoked in `RIGHT_SUMMARY` take effect within about 10 seconds.
