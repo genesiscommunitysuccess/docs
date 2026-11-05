@@ -20,7 +20,7 @@ The data model forms the foundation of the metadata used by other parts of the p
 Within your views, you can also define derived fields (columns) that are calculated on the fly to augment the data being returned by the system. This can be based on anything from the simplest arithmetic to calculate a percentage of an existing field (attribute value) through to calls that define the most complex calculations in your existing Java libraries.
 
 :::info
-View our reference documentation on the [data model](/develop/server-capabilities/data-model/).
+View our reference documentation on the [data model](/develop/server-capabilities/data-model/gpal-java/).
 :::
 
 ## Server architecture
@@ -54,7 +54,7 @@ The Event Handler also exposes metadata APIs that are used by the rest of the pl
 As data flows through the Event Handler, events are published to the rest of the platform, enabling other microservices to react and provide more capabilities. This includes pre-built business components, such as notifications. These business components use the application's data model, so you don't need to specify any extra logic to provide a full set of functions. 
 
 :::info
-View our reference documentation on the [core business logic](/develop/server-capabilities/core-business-logic-event-handler/).
+View our reference documentation on the [core business logic](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/).
 :::
 
 ### Real-time query microservice (Data Server) 
@@ -68,7 +68,7 @@ To configure the Data Server, you define real-time queries that enable the clien
 The Data Server preloads the data defined for each query, maintains meta-data for users requesting views into that data and exposes web sockets to provide a real-time stream of updates to keep those views live and ticking for the end user. 
 
 :::info
-View our reference documentation on the [real-time queries](/develop/server-capabilities/real-time-queries-data-server/).
+View our reference documentation on the [real-time queries](/develop/server-capabilities/query-data/real-time-queries-data-server/).
 :::
 
 ### Real-time aggregation microservice (Consolidator)

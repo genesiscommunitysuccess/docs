@@ -35,9 +35,9 @@ Now you need to make this view available so that the front end can retrieve and 
 You need to create a *requestReply* (if the information is static) or a *query* (if you want to stream data as it changes). This is a simple statement that makes the view you have created available as a source of data for the front end.
 
 ## In summary
-Databases store information in neat tables. But in many cases, you need to view information that is stored in two or more tables. For this, you create [views](/develop/server-capabilities/data-model/#views), which join together information in different tables.
+Databases store information in neat tables. But in many cases, you need to view information that is stored in two or more tables. For this, you create [views](/develop/server-capabilities/data-model/gpal-java/#views), which join together information in different tables.
 
-To make a view available as a data source for the front end, you must create a [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) or a [Data Server](/develop/server-capabilities/real-time-queries-data-server/) query that uses the view.
+To make a view available as a data source for the front end, you must create a [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) or a [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) query that uses the view.
 
 It is worth noting that a view does not itself contain any information - that is only contained in the tables in your database.
 

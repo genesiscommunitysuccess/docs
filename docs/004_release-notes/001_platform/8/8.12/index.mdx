@@ -241,7 +241,7 @@ This property wasn't working. If you have a `dockerConfig` configuration block i
 
 ### `IGNORE_WARNINGS` changes
 
-`IGNORE_WARNINGS` now behaves as it should, in that any warnings (sent as [`warningNack`](/develop/server-capabilities/core-business-logic-event-handler/#warningnack)) will be ignored and the event handler will continue to execute the code in `onCommit`, where `IGNORE_WARNINGS` is set to `true` by the client sending it. 
+`IGNORE_WARNINGS` now behaves as it should, in that any warnings (sent as [`warningNack`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#warningnack)) will be ignored and the event handler will continue to execute the code in `onCommit`, where `IGNORE_WARNINGS` is set to `true` by the client sending it. 
 Additionally, when the HTTP API is being used to trigger an event, the default value where not specified was to set `IGNORE_WARNINGS` as `true`. This has now been updated to be `false` to ensure warnings (aka soft errors) are not ignored.
 
 These changes are noted as an impactful change as the platform has operated differently for some time and although unlikely (given warningNack isn't used in many projects), this fix may cause change in an application's current behaviour.
