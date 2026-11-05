@@ -863,7 +863,7 @@ This tries to delete a record.
 
 A batch write must not name the same record twice. The record-level APIs (`SyncDb`, `AsyncDb` and `RxDb`, including `rxDb.entityDb()`) reject a batch that does this for `insertAll`, `modifyAll`, `deleteAll`, `recoverAll` and `upsertAll`. To build the entities you pass in a batch, see [Table entities](#table-entities).
 
-The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for a plain entity `insertAll`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
+The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for an entity `insertAll` through `rxDb.entityDb()`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
 
 ```kotlin
 import global.genesis.db.exceptions.DatabaseErrorCode
@@ -904,7 +904,7 @@ These are not treated as duplicates:
 
 The entity APIs (`SyncEntityDb`, `AsyncEntityDb` and the injected `RxEntityDb`) don't run this check, so a batch that names the same record twice isn't reliably rejected. For `upsertAll`, either of the two entries may win. On the entity APIs, avoid duplicate entries in a batch.
 
-Because the whole batch is checked first, a `Flow` passed to an entity-API batch write, or a `Flowable` passed to an `RxDb` one, is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
+Because the whole batch is checked first, a `Flowable` passed to an `RxDb` batch write is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
 
 #### Write operation listeners
 
