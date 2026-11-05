@@ -5,20 +5,511 @@ sidebar_position: 1
 id: 'upgrade-10.0'
 ---
 
-This guide will take you through upgrading an application from Genesis 8.15 to 10.0.
+This guide takes an application from Genesis 8.15 to 10.0. This page covers the changes every project makes: the build toolchain, the core libraries the platform moved to, and the Genesis Gradle plugins and packaging. Each area of the platform then has its own page for the changes that only matter if you use that area.
 
-Each area of the platform has its own page:
+Work through it in this order:
 
-| Area |
-|------|
-| [Removed and deprecated modules](./removed-modules.mdx) |
-| [Database layer](./database.mdx) |
-| [Dictionary and code generation](./dictionary-codegen.mdx) |
-| [Process runtime and clustering](./process-runtime-clustering.mdx) |
-| [Networking and router](./networking-router.mdx) |
-| [Security and authentication](./security-auth.mdx) |
-| [Event handlers and evaluator](./event-handlers-evaluator.mdx) |
-| [Data Server and Request Server](./data-server-request-server.mdx) |
-| [Consolidator and data pipelines](./consolidator-pipelines.mdx) |
-| [Test support](./test-support.mdx) |
-| [MCP](./mcp.mdx) |
+1. [Before you upgrade](#before-you-upgrade): changes you can make, and test, while you are still on 8.15.
+2. [Upgrade the build](#upgrade-the-build): toolchain, Genesis version, libraries and tests. Most problems here show up as build or compile errors.
+3. [Check the build and packaging](#check-the-build-and-packaging): Gradle plugin settings and container behaviour that changed.
+4. [Check at runtime](#check-at-runtime): the changes that compile cleanly but behave differently.
+5. The [area pages](#area-pages) that apply to your application.
+
+## What stays the same
+
+- An application still builds and runs on JDK 17. Genesis artifacts are Java 17 bytecode.
+- log4j2 is still the default logging backend.
+- Jackson annotations (`@JsonProperty`, `@JsonIgnore` and so on) keep their package, `com.fasterxml.jackson.annotation`.
+- The GenesisJunit annotations and the older test base classes keep their packages.
+- The `appDistZip` and `appDistTarGz` tasks, the `packagingStrategy` option, the `dockerImage` options, `preCompileScripts` and the start-up script cache all work as before.
+
+## Version summary
+
+| | 8.15 | 10.0 |
+|---|---|---|
+| Gradle | 8.10.2 | 9.7.1 |
+| Kotlin | 2.1.21 | 2.4.21 |
+| JDK for building and running an application | 17 or later | 17 or later (JDK 25 recommended at runtime) |
+| Guice | 5.1 | 7.0 |
+| Dependency injection annotations | `javax.inject` | `jakarta.inject` |
+| Lifecycle | Netflix Governator | `GenesisLifecycleManager` |
+| Jackson | 2.21 (`com.fasterxml.jackson`) | 3.1 (`tools.jackson`), with a 2.22 line kept for libraries that need it |
+| JUnit | 5.13, plus JUnit 4 support | Jupiter 6.1; JUnit 4 support removed |
+
+## Before you upgrade
+
+These changes all work on 8.15. Making them first, and releasing them, keeps the 10.0 upgrade itself smaller.
+
+- **Move a Maven build to Gradle.** The Genesis Maven plugins and the Maven archetype are not published for 10.0. An application built with Maven must move to the Genesis Gradle plugins first.
+- **Port JUnit 4 tests to JUnit Jupiter.** JUnit 4 support is removed in 10.0, but the Jupiter test-support modules (`genesis-testsupport` and `genesis-dbtest`) are already on 8.15. See [Tests: move to JUnit Jupiter 6](#tests-move-to-junit-jupiter-6).
+- **Update your own Gradle build scripts for Gradle 9.** The replacements in [Gradle 9 changes in your build scripts](#gradle-9-changes-in-your-build-scripts) also work on Gradle 8.10.2.
+- **Move off modules removed in 10.0.** See [Removed and deprecated modules](./removed-modules.mdx).
+- **Rewrite an old SQL dictionary, and stop using `DbMode=LEGACY`.** This has to be done on 8.15. See [Database layer](./database.mdx).
+
+## Upgrade the build
+
+### 1. Move to Gradle 9.7.1 and Kotlin 2.4.21
+
+**Applies to:** every application.
+
+**Why:** the 10.0 Genesis Gradle plugins are built against the Gradle 9 API, and Genesis artifacts are compiled with Kotlin 2.4. The 10.0 project template uses Gradle 9.7.1 and Kotlin 2.4.21, the versions Genesis itself is built with.
+
+**If you skip it:** Gradle 8 can't apply the 10.0 Genesis plugins, so the build fails before it compiles anything. Earlier Gradle 9 versions are untested.
+
+**What to do:**
+
+Update the Gradle wrapper. Run `./gradlew wrapper --gradle-version 9.7.1` twice (the second run updates the wrapper scripts too), or edit `gradle/wrapper/gradle-wrapper.properties`:
+
+```properties
+# 8.15
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.10.2-bin.zip
+
+# 10.0
+distributionUrl=https\://services.gradle.org/distributions/gradle-9.7.1-bin.zip
+```
+
+If your project has a site-specific module with its own wrapper, update that one as well.
+
+Update the Kotlin plugin version in the root `build.gradle.kts`:
+
+```kotlin
+// 8.15
+kotlin("jvm") version "2.1.21"
+
+// 10.0
+kotlin("jvm") version "2.4.21"
+```
+
+Update every other pinned Kotlin version too: plugins such as `plugin.serialization`, `allopen` and `noarg`, and the `kotlin-test-junit5` dependency.
+
+Replace the Kotlin compiler options. The 8.15 template set `-Xjvm-default=all -Xlambdas=indy` on each `KotlinCompile` task, and set `apiVersion` to Kotlin 2.0. The 10.0 template uses the Kotlin 2.4 form instead, inside `allprojects`:
+
+```kotlin
+// 8.15 (in subprojects { tasks { withType<KotlinCompile> { ... } } })
+freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all", "-Xlambdas=indy")
+
+// 10.0 (in allprojects, root build.gradle.kts)
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+        jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
+    }
+}
+```
+
+Remove the separate `java { toolchain { ... } }` block and the `apiVersion` setting.
+
+Check your third-party Gradle plugins support Gradle 9. For example, the JMH plugin needs 0.7.3 or later; 0.7.0 doesn't work.
+
+Gradle 9 itself needs JDK 17 or later to run. JDK 17 is the safe choice.
+
+Optionally, copy the template's JVM flags into `org.gradle.jvmargs` in `gradle.properties`. They are ignored on JDK 17 and remove warnings on JDK 25:
+
+```properties
+org.gradle.jvmargs=<existing flags> -XX:+IgnoreUnrecognizedVMOptions --sun-misc-unsafe-memory-access=allow --enable-native-access=ALL-UNNAMED -XX:+UseCompactObjectHeaders
+```
+
+#### Gradle 9 changes in your build scripts
+
+**Applies to:** build scripts that use Gradle APIs removed in Gradle 9. This list covers the ones Genesis projects commonly hit; Gradle's own upgrade guide has the full list.
+
+| Gradle 8 | Gradle 9 |
+|---|---|
+| `fileMode = 0755` (in copy specs) | `filePermissions { unix("rwxr-xr-x") }` |
+| `buildDir`, `project.buildDir` | `layout.buildDirectory` |
+| `task<T>("name") { }` | `tasks.register<T>("name") { }` |
+| `configuration.resolvedConfiguration.lenientConfiguration.getFiles { }` | `configuration.incoming.artifactView { isLenient = true }.files` |
+| `Provider<X?>` | `Provider<X>` |
+
+Projects generated with a site-specific module have one `fileMode` line in `<app>-site-specific/build.gradle.kts`:
+
+```kotlin
+// 8.15
+fileMode = scriptPermissions
+
+// 10.0
+filePermissions { unix(scriptPermissions) }
+```
+
+### 2. Bump the Genesis version and replace removed Genesis artifacts
+
+**Applies to:** every application. The artifact swaps apply if you declare them.
+
+**Why:** some 8.15 Genesis artifacts are not published for 10.0.
+
+**If you skip it:** dependency resolution fails.
+
+**What to do:** set the Genesis version to 10.0 (normally `genesisVersion` in `gradle.properties`), then replace any of these:
+
+| Remove (8.15) | Use instead (10.0) |
+|---|---|
+| `global.genesis:genesis-testsupport-junit4` | `global.genesis:genesis-testsupport` |
+| `global.genesis:genesis-dbtest-junit4` | `global.genesis:genesis-dbtest` |
+| `codegen-maven-plugin`, `genesis-maven-plugin`, `appgen-maven-plugin`, `releases-maven-plugin`, `genesis-archetype` | the Genesis Gradle plugins |
+
+The Jupiter modules have the same classes in the same packages, so only the dependency line changes. Other removed modules, such as `genesis-shell`, are on the [Removed and deprecated modules](./removed-modules.mdx) page.
+
+### 3. Rename `javax.inject` to `jakarta.inject`
+
+**Applies to:** every application with Kotlin or Java code that uses dependency injection, including tests and any `.kts` file that imports these annotations.
+
+**Why:** the platform now uses Guice 7, which only recognises `jakarta.inject`. The platform no longer brings in `javax.inject:javax.inject`.
+
+**If you skip it:** a leftover `javax.inject` import normally fails to compile. If something else still puts the `javax.inject` jar on the classpath, the import compiles but Guice ignores it: the field isn't injected, or a `@Named` qualifier is lost. Outside Genesis tests, nothing reports this.
+
+**What to do:** find and replace across the code base:
+
+| 8.15 | 10.0 |
+|---|---|
+| `javax.inject.Inject` | `jakarta.inject.Inject` |
+| `javax.inject.Named` | `jakarta.inject.Named` |
+| `javax.inject.Singleton` | `jakarta.inject.Singleton` |
+| `javax.inject.Provider` | `jakarta.inject.Provider` |
+| `javax.inject.Qualifier`, `javax.inject.Scope` | `jakarta.inject.Qualifier`, `jakarta.inject.Scope` |
+| dependency `javax.inject:javax.inject` | `jakarta.inject:jakarta.inject-api` (version managed by `genesis-bom`) |
+
+```kotlin
+// 8.15
+import javax.inject.Inject
+import javax.inject.Named
+
+class TradeService @Inject constructor(
+    @Named("tradeCache") private val cache: Cache,
+)
+
+// 10.0
+import jakarta.inject.Inject
+import jakarta.inject.Named
+
+class TradeService @Inject constructor(
+    @Named("tradeCache") private val cache: Cache,
+)
+```
+
+Then:
+
+- Regenerate all generated code, such as `SysDef`. On 10.0 the generated code imports `jakarta.inject.Inject`.
+- Leave `javax.inject.Inject` in custom Gradle tasks in your build logic. That is Gradle's own injection, not Guice.
+- Check nothing is left. Search the code base for `javax.inject`, and run `./gradlew dependencyInsight --dependency javax.inject` to check that no dependency still brings the jar in.
+
+### 4. Rename `javax.annotation.PostConstruct` and `PreDestroy`, and drop Governator
+
+**Applies to:** code with lifecycle hooks (`@PostConstruct`, `@PreDestroy`), and code that builds a Governator injector by hand.
+
+**Why:** Netflix Governator is replaced by `GenesisLifecycleManager`, which only honours `jakarta.annotation.PostConstruct` and `jakarta.annotation.PreDestroy`. The platform no longer brings in `javax.annotation-api`.
+
+**If you skip it:** a `javax.annotation` hook that still compiles is silently ignored. Nothing reports it, not even in tests.
+
+**What to do:**
+
+| 8.15 | 10.0 |
+|---|---|
+| `javax.annotation.PostConstruct` | `jakarta.annotation.PostConstruct` |
+| `javax.annotation.PreDestroy` | `jakarta.annotation.PreDestroy` |
+| dependency `javax.annotation:javax.annotation-api` | `jakarta.annotation:jakarta.annotation-api` (version managed by `genesis-bom`) |
+| dependency `com.netflix.governator:governator` | delete it |
+| `LifecycleInjector.builder()...createInjector()` | `GenesisLifecycleModule.createInjector(modules...)` |
+| `LifecycleManager` | `GenesisLifecycleManager` (`close()` runs the `@PreDestroy` hooks) |
+
+Leave the JSR-305 annotations (`javax.annotation.Nonnull`, `Nullable`, `CheckReturnValue`) alone. They come from a different artifact.
+
+Genesis processes and GenesisJunit build their own injectors, so only code that built a Governator injector itself needs the injector change.
+
+As with step 3, search for `javax.annotation.PostConstruct` and `javax.annotation.PreDestroy`, and run `./gradlew dependencyInsight --dependency javax.annotation-api`.
+
+Lifecycle hooks also behave slightly differently:
+
+- A `@PostConstruct` that throws now fails the injection with a `ProvisionException`.
+- `@PreDestroy` runs on the thread that is shutting down, with no timeout per method. A hook that hangs holds up shutdown.
+- A hook that 8.15 ran twice (an overridden method annotated again in the subclass) now runs once.
+
+### 5. Move your Jackson code to Jackson 3
+
+**Applies to:** code that uses Jackson classes directly: `ObjectMapper`, `JsonNode`, custom serialisers and deserialisers, `TypeReference`, or `GenesisJacksonMapper` as an `ObjectMapper`.
+
+You can skip 5a to 5c if your code only uses Jackson annotations and Genesis helpers such as `toJsonString()` and `toObject()`. Everyone should read [step 13](#13-check-payloads-that-change-on-the-wire), because the wire changes affect every application.
+
+**Why:** the platform runs on Jackson 3 (`tools.jackson`). Genesis types that take or return Jackson types now use the Jackson 3 ones, and `genesis-jackson` brings in the Jackson 3 artifacts.
+
+**If you skip it:** imports of Jackson 2 classes fail to compile, or no longer match the types Genesis APIs expect.
+
+#### 5a. Imports and dependencies
+
+Change every import from `com.fasterxml.jackson.databind`, `.core`, `.dataformat`, `.datatype` and `.module` to `tools.jackson`. Don't change `com.fasterxml.jackson.annotation`.
+
+| 8.15 | 10.0 |
+|---|---|
+| `com.fasterxml.jackson.databind.ObjectMapper`, `JsonNode` | `tools.jackson.databind.ObjectMapper`, `JsonNode` |
+| `com.fasterxml.jackson.databind.JsonSerializer` | `tools.jackson.databind.ValueSerializer` |
+| `com.fasterxml.jackson.databind.JsonDeserializer` | `tools.jackson.databind.ValueDeserializer` |
+| `com.fasterxml.jackson.databind.SerializerProvider` | `tools.jackson.databind.SerializationContext` |
+| `com.fasterxml.jackson.databind.annotation.JsonSerialize` | `tools.jackson.databind.annotation.JsonSerialize` |
+| `com.fasterxml.jackson.core.type.TypeReference` | `tools.jackson.core.type.TypeReference` |
+| `com.fasterxml.jackson.module.kotlin.jacksonObjectMapper` | `tools.jackson.module.kotlin.jacksonObjectMapper` |
+| `com.fasterxml.jackson.core.JsonProcessingException` (a checked `IOException`) | `tools.jackson.core.JacksonException` (unchecked) |
+
+For dependencies:
+
+- Replace `com.fasterxml.jackson.*` artifacts with their `tools.jackson.*` equivalents, for example `tools.jackson.module:jackson-module-kotlin`.
+- Leave the versions to `genesis-bom`, which manages Jackson 3 on the 3.1 line. Don't move to 3.2: the platform stays on 3.1 deliberately.
+- If a third-party library really needs Jackson 2 databind, you can still declare it. The BOM also manages a Jackson 2.22 line.
+
+#### 5b. Code that used `GenesisJacksonMapper` as an `ObjectMapper`
+
+`GenesisJacksonMapper` no longer passes through the whole `ObjectMapper` API, so calls like these no longer compile:
+
+```kotlin
+// 8.15: compiles, and changes the shared platform mapper
+GenesisJacksonMapper.defaultJsonMapper.registerModule(MyModule())
+GenesisJacksonMapper.defaultJsonMapper.copy()
+
+// 10.0
+GenesisJacksonMapper.defaultJsonMapper.mapper   // the underlying tools.jackson ObjectMapper, which is immutable
+val myMapper = JsonMapper.builder()
+    .addModule(MyModule())
+    .build()                                    // build your own mapper instead of changing the shared one
+```
+
+The read and write methods are still there: `readValue`, `writeValueAsString`, `readTree`, `convertValue` and so on. For any other `ObjectMapper` method, use `.mapper`.
+
+`defaultMsgPackMapper` still compiles, but it is deprecated and is now the Smile mapper. Use `defaultSmileMapper`.
+
+A mapper you build yourself doesn't get the Genesis settings. In particular, Jackson 3 sorts properties alphabetically by default; the Genesis mappers don't.
+
+#### 5c. `JsonNode` behaviour
+
+These changes compile, so look for them in review:
+
+- **`asText()` is now `asString()`**, and the `as...` accessors now throw on object and array nodes, where Jackson 2 returned `""`, `0` or `false`. If a node might be a container, check `isContainer` first. The exception, `JsonNodeException`, extends `DatabindException`, not `IllegalArgumentException`.
+- **`node.map { }` no longer maps over the children.** `JsonNode` now has its own `map` method, which wins over Kotlin's extension. Use `node.values().map { }`, `node.properties()` or `node.propertyNames()`.
+- **`fieldNames()` is gone.** Use `propertyNames()`, which returns a `Collection`.
+
+### 6. Tests: move to JUnit Jupiter 6
+
+**Applies to:** every application with tests.
+
+**Why:** JUnit 4 support is removed, and the platform manages JUnit Jupiter 6.1.
+
+**If you skip it:** JUnit 4 tests fail to compile, or are not run.
+
+**What to do:**
+
+1. **Dependencies.**
+   - Replace `genesis-testsupport-junit4` and `genesis-dbtest-junit4` ([step 2](#2-bump-the-genesis-version-and-replace-removed-genesis-artifacts)).
+   - Remove `junit:junit` and `org.junit.vintage:junit-vintage-engine`.
+   - Move any pinned `junit-bom` or `junit-jupiter-*` versions to 6.1. The 10.0 template pins `junit-jupiter-api` to 6.1.0.
+2. **Port JUnit 4 tests to Jupiter.** This is the standard JUnit mapping:
+
+   | JUnit 4 | Jupiter |
+   |---|---|
+   | `org.junit.Test` | `org.junit.jupiter.api.Test` |
+   | `@Before`, `@After` | `@BeforeEach`, `@AfterEach` |
+   | `@BeforeClass`, `@AfterClass` | `@BeforeAll`, `@AfterAll` |
+   | `@Ignore` | `@Disabled` |
+   | `@RunWith`, `@Rule`, `@ClassRule` | `@ExtendWith`, `@RegisterExtension`, `@TempDir` |
+   | `org.junit.Assert.*` (message first) | `org.junit.jupiter.api.Assertions.*` (message last) |
+   | `@Test(expected = X::class)` | `assertThrows<X> { }` |
+
+   Tests that extend `GenesisTestSupport` or `AbstractDatabaseTest` keep their base class, which now comes from the Jupiter module.
+3. **Test task.** The 10.0 template applies the Genesis test plugin to every module, which sets `useJUnitPlatform()` and the JVM flags the platform needs on the `test` task. Add it to the `subprojects` block of your root `build.gradle.kts`:
+
+   ```kotlin
+   subprojects {
+       apply(plugin = "global.genesis.test")
+       // ...
+   }
+   ```
+
+   If a test run can't find a JUnit launcher, add `testRuntimeOnly("org.junit.platform:junit-platform-launcher")` to that module. Gradle 9 no longer adds it for you. Modules built from the template usually have it already, through `kotlin-test-junit5`.
+4. **Custom Jupiter extensions.** Jupiter 6 changed some nullability. `ExtensionContext.Store.get(key, type)` can return null, while `beforeEach(context)`, `getDisplayName(...)` and `assertThrows<T>` are non-null. Kotlin implementations may need their signatures changed.
+5. **Mockito on JDK 25.** This only applies if you run your tests on JDK 25 and use Mockito. JDK 25 blocks the agent self-attach that Mockito's inline mock maker relies on, and won't let it instrument Kotlin function types, sealed classes, records or `Flow`. Pass `byte-buddy-agent` to the test JVM as a `-javaagent`, or use `mockito-subclass` or real test doubles.
+
+Changes to the Genesis test support itself, such as the new check for leftover `javax.inject` annotations in test classes, are on the [Test support](./test-support.mdx) page.
+
+### 7. Declare libraries you used without declaring them
+
+**Applies to:** code that imports any of the libraries below without declaring them as its own dependency.
+
+**Why:** on 8.15, Genesis modules exported these libraries or managed their versions. On 10.0 they don't.
+
+**If you skip it:** the code fails to compile, or the dependency has no version.
+
+**What to do:**
+
+| If your code uses | Declare |
+|---|---|
+| Kotlin compiler or PSI classes (`org.jetbrains.kotlin.psi.*`, `org.jetbrains.kotlin.com.intellij.*`) | `org.jetbrains.kotlin:kotlin-compiler-embeddable` |
+| `org.antlr.v4.runtime.*` | `org.antlr:antlr4-runtime`, with a version |
+| Apache Shiro (`org.apache.shiro.*`) | `org.apache.shiro:shiro-core`, with a version |
+| `javax.xml.bind.*` | move to `jakarta.xml.bind`, or declare the javax JAXB API and implementation yourself |
+| Artemis client classes | `org.apache.activemq:artemis-jakarta-client` (version still managed) |
+| `org.apache.commons.beanutils.*` | `commons-beanutils:commons-beanutils` (version still managed) |
+| Gson through Ktor | `io.ktor:ktor-client-gson`, with a version |
+| fest-assert | move to AssertJ (`org.assertj:assertj-core`, version managed) |
+| Groovy `json`, `sql`, `nio`, `templates`, `jsr223` or `cli-picocli` | the `org.codehaus.groovy` module you need |
+| `plexus-utils` or `handlebars` in tests or code generation | the library itself; it no longer arrives on the test and codegen classpaths |
+| `protobuf-java`, `protobuf-dynamic`, `javalin-rendering-freemarker`, Debezium or Kafka Connect | the library, with a version; `genesis-bom` no longer manages it |
+
+Two APIs that depended on these libraries have also changed:
+
+- `SecurityUtil.encryptOld` and `decryptOld`, deprecated in 8.15, are removed. Call `SecurityUtil.encrypt` and `decrypt`. The ciphertext format is the same, so stored values don't need encrypting again.
+- Code that caught the beanutils `ConversionException` from remap type conversion should catch `global.genesis.environment.remap.exceptions.TypeConversionException`.
+
+## Check the build and packaging
+
+### 8. Check Genesis Gradle properties are set as Gradle properties
+
+**Applies to:** builds that set `genesisVersion`, `clientName`, `skipWeb` or `enableGenesisIntellijHelperTasks` from a build script, for example with `extra["skipWeb"] = true`.
+
+**Why:** the Genesis plugins now read these only as Gradle properties.
+
+**If you skip it:** the value set in the build script is ignored.
+
+**What to do:** set them in `gradle.properties` or pass them with `-P` on the command line.
+
+`defaultGenesisManifestEnabled` in `gradle.properties` has never taken effect, because the settings plugin sets its own value. The build now warns about it. To turn the manifest on or off, use `genesisManifest { enabled = ... }` in the distribution module's build script.
+
+### 9. Check the values of boolean and enum `genesisExec` properties
+
+**Applies to:** builds that set `failPreCompileScriptOnErrors`, `enableDynamicDeployment`, `compactProcessesStrategy` or `packagingStrategy` in `gradle.properties`, on the command line or in CI.
+
+**Why:** these properties are now parsed strictly.
+
+- For the boolean properties, 8.15 treated anything other than `true` as false. On 10.0, `yes`, `on`, `y` and an empty value mean true; `no`, `off` and `n` mean false; case is ignored; any other value fails the build.
+- The enum properties are now matched ignoring case.
+
+**If you skip it:** a value that 8.15 read as false may now be read as true, or fail the build:
+
+```properties
+# 8.15: false (only "true" was true)    10.0: true
+enableDynamicDeployment=yes
+# 8.15: false                            10.0: the build fails with "Invalid value 'enabled' for Gradle property 'failPreCompileScriptOnErrors'. Expected true or false"
+failPreCompileScriptOnErrors=enabled
+```
+
+**What to do:** set each of these properties to `true` or `false`.
+
+### 10. If your system definition sets `DEPLOYED_PRODUCT`, ship the generated code
+
+**Applies to:** applications whose `genesis-system-definition.kts` sets `DEPLOYED_PRODUCT`.
+
+**Why:** when `DEPLOYED_PRODUCT` is set, the deploy and remap steps don't generate code. They expect the generated-code jars to be in the distribution already, and look for them under the `DEPLOYED_PRODUCT` name.
+
+**If you skip it:** code generation now fails the build if neither `bundleGeneratedClasses` nor `genesis.codegen.reuseUpstream` is `true`, because without them the application would fail to start. If `DEPLOYED_PRODUCT` doesn't match the product's distribution name exactly, case included, the build warns, and the application won't find its generated jars at runtime.
+
+**What to do:** either set `bundleGeneratedClasses=true` (or `genesis.codegen.reuseUpstream=true`) in `gradle.properties`, or remove `DEPLOYED_PRODUCT` if the build should generate code at deploy time. Make sure the value matches the product name exactly. If the generated jars reach the distribution some other way, set `genesis.codegen.deployedProductCheck=false` to skip the check.
+
+### 11. Stop running `genesisInstall` inside containers built from the generated Dockerfile
+
+**Applies to:** runbooks and scripts that run `genesisInstall` inside a running container built from the Dockerfile Genesis generates.
+
+**Why:** the generated image now sets `GENESIS_SYSDEF_BlockGenesisInstall=true` in its final stage. Inside that container, `genesisInstall` prints a warning and exits with status 0 without installing anything:
+
+```
+WARNING: genesisInstall cannot be executed because BlockGenesisInstall is set to "true".
+```
+
+**If you skip it:** a script that ran `genesisInstall` to regenerate config in a live container gets no error and no change.
+
+**What to do:**
+
+- For system definition changes, set them as `GENESIS_SYSDEF_<item>` environment variables on the container.
+- For config or GPAL changes, rebuild and redeploy the image.
+- If you really need the old behaviour, start the container with `GENESIS_SYSDEF_BlockGenesisInstall=false`.
+- In automation, don't rely on the exit status to tell whether it installed. Check its output for the warning, or check `GENESIS_SYSDEF_BlockGenesisInstall` before calling it.
+
+The builder stage of the generated Dockerfile, images built with `dockerImage { customDockerfile = ... }`, and installs outside Docker are not affected.
+
+### 12. If your processes relied on test or tooling jars in `genesis/lib`
+
+**Applies to:** applications that used one of these jars at runtime without declaring it. This is unlikely.
+
+**Why:** the platform's `genesis/lib` no longer ships:
+
+- the test-support jars that `genesis-log4j-testsupport` brought in, such as `assertj-core`, `opentest4j` and `log4j-core-test`
+- `jmh-core`
+- the old `jnr-ffi` 2.2.13 and `jffi` 1.3.10 jars
+
+**If you skip it:** a process that loaded one of these classes fails with a missing-class error.
+
+**What to do:** declare the library as a dependency of your own module.
+
+## Check at runtime
+
+### 13. Check payloads that change on the wire
+
+**Applies to:** every application. These changes affect anything that reads Genesis payloads: front ends, API clients and downstream systems.
+
+**Why:** Genesis keeps the 8.15 behaviour for most Jackson defaults, but these Jackson 3 changes could not be kept.
+
+**If you skip it:** clients see renamed or missing fields, or values in a new format, with no error on the server.
+
+**What to do:**
+
+| Change | Example | What to do |
+|---|---|---|
+| Getters that start with two or more capitals get new names | `getURLValue()`: `URLVALUE` becomes `URL_VALUE` | Add `@JsonProperty("URLVALUE")`, or the name your clients expect |
+| A getter with a digit straight after `get` is no longer a property | `get2Value()`: `2_VALUE` is no longer written | Rename the property, or add `@JsonProperty` |
+| CSV columns follow declaration order | they were alphabetical | Fix consumers that read columns by position, or reorder the properties |
+| XML nulls carry `xsi:nil` | `<note/>` becomes `<note xmlns:xsi="..." xsi:nil="true"/>` | Check consumers with a strict XML schema |
+| `Instant`, `LocalDateTime` and `ZonedDateTime` are written as whole epoch milliseconds | `1614834367.008000000` becomes `1614834367008` | Check clients of your own event and request types that use these types |
+
+Generated entity fields don't use `Instant`, `LocalDateTime` or `ZonedDateTime`, so the last row only affects types you define yourself.
+
+Before going live, test request/reply and Data Server subscriptions over both JSON and Smile, and check Consul registration if you use it.
+
+### 14. Choose a runtime JDK
+
+**Applies to:** every deployment. Nothing forces a change.
+
+**Why:** 10.0 runs on JDK 17, but it is built to take advantage of JDK 25. On JDK 25, the default JVM flags turn on compact object headers, which use less heap, and the `sun.misc.Unsafe` and native-access warnings go away. No application configuration is needed.
+
+**If you skip it:** nothing breaks. You don't get the JDK 25 benefits.
+
+**What to do:** pick the JDK your processes run on.
+
+The default JVM arguments now start with `-XX:+IgnoreUnrecognizedVMOptions`, so that JDK 25 flags are ignored on older JDKs. As a side effect, a misspelt option in a process's `<options>`, `<PROC>_PROCESS_OPTIONS`, the system definition's `JVM_OPTIONS` or `GENESIS_SYSDEF_JVM_OPTIONS` is now silently ignored. Check that custom options took effect, for example with `jcmd <pid> VM.command_line`.
+
+## Optional: compile `.kts` files at build time
+
+Not required. With it off, which is the default, applications build and start as they did on 8.15.
+
+Compiling your `.kts` files at build time shortens process start-up. To turn it on, add this to `settings.gradle.kts`:
+
+```kotlin
+genesis {
+    compileScriptsAtBuildTime = true
+}
+```
+
+Or apply `id("global.genesis.script.compilation")` to the modules that hold your `.kts` files. Then fix what the build reports:
+
+- Add a dependency for every type the scripts use, including modules named in `@file:ScriptModules`.
+- Exclude any `.kts` file that no script definition claims.
+
+With it on, a script that throws at start-up runs three times instead of twice, so any side effects before the exception happen once more. Check `*-script.kts` and `*-eventhandler.kts` files that do non-repeatable work before they can fail.
+
+To turn it off again, pass `-Pgenesis.scripts.compileAtBuildTime=false`, or set `enabled = false` in a module's `genesisScriptCompilation` block. There is no runtime switch.
+
+## Area pages
+
+After the steps on this page, work through the area pages that apply to your application.
+
+| Area | Who needs it |
+|---|---|
+| [Removed and deprecated modules](./removed-modules.mdx) | Applications that use a Genesis module, process or plugin removed or deprecated in 10.0, Groovy script processes, or the code generation cache tasks. |
+| [Database layer](./database.mdx) | Applications that call the database APIs directly, use write listeners or batch writes, or still have an old SQL dictionary. |
+| [Dictionary and code generation](./dictionary-codegen.mdx) | Applications that use generated repositories, entity builders, or removed dictionary and system definition members. |
+| [Process runtime and clustering](./process-runtime-clustering.mdx) | Anyone who sets process JVM options, runs a cluster, or has scripts that read `mon` output. |
+| [Networking and router](./networking-router.mdx) | Applications with custom binary clients, web handlers, router script settings or `MessageSerialization=MSGPACK`. |
+| [Security and authentication](./security-auth.mdx) | Every application with permissioning (`auth` blocks) on Data Servers, Request Servers or event handlers. |
+| [Event handlers and evaluator](./event-handlers-evaluator.mdx) | Applications with event handlers, XML event handler definitions, `AbstractEventHandler` subclasses or evaluator rules. |
+| [Data Server and Request Server](./data-server-request-server.mdx) | Applications with Data Server queries or Request Server definitions. |
+| [Consolidator and data pipelines](./consolidator-pipelines.mdx) | Applications with Consolidators, pipelines or custom pipeline sinks. |
+| [Test support](./test-support.mdx) | Applications with tests built on the Genesis test support. |
+| [MCP](./mcp.mdx) | Applications that run the Genesis MCP server. |
