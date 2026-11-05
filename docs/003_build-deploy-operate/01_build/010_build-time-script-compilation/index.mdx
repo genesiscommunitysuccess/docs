@@ -177,7 +177,7 @@ plugins {
 
 Then turn the switch on, either with `genesis { ktlintScripts = true }` in `settings.gradle.kts`, `ktlintScripts = true` in the module's `genesisScriptCompilation` block, or the `genesis.scripts.ktlint` Gradle property. With the plugin applied and the switch off, the plugin keeps ktlint away from the scripts.
 
-To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/testing-api/#testscriptfile) in the Testing API.
+To load a script in a test, see [`TestScriptFile`](/develop/server-capabilities/testing-api/gpal-java/#testscriptfile) in the Testing API.
 
 ## What fails the build
 
@@ -238,7 +238,7 @@ For example, if a `*-script.kts` file inserts a record at its top level and a la
 
 A component compiles its scripts against its own dictionary, which is packaged and distributed with it automatically, so you need no extra step when you build a component with this feature.
 
-If your application overrides a component's dictionary, the component's compiled scripts fail to link when they use a field or table your override changed incompatibly. The process then compiles them at start-up against your dictionary, which fails too. See [Overriding another product's dictionary](/develop/server-capabilities/data-model/#overriding-another-products-dictionary).
+If your application overrides a component's dictionary, the component's compiled scripts fail to link when they use a field or table your override changed incompatibly. The process then compiles them at start-up against your dictionary, which fails too. See [Overriding another product's dictionary](/develop/server-capabilities/data-model/gpal-java/#overriding-another-products-dictionary).
 
 ## Checking that it worked
 

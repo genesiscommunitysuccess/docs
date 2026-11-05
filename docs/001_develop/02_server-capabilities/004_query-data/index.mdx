@@ -1,0 +1,39 @@
+---
+title: 'Query Data'
+sidebar_label: 'Query Data'
+id: server-query-data
+keywords: [query, data server, request server, cube, real-time, snapshot, pivot]
+tags:
+- query
+- data server
+- request server
+- cube
+sidebar_position: 4
+---
+
+There are three ways to expose your application's data to clients:
+
+- **[Real-time queries (Data Server)](/develop/server-capabilities/query-data/real-time-queries-data-server)** send an initial set of data, then keep the subscription open and push every change to the client as it happens.
+- **[Snapshot queries (Request Server)](/develop/server-capabilities/query-data/snapshot-queries-request-server)** return a single snapshot of the data each time a client asks for it.
+- **[Cube Query Engine](/develop/server-capabilities/query-data/cube-query-engine)** serves flat, grouped and pivoted queries over JPA entities in a Spring Boot application. It is designed for grid UIs such as AG Grid's Server-Side Row Model.
+
+## Comparing the options
+
+| | Real-time queries (Data Server) | Snapshot queries (Request Server) | Cube Query Engine |
+|---|---|---|---|
+| What the client gets | An initial set of data, then a live stream of changes | One snapshot per request | One page of flat, grouped or pivoted rows per request |
+| How clients connect | WebSocket subscription; also available over REST | Request and reply; also available over REST, with an OpenAPI spec | HTTP, under `/api/v1/cubes/{resource}/...` |
+| Where you define it | `*-dataserver.kts` files or `GPalDataserver` classes | `*-reqrep.kts` files or `GPalRequestServer` classes | `CubeResource` declarations in a Spring Boot module |
+| What it reads | Tables and views from the data model | Tables and views from the data model, or custom logic in a custom Request Server | JPA entities, or a JPQL query |
+| Grouping and pivoting | No | No | Yes |
+| Live updates | Yes | No | No |
+
+## Which one to use
+
+- Use a **Data Server** when the client needs to see changes as they happen, for example a live blotter.
+- Use a **Request Server** when the client needs the current data on demand, for example a lookup or a report.
+- Use the **Cube Query Engine** when your application already uses Spring and [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa), and a grid needs to group, pivot or page through that data on the server. It sits alongside the Data Server and Request Server rather than replacing them. It is read-only, and because it is built on JPA it needs a SQL database.
+
+:::tip Working with Spring?
+Start with [Getting Started with Spring](/develop/development-environment/getting-started-with-spring), a step-by-step tutorial that sets up a Spring module, then [Application core](/develop/development-environment/getting-started-with-spring/application-core) for how Spring is bridged into a Genesis application.
+:::
