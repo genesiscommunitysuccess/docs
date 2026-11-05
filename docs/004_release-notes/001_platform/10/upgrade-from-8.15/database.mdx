@@ -64,7 +64,7 @@ The listener now runs inside the write's own transaction, so 10.0 is stricter ab
 
 **What goes wrong if you skip this:**
 
-- A listener that uses `tx` on a different thread, or after `onWriteResult` has returned, gets an `IllegalStateException`, and the write that triggered it is rolled back. The message names the listener and says how to fix it.
+- For writes that don't go through `RxDb`, a listener that uses `tx` on a different thread gets an `IllegalStateException`, and the write that triggered it is rolled back. So does an `AsyncWriteOperationListener` that uses `tx` after `onWriteResult` has returned. The message names the listener and says how to fix it.
 - A service with more than one kind of listener bound (for example, an old `WriteOperationListener` and a new `SyncWriteOperationListener`) logs this warning at startup, and from then on it is undefined which listener a write calls:
 
   ```
@@ -107,7 +107,7 @@ The listener now runs inside the write's own transaction, so 10.0 is stricter ab
 
 Whichever listener you use:
 
-- **Stay on the calling thread or coroutine.** Don't switch threads or dispatchers inside the listener. In 8.15, the Rx listener ran on `Dispatchers.IO`.
+- **Stay on the calling thread or coroutine.** Don't switch threads or dispatchers inside the listener. In 8.15, the listener ran on `Dispatchers.IO`; in 10.0, only writes through `RxDb` still run it there.
 - **Write through `tx`.** Writes made through `tx` are committed and published together with the write that triggered the listener, and they don't call the listener again. If the listener throws an exception, the triggering write is rolled back.
 - **Expect whole batches.** For an entity `upsertAll`, `writeResults` holds the whole batch in a single call.
 
@@ -132,12 +132,13 @@ Whichever listener you use:
 
 **Applies to:** views where two fields end up with the same SQL select label.
 
-**Why:** each field of a view is selected in SQL under the label `<join alias>_<field name>`. If two fields produce the same label, compared without regard to case, the generated SQL is ambiguous. For example, a field `B_C` on alias `A` and a field `C` on alias `A_B` both produce `A_B_C`. Code generation now rejects such a view, whatever the database and whatever `SqlViewsEnabled` is set to.
+**Why:** each field of a view is selected in SQL under the label `<join alias>_<field name>`. If two fields produce the same label, compared without regard to case, the generated SQL is ambiguous. For example, a field `B_C` on alias `A` and a field `C` on alias `A_B` both produce `A_B_C`. Code generation now rejects such a view, whatever the database and whatever `SqlViewsEnabled` is set to. It also rejects a view whose labels become identical only once they are shortened to fit the label length limit of a supported database.
 
-**What goes wrong if you skip this:** the build fails, with a message that starts:
+**What goes wrong if you skip this:** the build fails, with one of these messages:
 
 ```
 View <VIEW_NAME> fails the build whatever the database or SqlViewsEnabled setting, because its generated SQL select labels collide: ...
+View <VIEW_NAME> fails the build because its generated SQL select labels collide once shortened to the <N>-byte label limit of a supported database: ...
 ```
 
 **What to do:** rename a join alias or a field so that each label is unique.
@@ -186,7 +187,8 @@ IllegalArgumentException: Field <FIELD> value exceeds max size of <maxSize> char
 | 8.15 | 10.0 |
 |---|---|
 | `class MyEntity : Entity` (`global.genesis.db.entity.Entity`) | `TableEntity` |
-| `entityDb.safeWriteTransaction { … }` | `entityDb.writeTransaction { … }.first` |
+| `entityDb.safeWriteTransaction { … }` on `AsyncEntityDb` | `entityDb.writeTransaction { … }.first` |
+| `entityDb.safeWriteTransaction { … }` on `RxEntityDb` | `entityDb.writeTransaction { … }.map { it.first }` |
 | `entityDb.safeReadTransaction { … }` | `entityDb.readTransaction { … }` |
 | `getBulk(index, startRecord, fields)` and `getBulkFromEnd(index, startRecord[, fields])` on the entity databases | `getRange(…)` and `getRangeFromEnd(…)`, or `getByCriteria(…, paging = …)` |
 | `connection.buildStatement(sql, …)` on `SqlDatabaseConnection` | `connection.createPreparedStatement(sql, …)`. The suspending `buildStatement` on `SqlAsyncDatabaseConnection` is unchanged. |
@@ -196,7 +198,7 @@ IllegalArgumentException: Field <FIELD> value exceeds max size of <maxSize> char
 | `RxJdbcDataSource` | `SqlConnectionPool`, in the same package. This is a rename; it was not deprecated in 8.15. |
 | `DatabaseManager.getStorageEngine(…)` | Inject `StorageEngine`. This was not deprecated in 8.15. |
 
-For example:
+For example, with `AsyncEntityDb`:
 
 ```kotlin
 // 8.15
@@ -252,4 +254,3 @@ These changes don't require you to do anything, but code that relied on the old 
   - A nested transaction opened by a write listener joins the write that the listener is handling. If the nested transaction fails, its own writes are rolled back.
   - `RxDb` writes join an enclosing transaction.
   - A standalone `SyncEntityDb` write is atomic with its write listener.
-- **`readOnlyBlocking()` returns `null` on databases other than SQL.** In 8.15, it returned a reader whose `getByCriteria` threw an exception.
