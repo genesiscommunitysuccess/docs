@@ -77,7 +77,7 @@ For what `ModifyDetails` is, see [Modify details](/develop/server-capabilities/d
 
 Index names come from your data model. By default, the platform names an index `<TABLE_NAME>_BY_<FIELD_1>(_<FIELD_N>)`, as described in [primaryKey](/develop/server-capabilities/data-model/gpal-java/#primarykey), so a `TRADE_SUMMARY` table keyed on `TRADE_ID` gets `TRADE_SUMMARY_BY_TRADE_ID`. You can override the name with `.name()`.
 
-A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. It offers the write methods only, bound to the write's transaction. They are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). Do not cast it to `RxDb`: anything done through `RxDb` runs outside the write's transaction. This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
+A `WriteOperationListener` receives an `RxRecordWriteSupport` as `tx`. The write methods are bound to the write's transaction. They are `insert`, `modify`, `upsert`, `delete`, `recover` and their `All` variants, and each returns an RxJava `Single`. The read methods are declared on `RxRecordWriteSupport` too, but `tx` is typed `RxRecordWriteSupport<*, *, *>`, and through that star-projected type only `getAll` and `getAllAsList` can be called. `get`, `getBulk`, `getRange`, `count` and the other reads do not compile through it. Block on each call on the thread that called you, as [described below](#writeoperationlistener-on-the-sql-write-path). Do not cast it to `RxDb`: anything done through `RxDb` runs outside the write's transaction. This listener records a `TRADE_EVENT` row for every `TRADE` that is saved:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -120,7 +120,9 @@ To switch to a different listener type, replace the old listener with the new on
 - `tx` is bound to the same transaction. Writes you make through it commit or roll back with the triggering write, are published to the update queue after it, and don't call the listener again.
 - If the listener throws an exception, or one of its own writes fails, the triggering write rolls back and nothing is published.
 - Only an exception thrown before `onWriteResult` returns rolls the triggering write back. Work you hand to another thread is outside the transaction.
-- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. For `SyncWriteOperationListener` and `AsyncWriteOperationListener` nothing checks this. Unlike `WriteOperationListener`, which throws an error that explains the problem (see [below](#writeoperationlistener-on-the-sql-write-path)), a thread switch in these two shows up as a hang or a failed transaction, with no message that names the cause.
+- Stay on the thread that called you (for `AsyncWriteOperationListener`, the coroutine). Handing work on `tx` to another thread or dispatcher breaks the transaction or deadlocks it. Since 10.0.0, `SyncWriteOperationListener` and `AsyncWriteOperationListener` check this and throw an `IllegalStateException`:
+  - In a `SyncWriteOperationListener`, using `tx` on any thread other than the one that calls `onWriteResult` throws an `IllegalStateException` that names the listener and the thread. It tells you to make each `tx` call on that thread, and not to hand `tx` to another thread, executor or coroutine dispatcher.
+  - In an `AsyncWriteOperationListener`, using `tx` after `onWriteResult` returns throws an `IllegalStateException`. It tells you to finish every `tx` call before returning: await or join any coroutine that uses `tx`, and don't launch one into another scope. This check is scope-based, not a thread check.
 
 ### `WriteOperationListener` on the SQL write path
 
