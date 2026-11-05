@@ -77,7 +77,7 @@ For the current DSL, see [`triggerRemote`](/develop/server-capabilities/core-bus
 
 **What goes wrong if you skip this:** nothing fails. The file still loads, but the `<transactions>` section is ignored. Its `preValidate`, `prePersist` and `postPersist` expressions stop running, and its metadata field overrides stop applying.
 
-**What to do:** search your process configuration XML files for `<transactions>` and `preExpression`. Port each definition to a GPAL `eventHandler` or to a typed event handler:
+**What to do:** search your process configuration XML files for `<transactions>`. Port each definition to a GPAL `eventHandler` or to a typed event handler:
 
 | XML | Equivalent |
 |---|---|
@@ -264,8 +264,8 @@ The rewritten form also works in 8.15, so you can update stored rules before you
 **What to do:** check the clients that send these fields.
 
 - **`BigDecimal` fields with `@BigDecimalMin` or `@BigDecimalMax`.** A value outside the declared range is now rejected. 8.15 didn't enforce the range.
-- **Any `BigDecimal` field.** The value must be a plain decimal string, such as `"1.5"`, `"-2"` or `"1e3"`. A string such as `"1,5"` is now rejected by the schema. In 8.15, it failed later, when the payload was read.
-- **`LocalDate` fields.** These are written as epoch milliseconds at midnight UTC. They accept epoch milliseconds, `2021-03-04` or `2021-03-04T00:00:00Z`. Send midnight UTC: epoch milliseconds for local midnight in a time zone ahead of UTC are read as the previous day. Sending an ISO date avoids the problem.
+- **Any `BigDecimal` field.** The value must be a number written as a string, such as `"1.5"`, `"-2"` or `"1e3"`. A string such as `"1,5"` is now rejected by the schema. In 8.15, it failed later, when the payload was read.
+- **`LocalDate` fields.** In 8.15, the generated schema described a `LocalDate` field in a payload class as an object. In 10.0, it describes it as a date, sent as an integer: epoch milliseconds at midnight UTC. Send midnight UTC, because epoch milliseconds for local midnight in a time zone ahead of UTC are read as the previous day.
 
 ## 9. `CRON_RULE_AUDIT`: migrate the audit rows during the database upgrade
 
