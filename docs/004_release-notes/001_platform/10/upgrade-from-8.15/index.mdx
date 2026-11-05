@@ -41,9 +41,10 @@ Work through it in this order:
 These changes all work on 8.15. Making them first, and releasing them, keeps the 10.0 upgrade itself smaller.
 
 - **Move a Maven build to Gradle.** The Genesis Maven plugins and the Maven archetype are not published for 10.0. An application built with Maven must move to the Genesis Gradle plugins first.
-- **Port JUnit 4 tests to JUnit Jupiter.** JUnit 4 support is removed in 10.0, but the Jupiter test-support modules (`genesis-testsupport` and `genesis-dbtest`) are already on 8.15. See [Tests: move to JUnit Jupiter 6](#tests-move-to-junit-jupiter-6).
+- **Port JUnit 4 tests to JUnit Jupiter.** JUnit 4 support is removed in 10.0, but the Jupiter test-support modules (`genesis-testsupport` and `genesis-dbtest`) are already on 8.15. See [Tests: move to JUnit Jupiter 6](#6-tests-move-to-junit-jupiter-6).
 - **Update your own Gradle build scripts for Gradle 9.** The replacements in [Gradle 9 changes in your build scripts](#gradle-9-changes-in-your-build-scripts) also work on Gradle 8.10.2.
 - **Move off modules removed in 10.0.** See [Removed and deprecated modules](./removed-modules.mdx).
+- **Replace `SecurityUtil.encryptOld` and `decryptOld` with `encrypt` and `decrypt`.** The old methods are deprecated on 8.15 and removed in 10.0. See [step 7](#7-declare-libraries-you-used-without-declaring-them).
 - **Rewrite an old SQL dictionary, and stop using `DbMode=LEGACY`.** This has to be done on 8.15. See [Database layer](./database.mdx).
 
 ## Upgrade the build
@@ -224,7 +225,6 @@ As with step 3, search for `javax.annotation.PostConstruct` and `javax.annotatio
 
 Lifecycle hooks also behave slightly differently:
 
-- A `@PostConstruct` that throws now fails the injection with a `ProvisionException`.
 - `@PreDestroy` runs on the thread that is shutting down, with no timeout per method. A hook that hangs holds up shutdown.
 - A hook that 8.15 ran twice (an overridden method annotated again in the subclass) now runs once.
 
@@ -372,7 +372,7 @@ Two APIs that depended on these libraries have also changed:
 
 **What to do:** set them in `gradle.properties` or pass them with `-P` on the command line.
 
-`defaultGenesisManifestEnabled` in `gradle.properties` has never taken effect, because the settings plugin sets its own value. The build now warns about it. To turn the manifest on or off, use `genesisManifest { enabled = ... }` in the distribution module's build script.
+`defaultGenesisManifestEnabled` in `gradle.properties` has never taken effect, because the settings plugin sets its own value. The build now warns when the value you set differs from the one the plugin uses. To turn the manifest on or off, use `genesisManifest { enabled = ... }` in the distribution module's build script.
 
 ### 9. Check the values of boolean and enum `genesisExec` properties
 
@@ -380,7 +380,7 @@ Two APIs that depended on these libraries have also changed:
 
 **Why:** these properties are now parsed strictly.
 
-- For the boolean properties, 8.15 treated anything other than `true` as false. On 10.0, `yes`, `on`, `y` and an empty value mean true; `no`, `off` and `n` mean false; case is ignored; any other value fails the build.
+- For the boolean properties, 8.15 treated anything other than `true` (in any case) as false. On 10.0, `yes`, `on`, `y` and an empty value mean true; `no`, `off` and `n` mean false; case is ignored; any other value fails the build.
 - The enum properties are now matched ignoring case.
 
 **If you skip it:** a value that 8.15 read as false may now be read as true, or fail the build:
@@ -394,15 +394,15 @@ failPreCompileScriptOnErrors=enabled
 
 **What to do:** set each of these properties to `true` or `false`.
 
-### 10. If your system definition sets `DEPLOYED_PRODUCT`, ship the generated code
+### 10. If your system definition sets `DEPLOYED_PRODUCT`, check the generated code is shipped
 
-**Applies to:** applications whose `genesis-system-definition.kts` sets `DEPLOYED_PRODUCT`.
+**Applies to:** applications whose `genesis-system-definition.kts` sets `DEPLOYED_PRODUCT`. It does not apply to PBC projects, which are exempt from the check.
 
 **Why:** when `DEPLOYED_PRODUCT` is set, the deploy and remap steps don't generate code. They expect the generated-code jars to be in the distribution already, and look for them under the `DEPLOYED_PRODUCT` name.
 
-**If you skip it:** code generation now fails the build if neither `bundleGeneratedClasses` nor `genesis.codegen.reuseUpstream` is `true`, because without them the application would fail to start. If `DEPLOYED_PRODUCT` doesn't match the product's distribution name exactly, case included, the build warns, and the application won't find its generated jars at runtime.
+**If you skip it:** if you have set `genesis.codegen.reuseUpstream=false` and `bundleGeneratedClasses` is not `true`, the generated-code jars are left out of the distribution, so code generation now fails the build rather than letting the application fail to start. (`genesis.codegen.reuseUpstream` defaults to `true`, so a build that doesn't set it passes this check.) If `DEPLOYED_PRODUCT` doesn't match the product's distribution name exactly, case included, the build warns, and the application won't find its generated jars at runtime.
 
-**What to do:** either set `bundleGeneratedClasses=true` (or `genesis.codegen.reuseUpstream=true`) in `gradle.properties`, or remove `DEPLOYED_PRODUCT` if the build should generate code at deploy time. Make sure the value matches the product name exactly. If the generated jars reach the distribution some other way, set `genesis.codegen.deployedProductCheck=false` to skip the check.
+**What to do:** if the build fails this check, set `bundleGeneratedClasses=true` in `gradle.properties`, or remove `DEPLOYED_PRODUCT` if the build should generate code at deploy time. Make sure the value matches the product name exactly. If the generated jars reach the distribution some other way, set `genesis.codegen.deployedProductCheck=false` to skip the check.
 
 ### 11. Stop running `genesisInstall` inside containers built from the generated Dockerfile
 
