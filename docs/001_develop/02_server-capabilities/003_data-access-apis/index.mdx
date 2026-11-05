@@ -13,8 +13,9 @@ sidebar_position: 3
 
 The data access APIs read and write your application's data, and let you subscribe to changes. There are two ways to do this:
 
-- **[Data access APIs (GPAL / Java)](/develop/server-capabilities/data-access-apis/gpal-java)** describes the Genesis database APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb` and `RxDb`). `SyncEntityDb`, `AsyncEntityDb` and `RxEntityDb` work through type-safe DAOs generated from your [data model](/develop/server-capabilities/data-model/gpal-java); `RxDb` works without them. Most server capabilities use these APIs, and they work with every supported database.
+- **[Data access APIs (GPAL / Java)](/develop/server-capabilities/data-access-apis/gpal-java)** describes the Genesis database APIs. `SyncEntityDb`, `AsyncEntityDb` and `RxEntityDb` work through type-safe DAOs generated from your [data model](/develop/server-capabilities/data-model/gpal-java); the record-level `SyncDb`, `AsyncDb` and `RxDb` work with `DbRecord`s instead. Most server capabilities use these APIs, and they work with every supported database.
 - **[Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa)** describes how to use Spring Data JPA and Hibernate in a Spring Boot process. You get repositories, derived queries and `@Transactional` service methods, and the same tables, record IDs, audit trail and `UpdateQueue` as the Genesis APIs. It works with SQL databases only.
+- **[Write operation listeners](/develop/server-capabilities/data-access-apis/write-operation-listeners)** describes how to run your own code inside the transaction of every write a process makes.
 
 The Genesis APIs are used throughout the platform. Choose JPA when your process is already a Spring Boot application and you'd rather work in the Spring programming model. A write made through JPA is published to the rest of the platform just like any other write.
 
