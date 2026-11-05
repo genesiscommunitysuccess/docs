@@ -70,8 +70,8 @@ Here, we look look more closely at the two tables and values that we can expect 
 | DESCRIPTION | Description of the rule | Send position report to US desk | true |
 | TIME_ZONE | The [Time Zone](https://docs.oracle.com/cd/E84527_01/wcs/tag-ref/MISC/TimeZones.html) of the cron expression. **Be careful selecting time zones that don't shift with daylight savings**, such as `EST`, which may or may not be desirable. | America/New_York  | true |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event. | `ENABLED` | true |
-| USER_NAME | Set automatically to the user who inserts or amends the rule; any value you send is ignored. The rule's event runs as this user, so they must have permission to use that event for it to be triggered successfully | admin | true |
-| PROCESS_NAME | The name of the process to send the resulting event | `POSITION_EVENT_HANDLER` | true |
+| USER_NAME | Set automatically to the user who inserts or amends the rule; any value you send is ignored. The rule's event runs as this user, so they must have permission to use that event for it to be triggered successfully | admin | false |
+| PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. This field can be omitted, and we recommend that you omit it to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_POSITION_REPORT`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK = 'US') && (TRIGGER = 'RULE')` | true |
 
@@ -115,10 +115,10 @@ Each audit record holds the rule's fields, plus these fields:
 | Field Name | Description |
 | --- | --- |
 | `CRON_RULE_AUDIT_ID` / `DYNAMIC_RULE_AUDIT_ID` | Generated ID of the audit record |
-| `AUDIT_EVENT_TYPE` | `INSERT`, `MODIFY` or `DELETE` |
+| `AUDIT_EVENT_TYPE` | `INSERT`, `MODIFY` or `DELETE`. In `DYNAMIC_RULE_AUDIT` it can also be `ONCE_ONLY_DYNAMIC_RULE_EXECUTION`, when a `ONCE_ONLY` rule fires and the Evaluator deletes it |
 | `AUDIT_EVENT_DATETIME` | Date and time of the change |
-| `AUDIT_EVENT_USER` | The user who sent the event that changed the rule |
-| `AUDIT_EVENT_TEXT` | Not set by the Evaluator |
+| `AUDIT_EVENT_USER` | The user who sent the event that changed the rule. On a `ONCE_ONLY_DYNAMIC_RULE_EXECUTION` row in `DYNAMIC_RULE_AUDIT`, this is the rule's `USER_NAME` |
+| `AUDIT_EVENT_TEXT` | Not set by the Evaluator in `CRON_RULE_AUDIT`. In `DYNAMIC_RULE_AUDIT` it is set on a `ONCE_ONLY_DYNAMIC_RULE_EXECUTION` row to `Rule <id> with execution strategy ONCE_ONLY executed, deleting rule` |
 
 `USER_NAME` is the rule's own `USER_NAME`; the user who made the change is in `AUDIT_EVENT_USER`.
 
@@ -128,7 +128,7 @@ Each audit record holds the rule's fields, plus these fields:
 
 In 8.15 and earlier, `CRON_RULE_AUDIT` had `EVENT_TYPE` and `EVENT_DATETIME` instead of `AUDIT_EVENT_TYPE` and `AUDIT_EVENT_DATETIME`, and its `USER_NAME` held the user who made the change. `DYNAMIC_RULE_AUDIT` is unchanged. Update any queries or reports that read those columns.
 
-Existing rows are migrated to the new columns automatically when you install 10.0; their audit IDs are regenerated. The migration copies each old `USER_NAME` into both `AUDIT_EVENT_USER` and `USER_NAME`, so on rows written before the upgrade `USER_NAME` is still the user who made the change, not the rule's user.
+Existing rows are migrated to the new columns when you upgrade to 10.0; their audit IDs are regenerated. On Docker upgrades the rows are exported, cleared and reloaded automatically. On non-Docker upgrades the pre-install hook exports the rows to a CSV file and clears the table. After `remap --commit`, run [`genesisInstallHooks`](/build-deploy-operate/operate/commands/#genesisinstallhooks) with `--hookType=POST_REMAP` to load them back, and keep the exported file until then. The migration copies each old `USER_NAME` into both `AUDIT_EVENT_USER` and `USER_NAME`, so on rows written before the upgrade `USER_NAME` is still the user who made the change, not the rule's user.
 
 ::::
 
