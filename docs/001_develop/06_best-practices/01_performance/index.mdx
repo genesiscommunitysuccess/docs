@@ -23,8 +23,8 @@ For a **non-technical guide** to help clients and business analysts agree data v
 | -------- | ------ |
 | Modest row counts that fit comfortably in memory | [Client-side datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/) on [Grid Pro](/develop/client-capabilities/grids/grid-pro/) or default [Entity Manager](/develop/client-capabilities/grids/entity-manager/) |
 | Large or unbounded tables, heavy sort/filter | [Server-side datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/) (AG Grid Enterprise) or Entity Manager with `datasource-type="server"` — see [Data Server or Request Reply](#data-server-or-request-reply) |
-| Frequent real-time row updates in a bounded grid window | [Data Server](/develop/server-capabilities/real-time-queries-data-server/) with tuned `MAX_ROWS` / `MAX_VIEW` / `MOVING_VIEW` |
-| Infrequent updates or seconds-scale refresh via HTTP polling | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) with [criteria-only mode](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode) where appropriate |
+| Frequent real-time row updates in a bounded grid window | [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) with tuned `MAX_ROWS` / `MAX_VIEW` / `MOVING_VIEW` |
+| Infrequent updates or seconds-scale refresh via HTTP polling | [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) with [criteria-only mode](/develop/server-capabilities/query-data/snapshot-queries-request-server/#criteria-only-mode) where appropriate |
 | CRUD screens from metadata | [Entity Manager](/develop/client-capabilities/grids/entity-manager/) with tuned [`datasourceConfig`](/develop/client-capabilities/grids/entity-manager/#configuring-the-datasourceconfig) |
 | Read-only or custom grid UX | [Grid Pro](/develop/client-capabilities/grids/grid-pro/) directly |
 | Large dropdowns (select / combobox on reference data) | [`options-datasource`](/develop/client-capabilities/forms/form-inputs/client-options-datasource/) with **`infinite-scroll`** and tuned **`page-size`** |
@@ -40,20 +40,20 @@ Choosing between a Data Server subscription and Request Reply is not only about 
 | Prefer Data Server | Prefer Request Reply |
 | ---------------- | -------------------- |
 | Rows change often and you benefit from **streaming delta updates** over WebSocket | Rows change rarely, or **HTTP polling** with a delay of a few seconds (tune `pollingInterval` and [Connect polling](/develop/client-capabilities/server-communications/comms-connect/#configuration-httpconnectconfig)) is acceptable |
-| A **bounded live window** (`MAX_ROWS`, `MAX_VIEW`, [`MOVING_VIEW`](/develop/server-capabilities/real-time-queries-data-server/#max_view-and-moving_view)) matches the UX | You need database-side criteria and sort on columns that are **not** backed by [Data Server indices](/develop/server-capabilities/real-time-queries-data-server/#indices), and [criteria-only mode](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode) applies |
+| A **bounded live window** (`MAX_ROWS`, `MAX_VIEW`, [`MOVING_VIEW`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_view-and-moving_view)) matches the UX | You need database-side criteria and sort on columns that are **not** backed by [Data Server indices](/develop/server-capabilities/query-data/real-time-queries-data-server/#indices), and [criteria-only mode](/develop/server-capabilities/query-data/snapshot-queries-request-server/#criteria-only-mode) applies |
 
 For either resource type, use a [server-side grid datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-server-side-datasource) when the dataset is too large to download in full. Server-side row model (SSRM) works with **both** Data Server queries and Request Reply resources; it is not a separate pattern that replaces Data Server for live data above a fixed row count.
 
-**Request Reply trade-off:** polling is less efficient than a WebSocket Data Server stream, but it is a valid choice when refresh latency is tolerable. Point configuration to [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) and client `pollingInterval` / router `POLLING_FREQUENCY` rather than loading the full result set client-side.
+**Request Reply trade-off:** polling is less efficient than a WebSocket Data Server stream, but it is a valid choice when refresh latency is tolerable. Point configuration to [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) and client `pollingInterval` / router `POLLING_FREQUENCY` rather than loading the full result set client-side.
 
 ## How many rows to subscribe to
 
-There is no single row count that fits every grid. Transfer size and memory pressure depend on **row count × column count × value size**. The default [`MAX_VIEW`](/develop/server-capabilities/real-time-queries-data-server/#max_view) of 1000 is a starting point, not a guarantee: a grid with hundreds of columns (as in some legacy workloads) may need a much lower cap than a narrow grid with the same row count.
+There is no single row count that fits every grid. Transfer size and memory pressure depend on **row count × column count × value size**. The default [`MAX_VIEW`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_view) of 1000 is a starting point, not a guarantee: a grid with hundreds of columns (as in some legacy workloads) may need a much lower cap than a narrow grid with the same row count.
 
 Use a practical budget:
 
 - Estimate **cells in flight** (subscribed rows × columns you actually send).
-- Lower [`MAX_ROWS`](/develop/server-capabilities/real-time-queries-data-server/#max_rows) and `MAX_VIEW` when columns are wide or values are large.
+- Lower [`MAX_ROWS`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_rows) and `MAX_VIEW` when columns are wide or values are large.
 - For “latest activity” views, prefer a **moving live window** (`MOVING_VIEW` = true) over raising `MAX_VIEW` to tens of thousands so the grid can show new rows without holding the full history in the browser.
 
 Users often need to **search across** a large table without loading every row into the grid. That is solved with **server-side criteria** on indexed fields and UI that encourages filtering—not by subscribing to the entire dataset.
@@ -62,8 +62,8 @@ Users often need to **search across** a large table without loading every row in
 
 When the backing store may hold tens of thousands of rows (trades, orders, audit events) but each user only works with a filtered slice:
 
-1. Expose a [Data Server](/develop/server-capabilities/real-time-queries-data-server/) query (or Request Reply with criteria-only where indices do not fit).
-2. Define [indices](/develop/server-capabilities/real-time-queries-data-server/#indices) on fields users **sort and filter** on.
+1. Expose a [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) query (or Request Reply with criteria-only where indices do not fit).
+2. Define [indices](/develop/server-capabilities/query-data/real-time-queries-data-server/#indices) on fields users **sort and filter** on.
 3. Use a **server-side** grid datasource so `CRITERIA_MATCH` and `ORDER_BY` run on the server.
 4. Provide explicit filter UX—[Foundation Filters](/develop/client-capabilities/forms/smart-forms/foundation-forms-filters) or Entity Manager [filter configuration](/develop/client-capabilities/grids/entity-manager/entity-manager-filters) (`enable-filters`)—and pass criteria into the grid datasource so users narrow results before scrolling.
 5. Cap subscription size with `MAX_ROWS` / `MAX_VIEW`; align Entity Manager [`datasourceConfig.maxRows`](/develop/client-capabilities/grids/entity-manager/#configuring-the-datasourceconfig) with the same limits.
@@ -76,10 +76,10 @@ This guidance is about **preventing** unbounded client subscriptions on new proj
 
 - **Client-side** — sorting and filtering run in the browser. Suitable when the full result set is small enough to download and keep in memory. See [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/).
 - **Server-side** — sort and filter are sent to the backend (`ORDER_BY`, `CRITERIA_MATCH`); only the current window of rows is loaded. Behaviour depends on the resource type:
-  - **[Data Server](/develop/server-capabilities/real-time-queries-data-server/) `query`** — sorting is limited to columns backed by a [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices). Grid Pro enables sort on columns where metadata exposes a valid index.
-  - **[Request Server](/develop/server-capabilities/snapshot-queries-request-server/) `requestReply`** — with [`criteriaOnlyRequest`](/develop/server-capabilities/snapshot-queries-request-server/#criteria-only-mode), criteria and sorting are evaluated on the database where supported, so sortable columns are not restricted to Data Server-style indices (see `sortableFields` in resource metadata). Without criteria-only mode, the same index constraints as Data Server apply when streaming through the server-side datasource.
+  - **[Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) `query`** — sorting is limited to columns backed by a [Data Server index](/develop/server-capabilities/query-data/real-time-queries-data-server/#indices). Grid Pro enables sort on columns where metadata exposes a valid index.
+  - **[Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) `requestReply`** — with [`criteriaOnlyRequest`](/develop/server-capabilities/query-data/snapshot-queries-request-server/#criteria-only-mode), criteria and sorting are evaluated on the database where supported, so sortable columns are not restricted to Data Server-style indices (see `sortableFields` in resource metadata). Without criteria-only mode, the same index constraints as Data Server apply when streaming through the server-side datasource.
   - See [server-side datasource notes](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-server-side-datasource).
-- **`grid-pro-genesis-datasource`** — on [Data Server](/develop/server-capabilities/real-time-queries-data-server/) resources, enable **`request-visible-columns-only`** when the grid defines many columns but users typically show a subset. The datasource sends only the **`FIELDS`** for **currently visible** columns (plus the row id field for tracking), and reloads when column visibility changes. See [Grid Pro genesis datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource). Has no effect on Request Server resources; use static **`fields`** where you need a fixed subset.
+- **`grid-pro-genesis-datasource`** — on [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) resources, enable **`request-visible-columns-only`** when the grid defines many columns but users typically show a subset. The datasource sends only the **`FIELDS`** for **currently visible** columns (plus the row id field for tracking), and reloads when column visibility changes. See [Grid Pro genesis datasource](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/#grid-pro-genesis-datasource). Has no effect on Request Server resources; use static **`fields`** where you need a fixed subset.
 
 :::info Platform version
 **`request-visible-columns-only`** requires **`@genesislcap/grid-pro` 14.489** or later.
@@ -119,10 +119,10 @@ Each grid or datasource subscription is governed by Data Server **DATA_LOGON** p
 
 | Parameter | Role |
 | --------- | ---- |
-| [`MAX_ROWS`](/develop/server-capabilities/real-time-queries-data-server/#max_rows) | Rows per initial load and per `MORE_ROWS` request |
-| [`MAX_VIEW`](/develop/server-capabilities/real-time-queries-data-server/#max_view) | Maximum rows tracked for the subscription; `0` allows unbounded growth for infinite scroll without pre-allocating a huge server structure |
-| [`MOVING_VIEW`](/develop/server-capabilities/real-time-queries-data-server/#max_view-and-moving_view) | When `true`, new real-time rows can replace oldest rows once `MAX_VIEW` is reached |
-| [`VIEW_NUMBER`](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts) | Non-zero enables **pagination** mode (page replaces previous rows) |
+| [`MAX_ROWS`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_rows) | Rows per initial load and per `MORE_ROWS` request |
+| [`MAX_VIEW`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_view) | Maximum rows tracked for the subscription; `0` allows unbounded growth for infinite scroll without pre-allocating a huge server structure |
+| [`MOVING_VIEW`](/develop/server-capabilities/query-data/real-time-queries-data-server/#max_view-and-moving_view) | When `true`, new real-time rows can replace oldest rows once `MAX_VIEW` is reached |
+| [`VIEW_NUMBER`](/develop/server-capabilities/query-data/real-time-queries-data-server/#rows--view-concepts) | Non-zero enables **pagination** mode (page replaces previous rows) |
 
 Typical patterns:
 
@@ -130,7 +130,7 @@ Typical patterns:
 - **Infinite scroll** — server-side datasource with pagination disabled; consider `MAX_VIEW` = `0` for scroll growth; use grid [row count in server-side infinite scroll](/develop/client-capabilities/grids/grid-pro/#row-count-in-server-side-infinite-scroll).
 - **Pagination** — `MAX_ROWS` = page size, `VIEW_NUMBER` ≥ 1, `MOVING_VIEW` = false; align with grid pagination or Entity Manager grid options. On large trading and operations grids, **server-side search and filter on indexed fields** usually delivers a better experience than paging through an unfiltered history; treat pagination as a secondary option when users truly need to walk fixed pages of a already-narrowed result set.
 
-Full behaviour is documented under [rows and view concepts](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts).
+Full behaviour is documented under [rows and view concepts](/develop/server-capabilities/query-data/real-time-queries-data-server/#rows--view-concepts).
 
 ## 3. Optimise the grid UI
 
@@ -144,12 +144,12 @@ Even with bounded data, rendering cost matters.
 
 ## 4. Write queries that scale on the server
 
-- Define **indices** on Data Server queries for fields users sort and filter on. Searchable filter fields should be indexed; see [indices](/develop/server-capabilities/real-time-queries-data-server/#indices).
-- **Derived fields** are fine for display, but filtering and sorting only scale when filterable values live on the underlying **table or view** (or are persisted there). Avoid derived fields on attributes users must filter on unless they are backed accordingly. See [query `fields`](/develop/server-capabilities/real-time-queries-data-server/#fields).
+- Define **indices** on Data Server queries for fields users sort and filter on. Searchable filter fields should be indexed; see [indices](/develop/server-capabilities/query-data/real-time-queries-data-server/#indices).
+- **Derived fields** are fine for display, but filtering and sorting only scale when filterable values live on the underlying **table or view** (or are persisted there). Avoid derived fields on attributes users must filter on unless they are backed accordingly. See [query `fields`](/develop/server-capabilities/query-data/real-time-queries-data-server/#fields).
 - Express filters so they **hit indices**—especially date/time comparisons. See [criteria matching](/develop/client-capabilities/server-communications/criteria-matching/).
-- Enable the **type-aware criteria evaluator** and avoid criteria that force full linear scans when indexes exist. See [Data Server configuration](/develop/server-capabilities/real-time-queries-data-server/).
+- Enable the **type-aware criteria evaluator** and avoid criteria that force full linear scans when indexes exist. See [Data Server configuration](/develop/server-capabilities/query-data/real-time-queries-data-server/).
 - For heavy read paths, review **LMDB allocation**, **compression**, **serialization** (Kryo vs Fory), and **`batchingPeriod`** on the Data Server—especially when latency spikes on `DATA_LOGON` or `MORE_ROWS`.
-- When users **edit shared records**, enable [optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/#optimistic-concurrency) on the server ([configuration](/develop/server-capabilities/data-access-apis/#optimistic-concurrency)) and ensure edit events carry the record timestamp. Entity Manager and generated forms surface concurrency failures via [submit-failure notifications](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
+- When users **edit shared records**, enable [optimistic concurrency](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#optimistic-concurrency) on the server ([configuration](/develop/server-capabilities/data-access-apis/gpal-java/#optimistic-concurrency)) and ensure edit events carry the record timestamp. Entity Manager and generated forms surface concurrency failures via [submit-failure notifications](/develop/client-capabilities/grids/entity-manager/entity-manager-form/#configuring-submit-failure-notifications).
 
 For static or slowly changing lookup tables, consider [process cache](/develop/server-capabilities/runtime-configuration/process-cache/) with indices that match your joins.
 
@@ -175,7 +175,7 @@ For day-to-day performance work on large grids and subscriptions, browser toolin
 - **Network requests** — Run the client with [HTTP Connect](/develop/client-capabilities/server-communications/comms-connect/#http-connect-defaulthttpconnect) (`DefaultHttpConnect`) when you need to inspect traffic. Polling and request/response calls show up as normal HTTP requests in the browser **Network** panel, which makes it easier to see how often resources are polled, how large responses are, and whether screens subscribe to more queries than they need. Tune intervals using `POLLING_FREQUENCY` and `POLLING_INTERVAL_MAP` (see [Connect configuration](/develop/client-capabilities/server-communications/comms-connect/#configuration-httpconnectconfig)). Use WebSocket in production when push is required; switch to HTTP temporarily while diagnosing load.
 - **Memory allocation** — Use the browser **Memory** (or **Performance**) tools to take heap snapshots and compare allocation before and after opening a grid, scrolling, or changing routes. Spikes often point to client-side datasource caches, metadata, or grid data that is not released when leaving a page. See [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for a structured DevTools workflow and common UI patterns (FAST and React).
 
-On the server, use Data Server start-up logs and [LMDB allocation](/develop/server-capabilities/real-time-queries-data-server/#lmdb-allocation-and-warning-state) when investigating memory pressure from large queries.
+On the server, use Data Server start-up logs and [LMDB allocation](/develop/server-capabilities/query-data/real-time-queries-data-server/#lmdb-allocation-and-warning-state) when investigating memory pressure from large queries.
 
 ### In production
 
@@ -190,7 +190,7 @@ On the server, use Data Server start-up logs and [LMDB allocation](/develop/serv
 
 1. [Grids overview](/develop/client-capabilities/grids/)
 2. [Data Server or Request Reply](#data-server-or-request-reply) on this page
-3. [Data Server — rows and view](/develop/server-capabilities/real-time-queries-data-server/#rows--view-concepts)
+3. [Data Server — rows and view](/develop/server-capabilities/query-data/real-time-queries-data-server/#rows--view-concepts)
 4. [Grid Pro datasources](/develop/client-capabilities/grids/grid-pro/grid-pro-datasources/)
 5. [Entity Manager](/develop/client-capabilities/grids/entity-manager/) if you use CRUD micro front-ends
 6. [Avoiding browser memory leaks](/develop/best-practices/performance/browser-memory-leaks/) for client-side retention and cleanup

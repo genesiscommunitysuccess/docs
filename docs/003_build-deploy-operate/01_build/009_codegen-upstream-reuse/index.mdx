@@ -88,7 +88,7 @@ If the full publication is missing, the consuming build fails with an error such
 
 ## Settings
 
-Set these as Gradle properties, for example in your `gradle.properties` file. Table names and IDs must not collide with those of any upstream product; see [the data model](/develop/server-capabilities/data-model/#tables).
+Set these as Gradle properties, for example in your `gradle.properties` file. Table names and IDs must not collide with those of any upstream product; see [the data model](/develop/server-capabilities/data-model/gpal-java/#tables).
 
 | Property | Default | Description |
 |---|---|---|
@@ -135,7 +135,7 @@ Your copy replaces auth's whole table dictionary, not just the tables you change
 
 ### When an upstream product's system definition doesn't match
 
-An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code (see [Table entities](/develop/server-capabilities/data-access-apis/#table-entities) for the generated entity class name), where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
+An upstream product's slice jar records the system definition values that its dictionary used when it was generated. If your deployment changes one of those values, the entity classes in the slice jar may not match your deployment. For example, a table might have a field that is included only when a particular system definition value is set. In auth, for instance, setting `ADMIN_PERMISSION_ENTITY_TABLE` and `ADMIN_PERMISSION_ENTITY_FIELD` adds a `USER_<table>_MAP` table to auth's generated code (see [Table entities](/develop/server-capabilities/data-access-apis/gpal-java/#table-entities) for the generated entity class name), where `<table>` is the value of `ADMIN_PERMISSION_ENTITY_TABLE`. For other products and values, the build tells you: its warning or error lists the changed keys for each product.
 
 To change an upstream product's system definition value, add it to your application's own `genesis-system-definition.kts`. That file takes precedence over the system definitions of upstream products, so for example you set [`ADMIN_PERMISSION_ENTITY_TABLE`](/develop/server-capabilities/access-control/authorization/#simple-configuration) and `ADMIN_PERMISSION_ENTITY_FIELD` there, not in a copy of auth's system definition file. Never copy an upstream product's system definition file.
 
@@ -191,4 +191,4 @@ tables {
 }
 ```
 
-For what `tableUnion` accepts, see [`tableUnion`](/develop/server-capabilities/data-model/#tableunion) in the data model reference.
+For what `tableUnion` accepts, see [`tableUnion`](/develop/server-capabilities/data-model/gpal-java/#tableunion) in the data model reference.

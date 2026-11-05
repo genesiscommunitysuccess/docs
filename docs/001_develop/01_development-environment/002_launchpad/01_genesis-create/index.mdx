@@ -92,7 +92,7 @@ For each attribute that you want to add, make sure that the `New Attributes` pan
 5.	Click on the `Add Attribute` button. This adds the attribute to the list in the main area.
 
 #### Primary key
-The [primary key](/develop/server-capabilities/data-model/#primarykey) is the default way to find records in an entity. Every entity has to have a primary key.
+The [primary key](/develop/server-capabilities/data-model/gpal-java/#primarykey) is the default way to find records in an entity. Every entity has to have a primary key.
 
 When the attributes for your entity are listed in the main area, you can set the primary key for the entity. Select the `Primary Key` checkbox for the relevant attribute(s) to make the record unique. If yu want to select multiple fields (to create a multi-field key), the ordering your of the selected attributes is important. You can re-order by clicking the symbol on the far right and dragging your attributes.
 
@@ -106,7 +106,7 @@ Note that edit and delete buttons are available to the right of each attribute i
 
 An index gives you extra ways of searching for records on the entity. For example, users might want to find trades by instrument or by currency symbol.
 
-Indices can be [unique](/develop/server-capabilities/data-model/#unique), which enables you to find a single record or [non-unique](/develop/server-capabilities/data-model/#nonunique), which enables you to find a range of records.
+Indices can be [unique](/develop/server-capabilities/data-model/gpal-java/#unique), which enables you to find a single record or [non-unique](/develop/server-capabilities/data-model/gpal-java/#nonunique), which enables you to find a range of records.
 
 To add an index to the entity that you are creating or editing:
 
@@ -150,7 +150,7 @@ We strongly recommend that you use these.
 
 #### Creating a data model from Excel
 
-You can create a data model with entities ([tables](/develop/server-capabilities/data-model/#tables)) and [views](/develop/server-capabilities/data-model/#views) directly from an Excel workbook. 
+You can create a data model with entities ([tables](/develop/server-capabilities/data-model/gpal-java/#tables)) and [views](/develop/server-capabilities/data-model/gpal-java/#views) directly from an Excel workbook. 
 
 In the Entities main screen, click on the `Detect From Excel` button. This enables you to select a spreadsheet. 
 
@@ -206,7 +206,7 @@ Once you have adjusted your spreadsheet and you have loaded it successfully (whe
 When you have finished adding entities, click on the `Next` button at the bottom right of the window to go to the next step.
 
 ### Views
-[Views](/develop/server-capabilities/data-model/#views) enable you to display information from more than one table in a single place. 
+[Views](/develop/server-capabilities/data-model/gpal-java/#views) enable you to display information from more than one table in a single place. 
 
 For example, if you want a view of all your trades, you would want the TRADE table (we call that the root entity for the view), but you would add information from the COUNTERPARTY and INSTRUMENT tables as well.
 
