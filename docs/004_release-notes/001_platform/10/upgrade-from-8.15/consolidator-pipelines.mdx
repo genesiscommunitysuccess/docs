@@ -222,7 +222,7 @@ The error raised for the file says which of these happened.
 
 **Applies to:** pipelines that use `sendEventOnCompletion` or `sendCustomEventOnCompletion`. The script syntax has not changed.
 
-**Why:** in 10.0, the handler waits for a target service it can't find, instead of failing straight away. This affects event names that no running service handles, for example because the service isn't running yet or the name is misspelt.
+**Why:** in 10.0, the handler waits for a target service it can't find, instead of failing straight away. This affects event names that no running service handles, for example because the service isn't running yet or the name is misspelt. It also retries UNAVAILABLE replies whichever service discovery you use, where 8.15 only did so with Consul.
 
 | Case | 8.15 | 10.0 |
 |---|---|---|
@@ -231,7 +231,7 @@ The error raised for the file says which of these happened.
 | The target replies with any other NACK | Logged at error level | Unchanged |
 | No reply within `timeout` | Throws | Unchanged |
 
-**What goes wrong if you skip this:** a pipeline whose target service is missing, or whose event name is misspelt, stalls instead of failing. Any `onUncaughtError` handling or alerting that relied on the error no longer runs.
+**What goes wrong if you skip this:** a pipeline whose target service is missing, or whose event name is misspelt, stalls instead of failing, and so does one whose target keeps replying UNAVAILABLE. Any `onUncaughtError` handling or alerting that relied on the error no longer runs.
 
 **What to do:**
 
