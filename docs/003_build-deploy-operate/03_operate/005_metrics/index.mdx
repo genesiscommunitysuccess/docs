@@ -55,6 +55,8 @@ item(name = "MetricsDbCacheEnabled", value = "false")
 | MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
 | MetricsCriteriaOverlapEnabled  | `false` | enables [Data Server criteria metrics](#data-server-criteria-metrics) |
 
+After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes for the change to take effect.
+
 ## Framework metrics
 
 The Genesis Platform automatically collects metrics for various framework components when metrics are enabled. These metrics provide insight into the internal operations of the platform without requiring any additional configuration. Some of the collected metrics are detailed below.
