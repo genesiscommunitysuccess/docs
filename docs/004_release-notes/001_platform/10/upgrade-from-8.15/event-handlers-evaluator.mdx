@@ -14,7 +14,7 @@ The steps show up at different points of the upgrade:
 | The build fails | 1 (`permissions { }`, `triggerRemote` with a process name) and 5 (code that builds an approvable ack or implements `Approvable`) |
 | The build gives warnings | 4 (`AbstractEventHandler` and the classes around it) |
 | Nothing fails, but something stops working | 2 (XML event handler definitions are ignored) and 3 (bare `EVENT_INSERT`, `EVENT_MODIFY` and `EVENT_DELETE` messages are refused) |
-| Client requests are rejected | 6 (rule payloads), 7 (dynamic rules that use `!in`) and 8 (`BigDecimal` and `LocalDate` values) |
+| Client requests are rejected | 6 (rule payloads), 7 (rules that use `!in`, which also stop stored rules from running) and 8 (`BigDecimal` and `LocalDate` values) |
 | The database upgrade | 9 (`CRON_RULE_AUDIT`), which operators carry out when they upgrade a server |
 
 ## Before you start
@@ -31,7 +31,7 @@ The steps show up at different points of the upgrade:
 
 | Removed | Use instead |
 |---|---|
-| `permissions { ... }` in an event handler | `permissioning { ... }`, with the same body |
+| `permissions { ... }` directly in an `eventHandler` or `contextEventHandler` block | `permissioning { ... }`, with the same body |
 | `triggerRemote(message, processName, timeout)` | `triggerRemote(message, timeout)`, or `triggerRemote(message)` for the default timeout |
 
 **What goes wrong if you skip this:** the script fails to compile.
@@ -45,7 +45,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
         permissionCodes = listOf("TRADER")
     }
     onCommit { event ->
-        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE"), "AUDIT_PROCESS", 5000)
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), "AUDIT_PROCESS", 5000)
             ?: nack("audit unavailable")
     }
 }
@@ -56,7 +56,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
         permissionCodes = listOf("TRADER")
     }
     onCommit { event ->
-        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE"), 5000)
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), 5000)
     }
 }
 ```
@@ -227,21 +227,21 @@ You don't need to change:
   - `EVENT_DYNAMIC_RULE_ENABLE`, `EVENT_DYNAMIC_RULE_DISABLE` and `EVENT_DYNAMIC_RULE_DELETE` take `{ "ID": ... }`.
   - A payload with the whole row, which 8.15 accepted, is now rejected.
 - **`EVENT_DYNAMIC_RULE_AMEND`:** always send `TABLE_OPERATION`, as one of `INSERT`, `MODIFY`, `DELETE` or `PRIME`.
-- **Amending a rule:** `RULE_STATUS`, `RULE_TYPE`, `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` are read-only in an amend, so any value you send is ignored. To change a rule's status, use the enable and disable events.
+- **Amending a rule:** `RULE_STATUS` and `RULE_TYPE` are read-only in an amend, and so are `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` on dynamic rules. Any value you send for them is ignored. To change a rule's status, use the enable and disable events.
 - **Dynamic rules:** `RULE_EXPRESSION` must not be blank. The evaluator now rejects an insert or amend with a blank expression, and doesn't run a stored rule whose expression is blank.
 
-## 7. Dynamic rules that use `!in`
+## 7. Rules that use `!in`
 
-**Applies to:** dynamic rules whose expressions use the `!in` operator, whether they are stored in `DYNAMIC_RULE` or sent by a client.
+**Applies to:** dynamic rules and cron rules whose expressions use the `!in` operator, whether they are stored in `DYNAMIC_RULE` or `CRON_RULE`, or sent by a client.
 
-**Why:** the evaluator no longer accepts `!in` in a dynamic rule.
+**Why:** the evaluator no longer accepts `!in` in a rule expression or a result expression.
 
 **What goes wrong if you skip this:**
 
 - A stored rule that uses `!in` is refused when the evaluator loads it. The evaluator logs an ERROR line that names the rule, and the rule doesn't run.
 - An insert or amend that uses `!in` is rejected, with a message that suggests `!(A in B)`.
 
-**What to do:** before you upgrade, search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE`, and any client code that builds rules, for `!in`. Rewrite each one with the negation outside:
+**What to do:** before you upgrade, search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE`, the `RESULT_EXPRESSION` values in `CRON_RULE`, and any client code that builds rules, for `!in`. Rewrite each one with the negation outside:
 
 ```groovy
 // 8.15
@@ -311,10 +311,10 @@ If some rows can't be loaded, the hook logs a warning and writes them to a `CRON
 | `USER_NAME` (the user who made the change) | `AUDIT_EVENT_USER` |
 | Key: `NAME` and `EVENT_DATETIME` | Key: `CRON_RULE_AUDIT_ID` |
 
-On migrated rows, `USER_NAME` still holds the user who made the change, because that is what 8.15 stored. On rows written by 10.0, it holds the owner of the rule. For the time of the original event, use `AUDIT_EVENT_DATETIME`.
+On migrated rows, `USER_NAME` still holds the user who made the change, because that is what 8.15 stored. On rows written by 10.0, it holds the user who last inserted or amended the rule. For the time of the original event, use `AUDIT_EVENT_DATETIME`.
 
 ## Behaviour changes that need no action
 
 - **GPAL event handler scripts.** `eventHandler<T> { }` and `contextEventHandler` scripts work as before, unless they use the members removed in step 1.
-- **`PROCESS_NAME` on rule events.** `PROCESS_NAME` is now optional on the cron rule and dynamic rule insert and amend events.
+- **`PROCESS_NAME` on rule events.** `PROCESS_NAME` is no longer mandatory on the rule insert events and on `EVENT_DYNAMIC_RULE_AMEND`. A dynamic rule amend replaces every field, so if you leave `PROCESS_NAME` out of it, the stored value is cleared.
 - **`USER_NAME` on `EVENT_CRON_RULE_INSERT`.** You don't need to send `USER_NAME`. The evaluator sets it to the user who sent the event.
