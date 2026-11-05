@@ -161,6 +161,10 @@ dataServer {
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
 |`backwardsJoin`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
 
+:::note
+In Genesis 8.15 and earlier, the query `config` block also accepts `backwardsJoins` and `backJoins` as other names for `backwardsJoin`. Genesis 10.0 removed them.
+:::
+
 #### `fields`
 
 This block is optional. Where not specified all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
