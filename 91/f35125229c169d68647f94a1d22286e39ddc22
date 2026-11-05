@@ -1,0 +1,19 @@
+docs/003_build-deploy-operate/03_operate/002_commands/index.mdx
+  s_9fa7a55d6145a0::t_e5998a7734cf39 349-367
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "91f35125229c169d68647f94a1d22286e39ddc22",
+  "prompts": {},
+  "sessions": {
+    "s_9fa7a55d6145a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a8b5ed39-4d43-4287-86df-3e1f4c1bb060",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "apurvanit <apurva.nitanjay@genesis.global>"
+    }
+  }
+}
