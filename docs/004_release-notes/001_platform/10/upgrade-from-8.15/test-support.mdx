@@ -5,7 +5,7 @@ sidebar_position: 11
 id: 'upgrade-10.0-test-support'
 ---
 
-This page covers the changes to the platform's test support (`genesis-testsupport` and `genesis-dbtest`) between 8.15 and 10.0. They affect your test sources and test resources only; nothing here changes how a deployed application behaves.
+This page covers the changes to the platform's test support (`genesis-testsupport` and `genesis-dbtest`) between 8.15 and 10.0. The steps here are about your test sources and test resources.
 
 ## Before you start
 
@@ -17,7 +17,7 @@ Each change shows up at one of three points:
 | Running a test, before its body runs | [Replace `javax.inject` annotations](#replace-javaxinject-annotations-in-test-classes) |
 | Running a test: behaviour can change silently, or the test fails on bad data | [Network-config files in a test GENESIS_HOME](#check-each-test-genesis_home-for-a-network-config-file), [`EventClientBlocking` message types](#check-explicit-message-types-sent-with-eventclientblocking), [`@CsvData` RAW columns](#check-csvdata-files-that-fill-raw-columns) |
 
-You can make the `javax.inject`, `authorise`/`revoke` and `getValidationMode()` changes on 8.15 before you upgrade: their replacements already exist there.
+You can make the `authorise`/`revoke` and `getValidationMode()` changes on 8.15 before you upgrade: their replacements already exist there. The `javax.inject` change can only be made as part of the upgrade, because the 8.15 test support does not read `jakarta.inject` annotations.
 
 Two platform-wide changes are likely to touch the same test code: the JUnit 4 modules `genesis-testsupport-junit4` and `genesis-dbtest-junit4` have been removed (see [Removed and deprecated modules](./removed-modules.mdx)), and `javax.inject` has been replaced by `jakarta.inject` in application code as well as in tests.
 
@@ -25,16 +25,16 @@ Two platform-wide changes are likely to touch the same test code: the JUnit 4 mo
 
 **Applies to:** tests that use `@GenesisTest`, `@GenesisSharedContextTest`, `@GenesisDatabaseTest`, `AbstractGenesisTestSupport` or `GenesisTestSupport`, where the test class, a superclass or an interface it implements uses `javax.inject.Inject` or `javax.inject.Named`.
 
-**Why:** test injection only honours `jakarta.inject` and `com.google.inject` annotations. In 8.15, a `javax.inject.Inject` was silently ignored, so the member was never set. A `javax.inject.Named` was dropped, so the member received the unnamed binding instead. In 10.0, the test fails before it runs and names each offending member:
+**Why:** in 8.15, test injection read `javax.inject` and `com.google.inject` annotations. In 10.0, it reads `jakarta.inject` and `com.google.inject` annotations instead. Rather than silently skip a leftover `javax` annotation, the test fails before it runs and names each offending member:
 
 ```
 Genesis test injection does not honour javax.inject annotations, so these members are silently skipped, or lose their qualifier:
   - @javax.inject.Inject on field a.b.MyTest.db: use @jakarta.inject.Inject instead
 ```
 
-**If you skip it:** every affected test fails. Most of these tests were already failing in 8.15, because a member that was never injected throws when used. The case that changes from passing to failing is a `javax` `@Named` next to a `jakarta` or Guice `@Inject`, where the unnamed binding happened to work.
+**If you skip it:** every test that uses a `javax.inject` annotation on an injected member fails, even though it passed on 8.15.
 
-**What to do:** change the imports to `jakarta.inject`. On a Kotlin property, give `@Named` the `@field:` use-site target; without it, test injection doesn't see the qualifier. That was already true in 8.15.
+**What to do:** change the imports to `jakarta.inject` as part of the upgrade. Don't do this on 8.15 first: there, `jakarta.inject` annotations are ignored, so the members would not be injected. On a Kotlin property, give `@Named` the `@field:` use-site target, as in 8.15; without it, test injection doesn't see the qualifier.
 
 ```kotlin
 // 8.15
@@ -42,7 +42,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @Inject
-@Named("primary")
+@field:Named("primary")
 lateinit var client: SomeClient
 
 // 10.0
@@ -87,7 +87,7 @@ lateinit var client: SomeClient
 
 **If you skip it:** a test that relied on the name being sent unchanged now targets a different event handler. It typically fails because the handler it expected is not called.
 
-**What to do:** a `messageType` that already starts with `EVENT_` is sent as it is, so a test that passes the full name needs no change. If a test needs to send a name that doesn't start with `EVENT_`, none of the test event clients will do that any more: build the `Event` message yourself and send it through the message client.
+**What to do:** a `messageType` that already starts with `EVENT_` is sent as it is, so a test that passes the full name needs no change. If a test needs to send a name that doesn't start with `EVENT_`, none of the `EventClient` classes will do that any more: build the `Event` message yourself and send it through the message client.
 
 ## Check `@CsvData` files that fill RAW columns
 
@@ -98,6 +98,8 @@ lateinit var client: SomeClient
 **If you skip it:** a cell that is not valid for the field's encoding now fails to load, which fails the test. A cell that is valid is now loaded, so the record holds bytes where it used to be empty.
 
 **What to do:** make sure every value in a `RAW` column is valid for the field's encoding. If a test relied on the column being empty, clear the cells.
+
+This decoding is part of how the platform converts CSV text into a record, so it also applies when the platform's own tools load CSV data into a `RAW` field outside tests.
 
 ## Replace `authorise` and `revoke` on `AbstractGenesisTestSupport`
 
@@ -134,7 +136,7 @@ A better long-term fix is to move the test to `@GenesisTest` with `@EnableInMemo
 ```java
 // 8.15
 @Override
-protected ValidationMode getValidationMode() { return ValidationMode.LEGACY; }
+protected ValidationMode getValidationMode() { return ValidationMode.UNIFIED; }
 
 // 10.0: delete the override and the import
 ```
