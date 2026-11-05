@@ -14,7 +14,7 @@ Genesis 10.0 removes a set of old or little-used modules outright, and marks a s
 | Dependency resolution and compilation | A removed artifact, Gradle plugin or build setting | [2](#2-remove-dependencies-on-removed-artifacts-and-plugins), [4](#4-remove-generatecache-from-the-codegen-block), [5](#5-add-cdc-genesis-for-database-change-data-capture-sources), [6](#6-add-genesis-calendar-if-you-use-calendar-classes-directly) |
 | `genesisInstall` | A process definition for a removed platform process | [1](#1-remove-process-definitions-for-removed-platform-processes) |
 | Process start | A Groovy script process, or a process whose module was removed | [1](#1-remove-process-definitions-for-removed-platform-processes), [3](#3-convert-groovy-script-processes-to-gpal) |
-| Running `DumpIt` | The `LEGACY` criteria evaluator mode | [3](#3-convert-groovy-script-processes-to-gpal) |
+| Running `DumpIt --legacy` | The `LEGACY` criteria evaluator mode | [3](#3-convert-groovy-script-processes-to-gpal) |
 | Warnings only | Anything deprecated | [7](#7-expect-deprecation-warnings) |
 
 ## 1. Remove process definitions for removed platform processes
@@ -24,14 +24,14 @@ Genesis 10.0 removes a set of old or little-used modules outright, and marks a s
 **Why:** in 8.15, the platform defined these four processes, switched off by default. 10.0 no longer ships them, their configuration files, their service definitions or their modules. There is no replacement for webmon, the protobuf adapter and simulator, or database sync.
 
 **If you skip it:**
-- `genesisInstall` fails. The configuration check reports the missing configuration file as an error, for example `genesis-webmon-config.xml does not exist for process GENESIS_WEBMON`, whether or not the process is set to start. If the process is set to start, the missing service definition is an error, too. For webmon, the check also prints a warning that names the module as deprecated.
+- `genesisInstall` fails. The configuration check reports the missing configuration file as an error (`<path>/genesis-webmon-config.xml does not exist for process GENESIS_WEBMON`), whether or not the process is set to start. If the process is set to start, the missing service definition is an error, too. For webmon, the check also prints a warning that names the module as deprecated.
 - `startProcess` refuses to start the process and names the module whose jar it cannot find:
 
   ```
   Module 'genesis-sync': no jar found in any $GENESIS_HOME/*/bin directory. Process GENESIS_SYNC will not start.
   ```
 
-  For webmon, the message also says `Module 'genesis-webmon' is deprecated and will be removed in 11.0.0.`, even though the module is already gone.
+  For webmon, the message also says `Module 'genesis-webmon' is deprecated and will be removed in 11.0.0.`, even though the module is already gone. On an installation that uses dynamic deployment, the message reports the missing classpath file instead of the missing jar.
 
 **What to do:** delete the whole `<process>` stanza and its matching `<service>` entry. For example, delete this:
 
@@ -89,18 +89,19 @@ A process that runs `<module>genesis-streamerclient</module>` must be rebuilt on
 
 ## 3. Convert Groovy script processes to GPAL
 
-**Applies to:** processes that run a Groovy script (`.gy` or `.groovy`), processes that set `<language>groovy</language>`, code that imports Groovy libraries other than the core ones, and scripts that run `DumpIt` with `-cem LEGACY`.
+**Applies to:** processes that run a Groovy script (`.gy` or `.groovy`), processes that set `<language>groovy</language>`, code that imports Groovy libraries other than the core ones, and scripts that run `DumpIt --legacy` with `-cem LEGACY`.
 
 **Why:** 10.0 removes Groovy script processes and the `genesis-groovy` module. When a process does not set `<language>`, the default is now `pal`; in 8.15, it was `groovy`.
 
 **If you skip it:** the process does not start. `startProcess` prints one of these messages:
 
-| 8.15 process definition | 10.0 result |
-|-------------------------|-------------|
+| Process definition | 10.0 result |
+|--------------------|-------------|
 | `<script>foo.gy</script>`, no `<language>` | `Groovy script processes were removed in 10.0: foo.gy. Migrate the script to GPAL (.kts) and set <language>pal</language>. Process will not start.` |
 | `<language>groovy</language>` | `Groovy script processes were removed in 10.0: <language>groovy</language> is no longer supported. Migrate the script to GPAL (.kts) and set <language>pal</language>. Process will not start.` |
 | A `.kts` script with a `<module>` and `<language>pal</language>` | Unchanged |
-| The same, without `<language>` | Starts as `pal` |
+| The same, without `<language>` | Starts as `pal` (in 8.15, it was treated as Groovy) |
+| A `.kts` script with no `<module>` and no `<language>` | `Module must be specified when setting language as pal (the default when <language> is absent). Process will not start.` |
 
 **What to do:**
 - Rewrite each Groovy script process as a GPAL `.kts` script, and give the process a `<module>`.
@@ -118,7 +119,7 @@ implementation("org.codehaus.groovy:groovy-json:<groovy version>")
 
 ### DumpIt
 
-Remove `-cem LEGACY` and `--criteriaEvaluatorMode LEGACY` from any scripts that run `DumpIt`. `TYPE_AWARE`, which was already the default in 8.15, is now the only mode. If you pass `LEGACY`, `DumpIt` fails with:
+The legacy `DumpIt` mode (`DumpIt --legacy`) takes a criteria evaluator option. Remove `-cem LEGACY` and `--criteriaEvaluatorMode LEGACY` from any scripts that use it. `TYPE_AWARE`, which was already the default in 8.15, is now the only mode. If you pass `LEGACY`, `DumpIt` fails with:
 
 ```
 Unsupported criteriaEvaluatorMode 'LEGACY'. Supported modes: [TYPE_AWARE]. LEGACY was removed in 10.0.
