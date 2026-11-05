@@ -7,94 +7,94 @@ id: '10.0-auth'
 
 ### Breaking changes
 
-* build(deps)!: v9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
-* fix(auth-sso-endpoint)!: Implement private_key_JWT authentication for OIDC when SSO is enabled
+* V9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
+* `auth-sso-endpoint` : Implement private_key_JWT authentication for OIDC when SSO is enabled
 
 ### Features
 
-* feat(auth): add events to toggle notify-based MFA
-* feat(auth): expose notify-based MFA status on ALL_USERS
-* feat(auth): support numeric one-time codes for notify-based MFA
-* feat(auth-manager): migrate LDAP authentication onto genesis-ldap's engine
-* feat(auth-manager): optional per-connection LDAP timeouts and TLS trust/hostname opt-in
-* feat: Implement private_key_JWT authentication for OIDC when SSO is enabled
-* feat: Rename generated modules and enable slice jar publishing
-* feat: add per-IdP tokenDelivery cookie mode for SSO token delivery
+* `auth` : Add events to toggle notify-based MFA
+* `auth` : Expose notify-based MFA status on ALL_USERS
+* `auth` : Support numeric one-time codes for notify-based MFA
+* `auth-manager` : Migrate LDAP authentication onto genesis-ldap's engine
+* `auth-manager` : Optional per-connection LDAP timeouts and TLS trust/hostname opt-in
+* Implement private_key_JWT authentication for OIDC when SSO is enabled
+* Rename generated modules and enable slice jar publishing
+* Add per-IdP tokenDelivery cookie mode for SSO token delivery
 
 ### Fixes
 
-* fix(auth): only send a notify MFA code when the user asks for one
-* fix(auth): send a new notify MFA code once the last one is used, and send the cooldown to the client
-* fix(auth-manager): audit password changes in USER_LOGIN_AUDIT
-* fix(auth-manager): expire sessions on a fixed lifetime from START_TIMESTAMP
-* fix(auth-manager): mark ONE_TIME_PASSWORD as required in the EVENT_INSERT_USER schema
-* fix(auth-manager): raise the hard-coded LDAP timeouts back to 8.15's connect and search defaults
-* fix(auth-manager): read product details per LoginProcessor instance
-* fix(auth-manager): separate password validation prefix from errors
-* fix(auth-messages): point KeyValue byte-array annotations at Jackson 3
-* fix(auth-oidc): use lastIndexOf to extract idp from state parameter
-* fix(auth-saml): fix typo in standard SAML parameter
-* fix(auth-saml): pin SAML Destination validation to configured ACS URL
-* fix(auth-script-config): make AUTH-483 audit tests pass on Oracle and MSSQL
-* fix: USER_PROFILE_AMEND event fix for right consolidation
-* fix: Adapt codebase to new Websocket/HTTP changes in GSF
-* fix: Use TLS for user connection if useTls set
-* fix: add icons to pbc routes
-* fix: bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
-* fix: cap test-retry maxFailures so a broken module stops retrying
-* fix: exclude auth-entity-dictionary-cache from product manifest
-* fix: migrate javax.annotation imports to jakarta
-* fix: migrate the permissioning auth DSL onto authKey
-* fix: resolve version from the first @genesislcap/* dependency
-* fix: update RequestType import after genesis-net websocket refactor
+* `auth` : Only send a notify MFA code when the user asks for one
+* `auth` : Send a new notify MFA code once the last one is used, and send the cooldown to the client
+* `auth-manager` : Audit password changes in USER_LOGIN_AUDIT
+* `auth-manager` : Expire sessions on a fixed lifetime from START_TIMESTAMP
+* `auth-manager` : Mark ONE_TIME_PASSWORD as required in the EVENT_INSERT_USER schema
+* `auth-manager` : Raise the hard-coded LDAP timeouts back to 8.15's connect and search defaults
+* `auth-manager` : Read product details per LoginProcessor instance
+* `auth-manager` : Separate password validation prefix from errors
+* `auth-messages` : Point KeyValue byte-array annotations at Jackson 3
+* `auth-oidc` : Use lastIndexOf to extract idp from state parameter
+* `auth-saml` : Fix typo in standard SAML parameter
+* `auth-saml` : Pin SAML Destination validation to configured ACS URL
+* `auth-script-config` : Make AUTH-483 audit tests pass on Oracle and MSSQL
+* USER_PROFILE_AMEND event fix for right consolidation
+* Adapt codebase to new Websocket/HTTP changes in GSF
+* Use TLS for user connection if useTls set
+* Add icons to pbc routes
+* Bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
+* Cap test-retry maxFailures so a broken module stops retrying
+* Exclude auth-entity-dictionary-cache from product manifest
+* Migrate javax.annotation imports to jakarta
+* Migrate the permissioning auth DSL onto authKey
+* Resolve version from the first @genesislcap/* dependency
+* Update RequestType import after genesis-net websocket refactor
 
 ### Dependency changes
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): adopt global.genesis.settings.legacy so Kotlin tracks the platform
-* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
-* build(deps): bump WireMock from wiremock-jre8:3.0.1 to wiremock-jetty12:3.13.2
-* build(deps): bump actions/checkout from 2 to 6
-* build(deps): bump actions/checkout from 4 to 7
-* build(deps): bump com.auth0:java-jwt from 4.5.0 to 4.6.0
-* build(deps): bump com.auth0:java-jwt from 4.6.0 to 4.6.1
-* build(deps): bump com.auth0:java-jwt from 4.6.1 to 4.6.2
-* build(deps): bump com.auth0:jwks-rsa from 0.23.0 to 0.24.1
-* build(deps): bump com.github.dasniko:testcontainers-keycloak from 3.5.0 to 4.3.0
-* build(deps): bump com.github.dasniko:testcontainers-keycloak from 4.3.0 to 4.3.1
-* build(deps): bump com.github.dasniko:testcontainers-keycloak from 4.3.1 to 4.4.0
-* build(deps): bump com.jfrog.artifactory from 5.2.5 to 6.0.4
-* build(deps): bump com.unboundid:unboundid-ldapsdk from 7.0.3 to 7.0.4
-* build(deps): bump com.unboundid:unboundid-ldapsdk from 7.0.4 to 7.0.5
-* build(deps): bump dependabot/fetch-metadata from 2 to 3
-* build(deps): bump jvm from 2.3.0 to 2.4.10
-* build(deps): bump korthout/backport-action from 3 to 4
-* build(deps): bump org.apache.santuario:xmlsec from 2.2.6 to 4.0.4
-* build(deps): bump org.awaitility:awaitility-kotlin from 4.2.2 to 4.3.0
-* build(deps): bump org.gradle.test-retry from 1.6.4 to 1.6.5
-* build(deps): bump org.gradle.test-retry from 1.6.4 to 1.6.5
-* build(deps): bump org.gradle.test-retry from 1.6.5 to 1.6.6
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
-* build(deps): bump org.jlleitschuh.gradle.ktlint from 11.6.1 to 14.2.0
-* build(deps): bump org.mock-server:mockserver-client-java from 5.15.0 to 7.6.0
-* build(deps): bump org.mock-server:mockserver-client-java from 7.6.0 to 8.0.0
-* build(deps): bump org.mock-server:mockserver-netty from 5.15.0 to 7.5.0
-* build(deps): bump org.mock-server:mockserver-netty from 7.5.0 to 7.6.0
-* build(deps): bump org.mock-server:mockserver-netty from 7.6.0 to 8.0.0
-* build(deps): bump org.mockito.kotlin:mockito-kotlin from 5.4.0 to 6.2.3
-* build(deps): bump org.mockito.kotlin:mockito-kotlin from 6.2.3 to 6.3.0
-* build(deps): bump org.passay:passay from 1.6.6 to 2.0.0
-* build(deps): bump org.sonarqube from 5.1.0.4882 to 7.3.0.8198
-* build(deps): bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
-* build(deps): bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
-* build(deps): bump peter-evans/repository-dispatch from 3 to 4
-* build(deps): genesis-bom conformance cleanup
-* build(deps): inherit the Kotlin power-assert plugin version from GSF
-* build(deps): pin org.apache.santuario:xmlsec to 2.2.6
-* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Adopt global.genesis.settings.legacy so Kotlin tracks the platform
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump WireMock from wiremock-jre8:3.0.1 to wiremock-jetty12:3.13.2
+* Bump actions/checkout from 2 to 6
+* Bump actions/checkout from 4 to 7
+* Bump com.auth0:java-jwt from 4.5.0 to 4.6.0
+* Bump com.auth0:java-jwt from 4.6.0 to 4.6.1
+* Bump com.auth0:java-jwt from 4.6.1 to 4.6.2
+* Bump com.auth0:jwks-rsa from 0.23.0 to 0.24.1
+* Bump com.github.dasniko:testcontainers-keycloak from 3.5.0 to 4.3.0
+* Bump com.github.dasniko:testcontainers-keycloak from 4.3.0 to 4.3.1
+* Bump com.github.dasniko:testcontainers-keycloak from 4.3.1 to 4.4.0
+* Bump com.jfrog.artifactory from 5.2.5 to 6.0.4
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.3 to 7.0.4
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.4 to 7.0.5
+* Bump dependabot/fetch-metadata from 2 to 3
+* Bump jvm from 2.3.0 to 2.4.10
+* Bump korthout/backport-action from 3 to 4
+* Bump org.apache.santuario:xmlsec from 2.2.6 to 4.0.4
+* Bump org.awaitility:awaitility-kotlin from 4.2.2 to 4.3.0
+* Bump org.gradle.test-retry from 1.6.4 to 1.6.5
+* Bump org.gradle.test-retry from 1.6.4 to 1.6.5
+* Bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* Bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
+* Bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
+* Bump org.jlleitschuh.gradle.ktlint from 11.6.1 to 14.2.0
+* Bump org.mock-server:mockserver-client-java from 5.15.0 to 7.6.0
+* Bump org.mock-server:mockserver-client-java from 7.6.0 to 8.0.0
+* Bump org.mock-server:mockserver-netty from 5.15.0 to 7.5.0
+* Bump org.mock-server:mockserver-netty from 7.5.0 to 7.6.0
+* Bump org.mock-server:mockserver-netty from 7.6.0 to 8.0.0
+* Bump org.mockito.kotlin:mockito-kotlin from 5.4.0 to 6.2.3
+* Bump org.mockito.kotlin:mockito-kotlin from 6.2.3 to 6.3.0
+* Bump org.passay:passay from 1.6.6 to 2.0.0
+* Bump org.sonarqube from 5.1.0.4882 to 7.3.0.8198
+* Bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
+* Bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* Bump peter-evans/repository-dispatch from 3 to 4
+* Genesis-bom conformance cleanup
+* Inherit the Kotlin power-assert plugin version from GSF
+* Pin org.apache.santuario:xmlsec to 2.2.6
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
 
 ### Patch releases
 

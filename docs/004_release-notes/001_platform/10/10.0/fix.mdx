@@ -7,70 +7,70 @@ id: '10.0-fix'
 
 ### Breaking changes
 
-* build(deps)!: v9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
-* feat!: migrate quickfixj-core from 2.3.2 to 3.0.2
-* feat!: remove fix-webextension ahead of the genesis-webmon removal
+* V9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
+* Migrate quickfixj-core from 2.3.2 to 3.0.2
+* Remove fix-webextension ahead of the genesis-webmon removal
 
 ### Features
 
-* feat(codegen): Enable slice jar publishing and fix reuseUpstream scoping
-* feat: Add Dependabot auto-merge workflow
-* feat: upgrade kotlin to version 2.3.10
-* feat: Revert Add Dependabot auto-merge workflow
+* `codegen` : Enable slice jar publishing and fix reuseUpstream scoping
+* Add Dependabot auto-merge workflow
+* Upgrade kotlin to version 2.3.10
+* Revert Add Dependabot auto-merge workflow
 
 ### Fixes
 
-* fix(fix-config): parse FixAdmin.groovy arguments without CliBuilder
-* fix(fix-distribution): opt in to publishing the genesis manifest
-* fix(fix-eventhandler): restore target sequence number from the latest FIX_IN message
-* fix(fix-eventhandler): stop the FIX activity publisher when the process shuts down
-* fix(fix-pipelines): don't throw uncaught when target pipeline isn't started
-* fix(fix-shared): Replace per-record deletion with batched deleteAll in fix session reset with 10000 batch size
-* fix(fix-shared): Update RandomStringUtil import in FixAdmin.groovy to lang3 to bring import in line with other files
-* fix(server): inject Aggregators instead of the removed StreamerClientConfigReader.get()
-* fix: Events + Pipelines should nack/throw when session is down
-* fix: cap test-retry maxFailures and add noRetry guard
-* fix: migrate javax.annotation imports to jakarta
-* fix: prevent FixSink from persisting failed sends to the message store
-* fix: stop importing Kotlin compiler internals
+* `fix-config` : Parse FixAdmin.groovy arguments without CliBuilder
+* `fix-distribution` : Opt in to publishing the genesis manifest
+* `fix-eventhandler` : Restore target sequence number from the latest FIX_IN message
+* `fix-eventhandler` : Stop the FIX activity publisher when the process shuts down
+* `fix-pipelines` : Don't throw uncaught when target pipeline isn't started
+* `fix-shared` : Replace per-record deletion with batched deleteAll in fix session reset with 10000 batch size
+* `fix-shared` : Update RandomStringUtil import in FixAdmin.groovy to lang3 to bring import in line with other files
+* `server` : Inject Aggregators instead of the removed StreamerClientConfigReader.get()
+* Events + Pipelines should nack/throw when session is down
+* Cap test-retry maxFailures and add noRetry guard
+* Migrate javax.annotation imports to jakarta
+* Prevent FixSink from persisting failed sends to the message store
+* Stop importing Kotlin compiler internals
 
 ### Dependency changes
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): add genesisVersion consistency guard across gradle.properties files
-* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
-* build(deps): bump Kotlin from 2.4.0 to 2.4.20 in fix-codegen-plugin
-* build(deps): bump actions/checkout from 4 to 6
-* build(deps): bump actions/checkout from 4 to 7
-* build(deps): bump com.jfrog.artifactory from 5.1.10 to 6.0.4
-* build(deps): bump com.squareup:kotlinpoet from 1.14.2 to 2.3.0 in /fix-codegen-plugin
-* build(deps): bump com.squareup:kotlinpoet from 1.14.2 to 2.3.0 in /server
-* build(deps): bump com.squareup:kotlinpoet from 2.3.0 to 2.4.0
-* build(deps): bump joda-time:joda-time from 2.12.5 to 2.14.1 in /fix-codegen-plugin
-* build(deps): bump korthout/backport-action from 3 to 4
-* build(deps): bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.15.2
-* build(deps): bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.15.2 in /server
-* build(deps): bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.15.2 to 3.16.0
-* build(deps): bump org.apache.maven:maven-core from 3.9.5 to 3.9.14 in /server
-* build(deps): bump org.apache.maven:maven-plugin-api from 3.9.14 to 3.9.16
-* build(deps): bump org.apache.maven:maven-plugin-api from 3.9.16 to 3.10.0
-* build(deps): bump org.apache.mina:mina-core from 2.2.9 to 2.2.10
-* build(deps): bump org.gradle.test-retry from 1.5.6 to 1.6.4 in /fix-codegen-plugin
-* build(deps): bump org.gradle.test-retry from 1.5.6 to 1.6.5 in /server
-* build(deps): bump org.gradle.test-retry from 1.6.5 to 1.6.6
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9 in /server
-* build(deps): bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 14.2.0 in /fix-codegen-plugin
-* build(deps): bump org.quickfixj:quickfixj-codegenerator from 2.3.2 to 3.0.2 in /fix-codegen-plugin
-* build(deps): bump org.sonarqube from 4.4.1.3373 to 7.3.1.8318
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /fix-codegen-plugin
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
-* build(deps): bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
-* build(deps): bump plugin.power-assert from 2.3.0 to 2.4.0 in /server
-* build(deps): pin org.apache.mina:mina-core to 2.2.9
-* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Add genesisVersion consistency guard across gradle.properties files
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump Kotlin from 2.4.0 to 2.4.20 in fix-codegen-plugin
+* Bump actions/checkout from 4 to 6
+* Bump actions/checkout from 4 to 7
+* Bump com.jfrog.artifactory from 5.1.10 to 6.0.4
+* Bump com.squareup:kotlinpoet from 1.14.2 to 2.3.0 in /fix-codegen-plugin
+* Bump com.squareup:kotlinpoet from 1.14.2 to 2.3.0 in /server
+* Bump com.squareup:kotlinpoet from 2.3.0 to 2.4.0
+* Bump joda-time:joda-time from 2.12.5 to 2.14.1 in /fix-codegen-plugin
+* Bump korthout/backport-action from 3 to 4
+* Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.15.2
+* Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.15.2 in /server
+* Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.15.2 to 3.16.0
+* Bump org.apache.maven:maven-core from 3.9.5 to 3.9.14 in /server
+* Bump org.apache.maven:maven-plugin-api from 3.9.14 to 3.9.16
+* Bump org.apache.maven:maven-plugin-api from 3.9.16 to 3.10.0
+* Bump org.apache.mina:mina-core from 2.2.9 to 2.2.10
+* Bump org.gradle.test-retry from 1.5.6 to 1.6.4 in /fix-codegen-plugin
+* Bump org.gradle.test-retry from 1.5.6 to 1.6.5 in /server
+* Bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* Bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9 in /server
+* Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 14.2.0 in /fix-codegen-plugin
+* Bump org.quickfixj:quickfixj-codegenerator from 2.3.2 to 3.0.2 in /fix-codegen-plugin
+* Bump org.sonarqube from 4.4.1.3373 to 7.3.1.8318
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /fix-codegen-plugin
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
+* Bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* Bump plugin.power-assert from 2.3.0 to 2.4.0 in /server
+* Pin org.apache.mina:mina-core to 2.2.9
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
 
 ### Patch releases
 

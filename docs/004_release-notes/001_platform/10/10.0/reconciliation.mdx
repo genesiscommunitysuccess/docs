@@ -7,41 +7,41 @@ id: '10.0-reconciliation'
 
 ### Features
 
-* feat(codegen): enable reuseUpstream codegen
+* `codegen` : Enable reuseUpstream codegen
 
 ### Fixes
 
-* fix(build): keep genesis dev tools out of the ktlint codegen dependencies
-* fix(reconciliation): make integration tests wait for the state they assert
-* fix(reconciliation-app): restore toLowerCaseAsciiOnly import from genesis-commons
-* fix(test): correct CronRuleAudit parameter names in TableEntityNormaliserTest
-* fix: bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
-* fix: migrate javax.annotation imports to jakarta
-* fix: resolve version from the first @genesislcap/* dependency
+* `build` : Keep genesis dev tools out of the ktlint codegen dependencies
+* `reconciliation` : Make integration tests wait for the state they assert
+* `reconciliation-app` : Restore toLowerCaseAsciiOnly import from genesis-commons
+* `test` : Correct CronRuleAudit parameter names in TableEntityNormaliserTest
+* Bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
+* Migrate javax.annotation imports to jakarta
+* Resolve version from the first @genesislcap/* dependency
 
 ### Dependency changes
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): add genesisVersion consistency guard across gradle.properties files
-* build(deps): bump actions/checkout from 4 to 6
-* build(deps): bump actions/checkout from 4 to 7
-* build(deps): bump com.jfrog.artifactory from 5.2.4 to 6.0.4
-* build(deps): bump commons-io:commons-io from 2.13.0 to 2.21.0
-* build(deps): bump commons-io:commons-io from 2.21.0 to 2.22.0
-* build(deps): bump gradle-wrapper from 9.6.1 to 9.7.1
-* build(deps): bump korthout/backport-action from 3 to 4
-* build(deps): bump org.jetbrains.kotlinx:kotlinx-coroutines-core from 1.9.0 to 1.10.2
-* build(deps): bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.10.2 to 1.11.0
-* build(deps): bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.8.1 to 1.10.2
-* build(deps): bump peter-evans/repository-dispatch from 3 to 4
-* build(deps): bump plugin.power-assert from 2.3.10 to 2.3.20
-* build(deps): bump plugin.power-assert from 2.3.20 to 2.4.0
-* build(deps): bump plugin.power-assert from 2.4.0 to 2.4.10
-* build(deps): genesis-bom conformance cleanup
-* build(deps): inherit the Kotlin power-assert plugin version from GSF
-* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
-* build(deps): take the Kotlin version from the platform, power-assert to 2.4.0
-* build(deps): upgrade kotlin to 2.3.10 and enable power-assert
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Add genesisVersion consistency guard across gradle.properties files
+* Bump actions/checkout from 4 to 6
+* Bump actions/checkout from 4 to 7
+* Bump com.jfrog.artifactory from 5.2.4 to 6.0.4
+* Bump commons-io:commons-io from 2.13.0 to 2.21.0
+* Bump commons-io:commons-io from 2.21.0 to 2.22.0
+* Bump gradle-wrapper from 9.6.1 to 9.7.1
+* Bump korthout/backport-action from 3 to 4
+* Bump org.jetbrains.kotlinx:kotlinx-coroutines-core from 1.9.0 to 1.10.2
+* Bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.10.2 to 1.11.0
+* Bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.8.1 to 1.10.2
+* Bump peter-evans/repository-dispatch from 3 to 4
+* Bump plugin.power-assert from 2.3.10 to 2.3.20
+* Bump plugin.power-assert from 2.3.20 to 2.4.0
+* Bump plugin.power-assert from 2.4.0 to 2.4.10
+* Genesis-bom conformance cleanup
+* Inherit the Kotlin power-assert plugin version from GSF
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+* Take the Kotlin version from the platform, power-assert to 2.4.0
+* Upgrade kotlin to 2.3.10 and enable power-assert
 
 ### Patch releases
 

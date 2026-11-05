@@ -7,48 +7,48 @@ id: '10.0-reporting'
 
 ### Breaking changes
 
-* feat!: Added alternate data grouping strategies to templated reports
+* Added alternate data grouping strategies to templated reports
 
 ### Features
 
-* feat(codegen): enable reuseUpstream codegen
-* feat(reporting): file-expiry retention for generated reports
-* feat: Allow configurable max row limit for request server datasources
-* feat: Updated parameterisation implementation with latest design requirements
+* `codegen` : Enable reuseUpstream codegen
+* `reporting` : File-expiry retention for generated reports
+* Allow configurable max row limit for request server datasources
+* Updated parameterisation implementation with latest design requirements
 
 ### Fixes
 
-* fix(build): keep genesis dev tools out of the ktlint codegen dependencies
-* fix(reporting): stop importing Kotlin compiler internals for lowercasing
-* fix(reporting-app): import UUID from java.util, not JGroups
-* fix: Ensure basic excel reports preserve correct type for date and datetime columns
-* fix: Ensure reports can be generated using csv templates
-* fix: bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
-* fix: migrate javax.annotation imports to jakarta
-* fix: resolve version from the first @genesislcap/* dependency
+* `build` : Keep genesis dev tools out of the ktlint codegen dependencies
+* `reporting` : Stop importing Kotlin compiler internals for lowercasing
+* `reporting-app` : Import UUID from java.util, not JGroups
+* Ensure basic excel reports preserve correct type for date and datetime columns
+* Ensure reports can be generated using csv templates
+* Bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
+* Migrate javax.annotation imports to jakarta
+* Resolve version from the first @genesislcap/* dependency
 
 ### Dependency changes
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
-* build(deps): bump actions/checkout from 4 to 6
-* build(deps): bump actions/checkout from 4 to 7
-* build(deps): bump com.jfrog.artifactory from 5.2.5 to 6.0.4 in /server
-* build(deps): bump korthout/backport-action from 3 to 4
-* build(deps): bump org.gradle.test-retry from 1.6.4 to 1.6.5 in /server
-* build(deps): bump org.gradle.test-retry from 1.6.5 to 1.6.6
-* build(deps): bump org.sonarqube from 5.0.0.4638 to 7.2.3.7755
-* build(deps): bump org.sonarqube from 7.2.3.7755 to 7.3.0.8198
-* build(deps): bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318 in /server
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
-* build(deps): bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
-* build(deps): bump peter-evans/repository-dispatch from 3 to 4
-* build(deps): bump plugin.power-assert from 2.3.10 to 2.3.21
-* build(deps): inherit the Kotlin power-assert plugin version from GSF
-* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
-* build(deps): take Kotlin from the platform and drop the duplicated test setup
-* build(deps): upgrade kotlin to 2.3.10 and enable power-assert
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump actions/checkout from 4 to 6
+* Bump actions/checkout from 4 to 7
+* Bump com.jfrog.artifactory from 5.2.5 to 6.0.4 in /server
+* Bump korthout/backport-action from 3 to 4
+* Bump org.gradle.test-retry from 1.6.4 to 1.6.5 in /server
+* Bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* Bump org.sonarqube from 5.0.0.4638 to 7.2.3.7755
+* Bump org.sonarqube from 7.2.3.7755 to 7.3.0.8198
+* Bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318 in /server
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
+* Bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* Bump peter-evans/repository-dispatch from 3 to 4
+* Bump plugin.power-assert from 2.3.10 to 2.3.21
+* Inherit the Kotlin power-assert plugin version from GSF
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+* Take Kotlin from the platform and drop the duplicated test setup
+* Upgrade kotlin to 2.3.10 and enable power-assert
 
 ### Patch releases
 

@@ -7,70 +7,70 @@ id: '10.0-notify'
 
 ### Features
 
-* feat(notifications): include DYNAMIC_RULE_ID on screen alerts from notification rules
-* feat(notify): return broadcastTopics and skip Exclude Sender on SELF
-* feat: Add Slack as a Notify gateway
-* feat: Add a shared gateway for Slack and Teams to base their integration off
-* feat: Allow asset references to be passed to email notify api
-* feat: Enable slice jar publishing and fix reuseUpstream scoping
-* feat: persist and serve custom alert sounds for notification rules and templates
-* feat: support custom SMTP headers on email gateway
+* `notifications` : Include DYNAMIC_RULE_ID on screen alerts from notification rules
+* `notify` : Return broadcastTopics and skip Exclude Sender on SELF
+* Add Slack as a Notify gateway
+* Add a shared gateway for Slack and Teams to base their integration off
+* Allow asset references to be passed to email notify api
+* Enable slice jar publishing and fix reuseUpstream scoping
+* Persist and serve custom alert sounds for notification rules and templates
+* Support custom SMTP headers on email gateway
 
 ### Fixes
 
-* fix(genesis-notify-dispatcher): build the webhook mapper on Jackson 3
-* fix(genesis-notify-script-config): change deprecated dsl syntax
-* fix(notify): default RouteCreate.displayName to null
-* fix(notify): scope SELF routes by entityId so per-user subscriptions don't cross-deliver
-* fix: Email API should allow optional template reference parameter
-* fix: Ensure bulk dismiss is batched to avoid overwhelming the process memory
-* fix: allow alert sound fetch for service-owned notification rules
-* fix: bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
-* fix: cap test-retry failures and add noRetry guard
-* fix: exclude genesis-notify-test-dictionary-cache from product manifest
-* fix: remove unused context parameter from register function
-* fix: resolve version from the first @genesislcap/* dependency
+* `genesis-notify-dispatcher` : Build the webhook mapper on Jackson 3
+* `genesis-notify-script-config` : Change deprecated dsl syntax
+* `notify` : Default RouteCreate.displayName to null
+* `notify` : Scope SELF routes by entityId so per-user subscriptions don't cross-deliver
+* Email API should allow optional template reference parameter
+* Ensure bulk dismiss is batched to avoid overwhelming the process memory
+* Allow alert sound fetch for service-owned notification rules
+* Bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
+* Cap test-retry failures and add noRetry guard
+* Exclude genesis-notify-test-dictionary-cache from product manifest
+* Remove unused context parameter from register function
+* Resolve version from the first @genesislcap/* dependency
 
 ### Dependency changes
 
-* build(deps): add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
-* build(deps): add genesisVersion consistency guard across gradle.properties files
-* build(deps): adopt global.genesis.settings.legacy and drop the duplicated test setup
-* build(deps): bump Gradle wrapper from 9.6.1 to 9.7.1
-* build(deps): bump actions/checkout from 4 to 7
-* build(deps): bump angusMail from 2.0.3 to 2.0.4 to resolve vulnerability
-* build(deps): bump com.icegreen:greenmail from 2.0.1 to 2.1.8
-* build(deps): bump com.icegreen:greenmail from 2.1.13 to 2.1.14
-* build(deps): bump com.icegreen:greenmail from 2.1.14 to 2.1.15
-* build(deps): bump com.icegreen:greenmail from 2.1.8 to 2.1.13
-* build(deps): bump com.icegreen:greenmail from 2.1.8 to 2.1.13 in /server
-* build(deps): bump io.kotest:kotest-assertions-core-jvm from 5.8.1 to 6.2.4
-* build(deps): bump io.kotest:kotest-runner-junit5-jvm from 6.2.4 to 6.2.5
-* build(deps): bump io.kotest:kotest-runner-junit5-jvm from 6.2.5 to 6.2.6
-* build(deps): bump io.mockk:mockk from 1.13.10 to 1.14.11
-* build(deps): bump io.mockk:mockk-jvm from 1.14.9 to 1.14.11
-* build(deps): bump org.apache.pdfbox:pdfbox from 3.0.3 to 3.0.7
-* build(deps): bump org.apache.pdfbox:pdfbox from 3.0.7 to 3.0.8
-* build(deps): bump org.eclipse.angus:angus-mail from 2.0.4 to 2.0.5
-* build(deps): bump org.gradle.test-retry from 1.6.4 to 1.6.5
-* build(deps): bump org.gradle.test-retry from 1.6.5 to 1.6.6
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.1 to 0.9.8
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9 in /server
-* build(deps): bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
-* build(deps): bump org.simplejavamail:simple-java-mail from 8.12.6 to 9.3.2
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.2 to 9.3.3
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.3 to 9.3.4
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.4 to 9.3.5
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.5 to 9.3.6
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.6 to 9.3.8
-* build(deps): bump org.simplejavamail:simple-java-mail from 9.3.8 to 9.3.9
-* build(deps): bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
-* build(deps): bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
-* build(deps): bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
-* build(deps): bump peter-evans/repository-dispatch from 3 to 4
-* build(deps): remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Add genesisVersion consistency guard across gradle.properties files
+* Adopt global.genesis.settings.legacy and drop the duplicated test setup
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump actions/checkout from 4 to 7
+* Bump angusMail from 2.0.3 to 2.0.4 to resolve vulnerability
+* Bump com.icegreen:greenmail from 2.0.1 to 2.1.8
+* Bump com.icegreen:greenmail from 2.1.13 to 2.1.14
+* Bump com.icegreen:greenmail from 2.1.14 to 2.1.15
+* Bump com.icegreen:greenmail from 2.1.8 to 2.1.13
+* Bump com.icegreen:greenmail from 2.1.8 to 2.1.13 in /server
+* Bump io.kotest:kotest-assertions-core-jvm from 5.8.1 to 6.2.4
+* Bump io.kotest:kotest-runner-junit5-jvm from 6.2.4 to 6.2.5
+* Bump io.kotest:kotest-runner-junit5-jvm from 6.2.5 to 6.2.6
+* Bump io.mockk:mockk from 1.13.10 to 1.14.11
+* Bump io.mockk:mockk-jvm from 1.14.9 to 1.14.11
+* Bump org.apache.pdfbox:pdfbox from 3.0.3 to 3.0.7
+* Bump org.apache.pdfbox:pdfbox from 3.0.7 to 3.0.8
+* Bump org.eclipse.angus:angus-mail from 2.0.4 to 2.0.5
+* Bump org.gradle.test-retry from 1.6.4 to 1.6.5
+* Bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* Bump org.jetbrains.kotlinx.kover from 0.9.1 to 0.9.8
+* Bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9 in /server
+* Bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
+* Bump org.simplejavamail:simple-java-mail from 8.12.6 to 9.3.2
+* Bump org.simplejavamail:simple-java-mail from 9.3.2 to 9.3.3
+* Bump org.simplejavamail:simple-java-mail from 9.3.3 to 9.3.4
+* Bump org.simplejavamail:simple-java-mail from 9.3.4 to 9.3.5
+* Bump org.simplejavamail:simple-java-mail from 9.3.5 to 9.3.6
+* Bump org.simplejavamail:simple-java-mail from 9.3.6 to 9.3.8
+* Bump org.simplejavamail:simple-java-mail from 9.3.8 to 9.3.9
+* Bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496 in /server
+* Bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* Bump peter-evans/repository-dispatch from 3 to 4
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
 
 ### Patch releases
 
