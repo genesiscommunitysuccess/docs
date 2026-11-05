@@ -446,7 +446,7 @@ When configuring the db batch poller to use as part of your pipeline, you must p
 - source (required): this is what the PersistenceManager will use to find the last persisted record and should be unique across all pipelines
 - index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if a single field index is provided, ensure this value is either the generated `TIMESTAMP` field in the table or of type Long. Else, see below.
 - buildIndex (required for multi-field index only): if you would like to use an index that contains multiple fields, you need to provide a lambda that converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
-- dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - the default is 200ms, and is not required as part of the provided config
+- dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - the default is 200ms, and is not required as part of the provided config. It is also the starting delay before the source reads a record again when its sink is unavailable (see [When the sink is unavailable](#when-the-sink-is-unavailable))
 - pollFromLatest (optional): when set to `true` and no persisted index exists for this source, polling starts from the current latest record in the table rather than from the beginning, skipping all existing records. This is useful when you only want to process new data from the point the pipeline first starts. Defaults to `false`.
 
 :::note
@@ -479,7 +479,7 @@ pipelines {
 
 You also have the option of providing a batch size to the `dbBatchQuery` source.
 
-If no `batchSize` is provided, the elements from the database poll will be returned individually and the persistence manager will use the index from each individual record to keep track of what has been processed. This means that the index of each record will be persisted after it reaches the sink. This gives an *exactly once* guarantee.
+If no `batchSize` is provided, the elements from the database poll will be returned individually and the persistence manager will use the index from each individual record to keep track of what has been processed. This means that the index of each record will be persisted after it reaches the sink. With a transactional sink such as `txDbSink`, the index is persisted in the same transaction as the sink's writes, which gives an *exactly once* guarantee. With any other sink, a record whose sink failed after applying some of its writes is processed again, which gives an *at least once* guarantee.
 
 If a `batchSize` is provided, the elements from the database poll will be batched into the size you have specified in order of the index provided and returned as a list. The persistence manager will use the index from the last record of this batch. So, if the system goes down whilst in the middle of processing a batch of records, it recovers by continuing from the beginning of that batch. This gives an *at least once* guarantee. This option greatly increases processing speeds when working with large amounts of data.
 
@@ -498,6 +498,14 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 }
 // this source will return batches of List<TestIndexTable>
 ```
+
+##### When the sink is unavailable
+
+If the sink throws a `SinkUnavailableException` (for example, `KafkaSink` when the broker cannot be reached), the source does not persist the index of that record or batch. It waits, then reads it again from the last persisted index, and repeats until the sink accepts it. Records are not skipped while the sink is unavailable.
+
+The first wait is `dbLookupDelayMs`, or 100ms if that is lower. Each further wait doubles, up to 30 seconds or `dbLookupDelayMs` if that is higher. The wait goes back to its starting value once a record is processed. The first failure logs a warning with the stack trace; later failures log a one-line warning with the number of attempts.
+
+A sink that is not transactional may receive the same record or batch more than once if it applied some of it before failing.
 
 ### `dbBulkSubscribe`
 
