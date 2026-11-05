@@ -227,7 +227,8 @@ The error raised for the file says which of these happened.
 | Case | 8.15 | 10.0 |
 |---|---|---|
 | No service can be found for the event name | Throws `Unable to resolve service for endpoint ...`, so the pipeline's error handling runs | Logs a warning and retries with backoff until the event is delivered, with no time limit. Inside `txDbSink()`, it gives up after `timeout` and throws. |
-| The target replies with a NACK other than UNAVAILABLE | Logged at error level | Unchanged |
+| The target replies with an UNAVAILABLE NACK, for example from a node that is not primary | With Consul service discovery, retried without limit. Otherwise, logged at error level and dropped. | Retried with backoff until delivered. Inside `txDbSink()`, it gives up after `timeout` and throws. |
+| The target replies with any other NACK | Logged at error level | Unchanged |
 | No reply within `timeout` | Throws | Unchanged |
 
 **What goes wrong if you skip this:** a pipeline whose target service is missing, or whose event name is misspelt, stalls instead of failing. Any `onUncaughtError` handling or alerting that relied on the error no longer runs.
@@ -235,5 +236,5 @@ The error raised for the file says which of these happened.
 **What to do:**
 
 - Check that every event name is spelt correctly and that the service that handles it is deployed.
-- Watch the logs for warnings of the form `Unable to resolve ... holding until delivered`, which mean the handler is waiting for a target.
+- Watch the logs for warnings that contain `holding until delivered`, such as `Unable to resolve ... holding until delivered`. They mean the handler is waiting for a target.
 - `sendEventOnCompletion` has no setting to limit the wait. If you need a deadline, send the event from an [`eventSink`](/develop/server-capabilities/integrations/data-pipelines/#eventsink) with `retry = holdWithDeadline(maxWaitMs)` instead. An `eventSink` sends one event per element, from the sink position, rather than one when processing completes. By default it throws on a NACK, and a throw from a sink stops a real-time pipeline unless it has an `onUncaughtError` handler.
