@@ -1,0 +1,241 @@
+---
+title: 'Security and authentication'
+sidebar_label: 'Security and authentication'
+sidebar_position: 7
+id: 'upgrade-10.0-security-auth'
+---
+
+Most of this page is about one change: in 10.0, a permissioning `auth` block sets its key with `authKey` and its filter with `filter`. The older ways of writing an auth block (bare field lines, `field { }`, `fields { }` and `where { }`) have been removed. This affects data servers, request servers, event handlers and web handlers (steps 1 to 4). Steps 5 and 6 cover code that uses the LDAP library directly, and one management console LDAP setting.
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 1 to 5 (`fields { }`, `field { }` and `where { }` in auth blocks, `rowLevelPermissions` in `enrichedAuth`, and the removed or changed types) |
+| A process fails to start | 1, 2 and 3 (an auth block on an auth map that has no `authKey`) |
+| The management console's LDAP login is turned off | 6 (a `LdapUserDnTemplate` that isn't a DN, with `LdapUserGroups`) |
+
+## Before you start
+
+**Find the blocks to change.** Search your `.kts` and `.kt` files for `auth(`, `enrichedAuth(`, `requestAuth(` and `responseAuth(`, and read each block. A block needs changing if it names an auth map but has no `authKey`, or if it contains `where {`, `field {` or `fields {`.
+
+**Make most of the changes on 8.15.** `filter`, `filterWithUserName`, `authKey { key(...) }` and `authKeyWithUserName` all exist in 8.15. So you can make the changes in steps 2 to 4, and the `where` replacements in step 1, before you upgrade, and check that your application behaves the same. Only the `authKey(TABLE.FIELD)` replacement in step 1 has to wait for the upgrade, because that form is new in 10.0.
+
+## 1. Data servers and request servers: replace bare fields with `authKey(...)`
+
+**Applies to:** `auth("MAP_NAME") { }` blocks in data server queries and table-based request servers.
+
+**Why:** in 8.15, you could write the fields of the auth key as bare lines in the block, such as `TRADE_VIEW.TRADE_ID`, or wrap them in `fields { }`. The framework ran the block to collect those fields and used them as the key. 10.0 removes this. The key is now set only with `authKey(...)`, and the filter is set with `filter { }` instead of `where { }`.
+
+**What goes wrong if you skip this:**
+
+- A `fields { }` or `where { }` inside the block is a compile error.
+- A block on an auth map that has no `authKey` stops the process at startup. Bare field lines still compile, but they no longer set the key, so a block that has only bare field lines fails like this:
+
+  ```
+  ...: the auth block on map "TRADE_VISIBILITY" has no authKey, so it would deny every user. Add authKey(...) or authKeyWithUserName { ... } to it.
+  ```
+
+**What to do:** put the key fields in one `authKey(...)` call, and replace `where` with `filter`. Inside `filter`, the record is `data`.
+
+```kotlin
+// 8.15
+auth("TRADE_VISIBILITY") {
+    TRADE_VIEW.TRADE_ID
+    where {
+        (tradeQuantity ?: 0) >= 10000
+    }
+}
+
+// 10.0
+auth("TRADE_VISIBILITY") {
+    authKey(TRADE_VIEW.TRADE_ID)
+    filter {
+        (data.tradeQuantity ?: 0) >= 10000
+    }
+}
+```
+
+```kotlin
+// 8.15 (in a query on TRADE)
+auth("TRADE_VISIBILITY") {
+    fields {
+        TRADE_ID
+    }
+}
+
+// 10.0
+auth("TRADE_VISIBILITY") {
+    authKey(TRADE.TRADE_ID)
+}
+```
+
+```kotlin
+// 8.15 (request server)
+auth("EXCHANGE") {
+    INSTRUMENT_DETAILS.EXCHANGE_ID
+    INSTRUMENT_DETAILS.TRADED_CURRENCY
+}
+
+// 10.0
+auth("EXCHANGE") {
+    authKey(INSTRUMENT_DETAILS.EXCHANGE_ID, INSTRUMENT_DETAILS.TRADED_CURRENCY)
+}
+```
+
+When you make the change:
+
+- **Keep the fields in the same order.** The key is the field values joined in order, so the same order gives the same key, and the entries already in your auth maps still match.
+- **Use fields of the query's own table or view.** In a query on `TRADE_VIEW`, write `TRADE_VIEW.TRADE_ID`. A field from another table is now a compile error. In 8.15, it was accepted and matched by name only.
+- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. `authKey(TABLE.FIELD)` sets `rowLevelPermissions` for you, so you don't need to set it as well. On a key that isn't unique, the data server logs a warning when a second row shares a key, and falls back to the heavier map.
+- **Use one form of `authKey` in each block.** Following `authKey(TABLE.FIELD)` with `authKey { ... }` in the same block has the same effect as setting `rowLevelPermissions` yourself.
+- **If the old `where` used the user name**, as in `where { user -> user != "JohnDoe" }`, use `filterWithUserName { userName != "JohnDoe" }` instead.
+
+## 2. Data servers and request servers: write the `enrichedAuth(...)` key in full
+
+**Applies to:** `enrichedAuth("MAP_NAME", TABLE) { }` blocks in data server queries and table-based request servers.
+
+**Why:** the change in step 1 applies here too. `enrichedAuth` has no `authKey(TABLE.FIELD)` form, so you write the key as an expression in `authKey { key(...) }`. For each field, you choose whether it comes from the main record (`data`) or from the enriched record (`enriched`).
+
+**What goes wrong if you skip this:** a block that has no `authKey` stops the process at startup, with an error like the one in step 1 that names the `enrichedAuth` block. A `fields { }` or a two-parameter `where { }` in the block is a compile error, and so is setting `rowLevelPermissions` in an `enrichedAuth` block. That setting never had any effect there in 8.15, so delete it.
+
+**What to do:**
+
+```kotlin
+// 8.15
+enrichedAuth("TRADE_VISIBILITY", FAVOURITE_TRADES) {
+    TRADE_VIEW.TRADE_ID
+    FAVOURITE_TRADES.USER_NAME
+    where { tradeView, favouriteTrades ->
+        favouriteTrades?.tradeId == "00000000001TRSP0"
+    }
+}
+
+// 10.0
+enrichedAuth("TRADE_VISIBILITY", FAVOURITE_TRADES) {
+    authKey { key(data.tradeId, enriched?.userName) }
+    filter {
+        enriched?.tradeId == "00000000001TRSP0"
+    }
+}
+```
+
+Then check that the new key still matches your auth map. In 8.15, each field of the key was looked up by name, first on the main record and then on the enriched record, and a missing value became `"null"`. If a field name exists on both records, or the main record's value can be `null`, the record you choose may give a different key from the one 8.15 built.
+
+## 3. Event handlers, custom request servers and web handlers: replace `field`, `fields` and `where`
+
+**Applies to:** `auth` blocks in event handlers and custom request servers, and `requestAuth` and `responseAuth` blocks in web handlers.
+
+**Why:** `field { }`, `fields { }` and `where { }` have been removed from these blocks.
+
+**What goes wrong if you skip this:** the script doesn't compile. A block on an auth map that has no `authKey` stops the process at startup, with an error like the one in step 1.
+
+**What to do:** set the key with `authKey { key(...) }`, and the filter with `filter { }`, reading the record as `data`.
+
+```kotlin
+// 8.15
+auth("NAMES") {
+    field { name }
+}
+
+// 10.0
+auth("NAMES") {
+    authKey { key(data.name) }
+}
+```
+
+```kotlin
+// 8.15
+auth("TRADE_DETAILS") {
+    fields { listOf(counterpartyId, bookId) }
+}
+
+// 10.0
+auth("TRADE_DETAILS") {
+    authKey { key(data.counterpartyId, data.bookId) }
+}
+```
+
+```kotlin
+// 8.15
+auth("INSTRUMENT") {
+    field { instrumentId }
+    where { alternateType == "RIC" }
+}
+
+// 10.0
+auth("INSTRUMENT") {
+    authKey { key(data.instrumentId) }
+    filter { data.alternateType == "RIC" }
+}
+```
+
+If the old `where` used the user name (its lambda parameter), use `filterWithUserName { ... }` and read `userName` instead.
+
+## 4. Auth blocks without an auth map: replace `where`
+
+**Applies to:** `auth { }` blocks with no map name, in data servers and request servers.
+
+**Why:** `where` has been removed from these blocks.
+
+**What goes wrong if you skip this:** the script doesn't compile. A `fields { }` inside the block is also a compile error; it never affected the permission check, so move it out of `permissioning { }`.
+
+**What to do:**
+
+```kotlin
+// 8.15
+auth {
+    where { user ->
+        user != "JohnDoe"
+    }
+}
+
+// 10.0
+auth {
+    filterWithUserName {
+        userName != "JohnDoe"
+    }
+}
+```
+
+## 5. Code that uses removed or changed types (rare)
+
+**Applies to:** Kotlin code that refers to the types below directly. Scripts are not affected.
+
+**Why:** these types were deleted or changed in 10.0.
+
+**What goes wrong if you skip this:** the code doesn't compile.
+
+**What to do:**
+
+- **`EventHandlerPermissioning` and `EventHandlerAuthPermissioning`** have been deleted, with no replacement. Event handler scripts never used them, so remove any references to them.
+- **The `genesis-ldap` library**, if your code uses it directly. It is meant for use by the platform's own LDAP logins, so most applications don't. If yours does:
+  - `LdapResult.InvalidCredentials` is now an interface. Replace `== LdapResult.InvalidCredentials` and `LdapResult.InvalidCredentials ->` with `is LdapResult.InvalidCredentials ->`.
+  - `LdapConfig.trust` is now an `LdapTrustMode`. Wrap your `TrustConfig` in `LdapTrustMode.Standard(...)`.
+  - `LdapConfig.canonicalIdAttribute` can now be `null`.
+  - This one is not a compile error: at runtime, creating an `LdapConfig` now throws `LdapConfigException` if it has required groups and a `userDnTemplate` that doesn't produce a valid DN. This is the same check as in step 6.
+
+## 6. Management console: check `LdapUserDnTemplate` if you set `LdapUserGroups`
+
+**Applies to:** systems that log in to the management console with LDAP (`LDAP` in `DaemonMgmtUiLoginMode`), with both `LdapUserDnTemplate` and `LdapUserGroups` set.
+
+**Why:** 10.0 rejects an `LdapUserDnTemplate` that doesn't produce a valid DN, such as `{0}@example.com` or `EXAMPLE\{0}`, when `LdapUserGroups` is set. With such a template, group membership can never be checked, because the group lookup reads the bound value as a DN. In 8.15, this configuration was accepted and then failed at every login.
+
+**What goes wrong if you skip this:** the management console doesn't offer LDAP login. The other login providers in `DaemonMgmtUiLoginMode` keep working, and the daemon itself still starts. The first time the console login page is requested after the daemon starts, the daemon logs this at ERROR:
+
+```
+Refusing to enable console login provider LDAP: userDnTemplate '...' does not produce a valid DN ...
+```
+
+**What to do:** either use a template that produces a real DN, such as `CN={0},OU=People,DC=example,DC=com`, or remove `LdapUserGroups`.
+
+## Behaviour changes that need no action
+
+These changes don't require you to change anything, but code or operations that relied on the old behaviour will see a difference.
+
+- **Sessions expire a fixed time after they are created.** [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins), set in the `security { }` block of your application's `auth-preferences.kts`, is now the lifetime of a session, counted from when it was created, rather than an idle timeout. Activity no longer extends it. To keep access, a client logs in again with its refresh token before the session expires. This applies on every authentication path, including native HTTP endpoints and web endpoints served through the router.
+- **Platform LDAP login (the `ldap { connection { } }` script DSL):**
+  - If a connection sets both `bindDn` and `userGroups`, make sure the `bindDn` account can read group membership (`memberOf`) on user entries. Group membership is now read with that account rather than with the user's own connection, and if the account can't read it, every login that requires a group is denied. A connection that doesn't set `bindDn` is not affected.
+  - By default, a connection now times out after 10 seconds when connecting and after 300 seconds waiting for any directory response, including a bind. In 8.15, a bind timed out after 30 seconds. To change either value for a connection, set [`connectTimeoutMs`](/develop/server-capabilities/access-control/authentication/#connection) or `responseTimeoutMs` in its `connection { }` block, which sits in `security { authentication { ldap { } } }` in `auth-preferences.kts`.
+- **Management console login with `DaemonMgmtUiLoginMode=LDAP,USER_PASSWORD`:** a user whom the directory has verified, but who has no `ENABLED` row in the `USER` table, now gets "Invalid username or password." The login no longer falls through to `USER_PASSWORD`, so these users need a `USER` row. A `USER` row whose name differs from the directory name only in case now matches.
+- **Management console rights:** rights granted or revoked in `RIGHT_SUMMARY` take effect within about 10 seconds.

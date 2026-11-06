@@ -539,7 +539,18 @@ You can protect against Cross-Site Scripting (XSS) by enabling string sanitisati
 
 **System-wide XSS sanitisation**
 
-Enable XSS string sanitisation for all outgoing string properties by setting the router-config property `xssStringSanitizer` to `true` on `genesis-router.kts` file. By default this property is set to `false`.
+Enable XSS string sanitisation for all outgoing string properties by setting the `XssStringSanitizer` item to `true` in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/). By default this item is set to `false`.
+
+```kotlin
+// genesis-system-definition.kts
+systemDefinition {
+    global {
+        item(name = "XssStringSanitizer", value = "true")
+    }
+}
+```
+
+Setting it under `global` makes it apply to every process.
 
 **Per-field XSS sanitisation on type-safe messages**
 

@@ -1,0 +1,190 @@
+---
+title: 'MCP'
+sidebar_label: 'MCP'
+sidebar_position: 12
+id: 'upgrade-10.0-mcp'
+---
+
+This page covers the changes to the MCP (Model Context Protocol) server between 8.15 and 10.0. It only applies if your application runs the `GENESIS_MCP` process, which means `GENESIS_MCP_PROCESS_START` is set to `true`. If it doesn't, you can skip this page.
+
+Steps 1 to 3 keep your MCP server and clients working. Steps 4 and 5 deal with the new platform tools, which 10.0 switches on by default. Steps 6 and 7 are settings to decide on and differences to be aware of, and step 8 only affects custom code.
+
+| When it shows up | Steps |
+|---|---|
+| The MCP server doesn't start | 1 (`addToToolSpec` in `genesis-mcp-server.kts`) |
+| MCP clients can't connect, or calls run without the caller's identity | 2 (identity moves to HTTP headers) and 3 (`/sse` becomes `/mcp`) |
+| AI clients see many more tools than before | 4 (platform tools are on by default) |
+| Platform tools refuse every call | 5 (the MCP rights don't exist yet) |
+| Nothing fails, but there are new security settings to choose | 6 |
+| Callers get different results from your endpoint tools | 7 |
+| The build fails | 8 (only for code compiled against the `genesis-mcp` classes) |
+
+These are unchanged, so you don't need to do anything about them:
+
+- the `GENESIS_MCP_PROCESS_START` system definition item;
+- the default port, `3001`, and its `McpPort` override;
+- the `<application>-mcp.kts` file, `enableMcp(...)` and its `context` and `requiresAuth` properties;
+- the names of your endpoint tools: `event_<name>` for event handlers, `<name>_query` for request servers.
+
+For a full description of the 10.0 MCP server, see [Model Context Protocol](/develop/server-capabilities/model_context_protocol/).
+
+## 1. Remove `addToToolSpec` from `genesis-mcp-server.kts`
+
+**Applies to:** a `genesis-mcp-server.kts` that sets `addToToolSpec` inside `sessionAuthToken { }` or `providedUserName { }`.
+
+**Why:** in 10.0, `sessionAuthToken` and `providedUserName` have no properties, because the caller's identity no longer travels as a tool argument (see step 2).
+
+**What goes wrong if you skip this:** the script doesn't compile, so the MCP server doesn't start.
+
+**What to do:** delete the `addToToolSpec` line and leave the block empty.
+
+```kotlin
+// 8.15
+authenticationStrategy {
+    sessionAuthToken {
+        addToToolSpec = true
+    }
+}
+
+// 10.0
+authenticationStrategy {
+    sessionAuthToken { }
+}
+```
+
+Do the same for `providedUserName { }`. `staticUser { }` hasn't changed.
+
+## 2. Send the caller's identity as an HTTP header
+
+**Applies to:** applications that use the `sessionAuthToken` or `providedUserName` strategy.
+
+**Why:** in 8.15, endpoint tools had an extra argument for the caller's identity, `MCP_SESSION_TOKEN` or `MCP_USER_NAME`. Either the AI client filled it in, or a host application or proxy added it to each call. In 10.0 that argument has gone. The server reads the caller from the HTTP request headers instead, so the credential is never shown to the AI model.
+
+| Strategy | 8.15 tool argument | 10.0 HTTP header |
+|---|---|---|
+| `sessionAuthToken` | `MCP_SESSION_TOKEN` | `SESSION_AUTH_TOKEN: <token>`, or `Authorization: Bearer <token>` |
+| `providedUserName` | `MCP_USER_NAME` | `USER_NAME: <user>` |
+| `staticUser` | none | none |
+
+**What goes wrong if you skip this:** the server can't identify the caller. Platform tools, and the tools for endpoints that require authentication (`requiresAuth`, the default), return an error. Other endpoint tools run with no user. The old argument isn't removed from the call any more, either, so it reaches your endpoint as an ordinary field.
+
+**What to do:**
+
+- Change any host application, proxy or gateway that added `MCP_SESSION_TOKEN` or `MCP_USER_NAME` to the tool arguments, so that it sends the header instead.
+- With `providedUserName`, make sure the gateway also strips any `USER_NAME` header the client sends. The server trusts that header as it is.
+
+See [Authentication](/develop/server-capabilities/model_context_protocol/#authentication).
+
+## 3. Point MCP clients at `/mcp` instead of `/sse`
+
+**Applies to:** every MCP client and proxy that connects to the Genesis MCP server.
+
+**Why:** 10.0 removes the SSE transport (`/sse`, with `/message`). The server now uses the Streamable HTTP transport, on a single endpoint, `/mcp`.
+
+**What goes wrong if you skip this:** clients can't connect.
+
+**What to do:** change the URL in each client's configuration.
+
+```
+8.15:  http://<host>:3001/sse
+10.0:  http://<host>:3001/mcp
+```
+
+- A client that supports Streamable HTTP can connect to `/mcp` directly.
+- If you used a proxy such as `mcp-proxy` to bridge a stdio client to `/sse`, change its target to `/mcp`, and check that your version of the proxy supports Streamable HTTP. If the client supports Streamable HTTP itself, you can drop the proxy.
+
+See [Connecting an AI client](/develop/server-capabilities/model_context_protocol/#connecting-an-ai-client).
+
+## 4. Decide whether to expose the platform tools
+
+**Applies to:** every application that runs MCP.
+
+**Why:** 10.0 adds built-in platform tools, and `platformTools` is `true` by default. An application that exposed a few endpoints with `enableMcp` in 8.15 now also exposes 27 platform tools, 7 prompts and 4 resources. They include tools that read logs, read tables directly, start and stop processes, run a remap, send any event and change records.
+
+**What goes wrong if you skip this:** AI clients see and can try to call all of these tools. Until you complete step 5, the platform tools that check a right refuse every call.
+
+**What to do:** choose one.
+
+- **Keep the 8.15 behaviour.** Add `platformTools = false` to `server { }` in `genesis-mcp-server.kts`. Only your `enableMcp` endpoints are exposed, plus `get_current_time`, as in 8.15.
+- **Use the platform tools.** Carry on with step 5, and look at the settings in step 6.
+
+See [Platform tools, prompts and resources](/develop/server-capabilities/model_context_protocol/#platform-tools-prompts-and-resources).
+
+## 5. Grant the MCP rights, or turn the rights check off
+
+**Applies to:** applications that keep the platform tools (`platformTools = true`).
+
+**Why:** `enforcePlatformToolRights` is `true` by default. Most platform tools, and all the prompts and resources, then check that the caller has a right: `MCP_VIEW`, `MCP_DB_READ`, `MCP_OPERATE` or `MCP_ADMIN`, depending on the tool. The platform doesn't create these right codes for you.
+
+**What goes wrong if you skip this:** a caller without the right gets a "not authorised" error, and the audit log records `denied: missing <right> right`.
+
+**What to do:** choose one.
+
+- Create the right codes and grant them to the profiles that should use MCP. See [Grant the MCP rights](/develop/server-capabilities/model_context_protocol/#step-3-grant-the-mcp-rights).
+- Map each tier to a right your application already has, with `viewRight`, `dbReadRight`, `operateRight`, `adminRight` and `approverRight`.
+- Set `enforcePlatformToolRights = false`. Any identified caller can then use every platform tool, including the ones that change data and control processes.
+
+Before you grant anything, bear in mind:
+
+- **Raw database reads.** The `MCP_DB_READ` tools read tables directly. They don't apply your application's row and field permissions. Treat `MCP_DB_READ` (or your `dbReadRight`) as read access to the whole database.
+- **The shipped `staticUser`.** With the default `staticUser { userName = "admin" }`, every caller acts as `admin`. So the rights check depends only on what `admin` holds: every call is refused until you grant `admin` the rights, and every caller gets them once you do. In that set-up, the rights aren't access control.
+
+See [Authorisation](/develop/server-capabilities/model_context_protocol/#authorisation).
+
+## 6. Review the new security settings
+
+**Applies to:** every application that runs MCP.
+
+**Why:** 10.0 adds security settings that 8.15 didn't have. None of them is needed for the upgrade, but each is a decision to make for a deployed application.
+
+**What goes wrong if you skip this:** nothing fails. The defaults keep the server open to anonymous connections, and leave writes unheld unless you use `staticUser { requiresApproval = true }`.
+
+**What to do:** look at each setting in `server { }`:
+
+- **`requireAuthenticatedConnections`** (default `false`). Set it to `true` with `sessionAuthToken` or `oidc`, to refuse connections that have no valid identity with HTTP 401. You can't use it with `staticUser`: the server won't start, and logs a message that says why.
+- **`requireApprovalForWrites`** (default `false`). Set it to `true` to hold every write made over MCP for maker-checker approval. Under `staticUser { requiresApproval = true }`, which is the shipped default, writes are already held, as they were in 8.15 for `enableMcp` events.
+- **`approverRight`** (default `MCP_ADMIN`). Set it to a right that differs from `adminRight` if the users who make changes shouldn't also be able to approve them.
+- **`restrictedTables`**. Add any of your own sensitive tables that the raw database tools must refuse to read.
+- **TLS.** The server uses plain HTTP unless you add a `tls { }` block. If you use a strategy that authenticates over plain HTTP, the server logs a warning at start-up.
+
+The new `oidc` strategy is also available, for MCP servers that act as their own OAuth resource server.
+
+See [Server configuration](/develop/server-capabilities/model_context_protocol/#server-configuration) and [Maker-checker approval](/develop/server-capabilities/model_context_protocol/#maker-checker-approval).
+
+## 7. Check what relies on the results of your endpoint tools
+
+**Applies to:** anything that reads the results of your `enableMcp` endpoint tools: prompts, agents, scripts or tests.
+
+**Why:** endpoint tools behave differently in 10.0.
+
+**What goes wrong if you skip this:** nothing fails, but callers see different inputs and results.
+
+**What to do:** check each of these against what your callers expect.
+
+- **Request server tools (`<name>_query`)**:
+  - In 8.15, they took no inputs of their own, apart from the identity argument where step 2 applies, and always sent an empty request.
+  - In 10.0, their inputs are the request server's request fields, plus three optional query options, `CRITERIA_MATCH`, `MAX_ROWS` and `ORDER_BY`. The values are passed to the request server.
+  - A request field called `CRITERIA_MATCH`, `MAX_ROWS`, `ORDER_BY`, `VIEW_NUMBER` or `OFFSET`, in any case, is read as a query option and isn't passed to the request server. The server logs a warning when it registers the tool.
+- **Event tools held for approval** now return `{"status": "PENDING_APPROVAL", "applied": false, ...}` instead of a success response, so the caller isn't told that a held change has been applied.
+- **Approval message.** Under `staticUser`, a held event still carries the `approvalMessage` set in `staticUser { }`. If you don't set one, the event now carries the server-level `approvalMessage`, which defaults to `Submitted for approval via MCP`. In 8.15, it carried no message.
+- **Approval events under `staticUser`.** If you exposed `EVENT_PENDING_APPROVAL_ACCEPT`, `EVENT_PENDING_APPROVAL_REJECT` or `EVENT_PENDING_APPROVAL_CANCEL` with `enableMcp`, those tools now refuse every call under `staticUser`, because every caller shares one identity. Use the `approve_request` and `reject_request` platform tools, or cancel the request from the UI.
+- **Audit log.** Every endpoint tool call now writes a line to the `global.genesis.mcp.audit` logger. See [Audit logging](/develop/server-capabilities/model_context_protocol/#audit-logging).
+
+## 8. Update code that implements `AuthHandler`
+
+**Applies to:** code in your application that implements `global.genesis.mcp.auth.AuthHandler` or extends `AbstractAuthHandler`. This is rare: there is no documented way to plug in your own handler.
+
+**Why:** the interface now reads the caller from the request headers instead of the tool arguments.
+
+**What goes wrong if you skip this:** the code doesn't compile.
+
+**What to do:**
+
+| 8.15 | 10.0 |
+|---|---|
+| `getAdditionalProperties(): Map<String, JsonSchema>` | removed |
+| `buildEvent(resource, parameters, requiresAuth: Boolean)` | `buildEvent(resource, parameters, userName: String?)` |
+| `buildRequest(resource, parameters, requiresAuth: Boolean)` | `buildRequest(resource, parameters, userName: String?)` |
+| `AbstractAuthHandler.extractUser()`, which read the tool arguments | `resolveUserName(context: McpTransportContext): String?`, which reads the request headers |
+
+Code compiled against `genesis-mcp` is also affected by the general 10.0 changes, such as `jakarta.inject` in place of `javax.inject`, and Jackson 3. See the [upgrade guide](./index.mdx).

@@ -218,11 +218,12 @@ In proxy mode, the router stops loading `*-web-handler.kts` files from the appli
 
 A request that the router forwards doesn't go through these router checks, and the process doesn't apply them either:
 
-- `allowList` and `blockList`. A request server or event handler blocked at the router can still be reached through the proxy.
 - The router's own authentication, including `authDisabled`. The process authenticates the request instead, and the process's `HttpAuthDisabled` setting applies.
 - The router's XSS sanitising of responses. The process's response body is relayed as it is.
 
-Requests the router doesn't forward still get all three. If a resource must not be reachable over HTTP through the router, mark it `internal` or leave its process on TCP.
+Requests the router doesn't forward still get both.
+
+[`allowList` and `blockList`](#blocked-and-allowed-resources) still apply to a proxied request server or event handler: a resource that either list refuses is not proxied. Custom endpoints are not checked against the lists; they are checked only for `internal`. If a resource must not be reachable over HTTP through the router, mark it `internal` or leave its process on TCP.
 
 :::
 

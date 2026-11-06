@@ -1,0 +1,185 @@
+---
+title: 'Test support'
+sidebar_label: 'Test support'
+sidebar_position: 11
+id: 'upgrade-10.0-test-support'
+---
+
+This page covers the changes to the platform's test support (`genesis-testsupport` and `genesis-dbtest`) between 8.15 and 10.0. The steps here are about your test sources and test resources.
+
+## Before you start
+
+Each change shows up at one of three points:
+
+| When | Steps |
+|------|-------|
+| Compiling your tests | [Replace `authorise` and `revoke`](#replace-authorise-and-revoke-on-abstractgenesistestsupport), [remove `getValidationMode()`](#remove-getvalidationmode-overrides), and the [deprecations](#deprecated-legacy-test-classes) if you treat warnings as errors |
+| Running a test, before its body runs | [Replace `javax.inject` annotations](#replace-javaxinject-annotations-in-test-classes) |
+| Running a test: behaviour can change silently, or the test fails on bad data | [Network-config files in a test GENESIS_HOME](#check-each-test-genesis_home-for-a-network-config-file), [`EventClientBlocking` message types](#check-explicit-message-types-sent-with-eventclientblocking), [`@CsvData` RAW columns](#check-csvdata-files-that-fill-raw-columns) |
+
+You can make the `authorise`/`revoke` and `getValidationMode()` changes on 8.15 before you upgrade: their replacements already exist there. The `javax.inject` change can only be made as part of the upgrade, because the 8.15 test support does not read `jakarta.inject` annotations.
+
+Two platform-wide changes are likely to touch the same test code: the JUnit 4 modules `genesis-testsupport-junit4` and `genesis-dbtest-junit4` have been removed (see the replacement table in [step 2 of the upgrade guide](./index.mdx#2-bump-the-genesis-version-and-replace-removed-genesis-artifacts)), and `javax.inject` has been replaced by `jakarta.inject` in application code as well as in tests.
+
+## Replace `javax.inject` annotations in test classes
+
+**Applies to:** tests that use `@GenesisTest`, `@GenesisSharedContextTest`, `@GenesisDatabaseTest`, `AbstractGenesisTestSupport` or `GenesisTestSupport`, where the test class, a superclass or an interface it implements uses `javax.inject.Inject` or `javax.inject.Named`.
+
+**Why:** in 8.15, test injection read `javax.inject` and `com.google.inject` annotations. In 10.0, it reads `jakarta.inject` and `com.google.inject` annotations instead. Rather than silently skip a leftover `javax` annotation, the test fails before it runs and names each offending member:
+
+```
+Genesis test injection does not honour javax.inject annotations, so these members are silently skipped, or lose their qualifier:
+  - @javax.inject.Inject on field a.b.MyTest.db: use @jakarta.inject.Inject instead
+```
+
+**If you skip it:** every test that uses a `javax.inject` annotation on an injected member fails, even though it passed on 8.15.
+
+**What to do:** change the imports to `jakarta.inject` as part of the upgrade. Don't do this on 8.15 first: there, `jakarta.inject` annotations are ignored, so the members would not be injected. On a Kotlin property, give `@Named` the `@field:` use-site target, as in 8.15; without it, test injection doesn't see the qualifier.
+
+```kotlin
+// 8.15
+import javax.inject.Inject
+import javax.inject.Named
+
+@Inject
+@field:Named("primary")
+lateinit var client: SomeClient
+
+// 10.0
+import jakarta.inject.Inject
+import jakarta.inject.Named
+
+@Inject
+@field:Named("primary")
+lateinit var client: SomeClient
+```
+
+## Check each test GENESIS_HOME for a network-config file
+
+**Applies to:** tests that use `@GenesisTest`, `@GenesisSharedContextTest` or the Kotlin `AbstractGenesisTestSupport`, whose GENESIS_HOME contains a `network-config.yaml` or `network-config-<PROCESS_NAME>.yaml`. This is most likely where the test GENESIS_HOME is a copy of real `site-specific` or `cfg` configuration. Tests that use the Java `GenesisTestSupport` or `@GenesisDatabaseTest` are not affected.
+
+**Why:** in 8.15, a test process always built its network configuration from system definitions and ran without TLS. A network-config file in the test GENESIS_HOME was ignored. In 10.0, the test process reads that file in the same way as a real process:
+
+- the file replaces the transport set by the `ChannelType` and `MessageSerialization` system definitions, including values set with `@SysDefOverwrite`;
+- the file is validated, so an invalid file fails the test;
+- a `tls.mode` of `TLS` or `MUTUAL_TLS` starts the process with TLS.
+
+```text
+8.15: <GENESIS_HOME>/site-specific/cfg/network-config.yaml -> ignored; system definitions decide; no TLS
+10.0: <GENESIS_HOME>/site-specific/cfg/network-config.yaml -> applied; system definition transport ignored; TLS if the file says so
+```
+
+**If you skip it:** a test can change transport or start using TLS with no compile error. If the file is invalid, the test fails. If it turns TLS on and the keystore or certificate paths don't resolve, the test fails with `Could not start a test process with TLS mode ...`.
+
+**What to do:**
+
+1. Look for `network-config*.yaml` in each test GENESIS_HOME: the directory named by `@GenesisHome`, or the default one.
+2. For each file you find, do one of the following:
+   - Delete it, if the test was never meant to use it. The system definitions then apply, as before.
+   - Keep it. Make sure it is valid and that any `tls` paths resolve. Relative paths resolve against the test GENESIS_HOME. The platform doesn't ship test certificates, so provide your own keystore and certificates for the test.
+3. If a test sets `ChannelType` or `MessageSerialization` with `@SysDefOverwrite` and a network-config file is present, move that setting into the file. Alternatively, point the test at a file of its own with `@NetworkConfig("...")`.
+
+## Check explicit message types sent with `EventClientBlocking`
+
+**Applies to:** tests that call `EventClientBlocking.sendEvent` with a `messageType` that doesn't start with `EVENT_`.
+
+**Why:** the other event clients in test support already added the `EVENT_` prefix to a bare message type. In 8.15, `EventClientBlocking` sent the name exactly as given. In 10.0 it adds the prefix too, so `messageType = "TRADE_INSERT"` is sent as `EVENT_TRADE_INSERT`.
+
+**If you skip it:** a test that relied on the name being sent unchanged now targets a different event handler. It typically fails because the handler it expected is not called.
+
+**What to do:** a `messageType` that already starts with `EVENT_` is sent as it is, so a test that passes the full name needs no change. If a test needs to send a name that doesn't start with `EVENT_`, none of the `EventClient` classes will do that any more: build the `Event` message yourself and send it through the message client.
+
+## Check `@CsvData` files that fill RAW columns
+
+**Applies to:** `@CsvData` fixtures that have values in a column for a `RAW` field.
+
+**Why:** in 8.15, values in a `RAW` column were dropped when the CSV was loaded. In 10.0, they are decoded using the field's declared encoding, or `BASE_64` if it has none.
+
+**If you skip it:** a cell that is not valid for the field's encoding now fails to load, which fails the test. A cell that is valid is now loaded, so the record holds bytes where it used to be empty.
+
+**What to do:** make sure every value in a `RAW` column is valid for the field's encoding. If a test relied on the column being empty, clear the cells.
+
+This decoding is part of how the platform converts CSV text into a record, so it also applies when the platform's own tools load CSV data into a `RAW` field outside tests.
+
+## Replace `authorise` and `revoke` on `AbstractGenesisTestSupport`
+
+**Applies to:** subclasses of `AbstractGenesisTestSupport` that call `authorise(...)` or `revoke(...)` directly.
+
+**Why:** these two members were deprecated in 8.15 and have been removed in 10.0. Their replacement, the protected `inMemoryTestAuthCache` property, is available in both versions.
+
+**If you skip it:** the test doesn't compile.
+
+**What to do:** call the methods on `inMemoryTestAuthCache` instead. From Java, use `getInMemoryTestAuthCache().authorise(...)`. As before, the auth map must be listed in `authCacheOverrides` in the test configuration.
+
+```kotlin
+// 8.15
+authorise("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+revoke("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+
+// 10.0 (also compiles on 8.15)
+inMemoryTestAuthCache.authorise("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+inMemoryTestAuthCache.revoke("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+```
+
+A better long-term fix is to move the test to `@GenesisTest` with `@EnableInMemoryTestAuthCache` (see [Optional clean-ups](#optional-clean-ups)).
+
+## Remove `getValidationMode()` overrides
+
+**Applies to:** subclasses of `AbstractDatabaseTest` that override `getValidationMode()`.
+
+**Why:** this hook was deprecated in 8.15 and had no effect. It has been removed in 10.0, together with the `global.genesis.db.rx.ValidationMode` enum it returned.
+
+**If you skip it:** the test doesn't compile. In Java, `@Override` reports an error; in Kotlin, the `override` "overrides nothing".
+
+**What to do:** delete the override and the `ValidationMode` import.
+
+```java
+// 8.15
+@Override
+protected ValidationMode getValidationMode() { return ValidationMode.UNIFIED; }
+
+// 10.0: delete the override and the import
+```
+
+## Deprecated legacy test classes
+
+**Applies to:** tests that use any of `AbstractGenesisTestSupport`, `GenesisTestConfig`, `DataServerTest`, `EventResponse`, `GenesisTestSupport`, `GenesisClassGenerationTestSupport`, `AbstractDatabaseTest` or `SimpleQueueAbstractDatabaseTest`.
+
+**Why:** these classes are deprecated in 10.0. The Java classes (`GenesisTestSupport`, `GenesisClassGenerationTestSupport` and `AbstractDatabaseTest`) are marked for removal. The Kotlin classes are deprecated with no removal version set. They all still work.
+
+Separately, `SimpleQueueAbstractDatabaseTest` no longer extends `AbstractDatabaseTest`; it now extends an internal base class.
+
+**If you skip it:**
+
+- If your test build treats warnings as errors (Kotlin `allWarningsAsErrors`, or `javac -Werror`), it fails on the deprecation warnings.
+- Code that treats a `SimpleQueueAbstractDatabaseTest` subclass as an `AbstractDatabaseTest` — a cast, an `is` or `instanceof` check, or a shared helper typed on `AbstractDatabaseTest` — no longer compiles, or no longer matches.
+
+**What to do:** suppress the deprecation warnings in those tests, or move them to the GenesisJunit annotations (see [Optional clean-ups](#optional-clean-ups)). Retype any helper that takes an `AbstractDatabaseTest` and is also used with `SimpleQueueAbstractDatabaseTest` subclasses.
+
+## Optional clean-ups
+
+None of these is required for 10.0.
+
+### Move to the GenesisJunit annotations
+
+The legacy test classes listed above map to the annotation-driven GenesisJunit API as follows:
+
+- `AbstractGenesisTestSupport` and `GenesisTestSupport` become `@GenesisTest` or `@GenesisSharedContextTest`.
+- `AbstractDatabaseTest` becomes `@GenesisDatabaseTest`. The exception is a test that uses the limited production-dictionary filter, the no-argument TEST dictionary, explicit `.kts` dictionary paths, or swaps the dictionary in the middle of a test. None of these has a replacement in 10.0, so keep such tests on `AbstractDatabaseTest`.
+- An inline `createMockDictionary()` becomes `@ProvidedDictionary`.
+
+### Use `@ProvidedType` for a type, not `@ProvidedInstance`
+
+If a `@ProvidedInstance` member provides a class (`KClass` or `Class`) rather than an instance, it still works, but logs a warning on every run, and may be rejected in a later release. Change it to `@ProvidedType`:
+
+```kotlin
+// 8.15
+@ProvidedInstance
+private val myType = MyClass::class
+
+// 10.0
+@ProvidedType
+private val myType = MyClass::class
+```
+
+In a `@GenesisSharedContextTest`, put the `@ProvidedType` member in the companion object. An instance member there fails the test with a message telling you to use a static member.
