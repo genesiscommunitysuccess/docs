@@ -193,9 +193,13 @@ import global.genesis.message.core.HttpStatusCode
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
-import io.ktor.serialization.jackson.jackson
+import io.ktor.serialization.jackson3.jackson
 import io.ktor.util.reflect.TypeInfo
 ```
+
+:::note
+In Genesis 8.15 and earlier, import `io.ktor.serialization.jackson.jackson` instead (Jackson 2).
+:::
 
 2. Add the following event to the end of the the `eventHandler{}`:
 
@@ -432,9 +436,9 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
 3. You can add a new pipeline itself in the `pipelines{}` section. Use the code below:
 
 ```kotlin
-  pipeline("KAFKA_TO_DB_PIPELINE") {
+  pipeline("KAFKA_TO_DB_PIPELINE")
     // sourcing from the kafka source as defined above
-    source(source)
+    .source(source)
         // split operator to split up batch of ConsumerRecords as defined above
         .split(splitOperator).split { input -> 
             flow<FxRate>{
@@ -455,7 +459,7 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
         }
         // here we are using a simple database sink to perform the above operation - txDbSink is a transactional database sink
         .sink(txDbSink())
-    }
+    .build()
 ```
 
 :::info Checking your work

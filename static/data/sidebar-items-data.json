@@ -35,6 +35,11 @@
         "href": "/develop/development-environment/genx/",
         "imageUrl": "/svg/categories-icons/terminal-svgrepo-com.svg",
         "description": "Command line tool allowing advanced users to quickly generate new project scaffolding and perform typical development functions such as building, triggering tests and so on."
+      },
+      {
+        "href": "/develop/development-environment/getting-started-with-spring/",
+        "imageUrl": "/svg/categories-icons/code-svgrepo-com.svg",
+        "description": "Step-by-step tutorial for adding a Spring Boot module to a Genesis application, and how Spring is bridged into the platform."
       }
     ]
   },
@@ -57,14 +62,9 @@
         "description": "API for reading and writing data to the underlying database."
       },
       {
-        "href": "/develop/server-capabilities/real-time-queries-data-server/",
+        "href": "/develop/server-capabilities/query-data/",
         "imageUrl": "/svg/categories-icons/refresh-square-svgrepo-com.svg",
-        "description": "Define named queries for datasets that need to be exposed to subscribing clients for real-time, low-latency updates."
-      },
-      {
-        "href": "/develop/server-capabilities/snapshot-queries-request-server/",
-        "imageUrl": "/svg/categories-icons/table-alt-svgrepo-com.svg",
-        "description": "Define on-demand or snapshot data queries accessible to consuming clients."
+        "description": "Expose data to clients as real-time subscriptions, on-demand snapshots, or grouped and pivoted queries for grids."
       },
       {
         "href": "/develop/server-capabilities/core-business-logic-event-handler/",

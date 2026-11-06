@@ -181,7 +181,7 @@ You can also start and stop a process with `POST /api/processes/start` and `POST
 
 | Endpoint | What it does |
 |---|---|
-| `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. |
+| `POST /api/bootstrap` | Runs Bootstrap and Launch. Optional body: `{"skipSync": true}`. It is refused with `409 PROCESSES_RUNNING` while Genesis processes are running: stop them first, or retry with `stopRunning=true`. |
 | `POST /api/sync` | Runs Sync Processes. |
 | `POST /api/import` | Imports CSV files with `SendIt`. Body: `{"paths": [...]}`. Paths can be absolute or relative. A relative path is resolved against Genesis Start's working directory, `build/genesis-start/`, not the project root, so absolute paths are safest. |
 | `GET /api/scripts` | Lists the scripts available for the current process profile. |
@@ -320,7 +320,9 @@ There's no REST endpoint that shuts Genesis Start down. To stop it, press **Ctrl
 kill <pid>
 ```
 
-Genesis Start logs `Shutdown requested, stopping headless launcher.`, stops the REST API, and stops all running processes (in the same order as [Stop All](/develop/development-environment/genesis-start/#start-all-and-stop-all)). It waits for all of this to finish, for up to about 34 seconds, which is long enough to force-kill any processes that ignore the request to stop. If any processes are still running after that, it exits anyway and logs a warning that names them.
+Genesis Start logs `Shutdown requested, stopping headless launcher.`, stops the REST API, and stops the application's processes (in the same order as [Stop All](/develop/development-environment/genesis-start/#start-all-and-stop-all)). It waits for all of this to finish, for up to about 34 seconds, which is long enough to force-kill any processes that ignore the request to stop. If any processes are still running after that, it exits anyway and logs a warning that names them.
+
+The Gradle daemon that Genesis Start used for the build keeps running after Start exits, and stops on its own once it has been idle for a while. To stop it straight away, run `./gradlew --stop` in the project.
 
 To find the process id (`<pid>`):
 

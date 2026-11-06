@@ -17,11 +17,17 @@ The Genesis Application Platform enables you to create [modules for business log
 
 A key part of writing custom code is injecting the objects which your module or process relies on.
 
-Genesis supports some of the key annotations from javax.annotation and javax.inject, defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
+Genesis supports some of the key annotations from `jakarta.annotation` and `jakarta.inject`, defined in [Jakarta EE](https://jakarta.ee/specifications/), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
+
+:::note
+In Genesis 8.15 and earlier, use the `javax.annotation` and `javax.inject` packages instead.
+:::
 
 ### `@Module`
 
 All classes that need to be created on microservice start-up must be annotated with `@Module`. This ensures the instance is created as singleton.
+
+The class's package must also be in the `<package>` list of the process that should create it in your `*-processes.xml` file; a process only creates `@Module` classes from the packages it scans. See the [`package` tag](/develop/server-capabilities/runtime-configuration/processes/#tags).
 
 ### `@ProviderOf`
 
@@ -31,15 +37,15 @@ Example:
 ```kotlin
 @Singleton
 @ProviderOf(type = PriceFeed::class)
-class PriceFeedProvider : Provider<PriceFeedProvider> {
+class PriceFeedProvider : Provider<PriceFeed> {
     override fun get(): PriceFeed {
-        return new PriceFeed()
+        return PriceFeed()
     }
 }
 ```
 
 ### `@Inject`
-This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned `@Module` and `@ProviderOf` annotations. You should use the [Java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) `@Inject` annotation for best practice.
+This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned `@Module` and `@ProviderOf` annotations. You should use the [Jakarta](https://jakarta.ee/specifications/dependency-injection/2.0/apidocs/jakarta/inject/inject) `@Inject` annotation (`jakarta.inject.Inject`) for best practice.
 
 ### `@Named`
 
@@ -47,34 +53,56 @@ This annotation is used to provide Genesis system definition properties as part 
 
 ### `@PostConstruct`
 
-The Genesis microservice runtime environment will call this only once after initialization of the object, including all injected beans.
+Genesis calls a method annotated with `@PostConstruct` once, synchronously, as soon as the object has been created and its dependencies injected. Singletons are created when the process starts, so their `@PostConstruct` methods run during start-up. If the method throws, the object isn't created: Guice reports a `ProvisionException` and the process fails to start, instead of running on with a half-initialised object.
 
 ### `@PreDestroy`
 
-The Genesis microservice runtime environment will call this only once, just before Genesis removes the object from the application context on JVM shutdown.
+Genesis calls a method annotated with `@PreDestroy` once, when the process shuts down. Objects are torn down in the reverse of the order they were created, on the shutdown thread, with no time limit per method. If a `@PreDestroy` method throws, Genesis logs the error and carries on shutting down the remaining objects.
+
+### Lifecycle rules
+
+Both annotations follow these rules:
+
+- Only `jakarta.annotation.PostConstruct` and `jakarta.annotation.PreDestroy` are honoured. A method annotated with the `javax.annotation` version is never called.
+- The method must be non-static and take no parameters. Genesis logs a warning and skips any other annotated method, including a Kotlin `suspend` function.
+- Annotated methods inherited from a superclass run too. A superclass's `@PostConstruct` runs before the subclass's, and its `@PreDestroy` runs after. Each method runs once per object, even when a subclass overrides an annotated method and annotates it again.
+- Annotations on interface methods, default methods included, are ignored.
+- Objects you bind with `toInstance(...)` in a Guice module are created by you, not by Genesis, so their lifecycle methods aren't called.
 
 ### Example
 
 The example below combines `@Module`, `@Named` and `@Inject` annotations on a constructor and on a field, and it uses `@PostConstruct` and `@PreDestroy`.
 
 ```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
+import jakarta.inject.Inject
+import jakarta.inject.Named
+import org.slf4j.LoggerFactory
+
 @Module
 class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connectionUrl: String) {
 
+    private val LOG = LoggerFactory.getLogger(PriceFeed::class.java)
+
     @Inject
-    private lateinit var value: Value
+    private lateinit var entityDb: AsyncEntityDb
 
     @PostConstruct
     fun init() {
-        // code would go here
+        LOG.info("Starting PriceFeed, connecting to {}", connectionUrl)
     }
 
     @PreDestroy
     fun cleanUp() {
-        // code would go here
+        LOG.info("Stopping PriceFeed")
     }
 }
 ```
+
+`CONNECTION_URL` must be defined as an item in your system definition, or the process fails to start. See [Injectable properties from System Definition](#injectable-properties-from-system-definition).
 
 
 ### Conditional annotations
