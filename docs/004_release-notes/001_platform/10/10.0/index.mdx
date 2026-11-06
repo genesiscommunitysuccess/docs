@@ -1028,7 +1028,419 @@ There are currently no patch releases for this version
 
 ### Features
 
+* `foundation-header` : Update userName to attr
+* Allow disable button control on custom events
+* `foundation-layout` : Basic support for popout windows with cross-tab comms
+* `pbc-reporting-ui` : Handle duplicate datasources and grouping stratergies
+* `foundation-forms` : Add bulk insert mode with CSV support
+* `pbc-reporting-ui` : Export and import report configurations
+* `foundation-ai` : Add foundation-ai package with general AI provider architecture
+* `foundation-notifications` : Add container which handles stacking notifications
+* `grid-pro` : Status Pill Add hide on expiry and show after date attributes
+* `foundation-forms` : GridView for array renderer
+* `foundation-forms` : Add canAdd option to array renderer
+* `foundation-ui` : Adding scrollable attribute to tabs tablist component
+* `grid-pro` : Add multicolumn-dropdown component
+* `foundation-comms` : Redirect to login page when session expires (302)
+* `ai-assistant` : Beta chatbot component with example trades assistant
+* `grid-pro` : Add grid icon renderer
+* `foundation-entity-management` : Exposing additional renderers property
+* `foundation-ui` : Create workspace manager
+* `foundation-forms` : Add prefix and suffix to text renderer field
+* `foundation-forms` : Adding radio button renderer
+* `foundation-forms` : Adding segmented control renderer
+* `foundation-forms` : Adding vertical categorization renderer
+* `foundation-ui` : Making flyout width configurable
+* `foundation-forms` : Adding suffixes to number renderers
+* `foundation-forms` : Add fixed heights to vertical categorization renderer
+* `ts-loader` : React wrapper generator + react-types showcase
+* `foundation-react-utils` : Support foundation-forms custom renderers written in React
+* `ai-assistant` : Support multi-agents, tool folding, suggestions, splash screen, and app-level integration
+* `ai-assistant` : Support launching sub-agents from tools
+* `foundaton-forms` : Add text transformation on form string fields
+* `foundation-utils` : Add k/t/m/b shortcut support to NumberParser
+* `ts-builder` : Replace fast-react-wrapper with generated React.forwardRef wrappers
+* `ts-builder` : Add XxxRef type aliases to generated React wrapper declarations
+* `foundation-utils` : Add shortcut blocked events and editable cont...
+* `foundation-forms` : Show number field via ui schema
+* `foundation-ui` : Add visual filter chips to AI criteria search
+* `foundation-forms` : Add reset button to foundation-form
+* `foundation-rapid-cdn` : Init module
+* `ai-assistant` : Allow hiding input box and better input user focus
+* `ai-assistant` : Agent pinning and sub-agent interaction
+* Show notification success for custom actions
+* `ai-assistant` : Suppport stateful agents using state machine
+* `foundation-forms` : Type delimiter option on ConnectedRenderersOptions
+* `ai-assistant` : Allow hiding chat input during widget
+* `ai-assistant` : Publish activity event for tool loop start and stop
+* `foundation-ai` : Support anthropic transport and calculate running costs
+* `foundation-ui` : Move draggable from modal to dialog
+* `ai-assistant` : Support splash screen owning prompt input
+* `oxlint-config` : Oxlint/Oxfmt default lint stack and developer docs
+* `oxlint-config` : Bundle oxlint/oxfmt/eslint-plugins as dependencies
+* `foundation-layout` : Add nearRegistration placement for VS Code-like tab stacking
+* `foundation-ai` : Support multiple registered models
+* `foundation-forms` : React slot renderer via UiSchema options.render
+* `foundation-ui` : Status pills, palette and button extension
+* Updates to date picker
+* Switch to pnpm client and workspace:* for internal deps
+* `ai-assistant` : Capture all meta events in debug log
+* Add uischema className option to form fields
+* `ai-assistant` : Improved timeout handling and ability to stop current flow
+* Restore gridOptions after grid restart
+* `pbc-notify-ui` : Paginate inbox alerts with server-side load more
+* `foundation-ai` : Support gemini 3.X models (pro preview)
+* `ai-assistant` : Improved widget UX, widget costs, widget and sub agent timeout, resize composer
+* `foundation-comms` : Add opt-in caching to Connect.request
+* `foundation-auth` : Prefill login form from env vars
+* `ai-assistant` : Extra loading animations and widget presentation
+* `ai-assistant` : Support widget presentation modes
+* `foundation-forms` : Forms optimisation
+* `foundation-ai` : Support dynamic model registry
+* `foundation-entity-management` : Add smart-form-modal public API
+* `client-app` : Split Forms showcase into per-section routes
+* `foundation-ui` : Allow stepper to be used as progress indiciator
+* `foundation-ui` : Tab and layout design token update
+* `ai-assistant` : Allow stateful agents to define custom unknown tool handling
+* `ai-assistant` : Add condenseWhen tool handler
+* `foundation-ui` : Theming consolidation
+* `ai-assistant` : Support model request caching
+* `foundation-forms` : Emit reset event in form component
+* `foundation-ui` : Flex layout css for platform
+* Grid set filter is lost when connection drops and reconnects
+* `foundation-forms` : Handle server validation errors from backend
+* `foundation-forms` : Support activeCategory index for Categorization initial tab
+* `ai-assistant` : Centralizing ai settings in a single modal
+* `grid-pro` : Upgrade ag-grid from v35 to v36
+* `foundation-forms` : Detect BigDecimal-as-string in NumberControlRenderer
+* `g2plot-chart` : Normalize BigDecimal string values in chart datasource
+* `ai-assistant` : Sonnet 5 support, split thinking/narration, fix double counting cost, animation fps fix
+* `foundation-forms` : Foundation-filters layout and react showcase
+* `foundation-react-utils` : Add createGridProCellRenderer for grid-pro React renderers
+* `ai-assistant` : Add configurable chat styling and improved defaults
+* Type CustomEvent details in React wrappers across packages
+* `pbc-notify-ui` : Add STARTS_WITH/ENDS_WITH condition operators
+* `foundation-ui` : Opt-in upgrade of theming definition
+* `grid-pro` : Request only visible columns for genesis datasource
+* `pbc-notify-ui` : Per-channel Pop-up/Email delivery preferences in inbox
+* `foundation-ui` : Infinite scroll for options-datasource
+* Bound AI request timeouts with heartbeat stall detection
+* `ai-assistant` : Chat persistence, compaction, fix double mount implementation
+* `ai-assistant` : Improve widget api for better lifecycle events
+* `foundation-layout` : Emit event on any layout change
+* `genx` : Kotlin event DETAILS TypeScript codegen
+* Surface turn failure reason at the chat-driver loop boundary
+* Decouple AI execution from DOM, support opus 4.8 + fable 5.0, support structured output
+* `foundation-forms` : Adding review step to forms overriding button text scrollable container on inputs
+* `foundation-react-utils` : Reusable react-router primitives + single-component deep-link
+* `foundation-header` : Add feature flags selector panel
+* `ai-assistant` : Support unified diagnostics from sibling ChatDriver
+* `foundation-comms` : Route req/rep and event traffic over HTTP
+* `foundation-ui` : Add pill component for zero and rapid design sys...
+* `pbc-notify-ui` : Add FoundationInbox customization hooks
+* `foundation-comms` : ETag revalidation caching in Http client
+* `foundation-auth` : 2FA method using a 6-digit code
+* `foundation-auth` : Add configurable password visibility control
+* `pbc-notify-ui` : Add Slack routes tab to notify dashboard
+* Expose React wrapper exports for custom elements missing them
+* `ai-assistant` : Split token view, update settings menu, handle per-project tokens and cost
+* `ai-assistant` : Collapse condensed payloads in batches
+* `ai-assistant` : AI-budget-exhausted blocked state, per vendor
+* `ai-assistant` : Per-vendor budget progress meter in the settings modal
+* `pbc-notify-ui` : Add configurable inbox alert sounds
+* Handle forced tool schemas for anthropic and google
+* `ai-assistant` : Budget-meter refresh button and freshness label
+* Improved cost calcuations and api + ability to control model thinking
+* `ai-assistant` : Per-turn and session token buckets + USD cost in the debug log
+* `foundation-auth` : First-login password change confirmation and redirect
+* Scope the wall banner to the active vendor and fold multi-vendor copy
+* `foundation-ai` : Multimodal transports for per-vendor vision
+* `ai-assistant` : Let a widget report spend after its interaction resolves
+* `grid-pro` : Flash tabs and rows while a grid holds rows needing attention
+* `event-type-codegen` : Add metadata dump and --from-metadata codegen
+* `ai-assistant` : Improved input composer UX and testing sandbox
+* `ai-assistant` : Context limit UX and improved compaction implementation
+* `grid-pro` : Support for AG Grid Infinite Row Model
+* `grid-pro` : Add Excel-style enum column filter for grid-pro-beta
+* `foundation-ai` : Support gemini-3.8-flash and measured per-tier thinkingLevel sets
+* `genx` : Distribute upstream-first agent rules to consumer projects
+* `ai-assistant` : Extract AgentSession so either driver can host a stateful agent
+* `grid-pro` : Implement column selection feature in GridProBeta
+* `ai-assistant` : Support timestamps on messages
+* `ai-assistant` : Default message timestamps to always shown
+* `foundation-react-utils` : Adopt FlexLayout into platform and inline styles
+* `ai-assistant` : Host-transport Send button with a user note for the agent log
+* `mock-server` : Add reusable Genesis mock server, with showcase implementation
+* `foundation-react-utils` : Allowing functions to be passed in uischema to custom renderers
+* `ai-assistant` : Expose the lifetime-stitched debug log as getLifetimeDebugLog
+* `ai-assistant` : Platform AI tier table, tiered provider switcher and budget meter segments
+* `ai-assistant` : Genesis bridge - registration and read tools
+* `ai-assistant` : Added shadow parts to scaffolding and markdown
+* `ai-assistant` : Default the chat endpoint to a build's GENX_AI_CHAT_BASE
+* `ai-assistant` : Genesis bridge - write tools and the review a user approves
+* `pbc-notify-ui` : Subscribe inbox topics without cloning notify routes
+* `pbc-notify-ui` : Expose Show Toast on screen route admin
+* `ai-assistant` : Let the write review ask for changes as well as deny
+* `foundation-logger` : Add opt-in console timestamp prefix
+* `ai-assistant` : Leave out a bad part of the AI config instead of switching the assistant off, and publish what it reads
+* `ai-assistant` : Tell the user when a write's custom code can also write to other tables
+* `ai-assistant` : Show on a stopped write's review which rows were written
+* Deprecate the genx rollup builder and remove its in-repo usage
+* `ai-assistant` : Let the assistant read dataserver queries
+* `ai-assistant` : Check that a write's references name rows that exist
+* `foundation-auth` : MFA resend button, cooldown, and session-expired redirect
+* `foundation-ui` : Expose shadow parts across the stepper and the assistant conversation
+* `ai-assistant` : Run a custom handler that proves a row action
+* `mock-server` : Match GSF dataserver envelopes and paging, add a conformance suite
+* Add error monitoring hooks (log reporter, error boundaries, one-call setup)
+* `mock-server` : Declare table schemas and send the GSF META and JSON schema shapes
+* `mock-server` : Stamp RECORD_ID/TIMESTAMP and send the GSF NACK vocabulary
+* `mock-server` : Add generic CRUD events per table and the inbound schema check
+* `mock-server` : Answer REQ_ as GSF request servers do
+* `ai-assistant` : Run a key-only row action with the whole row in its review
+* `mock-server` : Full join model for views
+* `foundation-utils` : Limit what the error-monitoring SDK collects by default
+* `ai-assistant` : Automatically restart the conversation after reconnecting to agent
+* `mock-server` : Honour IGNORE_WARNINGS and match the showcase server's handlers
+* `ai-assistant` : Add driver decorators and the extension points autopilot needs
+* `ai-assistant` : Add thumbs up/down feedback on each assistant reply
+* `mock-server` : Newest-first snapshots, strict criteria and value encoding
+* `ai-assistant` : Add the autopilot, widget surfaces and the autopilot UI
+* `grid-pro` : Dock the columns picker as a side panel
+* `grid-pro` : Add a community status-bar host under the grid
+* `mock-server` : Live MODIFY diffs and the moving view
+* `mock-server` : Add a GSF platform preset
+* `mock-server` : Answer login and heartbeat as GSF's auth does
+* `pbc-notify-ui` : Add a hide-clear-all attribute to foundation-inbox
+* `mock-server` : Filter the platform preset by product and back the PBC screens
+* `foundation-header` : Accept permission arrays and drop empty nav submenus
+* `mock-server,foundation-criteria` : Test the serialisers with mock-server's validator
+* `foundation-utils` : Add isEditableKeyboardEvent and export extractKeyFromCode
+* `grid-pro` : Add a community right-click menu on v36 grids
+* Remove the zero design system and migrate its dependents to rapid
+* `mock-server` : Back the platform products' events and computed request servers
+* `grid-pro` : Vertical actions menu (kebab) via actions-menu
+* `genx` : Restart the Vite dev server when .env changes
+* `ai-assistant` : Add optional agent notifications for widgets and the autopilot
+* `foundation-workspace` : React support, unmounted items and grid filters in workspaces
+* `foundation-comms` : Add SCDB columnar wire encoding decode support
+* `vite-builder` : Honour genx pwa and serviceWorker config
+* `ai-assistant` : Save a changed pin and let a host send without the composer
+* `ai-assistant` : Widget controllers for the autopilot, and notifications that wait
+* `foundation-comms` : Add typed ConnectErrors and harden request/reply lifecycle
+* `ai-assistant` : Let an agent hand a request to another and get it back
+* `ai-assistant` : Keep autopilot running across an agent hand-off and its hand-back
+* `ai-assistant` : Drive an assistant without a DOM, over JSON if you like
+* `ai-assistant` : Let a headless session restore a saved session
+* `foundation-ai` : Add gemini-4-argon and date-based pricing for rate changes
+* `foundation-comms` : Add onReconnectionLimitReached reconnect call...
+* `foundation-utils` : Add stripSensitiveData option to lift error-monitoring limits
+* `foundation-ai` : An OpenAI chat transport on the Responses API
+
 ### Fixes
+
+* `pbc-reporting-ui` : Select output templates and verify csv config
+* `foundation-ui` : Fix allowCustomOptions in ConnectedSelectControlRenderer
+* `foundation-comms` : Re-create pollTrigger$ to work after destroy/reinit
+* `pbc-reporting-ui` : Do not set blank columns formats on setup
+* `vite-builder` : Inject base href tag into HTML to match webpack behavior
+* `pbc-notify-ui` : Add overflow-wrap to toast message
+* `seed-utils` : Resolve addUIDependency version from @genesislcap deps
+* `foundation-notifications` : Additional configurations such as toast sorting
+* `foundation-testing` : Fix critical basic-ftp path traversal vulnerability
+* `foundation-ui` : Timestamp giving error in rule expression unit te...
+* `grid-pro` : Fix SSRM pagination page-jump and ReqRep infinite scroll offset corruption
+* `client-app` : Remove unnecessary imports
+* `foundation-ui` : Changes to flyout to handle react compatability issues
+* `foundation-comms` : Allow datasource event handler to use local data
+* `pbc-documents-ui` : Width on actions column and resizing behaviour
+* `grid-pro` : Prevent detached grid and token subscription leaks
+* `webpack-builder` : Update webpackbar to v7
+* `g2plot-chart` : Make ChartConfig data optional with datasource
+* `foundation-forms` : Removing min width
+* `g2plot-chart` : Defer ChartDatasource init and add connection subscription + flexlayout showcase
+* `foundation-utils` : Remove circular dependency between editable elements and shortcut manager
+* `ai-assistant` : Better handling for continued multi-agent conversation
+* `foundation-entity-management` : Populate action columns before grid-ready in SSRM
+* `foundation-forms` : Open shadow dom to enable styling renderers
+* `vite-builder` : Enable typescript type checking
+* `foundation-ui` : Drop stale results from in-flight datasource fetches
+* `grid-pro` : First row polling with SSRM enabled, and fix react-client build errors
+* `foundation-forms` : Apply light-dom style fixes to foundation-filters
+* `react-client-app` : Resolve lint failures and align eslint globs
+* `ai-assistant` : Circular dep
+* `ai-assistant` : Improved stateful agent api
+* `ai-assistant` : Filter non-serializeable field from redux
+* `foundation-forms` : Checkbox dirty-state desync + showcase boolean demo
+* `ai-assistant` : Scroll position of chat for resizing widgets
+* `foundation-forms` : Emit fresh additionalErrors from dispatch
+* Remove sortType from colDef merge
+* `foundation-forms` : Scope vertical-categorization tablist styles
+* `foundation-entity-management` : Move helper fn before JSDoc to fix CEM event detection
+* `ai-assistant` : Defer handle swapping agents array during tool loop
+* `foundation-forms` : Lazy-mount Categorization tab panels
+* `foundation-forms` : Drop unconditional mountedTabs reset on controlChanged
+* `rapid-grid-pro` : Set explicit @TagName JSDoc
+* `ai-assistant` : Stateful agent pinning and dynamic stateful agent example
+* `ai-assistant` : Sub agent cost counting and function in redux slice
+* `foundation-forms` : Stop json-forms schemaChanged emitting stale data-change
+* Use Auth token for file download not raw sessionStorage
+* `foundation-react-utils` : Updating handleChange to 'method'
+* Correct stale @genesislcap/oxlint-config pin (14.441.0 -> 14.447.0)
+* `grid-pro` : Show no rows overlay for empty ssrm results
+* Updates to search-bar functionality
+* Revert lerna npmClient to npm to unblock releases
+* Revert changes to unblock release
+* Update .releaserc for pnpm migration
+* `ai-assistant` : Stale rendering widgets due to component recycling
+* `ai-assistant` : Friendlier errors, more logging, and larger logging buffer
+* `foundation-logger` : Restore BrowserReporter for browser environments
+* `ai-assistant` : Informative tool fail messages for agent, telemtary, chat driver unit tests
+* `ai-assistant` : Require sub-agents to respond via tool call
+* `ai-assistant` : Make ChatDriver survive a long agentic turn without giving up
+* `grid-pro` : Register missing editor modules
+* `foundation-ui` : Add @TagName so CEM emits react types for decorator-registered components
+* `ai-assistant` : Aid with malformed calls, configure temperature and tool api, handle gemini thinking
+* `grid-pro` : Preserve consumer column defs and groups across schema update and state merge
+* `foundation-comms` : Fix sendForStream teardown and grid-pro unmount memory leaks
+* `ai-assistant` : Chat message ux improvements
+* `ts-builder` : Windows compatibility fixes for Genesis tooling
+* `grid-pro` : Hide No Rows overlay when criteria change returns data
+* `grid-pro` : Restore persisted filter model after columns ready for SSRM
+* `ai-assistant` : Flowing waves animation alignment
+* `foundation-workspace` : Export react component types
+* `grid-pro` : Route SSRM live updates through applyServerSideTransaction
+* `grid-pro` : Prevent empty SSRM grid when column filters applied
+* `ai-assistant` : Sub agent debug trace improvements
+* `grid-pro` : Resolve SSRM request on empty stream message with cached rows
+* `ai-assistant` : Ensure floating and popped in component share same driver
+* Update pnpm-lock.yaml
+* `pbc-reporting-ui` : Forward server error msg when fetching json schema
+* `pbc-documents-ui` : Only fetching 250 files to find template assets
+* `foundation-forms` : Preserve multiselect delimiter round-trip on deselect-all
+* `grid-pro` : Restore SSRM infinite scroll with CRITERIA_MATCH in non-pagination mode
+* `g2plot-chart` : Default single-series bar color to one gradient so bars render
+* `foundation-ui` : Harden number field input for BigDecimal forms
+* `grid-pro` : Fix SSRM infinite scroll when filters are applied
+* `foundation-entity-management` : Type grid selection event details in React wrappers
+* `ai-assistant` : Stale interactive widget due to fast recycling
+* `foundation-header` : Highlight active nav item across frameworks
+* `foundation-ui` : Unsubscribe stale dataSub before resubscribing on reconnect
+* `pbc-notify-ui` : Enum multiselect OR-conditions, boolean params, subscribe-toggle fixes
+* `foundation-ui` : Session-expiry redirect lands on 404 in react-router apps
+* `foundation-ai` : Raise typed truncation for Gemini MAX_TOKENS instead of retrying it as empty
+* `foundation-utils` : Fix LifecycleMixin reconnect after real disconnect
+* `foundation-ui` : Stop collapsing chart data on req/rep polling refresh
+* `foundation-ui` : Derive datasource rowId from resource type for req/rep
+* Short-circuit deterministic model refusals + structured-output routing tests
+* `grid-pro` : Keep datasource listeners across blocked reflow
+* `foundation-ui` : Resolve circular dependency in verification-code-input
+* `ai-assistant` : Check for message category too when deduping messages
+* `pbc-notify-ui` : Create SELF subscription routes to stop duplicate alerts
+* `foundation-ui` : Render actions-menu popup via Popover API to escape ancestor clipping
+* `foundation-forms` : Using formatters for data types, restting issubmitting on errors
+* `grid-pro` : Popup cell editors self-cancel after the first edit
+* `foundation-forms` : Fixing DateControlRenderer to use utc
+* `rapid-design-system` : Type Button appearance with the values it actually styles
+* Exempt boundary triggers from condensation batching
+* `seed-utils` : Stop gating PBC adds on the FoundationUI major
+* `ai-assistant` : Post-merge review follow-ups for the budget wall
+* `ai-assistant` : Accumulate project costs per project not element instance
+* `foundation-ui` : Default --dialog-z-index to 1001 so a non-modal dialog is not out-stacked
+* `grid-pro` : Centre cell content at custom rowHeight, and unshadow declared attributes
+* `foundation-ui` : Populate filtered options when pasting search text
+* `foundation-ai` : Say which phase a request timeout died in
+* `grid-pro` : Require criteriaOnlyRequest for req/rep SSRM, drop view-based paging
+* Popover icon tooltip and AG Grid drag ghost rendering in shadow-DOM grids
+* `grid-pro` : AgAttributeChangedCallback crashes on __setProperty wh...
+* `grid-pro` : Clear datasource-ready listeners on destroy
+* `ai-assistant` : Read the user bubble text colour from the real on-accent token
+* `ai-assistant` : Improved condesenWhen implementation
+* Budget-wall bubble advises switching and the meter snaps at latch time
+* `foundation-ui` : Page connected select infinite scroll by OFFSET
+* `grid-pro` : Guard GridProBeta against a not-yet-ready gridApi mid-reinit
+* `grid-pro` : Skip a queued initGrid when the slot ref is unbound
+* `pbc-notify-ui` : Open template dialog without waiting on SYSTEM_ENTITY_FIELDS
+* `foundation-ai` : Improved handling for anthropic when api key out of budget or limit
+* `foundation-ui` : Release number field typing guard when enter commits
+* `ai-assistant` : Improved handling when persistence starts failing
+* `event-type-codegen` : Align wire field names and DateTime types with Genesis
+* New release pipeline and update pre-release skill
+* `ai-assistant` : Follow up tweaks to composer UX
+* `foundation-forms` : Add labelRowFormatter to form review component
+* `foundation-auth` : Scope the router fallback to the configured hostPath
+* `event-type-codegen` : Scope generated enums to their owning table
+* `foundation-forms` : Expose order-by option on ConnectedSelectControlRenderer
+* `ai-assistant` : Improved context handling for config and condensed tools
+* `pbc-reporting-ui` : Persist column visibility selections under AG Grid 36
+* `ai-assistant` : Agent orchestrator and fallback agent
+* `foundation-ui` : Async combobox initial-value resolution + stale-clear
+* `foundation-auth,vite-builder` : Make DEFAULT_USER/PASSWORD work in an embedded app
+* `ai-assistant` : Context usage calculation and headroom warning
+* `categorization-wrapper` : Add additional errors to show error icons
+* `foundation-ui` : Stop connected-select display reverting on unrelated form changes
+* `pbc-notify-ui` : Restore SYSTEM_ENTITY_FIELDS-based getFields()
+* `grid-pro` : Infinite row model sort arrows match the client-side model
+* `grid-pro` : Apply consumer gridOptions on the infinite row model
+* `rapid-design-system` : Bump flexlayout-react to 0.10.8 for custom element lifecycle
+* `foundation-auth` : Enhance password reset flow and error handling
+* `ai-assistant` : Rename applyAgent to installAgent and require the AiDriver agent-session members
+* `event-type-codegen` : Resolve PAL script enums through Genesis default imports
+* `grid-pro` : Infinite and server-side row models fire datasource-data-changed
+* `grid-pro` : Enable dragging searched hidden columns onto grid
+* `foundation-ui` : Repopulate options-datasource list when the bound...
+* `ai-assistant` : Key untimestamped diagnostic messages on a digest of the entry
+* `grid-pro` : Make ag-grid-enterprise an optional peer dependency
+* `genx` : Act on the agent-rules review - wiring, state, and rule accuracy
+* `foundation-ui` : Cover options-datasource reload for async infinite-scroll after clear
+* `ai-assistant` : Keep unfired condenseWhen policies across a session reload
+* `vite-builder` : Minify production builds
+* `grid-pro` : Keep AG Grid v29 out of the v36 grid's import graph
+* `ai-assistant` : Tell the user what an AI service refusal means, and stop retrying it
+* Drop stale eslint lint-staged override and broken lint:eslint scripts
+* `grid-pro` : Show disconnect dialog and replace rows on full reload
+* `foundation-ui` : Keep typed text when async combobox reloads options
+* `foundation-ui` : Preserve caret position on formatted number field edits
+* `foundation-forms` : Prevent container-level errors from badging all sibling category tabs
+* `grid-pro` : Stop paging DATASERVER rows once the view is full at MAX_VIEW
+* `grid-pro` : Resolve custom row-id DATASERVER pushes by ROW_REF in the paging caches
+* `ai-assistant` : Refuse text past its column's length before the review
+* `foundation-auth` : Refresh an expired session on silent login
+* `foundation-ui` : Stop async combobox re-selecting a removed option over typed text
+* `grid-pro` : Bump AG Grid to 36.2.0 so hidden infinite grids get the theme row height
+* `foundation-forms` : Map GSF schema-error PATH and FIELD to the failing control
+* `ai-assistant` : Remove injected close button when assistant leaves bubble
+* `uvu-playwright-builder` : Run browser test suites once by bumping uvu to 0.5.6
+* `ai-assistant` : Refuse an INT or SHORT past its column's range before the review
+* `foundation-forms` : Clear a field with the empty value its schema accepts
+* `foundation-ui` : Toggle boolean selected attribute on stepper tabs
+* `vite-builder` : Pre-scan src/pbc so lazily imported PBCs don't re-optimize deps
+* `foundation-ui` : Drain the status-pill fake clock so later suites' frames still run
+* `foundation-forms` : Hide category tab error icons until submit or touch
+* `grid-pro` : Sort by leading index fields and enrich consumer columnDefs from metadata
+* `foundation-comms,foundation-auth` : Read login ack fields under GSF's names
+* `foundation-criteria` : Emit criteria GSF's whitelist accepts, single-quote strings
+* `genx` : Update toolchain dependencies flagged by vulnerability scans
+* `foundation-comms` : Refresh the session before retrying a failed socket reconnect
+* Mock-server fidelity and client follow-ups from the Create migration
+* `ai-assistant` : Stale interrupted prompt and agent chip under a held flow lock
+* `ai-assistant` : Send hand-off re-classify and continuation requests Anthropic accepts
+* `grid-pro` : Replace deprecated AG Grid tooltip and selection APIs
+* `foundation-forms,foundation-ui` : Drop stray delimited tokens and count only real options in multiselect
+* `foundation-auth` : Ignore missing SSO token in popup window
+* `foundation-comms` : Send no DATA_LOGOFF for a stream torn down before its DATA_LOGON
+* `foundation-comms` : Stop a destroyed datasource's init sending nameless requests
+* `foundation-comms` : Keep a replaced WebSocket's late close from dropping isConnected
+* `foundation-comms` : Reuse an open connection in Connect.connect
+* `ai-assistant` : A stopped turn no longer starts the hand-off it accepted
+* `ai-assistant` : Centre header buttons, legible markdown, responsive write review
+* `ai-assistant` : Pin the foundation-comms peer exactly
+* `build-kit` : Resolve the workspace root inside a git worktree
+* `ai-assistant` : Stop a turn ending from pulling focus out of an iframe
+* `foundation-utils` : Report modal content as visible in respondToVisibility
+* `foundation-workspace` : Register grids nested in a descendant's shadow root
+* `foundation-comms` : Recover streams after bfcache/freeze disconnect
+* `client-app` : Corporate theme dark mode uses a dark neutral fill
 
 ## Breaking changes guidance
 
