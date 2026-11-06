@@ -42,10 +42,11 @@ independently useful:
    defined in Genesis system-definition (`genesis-system-definition.kts`, `.env`, etc.) becomes readable
    through `application.yaml`, `@Value`, or `@ConfigurationProperties` without duplicating it into
    Spring's own config files.
-3. **Puts the app's HTTP surface on the network safely.** The starter publishes the app's servlet
-   context path and embedded server port, so `GENESIS_ROUTER` can reverse-proxy requests straight
-   to the embedded Tomcat under that path prefix, gateway-style — no separate load balancer or port
-   to manage. A router-proxied request reaches a Spring controller *before* the router's own
+3. **Puts the app's HTTP surface on the network safely.** The starter publishes the app's router
+   prefix and port, so `GENESIS_ROUTER` can reverse-proxy requests straight to the embedded Tomcat
+   under that prefix, gateway-style — no separate load balancer or port to manage. In
+   [external transport mode](#external-transport-mode), Tomcat also serves the Genesis protocol, so
+   the process has a single web server. A router-proxied request reaches a Spring controller *before* the router's own
    authentication logic runs, so this starter also installs its own authentication layer — see
    [Session-token authentication](#session-token-authentication) below.
 
@@ -412,8 +413,133 @@ To exercise this from a test, see [Testing an HTTP endpoint](/develop/server-cap
 ### Router proxying
 
 Every `@RestController` endpoint is also reachable from outside the cluster through
-`GENESIS_ROUTER`, which proxies external traffic straight through to the app's embedded Tomcat.
-Your URL is:
+`GENESIS_ROUTER`, which proxies external traffic straight through to the app. How the app serves
+that traffic depends on its transport mode, set by `genesis.spring.external-transport`:
+
+- **External transport mode** (`true`): Spring's embedded Tomcat is the process's only web server.
+  It serves the Genesis WebSocket protocol, the Genesis HTTP endpoints and your controllers, all on
+  the process's service-definition port.
+- **Native mode** (`false`, the default): the process runs two web servers. Genesis's own Netty
+  listener is on the service-definition port, and Spring's embedded Tomcat is on a port of its own.
+
+Use external transport mode for Spring processes. Spring Boot brings its own embedded web server,
+and so does Genesis; running both in one process means two listeners, two ports and two sets of
+web-server and TLS configuration to keep apart. External transport mode removes the second one.
+It is meant only for Spring processes. Native mode stays the default so that existing apps are
+unchanged until you switch them.
+
+#### Enabling the router proxy
+
+Whichever mode the app uses, whoever owns the router's service definition needs the proxy switch
+enabled once, cluster-wide:
+
+```kotlin
+// *-router.kts
+httpProxyEnabled = true
+```
+
+There's no per-app registration and no port to configure on the router: the app publishes its
+prefix and port to the cluster at boot, and the router picks them up from there. The app logs the
+prefix it was published under:
+
+```text
+Exposing Spring HTTP app at prefix '/orders-app/**' through GENESIS_ROUTER (embedded port 9000)
+```
+
+The router authenticates none of this traffic. When cookie authentication is on, it copies the
+session cookie into the `SESSION_AUTH_TOKEN` header before forwarding; a `SESSION_AUTH_TOKEN` header
+the caller sent is forwarded as-is. The app authenticates the request itself — see
+[Session-token authentication](#session-token-authentication) above.
+
+:::warning
+Turning on `httpProxyEnabled` also stops the router loading `*-web-handler.kts` files. Any
+web-handler script in the application must be loaded by a process on the WebSocket channel instead,
+or its endpoints disappear without an error. See
+[HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the
+router page.
+:::
+
+#### External transport mode
+
+```properties
+# application.properties
+genesis.spring.external-transport=true
+genesis.spring.router-path-prefix=orders-app
+```
+
+The app's controllers stay at the root of the process port. The prefix exists only at the router:
+the router strips it from the request before forwarding, and puts it back on a `Location` response
+header and on a cookie's `Path` on the way out, so redirects and cookies still work for the caller.
+
+```kotlin
+@RestController
+class OrderController(private val orders: OrderService) {
+    @GetMapping("/orders")          fun list() = orders.all()
+    @GetMapping("/orders/{id}")     fun get(@PathVariable id: String) = orders.view(id)
+}
+```
+
+| You call directly (process port) | You call through the router |
+|---|---|
+| `http://<app-host>:<process-port>/orders` | `http://<router-host>:<router-port>/orders-app/orders` |
+| `http://<app-host>:<process-port>/orders/42` | `http://<router-host>:<router-port>/orders-app/orders/42` |
+
+`genesis.spring.router-path-prefix` can have more than one segment (`team/orders-app`); leading and
+trailing slashes are ignored. If you don't set it, the app is routed under its process name, and a
+warning is logged at startup. Set it anyway: the prefix is part of the URL your callers depend on,
+and with the fallback, renaming the process moves their endpoints.
+
+Only your own controllers are reachable through the prefix. A request for a Genesis path under it,
+such as `/orders-app/event-trade-insert`, gets `404`.
+
+**What external transport mode requires**
+
+- **The WebSocket channel.** The process serves the Genesis WebSocket protocol only; the raw TCP
+  (MsgPack) channel and `tls.authorization` don't exist in this mode.
+- **Genesis TLS, not Spring TLS.** The port is served with the process's Genesis TLS configuration.
+  Every TLS mode in use must have a `tls.identity`.
+- **Neutral endpoint types.** A Genesis HTTP endpoint can't declare a Netty type. Use `File`,
+  `Path`, `InputStream` or `FileDownload` instead of `ChunkedFile` and `ChunkedInput`, `ByteArray`
+  instead of `ByteBuf`, and `HttpRequest.body` instead of `FullHttpRequest`.
+
+Startup is refused if any of these is broken, and also if `server.servlet.context-path` is set
+(use `genesis.spring.router-path-prefix`), if any `server.ssl.*` property is set (use Genesis TLS),
+or if `server.port` is set to anything other than the service-definition port or `0`.
+
+**Settings**
+
+| Setting | Default | Effect |
+|---|---|---|
+| `genesis.spring.router-path-prefix` | The process name | Prefix the app's controllers are routed under at `GENESIS_ROUTER`. |
+| `genesis.spring.web-socket-send-time-limit-ms` | `60000` | A WebSocket session whose current send has been in flight longer than this is closed. |
+| `genesis.spring.web-socket-send-buffer-limit-bytes` | `0` (no limit) | A WebSocket session with more than this many bytes queued is closed. |
+| `genesis.spring.suppress-multipart-config-warnings` | None | Multipart endpoint paths, or `*`, whose unsupported settings aren't logged at startup. |
+| `TransportReadyTimeoutMs` (system definition) | `120000` | How long the process waits for Tomcat to start after registering. If it runs out, the process goes to ERROR. |
+
+The starter sets Tomcat's upload limits to match native mode: `spring.servlet.multipart.max-file-size`
+1 GiB, `max-request-size` unlimited, `file-size-threshold` 16 KB, and
+`server.tomcat.max-http-form-post-size` 64 MiB. Your own value for any of these wins. A raised
+endpoint `maxFileSize` or `messaging.http.maxContentLength` is not carried over, so raise the
+Spring properties instead. Other settings that configure Netty have no effect in this mode:
+`messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
+`UseNettyThreadsForMessageProcessing`.
+
+**Differences from native mode**
+
+| Behaviour | Native mode | External transport mode |
+|---|---|---|
+| Custom HTTP reason phrase | Sent | Dropped |
+| `Content-Type` parameters | `application/json; charset=UTF-8` | `application/json;charset=UTF-8` |
+| CORS preflight on a Genesis path | `405` | Empty `200` |
+| Upload over the endpoint's `maxFileSize` | `400` | `413` |
+| Fragmented WebSocket message over `maxAggregatedFrameSize` | Closed with `1000` | Closed with `1009` |
+| Reading a request body | Repeatable | Once only |
+| `tls.identity.keystore.keyAlias` | Ignored | Honoured |
+| A client that stops reading | Never detected | Closed after the send time limit |
+
+#### Native mode
+
+In native mode, the router proxies to the app's embedded Tomcat port. Your URL is:
 
 ```text
 http(s)://<router-host>:<router-port>/<prefix>/<your-mapping>
@@ -429,13 +555,7 @@ the `@RequestMapping`/`@GetMapping`/etc. — nothing gets rewritten.
 server.servlet.context-path=/orders-app
 ```
 
-```kotlin
-@RestController
-class OrderController(private val orders: OrderService) {
-    @GetMapping("/orders")          fun list() = orders.all()
-    @GetMapping("/orders/{id}")     fun get(@PathVariable id: String) = orders.view(id)
-}
-```
+With the same `OrderController` as above:
 
 | You call directly (Tomcat) | You call through the router |
 |---|---|
@@ -459,37 +579,19 @@ In practice, most apps already set `spring.application.name` and get a router pr
 set `server.servlet.context-path` explicitly to choose a specific, human-chosen prefix instead of
 the derived slug.
 
-**Enabling it**
-
-Nothing extra is required on the Spring app beyond the property above. On the router side, whoever
-owns the router's service definition needs the proxy switch enabled once, cluster-wide:
-
-```kotlin
-// *-router.kts
-httpProxyEnabled = true
-```
-
-There's no per-app registration and no port to configure anywhere — the app's embedded Tomcat port
-is discovered automatically at boot and published to the cluster, and the router picks it up from
-there.
-
 :::caution
-A few things worth knowing before relying on this:
+A few things worth knowing before relying on router proxying:
 
-- **Actuator moves too.** If the prefix is derived from `spring.application.name=orders-app`,
-  health becomes `/orders-app/actuator/health`, not `/actuator/health` — update health-check probes
-  accordingly.
-- **The router performs no authentication for this traffic.** A `SESSION_AUTH_TOKEN` header, if
-  present, is forwarded as-is; the app is responsible for its own security (Spring Security, etc. —
-  see [Session-token authentication](#session-token-authentication) above). The router is only the
-  network path in, not a gatekeeper for these endpoints.
-- **The embedded Tomcat is a second network listener.** It must be reachable from the router's host
-  but not from the outside world directly — bind it to a cluster-internal interface
-  (`server.address`) and firewall the rest. External traffic should only ever reach the app through
-  the router.
-- **Single-word path collisions.** If the derived or explicit prefix is a single segment that
-  collides with an existing native Genesis resource name, the native resource wins and the app
-  isn't reachable under that name — pick a distinct context-path if this happens.
+- **Actuator moves too.** The router reaches actuator under the prefix as well:
+  `/orders-app/actuator/health`, not `/actuator/health`. In native mode the prefix is also the
+  context path, so the direct Tomcat URL moves too — update health-check probes accordingly.
+- **In native mode, the embedded Tomcat is a second network listener.** It must be reachable from
+  the router's host but not from the outside world directly — bind it to a cluster-internal
+  interface (`server.address`) and firewall the rest. External traffic should only ever reach the
+  app through the router.
+- **Single-word path collisions.** If the prefix is a single segment that collides with an existing
+  native Genesis resource name, the native resource wins and the app isn't reachable under that
+  name — pick a distinct prefix if this happens.
 - **Turning it off entirely.** `genesis.springboot.enabled=false` disables this along with the rest
   of the Genesis/Spring integration — the app then only serves HTTP on its own port, unrouted.
 :::
