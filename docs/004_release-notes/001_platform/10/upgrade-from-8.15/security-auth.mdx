@@ -5,7 +5,7 @@ sidebar_position: 7
 id: 'upgrade-10.0-security-auth'
 ---
 
-Most of this page is about one change: in 10.0, a permissioning `auth` block sets its key with `authKey` and its filter with `filter`. The older ways of writing an auth block (bare field lines, `field { }`, `fields { }` and `where { }`) have been removed. This affects data servers, request servers, event handlers and web handlers (steps 1 to 4). Steps 5 and 6 cover code that uses the LDAP library directly, and one management console LDAP setting.
+Most of this page is about one change: in 10.0, a permissioning `auth` block sets its key with `authKey` and its filter with `filter`. The older ways of writing an auth block (bare field lines, `field { }`, `fields { }` and `where { }`) have been removed. This affects data servers, request servers, event handlers and web handlers (steps 1 to 4). Steps 5 to 7 cover code that uses the LDAP library directly, one management console LDAP setting, and LDAP group lookups and logins.
 
 The steps show up at different points of the upgrade:
 
@@ -14,6 +14,7 @@ The steps show up at different points of the upgrade:
 | The build fails | 1 to 5 (`fields { }`, `field { }` and `where { }` in auth blocks, `rowLevelPermissions` in `enrichedAuth`, and the removed or changed types) |
 | A process fails to start | 1, 2 and 3 (an auth block on an auth map that has no `authKey`) |
 | The management console's LDAP login is turned off | 6 (a `LdapUserDnTemplate` that isn't a DN, with `LdapUserGroups`) |
+| Users are denied at login | 7 (a `bindDn` account that can't read `memberOf`, or a verified user with no `USER` row) |
 
 ## Before you start
 
@@ -229,13 +230,30 @@ Refusing to enable console login provider LDAP: userDnTemplate '...' does not pr
 
 **What to do:** either use a template that produces a real DN, such as `CN={0},OU=People,DC=example,DC=com`, or remove `LdapUserGroups`.
 
+## 7. Check LDAP group lookups
+
+**Applies to:** two cases.
+
+- Platform LDAP login (the `ldap { connection { } }` script DSL), where a connection sets both `bindDn` and `userGroups`. A connection that doesn't set `bindDn` is not affected.
+- Management console login with `DaemonMgmtUiLoginMode=LDAP,USER_PASSWORD`.
+
+**Why:** in 10.0, group membership on a connection with `bindDn` is read with the `bindDn` account rather than with the user's own connection. Separately, a management console user whom the directory has verified now has to have an `ENABLED` row in the `USER` table, and the login no longer falls through to `USER_PASSWORD` if there isn't one.
+
+**What goes wrong if you skip this:**
+
+- If the `bindDn` account can't read group membership, every login that requires a group is denied.
+- A user who is verified by the directory but has no `ENABLED` row in the `USER` table gets "Invalid username or password." in the management console.
+
+**What to do:**
+
+- Make sure the `bindDn` account can read group membership (`memberOf`) on user entries.
+- Make sure every user who logs in to the management console through the directory has a `USER` row, including users who used to get in through `USER_PASSWORD`.
+
 ## Behaviour changes that need no action
 
 These changes don't require you to change anything, but code or operations that relied on the old behaviour will see a difference.
 
 - **Sessions expire a fixed time after they are created.** [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins), set in the `security { }` block of your application's `auth-preferences.kts`, is now the lifetime of a session, counted from when it was created, rather than an idle timeout. Activity no longer extends it. To keep access, a client logs in again with its refresh token before the session expires. This applies on every authentication path, including native HTTP endpoints and web endpoints served through the router.
-- **Platform LDAP login (the `ldap { connection { } }` script DSL):**
-  - If a connection sets both `bindDn` and `userGroups`, make sure the `bindDn` account can read group membership (`memberOf`) on user entries. Group membership is now read with that account rather than with the user's own connection, and if the account can't read it, every login that requires a group is denied. A connection that doesn't set `bindDn` is not affected.
-  - By default, a connection now times out after 10 seconds when connecting and after 300 seconds waiting for any directory response, including a bind. In 8.15, a bind timed out after 30 seconds. To change either value for a connection, set [`connectTimeoutMs`](/develop/server-capabilities/access-control/authentication/#connection) or `responseTimeoutMs` in its `connection { }` block, which sits in `security { authentication { ldap { } } }` in `auth-preferences.kts`.
-- **Management console login with `DaemonMgmtUiLoginMode=LDAP,USER_PASSWORD`:** a user whom the directory has verified, but who has no `ENABLED` row in the `USER` table, now gets "Invalid username or password." The login no longer falls through to `USER_PASSWORD`, so these users need a `USER` row. A `USER` row whose name differs from the directory name only in case now matches.
+- **Platform LDAP login (the `ldap { connection { } }` script DSL):** by default, a connection now times out after 10 seconds when connecting and after 300 seconds waiting for any directory response, including a bind. In 8.15, a bind timed out after 30 seconds. To change either value for a connection, set [`connectTimeoutMs`](/develop/server-capabilities/access-control/authentication/#connection) or `responseTimeoutMs` in its `connection { }` block, which sits in `security { authentication { ldap { } } }` in `auth-preferences.kts`.
+- **Management console LDAP login matches `USER` names without regard to case.** A `USER` row whose name differs from the directory name only in case now matches.
 - **Management console rights:** rights granted or revoked in `RIGHT_SUMMARY` take effect within about 10 seconds.
