@@ -153,7 +153,7 @@ filePermissions { unix(scriptPermissions) }
 | `global.genesis:genesis-dbtest-junit4` | `global.genesis:genesis-dbtest` |
 | `codegen-maven-plugin`, `genesis-maven-plugin`, `appgen-maven-plugin`, `releases-maven-plugin`, `genesis-archetype` | the Genesis Gradle plugins |
 
-The Jupiter modules have the same classes in the same packages, so only the dependency line changes. Other removed modules, such as `genesis-shell`, are on the [Removed and deprecated modules](./removed-modules.mdx) page.
+The Jupiter modules have the same classes in the same packages, so only the dependency line changes. Before you build, also remove any dependency listed in [step 2 of Removed and deprecated modules](./removed-modules.mdx#2-remove-dependencies-on-removed-artifacts-and-plugins).
 
 ### 3. Rename `javax.inject` to `jakarta.inject`
 
