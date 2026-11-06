@@ -276,6 +276,26 @@ requestReplies {
 
 <CommonQueryFields />
 
+#### `derivedField`
+
+`derivedField` adds a calculated field to each row of the reply. Call it directly in the `requestReply` block, alongside `reply`, not inside `reply { }`. It takes the name and the type of the new field, and a block that calculates the value. The block reads the current row as `data`, and it can return `null`.
+
+`derivedFieldWithUserName` works the same way, but the block can also read `userName`, the name of the user who sent the request.
+
+The name of a derived field must not clash with a source field, a reply alias or another derived field. The comparison is case-insensitive.
+
+```kotlin
+requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+    reply { INSTRUMENT_CODE; LAST_TRADED_PRICE }
+    derivedField("HAS_HIGH_PRICE", BOOLEAN) {
+        (data.lastTradedPrice ?: 0.0) > 180
+    }
+    derivedFieldWithUserName("HAS_HIGH_PRICE_WITH_USERNAME", STRING) {
+        (data.lastTradedPrice gt 180.0).toString() + userName
+    }
+}
+```
+
 #### `config`
 
 The `config` block is supported at both the `requestReplies` or file level, as well as the `requestReply` level.
