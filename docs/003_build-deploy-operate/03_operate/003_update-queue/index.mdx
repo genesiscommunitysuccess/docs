@@ -163,29 +163,33 @@ The Config variables are listed below.
 
 | Config Item                      | Description                          | Default                  |
 |----------------------------------|--------------------------------------|--------------------------|
-| `JmsHost` (required)             | The host name, can hold multiple values separated by comma; this enables you to use HA failover | `tcp://localhost:61616` |
+| `JmsHost`                        | The host name, can hold multiple values separated by comma; this enables you to use HA failover | `tcp://localhost:61616` |
 | `JmsUsername`                    | Username to connect | |
 | `JmsPassword`                    | Password to connect (can be encrypted using `GenesisKey`) | |
 | `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
-| `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker before declaring the process `DOWN` | 20 |
+| `JmsMaxConnectionRetryOnStartup` | Has no effect. The process keeps trying to connect to the broker, as set by `JmsReconnectDelayMs` | 20 |
 | `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case of connectivity problems or other faults | 1000 |
 | `JmsRetryToSendDelayMs`          | The amount of time in milliseconds before the first retry of a failed send; each later retry waits twice as long as the previous one, up to one minute (or up to this value, if it is longer) | 1000 |
 | `JmsRetryToSendAction`           | What to do when sending an update fails: `RESCHEDULE` or `RETRY` retries the update; `IGNORE` drops it. See [Publish failures](#publish-failures) | `RESCHEDULE` |
-| `JmsRetryToSendLimit`            | The number of times a failed send is retried before the process stops publishing and shuts down. See [Publish failures](#publish-failures) | 5 |
+| `JmsRetryToSendLimit`            | The number of times a failed send is retried before the process stops publishing and shuts down. Applies only to `RESCHEDULE` and `RETRY`. With `0`, the process shuts down on the first failed send. See [Publish failures](#publish-failures) | 5 |
 
 #### Publish failures
+
+:::warning
+From versions 8.15.45 and 10.0.1, the process shuts down when an update still fails after all its retries. In earlier versions, the update was dropped with a WARN log and the process kept running, and `RESCHEDULE` put the update back on the queue instead of retrying it in place.
+:::
 
 If an update fails to send and `JmsRetryToSendAction` is `RESCHEDULE` or `RETRY` (they behave the same), the process retries that update in place before it sends any other update. The first retry waits `JmsRetryToSendDelayMs`; each retry after that waits twice as long as the previous one, up to one minute (or up to `JmsRetryToSendDelayMs`, if that is longer). No other updates are published while it retries.
 
 If the update still fails after `JmsRetryToSendLimit` retries, the process:
 
-- logs an ERROR, closes its connection to the broker and reports the update queue as disconnected
-- doesn't send any of the updates queued behind the failed one, and logs each of them at ERROR
-- shuts down with exit status 1
+- Logs an ERROR, closes its connection to the broker and reports the update queue as disconnected.
+- Does not send any of the updates queued behind the failed one, and logs each of them at ERROR.
+- Shuts down with exit status 1.
 
-With the defaults, the five retries wait 31 seconds in total.
+The process is restarted only if its [process definition](/develop/server-capabilities/runtime-configuration/processes/) sets `scheduleRestart` to `true`, or if your deployment restarts it. The updates that were not sent never reach the broker, so no consumer receives them, durable consumers included; processes that load their data at startup, such as Data Servers, pick up those changes when they restart.
 
-Only failed sends count towards the limit. While the connection to the broker is down, the process keeps trying to reconnect, as set by `JmsReconnectDelayMs`, and those attempts don't count.
+Only sends that fail on an open connection count towards the limit. With the defaults, the first send and five retries failing on an open connection take about 31 seconds, not counting reconnect time. While the broker is unreachable, the process keeps trying to reconnect, as set by `JmsReconnectDelayMs`; those attempts do not count, so a broker outage on its own does not shut the process down.
 
 With `JmsRetryToSendAction` set to `IGNORE`, a failed update is dropped and logged at ERROR, and later updates are still sent.
 
