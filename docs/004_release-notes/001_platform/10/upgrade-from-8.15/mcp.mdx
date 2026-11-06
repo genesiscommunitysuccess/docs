@@ -162,7 +162,7 @@ See [Server configuration](/develop/server-capabilities/model_context_protocol/#
 **What to do:** check each of these against what your callers expect.
 
 - **Request server tools (`<name>_query`)**:
-  - In 8.15, they had no inputs, and always sent an empty request.
+  - In 8.15, they took no inputs of their own (only the identity argument described in step 2), and always sent an empty request.
   - In 10.0, their inputs are the request server's request fields, plus three optional query options, `CRITERIA_MATCH`, `MAX_ROWS` and `ORDER_BY`. The values are passed to the request server.
   - A request field called `CRITERIA_MATCH`, `MAX_ROWS`, `ORDER_BY`, `VIEW_NUMBER` or `OFFSET`, in any case, is read as a query option and isn't passed to the request server. The server logs a warning when it registers the tool.
 - **Event tools held for approval** now return `{"status": "PENDING_APPROVAL", "applied": false, ...}` instead of a success response, so the caller isn't told that a held change has been applied.
