@@ -385,7 +385,7 @@ to `GENESIS_ROUTER` under `/my-app/**`:
 | `GET /secure` with a valid token | `200`, body `secure` | Token resolves to a live session |
 | `GET /whoami` with a valid token | `200`, body is the Genesis username | Resolved identity is published as the request `Principal` |
 | `GET /public/ping` with no token | `200`, body `pong` | `@GenesisAnonymous` opts this mapping out |
-| `GET /actuator/health` with no token | `200` | Actuator health is carved out automatically; the rest of the actuator tree is not |
+| `GET /actuator/health` with no token | `200` | Actuator health is carved out automatically (if the app includes `spring-boot-starter-actuator`; the starter doesn't add it); the rest of the actuator tree is not |
 
 To fully replace this security chain, supply your own `SecurityFilterChain` bean — the Genesis
 chain backs off automatically when one is present, and `@PreAuthorize`/`@EnableMethodSecurity`
@@ -462,6 +462,18 @@ instead — list it in that process's `script` entry in `processes.xml` (see
 — or its endpoints disappear without an error. See
 [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the
 router page.
+
+A Spring process lists its web handler in the `scriptFiles` of `@GenesisApplication`. The Gradle
+plugin writes that list into the `<script>` entry of the generated `processes.xml`:
+
+```kotlin
+@GenesisApplication(scriptFiles = ["orders-app-web-handler.kts"])
+class OrdersApplication
+```
+
+The script is looked up in `$GENESIS_HOME/site-specific/scripts/`, in the product's `scripts/`
+directory, and on the classpath (as `scripts/<name>` or `<name>`). This loader runs on the WebSocket
+channel, which external transport mode always uses.
 :::
 
 #### External transport mode
@@ -509,8 +521,11 @@ such as `/orders-app/event-trade-insert`, gets `404`.
   Every TLS mode in use must have a `tls.identity`.
 - **Neutral endpoint types.** A Genesis HTTP endpoint can't declare a Netty type. Use `File`,
   `Path`, `InputStream` or `FileDownload` instead of `ChunkedFile` and `ChunkedInput`, `ByteArray`
-  instead of `ByteBuf`, and `HttpRequest.body` instead of `FullHttpRequest`. An endpoint declared
-  like either of these in a `*-web-handler.kts` file is refused:
+  instead of `ByteBuf`, and the request body instead of `FullHttpRequest`. In `endpoint<In, Out>`,
+  `In` is the type of the request body, not of the request. Rewrite `endpoint<FullHttpRequest, String>`
+  as `endpoint<String, String>` and read `body`, or as `endpoint<Unit, String>` and read
+  `request.body.asInputStream()`. An endpoint declared like either of these in a
+  `*-web-handler.kts` file is refused:
 
   ```kotlin
   webHandlers { endpoint<FullHttpRequest, String>(POST, "raw") { /* ... */ } }
@@ -522,6 +537,9 @@ such as `/orders-app/event-trade-insert`, gets `404`.
   ```text
   Endpoint GET download declares io.netty.handler.stream.ChunkedFile. Netty request and response types are not supported in external transport mode. Declare a transport-neutral type instead.
   ```
+
+  The web-handler script must itself be listed in `scriptFiles`; see the warning under
+  [Enabling the router proxy](#enabling-the-router-proxy).
 
   The error doesn't name the replacement type. For a response, declare `File`, `Path` or
   `ByteArray` instead; see the return types table on the
@@ -563,7 +581,9 @@ The starter sets Tomcat's upload limits to match native mode: `spring.servlet.mu
 `server.tomcat.max-http-form-post-size` 64 MiB. Your own value for any of these wins. A raised
 `messaging.http.maxContentLength` is not carried over, so raise the Spring properties instead. Both
 upload limits apply: the endpoint's `maxFileSize` is still enforced (`413`), but only below
-Tomcat's limit. To accept larger files, raise `spring.servlet.multipart.max-file-size` as well (and
+Tomcat's limit. An upload above Tomcat's limit (`spring.servlet.multipart.max-file-size` or
+`max-request-size`) also gets `413`, but the container sets it, with Spring Boot's error body rather
+than the endpoint's own message. To accept larger files, raise `spring.servlet.multipart.max-file-size` as well (and
 `max-request-size` if you set it). Other settings that configure Netty have no effect in this mode:
 `messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
 `UseNettyThreadsForMessageProcessing`.
@@ -577,9 +597,9 @@ Tomcat's limit. To accept larger files, raise `spring.servlet.multipart.max-file
 | CORS preflight on a Genesis path | `405` | Empty `200` |
 | Upload over the endpoint's `maxFileSize` | `400` | `413` |
 | Fragmented WebSocket message over `maxAggregatedFrameSize` | Closed with `1000` | Closed with `1009` |
-| Reading a request body | Repeatable | Once only |
+| Reading a Genesis HTTP endpoint's request body more than once | Repeatable | Once only (a second read throws `BodyAlreadyReadException`) |
 | `tls.identity.keystore.keyAlias` | Ignored | Honoured |
-| A client that stops reading | Never detected | Closed after the send time limit |
+| A client that stops reading | Never detected | Closed after `genesis.spring.web-socket-send-time-limit-ms` (default 60 s) |
 
 #### Native mode
 
@@ -628,7 +648,8 @@ the derived slug.
 :::caution
 A few things worth knowing before relying on router proxying:
 
-- **Actuator moves too.** The router reaches actuator under the prefix as well:
+- **Actuator moves too** (if the app includes `org.springframework.boot:spring-boot-starter-actuator`;
+  the starter doesn't add it). The router reaches actuator under the prefix as well:
   `/orders-app/actuator/health`, not `/actuator/health`. In native mode the prefix is also the
   context path, so the direct Tomcat URL moves too — update health-check probes accordingly.
 - **In native mode, the embedded Tomcat is a second network listener.** It must be reachable from
