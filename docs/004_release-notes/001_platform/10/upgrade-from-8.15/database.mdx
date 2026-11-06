@@ -21,7 +21,7 @@ These have not changed, so they need no action:
 
 - **The database engine.** FoundationDB (`DbLayer=FDB` or `FDB2`) is deprecated in 10.0 and is planned for removal in 11.0.0, but it still works. A process that uses it now logs a deprecation warning at startup.
 - **`RxDb`, `RxEntityDb`, `AsyncEntityDb` and `SyncEntityDb`** can still be injected, and they still work.
-- **`DbSqlConnectionPoolSize`** is still honoured.
+- **`DbSqlConnectionPoolSize`** is still honoured but deprecated; use [`DbSqlMaxPoolSize`](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions).
 
 ## 1. Remove `DbMode=LEGACY`
 
@@ -115,7 +115,7 @@ Whichever listener you use:
 
 **Applies to:** applications on `DbLayer=SQL` that use views and don't set `SqlViewsEnabled`. FoundationDB is not affected.
 
-**Why:** [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) now defaults to `true`; in 8.15 it defaulted to `false`. A view that can be expressed in SQL is now read with a single SQL join query, and Data Server queries with [backwards joins](/develop/server-capabilities/query-data/real-time-queries-data-server/#backwards-joins) on such a view use the SQL join cache that is generated for it.
+**Why:** [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) now defaults to `true`; in 8.15 it defaulted to `false`. A view that can be expressed in SQL is now read with a single SQL join query, and Data Server queries with [backwards joins](/develop/server-capabilities/query-data/real-time-queries-data-server/#backwards-joins) on such a view use the SQL join cache that is generated for it. If your Data Server queries use `backwardsJoins` or `backJoins`, rename them as described in [Data Server and Request Server, step 1](./data-server-request-server.mdx#1-replace-the-removed-data-server-dsl).
 
 **What goes wrong if you skip this:** nothing fails, but views are read in a different way. Criteria on joined fields are evaluated in the database instead of lazily, which changes what you can combine with paging and sorting. See [getByCriteria](/develop/server-capabilities/data-access-apis/gpal-java/#getbycriteria).
 
