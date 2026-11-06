@@ -5,4 +5,252 @@ sidebar_position: 3
 id: 'upgrade-10.0-database'
 ---
 
-This page will describe how to upgrade the database layer from 8.15 to 10.0.
+Most applications need only a few of the steps on this page. The ones most likely to affect you are removing `DbMode=LEGACY` (step 1), checking your write listeners (step 2) and replacing the database APIs that 10.0 removes (step 7).
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 4 (code generation for views) and 7 (removed APIs) |
+| The build warns | 8 (deprecated `RxDb` and `RxEntityDb`) |
+| The application fails to start | 1 (`DbMode=LEGACY`, or a dictionary 10.0 can't copy) |
+| Writes that used to work now fail | 2 (write listeners), 5 (duplicate keys in a batch) and 6 (over-long strings) |
+| Behaviour differs silently | 3 (SQL views on by default) and 9 (the `MqLayer` default of the `db` helpers) |
+
+These have not changed, so they need no action:
+
+- **The database engine.** FoundationDB (`DbLayer=FDB` or `FDB2`) is deprecated in 10.0 and is planned for removal in 11.0.0, but it still works. A process that uses it now logs a deprecation warning at startup.
+- **`RxDb`, `RxEntityDb`, `AsyncEntityDb` and `SyncEntityDb`** can still be injected, and they still work.
+- **`DbSqlConnectionPoolSize`** is still honoured.
+
+## 1. Remove `DbMode=LEGACY`
+
+**Applies to:** applications on `DbLayer=SQL` with H2, HSQL or PostgreSQL. Oracle and SQL Server are not affected.
+
+**Why:** 10.0 reads the dictionary only from the namespace-aware store. In 8.15, a database that was created on an older release, or that ran with `DbMode=LEGACY`, could still hold its dictionary in the old `METADATA.DICTIONARY` table, and 8.15 fell back to reading it from there.
+
+**What goes wrong if you skip this:** if `DbMode=LEGACY` is still set, the database fails to start with:
+
+```
+DbMode=LEGACY is no longer supported. The dictionary is now always read from the namespace-aware store. ...
+```
+
+**What to do:**
+
+1. Remove `DbMode=LEGACY` from your system definition.
+2. Start the application on 10.0. If the dictionary is still only in `METADATA.DICTIONARY`, 10.0 copies it into the namespace-aware store on the first start and logs a warning that begins `Adopted the 8.15 dictionary in METADATA.DICTIONARY for namespace`. The old table is left in place, and 10.0 ignores it from then on.
+
+For the copy to work, the database user needs to be able to read `METADATA.DICTIONARY` and to create tables in the namespace. If the copy can't be made, the application refuses to start rather than coming up with an empty dictionary, and the error says which of these fixes applies:
+
+- **The user can't read `METADATA.DICTIONARY`:** grant it `SELECT` on that table, then restart.
+- **The user can't create tables in the namespace:** grant it `CREATE` there, or run a remap once as a user that can (the remap copies the dictionary in the same way). Then restart.
+- **The table doesn't hold a dictionary that 10.0 can read:** go back to 8.15 and run a remap there that writes the dictionary, then upgrade again. On 8.15, a remap writes the dictionary only when it finds schema differences, so a remap that reports success is not proof that the dictionary was written.
+
+A database that was created on a release that already used the namespace-aware store needs none of this.
+
+## 2. Check your write listeners
+
+**Applies to:** applications that implement a `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`.
+
+**Why:** in 10.0, most writes no longer go through `RxDb`. Two listener interfaces were added for the new write paths: `SyncWriteOperationListener`, a blocking listener that is handed a `SyncDb`, and `AsyncWriteOperationListener`, a suspending listener that is handed an `AsyncDb`.
+
+An existing `WriteOperationListener` still fires for every write. For writes that don't go through `RxDb`, it is called through a bridge, and the process logs this once at INFO:
+
+```
+No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sync write path
+```
+
+The listener now runs inside the write's own transaction, so 10.0 is stricter about how it uses `tx`.
+
+**What goes wrong if you skip this:**
+
+- For writes that don't go through `RxDb`, a listener that uses `tx` on a different thread gets an `IllegalStateException`, and the write that triggered it is rolled back. So does an `AsyncWriteOperationListener` that uses `tx` after `onWriteResult` has returned. The message names the listener and says how to fix it.
+- A service with more than one kind of listener bound (for example, an old `WriteOperationListener` and a new `SyncWriteOperationListener`) logs this warning at startup, and from then on it is undefined which listener a write calls:
+
+  ```
+  Only one write listener per service is supported, but 2 are bound: ...
+  ```
+
+**What to do:**
+
+- **Bind only one write listener in each service.** Choose `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`. Don't keep the old one alongside the new one.
+- **If you keep `WriteOperationListener`,** block on every call you make through `tx`, for example with `blockingGet()`, on the thread that called `onWriteResult`. Nothing else is needed to keep it firing.
+- **If you move to `SyncWriteOperationListener`,** first check where the service writes. On SQL, a `SyncWriteOperationListener` is called for writes through `SyncDb`, `AsyncDb`, `SyncEntityDb` and `AsyncEntityDb`, and for single writes through `RxEntityDb`. Writes through `RxDb` itself, or through `RxEntityDb.writeTransaction { }`, still call only `WriteOperationListener`, and so do writes through `SyncEntityDb` on FDB and FDB2. If the service writes in any of these ways, stay on `WriteOperationListener`.
+
+  Otherwise, register the new listener in the same way as your old one, and move all of the old listener's logic into it:
+
+  ```kotlin
+  // 8.15
+  @Module
+  class AuditHook : WriteOperationListener {
+      override fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>) {
+          if (writeResults.any { touches(it, "TRADE") }) {
+              tx.insert(auditRecord(writeResults)).blockingGet()
+          }
+      }
+  }
+
+  // 10.0
+  @Module
+  class AuditHook : SyncWriteOperationListener {
+      override fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>) {
+          if (writeResults.any { touches(it, "TRADE") }) {
+              tx.insert(auditRecord(writeResults))
+          }
+      }
+  }
+  ```
+
+  In this example, `touches` and `auditRecord` are placeholders for your own code.
+- **`AsyncWriteOperationListener`** is the suspending equivalent. It is called by suspending writes on `AsyncDb` and `AsyncEntityDb`, including `writeTransaction`, which covers writes from GPAL event handlers.
+- **`RawSQLWriteOperationListener` has been removed.** Implement `SyncWriteOperationListener` instead.
+
+Whichever listener you use:
+
+- **Stay on the calling thread or coroutine.** Don't switch threads or dispatchers inside the listener. In 8.15, the listener ran on `Dispatchers.IO`; in 10.0, only writes through `RxDb` still run it there.
+- **Write through `tx`.** Writes made through `tx` are committed and published together with the write that triggered the listener, and they don't call the listener again. If the listener throws an exception, the triggering write is rolled back.
+- **Expect whole batches.** For an entity `upsertAll`, `writeResults` holds the whole batch in a single call.
+
+## 3. Check reads of views on SQL
+
+**Applies to:** applications on `DbLayer=SQL` that use views and don't set `SqlViewsEnabled`. FoundationDB is not affected.
+
+**Why:** [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) now defaults to `true`; in 8.15 it defaulted to `false`. A view that can be expressed in SQL is now read with a single SQL join query, and Data Server queries with [backwards joins](/develop/server-capabilities/query-data/real-time-queries-data-server/#backwards-joins) on such a view use the SQL join cache that is generated for it.
+
+**What goes wrong if you skip this:** nothing fails, but views are read in a different way. Criteria on joined fields are evaluated in the database instead of lazily, which changes what you can combine with paging and sorting. See [getByCriteria](/develop/server-capabilities/data-access-apis/gpal-java/#getbycriteria).
+
+**What to do:**
+
+- Test the views that your application relies on.
+- To keep the 8.15 behaviour, set `SqlViewsEnabled` to `false` in your system definition:
+
+  ```kotlin
+  item(name = "SqlViewsEnabled", value = false)
+  ```
+
+## 4. Rename view fields whose SQL labels collide
+
+**Applies to:** views where two fields end up with the same SQL select label.
+
+**Why:** each field of a view is selected in SQL under the label `<join alias>_<field name>`. If two fields produce the same label, compared without regard to case, the generated SQL is ambiguous. For example, a field `B_C` on alias `A` and a field `C` on alias `A_B` both produce `A_B_C`. Code generation now rejects such a view, whatever the database and whatever `SqlViewsEnabled` is set to. It also rejects a view whose labels become identical only once they are shortened to fit the label length limit of a supported database.
+
+**What goes wrong if you skip this:** the build fails, with one of these messages:
+
+```
+View <VIEW_NAME> fails the build whatever the database or SqlViewsEnabled setting, because its generated SQL select labels collide: ...
+View <VIEW_NAME> fails the build because its generated SQL select labels collide once shortened to the <N>-byte label limit of a supported database: ...
+```
+
+**What to do:** rename a join alias or a field so that each label is unique.
+
+## 5. De-duplicate batch writes
+
+**Applies to:** code that calls `insertAll`, `upsertAll`, `modifyAll`, `deleteAll` or `recoverAll`.
+
+**Why:** these methods now reject a batch in which two items resolve to the same row, meaning the same table, the same unique index and the same key values. In 8.15, the outcome depended on the database: on some, a batch like this succeeded and kept one of the rows.
+
+**What goes wrong if you skip this:** the call throws `GenesisDatabaseFailureException` with `DatabaseErrorCode.DUPLICATE_KEY`, and nothing in the batch is written.
+
+**What to do:**
+
+- Remove duplicates before you call an `*All` method; for example, group the records by key and keep the last one.
+- Key values are compared after they have been normalised by field type, so `BigDecimal("1.0")` and `BigDecimal("1.00")` count as the same key.
+
+## 6. Check `STRING` values against `maxSize`
+
+**Applies to:** tables with `STRING` fields that have a `maxSize` in the dictionary.
+
+**Why:** a value that is longer than the field's `maxSize` now fails validation before the write is made. In 8.15, this was left to the database.
+
+**What goes wrong if you skip this:** the write fails with:
+
+```
+IllegalArgumentException: Field <FIELD> value exceeds max size of <maxSize> characters (was <length>)
+```
+
+**What to do:**
+
+- Make sure the application trims or validates over-long input.
+- Alternatively, raise `maxSize` in the dictionary and run a remap.
+- If your code caught a database-specific exception for this case, catch `IllegalArgumentException` instead.
+
+## 7. Replace removed database APIs
+
+**Applies to:** code that uses any API in the table below.
+
+**Why:** these APIs were removed in 10.0. Most of them were deprecated in 8.15, with an IDE quick-fix, so you can make the change while you are still on 8.15.
+
+**What goes wrong if you skip this:** the code doesn't compile against 10.0.
+
+**What to do:** replace each one.
+
+| 8.15 | 10.0 |
+|---|---|
+| `class MyEntity : Entity` (`global.genesis.db.entity.Entity`) | `TableEntity` |
+| `entityDb.safeWriteTransaction { … }` on `AsyncEntityDb` | `entityDb.writeTransaction { … }.first` |
+| `entityDb.safeWriteTransaction { … }` on `RxEntityDb` | `entityDb.writeTransaction { … }.map { it.first }` |
+| `entityDb.safeReadTransaction { … }` | `entityDb.readTransaction { … }` |
+| `getBulk(index, startRecord, fields)` and `getBulkFromEnd(index, startRecord[, fields])` on the entity databases | `getRange(…)` and `getRangeFromEnd(…)`, or `getByCriteria(…, paging = …)` |
+| `connection.buildStatement(sql, …)` on `SqlDatabaseConnection` | `connection.createPreparedStatement(sql, …)`. The suspending `buildStatement` on `SqlAsyncDatabaseConnection` is unchanged. |
+| `DatabaseDetails.Builder.validationMode(…)` | Delete the call; it had no effect. |
+| `GenesisDbCache.isTableCached(table)` and `addTable(table: String)` | `isTableIndexCached(table, index)` and `addTable(CacheTable)` |
+| `ZeroMQUpdateQueue.create(hosts, port)` and its overloads | Inject `UpdateQueue`. |
+| `RxJdbcDataSource` | `SqlConnectionPool`, in the same package. This is a rename; it was not deprecated in 8.15. |
+| `DatabaseManager.getStorageEngine(…)` | Inject `StorageEngine`. This was not deprecated in 8.15. |
+
+For example, with `AsyncEntityDb`:
+
+```kotlin
+// 8.15
+val result = entityDb.safeWriteTransaction {
+    insert(trade)
+}
+
+// 10.0
+val result = entityDb.writeTransaction {
+    insert(trade)
+}.first
+```
+
+Some APIs that were already hidden from source in 8.15 have also been removed. Source code couldn't call them, so there is nothing to change in your code, but any jar that was compiled against an older release must be rebuilt.
+
+## 8. Expect deprecation warnings for `RxDb` and `RxEntityDb`
+
+**Applies to:** code that uses `RxDb`, `RxDbImpl` or `RxEntityDb`.
+
+**Why:** these types are deprecated in 10.0, with no removal version set. `RxDb` remains supported, because its record-level subscriptions and admin operations have no `SyncDb` or `AsyncDb` equivalent.
+
+**What goes wrong if you skip this:** the code still compiles and runs, but you get deprecation warnings. A build that treats warnings as errors fails.
+
+**What to do:** either suppress the warnings for now, or:
+
+- move entity code from `RxEntityDb` to `AsyncEntityDb` (the IDE quick-fix does this)
+- move record code from `RxDb` to `SyncDb` or `AsyncDb`
+
+When you move writes off `RxDb`, check step 2: it can change which write listener the writes call.
+
+## 9. Check `MqLayer` if you use the `db` or `sqlDb` helpers
+
+**Applies to:** a system definition that calls `db(…)` or `sqlDb(…)` without passing `mqType`.
+
+**Why:** the default `mqType` of these helpers has changed from `MqLayers.GenerationalNano` to `MqLayers.ZeroMQ`.
+
+**What goes wrong if you skip this:** the application silently switches its update queue to ZeroMQ.
+
+**What to do:** to keep GenerationalNano, pass it explicitly. For example:
+
+```kotlin
+db(host = "localhost", port = 4500, mqType = MqLayers.GenerationalNano, dbType = DbLayers.SQL)
+```
+
+A system definition that sets the `MqLayer` item itself is not affected.
+
+## Behaviour changes that need no action
+
+These changes don't require you to do anything, but code that relied on the old behaviour will behave differently.
+
+- **SQL transactions are stricter:**
+  - Asynchronous writes, whether standalone or joined to a transaction, publish to the update queue only after they commit.
+  - A nested transaction opened by a write listener joins the write that the listener is handling. If the nested transaction fails, its own writes are rolled back.
+  - `RxDb` writes join an enclosing transaction.
+  - A standalone `SyncEntityDb` write is atomic with its write listener.
