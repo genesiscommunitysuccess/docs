@@ -472,8 +472,7 @@ class OrdersApplication
 ```
 
 The script is looked up in `$GENESIS_HOME/site-specific/scripts/`, in the product's `scripts/`
-directory, and on the classpath (as `scripts/<name>` or `<name>`). This loader runs on the WebSocket
-channel, which external transport mode always uses.
+directory, and on the classpath (as `scripts/<name>` or `<name>`). Web handler scripts load only on the WebSocket channel. External transport mode always uses it; in native mode, the process's network configuration must select the WebSocket channel, or the script is ignored without an error.
 :::
 
 #### External transport mode
