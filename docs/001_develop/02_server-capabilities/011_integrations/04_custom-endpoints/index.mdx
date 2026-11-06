@@ -72,7 +72,7 @@ webHandlers {
     endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 
@@ -724,7 +724,7 @@ Full example:
 endpoint<Trade, Trade>(POST, "trades") {
     permissioning {
         requestAuth(mapName = "ENTITY_VISIBILITY") {
-            authKey { data.instrument }
+            authKey { key(data.instrument) }
         }
     }
 
@@ -1203,7 +1203,7 @@ webHandlers {
     endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 
