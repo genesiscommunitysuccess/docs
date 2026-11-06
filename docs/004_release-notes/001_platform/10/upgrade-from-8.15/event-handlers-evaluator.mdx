@@ -85,6 +85,8 @@ For the current DSL, see [`triggerRemote`](/develop/server-capabilities/core-bus
 | `prePersist` / `postPersist` | Code in `onCommit { }`, before or after the write |
 | `metadata.fields.field` | Fields on the payload class, adjusted with `overrideMetadataFields()` |
 
+**How to check:** 10.0 logs nothing about a leftover XML file, so check the ported handlers instead. Start the event handler process and look in its log for `Registering event handler for EVENT_<NAME>`, an INFO line. Each ported event should appear once. If one is missing, you didn't port it, or its `-eventhandler.kts` script isn't in the process's script list. As a fallback, send one ported event and confirm that the process acknowledges it.
+
 ## 3. Messages sent as bare `EVENT_INSERT`, `EVENT_MODIFY` or `EVENT_DELETE`
 
 **Applies to:** any client, script or test fixture that sends `MESSAGE_TYPE` `EVENT_INSERT`, `EVENT_MODIFY` or `EVENT_DELETE`, with a table name in the payload.
