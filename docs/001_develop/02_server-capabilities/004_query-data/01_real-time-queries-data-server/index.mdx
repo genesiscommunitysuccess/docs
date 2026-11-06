@@ -197,6 +197,24 @@ dataServer {
 
 <CommonQueryFields />
 
+##### Derived field names
+
+From Genesis 10.0, the name of every derived field is checked, ignoring case. The name must not:
+
+- match a field of the source table or view (for example, a derived field called `trade_id` on a table that has `TRADE_ID`);
+- match an aliased output field that is selected earlier in the same definition;
+- match another derived field in the same definition.
+
+If a name breaks one of these rules, the script fails when it runs and the process doesn't start. The error is one of these:
+
+```
+Derived field 'X' in <owner> conflicts with field 'Y' from <source>. Rename the derived field so it does not shadow the underlying table/view field.
+Derived field 'X' in <owner> conflicts with aliased output field 'Y'. Rename the derived field so it does not shadow a selected alias.
+Derived field 'X' in <owner> is defined more than once. Rename one of the derived fields so names remain unique.
+```
+
+To fix it, rename the derived field. The new name is the column name that clients receive. These rules apply to derived fields in `enrich` blocks as well as to query-level derived fields. For upgrade steps, see [Data Server and Request Server](/release-notes/platform/10/upgrade-from-8.15/data-server-request-server/).
+
 #### `indices`
 
 A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order.
