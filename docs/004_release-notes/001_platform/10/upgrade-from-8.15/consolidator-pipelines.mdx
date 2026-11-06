@@ -143,6 +143,8 @@ class MySink : DbSink<MyRow> { /* ... */ }
 class MySink : TransactionalSink<MyRow> { /* ... */ }
 ```
 
+In 10.0, `TransactionalSink` and `RxTransactionalSink` are adapted to the suspend and stream sinks at runtime. `TransactionalSuspendSink` and `TransactionalStreamSink` are also available as the native Kotlin forms. See [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/).
+
 The `dbSink()` and `txDbSink()` functions in pipeline scripts are not affected. They build different classes, whose API has not changed.
 
 ## 5. Qualify outer-block calls in consolidator definitions
