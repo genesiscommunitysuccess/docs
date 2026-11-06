@@ -85,7 +85,24 @@ The following command aliases have been removed from `setup.sh`. Remove them fro
 
 ### Legacy streamer client
 
-A process that runs `<module>genesis-streamerclient</module>` must be rebuilt on `genesis-pal-streamerclient`, with a GPAL `*-streamer-client.kts` script; see [Streamer client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/). That module and its DSL are already available in 8.15, so you can do this before you upgrade.
+A process that runs `<module>genesis-streamerclient</module>` must be rebuilt on `genesis-pal-streamerclient`, with a GPAL `*-streamer-client.kts` script. That module and its DSL are already available in 8.15, so you can do this before you upgrade.
+
+The legacy client's configuration lived in its own process entry in `processes.xml` and in whatever the legacy client loaded for its streamer and target settings. Move those settings into the GPAL script. In `processes.xml`, swap the module and name the script:
+
+```xml
+<!-- Before -->
+<module>genesis-streamerclient</module>
+
+<!-- After -->
+<module>genesis-pal-streamerclient</module>
+<package>global.genesis.streamerclient.pal</package>
+<script>position-streamer-client.kts</script>
+<language>pal</language>
+```
+
+Here `position-streamer-client.kts` stands for your own `*-streamer-client.kts` script. For the script itself and a full `processes.xml` example, see [Streamer client](/develop/server-capabilities/integrations/streamer-apis/streamer-client/).
+
+**Done when:** the process starts, and the client receives data from the streamer.
 
 ## 3. Convert Groovy script processes to GPAL
 
@@ -188,9 +205,9 @@ Use the same dependency form as the other Genesis modules in your build.
 
 **Why:** these are deprecated in 10.0. They still work. Most are due to be removed in 11.0.0, and some have no removal date yet.
 
-**If you skip it:** nothing breaks in 10.0. You see warnings until you move off them.
+**If you skip it:** nothing breaks in 10.0 unless your build treats warnings as errors, in which case it fails. Suppress the warnings or move off the component.
 
-**What to do:** nothing is needed for 10.0. Use this table to plan the work before 11.0.
+**What to do:** nothing else is needed for 10.0. Use this table to plan the work before 11.0.
 
 | You use | What you see | Move to |
 |---------|--------------|---------|
@@ -203,7 +220,7 @@ Use the same dependency form as the other Genesis modules in your build.
 | `RxDb` and `RxEntityDb` | Compiler warnings | `SyncDb` or `AsyncDb`, and `AsyncEntityDb` (no removal date set) |
 | `AbstractEventHandler` and related classes (except `CallableTransactionHandler`, which is removed: see [Event handlers and evaluator](./event-handlers-evaluator.mdx)) | Compiler warnings | The typed `EventHandler` interfaces or GPAL; see [Event handlers and Evaluator](./event-handlers-evaluator.mdx) |
 | `*-fields-dictionary.kts` | A compiler warning, and a warning when the dictionary is read | Fields declared inside `table { }` (no removal date set) |
-| `AbstractGenesisTestSupport`, `AbstractDatabaseTest` and related classes | Compiler warnings | GenesisJunit; see [Test support](./test-support.mdx) |
+| `AbstractGenesisTestSupport`, `AbstractDatabaseTest` and related classes (except `authorise` and `revoke` on `AbstractGenesisTestSupport`, which are removed: see [Test support](./test-support.mdx#replace-authorise-and-revoke-on-abstractgenesistestsupport)) | Compiler warnings | GenesisJunit; see [Test support](./test-support.mdx) |
 | `table(..., isHFT = true)` | A warning when the dictionary is read; the table is now an ordinary table | Remove `isHFT` |
 
 If you see a warning about a component you don't use, check the processes your application inherits from its dependencies. `genesisInstall` checks every process in the merged `processes.xml`.
