@@ -263,7 +263,7 @@ This is an example only. The processes and ports in your response depend on your
     {
         "PROCESS_NAME":"GENESIS_AUTH_DATASERVER",
         "STATUS":"UP",
-        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "MESSAGE":"",
         "PORT":8002
     },
     {
@@ -287,7 +287,7 @@ This is an example only. The processes and ports in your response depend on your
     {
         "PROCESS_NAME":"GENESIS_CLUSTER",
         "STATUS":"UP",
-        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "MESSAGE":"",
         "PORT":9000
     },
     {
@@ -299,7 +299,7 @@ This is an example only. The processes and ports in your response depend on your
     {
         "PROCESS_NAME":"GENESIS_NOTIFY",
         "STATUS":"UP",
-        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "MESSAGE":"",
         "PORT":9018
     }
 ]
@@ -388,7 +388,7 @@ The Genesis Application Platform is highly resilient and easy to cluster for a H
 This area takes you through how to configure the platform with our clustering options when using containers.
 
 ### Built-in clustering
-Built-in clustering uses [Akka](https://akka.io/) to manage the members of the cluster. It is the `LEGACY` cluster mode, and it is the default: a host uses it when `ClusterMode` is not set. For how it works, including the `hosts` list and setting the primary node, see [clustering for virtual machines](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering).
+Built-in clustering uses [Apache Pekko](https://pekko.apache.org/) to manage the members of the cluster. It is the `LEGACY` cluster mode, and it is the default: a host uses it when `ClusterMode` is not set. For how it works, including the `hosts` list and setting the primary node, see [clustering for virtual machines](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines/#clustering).
 
 In a container, set the mode with the `GENESIS_SYSDEF_ClusterMode` environment variable:
 
