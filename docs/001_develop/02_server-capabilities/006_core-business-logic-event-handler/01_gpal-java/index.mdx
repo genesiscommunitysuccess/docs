@@ -1869,7 +1869,7 @@ Fourth, in your test set-up, authorize one user to be able to insert trades and 
 ```kotlin
     @Before
     fun setUp() {
-        authorise("ENTITY_VISIBILITY", "CP1", "TraderUser")
+        inMemoryTestAuthCache.authorise("ENTITY_VISIBILITY", "CP1", "TraderUser")
 
         val trader = DbRecord.dbRecord("RIGHT_SUMMARY") {
             "USER_NAME" with "TraderUser"
@@ -2210,7 +2210,7 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
 ```java
     @Before
     public void setUp() {
-        authorise("ENTITY_VISIBILITY", "CP1", "TraderUser");
+        getInMemoryTestAuthCache().authorise("ENTITY_VISIBILITY", "CP1", "TraderUser");
         getRxDb().insert(RightSummary.builder().setRightCode("TRADER").setUserName("TraderUser").build().toDbRecord()).blockingGet();
         getRxDb().insert(RightSummary.builder().setRightCode("SUPPORT").setUserName("SupportUser").build().toDbRecord()).blockingGet();
     }
