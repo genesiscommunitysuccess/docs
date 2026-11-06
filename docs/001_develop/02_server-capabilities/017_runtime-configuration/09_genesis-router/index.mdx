@@ -167,6 +167,8 @@ You can control which resources are exposed to the front end by the Genesis Rout
 
 The `allowList` and `blockList` tags are mutually exclusive. If you specify both, it will generate an error.
 
+A request for a blocked resource gets the same 404 as an unknown one.
+
 The default resources that are always exposed are:
 
 - EVENT_LOGIN_AUTH
