@@ -353,7 +353,7 @@ Default value: 7200 (5 days)
 
 ### `expiryCheckMins` 
 
-Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
+Specifies the interval (in minutes) at which the auth manager deletes sessions whose [refresh token](#refreshtokenexpirationmins) has expired.
 
 ```kotlin title="auth-preferences.kts"
 security {
