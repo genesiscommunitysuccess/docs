@@ -25,7 +25,7 @@ The versions of the entity EntityDb are:
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
 |`SyncEntityDb` |Kotlin + Java|A blocking API, simplest to use and helpful when performance isn't critical                                              |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
-|`RxEntityDb`   |Java only    |An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki)                                        |
+|`RxEntityDb`   |Java only    |Deprecated in 10.0; use `AsyncEntityDb` instead. An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki). See [Upgrade from 8.15: Database layer](/release-notes/platform/10/upgrade-from-8.15/database#8-expect-deprecation-warnings-for-rxdb-and-rxentitydb) |
 |`SyncDb`       |Kotlin + Java|A blocking, record-level API that works with [`DbRecord`](#dbrecord)s instead of type-safe entities. See [SyncDb and AsyncDb](#syncdb-and-asyncdb) |
 |`AsyncDb`      |Kotlin only  |A record-level API powered by Kotlin coroutines, which works with [`DbRecord`](#dbrecord)s instead of type-safe entities |
 |`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki), which does NOT use type-safe entities |
