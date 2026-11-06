@@ -5,4 +5,236 @@ sidebar_position: 10
 id: 'upgrade-10.0-consolidator-pipelines'
 ---
 
-This page will describe how to upgrade Consolidators and data pipelines from 8.15 to 10.0.
+Most of the work on this page is in your `*-pipelines.kts` and `*-data-pipeline.kts` scripts. 10.0 removes the block form of `pipeline("X") { ... }`, which most existing pipeline scripts use (step 1), and the other pipeline DSL that 8.15 deprecated (steps 3 and 4). It also rejects duplicate pipeline names (step 2). In `*-consolidator.kts` scripts, the nested blocks are scoped more strictly (step 5). Two runtime changes need no code change, but you should know about them: a failed Camel file now goes to an `.error` folder (step 7), and `sendEventOnCompletion` now waits for a target it can't find instead of failing (step 8).
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails, or the script fails to compile when the process starts | 1 (the `pipeline` block), 3 (removed pipeline DSL), 4 (removed sink typealiases), 5 (consolidator nested blocks) and 6 (`PipelinesReader.get()`) |
+| The process fails to start | 1 (a pipeline that is never built) and 2 (duplicate pipeline names) |
+| Behaviour differs at runtime, with no error | 7 (failed Camel files) and 8 (`sendEventOnCompletion` with no target) |
+
+Every replacement in steps 1, 3, 4, 5 and 6 already exists in 8.15, so you can make those changes on 8.15 first and then upgrade.
+
+If a `*-data-pipeline.kts` script uses `postgresSource`, `oracleSource` or `msSqlSource`, it also needs a new dependency, because these sources have moved out of the core platform. That is covered in [Removed and deprecated modules](./removed-modules.mdx).
+
+These have changed, but need no action:
+
+- **Consolidators.** In 10.0, `select { }` and `build { }` are optional, and `onNotFound` accepts a new `IGNORE` value. Existing definitions keep working.
+- **Record counters.** Pipelines now count records automatically, with no script change. A new Micrometer counter, `pipeline_records`, appears for each pipeline once a run has counted something, for example in any pipeline that uses `dbSink()` or `txDbSink()`. See [Record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters).
+
+## 1. Rewrite `pipeline("X") { ... }` as a builder chain
+
+**Applies to:** `*-pipelines.kts` scripts and compiled pipeline definitions that declare a pipeline with a block, `pipeline("X") { source(...) ... }`. This is the form most existing pipeline scripts use, so expect nearly every application with pipelines to need this step. The block form was deprecated in 8.15.
+
+**Why:** 10.0 removes the block form. Only the builder form remains: `pipeline("X")` followed by a chain of calls that ends in `.build()`.
+
+**What goes wrong if you skip this:** the script no longer compiles. Because `pipeline("X")` without a block still exists, the error is not an unresolved reference: the compiler reports that a `SourceBuilder` can't be invoked as a function.
+
+**What to do:** rewrite each pipeline as a chain.
+
+1. Close the call after the name: `pipeline("X")`.
+2. Turn `source(...)` into `.source(...)`.
+3. Delete the closing `}` of the old block.
+4. End the chain with `.build()`.
+
+```kotlin
+// 8.15
+pipelines {
+    pipeline("TEST_DB_SINK") {
+        source(TestSource())
+            .map { _ -> DbOperation.Insert(SimpleTrade { /* ... */ }) }
+            .sink(dbSink())
+    }
+}
+
+// 10.0
+pipelines {
+    pipeline("TEST_DB_SINK")
+        .source(TestSource())
+        .map { _ -> DbOperation.Insert(SimpleTrade { /* ... */ }) }
+        .sink(dbSink())
+        .build()
+}
+```
+
+Handlers that you attach to the completed pipeline, such as `.onCompletion(...)` and `.onUncaughtError { }`, go after `.sink(...)` and before `.build()`.
+
+8.15 has no IDE quick-fix for this, so you have to make the change by hand.
+
+Don't forget `.build()`. The old block form called it for you; the builder form doesn't. A pipeline that is declared but never built stops the process at startup with:
+
+```
+The following pipelines were not correctly completed [X]. Please ensure the build function is called to finish construction of the pipeline.
+```
+
+## 2. Give each pipeline a unique name
+
+**Applies to:** `pipelines { }` blocks that declare two pipelines with the same name.
+
+**Why:** in 8.15, a repeated name was accepted. If both pipelines were of the same kind (both real-time, for example), the later one replaced the earlier one, so one of them silently never ran. 10.0 rejects any repeated name, even between a real-time and a batch pipeline.
+
+**What goes wrong if you skip this:** the process fails to start with:
+
+```
+Pipeline X is declared more than once. Completion is tracked by name, so a duplicate would let one declaration's build() mark the other complete and the second be dropped silently.
+```
+
+**What to do:** rename the duplicate.
+
+The check only looks within one `pipelines { }` block. Two pipelines with the same name in different blocks or different files are not caught, so check across files yourself.
+
+## 3. Replace the removed pipeline DSL
+
+**Applies to:** `*-pipelines.kts` and `*-data-pipeline.kts` scripts, and Kotlin code, that use any of the members in the table below. All of them were deprecated in 8.15.
+
+**Why:** 10.0 removes them.
+
+**What goes wrong if you skip this:** the script or code no longer compiles.
+
+**What to do:** replace each one.
+
+| Removed | Where | Use instead |
+|---|---|---|
+| `sources { }` | `*-data-pipeline.kts` | `pipelines { }` |
+| `mapper(name, table) { }` | inbound mappers in `*-data-pipeline.kts` | `map(name, table) { }` |
+| `MapperBuilder.mapper(name, table, init)` | Kotlin code | `MapperBuilder.buildInboundMapper(name, table, init)` |
+| `camelSource { }` | `*-pipelines.kts` | `camelFileSource { }` |
+| `AbstractProgrammaticSource<T>` | `global.genesis.pipeline.event` | `ProgrammaticSource<T>`, in the same package |
+| `global.genesis.datapipeline.pal.sink.DbOperation<T>` | imports | `global.genesis.pipeline.api.db.DbOperation<T>` |
+
+For `camelSource`, only the function name changes. The configuration block inside it stays the same:
+
+```kotlin
+// 8.15
+val source = camelSource {
+    location = "file://runtime/inbound?noop=true"
+}
+
+// 10.0
+val source = camelFileSource {
+    location = "file://runtime/inbound?noop=true"
+}
+```
+
+In 10.0, a mapper that needs no configuration can be written as `map(name, table)`, with no block. On 8.15, `map` still needs a block, so if you make this change on 8.15 first, write `map(name, table) { }`.
+
+## 4. Replace the `DbSink` and `DbRxSink` typealiases
+
+**Applies to:** custom sinks written in Kotlin that implement `global.genesis.pipeline.api.DbSink<T>` or `global.genesis.pipeline.api.DbRxSink<T>`. Both were deprecated in 8.15.
+
+**Why:** 10.0 removes these typealiases.
+
+**What goes wrong if you skip this:** the code no longer compiles.
+
+**What to do:** implement the types they pointed to.
+
+| Removed | Use instead |
+|---|---|
+| `global.genesis.pipeline.api.DbSink<T>` | `global.genesis.pipeline.api.TransactionalSink<T>` |
+| `global.genesis.pipeline.api.DbRxSink<T>` | `global.genesis.pipeline.api.RxTransactionalSink<T>` |
+
+```kotlin
+// 8.15
+class MySink : DbSink<MyRow> { /* ... */ }
+
+// 10.0
+class MySink : TransactionalSink<MyRow> { /* ... */ }
+```
+
+The `dbSink()` and `txDbSink()` functions in pipeline scripts are not affected. They build different classes, whose API has not changed.
+
+## 5. Qualify outer-block calls in consolidator definitions
+
+**Applies to:** `*-consolidator.kts` scripts that call a member of an outer block from inside a nested block. Most scripts are not affected.
+
+**Why:** in 10.0, the nested blocks of a consolidator definition (`config`, `select`, `into`, `build`, `lookup`, `indexScan`, `onCommit` and the function blocks) are scoped as a Kotlin DSL. Kotlin then refuses an unqualified call from an inner block to a member of an enclosing block.
+
+**What goes wrong if you skip this:** the script no longer compiles. These patterns compiled on 8.15 and don't on 10.0:
+
+- `indexScan { }`, which belongs in `into { }`, written inside `build { }`;
+- the consolidator's own `group(...)`, `where`, `onCommit` or `config` called inside `build { }`, `lookup { }` or `onCommit { }`;
+- members of `select { }`, such as `sum`, `count` or `into`, called inside a function block such as `onJoin { }`.
+
+**What to do:**
+
+- If a block is in the wrong place, move it to the block it belongs to. For example, put `indexScan { }` next to `build { }` inside `into { }`, not inside `build { }`.
+- If you meant to call the outer block, qualify the call with a label, for example `this@consolidator.group(...)` inside `build { }`.
+
+```kotlin
+// 8.15: compiles, but the index scan is never registered
+groupBy { Order.ById(orderId) } into {
+    build {
+        indexScan { Trade.ByOrderId(groupId.orderId) }
+        Order { orderId = groupId.orderId }
+    }
+}
+
+// 10.0
+groupBy { Order.ById(orderId) } into {
+    indexScan { Trade.ByOrderId(groupId.orderId) }
+    build { Order { orderId = groupId.orderId } }
+}
+```
+
+On 8.15, an `indexScan` inside `build { }` was never registered. If your consolidator had needed the index scan, it would already have failed. So deleting it keeps the behaviour you had on 8.15. Moving it into `into { }` registers the scan for the first time, and the consolidator then uses it, so test the result if you move it.
+
+These are unchanged:
+
+- `group(...)` and `tuple(...)` inside `groupBy { }`;
+- entity builders, such as `Order { ... }`;
+- `groupId`, `input`, `output` and `LOG` inside the blocks that provide them;
+- the system definition values that the script itself provides.
+
+## 6. Stop calling `PipelinesReader.get()`
+
+**Applies to:** custom tests or tooling that inject `PipelinesReader` and call its no-argument `get()`. This method was deprecated in 8.15. Application scripts are not affected.
+
+**Why:** 10.0 removes it.
+
+**What goes wrong if you skip this:** the code no longer compiles.
+
+**What to do:** inject `PipelineDefinitionProvider` and call its `get()` instead. It already exists in 8.15, and it also returns pipelines from compiled definitions, not only from scripts.
+
+## 7. Watch the `.error` folder for failed Camel files
+
+**Applies to:** real-time pipelines that read files with `camelFileSource` and have no `onUncaughtError` handler, or one that can throw.
+
+**Why:** when an error that nothing handles stops such a pipeline, 10.0 no longer treats the file it was processing as done. In 8.15, the file was handled like a successfully processed one: it was moved or deleted as the route was configured. In 10.0, it goes to a folder named `.error` next to the file. If a file with the same name is already there, the moved file gets a timestamp prefix. As in 8.15, the pipeline stops.
+
+Some routes behave differently:
+
+- If the route sets Camel's `moveFailed` option, Camel moves the file as that option says.
+- If the route reads with `noop=true`, or doesn't read from a local folder (for example, SFTP), the file stays where it is and is read again when the pipeline restarts.
+
+The error raised for the file says which of these happened.
+
+**What goes wrong if you skip this:** nothing fails. But failed files collect in `.error` folders instead of wherever your route sends processed files, so any housekeeping or monitoring that watches that location will miss them.
+
+**What to do:**
+
+- Monitor the `.error` folders.
+- To process a failed file again, fix the cause of the error, move the file back into the folder the pipeline reads from, and restart the process.
+- If you want failed files to be treated as processed, as in 8.15, add an [`onUncaughtError`](/develop/server-capabilities/integrations/data-pipelines/#onuncaughterror) handler. If the handler returns normally, the pipeline keeps running and the file is handled like a processed one.
+
+## 8. Check `sendEventOnCompletion` targets
+
+**Applies to:** pipelines that use `sendEventOnCompletion` or `sendCustomEventOnCompletion`. The script syntax has not changed.
+
+**Why:** in 10.0, the handler waits for a target service it can't find, instead of failing straight away. This affects event names that no running service handles, for example because the service isn't running yet or the name is misspelt. It also retries UNAVAILABLE replies whichever service discovery you use, where 8.15 only did so with Consul.
+
+| Case | 8.15 | 10.0 |
+|---|---|---|
+| No service can be found for the event name | Throws `Unable to resolve service for endpoint ...`, so the pipeline's error handling runs | Logs a warning and retries with backoff until the event is delivered, with no time limit. Inside `txDbSink()`, it gives up after `timeout` and throws. |
+| The target replies with an UNAVAILABLE NACK, for example from a node that is not primary | With Consul service discovery, retried without limit. Otherwise, logged at error level and dropped. | Retried with backoff until delivered. Inside `txDbSink()`, it gives up after `timeout` and throws. |
+| The target replies with any other NACK | Logged at error level | Unchanged |
+| No reply within `timeout` | Throws | Unchanged |
+
+**What goes wrong if you skip this:** a pipeline whose target service is missing, or whose event name is misspelt, stalls instead of failing, and so does one whose target keeps replying UNAVAILABLE. Any `onUncaughtError` handling or alerting that relied on the error no longer runs.
+
+**What to do:**
+
+- Check that every event name is spelt correctly and that the service that handles it is deployed.
+- Watch the logs for warnings that contain `holding until delivered`, such as `Unable to resolve ... holding until delivered`. They mean the handler is waiting for a target.
+- `sendEventOnCompletion` has no setting to limit the wait. If you need a deadline, send the event from an [`eventSink`](/develop/server-capabilities/integrations/data-pipelines/#eventsink) with `retry = holdWithDeadline(maxWaitMs)` instead. An `eventSink` sends one event per element, from the sink position, rather than one when processing completes. By default it throws on a NACK, and a throw from a sink stops a real-time pipeline unless it has an `onUncaughtError` handler.
