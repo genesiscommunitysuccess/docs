@@ -84,8 +84,9 @@ These are unchanged:
 
 - `where(index, n)`, which selects by index position;
 - `filterWithUserName`;
-- `fields { }` inside `enrich`, for selecting enriched fields;
-- `where { }` inside a `permissioning` block, which belongs to the permissioning DSL.
+- `fields { }` inside `enrich`, for selecting enriched fields.
+
+`where { }` inside a `permissioning` auth block was removed in 10.0. See steps 1 and 4 of [Security and authentication](./security-auth.mdx) for the replacements, `filter` and `filterWithUserName`.
 
 ## 2. Replace the removed Request Server DSL
 
