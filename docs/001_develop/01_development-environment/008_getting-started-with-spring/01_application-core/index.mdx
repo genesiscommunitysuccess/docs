@@ -418,7 +418,10 @@ that traffic depends on its transport mode, set by `genesis.spring.external-tran
 
 - **External transport mode** (`true`): Spring's embedded Tomcat is the process's only web server.
   It serves the Genesis WebSocket protocol, the Genesis HTTP endpoints and your controllers, all on
-  the process's service-definition port.
+  the process's service-definition port. The `global.genesis.spring` Gradle plugin generates that
+  process's service-definition entry for you: the port is `portOffset` (default `11050`) plus the
+  `port` set on `@GenesisApplication`, or the process's index when none is set. The Application view
+  shows the port. See [Service definitions](/develop/server-capabilities/runtime-configuration/service-definition/).
 - **Native mode** (`false`, the default): the process runs two web servers. Genesis's own Netty
   listener is on the service-definition port, and Spring's embedded Tomcat is on a port of its own.
 
@@ -453,8 +456,10 @@ the caller sent is forwarded as-is. The app authenticates the request itself —
 
 :::warning
 Turning on `httpProxyEnabled` also stops the router loading `*-web-handler.kts` files. Any
-web-handler script in the application must be loaded by a process on the WebSocket channel instead,
-or its endpoints disappear without an error. See
+web-handler script in the application must be loaded by a process on the WebSocket channel
+instead — list it in that process's `script` entry in `processes.xml` (see
+[Custom endpoints on a process](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process))
+— or its endpoints disappear without an error. See
 [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the
 router page.
 :::
@@ -495,12 +500,32 @@ such as `/orders-app/event-trade-insert`, gets `404`.
 **What external transport mode requires**
 
 - **The WebSocket channel.** The process serves the Genesis WebSocket protocol only; the raw TCP
-  (MsgPack) channel and `tls.authorization` don't exist in this mode.
-- **Genesis TLS, not Spring TLS.** The port is served with the process's Genesis TLS configuration.
+  (MsgPack) channel and `tls.authorization` don't exist in this mode. The starter sets this for
+  you; no `*-processes.xml` change is needed. Platform clients that use service discovery switch to
+  WebSocket automatically. A hand-rolled TCP client reaches an HTTP server (Tomcat) on the same port
+  and fails, with nothing logged by Genesis, so move it to WebSocket.
+- **Genesis TLS, not Spring TLS.** The port is served with the process's [Genesis TLS
+  configuration](/develop/server-capabilities/runtime-configuration/service-encryption/yaml-reference/).
   Every TLS mode in use must have a `tls.identity`.
 - **Neutral endpoint types.** A Genesis HTTP endpoint can't declare a Netty type. Use `File`,
   `Path`, `InputStream` or `FileDownload` instead of `ChunkedFile` and `ChunkedInput`, `ByteArray`
-  instead of `ByteBuf`, and `HttpRequest.body` instead of `FullHttpRequest`.
+  instead of `ByteBuf`, and `HttpRequest.body` instead of `FullHttpRequest`. An endpoint declared
+  like either of these in a `*-web-handler.kts` file is refused:
+
+  ```kotlin
+  webHandlers { endpoint<FullHttpRequest, String>(POST, "raw") { /* ... */ } }
+  webHandlers { endpoint<ChunkedFile>(GET, "download") { /* ... */ } }
+  ```
+
+  The process fails to start with an error such as:
+
+  ```text
+  Endpoint GET download declares io.netty.handler.stream.ChunkedFile. Netty request and response types are not supported in external transport mode. Declare a transport-neutral type instead.
+  ```
+
+  The error doesn't name the replacement type. For a response, declare `File`, `Path` or
+  `ByteArray` instead; see the return types table on the
+  [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/#return-types) page.
 
 Startup is refused if any of these is broken, and also if `server.servlet.context-path` is set
 (use `genesis.spring.router-path-prefix`), if any `server.ssl.*` property is set (use Genesis TLS),
@@ -510,17 +535,36 @@ or if `server.port` is set to anything other than the service-definition port or
 
 | Setting | Default | Effect |
 |---|---|---|
-| `genesis.spring.router-path-prefix` | The process name | Prefix the app's controllers are routed under at `GENESIS_ROUTER`. |
-| `genesis.spring.web-socket-send-time-limit-ms` | `60000` | A WebSocket session whose current send has been in flight longer than this is closed. |
-| `genesis.spring.web-socket-send-buffer-limit-bytes` | `0` (no limit) | A WebSocket session with more than this many bytes queued is closed. |
-| `genesis.spring.suppress-multipart-config-warnings` | None | Multipart endpoint paths, or `*`, whose unsupported settings aren't logged at startup. |
+| `genesis.spring.router-path-prefix` (`application.properties`) | The process name | Prefix the app's controllers are routed under at `GENESIS_ROUTER`. |
+| `genesis.spring.web-socket-send-time-limit-ms` (`application.properties`) | `60000` | A WebSocket session whose current send has been in flight longer than this is closed. |
+| `genesis.spring.web-socket-send-buffer-limit-bytes` (`application.properties`) | `0` (no limit) | A WebSocket session with more than this many bytes queued is closed. |
+| `genesis.spring.suppress-multipart-config-warnings` (`application.properties`) | None | Multipart endpoint paths, or `*`, whose unsupported settings aren't logged at startup. |
 | `TransportReadyTimeoutMs` (system definition) | `120000` | How long the process waits for Tomcat to start after registering. If it runs out, the process goes to ERROR. |
+
+`genesis.spring.suppress-multipart-config-warnings` takes endpoint paths or `*` (every endpoint). It
+silences the startup warnings that say a multipart endpoint's settings don't carry over to Tomcat:
+
+- The servlet container has no multipart configuration. The warning reads: "The servlet container has
+  no multipart configuration, so uploads to `<METHOD> <path>`, … will fail. Set
+  spring.servlet.multipart.enabled=true, or suppress this with
+  genesis.spring.suppress-multipart-config-warnings."
+- An endpoint with `useDisk=false`: "`<METHOD> <path>` asks for uploads to be kept in memory
+  (useDisk=false), which the servlet container has no equivalent of. It spills them to disk past
+  spring.servlet.multipart.file-size-threshold, `<n>` bytes here."
+- An endpoint with a `minSize`: "`<METHOD> <path>` sets a `<minSize>` byte memory threshold (minSize);
+  the servlet container uses `<n>` instead (spring.servlet.multipart.file-size-threshold)."
+- An endpoint with a `baseDir`: "`<METHOD> <path>` sets baseDir=`<baseDir>`, which the servlet
+  container does not read; uploads land in `<location>` (spring.servlet.multipart.location)."
+
+They are logged at WARN by `GenesisServletTransportConfiguration`.
 
 The starter sets Tomcat's upload limits to match native mode: `spring.servlet.multipart.max-file-size`
 1 GiB, `max-request-size` unlimited, `file-size-threshold` 16 KB, and
 `server.tomcat.max-http-form-post-size` 64 MiB. Your own value for any of these wins. A raised
-endpoint `maxFileSize` or `messaging.http.maxContentLength` is not carried over, so raise the
-Spring properties instead. Other settings that configure Netty have no effect in this mode:
+`messaging.http.maxContentLength` is not carried over, so raise the Spring properties instead. Both
+upload limits apply: the endpoint's `maxFileSize` is still enforced (`413`), but only below
+Tomcat's limit. To accept larger files, raise `spring.servlet.multipart.max-file-size` as well (and
+`max-request-size` if you set it). Other settings that configure Netty have no effect in this mode:
 `messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
 `UseNettyThreadsForMessageProcessing`.
 
@@ -579,6 +623,8 @@ In practice, most apps already set `spring.application.name` and get a router pr
 set `server.servlet.context-path` explicitly to choose a specific, human-chosen prefix instead of
 the derived slug.
 
+#### Before relying on router proxying
+
 :::caution
 A few things worth knowing before relying on router proxying:
 
@@ -591,9 +637,11 @@ A few things worth knowing before relying on router proxying:
   app through the router.
 - **Single-word path collisions.** If the prefix is a single segment that collides with an existing
   native Genesis resource name, the native resource wins and the app isn't reachable under that
-  name — pick a distinct prefix if this happens.
+  name — pick a distinct prefix if this happens. List the native resource names with
+  [`GET /resources-request`](/develop/server-capabilities/runtime-configuration/genesis-router/#metadata-requests).
 - **Turning it off entirely.** `genesis.springboot.enabled=false` disables this along with the rest
-  of the Genesis/Spring integration — the app then only serves HTTP on its own port, unrouted.
+  of the Genesis/Spring integration. In native mode the app then only serves HTTP on its own port,
+  unrouted.
 :::
 
 ## Migrating from Guice-only components
