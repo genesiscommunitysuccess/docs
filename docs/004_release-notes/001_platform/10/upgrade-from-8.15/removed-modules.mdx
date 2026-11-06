@@ -87,7 +87,7 @@ The following command aliases have been removed from `setup.sh`. Remove them fro
 
 A process that runs `<module>genesis-streamerclient</module>` must be rebuilt on `genesis-pal-streamerclient`, with a GPAL `*-streamer-client.kts` script. That module and its DSL are already available in 8.15, so you can do this before you upgrade.
 
-The legacy client's configuration lived in its own process entry in `processes.xml` and in whatever the legacy client loaded for its streamer and target settings. Move those settings into the GPAL script. In `processes.xml`, swap the module and name the script:
+Move the legacy client's streamer and target settings into the GPAL script. In `processes.xml`, swap the module and name the script:
 
 ```xml
 <!-- Before -->
