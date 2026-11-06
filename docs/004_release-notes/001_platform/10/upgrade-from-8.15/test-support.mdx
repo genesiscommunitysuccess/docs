@@ -19,7 +19,7 @@ Each change shows up at one of three points:
 
 You can make the `authorise`/`revoke` and `getValidationMode()` changes on 8.15 before you upgrade: their replacements already exist there. The `javax.inject` change can only be made as part of the upgrade, because the 8.15 test support does not read `jakarta.inject` annotations.
 
-Two platform-wide changes are likely to touch the same test code: the JUnit 4 modules `genesis-testsupport-junit4` and `genesis-dbtest-junit4` have been removed (see [Removed and deprecated modules](./removed-modules.mdx)), and `javax.inject` has been replaced by `jakarta.inject` in application code as well as in tests.
+Two platform-wide changes are likely to touch the same test code: the JUnit 4 modules `genesis-testsupport-junit4` and `genesis-dbtest-junit4` have been removed (see the replacement table in [step 2 of the upgrade guide](./index.mdx#2-bump-the-genesis-version-and-replace-removed-genesis-artifacts)), and `javax.inject` has been replaced by `jakarta.inject` in application code as well as in tests.
 
 ## Replace `javax.inject` annotations in test classes
 
