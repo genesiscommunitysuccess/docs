@@ -318,5 +318,5 @@ On migrated rows, `USER_NAME` still holds the user who made the change, because 
 ## Behaviour changes that need no action
 
 - **GPAL event handler scripts.** `eventHandler<T> { }` and `contextEventHandler` scripts work as before, unless they use the members removed in step 1.
-- **`PROCESS_NAME` on rule events.** `PROCESS_NAME` is no longer mandatory on the rule insert events and on `EVENT_DYNAMIC_RULE_AMEND`. A dynamic rule amend replaces every field, so if you leave `PROCESS_NAME` out of it, the stored value is cleared.
+- **`PROCESS_NAME` on rule events.** The rule insert events and `EVENT_DYNAMIC_RULE_AMEND` no longer require `PROCESS_NAME` (the evaluator engine has used service discovery when it is empty since v8). A dynamic rule amend replaces every field, so if you leave `PROCESS_NAME` out of it, the stored value is cleared.
 - **`USER_NAME` on `EVENT_CRON_RULE_INSERT`.** You don't need to send `USER_NAME`. The evaluator sets it to the user who sent the event.
