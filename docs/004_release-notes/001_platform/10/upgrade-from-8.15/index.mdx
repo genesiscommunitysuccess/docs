@@ -21,7 +21,7 @@ Work through it in this order:
 - log4j2 is still the default logging backend.
 - Jackson annotations (`@JsonProperty`, `@JsonIgnore` and so on) keep their package, `com.fasterxml.jackson.annotation`.
 - The GenesisJunit annotations and the older test base classes keep their packages.
-- The `appDistZip` and `appDistTarGz` tasks, the `packagingStrategy` option, the `dockerImage` options, `preCompileScripts` and the start-up script cache all work as before.
+- The `appDistZip` and `appDistTarGz` tasks, the `packagingStrategy` option (but see [step 9](#9-check-the-values-of-boolean-and-enum-genesisexec-properties) for how its value is now read), the `dockerImage` options, `preCompileScripts` and the start-up script cache all work as before.
 
 ## Version summary
 
@@ -45,7 +45,7 @@ This is a pre-flight list. These changes all work on 8.15, so make them, and rel
 - **Update your own Gradle build scripts for Gradle 9.** The replacements in [Gradle 9 changes in your build scripts](#gradle-9-changes-in-your-build-scripts) also work on Gradle 8.10.2.
 - **Move off modules removed in 10.0.** See [Removed and deprecated modules](./removed-modules.mdx).
 - **Replace `SecurityUtil.encryptOld` and `decryptOld` with `encrypt` and `decrypt`.** The old methods are deprecated on 8.15 and removed in 10.0. See [step 7](#7-declare-libraries-you-used-without-declaring-them).
-- **Rewrite an old SQL dictionary, and stop using `DbMode=LEGACY`.** This has to be done on 8.15. See [Database layer](./database.mdx).
+- **Stop using `DbMode=LEGACY`.** 10.0 adopts a dictionary still held in `METADATA.DICTIONARY` on first start; only a dictionary 10.0 can't read has to be rewritten on 8.15 first. See [Database layer](./database.mdx#1-remove-dbmodelegacy).
 
 ## Upgrade the build
 
