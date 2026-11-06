@@ -32,6 +32,10 @@ There are three different update queue technologies to choose from, depending on
 - [MQTT](#mqtt) - use an independent MQTT broker if you want to allow dynamic scaling
 - [JMS](#jms) - use an independent Jakarta Messaging broker (former JMS)
 
+### Update order with MQTT and JMS
+
+From versions 8.15.45 and 10.0.1, the MQTT and JMS update queues publish updates one at a time, in the order they were submitted, and deliver updates for the same record in the order they arrive. Updates for different records may be delivered in a different order.
+
 ## ZeroMQ
 
 The Genesis Application Platform uses ZeroMQ out of the box to provide a zero-configuration decentralized peer-to-peer update queue.
@@ -199,8 +203,6 @@ Other config values that are available are listed below:
 The Genesis platform enables you to use a [Jakarta Messaging](https://en.wikipedia.org/wiki/Jakarta_Messaging) (former JMS) compliant message broker as its real-time update-queue back-end via [ArtemisMQ](https://activemq.apache.org/components/artemis/).
 
 Using a centralized external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity at the cost of maintaining or (re-using) a message broker.
-
-The JMS update queue publishes updates one at a time, in the order they were submitted, and delivers updates for the same record in the order they arrive.
 
 ### Prerequisites
 
