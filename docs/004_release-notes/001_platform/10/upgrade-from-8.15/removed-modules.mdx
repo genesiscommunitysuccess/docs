@@ -201,7 +201,7 @@ Use the same dependency form as the other Genesis modules in your build.
 | The `encryptUserPass` alias | Nothing; the alias will go when `genesis-genesistodb` is removed | `encryptUserPassWithKey`, with `GenesisKey` set, for system definition values |
 | `DbLayer=FDB` or `DbLayer=FDB2` | A warning in the process log at start-up | A SQL database; see [Database layer](./database.mdx) |
 | `RxDb` and `RxEntityDb` | Compiler warnings | `SyncDb` or `AsyncDb`, and `AsyncEntityDb` (no removal date set) |
-| `AbstractEventHandler` and related classes | Compiler warnings | The typed `EventHandler` interfaces or GPAL; see [Event handlers and Evaluator](./event-handlers-evaluator.mdx) |
+| `AbstractEventHandler` and related classes (except `CallableTransactionHandler`, which is removed: see [Event handlers and evaluator](./event-handlers-evaluator.mdx)) | Compiler warnings | The typed `EventHandler` interfaces or GPAL; see [Event handlers and Evaluator](./event-handlers-evaluator.mdx) |
 | `*-fields-dictionary.kts` | A compiler warning, and a warning when the dictionary is read | Fields declared inside `table { }` (no removal date set) |
 | `AbstractGenesisTestSupport`, `AbstractDatabaseTest` and related classes | Compiler warnings | GenesisJunit; see [Test support](./test-support.mdx) |
 | `table(..., isHFT = true)` | A warning when the dictionary is read; the table is now an ordinary table | Remove `isHFT` |
