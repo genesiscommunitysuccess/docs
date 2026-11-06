@@ -5,4 +5,206 @@ sidebar_position: 5
 id: 'upgrade-10.0-process-runtime-clustering'
 ---
 
-This page will describe how to upgrade process runtime and clustering configuration from 8.15 to 10.0.
+This page covers how processes are configured and started, how nodes form a cluster, and the operational scripts that sit around them. Most of the steps are for whoever runs the deployment rather than for application code. The ones most likely to affect you are checking `ClusterMode` (step 5) and updating `PopulateHolidays` region codes (step 9).
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 9 (code that imports the old holiday library), 11 (removed APIs) and 12 (custom code against the cluster classes) |
+| A process fails to start | 5 (an unrecognised `ClusterMode`) and 7 (an invalid host name) |
+| Nodes can't reach each other | 6 (the `ClusterPort` default) |
+| An operational script fails or misreads | 8 (a Consul exit code), 9 (`PopulateHolidays` region codes) and 10 (`mon` output and process detection) |
+| Behaviour differs silently | 1 (the `bootstrap` folder), 2 (heap flags), 3 (start-time overrides) and 4 (`joinPub` in a process definition) |
+
+These have not changed, so they need no action:
+
+- **The `hosts` list** in the system definition is still the seed list and trust list of the cluster.
+- **An explicitly set `ClusterPort`** behaves exactly as before.
+- **The Consul node id configuration** (`GFlakeNodeIdGraceMinutes`, `GFlakeNodeIdClusterName`, `ConsulNodeName` and a pinned `NodeId`) and the node id claims already stored in Consul.
+
+## 1. Rename the `boostrap` extensions folder to `bootstrap`
+
+**Applies to:** applications that ship files under `META-INF/global/genesis/boostrap/extensions/`.
+
+**Why:** a file in this folder adds its file name as a package to the packages a process scans at startup. 8.15 read only the misspelt folder `boostrap`; 10.0 reads only `bootstrap`.
+
+**What goes wrong if you skip this:** nothing warns you. The old folder is ignored, and the packages listed in it are no longer scanned, so the classes in them are not picked up.
+
+**What to do:** rename the folder as part of the upgrade. No folder name works on both versions.
+
+```
+8.15:  src/main/resources/META-INF/global/genesis/boostrap/extensions/com.acme.core
+10.0:  src/main/resources/META-INF/global/genesis/bootstrap/extensions/com.acme.core
+```
+
+## 2. Check heap flags set in both `JVM_OPTIONS` and a process override
+
+**Applies to:** system definitions that set `-Xmx` or `-Xms` both in the global `JVM_OPTIONS` item and in a `<PROCESS>_PROCESS_OPTIONS` item.
+
+**Why:** in 8.15, `JVM_OPTIONS` was appended to a process's options, so when both set the same heap flag, both reached the `java` command line and the one from `JVM_OPTIONS`, which came last, took effect. In 10.0, a heap flag set in more than one place is resolved before the process starts, and the more specific setting wins: a `<PROCESS>_PROCESS_OPTIONS` item beats `JVM_OPTIONS`, which in turn beats the `<options>` of the process definition. The losing flag is dropped. This is decided per flag, so a process override that sets only `-Xmx` still picks up an `-Xms` from `JVM_OPTIONS`. All other options in `JVM_OPTIONS` are still appended as before.
+
+**What goes wrong if you skip this:** nothing fails, but a process with its own heap setting now starts with that setting rather than the global one.
+
+```kotlin
+item(name = "JVM_OPTIONS", value = "-Xmx512m -XX:+UseG1GC")
+item(name = "MY_PROCESS_PROCESS_OPTIONS", value = "-Xmx2g")
+
+// 8.15: MY_PROCESS ran with -Xmx512m (the global value came last on the command line)
+// 10.0: MY_PROCESS runs with -Xmx2g and -XX:+UseG1GC
+```
+
+**What to do:** for each process that has a `<PROCESS>_PROCESS_OPTIONS` item, check the heap flags in it are the ones you want that process to run with. If you relied on the global value, remove the flag from the process override.
+
+## 3. Check `GENESIS_SYSDEF_` process overrides in the start environment
+
+**Applies to:** environments that set `<PROCESS>_PROCESS_*` overrides, for example `GENESIS_SYSDEF_MY_PROCESS_PROCESS_OPTIONS`, as environment variables.
+
+**Why:** in 8.15, `<PROCESS>_PROCESS_*` overrides in the system definition were applied only when `genesisInstall` wrote `processes.xml`. In 10.0, `startProcess` also reads them, from the system definition and from `GENESIS_SYSDEF_` environment variables, each time it starts a process, and they take precedence over `processes.xml`.
+
+**What goes wrong if you skip this:** an override environment variable that is left in the environment that runs `startProcess` now changes how the process starts, even if it had no effect on your 8.15 install.
+
+**What to do:** check the environment that runs `startProcess` (including `startServer` and any supervisor or container definition) for `GENESIS_SYSDEF_<PROCESS>_PROCESS_*` variables. Remove any you don't want applied.
+
+## 4. Remove `joinPub`
+
+**Applies to:** process definitions with a `<joinPub>` element, and launch scripts that pass `-joinPub` to a process.
+
+**Why:** the `joinPub` process option has been removed. 10.0 no longer reads it from the process definition, and the process bootstrap no longer accepts `-joinPub`.
+
+**What goes wrong if you skip this:** a `<joinPub>` element is ignored. On a hand-written command line, `-joinPub` is no longer recognised as an option, and the options that follow it are not read either, which can stop the process from starting.
+
+**What to do:** delete `<joinPub>` from your process definitions and `-joinPub <file>` from any launch scripts.
+
+## 5. Check the `ClusterMode` value
+
+**Applies to:** system definitions that set `ClusterMode`.
+
+**Why:** [`ClusterMode`](/develop/server-capabilities/runtime-configuration/system-definition/) must now be unset, blank, or exactly one of `LEGACY`, `CONSUL` or `DISABLED`. The check is case-sensitive. In 8.15, any value other than `CONSUL` or `DISABLED` (for example `consul`, `AKKA` or a typo) silently ran the node in `LEGACY` mode.
+
+**What goes wrong if you skip this:** a process fails at startup with:
+
+```
+Unrecognised ClusterMode '<value>'. Accepted values are LEGACY, CONSUL, DISABLED, or leave it unset for LEGACY.
+```
+
+**What to do:** set `ClusterMode` to one of the accepted values, in upper case. If your node ran in `LEGACY` mode on 8.15 because of an unrecognised value, set `LEGACY` or remove the item, so the node keeps running in the same mode.
+
+## 6. Check `ClusterPort` if your system definition doesn't set it
+
+**Applies to:** nodes where `ClusterMode` is unset or `LEGACY`, and the system definition doesn't set `ClusterPort`. With `CONSUL` or `DISABLED`, there is no cluster listener, so this doesn't apply.
+
+**Why:** when [`ClusterPort`](/develop/server-capabilities/runtime-configuration/system-definition/) isn't set, `GENESIS_CLUSTER` now listens on port `6000` instead of `9900`.
+
+**What goes wrong if you skip this:** after the upgrade, all nodes agree on the new port, but firewall rules, security groups or network policies that only open `9900` block it, and the nodes can't form a cluster.
+
+**What to do:** either open port `6000` between the nodes, or keep the 8.15 port by setting it explicitly in the system definition:
+
+```kotlin
+systems {
+    system(name = "PROD") {
+        item(name = "ClusterPort", value = "9900")
+    }
+}
+```
+
+The system name and where the item sits depend on your own file.
+
+## 7. Check every node's host name
+
+**Applies to:** nodes where `ClusterMode` is unset or `LEGACY`, including single-host installs.
+
+**Why:** `GENESIS_CLUSTER` now checks that the host name the machine reports is a valid RFC 1123 host name before it starts the cluster transport.
+
+**What goes wrong if you skip this:** `GENESIS_CLUSTER` refuses to start, with:
+
+```
+Invalid hostname '<name>' for cluster bootstrap: ...
+```
+
+A host name with an underscore already failed on 8.15, with a less clear error, so in practice this check mostly explains a failure you already have.
+
+**What to do:** if a host fails the check, either rename the host (for example, replace `_` with `-`), or, if the node doesn't need the cluster transport, set `ClusterMode` to `DISABLED`.
+
+## 8. Consul mode: update anything that matches exit code `1`
+
+**Applies to:** nodes with `ClusterMode` set to `CONSUL`.
+
+**Why:** a process that loses its node id claim now exits with code `3` instead of `1`, so you can tell it apart from an ordinary crash.
+
+**What goes wrong if you skip this:** alerting, supervisor rules or restart scripts that look for exit code `1` in this case no longer match it.
+
+**What to do:** update those rules to match exit code `3`. Restart mechanisms that don't look at the exit code, such as a Kubernetes `restartPolicy` of `Always` or `OnFailure`, or the platform's process restarter, need no change.
+
+## 9. Update `PopulateHolidays` region codes, and re-populate `HOLIDAYS`
+
+**Applies to:** applications that run [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays), or that use the `de.jollyday` holiday library directly.
+
+**Why:** holiday data now comes from the maintained `de.focus-shift:jollyday-core` library, which replaces `de.jollyday:jollyday` 0.5.10. This changes three things:
+
+- **Region codes.** Several countries' `-r` codes are now ISO 3166-2 subdivision codes. For example, the GB codes `en`, `sc`, `wa` and `ni` are now `eng`, `sct`, `wls` and `nir`.
+- **Unknown codes.** An unrecognised region code now fails, instead of silently writing national data.
+- **The data itself.** The bundled holiday data is different. When a holiday falls on a weekend, the date stored is the weekday it is observed on, as each country's calendar defines it. For US data, this means New Year's Day can be stored in the year before the one you asked for: `-y 2022 -c US` stores 2021-12-31.
+
+**What goes wrong if you skip this:** a `PopulateHolidays` run with an old region code fails with `Region <code> is not supported for country <country>`. Code that imports `de.jollyday.*` no longer compiles, because the old library is no longer on the classpath.
+
+**What to do:**
+
+- **Scripts:** update every cron job, runbook or script that passes `-r` to use the new codes:
+
+  ```
+  8.15:  PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+  10.0:  PopulateHolidays -y 2020,2021 -c BR,GB -r rj,eng
+  ```
+
+  If a run for a region that worked on 8.15 now fails, look up that region's current code in the library.
+- **Data:** delete the existing rows in `HOLIDAYS` for the years you hold, then re-run `PopulateHolidays` for those years, so that the table matches the new data. `PopulateHolidays` only inserts rows and never replaces existing ones, so if you skip the delete, every holiday for those years is stored twice. The [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays) reference shows how to delete the rows with `DbMon`.
+- **Code:** move any code that imports `de.jollyday.*` to the new library's packages.
+
+## 10. Check scripts that parse `mon` output or find processes themselves
+
+**Applies to:** your own scripts and monitoring that read [`mon`](/build-deploy-operate/operate/commands/#mon) output, and processes started by anything other than `startProcess`.
+
+**Why:** two behaviours have changed:
+
+- **The process status message** is now empty unless the process state is `WARNING` or `ERROR`. Informational monitor text on healthy processes is no longer shown in the `mon` message column, or anywhere else that reads the process status message; run `mon -a` to see it.
+- **Process detection** in `mon`, `killProcess`, `startServer` and the process restarter now recognises only a `java` process whose arguments include `-name <PROCESS_NAME>`.
+
+**What goes wrong if you skip this:** a script that reads informational text from the message column finds it empty. A process started without `-name`, or through a wrapper whose executable isn't `java`, is no longer seen as running, so the platform scripts report it as missing and may try to start it again.
+
+**What to do:** update scripts that parse the message column, and make sure every process is launched as `java ... -name <PROCESS_NAME>`. Processes started by `startProcess` already are.
+
+## 11. Replace removed APIs
+
+**Applies to:** code that calls any of the members below. Most applications don't.
+
+**Why:** these members have been removed, so code that uses them no longer compiles.
+
+| Removed | Use instead |
+|---|---|
+| `ConfigReadable.readConfigFile(name, validate)`, which returned an `XMLConfiguration` | `readExtendedConfigFile(name, validate).requireXmlConfig()`, or `ConfigUtil.readXmlConfig(reader, name, validate)` |
+| `ConfigReadable.readConfigFilesContaining(name, validate)`, which returned a `List<XMLConfiguration>` | `readExtendedConfigFilesContaining(name, validate)`, which returns a `List<ConfigFile>`; call `requireXmlConfig()` on each to get its `XMLConfiguration`. Or `ConfigUtil.readXmlConfigFiles(reader, name, validate)`, which returns a `List<XmlConfigFile>` and skips files that are not XML |
+| `SecurityUtil.encryptOld` and `SecurityUtil.decryptOld`, and the transitive `org.apache.shiro:shiro-core` dependency | `SecurityUtil.encrypt` and `SecurityUtil.decrypt` |
+| `StaticLogLevelHandler.apply(loggingLevels, rootLogger)` | `StaticLogLevelHandler.apply(loggingLevels)` |
+| `MessageDelegator.allowAnonymousRequestsForMessage(messageType)` | Nothing; delete the call |
+| `AbstractGenesisTestSupport.authorise(authMap, entityCode, userName)` and `revoke(...)` | `inMemoryTestAuthCache.authorise(...)` and `inMemoryTestAuthCache.revoke(...)` |
+
+**What to do:**
+
+- Replace each call as the table shows.
+- If you have your own `ConfigReadable` implementation, implement `readExtendedConfigFile` and `readExtendedConfigFilesContaining`. In 8.15 they had default implementations; in 10.0 they are abstract.
+- `SecurityUtil.decrypt` also reads values that were encrypted with the old methods, so you don't need to re-encrypt stored values. If your own code used Shiro classes, add the `shiro-core` dependency to your own build.
+- The `StaticLogLevelHandler` and `AbstractGenesisTestSupport` replacements already exist in 8.15, so you can make those changes before you upgrade.
+
+## 12. Custom code against the cluster classes
+
+**Applies to:** code written directly against the `genesis-cluster` or `genesis-clustersupport` classes, or that brings in its own Apache Pekko modules. This is rare.
+
+**Why and what to do:**
+
+| In 8.15 | In 10.0 |
+|---|---|
+| `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes drop a value of your own type, and there is no way to register one. Unless your own code reads these values on other nodes, there is nothing to change |
+| `ClusterMessage.getStatusMessage()` and `setStatusMessage(Serializable)` | Deprecated for removal. Use `getStatusMessageText()` and `setStatusMessageText(String)`; only a `String` survives the trip between nodes |
+| `InboundMessageListener.onNewMessage(ClusterMessage)` | Now `onNewMessage(ClusterMessage, String senderHost)` |
+| Your own Pekko modules on 1.4.x | Align them with Pekko 1.7, the version 10.0 brings in |
