@@ -325,7 +325,7 @@ On migrated rows, `USER_NAME` still holds the user who made the change, because 
 
 - A `\u` escape in a rule expression or client criteria is refused. So is a result expression written as a comparison, such as `DESK == 'US'`.
 - A stored rule that fails these checks doesn't run, and the evaluator logs an ERROR line that names it.
-- Client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected. Criteria set in configuration are exempt, and a stored rule over the length or operator limit still runs, with a warning.
+- Client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected.
 
 **What to do:** search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE` and the `RESULT_EXPRESSION` values in `CRON_RULE`. Use the literal character instead of a `\u` escape, and write results as assignments, such as `DESK = 'US'`.
 
