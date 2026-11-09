@@ -26,7 +26,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Remove the genesis-sync module
 * `genesis-codegen` : Delete the deprecated GenesisVersion
 * `genesis-dbtogenesis` : Drop the abandoned bonecp test dependency
-* ci!: make Postgres 15 the default CI database, H2 and FDB label-gated
 * Move CRON_RULE_AUDIT to generated audit table and migrate data via installHooks
 * Deprecate genesis-dbtogenesis and genesis-genesistodb
 * Remove the genesis-groovy module
@@ -94,23 +93,23 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-router` : Apply allowList/blockList, strict status and XSS settings to proxied HTTP requests
 * `server` : API contract cleanup across the transport stack
 * `genesis-jackson` : Lazily init cold mappers and per-instance schema registry
-* refactor!: decouple genesis-calendar from genesis-process
-* refactor!: decouple genesis-codegen and genesis-process from genesis-hft
-* refactor(codegen)!: remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
-* refactor(deps)!: bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
-* refactor(genesis-commons)!: remove XMLConfiguration-returning ConfigReadable methods
-* refactor(genesis-commons)!: retire the ANTLR Kotlin parser
-* refactor(genesis-console)!: move StatusDataserver onto genesis-pal-dataserver
-* refactor(genesis-db)!: drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
-* refactor(genesis-dictionary)!: remove the deprecated GenesisDictionary.sequenceIdFields
-* refactor(genesis-environment)!: implement the remap type conversions without commons-beanutils
-* refactor(genesis-environment)!: migrate PopulateHolidays to maintained de.focus-shift jollyday
-* refactor(genesis-evaluator)!: migrate rule event handlers to the typed EventHandler API
-* refactor(genesis-eventhandler)!: remove unused generic insert/modify/delete event handlers
-* refactor(genesis-net)!: make ClientConnectionsManager internal
-* refactor(genesis-pal)!: remove deprecated FileReader definition entry points
-* refactor(genesis-pipeline-api)!: remove deprecated DbSink and DbRxSink typealiases
-* refactor(groovy)!: trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
+* Decouple genesis-calendar from genesis-process
+* Decouple genesis-codegen and genesis-process from genesis-hft
+* Remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
+* Bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
+* Remove XMLConfiguration-returning ConfigReadable methods
+* Retire the ANTLR Kotlin parser
+* Move StatusDataserver onto genesis-pal-dataserver
+* Drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
+* Remove the deprecated GenesisDictionary.sequenceIdFields
+* Implement the remap type conversions without commons-beanutils
+* Mgrate PopulateHolidays to maintained de.focus-shift jollyday
+* Migrate rule event handlers to the typed EventHandler API
+* Remove unused generic insert/modify/delete event handlers
+* Make ClientConnectionsManager internal
+* Remove deprecated FileReader definition entry points
+* Remove deprecated DbSink and DbRxSink typealiases
+* Trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
 
 ### Features
 
