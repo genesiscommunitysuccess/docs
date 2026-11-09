@@ -240,12 +240,16 @@ An expression over a limit is refused with a message that names the item, for ex
 - A rule insert or amend event is rejected with the same message.
 
 :::warning
-This is a breaking change in 10.0.1: an expression over the defaults is now refused where it was accepted before. In practice, most expressions over the defaults already failed to parse, with the less helpful error `parsing failed`. If your application needs larger expressions, raise the limits, but read [Raising the limits](#raising-the-limits) first.
+This is a breaking change in 10.0.1: an expression over the defaults is now refused where it was accepted before. If your application needs larger expressions, raise the limits, but read [Raising the limits](#raising-the-limits) first.
 :::
 
 #### Raising the limits
 
-Groovy's parser, which reads these expressions, uses more thread stack the more deeply an expression is nested. Raising a limit doesn't let the parser handle more than the stack allows: past that point, a request still fails, with `INVALID_CRITERIA` and `parsing failed` instead of a message that names a limit.
+Groovy's parser, which reads these expressions, uses more thread stack the more deeply an expression is nested. Raising a limit doesn't let the parser handle more than the stack allows. Past that point, the expression is still refused, with the message `Expression is nested too deeply to parse` instead of one that names a limit, and not always with `INVALID_CRITERIA`:
+
+- A Data Server returns `INVALID_CRITERIA`.
+- A Request Server returns `REQUEST_FAILED`, and a custom Request Server returns `GENERIC_ERROR`.
+- A rule insert or amend event is rejected with that message.
 
 These figures are for a 1 MB thread stack, the JVM default on Linux x64, measured with Groovy 3.0.25 on a JVM that had just started (the worst case):
 
@@ -258,7 +262,7 @@ These figures are for a 1 MB thread stack, the JVM default on Linux x64, measure
 
 On a 1 MB stack, keep `ExpressionMaxNestingDepth` at or below `300` and `ExpressionMaxLogicalOperators` at or below `1000`. Length on its own doesn't strain the parser: a long flat list parses, so you can raise `ExpressionMaxLength` further if your expressions are flat. To go beyond these figures, increase the thread stack size of the process (for example, `-Xss2m` in its [`<options>`](/develop/server-capabilities/runtime-configuration/processes/#tags) in `processes.xml`). On a 2 MB stack, an `||` chain fails at about 4,100 clauses, and nested brackets fail at 782 levels.
 
-For dynamic and cron rules, a second nesting check runs on the parsed expression, and it is capped at 100 levels. `ExpressionMaxNestingDepth` can lower that cap but can't raise or disable it.
+For dynamic and cron rules, a second nesting check runs on the parsed expression, and it is capped at 100 levels. `ExpressionMaxNestingDepth` can lower that cap but can't raise or disable it. This check counts nested operators and method calls, not brackets: each `&&` or `||` in a chain adds a level, and so does each call in a chain such as `NAME.trim().trim()`. So a rule expression with a flat chain of more than about 100 conditions is refused with `Nesting deeper than 100 levels is not allowed in a dynamic rule`, even though it is within `ExpressionMaxLogicalOperators`.
 
 ### GPal script caching settings
 
