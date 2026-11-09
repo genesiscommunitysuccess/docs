@@ -328,7 +328,10 @@ authentication {
 
 ### `sessionTimeoutMins` 
 
-Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
+Specifies the lifetime (in minutes) of a session, counted from when the session was created. Activity, such as heartbeats and requests, doesn't extend it. When this time has passed, the session is expired (logged out) and the client is told to re-authenticate.
+
+To keep access without interruption, a client must perform a [refresh token login](#event_login_auth) before the session expires. This replaces the session with a new one that has its own lifetime, so the client must use the new session token from the response.
+
 A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
 
 ```kotlin title="auth-preferences.kts"
@@ -341,7 +344,7 @@ Default value: 30
 
 ### `refreshTokenExpirationMins` 
 
-Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
+Specifies a time out (in minutes) for the refresh token value that was provided on successful login, counted from when the session was created. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
 
 ```kotlin title="auth-preferences.kts"
 security {
