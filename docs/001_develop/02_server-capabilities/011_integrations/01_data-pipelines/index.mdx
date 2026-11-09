@@ -575,6 +575,8 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 // this source will return batches of List<TestIndexTable>
 ```
 
+If an uncaught exception stops the pipeline, the source keeps its persisted index before the record or batch that failed, and processes it again when the pipeline restarts. The one case where it doesn't is an [`onCompletion`](#oncompletion) handler that fails after a non-transactional sink has written: the persisted index moves past that record or batch, so it isn't processed again.
+
 #### `dbBulkSubscribe`
 
 This is a real-time bulk subscription to the database for a particular entity and can be used for tables or views.
