@@ -103,7 +103,7 @@ The listener now runs inside the write's own transaction, so 10.0 is stricter ab
 
   In this example, `touches` and `auditRecord` are placeholders for your own code.
 - **`AsyncWriteOperationListener`** is the suspending equivalent. It is called by suspending writes on `AsyncDb` and `AsyncEntityDb`, including `writeTransaction`, which covers writes from GPAL event handlers.
-- **`RawSQLWriteOperationListener` has been removed.** Implement `SyncWriteOperationListener` instead.
+- **`RawSQLWriteOperationListener` has been removed.** Implement `WriteOperationListener` instead.
 
 Whichever listener you use:
 

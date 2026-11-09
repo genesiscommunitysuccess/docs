@@ -283,7 +283,7 @@ A mapper you build yourself doesn't get the Genesis settings. In particular, Jac
 
 #### 5c. `JsonNode` behaviour
 
-These changes compile, so look for them in review:
+Apart from `fieldNames()`, these changes compile, so look for them in review:
 
 - **`asText()` is now `asString()`**, and the `as...` accessors now throw on object and array nodes, where Jackson 2 returned `""`, `0` or `false`. If a node might be a container, check `isContainer` first. The exception, `JsonNodeException`, extends `DatabindException`, not `IllegalArgumentException`.
 - **`node.map { }` no longer maps over the children.** `JsonNode` now has its own `map` method, which wins over Kotlin's extension. Use `node.values().map { }`, `node.properties()` or `node.propertyNames()`.

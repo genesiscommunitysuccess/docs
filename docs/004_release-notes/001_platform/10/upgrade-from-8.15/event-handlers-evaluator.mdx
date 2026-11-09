@@ -14,7 +14,7 @@ The steps show up at different points of the upgrade:
 | The build fails | 1 (`permissions { }`, `triggerRemote` with a process name) and 5 (code that builds an approvable ack or implements `Approvable`) |
 | The build gives warnings | 4 (`AbstractEventHandler` and the classes around it) |
 | Nothing fails, but something stops working | 2 (XML event handler definitions are ignored) and 3 (bare `EVENT_INSERT`, `EVENT_MODIFY` and `EVENT_DELETE` messages are refused) |
-| Client requests are rejected | 6 (rule payloads), 7 (rules that use `!in`, which also stop stored rules from running) and 8 (`BigDecimal` and `LocalDate` values) |
+| Client requests are rejected | 6 (rule payloads), 7 (rules that use `!in`, which also stop stored rules from running), 8 (`BigDecimal` and `LocalDate` values) and 10 (new checks and limits on rule expressions and client criteria) |
 | The database upgrade | 9 (`CRON_RULE_AUDIT`), which operators carry out when they upgrade a server |
 
 ## Before you start
@@ -314,6 +314,28 @@ If some rows can't be loaded, the hook logs a warning and writes them to a `CRON
 | Key: `NAME` and `EVENT_DATETIME` | Key: `CRON_RULE_AUDIT_ID` |
 
 On migrated rows, `USER_NAME` still holds the user who made the change, because that is what 8.15 stored. On rows written by 10.0, it holds the user who last inserted or amended the rule. For the time of the original event, use `AUDIT_EVENT_DATETIME`.
+
+## 10. Rule expressions and client criteria: new checks and limits
+
+**Applies to:** dynamic rules, cron rules and client criteria, particularly any that a program generates.
+
+**Why:** 10.0 checks these expressions more strictly and limits their size.
+
+**What goes wrong if you skip this:**
+
+- A `\u` escape in a rule expression or client criteria is refused. So is a result expression written as a comparison, such as `DESK == 'US'`.
+- A stored rule that fails these checks doesn't run, and the evaluator logs an ERROR line that names it.
+- Client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected. Criteria set in configuration are exempt, and a stored rule over the length or operator limit still runs, with a warning.
+
+**What to do:** search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE` and the `RESULT_EXPRESSION` values in `CRON_RULE`. Use the literal character instead of a `\u` escape, and write results as assignments, such as `DESK = 'US'`.
+
+If your expressions are near a limit, shorten them, or set the item in your system definition. A value of 0 or below disables the limit.
+
+| System definition item | Default |
+|---|---|
+| `ExpressionMaxLength` | 65,536 |
+| `ExpressionMaxNestingDepth` | 100 |
+| `ExpressionMaxLogicalOperators` | 1,000 |
 
 ## Behaviour changes that need no action
 
