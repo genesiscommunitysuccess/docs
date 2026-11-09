@@ -215,6 +215,58 @@ The value is case-sensitive. If `ClusterMode` is unset or blank, the mode is LEG
 
 For SSL on process communication, see the [service definition](/develop/server-capabilities/runtime-configuration/service-definition/#enabling-ssl-for-processes) page.
 
+### Expression limits
+
+From version 10.0.1, expressions sent by a client or a user are checked against three limits before they are parsed or compiled:
+
+- a client's `CRITERIA_MATCH` on a [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/#criteria_match) or [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#criteria_match)
+- `RULE_EXPRESSION` and `RESULT_EXPRESSION` when a [dynamic rule](/develop/server-capabilities/real-time-triggers-evaluator/#expression-limits) is inserted or amended, and `RESULT_EXPRESSION` when a cron rule is inserted or amended
+- `RULE_EXPRESSION` and `RESULT_EXPRESSION` of the dynamic rule created when a user subscribes to a rule template
+
+Only the text the client sends is checked. Criteria that your application defines, such as a query's criteria template, aren't counted.
+
+| Item | Default | What it counts |
+| --- | --- | --- |
+| **ExpressionMaxLength** | `65536` | Characters in the expression |
+| **ExpressionMaxNestingDepth** | `100` | The deepest nesting of `(`, `[` and `{` brackets |
+| **ExpressionMaxLogicalOperators** | `1000` | Logical operators: `&&`, `\|\|`, `!`, `?:` and the ternary `?`, plus `&`, `\|` and `^` |
+
+`!=` and the safe-navigation operator `?.` aren't counted as logical operators.
+
+Set an item to `0` or below to disable that limit.
+
+Brackets and operators inside a single-quoted string, or inside a double-quoted string without `$`, aren't counted, and neither are comments. After a `$`, a `#` or a slashy string (`/…/`), the check can no longer tell code from text. From that point on, it counts brackets and operators inside strings and comments too, and every opening bracket counts as one more level of nesting, even after it closes. An expression with many separate bracket groups can then be refused even though it isn't deeply nested; the error message says so. An expression that contains a `\u` escape is refused.
+
+An expression over a limit is refused with a message that names the item, for example `Expression exceeds ExpressionMaxNestingDepth: 101 > 100`:
+
+- Criteria are refused with the error code `INVALID_CRITERIA`.
+- A rule insert or amend event is rejected with the same message.
+
+:::warning
+This is a breaking change in 10.0.1: an expression over the defaults is now refused where it was accepted before. If your application needs larger expressions, raise the limits, but read [Raising the limits](#raising-the-limits) first.
+:::
+
+#### Raising the limits
+
+Groovy's parser, which reads these expressions, uses more thread stack the more deeply an expression is nested. Raising a limit doesn't let the parser handle more than the stack allows. Past that point, the expression is still refused, with the message `Expression is nested too deeply to parse` instead of one that names a limit, and not always with `INVALID_CRITERIA`:
+
+- A Data Server returns `INVALID_CRITERIA`.
+- A Request Server returns `REQUEST_FAILED`, and a custom Request Server returns `GENERIC_ERROR`.
+- A rule insert or amend event is rejected with that message.
+
+These figures are for a 1 MB thread stack, the JVM default on Linux x64, measured with Groovy 3.0.25 on a JVM that had just started (the worst case):
+
+| Expression shape | Parses | Fails |
+| --- | --- | --- |
+| `A \|\| B \|\| …` chain | 1,000 clauses | by 2,000 clauses (about 20,000–40,000 characters) |
+| Nested brackets, `((…))` | 300 levels | 342 levels |
+| Repeated `!` | 1,000 | about 1,560 |
+| `FIELD in [...]` list | No failure up to 1.5 MB of text | — |
+
+On a 1 MB stack, keep `ExpressionMaxNestingDepth` at or below `300` and `ExpressionMaxLogicalOperators` at or below `1000`. Length on its own doesn't strain the parser: a long flat list parses, so you can raise `ExpressionMaxLength` further if your expressions are flat. To go beyond these figures, increase the thread stack size of the process (for example, `-Xss2m` in its [`<options>`](/develop/server-capabilities/runtime-configuration/processes/#tags) in `processes.xml`). On a 2 MB stack, an `||` chain fails at about 4,100 clauses, and nested brackets fail at 782 levels.
+
+For dynamic and cron rules, a second nesting check runs on the parsed expression, and it is capped at 100 levels. `ExpressionMaxNestingDepth` can lower that cap but can't raise or disable it. This check counts nested operators and method calls, not brackets: each `&&` or `||` in a chain adds a level, and so does each call in a chain such as `NAME.trim().trim()`. So a rule expression with a flat chain of more than about 100 conditions is refused with `Nesting deeper than 100 levels is not allowed in a dynamic rule`, even though it is within `ExpressionMaxLogicalOperators`.
+
 ### GPal script caching settings
 
 These settings control compilation and caching of GPal scripts and system-definition files. Because these files rarely change between restarts, using cached versions speeds up process start-up and reduces memory use.

@@ -1226,6 +1226,8 @@ Client filtering is specified in the `CRITERIA_MATCH` option.
 
 The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in [Client capabilities - server communications](/develop/client-capabilities/server-communications/criteria-matching/).
 
+From version 10.0.1, the server checks the client's `CRITERIA_MATCH` against the [expression limits](/develop/server-capabilities/runtime-configuration/system-definition/#expression-limits) before it compiles it. Criteria over a limit are refused with `INVALID_CRITERIA`, and the error message names the limit, for example `Expression exceeds ExpressionMaxLength: 70000 > 65536`.
+
 ### `MORE_ROWS`
 
 Used to request more rows on an active subscription.
