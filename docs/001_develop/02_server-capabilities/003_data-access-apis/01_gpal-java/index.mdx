@@ -2301,7 +2301,7 @@ requestReply("TRADE", TRADE) {
 
 ## Generated repositories
 
-From version 10.0, repositories are generated for views only. Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables, use the [Entity Db](#entity-db-api).
+From version 10.0, repositories are generated for views only, and most of those are [deprecated](#view-repository-deprecation). Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables and views, use the [Entity Db](#entity-db-api).
 
 The `generateRepositories` setting has also been removed from `codeGen { }`, so a build script that still sets it will not compile. Delete the line.
 
@@ -2315,6 +2315,14 @@ Every view gets its repositories automatically. When you [build your DAOs](/buil
 * **PositionViewAsyncRepository** has an Async API, for use from Kotlin.
 
 View repositories are read-only, with a generated read method for each index of the view. The Entity Db can read views too, using generic methods that take the index as an argument.
+
+### View repository deprecation
+
+:::warning
+The generated view repositories have been deprecated since version 6.6, except those of views with [parameterized joins](/develop/server-capabilities/data-model/gpal-java/#parameterized-joins). From version 10.0.1, their interfaces and implementation classes are annotated with `@Deprecated`, with the message `Deprecated in 6.6. Use AsyncEntityDb or SyncEntityDb.`; version 10.0.0 does not have this annotation.
+
+Code that uses them compiles with a deprecation warning, so builds that treat warnings as errors (Kotlin `allWarningsAsErrors`, or Java `-Werror` with `-Xlint:deprecation`) fail. To read views, use the [Entity Db](#entity-db-api) instead: [`AsyncEntityDb`](#asyncentitydb) from Kotlin, and [`SyncEntityDb`](#syncentitydb) from Java.
+:::
 
 ### Write result
 
