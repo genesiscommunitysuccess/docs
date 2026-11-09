@@ -221,6 +221,7 @@ From version 10.0.1, expressions sent by a client or a user are checked against 
 
 - a client's `CRITERIA_MATCH` on a [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/#criteria_match) or [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/#criteria_match)
 - `RULE_EXPRESSION` and `RESULT_EXPRESSION` when a [dynamic rule](/develop/server-capabilities/real-time-triggers-evaluator/#expression-limits) is inserted or amended, and `RESULT_EXPRESSION` when a cron rule is inserted or amended
+- `RULE_EXPRESSION` and `RESULT_EXPRESSION` of the dynamic rule created when a user subscribes to a rule template
 
 Only the text the client sends is checked. Criteria that your application defines, such as a query's criteria template, aren't counted.
 
@@ -230,9 +231,11 @@ Only the text the client sends is checked. Criteria that your application define
 | **ExpressionMaxNestingDepth** | `100` | The deepest nesting of `(`, `[` and `{` brackets |
 | **ExpressionMaxLogicalOperators** | `1000` | Logical operators: `&&`, `\|\|`, `!`, `?:` and the ternary `?`, plus `&`, `\|` and `^` |
 
+`!=` and the safe-navigation operator `?.` aren't counted as logical operators.
+
 Set an item to `0` or below to disable that limit.
 
-Brackets and operators inside a single-quoted string, or inside a double-quoted string without `$`, aren't counted, and neither are comments. After a `$`, a `#` or a slashy string (`/…/`), the check can no longer tell code from text, so it counts every opening bracket from that point on. A `\u` escape anywhere in the expression has the same effect on the whole expression. An expression with many separate bracket groups can then be refused even though it isn't deeply nested; the error message says so.
+Brackets and operators inside a single-quoted string, or inside a double-quoted string without `$`, aren't counted, and neither are comments. After a `$`, a `#` or a slashy string (`/…/`), the check can no longer tell code from text. From that point on, it counts brackets and operators inside strings and comments too, and every opening bracket counts as one more level of nesting, even after it closes. An expression with many separate bracket groups can then be refused even though it isn't deeply nested; the error message says so. An expression that contains a `\u` escape is refused.
 
 An expression over a limit is refused with a message that names the item, for example `Expression exceeds ExpressionMaxNestingDepth: 101 > 100`:
 

@@ -110,7 +110,7 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 
 From version 10.0.1, the insert and amend events check a rule's expressions against the [expression limits](/develop/server-capabilities/runtime-configuration/system-definition/#expression-limits) before they save it: `RULE_EXPRESSION` and `RESULT_EXPRESSION` for a dynamic rule, and `RESULT_EXPRESSION` for a cron rule. An expression over a limit is rejected with a message that names the limit, for example `Expression exceeds ExpressionMaxNestingDepth: 101 > 100`.
 
-- An amend only checks an expression that it changes, so you can still amend the other fields of a stored rule that is over the limits.
+- An amend only checks an expression whose value differs from the stored rule, so you can still amend the other fields of a stored rule that is over the limits.
 - A template (`IS_TEMPLATE` is `true`) isn't checked when you insert or amend it. The rule created from it is checked when a user subscribes to the template.
 - Rule expressions also get a nesting check on the parsed expression, capped at 100 levels. `ExpressionMaxNestingDepth` can lower that cap, but can't raise or disable it. This check counts nested operators and method calls, not brackets, so a flat chain of more than about 100 `&&` or `||` conditions is refused with `Nesting deeper than 100 levels is not allowed in a dynamic rule`, even though it is within `ExpressionMaxLogicalOperators`.
 - Rules already in the database keep running when the Evaluator loads them, even if they are over the three limits; the Evaluator logs a warning for each one. The nesting check on the parsed expression still applies at its fixed cap of 100 levels, so a stored rule nested more deeply than that isn't run.
