@@ -1,0 +1,166 @@
+---
+title: 'Management API and console'
+sidebar_label: 'Management API and console'
+id: bdo-operate-management-console
+keywords: [operate, operations, resource daemon, management, console, mgmt, log level, heap dump, thread dump]
+tags:
+- operate
+- operations
+- management
+sidebar_position: 8
+---
+
+The Resource Daemon can serve two management surfaces, for operators who can't get a shell on the host:
+
+- a JSON API under `/mgmt`
+- a browser console
+
+Both let an authorized user change a process's log level, start, stop or restart a process, and capture heap and thread dumps. They act only on processes on the node that serves them.
+
+## Enabling the API and the console
+
+Both surfaces are off by default, and each has its own switch. The daemon reads these when it starts. You must also name the processes that can be managed:
+
+```kotlin {title="genesis-system-definition.kts"}
+systemDefinition {
+    global {
+        ...
+        item(name = "DaemonMgmtApiEnabled", value = "true")
+        item(name = "DaemonMgmtApiAuthMode", value = "OIDC")
+        item(name = "DaemonMgmtOidcIssuer", value = "https://idp.example.com/")
+        item(name = "DaemonMgmtOidcJwksUri", value = "https://idp.example.com/.well-known/jwks.json")
+        item(name = "DaemonMgmtOidcAudience", value = "genesis-daemon")
+
+        item(name = "DaemonMgmtUiEnabled", value = "true")
+        item(name = "DaemonMgmtUiLoginMode", value = "USER_PASSWORD")
+        item(name = "DaemonMgmtPasswordSalt", value = "<the passwordSalt from auth-preferences.kts>")
+
+        item(name = "DaemonManagedProcesses", value = "POSITION_EVENT_HANDLER,POSITION_DATASERVER")
+        ...
+    }
+}
+```
+
+The API and the console are served on the daemon's HTTP port, `DaemonServerPort` (`4568` in the default system definition). The daemon itself serves plain HTTP. To use the console, put it behind a proxy that terminates TLS, because its session cookie is marked `Secure` by default.
+
+## Settings
+
+| Item | Description | Default |
+| --- | --- | --- |
+| `DaemonMgmtApiEnabled` | Serve the `/mgmt` API | `false` |
+| `DaemonMgmtUiEnabled` | Serve the browser console | `false` |
+| `DaemonManagedProcesses` | Comma-separated list of the processes that can be managed, case-insensitive. `*` or `ALL` means every process on the node. If this is not set, every action is rejected | |
+| `DaemonDiagnosticsDir` | Where heap and thread dumps are written | `$GENESIS_HOME/runtime/diagnostics` |
+| `DaemonMgmtApiAuthMode` | How API callers are authenticated: `IAP`, `OIDC` or `TRUSTED_PROXY`. See [API authentication](#api-authentication). Required when the API is enabled | |
+| `DaemonMgmtIapAudience` | Expected audience of the token. Required for `IAP` | |
+| `DaemonMgmtOidcIssuer` | Expected issuer of the token. Required for `OIDC` | |
+| `DaemonMgmtOidcJwksUri` | URI of the JSON Web Key Set that verifies the token. Required for `OIDC` | |
+| `DaemonMgmtOidcAudience` | Expected audience of the token. Required for `OIDC` | |
+| `DaemonMgmtOidcUsernameClaim` | The token claim that holds the username | `sub` |
+| `DaemonMgmtOidcClockSkewSeconds` | Clock skew allowed when validating a token, for `IAP` and `OIDC`, in seconds | `60` |
+| `DaemonMgmtApiDefaultUser` | The user that requests are attributed to under `TRUSTED_PROXY` | `LOCAL` |
+| `DaemonMgmtUiLoginMode` | Comma-separated list of [login providers](#console-login-providers), in the order to try them. `DISABLED` or an empty value turns off login | `USER_PASSWORD` |
+| `DaemonMgmtPasswordSalt` | The salt for `USER_PASSWORD` login. It must match `passwordSalt` in `auth-preferences.kts` | |
+| `DaemonMgmtSessionTtlMinutes` | How long a console session can be idle, in minutes | `30` |
+| `DaemonMgmtSessionMaxMinutes` | The maximum length of a console session, in minutes | `480` |
+| `DaemonMgmtSessionCookieName` | The name of the console's session cookie | `GENESIS_DAEMON_SESSION` |
+| `DaemonMgmtCookieSecure` | Mark the session cookie as `Secure`. Set to `false` only for local development over HTTP | `true` |
+| `DaemonMgmtDiagnosticsDownloadEnabled` | Allow dumps to be downloaded from the console. When this is `false`, dumps are still written to disk | `true` |
+
+## Rights
+
+Each action needs its own right, and neither surface creates or ships these rights. Add the ones you need and assign them to user profiles, so that they appear in `RIGHT_SUMMARY`:
+
+| Right | Action | API endpoint |
+| --- | --- | --- |
+| `MGMT_LOG_LEVEL` | Change a log level | `POST /mgmt/processes/{name}/loglevel` |
+| `MGMT_THREAD_DUMP` | Capture a thread dump | `POST /mgmt/processes/{name}/threaddump` |
+| `MGMT_HEAP_DUMP` | Capture a heap dump | `POST /mgmt/processes/{name}/heapdump` |
+| `MGMT_RESTART` | Restart a process | `POST /mgmt/processes/{name}/restart` |
+| `MGMT_START` | Start a process | `POST /mgmt/processes/{name}/start` |
+| `MGMT_STOP` | Stop a process | `POST /mgmt/processes/{name}/stop` |
+
+A user needs at least one of these rights to log in to the console, and sees only the actions they hold rights for. A right that you grant or revoke doesn't take effect immediately, because the daemon caches each user's rights.
+
+## API authentication
+
+`DaemonMgmtApiAuthMode` has no default. While the API is enabled and this is unset or not valid, every request gets a `503`.
+
+| Mode | How a caller is authenticated |
+| --- | --- |
+| `IAP` | Validates the Google Cloud Identity-Aware Proxy JWT in the `x-goog-iap-jwt-assertion` header. The username is the `email` claim |
+| `OIDC` | Validates the JWT in the `Authorization: Bearer` header against the configured issuer, JWKS URI and audience. The username comes from `DaemonMgmtOidcUsernameClaim` |
+| `TRUSTED_PROXY` | No credential check. Every request is attributed to `DaemonMgmtApiDefaultUser`, so rights are the only check |
+
+:::warning
+With `TRUSTED_PROXY`, make sure that the daemon's port can be reached only through the trusted proxy.
+:::
+
+## Calling the API
+
+Each endpoint takes a JSON body with a mandatory `reason`:
+
+```bash
+curl -X POST http://localhost:4568/mgmt/processes/POSITION_EVENT_HANDLER/loglevel \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"level": "DEBUG", "expirySeconds": 900, "reason": "Investigating rejected trades"}'
+```
+
+The `loglevel` endpoint also accepts these fields:
+
+| Field | Description |
+| --- | --- |
+| `level` | `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR`. Required unless `reset` is `true` |
+| `expirySeconds` | How long the change lasts, in seconds, from `0` to `14400`. If you leave it out, it is `3600`. `0` makes the change permanent |
+| `reset` | Set to `true` to return the process to its default level |
+
+The response has the fields `action`, `processName`, `outcome` and `detail`. For a thread or heap dump, `detail` gives the path of the file. The daemon must run on a JDK, not a JRE, to capture dumps.
+
+| Status | Meaning |
+| --- | --- |
+| `400` | The body or a field is not valid, `reason` is missing, or the process is not in `DaemonManagedProcesses` |
+| `401` | The caller could not be authenticated |
+| `403` | The user doesn't have the right for this action |
+| `409` | Another operation is in progress on this process |
+| `503` | The API is misconfigured, or authentication is unavailable, for example because the JWKS can't be reached |
+
+## Console login providers
+
+The console is at `/login`. List one or more of these providers in `DaemonMgmtUiLoginMode`:
+
+| Provider | How a user logs in |
+| --- | --- |
+| `USER_PASSWORD` | Username and password, checked against the `USER` table. The account's `STATUS` must be `ENABLED` |
+| `LDAP` | Username and password, checked against an LDAP directory. The user must also have a `USER` row with `STATUS` of `ENABLED` |
+| `JWT_HEADER` | Uses the token that a proxy sends with the request, so the user doesn't enter a password. Needs `DaemonMgmtApiAuthMode` to be `IAP` or `OIDC`, and is not enabled otherwise |
+
+Providers that use a username and password are tried in the listed order. The next one is tried only if the current one rejects the credentials or is unavailable, so with `LDAP,USER_PASSWORD`, a local account still works if the directory is unreachable. After five failed logins in a row for the same username and IP address, that combination is locked out for a minute.
+
+The console's auto-revert field works differently from the API's `expirySeconds`: leaving it blank makes a log level change permanent.
+
+### LDAP settings
+
+The `LDAP` provider needs `LdapUrl`, and either `LdapSearchBases` or `LdapUserDnTemplate`. If the configuration is not valid, the provider is not registered, the daemon logs an error, and any other listed provider still works.
+
+| Item | Description | Default |
+| --- | --- | --- |
+| `LdapUrl` | The directory's hostname, without a scheme | |
+| `LdapPort` | The directory's port | `636` if `LdapUseTLS` is `true`, otherwise `389` |
+| `LdapUseTLS` | Connect with LDAPS. Without it, passwords are sent in clear text | `false` |
+| `LdapVerifyHostname` | Check the certificate's hostname | `true` |
+| `LdapTrustSource` | Where trusted certificates come from: `SYSTEM`, `CERTIFICATE` (with `LdapTrustCaBundlePath`) or `TRUSTSTORE` (with `LdapTrustStorePath`, `LdapTrustStoreType` and `LdapTrustStorePassword`) | `SYSTEM` |
+| `LdapSearchBases` | Semicolon-separated DNs to search for the user | |
+| `LdapUserDnTemplate` | A template to bind with directly instead of searching, using `{0}` or `%s` for the username, for example `CN={0},OU=People,DC=example,DC=com`. If you also set `LdapUserGroups`, the template must produce a valid DN | |
+| `LdapBindDn`, `LdapBindPassword` | The service account for searches. If these aren't set, searches are anonymous | |
+| `LdapUserIdType` | Comma-separated attributes to search on | `cn` |
+| `LdapCanonicalIdAttribute` | The attribute whose value is matched to `USER_NAME` | the first entry in `LdapUserIdType` |
+| `LdapUserGroups` | Semicolon-separated DNs of the groups a user must belong to. If this isn't set, any user who can bind is accepted | |
+| `LdapNestedGroupSearch` | Include nested group membership | `false` |
+| `LdapStripDomainPrefix` | Treat `DOMAIN\username` as `username` | `true` |
+| `LdapUserPrefix` | A prefix added to the value that is searched for | |
+| `LdapConnectTimeoutMs`, `LdapResponseTimeoutMs` | Connection and response timeouts | `5000`, `10000` |
+
+## Audit log
+
+The daemon writes every API action and console login, including denied attempts, to its log under the `MGMT_AUDIT` logger, with the action, process, user, reason and outcome.
