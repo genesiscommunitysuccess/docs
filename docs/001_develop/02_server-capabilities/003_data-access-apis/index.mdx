@@ -338,7 +338,7 @@ Sorting on derived fields is not supported.
 :::info
 `getByCriteria` is supported from version 8.14.0
 
-Views are fully supported in this operation, including joined tables, only when the system definition `SqlViewsEnabled` is set to `true`.
+Views are fully supported in this operation, including joined tables, only when the system definition `SqlViewsEnabled` is set to `true` and the view can be expressed as a single SQL join query. A view that has a [dynamic join](../data-model/#dynamic-joins), or a join on a field from a table's `derivedFields` block, can't be.
 Otherwise, criteria on joined tables are evaluated lazily, so they can't be combined with paging, and sorting by joined fields is not supported.
 :::
 
@@ -383,7 +383,7 @@ This is not an either/or situation. In cases where the platform is able to parti
 Lazily evaluated criteria:
 * Any criteria on a derived field
 * If `SqlViewsEnabled` is not true, in views, any criteria on a field on a joined table
-* If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins), any criteria on a field on a joined table
+* If `SqlViewsEnabled` is true, in views that use [dynamic joins](../data-model/#dynamic-joins) or join on a field from a table's `derivedFields` block, any criteria on a field on a joined table
 * On FDB, any criteria that is not a direct index match
 
 ###### Hybrid evaluation
