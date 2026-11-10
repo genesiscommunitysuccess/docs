@@ -159,7 +159,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 
   If a run for a region that worked on 8.15 now fails, look up that region's current code in the library.
 - **Data:** delete the existing rows in `HOLIDAYS` for the years you hold, then re-run `PopulateHolidays` for those years, so that the table matches the new data. `PopulateHolidays` only inserts rows and never replaces existing ones, so if you skip the delete, every holiday for those years is stored twice. The [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays) reference shows how to delete the rows with `DbMon`.
-- **Code:** move any code that imports `de.jollyday.*` to the new library's packages.
+- **Code:** change imports of `de.jollyday.*` to `de.focus_shift.jollyday.core.*`.
 
 ## 10. Check scripts that parse `mon` output or find processes themselves
 
