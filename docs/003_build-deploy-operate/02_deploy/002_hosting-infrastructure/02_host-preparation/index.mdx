@@ -35,7 +35,9 @@ Genesis applications include both server-side and web code.
 
 Genesis supports [OpenJDK](https://openjdk.org/) 17 and 25 as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
 
-The default JVM arguments of every Genesis process already include the flags for JDK 25; JDK 17 ignores the ones it doesn't recognise. On JDK 25, these flags turn on compact object headers, so a process uses less heap.
+The default JVM arguments of every Genesis process already include the flags for JDK 25; JDK 17 ignores the ones it doesn't recognise. On JDK 25, these flags turn on compact object headers (`-XX:+UseCompactObjectHeaders`), so a process uses less heap.
+
+To turn compact object headers off, add `-XX:-UseCompactObjectHeaders` to the end of the `JVM_OPTIONS` item in your application's `genesis-system-definition.kts`, then [run `genesisInstall` and restart your processes](/develop/server-capabilities/runtime-configuration/system-definition/#applying-a-change). Use `JVM_OPTIONS` rather than a process's `<options>` tag: `JVM_OPTIONS` comes later on the Java command line, and the last flag wins.
 
 ### Third-party software
 
