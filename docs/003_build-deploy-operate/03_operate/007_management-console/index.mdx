@@ -10,12 +10,16 @@ tags:
 sidebar_position: 8
 ---
 
+:::info
+The management API and console are available from Genesis Server 8.15.34, and `LDAP` login from 8.15.37.
+:::
+
 The Resource Daemon can serve two management surfaces, for operators who can't get a shell on the host:
 
 - a JSON API under `/mgmt`
 - a browser console
 
-Both let an authorized user change a process's log level, start, stop or restart a process, and capture heap and thread dumps. They act only on processes on the node that serves them.
+Both let an authorized user change a process's log level, start, stop or restart a process, and capture heap and thread dumps. They act only on processes on the node that serves them. Starting, stopping and restarting processes and changing log levels work only on Linux.
 
 ## Enabling the API and the console
 
@@ -80,7 +84,7 @@ Each action needs its own right, and neither surface creates or ships these righ
 | `MGMT_START` | Start a process | `POST /mgmt/processes/{name}/start` |
 | `MGMT_STOP` | Stop a process | `POST /mgmt/processes/{name}/stop` |
 
-A user needs at least one of these rights to log in to the console, and sees only the actions they hold rights for. A right that you grant or revoke doesn't take effect immediately, because the daemon caches each user's rights.
+A user needs at least one of these rights to log in to the console, and sees only the actions they hold rights for. Rights changes made through the auth event handlers take effect straight away. If you load profile data directly into the database, run `ConsolidateRights`. If a console user loses all `MGMT_*` rights, their session ends on their next request.
 
 ## API authentication
 
@@ -91,6 +95,8 @@ A user needs at least one of these rights to log in to the console, and sees onl
 | `IAP` | Validates the Google Cloud Identity-Aware Proxy JWT in the `x-goog-iap-jwt-assertion` header. The username is the `email` claim |
 | `OIDC` | Validates the JWT in the `Authorization: Bearer` header against the configured issuer, JWKS URI and audience. The username comes from `DaemonMgmtOidcUsernameClaim` |
 | `TRUSTED_PROXY` | No credential check. Every request is attributed to `DaemonMgmtApiDefaultUser`, so rights are the only check |
+
+The username from the token must match `USER_NAME` in the `USER` table exactly, including case. Otherwise every request gets a `403`.
 
 :::warning
 With `TRUSTED_PROXY`, make sure that the daemon's port can be reached only through the trusted proxy.
@@ -119,10 +125,11 @@ The response has the fields `action`, `processName`, `outcome` and `detail`. For
 
 | Status | Meaning |
 | --- | --- |
-| `400` | The body or a field is not valid, `reason` is missing, or the process is not in `DaemonManagedProcesses` |
+| `400` | The body or a field is not valid, `reason` is missing, the process name is not valid, or the process is not in `DaemonManagedProcesses` |
 | `401` | The caller could not be authenticated |
 | `403` | The user doesn't have the right for this action |
 | `409` | Another operation is in progress on this process |
+| `500` | The operation failed, for example a dump could not be captured, or a start, stop or restart was not confirmed within 30 seconds |
 | `503` | The API is misconfigured, or authentication is unavailable, for example because the JWKS can't be reached |
 
 ## Console login providers
@@ -133,9 +140,9 @@ The console is at `/login`. List one or more of these providers in `DaemonMgmtUi
 | --- | --- |
 | `USER_PASSWORD` | Username and password, checked against the `USER` table. The account's `STATUS` must be `ENABLED` |
 | `LDAP` | Username and password, checked against an LDAP directory. The user must also have a `USER` row with `STATUS` of `ENABLED` |
-| `JWT_HEADER` | Uses the token that a proxy sends with the request, so the user doesn't enter a password. Needs `DaemonMgmtApiAuthMode` to be `IAP` or `OIDC`, and is not enabled otherwise |
+| `JWT_HEADER` | Uses the token that a proxy sends with the request, so the user doesn't enter a password. Needs `DaemonMgmtApiAuthMode` to be `IAP` or `OIDC`, and is not enabled otherwise. The API itself doesn't need to be enabled |
 
-Providers that use a username and password are tried in the listed order. The next one is tried only if the current one rejects the credentials or is unavailable, so with `LDAP,USER_PASSWORD`, a local account still works if the directory is unreachable. After five failed logins in a row for the same username and IP address, that combination is locked out for a minute.
+Providers that use a username and password are tried in the listed order. The next one is tried only if the current one rejects the credentials or is unavailable, so with `LDAP,USER_PASSWORD`, a local account still works if the directory is unreachable. If a provider accepts the user but the user holds no `MGMT_*` right, login is refused and the next provider is not tried. After five failed logins in a row for the same username and IP address, that combination is locked out for a minute.
 
 The console's auto-revert field works differently from the API's `expirySeconds`: leaving it blank makes a log level change permanent.
 
@@ -163,4 +170,4 @@ The `LDAP` provider needs `LdapUrl`, and either `LdapSearchBases` or `LdapUserDn
 
 ## Audit log
 
-The daemon writes every API action and console login, including denied attempts, to its log under the `MGMT_AUDIT` logger, with the action, process, user, reason and outcome.
+The daemon writes every API and console action, and every console login, logout and ended session, including denied attempts, to its log under the `MGMT_AUDIT` logger. Each entry is a JSON line with the action, process, user, reason, outcome, detail and host.
