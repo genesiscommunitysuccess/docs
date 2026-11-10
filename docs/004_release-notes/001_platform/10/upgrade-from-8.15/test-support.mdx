@@ -87,7 +87,7 @@ lateinit var client: SomeClient
 
 **If you skip it:** a test that relied on the name being sent unchanged now targets a different event handler. It typically fails because the handler it expected is not called.
 
-**What to do:** a `messageType` that already starts with `EVENT_` is sent as it is, so a test that passes the full name needs no change. If a test needs to send a name that doesn't start with `EVENT_`, none of the `EventClient` classes will do that any more: build the `Event` message yourself and send it through the message client.
+**What to do:** a `messageType` that already starts with `EVENT_` is sent as it is, so a test that passes the full name needs no change. If a test needs to send a name that doesn't start with `EVENT_`, none of the `EventClient` classes will do that any more: build the `Event` message yourself and send it with `GenesisMessageClient` (see [legacy testing](/develop/server-capabilities/testing-api/legacy-testing-api)).
 
 ## Check `@CsvData` files that fill RAW columns
 
@@ -154,7 +154,7 @@ Separately, `SimpleQueueAbstractDatabaseTest` no longer extends `AbstractDatabas
 - If your test build treats warnings as errors (Kotlin `allWarningsAsErrors`, or `javac -Werror`), it fails on the deprecation warnings.
 - Code that treats a `SimpleQueueAbstractDatabaseTest` subclass as an `AbstractDatabaseTest` — a cast, an `is` or `instanceof` check, or a shared helper typed on `AbstractDatabaseTest` — no longer compiles, or no longer matches.
 
-**What to do:** suppress the deprecation warnings in those tests, or move them to the GenesisJunit annotations (see [Optional clean-ups](#optional-clean-ups)). Retype any helper that takes an `AbstractDatabaseTest` and is also used with `SimpleQueueAbstractDatabaseTest` subclasses.
+**What to do:** suppress the deprecation warnings in those tests, or move them to the GenesisJunit annotations (see [Optional clean-ups](#optional-clean-ups)). Retype any helper that takes an `AbstractDatabaseTest` and is also used with `SimpleQueueAbstractDatabaseTest` subclasses. Subclasses of both classes can still reach the database through `getRxDb()` (`rxDb` in Kotlin). For helpers, the replacement is `@GenesisDatabaseTest`, not a shared supertype.
 
 ## Optional clean-ups
 
