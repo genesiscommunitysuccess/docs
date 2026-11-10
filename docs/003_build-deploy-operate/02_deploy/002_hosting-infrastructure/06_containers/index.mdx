@@ -495,6 +495,8 @@ However, this is not recommended as **MQTT is required for dynamic scaling**.
 ### Automatic failover
 When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
+A process that calls a service through `MessageService` also fails over. If the service replies with an `UNAVAILABLE` NACK, `MessageService` resolves the service again and retries until the request times out, and the calling process reports a `WARNING` state until the service replies. If the time runs out, the caller receives the last `UNAVAILABLE` NACK.
+
 ### Networking
 All Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports. This applies to both built-in clustering and Consul mode.
 
