@@ -15,7 +15,7 @@ The steps show up at different points of the upgrade:
 | The process fails to start | 3 (derived field names that clash) |
 | Client requests that used to work are refused | 5 (client criteria) |
 | The process logs a warning at startup | 6 (the `ASYNC` backward-join cache mode) |
-| Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) |
+| Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) and 7 (custom replies under file-level `permissionCodes`) |
 
 Every replacement in steps 1 and 2 already exists in 8.15, so you can make those changes on 8.15 first and then upgrade.
 
@@ -197,4 +197,14 @@ Criteria "<criteria>" on query <query> bounds no value of <field>, the first fie
 
 **What goes wrong if you skip this:** nothing yet. A process with `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` set to `false` logs a deprecation warning at startup, and code that uses `BackwardsJoinCacheMode.ASYNC` or `syncBackwardsJoinCache(...)` gets a deprecation warning when it compiles.
 
-**What to do:** remove the `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` item from your system definition, and remove any calls to `syncBackwardsJoinCache(...)`. Replace `BackwardsJoinCacheMode.ASYNC` with `BackwardsJoinCacheMode.SYNC`.
+**What to do:** remove the `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` item from your system definition, and remove any calls to `syncBackwardsJoinCache(...)`. Remove any use of `BackwardsJoinCacheMode`: the whole enum is deprecated, and `SYNC` is the default.
+
+## 7. Check row access on custom replies under file-level `permissionCodes`
+
+**Applies to:** `*-reqrep.kts` scripts that set `permissionCodes` at file level and also contain a custom or paginated reply with its own `permissioning { auth { } }` block.
+
+**Why:** in 8.15, the file-level codes replaced the reply's `permissioning` definition, so its `auth` block was dropped. In 10.0, the reply keeps its `auth` block.
+
+**What goes wrong if you skip this:** users who saw every row in 8.15 now see only the rows their auth map allows.
+
+**What to do:** no code change is needed. Check that the auth maps give these users the rows they should see.

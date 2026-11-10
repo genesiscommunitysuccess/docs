@@ -206,5 +206,5 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 |---|---|
 | `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes drop a value of your own type, and there is no way to register one. Unless your own code reads these values on other nodes, there is nothing to change |
 | `ClusterMessage.getStatusMessage()` and `setStatusMessage(Serializable)` | Deprecated for removal. Use `getStatusMessageText()` and `setStatusMessageText(String)`; only a `String` survives the trip between nodes |
-| `InboundMessageListener.onNewMessage(ClusterMessage)` | Now `onNewMessage(ClusterMessage, String senderHost)` |
+| `InboundMessageListener.onNewMessage(ClusterMessage)` | Now `onNewMessage(ClusterMessage, String? senderHost)` |
 | Your own Pekko modules on 1.4.x | Align them with Pekko 1.7, the version 10.0 brings in |
