@@ -103,7 +103,8 @@ The check only looks within one `pipelines { }` block. Two pipelines with the sa
 | `camelSource { }` | `*-pipelines.kts` | `camelFileSource { }` |
 | `AbstractProgrammaticSource<T>` | `global.genesis.pipeline.event` | `ProgrammaticSource<T>`, in the same package |
 | `global.genesis.datapipeline.pal.sink.DbOperation<T>` | imports | `global.genesis.pipeline.api.db.DbOperation<T>` |
-| `csvSource(name) { }` | `*-pipelines.kts` and `*-data-pipeline.kts`, including inside `pipelines { }` | Unchanged. It is not removed, so keep it as it is. |
+
+`csvSource(name) { }` is not part of this list. It is unchanged and still works in both `*-pipelines.kts` and `*-data-pipeline.kts`, including inside `pipelines { }`.
 
 For `camelSource`, only the function name changes. The configuration block inside it stays the same:
 
