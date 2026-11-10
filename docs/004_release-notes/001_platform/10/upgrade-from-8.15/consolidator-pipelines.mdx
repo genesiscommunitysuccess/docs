@@ -103,6 +103,7 @@ The check only looks within one `pipelines { }` block. Two pipelines with the sa
 | `camelSource { }` | `*-pipelines.kts` | `camelFileSource { }` |
 | `AbstractProgrammaticSource<T>` | `global.genesis.pipeline.event` | `ProgrammaticSource<T>`, in the same package |
 | `global.genesis.datapipeline.pal.sink.DbOperation<T>` | imports | `global.genesis.pipeline.api.db.DbOperation<T>` |
+| `csvSource(name) { }` | `*-pipelines.kts` and `*-data-pipeline.kts`, including inside `pipelines { }` | Unchanged. It is not removed, so keep it as it is. |
 
 For `camelSource`, only the function name changes. The configuration block inside it stays the same:
 
@@ -197,7 +198,7 @@ These are unchanged:
 
 **What goes wrong if you skip this:** the code no longer compiles.
 
-**What to do:** inject `PipelineDefinitionProvider` and call its `get()` instead. It already exists in 8.15, and it also returns pipelines from compiled definitions, not only from scripts.
+**What to do:** inject `global.genesis.pipeline.pal.PipelineDefinitionProvider` and call its `get()` instead. It already exists in 8.15, and it also returns pipelines from compiled definitions, not only from scripts.
 
 ## 7. Watch the `.error` folder for failed Camel files
 
