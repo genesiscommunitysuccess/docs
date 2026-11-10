@@ -26,10 +26,6 @@ In a GPAL event handler, use the `entityDb` that the [event handler](/develop/se
 | Kotlin | 17 | `AsyncEntityDb` (`AsyncDb` for records) | Database work runs on platform threads, capped at 2 × CPU cores. Waiting for a connection suspends without holding a thread |
 | Java | 21 or later | `SyncEntityDb` (`SyncDb` for records) | Only standalone point reads and inserts hop to a virtual thread. Event handler code, `writeTransaction` bodies and streams stay on the calling thread |
 | Java | 17 | `SyncEntityDb` (`SyncDb` for records) | Platform threads throughout. See [Java and Sync pitfalls](#java-and-sync-pitfalls) |
-| Either | Any | `RxEntityDb`, `RxDb` | Deprecated in 10.0. Keep working code, but don't start new code on them |
-| Either | Any, on FoundationDB | `SyncEntityDb`, `AsyncEntityDb`, `SyncDb`, `AsyncDb` | These work through the Rx path. See [FoundationDB](#foundationdb) |
-
-Java 21 is enough to get virtual threads for database work: a later JDK isn't required. Genesis 10 still runs on Java 17.
 
 ## Virtual threads
 
@@ -96,9 +92,7 @@ Each process has one connection pool, and every API shares it. Nested calls reus
 
 ## Transactions: writes join
 
-On the SQL database layer in 10.0, a write made through an injected database API from inside a transaction joins that transaction. In 8.15 it didn't.
-
-If the transaction rolls back, the write now rolls back with it. Check any code that relied on such a write persisting after the surrounding transaction failed, because it no longer does.
+On the SQL database layer, a write made through an injected database API from inside a transaction joins that transaction. If the transaction rolls back, the write rolls back with it.
 
 ## Sizing the connection pool
 
@@ -167,7 +161,5 @@ FoundationDB is deprecated in 10.0.0 and is scheduled for removal in 11.0.0. Unt
 
 ## Upgrading from 8.15
 
-- **Injected writes join transactions.** This is the main behaviour change to check. See [Transactions: writes join](#transactions-writes-join).
-- **Nested use no longer stalls in the common cases.** In 8.15, a nested call that didn't go through the transaction object took a new connection, and could stall until the connection timeout. See [What reuses a connection](#what-reuses-a-connection).
+- **Injected writes [join transactions](#transactions-writes-join).** In 8.15 they didn't. Check any code that relied on such a write persisting after the surrounding transaction failed.
 - **`RxDb` and `RxEntityDb` give deprecation warnings.** A build that treats warnings as errors fails until you move away from them.
-- **Transactions on `SqlDatabaseConnection` are not new in 10.0.** They have been available since 8.15.2.
