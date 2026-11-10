@@ -152,6 +152,9 @@ filePermissions { unix(scriptPermissions) }
 | `global.genesis:genesis-testsupport-junit4` | `global.genesis:genesis-testsupport` |
 | `global.genesis:genesis-dbtest-junit4` | `global.genesis:genesis-dbtest` |
 | `codegen-maven-plugin`, `genesis-maven-plugin`, `appgen-maven-plugin`, `releases-maven-plugin`, `genesis-archetype` | the Genesis Gradle plugins |
+| `global.genesis.codegen.GenesisVersion` (a class, moved) | `global.genesis.commons.utils.GenesisVersion` |
+
+Also bump `authVersion`, `notifyVersion`, `fileServerVersion` and `reportingVersion` if your `gradle.properties` sets them. They still point at 8.15 releases. Each product is versioned separately, so set each one to its own 10.0-compatible release rather than to the Genesis version.
 
 The Jupiter modules have the same classes in the same packages, so only the dependency line changes. Before you build, also remove any dependency listed in [step 2 of Removed and deprecated modules](./removed-modules.mdx#2-remove-dependencies-on-removed-artifacts-and-plugins).
 
@@ -257,6 +260,7 @@ For dependencies:
 
 - Replace `com.fasterxml.jackson.*` artifacts with their `tools.jackson.*` equivalents, for example `tools.jackson.module:jackson-module-kotlin`.
 - Leave the versions to `genesis-bom`, which manages Jackson 3 on the 3.1 line. Don't move to 3.2: the platform stays on 3.1 deliberately.
+- Remove `jackson-datatype-jsr310` and any `JavaTimeModule` registration. Jackson 3 has Java time support built in, and there is no 3.x release of that artifact.
 - If a third-party library really needs Jackson 2 databind, you can still declare it. The BOM also manages a Jackson 2.22 line.
 
 #### 5b. Code that used `GenesisJacksonMapper` as an `ObjectMapper`
@@ -380,7 +384,7 @@ Two APIs that depended on these libraries have also changed:
 
 **Why:** these properties are now parsed strictly.
 
-- For the boolean properties, 8.15 treated anything other than `true` (in any case) as false. On 10.0, `yes`, `on`, `y` and an empty value mean true; `no`, `off` and `n` mean false; case is ignored; any other value fails the build.
+- For the boolean properties, 8.15 treated anything other than `true` (in any case) as false. On 10.0, `true`, `yes`, `on`, `y` and an empty value mean true; `false`, `no`, `off` and `n` mean false; case is ignored; any other value fails the build.
 - The enum properties are now matched ignoring case.
 
 **If you skip it:** a value that 8.15 read as false may now be read as true, or fail the build:
