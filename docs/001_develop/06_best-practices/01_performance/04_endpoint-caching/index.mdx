@@ -23,6 +23,8 @@ Both are handled at the HTTP layer, so any browser client (including the [`Http`
 This is complementary to [grid and Data Server tuning](/develop/best-practices/performance/): that bounds how many rows the browser holds; this bounds how often, and how many bytes, you send them.
 :::
 
+For a Request Server resource backed by a table or view, you don't need to write this yourself: see [Response caching](/develop/server-capabilities/query-data/snapshot-queries-request-server/#response-caching).
+
 ## Don't re-send unchanged data: conditional requests
 
 Give the response a strong [`ETag`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) and a `Cache-Control` that forces revalidation. The browser then replays the tag as `If-None-Match` on the next request; if nothing changed, answer `304 Not Modified` with **no body**, and the browser serves its cached copy.
