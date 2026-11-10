@@ -154,7 +154,7 @@ filePermissions { unix(scriptPermissions) }
 | `codegen-maven-plugin`, `genesis-maven-plugin`, `appgen-maven-plugin`, `releases-maven-plugin`, `genesis-archetype` | the Genesis Gradle plugins |
 | `global.genesis.codegen.GenesisVersion` (a class, moved) | `global.genesis.commons.utils.GenesisVersion` |
 
-Also bump `authVersion`, `notifyVersion`, `fileServerVersion` and `reportingVersion` if your `gradle.properties` sets them. They still point at 8.15 releases. Each product is versioned separately, so set each one to its own 10.0-compatible release rather than to the Genesis version.
+Also bump `authVersion`, `notifyVersion`, `fileServerVersion` and `reportingVersion` if your `gradle.properties` sets them. Each product is versioned separately, so set each one to its own 10.0-compatible release rather than to the Genesis version.
 
 The Jupiter modules have the same classes in the same packages, so only the dependency line changes. Before you build, also remove any dependency listed in [step 2 of Removed and deprecated modules](./removed-modules.mdx#2-remove-dependencies-on-removed-artifacts-and-plugins).
 
