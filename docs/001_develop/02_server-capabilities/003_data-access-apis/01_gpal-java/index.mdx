@@ -915,7 +915,7 @@ To run your own code inside the transaction of every write, see [Write operation
 The update operation is a condensed syntax for modifying data in the database. It works by providing a scope and a transformation. The scope could be one of:
 
 * `updateBy` - a unique index
-* `updateRangeBy` - an index range
+* `updateByRange` - an index range
 * `updateAll` - a whole table
 
 The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in the database, and can be modified in place, with the changes applied to the database. All update calls run in a `writeTransaction` and are transactional if the database supports it.
