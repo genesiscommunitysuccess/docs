@@ -77,7 +77,7 @@ For the current DSL, see [`triggerRemote`](/develop/server-capabilities/core-bus
 
 **What goes wrong if you skip this:** nothing fails. The file still loads, but the `<transactions>` section is ignored. Its `preValidate`, `prePersist` and `postPersist` expressions stop running, and its metadata field overrides stop applying.
 
-**What to do:** search your process configuration XML files for `<transactions>`. Port each definition to a GPAL `eventHandler` or to a typed event handler:
+**What to do:** search your process configuration XML files for `<transactions>`. Port each definition to a GPAL `eventHandler` or to a [typed event handler](#4-abstracteventhandler-subclasses-plan-the-port):
 
 | XML | Equivalent |
 |---|---|
