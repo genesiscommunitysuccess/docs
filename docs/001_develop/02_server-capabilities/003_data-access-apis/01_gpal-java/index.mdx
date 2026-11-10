@@ -450,6 +450,7 @@ The `criteria` is a Groovy expression on a table or view row.
 - Notes:
     - Field names must exist on the target table/view; unknown fields will error during SQL generation.
     - Some functions may be normalized into SQL `LIKE`, range predicates, or comparisons depending on the backend.
+    - `Expr.dateIsEqual`, `Expr.dateIsAfter` and `Expr.dateIsLessEqual` compare whole days, in the server's time zone. On a `DATETIME` field, `dateIsEqual` matches any time on that day, `dateIsAfter` starts from the next day, and `dateIsLessEqual` includes all of that day. On SQL databases, this applies only when `date` is a string literal.
 
 ##### Ordering
 
