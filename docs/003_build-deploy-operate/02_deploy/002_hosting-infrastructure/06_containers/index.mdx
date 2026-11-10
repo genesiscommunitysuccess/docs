@@ -432,7 +432,7 @@ systemDefinition {
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
 
-While `ConsulSessionLockDelaySeconds` is above `0`, the other three settings are capped so that a process stops before the lock delay ends. `ConsulLeaderContactDeadlineSeconds` can be at most `ConsulSessionLockDelaySeconds` - `ConsulLostContactHaltGraceSeconds` - `5`, `ConsulLostContactHaltGraceSeconds` at most `ConsulSessionLockDelaySeconds` - `20`, and `ConsulOrderlyHaltGraceSeconds` at most `ConsulSessionLockDelaySeconds` - `8`. A value outside its limits is adjusted when the process starts, and the process logs an error that gives the value it used.
+While `ConsulSessionLockDelaySeconds` is above `0`, the other three settings are capped so that a process stops before the lock delay ends. A value outside its limits is adjusted when the process starts, and the process logs an error that gives the value it used.
 
 ### Troubleshooting
 
