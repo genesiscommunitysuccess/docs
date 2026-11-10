@@ -32,14 +32,15 @@ These have not changed, so they need no action:
 
 **Applies to:** clients that encode Genesis binary messages themselves rather than through the Genesis libraries, and code that stores bytes produced by `GenesisJacksonMapper.defaultMsgPackMapper`.
 
-**Why:** 10.0 removes MessagePack. Binary messages are now encoded as [Smile](https://github.com/FasterXML/smile-format-specification), a binary form of JSON. The router's binary socket and the binary frames on its WebSocket always use Smile, whatever the serialization setting says.
+**Why:** 10.0 no longer uses MessagePack to encode messages. Binary messages are now encoded as [Smile](https://github.com/FasterXML/smile-format-specification), a binary form of JSON. The router's binary socket and the binary frames on its WebSocket always use Smile, whatever the serialization setting says.
 
-**What goes wrong if you skip this:** a custom client that sends or expects MessagePack can no longer talk to the router. Stored MessagePack bytes can't be read back: in 10.0, `defaultMsgPackMapper` is a deprecated alias for the Smile mapper. For the same reason, an 8.15 process and a 10.0 process can't exchange binary messages, so upgrade all the processes of an application together.
+**What goes wrong if you skip this:** a custom client that sends or expects MessagePack can no longer talk to the router. In 10.0, `GenesisJacksonMapper.defaultMsgPackMapper` is a deprecated alias for the Smile mapper, so it decodes Smile, not MessagePack. Reading stored MessagePack bytes through it fails. For the same reason, an 8.15 process and a 10.0 process can't exchange binary messages, so upgrade all the processes of an application together.
 
 **What to do:**
 
 - Switch custom binary clients to Smile, or to JSON.
-- Re-encode any stored bytes that were written with `defaultMsgPackMapper`, and use `GenesisJacksonMapper.defaultSmileMapper` from now on.
+- Use `GenesisJacksonMapper.defaultSmileMapper` from now on, in place of `defaultMsgPackMapper`.
+- Stored bytes that were written with `defaultMsgPackMapper` on 8.15 are MessagePack, and 10.0 ships no converter for them. The Jackson MessagePack module is no longer on the classpath, but `msgpack-core` (`org.msgpack.core.MessagePack`) still is. If you need to keep the data, read the bytes with `msgpack-core` and write them back with `defaultSmileMapper`. You have to write that conversion yourself, and test it on a copy of your data first.
 
 ## 2. Update imports of the web-handler DSL and the HTTP types
 
@@ -120,7 +121,18 @@ Two things behave differently:
 - **`SOURCE_REF`.** The removed methods always replaced a `SOURCE_REF` already in the message. `suspendRequest` and `rxRequest` keep it. If you resend a stored message, clear its `SOURCE_REF` first, or the reply may be routed to whoever sent the original.
 - **A disconnected client.** On 10.0, `suspendRequest` throws `ClientNotConnectedException` straight away, instead of returning a failed future. On 8.15 it fails later, with a generic error, so you only see this behaviour after the upgrade.
 
-`queryLogoffAndShutdown` has no replacement.
+`queryLogoffAndShutdown` has no direct replacement, but you can rebuild it. On 8.15 it sent the logoff request you gave it, waited for the matching `LOGOFF_ACK` (or a `_NACK`, or 10 seconds without a reply), and then shut the client down. In 10.0, send the same message with one of the request methods above, or with `sendMessage` and your own reply handling, and call `GenesisMessageClient.shutdown()` when the reply arrives or your timeout expires. For example, in Kotlin:
+
+```kotlin
+// 10.0: send the logoff request, then shut the client down
+try {
+    client.suspendRequest(logoffRequest, timeout)
+} finally {
+    client.shutdown()
+}
+```
+
+The method was deprecated in 8.15, with a note that it would be removed in the next major release, and it went with the other `ListenableFuture`-returning methods in this step.
 
 `ClientConnectionsManager`, deprecated in 8.15, is no longer public either. If your code uses it, use `ServiceDiscovery` instead.
 
