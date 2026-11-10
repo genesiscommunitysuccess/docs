@@ -75,7 +75,7 @@ Then change the calls. In this table, `Trade` stands for one of your table entit
 | `updateRange<Index>(keys..., transform)` | `updateByRange(Trade.byTypeId(type)) { ... }` |
 | `updateRangeStartToEnd<Index>(start, end, transform)` | `updateByRange(Trade.byId(start), Trade.byId(end)) { ... }` |
 | `getQueryBuilder()` | `queryBuilder<Trade>()` on `AsyncEntityDb` |
-| `getFirstInRange<Index>(key)` and `getLastInRange<Index>(key)`, for example `getFirstInRangeById(id)` | `getRange` and `getRangeFromEnd`, with `MIN_VALUE` and `MAX_VALUE` as bounds for the other parts of the key |
+| `getFirstInRange<Index>(key)` and `getLastInRange<Index>(key)`, for example `getFirstInRangeById(id)` | `getRange` and `getRangeFromEnd`, with `MIN_VALUE` and `MAX_VALUE` as bounds for the other parts of the key, and `MIN_STRING` and `MAX_STRING` for `String` parts |
 | `get`, `insert`, `modify`, `delete`, `upsert`, `getRange`, `subscribe` and the other reads and writes | The method with the same name, passed the entity or an index such as `Trade.byId(id)` |
 
 Two differences to watch for:
