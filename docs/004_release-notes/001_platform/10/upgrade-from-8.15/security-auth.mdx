@@ -26,6 +26,8 @@ The steps show up at different points of the upgrade:
 
 **Applies to:** `auth("MAP_NAME") { }` blocks in data server queries and table-based request servers.
 
+**Before you start:** the `authKey(TABLE.FIELD)` form needs the 10.0 build. If you haven't yet moved your build to 10.0, follow [Upgrade the build](./index.mdx#upgrade-the-build) first.
+
 **Why:** in 8.15, you could write the fields of the auth key as bare lines in the block, such as `TRADE_VIEW.TRADE_ID`, or wrap them in `fields { }`. The framework ran the block to collect those fields and used them as the key. 10.0 removes this. The key is now set only with `authKey(...)`, and the filter is set with `filter { }` instead of `where { }`.
 
 **What goes wrong if you skip this:**
@@ -209,7 +211,6 @@ auth {
 
 **What to do:**
 
-- **`EventHandlerPermissioning` and `EventHandlerAuthPermissioning`** have been deleted, with no replacement. Event handler scripts never used them, so remove any references to them.
 - **The `genesis-ldap` library**, if your code uses it directly. It is meant for use by the platform's own LDAP logins, so most applications don't. If yours does:
   - `LdapResult.InvalidCredentials` is now an interface. Replace `== LdapResult.InvalidCredentials` and `LdapResult.InvalidCredentials ->` with `is LdapResult.InvalidCredentials ->`.
   - `LdapConfig.trust` is now an `LdapTrustMode`. Wrap your `TrustConfig` in `LdapTrustMode.Standard(...)`.
