@@ -544,6 +544,11 @@ such as `/orders-app/event-trade-insert`, gets `404`.
   `ByteArray` instead; see the return types table on the
   [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/#return-types) page.
 
+  `ByteArray` can't read a multipart request body, in either transport mode. Genesis throws
+  `BodyDecodedAsPartsException: This body was decoded into multipart parts, so it has no byte stream to read`,
+  because the body has already been split into parts. Declare `MultipartHttpBody` as the request
+  type for an upload instead.
+
 Startup is refused if any of these is broken, and also if `server.servlet.context-path` is set
 (use `genesis.spring.router-path-prefix`), if any `server.ssl.*` property is set (use Genesis TLS),
 or if `server.port` is set to anything other than the service-definition port or `0`.
