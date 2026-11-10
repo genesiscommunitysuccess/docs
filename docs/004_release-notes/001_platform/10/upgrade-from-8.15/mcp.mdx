@@ -187,4 +187,6 @@ See [Server configuration](/develop/server-capabilities/model_context_protocol/#
 | `buildRequest(resource, parameters, requiresAuth: Boolean)` | `buildRequest(resource, parameters, userName: String?)` |
 | `AbstractAuthHandler.extractUser()`, which read the tool arguments | `resolveUserName(context: McpTransportContext): String?`, which reads the request headers |
 
+`McpTransportContext` is `io.modelcontextprotocol.common.McpTransportContext`, from the MCP SDK rather than a `global.genesis` package.
+
 Code compiled against `genesis-mcp` is also affected by the general 10.0 changes, such as `jakarta.inject` in place of `javax.inject`, and Jackson 3. See the [upgrade guide](./index.mdx).
