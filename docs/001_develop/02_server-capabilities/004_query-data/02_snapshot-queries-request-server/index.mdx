@@ -701,6 +701,7 @@ There are several options that can be optionally specified in the message header
 | `MAX_ROWS`       | `rowReturnLimit` defined for the target Request Server | Maximum number of rows to be returned as part of the reply message  |
 | `CRITERIA_MATCH` | | The front end can send an expression or a Groovy expression to perform filtering on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000`; [read more below](#criteria_match) |
 | `IF_NONE_MATCH` | | The `ETAG` of a previous reply from a resource with [response caching](#response-caching) enabled |
+| `ENCODING` | | Requests a [columnar encoding](#columnar-encoding) for the reply: `SCDB_V1` or `SCDBJ_V1`. Set this in the `DETAILS` block |
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -832,6 +833,12 @@ connection: keep-alive
 </Tabs>
 
 In the examples above we request all trades for counterparty with ID 1 with a DATE between 1st October 2024 (1731369600000 milliseconds) and 1st November 2024 (1730419200000 milliseconds). We then filter to only return those which are BUY trades, and will limit the response to 5 trades returned maximum. It returns 3 rows.
+
+#### Columnar encoding
+
+By default, a reply carries its rows in a `REPLY` array. A client can ask for a columnar reply instead by setting `ENCODING` in the `DETAILS` block of the request, to `SCDB_V1` (binary, in an `RBUF` field) or `SCDBJ_V1` (JSON columnar, in an `SCDBJ` field). A columnar reply returns the value in `ENCODING`, together with a `DICT_HASH` that the client uses to confirm that it has the same field order as the server.
+
+The reply uses the standard `REPLY` array and has no `ENCODING` if the request doesn't set `ENCODING`, if the value is not one that the server recognises, or if the reply contains a value that the encoding can't represent. The `request_server_columnar_encoding_fallback` metric counts replies in that last case.
 
 #### `CRITERIA_MATCH`
 
