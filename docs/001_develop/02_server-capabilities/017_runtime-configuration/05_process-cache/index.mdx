@@ -32,9 +32,10 @@ The options for both XML and GPAL are:
 * **update**. This setting implies the cache will update currently cached records with the latest information as they are updated in the database layer. Default: false.
 * **loadOnStart**. This global option enables pre-loading database tables in cache before the process starts and it applies as a default for all tables defined in the tables section. Default: false.
 * **insertNewEntries**. If you set this to **true**, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. Default: false.
+* **cacheInTransactions**. If you set this to **true**, single-record reads inside a database transaction can be served from the cache. See [Reads inside a transaction](#reads-inside-a-transaction) before enabling this. Default: false.
 * **tables**
   * **name** is the only mandatory setting for each table definition, and it is used to identify the database tables to be cached.
-  * **loadOnStart**, **update** and **insertNewEntries** options are also available at this level. The behaviour and default values have the same effect as their global settings counterparty described above, but apply at the specific table level.
+  * **loadOnStart**, **update**, **insertNewEntries** and **cacheInTransactions** options are also available at this level. The behaviour and default values have the same effect as their global settings counterparty described above, but apply at the specific table level.
   * The **indices** setting allows you to provide a set of unique indices to be cached as part of the **update** and **loadOnStart** operations.
 
 :::caution
@@ -107,3 +108,34 @@ If you need to change a process-scoped system-definition value at deploy time wi
 ```
 
 Note: If no configuration is found at all for a process, or if some fields are missing, the internal cache configuration will be filled with default values for every missing parameter. You can still use the database cache programmatically by adding tables manually in the code base using ```db.getCache().addTable("TABLE")```.
+
+## Reads inside a transaction
+
+By default, a transaction bypasses the cache, so that code inside it always sees its own uncommitted writes. This means that a cached table is still read from the database on every read inside a transaction.
+
+To serve those reads from the cache, set **cacheInTransactions** on the table, or at the top level to apply it to every table that doesn't set its own value.
+
+```kotlin
+cacheConfig {
+  loadOnStart = true
+  update = true
+
+  tables {
+    table(COUNTRY, indices = listOf(COUNTRY.BY_CODE), cacheInTransactions = true)
+  }
+}
+```
+
+```xml
+<table name="COUNTRY" indices="COUNTRY_BY_CODE" cacheInTransactions="true"/>
+```
+
+:::warning
+Enabling this gives up read-your-own-writes for the table. A write inside the transaction doesn't change what the cache holds, so a later read of that row in the same transaction can return the old value, or nothing at all for a row that the transaction has just inserted.
+
+Only enable it for tables that you read but don't write in the same transaction, which is usually reference data. In particular, don't enable it for a table that you change with `entityDb.updateBy`. That function reads and writes the row in its own transaction, so a stale cached row can be written back over a newer change.
+:::
+
+A cached row can also be out of date because another process has changed it, whether or not you are in a transaction. A row served from the cache isn't read at the transaction's read version, so the transaction can see a different point in time for this table than for its other tables.
+
+A write transaction never adds entries to the cache: a cached row is served, and a row that isn't cached is read from the database without being stored. This prevents uncommitted data from becoming visible to the rest of the process. Read transactions do add rows to the cache. If a table is only ever read inside write transactions, set **loadOnStart** to **true** so that the cache has rows to serve.
