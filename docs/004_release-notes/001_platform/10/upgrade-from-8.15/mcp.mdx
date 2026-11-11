@@ -7,7 +7,7 @@ id: 'upgrade-10.0-mcp'
 
 This page covers the changes to the MCP (Model Context Protocol) server between 8.15 and 10.0. It only applies if your application runs the `GENESIS_MCP` process, which means `GENESIS_MCP_PROCESS_START` is set to `true`. If it doesn't, you can skip this page.
 
-Steps 1 to 3 keep your MCP server and clients working. Steps 4 and 5 deal with the new platform tools, which 10.0 switches on by default. Steps 6 and 7 are settings to decide on and differences to be aware of, and step 8 only affects custom code.
+Steps 1 to 3 keep your MCP server and clients working. Steps 4 and 5 deal with the new platform tools, which 10.0 switches on by default. Steps 6 and 7 are settings to decide on and differences to be aware of.
 
 | When it shows up | Steps |
 |---|---|
@@ -17,7 +17,6 @@ Steps 1 to 3 keep your MCP server and clients working. Steps 4 and 5 deal with t
 | Platform tools refuse every call | 5 (the MCP rights don't exist yet) |
 | Nothing fails, but there are new security settings to choose | 6 |
 | Callers get different results from your endpoint tools | 7 |
-| The build fails | 8 (only for code compiled against the `genesis-mcp` classes) |
 
 These are unchanged, so you don't need to do anything about them:
 
@@ -169,24 +168,3 @@ See [Server configuration](/develop/server-capabilities/model_context_protocol/#
 - **Approval message.** Under `staticUser`, a held event still carries the `approvalMessage` set in `staticUser { }`. If you don't set one, the event now carries the server-level `approvalMessage`, which defaults to `Submitted for approval via MCP`. In 8.15, it carried no message.
 - **Approval events under `staticUser`.** If you exposed `EVENT_PENDING_APPROVAL_ACCEPT`, `EVENT_PENDING_APPROVAL_REJECT` or `EVENT_PENDING_APPROVAL_CANCEL` with `enableMcp`, those tools now refuse every call under `staticUser`, because every caller shares one identity. Use the `approve_request` and `reject_request` platform tools, or cancel the request from the UI.
 - **Audit log.** Every endpoint tool call now writes a line to the `global.genesis.mcp.audit` logger. See [Audit logging](/develop/server-capabilities/model_context_protocol/#audit-logging).
-
-## 8. Update code that implements `AuthHandler`
-
-**Applies to:** code in your application that implements `global.genesis.mcp.auth.AuthHandler` or extends `AbstractAuthHandler`. This is rare: there is no documented way to plug in your own handler.
-
-**Why:** the interface now reads the caller from the request headers instead of the tool arguments.
-
-**What goes wrong if you skip this:** the code doesn't compile.
-
-**What to do:**
-
-| 8.15 | 10.0 |
-|---|---|
-| `getAdditionalProperties(): Map<String, JsonSchema>` | removed |
-| `buildEvent(resource, parameters, requiresAuth: Boolean)` | `buildEvent(resource, parameters, userName: String?)` |
-| `buildRequest(resource, parameters, requiresAuth: Boolean)` | `buildRequest(resource, parameters, userName: String?)` |
-| `AbstractAuthHandler.extractUser()`, which read the tool arguments | `resolveUserName(context: McpTransportContext): String?`, which reads the request headers |
-
-`McpTransportContext` is `io.modelcontextprotocol.common.McpTransportContext`, from the MCP SDK rather than a `global.genesis` package.
-
-Code compiled against `genesis-mcp` is also affected by the general 10.0 changes, such as `jakarta.inject` in place of `javax.inject`, and Jackson 3. See the [upgrade guide](./index.mdx).
