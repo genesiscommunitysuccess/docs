@@ -204,7 +204,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
 
 | In 8.15 | In 10.0 |
 |---|---|
-| `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes drop a value of your own type, and there is no way to register one. Unless your own code reads these values on other nodes, there is nothing to change |
+| `ClusterManager.setGlobalValue` and `setNodeSpecificValue` with your own `Externalizable` class reached other nodes | The call still compiles and sends, but other nodes silently drop a value of your own type, whether it is `Externalizable` or plain `Serializable`. The supported value types are `String`, `Double`, `ConfigurationInfo` and `ProcessStateMapPayload`: `ClusterMessage` payloads are bound to jackson-json with a closed `@JsonSubTypes` list, and there is no supported way to register more types. Unless your own code reads these values on other nodes, there is nothing to change |
 | `ClusterMessage.getStatusMessage()` and `setStatusMessage(Serializable)` | Deprecated for removal. Use `getStatusMessageText()` and `setStatusMessageText(String)`; only a `String` survives the trip between nodes |
 | `InboundMessageListener.onNewMessage(ClusterMessage)` | Now `onNewMessage(ClusterMessage, String? senderHost)` |
 | Your own Pekko modules on 1.4.x | Align them with Pekko 1.7, the version 10.0 brings in |
