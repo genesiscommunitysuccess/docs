@@ -359,7 +359,7 @@ Changes to the Genesis test support itself, such as the new check for leftover `
 | `plexus-utils` or `handlebars` in tests or code generation | the library itself; it no longer arrives on the test and codegen classpaths |
 | `protobuf-java`, `protobuf-dynamic`, `javalin-rendering-freemarker`, Debezium or Kafka Connect | the library, with a version; `genesis-bom` no longer manages it |
 
-Some rows need a version and some don't. These stay version-managed, so declare them without one: `commons-beanutils`, `artemis-jakarta-client`, `assertj-core` and `kotlin-compiler-embeddable` (through `kotlin-bom`). Every other row needs an explicit version, including all six Groovy modules: `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` and `groovy-cli-picocli`.
+These stay version-managed, so declare them without one: `commons-beanutils`, `artemis-jakarta-client`, `assertj-core` and `kotlin-compiler-embeddable` (through `kotlin-bom`). The six Groovy modules need an explicit version (`3.0.25` matches the platform's Groovy): `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` and `groovy-cli-picocli`.
 
 As with steps 4 and 5, search the code base for the imports in the first column, and run `./gradlew dependencyInsight --dependency <library>` to see where a library comes from, for example `./gradlew dependencyInsight --dependency groovy-json`.
 
