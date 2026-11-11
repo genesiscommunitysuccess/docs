@@ -371,6 +371,15 @@ However, this is not recommended as **MQTT is required for dynamic scaling**.
 ### Automatic failover
 When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
+Each `primaryOnly` process competes for a leader lock in Consul, held through a Consul session. The process that holds the lock is the primary. A primary demotes itself and shuts down when either of these happens:
+
+- another session takes the lock, or the lock is released or removed
+- it has had no successful contact with Consul for `ConsulLeaderContactDeadlineSeconds`
+
+When a session ends, Consul keeps the lock from every other session for `ConsulSessionLockDelaySeconds`, so that the old primary has stopped before a secondary takes over. A demoted process that has not shut down within its grace period is halted. The grace period is `ConsulOrderlyHaltGraceSeconds`, or `ConsulLostContactHaltGraceSeconds` if the process demoted itself because it lost contact with Consul.
+
+A process that calls a service through `MessageService` also fails over. If the service replies with an `UNAVAILABLE` NACK, `MessageService` resolves the service again and retries, and the calling process reports a `WARNING` state while it retries. There is no overall time limit on these retries: the request ends when the service gives any other reply, or when a single attempt times out.
+
 ### Networking
 When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports.
 
@@ -415,9 +424,15 @@ systemDefinition {
 | `ConsulTtlSeconds` | Timeout for the TTL Consul checks | `15` |
 | `ConsulTtlPingSeconds` | How often to run the TTL checks and update Consul with the state | `ConsulTtlSeconds` / `2` |
 | `ConsulDeregisterTimeoutMins` | Time to wait after a TTL check goes critical before it deregisters the service in minutes | `30` |
+| `ConsulSessionLockDelaySeconds` | How long Consul keeps the leader lock from other sessions after a session ends, in seconds. The maximum is `60`. Values from `1` to `24` are raised to `25`. `0` turns off the delay, so a demoted primary is no longer guaranteed to have stopped before a secondary is promoted | `25` |
+| `ConsulLeaderContactDeadlineSeconds` | How long a primary can go without successful contact with Consul before it demotes itself, in seconds. The minimum is `15` | `ConsulSessionLockDelaySeconds` - `ConsulLostContactHaltGraceSeconds` - `5`, and at least `15` |
+| `ConsulLostContactHaltGraceSeconds` | How long a process that demoted itself after losing contact with Consul has to shut down before it is halted, in seconds. The minimum is `1` | `5` |
+| `ConsulOrderlyHaltGraceSeconds` | How long a process demoted for any other reason has to shut down before it is halted, in seconds. The minimum is `1` | `ConsulSessionLockDelaySeconds` - `8`, and at least `17` |
 | `ClusterServiceAffinityGroup` | Group services for preferred routing based on this value. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
+
+While `ConsulSessionLockDelaySeconds` is above `0`, the other three settings are capped so that a process stops before the lock delay ends. A value outside its limits is adjusted when the process starts, and the process logs an error that gives the value it used.
 
 ### Troubleshooting
 
