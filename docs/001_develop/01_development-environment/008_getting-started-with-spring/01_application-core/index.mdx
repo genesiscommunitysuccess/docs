@@ -385,7 +385,7 @@ to `GENESIS_ROUTER` under `/my-app/**`:
 | `GET /secure` with a valid token | `200`, body `secure` | Token resolves to a live session |
 | `GET /whoami` with a valid token | `200`, body is the Genesis username | Resolved identity is published as the request `Principal` |
 | `GET /public/ping` with no token | `200`, body `pong` | `@GenesisAnonymous` opts this mapping out |
-| `GET /actuator/health` with no token | `200` | Actuator health is carved out automatically (if the app includes `spring-boot-starter-actuator`; the starter doesn't add it); the rest of the actuator tree is not |
+| `GET /actuator/health` with no token | `200` | Actuator health is carved out automatically (if the app includes `spring-boot-starter-actuator`; the starter doesn't add it, and it needs more setup: see [Before relying on router proxying](#before-relying-on-router-proxying)); the rest of the actuator tree is not |
 
 To fully replace this security chain, supply your own `SecurityFilterChain` bean — the Genesis
 chain backs off automatically when one is present, and `@PreAuthorize`/`@EnableMethodSecurity`
@@ -656,6 +656,20 @@ A few things worth knowing before relying on router proxying:
   the starter doesn't add it). The router reaches actuator under the prefix as well:
   `/orders-app/actuator/health`, not `/actuator/health`. In native mode the prefix is also the
   context path, so the direct Tomcat URL moves too — update health-check probes accordingly.
+  To get it working:
+  - Add the dependency to the `-spring` module (the one with the application class), not `-app`.
+    In `-app` an unversioned dependency fails `genesisSync`, and with an explicit version the jars
+    never reach the app's JVM and health stays `404`.
+  - A new dependency reaches the running process only after you regenerate the start script
+    (`writeStartScript`) and restart Genesis Start. `genesisSync` and a process restart alone left
+    the jars off the classpath.
+  - Set `management.datadog.metrics.export.enabled=false` in the Spring module's
+    `application.properties`. Genesis ships the Datadog, Graphite and Prometheus registries, and
+    without this the app fails to start with `management.datadog.metrics.export.apiKey was 'null'`.
+    This is a workaround while GSF-9096 is open, not permanent design.
+  - Then `GET /<app>/actuator/health` returns `200` with `{"status":"UP"}`, both direct and through the
+    router. `/actuator/health` without the prefix is `404`, and the rest of `/<app>/actuator` needs
+    authentication. Health needs no exposure property.
 - **In native mode, the embedded Tomcat is a second network listener.** It must be reachable from
   the router's host but not from the outside world directly — bind it to a cluster-internal
   interface (`server.address`) and firewall the rest. External traffic should only ever reach the
