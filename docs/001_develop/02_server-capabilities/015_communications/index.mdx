@@ -742,6 +742,7 @@ The constructors that take a `NetworkConfiguration`, or no configuration at all,
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
 | rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
 | suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |
