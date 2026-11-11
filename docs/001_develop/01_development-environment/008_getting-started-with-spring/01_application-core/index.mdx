@@ -523,6 +523,10 @@ method body is unchanged.
 
 **Before — Guice-wired, using `@Module`/`@Inject`/`@Named`:**
 
+:::note
+In Genesis 8.15 and earlier, use the `javax.inject` package instead of `jakarta.inject` in these examples.
+:::
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -531,8 +535,8 @@ package com.example.app
 
 import global.genesis.commons.annotation.Module
 import global.genesis.session.UserSessionCache
-import javax.inject.Inject
-import javax.inject.Named
+import jakarta.inject.Inject
+import jakarta.inject.Named
 
 @Module
 class GreetingService @Inject constructor(
@@ -555,8 +559,8 @@ package com.example.app;
 import global.genesis.commons.annotation.Module;
 import global.genesis.session.UserSessionCache;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Module
 public class GreetingService {
