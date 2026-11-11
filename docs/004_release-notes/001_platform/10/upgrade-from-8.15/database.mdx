@@ -52,6 +52,8 @@ A database that was created on a release that already used the namespace-aware s
 
 **Applies to:** applications that implement a `WriteOperationListener`, `SyncWriteOperationListener` or `AsyncWriteOperationListener`.
 
+**Before you start:** `SyncDb` and `SyncWriteOperationListener` are new in 10.0. They don't exist in 8.15 (they were introduced in 10.0.0-beta1), so the code in the `SyncWriteOperationListener` example below compiles only after you have [bumped the Genesis version](./index.mdx#2-bump-the-genesis-version-and-replace-removed-genesis-artifacts).
+
 **Why:** in 10.0, most writes no longer go through `RxDb`. Two listener interfaces were added for the new write paths: `SyncWriteOperationListener`, a blocking listener that is handed a `SyncDb`, and `AsyncWriteOperationListener`, a suspending listener that is handed an `AsyncDb`.
 
 An existing `WriteOperationListener` still fires for every write. For writes that don't go through `RxDb`, it is called through a bridge, and the process logs this once at INFO:
@@ -149,11 +151,16 @@ View <VIEW_NAME> fails the build because its generated SQL select labels collide
 
 **Why:** these methods now reject a batch in which two items resolve to the same row, meaning the same table, the same unique index and the same key values. In 8.15, the outcome depended on the database: on some, a batch like this succeeded and kept one of the rows.
 
-**What goes wrong if you skip this:** the call throws `GenesisDatabaseFailureException` with `DatabaseErrorCode.DUPLICATE_KEY`, and nothing in the batch is written.
+**What goes wrong if you skip this:** where the check runs, the call throws `GenesisDatabaseFailureException` with `DatabaseErrorCode.DUPLICATE_KEY`, and nothing in the batch is written.
+
+**Where the check runs:**
+
+- **Checked:** the `Db` APIs (`SyncDb`, `AsyncDb` and `RxDb`), and `RxEntityDb` inside `writeTransaction`.
+- **Not checked:** standalone batch writes on `SyncEntityDb`, `AsyncEntityDb` and an injected `RxEntityDb`. These bypass the validator, so a batch that names the same record twice isn't reliably rejected there. See [gpal-java](/develop/server-capabilities/data-access-apis/gpal-java/). A directly constructed `RxEntityDb`, which is deprecated, does run the check.
 
 **What to do:**
 
-- Remove duplicates before you call an `*All` method; for example, group the records by key and keep the last one.
+- Remove duplicates before you call an `*All` method, including on the APIs that don't check, where a duplicate isn't reliably rejected; for example, group the records by key and keep the last one.
 - Key values are compared after they have been normalised by field type, so `BigDecimal("1.0")` and `BigDecimal("1.00")` count as the same key.
 
 ## 6. Check `STRING` values against `maxSize`
