@@ -34,7 +34,11 @@ For a non-technical guide that helps business analysts decide whether the client
 
 [Grid Pro](/develop/client-capabilities/grids/grid-pro/) is built on AG Grid. Some AG Grid capabilities ship only with an Enterprise licence. Foundation UI adds its own versions of the features applications use most often, so a grid can offer them on AG Grid Community.
 
-Grid Pro decides per feature. Register the matching Enterprise module and Grid Pro keeps AG Grid's implementation. Leave that module unregistered and Grid Pro uses the Foundation UI version, where one exists.
+How Grid Pro picks between the two depends on the feature:
+
+- **Status bar and set filter.** Grid Pro checks whether `StatusBarModule` or `SetFilterModule` is registered. With the module, it uses AG Grid's implementation. Without it, it uses Foundation UI's.
+- **Right-click menu and columns panel.** You opt in with `contextMenuItems` or `enable-column-selection`, and Grid Pro then uses Foundation UI's version whether or not the Enterprise module is registered. Setting `contextMenuItems` suppresses AG Grid's context menu.
+- **Lazy loading.** You choose the datasource: `<grid-pro-server-side-datasource>` (Enterprise) or `<grid-pro-infinite-datasource>` (Community).
 
 These alternatives apply to current Grid Pro (AG Grid 36, `@genesislcap/grid-pro` / `@genesislcap/rapid-grid-pro`). The legacy v29 grid keeps the Enterprise-only behaviour.
 
@@ -201,7 +205,7 @@ On Entity Manager, set `datasource-type="infinite"`. The legacy v29 grid does no
 | Data Server | Live. The paging subscription receives inserts, updates, and deletes | Live, with server-side row model behaviour |
 | Request Server | Read when the grid asks again (scroll into a block, filter, sort, or reload). A commit for an event in `pollTriggerEvents` re-reads the loaded blocks, so this session's create, update, and delete show up immediately | Server-side row model requests |
 
-Data Server rows load in order. Scrolling through the result is the intended use; a jump toward the end of a large view walks there one block at a time. `MAX_VIEW` still caps how many rows the server will serve. Data Server sort uses a named index on the resource. Columns outside every named index are not sortable on that transport.
+Data Server rows load in order. Scrolling through the result is the intended use; a jump toward the end of a large view walks there one block at a time. `MAX_VIEW` still caps how many rows the server will serve. On Data Server, a column is sortable only when it is the first field of a named index on the resource. A column that appears later in an index, or in no named index, is not sortable on that transport. Request Server columns are not limited this way.
 
 ```tsx
 import { GridProInfiniteDatasource } from '@genesislcap/grid-pro/react';
