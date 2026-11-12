@@ -341,7 +341,13 @@ Related to these tables, we have the`RIGHT_SUMMARY` table, which contains the su
 ###### Using `GENESIS_AUTH_MANAGER`
 You can use the `GENESIS_AUTH_MANAGER` process to add users and maintain their rights. As long as you use this process, then the entries in the `RIGHT_SUMMARY` table are maintained automatically by the system in real time, so the rights are easily accessible at speed. 
 
-For example, if you add a new user or you update a profile with new rights, the `RIGHT_SUMMARY` table is updated immediately and all the users in that profile receive the new right automatically.
+For example, if you add a new user or you update a profile with new rights, the `RIGHT_SUMMARY` row is written about 1.5 seconds later (the consolidator flushes its changes in batches at that interval), and all the users in that profile then receive the new right automatically.
+
+The timings depend on which event you are looking at:
+
+* Once a `RIGHT_SUMMARY` row changes, the server's in-memory rights cache reacts instantly, so rights checks by event handlers and other server components see the change straight away.
+* After a change to a user, profile or right, the `RIGHT_SUMMARY` row appears or disappears about 1.5 seconds later.
+* The management console's own rights (the `MGMT_*` rights that control what an operator can do in the console) can be up to 10 seconds stale, because the console caches them per user.
 
 ###### Updating directly in the database
 Note that you can also maintain the following tables manually using `DbMon` or `SendIt`:
