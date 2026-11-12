@@ -32,7 +32,7 @@ These need no action:
 
 **What goes wrong if you skip this:** a Kotlin build script that still sets either property fails to compile, with an unresolved reference.
 
-**What to do:** delete both lines.
+**What to do:** delete both lines, and delete the `codeGen` block if it is now empty.
 
 ```kotlin
 // 8.15
