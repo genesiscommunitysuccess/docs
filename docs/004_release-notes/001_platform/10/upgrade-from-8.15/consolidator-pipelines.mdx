@@ -168,16 +168,16 @@ The `dbSink()` and `txDbSink()` functions in pipeline scripts are not affected. 
 
 ```kotlin
 // 8.15: compiles, but the index scan is never registered
-groupBy { Order.ById(orderId) } into {
+groupBy { Order.byId(orderId) } into {
     build {
-        indexScan { Trade.ByOrderId(groupId.orderId) }
+        indexScan { Trade.byOrderId(groupId.orderId) }
         Order { orderId = groupId.orderId }
     }
 }
 
 // 10.0
-groupBy { Order.ById(orderId) } into {
-    indexScan { Trade.ByOrderId(groupId.orderId) }
+groupBy { Order.byId(orderId) } into {
+    indexScan { Trade.byOrderId(groupId.orderId) }
     build { Order { orderId = groupId.orderId } }
 }
 ```
