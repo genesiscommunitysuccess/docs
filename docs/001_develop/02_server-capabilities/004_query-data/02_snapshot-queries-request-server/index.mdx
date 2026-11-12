@@ -335,6 +335,18 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
   }
 ```
 
+#### `filterWithUserName`
+
+This is the same as `filter` but adds a `userName` context property that holds the name of the user making the request, alongside `data`.
+
+In the example below, we will filter out rows assigned to the user making the request.
+
+```kotlin
+  filterWithUserName {
+    data.assignedTo != userName
+  }
+```
+
 #### `criteriaTemplate`
 
 `criteriaTemplate` is a way to enhance the criteria on an incoming request.
