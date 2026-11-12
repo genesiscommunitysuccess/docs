@@ -121,7 +121,7 @@ Here `position-streamer-client.kts` stands for your own `*-streamer-client.kts` 
 | A `.kts` script with no `<module>` and no `<language>` | `Module must be specified when setting language as pal (the default when <language> is absent). Process will not start.` |
 
 **What to do:**
-- Rewrite each Groovy script process as a GPAL `.kts` script, and give the process a `<module>`. The value must match the name of a module jar installed on the server (for example, `genesis-pal-eventhandler` for a GPAL Event Handler); `genesisInstall` uses it to build the process classpath, and a name that matches no installed jar adds nothing to it. For more on moving scripts, see the [script migration guide](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/).
+- Rewrite each Groovy script process as a GPAL `.kts` script, and give the process a `<module>`. The value must match the name of a module jar installed on the server (for example, `genesis-pal-eventhandler` for a GPAL Event Handler); `genesisInstall` uses it to build the process classpath, and a name that matches no installed jar adds nothing to it. This is a rewrite, not a conversion: the Groovy script is replaced by a new GPAL `.kts` script, and there is no automatic converter or Groovy-to-GPAL migration guide. Replace the `<script>` value with the new `.kts` file name, and set the `<module>` as above.
 - You can keep `<language>pal</language>` or remove it; `pal` is now the default.
 
 ### Groovy libraries
