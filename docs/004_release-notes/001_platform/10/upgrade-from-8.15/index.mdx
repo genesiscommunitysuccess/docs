@@ -361,6 +361,8 @@ Changes to the Genesis test support itself, such as the new check for leftover `
 
 These stay version-managed, so declare them without one: `commons-beanutils`, `artemis-jakarta-client`, `assertj-core` and `kotlin-compiler-embeddable` (through `kotlin-bom`). The six Groovy modules need an explicit version (`3.0.25` matches the platform's Groovy): `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` and `groovy-cli-picocli`.
 
+Run `./gradlew build` to confirm the declarations are complete.
+
 As with steps 4 and 5, search the code base for the imports in the first column, and run `./gradlew dependencyInsight --dependency <library>` to see where a library comes from, for example `./gradlew dependencyInsight --dependency groovy-json`.
 
 Two APIs that depended on these libraries have also changed:
