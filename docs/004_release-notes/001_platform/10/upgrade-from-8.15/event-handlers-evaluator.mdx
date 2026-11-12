@@ -108,12 +108,12 @@ Message types that already include a table name, such as `EVENT_INSERT_USER`, ar
 
 **Why:** these classes in `global.genesis.eventhandler` are deprecated for removal in 10.0. They still work. `CallableTransactionHandler` has been removed.
 
-**What goes wrong if you skip this:** in 10.0, code that uses the deprecated classes gets a `[removal]` compiler warning. If your build treats warnings as errors, it fails. Code that uses `CallableTransactionHandler` fails to compile. A later major version will remove the deprecated classes.
+**What goes wrong if you skip this:** in 10.0, code that uses the deprecated classes gets a `[removal]` compiler warning. If your build treats warnings as errors, it fails. Code that uses `CallableTransactionHandler` fails to compile. The deprecated classes are slated for removal in v11.
 
 **What to do now:**
 
 - If your build treats warnings as errors, suppress the `removal` warning for these classes.
-- Replace any use of `CallableTransactionHandler`.
+- Replace any use of `CallableTransactionHandler`. 10.0.0 has no one-to-one substitute for it. The product's own guidance is to move the handler to one of the typed event handlers (the sync, async and rx3 variants, for example `SyncEventHandler`); the deprecation notes say there is "no single mechanical substitution". Plan this as a port of the handler, not a rename.
 
 **What to do before the classes are removed:** port each handler to a typed event handler in `global.genesis.eventhandler.typed`. These interfaces already exist in 8.15. There is no migration tool, so the port is manual. The deprecation notes in the code mention a `MigrateEventHandlerToPAL` tool and a migration guide, but neither ships with 10.0.
 
