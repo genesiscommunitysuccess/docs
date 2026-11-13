@@ -22,10 +22,8 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Drop ktor-client-gson, fest-assert and the unused commons-csv declaration
 * Drop the javax JAXB api and impl, nothing loads them
 * Migrate genesis-server to Jackson 3.1.4
-* Delete orphaned genesis-wsbridge and stale build-output directories
 * Remove the genesis-sync module
 * `genesis-codegen` : Delete the deprecated GenesisVersion
-* `genesis-dbtogenesis` : Drop the abandoned bonecp test dependency
 * Move CRON_RULE_AUDIT to generated audit table and migrate data via installHooks
 * Deprecate genesis-dbtogenesis and genesis-genesistodb
 * Remove the genesis-groovy module
@@ -35,7 +33,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Remove the genesis-publisher module
 * Remove the genesis-shell module and the ki-shell dependency
 * Remove the genesis-web-client-api client SDK
-* Remove the genesis-webmon module after all
+* Remove the genesis-webmon module
 * Remove the legacy genesis-streamer module
 * Remove the legacy genesis-streamerclient module
 * `genesis-clustersupport` : Delete the unused job scheduler package
@@ -95,21 +93,21 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-jackson` : Lazily init cold mappers and per-instance schema registry
 * Decouple genesis-calendar from genesis-process
 * Decouple genesis-codegen and genesis-process from genesis-hft
-* Remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
+* `codegen` : Remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
 * Bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
-* Remove XMLConfiguration-returning ConfigReadable methods
-* Retire the ANTLR Kotlin parser
-* Move StatusDataserver onto genesis-pal-dataserver
-* Drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
-* Remove the deprecated GenesisDictionary.sequenceIdFields
-* Implement the remap type conversions without commons-beanutils
-* Mgrate PopulateHolidays to maintained de.focus-shift jollyday
-* Migrate rule event handlers to the typed EventHandler API
-* Remove unused generic insert/modify/delete event handlers
-* Make ClientConnectionsManager internal
-* Remove deprecated FileReader definition entry points
-* Remove deprecated DbSink and DbRxSink typealiases
-* Trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
+* `genesis-commons` : Remove XMLConfiguration-returning ConfigReadable methods
+* `genesis-commons` : Retire the ANTLR Kotlin parser
+* `genesis-console` : Move StatusDataserver onto genesis-pal-dataserver
+* `genesis-db` : Drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
+* `genesis-dictionary` : Remove the deprecated GenesisDictionary.sequenceIdFields
+* `genesis-environment` : Implement the remap type conversions without commons-beanutils
+* `genesis-environment` : Migrate PopulateHolidays to maintained de.focus-shift jollyday
+* `genesis-evaluator` : Migrate rule event handlers to the typed EventHandler API
+* `genesis-eventhandler` : Remove unused generic insert/modify/delete event handlers
+* `genesis-net` : Make ClientConnectionsManager internal
+* `genesis-pal` : Remove deprecated FileReader definition entry points
+* `genesis-pipeline-api` : Remove deprecated DbSink and DbRxSink typealiases
+* `groovy` : Trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
 
 ### Features
 
@@ -174,7 +172,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-environment` : Generate ZeroMQ CURVE keys and client certificates
 * `genesis-environment` : Rename a column in one table with TABLE.FIELD in RenameFields
 * `genesis-environment` : Support custom main classes
-* `genesis-environment` : Support generic .templt. rendering in genesisInstall
+* `genesis-environment` : Support generic `.templt.<ext>` rendering in genesisInstall
 * `genesis-eventhandler-spring-boot-starter` : Add support for suspend methods
 * `genesis-eventhandler-spring-boot-starter` : Auto-audit JPA writes in Spring event handlers
 * `genesis-eventhandler-spring-boot-starter` : Bind EventHandlerType.INTERNAL for in-process event triggering
@@ -321,7 +319,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `core` : Process shuts down when a dependant process has shut down
 * `core` : Surface removed-module deprecations at install and startProcess
 * `coreproduct` : Handle boolean start flags in getListOfProcessNames()
-* `coreproduct` : Keep pre-logging startup failures in .log.err in every start mode
+* `coreproduct` : Keep pre-logging startup failures in `<process>.log.err` in every start mode
 * `coreproduct` : Make logback-default.xml honour L/RL and match log4j2 rollover
 * `coreproduct` : Report removed Groovy support instead of an unknown scripting engine
 * `coreproduct` : Show monitor details in mon -a while limiting default status messages to warning/error
@@ -431,7 +429,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes
 * `genesis-db` : Correct threading in jms update queue implementation
 * `genesis-db` : Do not pin H2 close-on-exit when AUTO_SERVER is set
-* `genesis-db` : Expose no-arg getBulk()/count() to GPAL scripts
+* `genesis-db` : Expose no-arg `getBulk<E>()`/`count<E>()` to GPAL scripts
 * `genesis-db` : Fail fast when a sync or async write listener uses its tx outside the write
 * `genesis-db` : Fail on colliding SQL view select labels
 * `genesis-db` : Honor injected DatabaseRetryDetails override in DatabaseDetailsProvider
@@ -483,7 +481,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `genesis-db` : Trusted criteria lift only leading imports, match rows when import- or comment-led, and keep trust apart
 * `genesis-db` : Warn at start-up when more than one write listener is bound
 * `genesis-db` : WriteTransaction returns every write's entity results
-* fix(genesis-db):Preserve input order/count in Bulk insertAll and deleteAll
+* `genesis-db` : Preserve input order/count in bulk insertAll and deleteAll
 * `genesis-dbmon` : Support -l flag in search/qsearch when criteriaMode is enabled
 * `genesis-dbtest` : Give each dataserver Test task its own SQL schema
 * `genesis-dbtest` : Stop the test database clear silently leaving rows behind on H2
@@ -681,7 +679,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Exclude plexus-utils and spring-core from distribution zip
 * Pass primingBatchSize through table range subscriptions
 * Report ktlintScripts when its prerequisites are missing
-* Revert changes for custom req-reps done on GSF-7636
 * Root-cause the flaky site-specific distribution and dataserver custom-index tests
 * Serialise recordId and timestamp as strings on the JSON plane
 * Update installed toolsets in docker images
@@ -975,7 +972,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Bump org.apache.activemq:artemis-jakarta-client from 2.56.0 to 2.57.0
 * Bump org.apache.arrow:arrow-memory-unsafe from 18.1.0 to 19.0.0
 * Bump org.apache.commons:commons-configuration2 from 2.13.0 to 2.14.0
-* Bump org.apache.commons:commons-configuration2 from 2.13.0 to 2.14.0
 * Bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.0
 * Bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.1
 * Bump org.apache.commons:commons-configuration2 from 2.15.0 to 2.15.1
@@ -1083,7 +1079,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `foundation-header` : Update userName to attr
 * Allow disable button control on custom events
 * `foundation-layout` : Basic support for popout windows with cross-tab comms
-* `pbc-reporting-ui` : Handle duplicate datasources and grouping stratergies
+* `pbc-reporting-ui` : Handle duplicate datasources and grouping strategies
 * `foundation-forms` : Add bulk insert mode with CSV support
 * `pbc-reporting-ui` : Export and import report configurations
 * `foundation-ai` : Add foundation-ai package with general AI provider architecture
@@ -1135,7 +1131,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `foundation-forms` : React slot renderer via UiSchema options.render
 * `foundation-ui` : Status pills, palette and button extension
 * Updates to date picker
-* Switch to pnpm client and workspace:* for internal deps
 * `ai-assistant` : Capture all meta events in debug log
 * Add uischema className option to form fields
 * `ai-assistant` : Improved timeout handling and ability to stop current flow
@@ -1150,7 +1145,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `foundation-forms` : Forms optimisation
 * `foundation-ai` : Support dynamic model registry
 * `foundation-entity-management` : Add smart-form-modal public API
-* `client-app` : Split Forms showcase into per-section routes
 * `foundation-ui` : Allow stepper to be used as progress indiciator
 * `foundation-ui` : Tab and layout design token update
 * `ai-assistant` : Allow stateful agents to define custom unknown tool handling
@@ -1341,9 +1335,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * Correct stale @genesislcap/oxlint-config pin (14.441.0 -> 14.447.0)
 * `grid-pro` : Show no rows overlay for empty ssrm results
 * Updates to search-bar functionality
-* Revert lerna npmClient to npm to unblock releases
-* Revert changes to unblock release
-* Update .releaserc for pnpm migration
 * `ai-assistant` : Stale rendering widgets due to component recycling
 * `ai-assistant` : Friendlier errors, more logging, and larger logging buffer
 * `foundation-logger` : Restore BrowserReporter for browser environments
@@ -1366,7 +1357,6 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `ai-assistant` : Sub agent debug trace improvements
 * `grid-pro` : Resolve SSRM request on empty stream message with cached rows
 * `ai-assistant` : Ensure floating and popped in component share same driver
-* Update pnpm-lock.yaml
 * `pbc-reporting-ui` : Forward server error msg when fetching json schema
 * `pbc-documents-ui` : Only fetching 250 files to find template assets
 * `foundation-forms` : Preserve multiselect delimiter round-trip on deselect-all
@@ -1390,7 +1380,7 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 * `ai-assistant` : Check for message category too when deduping messages
 * `pbc-notify-ui` : Create SELF subscription routes to stop duplicate alerts
 * `foundation-ui` : Render actions-menu popup via Popover API to escape ancestor clipping
-* `foundation-forms` : Using formatters for data types, restting issubmitting on errors
+* `foundation-forms` : Using formatters for data types, resetting isSubmitting on errors
 * `grid-pro` : Popup cell editors self-cancel after the first edit
 * `foundation-forms` : Fixing DateControlRenderer to use utc
 * `rapid-design-system` : Type Button appearance with the values it actually styles

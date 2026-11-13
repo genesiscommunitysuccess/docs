@@ -7,7 +7,7 @@ id: '10.0-auth'
 
 ### Breaking changes
 
-* V9 alignment — Gradle 9.6.1 + javax.inject→jakarta.inject
+* Upgrade to Gradle 9.6.1 and migrate from `javax.inject` to `jakarta.inject`
 * `auth-sso-endpoint` : Implement private_key_JWT authentication for OIDC when SSO is enabled
 
 ### Features
@@ -17,7 +17,6 @@ id: '10.0-auth'
 * `auth` : Support numeric one-time codes for notify-based MFA
 * `auth-manager` : Migrate LDAP authentication onto genesis-ldap's engine
 * `auth-manager` : Optional per-connection LDAP timeouts and TLS trust/hostname opt-in
-* Implement private_key_JWT authentication for OIDC when SSO is enabled
 * Rename generated modules and enable slice jar publishing
 * Add per-IdP tokenDelivery cookie mode for SSO token delivery
 
@@ -35,9 +34,7 @@ id: '10.0-auth'
 * `auth-oidc` : Use lastIndexOf to extract idp from state parameter
 * `auth-saml` : Fix typo in standard SAML parameter
 * `auth-saml` : Pin SAML Destination validation to configured ACS URL
-* `auth-script-config` : Make AUTH-483 audit tests pass on Oracle and MSSQL
 * USER_PROFILE_AMEND event fix for right consolidation
-* Adapt codebase to new Websocket/HTTP changes in GSF
 * Use TLS for user connection if useTls set
 * Add icons to pbc routes
 * Bump seed-utils to 15.6.2 to unblock FoundationUI 15 apps
