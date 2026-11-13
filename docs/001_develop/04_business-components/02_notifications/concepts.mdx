@@ -42,8 +42,24 @@ ENTITY_ID_TYPE is an enumeration with the following possible values.
 | ENTITY_ID_TYPE | Description |
 | --- | --- |
 | ALL | Sends to all active users within the system. If the type is ALL, ENTITY_ID will be null. |
-| SELF | Sends the notification to the user populated in the 'Sender' field of the notification. Example: Password reset notifications. If the type is SELF, ENTITY_ID will be null. |
+| SELF | Sends the notification to the sender of the notification by default. If ENTITY_ID is also set, delivery is instead scoped to that user — see below for details. Example: Password reset notifications. |
 | USER_NAME | If the type is USER_NAME, ENTITY_ID will be a single USER_NAME that will receive the notification.   |
 | PROFILE_NAME | If the type is PROFILE_NAME, ENTITY_ID will be the name of a PROFILE. All users that have that profile assignment will receive the notification.  |
 
 An additional value is available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. This is used primarily in multi-tenant systems. If using this value, notifications can be sent to everyone with visibility on a particular entity.
+
+When you configure a route with the `SELF` entity type, its behaviour depends on whether you specify an `ENTITY_ID`:
+
+* **Without an `ENTITY_ID`**: The route resolves to the sender of the notification (the user who triggered the event).
+* **With an `ENTITY_ID`**: The route is scoped to that specific user. The notification is delivered only if the sender of the notification matches the specified `ENTITY_ID`. This prevents duplicate alerts and cross-delivery when multiple users subscribe to shared topics.
+
+For example, for a route with `ENTITY_ID_TYPE = SELF` and `ENTITY_ID = "trader1"`:
+
+| Notification sender | Delivered? |
+| --- | --- |
+| `trader1` | Yes — sender matches `ENTITY_ID` |
+| `fdSF` (or any other value) | No |
+
+:::caution
+This is a behaviour change from versions prior to `genesis-notify` 8.15.13. Before that version, `ENTITY_ID` was ignored for `SELF` routes, and every matching notification was delivered to the sender regardless of what `ENTITY_ID` contained. If you have existing `SELF` routes with a populated `ENTITY_ID`, check that it matches how `sender` is actually set on your notifications before upgrading — otherwise that route will silently stop delivering notifications. Routes with `ENTITY_ID` left blank are not affected by this change.
+:::
