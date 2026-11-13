@@ -129,7 +129,7 @@ Here `position-streamer-client.kts` stands for your own `*-streamer-client.kts` 
 `genesis-commons` no longer provides `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` or `groovy-cli-picocli`, and the Genesis BOM no longer manages their versions. If your own code imports from them (for example, `groovy.json.JsonSlurper`, `groovy.sql.Sql` or `CliBuilder`), add the dependency yourself, at the same version as the `groovy` jar that the platform provides:
 
 ```kotlin
-implementation("org.codehaus.groovy:groovy-json:<groovy version>")
+implementation("org.codehaus.groovy:groovy-json:3.0.25")
 ```
 
 `groovy`, `groovy-astbuilder` and `groovy-xml` are still provided.
