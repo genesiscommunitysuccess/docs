@@ -282,7 +282,9 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 }
 ```
 
-From 10.0, you can instead pass the key fields straight to `authKey`, as `TABLE.FIELD` values:
+If a key you declared with `rowLevelPermissions = true` turns out to match more than one row, the Data Server logs a warning and from then on tracks several rows per key for that auth map.
+
+You can instead pass the key fields straight to `authKey`, as `TABLE.FIELD` values:
 
 ```kotlin {4}
 query("ALL_COUNTERPARTYS", COUNTERPARTY) {
@@ -294,7 +296,7 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 }
 ```
 
-The key is the values of the fields joined in the order you list them. Because the Data Server can see which fields make up the key, `authKey(TABLE.FIELD)` sets `rowLevelPermissions` for you, so you don't set it as well. It does this only when the key fields cover a primary or unique index of the table; for a key that isn't unique, `rowLevelPermissions` stays `false`. The `authKey { key(...) }` form shown above still works, but it doesn't set `rowLevelPermissions`, so you set it yourself. For the steps to move an existing application to this form, see [Upgrade from 8.15: Data servers and request servers, step 1](../../../../004_release-notes/001_platform/10/upgrade-from-8.15/security-auth.mdx#1-data-servers-and-request-servers-replace-bare-fields-with-authkey).
+The key is the values of the fields joined in the order you list them. Because the Data Server can see which fields make up the key, `authKey(TABLE.FIELD)` sets `rowLevelPermissions` for you, so you don't set it as well. Each `authKey(...)` call sets it to `true` if the key fields cover a primary or unique index of the table or view, and to `false` otherwise, replacing any value set before it. The `authKey { key(...) }` form shown above still works, but it doesn't set `rowLevelPermissions`, so you set it yourself. For the steps to move an existing application to this form, see [Upgrade from 8.15: Data servers and request servers, step 1](../../../../004_release-notes/001_platform/10/upgrade-from-8.15/security-auth.mdx#1-data-servers-and-request-servers-replace-bare-fields-with-authkey).
 
 #### `criteriaTemplate`
 
@@ -2330,7 +2332,7 @@ class MyDataServerTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.

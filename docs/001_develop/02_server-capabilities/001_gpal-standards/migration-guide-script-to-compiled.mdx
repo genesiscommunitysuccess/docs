@@ -85,7 +85,7 @@ You can keep some definitions in script files and add others in compiled classes
 
 A `GENESIS_COMPACT_PROCESS` commonly bundles several GPAL types together — for example a Data Server and an Event Handler in one process, sharing one `<module>`/`<package>`/`<script>` set. Migrating gradually means one type in that process becomes compiled while the others stay script-based, which is a different situation from the single-type "mixing" above: it's not one type with both forms, it's one process with different types each fully in one form or the other.
 
-The `<module>` and `<package>` tags are each a comma-separated **union** — list whatever every type in the process still needs, not a fixed one-to-one pairing between the two lists. `<script>` narrows down to just the `.kts` files still backing a script-based type. `<language>pal</language>` is optional in 10.0, because `pal` is the default; an explicit `pal` behaves exactly like an omitted tag, so you can keep it or remove it.
+The `<module>` and `<package>` tags are each a comma-separated **union** — list whatever every type in the process still needs, not a fixed one-to-one pairing between the two lists. `<script>` narrows down to just the `.kts` files still backing a script-based type. `<language>pal</language>` stays as long as *anything* in the process is still script-based (`genesisInstall` only merges processes that declare it into `GENESIS_COMPACT_PROCESS`), and is only dropped once every type in that process is compiled.
 
 Migrating a compact process's Data Server first, with its Event Handler still scripted, goes through three stages:
 
@@ -156,7 +156,7 @@ class MyDataServerTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedType` registers one exact class (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type), while `@ProvidedInstance` is for a pre-built instance you construct yourself. Either `@PackageScan` or `@ProvidedType` is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedType` with `@TestScriptFile` to bring everything into the same test.

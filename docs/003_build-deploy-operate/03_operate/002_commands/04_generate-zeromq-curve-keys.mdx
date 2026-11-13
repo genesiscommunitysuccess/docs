@@ -132,7 +132,7 @@ The command reads the deployed `network-config.yaml` and reports any of the foll
 - a public key that doesn't belong to its secret key
 - a client public key that has no certificate in `allowedClientCertDirectory`, so the server would reject it
 
-Run it in a shell with the same environment as the processes. The placeholder check is the one most worth running. An unset variable stays in the configuration as the literal text `${...}`. The process then reports a malformed key, which sends you looking at the key instead of the environment.
+Run it in a shell with the same environment as the processes. The placeholder check is the one most worth running: a process with an unset key variable doesn't start, and fails with `<key> was not resolved: set the <variable> environment variable, or disable ZeroMQ CURVE`.
 
 The check covers only the host you run it on. It can't tell whether the secrets are exported on the other hosts.
 

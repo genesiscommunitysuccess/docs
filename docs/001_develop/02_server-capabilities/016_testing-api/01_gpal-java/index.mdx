@@ -295,7 +295,7 @@ These tests will behave slightly differently.
 
 #### Microservice shared context
 
-When using [`@GenesisSharedContextTest`](#genesissharedcontexttest), function-level annotations are not supported and your test will fail if any are found.
+When using [`@GenesisSharedContextTest`](#genesissharedcontexttest), function-level annotations are not supported, except [`@CsvData`](#csvdata) and [`@ResetTableAfterTest`](#resettableaftertest). Your test will fail if any other GenesisJunit annotation is found on a test function. Data loaded by a function-level `@CsvData` is reverted after that test.
 Additionally, after each test, if the service is no longer healthy or if exit was called, any subsequent test will fail.
 
 #### Database only shared context
@@ -315,7 +315,7 @@ If compatible, the database will be reused; otherwise, it will be disregarded an
 You must add [`@GenesisDatabaseTest`](#genesisdatabasetest) or [`@GenesisTest`](#genesistest) to your class or function. This is essential.
 ::::
 
-`@GenesisDatabaseTest` or `@GenesisTest` and all the annotations below work on both the class and method level.
+`@GenesisDatabaseTest`, `@GenesisTest` and the annotations below can be applied to the targets listed in the table.
 Not all annotations are supported when using `@GenesisDatabaseTest`.
 
 | Annotation                                                  | Target             | Repeatable | Works with `@GenesisDatabaseTest` |
@@ -330,27 +330,28 @@ Not all annotations are supported when using `@GenesisDatabaseTest`.
 | [EnableQuietMode](#enablequietmode)                         | Class/ Method      |     ❌      |                ✔️                 |
 | [EnableTestClassLoader](#enabletestclassloader)             | Class/ Method      |     ❌️     |                ❌️                 |
 | [ExpectedExitCode](#expectedexitcode)                       | Class/ Method      |     ❌️     |                ❌️                 |
-| [ExpectedProcessStatus](#expectedprocessstatus)             | Class/ Method      |     ❌️     |                 ❌                 |
+| [ExpectedProcessStatus](#expectedprocessstatus)             | Method             |     ❌️     |                 ❌                 |
 | [FullDumpOnFailure](#fulldumponfailure)                     | Class/ Method      |     ❌      |                ✔️                 |
 | [GenesisHome](#genesishome)                                 | Class/ Method      |     ❌      |                ✔️                 |
 | [GenesisSharedContextTest](#genesissharedcontexttest)       | Class              |     ❌      |                 ❌                 |
 | [GenesisTemplateTest](#genesistemplatetest)                 | Method             |     ❌      |                ✔️                 |
-| [PackageNameScan](#packagenamescan)                         | Class/ Method      |     ✔️     |                ✔️                 |
-| [PackageScan](#packagescan)                                 | Class/ Method      |     ✔️     |                ✔️                 |
+| [NetworkConfig](#networkconfig)                             | Class/ Method      |     ❌      |                 ❌                 |
+| [PackageNameScan](#packagenamescan)                         | Class/ Method      |     ✔️     |                 ❌                 |
+| [PackageScan](#packagescan)                                 | Class/ Method      |     ✔️     |                 ❌                 |
 | [ProcessArg](#processarg)                                   | Class/ Method      |     ❌      |                 ❌                 |
 | [ProvidedDictionary](#provideddictionary)                   | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedInstance](#providedinstance)                       | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedSysDef](#providedsysdef)                           | Field/ Method      |     ❌      |                ✔️                 |
 | [ProvidedType](#providedtype)                               | Field/ Method      |     ❌      |                ✔️                 |
-| [ResetTableAfterTest](#resettableaftertest)                 | Class/ Method      |     ✔️     |                ✔️                 |
-| [RootLogLevel](#rootloglevel)                               | Class/ Method      |     ❌      |                ✔️                 |
+| [ResetTableAfterTest](#resettableaftertest)                 | Class/ Method      |     ❌      |                 ❌                 |
+| [RootLogLevel](#rootloglevel)                               | Class/ Method      |     ❌      |                 ❌                 |
 | [SysDefOverwrite](#sysdefoverwrite)                         | Class/ Method      |     ✔️     |                ✔️                 |
-| [TestInject](#testinject)                                   | Method parameter   |     ✔️     |                ✔️                 |
-| [TestConfigFile](#testconfigfile)                           | Class/ Method      |     ✔️     |                 ❌                 |
+| [TestInject](#testinject)                                   | Method parameter   |     ❌      |                ✔️                 |
+| [TestConfigFile](#testconfigfile)                           | Class/ Method      |     ❌      |                 ❌                 |
 | [TestScenario](#testscenario)                               | Class/ Method      |     ✔️     |                ✔️                 |
 | [TestScriptFile](#testscriptfile)                           | Class/ Method      |     ✔️     |                 ❌                 |
 | [ThreadDumpOnFailure](#threaddumponfailure)                 | Class/ Method      |     ❌      |                ✔️                 |
-| [UserRight](#userright)                                     | Class/ Method      |     ✔️     |                ✔️                 |
+| [UserRight](#userright)                                     | Class/ Method      |     ✔️     |                 ❌                 |
 | [WithLogLevel](#withloglevel)                               | Class/ Method      |     ✔️     |                ✔️                 |
 
 Some annotations are repeatable, which means you can provide multiple values at the class or method level.
@@ -633,13 +634,14 @@ public class LegacyXmlDictionaryTest {
 #### EnableQuietMode
 
 This annotation disables the update queue during the test.
+It applies to [`@GenesisDatabaseTest`](#genesisdatabasetest) tests only; a `@GenesisTest` ignores it.
 This annotation can be applied to classes or methods and is not Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-@GenesisTest
+@GenesisDatabaseTest
 @EnableQuietMode
 class QuietModeTest {
     @Test
@@ -653,7 +655,7 @@ class QuietModeTest {
 <TabItem value="java">
 
 ```java
-@GenesisTest
+@GenesisDatabaseTest
 @EnableQuietMode
 public class QuietModeTest {
     @Test
@@ -1000,7 +1002,7 @@ public class PackageNameScanTest {
 #### ProvidedSysDef
 
 Annotation used to mark properties or methods as provided system definitions.
-Marked properties or methods can be used to provide system definition values during test runtime.
+The annotation takes the system definition key, and the value of the marked property, or the return value of the marked no-argument method, becomes that key's value during test runtime.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1009,12 +1011,12 @@ Marked properties or methods can be used to provide system definition values dur
 @GenesisTest
 internal class ProvidedSysDefTest {
 
-    @ProvidedSysDef
+    @ProvidedSysDef("MY_SYS_DEF")
     private val mySysDef: String = "test-value"
 
     @Test
     fun myTest() {
-        // mySysDef is provided as a system definition
+        // the MY_SYS_DEF system definition is set to "test-value"
     }
 }
 ```
@@ -1026,12 +1028,12 @@ internal class ProvidedSysDefTest {
 @GenesisTest
 public class ProvidedSysDefTest {
 
-    @ProvidedSysDef
+    @ProvidedSysDef("MY_SYS_DEF")
     private String mySysDef = "test-value";
 
     @Test
     public void myTest() {
-        // mySysDef is provided as a system definition
+        // the MY_SYS_DEF system definition is set to "test-value"
     }
 }
 ```
@@ -1420,11 +1422,11 @@ public class SharedProvidedTypeTest {
 
 #### ResetTableAfterTest
 
-Annotation used to reset specific database tables after each test when using a shared-context test.
+Annotation used to reset specific database tables after each test when using a [`@GenesisSharedContextTest`](#genesissharedcontexttest).
 GenesisJunit will take a snapshot of the table before each test, and then revert it to its previous state.
 Please note that there is a limit of 1,000 rows; the test will fail if a table has more rows than this.
 The snapshot will be taken after any [`@CsvData`](#csvdata) is loaded, but before the test is run.
-This annotation can be applied to classes or methods and is Repeatable.
+This annotation can be applied to classes or methods. It is not Repeatable; to reset several tables, list them in one annotation, for example `@ResetTableAfterTest("TRADE", "POSITION")`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1612,8 +1614,16 @@ public class WithLogLevelTest {
 
 #### NetworkConfig
 
-Points the test process at a network config file anywhere on the classpath, read exactly as a
-`network-config.yaml` under GENESIS_HOME is. The annotated file wins outright: a file under the test
+Without this annotation, a test process reads a `network-config.yaml` or `network-config-PROCESS_NAME.yaml`
+from its GENESIS_HOME, as a deployed process does (see
+[Service encryption](/develop/server-capabilities/runtime-configuration/service-encryption/)). The file
+replaces the `ChannelType` and `MessageSerialization` system definitions, and a `tls` mode of `TLS` or
+`MUTUAL_TLS` starts the test process with TLS. Relative TLS paths in the file resolve against the test
+GENESIS_HOME. With no file, the system definitions apply, defaulting to WebSocket and JSON.
+
+`@NetworkConfig` points the test process at a network config file of your choice instead. The path is a
+classpath resource; if no resource matches, it is read as a filesystem path. The file is read exactly as
+a `network-config.yaml` under GENESIS_HOME is. The annotated file wins outright: a file under the test
 GENESIS_HOME and the `ChannelType` and `MessageSerialization` system definitions are both ignored.
 You can apply this annotation on both classes and methods.
 

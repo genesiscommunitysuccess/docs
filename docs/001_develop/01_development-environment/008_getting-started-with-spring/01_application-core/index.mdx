@@ -65,9 +65,9 @@ authentication it provides for a servlet web app.
 
 ## Set-up
 
-Apply the Genesis convention plugin and add the starter — this pulls in the Spring Boot Gradle
-plugin and dependency-management/BOM alignment, so you don't need to hand-pin every transitive
-Spring Boot version yourself:
+Apply the [Genesis Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) and add the
+starter. The plugin does not apply the Spring Boot Gradle plugin; the starter brings Spring Boot's
+dependency versions with it as a platform, so you don't need to pin Spring Boot versions yourself:
 
 ```kotlin
 plugins {

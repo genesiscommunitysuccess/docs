@@ -74,11 +74,11 @@ consolidators {
         groupBy { Order.byIdDate(orderId, tradeDate) } into {
             build {
                 Order {
-                    id = groupId.orderId
-                    orderDate = groupId.tradeDate
+                    id = groupId.id
+                    orderDate = groupId.orderDate
                 }
             }
-            indexScan { ConsolidatorTrade.byOrderId(groupId.orderId) } // Need to recalculate certain functions
+            indexScan { ConsolidatorTrade.byOrderId(groupId.id) } // Need to recalculate certain functions
         }
     }
 
@@ -132,6 +132,7 @@ val sideEnum = sharedField("SIDE", ENUM("BUY", "SELL"))
     field(name = "ORDER_ID", type = INT).notNull()
     field(name = "TRADE_DATE", type = DATE)
     field(name = "QUANTITY", type = LONG)
+    field(name = "PRICE", type = DOUBLE)
     field(name = "COUNTERPARTY_ID", type = STRING).notNull()
     field(name = "SYMBOL", type = STRING).notNull()
     field(sideEnum)
@@ -649,8 +650,8 @@ For example, this is the `CON_ORDER_FROM_TRADES` consolidator from the top of th
     groupBy { Order.byIdDate(orderId, tradeDate) } into {
         build {
             Order {
-                id = groupId.orderId
-                orderDate = groupId.tradeDate
+                id = groupId.id
+                orderDate = groupId.orderDate
             }
         }
     }
@@ -1627,7 +1628,7 @@ class ConsolidatorTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.

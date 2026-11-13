@@ -369,8 +369,6 @@ Inside `buildResponse` you can set:
 | `body(value)` | The response body, serialised the same way as a returned value |
 | `contentType(contentType)` | Override the response content type |
 
-8.15 and earlier import `HttpResponse` from `global.genesis.router.server.web.http.extensions`; 10.0 moved it to `global.genesis.process.web.handler`.
-
 For a status code that does **not** depend on the request, prefer the [`status` parameter](#override-status-code) on `endpoint` or the [`HttpResponseCode` annotation](#httpresponsecode-annotation) instead.
 
 #### `multipartEndpoint`
@@ -1046,10 +1044,6 @@ There are some simple steps to follow in order to set up your test.
 
 ###### Create the test class
 Create the test class using the code provided below:
-
-:::note
-The code examples use `jakarta.inject`. In Genesis 8.15 and earlier, import `javax.inject` instead.
-:::
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

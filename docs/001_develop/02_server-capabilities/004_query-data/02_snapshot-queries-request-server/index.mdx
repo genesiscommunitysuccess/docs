@@ -695,6 +695,7 @@ The Request Server serves a resource without caching, and logs a warning at star
 - uses `filter`, `filterWithUserName`, `filterWithParameters` or `filterWithRequest`
 - uses `withTransformation` on a request field
 - can't be tracked, because the update queue is disabled (`MqLayer=Disabled`) or the table or view name can't be resolved
+- is a custom or paginated Request Server that inherits `cacheable()` from a file-level `config` block
 
 ### Revalidating a response
 
@@ -1400,7 +1401,7 @@ class HelloWorldRequestServerTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` and `@ProvidedType` each work standalone — you don't need both. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
