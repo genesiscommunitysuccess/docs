@@ -278,6 +278,42 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.44
+
+###### Features
+
+* `genesis-router` : Add ssoToken pre-auth cookie support for SSO token delivery
+* Write _AUDIT rows for consolidator writes to audited tables
+
+###### Performance improvements
+
+* `genesis-commons` : Load out-of-order keys into the paged sorted maps faster with no extra heap
+* `genesis-pal-execution` : Deliver sync backward-join branch updates through a private channel instead of an IO thread per branch
+* `genesis-pal-execution` : Encode each join key once per update in the memory-efficient sync backward-join cache
+* `genesis-pal-execution` : Exact memory-efficient sync backward-join cache with compact storage
+* `genesis-pal-execution` : Share parent keys between sibling identity backward-join branches
+* `genesis-pal-execution` : Store root primary keys encoded in the memory-efficient backward-join cache
+
+###### Fixes
+
+* `core` : Publish JMS updates as BytesMessage
+* `genesis-db` : Call destroy() on the stored listener when TopicHandler.deregister removes it
+* `genesis-db` : Honour reverse order in SQL view getRangeFromEnd with an index reference
+* `genesis-db` : Merge both sides of two Modify updates
+* `genesis-db` : Range subscriptions unlink rows and join chains they no longer hold, order and bound range refreshes
+* `genesis-db` : Stop the SQL connection pool losing permits and connections
+* `genesis-environment` : SetProcessState resolves its client config from network-config.yaml
+* `genesis-pal` : Do not mark a join as identity when its key reads an ancestor field
+* `genesis-pal-datapipeline` : Keep the DB poller checkpoint on a sink timeout or a terminated pipeline
+* `genesis-pal-execution` : Backward-join cache missed updates, join ordering, merges, fields and SQL view replay memo
+* `genesis-pal-execution` : Recover backward-join child updates dropped before the link exists
+* `genesis-pal-execution` : Share one backward-join root collection across every enricher client
+* `genesis-subcore` : Configurable JMS client id so durable subscriptions survive pod restarts
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW bulkSubscribe
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW rangeSubscribe and no-join view subscriptions
+* `genesis-subcore` : Subscribe again on each sync backward-join branch retry, and release BLOCKING listeners a priming view never collected
+* Pass primingBatchSize through table range subscriptions
+
 #### 8.15.43
 
 ###### Fixes
