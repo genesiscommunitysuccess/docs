@@ -28,6 +28,8 @@ When you make a request to a Request Server resource, you specify the filtering 
 When you connect to a Data Server resource, the attributes you specify for filtering are automatically included in the **DATA_LOGON** message that is sent to the server when the connection is first established.
 :::
 
+From version 10.0.1, the server limits the size of the criteria a client sends. By default, criteria can be up to 65,536 characters, with brackets nested up to 100 levels deep and up to 1,000 logical operators (such as `&&`, `||` and `!`). Criteria over a limit are refused with the error code `INVALID_CRITERIA` and a message that names the limit. A filter built from a long list of values, such as `A || B || C || …`, is the shape most likely to reach the logical-operator limit; `FIELD in [...]` with a list of values doesn't count towards it. The application can change these limits; see [Expression limits](/develop/server-capabilities/runtime-configuration/system-definition/#expression-limits).
+
 ## Common expressions
 
 The platform provides common expressions that are especially helpful for `Date` and `DateTime` filtering. Common expressions are called using the `Expr` binding and take one or two parameters:

@@ -555,7 +555,9 @@ pipelines {
 
 You also have the option of providing a batch size to the `dbBatchQuery` source.
 
-If no `batchSize` is provided, the elements from the database poll will be returned individually and the persistence manager will use the index from each individual record to keep track of what has been processed. This means that the index of each record will be persisted after it reaches the sink. This gives an *exactly once* guarantee.
+If no `batchSize` is provided, the elements from the database poll will be returned individually and the persistence manager will use the index from each individual record to keep track of what has been processed. This means that the index of each record will be persisted after it reaches the sink.
+
+With a [transactional sink](./#transactional-sinks) such as [`txDbSink`](#txdbsink), the index and the sink's writes are committed in one transaction, so each record takes effect *exactly once*. With any other sink, this gives an *at least once* guarantee: a record is read again if the sink delivers it and then times out, or if the system goes down before the index is persisted. Neither guarantee covers a record that the source skips, as described in [What happens when processing fails](#what-happens-when-processing-fails).
 
 If a `batchSize` is provided, the elements from the database poll will be batched into the size you have specified in order of the index provided and returned as a list. The persistence manager will use the index from the last record of this batch. So, if the system goes down whilst in the middle of processing a batch of records, it recovers by continuing from the beginning of that batch. This gives an *at least once* guarantee. This option greatly increases processing speeds when working with large amounts of data.
 
@@ -574,6 +576,20 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 }
 // this source will return batches of List<TestIndexTable>
 ```
+
+###### What happens when processing fails
+
+The source keeps its persisted index at the last record or batch that completed, and processes the failed one again:
+
+- If the sink times out (for example, inside `withTimeout`) or throws `SinkUnavailableException`, the source reads the record or batch again and the pipeline keeps running. The first retry waits for `dbLookupDelayMs`, with a minimum of 100ms. The delay doubles on each retry up to 30 seconds, or `dbLookupDelayMs` if that is longer. There is no limit on retries, so the pipeline stays on that record or batch until the sink recovers.
+- If the pipeline is terminated (by `STOP_PIPELINE` or a `TerminatePipelineException`), or is stopped because an [`onCompletion`](#oncompletion) handler failed inside a transactional sink, the record or batch is processed again when the pipeline restarts.
+
+The persisted index does move past the record or batch in the following cases, so it isn't processed again:
+
+- An [`onUncaughtError`](#onuncaughterror) handler returns normally.
+- A `map`, `filter` or `split` step times out.
+
+If an uncaught exception stops the pipeline, the source keeps its persisted index before the record or batch that failed, and processes it again when the pipeline restarts. The one case where it doesn't is an [`onCompletion`](#oncompletion) handler that fails after a non-transactional sink has written: the persisted index moves past that record or batch, so it isn't processed again.
 
 #### `dbBulkSubscribe`
 

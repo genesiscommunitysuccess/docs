@@ -66,9 +66,9 @@ authentication it provides for a servlet web app.
 
 ## Set-up
 
-Apply the Genesis convention plugin and add the starter — this pulls in the Spring Boot Gradle
-plugin and dependency-management/BOM alignment, so you don't need to hand-pin every transitive
-Spring Boot version yourself:
+Apply the [Genesis Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) and add the
+starter. The plugin does not apply the Spring Boot Gradle plugin; the starter brings Spring Boot's
+dependency versions with it as a platform, so you don't need to pin Spring Boot versions yourself:
 
 ```kotlin
 plugins {
@@ -283,7 +283,8 @@ own, independent, **deny-by-default** authentication layer. It reads the same
 `SESSION_AUTH_TOKEN` header the rest of Genesis uses (the hyphenated `SESSION-AUTH-TOKEN` spelling
 is also accepted, since some proxies drop headers containing underscores) and resolves it through
 `OnDemandUserSessionCache`, which reads a session from `USER_SESSION` the first time its token is
-seen and caches it. An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
+seen and caches it, as the router does (see
+[Auth tokens](/develop/server-capabilities/access-control/authentication/#auth-tokens)). An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
 
 This layer is an authorisation filter: when it sees a `SESSION_AUTH_TOKEN` (or `SESSION-AUTH-TOKEN`)
 header on the incoming request, it resolves the token against the session store and populates the
@@ -720,8 +721,8 @@ package com.example.app
 
 import global.genesis.commons.annotation.Module
 import global.genesis.session.UserSessionCache
-import javax.inject.Inject
-import javax.inject.Named
+import jakarta.inject.Inject
+import jakarta.inject.Named
 
 @Module
 class GreetingService @Inject constructor(
@@ -744,8 +745,8 @@ package com.example.app;
 import global.genesis.commons.annotation.Module;
 import global.genesis.session.UserSessionCache;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Module
 public class GreetingService {

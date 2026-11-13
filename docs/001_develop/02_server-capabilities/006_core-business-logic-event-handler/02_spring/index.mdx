@@ -14,8 +14,8 @@ import TabItem from '@theme/TabItem';
 
 A class-based, annotation-driven way to write event handlers, as an alternative to [GPAL `.kts` event handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java).
 
-:::caution
-`genesis-eventhandler-spring-boot-starter` is still work-in-progress upstream — expect its API and the set of supported annotations to change as the module matures. The gaps below are accurate as of this writing, but check back before relying on any of them being fixed.
+:::note
+Some features of GPAL event handlers are not available in Spring event handlers. See [Limitations](#limitations).
 :::
 
 ## Overview
@@ -146,6 +146,7 @@ import global.genesis.eventhandler.spring.annotation.EventCommit
 import global.genesis.eventhandler.spring.annotation.EventContext
 import global.genesis.eventhandler.spring.annotation.EventValidate
 import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+import global.genesis.eventhandler.spring.service.blocking.EventProvider
 
 data class Create(val name: String = "", val qty: Int = 0)
 data class Created(val id: String)
@@ -241,8 +242,8 @@ class InternalEventHandler {
 ### Handler annotation(s)
 
 - `@GenesisEventHandler("EVENT_NAME")` on a class marks it as a single-event handler. It may declare one `@EventValidate` method and must declare exactly one `@EventCommit` method.
-- `@GenesisEventController("PREFIX")` on a class groups several related events together. Each method annotated `@EventMapping("SUFFIX")` becomes its own event, registered as `PREFIX_SUFFIX` (or just `SUFFIX` if the prefix is empty). A controller class must **not** declare `@EventValidate`/`@EventCommit` methods — there is no automatic validate/commit split per method inside a controller; a mapped method either handles the request outright or inspects `@IsValidateOnly` itself (see below).
-- A class cannot carry both `@GenesisEventHandler` and `@GenesisEventController` — that combination is rejected at start-up, as is a controller with no matching methods, a single handler with no commit method, or more than one commit method.
+- `@GenesisEventController("PREFIX")` on a class groups several related events together. Each method annotated `@EventMapping("SUFFIX")` becomes its own event, registered as `PREFIX_SUFFIX`. The prefix and each suffix must match `[A-Z][A-Z0-9_]+`, so a controller with an empty prefix fails registration at start-up. A controller class must **not** declare `@EventValidate`/`@EventCommit` methods — there is no automatic validate/commit split per method inside a controller; a mapped method either handles the request outright or inspects `@IsValidateOnly` itself (see below).
+- A class cannot carry both `@GenesisEventHandler` and `@GenesisEventController` — that combination is rejected at start-up, as is a single handler with no commit method or with more than one commit or validate method, and a controller that maps the same event name twice.
 - `EventHandlerType` (`STANDARD` / `INTERNAL` / `APPROVABLE` / `DEFAULT`, which resolves to `STANDARD`) is settable on the class or per-method, to influence routing and visibility. `STANDARD` is the default, UI-exposed case. `INTERNAL` is enforced at the router level: once an event is marked `INTERNAL`, the router will not expose it externally. `APPROVABLE` exists only as a value today — there's no supporting machinery for a multi-party approval flow, so setting it doesn't currently change a handler's behaviour (see [Limitations](#limitations)).
 
 Parameter-level injection available on a validate/commit/mapping method:
@@ -337,7 +338,7 @@ public class AnyRightEventHandler {
 </TabItem>
 </Tabs>
 
-`@RequiresAnyRight`/`@RequiresAllRights` are checked against `RightSummaryCache` before the handler method runs; an unauthorised user gets a not-authorised nack and the method body never executes. They can sit on the class, on an individual `@EventMapping` method, or both (both checks then apply — logical AND). This path is genuinely wired and tested.
+`@RequiresAnyRight`/`@RequiresAllRights` are checked against `RightSummaryCache` before the handler method runs; an unauthorised user gets a not-authorised nack and the method body never executes. They can sit on the class and on any handler method: the `@EventValidate` and `@EventCommit` methods of a `@GenesisEventHandler`, or an `@EventMapping` method of a `@GenesisEventController`. Every level that carries one applies (logical AND), so the user must pass the class-level check and the check on each of the event's methods. A class-level annotation is inherited by subclasses.
 
 `@RequiresAuth(mapName, fields)` is also available, intended for row-level/dynamic authorisation against a Genesis authorization map, but it is **not enforced today** — it's parsed into a model attached to the handler definition and nothing consults it. Don't rely on it for row-level authorisation yet; use `@RequiresAnyRight`/`@RequiresAllRights` for anything that must actually be checked.
 
@@ -402,9 +403,9 @@ Exceptions are mapped to nacks through the following mechanisms:
 - A per-handler `@EventExceptionHandler([SomeException::class])` method, which takes priority for exceptions thrown by that handler's own methods.
 - A separate class annotated `@EventControllerAdvice`, with its own `@EventExceptionHandler` methods, registers globally and is consulted for any handler with no matching handler of its own. An advice class with no `@EventExceptionHandler` methods fails registration.
 - A custom exception class annotated `@EventWarning(status = ...)` is treated as a business warning — the resulting `EventNack` carries it as a `warning` rather than an `error`.
-- Any exception that doesn't match one of the above falls back to a default mapping: an `IllegalArgumentException`, or an exception annotated `@ExposeClientError` (see below), produces a nack carrying its message as the error. Any other exception — including `ValidatingEventHandler`'s own `IllegalStateException` from [Example configuration](#example-configuration), and the `IllegalStateException` thrown by `commit` above when `details.name` is neither `"warn"` nor `"custom"` — is nacked with that exception's own message too; it's just labelled as an internal-error type rather than a request-level one. The one case that doesn't carry its own message is `NullPointerException`, which gets a substitute, sanitised message instead.
+- Any exception that doesn't match one of the above falls back to a default mapping: an `IllegalArgumentException` produces a nack with error code `REQUEST_FAILED` and its message as the error text. Any other exception — including `ValidatingEventHandler`'s own `IllegalStateException` from [Example configuration](#example-configuration), and the `IllegalStateException` thrown by `commit` below when `details.name` is neither `"warn"` nor `"custom"` — is nacked with error code `INTERNAL_ERROR` and that exception's own message. The one case that doesn't carry its own message is `NullPointerException`, which gets the generic `INTERNAL_ERROR` text instead.
 
-An `@EventExceptionHandler` method must return `EventReply` and take exactly one `Throwable`-subtype parameter, checked at start-up:
+An `@EventExceptionHandler` method must return `EventReply` and take exactly one `Throwable`-subtype parameter. On an `@EventControllerAdvice` class this is checked at start-up:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -496,8 +497,6 @@ public class ExplodingEventHandler {
 
 `EventReply.EventNack`'s primary constructor takes `warning` before `error` (`EventNack(warning: List<GenesisError> = ..., error: List<GenesisError> = ...)`), which is easy to get backwards positionally from Java — the vararg secondary constructor (`EventNack(vararg error: GenesisError)`) shown above maps unambiguously onto `error` instead.
 
-`@ExposeClientError` is the annotation that puts a custom exception class into the "message exposed" branch above, without it needing to be an `IllegalArgumentException` — annotate the exception class itself. Exposure is not unconditional: an unannotated exception that isn't an `IllegalArgumentException` is still masked behind the generic internal-error nack.
-
 ### Triggering other events
 
 A handler can call another event from within its own commit logic by injecting an `EventProvider` — a suspending variant (`global.genesis.eventhandler.spring.service.EventProvider`) for `suspend` call sites, and a blocking one (`global.genesis.eventhandler.spring.service.blocking.EventProvider`) for everything else, including Java:
@@ -508,6 +507,7 @@ A handler can call another event from within its own commit logic by injecting a
 ```kotlin
 import global.genesis.eventhandler.spring.annotation.EventCommit
 import global.genesis.eventhandler.spring.annotation.GenesisEventHandler
+import global.genesis.eventhandler.spring.service.EventProvider
 import global.genesis.message.core.event.EventReply
 
 @GenesisEventHandler("CREATE_AND_TOUCH")
@@ -554,7 +554,9 @@ public class CreateAndTouchEventHandler {
 </TabItem>
 </Tabs>
 
-`trigger(eventName, payload)` is in-process only — it looks the target event up directly in the local registry, and throws if nothing is registered under that name in the *same* process; it does not fall back to a remote call. For a handler registered in a different process, use `triggerRemote(eventName, payload)` (suspends or blocks for the reply) or `triggerAsync(eventName, payload)` (fire-and-forget), both resolved via `ServiceDiscovery`.
+`trigger(eventName, payload)` is in-process only — it looks the target event up among the Spring event handlers registered in this process, and throws if none is registered under that name; it does not fall back to a remote call, and it does not find a GPAL event handler in the same process. For a handler registered in a different process, use `triggerRemote(eventName, payload)` (suspends or blocks for the reply) or `triggerAsync(eventName, payload)` (fire-and-forget; a nack reply is logged at `ERROR`), both resolved via `ServiceDiscovery`. The event name can be given with or without the `EVENT_` prefix.
+
+An event triggered from inside a handler method runs as the user who sent the triggering event, so the target's rights checks apply to that user; called outside any handler, it runs as `UNKNOWN`. It also carries the caller's validate flag: an event triggered from an `@EventValidate` method, or while handling a `validate=true` request, is sent with `validate=true`, so the target only validates.
 
 ### Suspend handlers — Kotlin only
 
@@ -578,9 +580,9 @@ There is no Java equivalent for this one — suspend handlers are supported in K
 
 ## Limitations
 
-This module is real, working code with test coverage for everything described above, but it is genuinely incomplete. Worth knowing before you plan around it:
+Spring event handlers have these limitations:
 
-- **There is no transaction control.** Earlier versions of the annotations carried a `transactional` flag; it has since been removed entirely, and there is no replacement. A handler method that needs a database transaction has to manage it itself — see [Data access APIs (JPA): Transactions](/develop/server-capabilities/data-access-apis/jpa#transactions) for how transaction boundaries and rollback work when a handler uses Spring Data JPA.
+- **There is no transaction control.** The annotations have no `transactional` flag, and the module does not open a transaction for you. A handler method that needs a database transaction has to manage it itself — see [Data access APIs (JPA): Transactions](/develop/server-capabilities/data-access-apis/jpa#transactions) for how transaction boundaries and rollback work when a handler uses Spring Data JPA.
 - **Approvable workflows are not supported.** `EventHandlerType.APPROVABLE` exists as a value, but the return types needed to drive a multi-party approval flow aren't consumed anywhere in the handler-invocation path. Don't build an approval-based feature on this module today — use GPAL's [pending approval workflow](/develop/server-capabilities/core-business-logic-event-handler/gpal-java#approval-workflow) instead.
 - **`@RequiresAuth` (row-level/dynamic authorisation) is parsed but not enforced.** Only the static `@RequiresAnyRight`/`@RequiresAllRights` checks actually run. It compiles and is scanned like any other annotation here:
 
@@ -738,6 +740,7 @@ import global.genesis.springboot.test.GenesisTestApplication;
 import global.genesis.testsupport.client.eventhandler.EventClientSync;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @GenesisSpringTest

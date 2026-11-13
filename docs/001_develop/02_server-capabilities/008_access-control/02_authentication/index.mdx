@@ -328,8 +328,11 @@ authentication {
 
 ### `sessionTimeoutMins` 
 
-Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
-A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
+Specifies the lifetime (in minutes) of a session, counted from when the session was created. Activity, such as heartbeats and requests, doesn't extend it. When this time has passed, the session is expired (logged out) and the client is told to re-authenticate.
+
+If the session expires, the client can still create a new session with a [refresh token login](#event_login_auth) until the refresh token expires, but requests in between are rejected. To avoid that interruption, perform the refresh token login before the session expires. It ends the old session immediately and creates a new one with its own lifetime, so the client must replace both `SESSION_AUTH_TOKEN` and `REFRESH_AUTH_TOKEN` with the values in the response.
+
+A genesis UI is configured by default to perform a refresh token login upon expiry to avoid users needing to manually re-authenticate.
 
 ```kotlin title="auth-preferences.kts"
 security {
@@ -341,7 +344,7 @@ Default value: 30
 
 ### `refreshTokenExpirationMins` 
 
-Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
+Specifies a timeout (in minutes) for the refresh token value that was provided on successful login, counted from when the session was created. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token. Each refresh token login creates a new session and refresh token, which start their own timeouts, so a client that keeps refreshing doesn't need to log in again.
 
 ```kotlin title="auth-preferences.kts"
 security {
@@ -353,7 +356,7 @@ Default value: 7200 (5 days)
 
 ### `expiryCheckMins` 
 
-Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
+Specifies the interval (in minutes) at which the auth manager deletes sessions whose [refresh token](#refreshtokenexpirationmins) has expired.
 
 ```kotlin title="auth-preferences.kts"
 security {
@@ -638,6 +641,8 @@ Session tokens and refresh tokens work in pairs together to enable you to contro
 The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed.
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
+
+The Genesis Router, a process serving [native HTTP on its port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/), an MCP server and a Spring Boot app each check a session token against the `USER_SESSION` table. A process reads the session from the database the first time it sees the token, and keeps it until the session expires or the user logs out. A token that matches no live session is remembered as invalid for 10 minutes, unless a login with that token clears it. Each read is limited to 10 seconds. If a read times out or fails, the token is treated as having no session, so the request is rejected as not logged in, and the process logs `Session lookup failed; treating the token as having no session` at WARN. After three failures in a row, or a failure to connect, tokens that the process hasn't cached are refused for 30 seconds without a database read, and then one lookup tries the database again. When a lookup succeeds, the process logs `Session lookups are reaching the database again` at INFO. While lookups fail, the router still accepts a WebSocket connection's own login until its session expires.
 
 ### `EVENT_LOGIN_AUTH`
 
@@ -1539,7 +1544,7 @@ Each authentication event is audited in one way or another, either using the aut
 
 In the first case scenario, auditing works as it would do for any other Genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
 
-In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided).
+In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, FAILED_LOGOUT (if an incorrect session ID or user name has been provided), CHANGE_PASSWORD and FAILED_CHANGE_PASSWORD. The password entries are written by `EVENT_CHANGE_USER_PASSWORD`, `EVENT_PASSWORD_RESET_ACTION` and `EVENT_EXPIRE_USER_PASSWORD`; an expiry is recorded as CHANGE_PASSWORD with the reason `EXPIRE_PASSWORD`.
 
 Additionally, all USER_LOGIN audit events are logged to a file at INFO level in the following format:
 
@@ -2675,13 +2680,14 @@ authentication {
 After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
 
 - On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself. For the request to send, see the [SSO login example](#sso-login) under `EVENT_LOGIN_AUTH`.
-- On a WebSocket upgrade, the router accepts the connection without a session cookie when an `ssoToken` cookie is present, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
+- On a WebSocket upgrade, the router accepts the connection when an `ssoToken` cookie is present, even if there is no session cookie or the session cookie matches no live session, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
   - `EVENT_LOGIN_AUTH` is accepted only while the router still holds the token from the upgrade. The router adds the token to that message and then discards it, so the token is used once. Any other `EVENT_LOGIN_AUTH` on the socket is rejected as Forbidden.
   - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
   - `HEARTBEAT_PING` is answered whether or not the user is logged in. The reply's `IS_AUTHENTICATED` field says which.
   - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
-  - Every other message is rejected as Forbidden until the user has logged in: the reply is a `MSG_NACK` with `STATUS_CODE` 403 and the text `Unable to call <MESSAGE_TYPE> via websocket`.
-- When the login succeeds or fails, the router clears the cookie.
+  - A message rejected as Forbidden gets a `MSG_NACK` with `STATUS_CODE` 403 and the text `Unable to call <MESSAGE_TYPE> via websocket`.
+  - Every other message needs a logged-in user, so until the user has logged in it gets a `MSG_NACK` with `STATUS_CODE` 401 and the text `This request needs the user to be logged in, but the current authentication status is logged out`.
+- When a login over HTTP to `event-login-auth` succeeds or fails, the router clears the cookie in its response. A login over the WebSocket doesn't clear it.
 
 :::tip
 To check that the header is ignored, send a valid `ssoToken` cookie together with an invalid `SSO_TOKEN` header. The login succeeds because the router ignores the header.

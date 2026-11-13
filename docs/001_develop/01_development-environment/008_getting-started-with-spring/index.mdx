@@ -16,19 +16,15 @@ This tutorial builds a small Spring Boot integration on top of a Genesis project
 - **Part 2** builds a data cube on top of Part 1: HTTP query and aggregation endpoints over the `WIDGET` table. It's optional — stop after Part 1 if you only need the Spring integration.
 
 :::note
-Spring integration ships with Genesis v10, currently at version 10.0.0. Make sure your project is on v10 (10.0.0 or later) before starting.
+Spring integration ships with Genesis v10. Make sure your project is on v10 (10.0.0 or later) before starting.
 :::
 
 ## Part 1: Spring integration
 
 ### Step 1: Create the project
 
-:::note
-**Temporary, pre-GA instruction:** until Genesis v10 is generally released, `genx`'s default seed targets the current GA release, not v10. Pass `--ref release-v10` so `genx` scaffolds a v10-compatible project — including a Gradle wrapper new enough for v10's Genesis Gradle plugins. Once Genesis v10 is generally released, drop this flag.
-:::
-
 ```shell
-npx -y @genesislcap/genx@latest init mySpringDemo --ref release-v10
+npx -y @genesislcap/genx@latest init mySpringDemo
 ```
 
 For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the default answer for every prompt, and `--no-shell` stops `genx` dropping into an interactive sub-shell inside the new project when it finishes.
@@ -36,10 +32,10 @@ For non-interactive use (scripts/CI), add `-x --no-shell`: `-x` accepts the defa
 `<project-name>` is the name you gave to `genx init`, e.g. `mySpringDemo`.
 
 ```shell
-npx -y @genesislcap/genx@latest init mySpringDemo --ref release-v10 -x --no-shell
+npx -y @genesislcap/genx@latest init mySpringDemo -x --no-shell
 ```
 
-Scaffolding with `--ref release-v10` already seeds `server/gradle.properties` with `genesisVersion`/`authVersion` at `10.0.0` or later, so no manual version bump is needed.
+The default seed already sets `genesisVersion` and `authVersion` in `server/gradle.properties` to a v10 release, and its Gradle wrapper is on the Gradle version the v10 Genesis Gradle plugins need, so no manual version bump is needed.
 
 ### Step 2: Create the Spring module
 
@@ -77,7 +73,7 @@ genesisSpring {
 
 Module dependency versions are pinned by the [Genesis BOM](/build-deploy-operate/build/plugins), which the Settings plugin contributes as a platform dependency — you shouldn't need to specify versions on the individual `global.genesis:*` dependencies.
 
-The `genesisGeneratedCode(withTestDependency = true)` line is there because the dictionary `.kts` files live in the `-app` module, and `@GenesisSpringTest` (see [Testing API (Spring)](/develop/server-capabilities/testing-api/spring#overview)) needs them on this module's test classpath.
+The dictionary `.kts` files live in the `-app` module. The `genesisGeneratedCode(withTestDependency = true)` line puts the dictionary cache generated from them on this module's compile classpath and, because of `withTestDependency = true`, on its test classpath too, where `@GenesisSpringTest` (see [Testing API (Spring)](/develop/server-capabilities/testing-api/spring#overview)) needs it.
 
 ### Step 3: Switch logging to Logback
 

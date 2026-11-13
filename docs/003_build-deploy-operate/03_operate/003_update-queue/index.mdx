@@ -32,6 +32,10 @@ There are three different update queue technologies to choose from, depending on
 - [MQTT](#mqtt) - use an independent MQTT broker if you want to allow dynamic scaling
 - [JMS](#jms) - use an independent Jakarta Messaging broker (former JMS)
 
+### Update order with MQTT and JMS
+
+From versions 8.15.45 and 10.0.1, the MQTT and JMS update queues publish updates one at a time, in the order they were submitted, and deliver updates for the same record in the order they arrive. Updates for different records may be delivered in a different order.
+
 ## ZeroMQ
 
 The Genesis Application Platform uses ZeroMQ out of the box to provide a zero-configuration decentralized peer-to-peer update queue.
@@ -123,7 +127,7 @@ The error names the YAML key that's wrong. For example: `curveServerPublicKey is
 
 For the full list of error messages, see the Validation table in the [`zeroMqEncryption` section](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#zeromqencryption-section) of the network configuration YAML reference.
 
-If an environment variable isn't set, the configuration gets the literal `${...}` text, and you see an error about the key's length. Check the environment before you check the key. `GenerateZeroMqCurveKeys --verify` reports unset variables directly.
+If an environment variable isn't set, the error names it. For example: `curveServerSecretKey was not resolved: set the ZMQ_CURVE_SERVER_SECRET environment variable, or disable ZeroMQ CURVE`. `GenerateZeroMqCurveKeys --verify` reports unset variables before you restart.
 
 #### Handshake failures
 
@@ -147,7 +151,7 @@ A process doesn't reconnect to a peer whose handshake failed, even after the pee
 
 #### Subscriber readiness
 
-A subscriber isn't connected until its handshake completes. So that messages aren't lost in the meantime, a publisher with CURVE on holds each message for up to `readinessTimeoutMillis` (default: 5 seconds) until a subscriber has subscribed to its topic. If nobody subscribes in time, the publisher logs a warning, `Publishing ZeroMQ topic '<topic>' before subscriber readiness was observed`, and sends the message anyway. With CURVE off, messages are sent straight away, as they were before.
+A subscriber isn't connected until its handshake completes. So that messages aren't lost in the meantime, a publisher with CURVE on holds each message for up to `readinessTimeoutMillis` (default: 5 seconds) until a subscriber has subscribed to its topic. If nobody subscribes in time, the publisher logs a warning, `Publishing ZeroMQ topic '<topic>' before subscriber readiness was observed`, sends the message anyway, and from then on sends messages on that topic without waiting. With CURVE off, messages are sent straight away, as they were before.
 
 ### Using loopback (development environments)
 

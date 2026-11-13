@@ -950,7 +950,7 @@ tables {
     primaryKey("HOLIDAY_ID").name("HOLIDAY_BY_ID")
 
     indices {
-      nonUnique("COUNTRY_CODE", "REGION_CODE", "DATE").name("HOLIDAYS_BY_COUNTRY_CODE_REGION_CODE_DATE")
+      unique("COUNTRY_CODE", "REGION_CODE", "DATE").name("HOLIDAYS_BY_COUNTRY_CODE_REGION_CODE_DATE")
       nonUnique("COUNTRY_CODE", "DATE", "HOLIDAY_ID").name("HOLIDAYS_BY_COUNTRY_CODE_DATE")
     }
   }
