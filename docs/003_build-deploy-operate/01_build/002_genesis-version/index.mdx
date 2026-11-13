@@ -113,3 +113,6 @@ All `@genesislcap/*` packages typically use the same version number to ensure co
 - **Server:** The core `genesisVersion` drives the main platform version
 - **Server:** Module-specific versions (auth, notify, etc.) may differ with respect to their maintenance version (after the last `.`) but the major + minor versions (e.g. 8.14) should match the core server version.
 
+## Reading the version from code
+
+To read the Genesis platform version from build tooling or custom code, use `global.genesis.commons.utils.GenesisVersion.version` (a static property, so `GenesisVersion.getVersion()` in Java). It is a `String` taken from the `Implementation-Version` of the `genesis-commons` jar manifest, and is `LOCAL_DEV` when no such manifest is found, for example when running from an IDE. It replaces `global.genesis.codegen.GenesisVersion.version`, which was removed in 10.0.
