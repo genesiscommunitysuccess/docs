@@ -80,7 +80,7 @@ item(name = "MY_PROCESS_PROCESS_OPTIONS", value = "-Xmx2g")
 
 **Applies to:** system definitions that set `ClusterMode`.
 
-**Why:** [`ClusterMode`](/develop/server-capabilities/runtime-configuration/system-definition/) must now be unset, blank, or exactly one of `LEGACY`, `CONSUL` or `DISABLED`. The check is case-sensitive. In 8.15, any value other than `CONSUL` or `DISABLED` (for example `consul`, `AKKA` or a typo) silently ran the node in `LEGACY` mode.
+**Why:** [`ClusterMode`](/develop/server-capabilities/runtime-configuration/system-definition#items-defined) must now be unset, blank, or exactly one of `LEGACY`, `CONSUL` or `DISABLED`. The check is case-sensitive. In 8.15, any value other than `CONSUL` or `DISABLED` (for example `consul`, `AKKA` or a typo) silently ran the node in `LEGACY` mode.
 
 **What goes wrong if you skip this:** a process fails at startup with:
 
@@ -94,7 +94,7 @@ Unrecognised ClusterMode '<value>'. Accepted values are LEGACY, CONSUL, DISABLED
 
 **Applies to:** nodes where `ClusterMode` is unset or `LEGACY`, and the system definition doesn't set `ClusterPort`. With `CONSUL` or `DISABLED`, there is no cluster listener, so this doesn't apply.
 
-**Why:** when [`ClusterPort`](/develop/server-capabilities/runtime-configuration/system-definition/) isn't set, `GENESIS_CLUSTER` now listens on port `6000` instead of `9900`.
+**Why:** when [`ClusterPort`](/develop/server-capabilities/runtime-configuration/system-definition#items-defined) isn't set, `GENESIS_CLUSTER` now listens on port `6000` instead of `9900`.
 
 **What goes wrong if you skip this:** after the upgrade, all nodes agree on the new port, but firewall rules, security groups or network policies that only open `9900` block it, and the nodes can't form a cluster.
 

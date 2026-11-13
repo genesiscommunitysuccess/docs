@@ -42,7 +42,7 @@ Most settings of the legacy test configuration have an equivalent in the annotat
 | `sendMessage` / `sendMessageAsync` | Inject a `GenesisMessageClient` (`@Inject`), which the test context provides to every `@GenesisTest`. This is the generic route: for a service with its own client (such as an event handler, with `EventClientSync`), prefer that client instead, as described in the `parser` row below. That client takes the event as a typed object; a test that keeps building `GenesisSet`s stays on `GenesisMessageClient`. See [sending messages in a GenesisJunit test](#sending-messages-in-a-genesisjunit-test) |
 | `parser` / `EventResponse` | Not needed: inject the client for the service you are testing. Use [`EventClientSync`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing-compiled-definitions) (or `EventClientAsync`) for event handlers, `RequestClientSync` (or `RequestClientAsync`) for request servers, and `DataServerSubscriptionClientAsync` or `DataServerQueryViewClient` for data servers. See [testing specific services](/develop/server-capabilities/testing-api/gpal-java/#testing-specific-services) |
 | `initialDataFile` / `initialDataFiles` | `@CsvData("...")` (repeatable) |
-| `authCacheOverride` / `authCacheOverrides` | [`@EnableInMemoryTestAuthCache`](/develop/server-capabilities/testing-api/gpal-java/#enableinmemorytestauthcache), and inject `InMemoryTestAuthCache`. The auth map name is now passed per call, `authCache.authorise(authMap = …, entityCode = …, userName = …)`, not set as configuration |
+| `authCacheOverride` / `authCacheOverrides` | [`@EnableInMemoryTestAuthCache`](/develop/server-capabilities/testing-api/gpal-java/#enableinmemorytestauthcache), and inject `InMemoryTestAuthCache`. The auth map name is now passed per call with GenesisJunit, `authCache.authorise(authMap = …, entityCode = …, userName = …)`, not set as configuration |
 | `useTempClassloader = true`, or `GenesisClassGenerationTestSupport` | `@EnableTestClassLoader` |
 | `dataDumpOn` | `@EnableDataDump` |
 | `rootLogLevel` | `@RootLogLevel` |
@@ -450,7 +450,7 @@ To create a test, you need to provide a `GenesisTestConfig` instance in the cons
 | initialDataFile | no | csv files to load into the database |
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | scriptFileName | no | `String?`: the GPAL script file under test. Not needed for compiled GPAL definitions |
-| authCacheOverride | no | overrides auth-perms map to test; grant access with `inMemoryTestAuthCache.authorise(map, entity, user)` (in Java, `getInMemoryTestAuthCache().authorise(...)`) (see [Testing with authorization](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing-with-authorization)) |
+| authCacheOverride | no | overrides auth-perms map to test; with `AbstractGenesisTestSupport`, grant access with `inMemoryTestAuthCache.authorise(map, entity, user)` (from Java, `getInMemoryTestAuthCache().authorise(...)`) (see [Testing with authorization](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing-with-authorization)) |
 | dataDumpOn | no | `Boolean`, defaults to `true`: whether the DATADUMP log level is active in the test |
 | rootLogLevel | no | `Level` (`org.slf4j.event.Level`), defaults to `INFO`: the root log level for the test |
 

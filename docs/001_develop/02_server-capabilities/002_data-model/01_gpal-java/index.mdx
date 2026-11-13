@@ -358,6 +358,10 @@ item(name = "SqlEnableSequenceGeneration", value = true)
 **If you do not make these settings and you are using an SQL database, then `sequence` will generate a uuid by default**.
 :::
 
+###### Reading sequence fields from code
+
+Custom code that has the `GenesisDictionary` can read the fields that generate IDs through `dictionary.idSequences` (`getIdSequences()` in Java). It returns a map from each table's ID to the set of `IdField` objects for that table. It replaces `sequenceIdFields`, which was removed in 10.0.
+
 ##### `uuid`
 A `uuid` is a [Universally Unique Identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier); it is a randomly generated string, which is not sequenced, but which guarantees that a unique value is generated.
 

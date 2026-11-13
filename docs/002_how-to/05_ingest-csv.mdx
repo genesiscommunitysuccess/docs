@@ -98,6 +98,10 @@ pipelines {
 }
 ```
 
+:::note
+On 10.0, the block form `pipeline("X") { ... }` is removed, so `map` and the other operators are chained onto the builder as shown here. See [Upgrade from 8.15: Consolidator and data pipelines, step 1](/release-notes/platform/10/upgrade-from-8.15/consolidator-pipelines#1-rewrite-pipelinex----as-a-builder-chain).
+:::
+
 ### System definition
 Every application also has a [main configuration file](/develop/server-capabilities/runtime-configuration/system-definition/) called `genesis-system-definition.kts`. 
 

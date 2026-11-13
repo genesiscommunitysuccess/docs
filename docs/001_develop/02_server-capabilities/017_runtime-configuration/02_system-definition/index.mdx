@@ -498,6 +498,8 @@ systems {
 
 During runtime the `hosts` block will be read to find configurations applicable to this host.
 
+In a `systems { }` block, `genesisHosts(environment)` returns the hosts declared for the `system` whose name is `environment`, as a list of `GenesisHost` objects. It returns an empty list if no `system` has that name. It replaces `dtaHosts(environment)`, which was removed in 10.0.
+
 :::important
 **LOCAL_HOST special behavior**: Any `system` using the `LOCAL_HOST` special value will always match in any environment, and therefore must be defined at the bottom of the system definition file.
 

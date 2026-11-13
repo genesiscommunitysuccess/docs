@@ -109,16 +109,16 @@ This decoding is part of how the platform converts CSV text into a record, so it
 
 **If you skip it:** the test doesn't compile.
 
-**What to do:** call the methods on `inMemoryTestAuthCache` instead. From Java, use `getInMemoryTestAuthCache().authorise(...)`. As before, the auth map must be listed in `authCacheOverrides` in the test configuration.
+**What to do:** call the methods on `inMemoryTestAuthCache` instead. From Java, use `getInMemoryTestAuthCache().authorise(...)`. As before, the auth map must be listed in `authCacheOverrides` in the test configuration. Both methods take the parameters in the same order: auth map, entity code, user name.
 
 ```kotlin
 // 8.15
-authorise("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
-revoke("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+authorise("ENTITY_VISIBILITY", "TRADE_001", "JohnDoe")
+revoke("ENTITY_VISIBILITY", "TRADE_001", "JohnDoe")
 
 // 10.0 (also compiles on 8.15)
-inMemoryTestAuthCache.authorise("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
-inMemoryTestAuthCache.revoke("ENTITY_VISIBILITY", "JohnDoe", "JohnDoe")
+inMemoryTestAuthCache.authorise("ENTITY_VISIBILITY", "TRADE_001", "JohnDoe")
+inMemoryTestAuthCache.revoke("ENTITY_VISIBILITY", "TRADE_001", "JohnDoe")
 ```
 
 A better long-term fix is to move the test to `@GenesisTest` with `@EnableInMemoryTestAuthCache` (see [Optional clean-ups](#optional-clean-ups)).
