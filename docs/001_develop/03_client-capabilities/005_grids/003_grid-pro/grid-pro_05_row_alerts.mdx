@@ -23,7 +23,7 @@ tags:
   - flash
   - row-match
 pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-renderers
-pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-community-features
 ---
 
 import Tabs from '@theme/Tabs';
@@ -336,7 +336,7 @@ Notes:
 
 * Both row and cell class rules are installed up front. Scope is evaluated when rows render, because a grid backed by a Genesis datasource keeps the `gridOptions` it was created with — swapping rules later would do nothing. Changing flash target redraws via the grid API handed to the menu action.
 * Alerts that share a `persistPreferencesKey` share one preference store, so several blotters on one page answer to a single setting.
-* Context menus need AG Grid Enterprise `MenuModule` registered on the same `ModuleRegistry` as the grid in use (classic v29 and beta v36 keep separate registries).
+* Put the presets on Grid Pro's community right-click menu with `contextMenuItems` and `rowAlert.createMenuItem(event.api)`. See [Right-click menu](/develop/client-capabilities/grids/grid-pro/grid-pro-community-features#right-click-menu). `gridOptions.getContextMenuItems` is AG Grid's callback and needs the Enterprise context-menu module on that grid's `ModuleRegistry` (the legacy v29 grid and current v36 grid keep separate registries).
 
 ### Class rules only
 
