@@ -174,7 +174,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 | unSet | `fun unSet(field: String)` | Shorthand method to unset a single field. For example, `genesisSet.unSet("PRICE")` |
 | unSetDirect | `tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this)` | Shorthand method to unset a field that may be multiple sets deep. For example, `genesisSet.unSetDirect("DETAILS.TRADE.CLIENT.NAME")`. |
 | unSetGenesisSet | `fun unSetGenesisSet(key: String)` | Shorthand method to unset a GenesisSet. |
-| with | `infix fun String.with(any: Any?)` | Sets key value in GenesisSet. For example, `MESSAGE_TYPE with "EVENT_INSERT"`. |
+| with | `infix fun String.with(any: Any?)` | Sets key value in GenesisSet. For example, `MESSAGE_TYPE with "EVENT_TRADE_INSERT"`. |
 | toString | `override fun toString(): String` | Returns a pretty-print string. |
 | writeTo | `fun writeTo(pk: MessagePacker)` | Serialize object into specified packer. |
 | readFrom | `fun readFrom(unpacker: MessageUnpacker)` | Deserialize object from given unpacker. |
@@ -191,7 +191,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 
 The Genesis Application Platform uses type-safe messages to perform message serialization and deserialization. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
 
-These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
+These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#event-handler-api).
 
 ### Input messages
 
@@ -503,18 +503,9 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-To get the appropriate status code for an error message, you need to enable this at router-level. You do this using the property `strictHttpStatusCode`.
+To get the appropriate status code for an error message, you need to enable the `StrictHttpStatusCode` item in the system definition. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `strictHttpStatusCode` fails to compile, so the router doesn't start.
 
-For example, `strictHttpStatusCode` is set to `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. So, we set `strictHttpStatusCode` to `true` in the **genesis-router.kts** file:
-
-```kotlin
-router {
-    webPort = 9064
-    socketPort = 9065
-    strictHttpStatusCode = true
-    nettyLoggingEnabled = true
-}
-```
+`StrictHttpStatusCode` is `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the Genesis router page for how to set it in **genesis-system-definition.kts**.
 
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
@@ -548,7 +539,18 @@ You can protect against Cross-Site Scripting (XSS) by enabling string sanitisati
 
 **System-wide XSS sanitisation**
 
-Enable XSS string sanitisation for all outgoing string properties by setting the router-config property `xssStringSanitizer` to `true` on `genesis-router.kts` file. By default this property is set to `false`.
+Enable XSS string sanitisation for all outgoing string properties by setting the `XssStringSanitizer` item to `true` in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/). By default this item is set to `false`.
+
+```kotlin
+// genesis-system-definition.kts
+systemDefinition {
+    global {
+        item(name = "XssStringSanitizer", value = "true")
+    }
+}
+```
+
+Setting it under `global` makes it apply to every process. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `xssStringSanitizer` fails to compile, so the router doesn't start.
 
 **Per-field XSS sanitisation on type-safe messages**
 
@@ -557,7 +559,7 @@ For type-safe messages, you can annotate specific string fields to use the XSS s
 Apply `@field:JsonSerialize(using = XssSanitizingSerializer::class)` to the field. You need the following imports:
 
 ```kotlin
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import tools.jackson.databind.annotation.JsonSerialize
 import global.genesis.jackson.serialization.XssSanitizingSerializer
 
 
@@ -614,6 +616,8 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 ## Network API
 
 Use these APIs to send and receive messages between micro-services.
+
+Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. MessagePack is no longer supported. The `MSGPACK` [serialization setting](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section) is still accepted, but it is deprecated and resolves to `SMILE`. The system-definition item `MessageSerialization=MSGPACK` logs a deprecation warning at startup; `serialization: MSGPACK` in the network configuration YAML resolves without a warning.
 
 ### `ServiceDiscovery`
 
@@ -711,7 +715,11 @@ public class TestAuthManagerService {
 
 #### Constructor
 
-`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)`
+`GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfigContainer, requestLogger: RequestLogger)`
+
+`configuration` takes the same settings as [`network-config.yaml`](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/). Inside a process, inject `NetworkConfigContainer` to get the configuration that process resolved. When `tls.mode` is `SELECTIVE_TLS`, `secure` decides whether the connection uses TLS; in the other modes, `tls.mode` alone decides. On the `WEBSOCKET` channel, `secure` also sets the scheme of the WebSocket handshake URI: `wss` when `true`, `ws` when `false`.
+
+The constructors that take a `NetworkConfiguration`, or no configuration at all, are deprecated.
 
 #### Functions
 
@@ -719,21 +727,23 @@ public class TestAuthManagerService {
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): Reply<O>` |
-| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.reqRepTimeout): Single<O>` |
-| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout,): O` |
-| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.reqRepTimeout): O where O : Outbound, O : ParametricType<P>` |
+| request | `fun <I : Inbound, O : Outbound> request(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend fun <I : Any, O : Any> request(messageWorkflow: RequestReplyDataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): Reply<O>` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: Class<O>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| request | `suspend inline fun <reified O : Outbound> request(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout): O` |
+| request | `fun <I : Inbound, O : Outbound> request(message: I, output: List<Class<*>>, timeout: Int = configuration.messaging.requestTimeout): Single<O>` |
+| requestParametric | `suspend inline fun <reified O, reified P : Any> requestParametric(message: Inbound, messageType: String, timeout: Int = configuration.messaging.requestTimeout): O where O : Outbound, O : ParametricType<P>` |
 | sendMessage | `fun sendMessage(set: GenesisSet): Boolean` |
 | sendMessage | `fun sendMessage(set: GenesisMessage): Boolean` |
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout): O?` |
-| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Any> suspendRequest(message: I, timeout: Int = configuration.messaging.requestTimeout): O?` |
+| suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.messaging.requestTimeout): O?` |
 | addListener | `fun addListener(listener: GenesisMessageListener<GenesisSet>)` |
 | removeListener | `fun removeListener(listener: GenesisMessageListener<GenesisSet>)` |
 | addGenesisMessageListener | `fun <V : GenesisMessage> addGenesisMessageListener(clazz: Class<V>, listener: GenesisMessageListener<V>)` |
@@ -743,18 +753,19 @@ public class TestAuthManagerService {
 | triggerCallback | `fun <V : GenesisMessage> triggerCallback(sourceRef: String, message: V): Boolean` |
 | registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.simpleName))` |
 | registerReaderType | `fun registerReaderType(clazz: KClass<out GenesisMessage>, messageType: String = toUpperUnderscoreWithAcronyms(clazz.java.simpleName))` |
-| registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: KClass<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.java.simpleName))` |
+| registerReaderType | `fun registerReaderType(clazz: KClass<out GenesisMessage>, parametricType: KClass<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.java.simpleName))` |
 | registerReaderType | `fun registerReaderType(clazz: Class<out GenesisMessage>, parametricType: Class<*>, messageType: String = toUpperUnderscoreWithAcronyms(parametricType.simpleName))` |
 | notifyConnectionDown | `fun notifyConnectionDown(ctx: ChannelHandlerContext)` |
-| waitForConnection | `fun waitForConnection()` |
+| waitForConnection | `@Throws(InterruptedException::class) fun waitForConnection()` |
 
 #### Properties
 
 | Name | Summary |
 | --- | --- |
 | handler | Returns GenesisMessageHandler, which allows us to attach listeners to servers and clients |
-| isActive | Checks whether the netty connector is open for a new connection |
-| isConnected | Checks whether the netty connector is open for a new connection |
+| isActive | Checks whether the Netty channel to the server is open |
+| isConnected | Checks whether the client is connected to the server |
+| isShutdown | Checks whether `shutdown` has been called |
 
 Example:
 
@@ -868,10 +879,10 @@ public class TestAuthManagerService {
 | --- | --- |
 | addConnectionEventHandler | `fun addConnectionEventHandler(handler: ConnectionEventHandler)` |
 | removeConnectionEventHandler | `fun removeConnectionEventHandler(handler: ConnectionEventHandler)` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet): Single<Boolean>` |
-| rxSendMessage | `fun sendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet): Boolean` |
-| suspendSendMessage | `suspend fun sendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet): Single<Boolean>` |
+| rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet): Boolean` |
+| suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
 | rxRequest | `fun rxRequest(set: GenesisSet): Single<GenesisSet>` |
 | rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
 | suspendRequest | `suspend fun suspendRequest(set: GenesisSet): GenesisSet?` |

@@ -168,7 +168,7 @@ genesis {
 
 ## Server configuration
 
-Any [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information).
+Any [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) endpoint can be used as a report data source. However, these resources are not available by default (in case they contain sensitive information).
 
 To make a resource available as a source of data for a report, add the resource name to the `REPORTING_DATASOURCE_LIST` system definition in the file `reporting-system-definition.kts`.
 
@@ -184,7 +184,7 @@ If the file `reporting-system-definition.kts` does not exist in your application
 
 When using Genesis Create this will automatically be populated with all of the endpoints configured during the create process.
 
-Only [Request Server endpoints](/develop/server-capabilities/snapshot-queries-request-server/#request) are valid report data sources. Anything listed in `REPORTING_DATASOURCE_LIST` which is not a valid request server endpoint in the application will be ignored.
+Only [Request Server endpoints](/develop/server-capabilities/query-data/snapshot-queries-request-server/#request) are valid report data sources. Anything listed in `REPORTING_DATASOURCE_LIST` which is not a valid request server endpoint in the application will be ignored.
 
 ### Report retention
 

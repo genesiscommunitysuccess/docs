@@ -102,6 +102,23 @@ id: "8.6"
 
 ### Patch releases
 
+#### 8.6.26
+
+###### Breaking changes
+
+* `genesis-evaluator` : Validate CRON_RULE result expressions and close rewrite bypasses
+
+###### Performance improvements
+
+* `criteria` : Share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval
+
+###### Fixes
+
+* `genesis-db` : Parse client criteria without Groovy AST transformations, with the 8.15.x criteria vocabulary and user-name binding
+* `genesis-db` : Report an absent field as null rather than dereferencing it
+* `genesis-environment` : Build FDB indexes from record-aligned ranges instead of stitched fragments
+* `genesis-environment` : Harden VerifyFDBIndexes and the record-aligned FDB remap scan
+
 #### 8.6.25
 
 ###### Fixes

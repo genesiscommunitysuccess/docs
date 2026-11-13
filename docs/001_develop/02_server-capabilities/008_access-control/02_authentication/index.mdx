@@ -74,7 +74,7 @@ This block is required where setting up for [Genesis password](#genesis-password
 
 Example configuration:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   authentication {
     genesisPassword {
@@ -236,18 +236,26 @@ The following variables are used to configure an LDAP `connection`, details for 
   * which user permissions are allocated, using `createUserPermissions`
 * `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
 * `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+* `verifyHostname` is a boolean value indicating whether to check that the server's certificate matches the hostname in `url`. It only applies with `useTLS = true`. Default: `false`.
+* `trust` defines how the server's certificate is validated when `useTLS` is `true`. Default: not set, which checks only the certificate's validity dates. See [TLS certificate validation](#tls-certificate-validation).
+* `connectTimeoutMs` is the time, in milliseconds, to wait for the connection to the LDAP server to be established. It must be a positive integer, otherwise the application fails to start. Default: `10000`.
+* `responseTimeoutMs` is the time, in milliseconds, to wait for each request to the LDAP server to be answered. This covers every request a login makes, including the bind of the service account (`bindDn`), each search, and the reads made after a successful bind. It must be a positive integer, otherwise the application fails to start. Default: `300000`.
+
+`connectTimeoutMs`, `responseTimeoutMs`, `verifyHostname` and `trust` are supported from version 10.0. The timeouts are set separately on each `connection`, and a timeout you leave unset uses its default.
+
+A single login makes several requests, and each one waits up to `responseTimeoutMs`. When you configure several connections, a server that is down or slow can therefore delay a login that falls through to the next connection by a multiple of that value. Lower the timeouts if that matters to you.
 
 
 Example ldap connection:
 
-```kotlin {3-5}
+```kotlin title="auth-preferences.kts" {3-5}
 security {
   authentication {
     ldap {
 			connection {
 				url = "localhost"
           port = 389
-          searchBase {
+          searchBases {
             searchBase("ou=temp,dc=temp")
           }
           userGroups {
@@ -256,8 +264,52 @@ security {
           bindDn = ldap.server.user
           bindPassword = ldap.server.password
           userIdType = "cn"
+          connectTimeoutMs = 5000
+          responseTimeoutMs = 30000
 			}
 		}
+  }
+}
+```
+
+#### TLS certificate validation
+
+With `useTLS = true` and no `trust` block, the server's certificate is checked only for its validity dates. Its issuer and chain are not checked, and neither is its hostname. To rely on a certificate authority instead, add a `trust` block, and set `verifyHostname = true` to check that the certificate was issued for the server you are connecting to.
+
+Choose one of the following inside the `trust` block:
+
+* `systemSource()` trusts the certificate authorities that the Java runtime trusts by default. An empty `trust { }` block does the same.
+* `certificate { caBundlePath = "..." }` trusts the certificates in the CA bundle (PEM) file at that path. To trust further bundles as well, add `additionalCaBundles("...")` inside the same `trust` block; it can only be used together with `certificate`.
+* `truststore { path = "..."; storePassword = "..." }` trusts the certificates in the keystore file at that path. The store type is `PKCS12` unless you call `jksType()` inside the `truststore` block.
+
+Use absolute paths for these files. Take `storePassword` from the same place as `bindPassword`, rather than writing it into the script.
+
+`trust` and `verifyHostname` only apply with `useTLS = true`, and the application fails to start if you set either without it. It also fails to start if a file named in the `trust` block is missing or unreadable, or if the truststore password is wrong, so a configuration problem shows up when the application starts and not at the first login.
+
+Example ldap connection over TLS, validating the server's certificate against your own CA bundle:
+
+```kotlin {7-13}
+security {
+  authentication {
+    ldap {
+      connection {
+        url = "ldap.example.com"
+        port = 636
+        useTLS = true
+        verifyHostname = true
+        trust {
+          certificate {
+            caBundlePath = "/etc/ssl/certs/internal-ca.pem"
+          }
+        }
+        searchBases {
+          searchBase("ou=temp,dc=temp")
+        }
+        bindDn = ldap.server.user
+        bindPassword = ldap.server.password
+        userIdType = "cn"
+      }
+    }
   }
 }
 ```
@@ -276,10 +328,13 @@ authentication {
 
 ### `sessionTimeoutMins` 
 
-Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
-A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
+Specifies the lifetime (in minutes) of a session, counted from when the session was created. Activity, such as heartbeats and requests, doesn't extend it. When this time has passed, the session is expired (logged out) and the client is told to re-authenticate.
 
-```kotlin
+If the session expires, the client can still create a new session with a [refresh token login](#event_login_auth) until the refresh token expires, but requests in between are rejected. To avoid that interruption, perform the refresh token login before the session expires. It ends the old session immediately and creates a new one with its own lifetime, so the client must replace both `SESSION_AUTH_TOKEN` and `REFRESH_AUTH_TOKEN` with the values in the response.
+
+A genesis UI is configured by default to perform a refresh token login upon expiry to avoid users needing to manually re-authenticate.
+
+```kotlin title="auth-preferences.kts"
 security {
   sessionTimeoutMins = 60
 }
@@ -289,9 +344,9 @@ Default value: 30
 
 ### `refreshTokenExpirationMins` 
 
-Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
+Specifies a timeout (in minutes) for the refresh token value that was provided on successful login, counted from when the session was created. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token. Each refresh token login creates a new session and refresh token, which start their own timeouts, so a client that keeps refreshing doesn't need to log in again.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   refreshTokenExpirationMins = 2880
 }
@@ -301,9 +356,9 @@ Default value: 7200 (5 days)
 
 ### `expiryCheckMins` 
 
-Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
+Specifies the interval (in minutes) at which the auth manager deletes sessions whose [refresh token](#refreshtokenexpirationmins) has expired.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   expiryCheckMins = 10
 }
@@ -319,7 +374,7 @@ If the value is zero, is not defined, or is not a positive integer, then any num
 
 When the maximum number of sessions is reached, the system will provide host/IP information for each active session to help the user identify which sessions they may want to log out from.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   maxSimultaneousUserLogins = 2
 }
@@ -333,7 +388,7 @@ Specifies whether to hide host/IP information from the user when they have reach
 
 By default, this is set to `false`, which means the host/IP information is sent back to the client. This information can be used by the user to select a specific session to log out from so that a new session can be created.
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   hideHostsFromMaxActiveSessionsReachedMessage = true
 }
@@ -343,7 +398,7 @@ Default value: false
 
 ### `retry`
 
-```kotlin {5-8}
+```kotlin title="auth-preferences.kts" {5-8}
 security {
   authentication {
     ...
@@ -392,7 +447,7 @@ This method of MFA generates a qrCode that can be imported into apps such as Goo
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -435,7 +490,7 @@ This block exposes the following configuration items:
 
 Example configuration: 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -455,7 +510,7 @@ security {
 
 To send a short numeric code that the user types in instead of a login link, enable `tempCodeNumeric` and omit `{{LOGIN_URL}}` from the message:
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   mfa {
@@ -516,7 +571,7 @@ The following functions will be invoked on this table or view:
 Example configuration:
 
 
-```kotlin
+```kotlin title="auth-preferences.kts"
 security {
   ...
   loginAck(USER_ATTRIBUTES) {
@@ -537,9 +592,9 @@ The `customLoginAck` function enables you to modify the list of permissions, pro
 
 This can be helpful in combination with `customPermissions` blocks being set in your client facing genesis services for which a typical use case is when using an external permissions system. In this case you can define logic to send the front end the external system's normalized access codes and then the genesis application's front end can permission UI components using the same logic as the back end without requiring any integration with the custom permission system:
 
-- [Data Servers](/develop/server-capabilities/real-time-queries-data-server/#custompermissions)
-- [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#custompermissions) 
-- [Event handlers](/develop/server-capabilities/core-business-logic-event-handler/#custompermissions)
+- [Data Servers](/develop/server-capabilities/query-data/real-time-queries-data-server/#custompermissions)
+- [Request Servers](/develop/server-capabilities/query-data/snapshot-queries-request-server/#custompermissions) 
+- [Event handlers](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#custompermissions)
 
 The `user` record is provided as a parameter, and there are three properties to set:
 * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
@@ -566,7 +621,7 @@ In this example an `entitlementUtils` object wraps an external API we can call t
 
 ## Client API
 
-Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
+Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
 
 This section will give an overview of the auth API events available to users, which are already available in a client UI in any applications using the [User management](/develop/business-components/user-management/) component. They are listed here for those who wish to build their own Client API to authenticate to use the application API, and further if they wish to interact with users/profile setup from their client.
 
@@ -587,6 +642,8 @@ The expiry date of the refresh token is always further in the future than the ex
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 
+The Genesis Router, a process serving [native HTTP on its port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/), an MCP server and a Spring Boot app each check a session token against the `USER_SESSION` table. A process reads the session from the database the first time it sees the token, and keeps it until the session expires or the user logs out. A token that matches no live session is remembered as invalid for 10 minutes, unless a login with that token clears it. Each read is limited to 10 seconds. If a read times out or fails, the token is treated as having no session, so the request is rejected as not logged in, and the process logs `Session lookup failed; treating the token as having no session` at WARN. After three failures in a row, or a failure to connect, tokens that the process hasn't cached are refused for 30 seconds without a database read, and then one lookup tries the database again. When a lookup succeeds, the process logs `Session lookups are reaching the database again` at INFO. While lookups fail, the router still accepts a WebSocket connection's own login until its session expires.
+
 ### `EVENT_LOGIN_AUTH`
 
 Authenticates and logs the user in.
@@ -595,7 +652,7 @@ Authenticates and logs the user in.
 No `SESSION_AUTH_TOKEN` required.
 :::
 
-There are 2 example events here, one takes a `USER_NAME` and `PASSWORD`, and the other a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above.
+There are 3 example events here, one takes a `USER_NAME` and `PASSWORD`, another a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above, and the third logs in with an SSO token held in a cookie.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -789,6 +846,21 @@ SOURCE_REF: 001b
 }
 ```
 
+<a id="sso-login"></a>
+SSO login example (SSO token in the `ssoToken` cookie)
+```
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+Cookie: ssoToken=<SSO token issued by the authentication service>
+SOURCE_REF: 001c
+{
+  "DETAILS": {}
+}
+```
+
+The client does not put the SSO token in the body or in a header. When [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled, the router takes the token from the `ssoToken` cookie and supplies the `SSO_TOKEN` header itself; any `SSO_TOKEN` header the client sends is dropped. See [SSO token in a cookie](#sso-token-in-a-cookie).
+
 Response
 ```
 {
@@ -950,6 +1022,10 @@ Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 002
 SESSION_ID: b08f6955-48a0-4d42-83a0-41e65c0dc084
+
+{
+  "DETAILS": {}
+}
 ```
 </TabItem>
 </Tabs>
@@ -983,11 +1059,17 @@ This triggers a self-service password reset. [Self Service Reset](#selfservicere
 
 Changes a user's password.
 
+:::info
+No `SESSION_AUTH_TOKEN` required.
+:::
+
+This is how a user whose password has expired, or who has been given a one-time password, activates their account: they send their current password as `OLD_PASSWORD` and choose a new one as `NEW_PASSWORD`, without logging in first.
+
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
 ```
 {
-  "USER_NAME": "admin",
+  "USER_NAME": "JohnDoe",
   "SOURCE_REF": "004",
   "MESSAGE_TYPE": "EVENT_CHANGE_USER_PASSWORD",
   "DETAILS": {
@@ -1002,8 +1084,9 @@ Changes a user's password.
 POST /event-change-user-password HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
-SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+USER_NAME: JohnDoe
 SOURCE_REF: 004
+
 {
   "DETAILS": {
     "OLD_PASSWORD": "genesis",
@@ -1013,6 +1096,8 @@ SOURCE_REF: 004
 ```
 </TabItem>
 </Tabs>
+
+In the REST API, send `USER_NAME` as an HTTP header, as in the example above, and only `DETAILS` is read from the request body; in the Websocket API, `USER_NAME` goes in the message body.
 
 ### `EVENT_EXPIRE_USER_PASSWORD`
 
@@ -1043,9 +1128,12 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 004
-"DETAILS": {
-  "PASSWORD": "optional",
-  "USER_NAME": "JohnDoe"
+
+{
+  "DETAILS": {
+    "PASSWORD": "optional",
+    "USER_NAME": "JohnDoe"
+  }
 }
 ```
 </TabItem>
@@ -1075,6 +1163,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 006
+
 {
   "DETAILS": {
     "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
@@ -1127,6 +1216,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 010
+
 {
   "DETAILS": {
     "ACCESS_TYPE": "ALL",
@@ -1216,6 +1306,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 011
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1275,6 +1366,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 012
+
 {
   "DETAILS": {
     "USER_NAME": "JohnDoe",
@@ -1320,6 +1412,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 013
+
 {
   "DETAILS": {
     "NAME": "TRADERS",
@@ -1381,6 +1474,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 014
+
 {
   "DETAILS": {
     "DESCRIPTION": "A profile for users who are traders",
@@ -1428,6 +1522,7 @@ Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
 SOURCE_REF: 015
+
 {
   "DETAILS": {
     "NAME": "TRADERS"
@@ -1441,7 +1536,7 @@ SOURCE_REF: 015
 
 The Data server query `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME=='JohnDoe'` (in this example, if the user's name were "JohnDoe") to receive push updates to user privileges.
 
-This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
+This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/query-data/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
 
 ### Event auditing
 
@@ -1449,7 +1544,7 @@ Each authentication event is audited in one way or another, either using the aut
 
 In the first case scenario, auditing works as it would do for any other Genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
 
-In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided).
+In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, FAILED_LOGOUT (if an incorrect session ID or user name has been provided), CHANGE_PASSWORD and FAILED_CHANGE_PASSWORD. The password entries are written by `EVENT_CHANGE_USER_PASSWORD`, `EVENT_PASSWORD_RESET_ACTION` and `EVENT_EXPIRE_USER_PASSWORD`; an expiry is recorded as CHANGE_PASSWORD with the reason `EXPIRE_PASSWORD`.
 
 Additionally, all USER_LOGIN audit events are logged to a file at INFO level in the following format:
 
@@ -2019,6 +2114,7 @@ Each `identityProvider` configuration has the following properties:
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | No | 50 minutes | Int |
+| tokenDelivery | How the issued SSO token reaches the front end: in the URL query, or in an HttpOnly `ssoToken` cookie. See [SSO token in a cookie](#sso-token-in-a-cookie) | No | `URL_QUERY` | Enum (URL_QUERY, COOKIE) |
 | redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
@@ -2576,6 +2672,48 @@ Finally, you need to ensure [`ssoToken()`](#ssotoken) is in your `auth-preferenc
 ```kotlin
 authentication {
   ssoToken()
+}
+```
+
+### SSO token in a cookie
+
+After a SAML or OIDC login, the authentication service hands the front end an SSO token to log in with. Usually this arrives in the `SSO_TOKEN` URL parameter. It can also arrive in an HttpOnly cookie called `ssoToken`, which keeps the token out of the URL. The Genesis Router reads that cookie only when [cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication) is enabled:
+
+- On an HTTP call to `event-login-auth`, the router copies the cookie into the `SSO_TOKEN` header. It ignores any `SSO_TOKEN` header that the client sends itself. For the request to send, see the [SSO login example](#sso-login) under `EVENT_LOGIN_AUTH`.
+- On a WebSocket upgrade, the router accepts the connection when an `ssoToken` cookie is present, even if there is no session cookie or the session cookie matches no live session, so the front end can open its socket before it has a session. The token is checked at login, not at the upgrade. Until the user has logged in, the socket handles messages like this:
+  - `EVENT_LOGIN_AUTH` is accepted only while the router still holds the token from the upgrade. The router adds the token to that message and then discards it, so the token is used once. Any other `EVENT_LOGIN_AUTH` on the socket is rejected as Forbidden.
+  - `EVENT_LOGOUT` is always rejected as Forbidden on the socket.
+  - `HEARTBEAT_PING` is answered whether or not the user is logged in. The reply's `IS_AUTHENTICATED` field says which.
+  - `EVENT_SELF_SERVICE_PASSWORD_RESET` and `EVENT_PASSWORD_RESET_ACTION` work only while the user is logged out. `EVENT_CHANGE_USER_PASSWORD` works either way.
+  - A message rejected as Forbidden gets a `MSG_NACK` with `STATUS_CODE` 403 and the text `Unable to call <MESSAGE_TYPE> via websocket`.
+  - Every other message needs a logged-in user, so until the user has logged in it gets a `MSG_NACK` with `STATUS_CODE` 401 and the text `This request needs the user to be logged in, but the current authentication status is logged out`.
+- When a login over HTTP to `event-login-auth` succeeds or fails, the router clears the cookie in its response. A login over the WebSocket doesn't clear it.
+
+:::tip
+To check that the header is ignored, send a valid `ssoToken` cookie together with an invalid `SSO_TOKEN` header. The login succeeds because the router ignores the header.
+:::
+
+The router only reads and clears the `ssoToken` cookie; it never sets it. To have the authentication service deliver the token in the cookie instead of the URL, set `tokenDelivery` to `COOKIE` on the identity provider in your `*-oidc-config.kts` or `*-saml-config.kts` file. The setting is per identity provider and takes `URL_QUERY` (the default) or `COOKIE`. Cookie authentication must also be enabled in the router, as above; otherwise the router ignores the cookie.
+
+```kotlin title="*-oidc-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+oidc {
+  identityProvider("uatOidc") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
+}
+```
+
+```kotlin title="*-saml-config.kts"
+import global.genesis.auth.sso.TokenDelivery
+
+saml {
+  identityProvider("genesis") {
+    ...
+    tokenDelivery = TokenDelivery.COOKIE
+  }
 }
 ```
 

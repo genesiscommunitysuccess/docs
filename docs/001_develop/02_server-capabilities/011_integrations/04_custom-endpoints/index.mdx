@@ -43,6 +43,8 @@ Custom endpoints are defined in the `*-web-handler.kts` files.
 
 Once a web-handler.kts is available within your product/script directory, it is immediately available as an endpoint in the router.
 
+By default, the Genesis Router loads every `*-web-handler.kts` file in your application's script folders and serves its endpoints. You can also load a web-handler script in the process that owns the logic, if that process uses the WebSocket messaging channel; see [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process). If you turn on the router's [HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy), the router stops loading web-handler scripts from the script folders, so each script must then be loaded by a process.
+
 ## Example configuration
 
 The following shows example web endpoint configurations.
@@ -67,10 +69,10 @@ webHandlers {
         }
     }
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 
@@ -85,7 +87,7 @@ webHandlers {
     endpoint<Trade, CreateTradeResponse>(POST, "trades") {
         permissioning {
             requestAuth("INSTRUMENTS") {
-                authKey { data.instrumentId }
+                authKey { key(data.instrumentId) }
             }
         }
 
@@ -150,6 +152,8 @@ On handling a request, reads all file uploads from the request body and writes t
 ### `webHandlers`
 
 The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**.
+
+Put helper classes and any other declarations before the `webHandlers { }` block. The block must be the last expression in the file; a declaration after it (for example a `data class`) stops the process starting, with `ClassCastException: class kotlin.Unit cannot be cast to class global.genesis.process.web.handler.WebHandlerScriptResult`.
 
 ###### Overriding the base path
 
@@ -341,9 +345,10 @@ webHandlers {
 The `status` parameter above is fixed at configuration time. When you need to choose the status code **at runtime** or set response **headers** — for example to return a conditional `304 Not Modified`, an `ETag`, or a `Cache-Control` header — return the result of `buildResponse` from `handleRequest`, and type the endpoint response as `HttpResponse`:
 
 ```kotlin
-import global.genesis.router.server.web.http.extensions.HttpResponse
+import global.genesis.message.core.HttpStatusCode
+import global.genesis.process.web.handler.HttpResponse
 
-endpoint<Unit, HttpResponse>(GET, "trades") {
+endpoint<HttpResponse>(GET, "trades") {
     handleRequest {
         buildResponse {
             status(HttpStatusCode.Ok)                 // or status(code, "reason")
@@ -380,6 +385,17 @@ multipartEndpoint("test") {
     }
 }
 ```
+
+Each element of `fileUploads` is a `FileUploadFileData` (package `global.genesis.net.http.multipart`). It is a `java.io.InputStream` over the uploaded file's content, with these additions:
+
+| Member | Purpose |
+| ------ | ------- |
+| `fileName: String` | The file name the client sent with the upload |
+| `size: Long` | The file's size in bytes |
+| `copyTo(path: Path): Long` | Copies the content to `path` and returns the number of bytes written; fails if `path` already exists |
+| `readText(charset)` | Reads the whole content as a string (an extension function in the same package; `charset` defaults to the platform charset) |
+
+Because it is an `InputStream`, you can also read the content directly with `read`, `readAllBytes` or `transferTo`, without writing it to disk first.
 
 #### `config`
 
@@ -605,6 +621,14 @@ Within the context of `handleRequest`, the following properties are in scope:
 | `userName` | The user name of the user making the request | When logged in |
 | `request`  | The request object                           | Always         |
 
+These properties are members of the receiver of the `handleRequest` block, so you use them directly by name. The block does not take a lambda parameter; do not write `handleRequest { request -> ... }`, because `userName` and the other properties are not then in scope.
+
+```kotlin
+handleRequest {
+    mapOf("user" to userName)
+}
+```
+
 Any write call to the `db` will create audit entries for auditable tables, and will be executed in a transaction, if supported by the database layer.
 
 Additionally, the `triggerEvent` function is available to trigger events from the endpoint:
@@ -687,7 +711,7 @@ Where utilizing `customPermissions` you should also consider configuring a [`cus
 ```kotlin
 permissioning {
     requestAuth(mapName = "ENTITY_VISIBILITY") {
-        authKey { data.instrumentId }
+        authKey { key(data.instrumentId) }
     }
 }
 ```
@@ -698,7 +722,7 @@ Full example:
 endpoint<Trade, Trade>(POST, "trades") {
     permissioning {
         requestAuth(mapName = "ENTITY_VISIBILITY") {
-            authKey { data.instrument }
+            authKey { key(data.instrument) }
         }
     }
 
@@ -715,7 +739,7 @@ endpoint<Trade, Trade>(POST, "trades") {
 ```kotlin
 permissioning {
     requestAuth(mapName = "ENTITY_VISIBILITY") {
-        authKey { data.instrumentId }
+        authKey { key(data.instrumentId) }
     }
 }
 ```
@@ -726,7 +750,7 @@ Full example:
 endpoint(GET, "trades") {
     permissioning {
         responseAuth(mapName = "ENTITY_VISIBILITY", flow<Trade>()) {
-            authKey { data.instrumentId }
+            authKey { key(data.instrumentId) }
         }
     }
 
@@ -906,7 +930,9 @@ endpoint<String>(GET, "users") {
 
 ## Runtime configuration
 
-GPAL custom endpoints require no configuration beyond the web-handler.kts file. No modifications to the processes.xml file are required. Files will be picked up automatically by the Genesis Router from the /script folders.
+When the Genesis Router serves your custom endpoints, which is the default, they need no configuration beyond the web-handler.kts file and no changes to the processes.xml file. The router picks the files up automatically from the script folders.
+
+To serve the endpoints from another process instead, that process needs the WebSocket messaging channel (set in network-config.yaml) and its script entry in processes.xml. See [Native HTTP on the process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process) for the detail.
 
 ### Script modules
 
@@ -958,7 +984,7 @@ import global.genesis.trade.TradeInformationClient
 webHandlers {
     val tradeInformationClient = injector<TradeInformationClient>()
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         val tradeId: String by queryParameter("trade-id")
 
         handleRequest {
@@ -1036,7 +1062,7 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @GenesisTest
 @TestScriptFile("genesis-router.kts")
@@ -1088,7 +1114,7 @@ This test class does four things:
 * It will read the Router script as identified with the `TestScriptFile` annotation, causing all web handler scripts to be read.
 * Scans the `global.genesis.router` package with the `PackageNameScan` annotation to load all relevant Router classes.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 
 #### A first test
 Here is a simple first test. It does the following:
@@ -1168,10 +1194,10 @@ To test dynamic authorization, you need to amend your Web Endpoint definition. B
 webHandlers {
     val tradeInformationClient = injector<TradeInformationClient>()
 
-    endpoint<Unit, TradeInformation>(GET, "trades") {
+    endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 

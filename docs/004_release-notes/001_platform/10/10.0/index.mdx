@@ -1,0 +1,1490 @@
+---
+title: '10.0'
+sidebar_label: '10.0'
+sidebar_position: 1
+id: '10.0'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-changes-guidance). Further details are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
+## Server
+
+### Breaking changes
+
+* Drop the BOM constraints orphaned by the v10 module removals
+* Enable JDK 25 toolchain + Mockito-on-JDK-25 remediation + Guice 5 -> 7 and Javax -> Jakarta migration + Junit 5 -> 6 and Junit4 support retirement
+* Retire the Maven plugin submodules in favour of the Gradle codegen plugins
+* Update to Apache Fory 0.14.1
+* Upgrade Kotlin to 2.3
+* Bump camelVersion from 4.14.4 to 4.18.0
+* Drop ktor-client-gson, fest-assert and the unused commons-csv declaration
+* Drop the javax JAXB api and impl, nothing loads them
+* Migrate genesis-server to Jackson 3.1.4
+* Remove the genesis-sync module
+* `genesis-codegen` : Delete the deprecated GenesisVersion
+* Move CRON_RULE_AUDIT to generated audit table and migrate data via installHooks
+* Deprecate genesis-dbtogenesis and genesis-genesistodb
+* Remove the genesis-groovy module
+* Remove the genesis-hft module and the HFT feature line
+* Remove the genesis-protobuf adapter module
+* Remove the genesis-protobufsim module
+* Remove the genesis-publisher module
+* Remove the genesis-shell module and the ki-shell dependency
+* Remove the genesis-web-client-api client SDK
+* Remove the genesis-webmon module
+* Remove the legacy genesis-streamer module
+* Remove the legacy genesis-streamerclient module
+* `genesis-clustersupport` : Delete the unused job scheduler package
+* `genesis-codegen` : Deprecate the generated Fields object
+* `genesis-codegen` : Stop emitting the deprecated entity Builder and is-prefixed setters
+* `genesis-codegen` : Stop generating the deprecated per-entity table repositories
+* `genesis-config` : Remove the deprecated Shiro security helpers and drop shiro-core
+* `genesis-data-ingest` : Move CDC support to platform-integrations
+* `genesis-db` : Default DbLayer to SQL and deprecate FoundationDB
+* `genesis-db` : Delete the HIDDEN binary-compatibility shims
+* `genesis-db` : Deprecate the RxDb, RxDbImpl and RxEntityDb types
+* `genesis-db` : Enable SQL views by default
+* `genesis-db` : Remove dead transaction interfaces, safeWriteTransaction and isBulkSorted
+* `genesis-db` : Remove deprecated reflection helpers, SQLDictionaryStore and SqlMode.LEGACY
+* `genesis-db` : Remove entity-level continuation reads
+* `genesis-db` : Remove the deprecated Entity interface
+* `genesis-db` : Remove the deprecated buildStatement overloads
+* `genesis-db` : Remove the deprecated cache API isTableCached and addTable(String)
+* `genesis-db` : Remove the remaining deprecated database-details members
+* `genesis-db` : Remove vararg overload from entity-DB getAllAsList
+* `genesis-db` : Sync-core DB layer with Rx/Sync/Async record & entity APIs
+* `genesis-dictionary` : Deprecate the fields dictionary DSL in favour of inline table fields
+* `genesis-dictionary` : Move framework fields inline in updateTablesDictionary
+* `genesis-dictionary` : Remove LambdaExtractor, dtaHosts and enumField
+* `genesis-eventhandler` : Deprecate the AbstractEventHandler API ahead of v11 removal
+* `genesis-eventhandler` : Remove the legacy XML event-handler definition format
+* `genesis-net` : Add HTTP/Websocket transport support and improve Netty byte buffer reusability
+* `genesis-net` : Native HTTP endpoints per process (req-rep and eventhandler) + streaming router proxy
+* `genesis-net` : Remove ListenableFuture-based sendReqRep
+* `genesis-net` : Switch binary serialization to Smile and remove MessagePack dataformat
+* `genesis-pal` : Converge the permissioning auth DSL on filter and authKey
+* `genesis-pal` : Remove deprecated eventhandler and requestserver DSL members
+* `genesis-pal-datapipeline` : Remove deprecated DSL syntax and guard pipeline completion
+* `genesis-pal-dataserver` : Remove deprecated DSL syntax and the FURY serialization type
+* `genesis-process` : Decouple web-handler script DSL from router into genesis-process
+* `genesis-process` : Remove deprecated log-level, message-delegator and test auth-cache members
+* `genesis-router` : Remove the deprecated webSocketCompression router setting
+* `genesis-testsupport` : Honour a network-config file and run a TLS-enabled process
+* `server` : Transport-neutral endpoints and response composition
+* Improve warning/error around derivedFields on dataservers, request-replies
+* `build` : Declare script permissions on genesis distribution archives
+* `codegen-gradle-plugin` : Fail build if DEPLOYED_PRODUCT is set but generated jars aren't distributed
+* `coreproduct` : Remove MigrateDictionaryToGenesis scripts broken by dta dependencies removal in 8.15.0
+* `exec-gradle-plugin` : Add BLOCK_GENESIS_INSTALL Sysdef to block genesisInstall in docker deployments
+* `genesis-cluster` : Correct three cluster defects and converge the ClusterPort default
+* `genesis-cluster` : Replace Java serialization on the cluster transport
+* `genesis-commons` : Stop exporting the Kotlin compiler to every consumer
+* `genesis-config` : Reject unrecognised ClusterMode values at startup
+* `genesis-db` : Converge the update-queue default on ZeroMQ
+* `genesis-evaluator` : Point dynamic rules using !in at !(A in B)
+* `genesis-net` : Resolve every network consumer from NetworkConfigContainer
+* `genesis-pal-datapipeline` : Move a Camel file to .error when the pipeline stops on an uncaught error
+* `genesis-process` : Correct boostrap typo to bootstrap in META-INF resource path
+* `genesis-router` : Sanitise output strings for XSS attacks
+* `genesis-router` : Apply allowList/blockList, strict status and XSS settings to proxied HTTP requests
+* `server` : API contract cleanup across the transport stack
+* `genesis-jackson` : Lazily init cold mappers and per-instance schema registry
+* Decouple genesis-calendar from genesis-process
+* Decouple genesis-codegen and genesis-process from genesis-hft
+* `codegen` : Remove generateDaoCache/generateViewCache tasks and Kryo cache infrastructure
+* Bump Guice 5.1.0 -> 7.0.0 + javax.inject -> jakarta.inject migration
+* `genesis-commons` : Remove XMLConfiguration-returning ConfigReadable methods
+* `genesis-commons` : Retire the ANTLR Kotlin parser
+* `genesis-console` : Move StatusDataserver onto genesis-pal-dataserver
+* `genesis-db` : Drop the deprecated ZeroMQUpdateQueue factory and its dead DatabaseManager caller chain
+* `genesis-dictionary` : Remove the deprecated GenesisDictionary.sequenceIdFields
+* `genesis-environment` : Implement the remap type conversions without commons-beanutils
+* `genesis-environment` : Migrate PopulateHolidays to maintained de.focus-shift jollyday
+* `genesis-evaluator` : Migrate rule event handlers to the typed EventHandler API
+* `genesis-eventhandler` : Remove unused generic insert/modify/delete event handlers
+* `genesis-net` : Make ClientConnectionsManager internal
+* `genesis-pal` : Remove deprecated FileReader definition entry points
+* `genesis-pipeline-api` : Remove deprecated DbSink and DbRxSink typealiases
+* `groovy` : Trim the Groovy artifacts, retire the JSR-223 paths, and default script processes to pal
+
+### Features
+
+* `clustersupport` : Consul-backed gFlake NodeId allocation, wiring & reclamation
+* `codegen` : Reduce application build time via codegen slice+facade split and add KTS cache reusability + incompatibility detection
+* `core` : Support overriding process level system definition properties using environment variables
+* `coreproduct` : Allow override of any process level config through sysdef or environment variables, including JVM options
+* `coreproduct` : Increase maxSize to 256 for SYSTEM_KEY field
+* `cube` : Reject a non-boolean baseCriteria at registration
+* `cube` : Validate a base-criteria template's own literals at registration
+* `genesis-pal-dataserver` : Export how much subscribed criteria overlap behind an opt-in metrics flag
+* `genesis-db` : Notify AsyncWriteOperationListener from the async write paths
+* `distribution-gradle-plugin` : Let platform PBCs build their distribution with the plugin
+* `docker` : Optimise generated Dockerfile build
+* `exec-gradle-plugin` : Add feature-flag support to project-overview.json
+* `genesis-cluster` : Add `DISABLED` ClusterMode option to completely disable primary only checks and cluster health messages
+* `genesis-cluster` : Add `ZeroMQProxyUnicastRelayExcludedTopics` system definition option to avoid retransmitting specific update queue topics to other cluster nodes
+* `genesis-clustersupport` : Scope ServiceDiscovery by (service, resource) composite key
+* `genesis-codegen` : Add equals and hashcode methods to entity builder classes
+* `genesis-columnar` : SCDB columnar wire encoding for dataserver & request-server
+* `genesis-config` : Load build-time-compiled .kts instead of compiling them at startup
+* `genesis-conventions` : Centralise Spring dependency management via an opt-in platform
+* `genesis-conventions` : Configure dokka to resolve @sample code samples
+* `genesis-conventions` : Declare the test logging backend in one line
+* `genesis-data-cube-spring-boot-starter` : Exposure API — declarative CubeResource beans + query seam
+* `genesis-data-cube-spring-boot-starter` : Address rows with a server-decided ROW_REF column
+* `genesis-data-cube-spring-boot-starter` : Bind watermark-backed cache freshness
+* `genesis-data-cube-spring-boot-starter` : Canonical request identity token
+* `genesis-data-cube-spring-boot-starter` : Deterministic pagination via identity ORDER BY tiebreaker
+* `genesis-data-cube-spring-boot-starter` : Front-end filtering typed columns, unified filter model, JPQL compiler
+* `genesis-data-cube-spring-boot-starter` : Initial implementation of genesis data cube
+* `genesis-data-cube-spring-boot-starter` : Make the pivot column cap configurable
+* `genesis-data-cube-spring-boot-starter` : Plan named operations at registration to type their aggregate outputs
+* `genesis-data-cube-spring-boot-starter` : Port the SSRM dev server onto the real cube HTTP endpoints
+* `genesis-data-cube-spring-boot-starter` : Publish JSON Schema leaves alongside the cube capability document
+* `genesis-data-cube-spring-boot-starter` : Return a slice rather than a page from the cube HTTP plane
+* `genesis-data-cube-spring-boot-starter` : Row identity and composite-key columns
+* `genesis-data-cube-spring-boot-starter` : Serve the cube HTTP snapshot plane
+* `genesis-data-cube-spring-boot-starter` : Serve the cube resource capability document
+* `genesis-data-cube-spring-boot-starter` : Source-set extraction for cube sources
+* `genesis-data-spring-boot-starter` : Add a Spring-native @UpdateQueueListener
+* `genesis-data-spring-boot-starter` : Add support h2, oracle and sql server
+* `genesis-data-spring-boot-starter` : Provide jpa support in spring
+* `genesis-data-spring-boot-starter` : Publish JPA repository writes to the update queue
+* `genesis-db` : Add transactional support for SqlDatabaseConnection, integration with our standard database APIs, and opt-in system definition property for automatic table/column naming convention translation
+* `genesis-db` : SQL criteria translation framework with SQLite adapter
+* `genesis-db` : Add `updateBy` to SyncEntityDb
+* `genesis-db` : Add configurable ZeroMQ CURVE auth and XPUB readiness flow
+* `genesis-db` : Add delimiter-aware ContainsWordsStartingWithIgnoreCase
+* `genesis-db` : Added `DbMaxRetryBeforeExit` system property to terminate process after failed retries
+* `genesis-db` : Configurable IO dispatcher for SyncEntityDb
+* `genesis-db` : Default getRangeFromEnd numKeyFields to the index width
+* `genesis-db` : Deprecate the ASYNC backward-join cache mode
+* `genesis-db` : Derive cache generations from update-queue watermarks
+* `genesis-db` : Opt-in cached point reads inside transactions
+* `genesis-db` : Split WriteOperationListener into sync/async flavors
+* `genesis-db-server` : Rebuild GENESIS_DB_SERVER on genesis-pal-dataserver
+* `genesis-dbtest` : Dictionary-cache drift consistency test
+* `genesis-dictionary` : Inline field parity with the fields DSL
+* `genesis-dictionary` : Lossless inline-field migration and dictionary equivalence check
+* `genesis-dictionary` : Share non-enum fields with sharedField
+* `genesis-environment` : Generate ZeroMQ CURVE keys and client certificates
+* `genesis-environment` : Rename a column in one table with TABLE.FIELD in RenameFields
+* `genesis-environment` : Support custom main classes
+* `genesis-environment` : Support generic `.templt.<ext>` rendering in genesisInstall
+* `genesis-eventhandler-spring-boot-starter` : Add support for suspend methods
+* `genesis-eventhandler-spring-boot-starter` : Auto-audit JPA writes in Spring event handlers
+* `genesis-eventhandler-spring-boot-starter` : Bind EventHandlerType.INTERNAL for in-process event triggering
+* `genesis-eventhandler-spring-boot-starter` : Implement EventControllerAdvice support
+* `genesis-jackson` : Add Smile serialization for GenesisSet
+* `genesis-jackson` : Move cube temporal serialisers into genesis-jackson
+* `genesis-jpa-base` : Add @Transactional annotations and paging/sorting support
+* `genesis-ldap` : Multi-connection, DSL config factory, trust mode, nullable canonical id, hook lifecycle
+* `genesis-log4j-testsupport` : Add WithLogLevel annotation to adjust log levels during tests
+* `genesis-logging` : Provide support for switching between logback and log4j
+* `genesis-logging-api` : Log the active logging backend and resolved config at process start-up
+* `genesis-mcp` : Built-in platform tools with tiered auth, maker-checker approvals, and audit
+* `genesis-messages` : Rename Approvable.approvalMessage to resultMessage
+* `genesis-pal` : Add @sample coverage across GPAL DSL modules
+* `genesis-pal` : Introduce 'internal' resource scoping for router gating
+* `genesis-pal-consolidator` : Add IGNORE to OnNotFound config in ConsolidatorBuilder
+* `genesis-pal-consolidator` : Allow consolidator definitions without a select block
+* `genesis-pal-consolidator` : GPAL consolidator stored counts diverge from source under concurrent input
+* `genesis-pal-consolidator` : Make build block optional when onNotFound is not BUILD
+* `genesis-pal-consolidator` : Add excludedEmitters support
+* `genesis-pal-datapipeline` : Add ability for dbBatchQuery source to start polling from latest
+* `genesis-pal-datapipeline` : Add record count to pipeline processing context
+* `genesis-pal-dataserver` : Add SQLite backend for full "order by" support including pagination, criteria to SQL translation, avoid LMDB limitations, and other benefits (with trade-offs)
+* `genesis-pal-dataserver` : Report lmdb space usage as metrics
+* `genesis-pal-requestserver` : Expose Request.Details to custom reqrep handlers
+* `genesis-pal-requestserver` : Opt-in response caching with ETag validation
+* `genesis-pal-streamerclient` : Name GenesisSet streamer-client fields with TableField
+* `genesis-parent` : Add @ProcessArg annotation to `GenesisJUnit`
+* `genesis-parent` : Add @ProvidedType, a type-safe alternative to @ProvidedInstance
+* `genesis-process` : Add sysdef flag to print DATADUMP_ON messages as single-line JSON string
+* `genesis-process` : Add runtime deprecation-warning mechanism for modules, packages and DB engines
+* `genesis-process` : Add system definition flag to explicitly disable tracing
+* `genesis-process` : Default /health, /health/details, /health/readiness, and /prometheus endpoints per process
+* `genesis-process` : Refuse Netty-typed endpoints at startup in one-port mode
+* `genesis-resource-daemon` : LDAP login mode for the management console
+* `genesis-resource-daemon` : Authenticated management API and browser console
+* `genesis-router` : Add `httpCompression` option to router definition
+* `genesis-router` : Add sessionCookies configuration to allow undefined max-age cookies
+* `genesis-router` : Add ssoToken pre-auth cookie support for SSO token delivery
+* `genesis-router` : Sysdef toggles for OpenAPI and RESOURCES_REQUEST, and hide internal/blocked resources from both
+* `genesis-router` : Sysdef-overridable router and MCP ports
+* `genesis-session` : Opt-in on-demand session cache for process HTTP auth, router and MCP
+* `genesis-spring-boot-gradle-plugin` : Generate jpa entities for genesis views
+* `genesis-spring-boot-gradle-plugin` : Let the JPA generator target a named source set
+* `genesis-spring-boot-starter` : Authenticate callers on the Spring HTTP plane
+* `genesis-spring-boot-starter` : Handle duplicate Guice-to-Spring bean name clashes
+* `genesis-spring-boot-starter` : Resolve web server genesis settings once at startup
+* `genesis-spring-boot-starter` : Route a Spring app's HTTP surface through GENESIS_ROUTER
+* `genesis-spring-boot-starter` : Serve the one-port surface with genesis TLS
+* `genesis-spring-testsupport` : Integration test support for Spring Boot event handlers
+* `genesis-subcore` : Update startServer script to allow archiving to run in the background
+* `genesis-subcore` : Add deleteAll() and deleteAll(entities) to GenesisJpaRepository
+* `genesis-subcore` : Genesis-dev-tools convention with generateZeroMqCurveKeys and inlineDictionaryFields
+* `genesis-testsupport` : Add @ProvidedDictionary
+* `genesis-testsupport` : Deprecate legacy pre-`GenesisJUnit` test-support API
+* `gradle` : Add packagingStrategy property to ExecExtension for app distribution folder structure
+* `jpa` : Map schema DATE fields to LocalDate
+* `lifecycle` : Replace Netflix Governator with Genesis lifecycle adapter
+* `pipeline` : Event sink with process/service targeting
+* `script-compilation-gradle-plugin` : Compile Genesis .kts in a source set of their own
+* `script-compilation-gradle-plugin` : Compile same-named .kts under distinct class names
+* `script-compilation-gradle-plugin` : Enable build-time .kts compilation without the settings plugin
+* `server` : Multipart uploads on the servlet transport
+* `server` : Route a one-port Spring app through GENESIS_ROUTER by stripping a published prefix
+* `server` : Servlet transport adapter for one-port mode
+* `server` : Transport-neutral HTTP request abstraction
+* `server` : Transport-neutral core seam for Spring/Genesis server unification
+* `testsupport` : Mark @ResetQuery and CacheFlusher as platform-internal test API
+* Add formatting support for java.time Temporal types
+* Implement Graceful Shutdown in Spring interop
+* Permissions Support for Spring Boot Event Handler
+* Prepare exec and distribution plugin for dynamic file creation
+* Spring Boot Event Handler implementation
+* Add AppDistTarGz task that mirrors AppDistZip; but create a tar.gz file
+* Added 'METRICS_JVM_ENABLED' field to SysDefs to allow users to choose to run jvm specific metrics
+* Automatically detect @GenesisApplication and provide process xml
+* Deprecate genesis-consolidator2 instead of removing it
+* Deprecate genesis-dataserver2 instead of removing it
+* Deprecate genesis-streamer instead of removing it
+* Deprecate genesis-web-client-api instead of removing it
+* Deprecate genesis-webmon instead of removing it
+* Harden module-deprecation detection with classpath scanning and a build-time warning
+* Write _AUDIT rows for consolidator writes to audited tables
+
+### Performance improvements
+
+* `commons` : Take the Expr date caches off Caffeine and hold the today and range brackets
+* `criteria` : Fold comparisons on one variable across an AND/OR chain
+* `criteria` : Serve cached criteria without queuing behind a compile
+* `criteria` : Share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval
+* `genesis-pal-dataserver` : Cut per-row, per-client waste from the update fan-out
+* `genesis-pal-dataserver` : Reuse authorisation keys and verdicts across a batch, and keep authKeyWithUserName keys per user
+* `genesis-db` : Parse and compile a repeated getByCriteria once, in the engine's criteria cache
+* `genesis-commons` : Cut GenesisSet construction, message-boundary and conversion overhead
+* `genesis-commons` : Load out-of-order keys into the paged sorted maps faster with no extra heap
+* `genesis-db` : Optimize DataTypeConverter resolution
+* `genesis-pal-dataserver` : Batch enrichment DB lookups to reduce N round-trips to 1
+* `genesis-pal-dataserver` : Cache derived field evaluations lazily in EnhancedRow
+* `genesis-pal-dataserver` : Cache full-table row count for O(1) lookup
+* `genesis-pal-dataserver` : Optimize LMDB batch dedup and reduce runBlocking overhead
+* `genesis-pal-dataserver` : Parallelize client fan-out in DataserverUpdateProcessor
+* `genesis-pal-dataserver` : Reduce boxing in MemoryTable, MemoryTableSubscriber, and PublishClientIndex
+* `genesis-pal-dataserver` : Replace runBlocking with non-blocking dispatch in ConnectionManager
+* `genesis-pal-execution` : Reduce memory footprint of backward join cache by optimising backward joins implementation and add special case for Identity branches
+* `genesis-pal-execution` : Encode each join key once per update in the memory-efficient sync backward-join cache
+* `genesis-pal-execution` : Exact memory-efficient sync backward-join cache with compact storage
+* `genesis-pal-execution` : Share parent keys between sibling identity backward-join branches
+* `genesis-pal-execution` : Store root primary keys encoded in the memory-efficient backward-join cache
+
+### Fixes
+
+* `.github` : Stop a GitHub 500 on test-result publish failing the PR build
+* `build` : ArtifactoryPublish drops library modules under Gradle 9 (module-conventions afterEvaluate)
+* `build` : Compile against the JDK 17 API with --release 17
+* `build` : Stop wholesale System.getProperties() read breaking the configuration cache
+* `build` : Wire ktlint check tasks to generator tasks for Gradle 9
+* `build` : Wire test source-set tasks to generateInternalModules for Gradle 9
+* `build-gradle-plugin` : Let the root build script declare genesisManifest \{\}
+* `cicd` : Estate-usage scan picked wrong current-major version
+* `cicd` : Resolve genesisVersion for Maven-only estate-scan consumers
+* `cicd` : Restore the OWASP dependency-check vulnerability gate
+* `cicd` : Run the Spring module SQL tests in CI
+* `cicd` : Stop publishing into the shared runner maven local
+* `cicd` : Stop the OWASP gate publishing an incomplete NVD database
+* `cicd` : Uncap the changed-file gate and cover the composed test annotation
+* `cluster` : Make HostDiff actually reach every node and report failures
+* `clustersupport` : Route pipeline event sink through MessageService with UNAVAILABLE retry and auto-failover
+* `codegen` : Fix seed-app publish and stale ZipFile handle in PR CI
+* `codegen` : Gate sysdef-mismatch fail-fast behind existing reuseUpstream.strict flag
+* `codegen` : GenerateView defines overridden upstream tables twice with overrideSlices
+* `codegen` : Multi-word product DAO slice missing local tables
+* `codegen` : Preserve slice publishing under PBC dictionary-cache disabler
+* `codegen` : SliceJar output dir collision with build/libs
+* `codegen-gradle-plugin` : Auto-resolve local product in tableUnion overrideSlices check
+* `codegen-gradle-plugin` : Drop all upstream types for override products
+* `codegen-gradle-plugin` : Evaluate every own dictionary under reuseUpstream and fail PBCs on mismatched prefixes
+* `codegen-gradle-plugin` : Generate upstream product classes locally on a lenient sysdef mismatch
+* `codegen-gradle-plugin` : Honour overrideSlices and src/main/genesis/cfg in the reuseUpstream override check
+* `codegen-gradle-plugin` : Publish only the slice jar from slice modules whatever the build names its publication
+* `codegen-gradle-plugin` : Publish the generated modules without relying on the build's publishing block
+* `commons` : Free the criteria replacer when a compile fails
+* `consul` : SessionJob starts unconditionally and monitor checks always register as critical
+* `consul` : Shut down replaced client to stop Netty reconnect loop retrying dead node
+* `core` : Process shuts down when a dependant process has shut down
+* `core` : Surface removed-module deprecations at install and startProcess
+* `coreproduct` : Handle boolean start flags in getListOfProcessNames()
+* `coreproduct` : Keep pre-logging startup failures in `<process>.log.err` in every start mode
+* `coreproduct` : Make logback-default.xml honour L/RL and match log4j2 rollover
+* `coreproduct` : Report removed Groovy support instead of an unknown scripting engine
+* `coreproduct` : Show monitor details in mon -a while limiting default status messages to warning/error
+* `coreproduct` : Skip configured jar prefixes in manifest and classpath-file resolution
+* `criteria` : Parse date literals the same way in memory as in SQL
+* `daemon` : Fix minor resource leak in daemon script if an exception occurs
+* `daemon` : Resolve the network config in standalone script DI
+* `datapipeline` : Bound sendEventOnCompletion's hold inside a txDbSink transaction
+* `genesis-pal-dataserver` : EnrichedAuth queries never receive live grants
+* `genesis-pal-dataserver` : Inherit server-level SQLite strictMode and batchSize in query-level sqlite \{ \}
+* `dataserver2` : Apply the criteria vocabulary to client criteria
+* `genesis-db` : Bridge WriteOperationListener onto the SQL sync write path
+* `genesis-db` : Log the FDB/FDB2 deprecation warning on the Guice engine path
+* `genesis-db` : Refuse to start on an empty dictionary when the 8.15 one is still in METADATA.DICTIONARY
+* `dbmon` : Compare against the comparator date in Expr.dateIsAfter
+* Exclude transitive dependency jmh-core from genesis distribution
+* `distribution-gradle-plugin` : Publish the bin and minimal zips as one publication
+* `distribution-gradle-plugin` : ReuseUpstream default fallback and upstream slice-jar resolution ordering
+* `exec-gradle-plugin` : AppDistZip crash when genesisServer/genesisWeb configurations are empty
+* `exec-gradle-plugin` : Bind logback on the test classpath when backend = LOGBACK
+* `exec-gradle-plugin` : Ensure AppDistZip and AppDistTarGz files are compatible with gradle config cache
+* `exec-gradle-plugin` : Ensure image name is always lowercase
+* `exec-gradle-plugin` : List enum Gradle property values as declared in the invalid-value error
+* `exec-gradle-plugin` : Set GENESIS_PRIMARY in the dev docker-compose template
+* `exec-gradle-plugin` : Support multiple files in genesisServer for appDistZip
+* `exec-gradle-plugin` : Sync an application's seed data into genesis-home
+* `genesis-bom` : Repair BOM and platform dependency metadata for Spring apps
+* `genesis-cluster` : Consul TTL healcheck pings should only start after successful service registration
+* `genesis-cluster` : Validate hostname in order to produce specific error
+* `genesis-clustersupport` : Consul failover — UNAVAILABLE nack swap + exclude STARTING primaryOnly nodes
+* `genesis-clustersupport` : Ensure Consul TTL health check coroutines run independently to avoid contention problems
+* `genesis-clustersupport` : Make consul health checks use elapsed time scheduling rather than fixed time scheduling and simplify primaryOnly health checks
+* `genesis-clustersupport` : Demote a primary that loses contact with Consul
+* `genesis-clustersupport` : Distinct exit code for NodeId-lost halt
+* `genesis-clustersupport` : Drain one merged stream so a chatty child cannot deadlock a runtime command
+* `genesis-clustersupport` : Extend transient-I/O retry to the explicit-pin path
+* `genesis-clustersupport` : Fix race condition in consul health point registration
+* `genesis-clustersupport` : Keep service discovery updating, heal missed deletes, bound MCP lookups
+* `genesis-clustersupport` : Keep the wildcard bind where Consul must reach the process
+* `genesis-clustersupport` : Migrate ProcessHeartbeatTest off the JUnit 4 API
+* `genesis-clustersupport` : Publish the resource internal flag from the Consul service registry
+* `genesis-clustersupport` : Reach a one-port process on the channel it published
+* `genesis-clustersupport` : Replay current snapshot on addServiceListener to avoid waitForDependencies hang
+* `genesis-clustersupport` : Restore statusMessage over the wire and tolerate its absence
+* `genesis-clustersupport` : Scope ClusterManagerProvider as a singleton
+* `genesis-clustersupport` : Scope ConsulClientProvider as a singleton
+* `genesis-clustersupport` : Use a claim token instead of timestamps to detect sibling adoption
+* `genesis-codegen` : Backtick-escape Kotlin-keyword field names in generated DAOs
+* `genesis-codegen` : Suppress the RxDb deprecation in generated view repos, configs and join caches
+* `genesis-commons` : DST-safe week boundary in dateTimeIsInRange tests
+* `genesis-commons` : Disable ANTLR4 Groovy parser to improve parsing performance and reduce memory footprint
+* `genesis-commons` : One strict criteria rule set for dataserver2 and genesis-db
+* `genesis-commons` : Run each lifecycle hook exactly once and stop pinning classloaders
+* `genesis-commons` : Skip teardown of an already-destroyed instance during the drain too
+* `genesis-config` : Replace shiro with javax.crypto and add tests for backwards compatibility
+* `genesis-config` : Merge SysDef JVM_OPTIONS heap flags instead of appending
+* `genesis-config` : Resolve @file:ScriptModules before parsing so wildcard imports see it
+* `genesis-config` : Script cache invalidation targets wrong file in attemptToRecover
+* `genesis-console` : Reply to SYSTEM_DEFINITION when ClusterPort is unset
+* `genesis-conventions` : Guard the Spring starters' logging-provider classpath contract
+* `genesis-conventions` : Resolve Gradle plugins from our own repo and Plugin Portal before Maven Central
+* `genesis-criteria` : `dateTimeIsInRange` throws exception when ran at midnight for TimeRange HOUR and TimeContext previous
+* `genesis-criteria` : Allow nested binary expressions in evaluator result/rule expressions
+* `genesis-data-cube-spring-boot-starter` : Accept a sort on a wire-reachable pivot-generated column
+* `genesis-data-cube-spring-boot-starter` : Accept explicit null pivot on a noPivot exposeQuery resource
+* `genesis-data-cube-spring-boot-starter` : Answer 415 and 405 in the plane's own error contract
+* `genesis-data-cube-spring-boot-starter` : Attribute base-criteria coercion failures to the server, not the caller
+* `genesis-data-cube-spring-boot-starter` : Base64-encode ByteArray row-ref components
+* `genesis-data-cube-spring-boot-starter` : Bound dynamic-query sort to the request's own output columns
+* `genesis-data-cube-spring-boot-starter` : Cache enum valid-values instead of recomputing per request
+* `genesis-data-cube-spring-boot-starter` : Cap the request shape, filter and sort on the cube snapshot plane
+* `genesis-data-cube-spring-boot-starter` : Close gaps in the source-set completeness rule
+* `genesis-data-cube-spring-boot-starter` : Describe grouped+projected DTO rows from the DTO, not the source column
+* `genesis-data-cube-spring-boot-starter` : Enable HAVING on the exposeQuery dynamic path
+* `genesis-data-cube-spring-boot-starter` : Enable dynamic groupExpansion drill-down on exposeQuery
+* `genesis-data-cube-spring-boot-starter` : Enforce cube resource permissions and bind :username over HTTP
+* `genesis-data-cube-spring-boot-starter` : Fill JPQL flat DTO projections by name, not position
+* `genesis-data-cube-spring-boot-starter` : Fold the cube era into the ETag
+* `genesis-data-cube-spring-boot-starter` : Honour a RAW field's declared Encoding on the wire
+* `genesis-data-cube-spring-boot-starter` : Inspect a JPQL subquery's FROM for the dictionary-generated-entity rule
+* `genesis-data-cube-spring-boot-starter` : Never cache remember() plans against uncommitted writes
+* `genesis-data-cube-spring-boot-starter` : Omit pivot for a noPivot() resource's exposeQuery request schema
+* `genesis-data-cube-spring-boot-starter` : Publish query-request bounds in exposeQuery schema
+* `genesis-data-cube-spring-boot-starter` : Reject ambiguous column naming in the cube
+* `genesis-data-cube-spring-boot-starter` : Report missing wire fields by name in CubeNumberAsStringWireTest
+* `genesis-data-cube-spring-boot-starter` : Resolve pivot-generated column aliases for HAVING on exposeQuery
+* `genesis-data-cube-spring-boot-starter` : Restore enumValidValues for raw-Class operation schema path
+* `genesis-data-cube-spring-boot-starter` : Shape-check aggregation aliases at startup
+* `genesis-data-cube-spring-boot-starter` : Sharpen cube schema test assertions
+* `genesis-data-cube-spring-boot-starter` : Stamp the remembered entry instead of a runner-global era
+* `genesis-data-cube-spring-boot-starter` : Stop honouring a bare If-None-Match star
+* `genesis-data-ingest` : Exclude maven-artifact from kafka-connect deps
+* `genesis-dataserver2` : Add Joda-Time Kryo serializers to remove kryo-serializers dependency
+* `genesis-db` : Add logging for non default connection pool size
+* `genesis-db` : Add maxSize validation to STRING fields to fail fast
+* `genesis-db` : Preserve input order/count in Bulk upsertAll
+* `genesis-db` : Return a more specific exception message when a certain path is unavailable
+* `genesis-db` : Translate SQL select aliases correctly in SqlStatementTranslator
+* `genesis-db` : A listener's nested async transaction joins the write it listens to
+* `genesis-db` : A nested write transaction that joins an open one rolls back on its own when it fails
+* `genesis-db` : Add Java overloads for SyncReadDb defaulted reads
+* `genesis-db` : Anchor temporal->Long converter writes at UTC
+* `genesis-db` : Bind Oracle booleans as "1"/"0" on the coroutine path
+* `genesis-db` : Bind the subscription handler to the swapped update queue
+* `genesis-db` : Bound criteria query cache and free compiled expressions on eviction
+* `genesis-db` : Coerce DateTime/enum by field type when binding SQL params
+* `genesis-db` : Correct native sql handling of (non-)nullable methods in proxy classes
+* `genesis-db` : Correct threading in jms update queue implementation
+* `genesis-db` : Do not pin H2 close-on-exit when AUTO_SERVER is set
+* `genesis-db` : Expose no-arg `getBulk<E>()`/`count<E>()` to GPAL scripts
+* `genesis-db` : Fail fast when a sync or async write listener uses its tx outside the write
+* `genesis-db` : Fail on colliding SQL view select labels
+* `genesis-db` : Honor injected DatabaseRetryDetails override in DatabaseDetailsProvider
+* `genesis-db` : Honour read direction in seeded bulk reads, plus dbmon nav coverage
+* `genesis-db` : Honour reverse order in SQL view getRangeFromEnd with an index reference
+* `genesis-db` : Honour the index-only start contract in FDB2 reverse bulk reads
+* `genesis-db` : Keep SQL Server dropDatabase working for dbo, shared schemas and user views
+* `genesis-db` : Keep a SQL write transaction's writes inside it when called from another coroutine, thread or its rx() view
+* `genesis-db` : Legacy Rx writes inside a native SQL transaction join it
+* `genesis-db` : Lower Expr.dateIsEqual/After/LessEqual to whole-day ranges
+* `genesis-db` : Make AccumulatingUpdateQueueListener.destroy() idempotent
+* `genesis-db` : Make CoroutineAsyncMultiEntityWriteWrapper.readOnly()/sync() honour the wrapper's guarantees
+* `genesis-db` : Make ZeroMQ removeListener remove metrics-wrapped and proxy registrations
+* `genesis-db` : Make standalone SyncEntityDb and SyncDb writes atomic with their listener
+* `genesis-db` : Map Oracle result-set columns regardless of SQL translation
+* `genesis-db` : Merge both sides of two Modify updates
+* `genesis-db` : Narrow SyncDb.readTransaction to a read-only receiver
+* `genesis-db` : Notify WriteOperationListener for writes through SyncEntityDb
+* `genesis-db` : Notify WriteOperationListener once with a merged WriteResult for modifyAll
+* `genesis-db` : Notify WriteOperationListener once with the full batch for upsertAll
+* `genesis-db` : Notify a WriteOperationListener for writes through SyncDb and AsyncDb
+* `genesis-db` : Optimistic concurrency strict upsertAll with new record throws exception when timestamp not provided
+* `genesis-db` : Parse client criteria without running Groovy AST transformations
+* `genesis-db` : Pass an update without a RECORD_ID through batching instead of dropping the batch
+* `genesis-db` : Publish a WriteOperationListener's nested writes on the Rx/FDB path
+* `genesis-db` : Publish a write that joins an enclosing transaction only once that transaction commits
+* `genesis-db` : Quote dbnamespace in generated SQL on Postgres and SQL Server
+* `genesis-db` : Quote the new column name when renaming a column
+* `genesis-db` : Range subscriptions unlink rows and join chains they no longer hold, order and bound range refreshes
+* `genesis-db` : ReadOnlyBlocking returns null on non-sync storage engines
+* `genesis-db` : Reject batches with duplicate keys before any write happens
+* `genesis-db` : Release a streaming read's connection when it is drained
+* `genesis-db` : Remove blocking calls in CriteriaCacheManager.kt
+* `genesis-db` : Remove the dead RxDb.callback default
+* `genesis-db` : Report an absent field as null rather than dereferencing it
+* `genesis-db` : Reset oracle sequence values and continue setsequence batch on row errors
+* `genesis-db` : Resolve BigDecimal scale-sensitivity bugs in SendIt test and batch deleteAll
+* `genesis-db` : Resolve SQL view labels over the engine identifier limit at runtime
+* `genesis-db` : Resolve suffixed result-set columns ignoring case
+* `genesis-db` : Resolve the SQL view connection per query instead of pinning the first transaction's
+* `genesis-db` : Restore cancellation and unblock concurrent coroutine-native SQL reads
+* `genesis-db` : Rethrow InterruptedException during SQLEngine dictionary retrieval
+* `genesis-db` : Reuse the storage engine's criteria evaluator pool in NonSqlCriteriaHelper
+* `genesis-db` : Route WriteOperationListener through AsyncEntityDb's async write path
+* `genesis-db` : Set both java.util.TimeZone and Joda DateTimeZone to UTC
+* `genesis-db` : Start top-level Rx entry points on DB_TXN instead of Dispatchers.Default
+* `genesis-db` : Stop the SQL connection pool losing permits and connections
+* `genesis-db` : Support Field.Type.RAW in DbUtil so @CsvData can seed RAW columns
+* `genesis-db` : Trusted criteria lift only leading imports, match rows when import- or comment-led, and keep trust apart
+* `genesis-db` : Warn at start-up when more than one write listener is bound
+* `genesis-db` : WriteTransaction returns every write's entity results
+* `genesis-db` : Preserve input order/count in bulk insertAll and deleteAll
+* `genesis-dbmon` : Support -l flag in search/qsearch when criteriaMode is enabled
+* `genesis-dbtest` : Give each dataserver Test task its own SQL schema
+* `genesis-dbtest` : Stop the test database clear silently leaving rows behind on H2
+* `genesis-dictionary` : Turn cross-table duplicate sequence into a warning
+* `genesis-dictionary` : Keep a global field's sensitive mask in tables that reference it
+* `genesis-dictionary` : Reject empty indices and inline fields referenced in index blocks
+* `genesis-dictionary` : Restore pre-unbounded FieldMetadata number constructors
+* `genesis-distribution` : Correct v10-cleanup removalVersion labels to 11.0.0
+* `genesis-distribution` : One jnr-ffi, one jffi, one asm — and pin to what lmdbjava asks for
+* `genesis-distribution` : Ship the Spring starters in genesis/bin
+* `genesis-environment` : Improve GetNextSequenceNumbers/GetNextAutoIncrementNumbers handling for empty tables and UUID-style IDs
+* `genesis-environment` : Improve remap handling in complex situations
+* `genesis-environment` : SendIt BigDecimal Precision and Rounding Issues for FDB Migrations
+* `genesis-environment` : Build FDB indexes from record-aligned ranges instead of stitched fragments
+* `genesis-environment` : Correct remap --dataLoad prompt and help text
+* `genesis-environment` : Escape template values only for XML/HTML outputs and support \{\{\{token\}\}\}
+* `genesis-environment` : Harden VerifyFDBIndexes and the record-aligned FDB remap scan
+* `genesis-environment` : Let RenameFields rename inline table columns
+* `genesis-environment` : Make DumpTableFormattedTest locale-independent
+* `genesis-environment` : Make LogLevel work over WebSocket and from the console
+* `genesis-environment` : Recreate view objects on remap when only the views have changed
+* `genesis-environment` : Resume an FDB index build after the transaction-size guard stops a batch
+* `genesis-environment` : Store observed holiday dates in PopulateHolidays so substitute bank holidays are kept
+* `genesis-environment` : Update DumpTable to use commons-collections4
+* `genesis-evaluator` : Don't crash on a syntactically invalid cron expression
+* `genesis-evaluator` : Give DynamicRulesEngine a scope it can cancel
+* `genesis-evaluator` : Make PROCESS_NAME optional on rule events and reject blank RULE_EXPRESSION
+* `genesis-eventhandler` : Interface resolution misses inherited interfaces causing type lookup failures
+* `genesis-eventhandler` : Prevent duplicate event handler registration with ClassUtils.getAllInterfaces
+* `genesis-eventhandler` : Scan the user class, not the proxy
+* `genesis-gradle` : Read genesisVersion, clientName, skipWeb and enableGenesisIntellijHelperTasks via providers.gradleProperty
+* `genesis-jackson` : Accept an ISO datetime string for a LocalDate field
+* `genesis-jackson` : Stop strict null checks rejecting null fields in request replies and event acks
+* `genesis-kts-aot-test` : Apply logback-test-conventions to guarantee a single slf4j binding
+* `genesis-kts-aot-test` : Stop staged dictionaries duplicating in sourcesJar
+* `genesis-log4j-testsupport` : Make @WithLogLevel work on logback-only Spring test classpaths
+* `genesis-log4j-testsupport` : Stop shipping test jars in the distribution
+* `genesis-logging-api` : Attribute unusableCount per provider, not per ServiceLoader retry
+* `genesis-mcp` : Honour staticUser approvalMessage for held events
+* `genesis-mcp` : Re-list restarted enableMcp endpoints by bounding tool builds
+* `genesis-mcp` : Re-register a restarted endpoint's MCP tool when discovery misses it
+* `genesis-mcp` : Report effective write approval in the MCP security posture line
+* `genesis-mcp` : Send only the update event's accepted fields from modify_record
+* `genesis-metrics` : Point GaugeCounter.getValue's ReplaceWith at a successor that compiles
+* `genesis-net` : Harden suspendRequest hang regression test
+* `genesis-net` : Keep a client's TLS context client-side after a certificate reload
+* `genesis-net` : Let a transport override set one field without resetting the other
+* `genesis-net` : Make suspendRequest's timeout actually cancel a pending reply
+* `genesis-net` : Read CURVE secret keys back from network-config.yaml
+* `genesis-net` : Validate messages sent to a process HTTP port as the router route does
+* `genesis-net-http` : Authenticate before revealing whether a process route exists
+* `genesis-net-http` : Free request resources only once the response is written
+* `genesis-net-http` : Run native HTTP PAL requests as the session user
+* `genesis-pal` : Do not mark a join as identity when its key reads an ancestor field
+* `genesis-pal` : Exclude joined RECORD_ID/TIMESTAMP from implicit allFields()
+* `genesis-pal` : Make update-queue watermarks shutdown-safe and set-shaped
+* `genesis-pal` : Reject key-less map-based auth and fields \{ \} inside auth
+* `genesis-pal` : Scope the ReqRep and MCP definition providers as singletons
+* `genesis-pal-consolidator` : Improve consolidator error messages and scope DSL in the Consolidator
+* `genesis-pal-consolidator` : Flaky cold-start Order convergence tests
+* `genesis-pal-datapipeline` : Ensure buildIndex filter is applied from the first poll when no persistence entry exists
+* `genesis-pal-datapipeline` : Keep the DB poller checkpoint on a sink timeout or a terminated pipeline
+* `genesis-pal-datapipeline` : Re-read instead of checkpointing past a record whose sink is unavailable
+* `genesis-pal-dataserver` : Fix intermittent async DataServer test failures caused by timestamp collisions, thread-safety race and stale ClientIndex overwrites
+* `genesis-pal-dataserver` : Bound PermissionCodesTests with maxView to stop async auth catch-up overrunning maxRows
+* `genesis-pal-dataserver` : Check range filter in processOutOfSyncUpdate to remove out-of-range records
+* `genesis-pal-dataserver` : Fix SQLite priming hang caused by PRAGMA optimize on query_only connections
+* `genesis-pal-dataserver` : Fix auth pipeline race conditions and deadlock
+* `genesis-pal-dataserver` : Fix auth update silent data loss and batch emissions
+* `genesis-pal-dataserver` : Fix enriched row state not cleaned up on row deletion
+* `genesis-pal-dataserver` : Guard the lmdb env lifecycle instead of one call site
+* `genesis-pal-dataserver` : Isolate failing rows in the reprime replay and auth key batch, and fail a broken auth key rebuild
+* `genesis-pal-dataserver` : Join lmdb background loops before closing the env
+* `genesis-pal-dataserver` : Only set ROWS_COUNT on first chunk of chunked initial load
+* `genesis-pal-dataserver` : Read the lmdb space usage in a read transaction
+* `genesis-pal-dataserver` : Return defensive copy from MultiRowEntityToRowMap.recordsForEntity to prevent concurrent iteration on live LongHashSet
+* `genesis-pal-dataserver` : Stop MORE_ROWS reading past a full fixed MAX_VIEW
+* `genesis-pal-dataserver` : Stop chunked initial load double-counting rows against MAX_VIEW
+* `genesis-pal-eventhandler` : Compiled GPAL event handlers may crash when multiple .kt files exist and global permissions are defined
+* `genesis-pal-execution` : Backward-join cache missed updates, join ordering, merges, fields and SQL view replay memo
+* `genesis-pal-execution` : Fix CompoundAuthEvaluator single-arg overloads throwing instead of delegating
+* `genesis-pal-execution` : Move BulkJoinProcessor channels to per-call scope
+* `genesis-pal-execution` : Recover backward-join child updates dropped before the link exists
+* `genesis-pal-execution` : Share one backward-join root collection across every enricher client
+* `genesis-pal-requestserver` : Register ReqRepHttpTest custom endpoints once
+* `genesis-pal-streamerclient` : Revert "Resource-based service discovery for streamer clients with compact process support" due to resource name clashing issues
+* `genesis-pal-test` : Close the streams that wedge every Postgres nightly cell
+* `genesis-parent` : Bind the in-memory auth cache factory when a test enables it with no service packages
+* `genesis-parent` : Correct consolidator error message examples
+* `genesis-parent` : Default-import consolidator config enum classes so OnNotFound.BUILD resolves
+* `genesis-parent` : Fail clearly when an Event Handler script is missing
+* `genesis-parent` : Fail startup for @UpdateQueueListener on uninjected prototype-scoped beans
+* `genesis-parent` : Keep @UpdateQueueListener beans eager under global lazy initialization
+* `genesis-parent` : Keep an un-ignored JPA entity key in the derived event schema
+* `genesis-parent` : Make USER_NAME optional on EVENT_CRON_RULE_INSERT
+* `genesis-parent` : One consistent, right-sized kotlin.daemon.jvmargs for fixtures
+* `genesis-parent` : Reject @UpdateQueueListener on non-singleton FactoryBean products
+* `genesis-parent` : Separate and widen the unresolved test-data path hint
+* `genesis-parent` : Withdraw the TLS test kit from genesis-testsupport's public API
+* `genesis-pipeline-api` : Restore UncaughtRealTimePipelineException's binary-compatible constructors
+* `genesis-process` : Anchor the generated BigDecimal JSON schema pattern
+* `genesis-process` : Check a session without building RightSummaryCache when no permission codes are required
+* `genesis-process` : Default-import HttpResponse and HttpResponseCode in web-handler scripts
+* `genesis-process` : Describe a LocalDate payload field as DATE, not as an object
+* `genesis-process` : Enforce declared min/max on BigDecimal fields in the generated JSON schema
+* `genesis-process` : Keep an EXTERNAL-transport process below UP when it closes before transport-ready
+* `genesis-process` : Load web handler scripts from a process's script entry; share the script dependency check
+* `genesis-process` : Nullable Any-typed fields lose their null option in generated JSON schema
+* `genesis-process` : Recognise Java record accessor-derived properties in event handler schema
+* `genesis-process` : Stop the native genesis listener when the lifecycle closes
+* `genesis-process` : Support dotted excludeMetadataFields paths for nested DAOs
+* `genesis-process` : Time out an EXTERNAL process that never becomes transport-ready
+* `genesis-queue-handler` : Hoist executor into field and ensure it is shutdown in close to prevent thread leak
+* `genesis-queue-handler` : Read the ZeroMQ proxy's CURVE config from network-config.yaml
+* `genesis-resource-daemon` : Correct health endpoint handling with processes disabled
+* `genesis-resource-daemon` : Don't abort the login provider loop on a no-rights identity
+* `genesis-resource-daemon` : Resolve management console rights daemon-locally instead of via RightSummaryCache
+* `genesis-router` : Keep SOURCE_REF on REST calls proxied to WEBSOCKET-channel processes
+* `genesis-router` : Keep auth events off the HTTP proxy
+* `genesis-router` : Keep the mfaCode cookie unless login returns a new code
+* `genesis-router` : Let a stale session cookie fall through to the ssoToken on WebSocket upgrade
+* `genesis-router` : Preserve MORE_ROWS flag in HTTP dataserver polling response
+* `genesis-router` : Refuse internal resources over HTTP exactly like missing ones
+* `genesis-router` : Resume a failed proxy forward once
+* `genesis-router` : Router proxy decides TLS from tls.mode, not the secure flag
+* `genesis-router` : Stop the HTTP proxy writing a 502 after a relayed response has started
+* `genesis-router` : Warn when the router serves a web endpoint marked internal
+* `genesis-scripts` : Honour the process restart suppression flag in processRestarter
+* `genesis-scripts` : Keep JVM_OPTIONS when a process options override is set
+* `genesis-scripts` : Stop startServer archiving a freshly started process's log
+* `genesis-session` : Expire sessions on a fixed lifetime from START_TIMESTAMP across all auth paths
+* `genesis-session` : Pre-generate Chronicle value flyweight to avoid startup OOM
+* `genesis-spring-boot-entity-generation` : Carry RAW field Encoding into JPA view entities
+* `genesis-spring-boot-entity-generation` : Carry RAW field Encoding onto generated JPA entities
+* `genesis-spring-boot-entity-generation` : Carry RAW field encoding through composite primary keys
+* `genesis-spring-boot-entity-generation` : Publish a single-field PK under its dictionary name
+* `genesis-spring-boot-entity-generation` : Stop doubling table-scoped enum FQN
+* `genesis-spring-boot-entity-generation` : Stop generating a view's prefixed joined RECORD_ID/TIMESTAMP as an override
+* `genesis-spring-boot-entity-generation` : Un-ignore a Standard entity's sole ID/PK-named primary key
+* `genesis-spring-boot-gradle-plugin` : Apply kotlin("plugin.spring") automatically
+* `genesis-spring-boot-gradle-plugin` : Honour generateConfigurationClass in generateAutoConfig
+* `genesis-spring-boot-gradle-plugin` : Publish the real descriptor, not an empty shell
+* `genesis-spring-boot-starter` : Bind genesis.spring.* before a post-processor can consume it
+* `genesis-spring-boot-starter` : Force Logback on Spring starters so LoggingController works
+* `genesis-spring-boot-starter` : Publish the router prefix as secure when genesis TLS serves the one-port app
+* `genesis-spring-testsupport` : Log4j-slf4j2-impl conflicts with Spring Boot's Logback bridge
+* `genesis-spring-testsupport` : Reload @CsvData when another context has truncated it
+* `genesis-subcore` : Verify that site specific folder exists on environment before calling script within it
+* `genesis-subcore` : Always generate JpaConfiguration in the Spring Boot plugin
+* `genesis-subcore` : Bind UpdateQueue for MqLayer MQTT and AERON
+* `genesis-subcore` : Close the JMSUpdateQueue addListener/terminate race and tighten the failed-subscribe rollback
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW bulkSubscribe
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW rangeSubscribe and no-join view subscriptions
+* `genesis-subcore` : Fail generateZeroMqCurveKeys fast when the build cannot prompt
+* `genesis-subcore` : Generate the debug Dockerfile with ssh and dev data, in its own context
+* `genesis-subcore` : Process detection no longer matches any command line containing name + "java"
+* `genesis-subcore` : Publish standalone async writes to the update queue after commit
+* `genesis-subcore` : Reject HTTP requests exceeding codec limits with 414/431 instead of routing them
+* `genesis-subcore` : Report upstream products whose version has no codegen slice jars
+* `genesis-subcore` : Resolve kotlin("plugin.jpa")'s version automatically
+* `genesis-subcore` : Resolve the injected SqlDatabaseConnection per call instead of pinning the first one
+* `genesis-subcore` : Reuse the legacy blocking connection in SQLEngine.sqlConnection()
+* `genesis-subcore` : Subscribe again on each sync backward-join branch retry, and release BLOCKING listeners a priming view never collected
+* `genesis-testsupport` : Bind provided members under @GenesisDatabaseTest
+* `genesis-testsupport` : Bind the test message server to loopback, not the wildcard address
+* `genesis-testsupport` : Honour Guice optional injection, and skip the FDB2 partial-lookup case
+* `genesis-testsupport` : Prefix an explicit messageType with EVENT_ in EventClientBlocking
+* `genesis-testsupport` : Reject leftover javax.inject annotations on test injection points
+* `gradle` : Change default docker url back to genesis which is used in docker image name
+* `gradle` : Remove duplicate entries in docker genesis-home
+* `gradle-plugin-common` : Read the whole file-annotation region for @file:ScriptModules
+* `hooks` : Migrate legacy CRON_RULE_AUDIT rows with install hooks
+* `process` : Align startProcess override keys and remove dead joinPub
+* `remap` : Add FDB transaction limit checks whilst performing batch write operations to prevent blocker failures whilst executing remap
+* `server` : Convert DateTime and enum values on every view DbRecord path
+* `server` : Reconcile WS decode logging and restore write-inclusive WEB_ENDPOINT duration
+* `settings-gradle-plugin-common` : Keep genesisScriptCompilation registered when compileAtBuildTime=false
+* `settings-gradle-plugin-common` : Warn when gradle.properties sets a manifest default the settings plugin overrides
+* `simple-settings-plugin-test` : Build the MavenPublicationTest fixture against the Genesis jars from the same build
+* `streamerclient` : Signal-based full-queue wait, and fix three flaky tests
+* `templates` : Make the generated project build, test and publish cleanly
+* `testsupport` : Fail fast on unreadable @ProvidedType members
+* `zeromq` : Log rejected CURVE client keys on the accepting side
+* `zeromq` : Name network-config.yaml keys in CURVE validation errors
+* `zeromq` : Stop the process when a CURVE handshake fails instead of dropping traffic
+* Avoid exposure of internal details through API and expose them in LOG instead
+* Fix dependabot failure at JFROG CLI setup
+* Install custom Nginx version via dnf
+* Split delimited cache table indices in XML config file
+* Add JFROG_AUTH_DEPENDABOT gradle builds
+* Add genesisType for BigDecimal nullable and non-nullable case
+* Bump jackson-core from 2.19.2 to 2.21.1
+* Cache NVD database in OWASP dependency check
+* Downgrade quartz to 2.4.1 to fix 1W cron regression
+* Exclude plexus-utils and spring-core from distribution zip
+* Pass primingBatchSize through table range subscriptions
+* Report ktlintScripts when its prerequisites are missing
+* Root-cause the flaky site-specific distribution and dataserver custom-index tests
+* Serialise recordId and timestamp as strings on the JSON plane
+* Update installed toolsets in docker images
+* Upgrade Jetty from 11.0.26 to 12.1.6 in genesis-mcp
+
+### Dependency changes
+
+* Rollback artifactory-maven-plugin upgrade
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Add Jetty 12.1.8 version management to genesis-conventions platform
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump Kotlin from 2.4.0 to 2.4.20
+* Bump Kotlin from 2.4.20 to 2.4.21
+* Bump actions/cache from 4 to 5
+* Bump actions/cache from 5 to 6
+* Bump actions/checkout from 4 to 6
+* Bump actions/checkout from 6 to 7
+* Bump actions/create-github-app-token from 1 to 3
+* Bump actions/setup-java from 4 to 5
+* Bump actions/setup-java from 5 to 6
+* Bump actions/upload-artifact from 4 to 7
+* Bump aeronVersion from 1.50.0 to 1.50.1
+* Bump aeronVersion from 1.50.1 to 1.50.2
+* Bump aeronVersion from 1.50.2 to 1.50.3
+* Bump aeronVersion from 1.50.3 to 1.50.4
+* Bump aeronVersion from 1.50.4 to 1.51.0
+* Bump aeronVersion from 1.51.0 to 1.51.1
+* Bump aeronVersion from 1.51.1 to 1.52.0
+* Bump aeronVersion from 1.52.0 to 1.52.1
+* Bump aeronVersion from 1.52.1 to 1.52.2
+* Bump aeronVersion from 1.52.2 to 1.53.0
+* Bump aeronVersion from 1.53.0 to 1.53.1
+* Bump aeronVersion from 1.53.1 to 1.53.2
+* Bump aeronVersion from 1.53.2 to 1.53.3
+* Bump apachePoi from 5.5.1 to 6.0.0
+* Bump at.yawk.lz4:lz4-java from 1.10.3 to 1.10.4
+* Bump at.yawk.lz4:lz4-java from 1.10.4 to 1.11.0
+* Bump at.yawk.lz4:lz4-java from 1.11.0 to 1.11.1
+* Bump at.yawk.lz4:lz4-java from 1.11.1 to 1.11.2
+* Bump at.yawk.lz4:lz4-java from 1.11.2 to 1.11.3
+* Bump at.yawk.lz4:lz4-java from 1.11.3 to 1.12.0
+* Bump at.yawk.lz4:lz4-java from 1.12.0 to 1.12.1
+* Bump awaitility to 4.3.0
+* Bump bcprovVersion from 1.84 to 1.85
+* Bump bcprovVersion from 1.85 to 1.86
+* Bump byteBuddyVersion from 1.18.10 to 1.18.11
+* Bump byteBuddyVersion from 1.18.11 to 1.18.12
+* Bump byteBuddyVersion from 1.18.12 to 1.18.13
+* Bump byteBuddyVersion from 1.18.13 to 1.18.14
+* Bump byteBuddyVersion from 1.18.14 to 1.18.15
+* Bump byteBuddyVersion from 1.18.15 to 1.18.16
+* Bump byteBuddyVersion from 1.18.4 to 1.18.5
+* Bump byteBuddyVersion from 1.18.5 to 1.18.7
+* Bump byteBuddyVersion from 1.18.7 to 1.18.8
+* Bump byteBuddyVersion from 1.18.8 to 1.18.10
+* Bump camel from 4.18.1 to 4.18.2
+* Bump camelVersion from 4.18.0 to 4.18.1
+* Bump camelVersion from 4.18.2 to 4.18.3
+* Bump camelVersion from 4.21.0 to 4.22.0
+* Bump camelVersion from 4.22.0 to 4.22.1
+* Bump camelVersion from 4.22.1 to 4.23.0
+* Bump chronicle BOM to 2026.x for JDK 25 runtime support
+* Bump classgraph to 4.8.199 and cap Dependabot below 5.0.0
+* Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.20 to 0.17.21
+* Bump com.esotericsoftware:kryo from 5.6.2 to 5.7.0
+* Bump com.esotericsoftware:kryo from 5.7.0 to 5.7.1
+* Bump com.fasterxml.jackson:jackson-bom from 2.21.1 to 2.21.2
+* Bump com.fasterxml.jackson:jackson-bom from 2.21.2 to 2.21.3
+* Bump com.fasterxml.jackson:jackson-bom from 2.21.3 to 2.22.0
+* Bump com.fasterxml.jackson:jackson-bom from 2.22.0 to 2.22.1
+* Bump com.fasterxml.jackson:jackson-bom from 2.22.1 to 2.22.2
+* Bump com.fasterxml.jackson:jackson-bom from 2.22.2 to 2.22.3
+* Bump com.fasterxml.jackson:jackson-bom from 2.22.3 to 2.22.4
+* Bump com.github.ben-manes.caffeine:caffeine from 3.2.3 to 3.2.4
+* Bump com.github.ben-manes.caffeine:caffeine from 3.2.4 to 3.3.0
+* Bump com.github.ben-manes.caffeine:caffeine from 3.3.0 to 3.3.1
+* Bump com.github.javaparser:javaparser-core from 3.28.0 to 3.28.1
+* Bump com.github.javaparser:javaparser-core from 3.28.1 to 3.28.2
+* Bump com.github.jsqlparser:jsqlparser from 5.3 to 5.4
+* Bump com.github.oshi:oshi-core from 6.10.0 to 6.11.0
+* Bump com.github.oshi:oshi-core from 6.11.0 to 6.11.1
+* Bump com.github.oshi:oshi-core from 6.11.1 to 6.12.0
+* Bump com.github.oshi:oshi-core from 6.12.0 to 7.0.1
+* Bump com.github.oshi:oshi-core from 6.9.3 to 6.10.0
+* Bump com.github.oshi:oshi-core from 7.0.1 to 7.1.0
+* Bump com.github.oshi:oshi-core from 7.1.0 to 7.3.2
+* Bump com.github.oshi:oshi-core from 7.3.2 to 7.4.0
+* Bump com.github.oshi:oshi-core from 7.4.0 to 7.4.1
+* Bump com.github.oshi:oshi-core from 7.4.1 to 7.4.2
+* Bump com.github.oshi:oshi-core from 7.4.2 to 7.4.4
+* Bump com.github.oshi:oshi-core from 7.4.4 to 7.5.0
+* Bump com.github.oshi:oshi-core from 7.5.0 to 7.6.0
+* Bump com.github.oshi:oshi-core from 7.6.0 to 7.6.1
+* Bump com.github.oshi:oshi-core from 7.6.1 to 7.7.0
+* Bump com.github.oshi:oshi-core from 7.7.0 to 7.7.1
+* Bump com.github.oshi:oshi-core from 7.7.1 to 7.7.2
+* Bump com.github.spullara.mustache.java:compiler from 0.9.10 to 0.9.14
+* Bump com.google.devtools.ksp from 2.3.11 to 2.3.12
+* Bump com.google.errorprone:error_prone_annotations from 2.46.0 to 2.47.0
+* Bump com.google.errorprone:error_prone_annotations from 2.47.0 to 2.48.0
+* Bump com.google.errorprone:error_prone_annotations from 2.48.0 to 2.49.0
+* Bump com.google.errorprone:error_prone_annotations from 2.49.0 to 2.50.0
+* Bump com.google.errorprone:error_prone_annotations from 2.50.0 to 2.51.0
+* Bump com.google.guava:guava from 33.5.0-jre to 33.6.0-jre
+* Bump com.google.guava:guava from 33.6.0-jre to 33.7.1-jre
+* Bump com.google.guava:guava from 33.7.1-jre to 33.7.2-jre
+* Bump com.google.jimfs:jimfs from 1.3.1 to 1.3.2
+* Bump com.google.protobuf:protobuf-java from 4.33.5 to 4.34.0
+* Bump com.google.protobuf:protobuf-java from 4.34.0 to 4.34.1
+* Bump com.google.protobuf:protobuf-java from 4.34.1 to 4.35.0
+* Bump com.google.protobuf:protobuf-java from 4.35.0 to 4.35.1
+* Bump com.google.protobuf:protobuf-java from 4.35.1 to 4.36.0
+* Bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260102.1 to 20260313.1
+* Bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260313.1 to 20260921.1
+* Bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260921.1 to 20260924.2
+* Bump com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer from 20260924.2 to 20261011.1
+* Bump com.gradleup.gratatouille from 0.2.2 to 0.2.3
+* Bump com.gradleup.gratatouille.tasks from 0.2.2 to 0.2.3
+* Bump com.jayway.jsonpath:json-path from 2.9.0 to 3.0.0
+* Bump com.lmax:disruptor from 3.4.4 to 4.0.0
+* Bump com.microsoft.sqlserver:mssql-jdbc from 13.2.1.jre11 to 13.4.0.jre11
+* Bump com.microsoft.sqlserver:mssql-jdbc from 13.4.0.jre11 to 13.6.0.jre11
+* Bump com.microsoft.sqlserver:mssql-jdbc from 13.6.0.jre11 to 13.6.1.jre11
+* Bump com.squareup.okhttp3:okhttp from 4.12.0 to 5.4.0
+* Bump com.squareup.okhttp3:okhttp from 5.4.0 to 5.5.0
+* Bump com.squareup.okhttp3:okhttp from 5.5.0 to 5.5.1
+* Bump com.squareup:kotlinpoet-jvm from 2.2.0 to 2.3.0
+* Bump com.squareup:kotlinpoet-jvm from 2.3.0 to 2.4.0
+* Bump com.unboundid:unboundid-ldapsdk from 7.0.4 to 7.0.5
+* Bump com.zaxxer:HikariCP from 6.3.2 to 7.1.0
+* Bump commons-codec:commons-codec from 1.21.0 to 1.22.0
+* Bump commons-codec:commons-codec from 1.22.0 to 1.22.1
+* Bump commons-codec:commons-codec from 1.22.1 to 1.23.0
+* Bump commons-io:commons-io from 2.21.0 to 2.22.0
+* Bump commons-net:commons-net from 3.12.0 to 3.13.0
+* Bump dcarbone/install-jq-action from 3.1.1 to 3.2.0
+* Bump dcarbone/install-jq-action from 3.2.0 to 4.0.1
+* Bump debeziumVersion from 3.2.2.Final to 3.5.0.Final
+* Bump debeziumVersion from 3.5.0.Final to 3.5.1.Final
+* Bump debeziumVersion from 3.5.1.Final to 3.5.2.Final
+* Bump debeziumVersion from 3.5.2.Final to 3.6.0.Final
+* Bump debeziumVersion from 3.6.0.Final to 3.6.1.Final
+* Bump docker/login-action from 3 to 4
+* Bump foundationdb-rs/foundationdb-actions-install from 2.1.0 to 2.3.0
+* Bump gradle/actions from 4 to 5
+* Bump gradle/actions from 5 to 6.2.0
+* Bump io.github.classgraph:classgraph from 4.8.184 to 4.8.186
+* Bump io.github.classgraph:classgraph from 4.8.186 to 4.8.192
+* Bump io.github.classgraph:classgraph from 4.8.192 to 4.8.193
+* Bump io.github.classgraph:classgraph from 4.8.193 to 4.8.194
+* Bump io.github.classgraph:classgraph from 4.8.194 to 4.8.195
+* Bump io.github.classgraph:classgraph from 4.8.195 to 4.8.196
+* Bump io.javalin:javalin from 6.7.0 to 7.0.0
+* Bump io.javalin:javalin from 7.0.0 to 7.1.0
+* Bump io.javalin:javalin from 7.1.0 to 7.2.0
+* Bump io.javalin:javalin from 7.2.0 to 7.2.2
+* Bump io.javalin:javalin from 7.2.2 to 7.2.3
+* Bump io.javalin:javalin from 7.2.3 to 7.2.4
+* Bump io.javalin:javalin-rendering-freemarker from 7.0.0 to 7.1.0
+* Bump io.javalin:javalin-rendering-freemarker from 7.1.0 to 7.2.0
+* Bump io.javalin:javalin-rendering-freemarker from 7.2.0 to 7.2.2
+* Bump io.javalin:javalin-rendering-freemarker from 7.2.2 to 7.2.3
+* Bump io.modelcontextprotocol.sdk:mcp from 0.10.0 to 1.1.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.17.1 to 2.26.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.26.0 to 2.26.1
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.26.1 to 2.27.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.27.0 to 2.28.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.28.0 to 2.29.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.29.0 to 2.30.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.30.0 to 2.31.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.31.0 to 2.31.1
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.31.1 to 2.32.0
+* Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom from 2.33.0 to 2.33.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.24.0 to 2.25.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.25.0 to 2.26.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.26.0 to 2.26.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.26.1 to 2.27.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.27.0 to 2.29.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.29.0 to 2.30.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.30.0 to 2.31.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.31.0 to 2.31.1
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.31.1 to 2.32.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.32.0 to 2.33.0
+* Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 2.33.0 to 2.33.1
+* Bump io.opentelemetry:opentelemetry-bom from 1.51.0 to 1.61.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.61.0 to 1.62.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.62.0 to 1.63.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.63.0 to 1.64.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.64.0 to 1.65.0
+* Bump io.opentelemetry:opentelemetry-bom from 1.65.0 to 1.66.0
+* Bump it.unimi.dsi:fastutil-core from 8.5.18 to 8.5.19
+* Bump jakarta.inject:jakarta.inject-api from 1 to 2.0.1
+* Bump jakarta.persistence:jakarta.persistence-api from 3.1.0 to 3.2.0
+* Bump jettyVersion from 11.0.25 to 11.0.26
+* Bump jettyVersion from 12.1.10 to 12.1.11
+* Bump jettyVersion from 12.1.11 to 12.1.12
+* Bump jettyVersion from 12.1.12 to 12.1.13
+* Bump jettyVersion from 12.1.13 to 12.1.14
+* Bump jettyVersion from 12.1.6 to 12.1.8
+* Bump jettyVersion from 12.1.8 to 12.1.9
+* Bump jettyVersion from 12.1.9 to 12.1.10
+* Bump jfrog/setup-jfrog-cli from 4 to 5
+* Bump jnaVersion from 5.18.1 to 5.19.1
+* Bump joda-time:joda-time from 2.14.0 to 2.14.1
+* Bump joda-time:joda-time from 2.14.1 to 2.14.2
+* Bump joda-time:joda-time from 2.14.2 to 2.14.3
+* Bump joda-time:joda-time from 2.14.3 to 2.14.4
+* Bump joda-time:joda-time from 2.14.4 to 2.15.0
+* Bump jollydayVersion from 1.5.2 to 2.19.0
+* Bump jollydayVersion from 2.19.0 to 2.20.0
+* Bump jollydayVersion from 2.20.0 to 2.21.0
+* Bump jollydayVersion from 2.21.0 to 2.22.1
+* Bump junitVersion from 6.1.0 to 6.1.1
+* Bump junitVersion from 6.1.1 to 6.1.2
+* Bump junitVersion from 6.1.2 to 6.1.3
+* Bump kafkaClientVersion from 4.1.1 to 4.1.2
+* Bump kafkaClientVersion from 4.1.2 to 4.3.1
+* Bump korthout/backport-action from 3 to 4
+* Bump kspVersion from 2.3.10 to 2.3.11
+* Bump kspVersion from 2.3.11 to 2.3.12
+* Bump kspVersion from 2.3.6 to 2.3.9
+* Bump kspVersion from 2.3.9 to 2.3.10
+* Bump ktorVersion from 3.2.3 to 3.4.2
+* Bump ktorVersion from 3.4.2 to 3.4.3
+* Bump ktorVersion from 3.4.3 to 3.5.0
+* Bump ktorVersion from 3.5.0 to 3.5.1
+* Bump ktorVersion from 3.5.1 to 3.5.2
+* Bump log4jVersion from 2.25.3 to 2.25.4
+* Bump log4jVersion from 2.25.4 to 2.26.0
+* Bump log4jVersion from 2.26.0 to 2.26.1
+* Bump logbackVersion from 1.5.32 to 1.5.37
+* Bump logbackVersion from 1.5.37 to 1.5.38
+* Bump logbackVersion from 1.5.38 to 1.6.0
+* Bump logbackVersion from 1.6.0 to 1.6.1
+* Bump logbackVersion from 1.6.1 to 1.6.3
+* Bump logbackVersion from 1.6.3 to 1.6.4
+* Bump logbackVersion from 1.6.4 to 1.6.5
+* Bump logbackVersion from 1.6.5 to 1.6.6
+* Bump maven-plugin-api.version from 3.9.12 to 3.9.13
+* Bump maven-plugin-api.version from 3.9.13 to 3.9.14
+* Bump maven-plugin-api.version from 3.9.14 to 3.9.15
+* Bump maven-plugin-api.version from 3.9.15 to 3.9.16
+* Bump mcpVersion from 1.1.0 to 1.1.1
+* Bump mcpVersion from 1.1.1 to 1.1.2
+* Bump mcpVersion from 1.1.2 to 1.1.3
+* Bump mcpVersion from 2.0.0 to 2.0.1
+* Bump mcpVersion from 2.0.1 to 2.1.0
+* Bump mi-kas/kover-report from 1 to 2
+* Bump micrometerVersion from 1.16.2 to 1.16.3
+* Bump micrometerVersion from 1.16.3 to 1.16.4
+* Bump micrometerVersion from 1.16.4 to 1.16.5
+* Bump micrometerVersion from 1.16.5 to 1.17.0
+* Bump micrometerVersion from 1.17.0 to 1.17.1
+* Bump micrometerVersion from 1.17.1 to 1.17.2
+* Bump mockitoVersion from 5.21.0 to 5.22.0
+* Bump mockitoVersion from 5.22.0 to 5.23.0
+* Bump mockitoVersion from 5.23.0 to 5.24.0
+* Bump msgpackVersion from 0.9.11 to 0.9.12
+* Bump net.openhft:chronicle-bom from 2026.12 to 2026.18
+* Bump net.openhft:chronicle-bom from 2026.18 to 2026.19
+* Bump net.openhft:chronicle-bom from 2026.19 to 2026.20
+* Bump net.openhft:chronicle-bom from 2026.20 to 2026.21
+* Bump net.openhft:chronicle-bom from 2026.21 to 2026.22
+* Bump net.openhft:chronicle-bom from 2026.22 to 2026.24
+* Bump net.openhft:chronicle-bom from 2026.24 to 2026.25
+* Bump net.openhft:chronicle-bom from 2026.25 to 2026.26
+* Bump nettyVersion from 4.2.10.Final to 4.2.11.Final
+* Bump nettyVersion from 4.2.11.Final to 4.2.12.Final
+* Bump nettyVersion from 4.2.12.Final to 4.2.13.Final
+* Bump nettyVersion from 4.2.13.Final to 4.2.14.Final
+* Bump nettyVersion from 4.2.14.Final to 4.2.15.Final
+* Bump nettyVersion from 4.2.15.Final to 4.2.16.Final
+* Bump nettyVersion from 4.2.16.Final to 4.2.17.Final
+* Bump nettyVersion from 4.2.17.Final to 4.2.18.Final
+* Bump nettyVersion from 4.2.18.Final to 4.2.19.Final
+* Bump nettyVersion from 4.2.9.Final to 4.2.10.Final
+* Bump oracleJdbcVersion from 23.26.1.0.0 to 23.26.2.0.0
+* Bump oracleJdbcVersion from 23.26.2.0.0 to 23.26.3.0.0
+* Bump oracleJdbcVersion from 23.9.0.25.07 to 23.26.1.0.0
+* Bump org.agrona:agrona from 2.4.0 to 2.4.1
+* Bump org.agrona:agrona from 2.4.1 to 2.5.0
+* Bump org.agrona:agrona from 2.5.0 to 2.6.0
+* Bump org.agrona:agrona from 2.6.0 to 2.6.1
+* Bump org.agrona:agrona from 2.6.1 to 2.7.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.50.0 to 2.51.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.51.0 to 2.52.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.52.0 to 2.53.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.53.0 to 2.54.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.54.0 to 2.55.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.55.0 to 2.56.0
+* Bump org.apache.activemq:artemis-jakarta-client from 2.56.0 to 2.57.0
+* Bump org.apache.arrow:arrow-memory-unsafe from 18.1.0 to 19.0.0
+* Bump org.apache.commons:commons-configuration2 from 2.13.0 to 2.14.0
+* Bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.0
+* Bump org.apache.commons:commons-configuration2 from 2.14.0 to 2.15.1
+* Bump org.apache.commons:commons-configuration2 from 2.15.0 to 2.15.1
+* Bump org.apache.commons:commons-lang3 from 3.20.0 to 3.21.0
+* Bump org.apache.fory:fory-kotlin from 0.14.1 to 0.15.0
+* Bump org.apache.fory:fory-kotlin from 0.15.0 to 0.16.0
+* Bump org.apache.fory:fory-kotlin from 0.16.0 to 0.17.0
+* Bump org.apache.fory:fory-kotlin from 1.0.0 to 1.3.0
+* Bump org.apache.fory:fory-kotlin from 1.3.0 to 1.4.0
+* Bump org.apache.fory:fory-kotlin from 1.4.0 to 1.5.0
+* Bump org.apache.fory:fory-kotlin from 1.5.0 to 1.6.1
+* Bump org.apache.fory:fory-kotlin from 1.6.1 to 1.7.0
+* Bump org.apache.fory:fory-kotlin from 1.7.0 to 1.7.1
+* Bump org.apache.fory:fory-kotlin from 1.7.1 to 1.7.2
+* Bump org.apache.fory:fory-kotlin from 1.7.2 to 1.7.3
+* Bump org.apache.fory:fory-kotlin from 1.7.3 to 1.7.4
+* Bump org.apache.fory:fory-kotlin from 1.7.4 to 1.7.5
+* Bump org.apache.fory:fory-kotlin from 1.7.5 to 1.7.6
+* Bump org.apache.fory:fory-kotlin from 1.7.6 to 1.7.7
+* Bump org.apache.ivy:ivy from 2.5.3 to 2.6.0
+* Bump org.apache.maven.plugins:maven-compiler-plugin from 3.14.1 to 3.15.0
+* Bump org.apache.maven.plugins:maven-dependency-plugin from 3.10.0 to 3.11.0
+* Bump org.apache.maven.plugins:maven-dependency-plugin from 3.9.0 to 3.10.0
+* Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.6.2 to 3.6.3
+* Bump org.apache.maven.plugins:maven-resources-plugin from 3.4.0 to 3.5.0
+* Bump org.apache.maven.plugins:maven-site-plugin from 3.21.0 to 3.22.0
+* Bump org.apache.maven:maven-artifact from 3.9.10 to 3.9.15
+* Bump org.apache.maven:maven-artifact from 3.9.15 to 3.9.16
+* Bump org.apache.maven:maven-model from 3.9.12 to 3.9.13
+* Bump org.apache.maven:maven-model from 3.9.13 to 3.9.14
+* Bump org.apache.maven:maven-model from 3.9.14 to 3.9.15
+* Bump org.apache.maven:maven-model from 3.9.15 to 3.9.16
+* Bump org.apache.shiro:shiro-core from 2.0.6 to 2.1.0
+* Bump org.apache.shiro:shiro-core from 2.1.0 to 2.2.0
+* Bump org.apache.shiro:shiro-core from 2.2.0 to 3.0.0
+* Bump org.checkerframework:checker-qual from 3.53.0 to 3.53.1
+* Bump org.checkerframework:checker-qual from 3.53.1 to 3.54.0
+* Bump org.checkerframework:checker-qual from 3.54.0 to 3.54.1
+* Bump org.checkerframework:checker-qual from 3.54.1 to 3.55.1
+* Bump org.checkerframework:checker-qual from 3.55.1 to 4.0.0
+* Bump org.checkerframework:checker-qual from 4.0.0 to 4.1.0
+* Bump org.checkerframework:checker-qual from 4.1.0 to 4.2.0
+
+### Patch releases
+
+#### 10.0.1
+
+###### Breaking changes
+
+* `genesis-commons` : Configurable expression limits for client criteria and rules
+* `genesis-evaluator` : Validate CRON_RULE result expressions and close rewrite bypasses
+
+###### Features
+
+* `genesis-parent` : Expose last heartbeat time per process on ResourceDaemon health routes via ?detail=true
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Deliver sync backward-join branch updates through a private channel instead of an IO thread per branch
+* `genesis-pal-execution` : Hold backward-join child updates under the root until the window ends, without per-key parent sets
+* `genesis-pal-execution` : List the parents of held backward-join keys so a window flush visits only them, and end held windows ahead of queued join steps
+* `genesis-pal-execution` : Share root keys and identity parent keys across chains as a frozen base with per-chain deltas
+
+###### Fixes
+
+* `core` : Publish JMS updates as BytesMessage
+* `coreproduct` : Stop the Spring starter jar making genesis-eventhandler's module lookup ambiguous
+* `genesis-codegen` : Deprecate the generated view repositories again
+* `genesis-db` : Call destroy() on the stored listener when TopicHandler.deregister removes it
+* `genesis-db` : Harden engine-label shortening for SQL views
+* `genesis-db` : Match external-queue listener removals by wrapper and cancel the temporary batch wrapper's job
+* `genesis-db` : Wake the ZeroMQ I/O thread when a new connection never starts its handshake
+* `genesis-environment` : RenameFields keeps enum check constraints and refuses generated fields
+* `genesis-evaluator` : Free the compiled half of a dynamic rule that fails to compile
+* `genesis-net` : Enforce tls.authorization on the WEBSOCKET channel
+* `genesis-pal-requestserver` : Keep a custom request reply's auth when applying file-level permission codes
+* `genesis-parent` : Publish genesis-generated-view to mavenLocal before the plugin tests
+* `genesis-subcore` : JMS publish worker stops retrying and reconnecting once closed
+* `genesis-subcore` : A Spring app starts when a table is keyed on a single DATE or DATETIME field
+* `genesis-subcore` : A Spring event taking a generated JPA entity requires its required columns
+* `genesis-subcore` : Carry a registration signal from the update subscription to priming
+* `genesis-subcore` : Compare DEPLOYED_PRODUCT with the product name in DeployedProductCheck
+* `genesis-subcore` : Configurable JMS client id so durable subscriptions survive pod restarts
+* `genesis-subcore` : Dedupe range-change reads and send deletes only for sent rows on table range subscribes
+* `genesis-subcore` : Deliver writes made during priming once on table range subscribes
+* `genesis-subcore` : Drop a late Delete for a row never sent on Never and bulk subscribes
+* `genesis-subcore` : Flush batching and grouping update-queue listeners on destroy and log lost batches
+* `genesis-subcore` : Keep per-record order on the JMS update queue
+* `genesis-subcore` : Match update queue removals without building live listener wrappers
+* `genesis-subcore` : Only unsubscribe JMS topic when removeListener deregisters the last listener
+* `genesis-subcore` : Register backward-join branch subscriptions before priming
+* `genesis-subcore` : Remove Gradle 10 deprecations from the Genesis Gradle plugins
+* `genesis-subcore` : Retry JMS publishes in place and fail fast once retries run out
+* `genesis-subcore` : Roll back the listener registration when a JMS subscribe fails
+* `genesis-subcore` : Serialise JMSUpdateQueue addListener with removeListener
+* `genesis-subcore` : Shut down an Aeron TopicHandler's dispatcher when the handler is dropped
+* `genesis-subcore` : Stop the JMS publish worker when an abandoned close never reaches it
+* `genesis-subcore` : Warn about fields dictionaries only for the local project
+* `genesis-testsupport` : Bound the database retry in jupiter test contexts
+
+## Client
+
+### Features
+
+* `foundation-header` : Update userName to attr
+* Allow disable button control on custom events
+* `foundation-layout` : Basic support for popout windows with cross-tab comms
+* `pbc-reporting-ui` : Handle duplicate datasources and grouping strategies
+* `foundation-forms` : Add bulk insert mode with CSV support
+* `pbc-reporting-ui` : Export and import report configurations
+* `foundation-ai` : Add foundation-ai package with general AI provider architecture
+* `foundation-notifications` : Add container which handles stacking notifications
+* `grid-pro` : Status Pill Add hide on expiry and show after date attributes
+* `foundation-forms` : GridView for array renderer
+* `foundation-forms` : Add canAdd option to array renderer
+* `foundation-ui` : Adding scrollable attribute to tabs tablist component
+* `grid-pro` : Add multicolumn-dropdown component
+* `foundation-comms` : Redirect to login page when session expires (302)
+* `ai-assistant` : Beta chatbot component with example trades assistant
+* `grid-pro` : Add grid icon renderer
+* `foundation-entity-management` : Exposing additional renderers property
+* `foundation-ui` : Create workspace manager
+* `foundation-forms` : Add prefix and suffix to text renderer field
+* `foundation-forms` : Adding radio button renderer
+* `foundation-forms` : Adding segmented control renderer
+* `foundation-forms` : Adding vertical categorization renderer
+* `foundation-ui` : Making flyout width configurable
+* `foundation-forms` : Adding suffixes to number renderers
+* `foundation-forms` : Add fixed heights to vertical categorization renderer
+* `ts-loader` : React wrapper generator + react-types showcase
+* `foundation-react-utils` : Support foundation-forms custom renderers written in React
+* `ai-assistant` : Support multi-agents, tool folding, suggestions, splash screen, and app-level integration
+* `ai-assistant` : Support launching sub-agents from tools
+* `foundaton-forms` : Add text transformation on form string fields
+* `foundation-utils` : Add k/t/m/b shortcut support to NumberParser
+* `ts-builder` : Replace fast-react-wrapper with generated React.forwardRef wrappers
+* `ts-builder` : Add XxxRef type aliases to generated React wrapper declarations
+* `foundation-utils` : Add shortcut blocked events and editable cont...
+* `foundation-forms` : Show number field via ui schema
+* `foundation-ui` : Add visual filter chips to AI criteria search
+* `foundation-forms` : Add reset button to foundation-form
+* `foundation-rapid-cdn` : Init module
+* `ai-assistant` : Allow hiding input box and better input user focus
+* `ai-assistant` : Agent pinning and sub-agent interaction
+* Show notification success for custom actions
+* `ai-assistant` : Suppport stateful agents using state machine
+* `foundation-forms` : Type delimiter option on ConnectedRenderersOptions
+* `ai-assistant` : Allow hiding chat input during widget
+* `ai-assistant` : Publish activity event for tool loop start and stop
+* `foundation-ai` : Support anthropic transport and calculate running costs
+* `foundation-ui` : Move draggable from modal to dialog
+* `ai-assistant` : Support splash screen owning prompt input
+* `oxlint-config` : Oxlint/Oxfmt default lint stack and developer docs
+* `oxlint-config` : Bundle oxlint/oxfmt/eslint-plugins as dependencies
+* `foundation-layout` : Add nearRegistration placement for VS Code-like tab stacking
+* `foundation-ai` : Support multiple registered models
+* `foundation-forms` : React slot renderer via UiSchema options.render
+* `foundation-ui` : Status pills, palette and button extension
+* Updates to date picker
+* `ai-assistant` : Capture all meta events in debug log
+* Add uischema className option to form fields
+* `ai-assistant` : Improved timeout handling and ability to stop current flow
+* Restore gridOptions after grid restart
+* `pbc-notify-ui` : Paginate inbox alerts with server-side load more
+* `foundation-ai` : Support gemini 3.X models (pro preview)
+* `ai-assistant` : Improved widget UX, widget costs, widget and sub agent timeout, resize composer
+* `foundation-comms` : Add opt-in caching to Connect.request
+* `foundation-auth` : Prefill login form from env vars
+* `ai-assistant` : Extra loading animations and widget presentation
+* `ai-assistant` : Support widget presentation modes
+* `foundation-forms` : Forms optimisation
+* `foundation-ai` : Support dynamic model registry
+* `foundation-entity-management` : Add smart-form-modal public API
+* `foundation-ui` : Allow stepper to be used as progress indiciator
+* `foundation-ui` : Tab and layout design token update
+* `ai-assistant` : Allow stateful agents to define custom unknown tool handling
+* `ai-assistant` : Add condenseWhen tool handler
+* `foundation-ui` : Theming consolidation
+* `ai-assistant` : Support model request caching
+* `foundation-forms` : Emit reset event in form component
+* `foundation-ui` : Flex layout css for platform
+* Grid set filter is lost when connection drops and reconnects
+* `foundation-forms` : Handle server validation errors from backend
+* `foundation-forms` : Support activeCategory index for Categorization initial tab
+* `ai-assistant` : Centralizing ai settings in a single modal
+* `grid-pro` : Upgrade ag-grid from v35 to v36
+* `foundation-forms` : Detect BigDecimal-as-string in NumberControlRenderer
+* `g2plot-chart` : Normalize BigDecimal string values in chart datasource
+* `ai-assistant` : Sonnet 5 support, split thinking/narration, fix double counting cost, animation fps fix
+* `foundation-forms` : Foundation-filters layout and react showcase
+* `foundation-react-utils` : Add createGridProCellRenderer for grid-pro React renderers
+* `ai-assistant` : Add configurable chat styling and improved defaults
+* Type CustomEvent details in React wrappers across packages
+* `pbc-notify-ui` : Add STARTS_WITH/ENDS_WITH condition operators
+* `foundation-ui` : Opt-in upgrade of theming definition
+* `grid-pro` : Request only visible columns for genesis datasource
+* `pbc-notify-ui` : Per-channel Pop-up/Email delivery preferences in inbox
+* `foundation-ui` : Infinite scroll for options-datasource
+* Bound AI request timeouts with heartbeat stall detection
+* `ai-assistant` : Chat persistence, compaction, fix double mount implementation
+* `ai-assistant` : Improve widget api for better lifecycle events
+* `foundation-layout` : Emit event on any layout change
+* `genx` : Kotlin event DETAILS TypeScript codegen
+* Surface turn failure reason at the chat-driver loop boundary
+* Decouple AI execution from DOM, support opus 4.8 + fable 5.0, support structured output
+* `foundation-forms` : Adding review step to forms overriding button text scrollable container on inputs
+* `foundation-react-utils` : Reusable react-router primitives + single-component deep-link
+* `foundation-header` : Add feature flags selector panel
+* `ai-assistant` : Support unified diagnostics from sibling ChatDriver
+* `foundation-comms` : Route req/rep and event traffic over HTTP
+* `foundation-ui` : Add pill component for zero and rapid design sys...
+* `pbc-notify-ui` : Add FoundationInbox customization hooks
+* `foundation-comms` : ETag revalidation caching in Http client
+* `foundation-auth` : 2FA method using a 6-digit code
+* `foundation-auth` : Add configurable password visibility control
+* `pbc-notify-ui` : Add Slack routes tab to notify dashboard
+* Expose React wrapper exports for custom elements missing them
+* `ai-assistant` : Split token view, update settings menu, handle per-project tokens and cost
+* `ai-assistant` : Collapse condensed payloads in batches
+* `ai-assistant` : AI-budget-exhausted blocked state, per vendor
+* `ai-assistant` : Per-vendor budget progress meter in the settings modal
+* `pbc-notify-ui` : Add configurable inbox alert sounds
+* Handle forced tool schemas for anthropic and google
+* `ai-assistant` : Budget-meter refresh button and freshness label
+* Improved cost calcuations and api + ability to control model thinking
+* `ai-assistant` : Per-turn and session token buckets + USD cost in the debug log
+* `foundation-auth` : First-login password change confirmation and redirect
+* Scope the wall banner to the active vendor and fold multi-vendor copy
+* `foundation-ai` : Multimodal transports for per-vendor vision
+* `ai-assistant` : Let a widget report spend after its interaction resolves
+* `grid-pro` : Flash tabs and rows while a grid holds rows needing attention
+* `event-type-codegen` : Add metadata dump and --from-metadata codegen
+* `ai-assistant` : Improved input composer UX and testing sandbox
+* `ai-assistant` : Context limit UX and improved compaction implementation
+* `grid-pro` : Support for AG Grid Infinite Row Model
+* `grid-pro` : Add Excel-style enum column filter for grid-pro-beta
+* `foundation-ai` : Support gemini-3.8-flash and measured per-tier thinkingLevel sets
+* `genx` : Distribute upstream-first agent rules to consumer projects
+* `ai-assistant` : Extract AgentSession so either driver can host a stateful agent
+* `grid-pro` : Implement column selection feature in GridProBeta
+* `ai-assistant` : Support timestamps on messages
+* `ai-assistant` : Default message timestamps to always shown
+* `foundation-react-utils` : Adopt FlexLayout into platform and inline styles
+* `ai-assistant` : Host-transport Send button with a user note for the agent log
+* `mock-server` : Add reusable Genesis mock server, with showcase implementation
+* `foundation-react-utils` : Allowing functions to be passed in uischema to custom renderers
+* `ai-assistant` : Expose the lifetime-stitched debug log as getLifetimeDebugLog
+* `ai-assistant` : Platform AI tier table, tiered provider switcher and budget meter segments
+* `ai-assistant` : Genesis bridge - registration and read tools
+* `ai-assistant` : Added shadow parts to scaffolding and markdown
+* `ai-assistant` : Default the chat endpoint to a build's GENX_AI_CHAT_BASE
+* `ai-assistant` : Genesis bridge - write tools and the review a user approves
+* `pbc-notify-ui` : Subscribe inbox topics without cloning notify routes
+* `pbc-notify-ui` : Expose Show Toast on screen route admin
+* `ai-assistant` : Let the write review ask for changes as well as deny
+* `foundation-logger` : Add opt-in console timestamp prefix
+* `ai-assistant` : Leave out a bad part of the AI config instead of switching the assistant off, and publish what it reads
+* `ai-assistant` : Tell the user when a write's custom code can also write to other tables
+* `ai-assistant` : Show on a stopped write's review which rows were written
+* Deprecate the genx rollup builder and remove its in-repo usage
+* `ai-assistant` : Let the assistant read dataserver queries
+* `ai-assistant` : Check that a write's references name rows that exist
+* `foundation-auth` : MFA resend button, cooldown, and session-expired redirect
+* `foundation-ui` : Expose shadow parts across the stepper and the assistant conversation
+* `ai-assistant` : Run a custom handler that proves a row action
+* `mock-server` : Match GSF dataserver envelopes and paging, add a conformance suite
+* Add error monitoring hooks (log reporter, error boundaries, one-call setup)
+* `mock-server` : Declare table schemas and send the GSF META and JSON schema shapes
+* `mock-server` : Stamp RECORD_ID/TIMESTAMP and send the GSF NACK vocabulary
+* `mock-server` : Add generic CRUD events per table and the inbound schema check
+* `mock-server` : Answer REQ_ as GSF request servers do
+* `ai-assistant` : Run a key-only row action with the whole row in its review
+* `mock-server` : Full join model for views
+* `foundation-utils` : Limit what the error-monitoring SDK collects by default
+* `ai-assistant` : Automatically restart the conversation after reconnecting to agent
+* `mock-server` : Honour IGNORE_WARNINGS and match the showcase server's handlers
+* `ai-assistant` : Add driver decorators and the extension points autopilot needs
+* `ai-assistant` : Add thumbs up/down feedback on each assistant reply
+* `mock-server` : Newest-first snapshots, strict criteria and value encoding
+* `ai-assistant` : Add the autopilot, widget surfaces and the autopilot UI
+* `grid-pro` : Dock the columns picker as a side panel
+* `grid-pro` : Add a community status-bar host under the grid
+* `mock-server` : Live MODIFY diffs and the moving view
+* `mock-server` : Add a GSF platform preset
+* `mock-server` : Answer login and heartbeat as GSF's auth does
+* `pbc-notify-ui` : Add a hide-clear-all attribute to foundation-inbox
+* `mock-server` : Filter the platform preset by product and back the PBC screens
+* `foundation-header` : Accept permission arrays and drop empty nav submenus
+* `mock-server,foundation-criteria` : Test the serialisers with mock-server's validator
+* `foundation-utils` : Add isEditableKeyboardEvent and export extractKeyFromCode
+* `grid-pro` : Add a community right-click menu on v36 grids
+* Remove the zero design system and migrate its dependents to rapid
+* `mock-server` : Back the platform products' events and computed request servers
+* `grid-pro` : Vertical actions menu (kebab) via actions-menu
+* `genx` : Restart the Vite dev server when .env changes
+* `ai-assistant` : Add optional agent notifications for widgets and the autopilot
+* `foundation-workspace` : React support, unmounted items and grid filters in workspaces
+* `foundation-comms` : Add SCDB columnar wire encoding decode support
+* `vite-builder` : Honour genx pwa and serviceWorker config
+* `ai-assistant` : Save a changed pin and let a host send without the composer
+* `ai-assistant` : Widget controllers for the autopilot, and notifications that wait
+* `foundation-comms` : Add typed ConnectErrors and harden request/reply lifecycle
+* `ai-assistant` : Let an agent hand a request to another and get it back
+* `ai-assistant` : Keep autopilot running across an agent hand-off and its hand-back
+* `ai-assistant` : Drive an assistant without a DOM, over JSON if you like
+* `ai-assistant` : Let a headless session restore a saved session
+* `foundation-ai` : Add gemini-4-argon and date-based pricing for rate changes
+* `foundation-comms` : Add onReconnectionLimitReached reconnect call...
+* `foundation-utils` : Add stripSensitiveData option to lift error-monitoring limits
+* `foundation-ai` : An OpenAI chat transport on the Responses API
+
+### Fixes
+
+* `pbc-reporting-ui` : Select output templates and verify csv config
+* `foundation-ui` : Fix allowCustomOptions in ConnectedSelectControlRenderer
+* `foundation-comms` : Re-create pollTrigger$ to work after destroy/reinit
+* `pbc-reporting-ui` : Do not set blank columns formats on setup
+* `vite-builder` : Inject base href tag into HTML to match webpack behavior
+* `pbc-notify-ui` : Add overflow-wrap to toast message
+* `seed-utils` : Resolve addUIDependency version from @genesislcap deps
+* `foundation-notifications` : Additional configurations such as toast sorting
+* `foundation-testing` : Fix critical basic-ftp path traversal vulnerability
+* `foundation-ui` : Timestamp giving error in rule expression unit te...
+* `grid-pro` : Fix SSRM pagination page-jump and ReqRep infinite scroll offset corruption
+* `client-app` : Remove unnecessary imports
+* `foundation-ui` : Changes to flyout to handle react compatability issues
+* `foundation-comms` : Allow datasource event handler to use local data
+* `pbc-documents-ui` : Width on actions column and resizing behaviour
+* `grid-pro` : Prevent detached grid and token subscription leaks
+* `webpack-builder` : Update webpackbar to v7
+* `g2plot-chart` : Make ChartConfig data optional with datasource
+* `foundation-forms` : Removing min width
+* `g2plot-chart` : Defer ChartDatasource init and add connection subscription + flexlayout showcase
+* `foundation-utils` : Remove circular dependency between editable elements and shortcut manager
+* `ai-assistant` : Better handling for continued multi-agent conversation
+* `foundation-entity-management` : Populate action columns before grid-ready in SSRM
+* `foundation-forms` : Open shadow dom to enable styling renderers
+* `vite-builder` : Enable typescript type checking
+* `foundation-ui` : Drop stale results from in-flight datasource fetches
+* `grid-pro` : First row polling with SSRM enabled, and fix react-client build errors
+* `foundation-forms` : Apply light-dom style fixes to foundation-filters
+* `react-client-app` : Resolve lint failures and align eslint globs
+* `ai-assistant` : Circular dep
+* `ai-assistant` : Improved stateful agent api
+* `ai-assistant` : Filter non-serializeable field from redux
+* `foundation-forms` : Checkbox dirty-state desync + showcase boolean demo
+* `ai-assistant` : Scroll position of chat for resizing widgets
+* `foundation-forms` : Emit fresh additionalErrors from dispatch
+* Remove sortType from colDef merge
+* `foundation-forms` : Scope vertical-categorization tablist styles
+* `foundation-entity-management` : Move helper fn before JSDoc to fix CEM event detection
+* `ai-assistant` : Defer handle swapping agents array during tool loop
+* `foundation-forms` : Lazy-mount Categorization tab panels
+* `foundation-forms` : Drop unconditional mountedTabs reset on controlChanged
+* `rapid-grid-pro` : Set explicit @TagName JSDoc
+* `ai-assistant` : Stateful agent pinning and dynamic stateful agent example
+* `ai-assistant` : Sub agent cost counting and function in redux slice
+* `foundation-forms` : Stop json-forms schemaChanged emitting stale data-change
+* Use Auth token for file download not raw sessionStorage
+* `foundation-react-utils` : Updating handleChange to 'method'
+* Correct stale @genesislcap/oxlint-config pin (14.441.0 -> 14.447.0)
+* `grid-pro` : Show no rows overlay for empty ssrm results
+* Updates to search-bar functionality
+* `ai-assistant` : Stale rendering widgets due to component recycling
+* `ai-assistant` : Friendlier errors, more logging, and larger logging buffer
+* `foundation-logger` : Restore BrowserReporter for browser environments
+* `ai-assistant` : Informative tool fail messages for agent, telemtary, chat driver unit tests
+* `ai-assistant` : Require sub-agents to respond via tool call
+* `ai-assistant` : Make ChatDriver survive a long agentic turn without giving up
+* `grid-pro` : Register missing editor modules
+* `foundation-ui` : Add @TagName so CEM emits react types for decorator-registered components
+* `ai-assistant` : Aid with malformed calls, configure temperature and tool api, handle gemini thinking
+* `grid-pro` : Preserve consumer column defs and groups across schema update and state merge
+* `foundation-comms` : Fix sendForStream teardown and grid-pro unmount memory leaks
+* `ai-assistant` : Chat message ux improvements
+* `ts-builder` : Windows compatibility fixes for Genesis tooling
+* `grid-pro` : Hide No Rows overlay when criteria change returns data
+* `grid-pro` : Restore persisted filter model after columns ready for SSRM
+* `ai-assistant` : Flowing waves animation alignment
+* `foundation-workspace` : Export react component types
+* `grid-pro` : Route SSRM live updates through applyServerSideTransaction
+* `grid-pro` : Prevent empty SSRM grid when column filters applied
+* `ai-assistant` : Sub agent debug trace improvements
+* `grid-pro` : Resolve SSRM request on empty stream message with cached rows
+* `ai-assistant` : Ensure floating and popped in component share same driver
+* `pbc-reporting-ui` : Forward server error msg when fetching json schema
+* `pbc-documents-ui` : Only fetching 250 files to find template assets
+* `foundation-forms` : Preserve multiselect delimiter round-trip on deselect-all
+* `grid-pro` : Restore SSRM infinite scroll with CRITERIA_MATCH in non-pagination mode
+* `g2plot-chart` : Default single-series bar color to one gradient so bars render
+* `foundation-ui` : Harden number field input for BigDecimal forms
+* `grid-pro` : Fix SSRM infinite scroll when filters are applied
+* `foundation-entity-management` : Type grid selection event details in React wrappers
+* `ai-assistant` : Stale interactive widget due to fast recycling
+* `foundation-header` : Highlight active nav item across frameworks
+* `foundation-ui` : Unsubscribe stale dataSub before resubscribing on reconnect
+* `pbc-notify-ui` : Enum multiselect OR-conditions, boolean params, subscribe-toggle fixes
+* `foundation-ui` : Session-expiry redirect lands on 404 in react-router apps
+* `foundation-ai` : Raise typed truncation for Gemini MAX_TOKENS instead of retrying it as empty
+* `foundation-utils` : Fix LifecycleMixin reconnect after real disconnect
+* `foundation-ui` : Stop collapsing chart data on req/rep polling refresh
+* `foundation-ui` : Derive datasource rowId from resource type for req/rep
+* Short-circuit deterministic model refusals + structured-output routing tests
+* `grid-pro` : Keep datasource listeners across blocked reflow
+* `foundation-ui` : Resolve circular dependency in verification-code-input
+* `ai-assistant` : Check for message category too when deduping messages
+* `pbc-notify-ui` : Create SELF subscription routes to stop duplicate alerts
+* `foundation-ui` : Render actions-menu popup via Popover API to escape ancestor clipping
+* `foundation-forms` : Using formatters for data types, resetting isSubmitting on errors
+* `grid-pro` : Popup cell editors self-cancel after the first edit
+* `foundation-forms` : Fixing DateControlRenderer to use utc
+* `rapid-design-system` : Type Button appearance with the values it actually styles
+* Exempt boundary triggers from condensation batching
+* `seed-utils` : Stop gating PBC adds on the FoundationUI major
+* `ai-assistant` : Post-merge review follow-ups for the budget wall
+* `ai-assistant` : Accumulate project costs per project not element instance
+* `foundation-ui` : Default --dialog-z-index to 1001 so a non-modal dialog is not out-stacked
+* `grid-pro` : Centre cell content at custom rowHeight, and unshadow declared attributes
+* `foundation-ui` : Populate filtered options when pasting search text
+* `foundation-ai` : Say which phase a request timeout died in
+* `grid-pro` : Require criteriaOnlyRequest for req/rep SSRM, drop view-based paging
+* Popover icon tooltip and AG Grid drag ghost rendering in shadow-DOM grids
+* `grid-pro` : AgAttributeChangedCallback crashes on __setProperty wh...
+* `grid-pro` : Clear datasource-ready listeners on destroy
+* `ai-assistant` : Read the user bubble text colour from the real on-accent token
+* `ai-assistant` : Improved condesenWhen implementation
+* Budget-wall bubble advises switching and the meter snaps at latch time
+* `foundation-ui` : Page connected select infinite scroll by OFFSET
+* `grid-pro` : Guard GridProBeta against a not-yet-ready gridApi mid-reinit
+* `grid-pro` : Skip a queued initGrid when the slot ref is unbound
+* `pbc-notify-ui` : Open template dialog without waiting on SYSTEM_ENTITY_FIELDS
+* `foundation-ai` : Improved handling for anthropic when api key out of budget or limit
+* `foundation-ui` : Release number field typing guard when enter commits
+* `ai-assistant` : Improved handling when persistence starts failing
+* `event-type-codegen` : Align wire field names and DateTime types with Genesis
+* New release pipeline and update pre-release skill
+* `ai-assistant` : Follow up tweaks to composer UX
+* `foundation-forms` : Add labelRowFormatter to form review component
+* `foundation-auth` : Scope the router fallback to the configured hostPath
+* `event-type-codegen` : Scope generated enums to their owning table
+* `foundation-forms` : Expose order-by option on ConnectedSelectControlRenderer
+* `ai-assistant` : Improved context handling for config and condensed tools
+* `pbc-reporting-ui` : Persist column visibility selections under AG Grid 36
+* `ai-assistant` : Agent orchestrator and fallback agent
+* `foundation-ui` : Async combobox initial-value resolution + stale-clear
+* `foundation-auth,vite-builder` : Make DEFAULT_USER/PASSWORD work in an embedded app
+* `ai-assistant` : Context usage calculation and headroom warning
+* `categorization-wrapper` : Add additional errors to show error icons
+* `foundation-ui` : Stop connected-select display reverting on unrelated form changes
+* `pbc-notify-ui` : Restore SYSTEM_ENTITY_FIELDS-based getFields()
+* `grid-pro` : Infinite row model sort arrows match the client-side model
+* `grid-pro` : Apply consumer gridOptions on the infinite row model
+* `rapid-design-system` : Bump flexlayout-react to 0.10.8 for custom element lifecycle
+* `foundation-auth` : Enhance password reset flow and error handling
+* `ai-assistant` : Rename applyAgent to installAgent and require the AiDriver agent-session members
+* `event-type-codegen` : Resolve PAL script enums through Genesis default imports
+* `grid-pro` : Infinite and server-side row models fire datasource-data-changed
+* `grid-pro` : Enable dragging searched hidden columns onto grid
+* `foundation-ui` : Repopulate options-datasource list when the bound...
+* `ai-assistant` : Key untimestamped diagnostic messages on a digest of the entry
+* `grid-pro` : Make ag-grid-enterprise an optional peer dependency
+* `genx` : Act on the agent-rules review - wiring, state, and rule accuracy
+* `foundation-ui` : Cover options-datasource reload for async infinite-scroll after clear
+* `ai-assistant` : Keep unfired condenseWhen policies across a session reload
+* `vite-builder` : Minify production builds
+* `grid-pro` : Keep AG Grid v29 out of the v36 grid's import graph
+* `ai-assistant` : Tell the user what an AI service refusal means, and stop retrying it
+* Drop stale eslint lint-staged override and broken lint:eslint scripts
+* `grid-pro` : Show disconnect dialog and replace rows on full reload
+* `foundation-ui` : Keep typed text when async combobox reloads options
+* `foundation-ui` : Preserve caret position on formatted number field edits
+* `foundation-forms` : Prevent container-level errors from badging all sibling category tabs
+* `grid-pro` : Stop paging DATASERVER rows once the view is full at MAX_VIEW
+* `grid-pro` : Resolve custom row-id DATASERVER pushes by ROW_REF in the paging caches
+* `ai-assistant` : Refuse text past its column's length before the review
+* `foundation-auth` : Refresh an expired session on silent login
+* `foundation-ui` : Stop async combobox re-selecting a removed option over typed text
+* `grid-pro` : Bump AG Grid to 36.2.0 so hidden infinite grids get the theme row height
+* `foundation-forms` : Map GSF schema-error PATH and FIELD to the failing control
+* `ai-assistant` : Remove injected close button when assistant leaves bubble
+* `uvu-playwright-builder` : Run browser test suites once by bumping uvu to 0.5.6
+* `ai-assistant` : Refuse an INT or SHORT past its column's range before the review
+* `foundation-forms` : Clear a field with the empty value its schema accepts
+* `foundation-ui` : Toggle boolean selected attribute on stepper tabs
+* `vite-builder` : Pre-scan src/pbc so lazily imported PBCs don't re-optimize deps
+* `foundation-ui` : Drain the status-pill fake clock so later suites' frames still run
+* `foundation-forms` : Hide category tab error icons until submit or touch
+* `grid-pro` : Sort by leading index fields and enrich consumer columnDefs from metadata
+* `foundation-comms,foundation-auth` : Read login ack fields under GSF's names
+* `foundation-criteria` : Emit criteria GSF's whitelist accepts, single-quote strings
+* `genx` : Update toolchain dependencies flagged by vulnerability scans
+* `foundation-comms` : Refresh the session before retrying a failed socket reconnect
+* Mock-server fidelity and client follow-ups from the Create migration
+* `ai-assistant` : Stale interrupted prompt and agent chip under a held flow lock
+* `ai-assistant` : Send hand-off re-classify and continuation requests Anthropic accepts
+* `grid-pro` : Replace deprecated AG Grid tooltip and selection APIs
+* `foundation-forms,foundation-ui` : Drop stray delimited tokens and count only real options in multiselect
+* `foundation-auth` : Ignore missing SSO token in popup window
+* `foundation-comms` : Send no DATA_LOGOFF for a stream torn down before its DATA_LOGON
+* `foundation-comms` : Stop a destroyed datasource's init sending nameless requests
+* `foundation-comms` : Keep a replaced WebSocket's late close from dropping isConnected
+* `foundation-comms` : Reuse an open connection in Connect.connect
+* `ai-assistant` : A stopped turn no longer starts the hand-off it accepted
+* `ai-assistant` : Centre header buttons, legible markdown, responsive write review
+* `ai-assistant` : Pin the foundation-comms peer exactly
+* `build-kit` : Resolve the workspace root inside a git worktree
+* `ai-assistant` : Stop a turn ending from pulling focus out of an iframe
+* `foundation-utils` : Report modal content as visible in respondToVisibility
+* `foundation-workspace` : Register grids nested in a descendant's shadow root
+* `foundation-comms` : Recover streams after bfcache/freeze disconnect
+* `client-app` : Corporate theme dark mode uses a dark neutral fill
+
+## Breaking changes guidance
+
+
+For the steps to move an application from 8.15 to 10.0, see [Upgrading from 8.15 to 10.0](../upgrade-from-8.15/index.mdx).

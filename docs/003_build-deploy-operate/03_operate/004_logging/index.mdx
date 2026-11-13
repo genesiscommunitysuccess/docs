@@ -11,14 +11,22 @@ tags:
 sidebar_position: 4
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This page relates to Server logging.
 
 ## Overview
 
-Genesis uses [slf4j](https://www.slf4j.org/) for logging and the internal logging framework is [log4j2](https://logging.apache.org/log4j/2.12.x/).
-Logging settings are configured using a log4j2 configuration file, which by default is named `log4j2-default.xml` and can be overridden by a user-defined file with the same name in `site-specific/cfg/`.
+Genesis uses [slf4j](https://www.slf4j.org/) for logging. Behind it, the logging backend is [log4j2](https://logging.apache.org/log4j/2.12.x/) by default, or [Logback](https://logback.qos.ch/) if you choose it; see [Choosing a logging backend](#choosing-a-logging-backend).
+Logging is configured by a configuration file for the backend in use. By default this is `log4j2-default.xml` with log4j2 or `logback-default.xml` with Logback, and for either backend you can override it with a file of the same name in `site-specific/cfg/`.
 
-See default file below:
+See default files below:
+
+<Tabs defaultValue="log4j2" values={[{ label: 'Log4j2', value: 'log4j2' }, { label: 'Logback', value: 'logback' }]}>
+
+<TabItem value="log4j2">
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
@@ -51,24 +59,153 @@ See default file below:
             </Policies>
             <DefaultRolloverStrategy max="30"/>
         </RollingFile>
+
+        <RollingFile name="RequestLogRollingFile" fileName="${env:L:-${main:default-logs}}/${sys:PROCESS_NAME}.log.request"
+                     filePattern="${env:RL:-${main:default-rolling-logs}}/${sys:PROCESS_NAME}_%d{yyyy-MM-dd}-%i.log.request.gz"
+                     ignoreExceptions="false" append="true" createOnDemand="true" bufferedIO="true">
+            <PatternLayout>
+                <Pattern>%d{yyyyMMdd}|%d{HH:mm}|%d{UNIX_MILLIS}|%msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <AsyncLogger name="global.genesis." level="info" includeLocation="false" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </AsyncLogger>
-        <AsyncLogger name="org.apache.commons.configuration" level="info" includeLocation="false" additivity="false">
+
+        <AsyncLogger name="org.apache.commons.configuration2" level="info" includeLocation="false" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </AsyncLogger>
+
+        <AsyncLogger name="org.ehcache" level="info" includeLocation="false" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </AsyncLogger>
+
         <AsyncLogger name="global.genesis.metrics" level="debug" includeLocation="false" additivity="false">
             <AppenderRef ref="MetricsRollingFile"/>
         </AsyncLogger>
+
+        <AsyncLogger name="global.genesis.net.logging.RequestLogger" level="trace" includeLocation="false" additivity="false">
+            <LevelRangeFilter minLevel="trace" maxLevel="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <AppenderRef ref="RequestLogRollingFile"/>
+        </AsyncLogger>
+
         <AsyncRoot level="info" includeLocation="false">
             <AppenderRef ref="RollingFile"/>
         </AsyncRoot>
     </Loggers>
 </Configuration>
 ```
+
+</TabItem>
+
+<TabItem value="logback">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${L:-${GENESIS_HOME}/runtime/logs}/${PROCESS_NAME}.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${RL:-${GENESIS_HOME}/runtime/logs/currentRun}/${PROCESS_NAME}_%d{yyyy-MM-dd}-1.log.gz</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="MetricsRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${L:-${GENESIS_HOME}/runtime/logs}/${PROCESS_NAME}.log.metrics</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${RL:-${GENESIS_HOME}/runtime/logs/currentRun}/${PROCESS_NAME}_%d{yyyy-MM-dd}-1.log.metrics.gz</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="RequestLogRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${L:-${GENESIS_HOME}/runtime/logs}/${PROCESS_NAME}.log.request</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyyMMdd}|%d{HH:mm}|%d{UNIX_MILLIS}|%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${RL:-${GENESIS_HOME}/runtime/logs/currentRun}/${PROCESS_NAME}_%d{yyyy-MM-dd}-1.log.request.gz</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="global.genesis." level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="org.apache.commons.configuration2" level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="org.ehcache" level="info" additivity="false">
+        <appender-ref ref="RollingFile"/>
+    </logger>
+
+    <logger name="global.genesis.metrics" level="debug" additivity="false">
+        <appender-ref ref="MetricsRollingFile"/>
+    </logger>
+
+    <logger name="global.genesis.net.logging.RequestLogger" level="trace" additivity="false">
+        <appender-ref ref="RequestLogRollingFile"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="RollingFile"/>
+    </root>
+</configuration>
+```
+
+</TabItem>
+
+</Tabs>
+
+## Choosing a logging backend
+
+A Genesis process logs through log4j2 unless you choose Logback. You make the choice when you build your application: the Genesis exec plugin puts exactly one logging backend on your application's runtime classpath. To use Logback, set this Gradle property in your application's `server/gradle.properties`:
+
+```properties
+genesis.logging-backend=logback
+```
+
+The accepted values are `log4j` (the default) and `logback`, in any case. Any other value fails the build. You can also set the backend in the `logging` block of the `genesisExec` extension:
+
+```kotlin
+genesisExec {
+    logging {
+        backend.set(LOGBACK)
+    }
+}
+```
+
+The constants this block accepts are `LOG4J` and `LOGBACK`. log4j2 is the default, so to go back to it you don't need to set anything: remove the Logback setting, whether it is the Gradle property or the `backend.set(LOGBACK)` line.
+
+If you set both, the value in the `genesisExec` block wins; the Gradle property is only its default.
+
+The change takes effect only once your application's process classpath is rebuilt. After you change the backend, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes.
+
+- At start-up, a process uses the logging backend it finds on its classpath. The `LogFramework` system definition item no longer selects one.
+- The `LogFrameworkConfig` system definition item names the configuration file. Its default is `log4j2-default.xml`. If Logback is the backend and the item still has that default, Genesis loads `logback-default.xml` instead; both files ship with Genesis. Any other value is used as given, so if you name your own file, make sure it is written for the backend you chose.
+- To confirm which backend and configuration file a process is using, look for the `INFO` line that each process logs at start-up, for example `Logging backend: Logback (config: <path>)`. The backend is `Log4j2` or `Logback`, and the config is the absolute path of the file that was loaded. If Genesis can't find the file in its configuration folders, the line shows only the file name, such as `logback-default.xml`, instead of a path.
+- If more than one backend is on the classpath, the process prints `Too many logging controllers; unable to initialize logging services; found ...` to standard error, then carries on with whichever backend it found first. Check that your dependencies don't add a second backend.
+- The setting also changes the test runtime classpath of the module that applies the Genesis exec plugin: with Logback, its tests log through Logback instead of log4j2.
 
 ## Log directories
 
@@ -77,12 +214,12 @@ Genesis utilizes three key environment variables to define log directory locatio
 1.  **`$L` (Log Directory):**
 *   **Purpose:** The main directory for current log files. This is where Genesis writes logs during its active operation.
 *   **Default:** `${GENESIS_HOME}/runtime/logs`
-*   **Used By:** `log4j2-default.xml` for current log output.
+*   **Used By:** `log4j2-default.xml` and `logback-default.xml` for current log output.
 
 2.  **`$RL` (Rolling Log Directory):**
 *   **Purpose:** Stores rolling logs. Log files are often "rolled over" (archived and replaced with new ones) based on size or time to prevent them from becoming too large. This directory also holds logs moved during the `startProcess` command execution.
 *   **Default:** `${L}/currentRun` (a subdirectory within the main log directory `$L`)
-*   **Used By:** `log4j2-default.xml` for rolling log configurations and the [`startProcess`](/build-deploy-operate/operate/commands/#startprocess) command.
+*   **Used By:** `log4j2-default.xml` and `logback-default.xml` for rolling log configurations and the [`startProcess`](/build-deploy-operate/operate/commands/#startprocess) command.
 
 3.  **`$AL` (Archive Log Directory):**
 *   **Purpose:** Stores archived logs, typically older logs moved during server startup processes, for long-term storage.
@@ -102,7 +239,7 @@ By default, messages sent to standard output (stdout) and standard error (stderr
 
 If you want to capture **all** output, including stdout and stderr, directly within the process's log files, you can change this behavior by setting the genesis system definiiton property `RedirectStreamsToLog` to `true`.
 
-Setting this property to `true` ensures that standard output and error messages are written to the same log files managed by Log4j2, providing a consolidated view of all process output that will be managed the same way as other log messages.
+Setting this property to `true` ensures that standard output and error messages are written to the same process log files, providing a consolidated view of all process output that will be managed the same way as other log messages.
 
 ## Logging level
 
@@ -175,4 +312,14 @@ Show just the Source Ref attribute in json format:
 <JsonLayout complete="false" compact="true" eventEol="true" >
     <KeyValuePair key="SourceRef" value="${ctx:genesis.source_ref}"/>
 </JsonLayout>
+```
+
+### Example Logback configuration
+
+Show just the Source Ref attribute. This is the Logback equivalent of the log4j2 `<Pattern>` above:
+
+```xml
+<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    <pattern>%d{dd MMM yyyy HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} [SourceRef = %X{genesis.source_ref}] - %msg%n</pattern>
+</encoder>
 ```

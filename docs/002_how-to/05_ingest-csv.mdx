@@ -85,18 +85,22 @@ For example:
 We would then add code into the data pipeline file like this:
 ```jsx
 pipelines {
-    pipeline("MY_PIPELINE") {
-        source(camelSource { location = getDefaultLocalFileCamelLocation(systemDefinition.get("FolderLocation").get(),"FileName") })
+    pipeline("MY_PIPELINE")
+        .source(camelFileSource { location = getDefaultLocalFileCamelLocation(systemDefinition.get("FolderLocation").get(),"FileName") })
             .map { LOG.info("Triggered MY_PIPELINE"); it}
             .split(csvRawDecoder())
             .map { row ->
                 ...
             }
             .sink(dbSink())
-            .onCompletion
-    }
+            .onCompletion { ... }
+        .build()
 }
 ```
+
+:::note
+On 10.0, the block form `pipeline("X") { ... }` is removed, so `map` and the other operators are chained onto the builder as shown here. See [Upgrade from 8.15: Consolidator and data pipelines, step 1](/release-notes/platform/10/upgrade-from-8.15/upgrade-10.0-consolidator-pipelines#1-rewrite-pipelinex----as-a-builder-chain).
+:::
 
 ### System definition
 Every application also has a [main configuration file](/develop/server-capabilities/runtime-configuration/system-definition/) called `genesis-system-definition.kts`. 

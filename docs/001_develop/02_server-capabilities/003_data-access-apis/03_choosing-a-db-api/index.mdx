@@ -1,0 +1,164 @@
+---
+title: 'Choosing and using a DB API'
+sidebar_label: 'Choosing and using a DB API'
+id: server-choosing-a-db-api
+keywords: [data, data access, data api, syncentitydb, asyncentitydb, rxentitydb, virtual threads, connection pool, transactions]
+tags:
+- data
+- data access
+- data api
+sidebar_position: 1
+---
+
+This page explains which Genesis database API to use in Genesis 10, which threads your code runs on, and how the API you choose uses database connections. For the operations each API offers, see [Data access APIs (GPAL / Java)](/develop/server-capabilities/data-access-apis/gpal-java).
+
+## Which API should I use?
+
+- **From Java, use `SyncEntityDb`.** Use `SyncDb` if you need to work with `DbRecord`s.
+- **From Kotlin, use `AsyncEntityDb`.** Use `AsyncDb` if you need to work with `DbRecord`s.
+- **Don't start new code on `RxEntityDb` or `RxDb`.** Both are deprecated in 10.0, and no removal version is set. Existing code keeps working, and `RxDb` remains supported. The deprecation warning suggests `AsyncEntityDb`; from Java, use `SyncEntityDb`.
+
+In a GPAL event handler, use the `entityDb` that the [event handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) provides, rather than injecting an API.
+
+| Language | JDK | Use | Threading you get |
+|---|---|---|---|
+| Kotlin | 21 or later | `AsyncEntityDb` (`AsyncDb` for records) | Transaction bodies, JDBC work and `Flow` producers run on virtual threads automatically. Code in a non-transactional event handler runs on a fixed pool of platform threads, one per CPU core |
+| Kotlin | 17 | `AsyncEntityDb` (`AsyncDb` for records) | Database work runs on platform threads, capped at 2 × CPU cores. Waiting for a connection suspends without holding a thread |
+| Java | 21 or later | `SyncEntityDb` (`SyncDb` for records) | Database calls, `writeTransaction` bodies and streams run on the calling thread |
+| Java | 17 | `SyncEntityDb` (`SyncDb` for records) | Platform threads throughout. See [Java and Sync pitfalls](#java-and-sync-pitfalls) |
+
+## Virtual threads
+
+On Java 21 and later, the database layer selects virtual threads for its own work automatically. There is nothing to enable.
+
+To use platform threads instead, set the JVM system property `-Dgenesis.db.virtualThreads=false` in the process's `<options>` in its [`processes.xml`](/develop/server-capabilities/runtime-configuration/processes/). Setting it to `true` requests virtual threads, and falls back to platform threads with a warning if the JVM doesn't support them.
+
+Virtual threads apply to the work the database layer runs, not to all of your code. On Java 21 and later:
+
+| Code | Runs on a virtual thread | Runs on the calling thread |
+|---|---|---|
+| Async point read or write | The JDBC work | Your code before and after the call, on your coroutine's dispatcher |
+| Async `writeTransaction` or `readTransaction` | The whole transaction body | Nothing inside the block |
+| Async `Flow` read | The producer | The collector, on its own dispatcher |
+| GPAL event handler with `transactional = true` | The handler body, because it runs inside `writeTransaction` | |
+| GPAL event handler, non-transactional | Only the database calls | Handler code, on a fixed pool of platform threads, one per CPU core |
+| Sync reads and writes, `writeTransaction` and `readTransaction` | Nothing | The whole block or call |
+| Sync streams (`stream()`, `getBulkStream`) | Nothing | The whole stream |
+| Sync event handler | Nothing for the handler, by default | Handler code, on the message threads: by default a fixed pool of platform threads, one per CPU core |
+| Spring non-suspend `@Event` handler | Nothing for the handler | Handler code, on platform threads |
+
+A Java Sync event handler makes its database calls on its message thread, so the number of Sync handlers running at once is limited by the message threads. On Java 24 and later, the JVM system property `-Dgenesis.net.virtualThreads=true` runs the message threads as virtual threads instead, with at most `genesis.net.virtualThreads.maxInFlight` messages (default 256) in flight at once.
+
+Virtual threads also don't raise database concurrency on their own. Once threads stop being the limit, [the connection pool](#sizing-the-connection-pool) is.
+
+## Connections and nesting
+
+Each process has one connection pool for the Genesis database, and every API shares it. Nested calls reuse a connection in the cases below. This section describes the SQL database layer.
+
+### What reuses a connection
+
+- **Anything inside a transaction.** Inside an `AsyncEntityDb` `readTransaction` or `writeTransaction`, these all use the transaction's connection, and a rollback covers their writes: suspending calls, `getBulk().collect { get() }`, a direct blocking or Sync call, and code inside `withContext`.
+- **Nested transactions.** A nested transaction joins the outer one. A nested `writeTransaction` uses a savepoint.
+- **Nested calls in a Sync stream.** A blocking `get` made while reading a Sync stream on the same thread reuses the stream's connection, at any depth of nesting.
+
+### What needs another connection
+
+- **A non-transactional `getBulk().collect { get() }`.** The stream holds one connection and the nested `get` needs a second. Wrap it in `readTransaction` to use one:
+
+  ```kotlin
+  // Needs two connections
+  asyncDb.getBulk(Trade::class).collect { trade ->
+      asyncDb.get(trade.byPrimaryKey())
+  }
+
+  // Needs one connection
+  asyncDb.readTransaction {
+      getBulk(Trade::class).collect { trade ->
+          get(trade.byPrimaryKey())
+      }
+  }
+  ```
+
+- **An Rx `getBulk` with an interleaved Rx `modify`.** The stream and the write each need a connection.
+- **An Rx call inside Sync or Async code that holds a connection but isn't in a transaction.**
+- **Independent concurrent callers.** Each needs its own connection.
+- **Code in a new, independent coroutine scope, or on a thread you manage, that calls the database directly rather than through the `writeTransaction` receiver.** It can't see the transaction, so it asks for its own connection. If every connection is held, it waits until the [connection timeout](#how-waiting-works).
+
+### Rules for threads
+
+- Consume and close a Sync stream on the thread that opened it.
+- An Rx write made inside a Sync or Async transaction joins that transaction if it is subscribed on the same thread while the transaction is open. Otherwise it throws an `IllegalStateException`. Block on it inside the transaction, for example with `blockingGet()`, and don't use `subscribeOn` or `observeOn`.
+
+## Transactions: writes join
+
+On the SQL database layer, a write made through an injected database API from inside a transaction joins that transaction. If the transaction rolls back, the write rolls back with it.
+
+## Sizing the connection pool
+
+:::note
+This section explains how the mechanism works so that you can reason about your own application. It is not a benchmark, and the numbers are not recommended values.
+:::
+
+| Database | Default maximum pool size |
+|---|---|
+| PostgreSQL | **4** |
+| H2, HSQL, Oracle, SQL Server | The greater of 2 × CPU cores and 4, plus 1 |
+
+The PostgreSQL default is small, so check it first if you run on PostgreSQL.
+
+Set the size with the [system definition](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions) item `DbSqlMaxPoolSize`. The older `DbSqlConnectionPoolSize` is still honoured when `DbSqlMaxPoolSize` is not set.
+
+By default, each process holds its full pool. Multiply the pool size by the number of processes, and check the total against your database's connection limit.
+
+On SQL, `DbThreadsMax` sizes only the thread pool for the Rx path, so it doesn't change how many connections Sync and Async code can use.
+
+### What to size for
+
+With virtual threads, the pool is what limits database concurrency. Size it for the peak number of callers holding a connection at the same moment, not for the number of requests. Each of these holds one:
+
+- A transaction, for its whole body, including any non-database work in it.
+- A streaming read, for its whole collection.
+- A point operation, briefly.
+
+A process with `P` concurrent holders needs `P` connections. If those holders use [non-transactional nested reads](#what-needs-another-connection), it needs 2 × `P`. Keep non-database work out of transactions so that they hold their connection for as short a time as possible.
+
+### How waiting works
+
+When no connection is free, suspending code suspends without holding a thread, and blocking code parks its thread. The wait is limited by the `DbSqlConnectionTimeoutMillis` system definition item, which defaults to 30000 (30 seconds).
+
+## Kotlin pitfalls
+
+- **Sync calls from a suspend function.** A call to `SyncEntityDb` parks the current thread. Inside a transaction it reuses the transaction's connection, but outside one it blocks whichever dispatcher you are on. Use `AsyncEntityDb` instead.
+- **Blocking `Dispatchers.Default`.** Don't block `Dispatchers.Default` threads on database work, on any JDK.
+- **`Flow` and connection lifetime.** Flows are cold. A flow acquires its connection when collection starts, and holds it until the producer finishes or is cancelled, so a slow collector holds a connection for as long as it runs. A flow from the outer database joins a transaction only where it is collected, so collect it inside the transaction you want it to join.
+
+## Java and Sync pitfalls
+
+- **Close your streams.** A stream holds a connection until it is read to the end or closed. Operations that read to the end, such as `toList`, `forEach` and `count`, release it. Operations that stop early, such as `findFirst`, `limit` and `anyMatch`, do not. Always use try-with-resources, or Kotlin's `use { }`:
+
+  ```java
+  try (Stream<Trade> trades = db.stream().getBulk(TRADE.INSTANCE)) {
+      Optional<Trade> first = trades.findFirst();
+  }
+  ```
+
+- **Unreleased streams on PostgreSQL.** A stream that hasn't been released holds an open transaction, which blocks `TRUNCATE` and DDL on the tables it reads.
+- **Don't pass a stream between threads.** Consume and close it on the thread that opened it.
+- **Java 17, or virtual threads turned off.** Database work shares a pool of platform threads, capped at 2 × CPU cores. Don't make a blocking read, such as `getBulk(...).toList().blockingGet()`, from code that already occupies one of those threads, and don't block those threads on other work that needs them. The waiting thread keeps its slot while the read needs another one. If all the slots are taken this way, nothing progresses and nothing times out.
+
+## FoundationDB
+
+FoundationDB is deprecated in 10.0.0 and is scheduled for removal in 11.0.0. Until then, on the `FDB` and `FDB2` database layers:
+
+| API | Behaviour |
+|---|---|
+| `SyncEntityDb`, `AsyncEntityDb`, `SyncDb`, `AsyncDb` | These work, through the Rx path |
+| `SyncStorageEngine`, `CoroutineStorageEngine` | Not available for direct injection. Inject them with `@Inject(optional = true)` if your code also runs on other database layers |
+| `sqlConnection()`, `sqlAsyncConnection()` | Throw `UnsupportedOperationException` |
+| Sync streams | Read eagerly into memory |
+| Complex criteria | Supported, but evaluated in memory rather than by the database |
+
+## Upgrading from 8.15
+
+- **Injected writes [join transactions](#transactions-writes-join).** In 8.15 they didn't. Check any code that relied on such a write persisting after the surrounding transaction failed.
+- **`RxDb` and `RxEntityDb` give deprecation warnings.** A build that treats deprecation warnings as errors fails until you move away from them.

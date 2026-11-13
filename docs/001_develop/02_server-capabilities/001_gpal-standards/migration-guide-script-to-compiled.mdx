@@ -19,9 +19,9 @@ For each GPAL type, extend the corresponding base class and use the same DSL ins
 
 | GPAL type       | Base class           | Gradle dependency                            | Script extension       | Documentation                                                                                                                                                                                                         |
 |-----------------|-----------------------|----------------------------------------------|------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data Server     | `GPalDataserver`     | `implementation(genesis("pal-dataserver"))`     | `-dataserver.kts`      | [Data Server](/develop/server-capabilities/real-time-queries-data-server/) / [Runtime configuration](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)                               |
-| Event Handler   | `GPalEventHandler`   | `implementation(genesis("pal-eventhandler"))`   | `-eventhandler.kts`    | [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) / [Runtime configuration](/develop/server-capabilities/core-business-logic-event-handler/#runtime-configuration)                     |
-| Request/Reply   | `GPalRequestServer`  | `implementation(genesis("pal-requestserver"))`  | `-reqrep.kts`          | [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) / [Runtime configuration](/develop/server-capabilities/snapshot-queries-request-server/#runtime-configuration)                        |
+| Data Server     | `GPalDataserver`     | `implementation(genesis("pal-dataserver"))`     | `-dataserver.kts`      | [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/) / [Runtime configuration](/develop/server-capabilities/query-data/real-time-queries-data-server/#runtime-configuration)                               |
+| Event Handler   | `GPalEventHandler`   | `implementation(genesis("pal-eventhandler"))`   | `-eventhandler.kts`    | [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) / [Runtime configuration](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#runtime-configuration)                     |
+| Request/Reply   | `GPalRequestServer`  | `implementation(genesis("pal-requestserver"))`  | `-reqrep.kts`          | [Request Server](/develop/server-capabilities/query-data/snapshot-queries-request-server/) / [Runtime configuration](/develop/server-capabilities/query-data/snapshot-queries-request-server/#runtime-configuration)                        |
 | Consolidator    | `GPalConsolidator`   | `implementation(genesis("pal-consolidator"))`   | `-consolidator.kts`    | [Consolidator](/develop/server-capabilities/real-time-aggregation-consolidator/) / [Runtime configuration](/develop/server-capabilities/real-time-aggregation-consolidator/#runtime-configuration)                    |
 | Pipeline        | `GPalPipeline`       | `implementation(genesis("pal-datapipeline"))`   | `-pipelines.kts`       | [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/) / [Runtime configuration](/develop/server-capabilities/integrations/data-pipelines/#runtime-configuration)                                |
 | Streamer        | `GPalStreamer`       | `implementation(genesis("pal-streamer"))`       | `-streamer.kts`        | [Streamer](/develop/server-capabilities/integrations/streamer-apis/streamer/) / [Runtime configuration](/develop/server-capabilities/integrations/streamer-apis/streamer/#runtime-configuration)                      |
@@ -85,7 +85,7 @@ You can keep some definitions in script files and add others in compiled classes
 
 A `GENESIS_COMPACT_PROCESS` commonly bundles several GPAL types together — for example a Data Server and an Event Handler in one process, sharing one `<module>`/`<package>`/`<script>` set. Migrating gradually means one type in that process becomes compiled while the others stay script-based, which is a different situation from the single-type "mixing" above: it's not one type with both forms, it's one process with different types each fully in one form or the other.
 
-The `<module>` and `<package>` tags are each a comma-separated **union** — list whatever every type in the process still needs, not a fixed one-to-one pairing between the two lists. `<script>` narrows down to just the `.kts` files still backing a script-based type. `<language>pal</language>` stays as long as *anything* in the process is still script-based (it enables script compilation for the whole process), and is only dropped once every type in that process is compiled.
+The `<module>` and `<package>` tags are each a comma-separated **union** — list whatever every type in the process still needs, not a fixed one-to-one pairing between the two lists. `<script>` narrows down to just the `.kts` files still backing a script-based type. `<language>pal</language>` stays as long as *anything* in the process is still script-based (`genesisInstall` only merges processes that declare it into `GENESIS_COMPACT_PROCESS`), and is only dropped once every type in that process is compiled.
 
 Migrating a compact process's Data Server first, with its Event Handler still scripted, goes through three stages:
 
@@ -98,7 +98,7 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 <language>pal</language>
 ```
 
-**Intermediate — Data Server compiled, Event Handler still script-based:** the Data Server's PAL module and package are replaced with your app's own; the Event Handler's PAL module, package, and script file are untouched; `<language>` stays, because the Event Handler still needs it.
+**Intermediate — Data Server compiled, Event Handler still script-based:** the Data Server's PAL module and package are replaced with your app's own; the Event Handler's PAL module, package, and script file are untouched; `<language>pal</language>` stays, so `genesisInstall` still merges the process into `GENESIS_COMPACT_PROCESS`.
 
 ```xml
 <module>myapp,genesis-pal-eventhandler</module>
@@ -107,7 +107,7 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 <language>pal</language>
 ```
 
-**After — both compiled:** your app's module now covers every definition, so it's listed once; `<package>` unions both definition packages; `<script>` and `<language>` are dropped entirely, since nothing in the process is script-based any more.
+**After — both compiled:** your app's module now covers every definition, so it's listed once; `<package>` unions both definition packages; `<script>` and `<language>` are dropped entirely, since nothing in the process is script-based any more. With no PAL package left in `<package>`, `genesisInstall` no longer merges the process into `GENESIS_COMPACT_PROCESS`.
 
 ```xml
 <module>myapp</module>
@@ -116,14 +116,14 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 
 ## Runtime configuration
 
-When using **compiled definitions only**, the process definition uses your definition **package** (e.g. `my.app`) and your application's **module** (e.g. `position-app`). You do **not** set the `script` or `language` tags; dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically. For full details (including script-based and mixed setups), see [Processes](/develop/server-capabilities/runtime-configuration/processes/) and the runtime configuration section in each GPAL type's documentation (e.g. [Data Server](/develop/server-capabilities/real-time-queries-data-server/#runtime-configuration)).
+When using **compiled definitions only**, the process definition uses your definition **package** (e.g. `my.app`) and your application's **module** (e.g. `position-app`). You do **not** set the `script` or `language` tags; dependency injection discovers compiled GPAL definitions in the scanned package and instantiates the service automatically. For full details (including script-based and mixed setups), see [Processes](/develop/server-capabilities/runtime-configuration/processes/) and the runtime configuration section in each GPAL type's documentation (e.g. [Data Server](/develop/server-capabilities/query-data/real-time-queries-data-server/#runtime-configuration)).
 
 ## Testing without a script file
 
-`testImplementation(genesis("testsupport"))` should already be in your app module's `build.gradle.kts` by default — it's the only test dependency you need, covering [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) and every GPAL type's test client. There's no separate one per type. A compiled definition can be brought into a GenesisJunit test in either of two ways:
+`testImplementation(genesis("testsupport"))` should already be in your app module's `build.gradle.kts` by default — it's the only test dependency you need, covering [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#integration-testing) and every GPAL type's test client. There's no separate one per type. A compiled definition can be brought into a GenesisJunit test in either of two ways:
 
 - **`@PackageScan`** adds the definition class's whole package to the scan list; GenesisJunit discovers and constructs every scanned definition in it, exactly as a running process would.
-- **`@ProvidedInstance`** registers one exact class (or a pre-built instance) without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains.
+- **`@ProvidedType`** registers one exact class without scanning its package at all — a more surgical choice when you don't want to pull in everything else that package contains. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance.
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
@@ -141,23 +141,27 @@ class MyDataServerTest {
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.MyDataServer
 import org.junit.jupiter.api.Test
 
 @GenesisTest
 class MyDataServerTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val myDataServer = MyDataServer::class
 
     // inject a client and write tests as usual
 }
 ```
 
-`@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedInstance` accepts a `KClass` too (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type) or a pre-built instance if you'd rather construct it yourself. Either annotation is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedInstance` with `@TestScriptFile` to bring everything into the same test.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
 
-For full worked examples, including injecting a client and asserting behaviour, see the testing sections in each GPAL type's documentation (e.g. [Data Server testing](/develop/server-capabilities/real-time-queries-data-server/#testing-compiled-definitions), [Event Handler testing](/develop/server-capabilities/core-business-logic-event-handler/#testing-compiled-definitions)) and the [Testing API](/develop/server-capabilities/testing-api/).
+`@PackageScan` takes a `KClass`, not a package name string, so the class itself — not its location — is what your test declares; renaming or moving `MyDataServer` keeps the test in sync automatically. `@ProvidedType` registers one exact class (Guice constructs and injects it, same as `@PackageScan` would, just for one exact type), while `@ProvidedInstance` is for a pre-built instance you construct yourself. Either `@PackageScan` or `@ProvidedType` is enough on its own; you don't need both. If a process mixes script files and compiled definitions, combine `@PackageScan` and/or `@ProvidedType` with `@TestScriptFile` to bring everything into the same test.
+
+For full worked examples, including injecting a client and asserting behaviour, see the testing sections in each GPAL type's documentation (e.g. [Data Server testing](/develop/server-capabilities/query-data/real-time-queries-data-server/#testing-compiled-definitions), [Event Handler testing](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#testing-compiled-definitions)) and the [Testing API](/develop/server-capabilities/testing-api/gpal-java/).
 
 ## See also
 

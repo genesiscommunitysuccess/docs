@@ -125,6 +125,8 @@ This button synchronises any changes made to your project's [process configurati
 
 When **File → Settings → Use Genesis Sync** is enabled (the default), Genesis Start runs the sync task before it starts anything, but it does not reload the project overview. Genesis Start launches each process with the arguments held in the project overview, so changes to your process definitions (`*-processes.xml`) only reach the processes it launches after you click this button, or after you [start Genesis Start](#starting-genesis-start) again with the `genesisStart` Gradle task. Use it whenever you add, remove or change processes or scripts.
 
+When Genesis Start runs [headless](/develop/development-environment/genesis-start/headless-mode/), you change the same setting over REST with `PATCH /api/settings`, or skip the sync for a single request with `{"skipSync": true}`. See [Driving it over REST](/develop/development-environment/genesis-start/headless-mode/#driving-it-over-rest).
+
 ### Application Info
 
 ![Application Info](/img/genesis-start/genesis-start-app-info-button.png)

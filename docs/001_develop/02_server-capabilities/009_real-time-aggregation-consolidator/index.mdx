@@ -44,7 +44,7 @@ Consolidators are defined in the `*-consolidator.kts` files or in compiled Kotli
 Here is an example Consolidator file that defines two Consolidators used as a service:
 
 * CON_ORDER_FROM_TRADES.
-This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ORDER_ID``` and ```ORDER.ORDER_DATE``` fields (using [`groupBy`](#groupby) and [`build`](#build)). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator [`coldStart`](#coldstart).
+This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ID``` and ```ORDER.ORDER_DATE``` fields (using [`groupBy`](#groupby) and [`build`](#build)). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator [`coldStart`](#coldstart).
 
 * CON_ORDER_SUMMARY_FROM_ORDER. This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple [`groupBy`](#groupby) conditions based on your requirement.
 In this second Consolidator, we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different [`groupBy`](#groupby) conditions.
@@ -71,14 +71,14 @@ consolidators {
             }
         }
 
-        groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+        groupBy { Order.byIdDate(orderId, tradeDate) } into {
             build {
                 Order {
-                    orderId = groupId.orderId
-                    orderDate = groupId.tradeDate
+                    id = groupId.id
+                    orderDate = groupId.orderDate
                 }
             }
-            indexScan { ConsolidatorTrade.byOrderId(groupId.orderId) } // Need to recalculate certain functions
+            indexScan { ConsolidatorTrade.byOrderId(groupId.id) } // Need to recalculate certain functions
         }
     }
 
@@ -103,7 +103,7 @@ consolidators {
 val sideEnum = sharedField("SIDE", ENUM("BUY", "SELL"))
 
   table("ORDER", 1001) {
-    field(name = "ORDER_ID", type = INT)
+    field(name = "ID", type = INT)
     field(name = "ORDER_DATE", type = DATE).notNull()
     field(name = "TRADE_COUNT", type = INT)
     field(name = "TOTAL_QUANTITY", type = LONG)
@@ -131,7 +131,8 @@ val sideEnum = sharedField("SIDE", ENUM("BUY", "SELL"))
     field(name = "TRADE_ID", type = INT)
     field(name = "ORDER_ID", type = INT).notNull()
     field(name = "TRADE_DATE", type = DATE)
-    field(name = "QUANTITY", type = INT)
+    field(name = "QUANTITY", type = LONG)
+    field(name = "PRICE", type = DOUBLE)
     field(name = "COUNTERPARTY_ID", type = STRING).notNull()
     field(name = "SYMBOL", type = STRING).notNull()
     field(sideEnum)
@@ -150,7 +151,7 @@ The example below has a single consolidator, called `CONSOLIDATE_POSITIONS`.
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
 - The [`config`](#config) block contains Consolidator level configuration
-- The [`select`](#select) block to specify some calculations and assign to output fields
+- The [`select`](#select) block to specify some calculations and assign to output fields (optional)
 - The [`onCommit`](#oncommit) block to amend the output row
 - The [`groupBy`](#groupby) block groups by `INSTRUMENT_ID`
 
@@ -199,7 +200,7 @@ consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
         instrumentId
     } into {
         lookup {
-            Position.ByInstrumentId(groupId)
+            Position.byInstrumentId(groupId)
         }
         build {
             Position {
@@ -228,13 +229,13 @@ Effectively, that gives you three types of Consolidator object, which we shall i
 
 ```kotlin
 // consolidate database records:
-val order: Order? = tradeConsolidator.get(Trade.ById("A"))
-val orders: List<Order> = tradeConsolidator.getRange(Trade.ByOrderId("A"), 1).toList()
+val order: Order? = tradeConsolidator.get(Trade.byId("A"))
+val orders: List<Order> = tradeConsolidator.getRange(Trade.byOrderId("A"), 1).toList()
 // consolidate runtime instances:
 val order: Order? = tradeConsolidator.consolidate(trade)
 val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
 // what-if analysis, combine both database records and runtime instances:
-val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
+val result = tradeConsolidator.whatIf(Trade.byOrderId("2"), trade1, trade2)
 ```
 #### Three types of Consolidator object
 In practice, you can create three types of Consolidator object to cover different use cases:
@@ -484,7 +485,7 @@ The config block is available at both the file and Consolidator level with exact
 
 See sample configuration below with the default values.
 
-```
+```kotlin
 import global.genesis.pal.consolidator.definition.config.ConsistencyMode
 import global.genesis.pal.consolidator.definition.config.ConsolidationTransactionType
 import global.genesis.pal.consolidator.definition.config.LogLevel
@@ -495,7 +496,7 @@ consolidators {
     onNotFound = OnNotFound.BUILD
     batchingPeriod = 500
     ignoreIndexScan = false
-    defaultErrorHandling = ErrorHandling.FAIL
+    defaultErrorHandling = FAIL
     backPressure = 100
     logFunctions = false
     transactionType = ConsolidationTransactionType.DEFAULT
@@ -518,7 +519,7 @@ consolidators {
 | Property             | Description                                                                                                                                                                               | Supports Values                                                                                                                                                             | Default Value          |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
 | logLevel             | the default log level used when logging inside the Consolidator                                                                                                                           | TRACE, DEBUG, INFO, WARN, ERROR                                                                                                                                             | DEBUG                  |
-| onNotFound           | determines what to do if an output record is not found (see [build](#build))                                                                                                              | BUILD, WARN, LOG, FAIL                                                                                                                                                      | BUILD                  |
+| onNotFound           | determines what to do if an output record is not found (see [build](#build))                                                                                                              | BUILD (build and insert a new row with [build](#build); `build` can be omitted only when `groupBy` returns a unique index covering every non-nullable output field), WARN (log a warning and skip the group), LOG (log at the consolidator's `logLevel` and skip the group), FAIL (throw an error), IGNORE (skip the group without logging) | BUILD                  |
 | batchingPeriod       | the time in ms accumulating updates before writing to the database                                                                                                                        | Integer values                                                                                                                                                              | 500                    |
 | ignoreIndexScan      | disables index scans (see [indexScan](#indexscan))                                                                                                                                        | true, false                                                                                                                                                                 | false                  |
 | defaultErrorHandling | what to do if an exception is thrown during any calculation                                                                                                                               | LOG, WARN (produces a warning log), FAIL (crashes the process)                                                                                                              | FAIL                   |
@@ -527,16 +528,16 @@ consolidators {
 | transactionType      | determines the consolidation approach when writing to database.                                                                                                                           | DEFAULT (currently DATABASE), DATABASE (will use database transactions to handle delta changes), LOCAL (will use in-memory copies of consolidated records to apply changes) | DEFAULT                |
 | groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                             | Free text.                                                                                                                                                                  | No grouping by default |
 | tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
-| backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
+| backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/gpal-java/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
 | audit                | writes `_AUDIT` rows for inserts and modifications to an audited `output` table (see [audit](#audit)). Available from versions 8.15.44 and 10.0.0.                                         | true, false                                                                                                                                                                 | false                  |
-| consistencyMode      | INCREMENTAL applies each update to the aggregate as it arrives. EVENTUAL never applies updates incrementally: each one marks its group for a rebuild from the current source rows, which needs an [indexScan](#indexscan) on the source (a Consolidator without one is rejected at startup). Available from version 8.15.31. | INCREMENTAL, EVENTUAL | INCREMENTAL |
-| excludedEmitters     | process names whose updates this Consolidator drops; they are never applied to the aggregate. A warning listing them is logged at startup. Use an empty set to process updates from every process. `excludedEmitters("A", "B")` is shorthand for `excludedEmitters = setOf("A", "B")`. Available from version 8.15.36. | Set of process names | `setOf("PurgeTables")` (the Purger) |
+| consistencyMode      | INCREMENTAL applies each update to the aggregate as it arrives. EVENTUAL never applies updates incrementally: each one marks its group for a rebuild from the current source rows, which needs an [indexScan](#indexscan) on the source (a Consolidator without one is rejected at startup). | INCREMENTAL, EVENTUAL | INCREMENTAL |
+| excludedEmitters     | process names whose updates this Consolidator drops; they are never applied to the aggregate. A warning listing them is logged at startup. Use an empty set to process updates from every process. `excludedEmitters("A", "B")` is shorthand for `excludedEmitters = setOf("A", "B")`. | Set of process names | `setOf("PurgeTables")` (the Purger) |
 
 #### `audit`
 
 Available from versions 8.15.44 and 10.0.0.
 
-If the output table is an [audited table](/develop/server-capabilities/data-model/#audited-tables) (defined with `audit = details(...)`), you can make the Consolidator write a record to the output table's `_AUDIT` table every time it inserts or modifies a row. Auditing is off by default; set `audit = true` to turn it on.
+If the output table is an [audited table](/develop/server-capabilities/data-model/gpal-java/#audited-tables) (defined with `audit = details(...)`), you can make the Consolidator write a record to the output table's `_AUDIT` table every time it inserts or modifies a row. Auditing is off by default; set `audit = true` to turn it on.
 
 Both conditions must be met for audit records to be written:
 
@@ -634,6 +635,34 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
 ```
 
 ### `select`
+
+The `select` block is optional. A consolidator without one has no functions, but it still does two things:
+
+- When `onNotFound` is `BUILD`, it writes a new output row the first time it sees a group.
+- It runs your `onCommit` block once for each group it processes in a batch, including groups that already have an output row.
+
+This suits a consolidation that does all its work in `onCommit`, such as a calculation across related rows of the group: you don't need a placeholder `select` just to make it load. If there is no `onCommit` block either, an input whose output row already exists produces no write.
+
+For example, this is the `CON_ORDER_FROM_TRADES` consolidator from the top of the page, rewritten without a `select` block. It builds an `ORDER` row for each order and sets its fields in `onCommit`:
+
+```kotlin
+  consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+    groupBy { Order.byIdDate(orderId, tradeDate) } into {
+        build {
+            Order {
+                id = groupId.id
+                orderDate = groupId.orderDate
+            }
+        }
+    }
+
+    onCommit {
+        output.symbol = input.symbol
+        output.side = input.side
+        output.counterpartyId = input.counterpartyId
+    }
+  }
+```
 
 In the select block, you can specify functions based on the entity `input` values, and a target field in the `output` table. The example below show how it is possible to aggregate all the quantity fields for then input TRADE table into the POSITION table:
 
@@ -1035,8 +1064,10 @@ groupBy { group(allocationId, feeGroup) }
 ```
 - unique index entries on the output table (table only):
 ```kotlin
-groupBy { CommissionAndFeesSummary.ByAllocationId(allocationId, feeGroup) }
+groupBy { CommissionAndFeesSummary.byAllocationId(allocationId, feeGroup) }
 ```
+
+The index entity is generated from the table's key (for example, `ORDER_BY_ID` becomes `byId`); use the one that matches your table's key. For more information, see [Index entities](/develop/server-capabilities/data-access-apis/gpal-java/#index-entities).
 
 Using `tuple` and `group` in `groupBy` can later be interacted with in sub blocks such as lookup.
 
@@ -1089,7 +1120,7 @@ should be defined. In this block, you have access to the `groupId` property, as 
 Example:
 ```kotlin
 groupBy { tradeId } into {
-    lookup { Trade.ById(groupId) }
+    lookup { Trade.byId(groupId) }
 }
 ```
 
@@ -1098,16 +1129,28 @@ groupBy { tradeId } into {
 The `build` block is required to construct a new record in the output table (or simply a new object in on-demand consolidators), if the record in the output table could not be found.
 This new entity needs all non-nullable properties without a default value to be initialised at this stage.
 
+You only need a `build` block when [`onNotFound`](#config) is `BUILD`, which is the default. With any other `onNotFound` value, the consolidator never builds a new output row, so you can leave `build` out.
+
+If `onNotFound` is `BUILD` and there is no `build` block, the consolidator fails to load, with one exception: when `groupBy` returns a unique index of the output table that covers every non-nullable field of that table, the consolidator builds the new row itself and you can leave `build` out. This is the only case where `build` can be omitted under `BUILD`. The check runs after the whole `consolidator` block has been read, so a `config` block placed after `groupBy` still counts.
+
 Example:
 
 ```kotlin
-groupBy { Trade.ById(tradeId) } into {
+groupBy { Trade.byId(tradeId) } into {
     build {
         Trade {
             tradeId = groupId.tradeId
             feeAmount = input.feeAmount ?: 0
         }
     }
+}
+```
+
+For example, if the `Trade` table's primary key is `tradeId` and `tradeId` is the only non-nullable field, grouping by the primary key lets the consolidator build the row itself:
+
+```kotlin
+groupBy { Trade.byId(tradeId) } into {
+    // No build block needed: the consolidator builds the Trade row from the group ID
 }
 ```
 
@@ -1130,8 +1173,8 @@ tell the Consolidator how to do that.
 For example, if you are aggregating the total quantity value of `Trade` entities for a specific `Order` entity, your `indexScan` definition should be able to lookup all trades for that specific `Order`. See example below:
 
 ```kotlin
-groupBy { Order.ById(orderId) } into {
-    indexScan { Trade.ByOrderId(groupId.orderId) }
+groupBy { Order.byId(orderId) } into {
+    indexScan { Trade.byOrderId(groupId.orderId) }
 }
 ```
 
@@ -1314,7 +1357,7 @@ There are three ways to initiate cold start:
 You can test using **compiled definitions** (classes extending `GPalConsolidator`) by scanning the definition's package instead of loading a script file. In that case no script file or `scriptFileName` is required — see [Testing compiled definitions](#testing-compiled-definitions) below. The rest of this section uses a script-based definition with `scriptFileName`.
 
 :::info
-For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/gpal-java/#integration-testing).
 :::
 
 The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
@@ -1360,7 +1403,7 @@ consolidators {
             }
         }
 
-        groupBy { Order.ById(orderId) } into {
+        groupBy { Order.byId(orderId) } into {
             val start = DateTime(2022, 1, 1, 0, 0)
             build {
                 val id = groupId.orderId.toInt()
@@ -1410,7 +1453,7 @@ private fun trade(
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals(22.0*100, record?.totalNotional)
             }
         }
@@ -1427,7 +1470,7 @@ private fun trade(
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
             }
         }
@@ -1473,7 +1516,7 @@ fun `test nested consolidation`() = runBlocking {
 
 ### Testing compiled definitions
 
-The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedInstance`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
+The walkthrough above uses the legacy `AbstractGenesisTestSupport` API. On [**GenesisJunit**](/develop/server-capabilities/testing-api/gpal-java/#integration-testing) (GSF v8+), the current, non-legacy way to test a Consolidator is `@GenesisTest`, whether your Consolidator is script-based (`@TestScriptFile`) or a **compiled definition** — a class extending `GPalConsolidator` — brought in with `@ProvidedType`. Those annotations come from `testImplementation(genesis("testsupport"))` — see [Testing without a script file](/develop/server-capabilities/gpal-standards/migration-guide-script-to-compiled/#testing-without-a-script-file).
 
 Given this compiled Consolidator (the same configuration as the script example above):
 
@@ -1503,7 +1546,7 @@ class OrderFromTradesConsolidator : GPalConsolidator({
             }
         }
 
-        groupBy { Order.ById(orderId) } into {
+        groupBy { Order.byId(orderId) } into {
             val start = DateTime(2022, 1, 1, 0, 0)
             build {
                 val id = groupId.orderId.toInt()
@@ -1559,7 +1602,7 @@ class ConsolidatorTest {
 
         await untilAsserted {
             runBlocking {
-                val record = entityDb.get(Order.ById("1"))
+                val record = entityDb.get(Order.byId("1"))
                 assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
             }
         }
@@ -1567,21 +1610,25 @@ class ConsolidatorTest {
 }
 ```
 
-Or, to register just this one class without scanning its whole package, use `@ProvidedInstance` with a `KClass` reference instead:
+Or, to register just this one class without scanning its whole package, use `@ProvidedType` with a `KClass` reference instead:
 
 ```kotlin
 import global.genesis.testsupport.jupiter.GenesisTest
-import global.genesis.testsupport.jupiter.ProvidedInstance
+import global.genesis.testsupport.jupiter.ProvidedType
 import myapp.definition.OrderFromTradesConsolidator
 
 @GenesisTest
 class ConsolidatorTest {
 
-    @ProvidedInstance
+    @ProvidedType
     private val orderFromTradesConsolidator = OrderFromTradesConsolidator::class
 
     // ... same entityDb injection and test as above
 }
 ```
 
-`@PackageScan` and `@ProvidedInstance` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedInstance` registers only the exact class (or instance) you give it. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
+:::note
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
+:::
+
+`@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.

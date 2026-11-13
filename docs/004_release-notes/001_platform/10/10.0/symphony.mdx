@@ -1,0 +1,46 @@
+---
+title: '10.0 Symphony'
+sidebar_label: 'Symphony'
+sidebar_position: 8
+id: '10.0-symphony'
+---
+
+### Features
+
+* Persist displayName on Symphony notify routes
+
+### Fixes
+
+* `server` : Force H2 to the genesis-bom pinned version for every subproject
+* Disable reuseUpstream codegen for sibling dict-cache builds
+* Apply the test-retry plugin to subprojects so the retry block resolves
+* Configure test-retry plugin bounds in server
+* Exclude genesis-symphony-test-dictionary-cache from product manifest
+* Keep displayName and route settings on Symphony route updates
+
+### Dependency changes
+
+* Add JFrog dev-repo to Gradle configs to mitigate Maven Central throttling
+* Add genesisVersion consistency guard across gradle.properties files
+* Adopt global.genesis.settings.legacy so Kotlin tracks the platform
+* Bump Gradle wrapper from 9.6.1 to 9.7.1
+* Bump actions/checkout from 4 to 7
+* Bump com.jfrog.artifactory from 5.2.0 to 6.0.4
+* Bump gradle-wrapper from 9.6.1 to 9.7.1 in /server
+* Bump org.finos.symphony.bdk:symphony-bdk-bom from 3.2.1 to 3.3.14
+* Bump org.finos.symphony.bdk:symphony-bdk-bom from 3.3.14 to 3.3.15
+* Bump org.finos.symphony.bdk:symphony-bdk-bom from 3.3.15 to 3.5.1
+* Bump org.finos.symphony.bdk:symphony-bdk-bom from 3.5.1 to 3.6.0
+* Bump org.finos.symphony.bdk:symphony-bdk-bom from 3.6.0 to 3.6.1
+* Bump org.gradle.test-retry from 1.6.5 to 1.6.6
+* Bump org.jetbrains.kotlinx.kover from 0.9.10 to 0.9.11
+* Bump org.jetbrains.kotlinx.kover from 0.9.8 to 0.9.9
+* Bump org.jetbrains.kotlinx.kover from 0.9.9 to 0.9.10
+* Bump org.sonarqube from 7.3.0.8198 to 7.3.1.8318
+* Bump org.sonarqube from 7.3.1.8318 to 7.4.0.8496
+* Bump org.sonarqube from 7.4.0.8496 to 7.5.0.8588
+* Remove JFROG_USERNAME and JFROG_PASSWORD from workflow secrets
+
+### Patch releases
+
+There are currently no patch releases for this version

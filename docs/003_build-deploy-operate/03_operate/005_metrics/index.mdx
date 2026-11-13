@@ -18,7 +18,7 @@ The Genesis Platform provides metrics both on the framework and at the applicati
 
 Framework metrics are provided out of the box. Once these have been enabled, they provide base-line information. You can build on top of this to provide application-specific metrics.
 
-The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J) and OpenTelemetry Java Agent integration for enhanced observability and integration with monitoring tools like Prometheus.
+The platform supports multiple metrics collection methods including built-in reporters (Graphite, Datadog, SLF4J, Prometheus) and OpenTelemetry Java Agent integration for enhanced observability and integration with monitoring tools like Prometheus.
 
 Metrics allow in-depth monitoring of running applications and early detection of issues.
 
@@ -29,7 +29,11 @@ This helps early detection of problems and gives you invaluable context if an in
 
 ## Enabling metrics
 
-To enable metrics on your application, add the following settings to your [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
+To enable metrics on your application, add the following settings to your application's [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/). This file is found in the `cfg` directory of your application.
+
+:::warning
+Set these items in `genesis-system-definition.kts`, not in your application's `<product>-system-definition.kts` file. The platform sets `MetricsEnabled` to `false` by default, and a value in `<product>-system-definition.kts` cannot override it: the value from the `genesis` product is selected and the value in `<product>-system-definition.kts` is ignored. The platform logs this as `Duplicate System property MetricsEnabled; selected value false from product genesis`.
+:::
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
@@ -43,11 +47,15 @@ item(name = "MetricsDbCacheEnabled", value = "false")
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
+| MetricsJvmEnabled              | `true`  | enables JVM memory, garbage collection and thread metrics; `false`, `no`, `off` or `n` turns them off |
 | MetricsReportType              | n/a     | a comma-separated list of metrics reporters (not required when using OpenTelemetry) |
 | MetricsProcessorStatsEnabled   | `false` | enables additional process metrics          |
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
 | MetricsExecutorEnabled         | `true`  | enables executor service metrics (thread pools, connection pools) |
 | MetricsDbCacheEnabled          | `false` | enables database cache metrics (Caffeine cache statistics) |
+| MetricsCriteriaOverlapEnabled  | `false` | enables [Data Server criteria metrics](#data-server-criteria-metrics) |
+
+After you change `genesis-system-definition.kts`, run `genesisSync` (or rebuild and run `genesisInstall`), then restart the processes for the change to take effect.
 
 ## Framework metrics
 
@@ -74,6 +82,10 @@ When metrics are enabled, the platform automatically collects JVM memory metrics
   - Compressed class space (used, committed, max)
 
 These metrics help monitor memory consumption patterns, identify potential memory leaks, and optimize heap sizing.
+
+:::note
+JVM memory, garbage collection and thread metrics are collected by default. To turn all three off, set `MetricsJvmEnabled` to `false`.
+:::
 
 ### JVM Garbage Collection Metrics
 
@@ -152,6 +164,54 @@ When `MetricsDbCacheEnabled` is set to `true`, the platform collects metrics for
 
 Cache metrics are automatically registered when the cache is created and provide insight into cache performance and effectiveness.
 
+### Data server criteria metrics
+
+Set `MetricsCriteriaOverlapEnabled` to `true` (with `MetricsEnabled` also `true`) and each Data Server query reports two gauges that show how much its subscribers' criteria overlap. Both gauges carry the query name in the `dataserver` tag.
+
+The setting is off by default because it costs extra work at logon: the Data Server parses each new subscription's criteria a second time. The counts are approximate.
+
+| Metric                          | Explanation                                                          |
+|:--------------------------------|:---------------------------------------------------------------------|
+| dataserver_distinct_criteria    | The number of distinct criteria held by the subscribers of a query   |
+| dataserver_distinct_comparisons | The number of distinct comparisons within those criteria             |
+
+The simplest way to hold subscriptions open long enough to observe the overlap is over a WebSocket connection to the Genesis router. A REST `DATA_LOGON` subscription is counted only until the router's polling timeout (60 seconds by default) expires it.
+
+To see the gauges change, hold two subscriptions open on the same query.
+
+If cookie authentication is enabled in `genesis-router.kts` (the router script shipped with the product enables it), the WebSocket connection is only possible after a successful HTTP login, because the session is carried in a cookie; see [Cookie authentication](/develop/server-capabilities/runtime-configuration/genesis-router/#cookie-authentication). In that case, start with steps 1 and 2. Otherwise, open the WebSocket connection, log in over it, and continue from step 3.
+
+1. Log in over HTTP and keep the session cookie that the response sets.
+2. Open a WebSocket connection, sending that cookie with the upgrade request.
+3. Send a `DATA_LOGON` for the query, using a distinct `SOURCE_REF`.
+4. Send a second `DATA_LOGON` for the same query, with a different `SOURCE_REF`.
+
+```
+{
+    "MESSAGE_TYPE" : "DATA_LOGON",
+    "SOURCE_REF" : "123",
+    "DETAILS" : {
+        "DATASOURCE_NAME": "ALL_TRADES",
+        "CRITERIA_MATCH": "QUANTITY > 200"
+    }
+}
+```
+
+Leave both subscriptions open while you read the gauges. See [`DATA_LOGON`](/develop/server-capabilities/query-data/real-time-queries-data-server/#data_logon) for the full set of options.
+
+### Data pipeline metrics
+
+Every data pipeline publishes its [record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters) automatically, as a counter metric called `pipeline_records`. This covers the `sent_records` counter written by `dbSink()` and `txDbSink()`, and any counters your pipeline adds. On top of the standard tags, the metric has two tags:
+
+| Tag      | Explanation              |
+|:---------|:-------------------------|
+| pipeline | the name of the pipeline |
+| counter  | the name of the counter  |
+
+Tag values are lowercased, and any character other than a letter, a digit, `_` or `.` is replaced with `_`. For example, a pipeline called `MyPipeline` is tagged `pipeline=mypipeline`.
+
+The metric is only exported when `MetricsEnabled` is `true` and `MetricsReportType` names at least one [reporter](#metric-reporters), or when the [OpenTelemetry](#opentelemetry) Java agent is attached.
+
 ## Metric names
 
 The framework provides an abstraction on top of the reporters. A single interface is used, regardless of how the metrics are reported. 
@@ -182,7 +242,8 @@ The available built-in reporters are:
 |:---------|:--------------------------------------------------------------------|
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
-| SLF4J    | Publishes metrics to the services' log file                         |
+| SLF4J    | Publishes metrics to the services' metrics log file (`<PROCESS_NAME>.log.metrics` by default) |
+| PROMETHEUS | Exposes metrics for a [Prometheus](https://prometheus.io/) server to scrape |
 
 ### Graphite
 
@@ -248,7 +309,9 @@ item(name = "MetricsDatadogUri", value = "https://api.datadoghq.com")
 
 ### SLF4J
 
-Metrics can be reported straight to the log file.
+Metrics can be reported straight to a metrics log file.
+
+With the default log4j2 configuration, these metrics are not written to the main process log. The `global.genesis.metrics` logger has `additivity="false"` and writes to the `MetricsRollingFile` appender, so the metrics go to a separate log beside it, `${GENESIS_HOME}/runtime/logs/<PROCESS_NAME>.log.metrics`. That logger is set to `debug` by default, so the reporter's default `DEBUG` level is visible with no change to your logging configuration. See the log4j2 sample on the [Logging](/build-deploy-operate/operate/logging/) page for the `MetricsRollingFile` appender.
 
 This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
 
@@ -264,7 +327,24 @@ item(name = "Slf4jReporterLogInactive", value = "true")
 |:--------------------------|:--------|:-----------------------------------------------------------------|
 | MetricsReportIntervalSecs | `60`    | interval between metrics log messages                            |
 | Slf4jReporterLoggingLevel | `DEBUG` | the log level to use                                             |
-| Slf4jReporterLogInactive  | `true`  | when set to `true`, metrics with a zero `0` will not be reported |
+| Slf4jReporterLogInactive  | `false` | When `true`, meters with no activity (zero counts) are also logged; when `false` they are skipped. Gauges are always logged. |
+
+Each metric is logged on one line: the metric name, its tags in braces, then the value. For example, a Data Server gauge looks like this:
+
+```text
+dataserver_distinct_criteria{dataserver=all_trades,groupName=trading,hostname=localhost,processName=trading_dataserver} value=2
+```
+
+### Prometheus
+
+The `PROMETHEUS` reporter keeps metrics in memory so that a Prometheus server can scrape them from the process's `/prometheus` endpoint. To use it, add it to `MetricsReportType`, alone or alongside other reporters:
+
+```kotlin
+item(name = "MetricsEnabled", value = "true")
+item(name = "MetricsReportType", value = "PROMETHEUS") // or, for example, "GRAPHITE,PROMETHEUS"
+```
+
+The `/prometheus` endpoint is served on the process's own port, and only by processes that use the `WEBSOCKET` messaging channel. On a process that uses the default `TCP` channel there is no endpoint, so nothing can read the metrics the reporter collects. See [process health endpoints](/build-deploy-operate/deploy/hosting-infrastructure/containers/#process-health-endpoints) for how to set the channel and what the endpoints return.
 
 ## OpenTelemetry
 

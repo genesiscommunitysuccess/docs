@@ -1,0 +1,899 @@
+---
+title: 'Application core'
+sidebar_label: 'Application core'
+id: server-spring-core
+keywords: [spring, guice, dependency injection, propertysource, authentication]
+tags:
+- spring
+- guice
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+`genesis-spring-boot-starter` is the foundation module for building a Genesis process as a **Spring
+Boot** application instead of a GPAL `.kts`-scripted, Guice-wired one. It does not replace the
+Guice runtime — it boots a real Genesis Guice `Injector` underneath the Spring context and bridges
+the two together, so Spring idioms such as `@Autowired`, `@RestController` and
+`@ConfigurationProperties` can be used in a process that is still, underneath, a genuine Genesis
+process participating in the same cluster.
+
+Every other Spring-flavoured Genesis module — annotation-driven event handling, JPA data access,
+and their test tooling — builds on top of this starter. See also the existing
+[Guice-based dependency injection](/develop/server-capabilities/custom-components) used elsewhere
+in Genesis.
+
+## Overview
+
+If you want to write a Genesis process using ordinary Spring idioms — dependency injection via
+`@Autowired`, JPA repositories, `@RestController` HTTP endpoints, Spring's configuration-properties
+binding — rather than the GPAL DSL, this starter is the entry point. It does three things, each
+independently useful:
+
+1. **Makes Genesis singletons visible to Spring.** Every Guice-bound singleton the process knows
+   about is copied into the Spring `BeanFactory` as a manual singleton. On top of that, an
+   `@Autowired` field or constructor parameter of any `global.genesis.*` type resolves straight
+   from Guice even if it was never explicitly bridged as a named bean — Spring's own resolution
+   (including `@Primary`) always wins first when it can resolve the type unaided. In practice, you
+   can inject `ServiceRegistry`, `UserSessionCache`, or any other Genesis platform singleton
+   straight into a `@Service` or `@RestController` with no extra configuration.
+2. **Makes Genesis system-definition values visible to Spring configuration.** Any value already
+   defined in Genesis system-definition (`genesis-system-definition.kts`, `.env`, etc.) becomes readable
+   through `application.yaml`, `@Value`, or `@ConfigurationProperties` without duplicating it into
+   Spring's own config files.
+3. **Puts the app's HTTP surface on the network safely.** The starter publishes the app's router
+   prefix and port, so `GENESIS_ROUTER` can reverse-proxy requests straight to the embedded Tomcat
+   under that prefix, gateway-style — no separate load balancer or port to manage. In
+   [external transport mode](#external-transport-mode), Tomcat also serves the Genesis protocol, so
+   the process has a single web server. A router-proxied request reaches a Spring controller *before* the router's own
+   authentication logic runs, so this starter also installs its own authentication layer — see
+   [Session-token authentication](#session-token-authentication) below.
+
+This starter does not give you JPA entities, repositories, or database access — see
+[Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — and it does not give you annotation-driven Genesis event
+handlers — see [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring). A Genesis application can
+freely mix GPAL-scripted processes and Spring Boot processes in the same cluster, since both
+ultimately register with the same `ServiceRegistry`/`MetaDataRegistry` and router.
+
+Security here is deliberately narrow: it authenticates (resolves *who* is calling); it does not
+authorize beyond Spring Security's standard `@PreAuthorize`/`@EnableMethodSecurity` support, which
+stays available regardless of whether an app keeps or replaces the Genesis security chain.
+
+If your process has no HTTP surface and needs no Spring idioms, plain GPAL is simpler — this
+starter's value is specifically the Spring/JPA ecosystem interop and the deny-by-default HTTP
+authentication it provides for a servlet web app.
+
+## Set-up
+
+Apply the [Genesis Spring Boot plugin](/build-deploy-operate/build/spring-boot-plugin) and add the
+starter. The plugin does not apply the Spring Boot Gradle plugin; the starter brings Spring Boot's
+dependency versions with it as a platform, so you don't need to pin Spring Boot versions yourself:
+
+```kotlin
+plugins {
+    id("global.genesis.spring")
+}
+
+dependencies {
+    implementation("global.genesis:genesis-spring-boot-starter")
+}
+```
+
+The starter already declares Spring Web, Spring Security, and Jackson's Kotlin module as `api`
+dependencies, so they're visible to a consumer without redeclaration. **Spring Security is a hard
+dependency, not opt-in** — every Genesis Spring web app is authenticated by default (see
+[Session-token authentication](#session-token-authentication)).
+
+Your Spring Boot application's entry-point class must also carry `@GenesisApplication` alongside
+`@SpringBootApplication` — this is what actually boots the class as a Genesis process and wires in
+the Guice `Injector` bridge described above. See
+[Getting Started with Spring: Step 5](/develop/development-environment/getting-started-with-spring#step-5-implement-the-spring-application) for a
+complete example.
+
+:::note
+Genesis Spring integration only supports **Logback** for logging, not the Log4j2 backend used by
+GPAL-scripted processes. Switching requires three changes — `backend = LOGBACK`, a `logback.xml`
+config, and the `LogFramework`/`LogFrameworkConfig` system-definition keys — see
+[Getting Started with Spring: Step 3](/develop/development-environment/getting-started-with-spring#step-3-switch-logging-to-logback) for the details.
+:::
+
+Your application still needs a normal Genesis process environment — system definitions,
+`GENESIS_HOME`, dictionary, and cluster configuration all need to be in place, because this is a
+real Genesis process under the hood, not a standalone Spring app. Nothing extra is required for the
+HTTP/security layer beyond what Spring Boot itself needs; the starter's autoconfiguration installs
+its own security chain automatically for any servlet web application.
+
+Set `spring.application.name`, or an explicit `server.servlet.context-path`, so the app is exposed
+through `GENESIS_ROUTER`:
+
+:::note
+Without either `spring.application.name` or an explicit `server.servlet.context-path`, the app
+still runs and serves requests directly on its embedded port, but is never registered with
+`GENESIS_ROUTER` — a startup log line calls this out, but it's easy to miss.
+:::
+
+Set this in `src/main/resources/application.yaml`, following the standard Spring Boot convention:
+
+```yaml
+spring:
+  application:
+    name: my-spring-app
+```
+
+## Configuration options
+
+### BeanFactory bridging
+
+Every Guice-bound singleton the Genesis process knows about is registered into the Spring
+`BeanFactory` as a manual singleton, keyed by its Guice binding name (falling back to the canonical
+class name). Two things are worth knowing:
+
+- **Duplicate binding names.** If several distinct Guice singletons share the same effective name,
+  each is registered separately under a suffixed name (`<name>_<identityHashCode>`) and a warning
+  is logged, because a bean registered like this can't be reliably injected *by name* — inject by
+  type instead. A specific warning can be silenced with:
+
+  ```yaml
+  genesis:
+    spring:
+      suppress-duplicate-bean-warnings:
+        - myDuplicatedBindingName
+  ```
+
+- **Type-based fallback beyond the bridged beans.** `@Autowired`/constructor injection resolves
+  *any* `global.genesis.*`-packaged type from Guice, even one never explicitly bridged as a named
+  singleton. Spring's own resolution always wins first: a single matching Spring bean, or several
+  disambiguated by a unique `@Primary`, is used before Guice is even consulted — so a
+  `@Bean @Primary` override of something Guice also provides works as expected. A
+  `@Qualifier`-annotated injection point resolves by Guice binding name instead, which also
+  correctly reaches beans that got a suffixed duplicate name:
+
+  ```kotlin
+  @Qualifier("myDuplicatedBindingName") private val service: MyDuplicatedBinding
+  ```
+
+Injecting a Genesis platform singleton (`UserSessionCache`) into a plain `@Service` needs no `@Bean`
+declared anywhere:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.session.UserSessionCache
+import org.springframework.stereotype.Service
+
+@Service
+class SessionAuditService(
+    private val userSessionCache: UserSessionCache,
+) {
+    fun isLiveInCache(token: String): Boolean = userSessionCache.userLoggedIn(token) != null
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.session.UserSessionCache;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SessionAuditService {
+    private final UserSessionCache userSessionCache;
+
+    public SessionAuditService(UserSessionCache userSessionCache) {
+        this.userSessionCache = userSessionCache;
+    }
+
+    public boolean isLiveInCache(String token) {
+        return userSessionCache.userLoggedIn(token) != null;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+Only types under `global.genesis.*` resolve through this fallback. Injecting a third-party or
+app-defined type that happens to be Guice-bound, but isn't under `global.genesis.*`, needs an
+explicit Spring `@Bean` instead.
+:::
+
+### System definitions as a Spring PropertySource
+
+Genesis system definitions are exposed as a Spring `PropertySource` named `"genesis"`, added at
+**low priority**. That means:
+
+- Any Genesis system-definition value is readable via `@Value("${my.system.def.key}")` or
+  `@ConfigurationProperties`, without copying it into `application.yaml`.
+- Because it's low priority, an explicit Spring config source (`application.yaml`, environment
+  variable, system property) for the same key always wins over the Genesis-sourced value. Treat it
+  as a fallback layer, not a way to override normal Spring config.
+
+For example, with a Genesis system-definition key `APP_GREETING` defined somewhere in the process's
+[system definitions](/develop/server-capabilities/runtime-configuration/system-definition):
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
+
+@Component
+class GreetingService(
+    @Value("\${APP_GREETING:hello}") private val greeting: String,
+) {
+    fun greet(name: String): String = "$greeting, $name"
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class GreetingService {
+    private final String greeting;
+
+    public GreetingService(@Value("${APP_GREETING:hello}") String greeting) {
+        this.greeting = greeting;
+    }
+
+    public String greet(String name) {
+        return greeting + ", " + name;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`@ConfigurationProperties` binding works the same way — Spring's relaxed binding treats
+`app.greeting` and `APP_GREETING` as the same key, so an existing `AppProperties(greeting: String)`
+bound to prefix `app` is satisfied by the Genesis-sourced value once nothing higher-priority
+supplies it first.
+
+:::note
+A `@GenesisSpringTest` does not read your project's real system-definition files by default, so a
+`@Value`-bound property like `APP_GREETING` above resolves to its fallback in tests unless you
+supply it another way. Use `@SysDefOverwrite` to provide the value directly in the test, or see
+[`enableAppConfigInTests`](/develop/server-capabilities/testing-api/gpal-java#system-definitions-in-tests) to
+opt the test into reading the real system-definition files instead.
+:::
+
+### Session-token authentication
+
+Because a router-proxied request reaches a Spring controller *before* the router's own
+authentication logic runs (the proxy simply forwards headers verbatim), this starter installs its
+own, independent, **deny-by-default** authentication layer. It reads the same
+`SESSION_AUTH_TOKEN` header the rest of Genesis uses (the hyphenated `SESSION-AUTH-TOKEN` spelling
+is also accepted, since some proxies drop headers containing underscores) and resolves it through
+`OnDemandUserSessionCache`, which reads a session from `USER_SESSION` the first time its token is
+seen and caches it, as the router does (see
+[Auth tokens](/develop/server-capabilities/access-control/authentication/#auth-tokens)). An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
+
+This layer is an authorisation filter: when it sees a `SESSION_AUTH_TOKEN` (or `SESSION-AUTH-TOKEN`)
+header on the incoming request, it resolves the token against the session store and populates the
+request `Principal` with the caller's Genesis username, which is what the `whoami` example below
+reads back via `principal.name`. If neither header is present, or the header doesn't resolve to a
+live session, the request is rejected before it reaches a controller.
+
+For how a caller obtains a `SESSION_AUTH_TOKEN` in the first place, see
+[`EVENT_LOGIN_AUTH`](/develop/server-capabilities/access-control/authentication/#event_login_auth).
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.springboot.annotation.GenesisAnonymous
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
+
+@RestController
+class SecureController {
+    // No annotation needed: every Genesis Spring web app authenticates by default.
+    @GetMapping("/secure")
+    fun secure(): String = "secure"
+
+    // The authenticated caller's Genesis username is available as the request Principal.
+    @GetMapping("/whoami")
+    fun whoami(principal: Principal): String = principal.name
+}
+
+@RestController
+class PublicController {
+    // Opts this one mapping out of authentication.
+    @GenesisAnonymous
+    @GetMapping("/public/ping")
+    fun ping(): String = "pong"
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.springboot.annotation.GenesisAnonymous;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
+
+@RestController
+public class SecureController {
+    // No annotation needed: every Genesis Spring web app authenticates by default.
+    @GetMapping("/secure")
+    public String secure() {
+        return "secure";
+    }
+
+    // The authenticated caller's Genesis username is available as the request Principal.
+    @GetMapping("/whoami")
+    public String whoami(Principal principal) {
+        return principal.getName();
+    }
+}
+```
+
+```java
+package com.example.app;
+
+import global.genesis.springboot.annotation.GenesisAnonymous;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class PublicController {
+    // Opts this one mapping out of authentication.
+    @GenesisAnonymous
+    @GetMapping("/public/ping")
+    public String ping() {
+        return "pong";
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+With `spring.application.name=my-app` set (or an explicit `server.servlet.context-path`), this app
+is authenticated on every request except `/public/ping` and the actuator health group, and exposed
+to `GENESIS_ROUTER` under `/my-app/**`:
+
+| Request | Result | Why |
+|---|---|---|
+| `GET /secure` with no `SESSION_AUTH_TOKEN` header | `401` | Deny-by-default: no token, no session |
+| `GET /secure` with a token for an unknown/expired session | `401` | Token resolves to no live session |
+| `GET /secure` with a valid token | `200`, body `secure` | Token resolves to a live session |
+| `GET /whoami` with a valid token | `200`, body is the Genesis username | Resolved identity is published as the request `Principal` |
+| `GET /public/ping` with no token | `200`, body `pong` | `@GenesisAnonymous` opts this mapping out |
+| `GET /actuator/health` with no token | `200` | Actuator health is carved out automatically (if the app includes `spring-boot-starter-actuator`; the starter doesn't add it, and it needs more setup: see [Before relying on router proxying](#before-relying-on-router-proxying)); the rest of the actuator tree is not |
+
+To fully replace this security chain, supply your own `SecurityFilterChain` bean — the Genesis
+chain backs off automatically when one is present, and `@PreAuthorize`/`@EnableMethodSecurity`
+keeps working regardless. Configuration key `genesis.springboot.security.enabled` (default `true`)
+withdraws the Genesis chain, but does **not**, on its own, make the app unauthenticated:
+
+:::caution
+Setting `genesis.springboot.security.enabled=false` withdraws the Genesis security chain, but
+Spring Boot's own default security auto-configuration then installs its own chain instead — the app
+ends up demanding HTTP Basic against a password generated fresh at every startup and printed to the
+console. If you want an open app, supply your own permit-all `SecurityFilterChain` bean rather than
+relying on this setting alone.
+:::
+
+An anonymous mapping whose pattern (a variable segment or wildcard) would also match a different,
+unannotated, guarded handler fails application startup on purpose — a `permitAll` rule is matched
+by pattern, not by which handler actually serves the request, so an ambiguous overlap is refused
+rather than silently under- or over-exposing an endpoint. The startup error names both offending
+mappings; narrow the anonymous mapping, or annotate the sibling too, to resolve it. A mapping
+narrowed by `params`, `headers`, `consumes`, or `produces` can't be expressed as a plain permit-all
+rule either, and fails the same way — restructure the mapping, or drop the affected condition.
+
+To exercise this from a test, see [Testing an HTTP endpoint](/develop/server-capabilities/testing-api/spring#testing-an-http-endpoint).
+
+### Router proxying
+
+Every `@RestController` endpoint is also reachable from outside the cluster through
+`GENESIS_ROUTER`, which proxies external traffic straight through to the app. How the app serves
+that traffic depends on its transport mode, set by `genesis.spring.external-transport`:
+
+- **External transport mode** (`true`): Spring's embedded Tomcat is the process's only web server.
+  It serves the Genesis WebSocket protocol, the Genesis HTTP endpoints and your controllers, all on
+  the process's service-definition port. The `global.genesis.spring` Gradle plugin generates that
+  process's service-definition entry for you: the port is `portOffset` (default `11050`) plus the
+  `port` set on `@GenesisApplication`, or the process's index when none is set. The Application view
+  shows the port. See [Service definitions](/develop/server-capabilities/runtime-configuration/service-definition/).
+- **Native mode** (`false`, the default): the process runs two web servers. Genesis's own Netty
+  listener is on the service-definition port, and Spring's embedded Tomcat is on a port of its own.
+
+Use external transport mode for Spring processes. Spring Boot brings its own embedded web server,
+and so does Genesis; running both in one process means two listeners, two ports and two sets of
+web-server and TLS configuration to keep apart. External transport mode removes the second one.
+It is meant only for Spring processes. Native mode stays the default so that existing apps are
+unchanged until you switch them.
+
+#### Enabling the router proxy
+
+Whichever mode the app uses, whoever owns the router's service definition needs the proxy switch
+enabled once, cluster-wide:
+
+```kotlin
+// *-router.kts
+httpProxyEnabled = true
+```
+
+There's no per-app registration and no port to configure on the router: the app publishes its
+prefix and port to the cluster at boot, and the router picks them up from there. The app logs the
+prefix it was published under:
+
+```text
+Exposing Spring HTTP app at prefix '/orders-app/**' through GENESIS_ROUTER (embedded port 9000)
+```
+
+The router authenticates none of this traffic. When cookie authentication is on, it copies the
+session cookie into the `SESSION_AUTH_TOKEN` header before forwarding; a `SESSION_AUTH_TOKEN` header
+the caller sent is forwarded as-is. The app authenticates the request itself — see
+[Session-token authentication](#session-token-authentication) above.
+
+:::warning
+Turning on `httpProxyEnabled` also stops the router loading `*-web-handler.kts` files. Any
+web-handler script in the application must be loaded by a process on the WebSocket channel
+instead — list it in that process's `script` entry in `processes.xml` (see
+[Custom endpoints on a process](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process))
+— or its endpoints disappear without an error. See
+[HTTP proxy](/develop/server-capabilities/runtime-configuration/genesis-router/#http-proxy) on the
+router page.
+
+A Spring process lists its web handler in the `scriptFiles` of `@GenesisApplication`. The Gradle
+plugin writes that list into the `<script>` entry of the generated `processes.xml`:
+
+```kotlin
+@GenesisApplication(scriptFiles = ["orders-app-web-handler.kts"])
+class OrdersApplication
+```
+
+The script is looked up in `$GENESIS_HOME/site-specific/scripts/`, in the product's `scripts/`
+directory, and on the classpath (as `scripts/<name>` or `<name>`). Web handler scripts load only on the WebSocket channel. External transport mode always uses it; in native mode, the process's network configuration must select the WebSocket channel, or the script is ignored without an error.
+:::
+
+#### External transport mode
+
+```properties
+# application.properties
+genesis.spring.external-transport=true
+genesis.spring.router-path-prefix=orders-app
+```
+
+The app's controllers stay at the root of the process port. The prefix exists only at the router:
+the router strips it from the request before forwarding, and puts it back on a `Location` response
+header and on a cookie's `Path` on the way out, so redirects and cookies still work for the caller.
+
+```kotlin
+@RestController
+class OrderController(private val orders: OrderService) {
+    @GetMapping("/orders")          fun list() = orders.all()
+    @GetMapping("/orders/{id}")     fun get(@PathVariable id: String) = orders.view(id)
+}
+```
+
+| You call directly (process port) | You call through the router |
+|---|---|
+| `http://<app-host>:<process-port>/orders` | `http://<router-host>:<router-port>/orders-app/orders` |
+| `http://<app-host>:<process-port>/orders/42` | `http://<router-host>:<router-port>/orders-app/orders/42` |
+
+`genesis.spring.router-path-prefix` can have more than one segment (`team/orders-app`); leading and
+trailing slashes are ignored. If you don't set it, the app is routed under its process name, and a
+warning is logged at startup. Set it anyway: the prefix is part of the URL your callers depend on,
+and with the fallback, renaming the process moves their endpoints.
+
+Only your own controllers are reachable through the prefix. A request for a Genesis path under it,
+such as `/orders-app/event-trade-insert`, gets `404`.
+
+**What external transport mode requires**
+
+- **The WebSocket channel.** The process serves the Genesis WebSocket protocol only; the raw TCP
+  (MsgPack) channel isn't available, and `tls.authorization` isn't applied. The starter sets this for
+  you; no `*-processes.xml` change is needed. Platform clients that use service discovery switch to
+  WebSocket automatically. A hand-rolled TCP client reaches an HTTP server (Tomcat) on the same port
+  and fails, with nothing logged by Genesis, so move it to WebSocket.
+- **Genesis TLS, not Spring TLS.** The port is served with the process's [Genesis TLS
+  configuration](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/).
+  Every TLS mode in use must have a `tls.identity`.
+- **Neutral endpoint types.** A Genesis HTTP endpoint can't declare a Netty type. Use `File`,
+  `Path`, `InputStream` or `FileDownload` instead of `ChunkedFile` and `ChunkedInput`, `ByteArray`
+  instead of `ByteBuf`, and the request body instead of `FullHttpRequest`. In `endpoint<In, Out>`,
+  `In` is the type of the request body, not of the request. Rewrite `endpoint<FullHttpRequest, String>`
+  as `endpoint<String, String>` and read `body`, or as `endpoint<Unit, String>` and read
+  `request.body.asInputStream()`. An endpoint declared like either of these in a
+  `*-web-handler.kts` file is refused:
+
+  ```kotlin
+  webHandlers { endpoint<FullHttpRequest, String>(POST, "raw") { /* ... */ } }
+  webHandlers { endpoint<ChunkedFile>(GET, "download") { /* ... */ } }
+  ```
+
+  The process fails to start with an error such as:
+
+  ```text
+  Endpoint GET download declares io.netty.handler.stream.ChunkedFile. Netty request and response types are not supported in external transport mode. Declare a transport-neutral type instead.
+  ```
+
+  The web-handler script must itself be listed in `scriptFiles`; see the warning under
+  [Enabling the router proxy](#enabling-the-router-proxy).
+
+  The error doesn't name the replacement type. For a response, declare `File`, `Path` or
+  `ByteArray` instead; see the return types table on the
+  [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/#return-types) page.
+
+  `ByteArray` can't read a multipart request body, in either transport mode. Genesis throws
+  `BodyDecodedAsPartsException: This body was decoded into multipart parts, so it has no byte stream to read; take it as parts() or declare the endpoint's request type as a multipart body`,
+  because the body has already been split into parts. Declare `MultipartHttpBody` as the request
+  type for an upload instead.
+
+Startup is refused if any of these is broken, and also if `server.servlet.context-path` is set
+(use `genesis.spring.router-path-prefix`), if Spring TLS (`server.ssl`) is enabled (use Genesis TLS),
+or if `server.port` is set to anything other than the service-definition port or `0`.
+
+**Settings**
+
+| Setting | Default | Effect |
+|---|---|---|
+| `genesis.spring.router-path-prefix` (`application.properties`) | The process name | Prefix the app's controllers are routed under at `GENESIS_ROUTER`. |
+| `genesis.spring.web-socket-send-time-limit-ms` (`application.properties`) | `60000` | A WebSocket session whose current send has been in flight longer than this is closed. |
+| `genesis.spring.web-socket-send-buffer-limit-bytes` (`application.properties`) | `0` (no limit) | A WebSocket session with more than this many bytes queued is closed. |
+| `genesis.spring.suppress-multipart-config-warnings` (`application.properties`) | None | Multipart endpoint paths, or `*`, whose unsupported settings aren't logged at startup. |
+| `TransportReadyTimeoutMs` (system definition) | `120000` | How long the process waits for Tomcat to start after registering. If it runs out, the process goes to ERROR. |
+
+`genesis.spring.suppress-multipart-config-warnings` takes endpoint paths or `*` (every endpoint). It
+silences the startup warnings that say a multipart endpoint's settings don't carry over to Tomcat:
+
+- The servlet container has no multipart configuration. The warning reads: "The servlet container has
+  no multipart configuration, so uploads to `<METHOD> <path>`, … will fail. Set
+  spring.servlet.multipart.enabled=true, or suppress this with
+  genesis.spring.suppress-multipart-config-warnings."
+- An endpoint with `useDisk=false`: "`<METHOD> <path>` asks for uploads to be kept in memory
+  (useDisk=false), which the servlet container has no equivalent of. It spills them to disk past
+  spring.servlet.multipart.file-size-threshold, `<n>` bytes here."
+- An endpoint with a `minSize`: "`<METHOD> <path>` sets a `<minSize>` byte memory threshold (minSize);
+  the servlet container uses `<n>` instead (spring.servlet.multipart.file-size-threshold)."
+- An endpoint with a `baseDir`: "`<METHOD> <path>` sets baseDir=`<baseDir>`, which the servlet
+  container does not read; uploads land in `<location>` (spring.servlet.multipart.location)."
+
+They are logged at WARN by `GenesisServletTransportConfiguration`.
+
+The starter sets Tomcat's upload limits to match native mode: `spring.servlet.multipart.max-file-size`
+1 GiB, `max-request-size` unlimited, `file-size-threshold` 16 KiB, and
+`server.tomcat.max-http-form-post-size` 64 MiB. Your own value for any of these wins. A raised
+`messaging.http.maxContentLength` still limits a Genesis endpoint's request body, but isn't carried
+over to `server.tomcat.max-http-form-post-size`, so raise that as well. Both
+upload limits apply: the endpoint's `maxFileSize` is still enforced (`413`), but only below
+Tomcat's limit. An upload above Tomcat's limit (`spring.servlet.multipart.max-file-size` or
+`max-request-size`) also gets `413`, but the container sets it, with Spring Boot's error body rather
+than the endpoint's own message. To accept larger files, raise `spring.servlet.multipart.max-file-size` as well (and
+`max-request-size` if you set it). Other settings that configure Netty have no effect in this mode:
+the rest of `messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
+`UseNettyThreadsForMessageProcessing`.
+
+**Differences from native mode**
+
+| Behaviour | Native mode | External transport mode |
+|---|---|---|
+| Custom HTTP reason phrase | Sent | Dropped |
+| `Content-Type` parameters | `application/json; charset=UTF-8` | `application/json;charset=UTF-8` |
+| CORS preflight on a Genesis path | `405` | Empty `200` |
+| Upload over the endpoint's `maxFileSize` | `400` | `413` |
+| Fragmented WebSocket message over `maxAggregatedFrameSize` | Closed with `1000` | Closed with `1009` |
+| Reading a Genesis HTTP endpoint's request body more than once | Repeatable | Once only (a second read throws `BodyAlreadyReadException`) |
+| `tls.identity.keystore.keyAlias` | Ignored | Honoured |
+| A client that stops reading | Never detected | Closed after `genesis.spring.web-socket-send-time-limit-ms` (default 60 s) |
+
+#### Native mode
+
+In native mode, the router proxies to the app's embedded Tomcat port. Your URL is:
+
+```text
+http(s)://<router-host>:<router-port>/<prefix>/<your-mapping>
+```
+
+Where `<prefix>` is the app's context-path, and the rest of the path is exactly what was written in
+the `@RequestMapping`/`@GetMapping`/etc. — nothing gets rewritten.
+
+**Worked example**
+
+```properties
+# application.properties
+server.servlet.context-path=/orders-app
+```
+
+With the same `OrderController` as above:
+
+| You call directly (Tomcat) | You call through the router |
+|---|---|
+| `http://<app-host>:<tomcat-port>/orders-app/orders` | `http://<router-host>:<router-port>/orders-app/orders` |
+| `http://<app-host>:<tomcat-port>/orders-app/orders/42` | `http://<router-host>:<router-port>/orders-app/orders/42` |
+
+Same path, different host/port — the router just proxies whatever's under `/orders-app/**` straight
+to the app's Tomcat port, path unchanged.
+
+**Where the prefix comes from**
+
+1. `server.servlet.context-path` is set — that's the prefix, verbatim.
+2. It isn't set, but `spring.application.name` is — the prefix is derived from that: the name,
+   lower-cased and slugified to one URL segment. For example, `spring.application.name=OrdersApp`
+   becomes prefix `/ordersapp`. This is logged at startup, so the log can be read instead of
+   guessing.
+3. Neither is set — the app isn't exposed through `GENESIS_ROUTER` at all (a warning is logged, as
+   noted above). It's still reachable directly on its own port, just not via the router.
+
+In practice, most apps already set `spring.application.name` and get a router prefix for free. Only
+set `server.servlet.context-path` explicitly to choose a specific, human-chosen prefix instead of
+the derived slug.
+
+#### Before relying on router proxying
+
+:::caution
+A few things worth knowing before relying on router proxying:
+
+- **Actuator moves too** (if the app includes `org.springframework.boot:spring-boot-starter-actuator`;
+  the starter doesn't add it). The router reaches actuator under the prefix as well:
+  `/orders-app/actuator/health`, not `/actuator/health`. In native mode the prefix is also the
+  context path, so the direct Tomcat URL moves too — update health-check probes accordingly.
+  To get it working:
+  - Add the dependency to the `-spring` module (the one with the application class), not `-app`.
+    In `-app` an unversioned dependency fails `genesisSync`, and with an explicit version the jars
+    never reach the app's JVM and health stays `404`.
+  - A new dependency reaches the running process only after you regenerate the start script
+    (`writeStartScript`) and restart Genesis Start. `genesisSync` and a process restart alone don't
+    put the jars on the classpath.
+  - Set `management.datadog.metrics.export.enabled=false` in the Spring module's
+    `application.properties`. Genesis ships the Datadog, Graphite and Prometheus registries, and
+    without this the app fails to start with `management.datadog.metrics.export.apiKey was 'null'`.
+  - Then `GET /<app>/actuator/health` through the router returns `200` with `"status":"UP"` in the
+    body. Directly on the app's port, health is at `/<app>/actuator/health` in native mode and at
+    `/actuator/health` in external transport mode. The rest of the actuator tree needs
+    authentication. Health needs no exposure property.
+- **In native mode, the embedded Tomcat is a second network listener.** It must be reachable from
+  the router's host but not from the outside world directly — bind it to a cluster-internal
+  interface (`server.address`) and firewall the rest. External traffic should only ever reach the
+  app through the router.
+- **Single-word path collisions.** If the prefix is a single segment that collides with an existing
+  native Genesis resource name, the native resource wins and the app isn't reachable under that
+  name — pick a distinct prefix if this happens. List the native resource names with
+  [`GET /resources-request`](/develop/server-capabilities/runtime-configuration/genesis-router/#metadata-requests).
+- **Turning it off entirely.** `genesis.springboot.enabled=false` disables this along with the rest
+  of the Genesis/Spring integration. In native mode the app then only serves HTTP on its own port,
+  unrouted.
+:::
+
+## Migrating from Guice-only components
+
+Existing [Guice-based custom components](/develop/server-capabilities/custom-components) can move
+onto this starter incrementally:
+
+- A Guice-bound singleton needs no changes to become reachable from Spring — it's bridged
+  automatically. Prefer constructor injection of the concrete Genesis type (e.g. `UserSessionCache`)
+  over reaching for the Guice `Injector` directly.
+- If several components share an ambiguous Guice binding name, inject by type or use
+  `@Qualifier("bindingName")` rather than relying on Spring's by-name autowiring, which is not
+  stable across runs for a suffixed duplicate name.
+- HTTP endpoints written against the Guice-era request/response plumbing become `@RestController`
+  classes; authentication moves from whatever the previous surface implemented to the
+  `SESSION_AUTH_TOKEN`-based chain described above, with `@GenesisAnonymous` replacing any
+  bespoke "public endpoint" logic.
+- A mixed deployment is fully supported: GPAL-scripted and Spring Boot processes can run side by
+  side in the same cluster, so a migration can proceed module by module rather than all at once.
+
+### Worked example: migrating a Guice-bound service
+
+Take a Guice-bound service that depends on a Genesis platform singleton and a Genesis
+system-definition value — the same two things the
+[BeanFactory bridging](#beanfactory-bridging) and
+[System definitions as a Spring PropertySource](#system-definitions-as-a-spring-propertysource)
+sections above cover individually. Migrating it to Spring only touches the DI annotations; the
+method body is unchanged.
+
+**Before — Guice-wired, using `@Module`/`@Inject`/`@Named`:**
+
+:::note
+In Genesis 8.15 and earlier, use the `javax.inject` package instead of `jakarta.inject` in these examples.
+:::
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.commons.annotation.Module
+import global.genesis.session.UserSessionCache
+import jakarta.inject.Inject
+import jakarta.inject.Named
+
+@Module
+class GreetingService @Inject constructor(
+    private val userSessionCache: UserSessionCache,
+    @Named("APP_GREETING") private val greeting: String,
+) {
+    fun greet(token: String): String {
+        val isLive = userSessionCache.userLoggedIn(token) != null
+        return if (isLive) greeting else "unauthenticated"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.commons.annotation.Module;
+import global.genesis.session.UserSessionCache;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+@Module
+public class GreetingService {
+    private final UserSessionCache userSessionCache;
+    private final String greeting;
+
+    @Inject
+    public GreetingService(
+        UserSessionCache userSessionCache,
+        @Named("APP_GREETING") String greeting
+    ) {
+        this.userSessionCache = userSessionCache;
+        this.greeting = greeting;
+    }
+
+    public String greet(String token) {
+        boolean isLive = userSessionCache.userLoggedIn(token) != null;
+        return isLive ? greeting : "unauthenticated";
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+**After — Spring-wired, using `@Service`/`@Value`:**
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+package com.example.app
+
+import global.genesis.session.UserSessionCache
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
+
+@Service
+class GreetingService(
+    private val userSessionCache: UserSessionCache,
+    @Value("\${APP_GREETING:hello}") private val greeting: String,
+) {
+    fun greet(token: String): String {
+        val isLive = userSessionCache.userLoggedIn(token) != null
+        return if (isLive) greeting else "unauthenticated"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+package com.example.app;
+
+import global.genesis.session.UserSessionCache;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class GreetingService {
+    private final UserSessionCache userSessionCache;
+    private final String greeting;
+
+    public GreetingService(
+        UserSessionCache userSessionCache,
+        @Value("${APP_GREETING:hello}") String greeting
+    ) {
+        this.userSessionCache = userSessionCache;
+        this.greeting = greeting;
+    }
+
+    public String greet(String token) {
+        boolean isLive = userSessionCache.userLoggedIn(token) != null;
+        return isLive ? greeting : "unauthenticated";
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+The `@Module`/`@Inject` constructor becomes a plain Spring-managed constructor:
+`UserSessionCache` resolves through the type-based Guice fallback described above with no
+bridging configuration needed, and the `@Named("APP_GREETING")` system-definition value becomes
+`@Value("\${APP_GREETING:hello}")`, sourced from the same `"genesis"` PropertySource described
+above.
+
+### What changes for a Guice-era HTTP endpoint
+
+Guice-era HTTP endpoints are either GPAL [custom endpoints](/develop/server-capabilities/integrations/custom-endpoints)
+(`webHandlers { endpoint(...) }` in a `*-web-handler.kts` file) or coded `WebEndpoint`,
+`BodyLessWebEndpoint`, `SuspendingWebEndpoint` or `BlockingWebEndpoint` classes registered with
+`WebEndpointRegistry`. Rewriting one as a `@RestController` changes three Genesis-specific things;
+everything else is ordinary Spring MVC (see Spring's
+[Annotated Controllers](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller.html)
+documentation).
+
+- **Authentication.** The Guice-era endpoint decided this itself: `requiresAuth()` (default `true`)
+  on a coded endpoint, or `requiresAuth = false` in a web handler's `config` block. In the Spring
+  app, every request goes through the deny-by-default session-token filter chain before it reaches
+  a controller; `@GenesisAnonymous` on the class or on a single handler method replaces
+  `requiresAuth = false`. See [Session-token authentication](#session-token-authentication).
+- **Reply shapes.** Genesis no longer composes the response. What the endpoint returned from
+  `handleRequest` or `process(...)`, including an `EventReply` from `triggerEvent(...)`, was
+  serialised by Genesis, with `buildResponse`/`HttpResponse` used to set the status and headers. A
+  controller returns a plain value that Spring serialises, or a `ResponseEntity` when it needs to
+  set the status or headers. Nothing in the starter maps an `EventReply` to an HTTP response, so a
+  controller that still returns one must turn an `EventNack` into an error status itself. Logic that
+  is really an event belongs in an [annotation-driven event handler](/develop/server-capabilities/core-business-logic-event-handler/spring), which
+  replies with `EventReply` natively.
+- **Routing.** The URL changes. The router served a Guice-era endpoint at
+  `/<product>/<endpoint>`, where the first segment comes from the web handler's file name (or its
+  `basePath`) or from the product a coded endpoint was registered under. A controller is reached at
+  `/<prefix>/<mapping>`, where the prefix is set as described under
+  [Router proxying](#router-proxying). To keep an existing URL, set `server.servlet.context-path` to
+  the old first segment, and retire the old endpoint first: the router serves a path it still has
+  registered locally instead of proxying it.
+
+## Testing
+
+Dedicated test tooling for Spring/Guice-bridged Genesis apps lives in
+[Testing API (Spring)](/develop/server-capabilities/testing-api/spring). Testing a hand-written bean such as `SessionAuditService` or
+`GreetingService` above with `@GenesisSpringTest` needs one extra step: `GenesisTestApplication`
+carries no `@ComponentScan`, so the bean has to be listed explicitly, e.g.
+`@SpringBootTest(classes = [GenesisTestApplication::class, SessionAuditService::class])` — see
+[Core business logic (Spring): Testing](/develop/server-capabilities/core-business-logic-event-handler/spring#testing) for the fuller explanation.
+
+For a narrow test of your own controller and security wiring without booting a full Genesis
+process, see [Testing an HTTP endpoint](/develop/server-capabilities/testing-api/spring#testing-an-http-endpoint) in the test-tooling
+guide. It uses Spring Boot's `@WebMvcTest` slice with `GenesisSpringSecurityConfig` imported, so the
+security layer only needs a mock `OnDemandUserSessionCache` to resolve tokens against. Useful assertions to
+build on: a request with no token is `401`; a token resolving to no live session is `401`; a valid
+token is served and its username is available via `Principal`; a `@GenesisAnonymous`-marked endpoint
+is served with no token. Actuator endpoints are not part of the `@WebMvcTest` slice, so asserting on
+actuator health there may need extra configuration.
+
+## See also
+
+- [Core business logic (Spring)](/develop/server-capabilities/core-business-logic-event-handler/spring) — builds directly on this starter and adds
+  an application-ready-driven flush path for annotation-based event handlers.
+- [Data access APIs (JPA)](/develop/server-capabilities/data-access-apis/jpa) — also builds directly on this starter, so JPA repositories
+  and entities live in the same Spring/Guice-bridged context described above.
+- [Testing API (Spring)](/develop/server-capabilities/testing-api/spring) — JUnit 6 support purpose-built for testing code that sits on top
+  of this starter.
