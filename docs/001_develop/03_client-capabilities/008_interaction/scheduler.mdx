@@ -16,7 +16,7 @@ import CronSchedulerDemo from '/examples/ui/client-capabilities/interaction/sche
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Cron Scheduler is a web component designed to simplify the creation and management of scheduled tasks. It provides a user-friendly interface for selecting a `recurrence pattern` (hourly, daily, weekly, monthly, yearly), with input options that adapt based on the selected type such as frequency, specific days, or time of execution. 
+The Cron Scheduler is a web component designed to simplify the creation and management of scheduled tasks. It provides a user-friendly interface for selecting a `recurrence pattern` (minutes, hourly, daily, weekly, monthly, yearly), with input options that adapt based on the selected type such as frequency, specific days, time of execution, or—for minute and hourly schedules—whether the job runs at a fixed interval or only in chosen hours of the day. 
 
 Once configured, the component:
 
@@ -158,10 +158,27 @@ export function MyComponent() {
 </Tabs>
 
 ## Recurrence types
-Each recurrence type provides a unique way to schedule tasks based on inputs like time, frequency, selected days, month, etc.
+Each recurrence type provides a unique way to schedule tasks based on inputs like time, frequency, selected days, month, and so on.
+
+### Minutes recurrence
+The `Minutes` recurrence type runs a job every `N` minutes, where `N` is chosen from a fixed set of intervals (for example 1, 5, 15, 30 minutes). The UI only offers steps that divide evenly into 60 minutes, which matches how the `minutes` field works in cron: a repeating pattern like `0/N` in that field only lines up on the hour boundary when `N` is a divisor of 60. The list of allowed values can be restricted upward with the `min-minute-interval` attribute in the API section below: only intervals greater than or equal to that minimum are offered. If `min-minute-interval` is greater than 30, the `Minutes` option is hidden from the recurrence dropdown, because sub-hour scheduling is not applicable for that configuration.
+
+Use the `During` control to choose whether the minute pattern applies:
+
+- `Every hour` — the interval repeats across all hours of the day (Quartz-style `*` in the hours field).
+- `Specific hours` — pick one or more hours (0–23) with the hours multiselect so the minute schedule runs only in those hours (for example only during business hours). Selecting every hour is equivalent to `Every hour`.
+
+The minutes row still exposes `seconds` so you can align the pattern to a specific second within each firing minute.
 
 ### Hourly recurrence
-The `Hourly` recurrence type allows users to schedule tasks to run at regular `hourly intervals` throughout the day. Users can specify the `frequency` in hours (for example, every 2 hours) to define how often the task should repeat. This type is useful for scenarios requiring high-frequency execution, such as polling services, syncing data, or checking for updates at consistent intervals.
+The `Hourly` recurrence type covers both multi-hour intervals and explicit clock hours.
+
+Use `Mode` to switch between:
+
+- `Interval` — run every `N` hours (`N` from 1 to 23) at the same minute and second within the hour (for example every 2 hours at 30 minutes past the hour).
+- `Selected Hours` — choose one or more hours of the day (0–23) with the multiselect; the job runs at your chosen minute and second in each of those hours only. If you select all 24 hours, the builder treats that the same as covering every hour.
+
+This supports both wide spacing (for example polling every few hours) and precise windows (for example running only during trading hours by using `Selected Hours` and picking each open hour, such as 9 through 16 for a typical market session).
 
 ### Daily recurrence
 The `Daily` recurrence type allows users to schedule tasks that repeat every specified number of days. It supports two `weekType` options: 
@@ -178,7 +195,7 @@ When `weekType` is set to **"Work week"**, the cron expression uses a range in t
 :::
 
 ### Weekly recurrence
-The `Weekly` recurrence type enables scheduling tasks on specific `days of the week`, offering flexibility to select one or more weekdays from **Monday to Sunday**. Users can choose the exact `time` at which the task should run on the `selected days`. This set-up is ideal for scenarios where tasks need to occur on consistent weekly patterns, such as every Monday and Wednesday at 9 AM, allowing fine-grained control over the execution schedule.
+The `Weekly` recurrence type enables scheduling tasks on specific days of the week: select one or more of `Monday` through `Sunday`. Users choose the `time` at which the task runs on the selected days. This set-up suits consistent weekly patterns, such as every Monday and Wednesday at 9:00.
 
 ### Monthly recurrence
 The `Monthly` recurrence type allows users to schedule tasks that repeat on specific `days of the month`. Users can select a particular `day` (e.g. the 15th) or choose a specific `weekday occurrence` (e.g. the first Monday of the month). Additionally, users can define the `time` at which the task should run. This configuration is useful for tasks that need to occur on a regular monthly basis, such as generating reports or sending reminders.
@@ -219,7 +236,33 @@ Property and attribute binding examples for Genesis Component syntax.
 </table>
 
 ### Attributes
-This component doesn't have any attributes.
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>min-minute-interval</code></td>
+            <td>number</td>
+            <td>Optional. Minimum minute step for the <code>Minutes</code> recurrence type. Values below this are removed from the frequency list. If set higher than <code>30</code>, the <code>Minutes</code> recurrence option is not shown. Values of <code>60</code> or more have no effect on hourly-or-longer patterns and log a console warning.</td>
+        </tr>
+        <tr>
+            <td><code>disable-tooltips</code></td>
+            <td>boolean</td>
+            <td>When present, hides the built-in help tooltips next to recurrence and mode labels.</td>
+        </tr>
+        <tr>
+            <td><code>timezone</code></td>
+            <td>string</td>
+            <td>Optional. Attribute on the element for host or integration use; the builder does not read it when generating the cron string.</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Events fired
 
@@ -272,6 +315,9 @@ Below are some examples of cron expressions and their meanings:
 | `0 15 10 ? * 2-6` | At 10:15 AM every Monday to Friday |
 | `0 15 10 */2 * ?` | At 10:15 AM twice a day every day |
 | `0 15 10 ? * 1,3` | At 10:15 AM every Monday and Wednesday |
+| `0 0/15 * ? * *` | Every 15 minutes |
+| `0 0/15 9,10,14 ? * *` | Every 15 minutes during hours 9, 10, and 14 |
+| `0 30 9,14 ? * *` | At 30 minutes past hours 9 and 14 every day |
 | `0 0 0/5 ? * *` | Every 5 hours |
 | `0 30 10 15 * ?` | At 10:30 AM on the 15th of every month |
 | `0 30 10 15 11 ?` | At 10:30 AM on November 15th of every year |
