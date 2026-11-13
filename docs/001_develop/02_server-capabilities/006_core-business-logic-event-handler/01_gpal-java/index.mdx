@@ -214,7 +214,7 @@ Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NA
 In the parenthesis you can define:
 
 - `name` : the name of the event. `name` will automatically be prefixed with `EVENT_`. so `name = "TRADE_INSERT"` will be targeted by the client as `EVENT_TRADE_INSERT`. Where left unspecified the name will default to the eventHandler Type class name.
-- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables).
+- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. Writes to [audited tables](/develop/server-capabilities/data-model/gpal-java/#audited-tables) are audited whether or not the event is transactional.
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -458,7 +458,7 @@ This is used where particular system events require a second system user to appr
 
 In the example below, you can **optionally** set the approval message. This is the message that an authorized approver will see during their review.
 
-The function must return boolean logic, where it evaluates to false the event will be subject to approval.
+The function must return boolean logic, where it evaluates to true the event will be subject to approval.
 
 ```kotlin
   eventHandler<Trade>("TRADE_INSERT") {
@@ -594,7 +594,7 @@ The `onCommit` block runs after successful validation in the `onValidate` block.
 
 The `entityDb` handle in this block can be used to read and write.
 
-As with `onValidate` the block must finish with an [`ack`](#ack). If the event is set as `transactional` and the `ack` is not reached, any database writes will be rolled back.
+As with `onValidate` the block must finish with an [`ack`](#ack). If the event is set as `transactional` and the block throws an exception, any database writes will be rolled back.
 
 ```kotlin
   eventHandler<Trade>("TRADE_INSERT") {
@@ -637,7 +637,7 @@ You can use the `triggerRemote` method to call an event that is not defined in t
 `triggerRemote` takes the following parameters:
 
 - event metadata
-- timeout on the remote event call in milliseconds (optional)
+- timeout on the remote event call in seconds (optional; defaults to the process's request timeout, `ReqRepTimeout`, 60 seconds by default)
 
 ```kotlin
     eventHandler<TriggerTrade>(name = "TRIGGER_REMOTE_TRADE_INSERT") {
@@ -664,8 +664,8 @@ You can use the `triggerRemote` method to call an event that is not defined in t
       val tradeDetails = event.details
 
       val originalTrade = entityDb.get(Trade.ById(event.details.tradeId))
-      require(originalEmailDist != null) {
-        "Unknown Trade ID received ${event.details.csdCode}"
+      require(originalTrade != null) {
+        "Unknown Trade ID received ${event.details.tradeId}"
       }
       ...
       validationAck(validationContext = originalTrade)
@@ -679,8 +679,8 @@ You can use the `triggerRemote` method to call an event that is not defined in t
 ```
 
 - The definition takes two `<Type>` (aka Generic) parameters instead of one:
-  - the context object, which will be passed to the [`onCommit`](#oncommit) block
   - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler))
+  - the context object, which will be passed to the [`onCommit`](#oncommit) block
 - The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
 - The [`onCommit`](#oncommit) block has two lambda parameters:
   - the standard event
@@ -690,7 +690,7 @@ You can use the `triggerRemote` method to call an event that is not defined in t
 
 For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler` blocks.
 
-The `validationAck` must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
+The `validationAck` must return an object matching the type of the second `<Type>` parameter in the `contextEventHandler` definition.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
@@ -728,7 +728,7 @@ There are several options that can be specified in the message header:
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
 | `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true |
 | `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence |
-| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/gpal-java/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` |
+| `REASON`            | | Where the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/gpal-java/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` |
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -910,7 +910,7 @@ eventHandler {
     onValidate { event ->
       val company = event.details
       // custom validation code block..
-      return approvableAck(
+      approvableAck(
         entityDetails = listOf(
           // One or many entities can be affected with a single event, so we can provide the whole list here
           ApprovalEntityDetails(
@@ -1131,7 +1131,7 @@ pendingApproval {
 ```
 ### System rejects
 
-An approval process deliberately delays events. So it is possible that by the time a pending approval action is approved, the underlying data has changed enough to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SYSTEM in its `APPROVAL_STATUS` field.
+An approval process deliberately delays events. So it is possible that by the time a pending approval action is approved, the underlying data has changed enough to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SERVICE in its `APPROVAL_STATUS` field.
 
 The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
@@ -1195,8 +1195,9 @@ The Event Handler latency metrics show how long it takes for a specific `eventHa
 
 | Metric             | Explanation                                                  |
 |:-------------------|:-------------------------------------------------------------|
-| processing_latency | The latency for processing events (kts event handler)        |
-| latency            | The latency for processing events (kotlin/java event handler)|
+| processing_latency | The latency for processing events (GPAL event handlers, and Kotlin/Java event handlers written with the [Event handler API](#event-handler-api)) |
+| latency            | The latency for processing events (event handlers extending the deprecated `AbstractEventHandler`) |
+| event_handler.async.available_permits | How many more async event handlers can start in this process before the in-flight limit is reached (see [Async event handlers in flight](#async-event-handlers-in-flight)) |
 
 ## Runtime configuration
 
@@ -1237,6 +1238,10 @@ If you wish to run a dedicated process for an Event Handler, here is an example 
 ```
 
 For compiled definitions only, use your app's module and definition package and omit `script` and `language`.
+
+### Async event handlers in flight
+
+A process runs at most 256 async event handlers at once; this covers GPAL event handlers and `AsyncEventHandler` implementations. Further events wait until one finishes. Set the `genesis.eventhandler.async.maxInFlight` system property in the process's JVM options to change the limit, for example `-Dgenesis.eventhandler.async.maxInFlight=512`; `0` removes it. A handler that waits on another async event handler in the same process, for example through `triggerRemote`, keeps its place while it waits, so at the limit those events wait until they time out.
 
 <CommonProcesses/>
 
@@ -1681,7 +1686,7 @@ class HelloWorldEventHandlerTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` on the same test class — all definitions are merged, exactly as they are at runtime.
@@ -1867,9 +1872,9 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 Fourth, in your test set-up, authorize one user to be able to insert trades and another who is not.
 
 ```kotlin
-    @Before
+    @BeforeEach
     fun setUp() {
-        authorise("ENTITY_VISIBILITY", "CP1", "TraderUser")
+        inMemoryTestAuthCache.authorise("ENTITY_VISIBILITY", "CP1", "TraderUser")
 
         val trader = DbRecord.dbRecord("RIGHT_SUMMARY") {
             "USER_NAME" with "TraderUser"
@@ -2208,9 +2213,9 @@ Third, you need to specify the auth cache override in the `GenesisTestConfig`:
 Fourth, in your test set-up, let's authorise one user to be able to insert trades and another who is not.
 
 ```java
-    @Before
+    @BeforeEach
     public void setUp() {
-        authorise("ENTITY_VISIBILITY", "CP1", "TraderUser");
+        getInMemoryTestAuthCache().authorise("ENTITY_VISIBILITY", "CP1", "TraderUser");
         getRxDb().insert(RightSummary.builder().setRightCode("TRADER").setUserName("TraderUser").build().toDbRecord()).blockingGet();
         getRxDb().insert(RightSummary.builder().setRightCode("SUPPORT").setUserName("SupportUser").build().toDbRecord()).blockingGet();
     }
@@ -2314,8 +2319,8 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`. To exclude a field of a nested object, use a dotted path such as `MAIN.RECORD_ID`; see [Excluding fields of nested objects](#excluding-fields-of-nested-objects)                                                                                                                                                                                                   |
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
-| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`. For detailed information on how this works and examples, see the [`overrideMetadataFields` section](#overridemetadatafields).                                                                                        |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](#approval-workflow) in order to take effect) |
+| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptyMap() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`. For detailed information on how this works and examples, see the [`overrideMetadataFields` section](#overridemetadatafields).                                                                                        |
+| requiresPendingApproval | `fun requiresPendingApproval(): (suspend (Event<I>) -> Boolean)?` (`AsyncEventHandler`), `Function<Event<I>, Single<Boolean>>?` (`Rx3EventHandler`), `Function<Event<I>, Boolean>?` (`SyncEventHandler`) | null | Declared on `AsyncEventHandler`, `Rx3EventHandler` and `SyncEventHandler` rather than on this interface. Return a function that evaluates to `true` for events that require a second system user to approve them ([pending approval](#approval-workflow)) in order to take effect |
 | schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](/develop/server-capabilities/communications/#type-safe-messages) for more information.
 
 Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
@@ -2341,7 +2346,7 @@ The only mandatory method to implement this in the interface is:
 
 | Name | Signature |
 | --- | --- |
-| process | `fun suspend process(message: Event<I>) : O` |
+| process | `suspend fun process(message: Event<I>) : O` |
 
 This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned.
 
@@ -3143,9 +3148,9 @@ Look at the `onValidate` method in the previous example:
 
 So far, we have seen `ack` and `nack.  There is a third reply type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
 
-* `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
-* `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
-* `warningNack`: used to warn the client. `warningNack`, like `nack`, accepts either a `String` parameter or a `Throwable`. For example, `warningNack("Provided User alias $userAlias will override Username $username.")` or `warningNack(myThrowable)`.
+* `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(this, List.of(Map.of("TRADE_ID", "1")))`.
+* `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack(this, "Error!")` or `nack(this, myThrowable)`.
+* `warningNack`: used to warn the client. The Event Handler API has no `warningNack` helper; return an `EventReply.EventNack` that carries the error in its `warning` list instead. For example, `Single.just(new EventReply.EventNack(List.of(new StandardError(ErrorCode.VALIDATION_ERROR, "Price out of bounds")), List.of()))`.
 
 
 ### Transactional Event Handlers (ACID)

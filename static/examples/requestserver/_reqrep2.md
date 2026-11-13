@@ -1,4 +1,4 @@
-<!-- Below is a **reqrep.kts** file that has a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/develop/server-capabilities/query-data/snapshot-queries-request-server/#where-block) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. -->
+<!-- Below is a **reqrep.kts** file that has a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`filterWithParameters` block](/develop/server-capabilities/query-data/snapshot-queries-request-server/#filterwithparameters) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. -->
 
 ```kotlin
 requestReplies {
@@ -19,8 +19,8 @@ requestReplies {
             EXCHANGE_ID
         }
 
-        filter {
-            data.instrumentCode == parameters.getString("INSTRUMENT_CODE")
+        filterWithParameters {
+            data.instrumentCode == genesisSet.getString("INSTRUMENT_CODE")
         }
     }
 }

@@ -106,7 +106,7 @@ plugins {
 | Switch | Where | Effect |
 | --- | --- | --- |
 | `genesis { compileScriptsAtBuildTime = true }` | `settings.gradle.kts` | Applies the plugin to the application's config module or modules |
-| `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint, when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin; see [Linting scripts with ktlint](#linting-scripts-with-ktlint). Default: `false` |
+| `genesis { ktlintScripts = true }` | `settings.gradle.kts` | Also lints the `.kts` files with ktlint, when build-time compilation is on. The module must apply the `org.jlleitschuh.gradle.ktlint` plugin; see [Linting scripts with ktlint](#linting-scripts-with-ktlint). Default: `false` |
 | `genesis.scripts.compileAtBuildTime` | Gradle property | `true`: with a Settings plugin, the same as `compileScriptsAtBuildTime = true` when `settings.gradle.kts` doesn't set it; without one, does nothing on its own. `false`: turns the feature off for the whole build |
 | `genesis.scripts.ktlint` | Gradle property | The default for `ktlintScripts` |
 | `genesisScriptCompilation { enabled = false }` | Module build file | Turns the feature off for one module |
@@ -143,7 +143,7 @@ The `genesisScriptCompilation` block in a module's `build.gradle.kts` file confi
 | `exclude` | Empty | Ant patterns, relative to each script directory, for `.kts` files that must not be compiled, such as `setOf("**/broken-*.kts")` |
 | `scriptDefinitions` | Empty | Fully qualified names of script-definition classes to use. Also available as `scriptDefinitions("...", "...")` |
 | `discoverScriptDefinitions` | `true` while `scriptDefinitions` is empty | Find script definitions by scanning the compile classpath |
-| `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint. It takes effect only when build-time compilation is on and the module applies the `org.jlleitschuh.gradle.ktlint` plugin |
+| `ktlintScripts` | The `genesis.scripts.ktlint` Gradle property, otherwise `false` | Lint the `.kts` files with ktlint. It takes effect only when build-time compilation is on, and then the module must apply the `org.jlleitschuh.gradle.ktlint` plugin |
 | `expectGeneratedScripts` | `false` (the Settings plugin sets `true`) | Set up compilation even when no `.kts` file exists yet when Gradle configures the build |
 | `failOnMissingScriptClasses` | `true` | Fail the build if the compiler emits no class for a script. This shouldn't happen in normal use |
 
@@ -167,7 +167,7 @@ You can leave `scriptDefinitions` out: discovery finds the definition as long as
 
 ### Linting scripts with ktlint
 
-The Genesis plugins don't apply ktlint for you. Setting `ktlintScripts = true` does nothing unless the module that holds the scripts, normally the application's config module, applies the ktlint Gradle plugin. In that module's `build.gradle.kts`:
+The Genesis plugins don't apply ktlint for you. The module that holds the scripts, normally the application's config module, must apply the ktlint Gradle plugin. If `ktlintScripts` is `true` and a module compiles its scripts without that plugin, the build fails with a message that begins `genesisScriptCompilation.ktlintScripts is true for <module>, but <module> does not apply the 'org.jlleitschuh.gradle.ktlint' plugin`. With build-time compilation off, `ktlintScripts = true` is ignored with a warning. To apply the plugin, add it to the module's `build.gradle.kts`:
 
 ```kotlin
 plugins {

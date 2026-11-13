@@ -316,6 +316,7 @@ Every process has to use the same `enabled` value and the same keys. If a proces
 | Condition | Error message |
 |-----------|---------------|
 | A key is missing or blank | `<key> is required when ZeroMQ CURVE is enabled` |
+| A key is still an unresolved `${VAR}` reference, because the environment variable isn't set | `<key> was not resolved: set the <VAR> environment variable, or disable ZeroMQ CURVE` |
 | A key isn't exactly 40 characters | `<key> must be 40 characters of Z85, but is <length>` |
 | A key isn't valid Z85. Z85 is ZeroMQ's 85-character text encoding ([RFC 32](https://rfc.zeromq.org/spec/32/)); a 40-character key containing a space, quote or comma is not valid Z85 | `<key> must be a valid Z85 CURVE key` |
 | `allowedClientCertDirectory` is missing or blank | `allowedClientCertDirectory is required when ZeroMQ CURVE is enabled` |

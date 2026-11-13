@@ -264,6 +264,10 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 }
 ```
 
+If a key you declared with `rowLevelPermissions = true` turns out to match more than one row, the Data Server logs a warning and from then on tracks several rows per key for that auth map.
+
+When you build the key from fields with `authKey(TABLE.FIELD, ...)`, you don't need to set `rowLevelPermissions`: each `authKey(...)` call sets it to `true` if the fields cover a unique index of the table or view, and to `false` otherwise, replacing any value set before it.
+
 #### `criteriaTemplate`
 
 `criteriaTemplate` is a way to enhance the criteria on an incoming data logon.
@@ -2298,7 +2302,7 @@ class MyDataServerTest {
 ```
 
 :::note
-`@ProvidedType` is new in v10 (Genesis 10.0). If your clients are on v8, use the previous syntax: `@ProvidedInstance` with a class.
+`@ProvidedType` is new in v10 (Genesis 10.0). If your application is on Genesis 8, use the previous syntax: `@ProvidedInstance` with a class.
 :::
 
 `@PackageScan` and `@ProvidedType` each work standalone — you don't need both. `@PackageScan` scans the whole package, so it also picks up anything else defined there; `@ProvidedType` registers only the exact class you give it. Use `@ProvidedInstance` only when you want to hand the test a pre-built instance, for example when the definition needs a dependency you want to stub out yourself. If your process mixes script files and compiled definitions, combine either with `@TestScriptFile` (and `@CsvData` for seed data) on the same test class — all definitions are merged, exactly as they are at runtime.

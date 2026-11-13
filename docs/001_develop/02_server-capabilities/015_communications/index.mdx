@@ -503,7 +503,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-To get the appropriate status code for an error message, you need to enable the `StrictHttpStatusCode` item in the system definition. It is not a router setting: the `strictHttpStatusCode` property that used to sit in `router { }` was removed in 10.0, and a router that still sets it fails to start.
+To get the appropriate status code for an error message, you need to enable the `StrictHttpStatusCode` item in the system definition. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `strictHttpStatusCode` fails to compile, so the router doesn't start.
 
 `StrictHttpStatusCode` is `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. See [`StrictHttpStatusCode`](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) on the Genesis router page for how to set it in **genesis-system-definition.kts**.
 
@@ -539,7 +539,7 @@ You can protect against Cross-Site Scripting (XSS) by enabling string sanitisati
 
 **System-wide XSS sanitisation**
 
-Enable XSS string sanitisation for all outgoing string properties by setting the router-config property `xssStringSanitizer` to `true` on `genesis-router.kts` file. By default this property is set to `false`.
+Enable XSS string sanitisation for all outgoing string properties by setting the [`XssStringSanitizer`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) system definition item to `true` in your application's `genesis-system-definition.kts` file. By default it is `false`. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `xssStringSanitizer` fails to compile, so the router doesn't start.
 
 **Per-field XSS sanitisation on type-safe messages**
 
@@ -558,10 +558,6 @@ data class SanitisedDataClass(
     val unsanitised: String
 )
 ```
-
-:::note
-In Genesis 8.15 and earlier, import `JsonSerialize` from `com.fasterxml.jackson.databind.annotation` instead (Jackson 2).
-:::
 
 When serialising, the `sanitised` field is sanitised (script tags are stripped and certain characters are escaped), while `unsanitised` keeps the raw value. For example:
 
@@ -610,7 +606,7 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 
 Use these APIs to send and receive messages between micro-services.
 
-Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. 8.15 and earlier used MessagePack, which 10.0 removed, so an 8.15 process and a 10.0 process can't exchange binary messages. The `MSGPACK` [serialization setting](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section) is still accepted, but it is deprecated and resolves to `SMILE`. The system-definition item `MessageSerialization=MSGPACK` logs a deprecation warning at startup; `serialization: MSGPACK` in the network configuration YAML resolves without a warning.
+Processes exchange Genesis messages over one of two channels: TCP, which is the default, or WebSocket. You choose the channel for each process in the [network configuration YAML](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section). A process on the WebSocket channel also answers [native HTTP on its own port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/). Binary messages are encoded as Smile by default; JSON is the alternative. MessagePack is no longer supported. The `MSGPACK` [serialization setting](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/#messaging-section) is still accepted, but it is deprecated and resolves to `SMILE`. The system-definition item `MessageSerialization=MSGPACK` logs a deprecation warning at startup; `serialization: MSGPACK` in the network configuration YAML resolves without a warning.
 
 ### `ServiceDiscovery`
 

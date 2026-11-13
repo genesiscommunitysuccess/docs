@@ -25,7 +25,7 @@ The versions of the entity EntityDb are:
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
 |`SyncEntityDb` |Kotlin + Java|A blocking API, and the simplest to use. This is the API to use from Java                                                |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
-|`RxEntityDb`   |Java only    |An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki)                                        |
+|`RxEntityDb`   |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki). Deprecated in 10.0: use `AsyncEntityDb` from Kotlin or `SyncEntityDb` from Java |
 |`SyncDb`       |Kotlin + Java|A blocking, record-level API that works with [`DbRecord`](#dbrecord)s instead of type-safe entities. See [SyncDb and AsyncDb](#syncdb-and-asyncdb) |
 |`AsyncDb`      |Kotlin only  |A record-level API powered by Kotlin coroutines, which works with [`DbRecord`](#dbrecord)s instead of type-safe entities |
 |`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki), which does NOT use type-safe entities |
@@ -349,8 +349,8 @@ Sorting on derived fields is not supported.
 :::info
 `getByCriteria` is supported from version 8.14.0
 
-Views are fully supported in this operation, including joined tables, when the system definition item [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) is `true`, which is the default from 10.0.
-If it is set to `false`, criteria on joined tables are evaluated lazily, so they can't be combined with paging, and sorting by joined fields is not supported.
+Views are fully supported in this operation, including joined tables, when the system definition item [`SqlViewsEnabled`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) is `true`, which is the default from 10.0, and the view can be expressed as a single SQL join query. A view that has a [dynamic join](/develop/server-capabilities/data-model/gpal-java/#dynamic-joins), or a join on a field from a table's `derivedFields` block, can't be.
+Otherwise, criteria on joined tables are evaluated lazily, so they can't be combined with paging, and sorting by joined fields is not supported.
 :::
 
 In this example, we query for a specific instrument.
@@ -394,7 +394,7 @@ This is not an either/or situation. In cases where the platform is able to parti
 Lazily evaluated criteria:
 * Any criteria on a derived field
 * If `SqlViewsEnabled` is set to `false`, in views, any criteria on a field on a joined table
-* If `SqlViewsEnabled` is true, in views that use [dynamic joins](/develop/server-capabilities/data-model/gpal-java/#dynamic-joins), any criteria on a field on a joined table
+* If `SqlViewsEnabled` is true, in views that use [dynamic joins](/develop/server-capabilities/data-model/gpal-java/#dynamic-joins) or join on a field from a table's `derivedFields` block, any criteria on a field on a joined table
 * On FDB, any criteria that is not a direct index match. FoundationDB (the `FDB` and `FDB2` database layers) is deprecated in 10.0 and is planned for removal in 11.0.0. Use the `SQL` database layer instead.
 
 ###### Hybrid evaluation
@@ -864,9 +864,7 @@ This tries to delete a record.
 
 #### Batches that name the same record twice
 
-A batch write must not name the same record twice. The record-level APIs (`SyncDb`, `AsyncDb` and `RxDb`, including `rxDb.entityDb()`) reject a batch that does this for `insertAll`, `modifyAll`, `deleteAll`, `recoverAll` and `upsertAll`. To build the entities you pass in a batch, see [Table entities](#table-entities).
-
-The batch is checked before anything is written. If two items resolve to the same table and the same unique index with the same key values, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. You don't name the index for an entity `insertAll` through `rxDb.entityDb()`: the platform picks it for each item, using the primary key when all its fields are set, and otherwise a unique index whose fields are all set. Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
+A batch write must not name the same record twice. `insertAll`, `modifyAll`, `upsertAll`, `deleteAll` and `recoverAll` check the whole batch before anything is written, on every database API: `SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`, `SyncDb`, `AsyncDb` and `RxDb`. If two items name the same record, the call throws a `global.genesis.db.exceptions.GenesisDatabaseFailureException` with the error code `DatabaseErrorCode.DUPLICATE_KEY` (from `global.genesis.db.exceptions.DatabaseErrorCode`), and the database is left unchanged. To build the entities you pass in a batch, see [Table entities](#table-entities).
 
 ```kotlin
 import global.genesis.db.exceptions.DatabaseErrorCode
@@ -881,33 +879,42 @@ try {
 }
 ```
 
-These are not treated as duplicates:
+Two items name the same record when they are for the same table and have the same values for one of its [unique indexes](/develop/server-capabilities/data-model/gpal-java/#unique), including the primary key:
 
-- two items that resolve to different [unique indexes](/develop/server-capabilities/data-model/gpal-java/#unique). In this `modifyAll`, both items address a `TRADE` record, one through the `TRADE_BY_ID` index and one through the `TRADE_BY_REFERENCE` index. The batch is accepted. The index is the second argument of [`ModifyDetails`](#modify-details), the name of a unique index; `null` means the primary key. The table, index and field names here are placeholders for your own data model.
+- `insertAll` and `recoverAll` compare every unique index of the table, so two new records that share the values of any unique index are rejected, not only two with the same primary key.
+- `modifyAll`, `upsertAll` and `deleteAll` compare the unique index that each item looks its record up by. `modifyAll` and `upsertAll` also compare the values that the items write to a unique index.
+- Key values are compared by field type, so a `BIGDECIMAL` key of `1.0` matches one of `1.00`.
 
-  ```kotlin
-  val byId = DbRecord("TRADE").apply {
-      setString("TRADE_ID", "T1")
-      setString("TRADE_STATUS", "CANCELLED")
-  }
-  val byReference = DbRecord("TRADE").apply {
-      setString("TRADE_REFERENCE", "REF-1")
-      setString("TRADE_STATUS", "CANCELLED")
-  }
+These are not compared:
 
-  syncDb.modifyAll(
-      listOf(
-          ModifyDetails(byId, "TRADE_BY_ID", listOf("TRADE_STATUS")),
-          ModifyDetails(byReference, "TRADE_BY_REFERENCE", listOf("TRADE_STATUS")),
-      )
-  )
-  ```
+- a unique index with a field that isn't set on the item, such as a key that the database generates on insert.
+- in `insertAll`, a unique index that includes `TIMESTAMP` or `RECORD_ID`, which the database sets itself. In `recoverAll`, a unique index that includes `RECORD_ID`.
+- in `modifyAll` and `upsertAll`, a unique index that the item neither looks its record up by nor writes. When you pass a list of fields to modify, only those fields are written.
+- on Oracle, a key whose values are all empty strings, because Oracle stores an empty string as `NULL`.
 
-- an item whose key isn't fully set yet, such as a record whose key the database generates on insert. This applies to `upsertAll` too.
+When a `modifyAll` or `deleteAll` batch looks up the records of one table through more than one unique index, `SyncEntityDb`, `AsyncEntityDb` and standalone writes through an injected `RxEntityDb` read those records first, and reject the batch if two items resolve to the same record. On the `SQL` database layer, `SyncDb`, `AsyncDb`, `RxDb` (including `rxDb.entityDb()`) and writes inside `RxEntityDb.writeTransaction` don't read them first. So in this `modifyAll`, which addresses one item through the `TRADE_BY_ID` index and the other through the `TRADE_BY_REFERENCE` index, the batch is accepted even if `REF-1` is the reference of trade `T1`. The index is the second argument of [`ModifyDetails`](#modify-details), the name of a unique index; `null` means the primary key. The table, index and field names here are placeholders for your own data model.
 
-The entity APIs (`SyncEntityDb`, `AsyncEntityDb` and the injected `RxEntityDb`) don't run this check, so a batch that names the same record twice isn't reliably rejected. For `upsertAll`, either of the two entries may win. On the entity APIs, avoid duplicate entries in a batch.
+```kotlin
+val byId = DbRecord("TRADE").apply {
+    setString("TRADE_ID", "T1")
+    setString("TRADE_STATUS", "CANCELLED")
+}
+val byReference = DbRecord("TRADE").apply {
+    setString("TRADE_REFERENCE", "REF-1")
+    setString("TRADE_STATUS", "CANCELLED")
+}
 
-Because the whole batch is checked first, a `Flowable` passed to an `RxDb` batch write is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
+syncDb.modifyAll(
+    listOf(
+        ModifyDetails(byId, "TRADE_BY_ID", listOf("TRADE_STATUS")),
+        ModifyDetails(byReference, "TRADE_BY_REFERENCE", listOf("TRADE_STATUS")),
+    )
+)
+```
+
+On the `FDB` and `FDB2` database layers, every API reads such records first.
+
+Because the whole batch is checked first, a `Flow` or `Flowable` passed to a batch write is collected into memory before anything is written. `SyncDb` and `AsyncDb` batch writes take a `List`.
 
 #### Write operation listeners
 
@@ -918,7 +925,7 @@ To run your own code inside the transaction of every write, see [Write operation
 The update operation is a condensed syntax for modifying data in the database. It works by providing a scope and a transformation. The scope could be one of:
 
 * `updateBy` - a unique index
-* `updateRangeBy` - an index range
+* `updateByRange` - an index range
 * `updateAll` - a whole table
 
 The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in the database, and can be modified in place, with the changes applied to the database. All update calls run in a `writeTransaction` and are transactional if the database supports it.
@@ -1051,7 +1058,7 @@ Single<OrderTrade> orderTrade = db.readTransaction(transaction -> {
 
 #### Write transactions
 
-Write transactions ensure all read and write operations are consistent. If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is wrapped and rethrown. Otherwise, the transaction commits when the block completes. An exception that you catch inside the block does not bubble up, so the other writes commit; rethrow it to roll back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,
+Write transactions ensure all read and write operations are consistent. If any exception bubbles up out of the `writeTransaction` block, the whole transaction rolls back and the exception is rethrown. Otherwise, the transaction commits when the block completes. An exception that you catch inside the block does not bubble up, so the other writes commit; rethrow it to roll back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,
 where `T` is the value returned in the `writeTransaction` lambda. On `RxEntityDb` it is wrapped in a `Single`: `Single<Pair<T, List<EntityWriteResult<*>>>>`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>

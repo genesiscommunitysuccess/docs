@@ -24,7 +24,7 @@ In a GPAL event handler, use the `entityDb` that the [event handler](/develop/se
 |---|---|---|---|
 | Kotlin | 21 or later | `AsyncEntityDb` (`AsyncDb` for records) | Transaction bodies, JDBC work and `Flow` producers run on virtual threads automatically. Code in a non-transactional event handler runs on a fixed pool of platform threads, one per CPU core |
 | Kotlin | 17 | `AsyncEntityDb` (`AsyncDb` for records) | Database work runs on platform threads, capped at 2 × CPU cores. Waiting for a connection suspends without holding a thread |
-| Java | 21 or later | `SyncEntityDb` (`SyncDb` for records) | Only standalone reads that return a value or a list (not streams), and single inserts, hop to a virtual thread. Event handler code, `writeTransaction` bodies and streams stay on the calling thread |
+| Java | 21 or later | `SyncEntityDb` (`SyncDb` for records) | Database calls, `writeTransaction` bodies and streams run on the calling thread |
 | Java | 17 | `SyncEntityDb` (`SyncDb` for records) | Platform threads throughout. See [Java and Sync pitfalls](#java-and-sync-pitfalls) |
 
 ## Virtual threads
@@ -42,13 +42,12 @@ Virtual threads apply to the work the database layer runs, not to all of your co
 | Async `Flow` read | The producer | The collector, on its own dispatcher |
 | GPAL event handler with `transactional = true` | The handler body, because it runs inside `writeTransaction` | |
 | GPAL event handler, non-transactional | Only the database calls | Handler code, on a fixed pool of platform threads, one per CPU core |
-| Sync standalone read or `insert` | The JDBC work. The calling thread parks meanwhile | |
-| Sync `writeTransaction` or `readTransaction`, and Sync `modify`, `delete` and batch writes | Nothing | The whole block or call |
+| Sync reads and writes, `writeTransaction` and `readTransaction` | Nothing | The whole block or call |
 | Sync streams (`stream()`, `getBulkStream`) | Nothing | The whole stream |
-| Sync event handler | Nothing for the handler | Handler code, on platform threads: by default the message threads, a fixed pool, one per CPU core |
+| Sync event handler | Nothing for the handler, by default | Handler code, on the message threads: by default a fixed pool of platform threads, one per CPU core |
 | Spring non-suspend `@Event` handler | Nothing for the handler | Handler code, on platform threads |
 
-No setting moves a Java Sync event handler onto virtual threads. It gets a virtual thread only for standalone reads that return a value or a list, and single inserts, and its message thread stays parked while they run, so the number of Sync handlers running at once is still limited by the message threads.
+A Java Sync event handler makes its database calls on its message thread, so the number of Sync handlers running at once is limited by the message threads. On Java 24 and later, the JVM system property `-Dgenesis.net.virtualThreads=true` runs the message threads as virtual threads instead, with at most `genesis.net.virtualThreads.maxInFlight` messages (default 256) in flight at once.
 
 Virtual threads also don't raise database concurrency on their own. Once threads stop being the limit, [the connection pool](#sizing-the-connection-pool) is.
 
