@@ -90,8 +90,8 @@ When you make the change:
 
 - **Keep the fields in the same order.** The key is the field values joined in order, so the same order gives the same key, and the entries already in your auth maps still match.
 - **Use fields of the query's own table or view.** In a query on `TRADE_VIEW`, write `TRADE_VIEW.TRADE_ID`. A field from another table is now a compile error. In 8.15, it was accepted and matched by name only.
-- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see that the key is unique for each row, so that it can use a lighter permissions map. `authKey(TABLE.FIELD)` sets `rowLevelPermissions` for you, so you don't need to set it as well. On a key that isn't unique, the data server logs a warning when a second row shares a key, and falls back to the heavier map.
-- **Use one form of `authKey` in each block.** Following `authKey(TABLE.FIELD)` with `authKey { ... }` in the same block has the same effect as setting `rowLevelPermissions` yourself.
+- **Prefer `authKey(TABLE.FIELD)` to `authKey { key(data.tradeId) }`.** Both give the same key, but only `authKey(TABLE.FIELD)` lets the data server see whether the key is unique for each row. It sets `rowLevelPermissions` for you, so you don't need to set it as well: to `true` if the fields cover a primary or unique index of the table or view, so that the data server can use a lighter permissions map, and to `false` otherwise. It replaces any value set before it. If `rowLevelPermissions` is `true` on a key that isn't unique, the data server logs a warning when a second row shares a key, and falls back to the heavier map.
+- **Use one form of `authKey` in each block.** If you follow `authKey(TABLE.FIELD)` with `authKey { ... }` in the same block, the key comes from `authKey { ... }`, but `rowLevelPermissions` keeps the value that `authKey(TABLE.FIELD)` set from its own fields.
 - **If the old `where` used the user name**, as in `where { user -> user != "JohnDoe" }`, use `filterWithUserName { userName != "JohnDoe" }` instead.
 
 ## 2. Data servers and request servers: write the `enrichedAuth(...)` key in full
@@ -238,12 +238,12 @@ Refusing to enable console login provider LDAP: userDnTemplate '...' does not pr
 - Platform LDAP login (the `ldap { connection { } }` script DSL), where a connection sets both `bindDn` and `userGroups`. A connection that doesn't set `bindDn` is not affected.
 - Management console login with `DaemonMgmtUiLoginMode=LDAP,USER_PASSWORD`.
 
-**Why:** in 10.0, group membership on a connection with `bindDn` is read with the `bindDn` account rather than with the user's own connection. Separately, a management console user whom the directory has verified now has to have an `ENABLED` row in the `USER` table, and the login no longer falls through to `USER_PASSWORD` if there isn't one.
+**Why:** in 10.0, group membership on a connection with `bindDn` is read with the `bindDn` account rather than with the user's own connection. Separately, a management console user whom the directory has verified needs an `ENABLED` row in the `USER` table, as in 8.15. What is new is that if there isn't one, the login stops there, instead of falling through to `USER_PASSWORD`.
 
 **What goes wrong if you skip this:**
 
 - If the `bindDn` account can't read group membership, every login that requires a group is denied.
-- A user who is verified by the directory but has no `ENABLED` row in the `USER` table gets "Invalid username or password." in the management console.
+- A user who is verified by the directory but has no `ENABLED` row in the `USER` table can no longer get in through `USER_PASSWORD`, and gets "Invalid username or password." in the management console.
 
 **What to do:**
 
@@ -256,5 +256,5 @@ These changes don't require you to change anything, but code or operations that 
 
 - **Sessions expire a fixed time after they are created.** [`sessionTimeoutMins`](/develop/server-capabilities/access-control/authentication/#sessiontimeoutmins), set in the `security { }` block of your application's `auth-preferences.kts`, is now the lifetime of a session, counted from when it was created, rather than an idle timeout. Activity no longer extends it. To keep access, a client logs in again with its refresh token before the session expires. This applies on every authentication path, including native HTTP endpoints and web endpoints served through the router.
 - **Platform LDAP login (the `ldap { connection { } }` script DSL):** by default, a connection now times out after 10 seconds when connecting and after 300 seconds waiting for any directory response, including a bind. In 8.15, a bind timed out after 30 seconds. To change either value for a connection, set [`connectTimeoutMs`](/develop/server-capabilities/access-control/authentication/#connection) or `responseTimeoutMs` in its `connection { }` block, which sits in `security { authentication { ldap { } } }` in `auth-preferences.kts`.
-- **Management console LDAP login matches `USER` names without regard to case.** A `USER` row whose name differs from the directory name only in case now matches.
+- **Management console LDAP login can find a `USER` row under the name as typed.** It looks up the `USER` row under the name the directory returns. If there is no row under that name, it also tries the name the user typed, but only if it differs from the directory name in case alone.
 - **Management console rights:** rights granted or revoked in `RIGHT_SUMMARY` take effect within about 10 seconds.

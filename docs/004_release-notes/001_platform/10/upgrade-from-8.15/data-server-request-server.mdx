@@ -15,7 +15,7 @@ The steps show up at different points of the upgrade:
 | The process fails to start | 3 (derived field names that clash) |
 | Client requests that used to work are refused | 5 (client criteria) |
 | The process logs a warning at startup | 6 (the `ASYNC` backward-join cache mode) |
-| Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) and 7 (custom replies under file-level `permissionCodes`) |
+| Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) and 7 (custom replies under file-level `permissionCodes`, from 8.15.44 or earlier) |
 
 Every replacement in steps 1 and 2 already exists in 8.15, so you can make those changes on 8.15 first and then upgrade.
 
@@ -201,10 +201,10 @@ Criteria "<criteria>" on query <query> bounds no value of <field>, the first fie
 
 ## 7. Check row access on custom replies under file-level `permissionCodes`
 
-**Applies to:** `*-reqrep.kts` scripts that set `permissionCodes` at file level and also contain a custom or paginated reply with its own `permissioning { auth { } }` block.
+**Applies to:** upgrades from 8.15.44 or earlier, for `*-reqrep.kts` scripts that set `permissionCodes` at file level and also contain a custom or paginated reply with its own `permissioning { auth { } }` block.
 
-**Why:** in 8.15, the file-level codes replaced the reply's `permissioning` definition, so its `auth` block was dropped. In 10.0, the reply keeps its `auth` block.
+**Why:** in 8.15.44 and earlier, the file-level codes replaced the reply's `permissioning` definition, so its `auth` block was dropped. In 8.15.45 and 10.0, the reply keeps its `auth` block.
 
-**What goes wrong if you skip this:** users who saw every row in 8.15 now see only the rows their auth map allows.
+**What goes wrong if you skip this:** users who saw every row before now see only the rows their auth map allows.
 
 **What to do:** no code change is needed. Check that the auth maps give these users the rows they should see.

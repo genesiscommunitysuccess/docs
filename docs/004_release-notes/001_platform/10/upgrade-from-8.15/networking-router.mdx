@@ -16,6 +16,7 @@ The steps show up at different points of the upgrade:
 | A custom client or stored data stops working | 1 (MessagePack replaced by Smile) |
 | A warning appears in the logs | 6 (an injected `NetworkConfiguration`) and 7 (`MessageSerialization=MSGPACK`) |
 | An HTTP client sees different responses | 8 (oversized requests) and 9 (resources blocked by the router) |
+| A client's connection is closed | 10 (client certificates on the router's web port) |
 
 You can do steps 3 and 4, and the injection part of step 6, on 8.15 before you upgrade, because their replacements already exist there. The other steps need 10.0.
 
@@ -236,6 +237,16 @@ Setting them under `global` makes them apply to every process, which matches wha
 **What goes wrong if you skip this:** a client or alert that matches `401` for a blocked resource no longer matches. A tool that reads the OpenAPI spec or `RESOURCES_REQUEST` and expects a blocked resource in it no longer finds it.
 
 **What to do:** update anything that relies on the `401` or on blocked resources being listed. Two new system definition items let you switch the listings off altogether: `RouterOpenApiEnabled` and `RouterResourcesRequestEnabled`. Both default to `true`.
+
+## 10. Check client certificates on the router's web port
+
+**Applies to:** routers that serve their web port over TLS, where `network-config.yaml` enables [`tls.authorization`](../../../../001_develop/02_server-capabilities/017_runtime-configuration/06_service-encryption/02_yaml-reference.mdx#tlsauthorization).
+
+**Why:** in 10.0, the router's web port applies `tls.authorization` to every client that presents a certificate. In 8.15, the web port didn't apply it. A client that presents no certificate is let in, as before.
+
+**What goes wrong if you skip this:** a browser or API client whose certificate identity the policy denies has its connection closed straight after the TLS handshake. The router logs `TLS authorization denied for peer identity ...` as a WARN line.
+
+**What to do:** add the identities of those clients to `tls.authorization.allow`, or stop them presenting a certificate to the router.
 
 ## Before you adopt the WebSocket channel or the router proxy
 

@@ -45,7 +45,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
         permissionCodes = listOf("TRADER")
     }
     onCommit { event ->
-        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), "AUDIT_PROCESS", 5000)
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), "AUDIT_PROCESS", 5)
             ?: nack("audit unavailable")
     }
 }
@@ -56,7 +56,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
         permissionCodes = listOf("TRADER")
     }
     onCommit { event ->
-        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), 5000)
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), 5)
     }
 }
 ```
@@ -65,27 +65,29 @@ The remaining `triggerRemote` isn't a drop-in replacement, so check each call yo
 
 - **Routing.** It finds the target process from the event's message type, not from a process name. Some process must advertise that event, or the call throws an exception that ends `but event could not be found`. Take particular care with calls into platform processes.
 - **Message type.** A message type without the `EVENT_` prefix gets the prefix added before the call.
+- **Timeout.** The timeout is in seconds, in 8.15 and 10.0.
 - **Return value.** It never returns null. If no reply arrives, it throws an exception. So a `?:` fallback after it never runs. The compiler only warns about this, so it won't show up as an error. If you need the fallback, catch the exception instead.
 
 For the current DSL, see [`triggerRemote`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#triggerremote).
 
 ## 2. XML event handler definitions: port them to GPAL
 
-**Applies to:** process configuration XML files that define event handlers in a `<transactions>` section.
+**Applies to:** process configuration XML files with a `<transactions>` section. Each `<transaction>` in it attached expressions and metadata overrides to the `AbstractEventHandler` handler with the same message type.
 
-**Why:** 10.0 removes the XML format for event handlers.
+**Why:** 10.0 no longer reads the `<transactions>` section.
 
 **What goes wrong if you skip this:** nothing fails. The file still loads, but the `<transactions>` section is ignored. Its `preValidate`, `prePersist` and `postPersist` expressions stop running, and its metadata field overrides stop applying.
 
-**What to do:** search your process configuration XML files for `<transactions>`. Port each definition to a GPAL `eventHandler` or to a [typed event handler](#4-abstracteventhandler-subclasses-plan-the-port):
+**What to do:** search your process configuration XML files for `<transactions>`. Move each `<transaction>` into the code of the handler it applies to. If you also port that handler to a [typed event handler](#4-abstracteventhandler-subclasses-plan-the-port), put it in the typed handler instead:
 
-| XML | Equivalent |
-|---|---|
-| `preValidate` | `onValidate { }` |
-| `prePersist` / `postPersist` | Code in `onCommit { }`, before or after the write |
-| `metadata.fields.field` | Fields on the payload class, adjusted with `overrideMetadataFields()` |
+| XML | 8.15 ran it | Move it to |
+|---|---|---|
+| `preValidate` | On the incoming message, before the handler's `onValidate` or `onCommit` | The start of `onValidate` and of `onCommit` |
+| `prePersist` | On the incoming message, before the handler's `onCommit` | The start of `onCommit` |
+| `postPersist` | On the reply, when the handler sent it with `EventManager.sendResponse` | Just before the handler sends its reply |
+| `metadata.fields.field` | Added fields to the handler's metadata, or made optional fields mandatory | The handler's `EventMetaData`, or the payload class of a typed handler |
 
-**How to check:** 10.0 logs nothing about a leftover XML file, so check the ported handlers instead. Start the event handler process and look in its log for `Registering event handler for EVENT_<NAME>`, an INFO line. Each ported event should appear once. If one is missing, you didn't port it, or its `-eventhandler.kts` script isn't in the process's script list. As a fallback, send one ported event and confirm that the process acknowledges it.
+**How to check:** 10.0 logs nothing about a leftover `<transactions>` section, and the handlers still register as before. For each moved `preValidate`, send an event that it used to reject and confirm that the handler still rejects it. For each moved `prePersist` or `postPersist`, send an event and confirm that the written record or the reply has the values it used to set.
 
 ## 3. Messages sent as bare `EVENT_INSERT`, `EVENT_MODIFY` or `EVENT_DELETE`
 
@@ -108,11 +110,11 @@ Message types that already include a table name, such as `EVENT_INSERT_USER`, ar
 
 **Why:** these classes in `global.genesis.eventhandler` are deprecated for removal in 10.0. They still work. `CallableTransactionHandler` has been removed.
 
-**What goes wrong if you skip this:** in 10.0, code that uses the deprecated classes gets a `[removal]` compiler warning. If your build treats warnings as errors, it fails. Code that uses `CallableTransactionHandler` fails to compile. The deprecated classes are slated for removal in v11.
+**What goes wrong if you skip this:** in 10.0, code that uses the deprecated classes gets a compiler warning: `[removal]` from `javac`, a deprecation warning from Kotlin. If your build treats warnings as errors, it fails. Code that uses `CallableTransactionHandler` fails to compile. The deprecated classes are slated for removal in v11.
 
 **What to do now:**
 
-- If your build treats warnings as errors, suppress the `removal` warning for these classes.
+- If your build treats warnings as errors, suppress the warning where you use these classes: `@SuppressWarnings("removal")` in Java, `@Suppress("DEPRECATION")` in Kotlin.
 - Replace any use of `CallableTransactionHandler`. 10.0.0 has no one-to-one substitute for it. The product's own guidance is to move the handler to one of the typed event handlers (the sync, async and rx3 variants, for example `SyncEventHandler`); the deprecation notes say there is "no single mechanical substitution". Plan this as a port of the handler, not a rename.
 
 **What to do before the classes are removed:** port each handler to a typed event handler in `global.genesis.eventhandler.typed`. These interfaces already exist in 8.15. There is no migration tool, so the port is manual. The deprecation notes in the code mention a `MigrateEventHandlerToPAL` tool and a migration guide, but neither ships with 10.0.
@@ -319,17 +321,16 @@ On migrated rows, `USER_NAME` still holds the user who made the change, because 
 
 **Applies to:** dynamic rules, cron rules and client criteria, particularly any that a program generates.
 
-**Why:** 10.0 checks these expressions more strictly and limits their size.
+**Why:** 10.0 limits the size of these expressions. It also refuses some expressions that 8.15.44 and earlier accept; 8.15.45 already has those checks.
 
 **What goes wrong if you skip this:**
 
-- A `\u` escape in a rule expression or client criteria is refused. So is a result expression written as a comparison, such as `DESK == 'US'`.
-- A stored rule that fails these checks doesn't run, and the evaluator logs an ERROR line that names it.
-- Client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected.
+- From 8.15.44 or earlier: a `\u` escape in a rule expression or client criteria is refused. So is a result expression written as a comparison, such as `DESK == 'US'`. A stored rule that fails these checks doesn't run, and the evaluator logs an ERROR line that names it.
+- From any 8.15 patch: client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected. A stored rule over a limit still runs, and the evaluator logs a WARN line that names it.
 
 **What to do:** search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE` and the `RESULT_EXPRESSION` values in `CRON_RULE`. Use the literal character instead of a `\u` escape, and write results as assignments, such as `DESK = 'US'`.
 
-If your expressions are near a limit, shorten them, or set the item in your system definition. A value of 0 or below disables the limit.
+If your expressions are near a limit, shorten them, or set the item in your system definition. A value of 0 or below disables the limit. Rules also get a [nesting check on the parsed expression](/develop/server-capabilities/runtime-configuration/system-definition/#raising-the-limits), capped at 100 levels: `ExpressionMaxNestingDepth` can lower that cap, but can't raise or disable it.
 
 | System definition item | Default |
 |---|---|
@@ -341,4 +342,5 @@ If your expressions are near a limit, shorten them, or set the item in your syst
 
 - **GPAL event handler scripts.** `eventHandler<T> { }` and `contextEventHandler` scripts work as before, unless they use the members removed in step 1.
 - **`PROCESS_NAME` on rule events.** The rule insert events and `EVENT_DYNAMIC_RULE_AMEND` no longer require `PROCESS_NAME` (the evaluator engine has used service discovery when it is empty since v8). A dynamic rule amend replaces every field, so if you leave `PROCESS_NAME` out of it, the stored value is cleared.
+- **Async event handlers in flight.** A process now runs at most 256 async event handlers at once, counting GPAL event handlers and `AsyncEventHandler` implementations. Further events wait until one finishes. To change the limit, set the `genesis.eventhandler.async.maxInFlight` system property in the process's JVM options; `0` removes it. See [Async event handlers in flight](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#async-event-handlers-in-flight).
 - **`USER_NAME` on `EVENT_CRON_RULE_INSERT`.** You don't need to send `USER_NAME`. The evaluator sets it to the user who sent the event.

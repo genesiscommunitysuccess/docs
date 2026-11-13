@@ -19,7 +19,7 @@ The steps show up at different points of the upgrade:
 
 These have not changed, so they need no action:
 
-- **The database engine.** FoundationDB (`DbLayer=FDB` or `FDB2`) is deprecated in 10.0 and is planned for removal in 11.0.0, but it still works. A process that uses it now logs a deprecation warning at startup.
+- **The database engine you set.** FoundationDB (`DbLayer=FDB` or `FDB2`) is deprecated in 10.0 and is planned for removal in 11.0.0, but it still works. A process that uses it now logs a deprecation warning at startup. If your system definition doesn't set `DbLayer`, 10.0 uses `SQL`, where 8.15 used `FDB`, so set it explicitly if you rely on the default.
 - **`RxDb`, `RxEntityDb`, `AsyncEntityDb` and `SyncEntityDb`** can still be injected, and they still work.
 - **`DbSqlConnectionPoolSize`** is still honoured but deprecated; use [`DbSqlMaxPoolSize`](/build-deploy-operate/deploy/supporting-infrastructure/#common-system-definitions).
 
@@ -149,18 +149,21 @@ View <VIEW_NAME> fails the build because its generated SQL select labels collide
 
 **Applies to:** code that calls `insertAll`, `upsertAll`, `modifyAll`, `deleteAll` or `recoverAll`.
 
-**Why:** these methods now reject a batch in which two items resolve to the same row, meaning the same table, the same unique index and the same key values. In 8.15, the outcome depended on the database: on some, a batch like this succeeded and kept one of the rows.
+**Why:** these methods now reject a batch in which two items name the same record, meaning the same table and the same values for one of its unique indexes. In 8.15, the outcome depended on the database: on some, a batch like this succeeded and kept one of the rows.
 
-**What goes wrong if you skip this:** where the check runs, the call throws `GenesisDatabaseFailureException` with `DatabaseErrorCode.DUPLICATE_KEY`, and nothing in the batch is written.
+**What goes wrong if you skip this:** the call throws `GenesisDatabaseFailureException` with `DatabaseErrorCode.DUPLICATE_KEY`, and nothing in the batch is written.
 
-**Where the check runs:**
+**What is checked:** every database API checks the whole batch before writing: `SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`, `SyncDb`, `AsyncDb` and `RxDb`.
 
-- **Checked:** the `Db` APIs (`SyncDb`, `AsyncDb` and `RxDb`), and `RxEntityDb` inside `writeTransaction`.
-- **Not checked:** standalone batch writes on `SyncEntityDb`, `AsyncEntityDb` and an injected `RxEntityDb`. These bypass the validator, so a batch that names the same record twice isn't reliably rejected there. See [gpal-java](/develop/server-capabilities/data-access-apis/gpal-java/). A directly constructed `RxEntityDb`, which is deprecated, does run the check.
+- `insertAll` and `recoverAll` compare every unique index of the table, not only the primary key.
+- `modifyAll`, `upsertAll` and `deleteAll` compare the unique index that each item looks its record up by. `modifyAll` and `upsertAll` also compare the values that the items write to a unique index.
+- When a `modifyAll` or `deleteAll` batch reaches the records of one table through more than one unique index, `SyncEntityDb`, `AsyncEntityDb` and standalone writes through an injected `RxEntityDb` read those records first, and reject two items that resolve to the same record. On `SQL`, `SyncDb`, `AsyncDb`, `RxDb` (including `rxDb.entityDb()`) and writes inside `RxEntityDb.writeTransaction` don't read them first. On `FDB` and `FDB2`, every API does.
+
+Some keys are not compared, such as a key field that isn't set on the item. See [Batches that name the same record twice](../../../../001_develop/02_server-capabilities/003_data-access-apis/01_gpal-java/index.mdx#batches-that-name-the-same-record-twice) for the full rules.
 
 **What to do:**
 
-- Remove duplicates before you call an `*All` method, including on the APIs that don't check, where a duplicate isn't reliably rejected; for example, group the records by key and keep the last one.
+- Remove duplicates before you call an `*All` method; for example, group the records by key and keep the last one.
 - Key values are compared after they have been normalised by field type, so `BigDecimal("1.0")` and `BigDecimal("1.00")` count as the same key.
 
 ## 6. Check `STRING` values against `maxSize`
@@ -204,6 +207,8 @@ IllegalArgumentException: Field <FIELD> value exceeds max size of <maxSize> char
 | `ZeroMQUpdateQueue.create(hosts, port)` and its overloads | Inject `UpdateQueue`. |
 | `RxJdbcDataSource` | `SqlConnectionPool`, in the same package. This is a rename; it was not deprecated in 8.15. |
 | `DatabaseManager.getStorageEngine(…)` | Inject `StorageEngine`. This was not deprecated in 8.15. |
+| `isBulkSorted` on the database and entity database read APIs | `true`: every supported database layer returns bulk reads sorted. |
+| The top-level functions `isEntityView`, `getEntityFields`, `getEntityIndices`, `getIndices` and `getIndex` in `global.genesis.db.dictionary.util` | The same functions on `DbReflectionUtils`, in the same package, for example `DbReflectionUtils.isEntityView(entity)`. |
 
 For example, with `AsyncEntityDb`:
 
@@ -261,3 +266,4 @@ These changes don't require you to do anything, but code that relied on the old 
   - A nested transaction opened by a write listener joins the write that the listener is handling. If the nested transaction fails, its own writes are rolled back.
   - `RxDb` writes join an enclosing transaction.
   - A standalone `SyncEntityDb` write is atomic with its write listener.
+- **SQL reads by a non-unique index** return rows that have the same index values in `RECORD_ID` order. In 8.15, their order was left to the database.

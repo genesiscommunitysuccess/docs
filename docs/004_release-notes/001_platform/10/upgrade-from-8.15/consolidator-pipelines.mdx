@@ -22,6 +22,7 @@ If a `*-data-pipeline.kts` script uses `postgresSource`, `oracleSource` or `msSq
 These have changed, but need no action:
 
 - **Consolidators.** In 10.0, `select { }` and `build { }` are optional, and `onNotFound` accepts a new `IGNORE` value. Existing definitions keep working.
+- **File sinks.** `fileSink()` and `camelFileSink { }` now write each file under a hidden temporary name in the target folder, then move it into place, so a route that reads the folder never picks up a partly written file.
 - **Record counters.** Pipelines now count records automatically, with no script change. A new Micrometer counter, `pipeline_records`, appears for each pipeline once a run has counted something, for example in any pipeline that uses `dbSink()` or `txDbSink()`. See [Record counters](/develop/server-capabilities/integrations/data-pipelines/#record-counters).
 
 ## 1. Rewrite `pipeline("X") { ... }` as a builder chain
@@ -104,7 +105,7 @@ The check only looks within one `pipelines { }` block. Two pipelines with the sa
 | `AbstractProgrammaticSource<T>` | `global.genesis.pipeline.event` | `ProgrammaticSource<T>`, in the same package |
 | `global.genesis.datapipeline.pal.sink.DbOperation<T>` | imports | `global.genesis.pipeline.api.db.DbOperation<T>` |
 
-`csvSource(name) { }` is not part of this list. It is unchanged and still works in both `*-pipelines.kts` and `*-data-pipeline.kts`, including inside `pipelines { }`.
+`csvSource(name) { }` is not part of this list. It is unchanged and still works in `*-data-pipeline.kts`, including inside `pipelines { }`. It is not available in `*-pipelines.kts`.
 
 For `camelSource`, only the function name changes. The configuration block inside it stays the same:
 
@@ -241,4 +242,4 @@ The error raised for the file says which of these happened.
 
 - Check that every event name is spelt correctly and that the service that handles it is deployed.
 - Watch the logs for warnings that contain `holding until delivered`, such as `Unable to resolve ... holding until delivered`. They mean the handler is waiting for a target.
-- `sendEventOnCompletion` has no setting to limit the wait. If you need a deadline, send the event from an [`eventSink`](/develop/server-capabilities/integrations/data-pipelines/#eventsink) with `retry = holdWithDeadline(maxWaitMs)` instead. An `eventSink` sends one event per element, from the sink position, rather than one when processing completes. By default it throws on a NACK, and a throw from a sink stops a real-time pipeline unless it has an `onUncaughtError` handler.
+- `sendEventOnCompletion` has no setting to limit the wait. If you need a deadline, send the event from an [`eventSink`](/develop/server-capabilities/integrations/data-pipelines/#eventsink) with `delivery { retry = holdWithDeadline(maxWaitMs) }` instead. An `eventSink` sends one event per element, from the sink position, rather than one when processing completes. By default it throws on a NACK, and a throw from a sink stops a real-time pipeline unless it has an `onUncaughtError` handler.

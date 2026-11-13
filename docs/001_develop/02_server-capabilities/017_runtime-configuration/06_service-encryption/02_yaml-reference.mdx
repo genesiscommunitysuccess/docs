@@ -261,6 +261,10 @@ When `tls.mode` is not `PLAIN_TEXT`, the TLS subtree is validated. Invalid or un
 | `allow`           | object | —       | Allow list (identities + patterns) |
 | `deny`            | object | —       | Deny list (identities + patterns) |
 
+A connection without a client certificate follows `defaultDecision`. The router's web port (its HTTP and WebSocket listener) is the exception: it checks a client that presents a certificate against these rules, and lets in a client that presents none, such as a browser.
+
+When a connection is denied, the process logs a WARN line `TLS authorization denied for peer identity <identity> from <peer> on <listener>`. Further denials of the same identity on the same listener are logged at DEBUG for 5 minutes.
+
 #### `tls.authorization.identitySource`
 
 | Key       | Type   | Default | Description |

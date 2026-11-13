@@ -60,7 +60,7 @@ item(name = "MY_PROCESS_PROCESS_OPTIONS", value = "-Xmx2g")
 
 **Applies to:** environments that set `<PROCESS>_PROCESS_*` overrides, for example `GENESIS_SYSDEF_MY_PROCESS_PROCESS_OPTIONS`, as environment variables.
 
-**Why:** in 8.15, `<PROCESS>_PROCESS_*` overrides in the system definition were applied only when `genesisInstall` wrote `processes.xml`. In 10.0, `startProcess` also reads them, from the system definition and from `GENESIS_SYSDEF_` environment variables, each time it starts a process, and they take precedence over `processes.xml`.
+**Why:** in 8.15, `<PROCESS>_PROCESS_*` overrides in the system definition were applied only when `genesisInstall` wrote `processes.xml`; only `<PROCESS>_PROCESS_START` was also read at run time, by server scripts such as `startServer` and `mon`. In 10.0, `startProcess` also reads them, from the system definition and from `GENESIS_SYSDEF_` environment variables, each time it starts a process, and they take precedence over `processes.xml`.
 
 **What goes wrong if you skip this:** an override environment variable that is left in the environment that runs `startProcess` now changes how the process starts, even if it had no effect on your 8.15 install.
 
@@ -158,7 +158,7 @@ A host name with an underscore already failed on 8.15, with a less clear error, 
   ```
 
   If a run for a region that worked on 8.15 now fails, look up that region's current code in the library.
-- **Data:** delete the existing rows in `HOLIDAYS` for the years you hold, then re-run `PopulateHolidays` for those years, so that the table matches the new data. `PopulateHolidays` only inserts rows and never replaces existing ones, so if you skip the delete, every holiday for those years is stored twice. The [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays) reference shows how to delete the rows with `DbMon`.
+- **Data:** delete the existing rows in `HOLIDAYS` for the years you hold, then re-run `PopulateHolidays` for those years, so that the table matches the new data. `PopulateHolidays` only inserts rows and never replaces existing ones. If you skip the delete, dates that already exist are not replaced: those inserts fail, and the run prints `Failed to import data for year <year> and country <country>`. Holidays that only the old data has stay in the table, and so do rows under an old region code, such as `en` beside the new `eng`. The [`PopulateHolidays`](/build-deploy-operate/operate/commands/#populateholidays) reference shows how to delete the rows with `DbMon`.
 - **Code:** change imports of `de.jollyday.*` to `de.focus_shift.jollyday.core.*`.
 
 ## 10. Check scripts that parse `mon` output or find processes themselves

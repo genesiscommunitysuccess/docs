@@ -29,7 +29,7 @@ Work through it in this order:
 |---|---|---|
 | Gradle | 8.10.2 | 9.7.1 |
 | Kotlin | 2.1.21 | 2.4.21 |
-| JDK for building and running an application | 17 or later | 17 or later (JDK 25 recommended at runtime) |
+| JDK for building and running an application | 17 or later | 17 or later (17 and 25 are supported equally) |
 | Guice | 5.1 | 7.0 |
 | Dependency injection annotations | `javax.inject` | `jakarta.inject` |
 | Lifecycle | Netflix Governator | `GenesisLifecycleManager` |
@@ -117,7 +117,7 @@ org.gradle.jvmargs=<existing flags> -XX:+IgnoreUnrecognizedVMOptions --sun-misc-
 
 #### Gradle 9 changes in your build scripts
 
-**Applies to:** build scripts that use Gradle APIs removed in Gradle 9. This list covers the ones Genesis projects commonly hit; Gradle's own upgrade guide has the full list.
+**Applies to:** build scripts that use Gradle APIs that Gradle 9 removed, deprecated or changed. This list covers the ones Genesis projects commonly hit; Gradle's own upgrade guide has the full list.
 
 | Gradle 8 | Gradle 9 |
 |---|---|
@@ -126,6 +126,8 @@ org.gradle.jvmargs=<existing flags> -XX:+IgnoreUnrecognizedVMOptions --sun-misc-
 | `task<T>("name") { }` | `tasks.register<T>("name") { }` |
 | `configuration.resolvedConfiguration.lenientConfiguration.getFiles { }` | `configuration.incoming.artifactView { isLenient = true }.files` |
 | `Provider<X?>` | `Provider<X>` |
+
+`fileMode` and `getFiles` are removed, so a script that uses them doesn't compile. `buildDir` and `task<T>(...)` still work in Gradle 9.7.1, but are deprecated. The `Provider` row is a nullability change: Gradle 9 declares `Provider` with a non-null type argument.
 
 Projects generated with a site-specific module have one `fileMode` line in `<app>-site-specific/build.gradle.kts`:
 
@@ -357,9 +359,10 @@ Changes to the Genesis test support itself, such as the new check for leftover `
 | fest-assert | move to AssertJ (`org.assertj:assertj-core`, version managed) |
 | Groovy `json`, `sql`, `nio`, `templates`, `jsr223` or `cli-picocli` | the `org.codehaus.groovy` module you need, with an explicit version. Use `3.0.25`, which matches the Groovy the platform itself uses |
 | `plexus-utils` or `handlebars` in tests or code generation | the library itself; it no longer arrives on the test and codegen classpaths |
-| `protobuf-java`, `protobuf-dynamic`, `javalin-rendering-freemarker`, Debezium or Kafka Connect | the library, with a version; `genesis-bom` no longer manages it |
+| `protobuf-java`, `protobuf-dynamic`, `javalin-rendering-freemarker`, `Java-WebSocket`, `xpp3`, `maven-artifact`, `ki-shell`, Debezium or Kafka Connect | the library, with a version; `genesis-bom` no longer manages it |
+| `io.ktor:ktor-serialization-jackson` or `org.apache.camel:camel-jacksonxml` | the Jackson 3 artifact, `io.ktor:ktor-serialization-jackson3` or `org.apache.camel:camel-jackson3xml` (version managed); the Jackson 2 artifacts are no longer managed |
 
-These stay version-managed, so declare them without one: `commons-beanutils`, `artemis-jakarta-client`, `assertj-core` and `kotlin-compiler-embeddable` (through `kotlin-bom`). The six Groovy modules need an explicit version (`3.0.25` matches the platform's Groovy): `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` and `groovy-cli-picocli`.
+These stay version-managed, so declare them without one: `commons-beanutils`, `artemis-jakarta-client`, `assertj-core`, `ktor-serialization-jackson3`, `camel-jackson3xml` and `kotlin-compiler-embeddable` (through `kotlin-bom`). The six Groovy modules need an explicit version (`3.0.25` matches the platform's Groovy): `groovy-json`, `groovy-sql`, `groovy-nio`, `groovy-templates`, `groovy-jsr223` and `groovy-cli-picocli`.
 
 Run `./gradlew build` to confirm the declarations are complete.
 
@@ -374,9 +377,9 @@ Two APIs that depended on these libraries have also changed:
 
 ### 8. Check Genesis Gradle properties are set as Gradle properties
 
-**Applies to:** builds that set `genesisVersion`, `clientName`, `skipWeb` or `enableGenesisIntellijHelperTasks` from a build script, for example with `extra["skipWeb"] = true`.
+**Applies to:** builds that set `genesisVersion`, `clientName`, `skipWeb` or `enableGenesisIntellijHelperTasks` from a build script, for example with `extra["skipWeb"] = "true"`.
 
-**Why:** the Genesis plugins now read these only as Gradle properties.
+**Why:** the Genesis plugins now read these only as Gradle properties. The one exception is `clientName`, which the exec plugin still reads from an extra property first when it looks for the site-specific module.
 
 **If you skip it:** the value set in the build script is ignored.
 
@@ -467,7 +470,7 @@ The builder stage of the generated Dockerfile, images built with `dockerImage { 
 | A getter with a digit straight after `get` is no longer a property | `get2Value()`: `2_VALUE` is no longer written | Rename the property, or add `@JsonProperty` |
 | CSV columns follow declaration order | they were alphabetical | Fix consumers that read columns by position, or reorder the properties |
 | XML nulls carry `xsi:nil` | `<note/>` becomes `<note xmlns:xsi="..." xsi:nil="true"/>` | Check consumers with a strict XML schema |
-| `Instant`, `LocalDateTime` and `ZonedDateTime` are written as whole epoch milliseconds | `1614834367.008000000` becomes `1614834367008` | Check clients of your own event and request types that use these types |
+| `Instant`, `LocalDateTime` and `ZonedDateTime` are written as whole epoch milliseconds | `1614834367.008000000` becomes `1614834367008` | Check clients of your own event and request types that use these types. A fractional number in the 8.15 form is now rejected when it is read, so clients that send these values must send whole milliseconds or an ISO-8601 string |
 
 Generated entity fields don't use `Instant`, `LocalDateTime` or `ZonedDateTime`, so the last row only affects types you define yourself.
 
@@ -499,7 +502,7 @@ genesis {
 
 Or apply `id("global.genesis.script.compilation")` to the modules that hold your `.kts` files. Then fix what the build reports:
 
-- Add a dependency for every type the scripts use, including modules named in `@file:ScriptModules`.
+- Add a dependency for every type the scripts use. A script that contains `@file:ScriptModules` is not compiled at build time; it is still compiled at start-up, where its modules are resolved.
 - Exclude any `.kts` file that no script definition claims.
 
 With it on, a script that throws at start-up runs three times instead of twice, so any side effects before the exception happen once more. Check `*-script.kts` and `*-eventhandler.kts` files that do non-repeatable work before they can fail.

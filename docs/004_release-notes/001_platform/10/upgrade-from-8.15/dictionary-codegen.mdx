@@ -141,6 +141,7 @@ For a field whose name starts with `IS` but that is not a `BOOLEAN`, 8.15 also g
 | `dtaHosts(environment)` | `genesisHosts(environment)` | The `systems { }` block of a `*-system-definition.kts` file |
 | `dictionary.sequenceIdFields` (`getSequenceIdFields()` in Java) | `dictionary.idSequences` (`getIdSequences()`) | Custom code that reads `GenesisDictionary` |
 | `global.genesis.codegen.GenesisVersion.version` | `global.genesis.commons.utils.GenesisVersion.version` | Custom Gradle or build tooling |
+| `LambdaExtractor` and `LambdaListener` (`global.genesis.dictionary.reader.kts`) | `TableDerivedFieldAnalyzer`, in the same package | Custom tooling that reads `derivedField` lambdas from a tables dictionary |
 
 ## 5. Fix framework field declarations that 8.15 only warned about
 
