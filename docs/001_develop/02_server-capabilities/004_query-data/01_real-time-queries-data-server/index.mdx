@@ -990,6 +990,7 @@ To control the flow of data and allow for filtering  and ordering, the following
 | `FIELDS`         |         | This parameter enables the front end to select a subset of fields from the query. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. If this option is not specified, all fields are returned                                                                                                                                                          |
 | `ORDER_BY`       |         | This option can be used to select an [index](#indices) in the Data Server query that is being queried for sorting. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest). On a query that uses the SQLite cache backend, this can also be a list of fields, such as `TRADE_DATE DESC, PRICE ASC`; read [sorting and filtering on SQLite](#sorting-and-filtering-on-sqlite) |
 | `REVERSE`        | `false` | Reverses the order of data served by the `ORDER_BY` index. For example, if you are using the default index, the query will return rows from newest database records to oldest. With a field list in `ORDER_BY`, it reverses the direction of every field |
+| `ENCODING`       |         | Requests a [columnar encoding](#columnar-encoding) for the rows in `QUERY_UPDATE` messages: `SCDB_V1` or `SCDBJ_V1`. If this option is not specified, or the value is not recognised, rows are sent in the standard row format |
 
 Example `DATA_LOGON`
 
@@ -1211,6 +1212,26 @@ connection: keep-alive
 </TabItem>
 </Tabs>
 
+#### Columnar encoding
+
+By default, each `QUERY_UPDATE` carries its rows in a `ROW` array, and every row repeats its field names. A client can ask for a columnar encoding instead by setting `ENCODING` in the `DETAILS` block of `DATA_LOGON`. Columnar messages pack the values by column and don't repeat field names in every row, which makes them smaller. Nothing changes for a client that doesn't ask.
+
+| `ENCODING` | Format | Field that carries the rows |
+|------------|--------|-----------------------------|
+| `SCDB_V1`  | Binary | `RBUF`                      |
+| `SCDBJ_V1` | JSON columnar | `SCDBJ`              |
+
+If the Data Server accepts the encoding, `LOGON_ACK` returns the value in `ENCODING`, together with a `DICT_HASH`. The column ids in the payload are positions in the query's full field list, which the client takes from the resource's metadata; the client uses `DICT_HASH` to confirm that it has the same field order as the server. Columnar `QUERY_UPDATE` messages also carry `ENCODING`.
+
+The server falls back to the standard row format in these cases:
+
+- The value of `ENCODING` is not one that the server recognises: `LOGON_ACK` has no `ENCODING`, and every update uses `ROW`.
+- A batch contains a value that the encoding can't represent: that one message uses `ROW` and has no `ENCODING`, and later messages can be columnar again. The `dataserver_columnar_encoding_fallback` metric counts these messages.
+
+A client that asks for a columnar encoding must therefore check each `QUERY_UPDATE` for `ENCODING`.
+
+In a Foundation UI application, set `connect.dataserverEncoding` in the connect configuration, and the client decodes the messages for you. Over HTTP, the client always uses row format for Data Server requests, so use a WebSocket connection for columnar streams.
+
 #### Rows & view concepts
 ###### MAX_ROWS
 MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows).
@@ -1257,6 +1278,8 @@ Let's summarize all that.
 Client filtering is specified in the `CRITERIA_MATCH` option.
 
 The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in [Client capabilities - server communications](/develop/client-capabilities/server-communications/criteria-matching/).
+
+From version 10.0.1, the server checks the client's `CRITERIA_MATCH` against the [expression limits](/develop/server-capabilities/runtime-configuration/system-definition/#expression-limits) before it compiles it. Criteria over a limit are refused with `INVALID_CRITERIA`, and the error message names the limit, for example `Expression exceeds ExpressionMaxLength: 70000 > 65536`.
 
 ### `MORE_ROWS`
 

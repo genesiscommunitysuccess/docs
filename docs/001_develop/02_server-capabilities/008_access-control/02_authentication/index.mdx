@@ -328,8 +328,11 @@ authentication {
 
 ### `sessionTimeoutMins` 
 
-Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
-A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
+Specifies the lifetime (in minutes) of a session, counted from when the session was created. Activity, such as heartbeats and requests, doesn't extend it. When this time has passed, the session is expired (logged out) and the client is told to re-authenticate.
+
+If the session expires, the client can still create a new session with a [refresh token login](#event_login_auth) until the refresh token expires, but requests in between are rejected. To avoid that interruption, perform the refresh token login before the session expires. It ends the old session immediately and creates a new one with its own lifetime, so the client must replace both `SESSION_AUTH_TOKEN` and `REFRESH_AUTH_TOKEN` with the values in the response.
+
+A genesis UI is configured by default to perform a refresh token login upon expiry to avoid users needing to manually re-authenticate.
 
 ```kotlin title="auth-preferences.kts"
 security {
@@ -341,7 +344,7 @@ Default value: 30
 
 ### `refreshTokenExpirationMins` 
 
-Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
+Specifies a timeout (in minutes) for the refresh token value that was provided on successful login, counted from when the session was created. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token. Each refresh token login creates a new session and refresh token, which start their own timeouts, so a client that keeps refreshing doesn't need to log in again.
 
 ```kotlin title="auth-preferences.kts"
 security {
@@ -353,7 +356,7 @@ Default value: 7200 (5 days)
 
 ### `expiryCheckMins` 
 
-Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
+Specifies the interval (in minutes) at which the auth manager deletes sessions whose [refresh token](#refreshtokenexpirationmins) has expired.
 
 ```kotlin title="auth-preferences.kts"
 security {

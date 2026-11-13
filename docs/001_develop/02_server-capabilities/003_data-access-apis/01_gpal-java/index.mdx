@@ -23,12 +23,14 @@ The versions of the entity EntityDb are:
 
 | API           | Languages   | Description                                                                                                             | 
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
-|`SyncEntityDb` |Kotlin + Java|A blocking API, simplest to use and helpful when performance isn't critical                                              |
+|`SyncEntityDb` |Kotlin + Java|A blocking API, and the simplest to use. This is the API to use from Java                                                |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
 |`RxEntityDb`   |Java only    |Deprecated in 10.0; use `AsyncEntityDb` instead. An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki). See [Upgrade from 8.15: Database layer](/release-notes/platform/10/upgrade-from-8.15/database#8-expect-deprecation-warnings-for-rxdb-and-rxentitydb) |
 |`SyncDb`       |Kotlin + Java|A blocking, record-level API that works with [`DbRecord`](#dbrecord)s instead of type-safe entities. See [SyncDb and AsyncDb](#syncdb-and-asyncdb) |
 |`AsyncDb`      |Kotlin only  |A record-level API powered by Kotlin coroutines, which works with [`DbRecord`](#dbrecord)s instead of type-safe entities |
 |`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki), which does NOT use type-safe entities |
+
+Use `SyncEntityDb` from Java and `AsyncEntityDb` from Kotlin. `RxEntityDb` and `RxDb` are deprecated in 10.0. See [Choosing and using a DB API](/develop/server-capabilities/data-access-apis/choosing-a-db-api).
 
 The difference between blocking (synchronous) and asynchronous is that the code needs to wait on results to occur before moving on.
 
@@ -450,6 +452,7 @@ The `criteria` is a Groovy expression on a table or view row.
 - Notes:
     - Field names must exist on the target table/view; unknown fields will error during SQL generation.
     - Some functions may be normalized into SQL `LIKE`, range predicates, or comparisons depending on the backend.
+    - `Expr.dateIsEqual`, `Expr.dateIsAfter` and `Expr.dateIsLessEqual` compare whole days, in the server's time zone. On a `DATETIME` field, `dateIsEqual` matches any time on that day, `dateIsAfter` starts from the next day, and `dateIsLessEqual` includes all of that day. On SQL databases, this applies only when `date` is a string literal.
 
 ##### Ordering
 
@@ -1077,6 +1080,10 @@ final var writeResults = pair.getSecond();
 </TabItem>
 </Tabs>
 
+:::note
+On the `SQL` database layer, a single or bulk write made inside an open write transaction joins it without a savepoint of its own. If the write fails and your code catches the failure, the transaction keeps whatever the write had already done; on PostgreSQL, the failed statement aborts the whole transaction instead, so it rolls back rather than commits. To make such a write atomic on its own, wrap it in a nested `writeTransaction { }`, which runs under a savepoint and rolls back on its own if it fails.
+:::
+
 ### Subscribe operations
 
 Subscribe operations create a subscription to the given table or view. They will be invoked whenever updates occur to the entity they are listening to.
@@ -1542,7 +1549,7 @@ While this is more memory-efficient, the database connection will be kept open u
 
 #### AsyncEntityDb
 
-The Genesis Application Platform relies on [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing high-performance applications. The Async API is the preferred API for accessing the database in Kotlin. The [RxJava API](/develop/server-capabilities/data-access-apis/gpal-java/#rxentitydb) is also available. If you use Java, the asynchronous API is not available.
+The Genesis Application Platform relies on [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing high-performance applications. The Async API is the preferred API for accessing the database in Kotlin. The [RxJava API](/develop/server-capabilities/data-access-apis/gpal-java/#rxentitydb) is also available, but it is deprecated in 10.0. If you use Java, the asynchronous API is not available: use [`SyncEntityDb`](#syncentitydb) instead.
 
 ###### Coroutines overview
 
@@ -1616,7 +1623,7 @@ The write runs after `init` returns, so it can't make `init` wait for it. For co
 
 [RxJava](https://github.com/reactivex/RxJava/wiki) is a Java implementation of reactive extensions. The Genesis database uses this library to represent asynchronous database operations in java.
 
-If you are using Java. RxJava API is the only way of accessing the database. For Kotlin, the [async](/develop/server-capabilities/data-access-apis/gpal-java/#asyncentitydb) API is preferred (although the RxJava API is also supported).
+`RxEntityDb` is deprecated in 10.0, and no removal version is set. Existing code keeps working, but don't start new code on it. From Java, use [`SyncEntityDb`](#syncentitydb). From Kotlin, use [`AsyncEntityDb`](/develop/server-capabilities/data-access-apis/gpal-java/#asyncentitydb). See [Choosing and using a DB API](/develop/server-capabilities/data-access-apis/choosing-a-db-api).
 
 ###### Subscription
 
@@ -1772,7 +1779,7 @@ dbRecord.differenceInFields(dbRecord2)
 :::warning
 In a GPAL event handler, never inject them. Use the `entityDb` that the event handler provides, as the [Event Handler (GPAL / Java)](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/) page says ("Never inject a `SyncDb` or `SyncEntityDb` for database access in an event handler"). There are two reasons:
 
-- The event handler's `entityDb` is enhanced. With `transactional = true`, it audits writes automatically: every write to an [audited table](/develop/server-capabilities/data-model/gpal-java/#audited-tables) gets an audit entry with the event name, user and timestamp. It is also transactional: if the event fails, its writes are rolled back. Writes through an injected `SyncDb` get neither.
+- The event handler's `entityDb` is enhanced. With `transactional = true`, it audits writes automatically: every write to an [audited table](/develop/server-capabilities/data-model/gpal-java/#audited-tables) gets an audit entry with the event name, user and timestamp. It is also transactional: if the event fails, its writes are rolled back. Writes through an injected `SyncDb` are not audited. On SQL, they [join the handler's transaction](/develop/server-capabilities/data-access-apis/choosing-a-db-api#transactions-writes-join) and roll back with it.
 - GPAL event handlers run on coroutines, and `SyncDb` blocks. Never make blocking calls in coroutines.
 :::
 
@@ -1902,7 +1909,7 @@ import global.genesis.db.rx.RxDb
 ```
 
 :::note
-`RxDb` is deprecated as of 10.0, but it is still supported. Use `SyncDb` or `AsyncDb` for record reads and writes, and `AsyncEntityDb` for entity access. Some `RxDb` features have no `SyncDb` or `AsyncDb` equivalent.
+`RxDb` is deprecated as of 10.0, but it is still supported. Use `SyncDb` (Java) or `AsyncDb` (Kotlin) for record reads and writes, and `SyncEntityDb` (Java) or `AsyncEntityDb` (Kotlin) for entity access. Some `RxDb` features have no `SyncDb` or `AsyncDb` equivalent.
 :::
 
 Table, index and field names are strings, as in `SyncDb`. The main methods are:
@@ -1924,7 +1931,7 @@ Differences from `SyncDb`:
 
 ###### Virtual threads
 
-On Java 21 and later, the database layer runs its coroutine work on virtual threads. To use platform threads instead, set the JVM system property `-Dgenesis.db.virtualThreads=false` in the process's `<options>` in its `processes.xml` (see [Processes](/develop/server-capabilities/runtime-configuration/processes/)).
+On Java 21 and later, the database layer runs its coroutine work on virtual threads. To use platform threads instead, set the JVM system property `-Dgenesis.db.virtualThreads=false` in the process's `<options>` in its `processes.xml` (see [Processes](/develop/server-capabilities/runtime-configuration/processes/)). For which of your code runs on virtual threads, see [Choosing and using a DB API](/develop/server-capabilities/data-access-apis/choosing-a-db-api#virtual-threads).
 
 ## Timestamps
 When you generate a database on the Genesis platform, every table in the database is given a TIMESTAMP and a RECORD_ID field.
@@ -2297,7 +2304,7 @@ requestReply("TRADE", TRADE) {
 
 ## Generated repositories
 
-From version 10.0, repositories are generated for views only. Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables, use the [Entity Db](#entity-db-api).
+From version 10.0, repositories are generated for views only, and most of those are [deprecated](#view-repository-deprecation). Code generation no longer creates `[TableName]AsyncRepository` or `[TableName]Rx3Repository` classes. To read and write tables and views, use the [Entity Db](#entity-db-api).
 
 The `generateRepositories` setting has also been removed from `codeGen { }`, so a build script that still sets it will not compile. Delete the line.
 
@@ -2311,6 +2318,14 @@ Every view gets its repositories automatically. When you [build your DAOs](/buil
 * **PositionViewAsyncRepository** has an Async API, for use from Kotlin.
 
 View repositories are read-only, with a generated read method for each index of the view. The Entity Db can read views too, using generic methods that take the index as an argument.
+
+### View repository deprecation
+
+:::warning
+The generated view repositories have been deprecated since version 6.6, except those of views with [parameterized joins](/develop/server-capabilities/data-model/gpal-java/#parameterized-joins). From version 10.0.1, their interfaces and implementation classes are annotated with `@Deprecated`, with the message `Deprecated in 6.6. Use AsyncEntityDb or SyncEntityDb.`; version 10.0.0 does not have this annotation.
+
+Code that uses them compiles with a deprecation warning, so builds that treat warnings as errors (Kotlin `allWarningsAsErrors`, or Java `-Werror` with `-Xlint:deprecation`) fail. To read views, use the [Entity Db](#entity-db-api) instead: [`AsyncEntityDb`](#asyncentitydb) from Kotlin, and [`SyncEntityDb`](#syncentitydb) from Java.
+:::
 
 ### Write result
 
