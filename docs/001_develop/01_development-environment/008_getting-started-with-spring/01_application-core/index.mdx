@@ -512,12 +512,12 @@ such as `/orders-app/event-trade-insert`, gets `404`.
 **What external transport mode requires**
 
 - **The WebSocket channel.** The process serves the Genesis WebSocket protocol only; the raw TCP
-  (MsgPack) channel and `tls.authorization` don't exist in this mode. The starter sets this for
+  (MsgPack) channel isn't available, and `tls.authorization` isn't applied. The starter sets this for
   you; no `*-processes.xml` change is needed. Platform clients that use service discovery switch to
   WebSocket automatically. A hand-rolled TCP client reaches an HTTP server (Tomcat) on the same port
   and fails, with nothing logged by Genesis, so move it to WebSocket.
 - **Genesis TLS, not Spring TLS.** The port is served with the process's [Genesis TLS
-  configuration](/develop/server-capabilities/runtime-configuration/service-encryption/yaml-reference/).
+  configuration](/develop/server-capabilities/runtime-configuration/service-encryption/network-configuration-yaml/).
   Every TLS mode in use must have a `tls.identity`.
 - **Neutral endpoint types.** A Genesis HTTP endpoint can't declare a Netty type. Use `File`,
   `Path`, `InputStream` or `FileDownload` instead of `ChunkedFile` and `ChunkedInput`, `ByteArray`
@@ -546,12 +546,12 @@ such as `/orders-app/event-trade-insert`, gets `404`.
   [Custom endpoints](/develop/server-capabilities/integrations/custom-endpoints/#return-types) page.
 
   `ByteArray` can't read a multipart request body, in either transport mode. Genesis throws
-  `BodyDecodedAsPartsException: This body was decoded into multipart parts, so it has no byte stream to read`,
+  `BodyDecodedAsPartsException: This body was decoded into multipart parts, so it has no byte stream to read; take it as parts() or declare the endpoint's request type as a multipart body`,
   because the body has already been split into parts. Declare `MultipartHttpBody` as the request
   type for an upload instead.
 
 Startup is refused if any of these is broken, and also if `server.servlet.context-path` is set
-(use `genesis.spring.router-path-prefix`), if any `server.ssl.*` property is set (use Genesis TLS),
+(use `genesis.spring.router-path-prefix`), if Spring TLS (`server.ssl`) is enabled (use Genesis TLS),
 or if `server.port` is set to anything other than the service-definition port or `0`.
 
 **Settings**
@@ -582,15 +582,16 @@ silences the startup warnings that say a multipart endpoint's settings don't car
 They are logged at WARN by `GenesisServletTransportConfiguration`.
 
 The starter sets Tomcat's upload limits to match native mode: `spring.servlet.multipart.max-file-size`
-1 GiB, `max-request-size` unlimited, `file-size-threshold` 16 KB, and
+1 GiB, `max-request-size` unlimited, `file-size-threshold` 16 KiB, and
 `server.tomcat.max-http-form-post-size` 64 MiB. Your own value for any of these wins. A raised
-`messaging.http.maxContentLength` is not carried over, so raise the Spring properties instead. Both
+`messaging.http.maxContentLength` still limits a Genesis endpoint's request body, but isn't carried
+over to `server.tomcat.max-http-form-post-size`, so raise that as well. Both
 upload limits apply: the endpoint's `maxFileSize` is still enforced (`413`), but only below
 Tomcat's limit. An upload above Tomcat's limit (`spring.servlet.multipart.max-file-size` or
 `max-request-size`) also gets `413`, but the container sets it, with Spring Boot's error body rather
 than the endpoint's own message. To accept larger files, raise `spring.servlet.multipart.max-file-size` as well (and
 `max-request-size` if you set it). Other settings that configure Netty have no effect in this mode:
-`messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
+the rest of `messaging.http`, `maxFrameSize`, `compression`, `allowExtensions`, `forceCloseTimeoutMillis` and
 `UseNettyThreadsForMessageProcessing`.
 
 **Differences from native mode**
@@ -662,14 +663,14 @@ A few things worth knowing before relying on router proxying:
     In `-app` an unversioned dependency fails `genesisSync`, and with an explicit version the jars
     never reach the app's JVM and health stays `404`.
   - A new dependency reaches the running process only after you regenerate the start script
-    (`writeStartScript`) and restart Genesis Start. `genesisSync` and a process restart alone left
-    the jars off the classpath.
+    (`writeStartScript`) and restart Genesis Start. `genesisSync` and a process restart alone don't
+    put the jars on the classpath.
   - Set `management.datadog.metrics.export.enabled=false` in the Spring module's
     `application.properties`. Genesis ships the Datadog, Graphite and Prometheus registries, and
     without this the app fails to start with `management.datadog.metrics.export.apiKey was 'null'`.
-    This is a workaround while GSF-9096 is open, not permanent design.
-  - Then `GET /<app>/actuator/health` returns `200` with `"status":"UP"` in the body, both direct and through the
-    router. `/actuator/health` without the prefix is `404`, and the rest of `/<app>/actuator` needs
+  - Then `GET /<app>/actuator/health` through the router returns `200` with `"status":"UP"` in the
+    body. Directly on the app's port, health is at `/<app>/actuator/health` in native mode and at
+    `/actuator/health` in external transport mode. The rest of the actuator tree needs
     authentication. Health needs no exposure property.
 - **In native mode, the embedded Tomcat is a second network listener.** It must be reachable from
   the router's host but not from the outside world directly — bind it to a cluster-internal
