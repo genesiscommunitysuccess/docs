@@ -30,7 +30,7 @@ If your project doesn't have Genesis Start yet, or you want to change how it run
 ## Key terms
 
 - **Genesis home**: the folder your application's processes run from locally. It holds the installed configuration, scripts and runtime files, including each process's log in `runtime/logs/`. The Genesis Gradle plugin creates and maintains it, normally at `build/genesis-home` inside your application module (for example, `server/myapp-app/build/genesis-home`).
-- **`genesisSync`**: the Genesis Gradle task that brings the Genesis home up to date. It builds your project's local modules, copies in the configuration of its dependencies, and runs `genesisInstall`. Gradle's up-to-date checks mean it does no more work than it has to. Genesis Start runs it before starting processes, unless you turn off **Use Genesis Sync**. Each [process profile](/develop/development-environment/genesis-start/configuration/#process-profiles) has its own version of this task. Genesis Start runs the right one for the profile you've chosen, but always shows it as `genesisSync`.
+- **`genesisSync`**: the Genesis Gradle task that brings the Genesis home up to date. It builds your project's local modules, copies in the configuration of its dependencies, and runs `genesisInstall`. Gradle's up-to-date checks mean it does no more work than it has to. Genesis Start runs it before starting processes, unless you turn off **Use Genesis Sync**, and rebuilds the project overview in the same run. Each [process profile](/develop/development-environment/genesis-start/configuration/#process-profiles) has its own version of this task. Genesis Start runs the right one for the profile you've chosen, but always shows it as `genesisSync`.
 - **Project overview**: a JSON file, written by the Genesis Gradle plugin, that describes your project: its processes, scripts, Genesis home, and the features your platform version supports. There is one per [process profile](/develop/development-environment/genesis-start/configuration/#process-profiles). Genesis Start reads everything it knows about your project from it.
 
 ## Starting Genesis Start
@@ -123,7 +123,9 @@ This button opens a file picker where you can select one or more CSV files to im
 
 This button synchronises any changes made to your project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/). It runs the project's sync task, then reloads the project overview, so the process list and the scripts available in [Run Script](#running-a-script) are brought up to date. No processes are started.
 
-When **File → Settings → Use Genesis Sync** is enabled (the default), Genesis Start runs the sync task before it starts anything, but it does not reload the project overview. Genesis Start launches each process with the arguments held in the project overview, so changes to your process definitions (`*-processes.xml`) only reach the processes it launches after you click this button, or after you [start Genesis Start](#starting-genesis-start) again with the `genesisStart` Gradle task. Use it whenever you add, remove or change processes or scripts.
+When **File → Settings → Use Genesis Sync** is enabled (the default), you don't need this button after you edit your process definitions (`*-processes.xml`). Each time Genesis Start starts processes, whether with Bootstrap and Launch, Start All or a single process, it rebuilds and reloads the project overview as part of running `genesisSync`. The processes it launches therefore use your latest definitions: a process you've added starts, and one you've removed doesn't. A process that is still running but has been removed from your definitions is labelled **no longer defined** in the process list. You can stop it but not start it, and it leaves the list once it stops.
+
+Use this button when **Use Genesis Sync** is off, or to bring the process list and scripts up to date without starting anything.
 
 ### Application Info
 
@@ -237,7 +239,7 @@ The bar along the bottom of the window shows:
 
 ### File
 
-- **Settings → Use Genesis Sync**: when checked (the default), Genesis Start runs `genesisSync` before starting processes and bootstrapping. Uncheck it only if you want to start processes without syncing first; for example, for speed or because you sync some other way.
+- **Settings → Use Genesis Sync**: when checked (the default), Genesis Start runs `genesisSync` before starting processes and bootstrapping, and reloads the project overview, so changes to your process definitions take effect on the next start. Uncheck it only if you want to start processes without syncing first; for example, for speed or because you sync some other way.
 - **Exit** closes the window. This does **not** stop the processes that Genesis Start started. See [Closing Genesis Start](#closing-genesis-start).
 
 ### Process Profile
