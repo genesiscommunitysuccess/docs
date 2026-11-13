@@ -64,6 +64,8 @@ No SyncWriteOperationListener bound; bridging WriteOperationListener onto the sy
 
 The listener now runs inside the write's own transaction, so 10.0 is stricter about how it uses `tx`.
 
+Which listener a write calls also depends on whether you move writes off `RxDb`; see [step 8](#8-expect-deprecation-warnings-for-rxdb-and-rxentitydb).
+
 **What goes wrong if you skip this:**
 
 - For writes that don't go through `RxDb`, a listener that uses `tx` on a different thread gets an `IllegalStateException`, and the write that triggered it is rolled back. So does an `AsyncWriteOperationListener` that uses `tx` after `onWriteResult` has returned. The message names the listener and says how to fix it.
@@ -167,7 +169,7 @@ View <VIEW_NAME> fails the build because its generated SQL select labels collide
 
 **Applies to:** tables with `STRING` fields that have a `maxSize` in the dictionary.
 
-**Why:** a value that is longer than the field's `maxSize` now fails validation before the write is made. In 8.15, this was left to the database.
+**Why:** a value that is longer than the field's `maxSize` now fails validation before the write is made. In 8.15, this was left to the database. For how `maxSize` is declared, see the [GPAL Java data model](/develop/server-capabilities/data-model/gpal-java/).
 
 **What goes wrong if you skip this:** the write fails with:
 
@@ -197,7 +199,7 @@ IllegalArgumentException: Field <FIELD> value exceeds max size of <maxSize> char
 | `entityDb.safeWriteTransaction { … }` on `AsyncEntityDb` | `entityDb.writeTransaction { … }.first` |
 | `entityDb.safeWriteTransaction { … }` on `RxEntityDb` | `entityDb.writeTransaction { … }.map { it.first }` |
 | `entityDb.safeReadTransaction { … }` | `entityDb.readTransaction { … }` |
-| `getBulk(index, startRecord, fields)` and `getBulkFromEnd(index, startRecord[, fields])` on the entity databases | `getRange(…)` and `getRangeFromEnd(…)`, or `getByCriteria(…, paging = …)` |
+| `getBulk(index, startRecord, fields)` and `getBulkFromEnd(index, startRecord[, fields])` on the entity databases | `getRange(…)` and `getRangeFromEnd(…)`, or `getByCriteria(…, paging = …)`. Only the forms of `getRange` with no `numKeyFields` need a `NonUniqueEntityIndex`; on a unique index, use `getRange(index, numKeyFields)`, `getRange(index, numKeyFields, fields)` or `getRange(start, end, numKeyFields)`. |
 | `connection.buildStatement(sql, …)` on `SqlDatabaseConnection` | `connection.createPreparedStatement(sql, …)`. The suspending `buildStatement` on `SqlAsyncDatabaseConnection` is unchanged. |
 | `DatabaseDetails.Builder.validationMode(…)` | Delete the call; it had no effect. |
 | `GenesisDbCache.isTableCached(table)` and `addTable(table: String)` | `isTableIndexCached(table, index)` and `addTable(CacheTable)` |
@@ -238,7 +240,7 @@ When you move writes off `RxDb`, check step 2: it can change which write listene
 
 ## 9. Check `MqLayer` if you use the `db` or `sqlDb` helpers
 
-**Applies to:** a system definition that calls `db(…)` or `sqlDb(…)` without passing `mqType`.
+**Applies to:** a system definition script (`*-system-definition.kts`) that calls `db(…)` or `sqlDb(…)` without passing `mqType`. These helpers are in the `global.genesis.config.dsl` package.
 
 **Why:** the default `mqType` of these helpers has changed from `MqLayers.GenerationalNano` to `MqLayers.ZeroMQ`.
 
