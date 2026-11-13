@@ -282,7 +282,8 @@ own, independent, **deny-by-default** authentication layer. It reads the same
 `SESSION_AUTH_TOKEN` header the rest of Genesis uses (the hyphenated `SESSION-AUTH-TOKEN` spelling
 is also accepted, since some proxies drop headers containing underscores) and resolves it through
 `OnDemandUserSessionCache`, which reads a session from `USER_SESSION` the first time its token is
-seen and caches it. An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
+seen and caches it, as the router does (see
+[Auth tokens](/develop/server-capabilities/access-control/authentication/#auth-tokens)). An endpoint opts out of authentication explicitly with `@GenesisAnonymous`.
 
 This layer is an authorisation filter: when it sees a `SESSION_AUTH_TOKEN` (or `SESSION-AUTH-TOKEN`)
 header on the incoming request, it resolves the token against the session store and populates the
