@@ -25,7 +25,7 @@ The versions of the entity EntityDb are:
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
 |`SyncEntityDb` |Kotlin + Java|A blocking API, and the simplest to use. This is the API to use from Java                                                |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
-|`RxEntityDb`   |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki). Deprecated in 10.0: use `AsyncEntityDb` from Kotlin or `SyncEntityDb` from Java |
+|`RxEntityDb`   |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki). Deprecated in 10.0: use `AsyncEntityDb` from Kotlin or `SyncEntityDb` from Java. See [Upgrade from 8.15: Database layer](../../../../004_release-notes/001_platform/10/upgrade-from-8.15/database.mdx#8-expect-deprecation-warnings-for-rxdb-and-rxentitydb) |
 |`SyncDb`       |Kotlin + Java|A blocking, record-level API that works with [`DbRecord`](#dbrecord)s instead of type-safe entities. See [SyncDb and AsyncDb](#syncdb-and-asyncdb) |
 |`AsyncDb`      |Kotlin only  |A record-level API powered by Kotlin coroutines, which works with [`DbRecord`](#dbrecord)s instead of type-safe entities |
 |`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki), which does NOT use type-safe entities |
@@ -937,7 +937,7 @@ The transformation is a lambda, where the rows that are in scope are provided on
 Similar to the async version, the row should be modified in place.
 
 In both cases, the full record will be provided, and values can be read as well as updated. The operations return
-`List<ModifyResult<E>>` for `updateAll` and `updateRangeBy` methods and `ModifyResult<E>` for the `updateBy` operation.
+`List<ModifyResult<E>>` for `updateAll` and `updateByRange` methods and `ModifyResult<E>` for the `updateBy` operation.
 
 For example:
 

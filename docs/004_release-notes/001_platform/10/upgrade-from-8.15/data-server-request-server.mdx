@@ -1,0 +1,210 @@
+---
+title: 'Data Server and Request Server'
+sidebar_label: 'Data Server and Request Server'
+sidebar_position: 9
+id: 'upgrade-10.0-data-server-request-server'
+---
+
+Most of the work on this page is in your `*-dataserver.kts` and `*-reqrep.kts` scripts: 10.0 removes DSL spellings that 8.15 deprecated (steps 1 and 2), and it rejects derived fields whose names clash with other fields (step 3). Two changes reach beyond the scripts: views no longer pass on the `RECORD_ID` and `TIMESTAMP` of joined tables (step 4), and some criteria that clients send are now refused (step 5).
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 1 (removed Data Server DSL) and 2 (removed Request Server DSL) |
+| The process fails to start | 3 (derived field names that clash) |
+| Client requests that used to work are refused | 5 (client criteria) |
+| The process logs a warning at startup | 6 (the `ASYNC` backward-join cache mode) |
+| Behaviour differs silently | 4 (joined `RECORD_ID` and `TIMESTAMP` in views) and 7 (custom replies under file-level `permissionCodes`, from 8.15.44 or earlier) |
+
+Every replacement in steps 1 and 2 already exists in 8.15, so you can make those changes on 8.15 first and then upgrade.
+
+The same scripts may also need changes that are covered on other pages:
+
+- the `permissioning { auth { } }` DSL, in [Security and authentication](./security-auth.mdx);
+- the event handler DSL, in [Event handlers and evaluator](./event-handlers-evaluator.mdx).
+
+These have not changed, so they need no action:
+
+- **The cache backend.** 10.0 adds SQLite as a cache backend for Data Server queries, but it is opt-in. An upgraded Data Server stays on LMDB unless you set `cacheBackend`, add a `sqlite { }` or `sqliteDedicated { }` block, or set the `DataServerCacheBackend` system definition item.
+- **`ORDER_BY`.** Field lists in `ORDER_BY` only take effect on SQLite queries. On LMDB, `ORDER_BY` is still the name of an index.
+- **`MetricsCriteriaOverlapEnabled`.** This new metric is off by default.
+
+## 1. Replace the removed Data Server DSL
+
+**Applies to:** `*-dataserver.kts` scripts that use any of the spellings in the table below. All of them were deprecated or superseded in 8.15.
+
+**Why:** 10.0 removes them.
+
+**What goes wrong if you skip this:** the script no longer compiles.
+
+**What to do:** replace each one.
+
+| Removed | Use instead |
+|---|---|
+| `config { backJoins = x }` | `config { backwardsJoin = x }` |
+| `config { backwardsJoins = x }` | `config { backwardsJoin = x }` |
+| `where { row -> ... }` at query level | `filter { ... }`, reading the row as `data` |
+| `derivedField(name, type) { ... }` inside a query's `fields { }` | `derivedField(name, type) { ... }` in the query body, outside `fields { }`, reading the row as `data` |
+| `derivedField(name, type) { row, userData -> ... }` inside `enrich { fields { } }` | `derivedField(name, type) { ... }` in the `enrich { }` body, outside `fields { }`, reading the row as `data` and the enriched record as `enriched` |
+| `SerializationType.FURY` | `SerializationType.FORY` |
+| `config { staggeredDelay = ... }`, `config { processingMode = ... }` and `DataServerProcessingMode` | Delete them. They belonged to an experimental mode that has been removed, and they did nothing in 8.15. |
+
+Here is a query before and after:
+
+```kotlin
+// 8.15
+query("ALL_TRADES", TRADE) {
+    config { backwardsJoins = false }
+    where { trade -> trade.quantity > 0 }
+    fields {
+        TRADE_ID
+        derivedField("NOTIONAL", DOUBLE) { quantity * price }
+    }
+}
+
+// 10.0
+query("ALL_TRADES", TRADE) {
+    config { backwardsJoin = false }
+    filter { data.quantity > 0 }
+    fields {
+        TRADE_ID
+    }
+    derivedField("NOTIONAL", DOUBLE) { data.quantity * data.price }
+}
+```
+
+The code inside the blocks changes too:
+
+- The old `where` and the old `derivedField` inside `fields { }` received the row as an argument or as the receiver. The new `filter` and `derivedField` read it as `data`.
+- In an `enrich` block, the old `(row, userData)` arguments become `data` and `enriched`.
+- 8.15 has no IDE quick-fix for a `derivedField` inside `fields { }`, so you have to move these by hand.
+
+These are unchanged:
+
+- `where(index, n)`, which selects by index position;
+- `filterWithUserName`;
+- `fields { }` inside `enrich`, for selecting enriched fields.
+
+`where { }` inside a `permissioning` auth block was removed in 10.0. See steps 1 and 4 of [Security and authentication](./security-auth.mdx) for the replacements, `filter` and `filterWithUserName`.
+
+## 2. Replace the removed Request Server DSL
+
+**Applies to:** `*-reqrep.kts` scripts that use `derivedFields { }` or the two-argument `where { row, request -> ... }`. Both were deprecated in 8.15.
+
+**Why:** 10.0 removes them.
+
+**What goes wrong if you skip this:** the script no longer compiles.
+
+**What to do:** replace each one.
+
+| Removed | Use instead |
+|---|---|
+| `derivedFields { derivedField(name, type) { ... } }` | `derivedField(name, type) { ... }` directly in the `requestReply { }` body, reading the row as `data` |
+| `where { row, request -> ... }` | `filterWithParameters { ... }`, reading the row as `data` and the request as `genesisSet` |
+
+```kotlin
+// 8.15
+requestReply(INSTRUMENT_DETAILS) {
+    derivedFields {
+        derivedField("HAS_HIGH_PRICE", BOOLEAN) {
+            (lastTradedPrice ?: 0.0) > 180
+        }
+    }
+    where { instrument, _ ->
+        "ALLL3" == instrument.instrumentCode
+    }
+}
+
+// 10.0
+requestReply(INSTRUMENT_DETAILS) {
+    derivedField("HAS_HIGH_PRICE", BOOLEAN) {
+        (data.lastTradedPrice ?: 0.0) > 180
+    }
+    filterWithParameters {
+        "ALLL3" == data.instrumentCode
+    }
+}
+```
+
+The 8.15 IDE quick-fix for `where` only renames the call. You still have to rewrite the body, because the lambda takes different arguments.
+
+## 3. Rename derived fields that clash with other fields
+
+**Applies to:** derived fields in Data Server queries, in Data Server `enrich` blocks and in Request Servers.
+
+**Why:** 10.0 checks the name of every derived field. The name must not match any of these, ignoring case:
+
+- a field of the source table or view (for example, a derived field called `trade_id` on a table that has `TRADE_ID`);
+- an aliased output field that is selected earlier in the same definition;
+- another derived field in the same definition.
+
+8.15 accepted these names, and the derived field could silently hide the field it clashed with.
+
+**What goes wrong if you skip this:** the script fails when it runs, so the process doesn't start. The error names the derived field, the query or Request Server it belongs to, and what it clashes with. It is one of these:
+
+```
+Derived field 'X' in <owner> conflicts with field 'Y' from <source>. Rename the derived field so it does not shadow the underlying table/view field.
+Derived field 'X' in <owner> conflicts with aliased output field 'Y'. Rename the derived field so it does not shadow a selected alias.
+Derived field 'X' in <owner> is defined more than once. Rename one of the derived fields so names remain unique.
+```
+
+**What to do:** rename the derived field. The new name is the column name that clients receive, so update any front end or API caller that reads it.
+
+## 4. Select joined `RECORD_ID` and `TIMESTAMP` explicitly if you need them
+
+**Applies to:** views that use `allFields()` (or `except(...)`) on a joined table or alias, where something reads that joined table's `RECORD_ID` or `TIMESTAMP` through the view.
+
+**Why:** in 10.0, `allFields()` on a joined table or alias no longer includes that table's `RECORD_ID` and `TIMESTAMP`. The root table's `RECORD_ID` and `TIMESTAMP` are still included.
+
+**What goes wrong if you skip this:** nothing fails. The columns are simply missing from the view, and from every Data Server query and Request Server that is built on it.
+
+**What to do:** select the field explicitly in the view's `fields { }`, with an alias so that it doesn't clash with the root table's field of the same name:
+
+```kotlin
+fields {
+    TRADE.allFields()
+    INSTRUMENT.allFields()
+    INSTRUMENT.TIMESTAMP withAlias "INSTRUMENT_TIMESTAMP"
+}
+```
+
+## 5. Check the criteria your clients send
+
+**Applies to:** front ends and API clients that send criteria (`CRITERIA_MATCH`) to Data Server queries, Data Server queries that set `defaultCriteria`, and code that queries the database by criteria. Queries that set `linearScan = false` are the most likely to be affected.
+
+**Why:** in 10.0, the Data Server and the database layer check criteria against the same rule set. In 8.15, each had its own rules, so a few expressions were accepted by one and refused by the other. Most of the rules are not new: constructs that 8.15 already refused, such as `matches` or a ternary, are still refused. Two changes can make a criteria that worked in 8.15 fail in 10.0:
+
+- **`!in` is refused.** Write `!(A in B)` instead.
+- **`linearScan = false` no longer falls back to a full scan.** On a query that sets `linearScan = false`, 10.0 refuses a criteria expression that doesn't bound the first field of the query's index. In 8.15, such a criteria could still run as a scan of every row.
+
+**What goes wrong if you skip this:** the Data Server refuses the request with an `INVALID_CRITERIA` error, so the grid or API call that sent it gets no data. For a `linearScan = false` query, the error includes this text:
+
+```
+Criteria "<criteria>" on query <query> bounds no value of <field>, the first field of index <index>, so it would scan every row, which linearScan="false" does not allow. ...
+```
+
+**What to do:** before you upgrade, run the criteria that your front ends and API callers send, and each query's `defaultCriteria`, against a 10.0 environment, and rewrite any that are refused:
+
+- Replace `A !in B` with `!(A in B)`.
+- On a `linearScan = false` query, compare the index's first field to a literal value with `==`, `<`, `<=`, `>` or `>=`, and join it to the rest of the criteria with `&&`. If the query really does need criteria that can't do that, set `linearScan = true` on it.
+
+## 6. Stop using the `ASYNC` backward-join cache mode
+
+**Applies to:** applications that set the system definition item `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` to `false`, or that use `BackwardsJoinCacheMode.ASYNC` or `DatabaseDetails.Builder.syncBackwardsJoinCache(...)` in code.
+
+**Why:** the `ASYNC` mode of the backward-join cache is deprecated in 10.0 and is planned for removal in 11.0. `SYNC` is the default, in 8.15 and in 10.0.
+
+**What goes wrong if you skip this:** nothing yet. A process with `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` set to `false` logs a deprecation warning at startup, and code that uses `BackwardsJoinCacheMode.ASYNC` or `syncBackwardsJoinCache(...)` gets a deprecation warning when it compiles.
+
+**What to do:** remove the `BACKWARD_JOIN_CACHE_PREREGISTER_ROOT` item from your system definition, and remove any calls to `syncBackwardsJoinCache(...)`. Remove any use of `BackwardsJoinCacheMode`: the whole enum is deprecated, and `SYNC` is the default.
+
+## 7. Check row access on custom replies under file-level `permissionCodes`
+
+**Applies to:** upgrades from 8.15.44 or earlier, for `*-reqrep.kts` scripts that set `permissionCodes` at file level and also contain a custom or paginated reply with its own `permissioning { auth { } }` block.
+
+**Why:** in 8.15.44 and earlier, the file-level codes replaced the reply's `permissioning` definition, so its `auth` block was dropped. In 8.15.45 and 10.0, the reply keeps its `auth` block.
+
+**What goes wrong if you skip this:** users who saw every row before now see only the rows their auth map allows.
+
+**What to do:** no code change is needed. Check that the auth maps give these users the rows they should see.

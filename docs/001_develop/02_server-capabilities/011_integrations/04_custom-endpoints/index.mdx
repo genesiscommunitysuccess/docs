@@ -72,7 +72,7 @@ webHandlers {
     endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 
@@ -87,7 +87,7 @@ webHandlers {
     endpoint<Trade, CreateTradeResponse>(POST, "trades") {
         permissioning {
             requestAuth("INSTRUMENTS") {
-                authKey { data.instrumentId }
+                authKey { key(data.instrumentId) }
             }
         }
 
@@ -711,7 +711,7 @@ Where utilizing `customPermissions` you should also consider configuring a [`cus
 ```kotlin
 permissioning {
     requestAuth(mapName = "ENTITY_VISIBILITY") {
-        authKey { data.instrumentId }
+        authKey { key(data.instrumentId) }
     }
 }
 ```
@@ -722,7 +722,7 @@ Full example:
 endpoint<Trade, Trade>(POST, "trades") {
     permissioning {
         requestAuth(mapName = "ENTITY_VISIBILITY") {
-            authKey { data.instrument }
+            authKey { key(data.instrument) }
         }
     }
 
@@ -739,7 +739,7 @@ endpoint<Trade, Trade>(POST, "trades") {
 ```kotlin
 permissioning {
     requestAuth(mapName = "ENTITY_VISIBILITY") {
-        authKey { data.instrumentId }
+        authKey { key(data.instrumentId) }
     }
 }
 ```
@@ -750,7 +750,7 @@ Full example:
 endpoint(GET, "trades") {
     permissioning {
         responseAuth(mapName = "ENTITY_VISIBILITY", flow<Trade>()) {
-            authKey { data.instrumentId }
+            authKey { key(data.instrumentId) }
         }
     }
 
@@ -1197,7 +1197,7 @@ webHandlers {
     endpoint<TradeInformation>(GET, "trades") {
         permissioning {
             responseAuth("INSTRUMENTS") {
-                authKey { data.instrument }
+                authKey { key(data.instrument) }
             }
         }
 

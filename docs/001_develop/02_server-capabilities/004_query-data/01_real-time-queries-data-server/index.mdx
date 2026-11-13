@@ -197,6 +197,24 @@ dataServer {
 
 <CommonQueryFields />
 
+##### Derived field names
+
+From Genesis 10.0, the name of every derived field is checked, ignoring case. The name must not:
+
+- match a field of the source table or view (for example, a derived field called `trade_id` on a table that has `TRADE_ID`);
+- match an aliased output field that is selected earlier in the same definition;
+- match another derived field in the same definition.
+
+If a name breaks one of these rules, the script fails when it runs and the process doesn't start. The error is one of these:
+
+```
+Derived field 'X' in <owner> conflicts with field 'Y' from <source>. Rename the derived field so it does not shadow the underlying table/view field.
+Derived field 'X' in <owner> conflicts with aliased output field 'Y'. Rename the derived field so it does not shadow a selected alias.
+Derived field 'X' in <owner> is defined more than once. Rename one of the derived fields so names remain unique.
+```
+
+To fix it, rename the derived field. The new name is the column name that clients receive. These rules apply to derived fields in `enrich` blocks as well as to query-level derived fields. For upgrade steps, see [Data Server and Request Server, step 3](../../../../004_release-notes/001_platform/10/upgrade-from-8.15/data-server-request-server.mdx#3-rename-derived-fields-that-clash-with-other-fields).
+
 #### `indices`
 
 A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order.
@@ -266,7 +284,19 @@ query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 
 If a key you declared with `rowLevelPermissions = true` turns out to match more than one row, the Data Server logs a warning and from then on tracks several rows per key for that auth map.
 
-When you build the key from fields with `authKey(TABLE.FIELD, ...)`, you don't need to set `rowLevelPermissions`: each `authKey(...)` call sets it to `true` if the fields cover a unique index of the table or view, and to `false` otherwise, replacing any value set before it.
+You can instead pass the key fields straight to `authKey`, as `TABLE.FIELD` values:
+
+```kotlin {4}
+query("ALL_COUNTERPARTYS", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            authKey(COUNTERPARTY.COUNTERPARTY_ID)
+        }
+    }
+}
+```
+
+The key is the values of the fields joined in the order you list them. Because the Data Server can see which fields make up the key, `authKey(TABLE.FIELD)` sets `rowLevelPermissions` for you, so you don't set it as well. Each `authKey(...)` call sets it to `true` if the key fields cover a primary or unique index of the table or view, and to `false` otherwise, replacing any value set before it. The `authKey { key(...) }` form shown above still works, but it doesn't set `rowLevelPermissions`, so you set it yourself. For the steps to move an existing application to this form, see [Upgrade from 8.15: Data servers and request servers, step 1](../../../../004_release-notes/001_platform/10/upgrade-from-8.15/security-auth.mdx#1-data-servers-and-request-servers-replace-bare-fields-with-authkey).
 
 #### `criteriaTemplate`
 

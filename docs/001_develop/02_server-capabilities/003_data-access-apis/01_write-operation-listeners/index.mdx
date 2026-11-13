@@ -38,6 +38,10 @@ When a process starts, it logs one of two lines from `RxDb`. `Database WriteOper
 | `SyncWriteOperationListener` | `fun onWriteResult(tx: SyncDb, writeResults: List<WriteResult>)` | a [`SyncDb`](/develop/server-capabilities/data-access-apis/gpal-java/#syncdb-and-asyncdb) bound to the write's transaction |
 | `WriteOperationListener` | `fun onWriteResult(tx: RxRecordWriteSupport<*, *, *>, writeResults: List<WriteResult>)` | an RxJava record API bound to the write's transaction |
 
+`RawSQLWriteOperationListener` has been removed in 10.0. Implement `WriteOperationListener` instead; `onTransactionWriteResult` becomes `onWriteResult(tx, writeResults)`. A `WriteOperationListener` is also the one that sees `RxDb` writes, and when it is the only listener bound it is notified by sync and async writes too (see [Which listener is called](#which-listener-is-called)).
+
+Choose `SyncWriteOperationListener` or `AsyncWriteOperationListener` instead when you want `tx` to be a `SyncDb` or an `AsyncDb`. Prefer `SyncWriteOperationListener` for blocking code that uses `SyncDb`. Prefer `AsyncWriteOperationListener` when the listener needs to call suspend functions. Neither is notified by `RxDb` writes.
+
 Each [`WriteResult`](/develop/server-capabilities/data-access-apis/gpal-java/#write-result) holds the records the write saved and removed. To tell which operation a `WriteResult` describes, look at which of its two lists is empty, as the database does itself:
 
 - `savedRecords` is empty: a delete. The deleted records are in `removedRecords`.

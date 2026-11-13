@@ -167,6 +167,8 @@ You can control which resources are exposed to the front end by the Genesis Rout
 
 The `allowList` and `blockList` tags are mutually exclusive. If you specify both, it will generate an error.
 
+A request for a blocked resource gets the same 404 as an unknown one.
+
 The default resources that are always exposed are:
 
 - EVENT_LOGIN_AUTH
@@ -211,6 +213,8 @@ The request URI and headers are forwarded unchanged, apart from `Host`. When coo
 To check whether the router forwarded a request or handled it itself, set the logger `global.genesis.router.proxy.HttpProxyDispatcher` to DEBUG on the router. Each forwarded request then logs a line beginning `Proxying PAL request` (a request server or event handler) or `Proxying custom endpoint`, naming the host and port it went to. The response won't tell you: the router relays the process's response headers and adds no header that marks a response as forwarded.
 
 In proxy mode, the router stops loading `*-web-handler.kts` files from the application's script folders. [Load each web-handler script on a process](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#custom-endpoints-on-a-process) that uses the WebSocket channel instead. A script that no process loads is dropped without any error, and its endpoints disappear.
+
+[`allowList` and `blockList`](#blocked-and-allowed-resources) still apply to a proxied request server or event handler: a resource that either list refuses is not proxied. Custom endpoints are not checked against the lists; they are checked only for `internal`. If a resource must not be reachable over HTTP through the router, mark it `internal` or leave its process on TCP.
 
 ### Cookie authentication
 

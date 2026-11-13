@@ -221,6 +221,10 @@ The value is case-sensitive. If `ClusterMode` is unset or blank, the mode is LEG
 
 **StrictHttpStatusCode**: When `true`, the router applies the HTTP status codes found in error responses to the HTTP reply; when `false` (the default), it returns the error payload in an HTTP 200 response. See [Router configuration](/develop/server-capabilities/runtime-configuration/genesis-router/#router-configuration) for details.
 
+**RouterOpenApiEnabled**: When `false`, the router switches off its OpenAPI listing. Default value: `true`.
+
+**RouterResourcesRequestEnabled**: When `false`, the router switches off its resources request listing (the reply to `RESOURCES_REQUEST`). Default value: `true`.
+
 **XssStringSanitizer**: When `true`, string values in the JSON that the router sends to clients over HTTP and WebSocket, and in the JSON replies from [HTTP endpoints on a process port](/develop/server-capabilities/runtime-configuration/process-http-endpoints/), are sanitised against Cross-Site Scripting (XSS). Default value is `false`. Like `StrictHttpStatusCode`, it is read by the process that builds the reply. See [XSS string sanitisation](/develop/server-capabilities/communications/#xss-string-sanitisation).
 
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](/build-deploy-operate/build/bdo-build-overview/#bundling-generated-code-with-product-distribution).
@@ -493,6 +497,8 @@ systems {
 ```
 
 During runtime the `hosts` block will be read to find configurations applicable to this host.
+
+In a `systems { }` block, `genesisHosts(environment)` returns the hosts declared for the `system` whose name is `environment`, as a list of `GenesisHost` objects. It returns an empty list if no `system` has that name. It replaces `dtaHosts(environment)`, which was removed in 10.0.
 
 :::important
 **LOCAL_HOST special behavior**: Any `system` using the `LOCAL_HOST` special value will always match in any environment, and therefore must be defined at the bottom of the system definition file.

@@ -1,0 +1,355 @@
+---
+title: 'Event handlers and evaluator'
+sidebar_label: 'Event handlers and evaluator'
+sidebar_position: 8
+id: 'upgrade-10.0-event-handlers-evaluator'
+---
+
+This page covers the changes to event handlers and the evaluator between 8.15 and 10.0. Most applications only need step 1, which removes two deprecated members of the event handler DSL. The rest apply if you use older event handler APIs (steps 2 to 5), manage evaluator rules from a client (steps 6 and 7), send `BigDecimal` or `LocalDate` fields to typed event handlers (step 8), or run a server that has used cron rules (step 9).
+
+The steps show up at different points of the upgrade:
+
+| When it shows up | Steps |
+|---|---|
+| The build fails | 1 (`permissions { }`, `triggerRemote` with a process name) and 5 (code that builds an approvable ack or implements `Approvable`) |
+| The build gives warnings | 4 (`AbstractEventHandler` and the classes around it) |
+| Nothing fails, but something stops working | 2 (XML event handler definitions are ignored) and 3 (bare `EVENT_INSERT`, `EVENT_MODIFY` and `EVENT_DELETE` messages are refused) |
+| Client requests are rejected | 6 (rule payloads), 7 (rules that use `!in`, which also stop stored rules from running), 8 (`BigDecimal` and `LocalDate` values) and 10 (new checks and limits on rule expressions and client criteria) |
+| The database upgrade | 9 (`CRON_RULE_AUDIT`), which operators carry out when they upgrade a server |
+
+## Before you start
+
+**Make some of the changes on 8.15.** The replacements in steps 1, 3 and 4 already exist in 8.15: `permissioning { }`, `triggerRemote(message, timeout)`, table-specific event handlers and the typed event handler interfaces. You can switch to them before you upgrade, and check that your application behaves the same.
+
+**Check scripts you will touch anyway.** The same event handler scripts are often affected by the change to permissioning `auth` blocks, described on the [Security and authentication](./security-auth.mdx) page.
+
+## 1. Event handler scripts: replace the removed DSL members
+
+**Applies to:** `*-eventhandler.kts` scripts that use `permissions { }` or call `triggerRemote` with a process name.
+
+**Why:** both were deprecated in 8.15 and have been removed in 10.0.
+
+| Removed | Use instead |
+|---|---|
+| `permissions { ... }` directly in an `eventHandler` or `contextEventHandler` block | `permissioning { ... }`, with the same body |
+| `triggerRemote(message, processName, timeout)` | `triggerRemote(message, timeout)`, or `triggerRemote(message)` for the default timeout |
+
+**What goes wrong if you skip this:** the script fails to compile.
+
+**What to do:**
+
+```kotlin
+// 8.15
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissions {
+        permissionCodes = listOf("TRADER")
+    }
+    onCommit { event ->
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), "AUDIT_PROCESS", 5)
+            ?: nack("audit unavailable")
+    }
+}
+
+// 10.0
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissioning {
+        permissionCodes = listOf("TRADER")
+    }
+    onCommit { event ->
+        triggerRemote<Trade, EventReply>(event.copyMeta(messageType = "EVENT_AUDIT_TRADE", details = event.details), 5)
+    }
+}
+```
+
+The remaining `triggerRemote` isn't a drop-in replacement, so check each call you change:
+
+- **Routing.** It finds the target process from the event's message type, not from a process name. Some process must advertise that event, or the call throws an exception that ends `but event could not be found`. Take particular care with calls into platform processes.
+- **Message type.** A message type without the `EVENT_` prefix gets the prefix added before the call.
+- **Timeout.** The timeout is in seconds, in 8.15 and 10.0.
+- **Return value.** It never returns null. If no reply arrives, it throws an exception. So a `?:` fallback after it never runs. The compiler only warns about this, so it won't show up as an error. If you need the fallback, catch the exception instead.
+
+For the current DSL, see [`triggerRemote`](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#triggerremote).
+
+## 2. XML event handler definitions: port them to GPAL
+
+**Applies to:** process configuration XML files with a `<transactions>` section. Each `<transaction>` in it attached expressions and metadata overrides to the `AbstractEventHandler` handler with the same message type.
+
+**Why:** 10.0 no longer reads the `<transactions>` section.
+
+**What goes wrong if you skip this:** nothing fails. The file still loads, but the `<transactions>` section is ignored. Its `preValidate`, `prePersist` and `postPersist` expressions stop running, and its metadata field overrides stop applying.
+
+**What to do:** search your process configuration XML files for `<transactions>`. Move each `<transaction>` into the code of the handler it applies to. If you also port that handler to a [typed event handler](#4-abstracteventhandler-subclasses-plan-the-port), put it in the typed handler instead:
+
+| XML | 8.15 ran it | Move it to |
+|---|---|---|
+| `preValidate` | On the incoming message, before the handler's `onValidate` or `onCommit` | The start of `onValidate` and of `onCommit` |
+| `prePersist` | On the incoming message, before the handler's `onCommit` | The start of `onCommit` |
+| `postPersist` | On the reply, when the handler sent it with `EventManager.sendResponse` | Just before the handler sends its reply |
+| `metadata.fields.field` | Added fields to the handler's metadata, or made optional fields mandatory | The handler's `EventMetaData`, or the payload class of a typed handler |
+
+**How to check:** 10.0 logs nothing about a leftover `<transactions>` section, and the handlers still register as before. For each moved `preValidate`, send an event that it used to reject and confirm that the handler still rejects it. For each moved `prePersist` or `postPersist`, send an event and confirm that the written record or the reply has the values it used to set.
+
+## 3. Messages sent as bare `EVENT_INSERT`, `EVENT_MODIFY` or `EVENT_DELETE`
+
+**Applies to:** any client, script or test fixture that sends `MESSAGE_TYPE` `EVENT_INSERT`, `EVENT_MODIFY` or `EVENT_DELETE`, with a table name in the payload.
+
+**Why:** 8.15 had generic handlers for these message types. They wrote to whichever table the payload named, and they didn't check permissions. 10.0 removes them.
+
+**What goes wrong if you skip this:** the event handler process replies with `EVENT_NACK` and `Message type not supported`.
+
+**What to do:**
+
+1. Define an event handler for the table, with `permissioning { }`.
+2. Send that handler's message type instead.
+
+Message types that already include a table name, such as `EVENT_INSERT_USER`, aren't affected.
+
+## 4. `AbstractEventHandler` subclasses: plan the port
+
+**Applies to:** Java or Kotlin event handlers that extend `AbstractEventHandler`, or use `EventManager`, `Message`, `ValidationResult` or `EventHandlerConstants`.
+
+**Why:** these classes in `global.genesis.eventhandler` are deprecated for removal in 10.0. They still work. `CallableTransactionHandler` has been removed.
+
+**What goes wrong if you skip this:** in 10.0, code that uses the deprecated classes gets a compiler warning: `[removal]` from `javac`, a deprecation warning from Kotlin. If your build treats warnings as errors, it fails. Code that uses `CallableTransactionHandler` fails to compile. The deprecated classes are slated for removal in v11.
+
+**What to do now:**
+
+- If your build treats warnings as errors, suppress the warning where you use these classes: `@SuppressWarnings("removal")` in Java, `@Suppress("DEPRECATION")` in Kotlin.
+- Replace any use of `CallableTransactionHandler`. 10.0.0 has no one-to-one substitute for it. The product's own guidance is to move the handler to one of the typed event handlers (the sync, async and rx3 variants, for example `SyncEventHandler`); the deprecation notes say there is "no single mechanical substitution". Plan this as a port of the handler, not a rename.
+
+**What to do before the classes are removed:** port each handler to a typed event handler in `global.genesis.eventhandler.typed`. These interfaces already exist in 8.15. There is no migration tool, so the port is manual. The deprecation notes in the code mention a `MigrateEventHandlerToPAL` tool and a migration guide, but neither ships with 10.0.
+
+Choose the interface by concurrency model and by how the handler validates:
+
+| | No `onValidate` | `onValidate` and `onCommit` | Validation with a context object |
+|---|---|---|---|
+| Synchronous | `SyncEventHandler<I, O>` | `SyncValidatingEventHandler<I, O>` | `SyncContextValidatingEventHandler<I, O, C>` |
+| Coroutines | `AsyncEventHandler<I, O>` | `AsyncValidatingEventHandler<I, O>` | `AsyncContextValidatingEventHandler<I, O, C>` |
+| RxJava 3 | `Rx3EventHandler<I, O>` | `Rx3ValidatingEventHandler<I, O>` | `Rx3ContextValidatingEventHandler<I, O, C>` |
+
+Here is a handler written against the old API:
+
+```kotlin
+// 8.15: AbstractEventHandler (abbreviated)
+@Module
+internal class EventCronRuleEnable
+@Inject
+constructor(private val manager: EventManager, private val service: QuartzRuleService) :
+    AbstractEventHandler(manager, "EVENT_CRON_RULE_ENABLE", metaData) {
+
+    companion object {
+        private val metaData by lazy {
+            EventMetaData().apply {
+                addField(EventMetaDataField.createMandatoryField("NAME", Field.Type.STRING))
+            }
+        }
+    }
+
+    override fun onValidate(message: Message, ignoreWarnings: Boolean) { /* reads message.genesisSet, calls manager.sendAck / manager.handleError */ }
+    override fun onCommit(message: Message, ignoreWarnings: Boolean) { /* the same, plus the write */ }
+}
+```
+
+And here is a typed validating handler:
+
+```kotlin
+// 10.0: typed event handler
+@Module
+class CompanyEventHandler : SyncValidatingEventHandler<Company, EventReply> {
+    override fun messageType(): String = "VALIDATING_COMPANY"
+
+    override fun onValidate(message: Event<Company>): EventReply {
+        return if (message.details.companyType != CompanyType.FUND) {
+            StandardError(ErrorCode.VALIDATION_ERROR, "This company is not a fund").toEventNackWarning()
+        } else {
+            ack()
+        }
+    }
+
+    override fun onCommit(message: Event<Company>): EventReply {
+        return EventReply.EventAck(listOf(mapOf("VALUE" to "RECEIVED")))
+    }
+}
+```
+
+What changes in the port:
+
+- **Metadata.** You no longer build `EventMetaData` by hand. The schema, mandatory fields and allowed values come from the payload class. To adjust them, override `overrideMetadataFields()`, `excludeMetadataFields()` or `includeMetadataFields()`.
+- **Payload.** Instead of reading a `GenesisSet`, you read properties of `message.details`.
+- **Replies.** Instead of calling `manager.sendAck` or `manager.handleError`, you return an `EventReply`, for example with `ack()`, `nack(...)` or `approvableAck(...)`.
+- **Message type.** The framework adds the `EVENT_` prefix, so `messageType()` returns the name without it.
+- **Registration.** Annotate the class with `@Module`. You don't pass in an `EventManager`.
+
+If you used `CallableTransactionHandler`, it was a dispatcher: it kept a map from a transaction name to a listener (`addTransaction`, `addMessageListener`) and called the matching listener for each incoming message. The typed API has no dispatcher class, so map it like this:
+
+| In 8.15 | In 10.0 |
+|---|---|
+| One `CallableTransactionHandler` holding several name-to-listener entries | One typed event handler per entry |
+| The transaction name a listener was registered under | The handler's `messageType()` (without the `EVENT_` prefix) |
+| The listener's `GenesisSet` handling | The handler's `onCommit` (and `onValidate`, if you validate) reading `message.details` |
+| The dispatcher's own lookup by name | None to write: the framework routes each message to the handler whose `messageType()` matches |
+
+GPAL `eventHandler<T> { }` scripts already run on the typed API, so they need no port.
+
+## 5. Approvable acks: `approvalMessage` becomes `resultMessage`
+
+**Applies to:** Kotlin or Java code that builds an `EventApprovableAck` directly or implements `Approvable`, and clients that read the message from a pending-approval ack.
+
+**Why:** the message that the submitter of a pending-approval event sees has been renamed, to tell it apart from the message the reviewer sees.
+
+**What goes wrong if you skip this:** code that uses the removed names fails to compile. Clients keep working for now, but read a deprecated field.
+
+**What to do:** in Kotlin or Java code, make these changes:
+
+| 8.15 | 10.0 |
+|---|---|
+| `EventReply.EventApprovableAck(approvalMessage = "Queued")` | `EventReply.EventApprovableAck(resultMessage = "Queued")` |
+| `ack.copy(approvalMessage = "Queued")` | `ack.copy(resultMessage = "Queued")` |
+| `ack.approvalMessage` | `ack.resultMessage` (the old getter still works, but is deprecated) |
+| `EventApprovableAck.defaultApprovalMessage` | `EventApprovableAck.defaultResultMessage` (the old constant still works, but is deprecated) |
+
+If you implement `Approvable`, override `resultMessage`, and keep `approvalMessage` as a deprecated property that returns it:
+
+```kotlin
+override val resultMessage: String = "Queued"
+
+@Deprecated("Use resultMessage")
+@get:JsonProperty("APPROVAL_MESSAGE")
+override val approvalMessage: String get() = resultMessage
+```
+
+In clients, read `RESULT_MESSAGE` from the approvable ack. `APPROVAL_MESSAGE` still carries the same value, but it is deprecated.
+
+You don't need to change:
+
+- `approvableAck(approvalMessage = "...")` in GPAL scripts and typed event handlers. The parameter keeps its name.
+- Anything to do with the message the reviewer sees: the `approvalMessage` on the incoming event, the `PENDING_APPROVAL` table and the `APPROVAL_MESSAGE_MISSING` error.
+
+## 6. Evaluator clients: send the payloads the rule events now expect
+
+**Applies to:** any UI or client that creates or manages cron rules or dynamic rules.
+
+**Why:** the evaluator's rule events now take their schema from the `CRON_RULE` and `DYNAMIC_RULE` tables, and check it more strictly. The message types are unchanged.
+
+**What goes wrong if you skip this:** the evaluator rejects requests that 8.15 accepted.
+
+**What to do:**
+
+- **Enable, disable and delete:** send only the key.
+  - `EVENT_CRON_RULE_ENABLE`, `EVENT_CRON_RULE_DISABLE` and `EVENT_CRON_RULE_DELETE` take `{ "NAME": ... }`.
+  - `EVENT_DYNAMIC_RULE_ENABLE`, `EVENT_DYNAMIC_RULE_DISABLE` and `EVENT_DYNAMIC_RULE_DELETE` take `{ "ID": ... }`.
+  - A payload with the whole row, which 8.15 accepted, is now rejected.
+- **`EVENT_DYNAMIC_RULE_AMEND`:** always send `TABLE_OPERATION`, as one of `INSERT`, `MODIFY`, `DELETE` or `PRIME`.
+- **Amending a rule:** `RULE_STATUS` and `RULE_TYPE` are read-only in an amend, and so are `IS_TEMPLATE` and `RULE_EXECUTION_STRATEGY` on dynamic rules. Any value you send for them is ignored. To change a rule's status, use the enable and disable events.
+- **Dynamic rules:** `RULE_EXPRESSION` must not be blank. The evaluator now rejects an insert or amend with a blank expression, and doesn't run a stored rule whose expression is blank.
+
+## 7. Rules that use `!in`
+
+**Applies to:** dynamic rules and cron rules whose expressions use the `!in` operator, whether they are stored in `DYNAMIC_RULE` or `CRON_RULE`, or sent by a client.
+
+**Why:** the evaluator no longer accepts `!in` in a rule expression or a result expression.
+
+**What goes wrong if you skip this:**
+
+- A stored rule that uses `!in` is refused when the evaluator loads it. The evaluator logs an ERROR line that names the rule, and the rule doesn't run.
+- An insert or amend that uses `!in` is rejected, with a message that suggests `!(A in B)`.
+
+**What to do:** before you upgrade, search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE`, the `RESULT_EXPRESSION` values in `CRON_RULE`, and any client code that builds rules, for `!in`. Rewrite each one with the negation outside:
+
+```groovy
+// 8.15
+CURRENCY_ID !in "USD"
+
+// 10.0
+!(CURRENCY_ID in "USD")
+```
+
+The rewritten form also works in 8.15, so you can update stored rules before you upgrade.
+
+## 8. Event payloads: `BigDecimal` and `LocalDate` input
+
+**Applies to:** clients that send `BigDecimal` or `LocalDate` fields to typed event handlers or GPAL event handlers.
+
+**Why:** the generated event schema is stricter for `BigDecimal` fields, and `LocalDate` fields now have a fixed format.
+
+**What goes wrong if you skip this:** the event handler rejects values that 8.15 accepted, or reads a date as the day before the one you meant.
+
+**What to do:** check the clients that send these fields.
+
+- **`BigDecimal` fields with `@BigDecimalMin` or `@BigDecimalMax`.** A value outside the declared range is now rejected. 8.15 didn't enforce the range.
+- **Any `BigDecimal` field.** The value must be a number written as a string, such as `"1.5"`, `"-2"` or `"1e3"`. A string such as `"1,5"` is now rejected by the schema. In 8.15, it failed later, when the payload was read.
+- **`LocalDate` fields.** In 8.15, the generated schema described a `LocalDate` field in a payload class as an object. In 10.0, it describes it as a date, sent as an integer: epoch milliseconds at midnight UTC. Send midnight UTC, because epoch milliseconds for local midnight in a time zone ahead of UTC are read as the previous day.
+
+## 9. `CRON_RULE_AUDIT`: migrate the audit rows during the database upgrade
+
+**Applies to:** operators upgrading any server that has rows in `CRON_RULE_AUDIT`, which means any server that has used cron rules. If you read `CRON_RULE_AUDIT` directly, the column changes at the end of this step also apply to you.
+
+**Why:** in 10.0, `CRON_RULE_AUDIT` is a generated audit table for `CRON_RULE`. Its key and several column names change. `remap` can't convert the existing rows, so install hooks shipped in the `genesis` product move them across:
+
+1. During `genesisInstall`, a hook exports the old rows to `$GENESIS_HOME/runtime/cron-rule-audit-migration/CRON_RULE_AUDIT.legacy.csv`, and then empties the table.
+2. `remap --commit` changes the table to the new layout.
+3. A post-remap hook transforms the exported rows and loads them back.
+
+**What goes wrong if you skip this:** if you don't run the post-remap hook, the table has no audit history from before the upgrade. The export stays on disk until you run the hook.
+
+**What to do:**
+
+1. **Stop every node that writes to `CRON_RULE_AUDIT`.** If the table changes while it is being exported, the hook leaves the table as it was and fails, and you have to run it again.
+2. **Install and remap as usual:**
+
+   ```bash
+   genesisInstall
+   remap --commit
+   ```
+
+   Don't use `genesisInstall --ignoreHooks`, which skips the export.
+3. **Load the rows back:**
+
+   ```bash
+   genesisInstallHooks --hookType=POST_REMAP
+   ```
+
+   It logs `CRON_RULE_AUDIT migration complete` when it has finished. It keeps the export, renamed to `CRON_RULE_AUDIT.legacy.<timestamp>.csv.migrated`, in the same folder.
+
+On Docker, with `GENESIS_DB_UPGRADE=true`, the startup script runs the install hooks, then `remap`, then the post-remap hooks. You don't need to do anything by hand.
+
+If some rows can't be loaded, the hook logs a warning and writes them to a `CRON_RULE_AUDIT.<timestamp>.rejected.csv` file in the same folder, so that you can repair them. If none of the rows can be loaded, the hook fails and keeps the export. It is safe to run the hook again after you fix the cause.
+
+**After the upgrade,** update anything that reads `CRON_RULE_AUDIT` directly, such as reports, SQL views and custom queries:
+
+| 8.15 column | 10.0 column |
+|---|---|
+| `EVENT_TYPE` | `AUDIT_EVENT_TYPE` |
+| `EVENT_DATETIME` | `AUDIT_EVENT_DATETIME` |
+| `USER_NAME` (the user who made the change) | `AUDIT_EVENT_USER` |
+| Key: `NAME` and `EVENT_DATETIME` | Key: `CRON_RULE_AUDIT_ID` |
+
+On migrated rows, `USER_NAME` still holds the user who made the change, because that is what 8.15 stored. On rows written by 10.0, it holds the user who last inserted or amended the rule. For the time of the original event, use `AUDIT_EVENT_DATETIME`.
+
+## 10. Rule expressions and client criteria: new checks and limits
+
+**Applies to:** dynamic rules, cron rules and client criteria, particularly any that a program generates.
+
+**Why:** 10.0 limits the size of these expressions. It also refuses some expressions that 8.15.44 and earlier accept; 8.15.45 already has those checks.
+
+**What goes wrong if you skip this:**
+
+- From 8.15.44 or earlier: a `\u` escape in a rule expression or client criteria is refused. So is a result expression written as a comparison, such as `DESK == 'US'`. A stored rule that fails these checks doesn't run, and the evaluator logs an ERROR line that names it.
+- From any 8.15 patch: client criteria over a limit are refused with `INVALID_CRITERIA`, and a rule insert or amend over a limit is rejected. A stored rule over a limit still runs, and the evaluator logs a WARN line that names it.
+
+**What to do:** search the `RULE_EXPRESSION` and `RESULT_EXPRESSION` values in `DYNAMIC_RULE` and the `RESULT_EXPRESSION` values in `CRON_RULE`. Use the literal character instead of a `\u` escape, and write results as assignments, such as `DESK = 'US'`.
+
+If your expressions are near a limit, shorten them, or set the item in your system definition. A value of 0 or below disables the limit. Rules also get a [nesting check on the parsed expression](/develop/server-capabilities/runtime-configuration/system-definition/#raising-the-limits), capped at 100 levels: `ExpressionMaxNestingDepth` can lower that cap, but can't raise or disable it.
+
+| System definition item | Default |
+|---|---|
+| `ExpressionMaxLength` | 65,536 |
+| `ExpressionMaxNestingDepth` | 100 |
+| `ExpressionMaxLogicalOperators` | 1,000 |
+
+## Behaviour changes that need no action
+
+- **GPAL event handler scripts.** `eventHandler<T> { }` and `contextEventHandler` scripts work as before, unless they use the members removed in step 1.
+- **`PROCESS_NAME` on rule events.** The rule insert events and `EVENT_DYNAMIC_RULE_AMEND` no longer require `PROCESS_NAME` (the evaluator engine has used service discovery when it is empty since v8). A dynamic rule amend replaces every field, so if you leave `PROCESS_NAME` out of it, the stored value is cleared.
+- **Async event handlers in flight.** A process now runs at most 256 async event handlers at once, counting GPAL event handlers and `AsyncEventHandler` implementations. Further events wait until one finishes. To change the limit, set the `genesis.eventhandler.async.maxInFlight` system property in the process's JVM options; `0` removes it. See [Async event handlers in flight](/develop/server-capabilities/core-business-logic-event-handler/gpal-java/#async-event-handlers-in-flight).
+- **`USER_NAME` on `EVENT_CRON_RULE_INSERT`.** You don't need to send `USER_NAME`. The evaluator sets it to the user who sent the event.

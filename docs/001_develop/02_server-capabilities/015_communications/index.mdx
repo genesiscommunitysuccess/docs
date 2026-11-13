@@ -174,7 +174,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 | unSet | `fun unSet(field: String)` | Shorthand method to unset a single field. For example, `genesisSet.unSet("PRICE")` |
 | unSetDirect | `tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this)` | Shorthand method to unset a field that may be multiple sets deep. For example, `genesisSet.unSetDirect("DETAILS.TRADE.CLIENT.NAME")`. |
 | unSetGenesisSet | `fun unSetGenesisSet(key: String)` | Shorthand method to unset a GenesisSet. |
-| with | `infix fun String.with(any: Any?)` | Sets key value in GenesisSet. For example, `MESSAGE_TYPE with "EVENT_INSERT"`. |
+| with | `infix fun String.with(any: Any?)` | Sets key value in GenesisSet. For example, `MESSAGE_TYPE with "EVENT_TRADE_INSERT"`. |
 | toString | `override fun toString(): String` | Returns a pretty-print string. |
 | writeTo | `fun writeTo(pk: MessagePacker)` | Serialize object into specified packer. |
 | readFrom | `fun readFrom(unpacker: MessageUnpacker)` | Deserialize object from given unpacker. |
@@ -539,7 +539,18 @@ You can protect against Cross-Site Scripting (XSS) by enabling string sanitisati
 
 **System-wide XSS sanitisation**
 
-Enable XSS string sanitisation for all outgoing string properties by setting the [`XssStringSanitizer`](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined) system definition item to `true` in your application's `genesis-system-definition.kts` file. By default it is `false`. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `xssStringSanitizer` fails to compile, so the router doesn't start.
+Enable XSS string sanitisation for all outgoing string properties by setting the `XssStringSanitizer` item to `true` in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/). By default this item is set to `false`.
+
+```kotlin
+// genesis-system-definition.kts
+systemDefinition {
+    global {
+        item(name = "XssStringSanitizer", value = "true")
+    }
+}
+```
+
+Setting it under `global` makes it apply to every process. It is not a router setting: a `router { }` block in `genesis-router.kts` that sets `xssStringSanitizer` fails to compile, so the router doesn't start.
 
 **Per-field XSS sanitisation on type-safe messages**
 
@@ -727,6 +738,7 @@ The constructors that take a `NetworkConfiguration`, or no configuration at all,
 | sendMessages | `fun sendMessages(sets: List<GenesisSet>)` |
 | rxSendMessage | `fun rxSendMessage(set: GenesisSet, timeout: Int): Single<Boolean>` |
 | suspendSendMessage | `suspend fun suspendSendMessage(set: GenesisSet, timeout: Int): Boolean` |
+| rxRequest | `fun rxRequest(set: GenesisSet, timeout: Int): Single<GenesisSet>` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>)` |
 | sendReqRep | `fun sendReqRep(set: GenesisSet, consumer: Consumer<GenesisSet>, reqRepTimeout: Int)` |
 | shutdown | `@Throws(InterruptedException::class) fun shutdown()` |

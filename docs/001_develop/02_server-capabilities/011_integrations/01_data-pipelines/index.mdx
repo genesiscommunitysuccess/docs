@@ -107,6 +107,8 @@ To start with, the pipeline is empty. We begin by calling the source function to
 
 Each pipeline name must be unique within its `pipelines` block, and every pipeline must end with a call to `build()`. If either rule is broken, the script fails to load; a missing `build()` produces an error that names the unfinished pipeline, and a duplicate name produces an error that says the pipeline "is declared more than once".
 
+If you are moving a pipeline script from 8.15, see [Upgrade from 8.15: Consolidator and data pipelines](/release-notes/platform/10/upgrade-from-8.15/upgrade-10.0-consolidator-pipelines) for the block form of `pipeline`, and for [`PipelinesReader.get()` and `PipelineDefinitionProvider`](/release-notes/platform/10/upgrade-from-8.15/upgrade-10.0-consolidator-pipelines#6-stop-calling-pipelinesreaderget).
+
 ### `source`
 The source function takes an instance of an object that implements the source interface.
 This can be:
@@ -441,6 +443,10 @@ camelFileSource {
 :::important
 If there is a requirement to stop the pipeline using the pipeline manager API, you must set a `routeID` on all routes created within the route builder function so that these routes can be removed from the `CamelContext` when the pipeline is stopped.
 If no `routeId` is provided, one will be assigned by Camel internally, and the pipeline runtime will be unable to deregister the route. This means if the pipeline is stopped but the process is still running, Camel will continue to process files.
+:::
+
+:::note
+From 10.0, a file that was being processed when an unhandled error stopped the pipeline is moved to an `.error` folder next to it. See [Upgrade from 8.15: Consolidator and data pipelines, step 7](/release-notes/platform/10/upgrade-from-8.15/upgrade-10.0-consolidator-pipelines#7-watch-the-error-folder-for-failed-camel-files).
 :::
 
 ###### Reading from a local directory
