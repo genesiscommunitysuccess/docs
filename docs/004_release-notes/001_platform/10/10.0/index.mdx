@@ -1021,7 +1021,60 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
-There are currently no patch releases for this version
+#### 10.0.1
+
+###### Breaking changes
+
+* `genesis-commons` : Configurable expression limits for client criteria and rules
+* `genesis-evaluator` : Validate CRON_RULE result expressions and close rewrite bypasses
+
+###### Features
+
+* `genesis-parent` : Expose last heartbeat time per process on ResourceDaemon health routes via ?detail=true
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Deliver sync backward-join branch updates through a private channel instead of an IO thread per branch
+* `genesis-pal-execution` : Hold backward-join child updates under the root until the window ends, without per-key parent sets
+* `genesis-pal-execution` : List the parents of held backward-join keys so a window flush visits only them, and end held windows ahead of queued join steps
+* `genesis-pal-execution` : Share root keys and identity parent keys across chains as a frozen base with per-chain deltas
+
+###### Fixes
+
+* `core` : Publish JMS updates as BytesMessage
+* `coreproduct` : Stop the Spring starter jar making genesis-eventhandler's module lookup ambiguous
+* `genesis-codegen` : Deprecate the generated view repositories again
+* `genesis-db` : Call destroy() on the stored listener when TopicHandler.deregister removes it
+* `genesis-db` : Harden engine-label shortening for SQL views
+* `genesis-db` : Match external-queue listener removals by wrapper and cancel the temporary batch wrapper's job
+* `genesis-db` : Wake the ZeroMQ I/O thread when a new connection never starts its handshake
+* `genesis-environment` : RenameFields keeps enum check constraints and refuses generated fields
+* `genesis-evaluator` : Free the compiled half of a dynamic rule that fails to compile
+* `genesis-net` : Enforce tls.authorization on the WEBSOCKET channel
+* `genesis-pal-requestserver` : Keep a custom request reply's auth when applying file-level permission codes
+* `genesis-parent` : Publish genesis-generated-view to mavenLocal before the plugin tests
+* `genesis-subcore` : JMS publish worker stops retrying and reconnecting once closed
+* `genesis-subcore` : A Spring app starts when a table is keyed on a single DATE or DATETIME field
+* `genesis-subcore` : A Spring event taking a generated JPA entity requires its required columns
+* `genesis-subcore` : Carry a registration signal from the update subscription to priming
+* `genesis-subcore` : Compare DEPLOYED_PRODUCT with the product name in DeployedProductCheck
+* `genesis-subcore` : Configurable JMS client id so durable subscriptions survive pod restarts
+* `genesis-subcore` : Dedupe range-change reads and send deletes only for sent rows on table range subscribes
+* `genesis-subcore` : Deliver writes made during priming once on table range subscribes
+* `genesis-subcore` : Drop a late Delete for a row never sent on Never and bulk subscribes
+* `genesis-subcore` : Flush batching and grouping update-queue listeners on destroy and log lost batches
+* `genesis-subcore` : Keep per-record order on the JMS update queue
+* `genesis-subcore` : Match update queue removals without building live listener wrappers
+* `genesis-subcore` : Only unsubscribe JMS topic when removeListener deregisters the last listener
+* `genesis-subcore` : Register backward-join branch subscriptions before priming
+* `genesis-subcore` : Remove Gradle 10 deprecations from the Genesis Gradle plugins
+* `genesis-subcore` : Retry JMS publishes in place and fail fast once retries run out
+* `genesis-subcore` : Roll back the listener registration when a JMS subscribe fails
+* `genesis-subcore` : Serialise JMSUpdateQueue addListener with removeListener
+* `genesis-subcore` : Shut down an Aeron TopicHandler's dispatcher when the handler is dropped
+* `genesis-subcore` : Stop the JMS publish worker when an abandoned close never reaches it
+* `genesis-subcore` : Warn about fields dictionaries only for the local project
+* `genesis-testsupport` : Bound the database retry in jupiter test contexts
 
 ## Client
 
