@@ -98,7 +98,7 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 <language>pal</language>
 ```
 
-**Intermediate — Data Server compiled, Event Handler still script-based:** the Data Server's PAL module and package are replaced with your app's own; the Event Handler's PAL module, package, and script file are untouched; `<language>` stays, because the Event Handler still needs it.
+**Intermediate — Data Server compiled, Event Handler still script-based:** the Data Server's PAL module and package are replaced with your app's own; the Event Handler's PAL module, package, and script file are untouched; `<language>pal</language>` stays, so `genesisInstall` still merges the process into `GENESIS_COMPACT_PROCESS`.
 
 ```xml
 <module>myapp,genesis-pal-eventhandler</module>
@@ -107,7 +107,7 @@ Migrating a compact process's Data Server first, with its Event Handler still sc
 <language>pal</language>
 ```
 
-**After — both compiled:** your app's module now covers every definition, so it's listed once; `<package>` unions both definition packages; `<script>` and `<language>` are dropped entirely, since nothing in the process is script-based any more.
+**After — both compiled:** your app's module now covers every definition, so it's listed once; `<package>` unions both definition packages; `<script>` and `<language>` are dropped entirely, since nothing in the process is script-based any more. With no PAL package left in `<package>`, `genesisInstall` no longer merges the process into `GENESIS_COMPACT_PROCESS`.
 
 ```xml
 <module>myapp</module>
