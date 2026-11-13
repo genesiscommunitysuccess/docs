@@ -178,6 +178,15 @@ What changes in the port:
 - **Message type.** The framework adds the `EVENT_` prefix, so `messageType()` returns the name without it.
 - **Registration.** Annotate the class with `@Module`. You don't pass in an `EventManager`.
 
+If you used `CallableTransactionHandler`, it was a dispatcher: it kept a map from a transaction name to a listener (`addTransaction`, `addMessageListener`) and called the matching listener for each incoming message. The typed API has no dispatcher class, so map it like this:
+
+| In 8.15 | In 10.0 |
+|---|---|
+| One `CallableTransactionHandler` holding several name-to-listener entries | One typed event handler per entry |
+| The transaction name a listener was registered under | The handler's `messageType()` (without the `EVENT_` prefix) |
+| The listener's `GenesisSet` handling | The handler's `onCommit` (and `onValidate`, if you validate) reading `message.details` |
+| The dispatcher's own lookup by name | None to write: the framework routes each message to the handler whose `messageType()` matches |
+
 GPAL `eventHandler<T> { }` scripts already run on the typed API, so they need no port.
 
 ## 5. Approvable acks: `approvalMessage` becomes `resultMessage`
