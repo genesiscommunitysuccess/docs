@@ -278,6 +278,84 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.45
+
+###### Breaking changes
+
+* `genesis-evaluator` : Validate CRON_RULE result expressions and close rewrite bypasses
+
+###### Features
+
+* `genesis-parent` : Expose last heartbeat time per process on ResourceDaemon health routes via ?detail=true
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Hold backward-join child updates under the root until the window ends, without per-key parent sets
+* `genesis-pal-execution` : List the parents of held backward-join keys so a window flush visits only them, and end held windows ahead of queued join steps
+* `genesis-pal-execution` : Share root keys and identity parent keys across chains as a frozen base with per-chain deltas
+
+###### Fixes
+
+* `genesis-db` : Backport BigDecimal scale-sensitivity fixes in SendIt test and batch deleteAll
+* `genesis-db` : Drop the trailing semicolon from the Oracle enum constraint drop
+* `genesis-db` : Match external-queue listener removals by wrapper and cancel the temporary batch wrapper's job
+* `genesis-environment` : RenameFields quotes renamed columns, keeps enum check constraints and refuses generated fields
+* `genesis-evaluator` : Free the compiled half of a dynamic rule that fails to compile
+* `genesis-evaluator` : Refuse time and dynamic rules whose expressions overflow the stack when compiled
+* `genesis-evaluator` : Stop dynamic and time rules whose result expression fails to evaluate
+* `genesis-pal-requestserver` : Keep a custom request reply's auth when applying file-level permission codes
+* `genesis-subcore` : JMS publish worker stops retrying and reconnecting once closed
+* `genesis-subcore` : Carry a registration signal from the update subscription to priming
+* `genesis-subcore` : Dedupe range-change reads and send deletes only for sent rows on table range subscribes
+* `genesis-subcore` : Deliver writes made during priming once on table range subscribes
+* `genesis-subcore` : Drop a late Delete for a row never sent on Never and bulk subscribes
+* `genesis-subcore` : Flush batching and grouping update-queue listeners on destroy and log lost batches
+* `genesis-subcore` : Keep per-record order on the JMS update queue
+* `genesis-subcore` : Match update queue removals without building live listener wrappers
+* `genesis-subcore` : Only unsubscribe JMS topic when removeListener deregisters the last listener
+* `genesis-subcore` : Register backward-join branch subscriptions before priming
+* `genesis-subcore` : Retry JMS publishes in place and fail fast once retries run out
+* `genesis-subcore` : Roll back the listener registration when a JMS subscribe fails
+* `genesis-subcore` : Serialise JMSUpdateQueue addListener with removeListener
+* `genesis-subcore` : Shut down an Aeron TopicHandler's dispatcher when the handler is dropped
+* `genesis-subcore` : Stop the JMS publish worker when an abandoned close never reaches it
+
+#### 8.15.44
+
+###### Features
+
+* `genesis-router` : Add ssoToken pre-auth cookie support for SSO token delivery
+* Write _AUDIT rows for consolidator writes to audited tables
+
+###### Performance improvements
+
+* `genesis-commons` : Load out-of-order keys into the paged sorted maps faster with no extra heap
+* `genesis-pal-execution` : Deliver sync backward-join branch updates through a private channel instead of an IO thread per branch
+* `genesis-pal-execution` : Encode each join key once per update in the memory-efficient sync backward-join cache
+* `genesis-pal-execution` : Exact memory-efficient sync backward-join cache with compact storage
+* `genesis-pal-execution` : Share parent keys between sibling identity backward-join branches
+* `genesis-pal-execution` : Store root primary keys encoded in the memory-efficient backward-join cache
+
+###### Fixes
+
+* `core` : Publish JMS updates as BytesMessage
+* `genesis-db` : Call destroy() on the stored listener when TopicHandler.deregister removes it
+* `genesis-db` : Honour reverse order in SQL view getRangeFromEnd with an index reference
+* `genesis-db` : Merge both sides of two Modify updates
+* `genesis-db` : Range subscriptions unlink rows and join chains they no longer hold, order and bound range refreshes
+* `genesis-db` : Stop the SQL connection pool losing permits and connections
+* `genesis-environment` : SetProcessState resolves its client config from network-config.yaml
+* `genesis-pal` : Do not mark a join as identity when its key reads an ancestor field
+* `genesis-pal-datapipeline` : Keep the DB poller checkpoint on a sink timeout or a terminated pipeline
+* `genesis-pal-execution` : Backward-join cache missed updates, join ordering, merges, fields and SQL view replay memo
+* `genesis-pal-execution` : Recover backward-join child updates dropped before the link exists
+* `genesis-pal-execution` : Share one backward-join root collection across every enricher client
+* `genesis-subcore` : Configurable JMS client id so durable subscriptions survive pod restarts
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW bulkSubscribe
+* `genesis-subcore` : Deliver updates written during priming in SHARED_FLOW rangeSubscribe and no-join view subscriptions
+* `genesis-subcore` : Subscribe again on each sync backward-join branch retry, and release BLOCKING listeners a priming view never collected
+* Pass primingBatchSize through table range subscriptions
+
 #### 8.15.43
 
 ###### Fixes
