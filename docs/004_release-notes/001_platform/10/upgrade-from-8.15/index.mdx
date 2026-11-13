@@ -5,7 +5,7 @@ sidebar_position: 1
 id: 'upgrade-10.0'
 ---
 
-This guide takes an application from Genesis 8.15 to 10.0. This page covers the changes every project makes: the build toolchain, the core libraries the platform moved to, and the Genesis Gradle plugins and packaging. Each area of the platform then has its own page for the changes that only matter if you use that area.
+This guide takes an application from Genesis 8.15 to 10.0. It describes the latest 10.0 patch release: upgrade to that, rather than to 10.0.0. This page covers the changes every project makes: the build toolchain, the core libraries the platform moved to, and the Genesis Gradle plugins and packaging. Each area of the platform then has its own page for the changes that only matter if you use that area.
 
 Work through it in this order:
 
@@ -485,6 +485,8 @@ Before going live, test request/reply and Data Server subscriptions over both JS
 **If you skip it:** nothing breaks. You don't get the JDK 25 benefits.
 
 **What to do:** pick the JDK your processes run on.
+
+On JDK 21 or later, the database layer runs its own work, such as `AsyncEntityDb` transaction bodies, on virtual threads automatically. To keep platform threads, set `-Dgenesis.db.virtualThreads=false` in the process's `<options>`. On JDK 24 or later, you can also opt in to virtual message threads with `-Dgenesis.net.virtualThreads=true`. For which code runs where, see [Virtual threads](/develop/server-capabilities/data-access-apis/choosing-a-db-api#virtual-threads).
 
 The default JVM arguments now start with `-XX:+IgnoreUnrecognizedVMOptions`, so that JDK 25 flags are ignored on older JDKs. As a side effect, a misspelt option in a process's `<options>`, `<PROC>_PROCESS_OPTIONS`, the system definition's `JVM_OPTIONS` or `GENESIS_SYSDEF_JVM_OPTIONS` is now silently ignored. Check that custom options took effect, for example with `jcmd <pid> VM.command_line`.
 
