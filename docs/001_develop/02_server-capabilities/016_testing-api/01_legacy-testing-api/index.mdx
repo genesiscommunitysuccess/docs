@@ -129,6 +129,14 @@ There two types of test described here:
 
 Both types of test work with all three dictionary types.
 
+##### SQL schema selection
+
+When running tests against SQL databases, the database schema/namespace used by the legacy test support can be controlled via JVM system properties:
+
+- `DbNamespace`: if set, this is always used.
+- `uniqueTestDbNamespace=true`: if `DbNamespace` is not set, generates a **unique random SQL namespace** for the test JVM (constrained to **30 characters** for Oracle compatibility).
+- Otherwise (default): if `DbNamespace` is not set and `uniqueTestDbNamespace` is false, the namespace defaults to `ProjectName` (or an empty string if `ProjectName` is not set, which typically uses the database's default schema).
+
 #### AbstractDatabaseTest
 
 Use this for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other Genesis components are provided. The only requirement for this type of test is a dictionary.
