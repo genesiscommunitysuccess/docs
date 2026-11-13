@@ -96,6 +96,26 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.10.13
+
+###### Breaking changes
+
+* `genesis-evaluator` : Validate CRON_RULE result expressions and close rewrite bypasses
+
+###### Performance improvements
+
+* `criteria` : Share one compiled class per %GENESIS_USER_NAME% criteria shape and fix its index interval
+
+###### Fixes
+
+* `genesis-db` : Parse client criteria without Groovy AST transformations, with the 8.15.x criteria vocabulary and user-name binding
+* `genesis-db` : Report an absent field as null rather than dereferencing it
+* `genesis-environment` : Resume an FDB index build after the transaction-size guard stops a batch
+
+###### Dependency changes
+
+* Bump testcontainers from 1.20.6 to 1.21.4
+
 #### 8.10.12
 
 ###### Fixes
