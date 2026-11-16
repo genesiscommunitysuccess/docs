@@ -1017,6 +1017,53 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 10.0.2
+
+###### Features
+
+* `eventhandler` : Bound in-flight async event handlers per process
+* `genesis-resource-daemon` : Opt-in mTLS for the health-check server
+* `net` : Opt-in virtual threads for the message pool
+
+###### Performance improvements
+
+* `genesis-pal-execution` : Share leaf non-identity parent links and sibling groups across chains as a frozen base with per-chain deltas
+* `genesis-pal-execution` : Share one update feed and parse per child table across sync backward-join chains
+
+###### Fixes
+
+* `codegen-gradle-plugin` : Keep inline enum imports when the DAO facade runs
+* `commons` : Make SharedCounterGFlake ids unique at and above the per-millisecond limit
+* `genesis-db` : Run blocking SQL connections on the calling thread
+* `dictionary` : Free field contexts with their thread
+* `genesis-dataserver2` : Run logon priming off the message thread so LMDB read slots survive virtual threads
+* `genesis-db` : Do not report a pool deadlock after a stop-the-world pause
+* `genesis-db` : Drop the trailing semicolon from the Oracle enum constraint drop
+* `genesis-db` : Give blocking permits to the innermost waiter on a shared event loop
+* `genesis-db` : Keep FoundationDB entity batches correct on key moves, RECORD_ID paging and rows named twice
+* `genesis-db` : Name the unset variable when a ZeroMQ CURVE key is unresolved
+* `genesis-db` : Order SQL non-unique index ties by RECORD_ID
+* `genesis-db` : Parse named parameters with each database's quoting and comment rules
+* `genesis-db` : Reject entity batches that name the same record twice before writing
+* `genesis-evaluator` : Wait for primed listeners and a connected target in DynamicRulesEngineTest
+* `genesis-eventhandler-spring-boot-starter` : Enforce rights annotations at every level
+* `genesis-metrics` : Wait for dispatched tasks before asserting MonitoredDispatcher metrics
+* `genesis-net` : Keep one source ref's messages in order on client, server and router
+* `genesis-net` : Register the suspendRequest reply callback before writing
+* `genesis-net` : Router web port enforces tls.authorization, refused clients back off
+* `genesis-net` : Set the connector at WebSocket handshake so isConnected holds once connected
+* `genesis-pal-datapipeline` : Let Camel pick up only completely written sink files
+* `genesis-pal-dataserver` : Send a new client its initial load before live updates, and fix the flaky chunked MoreRows tests
+* `genesis-pal-dataserver` : Stop a replayed stale modify deleting a row the initial load sent
+* `genesis-pal-execution` : Abandon hung tracked join reads at a deadline so the replay memo leaves overflow
+* `genesis-pal-execution` : Fail backward-join consumers and dataserver queries when the root subscription fails
+* `genesis-pal-execution` : Group FullJoin lookups in int chains instead of a list per request
+* `genesis-pal-execution` : Park unconfined channel-mode backward-join readers on Dispatchers.IO
+* `genesis-pal-execution` : Run BackwardJoinCacheMemoryTest again and account for identity non-leaf child maps in the memory doc
+* `genesis-router` : Read autoRead on the event loop in HttpCookieAuthenticationHandlerTest
+* `genesis-subcore` : Subscribe to BLOCKING updates before anything can cancel them, at every remaining site
+* `genesis-testsupport` : Clear the database when GenesisDatabaseTestContext starts
+
 #### 10.0.1
 
 ###### Breaking changes
