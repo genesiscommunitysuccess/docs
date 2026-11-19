@@ -1113,6 +1113,15 @@ An exception thrown by the sink doesn't reach `onOperationError`, which only cov
 
 So with the default `throwOnNack()` and no `onUncaughtError` handler, a single NACK stops the pipeline. To keep it running, use `logOnNack()` or add an `onUncaughtError` handler.
 
+In a pipeline that splits each file into rows (for example, with `.split(csvRawDecoder())`), the sink receives a file's rows as a stream, and an exception from the sink ends the whole file, not only the row:
+
+- Rows before the one that failed have already been delivered and stay delivered.
+- Rows after it are never sent.
+- If there is no `onUncaughtError` handler, the pipeline stops.
+- If an `onUncaughtError` handler returns normally, the file is acknowledged and dropped, and the pipeline carries on with the next file.
+
+For a file feed where one rejected row shouldn't stop the rest of the file, use `logOnNack()`: each rejected row is logged at error level and the remaining rows are still sent. A timeout or any other send error still ends the file.
+
 If a pipeline stops:
 
 - The pipeline logs `Exception thrown in <pipeline name> but no error handlers have been set` at error level, with the stack trace.
