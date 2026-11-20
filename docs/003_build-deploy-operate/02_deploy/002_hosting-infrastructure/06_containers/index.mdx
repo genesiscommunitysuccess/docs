@@ -559,8 +559,8 @@ systemDefinition {
 | `ClusterServiceAffinityGroup` | Group services for preferred routing based on this value. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
-| `ConsulReconcileResourceMaps` | Set to `false` to stop processes deleting and repairing [resource map entries](#resource-map-entries). Only `true` and `false` are accepted, ignoring case; any other value logs an error and turns reconciliation off. From versions 8.15.47 and 10.0.3 | `true` |
-| `ConsulResourceMapRepublishSeconds` | How often each process checks that its own [resource map entry](#resource-map-entries) is still there, and puts it back if it's missing, in seconds. `0` turns the check off. A negative or non-numeric value logs an error and uses `60`. Has no effect when `ConsulReconcileResourceMaps` is `false`. From versions 8.15.47 and 10.0.3 | `60` |
+| `ConsulReconcileResourceMaps` | Set to `false` to stop processes deleting and repairing [resource map entries](#resource-map-entries). Only `true` and `false` are accepted, ignoring case; any other value logs an error and turns reconciliation off. From version 8.15.47 | `true` |
+| `ConsulResourceMapRepublishSeconds` | How often each process checks that its own [resource map entry](#resource-map-entries) is still there, and puts it back if it's missing, in seconds. `0` turns the check off. A negative or non-numeric value logs an error and uses `60`. Has no effect when `ConsulReconcileResourceMaps` is `false`. From version 8.15.47 | `60` |
 | `ConsulNodeName` | The host's identity in Consul, used for its [node ID](#node-ids) claim. Set a stable value in containers | the hostname |
 | `GFlakeNodeIdGraceMinutes` | How long a node ID claim can go without a refresh before another host may take it, in minutes. Also sets how long a process tolerates Consul being unreachable. See [heartbeat and grace period](#heartbeat-and-grace-period) | `30` |
 | `GFlakeNodeIdClusterName` | The name under which node IDs are claimed in Consul. Apps that share a database must use the same value | the deployed product name |
@@ -665,7 +665,7 @@ To list the entries, run:
 consul kv get -recurse genesis/<DEPLOYED_PRODUCT>/resourceMaps/
 ```
 
-From versions 8.15.47 and 10.0.3, processes keep these entries in step with the processes registered in Consul. Before these versions, an entry stayed after its process was removed, and a resource it listed could still be routed to the removed process.
+From version 8.15.47, processes keep these entries in step with the processes registered in Consul. Before this version, an entry stayed after its process was removed, and a resource it listed could still be routed to the removed process.
 
 - **Before it writes its own entry at startup**, a process waits up to 10 seconds for its own instance to appear in the catalog, unless Consul ACLs hide the catalog from it. If its instance still hasn't appeared after 10 seconds, it logs a warning and writes the entry anyway.
 - **After it writes its own entry at startup**, a process deletes the entries of processes that have no instance registered in the Consul catalog. It never deletes its own entry. Registration decides, not health: a process that is standby, starting or failing is still registered, so its entry stays. An entry that changes between being read and being deleted is kept.
@@ -696,10 +696,10 @@ When the catalog is hidden or can't be read, the process logs a warning at start
 
 Scenario: This might happen when a resource is moved from one process to another. For example, a `requestReply` originally served from `REQ_REP_SERVICE_A` is now moved to `REQ_REP_SERVICE_B`, but Consul still holds a [resource map entry](#resource-map-entries) for `REQ_REP_SERVICE_A` that lists it.
 
-From versions 8.15.47 and 10.0.3, the entry is deleted when any process starts after `REQ_REP_SERVICE_A` has left the Consul catalog. This doesn't happen when reconciliation is turned off, or when Consul ACLs stop the process from seeing every service (see [When nothing is deleted](#when-nothing-is-deleted)).
+From version 8.15.47, the entry is deleted when any process starts after `REQ_REP_SERVICE_A` has left the Consul catalog. This doesn't happen when reconciliation is turned off, or when Consul ACLs stop the process from seeing every service (see [When nothing is deleted](#when-nothing-is-deleted)).
 
 Solution:
 
-- If `REQ_REP_SERVICE_A` is still running, restart it, so that it writes its entry without the resource. Don't delete its entry by hand: from versions 8.15.47 and 10.0.3, a running process puts its missing entry back within `ConsulResourceMapRepublishSeconds`, still listing the resource.
-- If `REQ_REP_SERVICE_A` no longer exists and its entry is still there (before versions 8.15.47 and 10.0.3, or in the cases above), check the Consul console (or CLI) for its resource map entry (under **Key/Value**). If there is one, [delete it](https://developer.hashicorp.com/consul/docs/dynamic-app-config/kv/store#delete-data). Then restart the Genesis services.
+- If `REQ_REP_SERVICE_A` is still running, restart it, so that it writes its entry without the resource. Don't delete its entry by hand: from version 8.15.47, a running process puts its missing entry back within `ConsulResourceMapRepublishSeconds`, still listing the resource.
+- If `REQ_REP_SERVICE_A` no longer exists and its entry is still there (before version 8.15.47, or in the cases above), check the Consul console (or CLI) for its resource map entry (under **Key/Value**). If there is one, [delete it](https://developer.hashicorp.com/consul/docs/dynamic-app-config/kv/store#delete-data). Then restart the Genesis services.
 
