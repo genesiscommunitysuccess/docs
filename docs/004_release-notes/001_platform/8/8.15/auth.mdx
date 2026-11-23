@@ -34,6 +34,20 @@ id: '8.15-auth'
 
 ### Patch releases
 
+#### 8.15.11
+
+###### Features
+
+* Add per-IdP tokenDelivery cookie mode for SSO token delivery
+
+###### Fixes
+
+* `auth` : Send a new notify MFA code once the last one is used, and send the cooldown to the client
+* `auth-manager` : Audit password changes in USER_LOGIN_AUDIT
+* `auth-manager` : Refuse expired refresh tokens at login and terms acceptance
+* `auth-manager` : Return MFA_EXPIRED for expired notify codes and send no code on refresh token logins
+* `auth-script-config` : Make AUTH-483 audit tests pass on Oracle and MSSQL
+
 #### 8.15.10
 
 ###### Features
