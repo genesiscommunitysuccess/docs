@@ -678,11 +678,18 @@ To turn all of this off, including the repair, set `ConsulReconcileResourceMaps`
 
 A process deletes a resource map entry at startup or shutdown only when it can see the whole catalog. Genesis doesn't send a Consul ACL token, so Consul answers with the agent's default token. Nothing is deleted at startup or shutdown when:
 
-- Consul ACLs hide some services from that token. Consul marks these answers as filtered.
+- Consul ACLs hide some services or nodes from that token. Consul marks these answers as filtered.
 - That token is the anonymous token and ACLs are enabled. Consul doesn't mark these answers as filtered, so the process treats them as incomplete.
 - The catalog or the resource map entries can't be read.
 
-When the catalog is hidden or can't be read, the process logs a warning at startup that starts with `Not reconciling resource map entries` (only if there are entries of other processes), and a message at shutdown that starts with `Keeping the resource map entry`. When the resource map entries can't be read, it logs a warning that starts with `Could not read the resource map entries` at startup, or `Could not remove the resource map entry` at shutdown. To let processes delete entries when ACLs are enabled, give the agent a default token, other than the anonymous token, that can read every service, for example with the rule `service_prefix "" { policy = "read" }`. A process still repairs its own entry when nothing can be deleted.
+When the catalog is hidden or can't be read, the process logs a warning at startup that starts with `Not reconciling resource map entries` (only if there are entries of other processes), and a message at shutdown that starts with `Keeping the resource map entry`. When the resource map entries can't be read, it logs a warning that starts with `Could not read the resource map entries` at startup, or `Could not remove the resource map entry` at shutdown. To let processes delete entries when ACLs are enabled, give the agent a default token, other than the anonymous token, that can read every service and every node. For example:
+
+```text
+service_prefix "" { policy = "read" }
+node_prefix "" { policy = "read" }
+```
+
+Without `node_prefix` read access, Consul filters the catalog answers, and nothing is deleted. A process still repairs its own entry when nothing can be deleted.
 
 #### Limitations
 
@@ -696,7 +703,7 @@ When the catalog is hidden or can't be read, the process logs a warning at start
 
 Scenario: This might happen when a resource is moved from one process to another. For example, a `requestReply` originally served from `REQ_REP_SERVICE_A` is now moved to `REQ_REP_SERVICE_B`, but Consul still holds a [resource map entry](#resource-map-entries) for `REQ_REP_SERVICE_A` that lists it.
 
-From versions 8.15.47 and 10.0.3, the entry is deleted when any process starts after `REQ_REP_SERVICE_A` has left the Consul catalog. This doesn't happen when reconciliation is turned off, or when Consul ACLs stop the process from seeing every service (see [When nothing is deleted](#when-nothing-is-deleted)).
+From versions 8.15.47 and 10.0.3, the entry is deleted when any process starts after `REQ_REP_SERVICE_A` has left the Consul catalog. This doesn't happen when reconciliation is turned off, or when Consul ACLs stop the process from seeing every service and node (see [When nothing is deleted](#when-nothing-is-deleted)).
 
 Solution:
 
