@@ -278,6 +278,44 @@ This release contains [breaking changes](#breaking-changes-guidance). Further de
 
 ### Patch releases
 
+#### 8.15.46
+
+###### Features
+
+* `genesis-net` : Report slow consumers with per-channel backlog gauges and a WARN
+
+###### Performance improvements
+
+* `genesis-db` : Pre-size DbRecord copies and read tableById directly for sequential IDs
+* `genesis-dictionary` : Stop copying the table map on every GenesisDictionary.tables access
+* `genesis-pal-execution` : Keep non-leaf non-identity backward-join links on shared bases
+* `genesis-pal-execution` : Share leaf non-identity parent links and sibling groups across chains as a frozen base with per-chain deltas
+* `genesis-pal-execution` : Share one update feed and parse per child table across sync backward-join chains
+
+###### Fixes
+
+* `commons` : Make SharedCounterGFlake ids unique at and above the per-millisecond limit
+* `exec-gradle-plugin` : Package the OpenTelemetry Java agent under dynamic deployment
+* `genesis-clustersupport` : Kill a timed-out command before its children so its shell cannot report them
+* `genesis-db` : Give blocking permits to the innermost waiter on a shared event loop
+* `genesis-db` : Order SQL non-unique index ties by RECORD_ID
+* `genesis-db` : Parse named parameters with per-database quoting and comment rules
+* `genesis-evaluator` : Wait for primed listeners and a connected target in DynamicRulesEngineTest
+* `genesis-metrics` : Wait for dispatched tasks before asserting MonitoredDispatcher metrics
+* `genesis-net` : Keep one source ref's messages in order on client, server and router
+* `genesis-net` : Register the suspendRequest reply callback before writing
+* `genesis-net` : Stop a late slow-consumer check swallowing the next warning
+* `genesis-pal-dataserver` : Count each client's enrichment registrations, so one client's deregister or a key move can't drop or leak another's
+* `genesis-pal-dataserver` : Send a new client its initial load before live updates, and fix the flaky chunked MoreRows tests
+* `genesis-pal-dataserver` : Stop a replayed stale modify deleting a row the initial load sent
+* `genesis-pal-execution` : Abandon hung tracked join reads at a deadline so the replay memo leaves overflow
+* `genesis-pal-execution` : Group FullJoin lookups in int chains instead of a list per request
+* `genesis-pal-execution` : Keep a re-keyed root row's new primary key against earlier batches
+* `genesis-pal-execution` : Park unconfined channel-mode backward-join readers on Dispatchers.IO
+* `genesis-pal-execution` : Run BackwardJoinCacheMemoryTest again and account for identity non-leaf child maps in the memory doc
+* `genesis-process` : Send one PROCESS_AVAILABLE per channel and SOURCE_REF
+* `genesis-subcore` : Subscribe to BLOCKING updates before anything can cancel them, at every remaining site
+
 #### 8.15.45
 
 ###### Breaking changes
