@@ -23,7 +23,7 @@ The recovery time objective (RTO) for a process whose node has failed is **15 mi
 
 | Step | Time |
 | --- | --- |
-| Kubernetes marks the node `NotReady` | about 1 minute (the control plane's `node-monitor-grace-period`) |
+| Kubernetes marks the node `NotReady` | about 1 minute (the control plane's `node-monitor-grace-period`, 40 to 50 seconds by default; check your cluster's value) |
 | The operator is alerted, confirms that the node is down or fences it, and removes the pod | up to 5 minutes |
 | Kubernetes schedules the new pod, pulls the image, and the process starts and becomes ready | up to 5 minutes (the startup probe allows 300 seconds with `startupFailureThreshold: 60`) |
 | Headroom | the rest |
@@ -46,7 +46,7 @@ kubectl describe pod <pod> -n <namespace>
 ## A pod doesn't start
 
 - **The process refuses to start.** Its log lists every problem under `ClusterMode=KUBERNETES cannot start this process:`. See [Requirements](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/#requirements).
-- **The startup probe keeps failing.** The process takes longer to start than `startupFailureThreshold` allows (300 seconds by default), and Kubernetes restarts it before it is ready. Raise `startupFailureThreshold` for that process.
+- **The startup probe keeps failing.** The process takes longer to start than `startupFailureThreshold` allows (300 seconds by default), and Kubernetes restarts the container before it is ready. Raise `startupFailureThreshold` for that process.
 - **The pod is running but never ready.** Readiness is down while the process is not `UP` or `WARNING`. Check `/health/details` on the process's port for the monitor that is failing.
 
 ## A node has failed or is unreachable
@@ -81,7 +81,7 @@ So never force-delete a pod unless you are sure that it is no longer running.
 
    If you can't do either, stop here. Restoring the node is safer than running two copies.
 
-3. Remove the pods. Either taint the node as out of service, which makes Kubernetes delete its pods and detach their volumes:
+3. Remove the pods. Either taint the node as out of service (Kubernetes 1.28 or later), which makes Kubernetes delete its pods and detach their volumes:
 
    ```bash
    kubectl taint nodes <node> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute

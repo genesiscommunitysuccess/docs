@@ -87,8 +87,10 @@ Keep the Consul cluster and its key/value store until you no longer need to roll
 2. Wait until no pod is left:
 
    ```bash
-   kubectl wait --for=delete pod --all -n <namespace> --timeout=10m
+   kubectl get pods -n <namespace> -l app.kubernetes.io/instance=<release>
    ```
+
+   The chart labels every pod it creates with `app.kubernetes.io/instance: <release>`. Repeat until the command finds no pods.
 
    A pod on a node that has failed or is cut off from the cluster doesn't go away on its own. Don't start any Consul host while such a pod might still be running. Follow the [Kubernetes runbook](/build-deploy-operate/operate/kubernetes-runbook/#a-node-has-failed-or-is-unreachable) to make sure it is stopped and remove it first.
 3. Set `ClusterMode` back to `CONSUL` on the Consul hosts, check that their Consul agents are running, and start them.
