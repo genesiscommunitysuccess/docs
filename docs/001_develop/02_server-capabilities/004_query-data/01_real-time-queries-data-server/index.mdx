@@ -615,6 +615,10 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
 
 With refresh queries, rows that move out of the filter range will be removed from the cache, while rows that move into the filter will be added.
 
+:::warning String range boundaries and database collation
+A ranged query's initial load uses the database collation, but real-time updates are checked with case-sensitive Java `String` ordering, so on non-binary collations (the MSSQL default, or Postgres with a locale such as `en_US.UTF-8`) a row updated later may be included or excluded differently from the initial load; for example, on MSSQL a range from `A` to `C` initially loads `a` and `b`. To avoid this, use a binary (case-sensitive) collation for string range columns, or bounds that sort the same either way (consistent case, letters and digits only); H2, Oracle (by default) and Postgres with `C`/`POSIX` collation are not affected.
+:::
+
 Examples when: `numKeyFields > 1`
 
 The range configuration returns a set of sorted records based on the index definition and the number of fields involved (specified by `numKeyFields`)
