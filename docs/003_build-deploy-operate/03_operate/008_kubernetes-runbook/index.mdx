@@ -1,0 +1,114 @@
+---
+title: 'Kubernetes runbook'
+sidebar_label: 'Kubernetes runbook'
+id: bdo-operate-kubernetes-runbook
+keywords: [operate, operations, kubernetes, k8s, runbook, failover, force delete, statefulset]
+tags:
+- operate
+- operations
+- kubernetes
+- runbook
+sidebar_position: 9
+---
+
+## Overview
+
+This runbook is for applications that run in [Kubernetes cluster mode](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/) (`ClusterMode=KUBERNETES`).
+
+In this mode, each Genesis process runs as a StatefulSet with one replica, and there is no standby. When a process fails, it is unavailable until its pod is running and ready again. Kubernetes restarts a failed container on its own. It does not replace a pod on a node that has failed or is unreachable: that needs you. See [A node has failed or is unreachable](#a-node-has-failed-or-is-unreachable).
+
+## Recovery time objective
+
+The recovery time objective (RTO) for a process whose node has failed is **15 minutes**, from the node failing to the process serving again. This assumes the chart defaults and an operator who is alerted when a node goes `NotReady`.
+
+| Step | Time |
+| --- | --- |
+| Kubernetes marks the node `NotReady` | about 1 minute (the control plane's `node-monitor-grace-period`) |
+| The operator is alerted, confirms that the node is down or fences it, and removes the pod | up to 5 minutes |
+| Kubernetes schedules the new pod, pulls the image, and the process starts and becomes ready | up to 5 minutes (the startup probe allows 300 seconds with `startupFailureThreshold: 60`) |
+| Headroom | the rest |
+
+A process that you allow to start more slowly, by raising `startupFailureThreshold`, adds the difference to the RTO.
+
+A failed container on a healthy node needs no operator. Its recovery time is the time the process takes to start, plus the time Kubernetes waits between restarts if the container keeps failing.
+
+## A container restarts
+
+Kubernetes restarts a container when it exits or when its liveness probe fails 6 times in a row (one minute). Liveness only checks that the process answers HTTP, so an outage of the database or the broker doesn't restart it.
+
+To see why the last container stopped:
+
+```bash
+kubectl logs <pod> -n <namespace> --previous
+kubectl describe pod <pod> -n <namespace>
+```
+
+## A pod doesn't start
+
+- **The process refuses to start.** Its log lists every problem under `ClusterMode=KUBERNETES cannot start this process:`. See [Requirements](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/#requirements).
+- **The startup probe keeps failing.** The process takes longer to start than `startupFailureThreshold` allows (300 seconds by default), and Kubernetes restarts it before it is ready. Raise `startupFailureThreshold` for that process.
+- **The pod is running but never ready.** Readiness is down while the process is not `UP` or `WARNING`. Check `/health/details` on the process's port for the monitor that is failing.
+
+## A node has failed or is unreachable
+
+When a node stops reporting to the control plane, Kubernetes marks it `NotReady`. After a few more minutes (300 seconds by default), it marks the pods on that node for deletion, and they show as `Terminating` or `Unknown`.
+
+The pods stay in that state. Kubernetes can't tell a node that has failed from one that is only cut off from the control plane, and a StatefulSet never starts a second pod with the same name while the first might still be running. Until the old pod is removed, the process is down.
+
+### Why the pod must be stopped first
+
+On a node that is cut off from the control plane, the old pod may still be running. It no longer receives traffic through its Service, but it can still read from and write to the database and the broker.
+
+If you remove that pod while it is still running, Kubernetes starts a new one, and there are two copies of the process:
+
+- A `primaryOnly` process does its work twice.
+- Both copies use the same gFlake node ID, so they can generate the same `RECORD_ID` for different records.
+
+So never force-delete a pod unless you are sure that it is no longer running.
+
+### Steps
+
+1. Find the pods on the node:
+
+   ```bash
+   kubectl get nodes
+   kubectl get pods -n <namespace> -o wide --field-selector spec.nodeName=<node>
+   ```
+
+2. Make sure that nothing on the node is still running. Do one of these:
+   - Power the machine off, through your cloud provider or hypervisor, and check that it is off.
+   - If it can't be powered off, cut it off from the database and the broker, for example with a network policy or firewall rule outside the node.
+
+   If you can't do either, stop here. Restoring the node is safer than running two copies.
+
+3. Remove the pods. Either taint the node as out of service, which makes Kubernetes delete its pods and detach their volumes:
+
+   ```bash
+   kubectl taint nodes <node> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute
+   ```
+
+   or force-delete each pod:
+
+   ```bash
+   kubectl delete pod <pod> -n <namespace> --grace-period=0 --force
+   ```
+
+4. Watch the new pods start on other nodes and become ready:
+
+   ```bash
+   kubectl get pods -n <namespace> -o wide -w
+   ```
+
+5. When the node has been repaired, and before it rejoins the cluster, remove the taint if you added one:
+
+   ```bash
+   kubectl taint nodes <node> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute-
+   ```
+
+For more on these mechanisms, see the Kubernetes documentation on [force-deleting StatefulSet pods](https://kubernetes.io/docs/tasks/run-application/force-delete-stateful-set-pod/) and [non-graceful node shutdown](https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/#non-graceful-node-shutdown).
+
+## Planned restarts
+
+Because each process has one replica, a rolling update or a `kubectl rollout restart` stops the old pod before it starts the new one. The process is unavailable for its shutdown plus its startup time. On shutdown, the process first reports not ready and keeps serving for `KubernetesShutdownDrainSeconds`; see [Graceful shutdown](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/#graceful-shutdown).
+
+Draining a node (`kubectl drain`) stops its pods in the same way, and Kubernetes starts them again on other nodes.
