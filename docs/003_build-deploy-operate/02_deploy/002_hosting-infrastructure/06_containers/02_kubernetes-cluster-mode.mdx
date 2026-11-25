@@ -52,6 +52,7 @@ Every process lists the pods in its namespace once a minute (see [Discovery](#di
 
 - **No standby failover.** There is one copy of each process. When a pod or its node fails, the process is unavailable until Kubernetes restarts the pod. When a node fails, the pod is not replaced until it is force-deleted; see the [Kubernetes runbook](/build-deploy-operate/operate/kubernetes-runbook/).
 - **One process per pod.** A pod runs exactly one Genesis process. A process cannot have more than one replica.
+- **No resource daemon.** The resource daemon doesn't run in this mode; Kubernetes starts, stops and restarts the processes.
 - **No service affinity groups.** `ClusterServiceAffinityGroup` is not supported.
 - **Node IDs are set by hand.** Each process's node ID is pinned in the chart values. Nothing allocates them for you.
 
@@ -115,13 +116,13 @@ processes:
 | `rbac.create` | `true` | Create the Role and RoleBinding that let each process list pods, and the ServiceAccount when `serviceAccount.name` is empty |
 | `serviceAccount.name` | `<release>-genesis` when `rbac.create` is `true`, otherwise the namespace's default | An existing service account for every process. With `rbac.create: false`, grant it `get` and `list` on `pods` yourself |
 | `processes.<NAME>` | | One entry per Genesis process, keyed by its process name |
-| `nodeId` | required | The process's gFlake node ID, from `1` to `1023`, unique across processes. Also set `GENESIS_SYSDEF_NodeId` to the same value in the process's `env` |
+| `nodeId` | required | The process's gFlake node ID, from `1` to `1023`, unique across processes. With a non-default `GFlakeNodeBits`, the process also needs it within `1` to `2^GFlakeNodeBits - 1`. Also set `GENESIS_SYSDEF_NodeId` to the same value in the process's `env` |
 | `port` | required | The process's port. It must equal the port in the process's [service definition](/develop/server-capabilities/runtime-configuration/service-definition/): other processes connect to `<service-name>:<port>` |
 | `secure` | `false` | `true` when the process serves TLS on its port; the probes then use HTTPS |
 | `transport` | `NATIVE` | `EXTERNAL` for a Spring Boot process |
-| `healthPath` | `/health` for `NATIVE`, `/actuator/health` for `EXTERNAL` | Base path of the probes; `/liveness` and `/readiness` are appended |
+| `healthPath` | `/health` for `NATIVE`, `/actuator/health` for `EXTERNAL` | Base path of the probes; `/liveness` and `/readiness` are appended. It must start with `/` and must not end with `/` |
 | `terminationGracePeriodSeconds` | `30` | How long Kubernetes waits after `SIGTERM` before it kills the container. See [Graceful shutdown](#graceful-shutdown) |
-| `startupFailureThreshold` | `60` | Startup probe failures allowed, one every 5 seconds, before the pod is restarted. `60` allows 300 seconds. Raise it for a process that takes longer to start |
+| `startupFailureThreshold` | `60` | Startup probe failures allowed, one every 5 seconds, before the container is restarted. `60` allows 300 seconds. Raise it for a process that takes longer to start |
 | `command`, `args` | the image's own | Container command and arguments |
 | `env` | none | Environment variables for this process only, with the same reserved names as the top-level `env` |
 | `resources` | none | Container resources |
@@ -165,10 +166,12 @@ Every record gets a `RECORD_ID` from gFlake, built from a timestamp, a node ID a
 In `KUBERNETES` mode, nothing is claimed in Consul. Each process takes its node ID from `GENESIS_SYSDEF_NodeId` (or the `-DNodeId` JVM property), which you set per process in the chart values. A process refuses to start if:
 
 - neither is set;
+- both are set to different values;
+- `GENESIS_SYSDEF_<PROCESS_NAME>_NodeId` is set. Use `GENESIS_SYSDEF_NodeId` in the process's own `env` instead;
 - the ID is outside `1` to `2^GFlakeNodeBits - 1` (`1` to `1023` by default);
 - `GFlakeNodeIdExplicit` is `true`. Every pod reads the same system definition, so a `NodeId` there would give every process the same ID.
 
-The chart checks that every process has a `nodeId` and that no two share one. Keep the IDs fixed for the life of the application: they don't have to stay the same across restarts, but two processes must never run with the same one.
+The chart checks that every process has a `nodeId` and that no two share one. A process's ID can change between restarts, but two processes must never run with the same one at the same time.
 
 ## Graceful shutdown
 
