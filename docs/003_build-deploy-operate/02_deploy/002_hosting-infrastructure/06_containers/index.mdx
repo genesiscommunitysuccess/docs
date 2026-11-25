@@ -322,6 +322,7 @@ All the endpoints accept `GET`. A `status` value is the process state, so beside
 | --- | --- |
 | /health | `{"status":"<state>"}`. `503` when the state is `DOWN`, `ERROR` or `UNKNOWN`; otherwise `200` |
 | /health/details | The state plus each monitor's status and, where there is one, its message, under `components`. Same status codes as `/health` |
+| /health/liveness | `{"status":"UP"}` with `200` whenever the process can answer HTTP. Only on the `NATIVE` transport. Use it for a liveness probe: it stays up through an outage of the database or the broker |
 | /health/readiness | `{"status":"UP"}` or `{"status":"OUT_OF_SERVICE"}`, with the cluster's readiness and the process state under `details`. `200` only when the cluster is ready and the state is `UP` or `WARNING`; otherwise `503` |
 | /prometheus | Metrics in Prometheus text format. Only present when the [`PROMETHEUS` reporter](/build-deploy-operate/operate/metrics/#prometheus) is enabled |
 
@@ -471,6 +472,10 @@ GENESIS_SYSDEF_MqttBrokerUrl: tcp://mosquitto:1883
 The service names `consul` and `mosquitto` are the hostnames the app containers use on the compose network. Add `depends_on` entries for both services to the app nodes if you want them to start first.
 
 The app image does not include the `consul` binary. Run `consul` commands, such as the `consul kv get` and `consul catalog` commands in [Node IDs](#node-ids), in the Consul container, for example `docker compose exec consul consul kv get -recurse genesis/cluster/<name>/node-ids/`. Alternatively, call Consul's HTTP API on port 8500, for example `/v1/kv/genesis/cluster/<name>/node-ids/?recurse`.
+
+### Kubernetes
+
+From version 10.1, the `KUBERNETES` cluster mode runs each process in its own Kubernetes pod and uses Kubernetes Services for discovery, with no Consul servers or agents. See [Kubernetes cluster mode](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/), and [Migrating between Consul and Kubernetes mode](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-migration/) to move an existing application.
 
 ### Consul
 The Consul cluster mode uses Hashicorp's [Consul](https://developer.hashicorp.com/consul/docs/architecture) for service discovery.

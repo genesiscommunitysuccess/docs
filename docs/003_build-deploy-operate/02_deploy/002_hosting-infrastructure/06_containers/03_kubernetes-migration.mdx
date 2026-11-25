@@ -1,0 +1,102 @@
+---
+title: 'Migrating between Consul and Kubernetes mode'
+sidebar_label: 'Migrating to Kubernetes mode'
+id: kubernetes-migration
+keywords: [kubernetes, k8s, consul, migration, rollback, cluster mode, node id]
+tags:
+- kubernetes
+- consul
+- containers
+- clustering
+- operations
+sidebar_position: 3
+---
+
+## Overview
+
+This page describes how to move an application from `ClusterMode=CONSUL` to [`ClusterMode=KUBERNETES`](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/), and how to move it back.
+
+The application keeps its database. Only the way its processes run and find each other changes.
+
+The switch is a full stop: every process in the old mode stops before the first process in the new mode starts. Never run the two modes against the same database at the same time:
+
+- Neither mode can see the other's processes, so a `primaryOnly` process would run twice, once in each mode.
+- In `KUBERNETES` mode, each process deletes the discovery rows of every node that is not a pod in its namespace, including the rows of running Consul hosts.
+- The two modes assign gFlake node IDs differently, and neither can see the other's IDs. See [Node IDs across the switch](#node-ids-across-the-switch).
+
+Plan for the application to be unavailable from the moment the Consul hosts stop until the pods are ready.
+
+## Node IDs across the switch
+
+Every record gets a `RECORD_ID` from gFlake, built from a timestamp, a node ID and a sequence number. The rule is:
+
+**A Consul host and a pod must never run with the same node ID at the same time.**
+
+Reusing a node ID later is safe. A `RECORD_ID` starts with its timestamp, so IDs generated after the switch can't repeat IDs generated before it, even with the same node ID.
+
+The full stop satisfies the rule on its own. It matters because nothing else does:
+
+- In `CONSUL` mode, each host claims a node ID in Consul, chosen at random from `1` to `1023`. See [Node IDs](/build-deploy-operate/deploy/hosting-infrastructure/containers/#node-ids).
+- In `KUBERNETES` mode, each process uses the node ID pinned in the chart values, and claims nothing in Consul.
+
+So the Consul allocator can't see the pinned IDs, and the chart can't see the Consul claims. A Consul host started while pods are still running can draw a node ID that a pod is using.
+
+:::tip
+Choose the pod node IDs from the top of the range, for example from `960` upwards, so that you can tell them apart from Consul claims at a glance. This is a convention only: Consul mode can still hand out these IDs.
+:::
+
+## Consul to Kubernetes
+
+### Before the switch
+
+Make every change that doesn't depend on the cluster mode first, while the application still runs in `CONSUL` mode. The switch itself then changes only the cluster mode, and you can check each change on its own.
+
+1. Upgrade the application to a version with `KUBERNETES` mode (10.1 or later), and run it in `CONSUL` mode.
+2. Switch the update queue to JMS: set `MqLayer` to `JMS` and configure the broker. See [JMS](/build-deploy-operate/operate/update-queue/#jms).
+3. Switch the messaging channel to `WEBSOCKET` in `network-config.yaml`. See [Enable the WebSocket channel](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#enable-the-websocket-channel).
+4. Remove `ClusterServiceAffinityGroup` if you set it. `KUBERNETES` mode doesn't support affinity groups.
+5. Check that every process name maps to a valid Service name. See [Services](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/#services).
+6. Make sure that the database is used by this application alone. See [One application per namespace and per database](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-cluster-mode/#one-application-per-namespace-and-per-database).
+7. Prepare the chart values: one entry per process, each with its own `nodeId` and the matching `GENESIS_SYSDEF_NodeId`, `GENESIS_SYSDEF_ClusterMode: KUBERNETES`, and the same database and broker settings as the Consul hosts.
+8. Note each Consul host's node ID, in case you need to roll back:
+
+   ```bash
+   consul kv get -recurse genesis/cluster/<name>/node-ids/
+   ```
+
+### The switch
+
+1. Stop every Genesis process on every Consul host.
+2. Check that none is still running. For a host you can't reach, treat its processes as running until the host is powered off.
+3. Install the chart.
+4. Wait for every pod to be ready:
+
+   ```bash
+   kubectl get pods -n <namespace>
+   ```
+
+   Each StatefulSet has one pod, named `<service-name>-0`. A pod that doesn't start logs the reason; a problem with the setup is listed under `ClusterMode=KUBERNETES cannot start this process:`.
+
+Within about a minute of starting, the processes delete the discovery rows that the Consul hosts left in `PROCESS_META_DATA`.
+
+Keep the Consul cluster and its key/value store until you no longer need to roll back. The node ID claims stay there, so the Consul hosts get their old IDs back.
+
+## Kubernetes to Consul (rollback)
+
+1. Stop every pod, either by uninstalling the chart or by scaling every StatefulSet to `0`.
+2. Wait until no pod is left:
+
+   ```bash
+   kubectl get pods -n <namespace> -l app.kubernetes.io/instance=<release>
+   ```
+
+   The chart labels every pod it creates with `app.kubernetes.io/instance: <release>`. Repeat until the command finds no pods.
+
+   A pod on a node that has failed or is cut off from the cluster doesn't go away on its own. Don't start any Consul host while such a pod might still be running. Follow the [Kubernetes runbook](/build-deploy-operate/operate/kubernetes-runbook/#a-node-has-failed-or-is-unreachable) to make sure it is stopped and remove it first.
+3. Set `ClusterMode` back to `CONSUL` on the Consul hosts, check that their Consul agents are running, and start them.
+
+   JMS and the `WEBSOCKET` channel both work in `CONSUL` mode, so you can keep them. Put `ClusterServiceAffinityGroup` back if you used it.
+
+Each Consul host claims a node ID again when it starts, usually the same one as before. It doesn't matter if that ID is one a pod used, because no pod is running any more.
+
+The `PROCESS_META_DATA` rows that the pods wrote, keyed on their pod names, stay in the table. In `CONSUL` mode a process reads only the rows of its own host, so they are not used.

@@ -1,0 +1,190 @@
+---
+title: 'Kubernetes cluster mode'
+sidebar_label: 'Kubernetes cluster mode'
+id: kubernetes-cluster-mode
+keywords: [kubernetes, k8s, cluster mode, statefulset, helm, containers, node id, gflake]
+tags:
+- kubernetes
+- containers
+- clustering
+- operations
+sidebar_position: 2
+---
+
+## Overview
+
+From version 10.1, an application can run on Kubernetes without Consul. Set `ClusterMode` to `KUBERNETES` and the application uses Kubernetes itself for service discovery: no Consul servers and no Consul agent sidecar.
+
+In this mode:
+
+- Each Genesis process runs in its own pod, as a StatefulSet with exactly one replica. There is never more than one copy of a process.
+- Each process has one Kubernetes Service. Processes find each other by the Service's DNS name.
+- Kubernetes readiness decides which pod receives traffic. Genesis never writes to the Kubernetes API.
+- Each process has its own gFlake node ID, pinned in the chart values.
+
+The `CONSUL` mode is unchanged. To move an existing application between the two modes, see [Migrating between Consul and Kubernetes mode](/build-deploy-operate/deploy/hosting-infrastructure/containers/kubernetes-migration/). For what to do when a node fails, see the [Kubernetes runbook](/build-deploy-operate/operate/kubernetes-runbook/).
+
+## Requirements
+
+A process in `KUBERNETES` mode checks its setup when it starts. If anything below is not met, it refuses to start and logs every problem it found, under the line `ClusterMode=KUBERNETES cannot start this process:`.
+
+| Requirement | How to meet it |
+| --- | --- |
+| The update queue is JMS | Set `MqLayer` to `JMS`. See [JMS](/build-deploy-operate/operate/update-queue/#jms) |
+| The messaging channel is `WEBSOCKET` | Set `messaging.channel` to `WEBSOCKET` in `network-config.yaml`. See [Enable the WebSocket channel](/develop/server-capabilities/runtime-configuration/process-http-endpoints/#enable-the-websocket-channel) |
+| Each process has its own gFlake node ID | Set `nodeId` for the process in the chart values, and set `GENESIS_SYSDEF_NodeId` to the same value in the process's `env`. See [Node IDs](#node-ids) |
+| A `primaryOnly` process runs as the first replica | The chart does this: the pod is named `<service-name>-0`, and the `POD_NAME` environment variable carries that name |
+| No service affinity groups | Leave `ClusterServiceAffinityGroup` unset |
+| Valid Service names | Each process name must map to a valid Service name. See [Services](#services) |
+
+Genesis processes use the `NATIVE` transport, where the process serves HTTP itself. A Spring Boot process uses the `EXTERNAL` transport; see [Probes](#probes) for how its readiness differs.
+
+### Kubernetes permissions
+
+Every process lists the pods in its namespace once a minute (see [Discovery](#discovery)). It needs `get` and `list` on `pods` in its own namespace. The chart creates a Role and RoleBinding for this by default.
+
+### One application per namespace and per database
+
+- Install one application per namespace. Service names carry no application prefix, so two applications in one namespace would clash.
+- Give the application a database of its own. Each process deletes the discovery rows of every node that is not a live pod in its namespace. If another application uses the same database, whether in `KUBERNETES`, `CONSUL` or `LEGACY` mode, their rows are deleted too.
+
+## Limits
+
+- **No standby failover.** There is one copy of each process. When a pod or its node fails, the process is unavailable until Kubernetes restarts the pod. When a node fails, the pod is not replaced until it is force-deleted; see the [Kubernetes runbook](/build-deploy-operate/operate/kubernetes-runbook/).
+- **One process per pod.** A pod runs exactly one Genesis process. A process cannot have more than one replica.
+- **No resource daemon.** The resource daemon doesn't run in this mode; Kubernetes starts, stops and restarts the processes.
+- **No service affinity groups.** `ClusterServiceAffinityGroup` is not supported.
+- **Node IDs are set by hand.** Each process's node ID is pinned in the chart values. Nothing allocates them for you.
+
+## Configuring the application
+
+Set the mode in the system definition:
+
+```kotlin
+systems {
+    system(name = "DEV") {
+        item(name = "ClusterMode", value = "KUBERNETES")
+        item(name = "MqLayer", value = "JMS")
+    }
+}
+```
+
+or in the container with `GENESIS_SYSDEF_ClusterMode: KUBERNETES`. Configure the JMS broker as described in [JMS configuration options](/build-deploy-operate/operate/update-queue/#jms-configuration-options), and set the `WEBSOCKET` channel in `network-config.yaml`:
+
+```yaml
+messaging:
+  channel: WEBSOCKET
+```
+
+## The Helm chart
+
+The Genesis server repository ships the pieces a Helm chart needs to run an application in this mode, under `kubernetes/chart/`: a values schema, and templates for the Services, the StatefulSets, the node ID checks and the pod-list permission. Copy them into your application's chart. The `README.md` in that folder shows how to wire them in.
+
+In `KUBERNETES` mode, the chart renders, for each entry under `processes`, one Service and one StatefulSet in place of a Deployment, plus the Role, RoleBinding and ServiceAccount once.
+
+### Values
+
+```yaml
+clusterMode: KUBERNETES
+image: registry.example.com/my-app:1.0.0
+env: []
+rbac:
+  create: true
+serviceAccount:
+  name: ""
+processes:
+  POSITION_EVENT_HANDLER:
+    nodeId: 1
+    port: 11001
+    secure: false
+    transport: NATIVE
+    healthPath: /health
+    terminationGracePeriodSeconds: 30
+    startupFailureThreshold: 60
+    command: []
+    args: []
+    env:
+      - name: GENESIS_SYSDEF_NodeId
+        value: "1"
+    resources: {}
+```
+
+| Value | Default | Meaning |
+| --- | --- | --- |
+| `image` | required | Container image for every process |
+| `env` | none | Environment variables for every process. An entry named `POD_NAME`, `POD_NAMESPACE` or `POD_IP` fails the render: the chart sets those itself |
+| `rbac.create` | `true` | Create the Role and RoleBinding that let each process list pods, and the ServiceAccount when `serviceAccount.name` is empty |
+| `serviceAccount.name` | `<release>-genesis` when `rbac.create` is `true`, otherwise the namespace's default | An existing service account for every process. With `rbac.create: false`, grant it `get` and `list` on `pods` yourself |
+| `processes.<NAME>` | | One entry per Genesis process, keyed by its process name |
+| `nodeId` | required | The process's gFlake node ID, from `1` to `1023`, unique across processes. With a non-default `GFlakeNodeBits`, the process also needs it within `1` to `2^GFlakeNodeBits - 1`. Also set `GENESIS_SYSDEF_NodeId` to the same value in the process's `env` |
+| `port` | required | The process's port. It must equal the port in the process's [service definition](/develop/server-capabilities/runtime-configuration/service-definition/): other processes connect to `<service-name>:<port>` |
+| `secure` | `false` | `true` when the process serves TLS on its port; the probes then use HTTPS |
+| `transport` | `NATIVE` | `EXTERNAL` for a Spring Boot process |
+| `healthPath` | `/health` for `NATIVE`, `/actuator/health` for `EXTERNAL` | Base path of the probes; `/liveness` and `/readiness` are appended. It must start with `/` and must not end with `/` |
+| `terminationGracePeriodSeconds` | `30` | How long Kubernetes waits after `SIGTERM` before it kills the container. See [Graceful shutdown](#graceful-shutdown) |
+| `startupFailureThreshold` | `60` | Startup probe failures allowed, one every 5 seconds, before the container is restarted. `60` allows 300 seconds. Raise it for a process that takes longer to start |
+| `command`, `args` | the image's own | Container command and arguments |
+| `env` | none | Environment variables for this process only, with the same reserved names as the top-level `env` |
+| `resources` | none | Container resources |
+
+The render fails if a process has no `nodeId`, if two processes share one, or if a process asks for more than one replica.
+
+## Services
+
+Each process gets one ClusterIP Service. Its name is the process name in lower case with `_` replaced by `-`: `POSITION_EVENT_HANDLER` becomes `position-event-handler`. Genesis looks its peers up by exactly this name, so don't change the mapping.
+
+A process name that doesn't give a valid Service name fails the render, and the process refuses to start on it too. That is a name that isn't a valid RFC 1035 label, is longer than 52 characters, or maps to the same Service name as another process.
+
+Use ClusterIP Services, not headless ones, and leave `publishNotReadyAddresses` unset. A ClusterIP Service only sends new connections to a pod that is ready, and that is how Genesis decides which pod receives traffic.
+
+## Discovery
+
+A process reaches another process at `<service-name>:<port>`, resolved through the cluster's DNS.
+
+Each process also records the resources it serves in the `PROCESS_META_DATA` table, in rows keyed on its pod name. Other processes, including the router, read these rows to find the process that serves a resource. Once a minute, each process lists the pods in its namespace and deletes the rows of pods that no longer exist. A process removed from the application therefore drops out of discovery within about a minute.
+
+If the pod list fails, for example because the permission is missing, each process logs a warning every minute and the rows of removed processes stay.
+
+## Probes
+
+| Probe | `NATIVE` path | `EXTERNAL` path | Period | Timeout | Failure threshold |
+| --- | --- | --- | --- | --- | --- |
+| Startup | `/health/liveness` | `/actuator/health/liveness` | 5 s | 3 s | `startupFailureThreshold` (60) |
+| Liveness | `/health/liveness` | `/actuator/health/liveness` | 10 s | 5 s | 6 |
+| Readiness | `/health/readiness` | `/actuator/health/readiness` | 5 s | 3 s | 2 |
+
+All three probe the process's own port. Liveness only says that the process can answer HTTP. It stays up through a database or broker outage, so an outage of a dependency doesn't restart the pod.
+
+On the `NATIVE` transport, readiness is up only while the process's cluster manager is ready and the process state is `UP` or `WARNING`. It is down while the process is starting, unhealthy or shutting down. See [Process health endpoints](/build-deploy-operate/deploy/hosting-infrastructure/containers/#process-health-endpoints).
+
+A Spring Boot process (`transport: EXTERNAL`) answers its probes from Spring Boot's own actuator liveness and readiness groups, which don't follow the Genesis process state.
+
+## Node IDs
+
+Every record gets a `RECORD_ID` from gFlake, built from a timestamp, a node ID and a sequence number. Two processes running with the same node ID can generate the same `RECORD_ID`.
+
+In `KUBERNETES` mode, nothing is claimed in Consul. Each process takes its node ID from `GENESIS_SYSDEF_NodeId` (or the `-DNodeId` JVM property), which you set per process in the chart values. A process refuses to start if:
+
+- neither is set;
+- both are set to different values;
+- `GENESIS_SYSDEF_<PROCESS_NAME>_NodeId` is set. Use `GENESIS_SYSDEF_NodeId` in the process's own `env` instead;
+- the ID is outside `1` to `2^GFlakeNodeBits - 1` (`1` to `1023` by default);
+- `GFlakeNodeIdExplicit` is `true`. Every pod reads the same system definition, so a `NodeId` there would give every process the same ID.
+
+The chart checks that every process has a `nodeId` and that no two share one. A process's ID can change between restarts, but two processes must never run with the same one at the same time.
+
+## Graceful shutdown
+
+When Kubernetes stops a pod, it sends the container `SIGTERM`, and kills it with `SIGKILL` once `terminationGracePeriodSeconds` has passed.
+
+On the `NATIVE` transport, a process that receives `SIGTERM`:
+
+1. reports not ready on `/health/readiness` at once, so that no new traffic is sent to it;
+2. keeps serving for `KubernetesShutdownDrainSeconds` (5 by default);
+3. closes.
+
+Set `KubernetesShutdownDrainSeconds` in the [system definition](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined). A Spring Boot process doesn't use it.
+
+:::warning
+The drain plus the time the process takes to close must fit within the pod's `terminationGracePeriodSeconds` (30 seconds by default). Nothing checks this for you. If the grace period runs out, the process is killed part-way through closing. Measure the close time of any process with heavy shutdown work, and raise `terminationGracePeriodSeconds` for it, with headroom.
+:::
