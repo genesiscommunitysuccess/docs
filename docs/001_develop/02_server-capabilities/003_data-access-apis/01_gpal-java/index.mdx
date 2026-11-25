@@ -2001,6 +2001,12 @@ Optimistic Concurrency can be configured with one of the following values: `STRI
 | `LAX`            | A check is performed on modify and delete database operations; if the database operation has provided a TIMESTAMP, the TIMESTAMP of the database record must be the same as the TIMESTAMP provided on the database operation. If no timestamp is provided, then no check is performed. |
 | `NONE` (Default) | Checks are disabled. |
 
+:::note
+With `NONE`, two writers that change different fields of the same record at the same time both succeed, and the database keeps both changes. However, the update the second writer publishes can miss the first writer's change: its old and new record images, and the record returned by `modify` or `upsert`, are built from the version of the record it read before the first writer committed.
+
+If consumers of a table use published update images as values rather than re-reading the record (for example, totals kept from old and new values, or custom update listeners), enable `STRICT` or `LAX` for that table. The second writer then fails with `OPTIMISTIC_CONCURRENCY_ERROR` instead of publishing an incomplete image; re-read the record and retry to publish an image that holds both changes.
+:::
+
 ### Configuration
 
 Optimistic concurrency can be configured using a global property that applies to all tables, or with table-specific properties that allow fine-grained control over individual tables.
